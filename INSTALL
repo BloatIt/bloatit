@@ -6,6 +6,8 @@ to 'www' folder in bloatit.
 Example:
 server.document-root       = "/home/fred/projets/bloatit/www"
 
+Uncomment 'mod_rewrite' in 'server.modules'
+
 In '/etc/lighttpd/conf-available/10-fastcgi.conf', replace 'fastcgi.server'
 settings by the python one. Example:
 
@@ -15,7 +17,7 @@ fastcgi.server = (
         "python-fcgi" =>
         (
          "socket" => "/tmp/fastcgi.python.socket",
-         "bin-path" => "/usr/bin/python /home/fred/projets/bloatit/www/serve.py",
+         "bin-path" => "/usr/bin/python /home/fred/projets/bloatit/src/fcgiserver/serve.py",
          "check-local" => "disable",
          "min-procs" => 1,
          "max-procs" => 1,
@@ -26,8 +28,15 @@ Create a symbolic link of '10-fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
 cd /etc/lighttpd/conf-enabled/
 ln -s ../conf-available/10-fastcgi.conf
 
+Create a symbolic link of 'rewrite.lighttpd.conf' in '/etc/lighttpd/conf-enabled/':
+cd /etc/lighttpd/conf-enabled/
+ln -s /home/fred/projets/bloatit/lighttpd/rewrite.lighttpd.conf
+
 Reload lighttpd config:
 service lighttpd reload
+
+Verify the loading in logs:
+cat /var/log/lighttpd/error.log
 
 Test it: http://127.0.0.1/serve.py
 
