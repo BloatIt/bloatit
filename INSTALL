@@ -1,0 +1,33 @@
+Install lighttpd:
+apt-get install lighttpd
+
+In '/etc/lighttpd/lighttpd.conf' modify the filed 'server.document-root' 
+to 'www' folder in bloatit.
+Example:
+server.document-root       = "/home/fred/projets/bloatit/www"
+
+In '/etc/lighttpd/conf-available/10-fastcgi.conf', replace 'fastcgi.server'
+settings by the python one. Example:
+
+fastcgi.server = (
+    "serve.py" =>
+    (
+        "python-fcgi" =>
+        (
+         "socket" => "/tmp/fastcgi.python.socket",
+         "bin-path" => "/usr/bin/python /home/fred/projets/bloatit/www/serve.py",
+         "check-local" => "disable",
+         "min-procs" => 1,
+         "max-procs" => 1,
+        )
+    ))
+
+Create a symbolic link of '10-fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
+cd /etc/lighttpd/conf-enabled/
+ln -s ../conf-available/10-fastcgi.conf
+
+Reload lighttpd config:
+service lighttpd reload
+
+Test it: http://127.0.0.1/serve.py
+
