@@ -59,7 +59,26 @@ class HtmlPage:
         self.html.write('</div>')
 
     def generate_main_menu(self):
-        pass
+        self.html.write('<div class="main_menu">')
+        self.html.indent()
+        self.html.write('<ul>')
+        self.html.indent()
+        self.html.write('<li><a href="/">Demands</a></li>')
+        self.html.write('<li><a href="/">Projects</a></li>')
+        self.html.write('<li><a href="/">Groups</a></li>')
+        self.html.write('<li><a href="/">Members</a></li>')
+        self.html.unindent()
+        self.html.write('</ul>')
+        self.html.write('<ul>')
+        self.html.indent()
+        self.html.write('<li><a href="/">Contact</a></li>')
+        self.html.write('<li><a href="/">Documentation</a></li>')
+        self.html.write('<li><a href="/">About BloatIt</a></li>')
+        self.html.write('<li><a href="/">Press</a></li>')
+        self.html.unindent()
+        self.html.write('</ul>')
+        self.html.unindent()
+        self.html.write('</div>')
 
     def generate_content(self):
          self.html.write('Bienvenue sur le site de '+self.generate_logo()+'.')
