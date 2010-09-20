@@ -17,7 +17,7 @@ fastcgi.server = (
         "python-fcgi" =>
         (
          "socket" => "/tmp/fastcgi.python.socket",
-         "bin-path" => "/usr/bin/python /home/fred/projets/bloatit/src/fcgiserver/serve.py",
+         "bin-path" => "/usr/bin/python /home/fred/projets/bloatit/src/bloatit/fcgiserver/serve.py",
          "check-local" => "disable",
          "min-procs" => 1,
          "max-procs" => 1,
