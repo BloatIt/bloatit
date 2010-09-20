@@ -4,6 +4,7 @@ class IndentedText:
     line_separator="\n"
     text=""
 
+    
 
     def indent(self):
         self.indent_count+=1

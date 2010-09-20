@@ -5,9 +5,10 @@ from bloatit.htmlrenderer.indentedtext import IndentedText
 """TODO: prévoir une option de configuration pour générer un mode compact"""
 
 class HtmlPage:
-    title = "UntitlePage"
-    html = IndentedText()
-
+    
+    def __init__(self):
+        self.html = IndentedText()
+        self.title = "UntitlePage"
 
     def generate_page(self):
         self.html.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">')
