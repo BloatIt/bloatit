@@ -1,3 +1,7 @@
+************************************
+*  Install and configure lighttpd  *
+************************************
+
 Install lighttpd:
 apt-get install lighttpd
 
@@ -8,32 +12,54 @@ server.document-root       = "/home/fred/projets/bloatit/www"
 
 Uncomment 'mod_rewrite' in 'server.modules'
 
-In '/etc/lighttpd/conf-available/10-fastcgi.conf', replace 'fastcgi.server'
-settings by the python one. Example:
+Create  '/etc/lighttpd/conf-available/10-scgi.conf', full it following this
+template:
 
-fastcgi.server = (
+server.modules   += ( "mod_scgi" )
+scgi.server = (
     "serve.py" =>
     (
-        "python-fcgi" =>
+        "python-scgi" =>
         (
-         "socket" => "/tmp/fastcgi.python.socket",
-         "bin-path" => "/usr/bin/python /home/fred/projets/bloatit/src/bloatit/fcgiserver/serve.py",
+         "host" => "127.0.0.1",
+         "port" => 4000,
          "check-local" => "disable",
-         "min-procs" => 1,
-         "max-procs" => 1,
         )
     ))
 
-Create a symbolic link of '10-fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
-cd /etc/lighttpd/conf-enabled/
-ln -s ../conf-available/10-fastcgi.conf
 
-Create a symbolic link of 'rewrite.lighttpd.conf' in '/etc/lighttpd/conf-enabled/':
+Create a symbolic link of '10-scgi.conf' in '/etc/lighttpd/conf-enabled/':
+cd /etc/lighttpd/conf-enabled/
+ln -s ../conf-available/10-scgi.conf
+
+Create a symbolic link of 'lighttpd/rewrite.lighttpd.conf' in '/etc/lighttpd/conf-enabled/':
 cd /etc/lighttpd/conf-enabled/
 ln -s /home/fred/projets/bloatit/lighttpd/rewrite.lighttpd.conf
 
-Reload lighttpd config:
-service lighttpd reload
+******************
+*  Install scgi  *
+******************
+
+Install python headers:
+sudo apt-get install python3-dev
+
+Build and install scgi
+cd lib/scgi
+sudo python3 setup.py install
+
+**************************
+*  Start BloatIt server  *
+**************************
+
+python3 src/bloatit/scgiserver/serve.py
+
+
+**********************
+*  Restart lighttpd  *
+**********************
+
+Restart lighttpd config:
+service lighttpd restart
 
 Verify the loading in logs:
 cat /var/log/lighttpd/error.log
