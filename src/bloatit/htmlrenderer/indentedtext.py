@@ -1,10 +1,10 @@
 class IndentedText:
-    indent_count=0
-    indent_separator="  "
-    line_separator="\n"
-    text=""
 
-    
+    def __init__(self):
+        self.indent_count=0
+        self.indent_separator="  "
+        self.line_separator="\n"
+        self.text=""
 
     def indent(self):
         self.indent_count+=1

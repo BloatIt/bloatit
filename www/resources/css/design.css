@@ -1,0 +1,35 @@
+/*Declare logo font*/
+
+@font-face {
+    font-family : 'DejaVuSans';
+    src: url('/resources/fonts/DejaVuSans.ttf') format('truetype');
+}
+
+@font-face {
+    font-family : 'DejaVuSans-Bold';
+    src: url('/resources/fonts/DejaVuSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family : 'DejaVuSansCondensed-Bold';
+    src: url('/resources/fonts/DejaVuSansCondensed-Bold.ttf') format('truetype');
+}
+
+body {
+   font-family: "DejaVuSans",  sans-serif;
+   background-color: rgb(220,220,220);
+   
+}
+
+.logo_bloatit {
+    font-family: "DejaVuSansCondensed-Bold",  sans-serif;
+    letter-spacing:-0.05em;
+}
+
+.logo_bloatit_bloat {
+    color: black;
+}
+.logo_bloatit_it {
+    /*color: rgb(0,174,14);*/
+    color: rgb(200,32,0);
+}
