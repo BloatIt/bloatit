@@ -17,13 +17,21 @@
 
 body {
    font-family: "DejaVuSans",  sans-serif;
-   background-color: rgb(220,220,220);
+   background-color: rgb(240,235,228);
    
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 3em;
+    text-shadow: 0.05em 0.05em 0.05em rgb(100,100,100);
 }
 
 .logo_bloatit {
     font-family: "DejaVuSansCondensed-Bold",  sans-serif;
     letter-spacing:-0.05em;
+    
 }
 
 .logo_bloatit_bloat {
