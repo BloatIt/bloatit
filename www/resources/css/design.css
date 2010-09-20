@@ -26,7 +26,7 @@ h1 {
     margin: 0;
     padding: 0;
     font-size: 3em;
-    text-shadow: 0.05em 0.05em 0.05em rgb(100,100,100);
+    text-shadow: 0.05em 0.05em 0.15em rgb(100,100,100);
 }
 
 .logo_bloatit {
