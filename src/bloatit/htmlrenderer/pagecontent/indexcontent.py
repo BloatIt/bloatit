@@ -3,6 +3,8 @@ from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 
 class IndexContent(PageContent):
 
+    def get_code():
+        return "index"
 
     
     def __init__(self, session):

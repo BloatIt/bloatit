@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
+from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
+from bloatit.htmlrenderer.htmltools import HtmlTools
 from bloatit.htmlrenderer.indentedtext import IndentedText
 
 """TODO: prévoir une option de configuration pour générer un mode compact"""
@@ -53,9 +56,7 @@ class HtmlPage:
     def generate_top_bar(self):
         self.html.write('<div class="top_bar">')
         self.html.indent()
-        self.html.write('<a href="/fr/login">Login</a>')
-        self.html.write('<a href="/">Help</a>')
-        self.html.write('<span class="top_bar_search_field"><input type="text" value="" /></span><span class="top_bar_search_button"><input type="submit"  value="Search"/></span>')
+        self.html.write(HtmlTools.generate_link(self.session,"Login / Signup", LoginContent))
         self.html.unindent()
         self.html.write('</div>')
 
@@ -64,18 +65,18 @@ class HtmlPage:
         self.html.indent()
         self.html.write('<ul>')
         self.html.indent()
-        self.html.write('<li><a href="/">Demands</a></li>')
-        self.html.write('<li><a href="/">Projects</a></li>')
-        self.html.write('<li><a href="/">Groups</a></li>')
-        self.html.write('<li><a href="/">Members</a></li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,"Demands", IndexContent)+'</li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,"Projects", IndexContent)+'</li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,"Groups", IndexContent)+'</li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,"Members", IndexContent)+'</li>')
         self.html.unindent()
         self.html.write('</ul>')
         self.html.write('<ul>')
         self.html.indent()
-        self.html.write('<li><a href="/">Contact</a></li>')
-        self.html.write('<li><a href="/">Documentation</a></li>')
-        self.html.write('<li><a href="/">About BloatIt</a></li>')
-        self.html.write('<li><a href="/">Press</a></li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,"Contact", IndexContent)+'</li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,"Documentation", IndexContent)+'</li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,"About BloatIt", IndexContent)+'</li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,"Press", IndexContent)+'</li>')
         self.html.unindent()
         self.html.write('</ul>')
         self.html.unindent()

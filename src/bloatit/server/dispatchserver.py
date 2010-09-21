@@ -15,7 +15,6 @@ class DispatchServer:
 
     def process(self):
 
-        print(self.query)
         self.session = Session()
         
 
@@ -26,8 +25,6 @@ class DispatchServer:
 
     def find_content(self):
         "page" in self.query
-        print(self.query["page"][0])
-        print(self.page_map)
         self.query["page"][0] in self.page_map
         if "page" in self.query and self.query["page"][0] in self.page_map:
             return self.page_map[self.query["page"][0]](self.session)
