@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
-from bloatit.htmlrenderer.htmlpage import HtmlPage
+from bloatit.server.dispatchserver import DispatchServer
 from urllib.parse import parse_qs
 from scgi.scgi_server import SCGIHandler
 from scgi.scgi_server import SCGIServer
@@ -20,9 +20,9 @@ class HtmlHandler(SCGIHandler):
         
         try:
             query = parse_qs(env["QUERY_STRING"]) #TODO
-            page = HtmlPage(query)
+            page = DispatchServer(query)
             output.write("Content-Type: text/html\r\n\r\n")
-            html = page.generate_page()
+            html = page.process()
             output.write(html)
             
         except Exception as e:

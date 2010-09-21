@@ -6,12 +6,13 @@ from bloatit.htmlrenderer.indentedtext import IndentedText
 
 class HtmlPage:
     
-    def __init__(self, query):
+    def __init__(self, session):
+        self.session = session
         self.html = IndentedText()
-        self.title = "UntitlePage"
         self.design = "/resources/css/design.css"
 
-    def generate_page(self):
+    def generate_page(self, content):
+        self.content = content
         self.html.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">')
         self.html.write('<html xmlns="http://www.w3.org/1999/xhtml">')
         self.html.indent()
@@ -27,7 +28,7 @@ class HtmlPage:
         self.html.indent()
         self.html.write('<link rel="stylesheet" href="'+self.design+'" type="text/css" media="handheld, all" />')
 
-        self.html.write('<title>BloatIt - '+self.title+'</title>')
+        self.html.write('<title>BloatIt - '+self.content.get_title()+'</title>')
         self.html.unindent()
         self.html.write('</head>')
 
@@ -52,7 +53,7 @@ class HtmlPage:
     def generate_top_bar(self):
         self.html.write('<div class="top_bar">')
         self.html.indent()
-        self.html.write('<a href="/">Login</a>')
+        self.html.write('<a href="/fr/login">Login</a>')
         self.html.write('<a href="/">Help</a>')
         self.html.write('<span class="top_bar_search_field"><input type="text" value="" /></span><span class="top_bar_search_button"><input type="submit"  value="Search"/></span>')
         self.html.unindent()
@@ -81,6 +82,9 @@ class HtmlPage:
         self.html.write('</div>')
 
     def generate_content(self):
-         self.html.write('Bienvenue sur le site de '+self.generate_logo()+'.')
-         
+        self.html.write('<div class="body_content">')
+        self.html.indent()
+        self.content.generate_body(self.html)
+        self.html.unindent()
+        self.html.write('</div>')
 
