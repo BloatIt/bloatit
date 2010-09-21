@@ -2,7 +2,11 @@
 class Language:
 
     language_code = {
-    
+        "en" : "en",
+        "en-us" : "en",
+        "fr" : "fr",
+        "fr-fr" : "fr"
+
     }
 
     """static $languageList = array(
@@ -20,3 +24,17 @@ class Language:
 
     def get_code(self):
         return self.code
+
+    def set_by_code(self, code):
+        self.code = code
+
+    def find_preferred(self, preferred_langs):
+        for preferred_lang in preferred_langs:
+            lang = preferred_lang.split(";")[0]
+            if lang in self.language_code:
+                self.code = self.language_code[lang]
+                break
+            else:
+                print("Unknow language code "+lang)
+                #TODO: clean log
+

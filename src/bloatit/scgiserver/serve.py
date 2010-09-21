@@ -20,7 +20,8 @@ class HtmlHandler(SCGIHandler):
         
         try:
             query = parse_qs(env["QUERY_STRING"]) #TODO
-            page = DispatchServer(query)
+            preferred_langs = env["HTTP_ACCEPT_LANGUAGE"].split(",")
+            page = DispatchServer(query, preferred_langs)
             output.write("Content-Type: text/html\r\n\r\n")
             html = page.process()
             output.write(html)

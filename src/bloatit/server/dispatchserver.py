@@ -1,3 +1,4 @@
+from bloatit.server.language import Language
 from bloatit.htmlrenderer.pagecontent.pagenotfoundcontent import PageNotFoundContent
 from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
@@ -9,14 +10,28 @@ class DispatchServer:
     'index': IndexContent,
     'login': LoginContent}
 
-    def __init__(self, query):
+    def __init__(self, query, preferred_langs):
         self.query = query
+        self.preferred_langs = preferred_langs
 
 
     def process(self):
 
+
+
         self.session = Session()
+
+        language = Language()
+
+        if "lang" in self.query:
+            if self.query["lang"][0] == "default":
+                language.find_preferred(self.preferred_langs)
+            else:
+                language.set_by_code(self.query["lang"][0])
+
+        self.session.set_language(language)
         
+
 
         page = HtmlPage(self.session)
 
