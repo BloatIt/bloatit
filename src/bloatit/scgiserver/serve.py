@@ -2,11 +2,13 @@
 # -*- coding: UTF-8 -*-
 
 from bloatit.htmlrenderer.htmlpage import HtmlPage
+from urllib.parse import parse_qs
 from scgi.scgi_server import SCGIHandler
 from scgi.scgi_server import SCGIServer
 import logging
 import traceback
 import sys
+
 LOG_FILENAME = '/tmp/bloatit_scgi.log'
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
@@ -17,7 +19,8 @@ class HtmlHandler(SCGIHandler):
         logging.info("HtmlHandler : produce page begin")
         
         try:
-            page = HtmlPage()
+            query = parse_qs(env["QUERY_STRING"]) #TODO
+            page = HtmlPage(query)
             output.write("Content-Type: text/html\r\n\r\n")
             html = page.generate_page()
             output.write(html)

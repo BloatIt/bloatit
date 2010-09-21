@@ -6,7 +6,7 @@ from bloatit.htmlrenderer.indentedtext import IndentedText
 
 class HtmlPage:
     
-    def __init__(self):
+    def __init__(self, query):
         self.html = IndentedText()
         self.title = "UntitlePage"
         self.design = "/resources/css/design.css"
@@ -82,5 +82,5 @@ class HtmlPage:
 
     def generate_content(self):
          self.html.write('Bienvenue sur le site de '+self.generate_logo()+'.')
-
+         
 
