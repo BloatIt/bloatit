@@ -12,7 +12,7 @@ server.document-root       = "/home/fred/projets/bloatit/www"
 
 Uncomment 'mod_rewrite' in 'server.modules'
 
-Create  '/etc/lighttpd/conf-available/10-scgi.conf', full it following this
+Create  '/etc/lighttpd/conf-available/10-scgi.conf', fill it following this
 template:
 
 server.modules   += ( "mod_scgi" )
@@ -53,6 +53,16 @@ sudo python3 setup.py install
 
 python3 src/bloatit/scgiserver/serve.py
 
+
+**********************
+* Update python path *
+**********************
+
+Create a link for python to find the project :
+cd /usr/lib/python3.1/dist-packages/ sudo ln -l
+/home/.............bloatit/src/bloatit
+
+(You can also modify PYTHONPATH)
 
 **********************
 *  Restart lighttpd  *
