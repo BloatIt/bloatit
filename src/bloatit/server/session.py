@@ -10,4 +10,5 @@ class Session:
 
     def set_language(self,language):
         self.language = language
+        self._ = language.get_gettext()
         

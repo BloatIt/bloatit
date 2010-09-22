@@ -1,0 +1,44 @@
+**********************
+* Add a new language *
+**********************
+
+in /po, example for french:
+
+msginit  fr.po bloatit.pot
+
+then edit it and change project name to BloatIt in configuration:
+
+poedit fr.po
+
+Update compilepo.sh to add new generation
+
+*****************************
+* Add new file to translate *
+*****************************
+
+edit /po/POTFILES.in
+
+
+*******************************
+* Update translation template *
+*******************************
+
+in /po :
+
+./genpot.sh
+
+*****************************************
+* Update translations with new template *
+*****************************************
+in /po, example for french :
+
+msgmerge -U fr.po bloatit.pot
+
+
+************************
+* Generate translation *
+************************
+
+in /po :
+
+./compilepo.sh

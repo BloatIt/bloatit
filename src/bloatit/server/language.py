@@ -1,3 +1,5 @@
+import gettext
+from bloatit.config import config
 
 class Language:
 
@@ -37,4 +39,8 @@ class Language:
             else:
                 print("Unknow language code "+lang)
                 #TODO: clean log
+
+    def get_gettext(self):
+        lang = gettext.translation(config.get("gettext_package"), config.get("localedir"), languages=[self.code], codeset="UTF-8")
+        return lang.gettext
 

@@ -1,0 +1,5 @@
+[encoding: UTF-8]
+
+src/bloatit/htmlrenderer/htmltools.py
+src/bloatit/htmlrenderer/htmlpage.py
+src/bloatit/htmlrenderer/pagecontent/logincontent.py

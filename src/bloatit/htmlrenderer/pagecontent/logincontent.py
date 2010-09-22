@@ -13,5 +13,5 @@ class LoginContent(PageContent):
         return "Login or sigup"
 
     def generate_body(self, text):
-        text.write("<h2>Login</h2>")
-        text.write("<h2>Sigup</h2>")
+        text.write("<h2>"+self.session._("Login")+"</h2>")
+        text.write("<h2>"+self.session._("Sigup")+"</h2>")

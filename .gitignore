@@ -6,3 +6,5 @@ umlet.tmp
 .pydevproject
 doc/bdd.pdf
 *.pyc
+*.bak
+locales/*
