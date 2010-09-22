@@ -14,6 +14,7 @@ class HtmlPage:
 
     def generate_page(self, content):
         self.content = content
+        self.html.write('<?xml version=\"1.0\" encoding=\"UTF-8\"?>')
         self.html.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">')
         self.html.write('<html xmlns="http://www.w3.org/1999/xhtml">')
         self.html.indent()
@@ -37,10 +38,19 @@ class HtmlPage:
     def generate_body(self):
         self.html.write('<body>')
         self.html.indent()
+        self.html.write('<div id="page">')
+        self.html.indent()
         self.generate_top_bar()
         self.generate_title()
+        self.html.indent()
+        self.html.write('<div id="center">')
         self.generate_main_menu()
         self.generate_content()
+        self.html.unindent()
+        self.html.write('</div>')
+        self.generate_footer()
+        self.html.unindent()
+        self.html.write('</div>')
         self.html.unindent()
         self.html.write('</body>')
 
@@ -50,10 +60,10 @@ class HtmlPage:
 
 
     def generate_title(self):
-        self.html.write('<h1>'+self.generate_logo()+'</h1>')
+        self.html.write('<h1>'+HtmlTools.generate_link(self.session,self.generate_logo(), IndexContent)+'</h1>')
 
     def generate_top_bar(self):
-        self.html.write('<div class="top_bar">')
+        self.html.write('<div id="top_bar">')
         self.html.indent()
         self.html.write(HtmlTools.generate_link(self.session,self.session._("Login / Signup"), LoginContent))
         self.html.unindent()
@@ -61,7 +71,7 @@ class HtmlPage:
 
     def generate_main_menu(self):
         
-        self.html.write('<div class="main_menu">')
+        self.html.write('<div id="main_menu">')
         self.html.indent()
         self.html.write('<ul>')
         self.html.indent()
@@ -82,8 +92,15 @@ class HtmlPage:
         self.html.unindent()
         self.html.write('</div>')
 
+    def generate_footer(self):
+        self.html.write('<div id="footer">')
+        self.html.indent()
+        self.html.write(self.session._("This website is under GNU Affero Public Licence."))
+        self.html.unindent()
+        self.html.write('</div>')
+
     def generate_content(self):
-        self.html.write('<div class="body_content">')
+        self.html.write('<div id="body_content">')
         self.html.indent()
         self.content.generate_body(self.html)
         self.html.unindent()

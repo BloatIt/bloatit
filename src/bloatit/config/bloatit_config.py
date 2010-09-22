@@ -36,7 +36,7 @@ config.set("script", sys.path[0])
 config.set("root_path", sys.path[0]+'/../../../')
 
 #path locale
-if os.path.exists(os.path.join(config.get("root_path"), 'build/mo')):
+if os.path.exists(os.path.join(config.get("root_path"), 'locales')):
     config.set("localedir", os.path.join(config.get("root_path"), 'locales'))
 else:
     print("ERROR : no locales path")

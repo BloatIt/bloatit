@@ -14,10 +14,17 @@
     font-family : 'DejaVuSansCondensed-Bold';
     src: url('/resources/fonts/DejaVuSansCondensed-Bold.ttf') format('truetype');
 }
+html {
+    /*height: 100%;*/
+
+}
 
 body {
-   font-family: "DejaVuSans",  sans-serif;
-   background-color: rgb(240,235,228);
+   /*height: 100%;*/
+
+   color: rgb(50,50,50);
+   font-family: "courier new",  sans-serif;
+   background-color: rgb(250,250,250);
    margin: 0;
    padding: 0;
    padding-bottom:50px;
@@ -25,9 +32,10 @@ body {
 
 h1 {
     margin: 0;
+    margin-left: 0.5em;
     padding: 0;
-    font-size: 3em;
-    text-shadow: 0.05em 0.05em 0.15em rgb(100,100,100);
+    font-size: 4em;
+    text-shadow: 0.05em 0.05em 0.15em rgb(150,150,175);
 }
 
 
@@ -36,35 +44,58 @@ h2 {
     margin-left: 1em;
     padding: 0.5em;
     font-size: 1.5em;
-    text-shadow: 0.05em 0.05em 0.15em rgb(100,100,100);
+    /*text-shadow: 0.05em 0.05em 0.15em rgb(100,100,100);*/
 }
 
+#page {
+    margin: 0;
+    padding: 0;
+    /*min-height: 100%;
+    position: relative;
+    */
 
+}
+
+#footer {
+    position: absolute;
+    bottom: 1em;
+    margin: 0;
+    margin-left: 3%;
+    
+    background-color: rgb(253,253,254);
+    border: 1px solid rgb(200,200,200);
+    padding: 1em;
+    width: 90%
+}
 
 .logo_bloatit {
     font-family: "DejaVuSansCondensed-Bold",  sans-serif;
     letter-spacing:-0.05em;
-    
+
 }
 
 .logo_bloatit_bloat {
-    color: black;
+    /*color: black;*/
+    color:rgb(50,50,50);
 }
 .logo_bloatit_it {
+    color: rgb(32,141,188);
+    /*color: rgb(14,0,174);*/
     /*color: rgb(0,174,14);*/
-    color: rgb(200,32,0);
+    /*color: rgb(200,32,0);*/
 }
 
 a {
-    color: rgb(100,0,0);
+    color: rgb(32,141,188);
+    font-weight: bold;
     text-decoration: none;
     margin: 0;
     padding: 0;
-    text-shadow: 0.05em 0.05em 0.07em rgb(100,100,100);
+    /*text-shadow: 0.05em 0.05em 0.07em rgb(100,100,100);*/
 }
 
 a:hover {
-    text-decoration: underline;
+    color: rgb(43,192,255);
 }
 
 ul {
@@ -77,38 +108,41 @@ li {
     list-style: none;
     margin: 0;
     padding: 0;
+    margin-bottom: 0.5em;
 }
 
 
 
 /*topbar*/
 
-.top_bar {
+#top_bar {
     float:right;
-    /*border-bottom: 1px solid rgb(100,0,0);*/
-    -moz-box-shadow:0 0 15px rgb(100,100,100);
+    -moz-box-shadow:0px 0 15px rgb(100,100,100);
     -webkit-box-shadow:0 0 15px rgb(100,100,100);
-     -moz-border-radius:3px;
-    -webkit-border-radius:3px;
+
     padding: 0.2em;
     margin: 0;
+    margin-right: 15px;
 
     background-color: rgb(250,250,250);
 }
 
-.top_bar a {
-    color: rgb(100,0,0);
+#top_bar a {
+    color: rgb(32,141,188);
     text-decoration: none;
     margin: 0;
     padding: 0;
     margin-left: 6em;
     margin-right: 6em;
-    text-shadow: 0.05em 0.05em 0.07em rgb(100,100,100);
+}
+
+#top_bar a:hover {
+    color: rgb(43,192,255);
+
 }
 
 
-
-.top_bar_search_field input{
+#top_bar_search_field input{
     border : 1px solid rgb(150,100,10);
     color: rgb(100,100,100);
     padding-left: 0.2em;
@@ -117,7 +151,7 @@ li {
     font-style:italic;
 }
 
-.top_bar_search_button input {
+#top_bar_search_button input {
     color: rgb(100,0,0);
     text-decoration: none;
     margin: 0;
@@ -128,7 +162,7 @@ li {
     background: none;
 }
 
-.top_bar_search_button input:hover {
+#top_bar_search_button input:hover {
     cursor: pointer;
     color: rgb(200,0,0);
 }
@@ -136,33 +170,47 @@ li {
 
 
 /*Main menu*/
-.main_menu {
+
+#main_menu {
     float:left;
 
-    /*border-bottom: 1px solid rgb(100,0,0);*/
+    
+    border: 1px solid rgb(200,200,200);
     -moz-box-shadow:0 0 15px rgb(100,100,100);
     -webkit-box-shadow:0 0 15px rgb(100,100,100);
-     -moz-border-radius:0.5em;
-    -webkit-border-radius:0.5em;
+    -moz-border-radius:1.0em;
+    -webkit-border-radius:1.0em;
     padding: 0.5em;
-    margin-top: 3em;
-    margin-left: -0.5em;
+    margin-top: 2em;
+    margin-left: -1.0em;
     margin-right: 2.5em;
+    margin-bottom: 0em;
 
     background-color: rgb(250,250,250);
+clear:both;
 }
 
 /*Body content**/
 
-.body_content {
-    -moz-box-shadow:0 0 15px rgb(100,100,100);
-    -webkit-box-shadow:0 0 15px rgb(100,100,100);
-     -moz-border-radius:0.5em;
-    -webkit-border-radius:0.5em;
+#body_content {
+    
+   
+    
+    
+}
 
-    margin-top: 1em;
-    margin-right: -0.5em;
-    margin-left: 2.5em;
+#center {
+    overflow: hidden;
+	
+
+    background-color: rgb(253,253,254);
+    border: 1px solid rgb(200,200,200);
+    -moz-box-shadow:-16px 0 15px rgb(100,100,100);
+    -webkit-box-shadow:0 0 15px rgb(100,100,100);
+    
+    margin: 0px;
+    margin-top: 0em;
     margin-bottom: 2em;
     padding-bottom: 4em;
+
 }
