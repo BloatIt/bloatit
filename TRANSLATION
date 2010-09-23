@@ -4,7 +4,7 @@
 
 in /po, example for french:
 
-msginit  fr.po bloatit.pot
+msginit  -o fr.po -i bloatit.pot
 
 then edit it and change project name to BloatIt in configuration:
 

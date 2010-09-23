@@ -14,13 +14,8 @@
     font-family : 'DejaVuSansCondensed-Bold';
     src: url('/resources/fonts/DejaVuSansCondensed-Bold.ttf') format('truetype');
 }
-html {
-    /*height: 100%;*/
-
-}
 
 body {
-   /*height: 100%;*/
 
    color: rgb(50,50,50);
    font-family: "courier new",  sans-serif;
@@ -44,21 +39,17 @@ h2 {
     margin-left: 1em;
     padding: 0.5em;
     font-size: 1.5em;
-    /*text-shadow: 0.05em 0.05em 0.15em rgb(100,100,100);*/
+    
 }
 
 #page {
     margin: 0;
     padding: 0;
-    /*min-height: 100%;
-    position: relative;
-    */
-
+    
 }
 
 #footer {
-    position: absolute;
-    bottom: 1em;
+    bottom: 0px;
     margin: 0;
     margin-left: 3%;
     
@@ -75,14 +66,10 @@ h2 {
 }
 
 .logo_bloatit_bloat {
-    /*color: black;*/
     color:rgb(50,50,50);
 }
 .logo_bloatit_it {
     color: rgb(32,141,188);
-    /*color: rgb(14,0,174);*/
-    /*color: rgb(0,174,14);*/
-    /*color: rgb(200,32,0);*/
 }
 
 a {
@@ -91,7 +78,6 @@ a {
     text-decoration: none;
     margin: 0;
     padding: 0;
-    /*text-shadow: 0.05em 0.05em 0.07em rgb(100,100,100);*/
 }
 
 a:hover {
@@ -99,15 +85,15 @@ a:hover {
 }
 
 ul {
-    list-style: none;
     margin: 1em;
     padding: 0;
+    list-style: none;
 }
 
 li {
-    list-style: none;
     margin: 0;
     padding: 0;
+    
     margin-bottom: 0.5em;
 }
 
@@ -168,49 +154,43 @@ li {
 }
 
 
-
-/*Main menu*/
-
-#main_menu {
-    float:left;
-
-    
-    border: 1px solid rgb(200,200,200);
-    -moz-box-shadow:0 0 15px rgb(100,100,100);
-    -webkit-box-shadow:0 0 15px rgb(100,100,100);
-    -moz-border-radius:1.0em;
-    -webkit-border-radius:1.0em;
-    padding: 0.5em;
-    margin-top: 2em;
-    margin-left: -1.0em;
-    margin-right: 2.5em;
-    margin-bottom: 0em;
-
-    background-color: rgb(250,250,250);
-clear:both;
-}
-
-/*Body content**/
-
-#body_content {
-    
-   
-    
-    
-}
-
 #center {
-    overflow: hidden;
-	
-
     background-color: rgb(253,253,254);
     border: 1px solid rgb(200,200,200);
     -moz-box-shadow:-16px 0 15px rgb(100,100,100);
     -webkit-box-shadow:0 0 15px rgb(100,100,100);
-    
+    padding: 0px;
     margin: 0px;
-    margin-top: 0em;
     margin-bottom: 2em;
-    padding-bottom: 4em;
-
 }
+
+/*table{
+    margin: 0em;
+    padding: 0;
+}*/
+
+#center div {
+    display: table-cell;
+    vertical-align: top;
+    /*margin: 0;
+    padding: 0;*/
+}
+
+/*Main menu*/
+
+#main_menu {
+    padding: 0px;
+    margin: 1em;
+    border-right: 1px dashed rgb(200,200,200);
+}
+
+/*Body content*/
+
+#body_content {
+    margin: 1em;
+    padding: 2em;
+    font-family: "Verdena"
+    
+}
+
+

@@ -17,4 +17,4 @@ class IndexContent(PageContent):
     def generate_body(self, text):
         text.write("<h2>Welcome in "+HtmlTools.generate_logo()+" website</h2>")
         text.write(HtmlTools.generate_logo()+" is a wonderful website !")
-        text.write(1000*" is a wonderful website !")
+        text.write(100*" is a wonderful website !")
