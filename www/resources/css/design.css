@@ -181,7 +181,12 @@ li {
 #main_menu {
     padding: 0px;
     margin: 1em;
+    padding-top: 3em;
     border-right: 1px dashed rgb(200,200,200);
+}
+
+#main_menu ul {
+    border-bottom: 1px dashed rgb(200,200,200);
 }
 
 /*Body content*/
