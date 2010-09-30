@@ -14,7 +14,7 @@ class DispatchServer:
         self.query = query
         self.preferred_langs = preferred_langs
 
-
+        
     def process(self):
 
 
@@ -39,7 +39,7 @@ class DispatchServer:
         return page.generate_page(content)
 
     def find_content(self):
-        "page" in self.query
+        "page" in self.query #TODO code mort ?
         self.query["page"][0] in self.page_map
         if "page" in self.query and self.query["page"][0] in self.page_map:
             return self.page_map[self.query["page"][0]](self.session)

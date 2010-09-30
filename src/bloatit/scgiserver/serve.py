@@ -19,7 +19,7 @@ class HtmlHandler(SCGIHandler):
         logging.info("HtmlHandler : produce page begin")
         
         try:
-            query = parse_qs(env["QUERY_STRING"]) #TODO
+            query = parse_qs(env["QUERY_STRING"])
             preferred_langs = env["HTTP_ACCEPT_LANGUAGE"].split(",")
             page = DispatchServer(query, preferred_langs)
             output.write("Content-Type: text/html\r\n\r\n")

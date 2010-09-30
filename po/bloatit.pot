@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-22 02:31+0200\n"
+"POT-Creation-Date: 2010-09-29 17:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,52 +16,44 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. locale.bindtextdomain(config.get("gettext_package"), config.get("localedir"))
-#. gettext.bindtextdomain("bloatit", "/home/fred/projets/bloatit/locales")
-#. locale.bindtextdomain("bloatit", "/home/fred/projets/bloatit/locales")
-#. gettext.install("bloatit", "/home/fred/projets/bloatit/locales")
-#. gettext.bind_textdomain_codeset("bloatit", "UTF-8")
-#. gettext.textdomain("bloatit");
-#. locale.setlocale(locale.LC_MESSAGES, "fr_FR.utf8")
-#. plop = gettext.translation("bloatit", "/home/fred/projets/bloatit/locales","/home/fred/projets/bloatit/locales/fr/LC_MESSAGES/bloatit.mo")
-#. plop = GNUTranslations(file("/home/fred/projets/bloatit/locales/fr/LC_MESSAGES/bloatit.mo")
-#. locale.setlocale(locale.LC_MESSAGES, "fr-fr")
-#: ../src/bloatit/htmlrenderer/htmlpage.py:28
-#: ../src/bloatit/htmlrenderer/htmlpage.py:72
-#: ../src/bloatit/htmlrenderer/htmlpage.py:73
+#: ../src/bloatit/htmlrenderer/htmlpage.py:68
 msgid "Login / Signup"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:83
+#: ../src/bloatit/htmlrenderer/htmlpage.py:78
 msgid "Demands"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:84
+#: ../src/bloatit/htmlrenderer/htmlpage.py:79
 msgid "Projects"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:85
+#: ../src/bloatit/htmlrenderer/htmlpage.py:80
 msgid "Groups"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:86
+#: ../src/bloatit/htmlrenderer/htmlpage.py:81
 msgid "Members"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:91
+#: ../src/bloatit/htmlrenderer/htmlpage.py:86
 msgid "Contact"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:92
+#: ../src/bloatit/htmlrenderer/htmlpage.py:87
 msgid "Documentation"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:93
+#: ../src/bloatit/htmlrenderer/htmlpage.py:88
 msgid "About BloatIt"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:94
+#: ../src/bloatit/htmlrenderer/htmlpage.py:89
 msgid "Press"
+msgstr ""
+
+#: ../src/bloatit/htmlrenderer/htmlpage.py:98
+msgid "This website is under GNU Affero Public Licence."
 msgstr ""
 
 #: ../src/bloatit/htmlrenderer/pagecontent/logincontent.py:16
