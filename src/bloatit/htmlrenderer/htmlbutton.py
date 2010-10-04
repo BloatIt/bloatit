@@ -17,19 +17,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
-
-class PageNotFoundContent(PageContent):
-
-    def get_code():
-        return "pagenotfound"
-
-    def __init__(self, session):
-        self.session = session
+from bloatit.htmlrenderer.htmlcomponent import HtmlComponent
 
 
-    def get_title(self):
-        return "Page not found"
+class HtmlButton(HtmlComponent):
 
-    def generate_body(self, text):
-        text.write("Page not found")
+    def set_label(self, label):
+        self.label = label
+
+    def generate(self, text):
+        text.write('<p><input type="submit" value="'+self.label+'"/><p>')

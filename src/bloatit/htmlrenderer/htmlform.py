@@ -17,19 +17,20 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.htmlrenderer.htmlcontainer import HtmlContainer
 
-class PageNotFoundContent(PageContent):
+class HtmlForm(HtmlContainer):
 
-    def get_code():
-        return "pagenotfound"
+    def generate(self, text):
+        # @type text IndentedText
+        text.write('<form action="'+self.action.get_url()+'" method="POST">')
+        text.indent()
 
-    def __init__(self, session):
-        self.session = session
+        #Generate content fields
+        super(HtmlForm, self).generate(text)
+        text.unindent()
+        text.write('</form>')
 
-
-    def get_title(self):
-        return "Page not found"
-
-    def generate_body(self, text):
-        text.write("Page not found")
+    def set_action(self, action):
+        # @type action Action
+        self.action = action

@@ -17,19 +17,5 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
-
-class PageNotFoundContent(PageContent):
-
-    def get_code():
-        return "pagenotfound"
-
-    def __init__(self, session):
-        self.session = session
-
-
-    def get_title(self):
-        return "Page not found"
-
-    def generate_body(self, text):
-        text.write("Page not found")
+__author__="fred"
+__date__ ="$4 oct. 2010 20:58:15$"

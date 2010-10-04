@@ -22,7 +22,7 @@ from bloatit.server.language import Language
 class Session:
 
     def __init__(self):
-        pass
+        self.login = None
 
     def get_language(self):
         return self.language
@@ -30,4 +30,9 @@ class Session:
     def set_language(self,language):
         self.language = language
         self._ = language.get_gettext()
-        
+
+    def set_login(self, login):
+        self.login = login
+
+    def get_login(self):
+        return self.login

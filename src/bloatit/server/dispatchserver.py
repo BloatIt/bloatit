@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.actions.logoutaction import LogoutAction
+from bloatit.actions.loginaction import LoginAction
 from bloatit.server.language import Language
 from bloatit.htmlrenderer.pagecontent.pagenotfoundcontent import PageNotFoundContent
 from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
@@ -29,16 +31,24 @@ class DispatchServer:
     'index': IndexContent,
     'login': LoginContent}
 
-    def __init__(self, query, preferred_langs):
+    action_map = {
+    'login': LoginAction,
+    'logout': LogoutAction}
+
+    def __init__(self, query, post, cookies, preferred_langs):
         self.query = query
+        self.post = post
+        self.cookies = cookies
         self.preferred_langs = preferred_langs
 
         
     def process(self):
 
-
+        #print(self.query)
 
         self.session = Session()
+        if "UserID" in self.cookies:
+            self.session.set_login(self.cookies["UserID"])
 
         language = Language()
 
@@ -49,18 +59,28 @@ class DispatchServer:
                 language.set_by_code(self.query["lang"][0])
 
         self.session.set_language(language)
-        
 
+        action = self.find_action()
+        if action != None:
+            return action.process(self.query, self.post)
+        else:
+            page = HtmlPage(self.session)
 
-        page = HtmlPage(self.session)
+            content = self.find_content()
+            return page.generate_page(content)
 
-        content = self.find_content()
-        return page.generate_page(content)
+    def find_action(self):
+        if "page" in self.query:
+            query = self.query["page"][0]
+            if query.startswith("action/") and query[7:] in self.action_map:
+                return self.action_map[query[7:]](self.session)
+        return None
 
     def find_content(self):
-        "page" in self.query #TODO code mort ?
-        self.query["page"][0] in self.page_map
-        if "page" in self.query and self.query["page"][0] in self.page_map:
-            return self.page_map[self.query["page"][0]](self.session)
-        else:
-            return PageNotFoundContent(self.session)
+        
+        if "page" in self.query:
+            query = self.query["page"][0]
+            if query in self.page_map:
+                return self.page_map[query](self.session)
+        
+        return PageNotFoundContent(self.session)

@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.actions.logoutaction import LogoutAction
 from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
 from bloatit.htmlrenderer.htmltools import HtmlTools
@@ -41,7 +42,7 @@ class HtmlPage:
         self.html.unindent()
         self.html.write('</html>')
 
-        return self.html.get_text()
+        return "Content-Type: text/html\r\n\r\n"+self.html.get_text()
 
     def generate_head(self):
         self.html.write('<head>')
@@ -83,7 +84,10 @@ class HtmlPage:
     def generate_top_bar(self):
         self.html.write('<div id="top_bar">')
         self.html.indent()
-        self.html.write(HtmlTools.generate_link(self.session,self.session._("Login / Signup"), LoginContent))
+        if self.session.get_login() is None :
+            self.html.write(HtmlTools.generate_link(self.session,self.session._("Login / Signup"), LoginContent))
+        else:
+            self.html.write(self.session.get_login()+" "+HtmlTools.generate_action_link(self.session,self.session._("Logout"), LogoutAction(self.session)))
         self.html.unindent()
         self.html.write('</div>')
 

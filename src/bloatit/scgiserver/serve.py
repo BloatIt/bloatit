@@ -34,19 +34,26 @@ class HtmlHandler(SCGIHandler):
     
     def produce(self, env, bodysize, input, output):
         logging.info("HtmlHandler : produce page begin")
-        
         try:
             query = parse_qs(env["QUERY_STRING"])
+            post = parse_qs(input.read(bodysize))
+
             preferred_langs = env["HTTP_ACCEPT_LANGUAGE"].split(",")
-            page = DispatchServer(query, preferred_langs)
-            output.write("Content-Type: text/html\r\n\r\n")
-            html = page.process()
-            output.write(html)
+            cookie_string = env["HTTP_COOKIE"].split(";")
+            cookies = {}
+            for cookie in cookie_string:
+                parts = cookie.split("=")
+                if len(parts) == 2 :
+                    cookies[parts[0].strip()] = parts[1].strip()
+            page = DispatchServer(query, post, cookies, preferred_langs)
+            
+            result = page.process()
+            output.write(result)
             
         except Exception as e:
             exc_type, exc_value, exc_traceback = sys.exc_info()
 
-            output.write("Content-Type: text/text\r\n\r\n")
+            output.write("Content-Type: text/html\r\n\r\n")
             #TODO:disable in prod
             logging.error("Fail to generate page : "+str(e))
             logging.error('Error Type: ' + str(exc_type))

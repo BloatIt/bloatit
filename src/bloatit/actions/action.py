@@ -1,3 +1,4 @@
+from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -17,19 +18,22 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.htmlrenderer.htmltools import HtmlTools
 
-class PageNotFoundContent(PageContent):
 
-    def get_code():
-        return "pagenotfound"
+class Action:
 
     def __init__(self, session):
+        # @type session Session
         self.session = session
 
 
-    def get_title(self):
-        return "Page not found"
+    def get_url(self):
+        return '/'+self.session.get_language().get_code()+'/action/'+self.get_code()
 
-    def generate_body(self, text):
-        text.write("Page not found")
+    def get_code(self):
+        """return the action code"""
+        pass
+
+    def process(self, query, post):
+        return "Location: "+HtmlTools.generate_url(self.session,IndexContent)

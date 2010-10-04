@@ -1,3 +1,4 @@
+from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -26,4 +27,13 @@ class HtmlTools:
         return '<span class="logo_bloatit"><span class="logo_bloatit_bloat">Bloat</span><span class="logo_bloatit_it">It</span></span>'
 
     def generate_link(session, text, link_page):
+        # @type link_page PageContent
         return '<a href="/'+session.get_language().get_code()+'/'+link_page.get_code()+'">'+text+'</a>'
+
+    def generate_action_link(session, text, link_action):
+        # @type link_action Action
+        return '<a href="/'+session.get_language().get_code()+'/action/'+link_action.get_code()+'">'+text+'</a>'
+
+    def generate_url(session, url_page):
+        # @type url_page PageContent
+        return '/'+session.get_language().get_code()+'/'+url_page.get_code()
