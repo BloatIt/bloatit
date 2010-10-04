@@ -47,6 +47,27 @@ Build and install scgi
 cd lib/scgi
 sudo python3 setup.py install
 
+**********************
+* Update python path *
+**********************
+
+Create a link for python to find the project :
+cd /usr/lib/python3.1/dist-packages/
+sudo ln -s /home/.............bloatit/src/bloatit
+
+(You can also modify PYTHONPATH)
+
+*****************
+* Build locales *
+*****************
+Install internationnalize tools :
+sudo apt-get install gettext
+
+Compile languages:
+
+cd po
+./compilepo.sh
+
 **************************
 *  Start BloatIt server  *
 **************************
@@ -54,15 +75,7 @@ sudo python3 setup.py install
 python3 src/bloatit/scgiserver/serve.py
 
 
-**********************
-* Update python path *
-**********************
 
-Create a link for python to find the project :
-cd /usr/lib/python3.1/dist-packages/ sudo ln -l
-/home/.............bloatit/src/bloatit
-
-(You can also modify PYTHONPATH)
 
 **********************
 *  Restart lighttpd  *
