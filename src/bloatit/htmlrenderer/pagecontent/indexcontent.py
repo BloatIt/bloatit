@@ -12,7 +12,7 @@ class IndexContent(PageContent):
 
 
     def get_title(self):
-        return "Collaborative open source financnig"
+        return "Finance free software"
 
     def generate_body(self, text):
         text.write("<h2>Welcome in "+HtmlTools.generate_logo()+" website</h2>")
