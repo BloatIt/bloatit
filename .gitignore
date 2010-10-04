@@ -8,3 +8,4 @@ doc/bdd.pdf
 *.pyc
 *.bak
 locales/*
+.LCK*~
