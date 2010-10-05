@@ -1,6 +1,6 @@
 /*Declare logo font*/
 
-@font-face {
+/*@font-face {
     font-family : 'DejaVuSans';
     src: url('/resources/fonts/DejaVuSans.ttf') format('truetype');
 }
@@ -13,7 +13,7 @@
 @font-face {
     font-family : 'DejaVuSansCondensed-Bold';
     src: url('/resources/fonts/DejaVuSansCondensed-Bold.ttf') format('truetype');
-}
+}*/
 
 body {
 
@@ -60,7 +60,8 @@ h2 {
 }
 
 .logo_bloatit {
-    font-family: "DejaVuSansCondensed-Bold",  sans-serif;
+    font-weight: bold;
+    font-family: "Verdena",  sans-serif;
     letter-spacing:-0.05em;
 
 }
