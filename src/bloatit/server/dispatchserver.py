@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
 from bloatit.actions.logoutaction import LogoutAction
 from bloatit.actions.loginaction import LoginAction
 from bloatit.server.language import Language
@@ -29,7 +30,9 @@ from bloatit.server.session import Session
 class DispatchServer:
     page_map = {
     'index': IndexContent,
-    'login': LoginContent}
+    'login': LoginContent,
+    'demands' : DemandContent
+    }
 
     action_map = {
     'login': LoginAction,

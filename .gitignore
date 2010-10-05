@@ -1,7 +1,7 @@
 www/fcgi.pyc
 nbproject/
 umlet.tmp
-
+*.po~
 .project
 .pydevproject
 doc/bdd.pdf

@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
 from bloatit.actions.logoutaction import LogoutAction
 from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
@@ -97,7 +98,7 @@ class HtmlPage:
         self.html.indent()
         self.html.write('<ul>')
         self.html.indent()
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Demands"), IndexContent)+'</li>')
+        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Demands"), DemandContent)+'</li>')
         self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Projects"), IndexContent)+'</li>')
         self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Groups"), IndexContent)+'</li>')
         self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Members"), IndexContent)+'</li>')
