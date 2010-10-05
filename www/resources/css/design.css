@@ -199,4 +199,8 @@ li {
     
 }
 
+#body_content div {
+    display: block;
+}
+
 
