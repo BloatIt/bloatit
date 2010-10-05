@@ -24,7 +24,7 @@ from bloatit.server.language import Language
 from bloatit.htmlrenderer.pagecontent.pagenotfoundcontent import PageNotFoundContent
 from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
-from bloatit.htmlrenderer.htmlpage import HtmlPage
+from bloatit.htmlrenderer.htmlcomponent.htmlpage import HtmlPage
 from bloatit.server.session import Session
 
 class DispatchServer:

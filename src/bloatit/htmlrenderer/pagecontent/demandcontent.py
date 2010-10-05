@@ -1,4 +1,3 @@
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -11,12 +10,14 @@ from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 # (at your option) any later version.
 #
 # BloatIt is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# but WITHOUT ANY WARRANTY; without even the implslied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+
+from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 
 class DemandContent(PageContent):
 

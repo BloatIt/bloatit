@@ -31,7 +31,6 @@ logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG, format="%(asctime
 
 class HtmlHandler(SCGIHandler):
 	
-    
     def produce(self, env, bodysize, input, output):
         logging.info("HtmlHandler : produce page begin")
         try:

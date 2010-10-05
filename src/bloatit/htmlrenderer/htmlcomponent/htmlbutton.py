@@ -17,20 +17,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmlcontainer import HtmlContainer
+from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
-class HtmlForm(HtmlContainer):
+
+class HtmlButton(HtmlComponent):
+
+    def set_label(self, label):
+        self.label = label
 
     def generate(self, text):
-        # @type text IndentedText
-        text.write('<form action="'+self.action.get_url()+'" method="POST">')
-        text.indent()
-
-        #Generate content fields
-        super(HtmlForm, self).generate(text)
-        text.unindent()
-        text.write('</form>')
-
-    def set_action(self, action):
-        # @type action Action
-        self.action = action
+        text.write('<p><input type="submit" value="'+self.label+'"/><p>')

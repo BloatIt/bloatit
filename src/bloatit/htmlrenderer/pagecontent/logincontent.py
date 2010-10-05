@@ -18,10 +18,10 @@
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 from bloatit.actions.loginaction import LoginAction
-from bloatit.htmlrenderer.htmlbutton import HtmlButton
-from bloatit.htmlrenderer.htmlpasswordfield import HtmlPasswordField
-from bloatit.htmlrenderer.htmltextfield import HtmlTextField
-from bloatit.htmlrenderer.htmlform import HtmlForm
+from bloatit.htmlrenderer.htmlcomponent.htmlbutton import HtmlButton
+from bloatit.htmlrenderer.htmlcomponent.htmlpasswordfield import HtmlPasswordField
+from bloatit.htmlrenderer.htmlcomponent.htmltextfield import HtmlTextField
+from bloatit.htmlrenderer.htmlcomponent.htmlform import HtmlForm
 from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 
 class LoginContent(PageContent):
