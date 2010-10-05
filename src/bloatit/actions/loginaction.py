@@ -33,8 +33,15 @@ class LoginAction(Action):
     def get_password_code(self):
         return "bloatit_password"
 
-    def process(self, query, post):
+    def process(self, html_result, query, post):
+        # @type html_result HtmlResult
+        
         if self.get_login_code() in post and self.get_password_code() in post:
             if post[self.get_password_code()][0] == "pass":
-                return "Set-Cookie: UserID="+post[self.get_login_code()][0]+"; path=/; Max-Age=31536000; Version=1 \r\nLocation: "+HtmlTools.generate_url(self.session,IndexContent)+"\r\n\r\n"
+                self.session.set_logged(True)
+                self.session.set_login(post[self.get_login_code()][0])
+
+
+        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
+        
         return "Location: "+HtmlTools.generate_url(self.session,IndexContent)+"\r\n\r\n"

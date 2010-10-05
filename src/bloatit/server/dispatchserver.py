@@ -18,6 +18,8 @@
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 from bloatit.htmlrenderer.pagecontent.demandscontent import DemandsContent
+from bloatit.htmlrenderer.htmlresult import HtmlResult
+from bloatit.server.sessionmanager import SessionManager
 from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
 from bloatit.actions.logoutaction import LogoutAction
 from bloatit.actions.loginaction import LoginAction
@@ -47,10 +49,15 @@ class DispatchServer:
 
         
     def process(self):
-        
-        self.session = Session()
-        if "UserID" in self.cookies:
-            self.session.set_login(self.cookies["UserID"])
+
+        self.session = None
+        if "session_key" in self.cookies:
+            self.session = SessionManager.get_by_key(self.cookies["session_key"])
+
+        if self.session is None:
+            self.session = SessionManager.create_session()
+
+        html_result = HtmlResult(self.session)
 
         language = Language()
 
@@ -64,12 +71,13 @@ class DispatchServer:
 
         action = self.find_action()
         if action != None:
-            return action.process(self.query, self.post)
+            action.process(html_result, self.query, self.post)
         else:
-            page = HtmlPage(self.session)
+            page = HtmlPage(self.session, html_result)
 
             content = self.find_content()
-            return page.generate_page(content)
+            page.generate_page(content)
+        return html_result.generate()
 
     def find_action(self):
         if "page" in self.query:

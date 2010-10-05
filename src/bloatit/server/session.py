@@ -21,6 +21,8 @@ class Session:
 
     def __init__(self):
         self.login = None
+        self.key = None
+        self.logged = False
 
     def get_language(self):
         return self.language
@@ -34,3 +36,16 @@ class Session:
 
     def get_login(self):
         return self.login
+
+    def set_logged(self, logged):
+        self.logged = logged
+
+    def is_logged(self):
+        return self.logged
+
+    def set_key(self, key):
+        # @type string
+        self.key = key
+
+    def get_key(self):
+        return self.key
