@@ -1,4 +1,3 @@
-from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -18,24 +17,33 @@ from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmltools import HtmlTools
+from bloatit.htmlrenderer.indentedtext import IndentedText
 
-
-class Action:
+class HtmlResult(IndentedText):
 
     def __init__(self, session):
-        # @type session Session
-        self.session = session
+        IndentedText.__init__(self)
+        self.redirect = None
+        self.session=session
+
+    def set_redirect(self,location):
+        self.redirect = location
+
+    def set_content(self, has_content):
+        self.has_content = has_content
+
+    def generate(self):
+        result = "Set-Cookie: session_key="+self.session.get_key()+"; path=/; Max-Age=1296000; Version=1 \r\n"
 
 
-    def get_url(self):
-        return '/'+self.session.get_language().get_code()+'/action/'+self.get_code()
+        if self.redirect:
+            result += "Location: "+self.redirect+"\r\n"
 
-    def get_code(self):
-        """return the action code"""
-        pass
+        text = self.get_text()
+        if len(text):
+            result += "Content-Type: text/html\r\n"
 
-    def process(self, html_result, query, post):
-        # @type html_result HtmlResult
-        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
-        
+        result += "\r\n"
+        result += text
+
+        return result

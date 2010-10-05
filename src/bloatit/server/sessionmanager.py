@@ -1,3 +1,7 @@
+import hashlib
+import string
+import random
+from bloatit.server.session import Session
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -17,21 +21,31 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
-from bloatit.actions.action import Action
-from bloatit.htmlrenderer.htmltools import HtmlTools
+class SessionManager:
+
+    active_session = {}
+    sha = hashlib.sha256()
 
 
-class LogoutAction(Action):
+    def __init__(self):
+        """Documentation"""
 
-    def get_code(self):
-        return "logout"
+    @classmethod
+    def create_session(cls):
+        new_session = Session()
+        d = "".join([random.choice(string.ascii_letters) for x in range(100)])
+        cls.sha.update(d.encode())
 
-    
-    def process(self, html_result, query, post):
-        self.session.set_logged(False)
-        self.session.set_login(None)
+        session_key = cls.sha.hexdigest()
+        new_session.set_key(session_key)
+        cls.active_session[session_key] = new_session
 
-        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
+        return new_session
 
+    @classmethod
+    def get_by_key(cls, key):
+        if key in cls.active_session:
+            return cls.active_session[key]
+        else:
+            return None
         
