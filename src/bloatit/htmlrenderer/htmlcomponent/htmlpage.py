@@ -80,7 +80,7 @@ class HtmlPage:
 
 
     def generate_title(self):
-        self.html_result.write('<h1>'+HtmlTools.generate_link(self.session,self.generate_logo(), IndexContent)+'</h1>')
+        self.html_result.write('<h1>'+HtmlTools.generate_link(self.session,self.generate_logo(), IndexContent(self.session))+'</h1>')
 
     def generate_top_bar(self):
         self.html_result.write('<div id="top_bar">')
@@ -95,26 +95,26 @@ class HtmlPage:
 
     def generate_main_menu(self):
         
-        self.html.write('<div id="main_menu">')
-        self.html.indent()
-        self.html.write('<ul>')
-        self.html.indent()
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Demands"), DemandsContent(self.session) )+'</li>')
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Projects"), IndexContent(self.session) )+'</li>')
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Groups"), IndexContent(self.session) )+'</li>')
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Members"), IndexContent(self.session) )+'</li>')
-        self.html.unindent()
-        self.html.write('</ul>')
-        self.html.write('<ul>')
-        self.html.indent()
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Contact"), IndexContent(self.session) )+'</li>')
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Documentation"), IndexContent(self.session) )+'</li>')
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("About BloatIt"), IndexContent(self.session) )+'</li>')
-        self.html.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Press"), IndexContent(self.session) )+'</li>')
-        self.html.unindent()
-        self.html.write('</ul>')
-        self.html.unindent()
-        self.html.write('</div>')
+        self.html_result.write('<div id="main_menu">')
+        self.html_result.indent()
+        self.html_result.write('<ul>')
+        self.html_result.indent()
+        self.html_result.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Demands"), DemandsContent(self.session) )+'</li>')
+        self.html_result.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Projects"), IndexContent(self.session) )+'</li>')
+        self.html_result.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Groups"), IndexContent(self.session) )+'</li>')
+        self.html_result.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Members"), IndexContent(self.session) )+'</li>')
+        self.html_result.unindent()
+        self.html_result.write('</ul>')
+        self.html_result.write('<ul>')
+        self.html_result.indent()
+        self.html_result.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Contact"), IndexContent(self.session) )+'</li>')
+        self.html_result.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Documentation"), IndexContent(self.session) )+'</li>')
+        self.html_result.write('<li>'+HtmlTools.generate_link(self.session,self.session._("About BloatIt"), IndexContent(self.session) )+'</li>')
+        self.html_result.write('<li>'+HtmlTools.generate_link(self.session,self.session._("Press"), IndexContent(self.session) )+'</li>')
+        self.html_result.unindent()
+        self.html_result.write('</ul>')
+        self.html_result.unindent()
+        self.html_result.write('</div>')
 
     def generate_footer(self):
         self.html_result.write('<div id="footer">')
