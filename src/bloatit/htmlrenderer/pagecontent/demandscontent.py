@@ -10,35 +10,31 @@
 # (at your option) any later version.
 #
 # BloatIt is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# but WITHOUT ANY WARRANTY; without even the implslied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmltools import HtmlTools
-from bloatit.server.session import Session
+from bloatit.htmlrenderer.elementrenderer.demandlistrenderer import DemandListRenderer
+from bloatit.framework.demandmanager import DemandManager
 from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
-from bloatit.model.demand import Demand
 
-class DemandContent(PageContent):
+class DemandsContent(PageContent):
 
-    def __init__(self, session, demand=None):
-        # @type session Session
-        # @type demand Demand
+    def __init__(self, session):
         self.session = session
-        self.demand = demand
+
+    def get_title(self):
+        return "Handle demands"
 
     def get_code(self):
-        return 'demand?id='+ str(self.demand.get_id())
+        return "demands"
 
-    def generate_list_field(self, text):
+    def generate_body(self, text):
         # @type text IndentedText
-        text.write('<div class="demand_entry">')
-        text.indent()
-        text.write('<p class="demand_title">'+ HtmlTools.generate_link(self.session, self.demand.get_title() , self) +'</p>')
-        text.write('<p class="demand_description">'+ self.demand.get_description()+'</p>')
-        text.unindent()
-        text.write('</div>')
+        demands = DemandManager.get_demands()
+        demands_renderer = DemandListRenderer(self.session, demands)
         
+        demands_renderer.generate(text)

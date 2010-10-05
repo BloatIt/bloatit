@@ -20,18 +20,21 @@
 class HtmlTools:
     
    
-
-    def generate_logo():
+    @classmethod
+    def generate_logo(cls):
         return '<span class="logo_bloatit"><span class="logo_bloatit_bloat">Bloat</span><span class="logo_bloatit_it">It</span></span>'
 
-    def generate_link(session, text, link_page):
+    @classmethod
+    def generate_link(cls, session, text, link_page):
         # @type link_page PageContent
         return '<a href="/'+session.get_language().get_code()+'/'+link_page.get_code()+'">'+text+'</a>'
 
-    def generate_action_link(session, text, link_action):
+    @classmethod
+    def generate_action_link(cls, session, text, link_action):
         # @type link_action Action
         return '<a href="/'+session.get_language().get_code()+'/action/'+link_action.get_code()+'">'+text+'</a>'
 
-    def generate_url(session, url_page):
+    @classmethod
+    def generate_url(cls, session, url_page):
         # @type url_page PageContent
         return '/'+session.get_language().get_code()+'/'+url_page.get_code()

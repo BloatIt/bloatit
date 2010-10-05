@@ -22,7 +22,7 @@ from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 
 class IndexContent(PageContent):
 
-    def get_code():
+    def get_code(self):
         return "index"
 
     

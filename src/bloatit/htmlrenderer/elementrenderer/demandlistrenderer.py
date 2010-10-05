@@ -17,28 +17,29 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
 from bloatit.htmlrenderer.htmltools import HtmlTools
-from bloatit.server.session import Session
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 from bloatit.model.demand import Demand
+from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
-class DemandContent(PageContent):
+class DemandListRenderer(HtmlComponent):
+    """Renders a list of demand as Html"""
 
-    def __init__(self, session, demand=None):
-        # @type session Session
-        # @type demand Demand
+    def __init__(self, session, demands ):
+        """
+        demands - a list of demands
+        """
+        self.demands = demands
         self.session = session
-        self.demand = demand
 
-    def get_code(self):
-        return 'demand?id='+ str(self.demand.get_id())
-
-    def generate_list_field(self, text):
+    def generate(self, text):
         # @type text IndentedText
-        text.write('<div class="demand_entry">')
+        text.write('<div class="demand_table">')
         text.indent()
-        text.write('<p class="demand_title">'+ HtmlTools.generate_link(self.session, self.demand.get_title() , self) +'</p>')
-        text.write('<p class="demand_description">'+ self.demand.get_description()+'</p>')
+        for demand in self.demands:
+            # @type demand Demand
+            demand_view = DemandContent(self.session, demand)
+            demand_view.generate_list_field(text)
+            
         text.unindent()
         text.write('</div>')
-        

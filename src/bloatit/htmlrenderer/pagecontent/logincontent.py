@@ -26,7 +26,7 @@ from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 
 class LoginContent(PageContent):
 
-    def get_code():
+    def get_code(self):
         return "login"
 
     def __init__(self, session):

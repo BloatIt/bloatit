@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.htmlrenderer.pagecontent.demandscontent import DemandsContent
 from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
 from bloatit.actions.logoutaction import LogoutAction
 from bloatit.actions.loginaction import LoginAction
@@ -31,7 +32,7 @@ class DispatchServer:
     page_map = {
     'index': IndexContent,
     'login': LoginContent,
-    'demands' : DemandContent
+    'demands' : DemandsContent
     }
 
     action_map = {
@@ -46,9 +47,7 @@ class DispatchServer:
 
         
     def process(self):
-
-        #print(self.query)
-
+        
         self.session = Session()
         if "UserID" in self.cookies:
             self.session.set_login(self.cookies["UserID"])

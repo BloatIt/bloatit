@@ -19,7 +19,7 @@
 
 class PageContent:
 
-    def get_code():
+    def get_code(self):
         pass
 
     def get_title(self):

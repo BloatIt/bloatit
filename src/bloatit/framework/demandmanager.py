@@ -1,3 +1,4 @@
+from bloatit.model.demand import Demand
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -19,7 +20,12 @@
 
 class DemandManager:
 
-    def get_demands():
-        pass
+    @classmethod
+    def get_demands(cls):
+        return [
+            Demand(),
+            Demand(),
+            Demand()
+            ]
 
     

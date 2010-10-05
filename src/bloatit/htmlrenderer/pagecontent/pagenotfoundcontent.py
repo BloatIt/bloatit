@@ -21,7 +21,7 @@ from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 
 class PageNotFoundContent(PageContent):
 
-    def get_code():
+    def get_code(self):
         return "pagenotfound"
 
     def __init__(self, session):
