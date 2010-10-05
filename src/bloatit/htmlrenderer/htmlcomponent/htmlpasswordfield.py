@@ -10,26 +10,20 @@
 # (at your option) any later version.
 #
 # BloatIt is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implslied warranty of
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
-class DemandContent(PageContent):
+class HtmlPasswordField(HtmlComponent):
 
-    def __init__(self, session):
-        self.session = session
+    def set_name(self,name):
+        self.name = name
 
-    def get_title(self):
-        return "Handle demands"
-
-    def get_code():
-        return "demands"
-
-    def generate_body(self, text):
+    def generate(self, text):
         # @type text IndentedText
-        text.write("hello")
+        text.write('<p><input name="'+self.name+'" type="password" /></p>')

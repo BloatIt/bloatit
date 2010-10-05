@@ -17,13 +17,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmlcomponent import HtmlComponent
+class Demand:
 
+    def __init__(self):
+        self.title = "test"
+        self.description = "Ceci est une description"
+        self.specification = "Ceci est une spécification complète"
 
-class HtmlButton(HtmlComponent):
+    def get_title(self):
+        return self.title
 
-    def set_label(self, label):
-        self.label = label
+    def get_description(self):
+        return self.description
 
-    def generate(self, text):
-        text.write('<p><input type="submit" value="'+self.label+'"/><p>')
+    def get_specification(self):
+        return self.specification

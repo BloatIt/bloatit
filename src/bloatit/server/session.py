@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-
 class Session:
 
     def __init__(self):

@@ -17,13 +17,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmlcomponent import HtmlComponent
+from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
-class HtmlPasswordField(HtmlComponent):
 
-    def set_name(self,name):
-        self.name = name
+class HtmlButton(HtmlComponent):
+
+    def set_label(self, label):
+        self.label = label
 
     def generate(self, text):
-        # @type text IndentedText
-        text.write('<p><input name="'+self.name+'" type="password" /></p>')
+        text.write('<p><input type="submit" value="'+self.label+'"/><p>')

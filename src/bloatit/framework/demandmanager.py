@@ -10,26 +10,16 @@
 # (at your option) any later version.
 #
 # BloatIt is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implslied warranty of
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
+class DemandManager:
 
-class DemandContent(PageContent):
+    def get_demands():
+        pass
 
-    def __init__(self, session):
-        self.session = session
-
-    def get_title(self):
-        return "Handle demands"
-
-    def get_code():
-        return "demands"
-
-    def generate_body(self, text):
-        # @type text IndentedText
-        text.write("hello")
+    

@@ -17,16 +17,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmlcomponent import HtmlComponent
+from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
-class HtmlContainer(HtmlComponent):
+class HtmlTextField(HtmlComponent):
 
-    def __init__(self):
-        self.components = []
-
-    def add_component(self, new_component):
-        self.components.append(new_component)
+    def set_name(self,name):
+        self.name = name
 
     def generate(self, text):
-        for component in self.components:
-            component.generate(text)
+        # @type text IndentedText
+        text.write('<p><input name="'+self.name+'" type="text" /></p>')

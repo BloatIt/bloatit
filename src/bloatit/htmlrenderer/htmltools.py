@@ -1,4 +1,3 @@
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -17,7 +16,6 @@ from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
-
 
 class HtmlTools:
     
