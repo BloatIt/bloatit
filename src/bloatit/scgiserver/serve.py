@@ -39,12 +39,15 @@ class HtmlHandler(SCGIHandler):
             post = parse_qs(input.read(bodysize))
 
             preferred_langs = env["HTTP_ACCEPT_LANGUAGE"].split(",")
-            cookie_string = env["HTTP_COOKIE"].split(";")
+
             cookies = {}
-            for cookie in cookie_string:
-                parts = cookie.split("=")
-                if len(parts) == 2 :
-                    cookies[parts[0].strip()] = parts[1].strip()
+            if "HTTP_COOKIE" in env:
+                cookie_string = env["HTTP_COOKIE"].split(";")
+                for cookie in cookie_string:
+                    parts = cookie.split("=")
+                    if len(parts) == 2 :
+                        cookies[parts[0].strip()] = parts[1].strip()
+                        
             page = DispatchServer(query, post, cookies, preferred_langs)
             
             result = page.process()
