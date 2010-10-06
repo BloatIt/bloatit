@@ -17,9 +17,11 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
 from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.actions.action import Action
 from bloatit.htmlrenderer.htmltools import HtmlTools
+from bloatit.framework.loginmanager import LoginManager
 
 
 class LoginAction(Action):
@@ -37,11 +39,20 @@ class LoginAction(Action):
         # @type html_result HtmlResult
         
         if self.get_login_code() in post and self.get_password_code() in post:
-            if post[self.get_password_code()][0] == "pass":
+            login = post[self.get_login_code()][0]
+            password = post[self.get_password_code()][0]
+
+            auth_token = LoginManager.login_by_password(login, password)
+
+            if auth_token:
                 self.session.set_logged(True)
-                self.session.set_login(post[self.get_login_code()][0])
+                self.session.set_auth_token(auth_token)
+                html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent(self.session)))
+            else:
+                self.session.set_logged(False)
+                self.session.set_auth_token(None)
+                html_result.set_redirect(HtmlTools.generate_url(self.session,LoginContent(self.session)))
 
 
-        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
         
-        return "Location: "+HtmlTools.generate_url(self.session,IndexContent)+"\r\n\r\n"
+        

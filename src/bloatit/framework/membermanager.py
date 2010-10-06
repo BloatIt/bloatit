@@ -1,3 +1,4 @@
+from bloatit.model.member import Member
 from bloatit.model.demand import Demand
 # -*- coding: utf-8 -*-
 
@@ -18,14 +19,35 @@ from bloatit.model.demand import Demand
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-class DemandManager:
+class MemberManager:
+
+    members = []
+
+    member = Member()
+    member.login = "fred"
+    member.full_name = "Fred"
+    member.email = "fred@bloatit.com"
+    members.append(member)
+    
+    member = Member()
+    member.login = "tom"
+    member.full_name = "Tom"
+    member.email = "tom@bloatit.com"
+    members.append(member)
+    
+    member = Member()
+    member.login = "yoann"
+    member.full_name = "Yoann"
+    member.email = "yoann@bloatit.com"
+    members.append(member)
+
 
     @classmethod
-    def get_demands(cls):
-        return [
-            Demand(),
-            Demand(),
-            Demand()
-            ]
+    def get_member_by_login(cls, login):
+        for member in cls.members:
+            if login == member.get_login():
+                return member
+
+        return None
 
 

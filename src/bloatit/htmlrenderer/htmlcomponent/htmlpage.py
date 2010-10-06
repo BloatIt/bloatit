@@ -86,7 +86,7 @@ class HtmlPage:
         self.html_result.write('<div id="top_bar">')
         self.html_result.indent()
         if self.session.is_logged():
-            self.html_result.write(self.session.get_login()+" "+HtmlTools.generate_action_link(self.session,self.session._("Logout"), LogoutAction(self.session)))
+            self.html_result.write(self.session.get_auth_token().get_member().get_full_name()+" "+HtmlTools.generate_action_link(self.session,self.session._("Logout"), LogoutAction(self.session)))
         else:
             self.html_result.write(HtmlTools.generate_link(self.session,self.session._("Login / Signup"), LoginContent(self.session) ))
             
