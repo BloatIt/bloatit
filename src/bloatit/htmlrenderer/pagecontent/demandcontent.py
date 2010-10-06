@@ -21,6 +21,7 @@ from bloatit.htmlrenderer.htmltools import HtmlTools
 from bloatit.server.session import Session
 from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 from bloatit.model.demand import Demand
+import urllib
 
 class DemandContent(PageContent):
 
@@ -31,7 +32,7 @@ class DemandContent(PageContent):
         self.demand = demand
 
     def get_code(self):
-        return 'demand?id='+ str(self.demand.get_id())
+        return 'demand?id='+ str(self.demand.get_id()) + '&title=' + urllib.parse.quote_plus(self.demand.get_title())
 
     def generate_list_field(self, text):
         # @type text IndentedText

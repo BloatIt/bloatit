@@ -20,10 +20,10 @@
 class Demand:
 
     def __init__(self):
-        self.title = "Demand_Title"
+        self.title = "Demande n° 1"
         self.description = "Ceci est une description"
         self.specification = "Ceci est une spécification complète"
-        self.id = 3
+        self.id = 1
 
     def get_title(self):
         return self.title
