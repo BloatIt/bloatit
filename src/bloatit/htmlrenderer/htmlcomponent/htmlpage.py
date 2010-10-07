@@ -24,6 +24,8 @@ from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
 from bloatit.htmlrenderer.htmltools import HtmlTools
 from bloatit.htmlrenderer.indentedtext import IndentedText
+from bloatit.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
+
 """TODO: prévoir une option de configuration pour générer un mode compact"""
 
 class HtmlPage:
@@ -86,7 +88,8 @@ class HtmlPage:
         self.html_result.write('<div id="top_bar">')
         self.html_result.indent()
         if self.session.is_logged():
-            self.html_result.write(self.session.get_login()+" "+HtmlTools.generate_action_link(self.session,self.session._("Logout"), LogoutAction(self.session)))
+            full_name = self.session.get_auth_token().get_member().get_full_name()
+            self.html_result.write(HtmlTools.generate_link(self.session,full_name, MyAccountContent(self.session) )+" "+HtmlTools.generate_action_link(self.session,self.session._("Logout"), LogoutAction(self.session)))
         else:
             self.html_result.write(HtmlTools.generate_link(self.session,self.session._("Login / Signup"), LoginContent(self.session) ))
             

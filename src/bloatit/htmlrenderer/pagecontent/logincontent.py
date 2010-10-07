@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.actions.loginaction import LoginAction
+import bloatit.actions.loginaction
 from bloatit.htmlrenderer.htmlcomponent.htmlbutton import HtmlButton
 from bloatit.htmlrenderer.htmlcomponent.htmlpasswordfield import HtmlPasswordField
 from bloatit.htmlrenderer.htmlcomponent.htmltextfield import HtmlTextField
@@ -47,9 +47,9 @@ class LoginContent(PageContent):
         login_form.add_component(password_field)
         login_form.add_component(submit_button)
 
-        login_action = LoginAction(self.session)
+        login_action = bloatit.actions.loginaction.LoginAction(self.session)
         
-        login_form.set_action(LoginAction(self.session))
+        login_form.set_action(bloatit.actions.loginaction.LoginAction(self.session))
         submit_button.set_label(self.session._("Login"))
         login_field.set_name(login_action.get_login_code())
         password_field.set_name(login_action.get_password_code())

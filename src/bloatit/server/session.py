@@ -20,9 +20,10 @@
 class Session:
 
     def __init__(self):
-        self.login = None
+        self.auth_token = None
         self.key = None
         self.logged = False
+        self.action_list = []
 
     def get_language(self):
         return self.language
@@ -31,11 +32,11 @@ class Session:
         self.language = language
         self._ = language.get_gettext()
 
-    def set_login(self, login):
-        self.login = login
+    def set_auth_token(self, auth_token):
+        self.auth_token = auth_token
 
-    def get_login(self):
-        return self.login
+    def get_auth_token(self):
+        return self.auth_token
 
     def set_logged(self, logged):
         self.logged = logged
@@ -49,3 +50,6 @@ class Session:
 
     def get_key(self):
         return self.key
+
+    def get_actions_list(self):
+        return self.action_list

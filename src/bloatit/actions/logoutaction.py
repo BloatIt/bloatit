@@ -30,8 +30,8 @@ class LogoutAction(Action):
     
     def process(self, html_result, query, post):
         self.session.set_logged(False)
-        self.session.set_login(None)
+        self.session.set_auth_token(None)
 
-        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
+        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent(self.session)))
 
         

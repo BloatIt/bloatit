@@ -17,22 +17,28 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmltools import HtmlTools
 from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 
-class IndexContent(PageContent):
+class MyAccountContent(PageContent):
 
     def get_code(self):
-        return "index"
-    
+        return "my_account"
+
     def __init__(self, session):
         self.session = session
 
 
     def get_title(self):
-        return "Finance free software"
+        return "My account - "+self.session.get_auth_token().get_member().get_login()
 
     def generate_body(self, text):
-        text.write("<h2>Welcome in "+HtmlTools.generate_logo()+" website</h2>")
-        text.write(HtmlTools.generate_logo()+" is a wonderful website !")
-        text.write(100*" is a wonderful website !")
+        # @type text IndentedText
+        member = self.session.get_auth_token().get_member()
+        # @type member Member
+
+
+        text.write("<h2>"+member.get_full_name()+"</h2>")
+        text.write("<p>Full name: "+member.get_full_name()+"</p>")
+        text.write("<p>Login: "+member.get_login()+"</p>")
+        text.write("<p>Email: "+member.get_email()+"</p>")
+        text.write("<p>Karma: "+str(member.get_karma())+"</p>")
