@@ -47,7 +47,7 @@ class HtmlTools:
                     if result[2] == "0":
                         result = result[0]
                     else:
-                        result = result[:2]
+                        result = result[:3]
                 elif result[2] == ".":
                     result = result[:2]
                 else:
@@ -67,6 +67,7 @@ class HtmlTools:
             result = str(abs_karma/1000000)
             result = cls.cut_number(result)+"M"
         elif abs_karma < 1000000000000:
+            result = str(abs_karma/1000000000)
             result = cls.cut_number(result)+"T"
         else:
             result = "∞"

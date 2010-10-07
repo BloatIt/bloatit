@@ -25,7 +25,15 @@ class TestHttpTools(unittest.TestCase):
     def test_compress_karma(self):
         self.assert_(HtmlTools.compress_karma(1) == "1")
         self.assert_(HtmlTools.compress_karma(20) == "20")
-        self.assertEqual(HtmlTools.compress_karma(20000000000000000), "∞")
+        self.assertEqual(HtmlTools.compress_karma(1000), "1k")
+        self.assertEqual(HtmlTools.compress_karma(1500), "1.5k")
+        self.assertEqual(HtmlTools.compress_karma(160000), "160k")
+        self.assertEqual(HtmlTools.compress_karma(2600000), "2.6M")
+        self.assertEqual(HtmlTools.compress_karma(27000000), "27M")
+        self.assertEqual(HtmlTools.compress_karma(5000000000), "5T")
+        self.assertEqual(HtmlTools.compress_karma(67000000000), "67T")
+        self.assertEqual(HtmlTools.compress_karma(671000000000), "671T")
+        self.assertEqual(HtmlTools.compress_karma(6710000000000), "∞")
         
 if __name__ == '__main__':
     unittest.main()
