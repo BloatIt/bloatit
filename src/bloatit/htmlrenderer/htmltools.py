@@ -38,3 +38,14 @@ class HtmlTools:
     def generate_url(cls, session, url_page):
         # @type url_page PageContent
         return '/'+session.get_language().get_code()+'/'+url_page.get_code()
+
+    @classmethod
+    def compress_karma(cls, karma):
+        abs = abs(karma)
+
+        result = str(abs)
+        if(karma >= 0):
+            return result
+        else:
+            return "-"+result
+
