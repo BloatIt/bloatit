@@ -38,7 +38,7 @@ class DemandListRenderer(HtmlComponent):
         text.indent()
         for demand in self.demands:
             # @type demand Demand
-            demand_view = DemandContent(self.session, demand)
+            demand_view = DemandContent(self.session, demand=demand)
             demand_view.generate_list_field(text)
             
         text.unindent()

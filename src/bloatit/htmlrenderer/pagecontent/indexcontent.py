@@ -25,8 +25,9 @@ class IndexContent(PageContent):
     def get_code(self):
         return "index"
     
-    def __init__(self, session):
+    def __init__(self, session, parameters={}):
         self.session = session
+        self.parameters = parameters
 
 
     def get_title(self):

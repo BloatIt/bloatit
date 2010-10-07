@@ -22,9 +22,10 @@ from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 
 class Action:
 
-    def __init__(self, session):
+    def __init__(self, session, parameters={}):
         # @type session Session
         self.session = session
+        self.parameters = parameters
 
 
     def get_url(self):

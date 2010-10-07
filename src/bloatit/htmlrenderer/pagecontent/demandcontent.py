@@ -25,11 +25,12 @@ import urllib
 
 class DemandContent(PageContent):
 
-    def __init__(self, session, demand=None):
+    def __init__(self, session, parameters={}, demand=None):
         # @type session Session
         # @type demand Demand
         self.session = session
         self.demand = demand
+        self.parameters = parameters
 
     def get_code(self):
         if self.demand != None:

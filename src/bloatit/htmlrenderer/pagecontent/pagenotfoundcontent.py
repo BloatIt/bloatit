@@ -24,8 +24,9 @@ class PageNotFoundContent(PageContent):
     def get_code(self):
         return "pagenotfound"
 
-    def __init__(self, session):
+    def __init__(self, session, parameters={}):
         self.session = session
+        self.parameters = parameters
 
 
     def get_title(self):
