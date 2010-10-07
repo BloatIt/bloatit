@@ -29,4 +29,6 @@ class DemandManager:
             Demand()
             ]
 
-
+    @classmethod
+    def get_demand_by_id(cls, id):
+        return Demand()

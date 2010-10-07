@@ -87,14 +87,14 @@ class DispatchServer:
         if "page" in self.query:
             page,parameters = self.parse_query_string()
             if page.startswith("action/") and page[7:] in self.action_map:
-                return self.action_map[page[7:]](self.session, parameters)
+                return self.action_map[page[7:]](self.session, parameters=parameters)
         return None
 
     def find_content(self):
         if "page" in self.query:
             page,parameters = self.parse_query_string()
             if page in self.page_map:
-                return self.page_map[page](self.session, parameters)
+                return self.page_map[page](self.session, parameters=parameters)
 
         return PageNotFoundContent(self.session), {}
 
@@ -110,7 +110,7 @@ class DispatchServer:
         # @type query string
         
         if '/' in query:
-            splitted = query.split('/')
+            splitted = (query.strip('/')).split('/')
             page = ''
             page_name = True
             param_list = {}
@@ -124,7 +124,13 @@ class DispatchServer:
                     if page != '':
                         page = page + '/'
                     page = page + parameter
+
             return page,param_list
         
         else:
             return query, {}
+
+    @staticmethod
+    def _parse(str):
+        # @type str string
+        Pass

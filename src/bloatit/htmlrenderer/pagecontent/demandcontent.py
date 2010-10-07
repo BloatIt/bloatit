@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.framework.demandmanager import DemandManager
 from bloatit.htmlrenderer.htmltools import HtmlTools
 from bloatit.server.session import Session
 from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
@@ -29,8 +30,13 @@ class DemandContent(PageContent):
         # @type session Session
         # @type demand Demand
         self.session = session
-        self.demand = demand
         self.parameters = parameters
+        if demand is None:
+            if 'id' in parameters:
+                self.demand = DemandManager.get_demand_by_id(parameters['id'])
+        else:
+            self.demand = demand
+
 
     def get_code(self):
         if self.demand != None:
