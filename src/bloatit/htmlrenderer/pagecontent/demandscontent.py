@@ -34,7 +34,7 @@ class DemandsContent(PageContent):
 
     def generate_body(self, text):
         # @type text IndentedText
-        demands = DemandManager.get_demands()
+        demands = DemandManager.get_all_demands()
         demands_renderer = DemandListRenderer(self.session, demands)
         
         demands_renderer.generate(text)

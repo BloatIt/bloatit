@@ -35,8 +35,9 @@ class HtmlPage:
         self.html_result = html_result
         self.design = "/resources/css/design.css"
 
-    def generate_page(self, content):
+    def generate_page(self, content, parameters):
         self.content = content
+        self.parameters = parameters
         self.html_result.write('<?xml version=\"1.0\" encoding=\"UTF-8\"?>')
         self.html_result.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">')
         self.html_result.write('<html xmlns="http://www.w3.org/1999/xhtml">')

@@ -36,6 +36,7 @@ class DispatchServer:
     'index': IndexContent,
     'login': LoginContent,
     'demands' : DemandsContent,
+    'demand' : DemandContent,
     'my_account' : MyAccountContent
     }
 
@@ -77,8 +78,8 @@ class DispatchServer:
         else:
             page = HtmlPage(self.session, html_result)
 
-            content = self.find_content()
-            page.generate_page(content)
+            content,parameters = self.find_content()
+            page.generate_page(content, parameters)
         return html_result.generate()
 
     def find_action(self):
@@ -89,10 +90,40 @@ class DispatchServer:
         return None
 
     def find_content(self):
-        
         if "page" in self.query:
-            query = self.query["page"][0]
-            if query in self.page_map:
-                return self.page_map[query](self.session)
+            page,parameters = self.parse_query_string()
+            if page in self.page_map:
+                return self.page_map[page](self.session), parameters
+
+        return PageNotFoundContent(self.session), {}
+
+    def parse_query_string(self):
+        """
+        Parse the query string to find page name and all parameters
+        Parameter format must be :
+            /name-value
+        will return a tuple with page name first and a map with all parameters
+        second. Parameter map is formatted {name : value, ... }
+        """
+        query = self.query['page'][0]
+        # @type query string
         
-        return PageNotFoundContent(self.session)
+        if '/' in query:
+            splitted = query.split('/')
+            page = ''
+            page_name = True
+            param_list = {}
+            
+            for parameter in splitted:
+                if '-' in parameter:
+                    page_name = False
+                    p = parameter.split('-')
+                    param_list[p[0]] = p[1]
+                elif page_name:
+                    if page != '':
+                        page = page + '/'
+                    page = page + parameter
+            return page,param_list
+        
+        else:
+            return query, {}
