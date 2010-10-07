@@ -42,7 +42,8 @@ class DispatchServer:
 
     action_map = {
     'login': LoginAction,
-    'logout': LogoutAction}
+    'logout': LogoutAction
+    }
 
     def __init__(self, query, post, cookies, preferred_langs):
         self.query = query
@@ -78,22 +79,22 @@ class DispatchServer:
         else:
             page = HtmlPage(self.session, html_result)
 
-            content,parameters = self.find_content()
-            page.generate_page(content, parameters)
+            content = self.find_content()
+            page.generate_page(content)
         return html_result.generate()
 
     def find_action(self):
         if "page" in self.query:
-            query = self.query["page"][0]
-            if query.startswith("action/") and query[7:] in self.action_map:
-                return self.action_map[query[7:]](self.session)
+            page,parameters = self.parse_query_string()
+            if page.startswith("action/") and page[7:] in self.action_map:
+                return self.action_map[page[7:]](self.session, parameters=parameters)
         return None
 
     def find_content(self):
         if "page" in self.query:
             page,parameters = self.parse_query_string()
             if page in self.page_map:
-                return self.page_map[page](self.session), parameters
+                return self.page_map[page](self.session, parameters=parameters)
 
         return PageNotFoundContent(self.session), {}
 
@@ -109,7 +110,7 @@ class DispatchServer:
         # @type query string
         
         if '/' in query:
-            splitted = query.split('/')
+            splitted = (query.strip('/')).split('/')
             page = ''
             page_name = True
             param_list = {}
@@ -123,7 +124,13 @@ class DispatchServer:
                     if page != '':
                         page = page + '/'
                     page = page + parameter
+
             return page,param_list
         
         else:
             return query, {}
+
+    @staticmethod
+    def _parse(str):
+        # @type str string
+        Pass

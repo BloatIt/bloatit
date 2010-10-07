@@ -23,8 +23,9 @@ from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 
 class DemandsContent(PageContent):
 
-    def __init__(self, session):
+    def __init__(self, session, parameters={}):
         self.session = session
+        self.parameters = parameters
 
     def get_title(self):
         return "Handle demands"

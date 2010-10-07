@@ -48,8 +48,8 @@ class HtmlHandler(SCGIHandler):
                         cookies[parts[0].strip()] = parts[1].strip()
                         
             page = DispatchServer(query, post, cookies, preferred_langs)
-            
             result = page.process()
+            
             output.write(result)
             
         except Exception as e:
