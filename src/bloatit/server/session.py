@@ -23,6 +23,7 @@ class Session:
         self.auth_token = None
         self.key = None
         self.logged = False
+        self.action_list = []
 
     def get_language(self):
         return self.language
@@ -49,3 +50,6 @@ class Session:
 
     def get_key(self):
         return self.key
+
+    def get_actions_list(self):
+        return self.action_list

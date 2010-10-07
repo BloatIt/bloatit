@@ -34,6 +34,11 @@ class MyAccountContent(PageContent):
     def generate_body(self, text):
         # @type text IndentedText
         member = self.session.get_auth_token().get_member()
+        # @type member Member
+
 
         text.write("<h2>"+member.get_full_name()+"</h2>")
+        text.write("<p>Full name: "+member.get_full_name()+"</p>")
+        text.write("<p>Login: "+member.get_login()+"</p>")
         text.write("<p>Email: "+member.get_email()+"</p>")
+        text.write("<p>Karma: "+str(member.get_karma())+"</p>")

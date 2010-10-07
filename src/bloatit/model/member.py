@@ -36,4 +36,6 @@ class Member:
 
     def get_id(self):
         return self.id
-    
+
+    def get_karma(self):
+        return self.karma

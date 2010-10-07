@@ -27,18 +27,21 @@ class MemberManager:
     member.login = "fred"
     member.full_name = "Fred"
     member.email = "fred@bloatit.com"
+    member.karma = 2500
     members.append(member)
     
     member = Member()
     member.login = "tom"
     member.full_name = "Tom"
     member.email = "tom@bloatit.com"
+    member.karma = 20
     members.append(member)
     
     member = Member()
     member.login = "yoann"
     member.full_name = "Yoann"
     member.email = "yoann@bloatit.com"
+    member.karma = -3
     members.append(member)
 
 
