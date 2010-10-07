@@ -1,4 +1,3 @@
-from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -19,7 +18,7 @@ from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 from bloatit.htmlrenderer.htmltools import HtmlTools
-
+from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 
 class Action:
 

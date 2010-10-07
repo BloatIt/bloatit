@@ -21,6 +21,7 @@ from bloatit.htmlrenderer.htmltools import HtmlTools
 from bloatit.server.session import Session
 from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 from bloatit.model.demand import Demand
+import urllib
 
 class DemandContent(PageContent):
 
@@ -31,7 +32,10 @@ class DemandContent(PageContent):
         self.demand = demand
 
     def get_code(self):
-        return 'demand?id='+ str(self.demand.get_id())
+        if self.demand != None:
+            return 'demand/id-'+ str(self.demand.get_id()) + '/title-' + urllib.parse.quote_plus(self.demand.get_title())
+        else:
+            return 'TODO' # TODO Faire un système pour afficher une page d'erreur
 
     def generate_list_field(self, text):
         # @type text IndentedText
@@ -41,4 +45,6 @@ class DemandContent(PageContent):
         text.write('<p class="demand_description">'+ self.demand.get_description()+'</p>')
         text.unindent()
         text.write('</div>')
-        
+
+    def get_title (self):
+        return 'TODO'

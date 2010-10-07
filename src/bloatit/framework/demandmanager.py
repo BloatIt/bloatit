@@ -1,4 +1,3 @@
-from bloatit.model.demand import Demand
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -18,10 +17,12 @@ from bloatit.model.demand import Demand
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.model.demand import Demand
+
 class DemandManager:
 
     @classmethod
-    def get_demands(cls):
+    def get_all_demands(cls):
         return [
             Demand(),
             Demand(),

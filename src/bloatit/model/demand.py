@@ -17,13 +17,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+from bloatit.model.member import Member
+
 class Demand:
 
     def __init__(self):
-        self.title = "Demand_Title"
+        self.title = "Demande n° 1"
         self.description = "Ceci est une description"
         self.specification = "Ceci est une spécification complète"
-        self.id = 3
+        self.id = 1
+        self.author = Member()
+        self.karma = 10
 
     def get_title(self):
         return self.title
@@ -36,3 +40,9 @@ class Demand:
 
     def get_id(self):
         return self.id
+
+    def get_karma(self):
+        return self.karma
+
+    def get_author (self):
+        return self.author
