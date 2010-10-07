@@ -98,7 +98,12 @@ li {
     margin-bottom: 0.5em;
 }
 
-
+.karma {
+   color: rgb(32,188,141);
+   font-size: 0.7em;
+   vertical-align: super;
+   margin-left: 0.2em;
+}
 
 /*topbar*/
 
@@ -114,7 +119,7 @@ li {
     background-color: rgb(250,250,250);
 }
 
-#top_bar a {
+#top_bar .top_bar_component {
     color: rgb(32,141,188);
     text-decoration: none;
     margin: 0;

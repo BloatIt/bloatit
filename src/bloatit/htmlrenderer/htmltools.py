@@ -39,13 +39,44 @@ class HtmlTools:
         # @type url_page PageContent
         return '/'+session.get_language().get_code()+'/'+url_page.get_code()
 
+
+    def cut_number(number):
+        result = number
+        if len(result) > 2:
+                if result[1] == ".":
+                    if result[2] == "0":
+                        result = result[0]
+                    else:
+                        result = result[:2]
+                elif result[2] == ".":
+                    result = result[:2]
+                else:
+                    result = result[:3]
+        return result
+
     @classmethod
     def compress_karma(cls, karma):
-        abs = abs(karma)
+        abs_karma = abs(karma)
 
-        result = str(abs)
+        if abs_karma < 1000:
+            result = str(abs_karma)
+        elif abs_karma < 1000000:
+            result = str(abs_karma/1000)
+            result = cls.cut_number(result)+"k"
+        elif abs_karma < 1000000000:
+            result = str(abs_karma/1000000)
+            result = cls.cut_number(result)+"M"
+        elif abs_karma < 1000000000000:
+            result = cls.cut_number(result)+"T"
+        else:
+            result = "∞"
+
+        
         if(karma >= 0):
             return result
         else:
             return "-"+result
 
+
+    
+        

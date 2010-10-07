@@ -89,9 +89,13 @@ class HtmlPage:
         self.html_result.indent()
         if self.session.is_logged():
             full_name = self.session.get_auth_token().get_member().get_full_name()
-            self.html_result.write(HtmlTools.generate_link(self.session,full_name, MyAccountContent(self.session) )+" "+HtmlTools.generate_action_link(self.session,self.session._("Logout"), LogoutAction(self.session)))
+            karma = HtmlTools.compress_karma(self.session.get_auth_token().get_member().get_karma())
+            member_link = HtmlTools.generate_link(self.session,full_name, MyAccountContent(self.session) )+'<span class="karma">'+karma+'</span>'
+            logout_link = HtmlTools.generate_action_link(self.session,self.session._("Logout"), LogoutAction(self.session))
+            
+            self.html_result.write('<span class="top_bar_component">'+member_link+'</span><span class="top_bar_component">'+logout_link+'</span>')
         else:
-            self.html_result.write(HtmlTools.generate_link(self.session,self.session._("Login / Signup"), LoginContent(self.session) ))
+            self.html_result.write('<span class="top_bar_component">'+HtmlTools.generate_link(self.session,self.session._("Login / Signup"), LoginContent(self.session) )+'</span>')
             
         self.html_result.unindent()
         self.html_result.write('</div>')
