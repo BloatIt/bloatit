@@ -17,20 +17,36 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
 
-class PageNotFoundContent(PageContent):
+class MyAccountContent(PageContent):
 
     def get_code(self):
-        return "pagenotfound"
+        return "my_account"
 
     def __init__(self, session, parameters={}):
         self.session = session
         self.parameters = parameters
 
-
     def get_title(self):
-        return "Page not found"
-
+        if self.session.get_auth_token():
+            return "My account - "+self.session.get_auth_token().get_member().get_login()
+        else:
+            return "My account - No account"
     def generate_body(self, text):
-        text.write("Page not found")
+        # @type text IndentedText
+
+        if self.session.get_auth_token():
+
+            member = self.session.get_auth_token().get_member()
+            # @type member Member
+
+
+            text.write("<h2>"+member.get_full_name()+"</h2>")
+            text.write("<p>Full name: "+member.get_full_name()+"</p>")
+            text.write("<p>Login: "+member.get_login()+"</p>")
+            text.write("<p>Email: "+member.get_email()+"</p>")
+            text.write("<p>Karma: "+str(member.get_karma())+"</p>")
+
+        else:
+            text.write("<h2>No account</h2>")

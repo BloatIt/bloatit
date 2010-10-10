@@ -17,13 +17,23 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
+
+class IndexContent(PageContent):
+
+    def get_code(self):
+        return "index"
+    
+    def __init__(self, session, parameters={}):
+        self.session = session
+        self.parameters = parameters
 
 
-class HtmlButton(HtmlComponent):
+    def get_title(self):
+        return "Finance free software"
 
-    def set_label(self, label):
-        self.label = label
-
-    def generate(self, text):
-        text.write('<p><input type="submit" value="'+self.label+'"/><p>')
+    def generate_body(self, text):
+        text.write("<h2>Welcome in "+HtmlTools.generate_logo()+" website</h2>")
+        text.write(HtmlTools.generate_logo()+" is a wonderful website !")
+        text.write(100*" is a wonderful website !")

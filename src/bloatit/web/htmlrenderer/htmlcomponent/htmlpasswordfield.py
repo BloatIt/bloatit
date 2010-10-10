@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
+from bloatit.web.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
 class HtmlPasswordField(HtmlComponent):
 

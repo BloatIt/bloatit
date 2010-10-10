@@ -17,10 +17,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
-from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
-from bloatit.actions.action import Action
-from bloatit.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.htmlrenderer.pagecontent.logincontent import LoginContent
+from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
+from bloatit.web.actions.action import Action
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
 from bloatit.framework.loginmanager import LoginManager
 
 

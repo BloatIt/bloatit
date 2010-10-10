@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.indentedtext import IndentedText
+from bloatit.web.htmlrenderer.indentedtext import IndentedText
 
 class HtmlResult(IndentedText):
 

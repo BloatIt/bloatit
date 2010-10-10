@@ -17,9 +17,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.elementrenderer.demandlistrenderer import DemandListRenderer
+from bloatit.web.htmlrenderer.elementrenderer.demandlistrenderer import DemandListRenderer
 from bloatit.framework.demandmanager import DemandManager
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
 
 class DemandsContent(PageContent):
 

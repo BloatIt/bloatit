@@ -17,25 +17,13 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmltools import HtmlTools
-from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
-
-class Action:
-
-    def __init__(self, session, parameters={}):
-        # @type session Session
-        self.session = session
-        self.parameters = parameters
+from bloatit.web.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
 
-    def get_url(self):
-        return '/'+self.session.get_language().get_code()+'/action/'+self.get_code()
+class HtmlButton(HtmlComponent):
 
-    def get_code(self):
-        """return the action code"""
-        pass
+    def set_label(self, label):
+        self.label = label
 
-    def process(self, html_result, query, post):
-        # @type html_result HtmlResult
-        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
-        
+    def generate(self, text):
+        text.write('<p><input type="submit" value="'+self.label+'"/><p>')

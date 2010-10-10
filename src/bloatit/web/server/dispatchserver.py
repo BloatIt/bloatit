@@ -17,18 +17,18 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
-from bloatit.htmlrenderer.pagecontent.demandscontent import DemandsContent
-from bloatit.htmlrenderer.htmlresult import HtmlResult
-from bloatit.server.sessionmanager import SessionManager
-from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
-from bloatit.actions.logoutaction import LogoutAction
-from bloatit.actions.loginaction import LoginAction
-from bloatit.server.language import Language
-from bloatit.htmlrenderer.pagecontent.pagenotfoundcontent import PageNotFoundContent
-from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
-from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
-from bloatit.htmlrenderer.htmlcomponent.htmlpage import HtmlPage
+from bloatit.web.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
+from bloatit.web.htmlrenderer.pagecontent.demandscontent import DemandsContent
+from bloatit.web.htmlrenderer.htmlresult import HtmlResult
+from bloatit.web.server.sessionmanager import SessionManager
+from bloatit.web.htmlrenderer.pagecontent.demandcontent import DemandContent
+from bloatit.web.actions.logoutaction import LogoutAction
+from bloatit.web.actions.loginaction import LoginAction
+from bloatit.web.server.language import Language
+from bloatit.web.htmlrenderer.pagecontent.pagenotfoundcontent import PageNotFoundContent
+from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
+from bloatit.web.htmlrenderer.pagecontent.logincontent import LoginContent
+from bloatit.web.htmlrenderer.htmlpage import HtmlPage
 
 class DispatchServer:
     page_map = {

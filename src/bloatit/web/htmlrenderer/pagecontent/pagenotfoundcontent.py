@@ -17,27 +17,20 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
-from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
 
-class DemandListRenderer(HtmlComponent):
-    """Renders a list of demand as Html"""
+class PageNotFoundContent(PageContent):
 
-    def __init__(self, session, demands ):
-        """
-        demands - a list of demands
-        """
-        self.demands = demands
+    def get_code(self):
+        return "pagenotfound"
+
+    def __init__(self, session, parameters={}):
         self.session = session
+        self.parameters = parameters
 
-    def generate(self, text):
-        # @type text IndentedText
-        text.write('<div class="demand_table">')
-        text.indent()
-        for demand in self.demands:
-            # @type demand Demand
-            demand_view = DemandContent(self.session, demand=demand)
-            demand_view.generate_list_field(text)
-            
-        text.unindent()
-        text.write('</div>')
+
+    def get_title(self):
+        return "Page not found"
+
+    def generate_body(self, text):
+        text.write("Page not found")

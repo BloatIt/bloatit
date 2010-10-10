@@ -8,58 +8,64 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-29 17:28+0200\n"
+"POT-Creation-Date: 2010-10-10 17:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:68
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:92
+msgid "Logout"
+msgstr ""
+
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:96
 msgid "Login / Signup"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:78
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:107
 msgid "Demands"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:79
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:108
 msgid "Projects"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:80
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:109
 msgid "Groups"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:81
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:110
 msgid "Members"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:86
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:115
 msgid "Contact"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:87
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:116
 msgid "Documentation"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:88
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:117
 msgid "About BloatIt"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:89
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:118
 msgid "Press"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/htmlpage.py:98
+#: ../src/bloatit/web/htmlrenderer/htmlpage.py:127
 msgid "This website is under GNU Affero Public Licence."
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/pagecontent/logincontent.py:16
+#: ../src/bloatit/web/htmlrenderer/pagecontent/logincontent.py:54
+#: ../src/bloatit/web/htmlrenderer/pagecontent/logincontent.py:59
 msgid "Login"
 msgstr ""
 
-#: ../src/bloatit/htmlrenderer/pagecontent/logincontent.py:17
+#: ../src/bloatit/web/htmlrenderer/pagecontent/logincontent.py:61
 msgid "Sigup"
 msgstr ""

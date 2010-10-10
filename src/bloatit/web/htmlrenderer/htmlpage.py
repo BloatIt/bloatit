@@ -17,12 +17,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.pagecontent.demandscontent import DemandsContent
-from bloatit.actions.logoutaction import LogoutAction
-from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
-from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
-from bloatit.htmlrenderer.htmltools import HtmlTools
-from bloatit.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
+from bloatit.web.htmlrenderer.pagecontent.demandscontent import DemandsContent
+from bloatit.web.actions.logoutaction import LogoutAction
+from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
+from bloatit.web.htmlrenderer.pagecontent.logincontent import LoginContent
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
 
 """TODO: prévoir une option de configuration pour générer un mode compact"""
 

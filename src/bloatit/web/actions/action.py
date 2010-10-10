@@ -17,13 +17,25 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
 
-class HtmlTextField(HtmlComponent):
+class Action:
 
-    def set_name(self,name):
-        self.name = name
+    def __init__(self, session, parameters={}):
+        # @type session Session
+        self.session = session
+        self.parameters = parameters
 
-    def generate(self, text):
-        # @type text IndentedText
-        text.write('<p><input name="'+self.name+'" type="text" /></p>')
+
+    def get_url(self):
+        return '/'+self.session.get_language().get_code()+'/action/'+self.get_code()
+
+    def get_code(self):
+        """return the action code"""
+        pass
+
+    def process(self, html_result, query, post):
+        # @type html_result HtmlResult
+        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
+        

@@ -18,10 +18,10 @@
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 from bloatit.framework.demandmanager import DemandManager
-from bloatit.htmlrenderer.htmltools import HtmlTools
-from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
 from bloatit.model.demand import Demand
-from bloatit.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
 
 
 class DemandContent(PageContent):

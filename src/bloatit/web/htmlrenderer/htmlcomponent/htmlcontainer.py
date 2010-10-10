@@ -1,7 +1,3 @@
-import hashlib
-import string
-import random
-from bloatit.server.session import Session
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.
@@ -21,31 +17,16 @@ from bloatit.server.session import Session
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-class SessionManager:
+from bloatit.web.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
-    active_session = {}
-    sha = hashlib.sha256()
-
+class HtmlContainer(HtmlComponent):
 
     def __init__(self):
-        """Documentation"""
+        self.components = []
 
-    @classmethod
-    def create_session(cls):
-        new_session = Session()
-        d = "".join([random.choice(string.ascii_letters) for _ in range(100)])
-        cls.sha.update(d.encode())
+    def add_component(self, new_component):
+        self.components.append(new_component)
 
-        session_key = cls.sha.hexdigest()
-        new_session.set_key(session_key)
-        cls.active_session[session_key] = new_session
-
-        return new_session
-
-    @classmethod
-    def get_by_key(cls, key):
-        if key in cls.active_session:
-            return cls.active_session[key]
-        else:
-            return None
-        
+    def generate(self, text):
+        for component in self.components:
+            component.generate(text)

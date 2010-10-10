@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.server.dispatchserver import DispatchServer
+from bloatit.web.server.dispatchserver import DispatchServer
 from urllib.parse import parse_qs
 from scgi.scgi_server import SCGIHandler
 from scgi.scgi_server import SCGIServer

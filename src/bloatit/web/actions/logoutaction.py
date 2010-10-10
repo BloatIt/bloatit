@@ -17,20 +17,21 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.htmlrenderer.htmlcomponent.htmlcontainer import HtmlContainer
+from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
+from bloatit.web.actions.action import Action
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
 
-class HtmlForm(HtmlContainer):
 
-    def generate(self, text):
-        # @type text IndentedText
-        text.write('<form action="'+self.action.get_url()+'" method="POST">')
-        text.indent()
+class LogoutAction(Action):
 
-        #Generate content fields
-        super(HtmlForm, self).generate(text)
-        text.unindent()
-        text.write('</form>')
+    def get_code(self):
+        return "logout"
 
-    def set_action(self, action):
-        # @type action Action
-        self.action = action
+    
+    def process(self, html_result, query, post):
+        self.session.set_logged(False)
+        self.session.set_auth_token(None)
+
+        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent(self.session)))
+
+        
