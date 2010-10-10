@@ -75,8 +75,6 @@ public class SCGIServer {
 
                 DispatchServer dispatchServer = new DispatchServer(query, post, cookies, preferredLangs);
 
-                String hello = "ContentType : text/html \r\n\r\nHello BloatIt !";
-
                 clientSocket.getOutputStream().write(dispatchServer.process().getBytes());
 
                 clientSocket.close();

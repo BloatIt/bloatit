@@ -167,7 +167,14 @@ Ignore multiple /
         self.session.set_language(language)
 */
     private void initSession() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        session = null;
+        if(cookies.containsKey("session_key")) {
+            session = SessionManager.getByKey(cookies.get("session_key"));
+        }
+
+        if(session == null) {
+            session = SessionManager.createSession();
+        }
     }
 
     private void initLanguage() {
