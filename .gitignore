@@ -12,3 +12,5 @@ locales/*
 .settings
 target
 nbactions.xml
+.classpath
+bin/
