@@ -31,7 +31,7 @@ LOG_FILENAME = '/tmp/bloatit_scgi.log'
 logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 class HtmlHandler(SCGIHandler):
-	
+    
     def produce(self, env, bodysize, input, output):
         logging.info("HtmlHandler : produce page begin")
         cgitb.enable()
