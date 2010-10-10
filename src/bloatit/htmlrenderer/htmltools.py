@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
+import urllib
+
 class HtmlTools:
     
    
@@ -78,6 +80,16 @@ class HtmlTools:
         else:
             return "-"+result
 
+    @classmethod
+    def escape_url_string(cls, str):
+        """
+        Escape a given string to use it safely in a URL
+        """
+        return (urllib.parse.quote_plus(str)).replace('+','_')
 
-    
-        
+    @classmethod
+    def unescape_url_string(cls, str):
+        """
+        Unescape a string escaped with escape_url_string
+        """
+        return urllib.parse.unquote_plus(str.replace('_','+'))

@@ -102,13 +102,15 @@ class DispatchServer:
     def _parse_query_string(cls, query):
         """
         Parse the query string to find page name and all parameters
+
         Parameter format must be :
             /name-value
         will return a tuple with page name first and a map with all parameters
         second. Parameter map is formatted {name : value, ... }
+        Ignore multiple /
         """
+
         # @type query string
-        
         splitted = (query.strip('/')).split('/')
         page = ''
         param_list = {}

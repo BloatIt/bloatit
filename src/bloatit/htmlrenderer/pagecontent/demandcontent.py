@@ -22,27 +22,51 @@ from bloatit.htmlrenderer.htmltools import HtmlTools
 from bloatit.server.session import Session
 from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
 from bloatit.model.demand import Demand
+from bloatit.htmlrenderer.htmltools import HtmlTools
 import urllib
 
 class DemandContent(PageContent):
+    # @type demand Demand
 
     def __init__(self, session, parameters={}, demand=None):
         # @type session Session
-        # @type demand Demand
+
         self.session = session
         self.parameters = parameters
         if demand is None:
             if 'id' in parameters:
-                self.demand = DemandManager.get_demand_by_id(parameters['id'])
+                try:
+                    id = int(parameters['id'])
+                    self.demand = DemandManager.get_demand_by_id(id)
+                except ValueError:
+                    pass # Back to general case : no demand specified
         else:
             self.demand = demand
 
-
     def get_code(self):
         if self.demand != None:
-            return 'demand/id-'+ str(self.demand.get_id()) + '/title-' + urllib.parse.quote_plus(self.demand.get_title())
+            return 'demand/id-'+ str(self.demand.get_id()) + '/title-' + HtmlTools.escape_url_string(self.demand.get_title())
         else:
-            return 'TODO' # TODO Faire un système pour afficher une page d'erreur
+            return 'demand' # TODO Faire un système pour afficher une page d'erreur
+
+    def generate_body(self, text):
+        # @type text IndentedText
+        print('plop')
+        if self.demand is None:
+            self._generate_empty_body(text)
+        else :
+            self._generate_not_empty_body(text)
+
+    def _generate_empty_body(self, text):
+        text.write('Error : Specified demand Id incorrect') #TODO
+
+    def _generate_not_empty_body(self, text):
+        text.write('<div class="demand">')
+        text.indent()
+        text.write('<p>Demand id : '+ str(self.demand.get_id()) + '</p>' )
+        text.write('<p>Nota : demand Id is always 1 (testing)</p>')
+        text.unindent()
+        text.write('</div>')
 
     def generate_list_field(self, text):
         # @type text IndentedText

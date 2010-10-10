@@ -58,5 +58,10 @@ class TestUrl(unittest.TestCase):
         self.assertEqual(DispatchServer._parse_query_string('/index#{[#/plop-plop'), ('index#{[#',{'plop':'plop'}))
         self.assertEqual(DispatchServer._parse_query_string('/index/plop@\#é-plop@\#é'), ('index',{'plop@\#é':'plop@\#é'}))
 
+        # few strange cases
+        self.assertEqual(DispatchServer._parse_query_string('index/-plop'), ('index',{'':'plop'}))
+        self.assertEqual(DispatchServer._parse_query_string('index/plop-'), ('index',{'plop':''}))
+        self.assertEqual(DispatchServer._parse_query_string('index/-'), ('index',{'':''}))
+
 if __name__ == '__main__':
     unittest.main()
