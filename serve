@@ -1,1 +1,1 @@
-python3 src/bloatit/scgiserver/serve.py
+python3 src/bloatit/web/scgiserver/serve.py
