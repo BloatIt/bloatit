@@ -18,7 +18,7 @@
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 
-from bloatit.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
 import unittest
 
 class TestHttpTools(unittest.TestCase):

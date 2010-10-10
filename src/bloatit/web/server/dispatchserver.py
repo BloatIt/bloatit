@@ -52,53 +52,34 @@ class DispatchServer:
 
         
     def process(self):
-
-        self.session = None
-        if "session_key" in self.cookies:
-            self.session = SessionManager.get_by_key(self.cookies["session_key"])
-
-        if self.session is None:
-            self.session = SessionManager.create_session()
-
+        
+        self.init_session()
+        self.init_language()
+        
+        current_request = self.init_current_request()
+        
         html_result = HtmlResult(self.session)
 
-        language = Language()
-
-        if "lang" in self.query:
-            if self.query["lang"][0] == "default":
-                language.find_preferred(self.preferred_langs)
-            else:
-                language.set_by_code(self.query["lang"][0])
-
-        self.session.set_language(language)
-
-        action = self.find_action()
-        if action != None:
-            action.process(html_result, self.query, self.post)
-        else:
-            page = HtmlPage(self.session, html_result)
-
-            content = self.find_content()
-            page.generate_page(content)
+        current_request.process(html_result)
+        
         return html_result.generate()
 
     def find_action(self):
         if "page" in self.query:
-            page,parameters = DispatchServer._parse_query_string(self.query['page'][0])
+            page,parameters = self._parse_query_string(self.query['page'][0])
             if page.startswith("action/") and page[7:] in self.action_map:
                 return self.action_map[page[7:]](self.session, parameters=parameters)
         return None
 
-    def find_content(self):
+    def find_page(self):
         if "page" in self.query:
-            page,parameters = DispatchServer._parse_query_string(self.query['page'][0])
+            page,parameters = self._parse_query_string(self.query['page'][0])
             if page in self.page_map:
                 return self.page_map[page](self.session, parameters=parameters)
 
         return PageNotFoundContent(self.session)
 
-    @classmethod
-    def _parse_query_string(cls, query):
+    def _parse_query_string(self, query):
         """
         Parse the query string to find page name and all parameters
 
@@ -130,3 +111,28 @@ class DispatchServer:
             i = i+1
 
         return page,param_list
+    
+    
+    def init_current_request(self):
+        request = self.find_action()
+        if request == None:
+            request = self.find_page()
+   
+    
+    def init_session(self):
+        self.session = None
+        if "session_key" in self.cookies:
+            self.session = SessionManager.get_by_key(self.cookies["session_key"])
+
+        if self.session is None:
+            self.session = SessionManager.create_session()
+            
+    def init_language(self):
+        language = Language()
+        if "lang" in self.query:
+            if self.query["lang"][0] == "default":
+                language.find_preferred(self.preferred_langs)
+            else:
+                language.set_by_code(self.query["lang"][0])
+
+        self.session.set_language(language)
