@@ -28,6 +28,7 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MyAccountPage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -62,10 +63,10 @@ public class DispatchServer {
     private Map<String, String> query;
     private Map<String, String> post;
     private Map<String, String> cookies;
-    private Map<String, String> preferred_langs;
+    private List<String> preferred_langs;
     private Session session;
 
-    public DispatchServer(Map<String, String> query, Map<String, String> post, Map<String, String> cookies, Map<String, String> preferred_langs) {
+    public DispatchServer(Map<String, String> query, Map<String, String> post, Map<String, String> cookies, List<String> preferred_langs) {
         this.query = query;
         this.post = post;
         this.cookies = cookies;

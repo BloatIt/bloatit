@@ -29,7 +29,7 @@ public class HtmlResult {
     }
 
     public String generate() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return "ContentType : text/html \r\n\r\nHello BloatIt !";
     }
 
 }
