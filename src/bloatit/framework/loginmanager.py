@@ -47,7 +47,7 @@ class LoginManager:
         #TODO: throw exception if no member match
 
         
-        d = "".join([random.choice(string.ascii_letters) for x in range(100)])
+        d = "".join([random.choice(string.ascii_letters) for _ in range(100)])
         cls.sha.update(d.encode())
 
         token_key = cls.sha.hexdigest()

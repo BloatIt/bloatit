@@ -1,5 +1,4 @@
 from bloatit.model.member import Member
-from bloatit.model.demand import Demand
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2010 BloatIt.

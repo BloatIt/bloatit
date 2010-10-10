@@ -19,9 +19,7 @@
 
 from bloatit.framework.demandmanager import DemandManager
 from bloatit.htmlrenderer.htmltools import HtmlTools
-from bloatit.server.session import Session
 from bloatit.htmlrenderer.pagecontent.pagecontent import PageContent
-from bloatit.model.demand import Demand
 import urllib
 
 class DemandContent(PageContent):

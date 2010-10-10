@@ -18,12 +18,10 @@
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 from bloatit.htmlrenderer.pagecontent.demandscontent import DemandsContent
-from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
 from bloatit.actions.logoutaction import LogoutAction
 from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
 from bloatit.htmlrenderer.htmltools import HtmlTools
-from bloatit.htmlrenderer.indentedtext import IndentedText
 from bloatit.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
 
 """TODO: prévoir une option de configuration pour générer un mode compact"""

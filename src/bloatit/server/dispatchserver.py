@@ -29,7 +29,6 @@ from bloatit.htmlrenderer.pagecontent.pagenotfoundcontent import PageNotFoundCon
 from bloatit.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.htmlrenderer.pagecontent.logincontent import LoginContent
 from bloatit.htmlrenderer.htmlcomponent.htmlpage import HtmlPage
-from bloatit.server.session import Session
 
 class DispatchServer:
     page_map = {
