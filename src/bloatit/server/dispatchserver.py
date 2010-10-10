@@ -85,20 +85,21 @@ class DispatchServer:
 
     def find_action(self):
         if "page" in self.query:
-            page,parameters = self.parse_query_string()
+            page,parameters = DispatchServer._parse_query_string(self.query['page'][0])
             if page.startswith("action/") and page[7:] in self.action_map:
                 return self.action_map[page[7:]](self.session, parameters=parameters)
         return None
 
     def find_content(self):
         if "page" in self.query:
-            page,parameters = self.parse_query_string()
+            page,parameters = DispatchServer._parse_query_string(self.query['page'][0])
             if page in self.page_map:
                 return self.page_map[page](self.session, parameters=parameters)
 
-        return PageNotFoundContent(self.session), {}
+        return PageNotFoundContent(self.session)
 
-    def parse_query_string(self):
+    @classmethod
+    def _parse_query_string(cls, query):
         """
         Parse the query string to find page name and all parameters
         Parameter format must be :
@@ -106,31 +107,25 @@ class DispatchServer:
         will return a tuple with page name first and a map with all parameters
         second. Parameter map is formatted {name : value, ... }
         """
-        query = self.query['page'][0]
         # @type query string
         
-        if '/' in query:
-            splitted = (query.strip('/')).split('/')
-            page = ''
-            page_name = True
-            param_list = {}
-            
-            for parameter in splitted:
-                if '-' in parameter:
-                    page_name = False
-                    p = parameter.split('-')
-                    param_list[p[0]] = p[1]
-                elif page_name:
-                    if page != '':
-                        page = page + '/'
-                    page = page + parameter
+        splitted = (query.strip('/')).split('/')
+        page = ''
+        param_list = {}
+        i = 0
 
-            return page,param_list
-        
-        else:
-            return query, {}
+        # Parsing, finding page name
+        while i < len(splitted) and not('-' in splitted[i]):
+            if page != '' and splitted[i] != '':
+                page = page + '/'
+            page = page + splitted[i]
+            i = i+1
 
-    @staticmethod
-    def _parse(str):
-        # @type str string
-        Pass
+        # Parsing, finding page parameters
+        while i < len(splitted):
+            if '-' in splitted[i]:
+                p = splitted[i].split('-')
+                param_list[p[0]] = p[1]
+            i = i+1
+
+        return page,param_list
