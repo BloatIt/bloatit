@@ -10,3 +10,5 @@ doc/bdd.pdf
 locales/*
 .LCK*~
 .settings
+target
+nbactions.xml
