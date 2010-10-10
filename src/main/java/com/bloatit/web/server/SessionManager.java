@@ -26,4 +26,8 @@ class SessionManager {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    static Session createSession() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
 }
