@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
+from bloatit.web.htmlrenderer.page import Page
 
 class MyAccountContent(Page):
 
@@ -25,8 +25,7 @@ class MyAccountContent(Page):
         return "my_account"
 
     def __init__(self, session, parameters={}):
-        self.session = session
-        self.parameters = parameters
+        super(MyAccountContent, self).__init__(session, parameters)
 
     def get_title(self):
         if self.session.get_auth_token():
@@ -34,7 +33,7 @@ class MyAccountContent(Page):
         else:
             return "My account - No account"
     
-    def generate_body(self, text):
+    def generate_content(self):
         # @type text IndentedText
 
         if self.session.get_auth_token():
@@ -43,11 +42,11 @@ class MyAccountContent(Page):
             # @type member Member
 
 
-            text.write("<h2>"+member.get_full_name()+"</h2>")
-            text.write("<p>Full name: "+member.get_full_name()+"</p>")
-            text.write("<p>Login: "+member.get_login()+"</p>")
-            text.write("<p>Email: "+member.get_email()+"</p>")
-            text.write("<p>Karma: "+str(member.get_karma())+"</p>")
+            self.html_result.write("<h2>"+member.get_full_name()+"</h2>")
+            self.html_result.write("<p>Full name: "+member.get_full_name()+"</p>")
+            self.html_result.write("<p>Login: "+member.get_login()+"</p>")
+            self.html_result.write("<p>Email: "+member.get_email()+"</p>")
+            self.html_result.write("<p>Karma: "+str(member.get_karma())+"</p>")
 
         else:
-            text.write("<h2>No account</h2>")
+            self.html_result.write("<h2>No account</h2>")

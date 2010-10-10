@@ -17,20 +17,26 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.pages.indexcontent import IndexContent
+from bloatit.web.server.request import Request
 
-class PageNotFoundContent(Page):
-
-    def get_code(self):
-        return "pagenotfound"
+class Action(Request):
 
     def __init__(self, session, parameters={}):
+        # @type session Session
         self.session = session
         self.parameters = parameters
 
 
-    def get_title(self):
-        return "Page not found"
+    def get_url(self):
+        return '/'+self.session.get_language().get_code()+'/action/'+self.get_code()
 
-    def generate_body(self, text):
-        text.write("Page not found")
+    def get_code(self):
+        """return the action code"""
+        pass
+
+    def _process(self):
+        # @type html_result HtmlResult
+        self.html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
+        

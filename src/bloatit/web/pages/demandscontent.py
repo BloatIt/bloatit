@@ -10,33 +10,31 @@
 # (at your option) any later version.
 #
 # BloatIt is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# but WITHOUT ANY WARRANTY; without even the implslied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.web.htmlrenderer.htmltools import HtmlTools
-from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
-from bloatit.web.request import Request
+from bloatit.web.htmlrenderer.elementrenderer.demandlistrenderer import DemandListRenderer
+from bloatit.framework.demandmanager import DemandManager
+from bloatit.web.htmlrenderer.page import Page
 
-class Action(Request):
+class DemandsContent(Page):
 
     def __init__(self, session, parameters={}):
-        # @type session Session
-        self.session = session
-        self.parameters = parameters
+        super(DemandsContent, self).__init__(session, parameters)
 
-
-    def get_url(self):
-        return '/'+self.session.get_language().get_code()+'/action/'+self.get_code()
+    def get_title(self):
+        return "Handle demands"
 
     def get_code(self):
-        """return the action code"""
-        pass
+        return "demands"
 
-    def process(self, html_result, query, post):
-        # @type html_result HtmlResult
-        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent))
+    def generate_content(self):
+        # @type text IndentedText
+        demands = DemandManager.get_all_demands()
+        demands_renderer = DemandListRenderer(self.session, demands)
         
+        demands_renderer.generate(self.html_result)

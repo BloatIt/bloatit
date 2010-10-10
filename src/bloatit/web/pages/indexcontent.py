@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from bloatit.web import request
 
 # Copyright (C) 2010 BloatIt.
 #
@@ -18,18 +17,21 @@ from bloatit.web import request
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-class Page(request):
-    def __init__(self, session, parameters={}):
-        self.session = session
-        self.parameters = parameters
+from bloatit.web.htmlrenderer.htmltools import HtmlTools
+from bloatit.web.htmlrenderer.page import Page
+
+class IndexContent(Page):
 
     def get_code(self):
-        pass
+        return "index"
+    
+    def __init__(self, session, parameters={}):
+        super(IndexContent, self).__init__(session, parameters)
 
     def get_title(self):
-        pass
+        return "Finance free software"
 
-    def execute(self, text):
-        pass
-
-    
+    def generate_content(self):
+        self.html_result.write("<h2>Welcome in "+HtmlTools.generate_logo()+" website</h2>")
+        self.html_result.write(HtmlTools.generate_logo()+" is a wonderful website !")
+        self.html_result.write(100*" is a wonderful website !")

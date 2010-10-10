@@ -17,18 +17,17 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.web.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
-from bloatit.web.htmlrenderer.pagecontent.demandscontent import DemandsContent
+from bloatit.web.pages.myaccountcontent import MyAccountContent
+from bloatit.web.pages.demandscontent import DemandsContent
 from bloatit.web.htmlrenderer.htmlresult import HtmlResult
 from bloatit.web.server.sessionmanager import SessionManager
-from bloatit.web.htmlrenderer.pagecontent.demandcontent import DemandContent
+from bloatit.web.pages.demandcontent import DemandContent
 from bloatit.web.actions.logoutaction import LogoutAction
 from bloatit.web.actions.loginaction import LoginAction
 from bloatit.web.server.language import Language
-from bloatit.web.htmlrenderer.pagecontent.pagenotfoundcontent import PageNotFoundContent
-from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
-from bloatit.web.htmlrenderer.pagecontent.logincontent import LoginContent
-from bloatit.web.htmlrenderer.htmlpage import HtmlPage
+from bloatit.web.pages.pagenotfoundcontent import PageNotFoundContent
+from bloatit.web.pages.indexcontent import IndexContent
+from bloatit.web.pages.logincontent import LoginContent
 
 class DispatchServer:
     page_map = {
@@ -45,6 +44,7 @@ class DispatchServer:
     }
 
     def __init__(self, query, post, cookies, preferred_langs):
+        
         self.query = query
         self.post = post
         self.cookies = cookies
@@ -55,12 +55,12 @@ class DispatchServer:
         
         self.init_session()
         self.init_language()
-        
+        # TODO : Combine query, post & cookies in a single map
         current_request = self.init_current_request()
         
         html_result = HtmlResult(self.session)
 
-        current_request.process(html_result)
+        current_request.do_process(html_result, self.query, self.post)
         
         return html_result.generate()
 
@@ -117,6 +117,8 @@ class DispatchServer:
         request = self.find_action()
         if request == None:
             request = self.find_page()
+        
+        return request    
    
     
     def init_session(self):

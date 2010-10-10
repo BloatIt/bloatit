@@ -17,25 +17,20 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.web.htmlrenderer.pagecontent.demandscontent import DemandsContent
-from bloatit.web.actions.logoutaction import LogoutAction
-from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
-from bloatit.web.htmlrenderer.pagecontent.logincontent import LoginContent
 from bloatit.web.htmlrenderer.htmltools import HtmlTools
-from bloatit.web.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
-from bloatit.web.request import Request
+
+from bloatit.web.server.request import Request
 
 """TODO: prévoir une option de configuration pour générer un mode compact"""
 
 class Page(Request):
     
-    def __init__(self, session, html_result):
+    def __init__(self, session, parameters={}):
         self.session = session
-        self.html_result = html_result
+        self.parameters = parameters
         self.design = "/resources/css/design.css"
 
-    def process(self, content):
-        self.content = content
+    def _process(self):
         self.html_result.write('<?xml version=\"1.0\" encoding=\"UTF-8\"?>')
         self.html_result.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">')
         self.html_result.write('<html xmlns="http://www.w3.org/1999/xhtml">')
@@ -51,7 +46,7 @@ class Page(Request):
         self.html_result.write('<metahttp-equiv="content-type" content="text/html;charset=utf-8"/>')
         self.html_result.write('<link rel="stylesheet" href="'+self.design+'" type="text/css" media="handheld, all" />')
 
-        self.html_result.write('<title>BloatIt - '+self.content.get_title()+'</title>')
+        self.html_result.write('<title>BloatIt - '+self.get_title()+'</title>')
         self.html_result.unindent()
         self.html_result.write('</head>')
 
@@ -65,9 +60,16 @@ class Page(Request):
         self.html_result.write('<div id="center">')
         self.html_result.indent()
         self.generate_main_menu()
-        self.generate_content()
+
+        self.html_result.write('<div id="body_content">')
+        self.html_result.indent()
+        
+        self.generate_content() # Call overloaded method with inheritance
         self.html_result.unindent()
         self.html_result.write('</div>')
+        self.html_result.unindent()
+        self.html_result.write('</div>')
+        
         self.generate_footer()
         self.html_result.unindent()
         self.html_result.write('</div>')
@@ -80,9 +82,15 @@ class Page(Request):
 
 
     def generate_title(self):
+        from bloatit.web.pages.indexcontent import IndexContent
+        
         self.html_result.write('<h1>'+HtmlTools.generate_link(self.session,self.generate_logo(), IndexContent(self.session))+'</h1>')
 
     def generate_top_bar(self):
+        from bloatit.web.actions.logoutaction import LogoutAction
+        from bloatit.web.pages.logincontent import LoginContent
+        from bloatit.web.pages.myaccountcontent import MyAccountContent
+        
         self.html_result.write('<div id="top_bar">')
         self.html_result.indent()
         if self.session.is_logged():
@@ -99,7 +107,9 @@ class Page(Request):
         self.html_result.write('</div>')
 
     def generate_main_menu(self):
-        
+        from bloatit.web.pages.demandscontent import DemandsContent
+        from bloatit.web.pages.indexcontent import IndexContent
+
         self.html_result.write('<div id="main_menu">')
         self.html_result.indent()
         self.html_result.write('<ul>')
@@ -129,9 +139,8 @@ class Page(Request):
         self.html_result.write('</div>')
 
     def generate_content(self):
-        self.html_result.write('<div id="body_content">')
-        self.html_result.indent()
-        self.content.generate_body(self.html_result)
-        self.html_result.unindent()
-        self.html_result.write('</div>')
+        """
+        Virtual method
+        """
+        pass
 

@@ -17,8 +17,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
-from bloatit.web.actions.action import Action
+from bloatit.web.pages.indexcontent import IndexContent
+from bloatit.web.server.action import Action
 from bloatit.web.htmlrenderer.htmltools import HtmlTools
 
 
@@ -28,10 +28,10 @@ class LogoutAction(Action):
         return "logout"
 
     
-    def process(self, html_result, query, post):
+    def _process(self):
         self.session.set_logged(False)
         self.session.set_auth_token(None)
 
-        html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent(self.session)))
+        self.html_result.set_redirect(HtmlTools.generate_url(self.session,IndexContent(self.session)))
 
         

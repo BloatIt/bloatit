@@ -22,7 +22,7 @@ from bloatit.web.htmlrenderer.htmlcomponent.htmlbutton import HtmlButton
 from bloatit.web.htmlrenderer.htmlcomponent.htmlpasswordfield import HtmlPasswordField
 from bloatit.web.htmlrenderer.htmlcomponent.htmltextfield import HtmlTextField
 from bloatit.web.htmlrenderer.htmlcomponent.htmlform import HtmlForm
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
+from bloatit.web.htmlrenderer.page import Page
 
 class LoginContent(Page):
 
@@ -30,14 +30,13 @@ class LoginContent(Page):
         return "login"
 
     def __init__(self, session, parameters={}):
-        self.session = session
-        self.parameters = parameters
+        super(LoginContent, self).__init__(session, parameters)
 
 
     def get_title(self):
         return "Login or sigup"
 
-    def generate_body(self, text):
+    def generate_content(self):
         # @type text IndentedText
         login_form = HtmlForm()
         login_field = HtmlTextField()
@@ -56,7 +55,7 @@ class LoginContent(Page):
         password_field.set_name(login_action.get_password_code())
 
 
-        text.write("<h2>"+self.session._("Login")+"</h2>")
-        login_form.generate(text)
-        text.write("<h2>"+self.session._("Sigup")+"</h2>")
-        text.write("<p>Not yet implemented.</p>")
+        self.html_result.write("<h2>"+self.session._("Login")+"</h2>")
+        login_form.generate(self.html_result)
+        self.html_result.write("<h2>"+self.session._("Sigup")+"</h2>")
+        self.html_result.write("<p>Not yet implemented.</p>")

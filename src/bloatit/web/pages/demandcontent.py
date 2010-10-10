@@ -18,18 +18,16 @@
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 from bloatit.framework.demandmanager import DemandManager
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
 from bloatit.web.htmlrenderer.htmltools import HtmlTools
-
+from bloatit.web.htmlrenderer.page import Page
 
 class DemandContent(Page):
-    # @type demand Demand
 
     def __init__(self, session, parameters={}, demand=None):
         # @type session Session
+        super(DemandContent, self).__init__(session, parameters)
+
         
-        self.session = session
-        self.parameters = parameters
         if demand is None:
             if 'id' in parameters:
                 try:
@@ -45,14 +43,14 @@ class DemandContent(Page):
             return 'demand/id-'+ str(self.demand.get_id()) + '/title-' + HtmlTools.escape_url_string(self.demand.get_title())
         else:
             return 'demand' # TODO Faire un système pour afficher une page d'erreur
-
-    def generate_body(self, text):
+        
+    
+    def generate_content(self):
         # @type text IndentedText
-        print('plop')
         if self.demand is None:
-            self._generate_empty_body(text)
+            self._generate_empty_body(self.html_result)
         else :
-            self._generate_not_empty_body(text)
+            self._generate_not_empty_body(self.html_result)
 
     def _generate_empty_body(self, text):
         text.write('Error : Specified demand Id incorrect') #TODO

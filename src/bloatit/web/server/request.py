@@ -23,8 +23,15 @@ class Request:
         self.session = session
         self.parameters = parameters
     
-    def execute(self):
+    def _process(self):
         pass
+        
+    def do_process(self, html_result, query='', post=''):
+        # TODO : Remove query/post and use the parameters list from constructor
+        self.html_result = html_result
+        self.query = query
+        self.post = post
+        self._process()
     
     def get_code(self):
         pass
