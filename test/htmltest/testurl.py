@@ -17,51 +17,52 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.server.dispatchserver import DispatchServer
+from bloatit.web.server.dispatchserver import DispatchServer
 import unittest
 
 class TestUrl(unittest.TestCase):
     def test_url_parsing(self):
+        dispatch_server = DispatchServer(None, None, None, None)
         # Empty page & no parameter
-        self.assertEqual(DispatchServer._parse_query_string(''), ('',{}))
-        self.assertEqual(DispatchServer._parse_query_string('/'), ('',{}))
-        self.assertEqual(DispatchServer._parse_query_string('////////'), ('',{}))
+        self.assertEqual(dispatch_server._parse_query_string(''), ('',{}))
+        self.assertEqual(dispatch_server._parse_query_string('/'), ('',{}))
+        self.assertEqual(dispatch_server._parse_query_string('////////'), ('',{}))
 
         # Non empty page & no parameter
-        self.assertEqual(DispatchServer._parse_query_string('index'), ('index',{}))
-        self.assertEqual(DispatchServer._parse_query_string('/index'), ('index',{}))
-        self.assertEqual(DispatchServer._parse_query_string('index/'), ('index',{}))
-        self.assertEqual(DispatchServer._parse_query_string('index/plop'), ('index/plop',{}))
-        self.assertEqual(DispatchServer._parse_query_string('index/////plop'), ('index/plop',{}))
+        self.assertEqual(dispatch_server._parse_query_string('index'), ('index',{}))
+        self.assertEqual(dispatch_server._parse_query_string('/index'), ('index',{}))
+        self.assertEqual(dispatch_server._parse_query_string('index/'), ('index',{}))
+        self.assertEqual(dispatch_server._parse_query_string('index/plop'), ('index/plop',{}))
+        self.assertEqual(dispatch_server._parse_query_string('index/////plop'), ('index/plop',{}))
 
         # empty page with parameter
-        self.assertEqual(DispatchServer._parse_query_string('plop-plop'), ('',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('/plop-plop'), ('',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('////////plop-plop'), ('',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('plop-plop/test'), ('',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('plop-plop/test/pataplop-pataplop'), ('',{'plop':'plop', 'pataplop':'pataplop'}))
+        self.assertEqual(dispatch_server._parse_query_string('plop-plop'), ('',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('/plop-plop'), ('',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('////////plop-plop'), ('',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('plop-plop/test'), ('',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('plop-plop/test/pataplop-pataplop'), ('',{'plop':'plop', 'pataplop':'pataplop'}))
 
         # non empty page and non empty parameters
-        self.assertEqual(DispatchServer._parse_query_string('index/plop-plop'), ('index',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('/index/plop-plop'), ('index',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('index/plop-plop/hello-hello'), ('index',{'plop':'plop', 'hello': 'hello'}))
-        self.assertEqual(DispatchServer._parse_query_string('index/plop-plop/hello-hello-hihi'), ('index',{'plop':'plop', 'hello': 'hello'}))
-        self.assertEqual(DispatchServer._parse_query_string('/index/plop-plop/hello-hello'), ('index',{'plop':'plop', 'hello': 'hello'}))
-        self.assertEqual(DispatchServer._parse_query_string('/index/plop-plop/hello-hello-hihi'), ('index',{'plop':'plop', 'hello': 'hello'}))
-        self.assertEqual(DispatchServer._parse_query_string('index/plop-plop/hello'), ('index',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('index/plop-plop/hello/pataplop-pataplop'), ('index',{'plop':'plop', 'pataplop': 'pataplop'}))
-        self.assertEqual(DispatchServer._parse_query_string('///index//hello//////plop-plop/////hello////pataplop-pataplop'), ('index/hello',{'plop':'plop', 'pataplop': 'pataplop'}))
+        self.assertEqual(dispatch_server._parse_query_string('index/plop-plop'), ('index',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('/index/plop-plop'), ('index',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('index/plop-plop/hello-hello'), ('index',{'plop':'plop', 'hello': 'hello'}))
+        self.assertEqual(dispatch_server._parse_query_string('index/plop-plop/hello-hello-hihi'), ('index',{'plop':'plop', 'hello': 'hello'}))
+        self.assertEqual(dispatch_server._parse_query_string('/index/plop-plop/hello-hello'), ('index',{'plop':'plop', 'hello': 'hello'}))
+        self.assertEqual(dispatch_server._parse_query_string('/index/plop-plop/hello-hello-hihi'), ('index',{'plop':'plop', 'hello': 'hello'}))
+        self.assertEqual(dispatch_server._parse_query_string('index/plop-plop/hello'), ('index',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('index/plop-plop/hello/pataplop-pataplop'), ('index',{'plop':'plop', 'pataplop': 'pataplop'}))
+        self.assertEqual(dispatch_server._parse_query_string('///index//hello//////plop-plop/////hello////pataplop-pataplop'), ('index/hello',{'plop':'plop', 'pataplop': 'pataplop'}))
 
         # special characters
-        self.assertEqual(DispatchServer._parse_query_string('index#{[#/plop-plop'), ('index#{[#',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('index/plop@\#é-plop@\#é'), ('index',{'plop@\#é':'plop@\#é'}))
-        self.assertEqual(DispatchServer._parse_query_string('/index#{[#/plop-plop'), ('index#{[#',{'plop':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('/index/plop@\#é-plop@\#é'), ('index',{'plop@\#é':'plop@\#é'}))
+        self.assertEqual(dispatch_server._parse_query_string('index#{[#/plop-plop'), ('index#{[#',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('index/plop@\#é-plop@\#é'), ('index',{'plop@\#é':'plop@\#é'}))
+        self.assertEqual(dispatch_server._parse_query_string('/index#{[#/plop-plop'), ('index#{[#',{'plop':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('/index/plop@\#é-plop@\#é'), ('index',{'plop@\#é':'plop@\#é'}))
 
         # few strange cases
-        self.assertEqual(DispatchServer._parse_query_string('index/-plop'), ('index',{'':'plop'}))
-        self.assertEqual(DispatchServer._parse_query_string('index/plop-'), ('index',{'plop':''}))
-        self.assertEqual(DispatchServer._parse_query_string('index/-'), ('index',{'':''}))
+        self.assertEqual(dispatch_server._parse_query_string('index/-plop'), ('index',{'':'plop'}))
+        self.assertEqual(dispatch_server._parse_query_string('index/plop-'), ('index',{'plop':''}))
+        self.assertEqual(dispatch_server._parse_query_string('index/-'), ('index',{'':''}))
 
 if __name__ == '__main__':
     unittest.main()

@@ -53,3 +53,11 @@ class Session:
 
     def get_actions_list(self):
         return self.action_list
+    
+    def set_last_stable_page(self, page):
+        self.last_stable_page = page
+    
+    def get_last_stable_page(self):
+        return self.last_stable_page
+        
+    
