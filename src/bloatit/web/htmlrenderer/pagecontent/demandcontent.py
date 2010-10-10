@@ -18,16 +18,16 @@
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 from bloatit.framework.demandmanager import DemandManager
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
 from bloatit.web.htmlrenderer.htmltools import HtmlTools
 
 
-class DemandContent(PageContent):
+class DemandContent(Page):
     # @type demand Demand
 
     def __init__(self, session, parameters={}, demand=None):
         # @type session Session
-
+        
         self.session = session
         self.parameters = parameters
         if demand is None:

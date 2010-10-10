@@ -17,9 +17,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
 
-class PageNotFoundContent(PageContent):
+class PageNotFoundContent(Page):
 
     def get_code(self):
         return "pagenotfound"

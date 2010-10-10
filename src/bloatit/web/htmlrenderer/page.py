@@ -23,17 +23,18 @@ from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
 from bloatit.web.htmlrenderer.pagecontent.logincontent import LoginContent
 from bloatit.web.htmlrenderer.htmltools import HtmlTools
 from bloatit.web.htmlrenderer.pagecontent.myaccountcontent import MyAccountContent
+from bloatit.web.request import Request
 
 """TODO: prévoir une option de configuration pour générer un mode compact"""
 
-class HtmlPage:
+class Page(Request):
     
     def __init__(self, session, html_result):
         self.session = session
         self.html_result = html_result
         self.design = "/resources/css/design.css"
 
-    def generate_page(self, content):
+    def process(self, content):
         self.content = content
         self.html_result.write('<?xml version=\"1.0\" encoding=\"UTF-8\"?>')
         self.html_result.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">')
@@ -43,7 +44,6 @@ class HtmlPage:
         self.generate_body()
         self.html_result.unindent()
         self.html_result.write('</html>')
-
 
     def generate_head(self):
         self.html_result.write('<head>')

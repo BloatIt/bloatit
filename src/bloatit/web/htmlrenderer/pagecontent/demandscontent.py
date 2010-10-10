@@ -19,9 +19,9 @@
 
 from bloatit.web.htmlrenderer.elementrenderer.demandlistrenderer import DemandListRenderer
 from bloatit.framework.demandmanager import DemandManager
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
 
-class DemandsContent(PageContent):
+class DemandsContent(Page):
 
     def __init__(self, session, parameters={}):
         self.session = session

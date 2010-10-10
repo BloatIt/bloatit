@@ -17,9 +17,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
 
-class MyAccountContent(PageContent):
+class MyAccountContent(Page):
 
     def get_code(self):
         return "my_account"
@@ -33,6 +33,7 @@ class MyAccountContent(PageContent):
             return "My account - "+self.session.get_auth_token().get_member().get_login()
         else:
             return "My account - No account"
+    
     def generate_body(self, text):
         # @type text IndentedText
 

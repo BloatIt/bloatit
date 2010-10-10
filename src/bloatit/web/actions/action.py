@@ -19,8 +19,9 @@
 
 from bloatit.web.htmlrenderer.htmltools import HtmlTools
 from bloatit.web.htmlrenderer.pagecontent.indexcontent import IndexContent
+from bloatit.web.request import Request
 
-class Action:
+class Action(Request):
 
     def __init__(self, session, parameters={}):
         # @type session Session

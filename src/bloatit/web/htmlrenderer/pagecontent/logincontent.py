@@ -22,9 +22,9 @@ from bloatit.web.htmlrenderer.htmlcomponent.htmlbutton import HtmlButton
 from bloatit.web.htmlrenderer.htmlcomponent.htmlpasswordfield import HtmlPasswordField
 from bloatit.web.htmlrenderer.htmlcomponent.htmltextfield import HtmlTextField
 from bloatit.web.htmlrenderer.htmlcomponent.htmlform import HtmlForm
-from bloatit.web.htmlrenderer.pagecontent.pagecontent import PageContent
+from bloatit.web.htmlrenderer.pagecontent.pagecontent import Page
 
-class LoginContent(PageContent):
+class LoginContent(Page):
 
     def get_code(self):
         return "login"

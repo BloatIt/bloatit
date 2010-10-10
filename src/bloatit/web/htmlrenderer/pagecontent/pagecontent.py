@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from bloatit.web import request
 
 # Copyright (C) 2010 BloatIt.
 #
@@ -17,7 +18,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
-class PageContent:
+class Page(request):
+    def __init__(self, session, parameters={}):
+        self.session = session
+        self.parameters = parameters
 
     def get_code(self):
         pass
@@ -25,7 +29,7 @@ class PageContent:
     def get_title(self):
         pass
 
-    def generate_body(self, text):
+    def execute(self, text):
         pass
 
     
