@@ -41,8 +41,8 @@ class HtmlTools:
         # @type url_page PageContent
         return '/'+session.get_language().get_code()+'/'+url_page.get_code()
 
-
-    def cut_number(number):
+    @classmethod
+    def cut_number(cls,number):
         result = number
         if len(result) > 2:
                 if result[1] == ".":

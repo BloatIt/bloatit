@@ -18,8 +18,6 @@
 # along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
 
 from bloatit.htmlrenderer.pagecontent.demandcontent import DemandContent
-from bloatit.htmlrenderer.htmltools import HtmlTools
-from bloatit.model.demand import Demand
 from bloatit.htmlrenderer.htmlcomponent.htmlcomponent import HtmlComponent
 
 class DemandListRenderer(HtmlComponent):

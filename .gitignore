@@ -9,3 +9,4 @@ doc/bdd.pdf
 *.bak
 locales/*
 .LCK*~
+.settings

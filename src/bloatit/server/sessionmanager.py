@@ -33,7 +33,7 @@ class SessionManager:
     @classmethod
     def create_session(cls):
         new_session = Session()
-        d = "".join([random.choice(string.ascii_letters) for x in range(100)])
+        d = "".join([random.choice(string.ascii_letters) for _ in range(100)])
         cls.sha.update(d.encode())
 
         session_key = cls.sha.hexdigest()
