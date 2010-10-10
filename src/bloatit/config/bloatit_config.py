@@ -32,13 +32,13 @@ config = Config()
 config.set("version", APP_VERSION)
 config.set("app_name", APP_NAME)
 config.set("script", sys.path[0])
-config.set("root_path", sys.path[0]+'/../../../')
+config.set("root_path", sys.path[0]+'/../../../../')
 
 #path locale
 if os.path.exists(os.path.join(config.get("root_path"), 'locales')):
     config.set("localedir", os.path.join(config.get("root_path"), 'locales'))
 else:
-    print("ERROR : no locales path")
+    print("ERROR : no locales path: "+os.path.join(config.get("root_path"), 'locales'))
     
 
 #gettext
