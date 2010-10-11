@@ -19,6 +19,7 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.model.Member;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import java.util.Map;
@@ -34,10 +35,32 @@ public class MyAccountPage extends Page {
         super(session);
     }
 
-
     @Override
     protected void generateContent() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (this.session.getAuthToken() != null) {
+            Member member = this.session.getAuthToken().getMember();
+            this.htmlResult.write("<h2>" + member.getFullName() + "</h2>");
+            this.htmlResult.write("<p>Full name: " + member.getFullName() + "</p>");
+            this.htmlResult.write("<p>Login: " + member.getLogin() + "</p>");
+            this.htmlResult.write("<p>Email: " + member.getEmail() + "</p>");
+            this.htmlResult.write("<p>Karma: " + member.getKarma() + "</p>");
+        } else {
+            this.htmlResult.write("<h2>No account</h2>");
+        }
+    }
+
+    @Override
+    public String getCode() {
+        return "my_account";
+    }
+
+    @Override
+    protected String getTitle() {
+        if (this.session.getAuthToken() != null) {
+            return "My account - " + this.session.getAuthToken().getMember().getLogin();
+        } else {
+            return "My account - No account";
+        }
     }
 
 }
