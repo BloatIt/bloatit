@@ -19,14 +19,55 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.DemandManager;
+import com.bloatit.model.Demand;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class DemandsPage extends Page {
 
+    public DemandsPage(Session session, Map<String, String> parameters) {
+        super(session, parameters);
+    }
+
     public DemandsPage(Session session) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this(session, new HashMap<String, String>());
+    }
+
+    @Override
+    protected void generateContent() {
+        ArrayList<Demand> demands = DemandManager.GetAllDemands();
+        this.htmlResult.write("<div class='demand_table'>");
+        this.htmlResult.indent();
+        /*for (Demand demand : demands){
+            DemandPage demandView = new DemandPage(this.session, demand);
+            demand_view.generate_list_field(this.htmlResult);
+        }
+
+        this.htmlResult.unindent();
+        this.htmlResult.write('</div>');*/
+    }
+
+    public String getTitle(){
+        return "View all demands - search demands";
+    }
+
+    public String getCode(){
+        return "demands";
     }
 
 }
+
+/*
+
+    def generate_content(self):
+        # @type text IndentedText
+        demands = DemandManager.get_all_demands()
+        demands_renderer = DemandListRenderer(self.session, demands)
+
+        demands_renderer.generate(self.html_result)
+ */

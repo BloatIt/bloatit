@@ -21,12 +21,24 @@ package com.bloatit.web.pages;
 
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginPage extends Page {
 
     public LoginPage(Session session) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this(session, new HashMap<String, String>());
+    }
+
+    public LoginPage(Session session, Map<String, String> parameters) {
+        super(session, parameters);
+    }
+
+
+    @Override
+    protected void generateContent() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

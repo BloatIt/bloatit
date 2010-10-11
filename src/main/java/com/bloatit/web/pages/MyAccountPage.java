@@ -21,12 +21,23 @@ package com.bloatit.web.pages;
 
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import java.util.Map;
 
 
 public class MyAccountPage extends Page {
 
+    public MyAccountPage(Session session, Map<String, String> parameters) {
+        super(session, parameters);
+    }
+
     public MyAccountPage(Session session) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        super(session);
+    }
+
+
+    @Override
+    protected void generateContent() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

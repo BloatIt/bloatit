@@ -47,7 +47,7 @@ public class DemandManager {
      * 
      * @return
      */
-    public static List<Demand> GetAllDemands() {
+    public static ArrayList<Demand> GetAllDemands() {
         return demands;
     }
 

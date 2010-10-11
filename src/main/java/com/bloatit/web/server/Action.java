@@ -33,7 +33,7 @@ public abstract class Action extends Request{
 
     @Override
     protected void process() throws ElementNotFoundException{
-        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session,new IndexPage()));
+        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session,new IndexPage(this.session)));
     }
 
     public String getUrl(){

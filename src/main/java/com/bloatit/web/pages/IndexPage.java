@@ -33,12 +33,12 @@ public class IndexPage extends Page {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public IndexPage(Session session){
+    public IndexPage(Session session) {
         this(session, new HashMap<String, String>());
     }
 
-    public IndexPage() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    @Override
+    protected void generateContent() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

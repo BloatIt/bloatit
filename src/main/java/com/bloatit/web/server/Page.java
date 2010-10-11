@@ -24,6 +24,7 @@ import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MyAccountPage;
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Page extends Request {
@@ -33,6 +34,10 @@ public abstract class Page extends Request {
     public Page(Session session, Map<String, String> parameters) {
         super(session, parameters);
         this.design = "/resources/css/design.css";
+    }
+
+    public Page(Session session){
+        this(session, new HashMap<String, String>());
     }
 
     @Override
