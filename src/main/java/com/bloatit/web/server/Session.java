@@ -66,15 +66,11 @@ public class Session {
         return this.logged;
     }
 
-    public void setKey(String sb) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     public Object getKey() {
         return key;
     }
 
-    public void setKey(Object key) {
+    public void setKey(String key) {
         this.key = key;
     }
 

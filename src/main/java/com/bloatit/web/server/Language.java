@@ -18,15 +18,17 @@
  */
 package com.bloatit.web.server;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
 public class Language {
 
-    private static HashMap<String, String> languageCode = new HashMap<String, String>() {
+    private static Map<String, String> languageCode = new HashMap<String, String>() {
+
         {
             put("en", "en");
             put("en-us", "en");
@@ -34,19 +36,17 @@ public class Language {
             put("fr-fr", "fr");
         }
     };
+    private static Map<String, LanguageTemplate> languageList = new HashMap<String, LanguageTemplate>() {
 
-   
-    private static HashMap<String, LanguageTemplate> languageList = new HashMap<String, LanguageTemplate>() {
         {
             put("en", new LanguageTemplate("en", "English", java.util.Locale.ENGLISH));
             put("fr", new LanguageTemplate("fr", "Français", java.util.Locale.FRENCH));
-            
+
         }
     };
-
     private LanguageTemplate template;
 
-    public Language(){
+    public Language() {
         template = languageList.get("en");
     }
 
@@ -54,26 +54,34 @@ public class Language {
         return template.key;
     }
 
-    public void findPrefered(ArrayList<String> preferredLangs){
+    public void findPrefered(List<String> preferredLangs) {
         String code;
-        for ( String preferredLang : preferredLangs){
+        for (String preferredLang : preferredLangs) {
             String lang = preferredLang.split(";")[0];
-            if(Language.languageCode.containsKey(lang)){
+            if (Language.languageCode.containsKey(lang)) {
                 code = Language.languageCode.get(lang);
-                if(languageList.containsKey(code)) {
+                if (languageList.containsKey(code)) {
                     template = languageList.get(code);
                 } else {
-                    System.err.println("Unknow language"+code);
+                    System.err.println("Unknow language code" + code);
                 }
-            }else{
-                System.err.println("Unknow language code "+lang);
+            } else {
+                System.err.println("Unknow language" + lang);
                 // TODO: Clean log
             }
         }
     }
 
-    public String tr(String s){
+    public String tr(String s) {
         return template.i18n.tr(s);
+    }
+
+    void setCode(String code) {
+        if (languageList.containsKey(code)) {
+            template = languageList.get(code);
+        } else {
+            System.err.println("Unknow language code" + code);
+        }
     }
 
     /**
@@ -90,8 +98,7 @@ public class Language {
             this.label = label;
             this.key = key;
             i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);
-            
-        }
 
+        }
     }
 }

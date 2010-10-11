@@ -38,6 +38,11 @@ public abstract class Request {
         this.parameters = parameters;
     }
 
+    public void init(Session session,  Map<String, String> parameters){
+        this.session = session;
+        this.parameters = parameters;
+    }
+
     public void doProcess(HtmlResult htmlResult, Map<String, String> query, Map<String, String> post) {
         try {
             this.htmlResult = htmlResult;

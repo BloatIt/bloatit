@@ -27,6 +27,7 @@ import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MyAccountPage;
+import com.bloatit.web.pages.PageNotFound;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
@@ -35,30 +36,32 @@ import java.util.Map;
 
 public class DispatchServer {
 
-    static final Map<String, PageFactory> pageMap;
-    static final Map<String, ActionFactory> actionMap;
+    static final Map<String, RequestFactory> pageMap;
+    static final Map<String, RequestFactory> actionMap;
 
     static {
-        pageMap = new HashMap<String, PageFactory>() {
+        pageMap = new HashMap<String, RequestFactory>() {
             {
-                put("index", new PageFactory<IndexPage>());
-                put("login", new PageFactory<LoginPage>());
-                put("demands", new PageFactory<DemandsPage>());
-                put("demand", new PageFactory<DemandPage>());
-                put("my_account", new PageFactory<MyAccountPage>());
+                put("index", new RequestFactory<IndexPage>(IndexPage.class));
+                put("login", new RequestFactory<LoginPage>(LoginPage.class));
+                put("demands", new RequestFactory<DemandsPage>(DemandsPage.class));
+                put("demand", new RequestFactory<DemandPage>(DemandPage.class));
+                put("my_account", new RequestFactory<MyAccountPage>(MyAccountPage.class));
             }
     
         };
 
-        actionMap = new HashMap<String, ActionFactory>() {
+        actionMap = new HashMap<String, RequestFactory>() {
             {
-                put("login", new ActionFactory<LoginAction>());
-                put("logout", new ActionFactory<LogoutAction>());
+                put("login", new RequestFactory<LoginAction>(LoginAction.class));
+                put("logout", new RequestFactory<LogoutAction>(LogoutAction.class));
                
             }
 
         };
     }
+
+
 
 
     private Map<String, String> query;
@@ -89,84 +92,6 @@ public class DispatchServer {
         return htmlResult.generate();
     }
 
-    
-        
-
-    /*def find_action(self):
-        if "page" in self.query:
-            page,parameters = self._parse_query_string(self.query['page'][0])
-            if page.startswith("action/") and page[7:] in self.action_map:
-                return self.action_map[page[7:]](self.session, parameters=parameters)
-        return None
-
-    def find_page(self):
-        if "page" in self.query:
-            page,parameters = self._parse_query_string(self.query['page'][0])
-            if page in self.page_map:
-                return self.page_map[page](self.session, parameters=parameters)
-
-        return PageNotFoundContent(self.session)
-
-    def _parse_query_string(self, query):
-        """
-Parse the query string to find page name and all parameters
-
-Parameter format must be :
-/name-value
-will return a tuple with page name first and a map with all parameters
-second. Parameter map is formatted {name : value, ... }
-Ignore multiple /
-"""
-
-        # @type query string
-        splitted = (query.strip('/')).split('/')
-        page = ''
-        param_list = {}
-        i = 0
-
-        # Parsing, finding        page name  page name
-        while i < len(splitted) and not('-' in splitted[i]):
-            if page != '' and splitted[i] != '':
-                page = page + '/'
-            page = page + splitted[i]
-            i = i+1
-
-        # Parsing, finding page parameters
-        while i < len(splitted):
-            if '-' in splitted[i]:
-                p = splitted[i].split('-')
-                param_list[p[0]] = p[1]
-            i = i+1
-
-        return page,param_list
-
-
-    def init_current_request(self):
-        request = self.find_action()
-        if request == None:
-            request = self.find_page()
-
-        return request
-
-
-    def init_session(self):
-        self.session = None
-        if "session_key" in self.cookies:
-            self.session = SessionManager.get_by_key(self.cookies["session_key"])
-
-        if self.session is None:
-            self.session = SessionManager.create_session()
-
-    def init_language(self):
-        language = Language()
-        if "lang" in self.query:
-            if self.query["lang"][0] == "default":
-                language.find_preferred(self.preferred_langs)
-            else:
-                language.set_by_code(self.query["lang"][0])
-
-        self.session.set_language(language)
-*/
     private void initSession() throws NoSuchAlgorithmException {
         session = null;
         if(cookies.containsKey("session_key")) {
@@ -179,10 +104,127 @@ Ignore multiple /
     }
 
     private void initLanguage() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Language language = new Language();
+        if(query.containsKey("lang")) {
+            if(query.get("lang").equals("default")) {
+                language.findPrefered(preferred_langs);
+            } else {
+                language.setCode(query.get("lang"));
+            }
+        }
+
+        session.setLanguage(language);
     }
 
     private Request initCurrentRequest() {
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        Request request = findAction();
+
+        if(request == null) {
+            request = findPage();
+        }
+
+        return request;
     }
+
+    private Request findAction() {
+
+        if(query.containsKey("page")) {
+            QueryString queryString = parseQueryString(query.get("page"));
+            if(queryString.page.startsWith("action/") && actionMap.containsKey(queryString.page.substring(7))) {
+                return actionMap.get(queryString.page.substring(7)).build(session, queryString.parameters);
+            }
+        }
+        return null;
+    }
+
+    private Request findPage() {
+
+        if(query.containsKey("page")) {
+            QueryString queryString = parseQueryString(query.get("page"));
+            if(pageMap.containsKey(queryString.page)) {
+                return pageMap.get(queryString.page).build(session, queryString.parameters);
+            }
+        }
+
+        return new PageNotFound(session);
+    }
+
+    private QueryString parseQueryString(String queryString) {
+        String[] splitted = strip(queryString, '/').split("/");
+
+        String page = "";
+        Map<String, String> parameters = new HashMap<String, String>();
+
+        int i = 0;
+
+         
+        
+        // Parsing, finding        page name  page name
+        while( i < splitted.length && !splitted[i].contains("-")) {
+            if(page.isEmpty() && !splitted[i].isEmpty()) {
+                page = page + "/";
+            }
+            page = page + splitted[i];
+            i = i+1;
+        }
+
+        // Parsing, finding page parameters
+        while (i < splitted.length){
+            if (splitted[i].contains("-")) {
+                String[] p = splitted[i].split("-");
+                parameters.put(p[0],p[1]);
+            }
+            i = i+1;
+        }
+
+        return new QueryString(page, parameters);
+
+    }
+
+    private static class QueryString {
+        public String page;
+        public Map<String, String> parameters;
+
+        public QueryString() {
+
+        }
+
+        private QueryString(String page, Map<String, String> parameters) {
+            this.page = page;
+            this.parameters = parameters;
+        }
+    }
+
+    private static String strip(String string, char stripped) {
+        String result1 = "";
+
+        int i = 0;
+
+        while(string.charAt(i) == stripped) {
+            i++;
+        }
+
+        for (i = 0; i < string.length(); i++) {
+            result1 += string.charAt(i);
+        }
+
+        i =  result1.length() -1;
+
+
+        String result2 = "";
+
+        while(string.charAt(i) == stripped) {
+            i--;
+        }
+
+        for (i = 0; i >= 0; i--) {
+            result2 = result1.charAt(i) + result2;
+        }
+        
+
+        return result2;
+    }
+
+
 }

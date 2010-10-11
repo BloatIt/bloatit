@@ -29,9 +29,7 @@ import java.util.Map;
 public class IndexPage extends Page {
 
     public IndexPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-        // FIXME
-        throw new UnsupportedOperationException("Not yet implemented");
+        super(session, parameters);        
     }
 
     public IndexPage(Session session) {

@@ -16,13 +16,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
+package com.bloatit.web.pages;
 
-package com.bloatit.web.server;
+import com.bloatit.web.server.Page;
+import com.bloatit.web.server.Session;
+import java.util.Map;
 
+public class PageNotFound extends Page {
 
-class PageFactory<T> {
-
-    public PageFactory() {
+    
+    public PageNotFound(Session session, Map<String, String> parameters) {
+        super(session, parameters);
     }
 
+    public PageNotFound(Session session) {
+        super(session);
+    }
+
+    @Override
+    protected void generateContent() {
+        this.htmlResult.write("<h2>"+this.session.tr("Page not found")+"</h2>");
+        
+    }
+
+    @Override
+    public String getCode() {
+        return "pagenotfound";
+    }
+
+    @Override
+    protected String getTitle() {
+        return "Page not found";
+    }
 }
