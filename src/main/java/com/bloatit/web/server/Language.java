@@ -20,6 +20,9 @@ package com.bloatit.web.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
+import org.xnap.commons.i18n.I18n;
+import org.xnap.commons.i18n.I18nFactory;
 
 public class Language {
 
@@ -32,38 +35,36 @@ public class Language {
         }
     };
 
-    private static HashMap<String, LanguageCode> LanguageList = new HashMap<String, LanguageCode>() {
+   
+    private static HashMap<String, LanguageTemplate> languageList = new HashMap<String, LanguageTemplate>() {
         {
-            put("en", new LanguageCode("en_US.utf8", true, "English", "en"));
-            put("fr", new LanguageCode("fr_FR.utf8", true, "Français", "fr"));
-            put("fr-fr", new LanguageCode("fr_FR.utf8", false, "fr"));
-            put("fr-be", new LanguageCode("fr_FR.utf8", false, "fr"));
-            put("fr-ca", new LanguageCode("fr_FR.utf8", false, "fr"));
-            put("fr-lu", new LanguageCode("fr_FR.utf8", false, "fr"));
-            put("fr-ch", new LanguageCode("fr_FR.utf8", false, "fr"));
+            put("en", new LanguageTemplate("en", "English", java.util.Locale.ENGLISH));
+            put("fr", new LanguageTemplate("fr", "Français", java.util.Locale.FRENCH));
+            
         }
     };
 
-    private String code;
+    private LanguageTemplate template;
 
     public Language(){
-        this.code = "en";
+        template = languageList.get("en");
     }
 
     public String getCode() {
-        return code;
+        return template.key;
     }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
 
     public void findPrefered(ArrayList<String> preferredLangs){
+        String code;
         for ( String preferredLang : preferredLangs){
             String lang = preferredLang.split(";")[0];
             if(Language.languageCode.containsKey(lang)){
-                this.code = Language.languageCode.get(lang);
+                code = Language.languageCode.get(lang);
+                if(languageList.containsKey(code)) {
+                    template = languageList.get(code);
+                } else {
+                    System.err.println("Unknow language"+code);
+                }
             }else{
                 System.err.println("Unknow language code "+lang);
                 // TODO: Clean log
@@ -71,33 +72,26 @@ public class Language {
         }
     }
 
-    public String getText(String s){
-        // TODO: everything
-        //lang = gettext.translation(config.get("gettext_package"), config.get("localedir"), languages=[self.code], codeset="UTF-8")
-        //return lang.gettext
-        throw new UnsupportedOperationException("Not yet implemented");
+    public String tr(String s){
+        return template.i18n.tr(s);
     }
 
     /**
      * Nested class to handle different languages
      * [Equivalent to using a struct]
      */
-    private static class LanguageCode {
+    private static class LanguageTemplate {
 
-        public String key;
-        public boolean choosable;
-        public String label;
-        public String ref;
+        final public String key;
+        final public String label;
+        final public I18n i18n;
 
-        public LanguageCode(String key, boolean choosable, String ref) {
-            this.key = key;
-            this.choosable = choosable;
-            this.ref = ref;
-        }
-
-        public LanguageCode(String key, boolean choosable, String label, String ref) {
-            this(key, choosable, ref);
+        private LanguageTemplate(String key, String label, Locale locale) {
             this.label = label;
+            this.key = key;
+            i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);
+            
         }
+
     }
 }

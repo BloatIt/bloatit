@@ -97,11 +97,11 @@ public abstract class Page extends Request {
             String full_name = this.session.getAuthToken().getMember().getFullName();
             int karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
             String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma + "</span>";
-            String logoutLink = HtmlTools.generateActionLink(this.session, this.session._("Logout"), new LogoutAction(this.session));
+            String logoutLink = HtmlTools.generateActionLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));
             this.htmlResult.write("<span class=\"top_bar_component\">" + memberLink + "</span><span class=\"top_bar_component\">" + logoutLink + "</span>");
 
         } else {
-            this.htmlResult.write("<span class=\"top_bar_component\">" + HtmlTools.generateLink(this.session, this.session._("Login / Signup"), new LoginPage(this.session)) + "</span>");
+            this.htmlResult.write("<span class=\"top_bar_component\">" + HtmlTools.generateLink(this.session, this.session.tr("Login / Signup"), new LoginPage(this.session)) + "</span>");
             this.htmlResult.unindent();
             this.htmlResult.write("</div>");
         }
@@ -112,18 +112,18 @@ public abstract class Page extends Request {
         this.htmlResult.indent();
         this.htmlResult.write("<ul>");
         this.htmlResult.indent();
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Demands"), new DemandsPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Projects"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Groups"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Members"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Demands"), new DemandsPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Projects"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Groups"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Members"), new IndexPage(this.session)) + "</li>");
         this.htmlResult.unindent();
         this.htmlResult.write("</ul>");
         this.htmlResult.write("<ul>");
         this.htmlResult.indent();
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Contact"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Documentation"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("About BloatIt"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Press"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Contact"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Documentation"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("About BloatIt"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Press"), new IndexPage(this.session)) + "</li>");
         this.htmlResult.unindent();
         this.htmlResult.write("</ul>");
         this.htmlResult.unindent();
@@ -137,7 +137,7 @@ public abstract class Page extends Request {
     private void generateFooter() {
         this.htmlResult.write("<div id='footer'>");
         this.htmlResult.indent();
-        this.htmlResult.write(this.session._("This website is under GNU Affero Public Licence."));
+        this.htmlResult.write(this.session.tr("This website is under GNU Affero Public Licence."));
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
     }

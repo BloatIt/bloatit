@@ -15,3 +15,4 @@ nbactions.xml
 .classpath
 bin/
 po/*~
+po/*.mo

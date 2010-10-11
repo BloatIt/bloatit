@@ -52,14 +52,14 @@ public class LoginPage extends Page {
         LoginAction logAction = new LoginAction(this.session);
 
         loginForm.setAction(logAction);
-        submitButton.setLabel(this.session._("Login"));
+        submitButton.setLabel(this.session.tr("Login"));
         loginField.setName(logAction.getLoginCode());
         passwordField.setName(logAction.getPasswordCode());
 
 
-        this.htmlResult.write("<h2>"+this.session._("Login")+"</h2>");
+        this.htmlResult.write("<h2>"+this.session.tr("Login")+"</h2>");
         loginForm.generate(this.htmlResult);
-        this.htmlResult.write("<h2>"+this.session._("Sigup")+"</h2>");
+        this.htmlResult.write("<h2>"+this.session.tr("Sigup")+"</h2>");
         this.htmlResult.write("<p>Not yet implemented.</p>");
     }
 

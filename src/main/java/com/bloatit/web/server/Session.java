@@ -38,8 +38,8 @@ public class Session {
         this.logged = false;
         this.actionList = new ArrayDeque<Action>();
     }
-    public String _(String s){
-        return this.language.getText(s);
+    public String tr(String s){
+        return this.language.tr(s);
     }
 
     public Language getLanguage() {

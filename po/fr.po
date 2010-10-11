@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-11 22:02+0200\n"
-"PO-Revision-Date: 2010-10-11 21:01+0100\n"
+"POT-Creation-Date: 2010-10-11 22:30+0200\n"
+"PO-Revision-Date: 2010-10-11 22:31+0100\n"
 "Last-Translator: Frédéric Bertolus <fred.bertolus@gmail.com>\n"
 "Language-Team: French\n"
 "Language: \n"
@@ -17,6 +17,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: com/bloatit/web/server/Page.java:100
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: com/bloatit/web/server/Page.java:104
+msgid "Login / Signup"
+msgstr "Se connecter / S'inscrire"
+
+#: com/bloatit/web/server/Page.java:115
+msgid "Demands"
+msgstr "Demandes"
+
+#: com/bloatit/web/server/Page.java:116
+msgid "Projects"
+msgstr "Projets"
+
+#: com/bloatit/web/server/Page.java:117
+msgid "Groups"
+msgstr "Groupes"
+
+#: com/bloatit/web/server/Page.java:118
+msgid "Members"
+msgstr "Membres"
+
+#: com/bloatit/web/server/Page.java:123
+msgid "Contact"
+msgstr "Contact"
+
+#: com/bloatit/web/server/Page.java:124
+msgid "Documentation"
+msgstr "Documentation"
+
+#: com/bloatit/web/server/Page.java:125
+msgid "About BloatIt"
+msgstr "À propos de BloatIt"
+
+#: com/bloatit/web/server/Page.java:126
+msgid "Press"
+msgstr "Presse"
+
+#: com/bloatit/web/server/Page.java:140
+msgid "This website is under GNU Affero Public Licence."
+msgstr "Ce site internet est sous la GNU Affero Public licence"
 
 #: com/bloatit/web/scgiserver/SCGIServer.java:56
 msgid "This text will be translated"
@@ -26,38 +70,12 @@ msgstr "Ce test sera traduit"
 msgid "This one also"
 msgstr "Celui là aussi"
 
-#~ msgid "Login / Signup"
-#~ msgstr "Se connecter / S'inscrire"
+#: com/bloatit/web/pages/LoginPage.java:55
+#: com/bloatit/web/pages/LoginPage.java:60
+msgid "Login"
+msgstr "Se connecter"
 
-#~ msgid "Demands"
-#~ msgstr "Demandes"
+#: com/bloatit/web/pages/LoginPage.java:62
+msgid "Sigup"
+msgstr "S'inscrire"
 
-#~ msgid "Projects"
-#~ msgstr "Projets"
-
-#~ msgid "Groups"
-#~ msgstr "Groupes"
-
-#~ msgid "Members"
-#~ msgstr "Membres"
-
-#~ msgid "Contact"
-#~ msgstr "Contact"
-
-#~ msgid "Documentation"
-#~ msgstr "Documentation"
-
-#~ msgid "About BloatIt"
-#~ msgstr "À propos de BloatIt"
-
-#~ msgid "Press"
-#~ msgstr "Presse"
-
-#~ msgid "This website is under GNU Affero Public Licence."
-#~ msgstr "Ce site internet est sous la GNU Affero Public licence"
-
-#~ msgid "Login"
-#~ msgstr "Se connecter"
-
-#~ msgid "Sigup"
-#~ msgstr "S'inscrire"
