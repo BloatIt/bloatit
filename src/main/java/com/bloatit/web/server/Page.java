@@ -16,10 +16,139 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.server;
 
+import com.bloatit.web.actions.LogoutAction;
+import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.pages.DemandsPage;
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.pages.LoginPage;
+import com.bloatit.web.pages.MyAccountPage;
+import java.util.Map;
 
-public class Page {
+public abstract class Page extends Request {
 
+    private final String design;
+
+    public Page(Session session, Map<String, String> parameters) {
+        super(session, parameters);
+        this.design = "/resources/css/design.css";
+    }
+
+    @Override
+    protected void process() {
+        this.htmlResult.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        this.htmlResult.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+        this.htmlResult.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+        this.htmlResult.indent();
+        this.generate_head();
+        this.generate_body();
+        this.htmlResult.unindent();
+        this.htmlResult.write("</html>");
+    }
+
+    @Override
+    protected String getCode() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private void generate_head() {
+        this.htmlResult.write("<head>");
+        this.htmlResult.indent();
+        this.htmlResult.write("<metahttp-equiv=\"content-type\" content=\"text/html;charset=utf-8\"/>");
+        this.htmlResult.write("<link rel=\"stylesheet\" href=" + this.design + " type=\"text/css\" media=\"handheld, all\" />");
+
+        this.htmlResult.write("<title>BloatIt - " + this.getTitle() + "</title>");
+        this.htmlResult.unindent();
+        this.htmlResult.write("</head>");
+    }
+
+    protected void generate_body() {
+        this.htmlResult.write("<body>");
+        this.htmlResult.indent();
+        this.htmlResult.write("<div id=\"page\">");
+        this.htmlResult.indent();
+        this.generateTopBar();
+        this.generateTitle();
+        this.htmlResult.write("<div id=\"center\">");
+        this.htmlResult.indent();
+        this.generateMainMenu();
+
+        this.htmlResult.write("<div id=\"body_content\">");
+        this.htmlResult.indent();
+
+        this.generateContent();
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+
+        this.generateFooter();
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+        this.htmlResult.unindent();
+        this.htmlResult.write("</body>");
+    }
+
+    private String getTitle() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void generateTopBar() {
+        this.htmlResult.write("<div id=\"top_bar\">");
+        this.htmlResult.indent();
+        if (this.session.isLogged()) {
+            String full_name = this.session.getAuthToken().getMember().getFullName();
+            int karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
+            String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma + "</span>";
+            String logoutLink = HtmlTools.generateActionLink(this.session, this.session._("Logout"), new LogoutAction(this.session));
+            this.htmlResult.write("<span class=\"top_bar_component\">" + memberLink + "</span><span class=\"top_bar_component\">" + logoutLink + "</span>");
+
+        } else {
+            this.htmlResult.write("<span class=\"top_bar_component\">" + HtmlTools.generateLink(this.session, this.session._("Login / Signup"), new LoginPage(this.session)) + "</span>");
+            this.htmlResult.unindent();
+            this.htmlResult.write("</div>");
+        }
+    }
+
+    private void generateMainMenu() {
+        this.htmlResult.write("<div id='main_menu'>");
+        this.htmlResult.indent();
+        this.htmlResult.write("<ul>");
+        this.htmlResult.indent();
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Demands"), new DemandsPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Projects"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Groups"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Members"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.unindent();
+        this.htmlResult.write("</ul>");
+        this.htmlResult.write("<ul>");
+        this.htmlResult.indent();
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Contact"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Documentation"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("About BloatIt"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session._("Press"), new IndexPage(this.session)) + "</li>");
+        this.htmlResult.unindent();
+        this.htmlResult.write("</ul>");
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+    }
+
+    private void generateTitle() {
+        this.htmlResult.write("<h1>" + HtmlTools.generateLink(this.session, this.generateLogo(), new IndexPage(this.session)) + "</h1>");
+    }
+
+    private void generateFooter() {
+        this.htmlResult.write("<div id='footer'>");
+        this.htmlResult.indent();
+        this.htmlResult.write(this.session._("This website is under GNU Affero Public Licence."));
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+    }
+
+    protected abstract void generateContent();
+
+    protected String generateLogo() {
+        return "<span class=\"logo_bloatit\"><span class=\"logo_bloatit_bloat\">Bloat</span><span class=\"logo_bloatit_it\">It</span></span>";
+    }
 }

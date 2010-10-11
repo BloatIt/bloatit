@@ -32,4 +32,20 @@ public class HtmlResult {
         return "ContentType : text/html \r\n\r\nHello BloatIt !";
     }
 
+    public void write(String string) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void indent() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void unindent() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void setRedirect(String generateUrl) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
 }

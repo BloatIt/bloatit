@@ -19,7 +19,25 @@
 
 package com.bloatit.web.server;
 
+import com.bloatit.model.exceptions.ElementNotFoundException;
+import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.pages.IndexPage;
+import java.util.Map;
 
-public class Action {
+
+public abstract class Action extends Request{
+
+    public Action(Session session, Map<String, String> parameters) {
+        super(session, parameters);
+    }
+
+    @Override
+    protected void process() throws ElementNotFoundException{
+        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session,new IndexPage()));
+    }
+
+    public String getUrl(){
+        return "/"+this.session.getLanguage().getCode()+"/action/"+this.getCode();
+    }
 
 }

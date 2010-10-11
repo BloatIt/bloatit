@@ -19,7 +19,33 @@
 
 package com.bloatit.web.server;
 
+import com.bloatit.framework.AuthToken;
+
 
 public class Session {
+
+    boolean isLogged() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    AuthToken getAuthToken() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public String _(String s){
+        return "";
+    }
+
+    Language getLanguage() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void setAuthToken(AuthToken token) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void setLogged(boolean b) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
 }

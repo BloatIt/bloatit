@@ -19,9 +19,34 @@
 
 package com.bloatit.web.actions;
 
+import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.server.Action;
+import com.bloatit.web.server.Session;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LogoutAction extends Action {
 
+    public LogoutAction(Session session, Map<String, String> parameters) {
+        super(session, parameters);
+    }
+
+    public  LogoutAction(Session session){
+        this(session, new HashMap<String, String>());
+    }
+
+    @Override
+    public String getCode() {
+         return "logout";
+    }
+
+    @Override
+    protected void process(){
+        this.session.setLogged(false);
+        this.session.setAuthToken(null);
+
+        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session,new IndexPage(this.session)));
+    }
 }

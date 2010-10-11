@@ -20,8 +20,13 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.web.server.Page;
+import com.bloatit.web.server.Session;
 
 
 public class LoginPage extends Page {
+
+    public LoginPage(Session session) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
 }

@@ -19,14 +19,39 @@
 
 package com.bloatit.web.server;
 
+import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
-class Request {
+public abstract class Request {
+    protected HtmlResult htmlResult;
+    protected Map<String, String> query;
+    protected Map<String, String> post;
+    protected Map<String, String> parameters;
+    protected Session session;
 
-    void doProcess(HtmlResult htmlResult, Map<String, String> query, Map<String, String> post) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    protected Request(Session session,  Map<String, String> parameters){
+        this.session = session;
+        this.parameters = parameters;
     }
 
+    public void doProcess(HtmlResult htmlResult, Map<String, String> query, Map<String, String> post) {
+        try {
+            this.htmlResult = htmlResult;
+            this.query = query;
+            this.post = post;
+            this.process();
+        } catch (ElementNotFoundException ex) {
+            //TODO
+            Logger.getLogger(Request.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+    }
+
+    abstract protected String getCode();
+
+    abstract protected void process() throws ElementNotFoundException;
 }

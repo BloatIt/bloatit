@@ -17,27 +17,28 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.pages;
+package com.bloatit.web.htmlrenderer;
 
+import com.bloatit.web.actions.LogoutAction;
+import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
-import java.util.HashMap;
-import java.util.Map;
 
+public class HtmlTools {
 
-public class IndexPage extends Page {
-
-    public IndexPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-        // FIXME
+    public static String generateLink(Session session, String generateLogo, Page page) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public IndexPage(Session session){
-        this(session, new HashMap<String, String>());
+    public static int compressKarma(int karma) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public IndexPage() {
+    public static String generateActionLink(Session session, String text, Action action) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public static String generateUrl(Session session, Page page){
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
