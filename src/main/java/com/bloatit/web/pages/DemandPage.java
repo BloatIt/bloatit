@@ -16,12 +16,84 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.DemandManager;
+import com.bloatit.model.Demand;
+import com.bloatit.model.exceptions.ElementNotFoundException;
+import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Page;
-
+import com.bloatit.web.server.Session;
+import java.util.Map;
 
 public class DemandPage extends Page {
 
+    private final Demand demand;
+
+    public DemandPage(Session session, Map<String, String> parameters) {
+        this(session, parameters, null);
+    }
+
+    public DemandPage(Session session, Map<String, String> parameters, Demand demand) {
+        super(session, parameters);
+        Demand d = null;
+
+        if (demand == null) {
+            if (parameters.containsKey("id")) {
+                Integer id = Integer.getInteger(parameters.get("id"));
+                if (id != null) {
+                    try {
+                        d = DemandManager.GetDemandById(id);
+                    } catch (ElementNotFoundException ex) {
+                    }
+                }
+            }
+        } else {
+            d = demand;
+        }
+        this.demand = d;
+    }
+
+    @Override
+    protected void generateContent() {
+        if (this.demand == null) {
+            this.generateEmptyBody();
+        } else {
+            this.generateNotEmptyBody();
+        }
+    }
+
+    private void generateEmptyBody() {
+        this.htmlResult.write("Error : Specified demand Id incorrect");
+    }
+
+    private void generateNotEmptyBody() {
+        this.htmlResult.write("<div class=\"demand\">");
+        this.htmlResult.indent();
+        this.htmlResult.write("<p>Demand id : "+ this.demand.getId() + "</p>" );
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+    }
+
+    public void generateListField(){
+        this.htmlResult.write("<div class=\"demand_entry\">");
+        this.htmlResult.indent();
+        this.htmlResult.write("<p class=\"demand_title\">"+ HtmlTools.generateLink(this.session, this.demand.getTitle() , this) +"</p>");
+        this.htmlResult.write("<p class=\"demand_description\">"+ this.demand.getDescription()+"</p>");
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+    }
+
+    @Override
+    public String getCode() {
+        if (this.demand != null) {
+            return "demand/id-" + this.demand.getId() + "/title-" + HtmlTools.escapeUrlString(this.demand.getTitle());
+        } else {
+            return "demand"; // TODO Faire un système pour afficher une page d'erreur
+        }
+    }
+
+    public String getTitle(){
+        return "Demand ...";
+    }
 }
