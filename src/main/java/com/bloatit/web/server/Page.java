@@ -48,7 +48,7 @@ public abstract class Page extends Request {
     }
 
     @Override
-    protected String getCode() {
+    public String getCode() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

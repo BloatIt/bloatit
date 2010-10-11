@@ -19,33 +19,42 @@
 
 package com.bloatit.web.htmlrenderer;
 
+import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
 
 
-public class HtmlResult {
+public class HtmlResult extends IndentedText{
+    private Session session;
+    private Request redirect;
 
     public HtmlResult(Session session) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        super();
+        this.session = session;
+        this.redirect = null;
+    }
+
+    public void setRedirect(Request redirect) {
+        this.redirect = redirect;
     }
 
     public String generate() {
-        return "ContentType : text/html \r\n\r\nHello BloatIt !";
-    }
+        String result;
 
-    public void write(String string) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+        result = "Set-Cookie: session_key="+this.session.getKey()+"; path=/; Max-Age=1296000; Version=1 \r\n";
+        
+        if (this.redirect != null ){
+            result += "Location: "+this.redirect+"\r\n";
+        }
 
-    public void indent() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+        String text = this.getText();
 
-    public void unindent() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+        if(text.length() > 0){
+            result += "Content-Type: text/html\r\n";
+        }
 
-    public void setRedirect(String generateUrl) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+        result += "\r\n";
+        result += text;
 
+        return result;
+    }
 }

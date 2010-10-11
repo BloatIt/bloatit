@@ -51,7 +51,7 @@ public abstract class Request {
         }
     }
 
-    abstract protected String getCode();
+    abstract public String getCode();
 
     abstract protected void process() throws ElementNotFoundException;
 }
