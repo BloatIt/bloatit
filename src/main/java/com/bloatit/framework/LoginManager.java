@@ -60,7 +60,7 @@ public class LoginManager {
 
     public static AuthToken getByKey(String key) {
         return new AuthToken(null, key);
-        // TODO : tralala
+        // TODO : everything
         /*
         if key in cls.auth_token_list:
         return cls.auth_token_list[key]

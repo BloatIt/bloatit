@@ -30,6 +30,7 @@ public class Session {
     private ArrayDeque<Action> actionList;
     private Language language;
     private Page lastStablePage;
+    private AuthToken authToken;
 
     public Session(){
         this.auth_token = null;
@@ -37,11 +38,6 @@ public class Session {
         this.logged = false;
         this.actionList = new ArrayDeque<Action>();
     }
-
-    AuthToken getAuthToken() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     public String _(String s){
         return this.language.getText(s);
     }
@@ -55,11 +51,11 @@ public class Session {
     }
 
     public void setAuthToken(AuthToken token) {
-        this.auth_token = token;
+        this.authToken = token;
     }
 
-    public Object getAuth_token() {
-        return auth_token;
+    public AuthToken getAuthToken() {
+        return this.authToken;
     }
 
     public void setLogged(boolean logged) {

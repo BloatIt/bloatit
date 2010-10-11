@@ -19,6 +19,7 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
@@ -39,6 +40,18 @@ public class IndexPage extends Page {
 
     @Override
     protected void generateContent() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.htmlResult.write("<h2>Welcome in "+HtmlTools.generateLogo()+" website</h2>");
+        this.htmlResult.write(HtmlTools.generateLogo()+" is a wonderful website !");
+        this.htmlResult.write(" is a wonderful website !");
+    }
+
+    @Override
+    public String getCode() {
+        return "index";
+    }
+
+    @Override
+    protected String getTitle() {
+        return "Finance free software";
     }
 }
