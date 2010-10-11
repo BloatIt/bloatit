@@ -25,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -74,8 +75,12 @@ public class SCGIServer {
 
 
                 DispatchServer dispatchServer = new DispatchServer(query, post, cookies, preferredLangs);
-
-                clientSocket.getOutputStream().write(dispatchServer.process().getBytes());
+                
+                try {
+                    clientSocket.getOutputStream().write(dispatchServer.process().getBytes());
+                } catch (NoSuchAlgorithmException ex) {
+                    ex.printStackTrace();
+                }
 
                 clientSocket.close();
             }

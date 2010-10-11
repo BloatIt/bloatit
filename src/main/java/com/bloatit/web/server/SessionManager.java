@@ -16,18 +16,40 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.server;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 class SessionManager {
 
-    static Session getByKey(String get) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private static HashMap<String, Session> activeSessions = new HashMap<String, Session>();
+
+    public static Session createSession() throws NoSuchAlgorithmException {
+        // TODO handle exception in there ?
+        Session session = new Session();
+        String d = "abcd";
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(d.getBytes());
+        byte byteData[] = md.digest();
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        
+        String key = sb.toString();
+        session.setKey(key);
+        activeSessions.put(key, session);
+        return session;
     }
 
-    static Session createSession() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public static Session getByKey(String key) {
+        if (activeSessions.containsKey(key)) {
+            return activeSessions.get(key);
+        } else {
+            return null;
+        }
     }
-
 }

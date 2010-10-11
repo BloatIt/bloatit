@@ -71,7 +71,7 @@ public class Language {
         }
     }
 
-    public void getText(){
+    public String getText(String s){
         // TODO: everything
         //lang = gettext.translation(config.get("gettext_package"), config.get("localedir"), languages=[self.code], codeset="UTF-8")
         //return lang.gettext
@@ -80,6 +80,7 @@ public class Language {
 
     /**
      * Nested class to handle different languages
+     * [Equivalent to using a struct]
      */
     private static class LanguageCode {
 

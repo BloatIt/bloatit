@@ -20,12 +20,22 @@
 package com.bloatit.web.server;
 
 import com.bloatit.framework.AuthToken;
+import java.util.ArrayDeque;
 
 
 public class Session {
+    private Object auth_token;
+    private Object key;
+    private boolean logged;
+    private ArrayDeque<Action> actionList;
+    private Language language;
+    private Page lastStablePage;
 
-    boolean isLogged() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public Session(){
+        this.auth_token = null;
+        this.key = null;
+        this.logged = false;
+        this.actionList = new ArrayDeque<Action>();
     }
 
     AuthToken getAuthToken() {
@@ -33,19 +43,54 @@ public class Session {
     }
 
     public String _(String s){
-        return "";
+        return this.language.getText(s);
     }
 
-    Language getLanguage() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public Language getLanguage() {
+        return this.language;
+    }
+
+    public void setLanguage(Language newLang){
+        this.language = newLang;
     }
 
     public void setAuthToken(AuthToken token) {
+        this.auth_token = token;
+    }
+
+    public Object getAuth_token() {
+        return auth_token;
+    }
+
+    public void setLogged(boolean logged) {
+        this.logged = logged;
+    }
+
+    public boolean isLogged() {
+        return this.logged;
+    }
+
+    public void setKey(String sb) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public void setLogged(boolean b) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public Object getKey() {
+        return key;
     }
 
+    public void setKey(Object key) {
+        this.key = key;
+    }
+
+    public ArrayDeque<Action> getActionList() {
+        return actionList;
+    }
+
+    public void setLastStablePage(Page p){
+        this.lastStablePage = p;
+    }
+
+    public Page getLastStablePage() {
+        return lastStablePage;
+    }
 }

@@ -27,6 +27,7 @@ import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MyAccountPage;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +74,7 @@ public class DispatchServer {
         this.preferred_langs = preferred_langs;
     }
 
-    public String process() {
+    public String process() throws NoSuchAlgorithmException {
         initSession();
         initLanguage();
 
@@ -166,7 +167,7 @@ Ignore multiple /
 
         self.session.set_language(language)
 */
-    private void initSession() {
+    private void initSession() throws NoSuchAlgorithmException {
         session = null;
         if(cookies.containsKey("session_key")) {
             session = SessionManager.getByKey(cookies.get("session_key"));
