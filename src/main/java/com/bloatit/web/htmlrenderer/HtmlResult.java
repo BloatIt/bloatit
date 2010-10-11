@@ -25,7 +25,7 @@ import com.bloatit.web.server.Session;
 
 public class HtmlResult extends IndentedText{
     private Session session;
-    private Request redirect;
+    private String redirect;
 
     public HtmlResult(Session session) {
         super();
@@ -33,7 +33,7 @@ public class HtmlResult extends IndentedText{
         this.redirect = null;
     }
 
-    public void setRedirect(Request redirect) {
+    public void setRedirect(String redirect) {
         this.redirect = redirect;
     }
 
