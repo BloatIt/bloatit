@@ -58,19 +58,4 @@ public class DemandsPage extends Page {
     public String getCode(){
         return "demands";
     }
-<<<<<<< HEAD
-
 }
-
-/*
-
-    def generate_content(self):
-        # @type text IndentedText
-        demands = DemandManager.get_all_demands()
-        demands_renderer = DemandListRenderer(self.session, demands)
-
-        demands_renderer.generate(self.html_result)
- */
-=======
-}
->>>>>>> 2bba828d6701e74ce3d470ef0af00606fa23d0e5
