@@ -41,4 +41,4 @@ public class LoginPage extends Page {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-}
+    }

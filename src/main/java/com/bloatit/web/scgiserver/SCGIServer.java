@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.scgiserver;
 
+import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.server.DispatchServer;
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -30,8 +31,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.xnap.commons.i18n.I18n;
+import org.xnap.commons.i18n.I18nFactory;
+
 
 public class SCGIServer {
 
@@ -40,9 +42,22 @@ public class SCGIServer {
     public static void main(String[] args) {
         SCGIServer server = new SCGIServer();
         server.serve();
+
+        
+    }
+    private String tr(String string) {
+        I18n i18n = I18nFactory.getI18n(LoginPage.class, "i18n.Messages", java.util.Locale.FRANCE);
+        return i18n.tr(string);
     }
 
     private void serve() {
+
+        
+        System.out.println(tr("This text will be translated"));
+        System.out.println(tr("This one also"));
+
+        
+
         try {
             System.err.println("Start BloatIt serveur");
             providerSocket = new ServerSocket(4000);
@@ -88,6 +103,8 @@ public class SCGIServer {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+         
     }
 
     private Map<String, String> parseQueryString(String url) {

@@ -1,5 +1,0 @@
-[encoding: UTF-8]
-
-src/bloatit/web/htmlrenderer/htmltools.py
-src/bloatit/web/htmlrenderer/htmlpage.py
-src/bloatit/web/htmlrenderer/pagecontent/logincontent.py

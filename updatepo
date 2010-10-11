@@ -1,0 +1,3 @@
+mvn gettext:gettext
+mvn gettext:merge
+mvn gettext:dist
