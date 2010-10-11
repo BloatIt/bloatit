@@ -52,11 +52,6 @@ public abstract class Page extends Request {
         this.htmlResult.write("</html>");
     }
 
-    @Override
-    public String getCode() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     private void generate_head() {
         this.htmlResult.write("<head>");
         this.htmlResult.indent();
@@ -68,7 +63,7 @@ public abstract class Page extends Request {
         this.htmlResult.write("</head>");
     }
 
-    protected void generate_body() {
+    private void generate_body() {
         this.htmlResult.write("<body>");
         this.htmlResult.indent();
         this.htmlResult.write("<div id=\"page\">");
@@ -93,10 +88,6 @@ public abstract class Page extends Request {
         this.htmlResult.write("</div>");
         this.htmlResult.unindent();
         this.htmlResult.write("</body>");
-    }
-
-    private String getTitle() {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     private void generateTopBar() {
@@ -152,6 +143,11 @@ public abstract class Page extends Request {
     }
 
     protected abstract void generateContent();
+    
+    @Override
+    public abstract String getCode();
+
+    protected abstract String getTitle();
 
     protected String generateLogo() {
         return "<span class=\"logo_bloatit\"><span class=\"logo_bloatit_bloat\">Bloat</span><span class=\"logo_bloatit_it\">It</span></span>";

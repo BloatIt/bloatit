@@ -16,14 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.pages;
 
+import com.bloatit.web.actions.LoginAction;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPasswordField;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class LoginPage extends Page {
 
@@ -35,10 +38,38 @@ public class LoginPage extends Page {
         super(session, parameters);
     }
 
-
     @Override
     protected void generateContent() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        HtmlForm loginForm = new HtmlForm();
+        HtmlTextField loginField = new HtmlTextField();
+        HtmlPasswordField passwordField =  new HtmlPasswordField();
+        HtmlButton submitButton = new HtmlButton();
+
+        loginForm.addComponent(loginField);
+        loginForm.addComponent(passwordField);
+        loginForm.addComponent(submitButton);
+
+        LoginAction logAction = new LoginAction(this.session);
+
+        loginForm.setAction(logAction);
+        submitButton.setLabel(this.session._("Login"));
+        loginField.setName(logAction.getLoginCode());
+        passwordField.setName(logAction.getPasswordCode());
+
+
+        this.htmlResult.write("<h2>"+this.session._("Login")+"</h2>");
+        loginForm.generate(this.htmlResult);
+        this.htmlResult.write("<h2>"+this.session._("Sigup")+"</h2>");
+        this.htmlResult.write("<p>Not yet implemented.</p>");
     }
 
+    @Override
+    public String getCode() {
+        return "login";
     }
+
+    @Override
+    protected String getTitle() {
+        return "Login or signup";
+    }
+}

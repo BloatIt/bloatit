@@ -43,13 +43,12 @@ public class DemandsPage extends Page {
         ArrayList<Demand> demands = DemandManager.GetAllDemands();
         this.htmlResult.write("<div class='demand_table'>");
         this.htmlResult.indent();
-        /*for (Demand demand : demands){
+        for (Demand demand : demands){
             DemandPage demandView = new DemandPage(this.session, demand);
-            demand_view.generate_list_field(this.htmlResult);
+            demandView.generateListField();
         }
-
         this.htmlResult.unindent();
-        this.htmlResult.write('</div>');*/
+        this.htmlResult.write("</div>");
     }
 
     public String getTitle(){
@@ -59,6 +58,7 @@ public class DemandsPage extends Page {
     public String getCode(){
         return "demands";
     }
+<<<<<<< HEAD
 
 }
 
@@ -71,3 +71,6 @@ public class DemandsPage extends Page {
 
         demands_renderer.generate(self.html_result)
  */
+=======
+}
+>>>>>>> 2bba828d6701e74ce3d470ef0af00606fa23d0e5
