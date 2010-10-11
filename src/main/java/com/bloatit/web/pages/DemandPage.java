@@ -24,6 +24,7 @@ import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DemandPage extends Page {
@@ -52,6 +53,10 @@ public class DemandPage extends Page {
             d = demand;
         }
         this.demand = d;
+    }
+
+    public DemandPage(Session session, Demand demand) {
+        this(session, new HashMap<String, String>(), demand);
     }
 
     @Override
