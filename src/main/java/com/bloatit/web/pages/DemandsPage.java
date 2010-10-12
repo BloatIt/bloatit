@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class DemandsPage extends Page {
 
-    private DemandsPage(){
+    public DemandsPage(){
     }
 
     public DemandsPage(Session session, Map<String, String> parameters) {

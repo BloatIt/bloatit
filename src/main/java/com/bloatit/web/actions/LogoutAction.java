@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class LogoutAction extends Action {
 
-    private LogoutAction() {
+    public LogoutAction() {
     }
 
     public LogoutAction(Session session, Map<String, String> parameters) {

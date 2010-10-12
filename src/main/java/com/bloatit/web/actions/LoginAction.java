@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class LoginAction extends Action {
 
-    private LoginAction() {
+    public LoginAction() {
     }
 
     public LoginAction(Session session, Map<String, String> parameters) {

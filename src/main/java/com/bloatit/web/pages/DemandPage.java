@@ -31,7 +31,7 @@ public class DemandPage extends Page {
 
     private final Demand demand;
 
-    private DemandPage(){
+    public DemandPage(){
         demand=null;
     }
 

@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class LoginPage extends Page {
 
-    private LoginPage(){
+    public LoginPage(){
     }
 
     public LoginPage(Session session) {
