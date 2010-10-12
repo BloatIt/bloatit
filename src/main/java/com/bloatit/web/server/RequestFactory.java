@@ -19,12 +19,13 @@
 
 package com.bloatit.web.server;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-class RequestFactory<T extends Request> {
+public class RequestFactory<T extends Request> {
 
     final private Class<T> type;
 
@@ -53,4 +54,7 @@ class RequestFactory<T extends Request> {
         return request;
     }
 
+    public T build(Session session) {
+        return build(session, new HashMap<String, String>());
+    }
 }

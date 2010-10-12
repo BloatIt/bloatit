@@ -24,6 +24,8 @@ import java.util.Map;
 
 public class PageNotFound extends Page {
 
+    private PageNotFound() {
+    }
     
     public PageNotFound(Session session, Map<String, String> parameters) {
         super(session, parameters);

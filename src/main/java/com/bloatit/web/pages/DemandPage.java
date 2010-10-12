@@ -31,6 +31,10 @@ public class DemandPage extends Page {
 
     private final Demand demand;
 
+    private DemandPage(){
+        demand=null;
+    }
+
     public DemandPage(Session session, Map<String, String> parameters) {
         this(session, parameters, null);
     }

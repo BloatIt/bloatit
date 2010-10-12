@@ -27,6 +27,10 @@ import java.util.Map;
 
 public abstract class Action extends Request{
 
+    protected Action() {
+        
+    }
+
     public Action(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }

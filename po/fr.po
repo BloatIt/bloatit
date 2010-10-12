@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-11 22:30+0200\n"
+"POT-Creation-Date: 2010-10-13 00:08+0200\n"
 "PO-Revision-Date: 2010-10-11 22:31+0100\n"
 "Last-Translator: Frédéric Bertolus <fred.bertolus@gmail.com>\n"
 "Language-Team: French\n"
@@ -62,14 +62,6 @@ msgstr "Presse"
 msgid "This website is under GNU Affero Public Licence."
 msgstr "Ce site internet est sous la GNU Affero Public licence"
 
-#: com/bloatit/web/scgiserver/SCGIServer.java:56
-msgid "This text will be translated"
-msgstr "Ce test sera traduit"
-
-#: com/bloatit/web/scgiserver/SCGIServer.java:57
-msgid "This one also"
-msgstr "Celui là aussi"
-
 #: com/bloatit/web/pages/LoginPage.java:55
 #: com/bloatit/web/pages/LoginPage.java:60
 msgid "Login"
@@ -79,3 +71,12 @@ msgstr "Se connecter"
 msgid "Sigup"
 msgstr "S'inscrire"
 
+#: com/bloatit/web/pages/PageNotFound.java:38
+msgid "Page not found"
+msgstr ""
+
+#~ msgid "This text will be translated"
+#~ msgstr "Ce test sera traduit"
+
+#~ msgid "This one also"
+#~ msgstr "Celui là aussi"

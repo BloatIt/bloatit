@@ -147,7 +147,7 @@ public class DispatchServer {
             }
         }
 
-        return new PageNotFound(session);
+        return new RequestFactory<PageNotFound>(PageNotFound.class).build(session);
     }
 
     private QueryString parseQueryString(String queryString) {
@@ -162,7 +162,7 @@ public class DispatchServer {
         
         // Parsing, finding        page name  page name
         while( i < splitted.length && !splitted[i].contains("-")) {
-            if(page.isEmpty() && !splitted[i].isEmpty()) {
+            if(!page.isEmpty() && !splitted[i].isEmpty()) {
                 page = page + "/";
             }
             page = page + splitted[i];
@@ -205,7 +205,7 @@ public class DispatchServer {
             i++;
         }
 
-        for (i = 0; i < string.length(); i++) {
+        for (; i < string.length(); i++) {
             result1 += string.charAt(i);
         }
 
@@ -214,11 +214,11 @@ public class DispatchServer {
 
         String result2 = "";
 
-        while(string.charAt(i) == stripped) {
+        while(result1.charAt(i) == stripped) {
             i--;
         }
 
-        for (i = 0; i >= 0; i--) {
+        for (; i >= 0; i--) {
             result2 = result1.charAt(i) + result2;
         }
         

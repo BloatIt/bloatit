@@ -25,11 +25,15 @@ import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.server.Action;
+import com.bloatit.web.server.RequestFactory;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginAction extends Action {
+
+    private LoginAction() {
+    }
 
     public LoginAction(Session session, Map<String, String> parameters) {
         super(session, parameters);

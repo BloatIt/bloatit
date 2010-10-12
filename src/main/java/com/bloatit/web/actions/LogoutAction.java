@@ -22,6 +22,7 @@ package com.bloatit.web.actions;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.server.Action;
+import com.bloatit.web.server.RequestFactory;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,10 +30,13 @@ import java.util.Map;
 
 public class LogoutAction extends Action {
 
+    private LogoutAction() {
+    }
+
     public LogoutAction(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }
-
+    
     public  LogoutAction(Session session){
         this(session, new HashMap<String, String>());
     }

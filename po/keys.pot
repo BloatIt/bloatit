@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-11 22:30+0200\n"
+"POT-Creation-Date: 2010-10-13 00:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -61,14 +61,6 @@ msgstr ""
 msgid "This website is under GNU Affero Public Licence."
 msgstr ""
 
-#: com/bloatit/web/scgiserver/SCGIServer.java:56
-msgid "This text will be translated"
-msgstr ""
-
-#: com/bloatit/web/scgiserver/SCGIServer.java:57
-msgid "This one also"
-msgstr ""
-
 #: com/bloatit/web/pages/LoginPage.java:55
 #: com/bloatit/web/pages/LoginPage.java:60
 msgid "Login"
@@ -76,4 +68,8 @@ msgstr ""
 
 #: com/bloatit/web/pages/LoginPage.java:62
 msgid "Sigup"
+msgstr ""
+
+#: com/bloatit/web/pages/PageNotFound.java:38
+msgid "Page not found"
 msgstr ""

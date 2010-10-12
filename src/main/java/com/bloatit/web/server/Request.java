@@ -21,6 +21,7 @@ package com.bloatit.web.server;
 
 import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.HtmlResult;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +34,9 @@ public abstract class Request {
     protected Map<String, String> parameters;
     protected Session session;
 
+    protected Request(){
+    }
+
     protected Request(Session session,  Map<String, String> parameters){
         this.session = session;
         this.parameters = parameters;
@@ -41,6 +45,10 @@ public abstract class Request {
     public void init(Session session,  Map<String, String> parameters){
         this.session = session;
         this.parameters = parameters;
+    }
+
+    public void init(Session session) {
+        this.init(session, new HashMap<String, String>());
     }
 
     public void doProcess(HtmlResult htmlResult, Map<String, String> query, Map<String, String> post) {

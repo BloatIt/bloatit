@@ -75,7 +75,7 @@ public class SCGIServer {
 
 
                 DispatchServer dispatchServer = new DispatchServer(query, post, cookies, preferredLangs);
-                
+
                 try {
                     clientSocket.getOutputStream().write(dispatchServer.process().getBytes());
                 } catch (NoSuchAlgorithmException ex) {
@@ -89,29 +89,28 @@ public class SCGIServer {
             ex.printStackTrace();
         }
 
-         
+
     }
 
     private Map<String, String> parseQueryString(String url) {
         Map<String, String> params = new HashMap<String, String>();
-        String[] urlParts = url.split("\\?");
-        if (urlParts.length > 1) {
-            String query = urlParts[1];
-            for (String param : query.split("&")) {
-                try {
+        for (String param : url.split("&")) {
+            try {
 
-                    String[] pair = param.split("=");
-                    String key;
+                String[] pair = param.split("=");
+                String key;
+                if(pair.length >= 2) {
                     key = URLDecoder.decode(pair[0], "UTF-8");
                     String value = URLDecoder.decode(pair[1], "UTF-8");
 
                     params.put(key, value);
-                } catch (UnsupportedEncodingException ex) {
-                    //TODO: log
                 }
+            } catch (UnsupportedEncodingException ex) {
+                //TODO: log
             }
-
         }
+
+
         return params;
     }
 

@@ -62,6 +62,7 @@ public class Language {
                 code = Language.languageCode.get(lang);
                 if (languageList.containsKey(code)) {
                     template = languageList.get(code);
+                    break;
                 } else {
                     System.err.println("Unknow language code" + code);
                 }

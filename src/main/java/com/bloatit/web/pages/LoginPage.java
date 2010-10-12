@@ -24,11 +24,16 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPasswordField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.server.Page;
+import com.bloatit.web.server.Request;
+import com.bloatit.web.server.RequestFactory;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginPage extends Page {
+
+    private LoginPage(){
+    }
 
     public LoginPage(Session session) {
         this(session, new HashMap<String, String>());
@@ -50,7 +55,7 @@ public class LoginPage extends Page {
         loginForm.addComponent(submitButton);
 
         LoginAction logAction = new LoginAction(this.session);
-
+        
         loginForm.setAction(logAction);
         submitButton.setLabel(this.session.tr("Login"));
         loginField.setName(logAction.getLoginCode());
