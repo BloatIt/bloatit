@@ -45,7 +45,7 @@ public class DemandPage extends Page {
 
         if (demand == null) {
             if (parameters.containsKey("id")) {
-                Integer id = Integer.getInteger(parameters.get("id"));
+                Integer id = new Integer(parameters.get("id"));
                 if (id != null) {
                     try {
                         d = DemandManager.GetDemandById(id);

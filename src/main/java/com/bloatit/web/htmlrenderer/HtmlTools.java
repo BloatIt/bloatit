@@ -67,9 +67,10 @@ public class HtmlTools {
      * @return the compressed String to display
      */
     public static String compressKarma(long karma) {
+        //TODO: rewrite this ugly code
         String[] append = {"", "k", "M", "T"};
         String s = new Long(karma).toString();
-        if (karma < 1000) {
+        if (Math.abs(karma) < 1000) {
             return s;
         }
         if (s.length() > 12) {
