@@ -22,6 +22,7 @@ import com.bloatit.web.server.DispatchServer;
 import com.bloatit.common.FatalErrorException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -98,6 +99,7 @@ public class SCGIServer {
                     display = "Content-type: text/html\r\n\r\n"+e.toString();
                     // TODO : Log
                     // TODO Debug Only
+                    // TODO : print stack trace
                 }
 
                 try {
@@ -155,6 +157,7 @@ public class SCGIServer {
     }
 
     private List<String> parseLanguageString(String languages) {
+        System.err.println(languages);
         return Arrays.asList(languages.split(","));
     }
 }

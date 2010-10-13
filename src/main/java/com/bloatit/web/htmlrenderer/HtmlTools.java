@@ -50,33 +50,67 @@ public class HtmlTools {
         return str;
     }
 
+    
+
     /**
      * Compress karma and make it easier to display
      *
      * Example of results :
      * 1 = 1
      * 100 = 100
-     * 1 000 = 1.0k
-     * 100 000 = 100.0k
-     * 1 000 000 = 1.0M
-     * 100 000 000 = 100.0M
-     * 1 000 000 000 = 1.0T
-     * 100 000 000 000 = 100.0T
+     * 1 000 = 1k
+     * 100 000 = 100k
+     * 1 000 000 = 1M
+     * 100 000 000 = 100M
+     * 1 000 000 000 = 1T
+     * 100 000 000 000 = 100T
      * 1 000 000 000 000 = ∞
      * @param karma the karma value to compress
      * @return the compressed String to display
      */
     public static String compressKarma(long karma) {
-        //TODO: rewrite this ugly code
-        String[] append = {"", "k", "M", "T"};
-        String s = new Long(karma).toString();
-        if (Math.abs(karma) < 1000) {
-            return s;
+        Double abs_karma = new Double(Math.abs(karma));
+        String result = "";
+        if (abs_karma < 1000) {
+            result = cutNumber(abs_karma.toString());
+        } else if (abs_karma < 1000000d) {
+            result = cutNumber(new Double(abs_karma / 1000d).toString()) + "k";
+        } else if (abs_karma < 1000000000d) {
+            result = cutNumber(new Double(abs_karma / 1000000d).toString()) + "M";
+
+        } else if (abs_karma < 1000000000000d) {
+            result = cutNumber(new Double(abs_karma / 1000000000d).toString()) + "T";
+        } else {
+
+            result = "∞";
         }
-        if (s.length() > 12) {
-            return "∞";
+        if (karma >= 0) {
+            return result;
+
+
+        } else {
+            return "-" + result;
+
+
         }
-        int modL = (s.length() % 3 == 0) ? 3 : s.length() % 3;
-        return s.substring(0, modL) + "." + s.substring(modL, modL + 1) + append[(int) (Math.floor((s.length() - 1) / 3))];
+    }
+
+    public static String cutNumber(String karma) {
+        String result = karma;
+        if (result.length() > 2) {
+            if (result.charAt(1) == '.') {
+                if (result.charAt(2) == '0') {
+                    result = result.substring(0, 1);
+                } else {
+                    result = result.substring(0, 3);
+                }
+            } else if (result.charAt(2) == '.') {
+                result = result.substring(0, 2);
+            } else {
+
+                result = result.substring(0, 3);
+            }
+        }
+        return result;
     }
 }
