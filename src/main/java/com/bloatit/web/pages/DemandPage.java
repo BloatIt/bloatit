@@ -31,7 +31,7 @@ public class DemandPage extends Page {
 
     private final Demand demand;
 
-    private DemandPage(){
+    public DemandPage(){
         demand=null;
     }
 
@@ -80,15 +80,6 @@ public class DemandPage extends Page {
         this.htmlResult.write("<div class=\"demand\">");
         this.htmlResult.indent();
         this.htmlResult.write("<p>Demand id : "+ this.demand.getId() + "</p>" );
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
-    }
-
-    public void generateListField(){
-        this.htmlResult.write("<div class=\"demand_entry\">");
-        this.htmlResult.indent();
-        this.htmlResult.write("<p class=\"demand_title\">"+ HtmlTools.generateLink(this.session, this.demand.getTitle() , this) +"</p>");
-        this.htmlResult.write("<p class=\"demand_description\">"+ this.demand.getDescription()+"</p>");
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
     }

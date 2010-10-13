@@ -21,6 +21,7 @@ package com.bloatit.web.pages;
 
 import com.bloatit.framework.DemandManager;
 import com.bloatit.model.Demand;
+import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import java.util.Map;
 
 public class DemandsPage extends Page {
 
-    private DemandsPage(){
+    public DemandsPage(){
     }
 
     public DemandsPage(Session session, Map<String, String> parameters) {
@@ -47,8 +48,13 @@ public class DemandsPage extends Page {
         this.htmlResult.write("<div class='demand_table'>");
         this.htmlResult.indent();
         for (Demand demand : demands){
-            DemandPage demandView = new DemandPage(this.session, demand);
-            demandView.generateListField();
+            DemandPage view = new DemandPage(session, demand);
+            this.htmlResult.write("<div class=\"demand_entry\">");
+            this.htmlResult.indent();
+            this.htmlResult.write("<p class=\"demand_title\">"+ HtmlTools.generateLink(this.session, demand.getTitle() , view) +"</p>");
+            this.htmlResult.write("<p class=\"demand_description\">"+ demand.getDescription()+"</p>");
+            this.htmlResult.unindent();
+            this.htmlResult.write("</div>");
         }
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");

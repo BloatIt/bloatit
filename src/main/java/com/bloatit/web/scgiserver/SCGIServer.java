@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class SCGIServer {
 
@@ -116,11 +117,15 @@ public class SCGIServer {
 
     private Map<String, String> parseCookiesString(String cookiesString) {
         Map<String, String> cookiesMap = new HashMap<String, String>();
-        String[] cookies = cookiesString.split(";");
-        for (String cookie : cookies) {
-            String[] cookieParts = cookie.split("=");
-            if (cookieParts.length == 2) {
-                cookiesMap.put(strip(cookieParts[0]), strip(cookieParts[1]));
+
+        System.out.println(cookiesString);
+        if(cookiesString != null){
+            String[] cookies = cookiesString.split(";");
+            for (String cookie : cookies) {
+                String[] cookieParts = cookie.split("=");
+                if (cookieParts.length == 2) {
+                    cookiesMap.put(strip(cookieParts[0]), strip(cookieParts[1]));
+                }
             }
         }
         return cookiesMap;

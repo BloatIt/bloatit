@@ -33,14 +33,14 @@ public class DemandManager {
     static {
         yoann = new Member(1, "Yoann", "yplenet@gmail.com", "yoann plénet", 150);
 
-        Demand[] tab = {
-            new Demand(1, "Title", "Description", "Specif", 1, yoann),
-            new Demand(2, "Demand 2", "Description2 ", "Specif2", 100, yoann),
-            new Demand(3, "Demand 3", "Description3", "Specif3", 3, yoann),
-            new Demand(4, "Demand 4", "Description4", "Specif4", 5, yoann)
+        demands = new ArrayList<Demand>(){
+            {
+                add(new Demand(1, "Title", "Description", "Specif", 1, yoann));
+                add(new Demand(2, "Demand 2", "Description2 ", "Specif2", 100, yoann));
+                add(new Demand(3, "Demand 3", "Description3", "Specif3", 3, yoann));
+                add(new Demand(4, "Demand 4", "Description4", "Specif4", 5, yoann));
+            }
         };
-
-        demands = (ArrayList<Demand>) Arrays.asList(tab);
     }
 
     /**
