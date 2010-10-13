@@ -17,12 +17,12 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.server;
+package com.bloatit.common;
 
 
 public class FatalErrorException extends RuntimeException {
 
-    FatalErrorException(String string, Throwable cause) {
+    public FatalErrorException(String string, Throwable cause) {
         super(string, cause);
     }
 

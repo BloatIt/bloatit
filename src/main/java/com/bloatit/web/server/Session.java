@@ -24,17 +24,16 @@ import java.util.ArrayDeque;
 
 
 public class Session {
-    private Object auth_token;
-    private Object key;
+    private final String key;
     private boolean logged;
     private ArrayDeque<Action> actionList;
     private Language language;
     private Page lastStablePage;
     private AuthToken authToken;
 
-    public Session(){
-        this.auth_token = null;
-        this.key = null;
+    Session(String key) {
+        this.key = key;
+        this.authToken = null;
         this.logged = false;
         this.actionList = new ArrayDeque<Action>();
     }
@@ -66,12 +65,8 @@ public class Session {
         return this.logged;
     }
 
-    public Object getKey() {
+    public String getKey() {
         return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public ArrayDeque<Action> getActionList() {

@@ -18,13 +18,18 @@
  */
 package com.bloatit.framework;
 
+import com.bloatit.common.CryptoTools;
 import com.bloatit.model.Member;
 import com.bloatit.model.exceptions.ElementNotFoundException;
+import com.bloatit.common.FatalErrorException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Random;
 
 public class LoginManager {
 
-    private static HashMap<String, AuthToken> authTokenList = new HashMap<String, AuthToken>();
+    private static final HashMap<String, AuthToken> authTokenList = new HashMap<String, AuthToken>();
     private static final HashMap<String, String> accounts = new HashMap<String, String>();
 
     static {
@@ -44,28 +49,25 @@ public class LoginManager {
     public static AuthToken newAuthToken(String login) throws ElementNotFoundException {
 
         Member member = MemberManager.getMemberByLogin(login);
+        //TODO: throw exception if no member match
 
-        // TODO : Generate auth token
+        String key = CryptoTools.generateKey();
 
-        return new AuthToken(member, "abcdefg");
-        /*
-        member = MemberManager.get_member_by_login(login)
-        #TODO: throw exception if no member match
-        d = "".join([random.choice(string.ascii_letters) for _ in range(100)])
-        cls.sha.update(d.encode())
-        token_key = cls.sha.hexdigest()
-        new_token = AuthToken(member, token_key)
-        return new_token*/
+        AuthToken newToken = new AuthToken(member, key);
+
+        authTokenList.put(key, newToken);
+
+        return newToken;
     }
 
     public static AuthToken getByKey(String key) {
-        return new AuthToken(null, key);
-        // TODO : everything
-        /*
-        if key in cls.auth_token_list:
-        return cls.auth_token_list[key]
-        else:
-        return None
-         */
+        if(authTokenList.containsKey(key)) {
+            return authTokenList.get(key);
+        } else {
+            return null;
+        }
+        
     }
+    
+    
 }

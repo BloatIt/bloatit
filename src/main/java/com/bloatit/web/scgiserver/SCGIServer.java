@@ -20,7 +20,7 @@ package com.bloatit.web.scgiserver;
 
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.server.DispatchServer;
-import com.bloatit.web.server.FatalErrorException;
+import com.bloatit.common.FatalErrorException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

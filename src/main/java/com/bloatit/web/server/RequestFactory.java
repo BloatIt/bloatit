@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.server;
 
+import com.bloatit.common.FatalErrorException;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
