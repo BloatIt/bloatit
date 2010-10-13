@@ -17,9 +17,9 @@ template:
 
 server.modules   += ( "mod_scgi" )
 scgi.server = (
-    "serve.py" =>
+    "bloatit" =>
     (
-        "python-scgi" =>
+        "bloatit-scgi" =>
         (
          "host" => "127.0.0.1",
          "port" => 4000,
