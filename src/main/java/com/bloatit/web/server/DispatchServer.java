@@ -35,25 +35,25 @@ import java.util.Map;
 
 public class DispatchServer {
 
-    static final Map<String, RequestFactory> pageMap;
-    static final Map<String, RequestFactory> actionMap;
+    static final Map<String, Class<? extends Request>> pageMap;
+    static final Map<String, Class<? extends Request>> actionMap;
 
     static {
-        pageMap = new HashMap<String, RequestFactory>() {
+        pageMap = new HashMap<String, Class<? extends Request>>() {
             {
-                put("index", new RequestFactory<IndexPage>(IndexPage.class));
-                put("login", new RequestFactory<LoginPage>(LoginPage.class));
-                put("demands", new RequestFactory<DemandsPage>(DemandsPage.class));
-                put("demand", new RequestFactory<DemandPage>(DemandPage.class));
-                put("my_account", new RequestFactory<MyAccountPage>(MyAccountPage.class));
+                put("index", IndexPage.class);
+                put("login", LoginPage.class);
+                put("demands", DemandsPage.class);
+                put("demand", DemandPage.class);
+                put("my_account", MyAccountPage.class);
             }
     
         };
 
-        actionMap = new HashMap<String, RequestFactory>() {
+        actionMap = new HashMap<String, Class<? extends Request>>() {
             {
-                put("login", new RequestFactory<LoginAction>(LoginAction.class));
-                put("logout", new RequestFactory<LogoutAction>(LogoutAction.class));
+                put("login", LoginAction.class);
+                put("logout", LogoutAction.class);
                
             }
 
@@ -76,7 +76,7 @@ public class DispatchServer {
         this.preferred_langs = preferred_langs;
     }
 
-    public String process() throws NoSuchAlgorithmException {
+    public String process() {
         initSession();
         initLanguage();
 
@@ -91,7 +91,7 @@ public class DispatchServer {
         return htmlResult.generate();
     }
 
-    private void initSession() throws NoSuchAlgorithmException {
+    private void initSession() {
         session = null;
         if(cookies.containsKey("session_key")) {
             session = SessionManager.getByKey(cookies.get("session_key"));
@@ -131,7 +131,7 @@ public class DispatchServer {
         if(query.containsKey("page")) {
             QueryString queryString = parseQueryString(query.get("page"));
             if(queryString.page.startsWith("action/") && actionMap.containsKey(queryString.page.substring(7))) {
-                return actionMap.get(queryString.page.substring(7)).build(session, queryString.parameters);
+                return RequestFactory.build(actionMap.get(queryString.page.substring(7)), session, queryString.parameters);
             }
         }
         return null;
@@ -142,11 +142,11 @@ public class DispatchServer {
         if(query.containsKey("page")) {
             QueryString queryString = parseQueryString(query.get("page"));
             if(pageMap.containsKey(queryString.page)) {
-                return pageMap.get(queryString.page).build(session, queryString.parameters);
+                return RequestFactory.build(pageMap.get(queryString.page),session, queryString.parameters);
             }
         }
 
-        return new RequestFactory<PageNotFound>(PageNotFound.class).build(session);
+        return new PageNotFound(session);
     }
 
     private QueryString parseQueryString(String queryString) {

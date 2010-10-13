@@ -36,7 +36,7 @@ class SessionManager {
         try {
             md = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException ex) {
-            throw new FatalErrorException();
+            throw new FatalErrorException("Algorithm Sha256 not available",ex);
         }
         md.update(d.getBytes());
         byte byteData[] = md.digest();
