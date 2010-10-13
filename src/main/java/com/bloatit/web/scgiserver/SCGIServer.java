@@ -73,6 +73,7 @@ public class SCGIServer {
                 Map<String, String> env = SCGI.parse(bis);
                 //SCGI.parse(bis);
                 // Read the body of the request.
+
                 byte[] postBytes = new byte[Integer.parseInt(env.get("CONTENT_LENGTH"))];
                 bis.read(postBytes);
 
