@@ -16,26 +16,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.bloatit.web.server;
 
-import java.lang.reflect.Constructor;
-import java.util.Map;
 
-public class RequestFactory {
+public class FatalErrorException extends RuntimeException {
 
-    static public Request build(Class<Request> requestClass, Session session, Map<String, String> parameters) {
-
-        Request request = null;
-
-        try {
-            Constructor<Request> constructor = requestClass.getConstructor(Session.class, Map.class);
-
-            request = constructor.newInstance(session, parameters);
-
-        } catch (Exception ex) {
-            throw new FatalErrorException();
-        }
-
-        return request;
-    }
 }
