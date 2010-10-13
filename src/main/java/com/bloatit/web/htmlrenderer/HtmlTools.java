@@ -28,10 +28,6 @@ public class HtmlTools {
         return "<a href=\"/" + session.getLanguage().getCode() + "/" + linkPage.getCode() + "\">" + displayedText + "</a>";
     }
 
-    public static int compressKarma(int karma) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     public static String generateActionLink(Session session, String text, Action linkAction) {
         return "<a href=\"/" + session.getLanguage().getCode() + "/action/" + linkAction.getCode() + "\">" + text + "</a>";
     }
@@ -70,9 +66,9 @@ public class HtmlTools {
      * @param karma the karma value to compress
      * @return the compressed String to display
      */
-    public String compressKarma(Long karma) {
+    public static String compressKarma(long karma) {
         String[] append = {"", "k", "M", "T"};
-        String s = karma.toString();
+        String s = new Long(karma).toString();
         if (karma < 1000) {
             return s;
         }

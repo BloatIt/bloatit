@@ -27,14 +27,14 @@ public class MemberManager {
     private final static ArrayList<Member> members = new ArrayList<Member>();
 
     static {
-        members.add(new Member(1, "Yoann", "yplenet@gmail.com", "Yoann Plénet", 14413));
-        members.add(new Member(1, "Fred", "fred@gmail.com", "Frédéric Bertolus", -12));
-        members.add(new Member(1, "Tom", "tom@gmail.com", "Thomas Guyard", 3));
+        members.add(new Member(1, "Yoann", "yplenet@gmail.com", "Yoann Plénet", -14413));
+        members.add(new Member(1, "Fred", "fred@gmail.com", "Frédéric Bertolus", 12));
+        members.add(new Member(1, "Tom", "tom@gmail.com", "Thomas Guyard", 3000000000000000000L));
     }
 
     public static Member getMemberByLogin(String login) throws ElementNotFoundException {
         for (Member m : members) {
-            if (login.equals(m.getLogin())) {
+            if (login.equalsIgnoreCase(m.getLogin())) {
                 return m;
             }
         }

@@ -25,9 +25,9 @@ public class Member {
     private String login;
     private String email;
     private String fullName;
-    private int karma;
+    private long karma;
 
-    public Member(int id, String login, String email, String fullName, int karma) {
+    public Member(int id, String login, String email, String fullName, long karma) {
         this.id = id;
         this.login = login;
         this.email = email;
@@ -51,7 +51,7 @@ public class Member {
         return id;
     }
 
-    public int getKarma() {
+    public long getKarma() {
         return karma;
     }
 

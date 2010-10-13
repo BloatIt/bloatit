@@ -99,16 +99,17 @@ public abstract class Page extends Request {
         this.htmlResult.indent();
         if (this.session.isLogged()) {
             String full_name = this.session.getAuthToken().getMember().getFullName();
-            int karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
+            String karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
             String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma + "</span>";
             String logoutLink = HtmlTools.generateActionLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));
             this.htmlResult.write("<span class=\"top_bar_component\">" + memberLink + "</span><span class=\"top_bar_component\">" + logoutLink + "</span>");
 
         } else {
             this.htmlResult.write("<span class=\"top_bar_component\">" + HtmlTools.generateLink(this.session, this.session.tr("Login / Signup"), new LoginPage(this.session)) + "</span>");
-            this.htmlResult.unindent();
-            this.htmlResult.write("</div>");
+            
         }
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
     }
 
     private void generateMainMenu() {
