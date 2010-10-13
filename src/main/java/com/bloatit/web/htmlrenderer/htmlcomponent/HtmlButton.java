@@ -19,10 +19,17 @@
 
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
+import com.bloatit.web.htmlrenderer.HtmlResult;
+
 public class HtmlButton extends HtmlComponent{
+    private final String label;
 
-    public void setLabel(String _) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public HtmlButton(String label){
+        this.label = label;
     }
-
+    
+    @Override
+    public void generate(HtmlResult htmlResult){
+        htmlResult.write("<p><input type=\"submit\" value="+this.label+"/><p>");
+    }
 }
