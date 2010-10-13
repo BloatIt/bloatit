@@ -34,9 +34,10 @@ public abstract class Request {
     protected Map<String, String> parameters;
     protected Session session;
 
-    protected Request(){
+    public Request(){
+        
     }
-
+    
     protected Request(Session session,  Map<String, String> parameters){
         this.session = session;
         this.parameters = parameters;
