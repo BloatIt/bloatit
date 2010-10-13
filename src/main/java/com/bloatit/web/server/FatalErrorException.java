@@ -22,4 +22,8 @@ package com.bloatit.web.server;
 
 public class FatalErrorException extends RuntimeException {
 
+    FatalErrorException(String string, Throwable cause) {
+        super(string, cause);
+    }
+
 }

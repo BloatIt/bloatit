@@ -23,17 +23,17 @@ import java.util.Map;
 
 public class RequestFactory {
 
-    static public Request build(Class<Request> requestClass, Session session, Map<String, String> parameters) {
+    static public Request build(Class<? extends Request> requestClass, Session session, Map<String, String> parameters) {
 
         Request request = null;
 
         try {
-            Constructor<Request> constructor = requestClass.getConstructor(Session.class, Map.class);
+            Constructor<? extends Request> constructor = requestClass.getConstructor(Session.class, Map.class);
 
             request = constructor.newInstance(session, parameters);
 
         } catch (Exception ex) {
-            throw new FatalErrorException();
+            throw new FatalErrorException("Request factory failed to build "+requestClass.getName(),ex);
         }
 
         return request;
