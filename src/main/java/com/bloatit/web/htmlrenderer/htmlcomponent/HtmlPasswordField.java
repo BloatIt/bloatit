@@ -19,8 +19,12 @@
 
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
+import com.bloatit.web.htmlrenderer.HtmlResult;
+
 public class HtmlPasswordField  extends HtmlComponent {
 
-
-
+    @Override
+    public void generate(HtmlResult htmlResult) {
+        htmlResult.write("<p><input name=\""+this.name+"\"type=\"password\" /></p>");
+    }
 }

@@ -24,8 +24,6 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPasswordField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Request;
-import com.bloatit.web.server.RequestFactory;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,19 +43,17 @@ public class LoginPage extends Page {
 
     @Override
     protected void generateContent() {
-        HtmlForm loginForm = new HtmlForm();
+        LoginAction logAction = new LoginAction(this.session);
+
+        HtmlForm loginForm = new HtmlForm(logAction);
         HtmlTextField loginField = new HtmlTextField();
         HtmlPasswordField passwordField =  new HtmlPasswordField();
-        HtmlButton submitButton = new HtmlButton();
+        HtmlButton submitButton = new HtmlButton(this.session.tr("Login"));
 
         loginForm.addComponent(loginField);
         loginForm.addComponent(passwordField);
         loginForm.addComponent(submitButton);
 
-        LoginAction logAction = new LoginAction(this.session);
-        
-        loginForm.setAction(logAction);
-        submitButton.setLabel(this.session.tr("Login"));
         loginField.setName(logAction.getLoginCode());
         passwordField.setName(logAction.getPasswordCode());
 

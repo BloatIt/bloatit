@@ -19,17 +19,23 @@
 
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
-import com.bloatit.web.actions.LoginAction;
+import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.server.Action;
 
-public class HtmlForm extends HtmlComponent{
+public class HtmlForm extends HtmlContainer{
+    private final Action action;
 
-    public void addComponent( HtmlComponent component) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public HtmlForm(Action action){
+        this.action = action;
     }
 
-    public void setAction(Action action) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+    @Override
+    public void generate(HtmlResult htmlResult) {
+        htmlResult.write("<form action=\""+this.action.getUrl()+"\" method=\"POST\">");
+        htmlResult.indent();
 
+        super.generate(htmlResult);
+        htmlResult.unindent();
+        htmlResult.write("</form>");
+    }
 }

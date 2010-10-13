@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.scgiserver;
 
-import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.server.DispatchServer;
 import com.bloatit.common.FatalErrorException;
 import java.io.BufferedInputStream;
@@ -27,14 +26,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class SCGIServer {
 

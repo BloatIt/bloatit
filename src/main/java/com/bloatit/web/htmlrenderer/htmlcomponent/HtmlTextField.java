@@ -19,10 +19,12 @@
 
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
+import com.bloatit.web.htmlrenderer.HtmlResult;
+
 public class HtmlTextField  extends HtmlComponent {
 
-    public void setName(String loginCode) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    @Override
+    public void generate(HtmlResult htmlResult) {
+        htmlResult.write("<p><input name=\""+this.name+"\" type=\"text\" /></p>");
     }
-
 }
