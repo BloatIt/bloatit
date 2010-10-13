@@ -39,7 +39,7 @@ public class LoginAction extends Action {
         super(session, parameters);
     }
 
-    public  LoginAction(Session session){
+    public LoginAction(Session session) {
         this(session, new HashMap<String, String>());
     }
 
@@ -64,15 +64,27 @@ public class LoginAction extends Action {
                 String password = this.post.get(this.getPasswordCode());
                 AuthToken token = LoginManager.loginByPassword(login, password);
 
-                this.session.setLogged(true);
-                this.session.setAuthToken(token);
-                this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new IndexPage(this.session)));
+                if (token != null) {
+                    loginSuccess(token);
+                } else {
+                    loginFailed();
+                }
             } catch (ElementNotFoundException ex) {
                 // TODO: Leave error treatment in there or put it in another class ?
-                this.session.setLogged(false);
-                this.session.setAuthToken(null);
-                this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new LoginPage(this.session)));
+                loginFailed();
             }
         }
+    }
+
+    private void loginSuccess(AuthToken token) {
+        this.session.setLogged(true);
+        this.session.setAuthToken(token);
+        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new IndexPage(this.session)));
+    }
+
+    private void loginFailed() {
+        this.session.setLogged(false);
+        this.session.setAuthToken(null);
+        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new LoginPage(this.session)));
     }
 }
