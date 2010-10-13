@@ -23,6 +23,7 @@ import com.bloatit.common.FatalErrorException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
@@ -30,6 +31,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SCGIServer {
 
@@ -41,6 +44,18 @@ public class SCGIServer {
     }
 
     private void serve() {
+
+        //Find a better way to clean the socket
+        try {
+            Socket cleanSocket = new Socket("127.0.0.1",4000);
+            cleanSocket.close();
+        } catch (IOException ex) {
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SCGIServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         try {
             System.err.println("Start BloatIt serveur");
