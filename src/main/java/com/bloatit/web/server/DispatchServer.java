@@ -76,7 +76,7 @@ public class DispatchServer {
         this.preferred_langs = preferred_langs;
     }
 
-    public String process() throws NoSuchAlgorithmException {
+    public String process() {
         initSession();
         initLanguage();
 
@@ -91,7 +91,7 @@ public class DispatchServer {
         return htmlResult.generate();
     }
 
-    private void initSession() throws NoSuchAlgorithmException {
+    private void initSession() {
         session = null;
         if(cookies.containsKey("session_key")) {
             session = SessionManager.getByKey(cookies.get("session_key"));
