@@ -54,6 +54,7 @@ public abstract class Page extends Request {
         this.generate_body();
         this.htmlResult.unindent();
         this.htmlResult.write("</html>");
+        this.session.flushNotifications();
     }
 
     private void generate_head() {
@@ -81,6 +82,7 @@ public abstract class Page extends Request {
         this.htmlResult.write("<div id=\"body_content\">");
         this.htmlResult.indent();
 
+        this.generateNotifications();
         this.generateContent();
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
@@ -156,5 +158,34 @@ public abstract class Page extends Request {
 
     protected String generateLogo() {
         return "<span class=\"logo_bloatit\"><span class=\"logo_bloatit_bloat\">Bloat</span><span class=\"logo_bloatit_it\">It</span></span>";
+    }
+
+    private void generateNotifications() {
+        this.htmlResult.write("<div id='notifications'>");
+        this.htmlResult.indent();
+        for(Notification notification: session.getNotifications()) {
+            generateNotification(notification);
+        }
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+    }
+
+    private void generateNotification(Notification notification) {
+
+        String notificationClass = "";
+
+        if(notification.getType() == Notification.Type.BAD) {
+            notificationClass = "notification_bad";
+        } else if (notification.getType() == Notification.Type.GOOD) {
+            notificationClass = "notification_good";
+        } else if (notification.getType() == Notification.Type.ERROR) {
+            notificationClass = "notification_error";
+        }
+
+        this.htmlResult.write("<div class=\""+notificationClass+"\">");
+        this.htmlResult.indent();
+        this.htmlResult.write(notification.getMessage());
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
     }
 }

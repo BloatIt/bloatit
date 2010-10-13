@@ -157,7 +157,6 @@ public class SCGIServer {
     }
 
     private List<String> parseLanguageString(String languages) {
-        System.err.println(languages);
         return Arrays.asList(languages.split(","));
     }
 }

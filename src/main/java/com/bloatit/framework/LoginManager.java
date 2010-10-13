@@ -22,10 +22,7 @@ import com.bloatit.common.CryptoTools;
 import com.bloatit.model.Member;
 import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.common.FatalErrorException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Random;
 
 public class LoginManager {
 
@@ -38,7 +35,7 @@ public class LoginManager {
         accounts.put("yoann", "babar");
     }
 
-    public static AuthToken loginByPassword(String login, String password) throws ElementNotFoundException {
+    public static AuthToken loginByPassword(String login, String password) {
         if (accounts.containsKey(login) && accounts.get(login).equals(password)) {
             return newAuthToken(login);
         } else {
@@ -46,12 +43,17 @@ public class LoginManager {
         }
     }
 
-    public static AuthToken newAuthToken(String login) throws ElementNotFoundException {
+    public static AuthToken newAuthToken(String login) {
 
-        Member member = MemberManager.getMemberByLogin(login);
-        //TODO: throw exception if no member match
+        Member member;
+        try {
+            member = MemberManager.getMemberByLogin(login);
+        } catch (ElementNotFoundException ex) {
+            throw new FatalErrorException("login invalid but auth sucess", ex);
+        }
 
         String key = CryptoTools.generateKey();
+
 
         AuthToken newToken = new AuthToken(member, key);
 
@@ -61,13 +63,11 @@ public class LoginManager {
     }
 
     public static AuthToken getByKey(String key) {
-        if(authTokenList.containsKey(key)) {
+        if (authTokenList.containsKey(key)) {
             return authTokenList.get(key);
         } else {
             return null;
         }
-        
+
     }
-    
-    
 }

@@ -59,20 +59,18 @@ public class LoginAction extends Action {
     @Override
     protected void process() {
         if (this.post.containsKey(this.getLoginCode()) && this.post.containsKey(this.getPasswordCode())) {
-            try {
+            
                 String login = this.post.get(this.getLoginCode());
                 String password = this.post.get(this.getPasswordCode());
-                AuthToken token = LoginManager.loginByPassword(login, password);
-
+                AuthToken token = null;
+                token    = LoginManager.loginByPassword(login, password);
+                
                 if (token != null) {
                     loginSuccess(token);
                 } else {
                     loginFailed();
                 }
-            } catch (ElementNotFoundException ex) {
-                // TODO: Leave error treatment in there or put it in another class ?
-                loginFailed();
-            }
+            
         }
     }
 
@@ -80,11 +78,13 @@ public class LoginAction extends Action {
         this.session.setLogged(true);
         this.session.setAuthToken(token);
         this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new IndexPage(this.session)));
+        this.session.notifyGood(this.session.tr("Login success."));
     }
 
     private void loginFailed() {
         this.session.setLogged(false);
         this.session.setAuthToken(null);
         this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new LoginPage(this.session)));
+        this.session.notifyBad(this.session.tr("Login failed. Wrong login or password."));
     }
 }
