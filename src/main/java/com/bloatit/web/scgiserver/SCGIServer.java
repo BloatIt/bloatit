@@ -75,11 +75,11 @@ public class SCGIServer {
                 // Read the body of the request.
                 bis.read(new byte[Integer.parseInt(env.get("CONTENT_LENGTH"))]);
 
-                System.err.println("post " + bis.toString());
+                /*System.err.println("post " + bis.toString());
 
                 for (String key : env.keySet()) {
                     System.err.println("" + key + " -> " + env.get(key));
-                }
+                }*/
 
 
                 Map<String, String> query = parseQueryString(env.get("QUERY_STRING"));
