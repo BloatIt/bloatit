@@ -21,16 +21,23 @@ package com.bloatit.web.server;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class SessionManager {
 
     private static HashMap<String, Session> activeSessions = new HashMap<String, Session>();
 
-    public static Session createSession() throws NoSuchAlgorithmException {
+    public static Session createSession() throws FatalErrorException {
         // TODO handle exception in there ?
         Session session = new Session();
-        String d = "abcd";
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        String d = "abcd"; // TODO generate random string
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException ex) {
+            throw new FatalErrorException();
+        }
         md.update(d.getBytes());
         byte byteData[] = md.digest();
 
