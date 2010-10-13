@@ -20,6 +20,7 @@ package com.bloatit.web.scgiserver;
 
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.server.DispatchServer;
+import com.bloatit.web.server.FatalErrorException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -31,6 +32,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class SCGIServer {
@@ -77,13 +80,23 @@ public class SCGIServer {
 
                 DispatchServer dispatchServer = new DispatchServer(query, post, cookies, preferredLangs);
 
+                String display;
                 try {
-                    clientSocket.getOutputStream().write(dispatchServer.process().getBytes());
-                } catch (NoSuchAlgorithmException ex) {
-                    ex.printStackTrace();
+                    display = dispatchServer.process();
+                } catch (FatalErrorException e) {
+                    display = "Content-type: text/html\r\n\r\n"+e.toString();
+                    // TODO : Log
+                    // TODO Debug Only
                 }
 
-                clientSocket.close();
+                try {
+                    clientSocket.getOutputStream().write(display.getBytes());
+                } catch (Exception e){
+                    e.printStackTrace();
+                    // TODO Log
+                }finally{
+                    clientSocket.close();
+                }
             }
 
         } catch (IOException ex) {

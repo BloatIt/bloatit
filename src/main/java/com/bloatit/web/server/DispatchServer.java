@@ -28,7 +28,6 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.PageNotFound;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
