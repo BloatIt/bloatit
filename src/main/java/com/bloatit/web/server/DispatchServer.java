@@ -60,9 +60,7 @@ public class DispatchServer {
         };
     }
 
-
-
-
+    
     private Map<String, String> query;
     private Map<String, String> post;
     private Map<String, String> cookies;
