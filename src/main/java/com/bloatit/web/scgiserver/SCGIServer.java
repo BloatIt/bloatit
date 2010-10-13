@@ -73,17 +73,17 @@ public class SCGIServer {
                 Map<String, String> env = SCGI.parse(bis);
                 //SCGI.parse(bis);
                 // Read the body of the request.
-                bis.read(new byte[Integer.parseInt(env.get("CONTENT_LENGTH"))]);
+                byte[] postBytes = new byte[Integer.parseInt(env.get("CONTENT_LENGTH"))];
+                bis.read(postBytes);
 
-                System.err.println("post " + bis.toString());
-
+                /*
                 for (String key : env.keySet()) {
                     System.err.println("" + key + " -> " + env.get(key));
                 }
-
+                */
 
                 Map<String, String> query = parseQueryString(env.get("QUERY_STRING"));
-                Map<String, String> post = parseQueryString(bis.toString());
+                Map<String, String> post = parseQueryString(new String(postBytes));
                 Map<String, String> cookies = parseCookiesString(env.get("HTTP_COOKIE"));
                 List<String> preferredLangs = parseLanguageString(env.get("HTTP_ACCEPT_LANGUAGE"));
 
@@ -141,29 +141,16 @@ public class SCGIServer {
     private Map<String, String> parseCookiesString(String cookiesString) {
         Map<String, String> cookiesMap = new HashMap<String, String>();
 
-        System.out.println(cookiesString);
         if(cookiesString != null){
             String[] cookies = cookiesString.split(";");
             for (String cookie : cookies) {
                 String[] cookieParts = cookie.split("=");
                 if (cookieParts.length == 2) {
-                    cookiesMap.put(strip(cookieParts[0]), strip(cookieParts[1]));
+                    cookiesMap.put(cookieParts[0].trim(), cookieParts[1].trim());
                 }
             }
         }
         return cookiesMap;
-    }
-
-    private static String strip(String s) {
-        String good =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        String result = "";
-        for (int i = 0; i < s.length(); i++) {
-            if (good.indexOf(s.charAt(i)) >= 0) {
-                result += s.charAt(i);
-            }
-        }
-        return result;
     }
 
     private List<String> parseLanguageString(String languages) {

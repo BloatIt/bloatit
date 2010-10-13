@@ -81,9 +81,7 @@ public class DispatchServer {
         //TODO : Combine query, post & cookies in a single map
 
         Request currentRequest = initCurrentRequest();
-
         HtmlResult htmlResult = new HtmlResult(session);
-
         currentRequest.doProcess(htmlResult, query, post);
 
         return htmlResult.generate();
@@ -195,33 +193,22 @@ public class DispatchServer {
 
     private static String strip(String string, char stripped) {
         String result1 = "";
-
         int i = 0;
-
         while(string.charAt(i) == stripped) {
             i++;
         }
-
         for (; i < string.length(); i++) {
             result1 += string.charAt(i);
         }
-
         i =  result1.length() -1;
 
-
         String result2 = "";
-
         while(result1.charAt(i) == stripped) {
             i--;
         }
-
         for (; i >= 0; i--) {
             result2 = result1.charAt(i) + result2;
         }
-        
-
         return result2;
     }
-
-
 }
