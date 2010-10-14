@@ -21,7 +21,9 @@ package com.bloatit.web.server;
 
 import com.bloatit.framework.AuthToken;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 
 public class Session {
@@ -33,12 +35,20 @@ public class Session {
     private Page lastStablePage;
     private AuthToken authToken;
 
+    private List<Language> preferredLanguages;
+    
+
     Session(String key) {
         this.key = key;
         this.authToken = null;
         this.logged = false;
         this.actionList = new ArrayDeque<Action>();
         this.notificationList = new ArrayDeque<Notification>();
+
+        // TODO : Following lines are for testing purposes only
+        preferredLanguages = new ArrayList<Language>();
+        preferredLanguages.add(new Language()); // TODO : ONLY FOR TEST
+        preferredLanguages.add(new Language("fr")); // TODO : ONLY FOR TEST
     }
     public String tr(String s){
         return this.language.tr(s);
@@ -102,5 +112,9 @@ public class Session {
 
     Deque<Notification> getNotifications() {
         return notificationList;
+    }
+
+    public List<Language> getPreferredLangs(){
+        return this.preferredLanguages;
     }
 }

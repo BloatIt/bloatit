@@ -20,6 +20,7 @@
 package com.bloatit.model;
 
 import com.bloatit.web.server.Language;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +29,18 @@ import java.util.Set;
 /**
  * Abstract class that describes components that can have various translations
  */
-public abstract class Translatable {
+public class Translatable {
     private Map<Language, Translation> translations;
 
+
     /**
-     * Creates a new translatable with no translations
+     * Create a translatable with a default translation and a default language
+     * @param entry
+     * @param defaultLanguage
      */
-    public Translatable(){
+    public Translatable(Translation entry){
         this.translations = new HashMap<Language, Translation>();
+        this.translations.put(entry.getLanguage(), entry);
     }
 
     /**
@@ -43,7 +48,7 @@ public abstract class Translatable {
      * @param translationList
      */
     public Translatable(List<Translation> translationList){
-        this();
+        this.translations = new HashMap<Language, Translation>();
         for(Translation t : translationList ){
             this.translations.put(t.getLanguage(), t);
         }
@@ -84,4 +89,6 @@ public abstract class Translatable {
     public Set<Language> getAvailableLangs(){
         return this.translations.keySet();
     }
+
+
 }

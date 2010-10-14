@@ -24,6 +24,7 @@ import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.TranslationManipulator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,7 +89,8 @@ public class DemandPage extends Page {
     @Override
     public String getCode() {
         if (this.demand != null) {
-            return "demand/id-" + this.demand.getId() + "/title-" + HtmlTools.escapeUrlString(this.demand.getTitle());
+            TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
+            return "demand/id-" + this.demand.getId() + "/title-" + HtmlTools.escapeUrlString(tm.tr(demand.getTitle()).getEntry());
         } else {
             return "demand"; // TODO Faire un système pour afficher une page d'erreur
         }

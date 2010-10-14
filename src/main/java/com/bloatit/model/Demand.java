@@ -18,24 +18,29 @@
  */
 package com.bloatit.model;
 
-public class Demand extends Translatable implements Kudoable{
-    private String title;
-    private String description;
-    private String specification;
+import java.util.ArrayList;
+
+
+public class Demand implements Kudoable{
     private int id;
     private Member author;
     private long karma;
+    private Translatable title;
+    private Translatable description;
+    private Translatable specification;
+    private final ArrayList<Translatable> drafts;
 
-    public Demand(int id, String title, String description, String specification, long karma, Member author) {
+    public Demand(int id, Translatable title, Translatable description, Translatable specification, ArrayList<Translatable> drafts, long karma, Member author) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.specification = specification;
+        this.drafts = new ArrayList<Translatable>();
         this.karma = karma;
         this.author = author;
     }
 
-    public String getDescription() {
+    public Translatable getDescription() {
         return this.description;
     }
 
@@ -43,11 +48,11 @@ public class Demand extends Translatable implements Kudoable{
         return this.id;
     }
 
-    public String getSpecification() {
+    public Translatable getSpecification() {
         return this.specification;
     }
 
-    public String getTitle() {
+    public Translatable getTitle() {
         return this.title;
     }
 

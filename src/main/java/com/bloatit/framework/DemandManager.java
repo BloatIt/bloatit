@@ -20,10 +20,11 @@ package com.bloatit.framework;
 
 import com.bloatit.model.Demand;
 import com.bloatit.model.Member;
+import com.bloatit.model.Translatable;
+import com.bloatit.model.Translation;
 import com.bloatit.model.exceptions.ElementNotFoundException;
+import com.bloatit.web.server.Language;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class DemandManager {
 
@@ -35,10 +36,30 @@ public class DemandManager {
 
         demands = new ArrayList<Demand>(){
             {
-                add(new Demand(1, "Title", "Description", "Specif", 1, yoann));
-                add(new Demand(2, "Demand 2", "Description2 ", "Specif2", 100, yoann));
-                add(new Demand(3, "Demand 3", "Description3", "Specif3", 3, yoann));
-                add(new Demand(4, "Demand 4", "Description4", "Specif4", 5, yoann));
+                add(new Demand(1, 
+                        new Translatable(new Translation("Title", new Language(), yoann, 0)),
+                        new Translatable(new Translation("Description", new Language(), yoann, 0)),
+                        new Translatable(new Translation("Specification", new Language(), yoann, 0)),
+                        new ArrayList<Translatable>(),
+                        1, yoann));
+                add(new Demand(1,
+                        new Translatable(new Translation("Demande 2", new Language("fr"), yoann, 0)),
+                        new Translatable(new Translation("Description", new Language("fr"), yoann, 0)),
+                        new Translatable(new Translation("Specification", new Language(), yoann, 0)),
+                        new ArrayList<Translatable>(),
+                        1, yoann));
+               add(new Demand(1,
+                        new Translatable(new Translation("German 3", new Language("de"), yoann, 0)),
+                        new Translatable(new Translation("German demand", new Language("de"), yoann, 0)),
+                        new Translatable(new Translation("This is a very nice german demand", new Language("de"), yoann, 0)),
+                        new ArrayList<Translatable>(),
+                        1, yoann));
+                add(new Demand(1,
+                        new Translatable(new Translation("Title4", new Language(), yoann, 0)),
+                        new Translatable(new Translation("Description", new Language(), yoann, 0)),
+                        new Translatable(new Translation("Specification", new Language(), yoann, 0)),
+                        new ArrayList<Translatable>(),
+                        1, yoann));
             }
         };
     }

@@ -21,13 +21,15 @@ package com.bloatit.web.pages;
 
 import com.bloatit.framework.DemandManager;
 import com.bloatit.model.Demand;
+import com.bloatit.model.Translation;
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.server.Language;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.TranslationManipulator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class DemandsPage extends Page {
 
@@ -42,16 +44,35 @@ public class DemandsPage extends Page {
     @Override
     protected void generateContent() {
         ArrayList<Demand> demands = DemandManager.GetAllDemands();
+        TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
+        this.htmlResult.write("<div class='demand_table'>");
+        this.htmlResult.write("<a href=\"demands/show-all\">Show me demands not in my language too (Doesn't work yet)</a>");
+        boolean showAll = false;
+        if(this.parameters.containsKey("show") && this.parameters.get("show").equals("all")){
+            showAll = true;
+        }
+        this.htmlResult.write("</div>");
+        
         this.htmlResult.write("<div class='demand_table'>");
         this.htmlResult.indent();
         for (Demand demand : demands){
-            DemandPage view = new DemandPage(session, demand);
-            this.htmlResult.write("<div class=\"demand_entry\">");
-            this.htmlResult.indent();
-            this.htmlResult.write("<p class=\"demand_title\">"+ HtmlTools.generateLink(this.session, demand.getTitle() , view) +"</p>");
-            this.htmlResult.write("<p class=\"demand_description\">"+ demand.getDescription()+"</p>");
-            this.htmlResult.unindent();
-            this.htmlResult.write("</div>");
+            Translation title = tm.tr(demand.getTitle());
+            Translation decription = tm.tr(demand.getDescription());
+
+            if(showAll || title != null){
+                DemandPage view = new DemandPage(session, demand);
+                this.htmlResult.write("<div class=\"demand_entry\">");
+                this.htmlResult.indent();
+                this.htmlResult.write("<p class=\"demand_title\">"+ HtmlTools.generateLink(this.session, title.getEntry() ,view) +"</p>");
+                this.htmlResult.write("<p class=\"demand_description\">"+ decription.getEntry() +"</p>");
+                this.htmlResult.write("<p class=\"demand_author\">Author : "+ demand.getAuthor().getLogin() +"</p>");
+                this.htmlResult.write("<p class=\"demand_list_langs\">Langs : ");
+                for(Language l : demand.getDescription().getAvailableLangs() ){
+                    this.htmlResult.write(" <span class=\"demand_lang\">"+ l.getCode() +"</span>");
+                }
+                this.htmlResult.unindent();
+                this.htmlResult.write("</div>");
+            }
         }
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");

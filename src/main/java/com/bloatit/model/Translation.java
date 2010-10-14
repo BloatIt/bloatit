@@ -21,15 +21,26 @@ package com.bloatit.model;
 
 import com.bloatit.web.server.Language;
 
+/**
+ * The version of a text for a given language
+ */
 public class Translation implements Kudoable {
     private final Language language;
-    private final String text;
     private Member author;
     private long karma;
 
-    public Translation(Language language, String text, Member author, long karma){
+    private String entry;
+
+    /**
+     * Creates a new translation
+     * @param entry The element translated into the new language
+     * @param language The language of the translation
+     * @param author The author of the translation
+     * @param karma The karma of the translation
+     */
+    public Translation(String entry, Language language, Member author, long karma){
+        this.entry = entry;
         this.language = language;
-        this.text = text;
         this.author = author;
         this.karma = karma;
     }
@@ -38,8 +49,11 @@ public class Translation implements Kudoable {
         return this.language;
     }
 
-    public String getText(){
-        return this.text;
+    /**
+     * @return the text for this given language
+     */
+    public String getEntry(){
+        return this.entry;
     }
 
     @Override
@@ -65,4 +79,5 @@ public class Translation implements Kudoable {
     public Member getAuthor(){
         return this.author;
     }
+
 }
