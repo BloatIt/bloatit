@@ -30,11 +30,7 @@ import java.util.Map;
 public class DemandPage extends Page {
 
     private final Demand demand;
-
-    public DemandPage(){
-        demand=null;
-    }
-
+    
     public DemandPage(Session session, Map<String, String> parameters) {
         this(session, parameters, null);
     }
@@ -45,7 +41,12 @@ public class DemandPage extends Page {
 
         if (demand == null) {
             if (parameters.containsKey("id")) {
-                Integer id = new Integer(parameters.get("id"));
+                Integer id = null;
+                try{
+                    id = new Integer(parameters.get("id"));
+                } catch(NumberFormatException e){
+                    
+                }
                 if (id != null) {
                     try {
                         d = DemandManager.GetDemandById(id);

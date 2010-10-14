@@ -30,9 +30,6 @@ import java.util.Map;
 
 public class LoginPage extends Page {
 
-    public LoginPage(){
-    }
-
     public LoginPage(Session session) {
         this(session, new HashMap<String, String>());
     }

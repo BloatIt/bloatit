@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.server;
 
 import com.bloatit.web.actions.LoginAction;
@@ -32,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class DispatchServer {
 
     static final Map<String, Class<? extends Request>> pageMap;
@@ -40,6 +38,7 @@ public class DispatchServer {
 
     static {
         pageMap = new HashMap<String, Class<? extends Request>>() {
+
             {
                 put("index", IndexPage.class);
                 put("login", LoginPage.class);
@@ -47,142 +46,138 @@ public class DispatchServer {
                 put("demand", DemandPage.class);
                 put("my_account", MyAccountPage.class);
             }
-    
         };
 
         actionMap = new HashMap<String, Class<? extends Request>>() {
+
             {
                 put("login", LoginAction.class);
                 put("logout", LogoutAction.class);
-               
-            }
 
+            }
         };
     }
-
-    
-    private Map<String, String> query;
-    private Map<String, String> post;
     private Map<String, String> cookies;
     private List<String> preferred_langs;
     private Session session;
+    private final Request request;
 
     public DispatchServer(Map<String, String> query, Map<String, String> post, Map<String, String> cookies, List<String> preferred_langs) {
-        this.query = query;
-        this.post = post;
         this.cookies = cookies;
         this.preferred_langs = preferred_langs;
+        this.session = this.findSession(query);
+        this.request = this.initCurrentRequest(query, post);
     }
 
     public String process() {
-        initSession();
-        initLanguage();
-
-        //TODO : Combine query, post & cookies in a single map
-
-        Request currentRequest = initCurrentRequest();
         HtmlResult htmlResult = new HtmlResult(session);
-        currentRequest.doProcess(htmlResult, query, post);
+        this.request.doProcess(htmlResult);
 
         return htmlResult.generate();
     }
 
-    private void initSession() {
-        session = null;
-        if(cookies.containsKey("session_key")) {
-            session = SessionManager.getByKey(cookies.get("session_key"));
-        }
+    private Session findSession(Map<String, String> query) {
+        Session sess = null;
+        Language l = this.userLanguage(query);
 
-        if(session == null) {
-            session = SessionManager.createSession();
+        if (this.cookies.containsKey("session_key")) {
+            sess = SessionManager.getByKey(cookies.get("session_key"));
         }
+        if(sess == null){
+            sess = SessionManager.createSession();
+        }
+        sess.setLanguage(l);
+        return sess;
     }
 
-    private void initLanguage() {
+    private Language userLanguage(Map<String, String> query) {
         Language language = new Language();
-        if(query.containsKey("lang")) {
-            if(query.get("lang").equals("default")) {
+        if (query.containsKey("lang")) {
+            if (query.get("lang").equals("default")) {
                 language.findPrefered(preferred_langs);
             } else {
                 language.setCode(query.get("lang"));
             }
         }
 
-        session.setLanguage(language);
+        return language;
     }
 
-    private Request initCurrentRequest() {
-
-        Request request = findAction();
-
-        if(request == null) {
-            request = findPage();
-        }
-
-        return request;
-    }
-
-    private Request findAction() {
-
-        if(query.containsKey("page")) {
+    private Request initCurrentRequest(Map<String, String> query, Map<String, String> post) {
+        // Parse query string
+        if (query.containsKey("page")) {
             QueryString queryString = parseQueryString(query.get("page"));
-            if(queryString.page.startsWith("action/") && actionMap.containsKey(queryString.page.substring(7))) {
-                return RequestFactory.build(actionMap.get(queryString.page.substring(7)), session, queryString.parameters);
-            }
+            // Merge Post & Get
+            Map<String, String> parameters = this.MergePostGet(queryString.parameters, post);
+
+            Request currentRequest = this.findRequest(queryString.page, parameters);
+            return currentRequest;
         }
-        return null;
+        return new PageNotFound(this.session);
     }
 
-    private Request findPage() {
-
-        if(query.containsKey("page")) {
-            QueryString queryString = parseQueryString(query.get("page"));
-            if(pageMap.containsKey(queryString.page)) {
-                return RequestFactory.build(pageMap.get(queryString.page),session, queryString.parameters);
-            }
+    
+    private Request findRequest(String page, Map<String, String> parameters) {
+        if (page.startsWith("action/") && actionMap.containsKey(page.substring(7))) {
+            // Find Action
+            return RequestFactory.build(actionMap.get(page.substring(7)), this.session, parameters);
         }
+        if (pageMap.containsKey(page)) {
+            // Find page
+            return RequestFactory.build(pageMap.get(page), this.session, parameters);
+        }
+        return new PageNotFound(session, parameters);
+    }
 
-        return new PageNotFound(session);
+    /**
+     * Merges the list of query attributes and the list of post attributes.
+     *
+     * If an attribute with the same key is found in Query and Post, the attribute
+     * from post is kept.
+     * @param query the Map containing the query parameters
+     * @param post the Map containing the post parameters
+     * @return the new map
+     */
+    private Map<String, String> MergePostGet(Map<String, String> query, Map<String, String> post){
+        HashMap<String, String> mergedList = new HashMap<String, String>();
+        mergedList.putAll(query);
+        mergedList.putAll(post);
+        
+        return mergedList;
     }
 
     private QueryString parseQueryString(String queryString) {
         String[] splitted = strip(queryString, '/').split("/");
-
         String page = "";
         Map<String, String> parameters = new HashMap<String, String>();
 
         int i = 0;
-
-         
-        
-        // Parsing, finding        page name  page name
-        while( i < splitted.length && !splitted[i].contains("-")) {
-            if(!page.isEmpty() && !splitted[i].isEmpty()) {
+        // Parsing, finding
+        while (i < splitted.length && !splitted[i].contains("-")) {
+            if (!page.isEmpty() && !splitted[i].isEmpty()) {
                 page = page + "/";
             }
             page = page + splitted[i];
-            i = i+1;
+            i = i + 1;
         }
 
         // Parsing, finding page parameters
-        while (i < splitted.length){
+        while (i < splitted.length) {
             if (splitted[i].contains("-")) {
                 String[] p = splitted[i].split("-");
-                parameters.put(p[0],p[1]);
+                parameters.put(p[0], p[1]);
             }
-            i = i+1;
+            i = i + 1;
         }
-
         return new QueryString(page, parameters);
-
     }
 
     private static class QueryString {
+
         public String page;
         public Map<String, String> parameters;
 
         public QueryString() {
-
         }
 
         private QueryString(String page, Map<String, String> parameters) {
@@ -194,16 +189,16 @@ public class DispatchServer {
     private static String strip(String string, char stripped) {
         String result1 = "";
         int i = 0;
-        while(string.charAt(i) == stripped) {
+        while (string.charAt(i) == stripped) {
             i++;
         }
         for (; i < string.length(); i++) {
             result1 += string.charAt(i);
         }
-        i =  result1.length() -1;
+        i = result1.length() - 1;
 
         String result2 = "";
-        while(result1.charAt(i) == stripped) {
+        while (result1.charAt(i) == stripped) {
             i--;
         }
         for (; i >= 0; i--) {

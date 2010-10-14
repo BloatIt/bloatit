@@ -31,9 +31,6 @@ import java.util.Map;
 
 public class DemandsPage extends Page {
 
-    public DemandsPage(){
-    }
-
     public DemandsPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }
@@ -60,10 +57,12 @@ public class DemandsPage extends Page {
         this.htmlResult.write("</div>");
     }
 
+    @Override
     public String getTitle(){
         return "View all demands - search demands";
     }
 
+    @Override
     public String getCode(){
         return "demands";
     }

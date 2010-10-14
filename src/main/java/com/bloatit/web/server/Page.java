@@ -31,10 +31,6 @@ public abstract class Page extends Request {
 
     private final String design;
 
-    protected Page() {
-        this.design = "/resources/css/design.css";
-    }
-
     public Page(Session session, Map<String, String> parameters) {
         super(session, parameters);
         this.design = "/resources/css/design.css";

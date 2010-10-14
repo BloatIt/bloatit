@@ -20,20 +20,15 @@ package com.bloatit.web.actions;
 
 import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.LoginManager;
-import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.server.Action;
-import com.bloatit.web.server.RequestFactory;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginAction extends Action {
-
-    public LoginAction() {
-    }
 
     public LoginAction(Session session, Map<String, String> parameters) {
         super(session, parameters);
@@ -58,10 +53,10 @@ public class LoginAction extends Action {
 
     @Override
     protected void process() {
-        if (this.post.containsKey(this.getLoginCode()) && this.post.containsKey(this.getPasswordCode())) {
+        if (this.parameters.containsKey(this.getLoginCode()) && this.parameters.containsKey(this.getPasswordCode())) {
             
-                String login = this.post.get(this.getLoginCode());
-                String password = this.post.get(this.getPasswordCode());
+                String login = this.parameters.get(this.getLoginCode());
+                String password = this.parameters.get(this.getPasswordCode());
                 AuthToken token = null;
                 token    = LoginManager.loginByPassword(login, password);
                 

@@ -23,9 +23,6 @@ import com.bloatit.web.server.Session;
 import java.util.Map;
 
 public class PageNotFound extends Page {
-
-    public PageNotFound() {
-    }
     
     public PageNotFound(Session session, Map<String, String> parameters) {
         super(session, parameters);
