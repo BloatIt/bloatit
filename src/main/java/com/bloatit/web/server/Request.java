@@ -19,12 +19,8 @@
 
 package com.bloatit.web.server;
 
-import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 public abstract class Request {
     protected HtmlResult htmlResult;
@@ -38,17 +34,11 @@ public abstract class Request {
 
     abstract public String getCode();
 
-    abstract protected void process() throws ElementNotFoundException;
+    abstract protected void process();
 
     
     public final void doProcess(HtmlResult htmlResult) {
-        try {
-            this.htmlResult = htmlResult;
-            this.process();
-        } catch (ElementNotFoundException ex) {
-            //TODO
-            Logger.getLogger(Request.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-        }
+        this.htmlResult = htmlResult;
+        this.process();
     }
 }

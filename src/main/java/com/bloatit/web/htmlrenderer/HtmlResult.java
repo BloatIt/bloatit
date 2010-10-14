@@ -19,7 +19,6 @@
 
 package com.bloatit.web.htmlrenderer;
 
-import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
 
 
