@@ -94,10 +94,19 @@ public class SCGIServer {
                 try {
                     display = dispatchServer.process();
                 } catch (FatalErrorException e) {
-                    display = "Content-type: text/html\r\n\r\n"+e.toString();
+                    display = "Content-type: text/html\r\n\r\n"+e.toString()+" :\n";
+                    for(StackTraceElement s : e.getStackTrace()){
+                       display+="<p>\t"+s+"</p>\n";
+                    }
                     // TODO : Log
                     // TODO Debug Only
                     // TODO : print stack trace
+                } catch (Exception e){
+                    // Protects the server
+                    display = "Content-type: text/html\r\n\r\n"+e.toString()+" :\n";
+                    for(StackTraceElement s : e.getStackTrace()){
+                       display+="<p>\t"+s+"</p>\n";
+                    }
                 }
 
                 try {
