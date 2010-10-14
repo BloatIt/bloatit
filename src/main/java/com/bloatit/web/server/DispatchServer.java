@@ -76,6 +76,12 @@ public class DispatchServer {
         return htmlResult.generate();
     }
 
+    /**
+     * Return the session for the user. Either an existing session or a new
+     * session.
+     * @param query the complet query string
+     * @return the session matching the user
+     */
     private Session findSession(Map<String, String> query) {
         Session sess = null;
         Language l = this.userLanguage(query);

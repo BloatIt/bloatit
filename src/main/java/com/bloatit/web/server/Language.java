@@ -87,7 +87,6 @@ public class Language {
 
     /**
      * Nested class to handle different languages
-     * [Equivalent to using a struct]
      */
     private static class LanguageTemplate {
 

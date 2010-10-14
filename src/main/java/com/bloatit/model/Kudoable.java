@@ -17,27 +17,34 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.server;
+package com.bloatit.model;
 
-import com.bloatit.model.exceptions.ElementNotFoundException;
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.pages.IndexPage;
-import java.util.Map;
+/**
+ * Interface that describes any elements that can be kudoed
+ */
+public interface Kudoable {
 
+        /**
+     * Call when a member kudos a kudoable
+     * @param kudoer the member that issues the kudo
+     */
+    public void kudo(Member kudoer);
 
-public abstract class Action extends Request{
+    /**
+     * Call when a member reports a kudoable
+     * @param kudoer the member that issues the report
+     */
+    public void report(Member reporter);
 
-    public Action(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-    }
+    /**
+     * Returns the current reputation of the kudoable
+     * @return
+     */
+    public long getReputation();
 
-    @Override
-    protected void process(){
-        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session,new IndexPage(this.session)));
-    }
-
-    public String getUrl(){
-        return "/"+this.session.getLanguage().getCode()+"/action/"+this.getCode();
-    }
-
+    /**
+     * Returns the author of the kudoable
+     * @return
+     */
+    public Member getAuthor();
 }

@@ -16,39 +16,30 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.bloatit.model;
 
-public class Demand extends Translatable implements Kudoable{
-    private String title;
-    private String description;
-    private String specification;
-    private int id;
+import com.bloatit.web.server.Language;
+
+public class Translation implements Kudoable {
+    private final Language language;
+    private final String text;
     private Member author;
     private long karma;
 
-    public Demand(int id, String title, String description, String specification, long karma, Member author) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.specification = specification;
-        this.karma = karma;
+    public Translation(Language language, String text, Member author, long karma){
+        this.language = language;
+        this.text = text;
         this.author = author;
+        this.karma = karma;
     }
 
-    public String getDescription() {
-        return this.description;
+    public Language getLanguage(){
+        return this.language;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public String getSpecification() {
-        return this.specification;
-    }
-
-    public String getTitle() {
-        return this.title;
+    public String getText(){
+        return this.text;
     }
 
     @Override
