@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.bloatit.model.util.HibernateUtil;
@@ -22,6 +24,7 @@ import com.bloatit.model.util.HibernateUtil;
 public class Member extends Identifiable {
 
 	@Basic(optional = false)
+	@Column(unique = true, updatable = false)
 	private String login;
 
 	@Basic(optional = false)
@@ -59,6 +62,17 @@ public class Member extends Identifiable {
 		}
 		return theMember;
 	}
+	
+	public static Member getMemberByLogin(String login){
+		try{
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			Query q = session.createQuery("from Member where login = :login");
+			q.setString("login", login);
+			return (Member) q.list().get(0);
+		}catch (HibernateException e) {
+			return null;
+		}
+	}
 
 	protected Member() {
 		super();
@@ -76,7 +90,6 @@ public class Member extends Identifiable {
 	 * Automatically add the group in the group -> member relationship
 	 */
 	public void addGroup(Group group) {
-		// TODO veryfi there is no bug with hibernate.
 		groups.add(group);
 	}
 

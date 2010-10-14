@@ -28,14 +28,26 @@ public class HibernateTest extends TestCase {
 		return new TestSuite(HibernateTest.class);
 	}
 
-	/**
-	 * Rigorous Test :-)
-	 */
-	public void testApp() {
-		Member theMember = Member.createAndPersiste("Thomas", "password", "tom@gmail.com");
-		theMember.setFirstname("Thomas");
-		theMember.setLastname("Guyard");
+	public void testCreateMember() {
+		{
+			Member theMember = Member.createAndPersiste("Thomas", "password", "tom@gmail.com");
+			theMember.setFirstname("Thomas");
+			theMember.setLastname("Guyard");
+		}
+		{
+			Member theMember = Member.createAndPersiste("Fred", "other", "fred@gmail.com");
+			theMember.setFirstname("Frédéric");
+			theMember.setLastname("Bertolus");
+		}
+		{
+			Member theMember = Member.createAndPersiste("Yo", "plop", "yo@gmail.com");
+			theMember.setFirstname("Yoann");
+			theMember.setLastname("Plénet");
+		}
 		
+		assert(Member.getMemberByLogin("Fred").getLastname() == "Bertolus");
+		assert(Member.getMemberByLogin("Inexistant") == null);
+
 		HibernateUtil.getSessionFactory().close();
 	}
 }
