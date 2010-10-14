@@ -17,14 +17,8 @@ public class Comment extends Kudosable {
 	private Draft commentedDraft;
 	@OneToOne(optional = false)
 	private LocalizedText text;
-	@OneToMany(mappedBy="comment")
+	@OneToMany(mappedBy = "comment")
 	private Set<Comment> children = new HashSet<Comment>(0);
-	
-	// For hibernate mapping 
-	@ManyToOne
-	private Comment comment;
-	@ManyToOne
-	private Draft draft;
 
 	public Comment(Draft commentedDraft, Member member, LocalizedText text) {
 		super(member);
@@ -51,4 +45,40 @@ public class Comment extends Kudosable {
 	protected Comment() {
 		super();
 	}
+	
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+	
+	@ManyToOne
+	private Comment comment;
+	@ManyToOne
+	private Draft draft;
+	protected Comment getComment() {
+    	return comment;
+    }
+
+	protected void setComment(Comment comment) {
+    	this.comment = comment;
+    }
+
+	protected Draft getDraft() {
+    	return draft;
+    }
+
+	protected void setDraft(Draft draft) {
+    	this.draft = draft;
+    }
+
+	protected void setCommentedDraft(Draft commentedDraft) {
+    	this.commentedDraft = commentedDraft;
+    }
+
+	protected void setText(LocalizedText text) {
+    	this.text = text;
+    }
+
+	protected void setChildren(Set<Comment> children) {
+    	this.children = children;
+    }
 }

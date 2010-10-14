@@ -44,4 +44,16 @@ public class Offer extends Kudosable {
 	public LocalizedText getText() {
 		return text;
 	}
+
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+	
+	protected void setDemand(Demand demand) {
+    	this.demand = demand;
+    }
+
+	protected void setText(LocalizedText text) {
+    	this.text = text;
+    }
 }

@@ -13,7 +13,7 @@ public class Transaction extends UserContent {
 
 	@Basic(optional = false)
 	private BigDecimal amount;
-	
+
 	// For hibernate mapping only:
 	@ManyToOne
 	private Demand demand;
@@ -29,5 +29,21 @@ public class Transaction extends UserContent {
 	public BigDecimal getAmount() {
 		return amount;
 	}
+	
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+
+	protected Demand getDemand() {
+    	return demand;
+    }
+
+	protected void setDemand(Demand demand) {
+    	this.demand = demand;
+    }
+
+	protected void setAmount(BigDecimal amount) {
+    	this.amount = amount;
+    }
 
 }

@@ -90,7 +90,10 @@ public class LocalizedText extends Identifiable {
 		return text;
 	}
 
-	// Methods for hibernate.
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+	
 	protected Locale getLocale() {
 		return locale;
 	}

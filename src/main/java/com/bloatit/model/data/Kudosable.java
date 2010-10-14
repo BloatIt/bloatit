@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -13,7 +12,7 @@ public abstract class Kudosable extends UserContent {
 
 	@Basic(optional = true)
 	private int popularity;
-	@OneToMany(mappedBy="kudosable")
+	@OneToMany(mappedBy = "kudosable")
 	private Set<Kudos> kudos = new HashSet<Kudos>(0);
 
 	protected Kudosable() {
@@ -26,7 +25,7 @@ public abstract class Kudosable extends UserContent {
 	}
 
 	/**
-	 * Trivial calculation of the popularity 
+	 * Trivial calculation of the popularity
 	 * 
 	 * @return the new popularity
 	 */
@@ -34,5 +33,25 @@ public abstract class Kudosable extends UserContent {
 		kudos.add(new Kudos(member, value));
 		return popularity += value;
 	}
+
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+	
+	protected int getPopularity() {
+    	return popularity;
+    }
+
+	protected void setPopularity(int popularity) {
+    	this.popularity = popularity;
+    }
+
+	protected Set<Kudos> getKudos() {
+    	return kudos;
+    }
+
+	protected void setKudos(Set<Kudos> kudos) {
+    	this.kudos = kudos;
+    }
 
 }

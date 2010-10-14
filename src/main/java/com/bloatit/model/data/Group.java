@@ -21,13 +21,12 @@ public class Group extends UserContent {
 
 	// right is also a SQL keyword.
 	@Basic(optional = false)
-	@Column(name = "group_right") 
+	@Column(name = "group_right")
 	private Right right;
 	private String logo;
 
 	@ManyToMany
-	@JoinTable(name = "GroupMembership", joinColumns = @JoinColumn(name = "member_id"),
-	           inverseJoinColumns = @JoinColumn(name = "group_id"))
+	@JoinTable(name = "GroupMembership", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
 	private Set<Member> members = new HashSet<Member>(0);
 
 	protected Group() {
@@ -66,5 +65,13 @@ public class Group extends UserContent {
 	public Set<Member> getMembers() {
 		return members;
 	}
+	
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+	
+	protected void setMembers(Set<Member> members) {
+    	this.members = members;
+    }
 
 }

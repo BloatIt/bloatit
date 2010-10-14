@@ -21,11 +21,11 @@ public class Demand extends UserContent {
 	private State state;
 	@OneToOne(mappedBy = "demand", optional = false)
 	private Draft currentDraft;
-	@OneToMany(mappedBy="demand")
+	@OneToMany(mappedBy = "demand")
 	private Set<Draft> drafts = new HashSet<Draft>(0); // a popularity sorted
-	@OneToMany(mappedBy="demand")
+	@OneToMany(mappedBy = "demand")
 	private Set<Offer> offers = new HashSet<Offer>(0);
-	@OneToMany(mappedBy="demand")
+	@OneToMany(mappedBy = "demand")
 	private Set<Transaction> contributions = new HashSet<Transaction>(0);
 
 	protected Demand() {
@@ -80,4 +80,24 @@ public class Demand extends UserContent {
 	public Set<Transaction> getContributions() {
 		return contributions;
 	}
+	
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+	
+	protected void setCurrentDraft(Draft currentDraft) {
+    	this.currentDraft = currentDraft;
+    }
+
+	protected void setDrafts(Set<Draft> drafts) {
+    	this.drafts = drafts;
+    }
+
+	protected void setOffers(Set<Offer> offers) {
+    	this.offers = offers;
+    }
+
+	protected void setContributions(Set<Transaction> contributions) {
+    	this.contributions = contributions;
+    }
 }

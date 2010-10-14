@@ -14,7 +14,7 @@ public class GroupMembership extends Identifiable {
 
 	@ManyToOne
 	private Member member;
-	
+
 	@ManyToOne
 	private Group group;
 	@Basic(optional = false)
@@ -41,4 +41,20 @@ public class GroupMembership extends Identifiable {
 	public boolean isAdmin() {
 		return isAdmin;
 	}
+	
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+
+	protected void setMember(Member member) {
+    	this.member = member;
+    }
+
+	protected void setGroup(Group group) {
+    	this.group = group;
+    }
+
+	protected void setAdmin(boolean isAdmin) {
+    	this.isAdmin = isAdmin;
+    }
 }

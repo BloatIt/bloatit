@@ -21,7 +21,7 @@ public class Draft extends UserContent {
 	private LocalizedText description;
 	@OneToOne(optional = false)
 	private LocalizedText specification;
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy="draft")
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "draft")
 	private Set<Comment> comments = new HashSet<Comment>(0);
 
 	protected Draft() {
@@ -58,6 +58,30 @@ public class Draft extends UserContent {
 
 	public void addComment(Member member, LocalizedText text) {
 		comments.add(new Comment(this, member, text));
+	}
+
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+
+	protected void setDemand(Demand demand) {
+		this.demand = demand;
+	}
+
+	protected void setTitle(LocalizedText title) {
+		this.title = title;
+	}
+
+	protected void setDescription(LocalizedText description) {
+		this.description = description;
+	}
+
+	protected void setSpecification(LocalizedText specification) {
+		this.specification = specification;
+	}
+
+	protected void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 
 }

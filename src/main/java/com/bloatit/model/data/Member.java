@@ -31,8 +31,7 @@ public class Member extends Identifiable {
 	private Date dateJoin;
 
 	@ManyToMany
-	@JoinTable(name = "GroupMembership", joinColumns = @JoinColumn(name = "group_id"),
-	           inverseJoinColumns = @JoinColumn(name = "member_id"))
+	@JoinTable(name = "GroupMembership", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "member_id"))
 	private Set<Group> groups = new HashSet<Group>(0);
 
 	protected Member() {
@@ -97,4 +96,20 @@ public class Member extends Identifiable {
 	public Set<Group> getGroups() {
 		return groups;
 	}
+	
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+	
+	protected void setLogin(String login) {
+    	this.login = login;
+    }
+
+	protected void setDateJoin(Date dateJoin) {
+    	this.dateJoin = dateJoin;
+    }
+
+	protected void setGroups(Set<Group> groups) {
+    	this.groups = groups;
+    }
 }

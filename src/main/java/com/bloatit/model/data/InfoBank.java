@@ -38,5 +38,21 @@ public class InfoBank extends Identifiable {
 	public String getIban() {
 		return iban;
 	}
+	
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+
+	protected void setCreationDate(Date creationDate) {
+    	this.creationDate = creationDate;
+    }
+
+	protected void setLastModificationDate(Date lastModificationDate) {
+    	this.lastModificationDate = lastModificationDate;
+    }
+
+	protected void setIban(String iban) {
+    	this.iban = iban;
+    }
 
 }

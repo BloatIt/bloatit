@@ -11,7 +11,7 @@ public class Kudos extends UserContent {
 
 	@Basic(optional = false)
 	private int value;
-	
+
 	// For dbMapping only
 	@ManyToOne
 	private Kudosable kudosable;
@@ -27,4 +27,20 @@ public class Kudos extends UserContent {
 	public int getValue() {
 		return value;
 	}
+	
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+
+	protected Kudosable getKudosable() {
+    	return kudosable;
+    }
+
+	protected void setKudosable(Kudosable kudosable) {
+    	this.kudosable = kudosable;
+    }
+
+	protected void setValue(int value) {
+    	this.value = value;
+    }
 }
