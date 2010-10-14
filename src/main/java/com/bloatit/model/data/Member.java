@@ -11,6 +11,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
+import com.bloatit.model.util.HibernateUtil;
+
 // member is a SQL keyword (in some specific implementations)
 @Entity(name = "bloatit_member")
 @MappedSuperclass
@@ -34,14 +39,36 @@ public class Member extends Identifiable {
 	@JoinTable(name = "GroupMembership", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "member_id"))
 	private Set<Group> groups = new HashSet<Group>(0);
 
+	/**
+	 * For now it is a simple creator. But it will automatically add the Member to the default group.
+	 * @param login The login of the member.
+	 * @param password The password of the member (md5 ??)
+	 * @return The newly created Member
+	 * @throws HibernateException if there is any problem connecting to the db.
+	 */
+	public static Member createAndPersiste(String login, String password, String email) throws HibernateException {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		Member theMember = new Member(login, password, email);
+		try {
+			session.save(theMember);
+			session.getTransaction().commit();
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			throw e;
+		}
+		return theMember;
+	}
+
 	protected Member() {
 		super();
 	}
 
-	public Member(String login, String password) {
+	protected Member(String login, String password, String email) {
 		super();
 		this.login = login;
 		this.password = password;
+		this.email = email;
 		dateJoin = new Date();
 	}
 
@@ -96,20 +123,20 @@ public class Member extends Identifiable {
 	public Set<Group> getGroups() {
 		return groups;
 	}
-	
+
 	// ======================================================================
 	// For hibernate mapping
 	// ======================================================================
-	
+
 	protected void setLogin(String login) {
-    	this.login = login;
-    }
+		this.login = login;
+	}
 
 	protected void setDateJoin(Date dateJoin) {
-    	this.dateJoin = dateJoin;
-    }
+		this.dateJoin = dateJoin;
+	}
 
 	protected void setGroups(Set<Group> groups) {
-    	this.groups = groups;
-    }
+		this.groups = groups;
+	}
 }

@@ -70,14 +70,21 @@
 			<version>3.4.0.GA</version>
 		</dependency>
 
-		<!-- We need the postgresql to map enum -->
+		<!-- we need sl4j for logging with hibernate -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.8</version>
+		</dependency>
+
+		<!-- sl4j uses log4j -->
+		
+		<!-- We need postgresql -->
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>8.4-701.jdbc4</version>
 		</dependency>
-
-
 
 	</dependencies>
 	<pluginRepositories>

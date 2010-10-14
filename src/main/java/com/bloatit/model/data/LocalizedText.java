@@ -4,11 +4,11 @@ import java.util.Locale;
 
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.NamedQuery;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.util.HibernateUtil;
 
@@ -27,7 +27,7 @@ import com.bloatit.model.util.HibernateUtil;
  */
 @Entity
 @MappedSuperclass
-@NamedQuery(name = "translation.getTextByLocale", query = "select text from Translation t where t.locale == :locale")
+@NamedQuery(name = "translation.getTextByLocale", query = "select text from Translation as t where t.locale = :locale")
 public class LocalizedText extends Identifiable {
 
 	private Locale locale;
