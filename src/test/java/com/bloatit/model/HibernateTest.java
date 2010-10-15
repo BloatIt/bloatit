@@ -1,16 +1,14 @@
 package com.bloatit.model;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
 import com.bloatit.model.data.Group;
 import com.bloatit.model.data.Member;
 import com.bloatit.model.util.HibernateUtil;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
@@ -54,44 +52,67 @@ public class HibernateTest extends TestCase {
 			HibernateUtil.EndWorkUnitAndFlush();
 		}
 
-		
 	}
-	
-	public void testMemberDuplicateCreation(){
+
+	public void testMemberDuplicateCreation() {
 		try {
 			HibernateUtil.beginWorkUnit();
-			Member.createAndPersiste("Yo", "plop", "yo@gmail.com"); // duplicate login
+			Member.createAndPersiste("Yo", "plop", "yo@gmail.com"); // duplicate
+																	// login
 			HibernateUtil.EndWorkUnitAndFlush();
-	        assert(false);
-        } catch (HibernateException e) {
-        	assert(true);
-        }
+			assert (false);
+		} catch (HibernateException e) {
+			assert (true);
+		}
 	}
-	
-	public void testGetMemberByLogin()
-	{
+
+	public void testGetMemberByLogin() {
 		HibernateUtil.beginWorkUnit();
-		assert (Member.getByLogin("Fred").getLastname() == "Bertolus");
+		assert (Member.getByLogin("Fred").getLastname().equals("Bertolus"));
 		assert (Member.getByLogin("Inexistant") == null);
 		HibernateUtil.EndWorkUnitAndFlush();
 	}
-	
-	public void testExistMemberByLogin()
-	{
+
+	public void testExistMemberByLogin() {
 		HibernateUtil.beginWorkUnit();
 		assert (Member.exist("Fred") == true);
 		assert (Member.exist("Inexistant") == false);
 		assert (Member.exist(null) == false);
 		HibernateUtil.EndWorkUnitAndFlush();
 	}
-	
+
 	public void testCreateGroup() {
 		HibernateUtil.beginWorkUnit();
 		Member yo = Member.getByLogin("Yo");
 		Group.createAndPersiste("Other", yo, Group.Right.PUBLIC);
 		Group.createAndPersiste("myGroup", yo, Group.Right.PUBLIC);
+		Group.createAndPersiste("b219", yo, Group.Right.PUBLIC);
 		HibernateUtil.EndWorkUnitAndFlush();
-		
+
+	}
+
+	public void testDuplicatedGroup() {
+		try {
+			HibernateUtil.beginWorkUnit();
+			Member fred = Member.getByLogin("Fred");
+			Group.createAndPersiste("Other", fred, Group.Right.PUBLIC);
+			assert (true);
+			HibernateUtil.EndWorkUnitAndFlush();
+			assert (false);
+		} catch (HibernateException e) {
+			assert (true);
+		}
+	}
+
+	public void testGetGroupByName() {
+		HibernateUtil.beginWorkUnit();
+		assert (Group.getByName("b219").getAuthor().getLastname().equals("Plénet"));
+		assert (Group.getByName("Inexistant") == null);
+		HibernateUtil.EndWorkUnitAndFlush();
+	}
+
+	public void end() {
 		HibernateUtil.getSessionFactory().close();
 	}
+
 }

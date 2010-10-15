@@ -6,12 +6,10 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-@MappedSuperclass
 public class Demand extends UserContent {
 	public enum State {
 		CONSTRUCTING, VALIDATED, DEVELOPING, DEVELOPED, ACCEPTED, REJECTED;

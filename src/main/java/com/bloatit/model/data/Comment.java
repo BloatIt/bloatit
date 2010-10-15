@@ -5,12 +5,10 @@ import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-@MappedSuperclass
 public class Comment extends Kudosable {
 
 	@ManyToOne(optional = false)

@@ -3,10 +3,10 @@ package com.bloatit.model.data;
 import java.util.Date;
 
 import javax.persistence.Basic;
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
-@Entity
+@MappedSuperclass
 public abstract class UserContent extends Identifiable {
 
 	@OneToOne

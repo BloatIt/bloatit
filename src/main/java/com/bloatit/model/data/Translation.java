@@ -4,17 +4,19 @@ import java.util.Locale;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.ManyToOne;
 
 // This class should handle some versions.
 @Entity
-@MappedSuperclass
 public class Translation extends Kudosable {
 
 	@Basic(optional = false)
 	private Locale locale;
 	@Basic(optional = false)
 	private String text;
+	
+	@ManyToOne(optional = false)
+	private LocalizedText baseText;
 
 	protected Translation() {
 	}
@@ -40,4 +42,12 @@ public class Translation extends Kudosable {
 	public void setText(String text) {
 		this.text = text;
 	}
+
+	protected void setBaseText(LocalizedText baseText) {
+	    this.baseText = baseText;
+    }
+
+	protected LocalizedText getBaseText() {
+	    return baseText;
+    }
 }

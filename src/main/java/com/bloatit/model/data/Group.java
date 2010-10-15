@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
@@ -18,7 +17,6 @@ import com.bloatit.model.util.HibernateUtil;
 
 //Group is SQL keyword
 @Entity(name = "bloatit_group")
-@MappedSuperclass
 public class Group extends UserContent {
 
 	public enum Right {

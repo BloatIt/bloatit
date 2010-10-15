@@ -6,12 +6,10 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
-@MappedSuperclass
 public class Draft extends UserContent {
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	private Demand demand;

@@ -4,10 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 
 @Entity
-@MappedSuperclass
 public class InfoBank extends Identifiable {
 	@Basic(optional = false)
 	private Date creationDate;

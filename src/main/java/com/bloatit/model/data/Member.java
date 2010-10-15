@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
@@ -21,7 +20,6 @@ import com.bloatit.model.util.HibernateUtil;
 
 // member is a SQL keyword (in some specific implementations)
 @Entity(name = "bloatit_member")
-@MappedSuperclass
 public class Member extends Identifiable {
 
 	@Basic(optional = false)
@@ -76,9 +74,9 @@ public class Member extends Identifiable {
 	
 	public static boolean exist(String login){
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			Query q = session.createQuery("select count(Member) from Member where login = :login");
+			Query q = session.createQuery("select count(m) from com.bloatit.model.data.Member as m where login = :login");
 			q.setString("login", login);
-			return q.iterate().next().equals(1);
+			return ((Boolean) q.uniqueResult()).equals(1);
 	}
 
 	public List<Group> getGroups() {

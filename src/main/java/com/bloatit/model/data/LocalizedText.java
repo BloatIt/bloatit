@@ -5,13 +5,11 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.util.HibernateUtil;
 
@@ -30,13 +28,12 @@ import com.bloatit.model.util.HibernateUtil;
  */
 //@NamedQuery(name = "translation.getTextByLocale", query = "select text from Translation as t where t.locale = :locale")
 @Entity
-@MappedSuperclass
 public class LocalizedText extends Identifiable {
 
 	private Locale locale;
 	private String text;
 
-	@OneToMany(mappedBy = "locale")
+	@OneToMany(mappedBy = "baseText")
 	private Set<Translation> translations = new HashSet<Translation>(0);
 
 	protected LocalizedText() {

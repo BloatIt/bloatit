@@ -2,7 +2,6 @@ package com.bloatit.model.data;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
@@ -14,7 +13,6 @@ import com.bloatit.model.util.HibernateUtil;
  * WARNING class not used yet. Everything is done using directly member.
  */
 @Entity
-@MappedSuperclass
 public class GroupMembership extends Identifiable {
 
 	@OneToOne(optional = false)

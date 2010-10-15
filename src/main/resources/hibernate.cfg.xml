@@ -44,6 +44,7 @@
 		<mapping class="com.bloatit.model.data.Demand" />
 		<mapping class="com.bloatit.model.data.Member" />
 		<mapping class="com.bloatit.model.data.Offer" />
+		
 		<!--<mapping class="com.bloatit.model.data.UserContent" />
 		<mapping class="com.bloatit.model.data.Kudosable" />
 		<mapping class="com.bloatit.model.data.Identifiable" />-->

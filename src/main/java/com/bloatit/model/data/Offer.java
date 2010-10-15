@@ -5,11 +5,9 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
 @Entity
-@MappedSuperclass
 public class Offer extends Kudosable {
 
 	@ManyToOne

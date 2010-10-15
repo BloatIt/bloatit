@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
-import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
-@Entity
+@MappedSuperclass
 public abstract class Kudosable extends UserContent {
 
 	@Basic(optional = true)
 	private int popularity;
-	@OneToMany(mappedBy = "kudosable")
+	@OneToMany
 	private Set<Kudos> kudos = new HashSet<Kudos>(0);
 
 	protected Kudosable() {

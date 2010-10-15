@@ -3,18 +3,12 @@ package com.bloatit.model.data;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
 
 @Entity
-@MappedSuperclass
 public class Kudos extends UserContent {
 
 	@Basic(optional = false)
 	private int value;
-
-	// For dbMapping only
-	@ManyToOne
-	private Kudosable kudosable;
 
 	public Kudos() {
 	}
@@ -31,14 +25,6 @@ public class Kudos extends UserContent {
 	// ======================================================================
 	// For hibernate mapping
 	// ======================================================================
-
-	protected Kudosable getKudosable() {
-    	return kudosable;
-    }
-
-	protected void setKudosable(Kudosable kudosable) {
-    	this.kudosable = kudosable;
-    }
 
 	protected void setValue(int value) {
     	this.value = value;
