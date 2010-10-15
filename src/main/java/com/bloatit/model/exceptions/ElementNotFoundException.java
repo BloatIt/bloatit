@@ -20,5 +20,6 @@
 package com.bloatit.model.exceptions;
 
 public class ElementNotFoundException extends Exception{
+    private static final long serialVersionUID = -1810777523607205468L;
     
 }
