@@ -15,10 +15,11 @@ import com.bloatit.model.util.HibernateUtil;
 @Entity
 public class GroupMembership extends Identifiable {
 
-	@OneToOne(optional = false)
+	// TODO find why I cannot make this parameter non null
+	@OneToOne
 	private Member member;
 
-	// TODO find why I cannot make this parameter optional
+	// TODO find why I cannot make this parameter non null
 	@OneToOne
 	private Group group;
 

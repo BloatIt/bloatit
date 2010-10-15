@@ -1,5 +1,7 @@
 package com.bloatit.model;
 
+import java.util.List;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -58,7 +60,7 @@ public class HibernateTest extends TestCase {
 		try {
 			HibernateUtil.beginWorkUnit();
 			Member.createAndPersiste("Yo", "plop", "yo@gmail.com"); // duplicate
-																	// login
+			                                                        // login
 			HibernateUtil.EndWorkUnitAndFlush();
 			assert (false);
 		} catch (HibernateException e) {
@@ -108,6 +110,31 @@ public class HibernateTest extends TestCase {
 		HibernateUtil.beginWorkUnit();
 		assert (Group.getByName("b219").getAuthor().getLastname().equals("Plénet"));
 		assert (Group.getByName("Inexistant") == null);
+		HibernateUtil.EndWorkUnitAndFlush();
+	}
+
+	public void testAddUserToGroup() {
+		HibernateUtil.beginWorkUnit();
+		Member.getByLogin("Fred").addGroup(Group.getByName("b219"), false);
+		Member.getByLogin("Yo").addGroup(Group.getByName("b219"), false);
+		HibernateUtil.EndWorkUnitAndFlush();
+	}
+
+	public void testGetAllUserInGroup() {
+		HibernateUtil.beginWorkUnit();
+		List<Member> members = Group.getByName("b219").getMembers();
+		assertEquals(members.size(), 2);
+		assertEquals(members.get(0).getFirstname(), "Frédéric");
+		assertEquals(members.get(1).getFirstname(), "Yoann");
+		HibernateUtil.EndWorkUnitAndFlush();
+	}
+	
+	public void testGetAllGroupForUser(){
+		HibernateUtil.beginWorkUnit();
+		List<Group> groups = Member.getByLogin("Yo").getGroups();
+		assertEquals(groups.size(), 2);
+		assertEquals(groups.get(0).getName(), "everybody");
+		assertEquals(groups.get(1).getName(), "b219");
 		HibernateUtil.EndWorkUnitAndFlush();
 	}
 

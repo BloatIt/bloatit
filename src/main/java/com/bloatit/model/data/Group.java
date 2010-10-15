@@ -69,10 +69,22 @@ public class Group extends UserContent {
 	}
 
 	public List<Member> getMembers() {
-		// TODO make this works
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		return null;
+		return getMembers(0, 0);
+	}
 
+	@SuppressWarnings("unchecked")
+    public List<Member> getMembers(int from, int number) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Query q = session.createQuery("select m from com.bloatit.model.data.Group g " 
+				+ "join g.groupMembership as gm " 
+				+ "join gm.member as m "
+		        + "where g = :group");
+		q.setParameter("group", this);
+		q.setFirstResult(from);
+		if (number != 0) {
+			q.setFetchSize(number);
+		}
+		return q.list();
 	}
 
 	public String getName() {

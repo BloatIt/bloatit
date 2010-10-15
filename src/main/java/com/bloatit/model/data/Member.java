@@ -74,7 +74,7 @@ public class Member extends Identifiable {
 	
 	public static boolean exist(String login){
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			// TODO use the count() in hql
+			// TODO use the count() in HQL
 			Query q = session.createQuery("from com.bloatit.model.data.Member as m where login = :login");
 			q.setString("login", login);
 			return (q.uniqueResult() != null);
@@ -84,9 +84,12 @@ public class Member extends Identifiable {
 		return getGroups(0, 0);
 	}
 
-	public List<Group> getGroups(int from, int number) {
+	@SuppressWarnings("unchecked")
+    public List<Group> getGroups(int from, int number) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Query q = session.createQuery("select g from com.bloatit.model.data.Member m " + "join m.groupMembership as gm " + "join gm.group as g "
+		Query q = session.createQuery("select g from com.bloatit.model.data.Member m " 
+				+ "join m.groupMembership as gm " 
+				+ "join gm.group as g "
 		        + "where m = :member");
 		q.setParameter("member", this);
 		q.setFirstResult(from);

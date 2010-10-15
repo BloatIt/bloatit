@@ -2,7 +2,6 @@ package com.bloatit.model.data;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Kudos extends UserContent {
