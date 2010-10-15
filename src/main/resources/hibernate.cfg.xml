@@ -4,6 +4,15 @@
 		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
+	
+		<!--  
+		<property   name="connection.driver_class">org.hsqldb.jdbcDriver</property>
+		<property   name="connection.url">jdbc:hsqldb:hsql://localhost</property>
+		<property   name="connection.username">bloatit</property>
+		<property   name="connection.password"></property>
+		-->
+		 
+		
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
 		<property name="hibernate.connection.url">jdbc:postgresql://localhost/bloatit</property>
 		<property name="hibernate.connection.username">bloatit</property>
@@ -21,7 +30,7 @@
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">true</property>
 		<!-- Drop and re-create the database schema on startup -->
-		<property name="hbm2ddl.auto">update</property>
+		<property name="hbm2ddl.auto">create-drop</property>
 
 		<mapping class="com.bloatit.model.data.Transaction" />
 		<mapping class="com.bloatit.model.data.Translation" />

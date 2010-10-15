@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 @Entity
 public abstract class UserContent extends Identifiable {
 
-	@OneToOne(optional = false)
+	@OneToOne
 	private Member author;
 	@Basic(optional = false)
 	private Date creationDate;

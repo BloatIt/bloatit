@@ -2,15 +2,16 @@ package com.bloatit.model.data;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -38,40 +39,63 @@ public class Member extends Identifiable {
 	@Basic(optional = false)
 	private Date dateJoin;
 
-	@ManyToMany
-	@JoinTable(name = "GroupMembership", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "member_id"))
-	private Set<Group> groups = new HashSet<Group>(0);
+	@OneToMany(mappedBy = "member",cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+	private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
 
 	/**
-	 * For now it is a simple creator. But it will automatically add the Member to the default group.
-	 * @param login The login of the member.
-	 * @param password The password of the member (md5 ??)
+	 * For now it is a simple creator.
+	 * 
+	 * @param login
+	 *            The login of the member.
+	 * @param password
+	 *            The password of the member (md5 ??)
 	 * @return The newly created Member
-	 * @throws HibernateException if there is any problem connecting to the db.
+	 * @throws HibernateException
+	 *             if there is any problem connecting to the db.
 	 */
 	public static Member createAndPersiste(String login, String password, String email) throws HibernateException {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		Member theMember = new Member(login, password, email);
 		try {
 			session.save(theMember);
-			session.getTransaction().commit();
+			theMember.addGroup(HibernateUtil.getEverybodyGroup(), false);
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
+			// session.beginTransaction();
 			throw e;
 		}
 		return theMember;
 	}
-	
-	public static Member getMemberByLogin(String login){
-		try{
+
+	public static Member getByLogin(String login) {
+		try {
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 			Query q = session.createQuery("from Member where login = :login");
 			q.setString("login", login);
 			return (Member) q.list().get(0);
-		}catch (HibernateException e) {
+		} catch (HibernateException e) {
 			return null;
 		}
+	}
+
+	public List<Group> getGroups() {
+		return getGroups(0, 0);
+	}
+
+	public List<Group> getGroups(int from, int number) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Query q = session.createQuery("select g from com.bloatit.model.data.Member m " + "join m.groupMembership as gm " + "join gm.group as g "
+		        + "where m = :member");
+		q.setParameter("member", this);
+		q.setFirstResult(from);
+		if (number != 0) {
+			q.setFetchSize(number);
+		}
+		return q.list();
+	}
+
+	public void addGroup(Group aGroup, boolean isAdmin) {
+		GroupMembership.createAndPersiste(this, aGroup, isAdmin);
 	}
 
 	protected Member() {
@@ -84,13 +108,6 @@ public class Member extends Identifiable {
 		this.password = password;
 		this.email = email;
 		dateJoin = new Date();
-	}
-
-	/**
-	 * Automatically add the group in the group -> member relationship
-	 */
-	public void addGroup(Group group) {
-		groups.add(group);
 	}
 
 	public String getPassword() {
@@ -133,10 +150,6 @@ public class Member extends Identifiable {
 		return dateJoin;
 	}
 
-	public Set<Group> getGroups() {
-		return groups;
-	}
-
 	// ======================================================================
 	// For hibernate mapping
 	// ======================================================================
@@ -149,7 +162,11 @@ public class Member extends Identifiable {
 		this.dateJoin = dateJoin;
 	}
 
-	protected void setGroups(Set<Group> groups) {
-		this.groups = groups;
+	protected void setGroupMembership(Set<GroupMembership> groupMembership) {
+		this.groupMembership = groupMembership;
+	}
+
+	protected Set<GroupMembership> getGroupMembership() {
+		return groupMembership;
 	}
 }

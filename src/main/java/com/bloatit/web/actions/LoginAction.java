@@ -18,6 +18,9 @@
  */
 package com.bloatit.web.actions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.LoginManager;
 import com.bloatit.model.exceptions.ElementNotFoundException;
@@ -25,10 +28,7 @@ import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.server.Action;
-import com.bloatit.web.server.RequestFactory;
 import com.bloatit.web.server.Session;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginAction extends Action {
 

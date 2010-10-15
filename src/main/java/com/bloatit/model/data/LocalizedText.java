@@ -1,9 +1,12 @@
 package com.bloatit.model.data;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -25,18 +28,16 @@ import com.bloatit.model.util.HibernateUtil;
  * translatable text ...)
  * 
  */
+//@NamedQuery(name = "translation.getTextByLocale", query = "select text from Translation as t where t.locale = :locale")
 @Entity
 @MappedSuperclass
-@NamedQuery(name = "translation.getTextByLocale", query = "select text from Translation as t where t.locale = :locale")
 public class LocalizedText extends Identifiable {
 
 	private Locale locale;
 	private String text;
 
-	// @OneToMany(mappedBy = "locale")
-	// @MapKey(name = "locale")
-	// private Map<Locale, Translation> translations = new HashMap<Locale,
-	// Translation>(0);
+	@OneToMany(mappedBy = "locale")
+	private Set<Translation> translations = new HashSet<Translation>(0);
 
 	protected LocalizedText() {
 		super();
@@ -89,11 +90,15 @@ public class LocalizedText extends Identifiable {
 		}
 		return text;
 	}
+	
+	public Set<Translation> getTranslations() {
+		return translations;
+	}
 
 	// ======================================================================
 	// For hibernate mapping
 	// ======================================================================
-	
+
 	protected Locale getLocale() {
 		return locale;
 	}
@@ -109,4 +114,9 @@ public class LocalizedText extends Identifiable {
 	protected String getText() {
 		return text;
 	}
+
+	protected void setTranslations(Set<Translation> translations) {
+	    this.translations = translations;
+    }
+
 }
