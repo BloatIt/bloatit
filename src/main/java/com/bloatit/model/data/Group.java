@@ -12,11 +12,13 @@ import javax.persistence.OneToMany;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.util.HibernateUtil;
 
 //Group is SQL keyword
 @Entity(name = "bloatit_group")
+@NamedQuery(name = "getMembers", query = "select m from com.bloatit.model.data.Group g join g.groupMembership as gm join gm.member as m where g = :group")
 public class Group extends UserContent {
 
 	public enum Right {
@@ -73,12 +75,9 @@ public class Group extends UserContent {
 	}
 
 	@SuppressWarnings("unchecked")
-    public List<Member> getMembers(int from, int number) {
+	public List<Member> getMembers(int from, int number) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Query q = session.createQuery("select m from com.bloatit.model.data.Group g " 
-				+ "join g.groupMembership as gm " 
-				+ "join gm.member as m "
-		        + "where g = :group");
+		Query q = session.getNamedQuery("getMembers");
 		q.setParameter("group", this);
 		q.setFirstResult(from);
 		if (number != 0) {

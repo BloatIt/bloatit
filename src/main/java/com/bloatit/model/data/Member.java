@@ -15,33 +15,32 @@ import javax.persistence.OneToMany;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.util.HibernateUtil;
 
 // member is a SQL keyword (in some specific implementations)
 @Entity(name = "bloatit_member")
+@NamedQuery(name = "getGroups", query = "select g from com.bloatit.model.data.Member m " + "join m.groupMembership as gm " + "join gm.group as g "
+        + "where m = :member")
 public class Member extends Identifiable {
 
 	@Basic(optional = false)
 	@Column(unique = true, updatable = false)
 	private String login;
-
 	@Basic(optional = false)
 	private String password;
 	private String firstname;
 	private String lastname;
-
 	@Basic(optional = false)
 	private String email;
-
 	@Basic(optional = false)
 	private Date dateJoin;
-
-	@OneToMany(mappedBy = "member",cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "member", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
 
 	/**
-	 * For now it is a simple creator.
+	 * Create a member and add it to the "everybody" group.
 	 * 
 	 * @param login
 	 *            The login of the member.
@@ -49,7 +48,8 @@ public class Member extends Identifiable {
 	 *            The password of the member (md5 ??)
 	 * @return The newly created Member
 	 * @throws HibernateException
-	 *             if there is any problem connecting to the db.
+	 *             if there is any problem connecting to the db. Then the
+	 *             transaction is rollback, and a new one is begun.
 	 */
 	public static Member createAndPersiste(String login, String password, String email) throws HibernateException {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -65,32 +65,48 @@ public class Member extends Identifiable {
 		return theMember;
 	}
 
+	/**
+	 * Find a Member using its login.
+	 * 
+	 * @param login
+	 *            the member login.
+	 * @return null if not found.
+	 */
 	public static Member getByLogin(String login) {
-			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			Query q = session.createQuery("from com.bloatit.model.data.Member where login = :login");
-			q.setString("login", login);
-			return (Member) q.uniqueResult();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Query q = session.createQuery("from com.bloatit.model.data.Member where login = :login");
+		q.setString("login", login);
+		return (Member) q.uniqueResult();
 	}
-	
-	public static boolean exist(String login){
-			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			// TODO use the count() in HQL
-			Query q = session.createQuery("from com.bloatit.model.data.Member as m where login = :login");
-			q.setString("login", login);
-			return (q.uniqueResult() != null);
+
+	/**
+	 * This method use a HQL request. If you intend to use "getByLogin", "exist"
+	 * is useless. (In that case you'd better test if getByLogin != null, to
+	 * minimize the number of HQL request).
+	 */
+	public static boolean exist(String login) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		// TODO use the count() in HQL
+		Query q = session.createQuery("from com.bloatit.model.data.Member as m where login = :login");
+		q.setString("login", login);
+		return (q.uniqueResult() != null);
 	}
 
 	public List<Group> getGroups() {
 		return getGroups(0, 0);
 	}
 
+	/**
+	 * @param from
+	 *            index of the first result?
+	 * @param number
+	 *            is the number max of results that the getGroup will return.
+	 * @return the list of groups that this member is in.
+	 */
 	@SuppressWarnings("unchecked")
-    public List<Group> getGroups(int from, int number) {
+	public List<Group> getGroups(int from, int number) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Query q = session.createQuery("select g from com.bloatit.model.data.Member m " 
-				+ "join m.groupMembership as gm " 
-				+ "join gm.group as g "
-		        + "where m = :member");
+		Query q = session.getNamedQuery("getGroups");
 		q.setParameter("member", this);
 		q.setFirstResult(from);
 		if (number != 0) {
