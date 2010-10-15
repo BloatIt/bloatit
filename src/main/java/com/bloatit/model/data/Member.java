@@ -61,21 +61,24 @@ public class Member extends Identifiable {
 			theMember.addGroup(HibernateUtil.getEverybodyGroup(), false);
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
-			// session.beginTransaction();
+			session.beginTransaction();
 			throw e;
 		}
 		return theMember;
 	}
 
 	public static Member getByLogin(String login) {
-		try {
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			Query q = session.createQuery("from Member where login = :login");
+			Query q = session.createQuery("from com.bloatit.model.data.Member where login = :login");
 			q.setString("login", login);
-			return (Member) q.list().get(0);
-		} catch (HibernateException e) {
-			return null;
-		}
+			return (Member) q.uniqueResult();
+	}
+	
+	public static boolean exist(String login){
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			Query q = session.createQuery("select count(Member) from Member where login = :login");
+			q.setString("login", login);
+			return q.iterate().next().equals(1);
 	}
 
 	public List<Group> getGroups() {

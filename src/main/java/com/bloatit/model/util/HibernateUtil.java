@@ -45,4 +45,25 @@ public class HibernateUtil {
 	public static Group getEverybodyGroup() {
 	    return everybodyGroup;
     }
+	
+	public static void beginWorkUnit() {
+		sessionFactory.getCurrentSession().beginTransaction();
+	}
+	
+	public static void EndWorkUnitAndFlush(){
+		try {
+			sessionFactory.getCurrentSession().getTransaction().commit();
+        } catch (HibernateException e) {
+        	sessionFactory.getCurrentSession().getTransaction().rollback();
+        	throw e;
+        }
+	}
+	
+	public static void flush(){
+		sessionFactory.getCurrentSession().flush();
+	}
+	
+	public static void rollback(){
+		sessionFactory.getCurrentSession().getTransaction().rollback();
+	}
 }
