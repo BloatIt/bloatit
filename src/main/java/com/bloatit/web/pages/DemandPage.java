@@ -22,6 +22,7 @@ import com.bloatit.framework.DemandManager;
 import com.bloatit.model.Demand;
 import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.TranslationManipulator;
@@ -89,8 +90,7 @@ public class DemandPage extends Page {
     @Override
     public String getCode() {
         if (this.demand != null) {
-            TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
-            return "demand/id-" + this.demand.getId() + "/title-" + HtmlTools.escapeUrlString(tm.tr(demand.getTitle()).getEntry());
+            return new HtmlString(session).add("demand/id-" + this.demand.getId() + "/title-").secure(demand.getTitle()).toString();
         } else {
             return "demand"; // TODO Faire un système pour afficher une page d'erreur
         }
