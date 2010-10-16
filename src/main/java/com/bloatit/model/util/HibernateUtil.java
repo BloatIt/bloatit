@@ -1,11 +1,7 @@
 package com.bloatit.model.util;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
-
-import com.bloatit.model.data.Group;
-import com.bloatit.model.data.Group.Right;
 
 /**
  * some utils to manage hibernate

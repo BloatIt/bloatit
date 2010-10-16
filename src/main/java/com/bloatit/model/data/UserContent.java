@@ -17,7 +17,7 @@ public abstract class UserContent extends Identifiable {
 	@ManyToOne(optional = true)
 	private Group asGroup;
 	@Basic(optional = false)
-	private Date creationDate;
+    private Date creationDate;
 
 	protected UserContent() {
 		creationDate = new Date();

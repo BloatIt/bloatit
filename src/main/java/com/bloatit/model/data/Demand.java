@@ -5,10 +5,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+/**
+ * For now the state is managed as a simple enum. But it will be necessary to
+ * associate data with each state (for example the date of change from a state
+ * to an other). We will have to find a way to do this.
+ * 
+ * @author tom
+ * 
+ */
 @Entity
 public class Demand extends UserContent {
 	public enum State {
@@ -16,14 +26,17 @@ public class Demand extends UserContent {
 	}
 
 	@Basic(optional = false)
+	@Enumerated
 	private State state;
 	@OneToOne(mappedBy = "demand", optional = false)
 	private Draft currentDraft;
-	@OneToMany(mappedBy = "demand")
-	private Set<Draft> drafts = new HashSet<Draft>(0); // a popularity sorted
-	@OneToMany(mappedBy = "demand")
+
+	// TODO sort me.
+	@OneToMany(mappedBy = "demand", cascade = { CascadeType.ALL })
+	private Set<Draft> drafts = new HashSet<Draft>(0);
+	@OneToMany(mappedBy = "demand", cascade = { CascadeType.ALL })
 	private Set<Offer> offers = new HashSet<Offer>(0);
-	@OneToMany(mappedBy = "demand")
+	@OneToMany(mappedBy = "demand", cascade = { CascadeType.ALL })
 	private Set<Transaction> contributions = new HashSet<Transaction>(0);
 
 	protected Demand() {
@@ -37,6 +50,7 @@ public class Demand extends UserContent {
 		drafts.add(currentDraft);
 	}
 
+	// TODO find or create a type to throw when the state is wrong.
 	public void addDraft(Member author, LocalizedText title, LocalizedText description, LocalizedText specification) throws Throwable {
 		if (state != State.CONSTRUCTING) {
 			throw (new Throwable("Demand is no longuer in construction mode."));
@@ -78,24 +92,24 @@ public class Demand extends UserContent {
 	public Set<Transaction> getContributions() {
 		return contributions;
 	}
-	
+
 	// ======================================================================
 	// For hibernate mapping
 	// ======================================================================
-	
+
 	protected void setCurrentDraft(Draft currentDraft) {
-    	this.currentDraft = currentDraft;
-    }
+		this.currentDraft = currentDraft;
+	}
 
 	protected void setDrafts(Set<Draft> drafts) {
-    	this.drafts = drafts;
-    }
+		this.drafts = drafts;
+	}
 
 	protected void setOffers(Set<Offer> offers) {
-    	this.offers = offers;
-    }
+		this.offers = offers;
+	}
 
 	protected void setContributions(Set<Transaction> contributions) {
-    	this.contributions = contributions;
-    }
+		this.contributions = contributions;
+	}
 }

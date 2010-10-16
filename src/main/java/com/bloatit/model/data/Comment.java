@@ -3,10 +3,12 @@ package com.bloatit.model.data;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Comment extends Kudosable {
@@ -15,7 +17,8 @@ public class Comment extends Kudosable {
 	private Draft commentedDraft;
 	@OneToOne(optional = false)
 	private LocalizedText text;
-	@OneToMany(mappedBy = "comment")
+	@OneToMany(mappedBy = "comment", cascade = {CascadeType.ALL})
+	@OrderBy(value="creationDate")
 	private Set<Comment> children = new HashSet<Comment>(0);
 
 	public Comment(Draft commentedDraft, Member member, LocalizedText text) {
