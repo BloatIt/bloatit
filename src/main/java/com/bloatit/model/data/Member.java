@@ -21,7 +21,8 @@ import com.bloatit.model.util.HibernateUtil;
 
 // member is a SQL keyword (in some specific implementations)
 @Entity(name = "bloatit_member")
-@NamedQuery(name = "getGroups", query = "select g from com.bloatit.model.data.Member m " + "join m.groupMembership as gm " + "join gm.group as g "
+@NamedQuery(name = "getGroups", query = "select g from com.bloatit.model.data.Member m " 
+	    + "join m.groupMembership as gm " + "join gm.group as g "
         + "where m = :member")
 public class Member extends Identifiable {
 
@@ -36,6 +37,8 @@ public class Member extends Identifiable {
 	private String email;
 	@Basic(optional = false)
 	private Date dateJoin;
+	
+	// this property is for hibernate mapping. It should never be used.
 	@OneToMany(mappedBy = "member", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
 
@@ -92,6 +95,7 @@ public class Member extends Identifiable {
 		return (q.uniqueResult() != null);
 	}
 
+	// TODO return a const list
 	public List<Group> getGroups() {
 		return getGroups(0, 0);
 	}
@@ -103,6 +107,7 @@ public class Member extends Identifiable {
 	 *            is the number max of results that the getGroup will return.
 	 * @return the list of groups that this member is in.
 	 */
+	// TODO return a const list
 	@SuppressWarnings("unchecked")
 	public List<Group> getGroups(int from, int number) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();

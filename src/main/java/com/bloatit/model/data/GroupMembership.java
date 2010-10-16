@@ -10,7 +10,7 @@ import org.hibernate.Session;
 import com.bloatit.model.util.HibernateUtil;
 
 /**
- * WARNING class not used yet. Everything is done using directly member.
+ * This class is for Hibernate only for now.
  */
 @Entity
 public class GroupMembership extends Identifiable {
