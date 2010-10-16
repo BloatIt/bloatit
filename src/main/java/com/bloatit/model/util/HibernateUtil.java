@@ -13,7 +13,6 @@ import com.bloatit.model.data.Group.Right;
 public class HibernateUtil {
 
 	private static final SessionFactory sessionFactory = buildSessionFactory();
-	private static final Group everybodyGroup = buildEveryBodyGroup();
 
 	private static SessionFactory buildSessionFactory() {
 		try {
@@ -26,14 +25,6 @@ public class HibernateUtil {
 		}
 	}
 
-	private static Group buildEveryBodyGroup() {
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		Group group = Group.createAndPersiste("everybody", null, Right.PUBLIC);
-		session.getTransaction().commit();
-	    return group;
-    }
-
 	/**
 	 * singleton pattern implementation.
 	 * @return the current session.
@@ -42,10 +33,6 @@ public class HibernateUtil {
 		return sessionFactory;
 	}
 
-	public static Group getEverybodyGroup() {
-	    return everybodyGroup;
-    }
-	
 	public static void beginWorkUnit() {
 		sessionFactory.getCurrentSession().beginTransaction();
 	}

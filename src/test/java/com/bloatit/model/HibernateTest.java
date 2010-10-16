@@ -132,9 +132,8 @@ public class HibernateTest extends TestCase {
 	public void testGetAllGroupForUser(){
 		HibernateUtil.beginWorkUnit();
 		List<Group> groups = Member.getByLogin("Yo").getGroups();
-		assertEquals(groups.size(), 2);
-		assertEquals(groups.get(0).getName(), "everybody");
-		assertEquals(groups.get(1).getName(), "b219");
+		assertEquals(groups.size(), 1);
+		assertEquals(groups.get(0).getName(), "b219");
 		HibernateUtil.EndWorkUnitAndFlush();
 	}
 

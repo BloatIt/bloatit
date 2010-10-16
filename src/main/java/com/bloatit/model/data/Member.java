@@ -43,7 +43,7 @@ public class Member extends Identifiable {
 	private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
 
 	/**
-	 * Create a member and add it to the "everybody" group.
+	 * Create a member.
 	 * 
 	 * @param login
 	 *            The login of the member.
@@ -59,7 +59,6 @@ public class Member extends Identifiable {
 		Member theMember = new Member(login, password, email);
 		try {
 			session.save(theMember);
-			theMember.addGroup(HibernateUtil.getEverybodyGroup(), false);
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
 			session.beginTransaction();

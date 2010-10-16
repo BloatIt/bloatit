@@ -3,6 +3,7 @@ package com.bloatit.model.data;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
@@ -11,6 +12,10 @@ public abstract class UserContent extends Identifiable {
 
 	@OneToOne
 	private Member author;
+	
+	// TODO I would like to have some external join tables.
+	@ManyToOne(optional = true)
+	private Group asGroup;
 	@Basic(optional = false)
 	private Date creationDate;
 
@@ -38,6 +43,14 @@ public abstract class UserContent extends Identifiable {
 	 */
 	public Date getCreationDate() {
 		return creationDate;
+	}
+
+	public void setAsGroup(Group asGroup) {
+		this.asGroup = asGroup;
+	}
+
+	public Group getAsGroup() {
+		return asGroup;
 	}
 
 	// ======================================================================
