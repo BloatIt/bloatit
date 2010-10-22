@@ -22,7 +22,7 @@ public class Identifiable {
 		this.id = id;
 	}
 
-	protected Integer getId() {
+	public Integer getId() {
 		return id;
 	}
 }

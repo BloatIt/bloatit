@@ -1,4 +1,4 @@
-package com.bloatit.model.util;
+package com.bloatit.model.data.util;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -6,7 +6,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
 /**
  * some utils to manage hibernate
  */
-public class HibernateUtil {
+public class SessionManger {
 
 	private static final SessionFactory sessionFactory = buildSessionFactory();
 
@@ -20,7 +20,7 @@ public class HibernateUtil {
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
-
+	
 	/**
 	 * singleton pattern implementation.
 	 * @return the current session.

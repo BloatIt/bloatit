@@ -1,52 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC
-		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-	<session-factory>
-	
-		<!--  
+ <session-factory name="">
+  <!--  
 		<property   name="connection.driver_class">org.hsqldb.jdbcDriver</property>
 		<property   name="connection.url">jdbc:hsqldb:hsql://localhost</property>
 		<property   name="connection.username">bloatit</property>
 		<property   name="connection.password"></property>
 		-->
-		 
-		
-		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://localhost/bloatit</property>
-		<property name="hibernate.connection.username">bloatit</property>
-		<property name="hibernate.connection.password">passe</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-
-		<!-- JDBC connection pool (use the built-in) -->
-		<property name="connection.pool_size">1</property>
-
-		<!-- Enable Hibernate's automatic session context management -->
-		<property name="current_session_context_class">thread</property>
-
-		<!-- Disable the second-level cache -->
-		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-		<!-- Echo all executed SQL to stdout -->
-		<property name="show_sql">true</property>
-		<!-- Drop and re-create the database schema on startup -->
-		<property name="hbm2ddl.auto">create-drop</property>
-
-		<mapping class="com.bloatit.model.data.Transaction" />
-		<mapping class="com.bloatit.model.data.Translation" />
-		<mapping class="com.bloatit.model.data.LocalizedText" />
-		<mapping class="com.bloatit.model.data.Kudos" />
-		<mapping class="com.bloatit.model.data.Draft" />
-		<mapping class="com.bloatit.model.data.Comment" />
-		<mapping class="com.bloatit.model.data.GroupMembership" />
-		<mapping class="com.bloatit.model.data.Group" />
-		<mapping class="com.bloatit.model.data.InfoBank" />
-		<mapping class="com.bloatit.model.data.Demand" />
-		<mapping class="com.bloatit.model.data.Member" />
-		<mapping class="com.bloatit.model.data.Offer" />
-		
-		<!--<mapping class="com.bloatit.model.data.UserContent" />
+  <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+  <property name="hibernate.connection.url">jdbc:postgresql://localhost/bloatit</property>
+  <property name="hibernate.connection.username">bloatit</property>
+  <property name="hibernate.connection.password">passe</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+  <!-- JDBC connection pool (use the built-in) -->
+  <property name="connection.pool_size">1</property>
+  <!-- Enable Hibernate's automatic session context management -->
+  <property name="current_session_context_class">thread</property>
+  <!-- Echo all executed SQL to stdout -->
+  <property name="show_sql">true</property>
+  <!-- Drop and re-create the database schema on startup -->
+  <property name="hbm2ddl.auto">create-drop</property>
+  <property name="hibernate.jdbc.batch_size">25</property>
+  
+  <mapping class="com.bloatit.model.data.Transaction"/>
+  <mapping class="com.bloatit.model.data.Translation"/>
+  <mapping class="com.bloatit.model.data.LocalizedText"/>
+  <mapping class="com.bloatit.model.data.Kudos"/>
+  <mapping class="com.bloatit.model.data.Draft"/>
+  <mapping class="com.bloatit.model.data.Comment"/>
+  <mapping class="com.bloatit.model.data.GroupMembership"/>
+  <mapping class="com.bloatit.model.data.Group"/>
+  <mapping class="com.bloatit.model.data.InfoBank"/>
+  <mapping class="com.bloatit.model.data.Demand"/>
+  <mapping class="com.bloatit.model.data.Member"/>
+  <mapping class="com.bloatit.model.data.Offer"/>
+  <!--<mapping class="com.bloatit.model.data.UserContent" />
 		<mapping class="com.bloatit.model.data.Kudosable" />
 		<mapping class="com.bloatit.model.data.Identifiable" />-->
-	</session-factory>
+ </session-factory>
 </hibernate-configuration>

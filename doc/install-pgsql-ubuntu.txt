@@ -16,3 +16,6 @@ psql
 vim /etc/postgresql/8.4/main/pg_hba.conf 
 # Go to the end of the file.
 # change ident to md5 [EXCEPT FOR THE USER "postgres"]
+
+# restart the server
+sudo service postgresql restart

@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import com.bloatit.model.util.HibernateUtil;
+import com.bloatit.model.data.util.SessionManger;
 
 /**
  * For now the state is managed as a simple enum. But it will be necessary to
@@ -52,7 +52,7 @@ public class Demand extends UserContent {
 	private Set<Transaction> contributions = new HashSet<Transaction>(0);
 
 	public static Demand createAndPersist(Member author, Locale locale, String title, String description, String specification) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		Demand demand = new Demand(author, locale, title, description, specification);
 		try {
 			session.save(demand);

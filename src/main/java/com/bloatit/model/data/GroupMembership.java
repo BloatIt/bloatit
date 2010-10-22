@@ -5,9 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
-import com.bloatit.model.util.HibernateUtil;
+import com.bloatit.model.data.util.SessionManger;
 
 /**
  * This class is for Hibernate only for now.
@@ -31,7 +32,7 @@ public class GroupMembership extends Identifiable {
 	}
 
 	public static GroupMembership createAndPersiste(Member member, Group group, boolean isAdmin) throws HibernateException {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		GroupMembership groupMembership = new GroupMembership(member, group, isAdmin);
 		try {
 			session.save(groupMembership);
@@ -42,12 +43,20 @@ public class GroupMembership extends Identifiable {
 		return groupMembership;
 	}
 	
+	public static GroupMembership Get(Group group, Member member){
+		Session session = SessionManger.getSessionFactory().getCurrentSession();
+		Query q = session.createQuery("from com.bloatit.model.data.GroupMembership as gm where gm.group = :group and gm.member = :member");
+		q.setEntity("group", group);
+		q.setEntity("member", member);
+		return (GroupMembership) q.uniqueResult();
+	}
+	
 	private GroupMembership(Member member, Group group, boolean isAdmin) {
 		this.member = member;
 		this.group = group;
 		this.isAdmin = isAdmin;
 	}
-
+	
 	public Member getMember() {
 		return member;
 	}

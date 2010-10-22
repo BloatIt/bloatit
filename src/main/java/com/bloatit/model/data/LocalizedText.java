@@ -11,7 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import com.bloatit.model.util.HibernateUtil;
+import com.bloatit.model.data.util.SessionManger;
 
 /**
  * A localized text is not a UserContent, because it is only a container class.
@@ -43,7 +43,7 @@ public class LocalizedText extends Identifiable {
 	
 	public static LocalizedText createAndPersist(Locale locale, String text)
 	{
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		LocalizedText localizedText = new LocalizedText(locale, text);
 		try {
 			session.save(localizedText);
@@ -64,7 +64,7 @@ public class LocalizedText extends Identifiable {
 		if (this.locale == locale) {
 			return true;
 		}
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		Query q = session.getNamedQuery("translation.getTextByLocale");
 		q.setLocale("locale", locale);
 		return (q.list().size() > 0);
@@ -90,7 +90,7 @@ public class LocalizedText extends Identifiable {
 
 	private String findTextInTranslation(Locale locale) {
 		try {
-			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			Session session = SessionManger.getSessionFactory().getCurrentSession();
 			Query q = session.getNamedQuery("translation.getTextByLocale");
 			q.setLocale("locale", locale);
 			if (q.list().size() > 0) {

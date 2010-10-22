@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import com.bloatit.model.util.HibernateUtil;
+import com.bloatit.model.data.util.SessionManger;
 
 @Entity
 public class Draft extends UserContent {
@@ -33,7 +33,7 @@ public class Draft extends UserContent {
 	}
 
 	public static Draft createAndPersist(Member member, Demand demand, Locale locale, String title, String description, String specification){
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		Draft draft = new Draft(member, demand, locale, title, description, specification);
 		try {
 			session.save(draft);

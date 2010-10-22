@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,183 +14,195 @@ import javax.persistence.OneToMany;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
-import com.bloatit.model.util.HibernateUtil;
+import com.bloatit.model.data.util.SessionManger;
 
 // member is a SQL keyword (in some specific implementations)
 @Entity(name = "bloatit_member")
-@NamedQuery(name = "getGroups", query = "select g from com.bloatit.model.data.Member m " 
-	    + "join m.groupMembership as gm " + "join gm.group as g "
+@NamedQuery(name = "getGroups", query = "select g from com.bloatit.model.data.Member m " + "join m.groupMembership as gm " + "join gm.group as g "
         + "where m = :member")
 public class Member extends Identifiable {
 
-	@Basic(optional = false)
-	@Column(unique = true, updatable = false)
-	private String login;
-	@Basic(optional = false)
-	private String password;
-	private String firstname;
-	private String lastname;
-	@Basic(optional = false)
-	private String email;
-	@Basic(optional = false)
-	private Date dateJoin;
-	
-	// this property is for hibernate mapping. It should never be used.
-	@OneToMany(mappedBy = "member", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-	private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
+    @Basic(optional = false)
+    @Column(unique = true, updatable = false)
+    private String login;
+    @Basic(optional = false)
+    private String password;
+    private String firstname;
+    private String lastname;
+    @Basic(optional = false)
+    private String email;
+    @Basic(optional = false)
+    private Date dateJoin;
 
-	/**
-	 * Create a member.
-	 * 
-	 * @param login
-	 *            The login of the member.
-	 * @param password
-	 *            The password of the member (md5 ??)
-	 * @return The newly created Member
-	 * @throws HibernateException
-	 *             if there is any problem connecting to the db. Then the
-	 *             transaction is rollback, and a new one is begun.
-	 */
-	public static Member createAndPersist(String login, String password, String email) throws HibernateException {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Member theMember = new Member(login, password, email);
-		try {
-			session.save(theMember);
-		} catch (HibernateException e) {
-			session.getTransaction().rollback();
-			session.beginTransaction();
-			throw e;
-		}
-		return theMember;
-	}
+    // this property is for hibernate mapping. It should never be used.
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
 
-	/**
-	 * Find a Member using its login.
-	 * 
-	 * @param login
-	 *            the member login.
-	 * @return null if not found.
-	 */
-	public static Member getByLogin(String login) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Query q = session.createQuery("from com.bloatit.model.data.Member where login = :login");
-		q.setString("login", login);
-		return (Member) q.uniqueResult();
-	}
+    /**
+     * Create a member. The member login must be unique, and you cannot change
+     * it.
+     * 
+     * @param login The login of the member.
+     * @param password The password of the member (md5 ??)
+     * @return The newly created Member
+     * @throws HibernateException If there is any problem connecting to the db. Or if the
+     *             member as a non unique login. If an exception is thrown then
+     *             the transaction is rolled back and reopened.
+     * 
+     */
+    public static Member createAndPersist(String login, String password, String email) throws HibernateException {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Member theMember = new Member(login, password, email);
+        try {
+            session.save(theMember);
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            session.beginTransaction();
+            throw e;
+        }
+        return theMember;
+    }
 
-	/**
-	 * This method use a HQL request. If you intend to use "getByLogin", "exist"
-	 * is useless. (In that case you'd better test if getByLogin != null, to
-	 * minimize the number of HQL request).
-	 */
-	public static boolean exist(String login) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		// TODO use the count() in HQL
-		Query q = session.createQuery("from com.bloatit.model.data.Member as m where login = :login");
-		q.setString("login", login);
-		return (q.uniqueResult() != null);
-	}
+    /**
+     * Find a Member using its login.
+     * 
+     * @param login the member login.
+     * @return null if not found.
+     */
+    public static Member getByLogin(String login) {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Query q = session.createQuery("from com.bloatit.model.data.Member where login = :login");
+        q.setString("login", login);
+        return (Member) q.uniqueResult();
+    }
 
-	// TODO return a const list
-	public List<Group> getGroups() {
-		return getGroups(0, 0);
-	}
+    /**
+     * This method use a HQL request. If you intend to use "getByLogin", "exist"
+     * is useless. (In that case you'd better test if getByLogin != null, to
+     * minimize the number of HQL request).
+     */
+    public static boolean exist(String login) {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        // TODO use the count() in HQL
+        Query q = session.createQuery("from com.bloatit.model.data.Member as m where login = :login");
+        q.setString("login", login);
+        return (q.uniqueResult() != null);
+    }
 
-	/**
-	 * @param from
-	 *            index of the first result?
-	 * @param number
-	 *            is the number max of results that the getGroup will return.
-	 * @return the list of groups that this member is in.
-	 */
-	// TODO return a const list
-	@SuppressWarnings("unchecked")
-	public List<Group> getGroups(int from, int number) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Query q = session.getNamedQuery("getGroups");
-		q.setParameter("member", this);
-		q.setFirstResult(from);
-		if (number != 0) {
-			q.setFetchSize(number);
-		}
-		return q.list();
-	}
+    /**
+     * @return getGroups(0, 0)
+     */
+    public List<Group> getGroups() {
+        return getGroups(0, 0);
+    }
 
-	public void addGroup(Group aGroup, boolean isAdmin) {
-		GroupMembership.createAndPersiste(this, aGroup, isAdmin);
-	}
+    /**
+     * @param from index of the first result.
+     * @param number is the number max of results that the getGroup will return.
+     * @return the list of groups that this member is in.
+     */
+    // TODO return a const list
+    @SuppressWarnings("unchecked")
+    public List<Group> getGroups(int from, int number) {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Query q = session.getNamedQuery("getGroups");
+        q.setParameter("member", this);
+        q.setFirstResult(from);
+        if (number != 0) {
+            q.setFetchSize(number);
+        }
+        return q.list();
+    }
 
-	protected Member() {
-		super();
-	}
+    /**
+     * @param aGroup the group in which this member is added.
+     * @param isAdmin tell if the member is an admin of the group 'aGroup'
+     */
+    public void addToGroup(Group aGroup, boolean isAdmin) {
+        GroupMembership.createAndPersiste(this, aGroup, isAdmin);
+    }
 
-	protected Member(String login, String password, String email) {
-		super();
-		this.login = login;
-		this.password = password;
-		this.email = email;
-		dateJoin = new Date();
-	}
+    /**
+     * @param aGroup the group from which this member is removed.
+     */
+    public void removeFromGroup(Group aGroup) {
+        groupMembership.remove(GroupMembership.Get(aGroup, this));
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    protected Member() {
+        super();
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    protected Member(String login, String password, String email) {
+        super();
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        dateJoin = new Date();
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public Date getDateJoin() {
-		return dateJoin;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    public String getLogin() {
+        return login;
+    }
 
-	protected void setLogin(String login) {
-		this.login = login;
-	}
+    public Date getDateJoin() {
+        return dateJoin;
+    }
 
-	protected void setDateJoin(Date dateJoin) {
-		this.dateJoin = dateJoin;
-	}
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
-	protected void setGroupMembership(Set<GroupMembership> groupMembership) {
-		this.groupMembership = groupMembership;
-	}
+    protected void setLogin(String login) {
+        this.login = login;
+    }
 
-	protected Set<GroupMembership> getGroupMembership() {
-		return groupMembership;
-	}
+    protected void setDateJoin(Date dateJoin) {
+        this.dateJoin = dateJoin;
+    }
+
+    protected void setGroupMembership(Set<GroupMembership> groupMembership) {
+        this.groupMembership = groupMembership;
+    }
+
+    protected Set<GroupMembership> getGroupMembership() {
+        return groupMembership;
+    }
 }
