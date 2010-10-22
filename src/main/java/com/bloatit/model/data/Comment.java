@@ -16,7 +16,7 @@ public class Comment extends Kudosable {
 	@ManyToOne(optional = false)
 	private Draft commentedDraft;
 	@OneToOne(optional = false)
-	private LocalizedText text;
+	private LocalizedText text; // TODO no translation
 	@OneToMany(mappedBy = "comment", cascade = {CascadeType.ALL})
 	@OrderBy(value="creationDate")
 	private Set<Comment> children = new HashSet<Comment>(0);

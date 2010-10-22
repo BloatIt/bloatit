@@ -54,7 +54,7 @@ public class Member extends Identifiable {
 	 *             if there is any problem connecting to the db. Then the
 	 *             transaction is rollback, and a new one is begun.
 	 */
-	public static Member createAndPersiste(String login, String password, String email) throws HibernateException {
+	public static Member createAndPersist(String login, String password, String email) throws HibernateException {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Member theMember = new Member(login, password, email);
 		try {

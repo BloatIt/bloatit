@@ -36,19 +36,19 @@ public class HibernateTest extends TestCase {
 	public void testCreateMember() {
 		HibernateUtil.beginWorkUnit();
 		{
-			Member theMember = Member.createAndPersiste("Thomas", "password", "tom@gmail.com");
+			Member theMember = Member.createAndPersist("Thomas", "password", "tom@gmail.com");
 			theMember.setFirstname("Thomas");
 			theMember.setLastname("Guyard");
 			HibernateUtil.flush();
 		}
 		{
-			Member theMember = Member.createAndPersiste("Fred", "other", "fred@gmail.com");
+			Member theMember = Member.createAndPersist("Fred", "other", "fred@gmail.com");
 			theMember.setFirstname("Frédéric");
 			theMember.setLastname("Bertolus");
 			HibernateUtil.flush();
 		}
 		{
-			Member theMember = Member.createAndPersiste("Yo", "plop", "yo@gmail.com");
+			Member theMember = Member.createAndPersist("Yo", "plop", "yo@gmail.com");
 			theMember.setFirstname("Yoann");
 			theMember.setLastname("Plénet");
 			HibernateUtil.EndWorkUnitAndFlush();
@@ -59,7 +59,7 @@ public class HibernateTest extends TestCase {
 	public void testMemberDuplicateCreation() {
 		try {
 			HibernateUtil.beginWorkUnit();
-			Member.createAndPersiste("Yo", "plop", "yo@gmail.com"); // duplicate
+			Member.createAndPersist("Yo", "plop", "yo@gmail.com"); // duplicate
 			                                                        // login
 			HibernateUtil.EndWorkUnitAndFlush();
 			assert (false);

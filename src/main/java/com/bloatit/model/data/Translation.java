@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 // This class should handle some versions.
+// version are managed by date.
 @Entity
 public class Translation extends Kudosable {
 

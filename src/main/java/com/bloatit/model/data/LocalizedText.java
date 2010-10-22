@@ -31,6 +31,7 @@ import com.bloatit.model.util.HibernateUtil;
 public class LocalizedText extends Identifiable {
 
 	private Locale locale;
+	// use translatable
 	private String text;
 
 	@OneToMany(mappedBy = "baseText")
@@ -38,6 +39,19 @@ public class LocalizedText extends Identifiable {
 
 	protected LocalizedText() {
 		super();
+	}
+	
+	public static LocalizedText createAndPersist(Locale locale, String text)
+	{
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		LocalizedText localizedText = new LocalizedText(locale, text);
+		try {
+			session.save(localizedText);
+		} catch (HibernateException e) {
+			session.getTransaction().rollback();
+			throw e;
+		}
+		return localizedText;
 	}
 
 	public LocalizedText(Locale locale, String text) {
