@@ -124,14 +124,16 @@ public class Member extends Identifiable {
      * @param isAdmin tell if the member is an admin of the group 'aGroup'
      */
     public void addToGroup(Group aGroup, boolean isAdmin) {
-        GroupMembership.createAndPersiste(this, aGroup, isAdmin);
+        groupMembership.add(new GroupMembership(this, aGroup, isAdmin));
     }
 
     /**
      * @param aGroup the group from which this member is removed.
      */
     public void removeFromGroup(Group aGroup) {
-        groupMembership.remove(GroupMembership.Get(aGroup, this));
+        GroupMembership link = GroupMembership.get(aGroup, this);
+        groupMembership.remove(link);
+        aGroup.getGroupMembership().remove(link);
     }
 
     protected Member() {

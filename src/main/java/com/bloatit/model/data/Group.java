@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.data.util.SessionManger;
@@ -36,6 +38,7 @@ public class Group extends UserContent {
     private String logo;
 
     @OneToMany(mappedBy = "group")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
 
     protected Group() {
@@ -63,6 +66,12 @@ public class Group extends UserContent {
         return group;
     }
 
+    /**
+     * find a group using its name.
+     * 
+     * @param name the name of the group we are looking for.
+     * @return null if not found.
+     */
     public static Group getByName(String name) {
         Session session = SessionManger.getSessionFactory().getCurrentSession();
         Query q = session.createQuery("from com.bloatit.model.data.Group as g where g.name = :name");
@@ -93,6 +102,15 @@ public class Group extends UserContent {
             q.setFetchSize(number);
         }
         return q.list();
+    }
+    
+    public void addMember(Member member, boolean isAdmin){
+        groupMembership.add(new GroupMembership(member, this, isAdmin));
+    }
+    public void removeMember(Member member){
+        GroupMembership link = GroupMembership.get(this, member);
+        groupMembership.remove(link);
+        member.getGroupMembership().remove(link);
     }
 
     public String getName() {

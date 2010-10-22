@@ -2,9 +2,8 @@ package com.bloatit.model.data;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -17,11 +16,11 @@ import com.bloatit.model.data.util.SessionManger;
 public class GroupMembership extends Identifiable {
 
 	// TODO find why I cannot make this parameter non null
-	@OneToOne
+	@ManyToOne
 	private Member member;
 
 	// TODO find why I cannot make this parameter non null
-	@OneToOne
+	@ManyToOne
 	private Group group;
 
 	@Basic(optional = false)
@@ -31,19 +30,7 @@ public class GroupMembership extends Identifiable {
 		super();
 	}
 
-	public static GroupMembership createAndPersiste(Member member, Group group, boolean isAdmin) throws HibernateException {
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
-		GroupMembership groupMembership = new GroupMembership(member, group, isAdmin);
-		try {
-			session.save(groupMembership);
-		} catch (HibernateException e) {
-			session.getTransaction().rollback();
-			throw e;
-		}
-		return groupMembership;
-	}
-	
-	public static GroupMembership Get(Group group, Member member){
+	public static GroupMembership get(Group group, Member member){
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		Query q = session.createQuery("from com.bloatit.model.data.GroupMembership as gm where gm.group = :group and gm.member = :member");
 		q.setEntity("group", group);
@@ -51,7 +38,7 @@ public class GroupMembership extends Identifiable {
 		return (GroupMembership) q.uniqueResult();
 	}
 	
-	private GroupMembership(Member member, Group group, boolean isAdmin) {
+	public GroupMembership(Member member, Group group, boolean isAdmin) {
 		this.member = member;
 		this.group = group;
 		this.isAdmin = isAdmin;
