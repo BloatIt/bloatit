@@ -18,29 +18,18 @@
  */
 package com.bloatit.web.server;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.bloatit.common.CryptoTools;
+import com.bloatit.common.FatalErrorException;
 import java.util.HashMap;
 
 class SessionManager {
 
     private static HashMap<String, Session> activeSessions = new HashMap<String, Session>();
 
-    public static Session createSession() throws NoSuchAlgorithmException {
-        // TODO handle exception in there ?
-        Session session = new Session();
-        String d = "abcd";
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(d.getBytes());
-        byte byteData[] = md.digest();
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < byteData.length; i++) {
-            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
+    public static Session createSession() throws FatalErrorException {
         
-        String key = sb.toString();
-        session.setKey(key);
+        String key = CryptoTools.generateKey();
+        Session session = new Session(key);
         activeSessions.put(key, session);
         return session;
     }

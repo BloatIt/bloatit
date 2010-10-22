@@ -20,13 +20,12 @@ package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
 
-public class HtmlComponent {
+public abstract class HtmlComponent {
+    protected String name;
 
-    public void setName(String name) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void setName(String name){
+        this.name = name;
     }
 
-    public void generate(HtmlResult htmlResult){
-        
-    }
+    public abstract void generate(HtmlResult htmlResult);
 }

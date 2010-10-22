@@ -16,45 +16,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.server;
 
-import java.util.HashMap;
+import com.bloatit.common.FatalErrorException;
+import java.lang.reflect.Constructor;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+public class RequestFactory {
 
-public class RequestFactory<T extends Request> {
+    static public Request build(Class<? extends Request> requestClass, Session session, Map<String, String> parameters) {
 
-    final private Class<T> type;
-
-    private RequestFactory() {
-        type = null;
-    };
-
-    public RequestFactory(Class<T> type) {
-        this.type = type;
-    }
-
-    public T build(Session session, Map<String, String> parameters) {
-
-        T request = null;
+        Request request = null;
 
         try {
-            request = type.newInstance();
-            request.init(session, parameters);
-            
-        } catch (InstantiationException ex) {
-            Logger.getLogger(RequestFactory.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(RequestFactory.class.getName()).log(Level.SEVERE, null, ex);
+            Constructor<? extends Request> constructor = requestClass.getConstructor(Session.class, Map.class);
+
+            request = constructor.newInstance(session, parameters);
+
+        } catch (Exception ex) {
+            throw new FatalErrorException("Request factory failed to build "+requestClass.getName(),ex);
         }
 
         return request;
-    }
-
-    public T build(Session session) {
-        return build(session, new HashMap<String, String>());
     }
 }

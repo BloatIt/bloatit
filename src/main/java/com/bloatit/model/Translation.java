@@ -16,44 +16,44 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.bloatit.model;
 
-import java.util.ArrayList;
+import com.bloatit.web.server.Language;
 
-
-public class Demand implements Kudoable{
-    private int id;
+/**
+ * The version of a text for a given language
+ */
+public class Translation implements Kudoable {
+    private final Language language;
     private Member author;
     private long karma;
-    private Translatable title;
-    private Translatable description;
-    private Translatable specification;
-    private final ArrayList<Translatable> drafts;
 
-    public Demand(int id, Translatable title, Translatable description, Translatable specification, ArrayList<Translatable> drafts, long karma, Member author) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.specification = specification;
-        this.drafts = new ArrayList<Translatable>();
-        this.karma = karma;
+    private String entry;
+
+    /**
+     * Creates a new translation
+     * @param entry The element translated into the new language
+     * @param language The language of the translation
+     * @param author The author of the translation
+     * @param karma The karma of the translation
+     */
+    public Translation(String entry, Language language, Member author, long karma){
+        this.entry = entry;
+        this.language = language;
         this.author = author;
+        this.karma = karma;
     }
 
-    public Translatable getDescription() {
-        return this.description;
+    public Language getLanguage(){
+        return this.language;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
-    public Translatable getSpecification() {
-        return this.specification;
-    }
-
-    public Translatable getTitle() {
-        return this.title;
+    /**
+     * @return the text for this given language
+     */
+    public String getEntry(){
+        return this.entry;
     }
 
     @Override
@@ -79,4 +79,5 @@ public class Demand implements Kudoable{
     public Member getAuthor(){
         return this.author;
     }
+
 }

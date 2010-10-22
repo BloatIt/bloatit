@@ -17,28 +17,13 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.server;
+package com.bloatit.common;
 
-import com.bloatit.web.htmlrenderer.HtmlResult;
-import java.util.Map;
 
-public abstract class Request {
-    protected HtmlResult htmlResult;
-    protected Map<String, String> parameters;
-    protected Session session;
-    
-    protected Request(Session session,  Map<String, String> parameters){
-        this.session = session;
-        this.parameters = parameters;
+public class FatalErrorException extends RuntimeException {
+
+    public FatalErrorException(String string, Throwable cause) {
+        super(string, cause);
     }
 
-    abstract public String getCode();
-
-    abstract protected void process();
-
-    
-    public final void doProcess(HtmlResult htmlResult) {
-        this.htmlResult = htmlResult;
-        this.process();
-    }
 }

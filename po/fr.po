@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-13 00:08+0200\n"
+"POT-Creation-Date: 2010-10-13 21:46+0200\n"
 "PO-Revision-Date: 2010-10-11 22:31+0100\n"
 "Last-Translator: Frédéric Bertolus <fred.bertolus@gmail.com>\n"
 "Language-Team: French\n"
@@ -18,62 +18,62 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: com/bloatit/web/server/Page.java:100
+#: com/bloatit/web/server/Page.java:104
 msgid "Logout"
 msgstr "Déconnexion"
 
-#: com/bloatit/web/server/Page.java:104
+#: com/bloatit/web/server/Page.java:108
 msgid "Login / Signup"
 msgstr "Se connecter / S'inscrire"
 
-#: com/bloatit/web/server/Page.java:115
+#: com/bloatit/web/server/Page.java:119
 msgid "Demands"
 msgstr "Demandes"
 
-#: com/bloatit/web/server/Page.java:116
+#: com/bloatit/web/server/Page.java:120
 msgid "Projects"
 msgstr "Projets"
 
-#: com/bloatit/web/server/Page.java:117
+#: com/bloatit/web/server/Page.java:121
 msgid "Groups"
 msgstr "Groupes"
 
-#: com/bloatit/web/server/Page.java:118
+#: com/bloatit/web/server/Page.java:122
 msgid "Members"
 msgstr "Membres"
 
-#: com/bloatit/web/server/Page.java:123
+#: com/bloatit/web/server/Page.java:127
 msgid "Contact"
 msgstr "Contact"
 
-#: com/bloatit/web/server/Page.java:124
+#: com/bloatit/web/server/Page.java:128
 msgid "Documentation"
 msgstr "Documentation"
 
-#: com/bloatit/web/server/Page.java:125
+#: com/bloatit/web/server/Page.java:129
 msgid "About BloatIt"
 msgstr "À propos de BloatIt"
 
-#: com/bloatit/web/server/Page.java:126
+#: com/bloatit/web/server/Page.java:130
 msgid "Press"
 msgstr "Presse"
 
-#: com/bloatit/web/server/Page.java:140
+#: com/bloatit/web/server/Page.java:144
 msgid "This website is under GNU Affero Public Licence."
 msgstr "Ce site internet est sous la GNU Affero Public licence"
 
-#: com/bloatit/web/pages/LoginPage.java:55
-#: com/bloatit/web/pages/LoginPage.java:60
+#: com/bloatit/web/pages/PageNotFound.java:40
+msgid "Page not found"
+msgstr ""
+
+#: com/bloatit/web/pages/LoginPage.java:51
+#: com/bloatit/web/pages/LoginPage.java:61
 msgid "Login"
 msgstr "Se connecter"
 
-#: com/bloatit/web/pages/LoginPage.java:62
+#: com/bloatit/web/pages/LoginPage.java:63
 msgid "Sigup"
 msgstr "S'inscrire"
-
-#: com/bloatit/web/pages/PageNotFound.java:38
-msgid "Page not found"
-msgstr ""
 
 #~ msgid "This text will be translated"
 #~ msgstr "Ce test sera traduit"

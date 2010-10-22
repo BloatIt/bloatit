@@ -31,10 +31,6 @@ public abstract class Page extends Request {
 
     private final String design;
 
-    protected Page() {
-        this.design = "/resources/css/design.css";
-    }
-
     public Page(Session session, Map<String, String> parameters) {
         super(session, parameters);
         this.design = "/resources/css/design.css";
@@ -54,6 +50,7 @@ public abstract class Page extends Request {
         this.generate_body();
         this.htmlResult.unindent();
         this.htmlResult.write("</html>");
+        this.session.flushNotifications();
     }
 
     private void generate_head() {
@@ -81,6 +78,7 @@ public abstract class Page extends Request {
         this.htmlResult.write("<div id=\"body_content\">");
         this.htmlResult.indent();
 
+        this.generateNotifications();
         this.generateContent();
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
@@ -99,16 +97,17 @@ public abstract class Page extends Request {
         this.htmlResult.indent();
         if (this.session.isLogged()) {
             String full_name = this.session.getAuthToken().getMember().getFullName();
-            int karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
+            String karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
             String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma + "</span>";
             String logoutLink = HtmlTools.generateActionLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));
             this.htmlResult.write("<span class=\"top_bar_component\">" + memberLink + "</span><span class=\"top_bar_component\">" + logoutLink + "</span>");
 
         } else {
             this.htmlResult.write("<span class=\"top_bar_component\">" + HtmlTools.generateLink(this.session, this.session.tr("Login / Signup"), new LoginPage(this.session)) + "</span>");
-            this.htmlResult.unindent();
-            this.htmlResult.write("</div>");
+            
         }
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
     }
 
     private void generateMainMenu() {
@@ -155,5 +154,34 @@ public abstract class Page extends Request {
 
     protected String generateLogo() {
         return "<span class=\"logo_bloatit\"><span class=\"logo_bloatit_bloat\">Bloat</span><span class=\"logo_bloatit_it\">It</span></span>";
+    }
+
+    private void generateNotifications() {
+        this.htmlResult.write("<div id='notifications'>");
+        this.htmlResult.indent();
+        for(Notification notification: session.getNotifications()) {
+            generateNotification(notification);
+        }
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
+    }
+
+    private void generateNotification(Notification notification) {
+
+        String notificationClass = "";
+
+        if(notification.getType() == Notification.Type.BAD) {
+            notificationClass = "notification_bad";
+        } else if (notification.getType() == Notification.Type.GOOD) {
+            notificationClass = "notification_good";
+        } else if (notification.getType() == Notification.Type.ERROR) {
+            notificationClass = "notification_error";
+        }
+
+        this.htmlResult.write("<div class=\""+notificationClass+"\">");
+        this.htmlResult.indent();
+        this.htmlResult.write(notification.getMessage());
+        this.htmlResult.unindent();
+        this.htmlResult.write("</div>");
     }
 }

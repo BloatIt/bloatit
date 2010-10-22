@@ -28,9 +28,6 @@ import java.util.Map;
 
 public class IndexPage extends Page {
 
-    public IndexPage() {
-    }
-
     public IndexPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }

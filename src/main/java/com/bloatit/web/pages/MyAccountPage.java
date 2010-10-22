@@ -27,9 +27,6 @@ import java.util.Map;
 
 public class MyAccountPage extends Page {
 
-    private MyAccountPage() {
-    }
-
     public MyAccountPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }

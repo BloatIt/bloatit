@@ -27,16 +27,12 @@ import java.util.Map;
 
 public abstract class Action extends Request{
 
-    protected Action() {
-        
-    }
-
     public Action(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }
 
     @Override
-    protected void process() throws ElementNotFoundException{
+    protected void process(){
         this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session,new IndexPage(this.session)));
     }
 

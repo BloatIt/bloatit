@@ -19,26 +19,34 @@
 
 package com.bloatit.web.server;
 
-import com.bloatit.web.htmlrenderer.HtmlResult;
-import java.util.Map;
 
-public abstract class Request {
-    protected HtmlResult htmlResult;
-    protected Map<String, String> parameters;
-    protected Session session;
-    
-    protected Request(Session session,  Map<String, String> parameters){
-        this.session = session;
-        this.parameters = parameters;
-    }
+public class Notification {
 
-    abstract public String getCode();
+    final String message;
+    final Type type;
 
-    abstract protected void process();
 
     
-    public final void doProcess(HtmlResult htmlResult) {
-        this.htmlResult = htmlResult;
-        this.process();
+    public static enum Type {
+        GOOD,
+        BAD,
+        ERROR
     }
+
+    public Notification(String message, Type type) {
+        this.message = message;
+        this.type = type;
+    }
+
+
+    Type getType() {
+        return type;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+
+
 }

@@ -22,19 +22,17 @@ import com.bloatit.framework.DemandManager;
 import com.bloatit.model.Demand;
 import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.TranslationManipulator;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DemandPage extends Page {
 
     private final Demand demand;
-
-    public DemandPage(){
-        demand=null;
-    }
-
+    
     public DemandPage(Session session, Map<String, String> parameters) {
         this(session, parameters, null);
     }
@@ -45,7 +43,12 @@ public class DemandPage extends Page {
 
         if (demand == null) {
             if (parameters.containsKey("id")) {
-                Integer id = Integer.getInteger(parameters.get("id"));
+                Integer id = null;
+                try{
+                    id = new Integer(parameters.get("id"));
+                } catch(NumberFormatException e){
+                    
+                }
                 if (id != null) {
                     try {
                         d = DemandManager.GetDemandById(id);
@@ -87,7 +90,7 @@ public class DemandPage extends Page {
     @Override
     public String getCode() {
         if (this.demand != null) {
-            return "demand/id-" + this.demand.getId() + "/title-" + HtmlTools.escapeUrlString(this.demand.getTitle());
+            return new HtmlString(session).add("demand/id-" + this.demand.getId() + "/title-").secure(demand.getTitle()).toString();
         } else {
             return "demand"; // TODO Faire un système pour afficher une page d'erreur
         }

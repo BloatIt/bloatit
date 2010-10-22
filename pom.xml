@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -26,71 +27,72 @@
 					<poDirectory>${basedir}/po</poDirectory>
 					<targetBundle>i18n.Messages</targetBundle>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>dist</goal>
+						</goals>
+						<phase>generate-sources</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>gettext-commons-site</id>
-			<url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
-		</repository>
-	</repositories>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.xnap.commons</groupId>
-			<artifactId>gettext-commons</artifactId>
-			<version>0.9.6</version>
-		</dependency>
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>3.8.1</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.xnap.commons</groupId>
+		<artifactId>gettext-commons</artifactId>
+		<version>0.9.6</version>
+	</dependency>
 
-		<!-- For hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>3.3.2.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.4.0.GA</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.3.0.ga</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.4.0.GA</version>
-		</dependency>
+	<!-- For hibernate -->
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-core</artifactId>
+		<version>3.3.2.GA</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-annotations</artifactId>
+		<version>3.4.0.GA</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-commons-annotations</artifactId>
+		<version>3.3.0.ga</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-entitymanager</artifactId>
+		<version>3.4.0.GA</version>
+	</dependency>
 
-		<!-- we need sl4j for logging with hibernate -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.8</version>
-		</dependency>
+	<!-- we need sl4j for logging with hibernate -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>1.5.8</version>
+	</dependency>
 
-		<!-- sl4j uses log4j -->
-		
-		<!-- We need postgresql -->
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>8.4-701.jdbc4</version>
-		</dependency>
+	<!-- sl4j uses log4j -->
 
-	</dependencies>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>gettext-commons-site</id>
-			<url>http://gettext-commons.googlecode.com/svn/maven-repository</url>
-		</pluginRepository>
-	</pluginRepositories>
+	<!-- We need postgresql -->
+	<dependency>
+		<groupId>postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+		<version>8.4-701.jdbc4</version>
+	</dependency>
+
+</dependencies>
+<pluginRepositories>
+	<pluginRepository>
+		<id>gettext-commons-site</id>
+		<url>http://gettext-commons.googlecode.com/svn/maven-repository</url>
+	</pluginRepository>
+</pluginRepositories>
 </project>

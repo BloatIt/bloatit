@@ -25,9 +25,9 @@ public class Member {
     private String login;
     private String email;
     private String fullName;
-    private int karma;
+    private long karma;
 
-    public Member(int id, String login, String email, String fullName, int karma) {
+    public Member(int id, String login, String email, String fullName, long karma) {
         this.id = id;
         this.login = login;
         this.email = email;
@@ -51,8 +51,41 @@ public class Member {
         return id;
     }
 
-    public int getKarma() {
+    public long getKarma() {
         return karma;
     }
 
+    /**
+     * Call when contribution from a member is kudoed by another member.
+     * Only called from package. Use Kudoable.kudo instead
+     * @param kudoer the person that issues the kudo
+     */
+    void receiveKudo(Member kudoer) {
+        this.karma += (long)(Math.log(kudoer.getKarma())/Math.log(2));
+    }
+
+    /**
+     * Call when a user issues a report.
+     * Only called from package. Use Kudoable.kudo instead
+     */
+    void issueKudo() {
+        // Nothing
+    }
+
+    /**
+     * Call when a user issues a report. 
+     * Only called from package. Use Kudoable.report instead
+     */
+    void issueReport() {
+        this.karma -= 1;
+    }
+
+    /**
+     * Call when a member contribution is reported.
+     * Only called from package. Use Kudoable.report instead
+     * @param reporter
+     */
+    void receiveReport(Member reporter) {
+        this.karma += (long)(Math.log(reporter.getKarma())/Math.log(2));
+    }
 }

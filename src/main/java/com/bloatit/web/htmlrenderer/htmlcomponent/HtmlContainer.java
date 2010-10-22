@@ -17,28 +17,34 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.server;
+package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
-import java.util.Map;
+import java.util.ArrayList;
 
-public abstract class Request {
-    protected HtmlResult htmlResult;
-    protected Map<String, String> parameters;
-    protected Session session;
-    
-    protected Request(Session session,  Map<String, String> parameters){
-        this.session = session;
-        this.parameters = parameters;
+/**
+ * A component used to store other components
+ */
+public class HtmlContainer extends HtmlComponent{
+    private ArrayList<HtmlComponent> components;
+
+    public HtmlContainer(){
+        this.components = new ArrayList<HtmlComponent>();
     }
 
-    abstract public String getCode();
+    /**
+     * Add a new component at the end of the list of components
+     * @param newComponent the added component
+     */
+    public void addComponent(HtmlComponent newComponent){
+        this.components.add(newComponent);
 
-    abstract protected void process();
-
+    }
     
-    public final void doProcess(HtmlResult htmlResult) {
-        this.htmlResult = htmlResult;
-        this.process();
+    @Override
+    public void generate(HtmlResult htmlResult) {
+        for (HtmlComponent component : this.components){
+            component.generate(htmlResult);
+        }
     }
 }

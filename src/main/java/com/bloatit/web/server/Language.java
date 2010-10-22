@@ -41,13 +41,21 @@ public class Language {
         {
             put("en", new LanguageTemplate("en", "English", java.util.Locale.ENGLISH));
             put("fr", new LanguageTemplate("fr", "Français", java.util.Locale.FRENCH));
+            put("de", new LanguageTemplate("de", "German",java.util.Locale.GERMAN));
 
         }
     };
     private LanguageTemplate template;
 
     public Language() {
-        template = languageList.get("en");
+        this.template = languageList.get("en");
+    }
+
+    public Language(String code){
+        this.template = languageList.get(code);
+        if(this.template == null){
+            this.template = languageList.get("en");
+        }
     }
 
     public String getCode() {
@@ -87,7 +95,6 @@ public class Language {
 
     /**
      * Nested class to handle different languages
-     * [Equivalent to using a struct]
      */
     private static class LanguageTemplate {
 
@@ -101,5 +108,48 @@ public class Language {
             i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);
 
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final LanguageTemplate other = (LanguageTemplate) obj;
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 29 * hash + (this.key != null ? this.key.hashCode() : 0);
+            return hash;
+        }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Language other = (Language) obj;
+        if (this.template != other.template && (this.template == null || !this.template.equals(other.template))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 11 * hash + (this.template != null ? this.template.hashCode() : 0);
+        return hash;
+    }
+
+    
 }

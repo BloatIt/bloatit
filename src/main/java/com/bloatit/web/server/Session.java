@@ -21,22 +21,34 @@ package com.bloatit.web.server;
 
 import com.bloatit.framework.AuthToken;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 
 public class Session {
-    private Object auth_token;
-    private Object key;
+    private final String key;
     private boolean logged;
-    private ArrayDeque<Action> actionList;
+    private Deque<Action> actionList;
+    private Deque<Notification> notificationList;
     private Language language;
     private Page lastStablePage;
     private AuthToken authToken;
 
-    public Session(){
-        this.auth_token = null;
-        this.key = null;
+    private List<Language> preferredLanguages;
+    
+
+    Session(String key) {
+        this.key = key;
+        this.authToken = null;
         this.logged = false;
         this.actionList = new ArrayDeque<Action>();
+        this.notificationList = new ArrayDeque<Notification>();
+
+        // TODO : Following lines are for testing purposes only
+        preferredLanguages = new ArrayList<Language>();
+        preferredLanguages.add(new Language()); // TODO : ONLY FOR TEST
+        preferredLanguages.add(new Language("fr")); // TODO : ONLY FOR TEST
     }
     public String tr(String s){
         return this.language.tr(s);
@@ -66,15 +78,11 @@ public class Session {
         return this.logged;
     }
 
-    public Object getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public ArrayDeque<Action> getActionList() {
+    public Deque<Action> getActionList() {
         return actionList;
     }
 
@@ -84,5 +92,29 @@ public class Session {
 
     public Page getLastStablePage() {
         return lastStablePage;
+    }
+
+    public void notifyGood(String message) {
+        this.notificationList.add(new Notification(message, Notification.Type.GOOD));
+    }
+
+    public void notifyBad(String message) {
+        this.notificationList.add(new Notification(message, Notification.Type.BAD));
+    }
+
+    public void notifyError(String message) {
+        this.notificationList.add(new Notification(message, Notification.Type.ERROR));
+    }
+
+    void flushNotifications() {
+        this.notificationList.clear();
+    }
+
+    Deque<Notification> getNotifications() {
+        return notificationList;
+    }
+
+    public List<Language> getPreferredLangs(){
+        return this.preferredLanguages;
     }
 }
