@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 @MappedSuperclass
 public abstract class Kudosable extends UserContent {
 
-	@Basic(optional = true)
+	@Basic(optional = false)
 	private int popularity;
 	@OneToMany
 	private Set<Kudos> kudos = new HashSet<Kudos>(0);

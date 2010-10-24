@@ -17,7 +17,7 @@ public class Translation extends Kudosable {
 	private String text;
 	
 	@ManyToOne(optional = false)
-	private LocalizedText baseText;
+	private Translatable baseText;
 
 	protected Translation() {
 	}
@@ -44,11 +44,11 @@ public class Translation extends Kudosable {
 		this.text = text;
 	}
 
-	protected void setBaseText(LocalizedText baseText) {
+	protected void setBaseText(Translatable baseText) {
 	    this.baseText = baseText;
     }
 
-	protected LocalizedText getBaseText() {
+	protected Translatable getBaseText() {
 	    return baseText;
     }
 }

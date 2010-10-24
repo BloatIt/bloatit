@@ -3,12 +3,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
-/**
- * some utils to manage hibernate
- */
 public class SessionManger {
 
-	private static final SessionFactory sessionFactory = buildSessionFactory();
+    // SHOULD BE FINAL see reCreateSessionFactory
+	private static SessionFactory sessionFactory = buildSessionFactory();
 
 	private static SessionFactory buildSessionFactory() {
 		try {
@@ -48,5 +46,20 @@ public class SessionManger {
 	
 	public static void rollback(){
 		sessionFactory.getCurrentSession().getTransaction().rollback();
+	}
+	
+	/**
+	 * @deprecated
+	 * DO NOT USE ! THIS IS FOR TESTS ONLY !!
+	 */
+	public static void reCreateSessionFactory(){
+	    try {
+            // Create the SessionFactory from hibernate.cfg.xml
+	        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        } catch (Throwable ex) {
+            // Make sure you log the exception, as it might be swallowed
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        }
 	}
 }

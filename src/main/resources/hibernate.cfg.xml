@@ -26,9 +26,9 @@
   
   <mapping class="com.bloatit.model.data.Transaction"/>
   <mapping class="com.bloatit.model.data.Translation"/>
-  <mapping class="com.bloatit.model.data.LocalizedText"/>
+  <mapping class="com.bloatit.model.data.Translatable"/>
+  <mapping class="com.bloatit.model.data.Specification"/>
   <mapping class="com.bloatit.model.data.Kudos"/>
-  <mapping class="com.bloatit.model.data.Draft"/>
   <mapping class="com.bloatit.model.data.Comment"/>
   <mapping class="com.bloatit.model.data.GroupMembership"/>
   <mapping class="com.bloatit.model.data.Group"/>

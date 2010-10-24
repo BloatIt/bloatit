@@ -16,9 +16,23 @@ import com.bloatit.model.data.util.SessionManger;
  * Unit test for simple App.
  */
 public class HibernateTest extends TestCase {
-    
+
     public HibernateTest(String testName) {
         super(testName);
+    }
+
+    @SuppressWarnings("deprecation")
+    protected void setUp() throws Exception {
+        super.setUp();
+        SessionManger.reCreateSessionFactory();
+    }
+
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        if (SessionManger.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+            SessionManger.EndWorkUnitAndFlush();
+        }
+        SessionManger.getSessionFactory().close();
     }
 
     /**
@@ -54,7 +68,9 @@ public class HibernateTest extends TestCase {
     public void testMemberDuplicateCreation() {
         try {
             SessionManger.beginWorkUnit();
-            Member.createAndPersist("Yo", "plop", "yo@gmail.com"); // duplicate login
+            Member.createAndPersist("Yo", "plop", "yo@gmail.com");
+            SessionManger.flush();
+            Member.createAndPersist("Yo", "plip", "yoyo@gmail.com"); // duplicate login
             SessionManger.EndWorkUnitAndFlush();
             assertTrue(false);
         } catch (HibernateException e) {
@@ -63,6 +79,7 @@ public class HibernateTest extends TestCase {
     }
 
     public void testGetMemberByLogin() {
+        testCreateMember();
         SessionManger.beginWorkUnit();
         assertEquals("Bertolus", Member.getByLogin("Fred").getLastname());
         assertNull(Member.getByLogin("Inexistant"));
@@ -70,6 +87,7 @@ public class HibernateTest extends TestCase {
     }
 
     public void testExistMemberByLogin() {
+        testCreateMember();
         SessionManger.beginWorkUnit();
         assertTrue(Member.exist("Fred"));
         assertFalse(Member.exist("Inexistant"));
@@ -78,6 +96,7 @@ public class HibernateTest extends TestCase {
     }
 
     public void testCreateGroup() {
+        testCreateMember();
         SessionManger.beginWorkUnit();
         Member yo = Member.getByLogin("Yo");
         Member fred = Member.getByLogin("Fred");
@@ -92,6 +111,7 @@ public class HibernateTest extends TestCase {
     }
 
     public void testDuplicatedGroup() {
+        testCreateGroup();
         try {
             SessionManger.beginWorkUnit();
             Member fred = Member.getByLogin("Fred");
@@ -105,6 +125,8 @@ public class HibernateTest extends TestCase {
     }
 
     public void testGetGroupByName() {
+        testCreateGroup();
+
         SessionManger.beginWorkUnit();
         assertEquals("Plénet", Group.getByName("b219").getAuthor().getLastname());
         assertNull(Group.getByName("Inexistant"));
@@ -112,6 +134,8 @@ public class HibernateTest extends TestCase {
     }
 
     public void testAddUserToGroup() {
+        testCreateGroup();
+
         SessionManger.beginWorkUnit();
         Member.getByLogin("Fred").addToGroup(Group.getByName("b219"), false);
         Member.getByLogin("Yo").addToGroup(Group.getByName("b219"), false);
@@ -122,6 +146,8 @@ public class HibernateTest extends TestCase {
     }
 
     public void testGetAllUserInGroup() {
+        testAddUserToGroup();
+
         SessionManger.beginWorkUnit();
         List<Member> members = Group.getByName("b219").getMembers();
         assertEquals(members.size(), 2);
@@ -131,6 +157,8 @@ public class HibernateTest extends TestCase {
     }
 
     public void testGetAllGroupForUser() {
+        testAddUserToGroup();
+
         SessionManger.beginWorkUnit();
         List<Group> groups = Member.getByLogin("Yo").getGroups();
         assertEquals(groups.size(), 4);
@@ -142,6 +170,8 @@ public class HibernateTest extends TestCase {
     }
 
     public void testRemoveGroup() {
+        testAddUserToGroup();
+
         SessionManger.beginWorkUnit();
         Group b219 = Group.getByName("b219");
         Member yo = Member.getByLogin("Yo");
@@ -156,24 +186,23 @@ public class HibernateTest extends TestCase {
 
         SessionManger.EndWorkUnitAndFlush();
     }
-    
-    public void testRemoveMember(){
+
+    public void testRemoveMember() {
+        testAddUserToGroup();
+
         SessionManger.beginWorkUnit();
         Group b218 = Group.getByName("b218");
         Member yo = Member.getByLogin("Yo");
-        
-        b218.removeMember(yo);
-        
-        List<Group> groups = yo.getGroups();
-        assertEquals(groups.size(), 2);
-        assertEquals(groups.get(0).getName(), "b217");
-        assertEquals(groups.get(1).getName(), "b216");
-        
-        SessionManger.EndWorkUnitAndFlush();
-    }
 
-    public void end() {
-        SessionManger.getSessionFactory().close();
+        b218.removeMember(yo);
+
+        List<Group> groups = yo.getGroups();
+        assertEquals(groups.size(), 3);
+        assertEquals(groups.get(0).getName(), "b219");
+        assertEquals(groups.get(1).getName(), "b217");
+        assertEquals(groups.get(2).getName(), "b216");
+
+        SessionManger.EndWorkUnitAndFlush();
     }
 
 }

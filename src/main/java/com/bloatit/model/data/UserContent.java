@@ -7,10 +7,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @MappedSuperclass
 public abstract class UserContent extends Identifiable {
 
+    // TODO find why I cannot make this not-null (Group related) 
 	@OneToOne
+	@Cascade(value = {CascadeType.ALL})
 	private Member author;
 	
 	// TODO I would like to have some external join tables.

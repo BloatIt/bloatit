@@ -13,7 +13,7 @@ public class Offer extends Kudosable {
 	@ManyToOne
 	private Demand demand;
 	@OneToOne
-	private LocalizedText text;
+	private Translatable text;
 	@Basic(optional = false)
 	private Date dateExpire;
 
@@ -21,7 +21,8 @@ public class Offer extends Kudosable {
 		super();
 	}
 
-	public Offer(Demand demand, LocalizedText text, Date dateExpire) {
+	public Offer(Member author, Demand demand, Translatable text, Date dateExpire) {
+	    super(author);
 		this.demand = demand;
 		this.text = text;
 		this.dateExpire = dateExpire;
@@ -39,7 +40,7 @@ public class Offer extends Kudosable {
 		return demand;
 	}
 
-	public LocalizedText getText() {
+	public Translatable getText() {
 		return text;
 	}
 
@@ -51,7 +52,7 @@ public class Offer extends Kudosable {
     	this.demand = demand;
     }
 
-	protected void setText(LocalizedText text) {
+	protected void setText(Translatable text) {
     	this.text = text;
     }
 }
