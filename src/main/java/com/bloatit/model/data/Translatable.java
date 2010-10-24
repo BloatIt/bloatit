@@ -21,7 +21,6 @@ public class Translatable extends Identifiable {
     private Locale defaultLocale;
 
     @OneToMany(mappedBy = "baseText")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Set<Translation> translations = new HashSet<Translation>(0);
 
     // For Hibernate revers mapping.

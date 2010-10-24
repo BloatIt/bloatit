@@ -6,6 +6,9 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 // This class should handle some versions.
 // version are managed by date.
 @Entity
@@ -17,6 +20,7 @@ public class Translation extends Kudosable {
     private String text;
 
     @ManyToOne(optional = false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Translatable baseText;
 
     protected Translation() {}

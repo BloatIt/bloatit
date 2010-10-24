@@ -2,7 +2,6 @@ package com.bloatit.model.data;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -38,7 +37,7 @@ public class Member extends Identifiable {
     @Basic(optional = false)
     private Date dateJoin;
 
-    // this property is for hibernate mapping. It should never be used.
+    // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
@@ -95,31 +94,6 @@ public class Member extends Identifiable {
     }
 
     /**
-     * @return getGroups(0, 0)
-     */
-    public List<Group> getGroups() {
-        return getGroups(0, 0);
-    }
-
-    /**
-     * @param from index of the first result.
-     * @param number is the number max of results that the getGroup will return.
-     * @return the list of groups that this member is in.
-     */
-    // TODO return a const list
-    @SuppressWarnings("unchecked")
-    public List<Group> getGroups(int from, int number) {
-        Session session = SessionManger.getSessionFactory().getCurrentSession();
-        Query q = session.getNamedQuery("getGroups");
-        q.setParameter("member", this);
-        q.setFirstResult(from);
-        if (number != 0) {
-            q.setFetchSize(number);
-        }
-        return q.list();
-    }
-
-    /**
      * @param aGroup the group in which this member is added.
      * @param isAdmin tell if the member is an admin of the group 'aGroup'
      */
@@ -134,6 +108,49 @@ public class Member extends Identifiable {
         GroupMembership link = GroupMembership.get(aGroup, this);
         groupMembership.remove(link);
         aGroup.getGroupMembership().remove(link);
+    }
+
+    public QueryCollection<Group> getGroups() {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Query q = session.getNamedQuery("getGroups");
+        q.setParameter("member", this);
+        return new QueryCollection<Group>(q);
+    }
+
+    public QueryCollection<Demand> getDemands() {
+        return getUserContent(Demand.class, "Demand");
+    }
+
+    public QueryCollection<Kudos> getKudos() {
+        return getUserContent(Kudos.class, "Kudos");
+    }
+
+    public QueryCollection<Specification> getSpecifications() {
+        return getUserContent(Specification.class, "Specification");
+    }
+
+    public QueryCollection<Transaction> getTransactions() {
+        return getUserContent(Transaction.class, "Transaction");
+    }
+
+    public QueryCollection<Comment> getComments() {
+        return getUserContent(Comment.class, "Comment");
+    }
+
+    public QueryCollection<Offer> getOffers() {
+        return getUserContent(Offer.class, "Offer");
+    }
+
+    public QueryCollection<Translation> getTranslations() {
+        return getUserContent(Translation.class, "Translation");
+    }
+
+    private <T> QueryCollection<T> getUserContent(Class<T> theClass, String className) {
+        Query q = SessionManger.getSessionFactory()
+                               .getCurrentSession()
+                               .createQuery("from com.bloatit.model.data." + className + " as x where x.author = :author");
+        q.setEntity("author", this);
+        return new QueryCollection<T>(q);
     }
 
     protected Member() {
@@ -207,4 +224,5 @@ public class Member extends Identifiable {
     protected Set<GroupMembership> getGroupMembership() {
         return groupMembership;
     }
+
 }

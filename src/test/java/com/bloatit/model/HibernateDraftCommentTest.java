@@ -12,6 +12,7 @@ import com.bloatit.model.data.util.SessionManger;
 
 /**
  * Here I assume the HibernateTest is run without error.
+ * 
  * @author thomas
  */
 public class HibernateDraftCommentTest extends TestCase {
@@ -59,10 +60,30 @@ public class HibernateDraftCommentTest extends TestCase {
     }
 
     public void testCreateDemand() {
+        SessionManger.beginWorkUnit();
 
-        new Demand(yo, new Translatable(yo, new Locale("fr"), "Ma super demande !"), new Translatable(yo,
-                                                                                                      new Locale("fr"),
-                                                                                                      "Ceci est la descption de ma demande :) "));
+        Demand demand = Demand.createAndPersist(yo,
+                                                new Translatable(yo, new Locale("fr"), "Ma super demande !"),
+                                                new Translatable(yo, new Locale("fr"), "Ceci est la descption de ma demande :) "));
+
+        assertEquals(demand, yo.getDemands().iterator().next());
+
+        SessionManger.EndWorkUnitAndFlush();
+
+    }
+
+    public void testAddSpecification() {
+        SessionManger.beginWorkUnit();
+
+        Demand demand = Demand.createAndPersist(yo,
+                                                new Translatable(yo, new Locale("fr"), "Ma super demande !"),
+                                                new Translatable(yo, new Locale("fr"), "Ceci est la descption de ma demande :) "));
+
+        demand.createSpecification(tom, "This is the spécification");
+
+        assertNotNull(demand.getSpecification());
+
+        SessionManger.EndWorkUnitAndFlush();
 
     }
 }

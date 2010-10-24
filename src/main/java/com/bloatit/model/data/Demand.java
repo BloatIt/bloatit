@@ -11,9 +11,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
+
+import com.bloatit.model.data.util.SessionManger;
 
 /**
  * 
@@ -56,7 +60,20 @@ public class Demand extends Kudosable {
      * @param member the author of the demand
      * @param description
      */
-    public Demand(Member member, Translatable title, Translatable description) {
+    public static Demand createAndPersist(Member member, Translatable title, Translatable description) {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Demand demand = new Demand(member, title, description);
+        try {
+            session.save(demand);
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            session.beginTransaction();
+            throw e;
+        }
+        return demand;
+    }
+
+    protected Demand(Member member, Translatable title, Translatable description) {
         super(member);
         this.title = title;
         this.state = State.VALIDATED;
@@ -68,8 +85,8 @@ public class Demand extends Kudosable {
         super();
     }
 
-    public void createSpecification(Member member, String content, Demand demand) {
-        specification = new Specification(member, content, demand);
+    public void createSpecification(Member member, String content) {
+        specification = new Specification(member, content, this);
     }
 
     public void addOffer(Member author, Translatable description, Date dateExpir) {

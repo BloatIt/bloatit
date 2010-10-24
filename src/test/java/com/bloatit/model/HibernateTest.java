@@ -1,5 +1,6 @@
 package com.bloatit.model;
 
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Test;
@@ -10,6 +11,7 @@ import org.hibernate.HibernateException;
 
 import com.bloatit.model.data.Group;
 import com.bloatit.model.data.Member;
+import com.bloatit.model.data.QueryCollection;
 import com.bloatit.model.data.util.SessionManger;
 
 /**
@@ -159,12 +161,13 @@ public class HibernateTest extends TestCase {
         testAddUserToGroup();
 
         SessionManger.beginWorkUnit();
-        List<Group> groups = Member.getByLogin("Yo").getGroups();
-        assertEquals(groups.size(), 4);
-        assertEquals(groups.get(0).getName(), "b219");
-        assertEquals(groups.get(1).getName(), "b218");
-        assertEquals(groups.get(2).getName(), "b217");
-        assertEquals(groups.get(3).getName(), "b216");
+        QueryCollection<Group> groups = Member.getByLogin("Yo").getGroups();
+        Iterator<Group> it = groups.iterator();
+        assertEquals(it.next().getName(), "b219");
+        assertEquals(it.next().getName(), "b218");
+        assertEquals(it.next().getName(), "b217");
+        assertEquals(it.next().getName(), "b216");
+        assertFalse(it.hasNext());
         SessionManger.EndWorkUnitAndFlush();
     }
 
@@ -177,11 +180,11 @@ public class HibernateTest extends TestCase {
 
         yo.removeFromGroup(b219);
 
-        List<Group> groups = yo.getGroups();
-        assertEquals(groups.size(), 3);
-        assertEquals(groups.get(0).getName(), "b218");
-        assertEquals(groups.get(1).getName(), "b217");
-        assertEquals(groups.get(2).getName(), "b216");
+        Iterator<Group> it = yo.getGroups().iterator();
+        assertEquals(it.next().getName(), "b218");
+        assertEquals(it.next().getName(), "b217");
+        assertEquals(it.next().getName(), "b216");
+        assertFalse(it.hasNext());
 
         SessionManger.EndWorkUnitAndFlush();
     }
@@ -195,11 +198,11 @@ public class HibernateTest extends TestCase {
 
         b218.removeMember(yo);
 
-        List<Group> groups = yo.getGroups();
-        assertEquals(groups.size(), 3);
-        assertEquals(groups.get(0).getName(), "b219");
-        assertEquals(groups.get(1).getName(), "b217");
-        assertEquals(groups.get(2).getName(), "b216");
+        Iterator<Group> it = yo.getGroups().iterator(); 
+        assertEquals(it.next().getName(), "b219");
+        assertEquals(it.next().getName(), "b217");
+        assertEquals(it.next().getName(), "b216");
+        assertFalse(it.hasNext());
 
         SessionManger.EndWorkUnitAndFlush();
     }
