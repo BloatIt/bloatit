@@ -56,6 +56,7 @@ public class Demand extends Kudosable {
 
     /**
      * It is automatically in validated state (temporary)
+     * Here I did not make any assumption on the locale and author of title and description. I think it is the next layer task.
      * 
      * @param member the author of the demand
      * @param description

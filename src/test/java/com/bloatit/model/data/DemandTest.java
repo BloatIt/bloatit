@@ -11,9 +11,7 @@ import com.bloatit.model.data.Translatable;
 import com.bloatit.model.data.util.SessionManger;
 
 /**
- * Here I assume the HibernateTest is run without error.
- * 
- * @author thomas
+ * I assume the GroupMemberTest is run without error.
  */
 public class DemandTest extends TestCase {
 
@@ -84,6 +82,8 @@ public class DemandTest extends TestCase {
         assertNotNull(demand.getSpecification());
 
         SessionManger.EndWorkUnitAndFlush();
-
     }
+
+    
+
 }
