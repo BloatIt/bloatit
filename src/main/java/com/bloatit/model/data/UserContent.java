@@ -13,61 +13,61 @@ import org.hibernate.annotations.CascadeType;
 @MappedSuperclass
 public abstract class UserContent extends Identifiable {
 
-    // TODO find why I cannot make this not-null (Group related) 
-	@OneToOne
-	@Cascade(value = {CascadeType.ALL})
-	private Member author;
-	
-	// TODO I would like to have some external join tables.
-	@ManyToOne(optional = true)
-	private Group asGroup;
-	@Basic(optional = false)
+    // TODO find why I cannot make this not-null (Group related)
+    @OneToOne
+    @Cascade(value = { CascadeType.ALL })
+    private Member author;
+
+    // TODO I would like to have some external join tables.
+    @ManyToOne(optional = true)
+    private Group asGroup;
+    @Basic(optional = false)
     private Date creationDate;
 
-	protected UserContent() {
-		creationDate = new Date();
-	}
+    protected UserContent() {
+        creationDate = new Date();
+    }
 
-	public UserContent(Member member) {
-		super();
-		author = member;
-		creationDate = new Date();
-	}
+    public UserContent(Member member) {
+        super();
+        author = member;
+        creationDate = new Date();
+    }
 
-	/**
-	 * No final because it is depreciated for hibernate. but you should
-	 * considered me as final
-	 */
-	public Member getAuthor() {
-		return author;
-	}
+    /**
+     * No final because it is depreciated for hibernate. but you should
+     * considered me as final
+     */
+    public Member getAuthor() {
+        return author;
+    }
 
-	/**
-	 * No final because it is depreciated for hibernate. but you should
-	 * considered me as final
-	 */
-	public Date getCreationDate() {
-		return creationDate;
-	}
+    /**
+     * No final because it is depreciated for hibernate. but you should
+     * considered me as final
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
-	public void setAsGroup(Group asGroup) {
-		this.asGroup = asGroup;
-	}
+    public void setAsGroup(Group asGroup) {
+        this.asGroup = asGroup;
+    }
 
-	public Group getAsGroup() {
-		return asGroup;
-	}
+    public Group getAsGroup() {
+        return asGroup;
+    }
 
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
-	protected void setAuthor(Member author) {
-		this.author = author;
-	}
+    protected void setAuthor(Member author) {
+        this.author = author;
+    }
 
-	protected void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
+    protected void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
 }

@@ -36,12 +36,13 @@ public class Demand extends Kudosable {
     private Translatable title;
 
     @OneToOne(mappedBy = "demand", optional = true)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Specification specification;
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @OrderBy(clause = "Offer.popularity") // TODO test me !
+    @OrderBy(clause = "Offer.popularity")
+    // TODO test me !
     private Set<Offer> offers = new HashSet<Offer>(0);
 
     // TODO make sure it is read only !
@@ -83,10 +84,10 @@ public class Demand extends Kudosable {
     public void removeOffer(Offer offer) {
         offers.remove(offer);
     }
-    
+
     // TODO create a Throwable type
-    public void addContribution(Member member, BigDecimal amount) throws Throwable{
-        if (amount.compareTo(new BigDecimal("0")) <= 0){
+    public void addContribution(Member member, BigDecimal amount) throws Throwable {
+        if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new Throwable();
         }
         contributions.add(new Transaction(member, amount));

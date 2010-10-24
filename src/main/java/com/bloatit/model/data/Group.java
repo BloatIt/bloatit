@@ -84,7 +84,7 @@ public class Group extends UserContent {
 
     public Group(String name, Member owner, Right right) {
         super(owner);
-        this.setName(name);
+        setName(name);
         this.right = right;
     }
 
@@ -103,11 +103,12 @@ public class Group extends UserContent {
         }
         return q.list();
     }
-    
-    public void addMember(Member member, boolean isAdmin){
+
+    public void addMember(Member member, boolean isAdmin) {
         groupMembership.add(new GroupMembership(member, this, isAdmin));
     }
-    public void removeMember(Member member){
+
+    public void removeMember(Member member) {
         GroupMembership link = GroupMembership.get(this, member);
         groupMembership.remove(link);
         member.getGroupMembership().remove(link);

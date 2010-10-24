@@ -21,7 +21,6 @@ public class HibernateTest extends TestCase {
         super(testName);
     }
 
-    @SuppressWarnings("deprecation")
     protected void setUp() throws Exception {
         super.setUp();
         SessionManger.reCreateSessionFactory();

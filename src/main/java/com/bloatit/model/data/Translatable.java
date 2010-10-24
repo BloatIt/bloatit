@@ -23,7 +23,7 @@ public class Translatable extends Identifiable {
     @OneToMany(mappedBy = "baseText")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Set<Translation> translations = new HashSet<Translation>(0);
-    
+
     // For Hibernate revers mapping.
     @ManyToOne
     private Demand demand;
@@ -34,7 +34,7 @@ public class Translatable extends Identifiable {
 
     public Translatable(Member member, Locale locale, String text) {
         super();
-        this.setDefaultLocale(locale);
+        setDefaultLocale(locale);
         this.translations.add(new Translation(member, locale, text));
     }
 

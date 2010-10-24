@@ -6,26 +6,25 @@ import javax.persistence.Entity;
 @Entity
 public class Kudos extends UserContent {
 
-	@Basic(optional = false)
-	private int value;
+    @Basic(optional = false)
+    private int value;
 
-	public Kudos() {
-	}
+    public Kudos() {}
 
-	public Kudos(Member member, int value) {
-		super(member);
-		this.value = value;
-	}
+    public Kudos(Member member, int value) {
+        super(member);
+        this.value = value;
+    }
 
-	public int getValue() {
-		return value;
-	}
-	
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    public int getValue() {
+        return value;
+    }
 
-	protected void setValue(int value) {
-    	this.value = value;
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
+
+    protected void setValue(int value) {
+        this.value = value;
     }
 }

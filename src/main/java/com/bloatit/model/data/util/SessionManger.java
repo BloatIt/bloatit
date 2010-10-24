@@ -49,7 +49,6 @@ public class SessionManger {
 	}
 	
 	/**
-	 * @deprecated
 	 * DO NOT USE ! THIS IS FOR TESTS ONLY !!
 	 */
 	public static void reCreateSessionFactory(){

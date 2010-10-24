@@ -11,44 +11,43 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Translation extends Kudosable {
 
-	@Basic(optional = false)
-	private Locale locale;
-	@Basic(optional = false)
-	private String text;
-	
-	@ManyToOne(optional = false)
-	private Translatable baseText;
+    @Basic(optional = false)
+    private Locale locale;
+    @Basic(optional = false)
+    private String text;
 
-	protected Translation() {
-	}
+    @ManyToOne(optional = false)
+    private Translatable baseText;
 
-	public Translation(Member member, Locale locale, String text) {
-		super(member);
-		this.locale = locale;
-		this.text = text;
-	}
+    protected Translation() {}
 
-	public Locale getLocale() {
-		return locale;
-	}
-
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	protected void setBaseText(Translatable baseText) {
-	    this.baseText = baseText;
+    public Translation(Member member, Locale locale, String text) {
+        super(member);
+        this.locale = locale;
+        this.text = text;
     }
 
-	protected Translatable getBaseText() {
-	    return baseText;
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    protected void setBaseText(Translatable baseText) {
+        this.baseText = baseText;
+    }
+
+    protected Translatable getBaseText() {
+        return baseText;
     }
 }

@@ -15,60 +15,60 @@ import com.bloatit.model.data.util.SessionManger;
 @Entity
 public class GroupMembership extends Identifiable {
 
-	// TODO find why I cannot make this parameter non null
-	@ManyToOne
-	private Member member;
+    // TODO find why I cannot make this parameter non null
+    @ManyToOne
+    private Member member;
 
-	// TODO find why I cannot make this parameter non null
-	@ManyToOne
-	private Group group;
+    // TODO find why I cannot make this parameter non null
+    @ManyToOne
+    private Group group;
 
-	@Basic(optional = false)
-	private boolean isAdmin; // Should be Role enum
+    @Basic(optional = false)
+    private boolean isAdmin; // Should be Role enum
 
-	protected GroupMembership() {
-		super();
-	}
+    protected GroupMembership() {
+        super();
+    }
 
-	public static GroupMembership get(Group group, Member member){
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
-		Query q = session.createQuery("from com.bloatit.model.data.GroupMembership as gm where gm.group = :group and gm.member = :member");
-		q.setEntity("group", group);
-		q.setEntity("member", member);
-		return (GroupMembership) q.uniqueResult();
-	}
-	
-	public GroupMembership(Member member, Group group, boolean isAdmin) {
-		this.member = member;
-		this.group = group;
-		this.isAdmin = isAdmin;
-	}
-	
-	public Member getMember() {
-		return member;
-	}
+    public static GroupMembership get(Group group, Member member) {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Query q = session.createQuery("from com.bloatit.model.data.GroupMembership as gm where gm.group = :group and gm.member = :member");
+        q.setEntity("group", group);
+        q.setEntity("member", member);
+        return (GroupMembership) q.uniqueResult();
+    }
 
-	public Group getGroup() {
-		return group;
-	}
+    public GroupMembership(Member member, Group group, boolean isAdmin) {
+        this.member = member;
+        this.group = group;
+        this.isAdmin = isAdmin;
+    }
 
-	public boolean isAdmin() {
-		return isAdmin;
-	}
+    public Member getMember() {
+        return member;
+    }
 
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    public Group getGroup() {
+        return group;
+    }
 
-	protected void setMember(Member member) {
-		this.member = member;
-	}
+    public boolean isAdmin() {
+        return isAdmin;
+    }
 
-	protected void setGroup(Group group) {
-		this.group = group;
-	}
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
-	protected void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+    protected void setMember(Member member) {
+        this.member = member;
+    }
+
+    protected void setGroup(Group group) {
+        this.group = group;
+    }
+
+    protected void setAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
 }

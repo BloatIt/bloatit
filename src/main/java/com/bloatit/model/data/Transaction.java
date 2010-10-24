@@ -9,39 +9,38 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Transaction extends UserContent {
 
-	@Basic(optional = false)
-	private BigDecimal amount;
+    @Basic(optional = false)
+    private BigDecimal amount;
 
-	// For hibernate mapping only:
-	@ManyToOne
-	private Demand demand;
+    // For hibernate mapping only:
+    @ManyToOne
+    private Demand demand;
 
-	public Transaction() {
-	}
+    public Transaction() {}
 
-	public Transaction(Member member, BigDecimal amount) {
-		super(member);
-		this.amount = amount;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-	
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
-
-	protected Demand getDemand() {
-    	return demand;
+    public Transaction(Member member, BigDecimal amount) {
+        super(member);
+        this.amount = amount;
     }
 
-	protected void setDemand(Demand demand) {
-    	this.demand = demand;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-	protected void setAmount(BigDecimal amount) {
-    	this.amount = amount;
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
+
+    protected Demand getDemand() {
+        return demand;
+    }
+
+    protected void setDemand(Demand demand) {
+        this.demand = demand;
+    }
+
+    protected void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
 }
