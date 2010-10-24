@@ -1,4 +1,4 @@
-package com.bloatit.model;
+package com.bloatit.model.data;
 
 import java.util.Iterator;
 import java.util.List;
@@ -17,9 +17,9 @@ import com.bloatit.model.data.util.SessionManger;
 /**
  * Unit test for simple App.
  */
-public class HibernateTest extends TestCase {
+public class GroupMemberTest extends TestCase {
 
-    public HibernateTest(String testName) {
+    public GroupMemberTest(String testName) {
         super(testName);
     }
 
@@ -40,7 +40,7 @@ public class HibernateTest extends TestCase {
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite(HibernateTest.class);
+        return new TestSuite(GroupMemberTest.class);
     }
 
     public void testCreateMember() {

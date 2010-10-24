@@ -1,4 +1,4 @@
-package com.bloatit.model;
+package com.bloatit.model.data;
 
 import java.util.Locale;
 
@@ -15,7 +15,7 @@ import com.bloatit.model.data.util.SessionManger;
  * 
  * @author thomas
  */
-public class HibernateDraftCommentTest extends TestCase {
+public class DemandTest extends TestCase {
 
     private Member yo;
     private Member tom;
