@@ -10,10 +10,16 @@ import javax.persistence.OneToMany;
 @MappedSuperclass
 public abstract class Kudosable extends UserContent {
 
+    public enum State {
+        PENDING, VALIDATED, REJECTED
+    }
+
     @Basic(optional = false)
     private int popularity;
     @OneToMany
     private Set<Kudos> kudos = new HashSet<Kudos>(0);
+    @Basic(optional = false)
+    private State state;
 
     protected Kudosable() {
         super();
@@ -22,6 +28,8 @@ public abstract class Kudosable extends UserContent {
 
     public Kudosable(Member member) {
         super(member);
+        popularity = 0;
+        setState(State.PENDING);
     }
 
     /**
@@ -34,9 +42,25 @@ public abstract class Kudosable extends UserContent {
         return popularity += value;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setValidated() {
+        this.state = State.VALIDATED;
+    }
+
+    public void setRejected() {
+        this.state = State.REJECTED;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
+
+    protected void setState(State state) {
+        this.state = state;
+    }
 
     protected int getPopularity() {
         return popularity;

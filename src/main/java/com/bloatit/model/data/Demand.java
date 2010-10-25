@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -23,9 +22,6 @@ import com.bloatit.model.data.util.SessionManger;
  */
 @Entity
 public class Demand extends Kudosable {
-
-    @Basic(optional = false)
-    private Boolean validated;
 
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -67,7 +63,7 @@ public class Demand extends Kudosable {
 
     protected Demand(Member member, Description description) {
         super(member);
-        this.validated = true;
+        setValidated();
         this.description = description;
         this.specification = null;
     }
@@ -124,14 +120,6 @@ public class Demand extends Kudosable {
     // TODO create a query ?
     public Set<Contribution> getContributions() {
         return contributions;
-    }
-
-    public void setValidated(Boolean validated) {
-        this.validated = validated;
-    }
-
-    public Boolean getValidated() {
-        return validated;
     }
 
     // ======================================================================
