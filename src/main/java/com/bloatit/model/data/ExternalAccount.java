@@ -8,6 +8,7 @@ import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+// TODO bankAccount is probably a better name
 public class ExternalAccount extends Account {
     public enum AccountType {
         IBAN
