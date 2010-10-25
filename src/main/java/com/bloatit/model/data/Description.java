@@ -5,36 +5,29 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.data.util.SessionManger;
 
-@NamedQuery(name = "translation.getTextByLocal", query = "select text from Translation as t where t.locale = :locale")
+@NamedQuery(name = "translation.getTextByLocal", query = "from Translation as t where t.locale = :locale")
 @Entity
-public class Translatable extends Identifiable {
+public class Description extends Identifiable {
 
     private Locale defaultLocale;
 
     @OneToMany(mappedBy = "baseText")
     private Set<Translation> translations = new HashSet<Translation>(0);
 
-    // For Hibernate revers mapping.
-    @ManyToOne
-    private Demand demand;
-
-    protected Translatable() {
+    protected Description() {
         super();
     }
 
-    public Translatable(Member member, Locale locale, String text) {
+    public Description(Member member, Locale locale, String title, String description) {
         super();
         setDefaultLocale(locale);
-        this.translations.add(new Translation(member, locale, text));
+        this.translations.add(new Translation(member, locale, title, description));
     }
 
     public Set<Translation> getTranslations() {
@@ -60,13 +53,4 @@ public class Translatable extends Identifiable {
     protected void setTranslations(Set<Translation> translations) {
         this.translations = translations;
     }
-
-    protected void setDemand(Demand demand) {
-        this.demand = demand;
-    }
-
-    protected Demand getDemand() {
-        return demand;
-    }
-
 }

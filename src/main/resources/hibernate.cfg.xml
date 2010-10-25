@@ -24,15 +24,18 @@
   <property name="hbm2ddl.auto">create-drop</property>
   <property name="hibernate.jdbc.batch_size">25</property>
   
-  <mapping class="com.bloatit.model.data.Transaction"/>
+  <mapping class="com.bloatit.model.data.Account"/>
+  <mapping class="com.bloatit.model.data.InternalAccount"/>
+  <mapping class="com.bloatit.model.data.ExternalAccount"/>
+  <mapping class="com.bloatit.model.data.Contribution"/>
   <mapping class="com.bloatit.model.data.Translation"/>
-  <mapping class="com.bloatit.model.data.Translatable"/>
+  <mapping class="com.bloatit.model.data.Transaction"/>
+  <mapping class="com.bloatit.model.data.Description"/>
   <mapping class="com.bloatit.model.data.Specification"/>
   <mapping class="com.bloatit.model.data.Kudos"/>
   <mapping class="com.bloatit.model.data.Comment"/>
   <mapping class="com.bloatit.model.data.GroupMembership"/>
   <mapping class="com.bloatit.model.data.Group"/>
-  <mapping class="com.bloatit.model.data.InfoBank"/>
   <mapping class="com.bloatit.model.data.Demand"/>
   <mapping class="com.bloatit.model.data.Member"/>
   <mapping class="com.bloatit.model.data.Offer"/>

@@ -17,18 +17,37 @@ public class Translation extends Kudosable {
     @Basic(optional = false)
     private Locale locale;
     @Basic(optional = false)
-    private String text;
+    private String title;
+    @Basic(optional = false)
+    private String description;
 
     @ManyToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    private Translatable baseText;
+    private Description baseText;
 
     protected Translation() {}
 
-    public Translation(Member member, Locale locale, String text) {
+    public Translation(Member member, Locale locale, String title, String description) {
         super(member);
         this.locale = locale;
-        this.text = text;
+        this.title = title;
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Locale getLocale() {
@@ -39,19 +58,11 @@ public class Translation extends Kudosable {
         this.locale = locale;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    protected void setBaseText(Translatable baseText) {
+    protected void setBaseText(Description baseText) {
         this.baseText = baseText;
     }
 
-    protected Translatable getBaseText() {
+    protected Description getBaseText() {
         return baseText;
     }
 }

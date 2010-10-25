@@ -5,11 +5,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @MappedSuperclass
 public abstract class UserContent extends Identifiable {

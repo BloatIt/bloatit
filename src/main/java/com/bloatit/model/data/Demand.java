@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -24,20 +23,13 @@ import com.bloatit.model.data.util.SessionManger;
  */
 @Entity
 public class Demand extends Kudosable {
-    public enum State {
-        CONSTRUCTING, VALIDATED, DEVELOPED, ACCEPTED, REJECTED;
-    }
 
     @Basic(optional = false)
-    @Enumerated
-    private State state;
+    private Boolean validated;
 
-    @OneToOne(mappedBy = "demand", optional = false)
+    @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    private Translatable description;
-    @OneToOne(mappedBy = "demand", optional = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    private Translatable title;
+    private Description description;
 
     @OneToOne(mappedBy = "demand", optional = true)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -52,18 +44,17 @@ public class Demand extends Kudosable {
     // TODO make sure it is read only !
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
-    private Set<Transaction> contributions = new HashSet<Transaction>(0);
+    private Set<Contribution> contributions = new HashSet<Contribution>(0);
 
     /**
      * It is automatically in validated state (temporary)
-     * Here I did not make any assumption on the locale and author of title and description. I think it is the next layer task.
      * 
      * @param member the author of the demand
      * @param description
      */
-    public static Demand createAndPersist(Member member, Translatable title, Translatable description) {
+    public static Demand createAndPersist(Member member, Description description) {
         Session session = SessionManger.getSessionFactory().getCurrentSession();
-        Demand demand = new Demand(member, title, description);
+        Demand demand = new Demand(member, description);
         try {
             session.save(demand);
         } catch (HibernateException e) {
@@ -74,10 +65,9 @@ public class Demand extends Kudosable {
         return demand;
     }
 
-    protected Demand(Member member, Translatable title, Translatable description) {
+    protected Demand(Member member, Description description) {
         super(member);
-        this.title = title;
-        this.state = State.VALIDATED;
+        this.validated = true;
         this.description = description;
         this.specification = null;
     }
@@ -86,12 +76,19 @@ public class Demand extends Kudosable {
         super();
     }
 
+    public void delete() {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        session.delete(this);
+    }
+
     public void createSpecification(Member member, String content) {
         specification = new Specification(member, content, this);
     }
 
-    public void addOffer(Member author, Translatable description, Date dateExpir) {
-        offers.add(new Offer(author, this, description, dateExpir));
+    public Offer addOffer(Member author, Description description, Date dateExpir) {
+        Offer offer = new Offer(author, this, description, dateExpir);
+        offers.add(offer);
+        return offer;
     }
 
     /**
@@ -108,31 +105,33 @@ public class Demand extends Kudosable {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new Throwable();
         }
-        contributions.add(new Transaction(member, amount));
+        contributions.add(new Contribution(member, amount));
     }
 
     public Specification getSpecification() {
         return specification;
     }
 
-    public State getState() {
-        return state;
-    }
-
-    public Translatable getDescription() {
+    public Description getDescription() {
         return description;
     }
 
-    protected Set<Offer> getOffers() {
+    // TODO create a query ?
+    public Set<Offer> getOffers() {
         return offers;
     }
 
-    protected Set<Transaction> getContributions() {
+    // TODO create a query ?
+    public Set<Contribution> getContributions() {
         return contributions;
     }
 
-    public Translatable getTitle() {
-        return title;
+    public void setValidated(Boolean validated) {
+        this.validated = validated;
+    }
+
+    public Boolean getValidated() {
+        return validated;
     }
 
     // ======================================================================
@@ -143,11 +142,7 @@ public class Demand extends Kudosable {
         this.specification = specification;
     }
 
-    protected void setState(State state) {
-        this.state = state;
-    }
-
-    protected void setDescription(Translatable description) {
+    protected void setDescription(Description description) {
         this.description = description;
     }
 
@@ -155,12 +150,7 @@ public class Demand extends Kudosable {
         this.offers = offers;
     }
 
-    protected void setContributions(Set<Transaction> contributions) {
+    protected void setContributions(Set<Contribution> contributions) {
         this.contributions = contributions;
     }
-
-    public void setTitle(Translatable title) {
-        this.title = title;
-    }
-
 }

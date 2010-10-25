@@ -7,13 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 public class Offer extends Kudosable {
 
     @ManyToOne
     private Demand demand;
     @OneToOne
-    private Translatable text;
+    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    private Description description;
     @Basic(optional = false)
     private Date dateExpire;
 
@@ -21,10 +25,10 @@ public class Offer extends Kudosable {
         super();
     }
 
-    public Offer(Member author, Demand demand, Translatable text, Date dateExpire) {
+    public Offer(Member author, Demand demand, Description text, Date dateExpire) {
         super(author);
         this.demand = demand;
-        this.text = text;
+        this.description = text;
         this.dateExpire = dateExpire;
     }
 
@@ -40,8 +44,8 @@ public class Offer extends Kudosable {
         return demand;
     }
 
-    public Translatable getText() {
-        return text;
+    public Description getDescription() {
+        return description;
     }
 
     // ======================================================================
@@ -52,7 +56,7 @@ public class Offer extends Kudosable {
         this.demand = demand;
     }
 
-    protected void setText(Translatable text) {
-        this.text = text;
+    protected void setDescription(Description text) {
+        this.description = text;
     }
 }

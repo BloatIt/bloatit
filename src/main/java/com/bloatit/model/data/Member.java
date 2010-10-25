@@ -7,8 +7,8 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -37,8 +37,16 @@ public class Member extends Identifiable {
     @Basic(optional = false)
     private Date dateJoin;
 
+    @OneToOne(optional = false)
+    @Cascade(value = { CascadeType.ALL })
+    private InternalAccount internalAccount;
+
+    @OneToOne
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    private ExternalAccount externalAccount;
+
     // this property is for hibernate mapping.
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
 
@@ -60,6 +68,7 @@ public class Member extends Identifiable {
         try {
             session.save(theMember);
         } catch (HibernateException e) {
+            System.out.println(e);
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
@@ -129,8 +138,8 @@ public class Member extends Identifiable {
         return getUserContent(Specification.class, "Specification");
     }
 
-    public QueryCollection<Transaction> getTransactions() {
-        return getUserContent(Transaction.class, "Transaction");
+    public QueryCollection<Contribution> getTransactions() {
+        return getUserContent(Contribution.class, "Transaction");
     }
 
     public QueryCollection<Comment> getComments() {
@@ -162,7 +171,8 @@ public class Member extends Identifiable {
         this.login = login;
         this.password = password;
         this.email = email;
-        dateJoin = new Date();
+        this.internalAccount = new InternalAccount(this);
+        this.dateJoin = new Date();
     }
 
     public String getPassword() {
@@ -205,9 +215,25 @@ public class Member extends Identifiable {
         return dateJoin;
     }
 
+    public InternalAccount getInternalAccount() {
+        return internalAccount;
+    }
+
+    public ExternalAccount getExternalAccount() {
+        return externalAccount;
+    }
+
+    public void setExternalAccount(ExternalAccount externalAccount) {
+        this.externalAccount = externalAccount;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
+
+    protected void setInternalAccount(InternalAccount internalAccount) {
+        this.internalAccount = internalAccount;
+    }
 
     protected void setLogin(String login) {
         this.login = login;

@@ -1,5 +1,7 @@
 package com.bloatit.model.data;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -7,7 +9,7 @@ import junit.framework.TestCase;
 import com.bloatit.model.data.Demand;
 import com.bloatit.model.data.Group;
 import com.bloatit.model.data.Member;
-import com.bloatit.model.data.Translatable;
+import com.bloatit.model.data.Description;
 import com.bloatit.model.data.util.SessionManger;
 
 /**
@@ -46,13 +48,13 @@ public class DemandTest extends TestCase {
             Group.createAndPersiste("b219", yo, Group.Right.PRIVATE).addMember(yo, true);
         }
 
-        SessionManger.EndWorkUnitAndFlush();
+        SessionManger.endWorkUnitAndFlush();
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
         if (SessionManger.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            SessionManger.EndWorkUnitAndFlush();
+            SessionManger.endWorkUnitAndFlush();
         }
         SessionManger.getSessionFactory().close();
     }
@@ -60,30 +62,149 @@ public class DemandTest extends TestCase {
     public void testCreateDemand() {
         SessionManger.beginWorkUnit();
 
-        Demand demand = Demand.createAndPersist(yo,
-                                                new Translatable(yo, new Locale("fr"), "Ma super demande !"),
-                                                new Translatable(yo, new Locale("fr"), "Ceci est la descption de ma demande :) "));
+        Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
         assertEquals(demand, yo.getDemands().iterator().next());
 
-        SessionManger.EndWorkUnitAndFlush();
+        SessionManger.endWorkUnitAndFlush();
 
     }
 
     public void testAddSpecification() {
         SessionManger.beginWorkUnit();
 
-        Demand demand = Demand.createAndPersist(yo,
-                                                new Translatable(yo, new Locale("fr"), "Ma super demande !"),
-                                                new Translatable(yo, new Locale("fr"), "Ceci est la descption de ma demande :) "));
+        Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
         demand.createSpecification(tom, "This is the spécification");
 
         assertNotNull(demand.getSpecification());
 
-        SessionManger.EndWorkUnitAndFlush();
+        SessionManger.endWorkUnitAndFlush();
     }
 
-    
+    public void testRetrieveDemand() {
+        SessionManger.beginWorkUnit();
+
+        Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+
+        demand.createSpecification(tom, "This is the spécification");
+
+        assertEquals(demand, DBRequests.getAll(Demand.class).iterator().next());
+
+        assertEquals(yo, demand.getAuthor());
+
+        SessionManger.endWorkUnitAndFlush();
+    }
+
+    public void testDeleteDemand() {
+        SessionManger.beginWorkUnit();
+
+        Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        demand.createSpecification(tom, "This is the spécification");
+
+        SessionManger.flush();
+
+        demand.delete();
+
+        assertFalse(DBRequests.getAll(Demand.class).iterator().hasNext());
+
+        SessionManger.endWorkUnitAndFlush();
+
+    }
+
+    public void testAddContribution() throws Throwable {
+        SessionManger.beginWorkUnit();
+
+        Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        demand.createSpecification(tom, "This is the spécification");
+
+        SessionManger.flush();
+
+        demand.addContribution(fred, new BigDecimal("25.00"));
+        demand.addContribution(yo, new BigDecimal("18.00"));
+
+        SessionManger.flush();
+
+        assertEquals(2, demand.getContributions().size());
+
+        assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("25")));
+        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("-25")));
+        assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("18")));
+        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("-18")));
+
+        SessionManger.endWorkUnitAndFlush();
+    }
+
+    public void testAddOffer() throws Throwable {
+        SessionManger.beginWorkUnit();
+
+        Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        demand.createSpecification(tom, "This is the spécification");
+
+        SessionManger.flush();
+
+        demand.addOffer(fred, new Description(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
+
+        SessionManger.flush();
+
+        assertEquals(1, demand.getOffers().size());
+
+        SessionManger.endWorkUnitAndFlush();
+
+    }
+
+    public void testAcceptContributions() throws Throwable {
+        SessionManger.beginWorkUnit();
+
+        Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        demand.createSpecification(tom, "This is the spécification");
+
+        Offer offer = demand.addOffer(fred, new Description(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
+        SessionManger.flush();
+
+        demand.addContribution(fred, new BigDecimal("25.00"));
+        demand.addContribution(yo, new BigDecimal("18.00"));
+
+        SessionManger.flush();
+
+        for (Contribution contribution : demand.getContributions()) {
+            contribution.accept(offer);
+        }
+
+        assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
+        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("18")));
+        assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
+        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("-18")));
+
+        SessionManger.endWorkUnitAndFlush();
+
+    }
+
+    public void testRejectContribution() throws Throwable {
+        SessionManger.beginWorkUnit();
+
+        Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        demand.createSpecification(tom, "This is the spécification");
+
+        demand.addOffer(fred, new Description(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
+        SessionManger.flush();
+
+        demand.addContribution(fred, new BigDecimal("25.00"));
+        demand.addContribution(yo, new BigDecimal("18.00"));
+
+        SessionManger.flush();
+
+        for (Contribution contribution : demand.getContributions()) {
+            contribution.cancel();
+        }
+
+        assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
+        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("0")));
+        assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
+        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("0")));
+
+        SessionManger.endWorkUnitAndFlush();
+
+    }
 
 }

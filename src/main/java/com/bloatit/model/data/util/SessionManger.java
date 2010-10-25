@@ -31,7 +31,7 @@ public class SessionManger {
 		sessionFactory.getCurrentSession().beginTransaction();
 	}
 	
-	public static void EndWorkUnitAndFlush(){
+	public static void endWorkUnitAndFlush(){
 		try {
 			sessionFactory.getCurrentSession().getTransaction().commit();
         } catch (HibernateException e) {
