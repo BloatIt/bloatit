@@ -25,6 +25,7 @@ import com.bloatit.web.server.Session;
 public class HtmlResult extends IndentedText{
     private Session session;
     private String redirect;
+    private int titleCount = 0;
 
     public HtmlResult(Session session) {
         super();
@@ -55,5 +56,14 @@ public class HtmlResult extends IndentedText{
         result += text;
 
         return result;
+    }
+
+    public String pushTitle() {
+        titleCount++;
+        return new Integer(titleCount).toString();
+    }
+
+    public void popTitle() {
+        titleCount--;
     }
 }

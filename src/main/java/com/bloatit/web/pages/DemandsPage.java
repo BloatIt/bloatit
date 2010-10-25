@@ -23,6 +23,10 @@ import com.bloatit.framework.DemandManager;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Translation;
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.server.Language;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
@@ -42,40 +46,46 @@ public class DemandsPage extends Page {
     }
 
     @Override
-    protected void generateContent() {
+    protected HtmlComponent generateContent() {
         ArrayList<Demand> demands = DemandManager.GetAllDemands();
         TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
-        this.htmlResult.write("<div class='demand_table'>");
-        this.htmlResult.write("<a href=\"demands/show-all\">Show me demands not in my language too (Doesn't work yet)</a>");
+        
+        HtmlBlock demandTableAll = new HtmlBlock("demand_table");
+
+        demandTableAll.add(new HtmlText("<a href=\"demands/show-all\">Show me demands not in my language too (Doesn't work yet)</a>"));
         boolean showAll = false;
         if(this.parameters.containsKey("show") && this.parameters.get("show").equals("all")){
             showAll = true;
         }
-        this.htmlResult.write("</div>");
         
-        this.htmlResult.write("<div class='demand_table'>");
-        this.htmlResult.indent();
+        HtmlBlock demandTable = new HtmlBlock("demand_table");
+        
         for (Demand demand : demands){
             Translation title = tm.tr(demand.getTitle());
             Translation decription = tm.tr(demand.getDescription());
 
             if(showAll || title != null){
                 DemandPage view = new DemandPage(session, demand);
-                this.htmlResult.write("<div class=\"demand_entry\">");
-                this.htmlResult.indent();
-                this.htmlResult.write("<p class=\"demand_title\">"+ HtmlTools.generateLink(this.session, title.getEntry() ,view) +"</p>");
-                this.htmlResult.write("<p class=\"demand_description\">"+ decription.getEntry() +"</p>");
-                this.htmlResult.write("<p class=\"demand_author\">Author : "+ demand.getAuthor().getLogin() +"</p>");
-                this.htmlResult.write("<p class=\"demand_list_langs\">Langs : ");
+                HtmlBlock demandEntry = new HtmlBlock("demand_entry");
+
+                demandEntry.add(new HtmlText("demand_title",  HtmlTools.generateLink(this.session, title.getEntry() ,view)));
+                demandEntry.add(new HtmlText("demand_description",  decription.getEntry()));
+                demandEntry.add(new HtmlText("demand_author",  demand.getAuthor().getLogin()));
+                demandEntry.add(new HtmlText("demand_list_langs",  "Langs :"));
+                
                 for(Language l : demand.getDescription().getAvailableLangs() ){
-                    this.htmlResult.write(" <span class=\"demand_lang\">"+ l.getCode() +"</span>");
+                    demandEntry.add(new HtmlText("demand_lang",  l.getCode()));
                 }
-                this.htmlResult.unindent();
-                this.htmlResult.write("</div>");
+                demandTable.add(demandEntry);
             }
         }
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
+        
+        HtmlContainer page = new HtmlContainer();
+        page.add(demandTableAll);
+        page.add(demandTable);
+        
+        return page;
+
     }
 
     @Override

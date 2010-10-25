@@ -21,11 +21,13 @@ package com.bloatit.web.pages;
 import com.bloatit.framework.DemandManager;
 import com.bloatit.model.Demand;
 import com.bloatit.model.exceptions.ElementNotFoundException;
-import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.TranslationManipulator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,24 +69,28 @@ public class DemandPage extends Page {
     }
 
     @Override
-    protected void generateContent() {
+    protected HtmlComponent generateContent() {
         if (this.demand == null) {
-            this.generateEmptyBody();
+            return this.generateEmptyBody();
         } else {
-            this.generateNotEmptyBody();
+            return this.generateNotEmptyBody();
         }
     }
 
-    private void generateEmptyBody() {
-        this.htmlResult.write("Error : Specified demand Id incorrect");
+    private HtmlComponent generateEmptyBody() {
+        return new HtmlText("Error : Specified demand Id incorrect");
     }
 
-    private void generateNotEmptyBody() {
-        this.htmlResult.write("<div class=\"demand\">");
-        this.htmlResult.indent();
-        this.htmlResult.write("<p>Demand id : "+ this.demand.getId() + "</p>" );
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
+    private HtmlComponent generateNotEmptyBody() {
+
+        HtmlBlock demandBlock = new HtmlBlock("demand");
+
+        HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session,this.demand.getTitle()), "demand_title");
+
+        demandBlock.add(demandTitle);
+
+        return demandBlock;
+        
     }
 
     @Override
