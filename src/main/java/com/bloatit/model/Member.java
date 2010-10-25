@@ -19,7 +19,7 @@
 
 package com.bloatit.model;
 
-public class Member {
+public class Member extends  Unlockable {
 
     private int id;
     private String login;

@@ -21,7 +21,7 @@ package com.bloatit.model;
 import java.util.ArrayList;
 
 
-public class Demand implements Kudoable{
+public class Demand  extends  Unlockable implements Kudoable{
     private int id;
     private Member author;
     private long karma;
