@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 public abstract class Kudosable extends UserContent {
 
     public enum State {
-        PENDING, VALIDATED, REJECTED
+        PENDING, VALIDATED, REJECTED, HIDDEN
     }
 
     @Basic(optional = false)
