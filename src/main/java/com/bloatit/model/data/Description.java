@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.data.util.SessionManger;
@@ -22,6 +24,20 @@ public class Description extends Identifiable {
 
     protected Description() {
         super();
+    }
+    
+    static public Description createAndPersist(Member member, Locale locale, String title, String description){
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Description descr = new Description(member, locale, title, description);
+        try {
+            session.save(descr);
+        } catch (HibernateException e) {
+            System.out.println(e);
+            session.getTransaction().rollback();
+            session.beginTransaction();
+            throw e;
+        }
+        return descr;
     }
 
     public Description(Member member, Locale locale, String title, String description) {
