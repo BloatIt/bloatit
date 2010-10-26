@@ -67,6 +67,8 @@ public class SCGIServer {
                 // Load the SCGI headers.
                 Socket clientSocket = providerSocket.accept();
 
+                long startTime = System.nanoTime();
+
                 BufferedInputStream bis;
                 bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
                 Map<String, String> env = SCGI.parse(bis);
@@ -117,6 +119,10 @@ public class SCGIServer {
                 }finally{
                     clientSocket.close();
                 }
+                long endTime = System.nanoTime();
+                double duration = ((double) (endTime - startTime))/1000000.;
+                System.err.println("Page generated in "+duration+" ms");
+
             }
 
         } catch (IOException ex) {
