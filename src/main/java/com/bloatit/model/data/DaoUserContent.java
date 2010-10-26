@@ -7,25 +7,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class UserContent extends Identifiable {
+public abstract class DaoUserContent extends DaoIdentifiable {
 
-    // TODO find why I cannot make this not-null (Group related)
+    // TODO find why I cannot make this not-null (DaoGroup related)
     @ManyToOne
-    private Actor actor;
+    private DaoActor actor;
 
     // TODO I would like to have some external join tables.
     @ManyToOne(optional = true)
-    private Group asGroup;
+    private DaoGroup asGroup;
     @Basic(optional = false)
     private Date creationDate;
 
-    protected UserContent() {
+    protected DaoUserContent() {
         creationDate = new Date();
     }
 
-    public UserContent(Actor actor) {
+    public DaoUserContent(DaoActor Actor) {
         super();
-        this.actor = actor;
+        this.actor = Actor;
         creationDate = new Date();
     }
 
@@ -33,7 +33,7 @@ public abstract class UserContent extends Identifiable {
      * No final because it is depreciated for hibernate. but you should
      * considered me as final
      */
-    public Actor getAuthor() {
+    public DaoActor getAuthor() {
         return actor;
     }
 
@@ -45,11 +45,11 @@ public abstract class UserContent extends Identifiable {
         return creationDate;
     }
 
-    public void setAsGroup(Group asGroup) {
+    public void setAsGroup(DaoGroup asGroup) {
         this.asGroup = asGroup;
     }
 
-    public Group getAsGroup() {
+    public DaoGroup getAsGroup() {
         return asGroup;
     }
 
@@ -57,7 +57,7 @@ public abstract class UserContent extends Identifiable {
     // For hibernate mapping
     // ======================================================================
 
-    protected void setAuthor(Actor author) {
+    protected void setAuthor(DaoActor author) {
         this.actor = author;
     }
 

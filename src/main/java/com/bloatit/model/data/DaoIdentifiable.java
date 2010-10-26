@@ -9,11 +9,11 @@ import javax.persistence.MappedSuperclass;
 
 /**
  * Base class to use with Hibernate. (A persistent class do not need to inherit
- * from Identifiable)
+ * from DaoIdentifiable)
  */
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Identifiable {
+public class DaoIdentifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

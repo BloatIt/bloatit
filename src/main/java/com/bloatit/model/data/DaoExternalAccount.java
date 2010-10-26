@@ -9,7 +9,7 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 // TODO bankAccount is probably a better name
-public class ExternalAccount extends Account {
+public class DaoExternalAccount extends DaoAccount {
     public enum AccountType {
         IBAN
     }
@@ -20,12 +20,12 @@ public class ExternalAccount extends Account {
     @Enumerated
     private AccountType type;
 
-    public ExternalAccount() {
+    public DaoExternalAccount() {
         super();
     }
 
-    public ExternalAccount(Actor actor, AccountType type, String bankCode) {
-        super(actor);
+    public DaoExternalAccount(DaoActor Actor, AccountType type, String bankCode) {
+        super(Actor);
         this.type = type;
         this.bankCode = bankCode;
     }

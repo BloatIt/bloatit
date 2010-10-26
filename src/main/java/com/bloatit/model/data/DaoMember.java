@@ -18,9 +18,9 @@ import com.bloatit.model.data.util.SessionManger;
 
 // member is a SQL keyword (in some specific implementations)
 @Entity(name = "bloatit_member")
-@NamedQuery(name = "getGroups", query = "select g from com.bloatit.model.data.Member m " + "join m.groupMembership as gm " + "join gm.group as g "
+@NamedQuery(name = "getGroups", query = "select g from com.bloatit.model.data.DaoMember m " + "join m.groupMembership as gm " + "join gm.group as g "
         + "where m = :member order by g.login")
-public class Member extends Actor {
+public class DaoMember extends DaoActor {
 
 	private String firstname;
 	@Basic(optional = false)
@@ -31,7 +31,7 @@ public class Member extends Actor {
 	// this property is for hibernate mapping.
 	@OneToMany(mappedBy = "member")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
+	private Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
 	/**
 	 * Create a member. The member login must be unique, and you cannot change
@@ -41,16 +41,16 @@ public class Member extends Actor {
 	 *            The login of the member.
 	 * @param password
 	 *            The password of the member (md5 ??)
-	 * @return The newly created Member
+	 * @return The newly created DaoMember
 	 * @throws HibernateException
 	 *             If there is any problem connecting to the db. Or if the
 	 *             member as a non unique login. If an exception is thrown then
 	 *             the transaction is rolled back and reopened.
 	 * 
 	 */
-	public static Member createAndPersist(String login, String password, String email) throws HibernateException {
+	public static DaoMember createAndPersist(String login, String password, String email) throws HibernateException {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
-		Member theMember = new Member(login, password, email);
+		DaoMember theMember = new DaoMember(login, password, email);
 		try {
 			session.save(theMember);
 		} catch (HibernateException e) {
@@ -63,24 +63,24 @@ public class Member extends Actor {
 	}
 	
 	/**
-	 * Find a Member using its login.
+	 * Find a DaoMember using its login.
 	 * 
 	 * @param login
 	 *            the member login.
 	 * @return null if not found.
 	 */
-	public static Member getByLogin(String login) {
+	public static DaoMember getByLogin(String login) {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
-		Query q = session.createQuery("from com.bloatit.model.data.Member where login = :login");
+		Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login");
 		q.setString("login", login);
-		return (Member) q.uniqueResult();
+		return (DaoMember) q.uniqueResult();
 	}
 
-	protected Member() {
+	protected DaoMember() {
 		super();
 	}
 
-	protected Member(String login, String password, String email) {
+	protected DaoMember(String login, String password, String email) {
 		super(login, email);
 		this.password = password;
 	}
@@ -91,25 +91,25 @@ public class Member extends Actor {
 	 * @param isAdmin
 	 *            tell if the member is an admin of the group 'aGroup'
 	 */
-	public void addToGroup(Group aGroup, boolean isAdmin) {
-		groupMembership.add(new GroupMembership(this, aGroup, isAdmin));
+	public void addToGroup(DaoGroup aGroup, boolean isAdmin) {
+		groupMembership.add(new DaoGroupMembership(this, aGroup, isAdmin));
 	}
 
 	/**
 	 * @param aGroup
 	 *            the group from which this member is removed.
 	 */
-	public void removeFromGroup(Group aGroup) {
-		GroupMembership link = GroupMembership.get(aGroup, this);
+	public void removeFromGroup(DaoGroup aGroup) {
+		DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
 		groupMembership.remove(link);
 		aGroup.getGroupMembership().remove(link);
 	}
 
-	public QueryCollection<Group> getGroups() {
+	public QueryCollection<DaoGroup> getGroups() {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		Query q = session.getNamedQuery("getGroups");
 		q.setParameter("member", this);
-		return new QueryCollection<Group>(q);
+		return new QueryCollection<DaoGroup>(q);
 	}
 
 	public String getFirstname() {
@@ -140,11 +140,11 @@ public class Member extends Actor {
 	// For hibernate mapping
 	// ======================================================================
 
-	protected void setGroupMembership(Set<GroupMembership> groupMembership) {
-		this.groupMembership = groupMembership;
+	protected void setGroupMembership(Set<DaoGroupMembership> GroupMembership) {
+		this.groupMembership = GroupMembership;
 	}
 
-	protected Set<GroupMembership> getGroupMembership() {
+	protected Set<DaoGroupMembership> getGroupMembership() {
 		return groupMembership;
 	}
 

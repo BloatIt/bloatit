@@ -13,42 +13,42 @@ import com.bloatit.model.data.util.SessionManger;
  * This class is for Hibernate only for now.
  */
 @Entity
-public class GroupMembership extends Identifiable {
+public class DaoGroupMembership extends DaoIdentifiable {
 
     // TODO find why I cannot make this parameter non null
     @ManyToOne
-    private Member member;
+    private DaoMember member;
 
     // TODO find why I cannot make this parameter non null
     @ManyToOne
-    private Group group;
+    private DaoGroup group;
 
     @Basic(optional = false)
     private boolean isAdmin; // Should be Role enum
 
-    protected GroupMembership() {
+    protected DaoGroupMembership() {
         super();
     }
 
-    public static GroupMembership get(Group group, Member member) {
+    public static DaoGroupMembership get(DaoGroup Group, DaoMember Member) {
         Session session = SessionManger.getSessionFactory().getCurrentSession();
-        Query q = session.createQuery("from com.bloatit.model.data.GroupMembership as gm where gm.group = :group and gm.member = :member");
-        q.setEntity("group", group);
-        q.setEntity("member", member);
-        return (GroupMembership) q.uniqueResult();
+        Query q = session.createQuery("from com.bloatit.model.data.DaoGroupMembership as gm where gm.group = :group and gm.member = :member");
+        q.setEntity("group", Group);
+        q.setEntity("member", Member);
+        return (DaoGroupMembership) q.uniqueResult();
     }
 
-    public GroupMembership(Member member, Group group, boolean isAdmin) {
-        this.member = member;
-        this.group = group;
+    public DaoGroupMembership(DaoMember Member, DaoGroup Group, boolean isAdmin) {
+        this.member = Member;
+        this.group = Group;
         this.isAdmin = isAdmin;
     }
 
-    public Member getMember() {
+    public DaoMember getMember() {
         return member;
     }
 
-    public Group getGroup() {
+    public DaoGroup getGroup() {
         return group;
     }
 
@@ -60,12 +60,12 @@ public class GroupMembership extends Identifiable {
     // For hibernate mapping
     // ======================================================================
 
-    protected void setMember(Member member) {
-        this.member = member;
+    protected void setMember(DaoMember Member) {
+        this.member = Member;
     }
 
-    protected void setGroup(Group group) {
-        this.group = group;
+    protected void setGroup(DaoGroup Group) {
+        this.group = Group;
     }
 
     protected void setAdmin(boolean isAdmin) {

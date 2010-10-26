@@ -11,16 +11,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 @Entity
-public class Comment extends Kudosable {
+public class DaoComment extends DaoKudosable {
 
     @Basic(optional = false)
     private String text;
     @OneToMany(mappedBy = "comment", cascade = { CascadeType.ALL })
     @OrderBy(value = "creationDate")
-    private Set<Comment> children = new HashSet<Comment>(0);
+    private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
-    public Comment(Actor actor, String text) {
-        super(actor);
+    public DaoComment(DaoActor Actor, String text) {
+        super(Actor);
         this.text = text;
     }
 
@@ -28,15 +28,15 @@ public class Comment extends Kudosable {
         return text;
     }
 
-    public Set<Comment> getChildren() {
+    public Set<DaoComment> getChildren() {
         return children;
     }
 
-    public void addChildComment(Comment comment) {
-        children.add(comment);
+    public void addChildComment(DaoComment Comment) {
+        children.add(Comment);
     }
 
-    protected Comment() {
+    protected DaoComment() {
         super();
     }
 
@@ -45,21 +45,21 @@ public class Comment extends Kudosable {
     // ======================================================================
 
     @ManyToOne
-    private Comment comment;
+    private DaoComment comment;
 
     protected void setText(String text) {
         this.text = text;
     }
 
-    protected void setChildren(Set<Comment> children) {
+    protected void setChildren(Set<DaoComment> children) {
         this.children = children;
     }
 
-    protected void setComment(Comment comment) {
-        this.comment = comment;
+    protected void setComment(DaoComment Comment) {
+        this.comment = Comment;
     }
 
-    protected Comment getComment() {
+    protected DaoComment getComment() {
         return comment;
     }
 }

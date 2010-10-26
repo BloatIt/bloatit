@@ -12,7 +12,7 @@ import org.hibernate.annotations.CascadeType;
 // This class should handle some versions.
 // version are managed by date.
 @Entity
-public class Translation extends Kudosable {
+public class DaoTranslation extends DaoKudosable {
 
     @Basic(optional = false)
     private Locale locale;
@@ -23,12 +23,12 @@ public class Translation extends Kudosable {
 
     @ManyToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    private Description baseText;
+    private DaoDescription baseText;
 
-    protected Translation() {}
+    protected DaoTranslation() {}
 
-    public Translation(Actor actor, Locale locale, String title, String description) {
-        super(actor);
+    public DaoTranslation(DaoActor Actor, Locale locale, String title, String description) {
+        super(Actor);
         this.locale = locale;
         this.title = title;
         this.description = description;
@@ -58,11 +58,11 @@ public class Translation extends Kudosable {
         this.locale = locale;
     }
 
-    protected void setBaseText(Description baseText) {
+    protected void setBaseText(DaoDescription baseText) {
         this.baseText = baseText;
     }
 
-    protected Description getBaseText() {
+    protected DaoDescription getBaseText() {
         return baseText;
     }
 }

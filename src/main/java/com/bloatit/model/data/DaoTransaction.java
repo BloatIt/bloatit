@@ -13,18 +13,18 @@ import org.hibernate.Session;
 import com.bloatit.model.data.util.SessionManger;
 
 @Entity
-public class Transaction extends Identifiable {
+public class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
     @ManyToOne(optional=false)
-    private InternalAccount from;
+    private DaoInternalAccount from;
     @ManyToOne(optional=false)
-    private Account to;
+    private DaoAccount to;
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 
-    protected Transaction() {
+    protected DaoTransaction() {
         super();
     }
 
@@ -35,21 +35,21 @@ public class Transaction extends Identifiable {
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
      */
-    public static Transaction createAndPersist(InternalAccount from, Account to, BigDecimal amount) {
+    public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount) {
         Session session = SessionManger.getSessionFactory().getCurrentSession();
-        Transaction transaction = new Transaction(from, to, amount);
+        DaoTransaction Transaction = new DaoTransaction(from, to, amount);
         try {
-            session.save(transaction);
+            session.save(Transaction);
         } catch (HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
         }
-        return transaction;
+        return Transaction;
 
     }
 
-    private Transaction(InternalAccount from, Account to, BigDecimal amount) {
+    private DaoTransaction(DaoInternalAccount from, DaoAccount to, BigDecimal amount) {
         super();
         // TODO make sure the different accounts have enough money ...
         this.from = from;
@@ -60,11 +60,11 @@ public class Transaction extends Identifiable {
         to.addToAmountValue(amount);
     }
 
-    public InternalAccount getFrom() {
+    public DaoInternalAccount getFrom() {
         return from;
     }
 
-    public Account getTo() {
+    public DaoAccount getTo() {
         return to;
     }
 
@@ -88,11 +88,11 @@ public class Transaction extends Identifiable {
         this.amount = amount;
     }
 
-    protected void setTo(Account to) {
+    protected void setTo(DaoAccount to) {
         this.to = to;
     }
 
-    protected void setFrom(InternalAccount from) {
+    protected void setFrom(DaoInternalAccount from) {
         this.from = from;
     }
 

@@ -16,13 +16,13 @@ import com.bloatit.model.data.util.SessionManger;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Account {
+public abstract class DaoAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @OneToOne
-    private Actor actor;
+    private DaoActor actor;
     private Date creationDate;
 
     @Basic(optional = false)
@@ -31,12 +31,12 @@ public abstract class Account {
     @Basic(optional = false)
     private BigDecimal amount;
 
-    protected Account() {
+    protected DaoAccount() {
         super();
     }
 
-    public Account(Actor actor) {
-        this.actor = actor;
+    public DaoAccount(DaoActor Actor) {
+        this.actor = Actor;
         this.creationDate = new Date();
         this.lastModificationDate = new Date();
         this.amount = new BigDecimal("0");
@@ -60,10 +60,10 @@ public abstract class Account {
         this.amount = this.amount.subtract(blocked);
     }
 
-    public QueryCollection<Transaction> getTransactions() {
-        return new QueryCollection<Transaction>(SessionManger.getSessionFactory()
+    public QueryCollection<DaoTransaction> getTransactions() {
+        return new QueryCollection<DaoTransaction>(SessionManger.getSessionFactory()
                                                              .getCurrentSession()
-                                                             .createQuery("from Transaction as t where t.from = this or t.to = this"));
+                                                             .createQuery("from DaoTransaction as t where t.from = this or t.to = this"));
     }
 
     protected void resetModificationDate() {
@@ -90,12 +90,12 @@ public abstract class Account {
         this.id = id;
     }
 
-    public Actor getActor() {
+    public DaoActor getActor() {
         return actor;
     }
 
-    public void setActor(Actor actor) {
-        this.actor = actor;
+    public void setActor(DaoActor Actor) {
+        this.actor = Actor;
     }
 
     public Date getCreationDate() {

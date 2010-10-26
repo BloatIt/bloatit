@@ -18,10 +18,10 @@ import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.data.util.SessionManger;
 
-// Group is SQL keyword
+// DaoGroup is SQL keyword
 @Entity(name = "bloatit_group")
-@NamedQuery(name = "getMembers", query = "select m from com.bloatit.model.data.Group g join g.groupMembership as gm join gm.member as m where g = :group")
-public class Group extends Actor {
+@NamedQuery(name = "getMembers", query = "select m from com.bloatit.model.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group")
+public class DaoGroup extends DaoActor {
 
 	public enum Right {
 		PUBLIC, PRIVATE, PROTECTED;
@@ -34,9 +34,9 @@ public class Group extends Actor {
 
 	@OneToMany(mappedBy = "group")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	private Set<GroupMembership> groupMembership = new HashSet<GroupMembership>(0);
+	private Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
-	protected Group() {
+	protected DaoGroup() {
 		super();
 	}
 
@@ -46,49 +46,49 @@ public class Group extends Actor {
 	 * @param name
 	 *            it the unique and non updatable name of the group.
 	 * @param owner
-	 *            is the Member creating this group.
+	 *            is the DaoMember creating this group.
 	 * @param right
 	 *            is the type of group we are creating.
 	 * @return the newly created group.
 	 * @throws HibernateException
 	 */
-	static public Group createAndPersiste(String login, String email, Right right) throws HibernateException {
+	static public DaoGroup createAndPersiste(String login, String email, Right right) throws HibernateException {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
-		Group group = new Group(login, email, right);
+		DaoGroup Group = new DaoGroup(login, email, right);
 		try {
-			session.save(group);
+			session.save(Group);
 		} catch (HibernateException e) {
 			session.getTransaction().rollback();
 			throw e;
 		}
-		return group;
+		return Group;
 	}
 	
 	/**
-	 * Find a Group using its login.
+	 * Find a DaoGroup using its login.
 	 * 
 	 * @param name
 	 *            the member login.
 	 * @return null if not found.
 	 */
-	public static Group getByName(String name) {
+	public static DaoGroup getByName(String name) {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
-		Query q = session.createQuery("from com.bloatit.model.data.Group where login = :login");
+		Query q = session.createQuery("from com.bloatit.model.data.DaoGroup where login = :login");
 		q.setString("login", name);
-		return (Group) q.uniqueResult();
+		return (DaoGroup) q.uniqueResult();
 	}
 
-	public Group(String login, String email, Right right) {
+	public DaoGroup(String login, String email, Right right) {
 		super(login, email);
 		this.right = right;
 	}
 
-	public List<Member> getMembers() {
+	public List<DaoMember> getMembers() {
 		return getMembers(0, 0);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Member> getMembers(int from, int number) {
+	public List<DaoMember> getMembers(int from, int number) {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		Query q = session.getNamedQuery("getMembers");
 		q.setParameter("group", this);
@@ -99,14 +99,14 @@ public class Group extends Actor {
 		return q.list();
 	}
 
-	public void addMember(Member member, boolean isAdmin) {
-		groupMembership.add(new GroupMembership(member, this, isAdmin));
+	public void addMember(DaoMember Member, boolean isAdmin) {
+		groupMembership.add(new DaoGroupMembership(Member, this, isAdmin));
 	}
 
-	public void removeMember(Member member) {
-		GroupMembership link = GroupMembership.get(this, member);
+	public void removeMember(DaoMember Member) {
+		DaoGroupMembership link = DaoGroupMembership.get(this, Member);
 		groupMembership.remove(link);
-		member.getGroupMembership().remove(link);
+		Member.getGroupMembership().remove(link);
 	}
 
 	public Right getRight() {
@@ -121,11 +121,11 @@ public class Group extends Actor {
 	// For hibernate mapping
 	// ======================================================================
 
-	protected void setGroupMembership(Set<GroupMembership> groupMembership) {
-		this.groupMembership = groupMembership;
+	protected void setGroupMembership(Set<DaoGroupMembership> GroupMembership) {
+		this.groupMembership = GroupMembership;
 	}
 
-	protected Set<GroupMembership> getGroupMembership() {
+	protected Set<DaoGroupMembership> getGroupMembership() {
 		return groupMembership;
 	}
 

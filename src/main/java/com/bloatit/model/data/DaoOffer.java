@@ -11,23 +11,23 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
-public class Offer extends Kudosable {
+public class DaoOffer extends DaoKudosable {
 
     @ManyToOne
-    private Demand demand;
+    private DaoDemand demand;
     @OneToOne
     @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    private Description description;
+    private DaoDescription description;
     @Basic(optional = false)
     private Date dateExpire;
 
-    protected Offer() {
+    protected DaoOffer() {
         super();
     }
 
-    public Offer(Actor actor, Demand demand, Description text, Date dateExpire) {
-        super(actor);
-        this.demand = demand;
+    public DaoOffer(DaoActor Actor, DaoDemand Demand, DaoDescription text, Date dateExpire) {
+        super(Actor);
+        this.demand = Demand;
         this.description = text;
         this.dateExpire = dateExpire;
     }
@@ -40,11 +40,11 @@ public class Offer extends Kudosable {
         this.dateExpire = dateExpire;
     }
 
-    public Demand getDemand() {
+    public DaoDemand getDemand() {
         return demand;
     }
 
-    public Description getDescription() {
+    public DaoDescription getDescription() {
         return description;
     }
 
@@ -52,11 +52,11 @@ public class Offer extends Kudosable {
     // For hibernate mapping
     // ======================================================================
 
-    protected void setDemand(Demand demand) {
-        this.demand = demand;
+    protected void setDemand(DaoDemand Demand) {
+        this.demand = Demand;
     }
 
-    protected void setDescription(Description text) {
+    protected void setDescription(DaoDescription text) {
         this.description = text;
     }
 }

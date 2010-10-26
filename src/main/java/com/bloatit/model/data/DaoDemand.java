@@ -21,54 +21,54 @@ import com.bloatit.model.data.util.SessionManger;
  * 
  */
 @Entity
-public class Demand extends Kudosable {
+public class DaoDemand extends DaoKudosable {
 
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    private Description description;
+    private DaoDescription description;
 
     @OneToOne(mappedBy = "demand", optional = true)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    private Specification specification;
+    private DaoSpecification specification;
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @OrderBy(clause = "Offer.popularity")
+    @OrderBy(clause = "DaoOffer.popularity")
     // TODO test me !
-    private Set<Offer> offers = new HashSet<Offer>(0);
+    private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
     // TODO make sure it is read only !
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
-    private Set<Contribution> contributions = new HashSet<Contribution>(0);
+    private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
     /**
      * It is automatically in validated state (temporary)
      * 
-     * @param actor the author of the demand
+     * @param Actor the author of the demand
      * @param description
      */
-    public static Demand createAndPersist(Actor actor, Description description) {
+    public static DaoDemand createAndPersist(DaoActor Actor, DaoDescription Description) {
         Session session = SessionManger.getSessionFactory().getCurrentSession();
-        Demand demand = new Demand(actor, description);
+        DaoDemand Demand = new DaoDemand(Actor, Description);
         try {
-            session.save(demand);
+            session.save(Demand);
         } catch (HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
         }
-        return demand;
+        return Demand;
     }
 
-    protected Demand(Actor actor, Description description) {
-        super(actor);
+    protected DaoDemand(DaoActor Actor, DaoDescription Description) {
+        super(Actor);
         setValidated();
-        this.description = description;
+        this.description = Description;
         this.specification = null;
     }
 
-    protected Demand() {
+    protected DaoDemand() {
         super();
     }
 
@@ -77,48 +77,48 @@ public class Demand extends Kudosable {
         session.delete(this);
     }
 
-    public void createSpecification(Actor actor, String content) {
-        specification = new Specification(actor, content, this);
+    public void createSpecification(DaoActor Actor, String content) {
+        specification = new DaoSpecification(Actor, content, this);
     }
 
-    public Offer addOffer(Actor actor, Description description, Date dateExpir) {
-        Offer offer = new Offer(actor, this, description, dateExpir);
-        offers.add(offer);
-        return offer;
+    public DaoOffer addOffer(DaoActor Actor, DaoDescription Description, Date dateExpir) {
+        DaoOffer Offer = new DaoOffer(Actor, this, Description, dateExpir);
+        offers.add(Offer);
+        return Offer;
     }
 
     /**
      * delete offer from this demand AND FROM DB !
      * 
-     * @param offer the offer we want to delete.
+     * @param Offer the offer we want to delete.
      */
-    public void removeOffer(Offer offer) {
-        offers.remove(offer);
+    public void removeOffer(DaoOffer Offer) {
+        offers.remove(Offer);
     }
 
     // TODO create a Throwable type
-    public void addContribution(Actor actor, BigDecimal amount) throws Throwable {
+    public void addContribution(DaoActor Actor, BigDecimal amount) throws Throwable {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new Throwable();
         }
-        contributions.add(new Contribution(actor, amount));
+        contributions.add(new DaoContribution(Actor, amount));
     }
 
-    public Specification getSpecification() {
+    public DaoSpecification getSpecification() {
         return specification;
     }
 
-    public Description getDescription() {
+    public DaoDescription getDescription() {
         return description;
     }
 
     // TODO create a query ?
-    public Set<Offer> getOffers() {
+    public Set<DaoOffer> getOffers() {
         return offers;
     }
 
     // TODO create a query ?
-    public Set<Contribution> getContributions() {
+    public Set<DaoContribution> getContributions() {
         return contributions;
     }
 
@@ -126,19 +126,19 @@ public class Demand extends Kudosable {
     // For hibernate mapping
     // ======================================================================
 
-    protected void setSpecification(Specification specification) {
-        this.specification = specification;
+    protected void setSpecification(DaoSpecification Specification) {
+        this.specification = Specification;
     }
 
-    protected void setDescription(Description description) {
-        this.description = description;
+    protected void setDescription(DaoDescription Description) {
+        this.description = Description;
     }
 
-    protected void setOffers(Set<Offer> offers) {
-        this.offers = offers;
+    protected void setOffers(Set<DaoOffer> Offers) {
+        this.offers = Offers;
     }
 
-    protected void setContributions(Set<Contribution> contributions) {
-        this.contributions = contributions;
+    protected void setContributions(Set<DaoContribution> Contributions) {
+        this.contributions = Contributions;
     }
 }

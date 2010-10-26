@@ -21,7 +21,7 @@ import com.bloatit.model.data.util.SessionManger;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Actor {
+public abstract class DaoActor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -36,23 +36,23 @@ public abstract class Actor {
 
 	@OneToOne(optional = false)
 	@Cascade(value = { CascadeType.ALL })
-	private InternalAccount internalAccount;
+	private DaoInternalAccount internalAccount;
 
 	@OneToOne
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	private ExternalAccount externalAccount;
+	private DaoExternalAccount externalAccount;
 
 	
-	protected Actor() {
+	protected DaoActor() {
 	    super();
     }
 
-	protected Actor(String login, String email) {
+	protected DaoActor(String login, String email) {
 		super();
 		this.dateJoin = new Date();
 		this.login = login;
 		this.email = email;
-		this.internalAccount = new InternalAccount(this);
+		this.internalAccount = new DaoInternalAccount(this);
 	}
 
 	/**
@@ -63,37 +63,37 @@ public abstract class Actor {
 	public static boolean exist(String login) {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		// TODO use the count() in HQL
-		Query q = session.createQuery("from com.bloatit.model.data.Actor as m where login = :login");
+		Query q = session.createQuery("from com.bloatit.model.data.DaoActor as m where login = :login");
 		q.setString("login", login);
 		return (q.uniqueResult() != null);
 	}
 
-	public QueryCollection<Demand> getDemands() {
-		return getUserContent(Demand.class, "Demand");
+	public QueryCollection<DaoDemand> getDemands() {
+		return getUserContent(DaoDemand.class, "DaoDemand");
 	}
 
-	public QueryCollection<Kudos> getKudos() {
-		return getUserContent(Kudos.class, "Kudos");
+	public QueryCollection<DaoKudos> getKudos() {
+		return getUserContent(DaoKudos.class, "DaoKudos");
 	}
 
-	public QueryCollection<Specification> getSpecifications() {
-		return getUserContent(Specification.class, "Specification");
+	public QueryCollection<DaoSpecification> getSpecifications() {
+		return getUserContent(DaoSpecification.class, "DaoSpecification");
 	}
 
-	public QueryCollection<Contribution> getTransactions() {
-		return getUserContent(Contribution.class, "Transaction");
+	public QueryCollection<DaoContribution> getTransactions() {
+		return getUserContent(DaoContribution.class, "DaoTransaction");
 	}
 
-	public QueryCollection<Comment> getComments() {
-		return getUserContent(Comment.class, "Comment");
+	public QueryCollection<DaoComment> getComments() {
+		return getUserContent(DaoComment.class, "DaoComment");
 	}
 
-	public QueryCollection<Offer> getOffers() {
-		return getUserContent(Offer.class, "Offer");
+	public QueryCollection<DaoOffer> getOffers() {
+		return getUserContent(DaoOffer.class, "DaoOffer");
 	}
 
-	public QueryCollection<Translation> getTranslations() {
-		return getUserContent(Translation.class, "Translation");
+	public QueryCollection<DaoTranslation> getTranslations() {
+		return getUserContent(DaoTranslation.class, "DaoTranslation");
 	}
 
 	private <T> QueryCollection<T> getUserContent(Class<T> theClass, String className) {
@@ -119,16 +119,16 @@ public abstract class Actor {
 		return dateJoin;
 	}
 
-	public InternalAccount getInternalAccount() {
+	public DaoInternalAccount getInternalAccount() {
 		return internalAccount;
 	}
 
-	public ExternalAccount getExternalAccount() {
+	public DaoExternalAccount getExternalAccount() {
 		return externalAccount;
 	}
 
-	public void setExternalAccount(ExternalAccount externalAccount) {
-		this.externalAccount = externalAccount;
+	public void setExternalAccount(DaoExternalAccount ExternalAccount) {
+		this.externalAccount = ExternalAccount;
 	}
 
 	public Integer getId() {
@@ -139,8 +139,8 @@ public abstract class Actor {
 	// For hibernate mapping
 	// ======================================================================
 
-	protected void setInternalAccount(InternalAccount internalAccount) {
-		this.internalAccount = internalAccount;
+	protected void setInternalAccount(DaoInternalAccount InternalAccount) {
+		this.internalAccount = InternalAccount;
 	}
 
 	protected void setLogin(String login) {

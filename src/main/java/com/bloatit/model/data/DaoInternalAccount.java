@@ -9,7 +9,7 @@ import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class InternalAccount extends Account {
+public class DaoInternalAccount extends DaoAccount {
 
     /**
      * This is the amount that is currently used by contributions.
@@ -19,13 +19,13 @@ public class InternalAccount extends Account {
     private BigDecimal blocked;
 
     
-    public InternalAccount() {
+    public DaoInternalAccount() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public InternalAccount(Actor actor) {
-        super(actor);
+    public DaoInternalAccount(DaoActor Actor) {
+        super(Actor);
         this.blocked = new BigDecimal("0");
     }
     
