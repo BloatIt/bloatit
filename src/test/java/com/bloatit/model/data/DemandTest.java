@@ -20,6 +20,8 @@ public class DemandTest extends TestCase {
     private Member yo;
     private Member tom;
     private Member fred;
+    
+    private Group b219;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -45,7 +47,7 @@ public class DemandTest extends TestCase {
 
             Group.createAndPersiste("Other", "plop@plop.com", Group.Right.PUBLIC).addMember(yo, false);
             Group.createAndPersiste("myGroup", "plop@plop.com", Group.Right.PUBLIC).addMember(yo, false);
-            Group.createAndPersiste("b219", "plop@plop.com", Group.Right.PRIVATE).addMember(yo, true);
+            (b219 = Group.createAndPersiste("b219", "plop@plop.com", Group.Right.PRIVATE)).addMember(yo, true);
         }
 
         SessionManger.endWorkUnitAndFlush();
@@ -63,8 +65,10 @@ public class DemandTest extends TestCase {
         SessionManger.beginWorkUnit();
 
         Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        Demand demand2 = Demand.createAndPersist(b219, new Description(b219, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
         assertEquals(demand, yo.getDemands().iterator().next());
+        assertEquals(demand2, b219.getDemands().iterator().next());
 
         SessionManger.endWorkUnitAndFlush();
 
@@ -74,10 +78,13 @@ public class DemandTest extends TestCase {
         SessionManger.beginWorkUnit();
 
         Demand demand = Demand.createAndPersist(yo, new Description(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        Demand demand2 = Demand.createAndPersist(b219, new Description(b219, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
         demand.createSpecification(tom, "This is the spécification");
+        demand2.createSpecification(tom, "This is the spécification");
 
         assertNotNull(demand.getSpecification());
+        assertNotNull(demand2.getSpecification());
 
         SessionManger.endWorkUnitAndFlush();
     }

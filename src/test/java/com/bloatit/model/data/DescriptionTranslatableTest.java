@@ -2,9 +2,9 @@ package com.bloatit.model.data;
 
 import java.util.Locale;
 
-import com.bloatit.model.data.util.SessionManger;
-
 import junit.framework.TestCase;
+
+import com.bloatit.model.data.util.SessionManger;
 
 public class DescriptionTranslatableTest extends TestCase {
 	private Member yo;

@@ -26,9 +26,9 @@ public class Description extends Identifiable {
         super();
     }
     
-    static public Description createAndPersist(Member member, Locale locale, String title, String description){
+    static public Description createAndPersist(Actor actor, Locale locale, String title, String description){
         Session session = SessionManger.getSessionFactory().getCurrentSession();
-        Description descr = new Description(member, locale, title, description);
+        Description descr = new Description(actor, locale, title, description);
         try {
             session.save(descr);
         } catch (HibernateException e) {
@@ -40,10 +40,10 @@ public class Description extends Identifiable {
         return descr;
     }
 
-    public Description(Member member, Locale locale, String title, String description) {
+    public Description(Actor actor, Locale locale, String title, String description) {
         super();
         setDefaultLocale(locale);
-        this.translations.add(new Translation(member, locale, title, description));
+        this.translations.add(new Translation(actor, locale, title, description));
     }
 
     public Set<Translation> getTranslations() {

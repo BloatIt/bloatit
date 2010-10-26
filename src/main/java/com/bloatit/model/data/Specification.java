@@ -14,8 +14,8 @@ public class Specification extends UserContent {
         super();
     }
 
-    public Specification(Member member, String content, Demand demand) {
-        super(member);
+    public Specification(Actor actor, String content, Demand demand) {
+        super(actor);
         this.content = content;
         this.demand = demand;
     }

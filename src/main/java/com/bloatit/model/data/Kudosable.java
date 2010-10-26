@@ -37,8 +37,8 @@ public abstract class Kudosable extends UserContent {
      * 
      * @return the new popularity
      */
-    public int addKudos(Member member, int value) {
-        kudos.add(new Kudos(member, value));
+    public int addKudos(Actor actor, int value) {
+        kudos.add(new Kudos(actor, value));
         return popularity += value;
     }
 

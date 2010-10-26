@@ -77,12 +77,12 @@ public class Demand extends Kudosable {
         session.delete(this);
     }
 
-    public void createSpecification(Member member, String content) {
-        specification = new Specification(member, content, this);
+    public void createSpecification(Actor actor, String content) {
+        specification = new Specification(actor, content, this);
     }
 
-    public Offer addOffer(Member author, Description description, Date dateExpir) {
-        Offer offer = new Offer(author, this, description, dateExpir);
+    public Offer addOffer(Actor actor, Description description, Date dateExpir) {
+        Offer offer = new Offer(actor, this, description, dateExpir);
         offers.add(offer);
         return offer;
     }
@@ -97,11 +97,11 @@ public class Demand extends Kudosable {
     }
 
     // TODO create a Throwable type
-    public void addContribution(Member member, BigDecimal amount) throws Throwable {
+    public void addContribution(Actor actor, BigDecimal amount) throws Throwable {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new Throwable();
         }
-        contributions.add(new Contribution(member, amount));
+        contributions.add(new Contribution(actor, amount));
     }
 
     public Specification getSpecification() {
