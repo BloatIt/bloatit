@@ -11,8 +11,8 @@ public class Kudos extends UserContent {
 
     public Kudos() {}
 
-    public Kudos(Member member, int value) {
-        super(member);
+    public Kudos(Actor actor, int value) {
+        super(actor);
         this.value = value;
     }
 

@@ -22,7 +22,7 @@ public abstract class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @OneToOne
-    private Member member;
+    private Actor actor;
     private Date creationDate;
 
     @Basic(optional = false)
@@ -35,8 +35,8 @@ public abstract class Account {
         super();
     }
 
-    public Account(Member member) {
-        this.member = member;
+    public Account(Actor actor) {
+        this.actor = actor;
         this.creationDate = new Date();
         this.lastModificationDate = new Date();
         this.amount = new BigDecimal("0");
@@ -90,12 +90,12 @@ public abstract class Account {
         this.id = id;
     }
 
-    public Member getMember() {
-        return member;
+    public Actor getActor() {
+        return actor;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setActor(Actor actor) {
+        this.actor = actor;
     }
 
     public Date getCreationDate() {

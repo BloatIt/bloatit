@@ -24,8 +24,8 @@ public class ExternalAccount extends Account {
         super();
     }
 
-    public ExternalAccount(Member member, AccountType type, String bankCode) {
-        super(member);
+    public ExternalAccount(Actor actor, AccountType type, String bankCode) {
+        super(actor);
         this.type = type;
         this.bankCode = bankCode;
     }

@@ -25,8 +25,8 @@ public class Offer extends Kudosable {
         super();
     }
 
-    public Offer(Member author, Demand demand, Description text, Date dateExpire) {
-        super(author);
+    public Offer(Actor actor, Demand demand, Description text, Date dateExpire) {
+        super(actor);
         this.demand = demand;
         this.description = text;
         this.dateExpire = dateExpire;

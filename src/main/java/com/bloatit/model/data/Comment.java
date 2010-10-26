@@ -19,8 +19,8 @@ public class Comment extends Kudosable {
     @OrderBy(value = "creationDate")
     private Set<Comment> children = new HashSet<Comment>(0);
 
-    public Comment(Member member, String text) {
-        super(member);
+    public Comment(Actor actor, String text) {
+        super(actor);
         this.text = text;
     }
 

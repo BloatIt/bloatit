@@ -43,9 +43,9 @@ public class DemandTest extends TestCase {
             yo.setLastname("Plénet");
             SessionManger.flush();
 
-            Group.createAndPersiste("Other", yo, Group.Right.PUBLIC).addMember(yo, false);
-            Group.createAndPersiste("myGroup", yo, Group.Right.PUBLIC).addMember(yo, false);
-            Group.createAndPersiste("b219", yo, Group.Right.PRIVATE).addMember(yo, true);
+            Group.createAndPersiste("Other", "plop@plop.com", Group.Right.PUBLIC).addMember(yo, false);
+            Group.createAndPersiste("myGroup", "plop@plop.com", Group.Right.PUBLIC).addMember(yo, false);
+            Group.createAndPersiste("b219", "plop@plop.com", Group.Right.PRIVATE).addMember(yo, true);
         }
 
         SessionManger.endWorkUnitAndFlush();

@@ -11,7 +11,7 @@ public abstract class UserContent extends Identifiable {
 
     // TODO find why I cannot make this not-null (Group related)
     @ManyToOne
-    private Member author;
+    private Actor actor;
 
     // TODO I would like to have some external join tables.
     @ManyToOne(optional = true)
@@ -23,9 +23,9 @@ public abstract class UserContent extends Identifiable {
         creationDate = new Date();
     }
 
-    public UserContent(Member member) {
+    public UserContent(Actor actor) {
         super();
-        author = member;
+        this.actor = actor;
         creationDate = new Date();
     }
 
@@ -33,8 +33,8 @@ public abstract class UserContent extends Identifiable {
      * No final because it is depreciated for hibernate. but you should
      * considered me as final
      */
-    public Member getAuthor() {
-        return author;
+    public Actor getAuthor() {
+        return actor;
     }
 
     /**
@@ -57,8 +57,8 @@ public abstract class UserContent extends Identifiable {
     // For hibernate mapping
     // ======================================================================
 
-    protected void setAuthor(Member author) {
-        this.author = author;
+    protected void setAuthor(Actor author) {
+        this.actor = author;
     }
 
     protected void setCreationDate(Date creationDate) {

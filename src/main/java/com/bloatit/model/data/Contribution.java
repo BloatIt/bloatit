@@ -31,9 +31,9 @@ public class Contribution extends UserContent {
     public Contribution() {}
 
     // the demand is associated into the Demand class by hibernate.
-    public Contribution(Member member, BigDecimal amount) {
+    public Contribution(Actor actor, BigDecimal amount) {
         // TODO make sure amount > 0
-        super(member);
+        super(actor);
         this.amount = amount;
         this.setState(State.WAITING);
         getAuthor().getInternalAccount().block(amount);

@@ -26,8 +26,8 @@ public abstract class Kudosable extends UserContent {
         popularity = 0;
     }
 
-    public Kudosable(Member member) {
-        super(member);
+    public Kudosable(Actor actor) {
+        super(actor);
         popularity = 0;
         setState(State.PENDING);
     }

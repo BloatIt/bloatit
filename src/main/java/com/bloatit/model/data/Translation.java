@@ -27,8 +27,8 @@ public class Translation extends Kudosable {
 
     protected Translation() {}
 
-    public Translation(Member member, Locale locale, String title, String description) {
-        super(member);
+    public Translation(Actor actor, Locale locale, String title, String description) {
+        super(actor);
         this.locale = locale;
         this.title = title;
         this.description = description;

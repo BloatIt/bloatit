@@ -45,12 +45,12 @@ public class Demand extends Kudosable {
     /**
      * It is automatically in validated state (temporary)
      * 
-     * @param member the author of the demand
+     * @param actor the author of the demand
      * @param description
      */
-    public static Demand createAndPersist(Member member, Description description) {
+    public static Demand createAndPersist(Actor actor, Description description) {
         Session session = SessionManger.getSessionFactory().getCurrentSession();
-        Demand demand = new Demand(member, description);
+        Demand demand = new Demand(actor, description);
         try {
             session.save(demand);
         } catch (HibernateException e) {
@@ -61,8 +61,8 @@ public class Demand extends Kudosable {
         return demand;
     }
 
-    protected Demand(Member member, Description description) {
-        super(member);
+    protected Demand(Actor actor, Description description) {
+        super(actor);
         setValidated();
         this.description = description;
         this.specification = null;

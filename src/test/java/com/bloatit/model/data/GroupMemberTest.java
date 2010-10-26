@@ -9,9 +9,6 @@ import junit.framework.TestSuite;
 
 import org.hibernate.HibernateException;
 
-import com.bloatit.model.data.Group;
-import com.bloatit.model.data.Member;
-import com.bloatit.model.data.QueryCollection;
 import com.bloatit.model.data.util.SessionManger;
 
 /**
@@ -99,14 +96,12 @@ public class GroupMemberTest extends TestCase {
     public void testCreateGroup() {
         testCreateMember();
         SessionManger.beginWorkUnit();
-        Member yo = Member.getByLogin("Yo");
-        Member fred = Member.getByLogin("Fred");
-        Group.createAndPersiste("Other", yo, Group.Right.PUBLIC);
-        Group.createAndPersiste("myGroup", yo, Group.Right.PUBLIC);
-        Group.createAndPersiste("b219", yo, Group.Right.PUBLIC);
-        Group.createAndPersiste("b218", fred, Group.Right.PUBLIC);
-        Group.createAndPersiste("b217", fred, Group.Right.PUBLIC);
-        Group.createAndPersiste("b216", Member.getByLogin("Thomas"), Group.Right.PUBLIC);
+        Group.createAndPersiste("Other", "plop@plop.com", Group.Right.PUBLIC);
+        Group.createAndPersiste("myGroup", "plop@plop.com", Group.Right.PUBLIC);
+        Group.createAndPersiste("b219", "plop@plop.com", Group.Right.PUBLIC);
+        Group.createAndPersiste("b218", "plop@plop.com", Group.Right.PUBLIC);
+        Group.createAndPersiste("b217", "plop@plop.com", Group.Right.PUBLIC);
+        Group.createAndPersiste("b216", "plop@plop.com", Group.Right.PUBLIC);
         SessionManger.endWorkUnitAndFlush();
 
     }
@@ -115,8 +110,7 @@ public class GroupMemberTest extends TestCase {
         testCreateGroup();
         try {
             SessionManger.beginWorkUnit();
-            Member fred = Member.getByLogin("Fred");
-            Group.createAndPersiste("Other", fred, Group.Right.PUBLIC);
+            Group.createAndPersiste("Other", "plop@plop.com", Group.Right.PUBLIC);
             assertTrue(true);
             SessionManger.endWorkUnitAndFlush();
             assertTrue(false);
@@ -129,7 +123,8 @@ public class GroupMemberTest extends TestCase {
         testCreateGroup();
 
         SessionManger.beginWorkUnit();
-        assertEquals("Plénet", Group.getByName("b219").getAuthor().getLastname());
+        // TODO correct me
+        assertEquals("plop@plop.com", Group.getByName("b219").getEmail());
         assertNull(Group.getByName("Inexistant"));
         SessionManger.endWorkUnitAndFlush();
     }
@@ -163,10 +158,10 @@ public class GroupMemberTest extends TestCase {
         SessionManger.beginWorkUnit();
         QueryCollection<Group> groups = Member.getByLogin("Yo").getGroups();
         Iterator<Group> it = groups.iterator();
-        assertEquals(it.next().getName(), "b219");
-        assertEquals(it.next().getName(), "b218");
-        assertEquals(it.next().getName(), "b217");
-        assertEquals(it.next().getName(), "b216");
+        assertEquals(it.next().getLogin(), "b216");
+        assertEquals(it.next().getLogin(), "b217");
+        assertEquals(it.next().getLogin(), "b218");
+        assertEquals(it.next().getLogin(), "b219");
         assertFalse(it.hasNext());
         SessionManger.endWorkUnitAndFlush();
     }
@@ -181,9 +176,9 @@ public class GroupMemberTest extends TestCase {
         yo.removeFromGroup(b219);
 
         Iterator<Group> it = yo.getGroups().iterator();
-        assertEquals(it.next().getName(), "b218");
-        assertEquals(it.next().getName(), "b217");
-        assertEquals(it.next().getName(), "b216");
+        assertEquals(it.next().getLogin(), "b216");
+        assertEquals(it.next().getLogin(), "b217");
+        assertEquals(it.next().getLogin(), "b218");
         assertFalse(it.hasNext());
 
         SessionManger.endWorkUnitAndFlush();
@@ -199,9 +194,9 @@ public class GroupMemberTest extends TestCase {
         b218.removeMember(yo);
 
         Iterator<Group> it = yo.getGroups().iterator(); 
-        assertEquals(it.next().getName(), "b219");
-        assertEquals(it.next().getName(), "b217");
-        assertEquals(it.next().getName(), "b216");
+        assertEquals(it.next().getLogin(), "b216");
+        assertEquals(it.next().getLogin(), "b217");
+        assertEquals(it.next().getLogin(), "b219");
         assertFalse(it.hasNext());
 
         SessionManger.endWorkUnitAndFlush();

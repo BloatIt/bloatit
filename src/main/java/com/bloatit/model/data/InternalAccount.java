@@ -24,8 +24,8 @@ public class InternalAccount extends Account {
         // TODO Auto-generated constructor stub
     }
 
-    public InternalAccount(Member member) {
-        super(member);
+    public InternalAccount(Actor actor) {
+        super(actor);
         this.blocked = new BigDecimal("0");
     }
     
