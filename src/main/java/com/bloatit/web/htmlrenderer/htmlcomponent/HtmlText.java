@@ -16,35 +16,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
-import java.util.ArrayList;
 
-/**
- * A component used to store other components
- */
-public class HtmlContainer extends HtmlComponent{
-    private ArrayList<HtmlComponent> components;
+public class HtmlText extends HtmlComponent {
 
-    public HtmlContainer(){
-        this.components = new ArrayList<HtmlComponent>();
+    final private String text;
+    final private String cssClass;
+
+    public HtmlText(String text) {
+        this.text = text;
+        this.cssClass = null;
     }
 
-    /**
-     * Add a new component at the end of the list of components
-     * @param newComponent the added component
-     */
-    public void add(HtmlComponent newComponent){
-        this.components.add(newComponent);
-
+    public HtmlText(String cssClass, String text) {
+        this.text = text;
+        this.cssClass = cssClass;
     }
-    
+
     @Override
     public void generate(HtmlResult htmlResult) {
-        for (HtmlComponent component : this.components){
-            component.generate(htmlResult);
+        if (cssClass == null) {
+            htmlResult.write("<p>" + text + "</p>");
+        } else {
+            htmlResult.write("<p class=\""+cssClass+"\">" + text + "</p>");
         }
     }
 }

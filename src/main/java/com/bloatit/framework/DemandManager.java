@@ -42,19 +42,19 @@ public class DemandManager {
                         new Translatable(new Translation("Specification", new Language(), yoann, 0)),
                         new ArrayList<Translatable>(),
                         1, yoann));
-                add(new Demand(1,
+                add(new Demand(2,
                         new Translatable(new Translation("Demande 2", new Language("fr"), yoann, 0)),
                         new Translatable(new Translation("Description", new Language("fr"), yoann, 0)),
                         new Translatable(new Translation("Specification", new Language(), yoann, 0)),
                         new ArrayList<Translatable>(),
                         1, yoann));
-               add(new Demand(1,
+               add(new Demand(3,
                         new Translatable(new Translation("German 3", new Language("de"), yoann, 0)),
                         new Translatable(new Translation("German demand", new Language("de"), yoann, 0)),
                         new Translatable(new Translation("This is a very nice german demand", new Language("de"), yoann, 0)),
                         new ArrayList<Translatable>(),
                         1, yoann));
-                add(new Demand(1,
+                add(new Demand(4,
                         new Translatable(new Translation("Title4", new Language(), yoann, 0)),
                         new Translatable(new Translation("Description", new Language(), yoann, 0)),
                         new Translatable(new Translation("Specification", new Language(), yoann, 0)),

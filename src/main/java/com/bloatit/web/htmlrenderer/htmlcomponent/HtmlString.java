@@ -26,6 +26,8 @@ import com.bloatit.web.utils.TranslationManipulator;
 
 
 public class HtmlString {
+
+
     private StringBuilder stringBuilder = new StringBuilder();
     private Session session = null;
 
@@ -63,5 +65,10 @@ public class HtmlString {
 
 
 
+    public static String Translate(Session session, Translatable text) {
+        HtmlString string = new HtmlString(session);
+        string.add(text);
+        return string.toString();
+    }
 
 }

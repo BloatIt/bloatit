@@ -18,6 +18,8 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import java.util.Map;
@@ -33,8 +35,10 @@ public class PageNotFound extends Page {
     }
 
     @Override
-    protected void generateContent() {
-        this.htmlResult.write("<h2>"+this.session.tr("Page not found")+"</h2>");
+    protected HtmlComponent generateContent() {
+        HtmlTitle errorTitle = new HtmlTitle(this.session.tr("Page not found"), "");
+
+        return errorTitle;
         
     }
 

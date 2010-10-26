@@ -20,9 +20,13 @@ package com.bloatit.web.pages;
 
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPasswordField;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
@@ -39,7 +43,7 @@ public class LoginPage extends Page {
     }
 
     @Override
-    protected void generateContent() {
+    protected HtmlComponent generateContent() {
         LoginAction logAction = new LoginAction(this.session);
 
         HtmlForm loginForm = new HtmlForm(logAction);
@@ -47,18 +51,25 @@ public class LoginPage extends Page {
         HtmlPasswordField passwordField =  new HtmlPasswordField();
         HtmlButton submitButton = new HtmlButton(this.session.tr("Login"));
 
-        loginForm.addComponent(loginField);
-        loginForm.addComponent(passwordField);
-        loginForm.addComponent(submitButton);
+        loginForm.add(loginField);
+        loginForm.add(passwordField);
+        loginForm.add(submitButton);
 
         loginField.setName(logAction.getLoginCode());
         passwordField.setName(logAction.getPasswordCode());
 
+        HtmlTitle loginTitle = new HtmlTitle(this.session.tr("Login"), "");
+        loginTitle.add(loginForm);
 
-        this.htmlResult.write("<h2>"+this.session.tr("Login")+"</h2>");
-        loginForm.generate(this.htmlResult);
-        this.htmlResult.write("<h2>"+this.session.tr("Sigup")+"</h2>");
-        this.htmlResult.write("<p>Not yet implemented.</p>");
+        HtmlTitle sigupTitle = new HtmlTitle(this.session.tr("Sigup"), "");
+        sigupTitle.add(new HtmlText("Not yet implemented."));
+
+        HtmlContainer group = new HtmlContainer();
+
+        group.add(loginTitle);
+        group.add(sigupTitle);
+
+        return group;
     }
 
     @Override

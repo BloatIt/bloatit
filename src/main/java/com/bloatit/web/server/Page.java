@@ -20,6 +20,7 @@ package com.bloatit.web.server;
 
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
@@ -79,7 +80,7 @@ public abstract class Page extends Request {
         this.htmlResult.indent();
 
         this.generateNotifications();
-        this.generateContent();
+        this.generateContent().generate(htmlResult);
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
         this.htmlResult.unindent();
@@ -134,6 +135,7 @@ public abstract class Page extends Request {
     }
 
     private void generateTitle() {
+        this.htmlResult.pushTitle();
         this.htmlResult.write("<h1>" + HtmlTools.generateLink(this.session, this.generateLogo(), new IndexPage(this.session)) + "</h1>");
     }
 
@@ -145,7 +147,7 @@ public abstract class Page extends Request {
         this.htmlResult.write("</div>");
     }
 
-    protected abstract void generateContent();
+    protected abstract HtmlComponent generateContent();
     
     @Override
     public abstract String getCode();

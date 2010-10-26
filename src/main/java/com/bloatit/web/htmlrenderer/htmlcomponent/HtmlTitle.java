@@ -20,31 +20,21 @@
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
-import java.util.ArrayList;
 
-/**
- * A component used to store other components
- */
-public class HtmlContainer extends HtmlComponent{
-    private ArrayList<HtmlComponent> components;
+public class HtmlTitle extends HtmlContainer{
+    private final String title;
+    private final String cssClass;
 
-    public HtmlContainer(){
-        this.components = new ArrayList<HtmlComponent>();
-    }
-
-    /**
-     * Add a new component at the end of the list of components
-     * @param newComponent the added component
-     */
-    public void add(HtmlComponent newComponent){
-        this.components.add(newComponent);
-
+    public HtmlTitle(String title, String cssClass){
+        this.title = title;
+        this.cssClass = cssClass;
     }
     
     @Override
-    public void generate(HtmlResult htmlResult) {
-        for (HtmlComponent component : this.components){
-            component.generate(htmlResult);
-        }
+    public void generate(HtmlResult htmlResult){
+        String titleNum =  htmlResult.pushTitle();
+        htmlResult.write("<h"+titleNum+" class=\""+this.cssClass+"\">"+this.title+"</h"+titleNum+">");
+        super.generate(htmlResult);
+        htmlResult.popTitle();
     }
 }

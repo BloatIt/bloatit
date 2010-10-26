@@ -24,7 +24,7 @@ import com.bloatit.framework.AuthToken;
 
 public class Unlockable {
 
-    private AuthToken token;
+    private AuthToken token = null;
 
     public void unLock(AuthToken token) {
         this.token = token;

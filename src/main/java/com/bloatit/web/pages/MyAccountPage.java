@@ -20,6 +20,9 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.model.Member;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import java.util.Map;
@@ -36,16 +39,20 @@ public class MyAccountPage extends Page {
     }
 
     @Override
-    protected void generateContent() {
+    protected HtmlComponent generateContent() {
         if (this.session.getAuthToken() != null) {
             Member member = this.session.getAuthToken().getMember();
-            this.htmlResult.write("<h2>" + member.getFullName() + "</h2>");
-            this.htmlResult.write("<p>Full name: " + member.getFullName() + "</p>");
-            this.htmlResult.write("<p>Login: " + member.getLogin() + "</p>");
-            this.htmlResult.write("<p>Email: " + member.getEmail() + "</p>");
-            this.htmlResult.write("<p>Karma: " + member.getKarma() + "</p>");
+
+            HtmlTitle memberTitle = new HtmlTitle(member.getFullName(), "");
+            
+            memberTitle.add(new HtmlText("Full name: " + member.getFullName()));
+            memberTitle.add(new HtmlText("Login: " + member.getLogin()));
+            memberTitle.add(new HtmlText("Email: " + member.getEmail()));
+            memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
+
+            return memberTitle;
         } else {
-            this.htmlResult.write("<h2>No account</h2>");
+            return new HtmlTitle("No account", "");
         }
     }
 
