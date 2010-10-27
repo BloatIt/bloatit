@@ -8,25 +8,25 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 @MappedSuperclass
-public abstract class Kudosable extends UserContent {
+public abstract class DaoKudosable extends DaoUserContent {
 
     public enum State {
-        PENDING, VALIDATED, REJECTED
+        PENDING, VALIDATED, REJECTED, HIDDEN
     }
 
     @Basic(optional = false)
     private int popularity;
     @OneToMany
-    private Set<Kudos> kudos = new HashSet<Kudos>(0);
+    private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
     @Basic(optional = false)
     private State state;
 
-    protected Kudosable() {
+    protected DaoKudosable() {
         super();
         popularity = 0;
     }
 
-    public Kudosable(Member member) {
+    public DaoKudosable(DaoMember member) {
         super(member);
         popularity = 0;
         setState(State.PENDING);
@@ -37,8 +37,8 @@ public abstract class Kudosable extends UserContent {
      * 
      * @return the new popularity
      */
-    public int addKudos(Member member, int value) {
-        kudos.add(new Kudos(member, value));
+    public int addKudos(DaoMember member, int value) {
+        kudos.add(new DaoKudos(member, value));
         return popularity += value;
     }
 
@@ -70,12 +70,12 @@ public abstract class Kudosable extends UserContent {
         this.popularity = popularity;
     }
 
-    protected Set<Kudos> getKudos() {
+    protected Set<DaoKudos> getKudos() {
         return kudos;
     }
 
-    protected void setKudos(Set<Kudos> kudos) {
-        this.kudos = kudos;
+    protected void setKudos(Set<DaoKudos> Kudos) {
+        this.kudos = Kudos;
     }
 
 }

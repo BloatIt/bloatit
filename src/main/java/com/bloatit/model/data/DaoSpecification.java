@@ -4,20 +4,20 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Specification extends UserContent {
+public class DaoSpecification extends DaoUserContent {
 
     private String content;
     @OneToOne(optional = true)
-    private Demand demand;
+    private DaoDemand demand;
 
-    protected Specification() {
+    protected DaoSpecification() {
         super();
     }
 
-    public Specification(Member member, String content, Demand demand) {
+    public DaoSpecification(DaoMember member, String content, DaoDemand Demand) {
         super(member);
         this.content = content;
-        this.demand = demand;
+        this.demand = Demand;
     }
 
     public String getContent() {
@@ -32,12 +32,12 @@ public class Specification extends UserContent {
     // For hibernate mapping
     // ======================================================================
 
-    protected Demand getDemand() {
+    protected DaoDemand getDemand() {
         return demand;
     }
 
-    protected void setDemand(Demand demand) {
-        this.demand = demand;
+    protected void setDemand(DaoDemand Demand) {
+        this.demand = Demand;
     }
 
 }

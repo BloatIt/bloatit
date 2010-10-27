@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Contribution extends UserContent {
+public class DaoContribution extends DaoUserContent {
 
     public enum State {
         WAITING, ACCEPTED, CANCELED
@@ -19,19 +19,19 @@ public class Contribution extends UserContent {
     private BigDecimal amount;
 
     @ManyToOne
-    private Demand demand;
+    private DaoDemand demand;
 
     @Basic(optional = false)
     @Enumerated
     private State state;
 
     @OneToOne(optional = true)
-    private Transaction transaction;
+    private DaoTransaction transaction;
 
-    public Contribution() {}
+    public DaoContribution() {}
 
-    // the demand is associated into the Demand class by hibernate.
-    public Contribution(Member member, BigDecimal amount) {
+    // the demand is associated into the DaoDemand class by hibernate.
+    public DaoContribution(DaoMember member, BigDecimal amount) {
         // TODO make sure amount > 0
         super(member);
         this.amount = amount;
@@ -39,10 +39,10 @@ public class Contribution extends UserContent {
         getAuthor().getInternalAccount().block(amount);
     }
 
-    public void accept(Offer offer) {
+    public void accept(DaoOffer Offer) {
         // TODO verify that the state is WAITING
         getAuthor().getInternalAccount().unBlock(amount);
-        transaction = Transaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), amount);
+        transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor().getInternalAccount(), amount);
         setState(State.ACCEPTED);
     }
 
@@ -60,7 +60,7 @@ public class Contribution extends UserContent {
         return state;
     }
 
-    public Transaction getTransaction() {
+    public DaoTransaction getTransaction() {
         return transaction;
     }
 
@@ -68,12 +68,12 @@ public class Contribution extends UserContent {
     // For hibernate mapping
     // ======================================================================
 
-    protected Demand getDemand() {
+    protected DaoDemand getDemand() {
         return demand;
     }
 
-    protected void setDemand(Demand demand) {
-        this.demand = demand;
+    protected void setDemand(DaoDemand Demand) {
+        this.demand = Demand;
     }
 
     protected void setAmount(BigDecimal amount) {
@@ -84,8 +84,8 @@ public class Contribution extends UserContent {
         this.state = state;
     }
 
-    protected void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    protected void setTransaction(DaoTransaction Transaction) {
+        this.transaction = Transaction;
     }
 
 }

@@ -4,14 +4,14 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 
 @Entity
-public class Kudos extends UserContent {
+public class DaoKudos extends DaoUserContent {
 
     @Basic(optional = false)
     private int value;
 
-    public Kudos() {}
+    public DaoKudos() {}
 
-    public Kudos(Member member, int value) {
+    public DaoKudos(DaoMember member, int value) {
         super(member);
         this.value = value;
     }
