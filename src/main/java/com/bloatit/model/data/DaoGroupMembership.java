@@ -15,12 +15,10 @@ import com.bloatit.model.data.util.SessionManger;
 @Entity
 public class DaoGroupMembership extends DaoIdentifiable {
 
-    // TODO find why I cannot make this parameter non null
-    @ManyToOne
+    @ManyToOne(optional = false)
     private DaoMember member;
 
-    // TODO find why I cannot make this parameter non null
-    @ManyToOne
+    @ManyToOne(optional = false)
     private DaoGroup group;
 
     @Basic(optional = false)

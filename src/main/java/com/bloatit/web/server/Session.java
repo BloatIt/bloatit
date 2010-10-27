@@ -48,11 +48,10 @@ public class Session {
 
         // TODO : Following lines are for testing purposes only
         preferredLocales = new ArrayList<Locale>();
-        preferredLocales.add(new Locale()); // TODO : ONLY FOR TEST
         preferredLocales.add(new Locale("fr")); // TODO : ONLY FOR TEST
     }
     public String tr(String s){
-        return this.language.tr(s);
+        return null; //this.language.tr(s);
     }
 
     public Locale getLocale() {

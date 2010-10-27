@@ -6,7 +6,6 @@ import org.hibernate.Query;
 
 import com.bloatit.common.PageIterable;
 
-// TODO create a page iterator ?
 public class QueryCollection<T> implements PageIterable<T> {
 
     private Query query;

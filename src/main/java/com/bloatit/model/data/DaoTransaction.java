@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 @Entity
 public class DaoTransaction extends DaoIdentifiable {
@@ -34,8 +35,9 @@ public class DaoTransaction extends DaoIdentifiable {
      * @param from is the account from which we will take money.
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
+     * @throws NotEnoughMoneyException 
      */
-    public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount) {
+    public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
         Session session = SessionManger.getSessionFactory().getCurrentSession();
         DaoTransaction Transaction = new DaoTransaction(from, to, amount);
         try {
@@ -49,9 +51,12 @@ public class DaoTransaction extends DaoIdentifiable {
 
     }
 
-    private DaoTransaction(DaoInternalAccount from, DaoAccount to, BigDecimal amount) {
+    private DaoTransaction(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
         super();
-        // TODO make sure the different accounts have enough money ...
+        // TODO Find how to manage this for the other account
+        if(from.getAmount().compareTo(amount)<0){
+            throw new NotEnoughMoneyException();
+        }
         this.from = from;
         this.to = to;
         this.amount = amount;

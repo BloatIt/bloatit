@@ -1,22 +1,27 @@
 /*
  * Copyright (C) 2010 BloatIt.
- *
+ * 
  * This file is part of BloatIt.
- *
+ * 
  * BloatIt is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * BloatIt is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.server;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
@@ -27,9 +32,6 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.PageNotFound;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DispatchServer {
 
@@ -79,34 +81,37 @@ public class DispatchServer {
     /**
      * Return the session for the user. Either an existing session or a new
      * session.
+     * 
      * @param query the complet query string
      * @return the session matching the user
      */
     private Session findSession(Map<String, String> query) {
         Session sess = null;
-        Language l = this.userLanguage(query);
+        Locale l = this.userLocale(query);
 
         if (this.cookies.containsKey("session_key")) {
             sess = SessionManager.getByKey(cookies.get("session_key"));
         }
-        if(sess == null){
+        if (sess == null) {
             sess = SessionManager.createSession();
         }
-        sess.setLanguage(l);
+        sess.setLocale(l);
         return sess;
     }
 
-    private Language userLanguage(Map<String, String> query) {
-        Language language = new Language();
-        if (query.containsKey("lang")) {
-            if (query.get("lang").equals("default")) {
-                language.findPrefered(preferred_langs);
-            } else {
-                language.setCode(query.get("lang"));
-            }
-        }
-
-        return language;
+    private Locale userLocale(Map<String, String> query) {
+        // TODO correct me!
+        // Locale language = new Locale();
+        // if (query.containsKey("lang")) {
+        // if (query.get("lang").equals("default")) {
+        // language.findPrefered(preferred_langs);
+        // } else {
+        // language.setCode(query.get("lang"));
+        // }
+        // }
+        //
+        // return language;
+        return null;
     }
 
     private Request initCurrentRequest(Map<String, String> query, Map<String, String> post) {
@@ -122,7 +127,6 @@ public class DispatchServer {
         return new PageNotFound(this.session);
     }
 
-    
     private Request findRequest(String page, Map<String, String> parameters) {
         if (page.startsWith("action/") && actionMap.containsKey(page.substring(7))) {
             // Find Action
@@ -137,18 +141,19 @@ public class DispatchServer {
 
     /**
      * Merges the list of query attributes and the list of post attributes.
-     *
+     * 
      * If an attribute with the same key is found in Query and Post, the attribute
      * from post is kept.
+     * 
      * @param query the Map containing the query parameters
      * @param post the Map containing the post parameters
      * @return the new map
      */
-    private Map<String, String> MergePostGet(Map<String, String> query, Map<String, String> post){
+    private Map<String, String> MergePostGet(Map<String, String> query, Map<String, String> post) {
         HashMap<String, String> mergedList = new HashMap<String, String>();
         mergedList.putAll(query);
         mergedList.putAll(post);
-        
+
         return mergedList;
     }
 
@@ -183,8 +188,7 @@ public class DispatchServer {
         public String page;
         public Map<String, String> parameters;
 
-        public QueryString() {
-        }
+        public QueryString() {}
 
         private QueryString(String page, Map<String, String> parameters) {
             this.page = page;

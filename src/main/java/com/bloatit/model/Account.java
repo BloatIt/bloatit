@@ -3,9 +3,12 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.TransactionList;
 import com.bloatit.model.data.DaoAccount;
+import com.bloatit.model.data.DaoGroup;
+import com.bloatit.model.data.DaoMember;
 
 public abstract class Account extends Identifiable{
     
@@ -23,14 +26,13 @@ public abstract class Account extends Identifiable{
 	    return new TransactionList(getDaoAccount().getTransactions());
 	}
 
-	public Integer getId() {
-	    return getDaoAccount().getId();
-	}
-
 	public Actor getActor() {
-	    // TODO find if it is a group or a member. (Factory ?)
-	    // TODO implement me 
-	    return null; //new Actor(daoAccount.getActor());
+	    if (getDaoAccount().getActor().getClass() == DaoMember.class){
+	        return new Member((DaoMember) getDaoAccount().getActor());
+	    }else if(getDaoAccount().getActor().getClass() == DaoGroup.class){
+            return new Group((DaoGroup) getDaoAccount().getActor());
+        }
+	    throw new FatalErrorException("Cannot find the right Actor child class.", null);
 	}
 
 	public Date getCreationDate() {

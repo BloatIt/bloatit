@@ -60,25 +60,26 @@ public class DemandsPage extends Page {
         
         HtmlBlock demandTable = new HtmlBlock("demand_table");
         
-        for (Demand demand : demands){
-            Translation title = tm.tr(demand.getTitle());
-            Translation decription = tm.tr(demand.getDescription());
-
-            if(showAll || title != null){
-                DemandPage view = new DemandPage(session, demand);
-                HtmlBlock demandEntry = new HtmlBlock("demand_entry");
-
-                demandEntry.add(new HtmlText("demand_title",  HtmlTools.generateLink(this.session, title.getEntry() ,view)));
-                demandEntry.add(new HtmlText("demand_description",  decription.getEntry()));
-                demandEntry.add(new HtmlText("demand_author",  demand.getAuthor().getLogin()));
-                demandEntry.add(new HtmlText("demand_list_langs",  "Langs :"));
-                
-                for(Language l : demand.getDescription().getAvailableLangs() ){
-                    demandEntry.add(new HtmlText("demand_lang",  l.getCode()));
-                }
-                demandTable.add(demandEntry);
-            }
-        }
+//        TODO correct me
+//        for (Demand demand : demands){
+//            Translation title = tm.tr(demand.getTitle());
+//            Translation decription = tm.tr(demand.getDescription());
+//
+//            if(showAll || title != null){
+//                DemandPage view = new DemandPage(session, demand);
+//                HtmlBlock demandEntry = new HtmlBlock("demand_entry");
+//
+//                demandEntry.add(new HtmlText("demand_title",  HtmlTools.generateLink(this.session, title.getTitle() ,view)));
+//                demandEntry.add(new HtmlText("demand_description",  decription.getText()));
+//                demandEntry.add(new HtmlText("demand_author",  demand.getAuthor().getLogin()));
+//                demandEntry.add(new HtmlText("demand_list_langs",  "Langs :"));
+//                
+//                for(Language l : demand.getDescription().getAvailableLangs() ){
+//                    demandEntry.add(new HtmlText("demand_lang",  l.getCode()));
+//                }
+//                demandTable.add(demandEntry);
+//            }
+//        }
         
         HtmlContainer page = new HtmlContainer();
         page.add(demandTableAll);

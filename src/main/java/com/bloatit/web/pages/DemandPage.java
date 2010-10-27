@@ -84,9 +84,9 @@ public class DemandPage extends Page {
 
         HtmlBlock demandBlock = new HtmlBlock("demand");
 
-        HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session, this.demand.getTitle()), "demand_title");
-
-        demandBlock.add(demandTitle);
+//        TODO CORRECT ME
+//        HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session, this.demand.getTitle()), "demand_title");
+//        demandBlock.add(demandTitle);
 
         return demandBlock;
 

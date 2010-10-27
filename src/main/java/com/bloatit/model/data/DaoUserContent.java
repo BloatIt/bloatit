@@ -9,8 +9,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class DaoUserContent extends DaoIdentifiable {
 
-	// TODO find why I cannot make this not-null (DaoGroup related)
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private DaoMember member;
 	@ManyToOne(optional = true)
 	private DaoGroup asGroup;

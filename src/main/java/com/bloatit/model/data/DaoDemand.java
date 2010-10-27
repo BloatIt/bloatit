@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManger;
 
@@ -102,10 +103,9 @@ public class DaoDemand extends DaoKudosable {
         offers.remove(Offer);
     }
 
-    // TODO create a Throwable type
-    public void addContribution(DaoMember member, BigDecimal amount) throws Throwable {
+    public void addContribution(DaoMember member, BigDecimal amount) {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
-            throw new Throwable();
+            throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         contributions.add(new DaoContribution(member, amount));
     }

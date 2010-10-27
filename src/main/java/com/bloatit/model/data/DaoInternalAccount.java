@@ -21,7 +21,6 @@ public class DaoInternalAccount extends DaoAccount {
     
     public DaoInternalAccount() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     // Used in Member constructor.

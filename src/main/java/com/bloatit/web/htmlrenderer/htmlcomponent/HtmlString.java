@@ -47,12 +47,12 @@ public class HtmlString {
 
     public HtmlString add(Translatable translatable) {
         TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
-        return add(tm.tr(translatable).getEntry());
+        return add(tm.tr(translatable).getText()); // TODO correct me !
     }
 
     public HtmlString secure(Translatable translatable) {
         TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
-        return secure(tm.tr(translatable).getEntry());
+        return secure(tm.tr(translatable).getText()); // TODO correct me !
     }
 
     @Override
