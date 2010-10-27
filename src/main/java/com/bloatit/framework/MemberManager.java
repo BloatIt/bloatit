@@ -29,8 +29,8 @@ public class MemberManager {
 
     static {
         members.add(new Member(1, "Yoann", "yplenet@gmail.com", "Yoann Plénet", -14413));
-        members.add(new Member(1, "Fred", "fred@gmail.com", "Frédéric Bertolus", 12));
-        members.add(new Member(1, "Tom", "tom@gmail.com", "Thomas Guyard", 3000000000000000000L));
+        members.add(new Member(2, "Fred", "fred@gmail.com", "Frédéric Bertolus", 12));
+        members.add(new Member(3, "Tom", "tom@gmail.com", "Thomas Guyard", 3000000000000000000L));
     }
 
     public static Member getMemberByLogin(String login) throws ElementNotFoundException {
@@ -42,7 +42,7 @@ public class MemberManager {
         throw new ElementNotFoundException();
     }
 
-    public static boolean existsMember(String login){
+    public static boolean existsMember(String login) {
         for (Member m : members) {
             if (login.equals(m.getLogin())) {
                 return true;
@@ -55,4 +55,12 @@ public class MemberManager {
         return members;
     }
 
+    public static Member GetMemberById(Integer id) throws ElementNotFoundException {
+        for (Member d : members) {
+            if (d.getId() == id) {
+                return d;
+            }
+        }
+        throw new ElementNotFoundException();
+    }
 }
