@@ -14,6 +14,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManger;
 
 // member is a SQL keyword (in some specific implementations)
@@ -105,7 +106,7 @@ public class DaoMember extends DaoActor {
 		aGroup.getGroupMembership().remove(link);
 	}
 
-	public QueryCollection<DaoGroup> getGroups() {
+	public PageIterable<DaoGroup> getGroups() {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		Query q = session.getNamedQuery("getGroups");
 		q.setParameter("member", this);
@@ -136,35 +137,35 @@ public class DaoMember extends DaoActor {
 		this.lastName = name;
 	}
 	
-	public QueryCollection<DaoDemand> getDemands() {
+	public PageIterable<DaoDemand> getDemands() {
 		return getUserContent(DaoDemand.class, "DaoDemand");
 	}
 
-	public QueryCollection<DaoKudos> getKudos() {
+	public PageIterable<DaoKudos> getKudos() {
 		return getUserContent(DaoKudos.class, "DaoKudos");
 	}
 
-	public QueryCollection<DaoSpecification> getSpecifications() {
+	public PageIterable<DaoSpecification> getSpecifications() {
 		return getUserContent(DaoSpecification.class, "DaoSpecification");
 	}
 
-	public QueryCollection<DaoContribution> getTransactions() {
+	public PageIterable<DaoContribution> getTransactions() {
 		return getUserContent(DaoContribution.class, "DaoTransaction");
 	}
 
-	public QueryCollection<DaoComment> getComments() {
+	public PageIterable<DaoComment> getComments() {
 		return getUserContent(DaoComment.class, "DaoComment");
 	}
 
-	public QueryCollection<DaoOffer> getOffers() {
+	public PageIterable<DaoOffer> getOffers() {
 		return getUserContent(DaoOffer.class, "DaoOffer");
 	}
 
-	public QueryCollection<DaoTranslation> getTranslations() {
+	public PageIterable<DaoTranslation> getTranslations() {
 		return getUserContent(DaoTranslation.class, "DaoTranslation");
 	}
 
-	private <T> QueryCollection<T> getUserContent(Class<T> theClass, String className) {
+	private <T> PageIterable<T> getUserContent(Class<T> theClass, String className) {
 		Query q = SessionManger.getSessionFactory().getCurrentSession()
 		        .createQuery("from com.bloatit.model.data." + className + " as x where x.member = :author");
 		q.setEntity("author", this);

@@ -9,6 +9,7 @@ import junit.framework.TestSuite;
 
 import org.hibernate.HibernateException;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManger;
 
 /**
@@ -156,7 +157,7 @@ public class GroupMemberTest extends TestCase {
         testAddUserToGroup();
 
         SessionManger.beginWorkUnit();
-        QueryCollection<DaoGroup> Groups = DaoMember.getByLogin("Yo").getGroups();
+        PageIterable<DaoGroup> Groups = DaoMember.getByLogin("Yo").getGroups();
         Iterator<DaoGroup> it = Groups.iterator();
         assertEquals(it.next().getLogin(), "b216");
         assertEquals(it.next().getLogin(), "b217");

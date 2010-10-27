@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.hibernate.Query;
 
+import com.bloatit.common.PageIterable;
+
 // TODO create a page iterator ?
-public class QueryCollection<T> implements Iterable<T> {
+public class QueryCollection<T> implements PageIterable<T> {
 
     private Query query;
     private int pageSize;
