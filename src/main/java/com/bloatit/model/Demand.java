@@ -3,6 +3,7 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.framework.lists.ContributionList;
 import com.bloatit.framework.lists.OfferList;
@@ -49,15 +50,15 @@ public class Demand extends Kudosable {
         return new Description(dao.getDescription());
     }
 
-    public OfferList getOffers() {
+    public PageIterable<Offer> getOffers() {
         return new OfferList(dao.getOffersFromQuery());
     }
 
-    public ContributionList getContributions() {
+    public PageIterable<Contribution> getContributions() {
         return new ContributionList(dao.getContributionsFromQuery());
     }
 
-    public CommentList getComments() {
+    public PageIterable<Comment> getComments() {
         return new CommentList(dao.getCommentsFromQuery());
     }
 

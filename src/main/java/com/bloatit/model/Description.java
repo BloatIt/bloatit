@@ -2,6 +2,7 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.TranslationList;
 import com.bloatit.model.data.DaoDescription;
 
@@ -19,7 +20,7 @@ public class Description extends Identifiable {
         return dao;
     }
 
-    public TranslationList getTranslations() {
+    public PageIterable<Translation> getTranslations() {
 		return new TranslationList(dao.getTranslationsFromQuery());
 	}
 

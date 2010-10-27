@@ -38,7 +38,7 @@ public class Member extends Actor {
         dao.removeFromGroup(aGroup.getDao());
     }
 
-    public GroupList getGroups() {
+    public PageIterable<Group> getGroups() {
         return new GroupList(dao.getGroups());
     }
     
@@ -73,15 +73,15 @@ public class Member extends Actor {
         dao.setLastname(name);
     }
 
-    public DemandList getDemands() {
+    public PageIterable<Demand> getDemands() {
         return new DemandList(dao.getDemands());
     }
 
-    public KudosList getKudos() {
+    public PageIterable<Kudos> getKudos() {
         return new KudosList(dao.getKudos());
     }
 
-    public SpecificationList getSpecifications() {
+    public PageIterable<Specification> getSpecifications() {
         return new SpecificationList(dao.getSpecifications());
     }
 
@@ -89,15 +89,15 @@ public class Member extends Actor {
         return new ContributionList(dao.getTransactions());
     }
 
-    public CommentList getComments() {
+    public PageIterable<Comment> getComments() {
         return new CommentList(dao.getComments());
     }
 
-    public OfferList getOffers() {
+    public PageIterable<Offer> getOffers() {
         return new OfferList(dao.getOffers());
     }
 
-    public TranslationList getTranslations() {
+    public PageIterable<Translation> getTranslations() {
         return new TranslationList(dao.getTranslations());
     }
 

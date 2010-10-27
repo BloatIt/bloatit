@@ -1,5 +1,6 @@
 package com.bloatit.model;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.MemberList;
 import com.bloatit.model.data.DaoActor;
 import com.bloatit.model.data.DaoGroup;
@@ -18,7 +19,7 @@ public class Group extends Actor {
         return dao;
     }
 
-    public MemberList getMembers() {
+    public PageIterable<Member> getMembers() {
         return new MemberList(dao.getMembers());
     }
 

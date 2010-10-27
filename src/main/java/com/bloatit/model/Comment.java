@@ -1,5 +1,6 @@
 package com.bloatit.model;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoKudosable;
@@ -17,7 +18,7 @@ public class Comment extends Kudosable {
         this.dao = dao;
     }
 
-    public CommentList getChildren() {
+    public PageIterable<Comment> getChildren() {
         return new CommentList(dao.getChildrenFromQuery());
     }
 
