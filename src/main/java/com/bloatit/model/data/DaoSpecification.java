@@ -14,8 +14,8 @@ public class DaoSpecification extends DaoUserContent {
         super();
     }
 
-    public DaoSpecification(DaoActor Actor, String content, DaoDemand Demand) {
-        super(Actor);
+    public DaoSpecification(DaoMember member, String content, DaoDemand Demand) {
+        super(member);
         this.content = content;
         this.demand = Demand;
     }

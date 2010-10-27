@@ -17,7 +17,7 @@ import org.hibernate.annotations.NamedQuery;
 import com.bloatit.model.data.util.SessionManger;
 
 // member is a SQL keyword (in some specific implementations)
-@Entity(name = "bloatit_member")
+@Entity
 @NamedQuery(name = "getGroups", query = "select g from com.bloatit.model.data.DaoMember m " + "join m.groupMembership as gm " + "join gm.group as g "
         + "where m = :member order by g.login")
 public class DaoMember extends DaoActor {
@@ -134,6 +134,41 @@ public class DaoMember extends DaoActor {
 
 	public void setLastname(String name) {
 		this.lastName = name;
+	}
+	
+	public QueryCollection<DaoDemand> getDemands() {
+		return getUserContent(DaoDemand.class, "DaoDemand");
+	}
+
+	public QueryCollection<DaoKudos> getKudos() {
+		return getUserContent(DaoKudos.class, "DaoKudos");
+	}
+
+	public QueryCollection<DaoSpecification> getSpecifications() {
+		return getUserContent(DaoSpecification.class, "DaoSpecification");
+	}
+
+	public QueryCollection<DaoContribution> getTransactions() {
+		return getUserContent(DaoContribution.class, "DaoTransaction");
+	}
+
+	public QueryCollection<DaoComment> getComments() {
+		return getUserContent(DaoComment.class, "DaoComment");
+	}
+
+	public QueryCollection<DaoOffer> getOffers() {
+		return getUserContent(DaoOffer.class, "DaoOffer");
+	}
+
+	public QueryCollection<DaoTranslation> getTranslations() {
+		return getUserContent(DaoTranslation.class, "DaoTranslation");
+	}
+
+	private <T> QueryCollection<T> getUserContent(Class<T> theClass, String className) {
+		Query q = SessionManger.getSessionFactory().getCurrentSession()
+		        .createQuery("from com.bloatit.model.data." + className + " as x where x.member = :author");
+		q.setEntity("author", this);
+		return new QueryCollection<T>(q);
 	}
 
 	// ======================================================================

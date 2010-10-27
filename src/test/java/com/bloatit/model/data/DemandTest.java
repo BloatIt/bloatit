@@ -21,8 +21,6 @@ public class DemandTest extends TestCase {
     private DaoMember tom;
     private DaoMember fred;
     
-    private DaoGroup b219;
-
     protected void setUp() throws Exception {
         super.setUp();
         SessionManger.reCreateSessionFactory();
@@ -47,7 +45,6 @@ public class DemandTest extends TestCase {
 
             DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
             DaoGroup.createAndPersiste("myGroup", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            (b219 = DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PRIVATE)).addMember(yo, true);
         }
 
         SessionManger.endWorkUnitAndFlush();
@@ -65,10 +62,8 @@ public class DemandTest extends TestCase {
         SessionManger.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
-        DaoDemand demand2 = DaoDemand.createAndPersist(b219, new DaoDescription(b219, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
         assertEquals(Demand, yo.getDemands().iterator().next());
-        assertEquals(demand2, b219.getDemands().iterator().next());
 
         SessionManger.endWorkUnitAndFlush();
 
@@ -78,13 +73,10 @@ public class DemandTest extends TestCase {
         SessionManger.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
-        DaoDemand demand2 = DaoDemand.createAndPersist(b219, new DaoDescription(b219, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
         Demand.createSpecification(tom, "This is the spécification");
-        demand2.createSpecification(tom, "This is the spécification");
 
         assertNotNull(Demand.getSpecification());
-        assertNotNull(demand2.getSpecification());
 
         SessionManger.endWorkUnitAndFlush();
     }

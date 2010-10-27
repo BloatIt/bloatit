@@ -20,8 +20,8 @@ import org.hibernate.annotations.CascadeType;
 import com.bloatit.model.data.util.SessionManger;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class DaoActor {
+@Inheritance(strategy=InheritanceType.JOINED)
+public abstract class DaoActor{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -32,7 +32,7 @@ public abstract class DaoActor {
 	@Basic(optional = false)
 	private String email;
 	@Basic(optional = false)
-	private Date dateJoin;
+	private Date dateCreation;
 
 	@OneToOne(optional = false)
 	@Cascade(value = { CascadeType.ALL })
@@ -49,7 +49,7 @@ public abstract class DaoActor {
 
 	protected DaoActor(String login, String email) {
 		super();
-		this.dateJoin = new Date();
+		this.dateCreation = new Date();
 		this.login = login;
 		this.email = email;
 		this.internalAccount = new DaoInternalAccount(this);
@@ -68,41 +68,6 @@ public abstract class DaoActor {
 		return (q.uniqueResult() != null);
 	}
 
-	public QueryCollection<DaoDemand> getDemands() {
-		return getUserContent(DaoDemand.class, "DaoDemand");
-	}
-
-	public QueryCollection<DaoKudos> getKudos() {
-		return getUserContent(DaoKudos.class, "DaoKudos");
-	}
-
-	public QueryCollection<DaoSpecification> getSpecifications() {
-		return getUserContent(DaoSpecification.class, "DaoSpecification");
-	}
-
-	public QueryCollection<DaoContribution> getTransactions() {
-		return getUserContent(DaoContribution.class, "DaoTransaction");
-	}
-
-	public QueryCollection<DaoComment> getComments() {
-		return getUserContent(DaoComment.class, "DaoComment");
-	}
-
-	public QueryCollection<DaoOffer> getOffers() {
-		return getUserContent(DaoOffer.class, "DaoOffer");
-	}
-
-	public QueryCollection<DaoTranslation> getTranslations() {
-		return getUserContent(DaoTranslation.class, "DaoTranslation");
-	}
-
-	private <T> QueryCollection<T> getUserContent(Class<T> theClass, String className) {
-		Query q = SessionManger.getSessionFactory().getCurrentSession()
-		        .createQuery("from com.bloatit.model.data." + className + " as x where x.actor = :author");
-		q.setEntity("author", this);
-		return new QueryCollection<T>(q);
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -115,8 +80,8 @@ public abstract class DaoActor {
 		return login;
 	}
 
-	public Date getDateJoin() {
-		return dateJoin;
+	public Date getDateCreation() {
+		return dateCreation;
 	}
 
 	public DaoInternalAccount getInternalAccount() {
@@ -147,8 +112,8 @@ public abstract class DaoActor {
 		this.login = login;
 	}
 
-	protected void setDateJoin(Date dateJoin) {
-		this.dateJoin = dateJoin;
+	protected void setDateCreation(Date dateJoin) {
+		this.dateCreation = dateJoin;
 	}
 
 	protected void setId(Integer id) {

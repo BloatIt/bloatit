@@ -41,16 +41,20 @@ public class DaoDemand extends DaoKudosable {
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
     private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
+    
+    @OneToMany
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
      * It is automatically in validated state (temporary)
      * 
-     * @param Actor the author of the demand
+     * @param member the author of the demand
      * @param description
      */
-    public static DaoDemand createAndPersist(DaoActor Actor, DaoDescription Description) {
+    public static DaoDemand createAndPersist(DaoMember member, DaoDescription Description) {
         Session session = SessionManger.getSessionFactory().getCurrentSession();
-        DaoDemand Demand = new DaoDemand(Actor, Description);
+        DaoDemand Demand = new DaoDemand(member, Description);
         try {
             session.save(Demand);
         } catch (HibernateException e) {
@@ -61,8 +65,8 @@ public class DaoDemand extends DaoKudosable {
         return Demand;
     }
 
-    protected DaoDemand(DaoActor Actor, DaoDescription Description) {
-        super(Actor);
+    protected DaoDemand(DaoMember member, DaoDescription Description) {
+        super(member);
         setValidated();
         this.description = Description;
         this.specification = null;
@@ -77,12 +81,12 @@ public class DaoDemand extends DaoKudosable {
         session.delete(this);
     }
 
-    public void createSpecification(DaoActor Actor, String content) {
-        specification = new DaoSpecification(Actor, content, this);
+    public void createSpecification(DaoMember member, String content) {
+        specification = new DaoSpecification(member, content, this);
     }
 
-    public DaoOffer addOffer(DaoActor Actor, DaoDescription Description, Date dateExpir) {
-        DaoOffer Offer = new DaoOffer(Actor, this, Description, dateExpir);
+    public DaoOffer addOffer(DaoMember member, DaoDescription Description, Date dateExpir) {
+        DaoOffer Offer = new DaoOffer(member, this, Description, dateExpir);
         offers.add(Offer);
         return Offer;
     }
@@ -97,11 +101,11 @@ public class DaoDemand extends DaoKudosable {
     }
 
     // TODO create a Throwable type
-    public void addContribution(DaoActor Actor, BigDecimal amount) throws Throwable {
+    public void addContribution(DaoMember member, BigDecimal amount) throws Throwable {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new Throwable();
         }
-        contributions.add(new DaoContribution(Actor, amount));
+        contributions.add(new DaoContribution(member, amount));
     }
 
     public DaoSpecification getSpecification() {
@@ -120,6 +124,15 @@ public class DaoDemand extends DaoKudosable {
     // TODO create a query ?
     public Set<DaoContribution> getContributions() {
         return contributions;
+    }
+    
+    // TODO create a query ?
+    public Set<DaoComment> getComments() {
+    	return comments;
+    }
+    
+    public void addComment(DaoComment comment){
+    	comments.add(comment);
     }
 
     // ======================================================================
@@ -141,4 +154,9 @@ public class DaoDemand extends DaoKudosable {
     protected void setContributions(Set<DaoContribution> Contributions) {
         this.contributions = Contributions;
     }
+
+	public void setComments(Set<DaoComment> comments) {
+	    this.comments = comments;
+    }
+
 }

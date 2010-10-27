@@ -26,9 +26,9 @@ public class DaoDescription extends DaoIdentifiable {
         super();
     }
     
-    static public DaoDescription createAndPersist(DaoActor Actor, Locale locale, String title, String description){
+    static public DaoDescription createAndPersist(DaoMember member, Locale locale, String title, String description){
         Session session = SessionManger.getSessionFactory().getCurrentSession();
-        DaoDescription descr = new DaoDescription(Actor, locale, title, description);
+        DaoDescription descr = new DaoDescription(member, locale, title, description);
         try {
             session.save(descr);
         } catch (HibernateException e) {
@@ -40,10 +40,10 @@ public class DaoDescription extends DaoIdentifiable {
         return descr;
     }
 
-    public DaoDescription(DaoActor Actor, Locale locale, String title, String description) {
+    public DaoDescription(DaoMember member, Locale locale, String title, String description) {
         super();
         setDefaultLocale(locale);
-        this.translations.add(new DaoTranslation(Actor, locale, title, description));
+        this.translations.add(new DaoTranslation(member, locale, title, description));
     }
 
     public Set<DaoTranslation> getTranslations() {

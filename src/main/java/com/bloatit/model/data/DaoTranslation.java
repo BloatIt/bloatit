@@ -27,8 +27,8 @@ public class DaoTranslation extends DaoKudosable {
 
     protected DaoTranslation() {}
 
-    public DaoTranslation(DaoActor Actor, Locale locale, String title, String description) {
-        super(Actor);
+    public DaoTranslation(DaoMember member, Locale locale, String title, String description) {
+        super(member);
         this.locale = locale;
         this.title = title;
         this.description = description;

@@ -9,60 +9,59 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class DaoUserContent extends DaoIdentifiable {
 
-    // TODO find why I cannot make this not-null (DaoGroup related)
-    @ManyToOne
-    private DaoActor actor;
+	// TODO find why I cannot make this not-null (DaoGroup related)
+	@ManyToOne
+	private DaoMember member;
+	@ManyToOne(optional = true)
+	private DaoGroup asGroup;
 
-    // TODO I would like to have some external join tables.
-    @ManyToOne(optional = true)
-    private DaoGroup asGroup;
-    @Basic(optional = false)
-    private Date creationDate;
+	@Basic(optional = false)
+	private Date creationDate;
 
-    protected DaoUserContent() {
-        creationDate = new Date();
-    }
+	protected DaoUserContent() {
+		creationDate = new Date();
+	}
 
-    public DaoUserContent(DaoActor Actor) {
-        super();
-        this.actor = Actor;
-        creationDate = new Date();
-    }
+	public DaoUserContent(DaoMember member) {
+		super();
+		this.member = member;
+		creationDate = new Date();
+	}
 
-    /**
-     * No final because it is depreciated for hibernate. but you should
-     * considered me as final
-     */
-    public DaoActor getAuthor() {
-        return actor;
-    }
+	/**
+	 * No final because it is depreciated for hibernate. but you should
+	 * considered me as final
+	 */
+	public DaoMember getAuthor() {
+		return member;
+	}
 
-    /**
-     * No final because it is depreciated for hibernate. but you should
-     * considered me as final
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
+	/**
+	 * No final because it is depreciated for hibernate. but you should
+	 * considered me as final
+	 */
+	public Date getCreationDate() {
+		return creationDate;
+	}
 
-    public void setAsGroup(DaoGroup asGroup) {
-        this.asGroup = asGroup;
-    }
+	public void setAsGroup(DaoGroup asGroup) {
+		this.asGroup = asGroup;
+	}
 
-    public DaoGroup getAsGroup() {
-        return asGroup;
-    }
+	public DaoGroup getAsGroup() {
+		return asGroup;
+	}
 
-    // ======================================================================
-    // For hibernate mapping
-    // ======================================================================
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
 
-    protected void setAuthor(DaoActor author) {
-        this.actor = author;
-    }
+	protected void setAuthor(DaoMember author) {
+		this.member = author;
+	}
 
-    protected void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
+	protected void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
 }

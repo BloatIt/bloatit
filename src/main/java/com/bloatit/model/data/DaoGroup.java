@@ -19,7 +19,7 @@ import org.hibernate.annotations.NamedQuery;
 import com.bloatit.model.data.util.SessionManger;
 
 // DaoGroup is SQL keyword
-@Entity(name = "bloatit_group")
+@Entity
 @NamedQuery(name = "getMembers", query = "select m from com.bloatit.model.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group")
 public class DaoGroup extends DaoActor {
 

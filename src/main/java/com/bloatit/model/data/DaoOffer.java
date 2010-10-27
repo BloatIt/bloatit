@@ -25,8 +25,8 @@ public class DaoOffer extends DaoKudosable {
         super();
     }
 
-    public DaoOffer(DaoActor Actor, DaoDemand Demand, DaoDescription text, Date dateExpire) {
-        super(Actor);
+    public DaoOffer(DaoMember member, DaoDemand Demand, DaoDescription text, Date dateExpire) {
+        super(member);
         this.demand = Demand;
         this.description = text;
         this.dateExpire = dateExpire;

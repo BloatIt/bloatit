@@ -11,8 +11,8 @@ public class DaoKudos extends DaoUserContent {
 
     public DaoKudos() {}
 
-    public DaoKudos(DaoActor Actor, int value) {
-        super(Actor);
+    public DaoKudos(DaoMember member, int value) {
+        super(member);
         this.value = value;
     }
 

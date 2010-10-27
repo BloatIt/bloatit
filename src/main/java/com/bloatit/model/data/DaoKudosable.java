@@ -26,8 +26,8 @@ public abstract class DaoKudosable extends DaoUserContent {
         popularity = 0;
     }
 
-    public DaoKudosable(DaoActor Actor) {
-        super(Actor);
+    public DaoKudosable(DaoMember member) {
+        super(member);
         popularity = 0;
         setState(State.PENDING);
     }
@@ -37,8 +37,8 @@ public abstract class DaoKudosable extends DaoUserContent {
      * 
      * @return the new popularity
      */
-    public int addKudos(DaoActor Actor, int value) {
-        kudos.add(new DaoKudos(Actor, value));
+    public int addKudos(DaoMember member, int value) {
+        kudos.add(new DaoKudos(member, value));
         return popularity += value;
     }
 

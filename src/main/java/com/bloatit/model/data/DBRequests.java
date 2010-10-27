@@ -13,6 +13,7 @@ public class DBRequests {
 
     public static <T> QueryCollection<T> getAll(Class<T> persistent) {
         ClassMetadata meta = SessionManger.getSessionFactory().getClassMetadata(persistent);
+        System.out.println("from " + meta.getEntityName());
         return new QueryCollection<T>(SessionManger.getSessionFactory().getCurrentSession().createQuery("from " + meta.getEntityName()));
     }
 

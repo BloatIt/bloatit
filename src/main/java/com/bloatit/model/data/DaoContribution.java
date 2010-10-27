@@ -31,9 +31,9 @@ public class DaoContribution extends DaoUserContent {
     public DaoContribution() {}
 
     // the demand is associated into the DaoDemand class by hibernate.
-    public DaoContribution(DaoActor Actor, BigDecimal amount) {
+    public DaoContribution(DaoMember member, BigDecimal amount) {
         // TODO make sure amount > 0
-        super(Actor);
+        super(member);
         this.amount = amount;
         this.setState(State.WAITING);
         getAuthor().getInternalAccount().block(amount);
