@@ -1,7 +1,6 @@
 package com.bloatit.model.data;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.hibernate.Query;
 
@@ -30,7 +29,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * @return a list of entity.
      */
     @SuppressWarnings("unchecked")
-    public List<T> getPage(int page){
+    public Iterable<T> getPage(int page){
         query.setFirstResult(page * pageSize);
         return query.list();
     }

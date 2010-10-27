@@ -19,19 +19,19 @@
 
 package com.bloatit.web.utils;
 
-import com.bloatit.model.Translatable;
-import com.bloatit.model.Translation;
-import com.bloatit.web.server.Language;
 import java.util.List;
+import java.util.Locale;
+
+import com.bloatit.model.Translation;
 
 /**
  * Helps manipulating translations
  */
 public class TranslationManipulator {
-    private final List<Language> preferredLanguages;
+    private final List<Locale> preferredLocales;
 
-    public TranslationManipulator( List<Language> preferredLanguages){
-        this.preferredLanguages = preferredLanguages;
+    public TranslationManipulator( List<Locale> preferredLocales){
+        this.preferredLocales = preferredLocales;
     }
     
     /**
@@ -39,7 +39,7 @@ public class TranslationManipulator {
      * @return the element in the good language or null if there is no match
      */
     public Translation getPreferedTranslation(Translatable toTranslate){
-        for(Language lang : this.preferredLanguages){
+        for(Locale lang : this.preferredLocales){
             if(toTranslate.containsLang(lang)){
                 return toTranslate.getTranslationForLang(lang);
             }

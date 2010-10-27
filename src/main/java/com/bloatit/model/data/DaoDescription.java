@@ -14,75 +14,85 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManger;
 
 @NamedQuery(name = "translation.getTextByLocal", query = "from DaoTranslation as t where t.locale = :locale")
 @Entity
 public class DaoDescription extends DaoIdentifiable {
 
-	private Locale defaultLocale;
+    private Locale defaultLocale;
 
-	@OneToMany(mappedBy = "description")
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	private Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
+    @OneToMany(mappedBy = "description")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    private Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
 
-	protected DaoDescription() {
-		super();
-	}
+    protected DaoDescription() {
+        super();
+    }
 
-	static public DaoDescription createAndPersist(DaoMember member, Locale locale, String title, String description) {
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
-		DaoDescription descr = new DaoDescription(member, locale, title, description);
-		try {
-			session.save(descr);
-		} catch (HibernateException e) {
-			System.out.println(e);
-			session.getTransaction().rollback();
-			session.beginTransaction();
-			throw e;
-		}
-		return descr;
-	}
+    static public DaoDescription createAndPersist(DaoMember member, Locale locale, String title, String description) {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        DaoDescription descr = new DaoDescription(member, locale, title, description);
+        try {
+            session.save(descr);
+        } catch (HibernateException e) {
+            System.out.println(e);
+            session.getTransaction().rollback();
+            session.beginTransaction();
+            throw e;
+        }
+        return descr;
+    }
 
-	public DaoDescription(DaoMember member, Locale locale, String title, String description) {
-		super();
-		setDefaultLocale(locale);
-		this.translations.add(new DaoTranslation(member, this, locale, title, description));
-	}
+    public DaoDescription(DaoMember member, Locale locale, String title, String description) {
+        super();
+        setDefaultLocale(locale);
+        this.translations.add(new DaoTranslation(member, this, locale, title, description));
+    }
 
-	public Set<DaoTranslation> getTranslations() {
-		return translations;
-	}
+    public PageIterable<DaoTranslation> getTranslationsFromQuery() {
+        Query q = SessionManger.getSessionFactory()
+                               .getCurrentSession()
+                               .createQuery("from com.bloatit.model.data.DaoTransaltion as t where t.description = :this");
+        q.setEntity("this", this);
+        return new QueryCollection<DaoTranslation>(q);
+    }
 
-	public void addTranslation(DaoTranslation translation) {
-		translations.add(translation);
-	}
+    public Set<DaoTranslation> getTranslations() {
+        return translations;
+    }
 
-	public DaoTranslation getTranslation(Locale locale) {
-		Query q = SessionManger.getSessionFactory().getCurrentSession()
-		        .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
-		q.setLocale("locale", locale);
-		q.setEntity("this", this);
-		return (DaoTranslation) q.uniqueResult();
-	}
+    public void addTranslation(DaoTranslation translation) {
+        translations.add(translation);
+    }
 
-	public DaoTranslation getDefaultTranslation() {
-		return (DaoTranslation) SessionManger.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal").uniqueResult();
-	}
+    public DaoTranslation getTranslation(Locale locale) {
+        Query q = SessionManger.getSessionFactory()
+                               .getCurrentSession()
+                               .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
+        q.setLocale("locale", locale);
+        q.setEntity("this", this);
+        return (DaoTranslation) q.uniqueResult();
+    }
 
-	public void setDefaultLocale(Locale defaultLocale) {
-		this.defaultLocale = defaultLocale;
-	}
+    public DaoTranslation getDefaultTranslation() {
+        return (DaoTranslation) SessionManger.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal").uniqueResult();
+    }
 
-	public Locale getDefaultLocale() {
-		return defaultLocale;
-	}
+    public void setDefaultLocale(Locale defaultLocale) {
+        this.defaultLocale = defaultLocale;
+    }
 
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    public Locale getDefaultLocale() {
+        return defaultLocale;
+    }
 
-	protected void setTranslations(Set<DaoTranslation> Translations) {
-		this.translations = Translations;
-	}
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
+
+    protected void setTranslations(Set<DaoTranslation> Translations) {
+        this.translations = Translations;
+    }
 }

@@ -24,6 +24,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Session {
@@ -31,11 +32,11 @@ public class Session {
     private boolean logged;
     private Deque<Action> actionList;
     private Deque<Notification> notificationList;
-    private Language language;
+    private Locale language;
     private Page lastStablePage;
     private AuthToken authToken;
 
-    private List<Language> preferredLanguages;
+    private List<Locale> preferredLocales;
     
 
     Session(String key) {
@@ -46,19 +47,19 @@ public class Session {
         this.notificationList = new ArrayDeque<Notification>();
 
         // TODO : Following lines are for testing purposes only
-        preferredLanguages = new ArrayList<Language>();
-        preferredLanguages.add(new Language()); // TODO : ONLY FOR TEST
-        preferredLanguages.add(new Language("fr")); // TODO : ONLY FOR TEST
+        preferredLocales = new ArrayList<Locale>();
+        preferredLocales.add(new Locale()); // TODO : ONLY FOR TEST
+        preferredLocales.add(new Locale("fr")); // TODO : ONLY FOR TEST
     }
     public String tr(String s){
         return this.language.tr(s);
     }
 
-    public Language getLanguage() {
+    public Locale getLocale() {
         return this.language;
     }
 
-    public void setLanguage(Language newLang){
+    public void setLocale(Locale newLang){
         this.language = newLang;
     }
 
@@ -114,7 +115,7 @@ public class Session {
         return notificationList;
     }
 
-    public List<Language> getPreferredLangs(){
-        return this.preferredLanguages;
+    public List<Locale> getPreferredLangs(){
+        return this.preferredLocales;
     }
 }

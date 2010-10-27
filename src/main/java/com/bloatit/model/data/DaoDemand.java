@@ -10,11 +10,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManger;
 
 /**
@@ -41,9 +43,9 @@ public class DaoDemand extends DaoKudosable {
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
     private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
-    
+
     @OneToMany
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
@@ -116,23 +118,38 @@ public class DaoDemand extends DaoKudosable {
         return description;
     }
 
-    // TODO create a query ?
+    public PageIterable<DaoOffer> getOffersFromQuery() {
+        Query q = SessionManger.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoOffer as f where f.demand = :this");
+        q.setEntity("this", this);
+        return new QueryCollection<DaoOffer>(q);
+    }
+
     public Set<DaoOffer> getOffers() {
         return offers;
     }
 
-    // TODO create a query ?
+    public PageIterable<DaoContribution> getContributionsFromQuery() {
+        Query q = SessionManger.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoContribution as f where f.demand = :this");
+        q.setEntity("this", this);
+        return new QueryCollection<DaoContribution>(q);
+    }
+
     public Set<DaoContribution> getContributions() {
         return contributions;
     }
-    
-    // TODO create a query ?
-    public Set<DaoComment> getComments() {
-    	return comments;
+
+    public PageIterable<DaoComment> getCommentsFromQuery() {
+        Query q = SessionManger.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoComment as f where f.demand = :this");
+        q.setEntity("this", this);
+        return new QueryCollection<DaoComment>(q);
     }
-    
-    public void addComment(DaoComment comment){
-    	comments.add(comment);
+
+    public Set<DaoComment> getComments() {
+        return comments;
+    }
+
+    public void addComment(DaoComment comment) {
+        comments.add(comment);
     }
 
     // ======================================================================
@@ -155,8 +172,8 @@ public class DaoDemand extends DaoKudosable {
         this.contributions = Contributions;
     }
 
-	public void setComments(Set<DaoComment> comments) {
-	    this.comments = comments;
+    public void setComments(Set<DaoComment> comments) {
+        this.comments = comments;
     }
 
 }

@@ -1,82 +1,73 @@
-/*
- * Copyright (C) 2010 BloatIt.
- *
- * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
- */
 package com.bloatit.model;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.Date;
 
+import com.bloatit.framework.lists.CommentList;
+import com.bloatit.framework.lists.ContributionList;
+import com.bloatit.framework.lists.OfferList;
+import com.bloatit.model.data.DaoDemand;
+import com.bloatit.model.data.DaoKudosable;
 
-public class Demand  extends  Unlockable implements Kudoable{
-    private int id;
-    private Member author;
-    private long karma;
-    private Translatable title;
-    private Translatable description;
-    private Translatable specification;
-    private final ArrayList<Translatable> drafts;
+public class Demand extends Kudosable {
+    private DaoDemand dao;
 
-    public Demand(int id, Translatable title, Translatable description, Translatable specification, ArrayList<Translatable> drafts, long karma, Member author) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.specification = specification;
-        this.drafts = new ArrayList<Translatable>();
-        this.karma = karma;
-        this.author = author;
+    public Demand(DaoDemand dao) {
+        super();
+        this.dao = dao;
     }
 
-    public Translatable getDescription() {
-        return this.description;
+    public DaoDemand getDao() {
+        return dao;
+    }
+    
+    public String getTitle(){
+        return getDescription().getDefaultTranslation().getTitle();
     }
 
-    public int getId() {
-        return this.id;
+    public void createSpecification(Member member, String content) {
+        dao.createSpecification(member.getDao(), content);
     }
 
-    public Translatable getSpecification() {
-        return this.specification;
+    public Offer addOffer(Member member, Description description, Date dateExpir) {
+        return new Offer(dao.addOffer(member.getDao(), description.getDao(), dateExpir));
     }
 
-    public Translatable getTitle() {
-        return this.title;
+    public void removeOffer(Offer offer) {
+        dao.removeOffer(offer.getDao());
+    }
+
+    public void addContribution(Member member, BigDecimal amount) throws Throwable {
+        dao.addContribution(member.getDao(), amount);
+    }
+
+    public Specification getSpecification() {
+        return new Specification(dao.getSpecification());
+    }
+
+    public Description getDescription() {
+        return new Description(dao.getDescription());
+    }
+
+    public OfferList getOffers() {
+        return new OfferList(dao.getOffersFromQuery());
+    }
+
+    public ContributionList getContributions() {
+        return new ContributionList(dao.getContributionsFromQuery());
+    }
+
+    public CommentList getComments() {
+        return new CommentList(dao.getCommentsFromQuery());
+    }
+
+    public void addComment(Comment comment) {
+        dao.addComment(comment.getDao());
     }
 
     @Override
-    public void kudo(Member kudoer){
-        this.karma += (long)(Math.log(kudoer.getKarma())/Math.log(2));
-        this.author.receiveKudo(kudoer);
-        kudoer.issueKudo();
+    protected DaoKudosable getDaoKudosable() {
+        return dao;
     }
 
-    @Override
-    public void report(Member reporter){
-        this.karma -= (long)(Math.log(reporter.getKarma())/Math.log(2));
-        this.author.receiveReport(reporter);
-        reporter.issueReport();
-    }
-
-    @Override
-    public long getReputation(){
-        return this.karma;
-    }
-
-    @Override
-    public Member getAuthor(){
-        return this.author;
-    }
 }
