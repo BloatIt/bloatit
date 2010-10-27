@@ -41,21 +41,38 @@ public class DescriptionTranslatableTest extends TestCase {
 		SessionManger.endWorkUnitAndFlush();
 	}
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        if (SessionManger.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            SessionManger.endWorkUnitAndFlush();
-        }
-        SessionManger.getSessionFactory().close();
-    }
-    public void testCreateDescritpion() {
-        SessionManger.beginWorkUnit();
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		if (SessionManger.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+			SessionManger.endWorkUnitAndFlush();
+		}
+		SessionManger.getSessionFactory().close();
+	}
 
-        DaoDescription Description = DaoDescription.createAndPersist(yo, new Locale("fr"), "title", "description");
+	public void testCreateDescritpion() {
+		SessionManger.beginWorkUnit();
 
-        SessionManger.endWorkUnitAndFlush();
+		DaoDescription description = DaoDescription.createAndPersist(yo, new Locale("fr"), "title", "description");
+		assertEquals(description, DBRequests.getAll(DaoDescription.class).iterator().next());
 
-    }
+		SessionManger.endWorkUnitAndFlush();
 
-	
+	}
+
+	public void testCreateDescritpionAndTranslation() {
+		SessionManger.beginWorkUnit();
+
+		DaoDescription description = DaoDescription.createAndPersist(yo, new Locale("en"), "title", "description");
+		if (description.getTranslation(new Locale("fr")) == null) {
+			description.addTranslation(new DaoTranslation(fred, description, new Locale("fr"), "titre", "description"));
+		} else {
+			fail("translation already exists");
+		}
+
+		assertEquals("titre", description.getTranslation(new Locale("fr")).getTitle());
+
+		SessionManger.endWorkUnitAndFlush();
+
+	}
+
 }

@@ -8,7 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.model.data.util.SessionManger;
@@ -17,56 +20,69 @@ import com.bloatit.model.data.util.SessionManger;
 @Entity
 public class DaoDescription extends DaoIdentifiable {
 
-    private Locale defaultLocale;
+	private Locale defaultLocale;
 
-    @OneToMany(mappedBy = "baseText")
-    private Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
+	@OneToMany(mappedBy = "description")
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	private Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
 
-    protected DaoDescription() {
-        super();
-    }
-    
-    static public DaoDescription createAndPersist(DaoMember member, Locale locale, String title, String description){
-        Session session = SessionManger.getSessionFactory().getCurrentSession();
-        DaoDescription descr = new DaoDescription(member, locale, title, description);
-        try {
-            session.save(descr);
-        } catch (HibernateException e) {
-            System.out.println(e);
-            session.getTransaction().rollback();
-            session.beginTransaction();
-            throw e;
-        }
-        return descr;
-    }
+	protected DaoDescription() {
+		super();
+	}
 
-    public DaoDescription(DaoMember member, Locale locale, String title, String description) {
-        super();
-        setDefaultLocale(locale);
-        this.translations.add(new DaoTranslation(member, locale, title, description));
-    }
+	static public DaoDescription createAndPersist(DaoMember member, Locale locale, String title, String description) {
+		Session session = SessionManger.getSessionFactory().getCurrentSession();
+		DaoDescription descr = new DaoDescription(member, locale, title, description);
+		try {
+			session.save(descr);
+		} catch (HibernateException e) {
+			System.out.println(e);
+			session.getTransaction().rollback();
+			session.beginTransaction();
+			throw e;
+		}
+		return descr;
+	}
 
-    public Set<DaoTranslation> getTranslations() {
-        return translations;
-    }
+	public DaoDescription(DaoMember member, Locale locale, String title, String description) {
+		super();
+		setDefaultLocale(locale);
+		this.translations.add(new DaoTranslation(member, this, locale, title, description));
+	}
 
-    public DaoTranslation getDefaultTranslation() {
-        return (DaoTranslation) SessionManger.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal").uniqueResult();
-    }
+	public Set<DaoTranslation> getTranslations() {
+		return translations;
+	}
 
-    public void setDefaultLocale(Locale defaultLocale) {
-        this.defaultLocale = defaultLocale;
-    }
+	public void addTranslation(DaoTranslation translation) {
+		translations.add(translation);
+	}
 
-    public Locale getDefaultLocale() {
-        return defaultLocale;
-    }
+	public DaoTranslation getTranslation(Locale locale) {
+		Query q = SessionManger.getSessionFactory().getCurrentSession()
+		        .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
+		q.setLocale("locale", locale);
+		q.setEntity("this", this);
+		return (DaoTranslation) q.uniqueResult();
+	}
 
-    // ======================================================================
-    // For hibernate mapping
-    // ======================================================================
+	public DaoTranslation getDefaultTranslation() {
+		return (DaoTranslation) SessionManger.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal").uniqueResult();
+	}
 
-    protected void setTranslations(Set<DaoTranslation> Translations) {
-        this.translations = Translations;
-    }
+	public void setDefaultLocale(Locale defaultLocale) {
+		this.defaultLocale = defaultLocale;
+	}
+
+	public Locale getDefaultLocale() {
+		return defaultLocale;
+	}
+
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
+
+	protected void setTranslations(Set<DaoTranslation> Translations) {
+		this.translations = Translations;
+	}
 }
