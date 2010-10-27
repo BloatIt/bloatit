@@ -21,6 +21,7 @@ package com.bloatit.framework;
 import com.bloatit.model.Member;
 import com.bloatit.model.exceptions.ElementNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MemberManager {
 
@@ -48,6 +49,10 @@ public class MemberManager {
             }
         }
         return false;
+    }
+
+    public static List<Member> getMemberList() {
+        return members;
     }
 
 }
