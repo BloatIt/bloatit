@@ -19,13 +19,18 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.MemberManager;
+import com.bloatit.model.Member;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -43,7 +48,19 @@ public class MembersListPage extends Page {
     protected HtmlComponent generateContent() {
 
         HtmlTitle pageTitle = new HtmlTitle("Members list", "");
+
+        List<Member> memberList = MemberManager.getMemberList();
+
+        HtmlList htmlMemberList = new HtmlList();
+        pageTitle.add(htmlMemberList);
+
+        for(Member member:memberList) {
+            
+            HtmlListItem item = new HtmlListItem(member.getFullName()+ "<span class=\"karma\">"+ HtmlTools.compressKarma(member.getKarma()) + "</span>");
+            htmlMemberList.addItem(item);
+        }
         
+
         return pageTitle;
 
     }
