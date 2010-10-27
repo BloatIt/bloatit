@@ -25,6 +25,7 @@ import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MyAccountPage;
+import com.bloatit.web.pages.SpecialsPage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -124,6 +125,7 @@ public abstract class Page extends Request {
         this.htmlResult.write("</ul>");
         this.htmlResult.write("<ul>");
         this.htmlResult.indent();
+        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Specials page"), new SpecialsPage(this.session)) + "</li>");
         this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Contact"), new IndexPage(this.session)) + "</li>");
         this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Documentation"), new IndexPage(this.session)) + "</li>");
         this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("About BloatIt"), new IndexPage(this.session)) + "</li>");

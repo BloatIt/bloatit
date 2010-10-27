@@ -25,8 +25,10 @@ import com.bloatit.web.pages.DemandPage;
 import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
+import com.bloatit.web.pages.MembersListPage;
 import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.PageNotFound;
+import com.bloatit.web.pages.SpecialsPage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,8 @@ public class DispatchServer {
                 put("demands", DemandsPage.class);
                 put("demand", DemandPage.class);
                 put("my_account", MyAccountPage.class);
+                put("specials", SpecialsPage.class);
+                put("members_list", MembersListPage.class);
             }
         };
 
