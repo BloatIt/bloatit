@@ -23,8 +23,9 @@ public class DaoInternalAccount extends DaoAccount {
         super();
         // TODO Auto-generated constructor stub
     }
-
-    public DaoInternalAccount(DaoActor Actor) {
+    
+    // Used in Member constructor.
+    protected DaoInternalAccount(DaoActor Actor) {
         super(Actor);
         this.blocked = new BigDecimal("0");
     }

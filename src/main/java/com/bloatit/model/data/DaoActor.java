@@ -17,11 +17,12 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.model.data.util.SessionManger;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-public abstract class DaoActor{
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class DaoActor {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -42,10 +43,9 @@ public abstract class DaoActor{
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	private DaoExternalAccount externalAccount;
 
-	
 	protected DaoActor() {
-	    super();
-    }
+		super();
+	}
 
 	protected DaoActor(String login, String email) {
 		super();
@@ -92,8 +92,11 @@ public abstract class DaoActor{
 		return externalAccount;
 	}
 
-	public void setExternalAccount(DaoExternalAccount ExternalAccount) {
-		this.externalAccount = ExternalAccount;
+	public void setExternalAccount(DaoExternalAccount externalAccount) {
+		if (externalAccount.getActor() != this) {
+			throw new FatalErrorException("Add an external account to the wrong user.", null);
+		}
+		this.externalAccount = externalAccount;
 	}
 
 	public Integer getId() {

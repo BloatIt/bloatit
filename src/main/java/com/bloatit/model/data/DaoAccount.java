@@ -18,92 +18,91 @@ import com.bloatit.model.data.util.SessionManger;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DaoAccount {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @OneToOne
-    private DaoActor actor;
-    private Date creationDate;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	@OneToOne
+	private DaoActor actor;
+	private Date creationDate;
 
-    @Basic(optional = false)
-    private Date lastModificationDate;
+	@Basic(optional = false)
+	private Date lastModificationDate;
 
-    @Basic(optional = false)
-    private BigDecimal amount;
+	@Basic(optional = false)
+	private BigDecimal amount;
 
-    protected DaoAccount() {
-        super();
-    }
+	protected DaoAccount() {
+		super();
+	}
 
-    public DaoAccount(DaoActor Actor) {
-        this.actor = Actor;
-        this.creationDate = new Date();
-        this.lastModificationDate = new Date();
-        this.amount = new BigDecimal("0");
-    }
+	public DaoAccount(DaoActor Actor) {
+		this.actor = Actor;
+		this.creationDate = new Date();
+		this.lastModificationDate = new Date();
+		this.amount = new BigDecimal("0");
+	}
 
-    public Date getLastModificationDate() {
-        return lastModificationDate;
-    }
+	public Date getLastModificationDate() {
+		return lastModificationDate;
+	}
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-    protected void addToAmountValue(BigDecimal blocked) {
-        this.lastModificationDate = new Date();
-        this.amount = this.amount.add(blocked);
-    }
+	protected void addToAmountValue(BigDecimal blocked) {
+		this.lastModificationDate = new Date();
+		this.amount = this.amount.add(blocked);
+	}
 
-    protected void substractToAmountValue(BigDecimal blocked) {
-        this.lastModificationDate = new Date();
-        this.amount = this.amount.subtract(blocked);
-    }
+	protected void substractToAmountValue(BigDecimal blocked) {
+		this.lastModificationDate = new Date();
+		this.amount = this.amount.subtract(blocked);
+	}
 
-    public QueryCollection<DaoTransaction> getTransactions() {
-        return new QueryCollection<DaoTransaction>(SessionManger.getSessionFactory()
-                                                             .getCurrentSession()
-                                                             .createQuery("from DaoTransaction as t where t.from = this or t.to = this"));
-    }
+	public QueryCollection<DaoTransaction> getTransactions() {
+		return new QueryCollection<DaoTransaction>(SessionManger.getSessionFactory().getCurrentSession()
+		        .createQuery("from DaoTransaction as t where t.from = this or t.to = this"));
+	}
 
-    protected void resetModificationDate() {
-        lastModificationDate = new Date();
-    }
+	protected void resetModificationDate() {
+		lastModificationDate = new Date();
+	}
 
-    // ======================================================================
-    // For hibernate mapping
-    // ======================================================================
+	public Integer getId() {
+		return id;
+	}
 
-    protected void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+	public DaoActor getActor() {
+		return actor;
+	}
 
-    protected void setLastModificationDate(Date lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
-    }
+	public Date getCreationDate() {
+		return creationDate;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	// ======================================================================
+	// For hibernate mapping
+	// ======================================================================
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	protected void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-    public DaoActor getActor() {
-        return actor;
-    }
+	protected void setLastModificationDate(Date lastModificationDate) {
+		this.lastModificationDate = lastModificationDate;
+	}
 
-    public void setActor(DaoActor Actor) {
-        this.actor = Actor;
-    }
+	protected void setId(Integer id) {
+		this.id = id;
+	}
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
+	protected void setActor(DaoActor Actor) {
+		this.actor = Actor;
+	}
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
+	protected void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
 }
