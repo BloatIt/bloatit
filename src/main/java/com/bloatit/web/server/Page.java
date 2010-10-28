@@ -20,11 +20,16 @@ package com.bloatit.web.server;
 
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
+import com.bloatit.web.pages.MembersListPage;
 import com.bloatit.web.pages.MyAccountPage;
+import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
 import java.util.HashMap;
 import java.util.Map;
@@ -113,27 +118,29 @@ public abstract class Page extends Request {
     }
 
     private void generateMainMenu() {
-        this.htmlResult.write("<div id='main_menu'>");
-        this.htmlResult.indent();
-        this.htmlResult.write("<ul>");
-        this.htmlResult.indent();
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Demands"), new DemandsPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Projects"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Groups"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Members"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.unindent();
-        this.htmlResult.write("</ul>");
-        this.htmlResult.write("<ul>");
-        this.htmlResult.indent();
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Specials page"), new SpecialsPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Contact"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Documentation"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("About BloatIt"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.write("<li>" + HtmlTools.generateLink(this.session, this.session.tr("Press"), new IndexPage(this.session)) + "</li>");
-        this.htmlResult.unindent();
-        this.htmlResult.write("</ul>");
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
+
+        Session s = this.session;
+        HtmlBlock mainMenu = new HtmlBlock("main_menu");
+
+        HtmlList primaryList = new HtmlList();
+
+        primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Demands"), new DemandsPage(s))));
+        primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Projects"), new IndexPage(s))));
+        primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Groups"), new IndexPage(s))));
+        primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Members"), new MembersListPage(s))));
+
+        HtmlList secondaryList = new HtmlList();
+
+        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Specials page"), new SpecialsPage(s))));
+        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Contact"), new PageNotFound(s))));
+        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Documentation"), new PageNotFound(s))));
+        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("About BloatIt"), new PageNotFound(s))));
+        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Press"), new PageNotFound(s))));
+
+        mainMenu.add(primaryList);
+        mainMenu.add(secondaryList);
+
+        mainMenu.generate(htmlResult);
     }
 
     private void generateTitle() {
