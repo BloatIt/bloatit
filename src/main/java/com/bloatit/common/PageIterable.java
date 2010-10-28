@@ -17,4 +17,5 @@ public interface PageIterable<T> extends Iterable<T> {
     public int getPageSize();
     
     // TODO nombre d'element et nombre de page.
+    
 }
