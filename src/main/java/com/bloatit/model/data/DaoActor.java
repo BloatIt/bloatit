@@ -18,7 +18,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bloatit.common.FatalErrorException;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -61,7 +61,7 @@ public abstract class DaoActor {
 	 * minimize the number of HQL request).
 	 */
 	public static boolean exist(String login) {
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
+		Session session = SessionManager.getSessionFactory().getCurrentSession();
 		// TODO use the count() in HQL
 		Query q = session.createQuery("from com.bloatit.model.data.DaoActor as m where login = :login");
 		q.setString("login", login);

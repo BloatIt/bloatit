@@ -18,7 +18,7 @@ import org.hibernate.annotations.OrderBy;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 /**
  * 
@@ -56,7 +56,7 @@ public class DaoDemand extends DaoKudosable {
      * @param description
      */
     public static DaoDemand createAndPersist(DaoMember member, DaoDescription Description) {
-        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
         DaoDemand Demand = new DaoDemand(member, Description);
         try {
             session.save(Demand);
@@ -80,7 +80,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public void delete() {
-        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
         session.delete(this);
     }
 
@@ -119,7 +119,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoOffer> getOffersFromQuery() {
-        Query q = SessionManger.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoOffer as f where f.demand = :this");
+        Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoOffer as f where f.demand = :this");
         q.setEntity("this", this);
         return new QueryCollection<DaoOffer>(q);
     }
@@ -129,7 +129,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoContribution> getContributionsFromQuery() {
-        Query q = SessionManger.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoContribution as f where f.demand = :this");
+        Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoContribution as f where f.demand = :this");
         q.setEntity("this", this);
         return new QueryCollection<DaoContribution>(q);
     }
@@ -139,7 +139,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        Query q = SessionManger.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoComment as f where f.demand = :this");
+        Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoComment as f where f.demand = :this");
         q.setEntity("this", this);
         return new QueryCollection<DaoComment>(q);
     }

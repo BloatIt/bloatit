@@ -2,7 +2,7 @@ package com.bloatit.framework;
 
 import com.bloatit.framework.managers.GroupManager;
 import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 import junit.framework.TestCase;
 
@@ -16,25 +16,25 @@ public class MemberTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        SessionManger.reCreateSessionFactory();
+        SessionManager.reCreateSessionFactory();
         db = new TestDB();
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         yoAuthToken = new AuthToken(MemberManager.getMemberByLogin("Yo"), "plop");
         tomAuthToken = new AuthToken(MemberManager.getMemberByLogin("Thomas"), "plip");
         fredAuthToken = new AuthToken(MemberManager.getMemberByLogin("Fred"), "plap");
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        if (SessionManger.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            SessionManger.endWorkUnitAndFlush();
+        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+            SessionManager.endWorkUnitAndFlush();
         }
-        SessionManger.getSessionFactory().close();
+        SessionManager.getSessionFactory().close();
     }
 
     public void testAddToGroup() {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         Member yo = MemberManager.getMemberByLogin("Yo");
         
         yo.unLock(yoAuthToken);
@@ -50,7 +50,7 @@ public class MemberTest extends TestCase {
         }
         
         
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testRemoveFromGroup() {

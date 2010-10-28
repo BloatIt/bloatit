@@ -13,7 +13,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -62,7 +62,7 @@ public abstract class DaoAccount {
 	}
 
 	public PageIterable<DaoTransaction> getTransactions() {
-		return new QueryCollection<DaoTransaction>(SessionManger.getSessionFactory().getCurrentSession()
+		return new QueryCollection<DaoTransaction>(SessionManager.getSessionFactory().getCurrentSession()
 		        .createQuery("from DaoTransaction as t where t.from = this or t.to = this"));
 	}
 

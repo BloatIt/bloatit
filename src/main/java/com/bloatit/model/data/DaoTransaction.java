@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 @Entity
@@ -38,7 +38,7 @@ public class DaoTransaction extends DaoIdentifiable {
      * @throws NotEnoughMoneyException 
      */
     public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
-        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
         DaoTransaction Transaction = new DaoTransaction(from, to, amount);
         try {
             session.save(Transaction);

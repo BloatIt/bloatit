@@ -81,10 +81,16 @@ public class DispatchServer {
     }
 
     public String process() {
+        com.bloatit.model.data.util.SessionManager.beginWorkUnit();
+
         HtmlResult htmlResult = new HtmlResult(session);
         this.request.doProcess(htmlResult);
 
-        return htmlResult.generate();
+        String result = htmlResult.generate();
+
+        com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
+
+        return result;
     }
 
     /**

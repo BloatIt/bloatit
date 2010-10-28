@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 /**
  * This class is for Hibernate only for now.
@@ -29,7 +29,7 @@ public class DaoGroupMembership extends DaoIdentifiable {
     }
 
     public static DaoGroupMembership get(DaoGroup Group, DaoMember Member) {
-        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
         Query q = session.createQuery("from com.bloatit.model.data.DaoGroupMembership as gm where gm.group = :group and gm.member = :member");
         q.setEntity("group", Group);
         q.setEntity("member", Member);

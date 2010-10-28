@@ -10,7 +10,7 @@ import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoGroup;
 import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoDescription;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 /**
  * I assume the GroupMemberTest is run without error.
@@ -23,54 +23,54 @@ public class DemandTest extends TestCase {
     
     protected void setUp() throws Exception {
         super.setUp();
-        SessionManger.reCreateSessionFactory();
-        SessionManger.beginWorkUnit();
+        SessionManager.reCreateSessionFactory();
+        SessionManager.beginWorkUnit();
         {
             tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
             tom.setFirstname("Thomas");
             tom.setLastname("Guyard");
-            SessionManger.flush();
+            SessionManager.flush();
         }
         {
             fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
             fred.setFirstname("Frédéric");
             fred.setLastname("Bertolus");
-            SessionManger.flush();
+            SessionManager.flush();
         }
         {
             yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
             yo.setFirstname("Yoann");
             yo.setLastname("Plénet");
-            SessionManger.flush();
+            SessionManager.flush();
 
             DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
             DaoGroup.createAndPersiste("myGroup", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
         }
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        if (SessionManger.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            SessionManger.endWorkUnitAndFlush();
+        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+            SessionManager.endWorkUnitAndFlush();
         }
-        SessionManger.getSessionFactory().close();
+        SessionManager.getSessionFactory().close();
     }
 
     public void testCreateDemand() {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
         assertEquals(Demand, yo.getDemands().iterator().next());
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
 
     }
 
     public void testAddSpecification() {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
@@ -78,11 +78,11 @@ public class DemandTest extends TestCase {
 
         assertNotNull(Demand.getSpecification());
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testRetrieveDemand() {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
@@ -92,37 +92,37 @@ public class DemandTest extends TestCase {
 
         assertEquals(yo, Demand.getAuthor());
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testDeleteDemand() {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
-        SessionManger.flush();
+        SessionManager.flush();
 
         Demand.delete();
 
         assertFalse(DBRequests.getAll(DaoDemand.class).iterator().hasNext());
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
 
     }
 
     public void testAddContribution() throws Throwable {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
-        SessionManger.flush();
+        SessionManager.flush();
 
         Demand.addContribution(fred, new BigDecimal("25.00"));
         Demand.addContribution(yo, new BigDecimal("18.00"));
 
-        SessionManger.flush();
+        SessionManager.flush();
 
         assertEquals(2, Demand.getContributions().size());
 
@@ -131,29 +131,29 @@ public class DemandTest extends TestCase {
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("18")));
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("-18")));
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testAddOffer() throws Throwable {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
-        SessionManger.flush();
+        SessionManager.flush();
 
         Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
 
-        SessionManger.flush();
+        SessionManager.flush();
 
         assertEquals(1, Demand.getOffers().size());
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
 
     }
 
     public void testAcceptContributions() throws Throwable {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         
         fred.getInternalAccount().setAmount(new BigDecimal(50));
         yo.getInternalAccount().setAmount(new BigDecimal(50));
@@ -162,12 +162,12 @@ public class DemandTest extends TestCase {
         Demand.createSpecification(tom, "This is the spécification");
 
         DaoOffer Offer = Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
-        SessionManger.flush();
+        SessionManager.flush();
 
         Demand.addContribution(fred, new BigDecimal("25.00"));
         Demand.addContribution(yo, new BigDecimal("18.00"));
 
-        SessionManger.flush();
+        SessionManager.flush();
 
         for (DaoContribution Contribution : Demand.getContributions()) {
             Contribution.accept(Offer);
@@ -178,23 +178,23 @@ public class DemandTest extends TestCase {
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("32")));
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
 
     }
 
     public void testRejectContribution() throws Throwable {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
         Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
-        SessionManger.flush();
+        SessionManager.flush();
 
         Demand.addContribution(fred, new BigDecimal("25.00"));
         Demand.addContribution(yo, new BigDecimal("18.00"));
 
-        SessionManger.flush();
+        SessionManager.flush();
 
         for (DaoContribution Contribution : Demand.getContributions()) {
             Contribution.cancel();
@@ -205,7 +205,7 @@ public class DemandTest extends TestCase {
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("0")));
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
 
     }
 

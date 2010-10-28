@@ -15,7 +15,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 @NamedQuery(name = "translation.getTextByLocal", query = "from DaoTranslation as t where t.locale = :locale")
 @Entity
@@ -32,7 +32,7 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     static public DaoDescription createAndPersist(DaoMember member, Locale locale, String title, String description) {
-        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
         DaoDescription descr = new DaoDescription(member, locale, title, description);
         try {
             session.save(descr);
@@ -52,7 +52,7 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     public PageIterable<DaoTranslation> getTranslationsFromQuery() {
-        Query q = SessionManger.getSessionFactory()
+        Query q = SessionManager.getSessionFactory()
                                .getCurrentSession()
                                .createQuery("from com.bloatit.model.data.DaoTransaltion as t where t.description = :this");
         q.setEntity("this", this);
@@ -68,7 +68,7 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     public DaoTranslation getTranslation(Locale locale) {
-        Query q = SessionManger.getSessionFactory()
+        Query q = SessionManager.getSessionFactory()
                                .getCurrentSession()
                                .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
         q.setLocale("locale", locale);
@@ -77,7 +77,7 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     public DaoTranslation getDefaultTranslation() {
-        return (DaoTranslation) SessionManger.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal").uniqueResult();
+        return (DaoTranslation) SessionManager.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal").uniqueResult();
     }
 
     public void setDefaultLocale(Locale defaultLocale) {

@@ -9,7 +9,7 @@ import javax.persistence.InheritanceType;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -29,7 +29,7 @@ public class DaoExternalAccount extends DaoAccount {
 	}
 
 	public static DaoExternalAccount createAndPersist(DaoActor Actor, AccountType type, String bankCode) {
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
+		Session session = SessionManager.getSessionFactory().getCurrentSession();
 		DaoExternalAccount account = new DaoExternalAccount(Actor, type, bankCode);
 		try {
 			session.save(account);
