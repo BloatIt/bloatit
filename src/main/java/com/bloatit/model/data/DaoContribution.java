@@ -30,6 +30,8 @@ public class DaoContribution extends DaoUserContent {
 
     @OneToOne(optional = true)
     private DaoTransaction transaction;
+    
+    // TODO add the possibility to add some text (144 c for auto tweet ?)
 
     public DaoContribution() {}
 

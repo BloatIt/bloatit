@@ -28,6 +28,9 @@ public class Unlockable {
     public void unLock(AuthToken token) {
         this.token = token;
     }
+    public void lock() {
+        this.token = null;
+    }
 
     protected AuthToken getToken() {
         return token;
@@ -41,10 +44,10 @@ public class Unlockable {
         if (token == null) {
             return Role.OTHER;
         }
-        if (token.getMember().getUnprotectedLogin() == "admin") {
+        if (token.getMember().getUnprotectedLogin().equals("admin")) {
             return Role.ADMIN;
         }
-        if (token.getMember().getUnprotectedLogin() == login) {
+        if (token.getMember().getUnprotectedLogin().equals(login)) {
             return Role.OWNER;
         }
         return Role.OTHER;
@@ -58,10 +61,10 @@ public class Unlockable {
         if (token == null) {
             return Role.OTHER;
         }
-        if (token.getMember().getUnprotectedLogin() == "admin") {
+        if (token.getMember().getUnprotectedLogin().equals("admin")) {
             return Role.ADMIN;
         }
-        if (token.getMember().equals(member)) {
+        if (token.getMember().getUnprotectedLogin().equals(member.getUnprotectedLogin())) {
             return Role.OWNER;
         }
         if (group != null && token.getMember().isInGroupUnprotected(group)) {
