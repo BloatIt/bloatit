@@ -26,12 +26,13 @@ import java.util.Map;
 import java.util.Set;
 
 import com.bloatit.framework.Translation;
+import com.bloatit.web.server.Language;
 
 /**
  * Abstract class that describes components that can have various translations
  */
 public class Translatable {
-    private Map<Locale, Translation> translations;
+    private Map<Language, Translation> translations;
 
 
     /**
@@ -40,8 +41,8 @@ public class Translatable {
      * @param defaultLocale
      */
     public Translatable(Translation entry){
-        this.translations = new HashMap<Locale, Translation>();
-        this.translations.put(entry.getLocale(), entry);
+        this.translations = new HashMap<Language, Translation>();
+        this.translations.put(new Language(entry.getLocale()), entry);
     }
 
     /**
@@ -49,9 +50,9 @@ public class Translatable {
      * @param translationList
      */
     public Translatable(List<Translation> translationList){
-        this.translations = new HashMap<Locale, Translation>();
+        this.translations = new HashMap<Language, Translation>();
         for(Translation t : translationList ){
-            this.translations.put(t.getLocale(), t);
+            this.translations.put(new Language(t.getLocale()), t);
         }
     }
 
@@ -60,7 +61,7 @@ public class Translatable {
      * @param translation
      */
     public void addTranslation(Translation translation){
-        this.translations.put(translation.getLocale(), translation);
+        this.translations.put(new Language(translation.getLocale()), translation);
     }
 
     /**
@@ -68,7 +69,7 @@ public class Translatable {
      * @param lang the language for which the translation is desired
      * @return the translation matching lang.
      */
-    public Translation getTranslationForLang(Locale lang){
+    public Translation getTranslationForLang(Language lang){
         if(!this.containsLang(lang)){
             return null;
         }
@@ -80,14 +81,14 @@ public class Translatable {
      * @param lang the language
      * @return <i>true</i> if it has been translated to lang <i>false</i> otherwise
      */
-    public boolean containsLang(Locale lang){
+    public boolean containsLang(Language lang){
         return translations.containsKey(lang);
     }
 
     /**
      * @return the list of available languages for the translation
      */
-    public Set<Locale> getAvailableLangs(){
+    public Set<Language> getAvailableLangs(){
         return this.translations.keySet();
     }
 
