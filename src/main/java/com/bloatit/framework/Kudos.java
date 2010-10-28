@@ -1,4 +1,4 @@
-package com.bloatit.model;
+package com.bloatit.framework;
 
 import com.bloatit.model.data.DaoKudos;
 import com.bloatit.model.data.DaoUserContent;

@@ -17,9 +17,8 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.model;
+package com.bloatit.framework;
 
-import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.right.RightManager.Role;
 
 public class Unlockable {

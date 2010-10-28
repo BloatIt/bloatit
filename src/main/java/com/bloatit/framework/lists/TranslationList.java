@@ -3,7 +3,7 @@ package com.bloatit.framework.lists;
 import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.Translation;
+import com.bloatit.framework.Translation;
 import com.bloatit.model.data.DaoTranslation;
 
 public class TranslationList extends ListBinder<Translation, DaoTranslation> {

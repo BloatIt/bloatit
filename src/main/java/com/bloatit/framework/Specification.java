@@ -1,4 +1,4 @@
-package com.bloatit.model;
+package com.bloatit.framework;
 
 import com.bloatit.framework.right.DemandRight;
 import com.bloatit.framework.right.RightManager.Action;

@@ -25,7 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import com.bloatit.model.Translation;
+import com.bloatit.framework.Translation;
 
 /**
  * Abstract class that describes components that can have various translations

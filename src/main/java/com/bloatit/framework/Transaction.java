@@ -1,4 +1,4 @@
-package com.bloatit.model;
+package com.bloatit.framework;
 
 import java.math.BigDecimal;
 import java.util.Date;

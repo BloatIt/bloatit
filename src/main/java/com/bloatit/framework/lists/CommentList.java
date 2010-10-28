@@ -3,7 +3,7 @@ package com.bloatit.framework.lists;
 import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.Comment;
+import com.bloatit.framework.Comment;
 import com.bloatit.model.data.DaoComment;
 
 public class CommentList extends ListBinder<Comment, DaoComment> {

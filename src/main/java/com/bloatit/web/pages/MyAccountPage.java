@@ -19,7 +19,7 @@
 
 package com.bloatit.web.pages;
 
-import com.bloatit.model.Member;
+import com.bloatit.framework.Member;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;

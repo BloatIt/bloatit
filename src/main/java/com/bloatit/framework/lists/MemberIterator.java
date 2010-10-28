@@ -2,7 +2,7 @@ package com.bloatit.framework.lists;
 
 import java.util.Iterator;
 
-import com.bloatit.model.Member;
+import com.bloatit.framework.Member;
 import com.bloatit.model.data.DaoMember;
 
 public class MemberIterator extends com.bloatit.framework.lists.IteratorBinder<Member, DaoMember> {

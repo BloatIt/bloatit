@@ -3,7 +3,7 @@ package com.bloatit.framework.lists;
 import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.Demand;
+import com.bloatit.framework.Demand;
 import com.bloatit.model.data.DaoDemand;
 
 public class DemandList extends ListBinder<Demand, DaoDemand> {

@@ -15,7 +15,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.Group;
+import com.bloatit.framework.Group;
 import com.bloatit.model.data.util.SessionManger;
 
 // member is a SQL keyword (in some specific implementations)

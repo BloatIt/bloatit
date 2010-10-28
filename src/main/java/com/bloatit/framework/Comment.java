@@ -1,4 +1,4 @@
-package com.bloatit.model;
+package com.bloatit.framework;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.CommentList;

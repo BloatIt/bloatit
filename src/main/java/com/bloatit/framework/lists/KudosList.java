@@ -3,7 +3,7 @@ package com.bloatit.framework.lists;
 import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.Kudos;
+import com.bloatit.framework.Kudos;
 import com.bloatit.model.data.DaoKudos;
 
 public class KudosList extends ListBinder<Kudos, DaoKudos> {

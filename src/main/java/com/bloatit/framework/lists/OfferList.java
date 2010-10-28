@@ -3,7 +3,7 @@ package com.bloatit.framework.lists;
 import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.Offer;
+import com.bloatit.framework.Offer;
 import com.bloatit.model.data.DaoOffer;
 
 public class OfferList extends ListBinder<Offer, DaoOffer> {

@@ -18,7 +18,7 @@
  */
 package com.bloatit.framework.managers;
 
-import com.bloatit.model.Member;
+import com.bloatit.framework.Member;
 import com.bloatit.model.exceptions.ElementNotFoundException;
 
 public class MemberManager {

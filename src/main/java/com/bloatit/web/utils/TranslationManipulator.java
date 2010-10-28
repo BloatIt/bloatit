@@ -22,7 +22,7 @@ package com.bloatit.web.utils;
 import java.util.List;
 import java.util.Locale;
 
-import com.bloatit.model.Translation;
+import com.bloatit.framework.Translation;
 
 /**
  * Helps manipulating translations

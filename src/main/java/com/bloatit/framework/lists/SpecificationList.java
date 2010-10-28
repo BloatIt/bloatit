@@ -3,7 +3,7 @@ package com.bloatit.framework.lists;
 import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.Specification;
+import com.bloatit.framework.Specification;
 import com.bloatit.model.data.DaoSpecification;
 
 public class SpecificationList extends ListBinder<Specification, DaoSpecification> {

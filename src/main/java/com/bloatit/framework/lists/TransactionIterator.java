@@ -2,7 +2,7 @@ package com.bloatit.framework.lists;
 
 import java.util.Iterator;
 
-import com.bloatit.model.Transaction;
+import com.bloatit.framework.Transaction;
 import com.bloatit.model.data.DaoTransaction;
 
 public class TransactionIterator extends com.bloatit.framework.lists.IteratorBinder<Transaction, DaoTransaction> {

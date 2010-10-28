@@ -18,8 +18,8 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.model.Demand;
 import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;

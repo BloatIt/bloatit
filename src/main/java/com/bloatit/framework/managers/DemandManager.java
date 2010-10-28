@@ -20,7 +20,7 @@ package com.bloatit.framework.managers;
 
 import java.util.ArrayList;
 
-import com.bloatit.model.Demand;
+import com.bloatit.framework.Demand;
 import com.bloatit.model.exceptions.ElementNotFoundException;
 
 public class DemandManager {

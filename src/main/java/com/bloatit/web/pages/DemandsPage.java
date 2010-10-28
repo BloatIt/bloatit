@@ -19,9 +19,9 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.Demand;
+import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.model.Demand;
-import com.bloatit.model.Translation;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;

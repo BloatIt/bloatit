@@ -2,7 +2,7 @@ package com.bloatit.framework.lists;
 
 import java.util.Iterator;
 
-import com.bloatit.model.Specification;
+import com.bloatit.framework.Specification;
 import com.bloatit.model.data.DaoSpecification;
 
 public class SpecificationIterator extends com.bloatit.framework.lists.IteratorBinder<Specification, DaoSpecification> {
