@@ -28,29 +28,18 @@ import com.bloatit.framework.Member;
 public class LoginManager {
 
     private static final HashMap<String, AuthToken> authTokenList = new HashMap<String, AuthToken>();
-    private static final HashMap<String, String> accounts = new HashMap<String, String>();
-
-    static {
-        accounts.put("fred", "lapin");
-        accounts.put("tom", "savoie");
-        accounts.put("yoann", "babar");
-    }
-
+    
     public static AuthToken loginByPassword(String login, String password) {
-        if (accounts.containsKey(login) && accounts.get(login).equals(password)) {
-            return newAuthToken(login);
+        Member member = MemberManager.getByLoginAndPassword(login, password);
+
+        if (member != null) {
+            return newAuthToken(member);
         } else {
             return null;
         }
     }
 
-    public static AuthToken newAuthToken(String login) {
-
-        Member member;
-        member = MemberManager.getMemberByLogin(login);
-        if (member == null) {
-            throw new FatalErrorException("login invalid but auth sucess", null);
-        }
+    public static AuthToken newAuthToken(Member member) {
 
         String key = CryptoTools.generateKey();
 

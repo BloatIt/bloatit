@@ -63,6 +63,7 @@ public class MemberPage extends Page {
         } else {
             d = member;
         }
+        
         this.member = d;
     }
 
@@ -70,7 +71,8 @@ public class MemberPage extends Page {
     @Override
     protected HtmlComponent generateContent() {
         if (this.member != null) {
-          
+            member.unLock(session.getAuthToken());
+
             HtmlTitle memberTitle = new HtmlTitle(member.getFullName(), "");
             
             memberTitle.add(new HtmlText("Full name: " + member.getFullName()));

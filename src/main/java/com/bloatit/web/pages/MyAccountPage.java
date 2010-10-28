@@ -42,7 +42,7 @@ public class MyAccountPage extends Page {
     protected HtmlComponent generateContent() {
         if (this.session.getAuthToken() != null) {
             Member member = this.session.getAuthToken().getMember();
-
+            member.unLock(this.session.getAuthToken());
             HtmlTitle memberTitle = new HtmlTitle(member.getFullName(), "");
             
             memberTitle.add(new HtmlText("Full name: " + member.getFullName()));

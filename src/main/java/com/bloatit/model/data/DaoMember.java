@@ -24,6 +24,8 @@ import com.bloatit.model.data.util.SessionManager;
         + "where m = :member order by g.login")
 public class DaoMember extends DaoActor {
 
+
+
     private String firstname;
     @Basic(optional = false)
     private String password;
@@ -77,6 +79,14 @@ public class DaoMember extends DaoActor {
         Session session = SessionManager.getSessionFactory().getCurrentSession();
         Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login");
         q.setString("login", login);
+        return (DaoMember) q.uniqueResult();
+    }
+
+    public static DaoMember getByLoginAndPassword(String login, String password) {
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
+        Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login and password = :password");
+        q.setString("login", login);
+        q.setString("password", password);
         return (DaoMember) q.uniqueResult();
     }
 
