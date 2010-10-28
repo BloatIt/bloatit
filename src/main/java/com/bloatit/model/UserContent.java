@@ -28,7 +28,7 @@ public abstract class UserContent extends Identifiable {
 	}
 
 	@Override
-	protected final int getDaoId(){
+	public final int getId(){
 	    return getDaoUserContent().getId();
 	}
 	

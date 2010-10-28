@@ -59,6 +59,13 @@ public abstract class RightManager {
             return ownerCanRead(role, action) || ownerCanWrite(role, action);
         }
     }
+    
+    public static class Public extends Accessor {
+        @Override
+        protected boolean can(Role role, Action action) {
+            return canRead(action) || ownerCanWrite(role, action);
+        }
+    }
 
     public static class PrivateReadOnly extends Accessor {
         @Override

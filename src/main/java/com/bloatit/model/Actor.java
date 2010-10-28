@@ -10,7 +10,7 @@ public abstract class Actor extends Identifiable {
 
     protected abstract DaoActor getDaoActor();
 
-    protected int getDaoId() {
+    public int getId() {
         return getDaoActor().getId();
     }
 
@@ -65,5 +65,9 @@ public abstract class Actor extends Identifiable {
     public void setExternalAccount(ExternalAccount externalAccount) {
         new ActorRight.ExternalAccount().tryAccess(calculateRole(getUnprotectedLogin()), Action.WRITE);
         getDaoActor().setExternalAccount(externalAccount.getDao());
+    }
+
+    protected DaoActor getDao() {
+        return getDaoActor();
     }
 }

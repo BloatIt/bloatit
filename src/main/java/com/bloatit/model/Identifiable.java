@@ -3,9 +3,6 @@ package com.bloatit.model;
 
 public abstract class Identifiable extends Unlockable{
     
-    protected abstract int getDaoId();
+    public abstract int getId();
 
-    public Integer getId() {
-        return getDaoId();
-    }
 }

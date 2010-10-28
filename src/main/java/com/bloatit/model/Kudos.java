@@ -12,7 +12,7 @@ public class Kudos extends UserContent {
         this.dao = dao;
     }
 
-    public DaoKudos getDao() {
+    protected DaoKudos getDao() {
         return dao;
     }
 

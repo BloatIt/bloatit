@@ -36,9 +36,6 @@ public class DaoTranslation extends DaoKudosable {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
 
 	public Locale getLocale() {
 		return locale;
@@ -46,6 +43,10 @@ public class DaoTranslation extends DaoKudosable {
 
 	public String getText() {
 		return text;
+	}
+	
+	protected void setTitle(String title) {
+	    this.title = title;
 	}
 
 	protected void setLocale(Locale locale) {

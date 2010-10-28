@@ -2,6 +2,8 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 
+import com.bloatit.framework.right.MoneyRight;
+import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoContribution;
 import com.bloatit.model.data.DaoContribution.State;
 import com.bloatit.model.data.DaoUserContent;
@@ -27,7 +29,12 @@ public class Contribution extends UserContent {
         return dao.getState();
     }
 
+    public boolean canGetTransaction() {
+        return new MoneyRight.Everything().canAccess(calculateRole(this), Action.READ);
+    }
+
     public Transaction getTransaction() {
+        new MoneyRight.Everything().tryAccess(calculateRole(this), Action.READ);
         return new Transaction(dao.getTransaction());
     }
 

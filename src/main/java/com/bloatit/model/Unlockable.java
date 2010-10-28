@@ -42,11 +42,17 @@ public class Unlockable {
         if (token == null) {
             return Role.OTHER;
         }
+        if (token.getMember().getUnprotectedLogin() == "admin") {
+            return Role.ADMIN;
+        }
         if (token.getMember().getUnprotectedLogin() == login) {
             return Role.OWNER;
         }
         return Role.OTHER;
+    }
 
+    protected Role calculateRole(UserContent userContent) {
+        return calculateRole(userContent.getAuthor());
     }
 
     protected Role calculateRole(Member member, Group group) {

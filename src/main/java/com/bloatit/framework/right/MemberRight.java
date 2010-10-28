@@ -13,12 +13,6 @@ public class MemberRight extends RightManager {
 
     public static class Password extends Private {}
 
-    public static class Name extends Accessor {
-        @Override
-        protected boolean can(Role role, Action action) {
-            return canRead(action) || ownerCanWrite(role, action);
-        }
-    }
-    
+    public static class Name extends Public {}
 
 }

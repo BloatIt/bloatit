@@ -19,11 +19,11 @@ public abstract class Kudosable extends UserContent {
         return getDaoKudosable().getState();
     }
 
-    public void setValidated() {
+    protected void setValidated() {
         getDaoKudosable().setValidated();
     }
 
-    public void setRejected() {
+    protected void setRejected() {
         getDaoKudosable().setRejected();
     }
     

@@ -45,7 +45,7 @@ public class Description extends Identifiable {
 	}
 
     @Override
-    protected int getDaoId() {
+    public int getId() {
         return dao.getId();
     }
 

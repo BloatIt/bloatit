@@ -2,6 +2,8 @@ package com.bloatit.model;
 
 import java.util.Date;
 
+import com.bloatit.framework.right.OfferRight;
+import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
 
@@ -22,7 +24,12 @@ public class Offer extends Kudosable {
         return dao.getDateExpire();
     }
 
+    public boolean canSetdatExpire() {
+        return new OfferRight.DateExpire().canAccess(calculateRole(this), Action.WRITE);
+    }
+
     public void setDateExpire(Date dateExpire) {
+        new OfferRight.DateExpire().tryAccess(calculateRole(this), Action.WRITE);
         dao.setDateExpire(dateExpire);
     }
 

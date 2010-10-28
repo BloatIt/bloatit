@@ -22,10 +22,6 @@ public class Translation extends Kudosable {
         return dao.getTitle();
     }
 
-    public void setTitle(String title) {
-        dao.setTitle(title);
-    }
-
     public Locale getLocale() {
         return dao.getLocale();
     }
