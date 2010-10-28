@@ -8,7 +8,4 @@ public class ActorRight extends RightManager {
 
     public static class InternalAccount extends PrivateReadOnly {}
 
-    // public static class Login extends ReadOnly {}
-    // public static class DateCreation extends ReadOnly {}
-
 }
