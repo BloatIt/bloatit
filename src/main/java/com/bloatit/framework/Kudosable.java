@@ -1,12 +1,9 @@
 package com.bloatit.framework;
 
-import javax.persistence.MappedSuperclass;
-
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoKudosable.State;
 import com.bloatit.model.data.DaoUserContent;
 
-@MappedSuperclass
 public abstract class Kudosable extends UserContent {
 
     protected abstract DaoKudosable getDaoKudosable();

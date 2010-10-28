@@ -2,11 +2,8 @@ package com.bloatit.framework;
 
 import java.util.Date;
 
-import javax.persistence.MappedSuperclass;
-
 import com.bloatit.model.data.DaoUserContent;
 
-@MappedSuperclass
 public abstract class UserContent extends Identifiable {
 
     protected abstract DaoUserContent getDaoUserContent();
