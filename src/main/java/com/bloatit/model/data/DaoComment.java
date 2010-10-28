@@ -15,7 +15,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 @Entity
 public class DaoComment extends DaoKudosable {
@@ -27,7 +27,7 @@ public class DaoComment extends DaoKudosable {
     private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
     public static DaoComment createAndPersist(DaoMember member, String text) {
-        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
         DaoComment comment = new DaoComment(member, text);
         try {
             session.save(comment);
@@ -49,7 +49,7 @@ public class DaoComment extends DaoKudosable {
     }
 
     public PageIterable<DaoComment> getChildrenFromQuery() {
-        Query q = SessionManger.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoComment as c where c.comment = :this");
+        Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoComment as c where c.comment = :this");
         q.setEntity("this", this);
         return new QueryCollection<DaoComment>(q);
     }

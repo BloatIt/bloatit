@@ -81,10 +81,16 @@ public class DispatchServer {
     }
 
     public String process() {
+        com.bloatit.model.data.util.SessionManager.beginWorkUnit();
+
         HtmlResult htmlResult = new HtmlResult(session);
         this.request.doProcess(htmlResult);
 
-        return htmlResult.generate();
+        String result = htmlResult.generate();
+
+        com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
+
+        return result;
     }
 
     /**
@@ -96,7 +102,7 @@ public class DispatchServer {
      */
     private Session findSession(Map<String, String> query) {
         Session sess = null;
-        Locale l = this.userLocale(query);
+        Language l = this.userLocale(query);
 
         if (this.cookies.containsKey("session_key")) {
             sess = SessionManager.getByKey(cookies.get("session_key"));
@@ -104,23 +110,21 @@ public class DispatchServer {
         if (sess == null) {
             sess = SessionManager.createSession();
         }
-        sess.setLocale(l);
+        sess.setLanguage(l);
         return sess;
     }
 
-    private Locale userLocale(Map<String, String> query) {
-        // TODO correct me!
-        // Locale language = new Locale();
-        // if (query.containsKey("lang")) {
-        // if (query.get("lang").equals("default")) {
-        // language.findPrefered(preferred_langs);
-        // } else {
-        // language.setCode(query.get("lang"));
-        // }
-        // }
-        //
-        // return language;
-        return null;
+    private Language userLocale(Map<String, String> query) {
+        Language language = new Language();
+        if (query.containsKey("lang")) {
+            if (query.get("lang").equals("default")) {
+                language.findPrefered(preferred_langs);
+            } else {
+                language.setCode(query.get("lang"));
+            }
+        }
+
+        return language;
     }
 
     private Request initCurrentRequest(Map<String, String> query, Map<String, String> post) {
@@ -197,7 +201,8 @@ public class DispatchServer {
         public String page;
         public Map<String, String> parameters;
 
-        public QueryString() {}
+        public QueryString() {
+        }
 
         private QueryString(String page, Map<String, String> parameters) {
             this.page = page;

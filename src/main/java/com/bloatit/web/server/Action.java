@@ -36,7 +36,7 @@ public abstract class Action extends Request {
     }
 
     public String getUrl() {
-        return "/" + this.session.getLocale() + "/action/" + this.getCode();
+        return "/" + this.session.getLanguage() + "/action/" + this.getCode();
     }
 
 }

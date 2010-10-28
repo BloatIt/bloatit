@@ -14,7 +14,7 @@ import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoExternalAccount.AccountType;
 import com.bloatit.model.data.DaoTransaction;
 import com.bloatit.model.data.DaoTranslation;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 public class TestDB {
@@ -30,7 +30,7 @@ public class TestDB {
 
     public TestDB(){
 
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         
         tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
         tom.setFirstname("Thomas");
@@ -102,7 +102,7 @@ public class TestDB {
         demand1.addContribution(yo, new BigDecimal("12"));
         demand1.addContribution(fred, new BigDecimal("11"));
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
 
     }
 
@@ -133,6 +133,9 @@ public class TestDB {
     public DaoDemand getDemand() {
         return demand;
     }
-    
+
+    public static void main(String[] args) {
+        new TestDB();
+    }
     
 }

@@ -10,7 +10,7 @@ import junit.framework.TestSuite;
 import org.hibernate.HibernateException;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 /**
  * Unit test for simple App.
@@ -23,15 +23,15 @@ public class GroupMemberTest extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        SessionManger.reCreateSessionFactory();
+        SessionManager.reCreateSessionFactory();
     }
 
     protected void tearDown() throws Exception {
         super.tearDown();
-        if (SessionManger.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            SessionManger.endWorkUnitAndFlush();
+        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+            SessionManager.endWorkUnitAndFlush();
         }
-        SessionManger.getSessionFactory().close();
+        SessionManager.getSessionFactory().close();
     }
 
     /**
@@ -42,35 +42,35 @@ public class GroupMemberTest extends TestCase {
     }
 
     public void testCreateMember() {
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         {
             DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
             theMember.setFirstname("Thomas");
             theMember.setLastname("Guyard");
-            SessionManger.flush();
+            SessionManager.flush();
         }
         {
             DaoMember theMember = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
             theMember.setFirstname("Frédéric");
             theMember.setLastname("Bertolus");
-            SessionManger.flush();
+            SessionManager.flush();
         }
         {
             DaoMember theMember = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
             theMember.setFirstname("Yoann");
             theMember.setLastname("Plénet");
-            SessionManger.endWorkUnitAndFlush();
+            SessionManager.endWorkUnitAndFlush();
         }
 
     }
 
     public void testMemberDuplicateCreation() {
         try {
-            SessionManger.beginWorkUnit();
+            SessionManager.beginWorkUnit();
             DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
-            SessionManger.flush();
+            SessionManager.flush();
             DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com"); // duplicate login
-            SessionManger.endWorkUnitAndFlush();
+            SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
         } catch (HibernateException e) {
             assertTrue(true);
@@ -79,41 +79,41 @@ public class GroupMemberTest extends TestCase {
 
     public void testGetMemberByLogin() {
         testCreateMember();
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         assertEquals("Bertolus", DaoMember.getByLogin("Fred").getLastname());
         assertNull(DaoMember.getByLogin("Inexistant"));
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testExistMemberByLogin() {
         testCreateMember();
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         assertTrue(DaoMember.exist("Fred"));
         assertFalse(DaoMember.exist("Inexistant"));
         assertFalse(DaoMember.exist(null));
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testCreateGroup() {
         testCreateMember();
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC);
         DaoGroup.createAndPersiste("myGroup", "plop@plop.com", DaoGroup.Right.PUBLIC);
         DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PUBLIC);
         DaoGroup.createAndPersiste("b218", "plop@plop.com", DaoGroup.Right.PUBLIC);
         DaoGroup.createAndPersiste("b217", "plop@plop.com", DaoGroup.Right.PUBLIC);
         DaoGroup.createAndPersiste("b216", "plop@plop.com", DaoGroup.Right.PUBLIC);
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
 
     }
 
     public void testDuplicatedGroup() {
         testCreateGroup();
         try {
-            SessionManger.beginWorkUnit();
+            SessionManager.beginWorkUnit();
             DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC);
             assertTrue(true);
-            SessionManger.endWorkUnitAndFlush();
+            SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
         } catch (HibernateException e) {
             assertTrue(true);
@@ -123,41 +123,41 @@ public class GroupMemberTest extends TestCase {
     public void testGetGroupByName() {
         testCreateGroup();
 
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         // TODO correct me
         assertEquals("plop@plop.com", DaoGroup.getByName("b219").getEmail());
         assertNull(DaoGroup.getByName("Inexistant"));
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testAddUserToGroup() {
         testCreateGroup();
 
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         DaoMember.getByLogin("Fred").addToGroup(DaoGroup.getByName("b219"), false);
         DaoMember.getByLogin("Yo").addToGroup(DaoGroup.getByName("b219"), false);
         DaoMember.getByLogin("Yo").addToGroup(DaoGroup.getByName("b217"), false);
         DaoMember.getByLogin("Yo").addToGroup(DaoGroup.getByName("b218"), false);
         DaoMember.getByLogin("Yo").addToGroup(DaoGroup.getByName("b216"), false);
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testGetAllUserInGroup() {
         testAddUserToGroup();
 
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         PageIterable<DaoMember> Members = DaoGroup.getByName("b219").getMembers();
         Iterator<DaoMember> it = Members.iterator();
         assertEquals(it.next().getFirstname(), "Frédéric");
         assertEquals(it.next().getFirstname(), "Yoann");
         assertFalse(it.hasNext());
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testGetAllGroupForUser() {
         testAddUserToGroup();
 
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         PageIterable<DaoGroup> Groups = DaoMember.getByLogin("Yo").getGroups();
         Iterator<DaoGroup> it = Groups.iterator();
         assertEquals(it.next().getLogin(), "b216");
@@ -165,13 +165,13 @@ public class GroupMemberTest extends TestCase {
         assertEquals(it.next().getLogin(), "b218");
         assertEquals(it.next().getLogin(), "b219");
         assertFalse(it.hasNext());
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testRemoveGroup() {
         testAddUserToGroup();
 
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         DaoGroup b219 = DaoGroup.getByName("b219");
         DaoMember yo = DaoMember.getByLogin("Yo");
 
@@ -183,13 +183,13 @@ public class GroupMemberTest extends TestCase {
         assertEquals(it.next().getLogin(), "b218");
         assertFalse(it.hasNext());
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testRemoveMember() {
         testAddUserToGroup();
 
-        SessionManger.beginWorkUnit();
+        SessionManager.beginWorkUnit();
         DaoGroup b218 = DaoGroup.getByName("b218");
         DaoMember yo = DaoMember.getByLogin("Yo");
 
@@ -201,7 +201,7 @@ public class GroupMemberTest extends TestCase {
         assertEquals(it.next().getLogin(), "b219");
         assertFalse(it.hasNext());
 
-        SessionManger.endWorkUnitAndFlush();
+        SessionManager.endWorkUnitAndFlush();
     }
 
 }

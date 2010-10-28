@@ -4,7 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
-public class SessionManger {
+public class SessionManager {
 
 	// SHOULD BE FINAL see reCreateSessionFactory
 	private static SessionFactory sessionFactory = buildSessionFactory();

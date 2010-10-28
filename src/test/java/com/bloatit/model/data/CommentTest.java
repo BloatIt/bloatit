@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 public class CommentTest extends TestCase {
 	private DaoMember yo;
@@ -16,25 +16,25 @@ public class CommentTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		SessionManger.reCreateSessionFactory();
-		SessionManger.beginWorkUnit();
+		SessionManager.reCreateSessionFactory();
+		SessionManager.beginWorkUnit();
 		{
 			tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
 			tom.setFirstname("Thomas");
 			tom.setLastname("Guyard");
-			SessionManger.flush();
+			SessionManager.flush();
 		}
 		{
 			fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
 			fred.setFirstname("Frédéric");
 			fred.setLastname("Bertolus");
-			SessionManger.flush();
+			SessionManager.flush();
 		}
 		{
 			yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
 			yo.setFirstname("Yoann");
 			yo.setLastname("Plénet");
-			SessionManger.flush();
+			SessionManager.flush();
 
 			DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
 			DaoGroup.createAndPersiste("myGroup", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
@@ -43,42 +43,42 @@ public class CommentTest extends TestCase {
 
 		demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
-		SessionManger.endWorkUnitAndFlush();
+		SessionManager.endWorkUnitAndFlush();
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		if (SessionManger.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-			SessionManger.endWorkUnitAndFlush();
+		if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
+			SessionManager.endWorkUnitAndFlush();
 		}
-		SessionManger.getSessionFactory().close();
+		SessionManager.getSessionFactory().close();
 	}
 
 	public void testDaoCommentDaoActorString() {
-		SessionManger.beginWorkUnit();
+		SessionManager.beginWorkUnit();
 
 		DaoComment comment = DaoComment.createAndPersist(yo, "Prems !");
 		demand.addComment(comment);
 
 		assertEquals("Prems !", comment.getText());
 
-		SessionManger.endWorkUnitAndFlush();
+		SessionManager.endWorkUnitAndFlush();
 
-		SessionManger.beginWorkUnit();
+		SessionManager.beginWorkUnit();
 		assertEquals("Prems !", DBRequests.getAll(DaoComment.class).iterator().next().getText());
-		SessionManger.endWorkUnitAndFlush();
+		SessionManager.endWorkUnitAndFlush();
 	}
 
 	public void testAddChildComment() {
-		SessionManger.beginWorkUnit();
+		SessionManager.beginWorkUnit();
 
 		DaoComment comment = DaoComment.createAndPersist(yo, "Prems !");
 		demand.addComment(comment);
 		comment.addChildComment(DaoComment.createAndPersist(tom, "Pff espèce de Kevin !"));
 
-		SessionManger.endWorkUnitAndFlush();
+		SessionManager.endWorkUnitAndFlush();
 
-		SessionManger.beginWorkUnit();
+		SessionManager.beginWorkUnit();
 		Iterator<DaoComment> it = DBRequests.getAll(DaoComment.class).iterator();
 		
 		DaoComment first = it.next();
@@ -91,23 +91,23 @@ public class CommentTest extends TestCase {
 		assertEquals(tom.getLogin(), next.getAuthor().getLogin());
 		assertFalse(it.hasNext());
 
-		SessionManger.endWorkUnitAndFlush();
+		SessionManager.endWorkUnitAndFlush();
 	}
 
 	public void testGetChildren() {
-		SessionManger.beginWorkUnit();
+		SessionManager.beginWorkUnit();
 
 		DaoComment comment = DaoComment.createAndPersist(yo, "Prems !");
 		demand.addComment(comment);
 		DaoComment child = DaoComment.createAndPersist(tom, "Pff espèce de Kevin !");
 		comment.addChildComment(child);
 
-		SessionManger.endWorkUnitAndFlush();
-		SessionManger.beginWorkUnit();
+		SessionManager.endWorkUnitAndFlush();
+		SessionManager.beginWorkUnit();
 
 		assertEquals(1, comment.getChildren().size());
 		assertTrue(comment.getChildren().contains(child));
 
-		SessionManger.endWorkUnitAndFlush();
+		SessionManager.endWorkUnitAndFlush();
 	}
 }

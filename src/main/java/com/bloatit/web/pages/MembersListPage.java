@@ -19,8 +19,9 @@
 
 package com.bloatit.web.pages;
 
-import com.bloatit.framework.MemberManager;
-import com.bloatit.model.Member;
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Member;
+import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
@@ -49,7 +50,7 @@ public class MembersListPage extends Page {
 
         HtmlTitle pageTitle = new HtmlTitle("Members list", "");
 
-        List<Member> memberList = MemberManager.getMemberList();
+        PageIterable<Member> memberList = MemberManager.getMembers();
 
         HtmlList htmlMemberList = new HtmlList();
         pageTitle.add(htmlMemberList);

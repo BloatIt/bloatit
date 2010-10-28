@@ -9,7 +9,7 @@ public class MemberRight extends RightManager {
         }
     }
 
-    public static class Karma extends Private {}
+    public static class Karma extends Public {}
 
     public static class Password extends Private {}
 

@@ -16,7 +16,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.data.util.SessionManager;
 
 // DaoGroup is SQL keyword
 @Entity
@@ -53,7 +53,7 @@ public class DaoGroup extends DaoActor {
 	 * @throws HibernateException
 	 */
 	static public DaoGroup createAndPersiste(String login, String email, Right right) throws HibernateException {
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
+		Session session = SessionManager.getSessionFactory().getCurrentSession();
 		DaoGroup Group = new DaoGroup(login, email, right);
 		try {
 			session.save(Group);
@@ -72,7 +72,7 @@ public class DaoGroup extends DaoActor {
 	 * @return null if not found.
 	 */
 	public static DaoGroup getByName(String name) {
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
+		Session session = SessionManager.getSessionFactory().getCurrentSession();
 		Query q = session.createQuery("from com.bloatit.model.data.DaoGroup where login = :login");
 		q.setString("login", name);
 		return (DaoGroup) q.uniqueResult();
@@ -85,7 +85,7 @@ public class DaoGroup extends DaoActor {
 
 
 	public PageIterable<DaoMember> getMembers() {
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
+		Session session = SessionManager.getSessionFactory().getCurrentSession();
 		Query q = session.getNamedQuery("getMembers");
 		q.setParameter("group", this);
 		return new QueryCollection<DaoMember>(q);

@@ -19,9 +19,8 @@
 
 package com.bloatit.web.pages;
 
-import com.bloatit.framework.MemberManager;
-import com.bloatit.model.Member;
-import com.bloatit.model.exceptions.ElementNotFoundException;
+import com.bloatit.framework.Member;
+import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
@@ -58,10 +57,7 @@ public class MemberPage extends Page {
 
                 }
                 if (id != null) {
-                    try {
-                        d = MemberManager.GetMemberById(id);
-                    } catch (ElementNotFoundException ex) {
-                    }
+                    d = MemberManager.getMemberById(id);
                 }
             }
         } else {
