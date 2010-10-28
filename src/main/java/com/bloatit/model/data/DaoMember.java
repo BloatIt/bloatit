@@ -15,6 +15,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.model.Group;
 import com.bloatit.model.data.util.SessionManger;
 
 // member is a SQL keyword (in some specific implementations)
@@ -174,6 +175,16 @@ public class DaoMember extends DaoActor {
                                .createQuery("from com.bloatit.model.data." + className + " as x where x.member = :author");
         q.setEntity("author", this);
         return new QueryCollection<T>(q);
+    }
+
+    public boolean isInGroup(Group group) {
+        Query q = SessionManger.getSessionFactory()
+                               .getCurrentSession()
+                               .createQuery("select count(*) from com.bloatit.model.data.DaoMember m join m.groupMembership as gm "
+                                       + "join gm.group as g where m = :member and g = :group");
+        q.setEntity("member", this);
+        q.setEntity("group", group);
+        return ((Integer) q.uniqueResult()) >= 1;
     }
 
     public void addToKarama(int value) {

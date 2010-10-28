@@ -19,14 +19,13 @@ public class Member extends Actor {
     public Member(DaoMember dao) {
         super();
         this.dao = dao;
-
     }
 
     public String getFullName() {
         return getFirstname() + " " + getLastname();
     }
 
-    public DaoMember getDao() {
+    protected DaoMember getDao() {
         return dao;
     }
 
@@ -41,11 +40,12 @@ public class Member extends Actor {
     public PageIterable<Group> getGroups() {
         return new GroupList(dao.getGroups());
     }
-    
-    public int getKarma(){
+
+    public int getKarma() {
         return dao.getKaram();
     }
-    public void addToKarma(int value){
+
+    public void addToKarma(int value) {
         dao.addToKarama(value);
     }
 
@@ -104,6 +104,14 @@ public class Member extends Actor {
     @Override
     protected DaoActor getDaoActor() {
         return dao;
+    }
+
+    protected boolean isInGroupUnprotected(Group group) {
+        return dao.isInGroup(group);
+    }
+    
+    public boolean isInGroup(Group group) {
+        return isInGroupUnprotected(group);
     }
 
 }
