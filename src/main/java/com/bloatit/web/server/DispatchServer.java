@@ -71,20 +71,26 @@ public class DispatchServer {
     private Map<String, String> cookies;
     private List<String> preferred_langs;
     private Session session;
-    private final Request request;
+    private final Map<String, String> query;
+    private final Map<String, String> post;
 
     public DispatchServer(Map<String, String> query, Map<String, String> post, Map<String, String> cookies, List<String> preferred_langs) {
         this.cookies = cookies;
         this.preferred_langs = preferred_langs;
         this.session = this.findSession(query);
-        this.request = this.initCurrentRequest(query, post);
+
+        this.query = query;
+        this.post = post;
+
     }
 
     public String process() {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
+        Request request = this.initCurrentRequest(query, post);
+
         HtmlResult htmlResult = new HtmlResult(session);
-        this.request.doProcess(htmlResult);
+        request.doProcess(htmlResult);
 
         String result = htmlResult.generate();
 

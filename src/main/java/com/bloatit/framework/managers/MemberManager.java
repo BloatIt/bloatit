@@ -23,13 +23,16 @@ import com.bloatit.framework.Member;
 import com.bloatit.framework.lists.MemberList;
 import com.bloatit.model.data.DBRequests;
 import com.bloatit.model.data.DaoMember;
-import java.util.Iterator;
-import java.util.List;
 
 public class MemberManager {
 
     public static Member getMemberByLogin(String login) {
-        return new Member(DaoMember.getByLogin(login));
+        DaoMember daoMember = DaoMember.getByLogin(login);
+        if (daoMember == null) {
+            return null;
+        }
+
+        return new Member(daoMember);
     }
 
     public static boolean existsMember(String login) {
@@ -44,4 +47,12 @@ public class MemberManager {
         return new MemberList(DBRequests.getAll(DaoMember.class));
     }
 
+    static Member getByLoginAndPassword(String login, String password) {
+        DaoMember daoMember = DaoMember.getByLoginAndPassword(login, password);
+        if (daoMember == null) {
+            return null;
+        }
+        
+        return new Member(daoMember);
+    }
 }
