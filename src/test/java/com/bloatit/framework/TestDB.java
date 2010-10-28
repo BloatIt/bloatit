@@ -1,0 +1,138 @@
+package com.bloatit.framework;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Locale;
+
+import com.bloatit.model.data.DaoComment;
+import com.bloatit.model.data.DaoContribution;
+import com.bloatit.model.data.DaoDemand;
+import com.bloatit.model.data.DaoDescription;
+import com.bloatit.model.data.DaoExternalAccount;
+import com.bloatit.model.data.DaoGroup;
+import com.bloatit.model.data.DaoMember;
+import com.bloatit.model.data.DaoExternalAccount.AccountType;
+import com.bloatit.model.data.DaoTransaction;
+import com.bloatit.model.data.DaoTranslation;
+import com.bloatit.model.data.util.SessionManger;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
+
+public class TestDB {
+    
+    
+    private DaoMember tom;
+    private DaoMember fred;
+    private DaoMember yo;
+    private DaoGroup other;
+    private DaoGroup b219;
+    private DaoGroup ubuntuUsers;
+    private DaoDemand demand;
+
+    public TestDB(){
+
+        SessionManger.beginWorkUnit();
+        
+        tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
+        tom.setFirstname("Thomas");
+        tom.setLastname("Guyard");
+        fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
+        fred.setFirstname("Frédéric");
+        fred.setLastname("Bertolus");
+        yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
+        yo.setFirstname("Yoann");
+        yo.setLastname("Plénet");
+
+        other = DaoGroup.createAndPersiste("other", "plop@plop.com", DaoGroup.Right.PROTECTED);
+        b219 = DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PRIVATE);
+        ubuntuUsers = DaoGroup.createAndPersiste("ubuntuUsers", "plop@plop.com", DaoGroup.Right.PUBLIC);
+
+        other.addMember(yo, true);
+        b219.addMember(yo, false);
+        b219.addMember(tom, true);
+        b219.addMember(fred, false);
+        ubuntuUsers.addMember(fred, true);
+
+        yo.setExternalAccount(DaoExternalAccount.createAndPersist(yo, AccountType.IBAN, "code"));
+        tom.setExternalAccount(DaoExternalAccount.createAndPersist(tom, AccountType.IBAN, "code"));
+        fred.setExternalAccount(DaoExternalAccount.createAndPersist(fred, AccountType.IBAN, "code"));
+        b219.setExternalAccount(DaoExternalAccount.createAndPersist(b219, AccountType.IBAN, "code"));
+        ubuntuUsers.setExternalAccount(DaoExternalAccount.createAndPersist(ubuntuUsers, AccountType.IBAN, "code"));
+
+        try {
+            DaoTransaction.createAndPersist(yo.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
+            DaoTransaction.createAndPersist(tom.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
+            DaoTransaction.createAndPersist(fred.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
+        } catch (NotEnoughMoneyException e) {
+            e.printStackTrace();
+        }
+
+        demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Mon titre", "Ceci est une description"));
+        DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
+        DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
+        DaoComment c21 = DaoComment.createAndPersist(tom, "plup");
+        DaoComment c22 = DaoComment.createAndPersist(tom, "CCC-Combo Breaker ;) ");
+        DaoComment c23 = DaoComment.createAndPersist(fred, "Plip");
+        demand.addComment(c1);
+        demand.addComment(c2);
+        c1.addChildComment(DaoComment.createAndPersist(yo, "Je sais c'est just un test"));
+        c2.addChildComment(c21);
+        c2.addChildComment(c22);
+        c2.addChildComment(c23);
+        
+        c22.addKudos(yo, 12);
+        c22.addKudos(fred, 22);
+        c2.addKudos(tom, 42);
+        c1.addKudos(tom, -12);
+        c21.addKudos(fred, -1);
+
+        demand.createSpecification(fred, "Tiens voila une spécif vraiment précise");
+        demand.addContribution(yo, new BigDecimal("120"));
+        demand.addContribution(tom, new BigDecimal("121"));
+
+        demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Mon Offre", "Voici la description"), new Date());
+
+        demand.getOffers().iterator().next().setValidated();
+
+        for (DaoContribution contribution : demand.getContributions()) {
+            contribution.accept(demand.getOffers().iterator().next());
+        }
+
+        DaoDemand demand1 = DaoDemand.createAndPersist(fred, new DaoDescription(fred, new Locale("en"), "I try it in English", "Hello world"));
+        demand1.getDescription().addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais", "Salut le monde"));
+        demand1.addContribution(yo, new BigDecimal("12"));
+        demand1.addContribution(fred, new BigDecimal("11"));
+
+        SessionManger.endWorkUnitAndFlush();
+
+    }
+
+    public DaoMember getTom() {
+        return tom;
+    }
+
+    public DaoMember getFred() {
+        return fred;
+    }
+
+    public DaoMember getYo() {
+        return yo;
+    }
+
+    public DaoGroup getOther() {
+        return other;
+    }
+
+    public DaoGroup getB219() {
+        return b219;
+    }
+
+    public DaoGroup getUbuntuUsers() {
+        return ubuntuUsers;
+    }
+
+    public DaoDemand getDemand() {
+        return demand;
+    }
+    
+    
+}

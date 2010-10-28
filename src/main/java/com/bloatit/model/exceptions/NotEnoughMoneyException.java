@@ -17,34 +17,9 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.model;
+package com.bloatit.model.exceptions;
 
-/**
- * Interface that describes any elements that can be kudoed
- */
-public interface Kudoable {
-
-        /**
-     * Call when a member kudos a kudoable
-     * @param kudoer the member that issues the kudo
-     */
-    public void kudo(Member kudoer);
-
-    /**
-     * Call when a member reports a kudoable
-     * @param kudoer the member that issues the report
-     */
-    public void report(Member reporter);
-
-    /**
-     * Returns the current reputation of the kudoable
-     * @return
-     */
-    public long getReputation();
-
-    /**
-     * Returns the author of the kudoable
-     * @return
-     */
-    public Member getAuthor();
+public class NotEnoughMoneyException extends Exception{
+    private static final long serialVersionUID = -1810777523607205468L;
+    
 }

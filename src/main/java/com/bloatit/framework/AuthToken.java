@@ -19,7 +19,6 @@
 
 package com.bloatit.framework;
 
-import com.bloatit.model.Member;
 
 public class AuthToken {
     private Member member;

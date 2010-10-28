@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.framework.AuthToken;
-import com.bloatit.framework.LoginManager;
+import com.bloatit.framework.managers.LoginManager;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;

@@ -1,0 +1,76 @@
+package com.bloatit.framework;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import com.bloatit.common.FatalErrorException;
+import com.bloatit.framework.right.MoneyRight;
+import com.bloatit.framework.right.RightManager.Action;
+import com.bloatit.framework.right.RightManager.Role;
+import com.bloatit.model.data.DaoExternalAccount;
+import com.bloatit.model.data.DaoInternalAccount;
+import com.bloatit.model.data.DaoTransaction;
+
+public class Transaction extends Identifiable {
+
+    private DaoTransaction dao;
+
+    public Transaction(DaoTransaction dao) {
+        super();
+        this.dao = dao;
+    }
+
+    public boolean canAccessSomething() {
+        return new MoneyRight.Everything().canAccess(calculateRole(), Action.READ);
+    }
+
+    public InternalAccount getFrom() {
+        new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
+        return new InternalAccount(dao.getFrom());
+    }
+
+    public Account getTo() {
+        new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
+        if (dao.getTo().getClass() == DaoInternalAccount.class) {
+            return new InternalAccount((DaoInternalAccount) dao.getTo());
+        } else if (dao.getTo().getClass() == DaoExternalAccount.class) {
+            return new ExternalAccount((DaoExternalAccount) dao.getTo());
+        }
+        throw new FatalErrorException("Cannot find the right Account child class.", null);
+    }
+
+    public BigDecimal getAmount() {
+        new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
+        return dao.getAmount();
+    }
+
+    public Date getCreationDate() {
+        new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
+        return dao.getCreationDate();
+    }
+
+    @Override
+    public int getId() {
+        return dao.getId();
+    }
+
+    protected DaoTransaction getDao() {
+        return dao;
+    }
+
+    protected Role calculateRole() {
+        Role fromRole = calculateRole(dao.getFrom().getActor().getLogin());
+        if (fromRole == Role.OTHER) {
+            return calculateRole(dao.getTo().getActor().getLogin());
+        } else if (fromRole == Role.ADMIN) {
+            return fromRole;
+        } else {
+            Role toRole = calculateRole(dao.getTo().getActor().getLogin());
+            if (toRole == Role.ADMIN) {
+                return toRole;
+            } else {
+                return fromRole;
+            }
+        }
+    }
+}

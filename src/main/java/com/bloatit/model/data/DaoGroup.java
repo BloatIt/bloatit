@@ -1,7 +1,6 @@
 package com.bloatit.model.data;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -16,6 +15,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManger;
 
 // DaoGroup is SQL keyword
@@ -83,20 +83,12 @@ public class DaoGroup extends DaoActor {
 		this.right = right;
 	}
 
-	public List<DaoMember> getMembers() {
-		return getMembers(0, 0);
-	}
 
-	@SuppressWarnings("unchecked")
-	public List<DaoMember> getMembers(int from, int number) {
+	public PageIterable<DaoMember> getMembers() {
 		Session session = SessionManger.getSessionFactory().getCurrentSession();
 		Query q = session.getNamedQuery("getMembers");
 		q.setParameter("group", this);
-		q.setFirstResult(from);
-		if (number != 0) {
-			q.setFetchSize(number);
-		}
-		return q.list();
+		return new QueryCollection<DaoMember>(q);
 	}
 
 	public void addMember(DaoMember Member, boolean isAdmin) {

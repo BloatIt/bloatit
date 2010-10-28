@@ -13,7 +13,6 @@ import com.bloatit.model.data.util.SessionManger;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-// TODO bankAccount is probably a better name
 public class DaoExternalAccount extends DaoAccount {
 	public enum AccountType {
 		IBAN

@@ -154,6 +154,9 @@ public class DemandTest extends TestCase {
 
     public void testAcceptContributions() throws Throwable {
         SessionManger.beginWorkUnit();
+        
+        fred.getInternalAccount().setAmount(new BigDecimal(50));
+        yo.getInternalAccount().setAmount(new BigDecimal(50));
 
         DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
@@ -171,9 +174,9 @@ public class DemandTest extends TestCase {
         }
 
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
-        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("18")));
+        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("68")));
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
-        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("-18")));
+        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("32")));
 
         SessionManger.endWorkUnitAndFlush();
 

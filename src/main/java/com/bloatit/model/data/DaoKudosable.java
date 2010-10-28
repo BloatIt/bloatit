@@ -7,6 +7,9 @@ import javax.persistence.Basic;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @MappedSuperclass
 public abstract class DaoKudosable extends DaoUserContent {
 
@@ -17,6 +20,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     @Basic(optional = false)
     private int popularity;
     @OneToMany
+    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
     @Basic(optional = false)
     private State state;

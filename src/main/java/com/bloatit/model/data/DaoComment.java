@@ -11,73 +11,81 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManger;
 
 @Entity
 public class DaoComment extends DaoKudosable {
 
-	@Basic(optional = false)
-	private String text;
-	@OneToMany(mappedBy = "comment", cascade = { CascadeType.ALL })
-	@OrderBy(value = "creationDate")
-	private Set<DaoComment> children = new HashSet<DaoComment>(0);
+    @Basic(optional = false)
+    private String text;
+    @OneToMany(mappedBy = "comment", cascade = { CascadeType.ALL })
+    @OrderBy(value = "creationDate")
+    private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
-	public static DaoComment createAndPersist(DaoMember member, String text) {
-		Session session = SessionManger.getSessionFactory().getCurrentSession();
-		DaoComment comment = new DaoComment(member, text);
-		try {
-			session.save(comment);
-		} catch (HibernateException e) {
-			session.getTransaction().rollback();
-			session.beginTransaction();
-			throw e;
-		}
-		return comment;
-	}
+    public static DaoComment createAndPersist(DaoMember member, String text) {
+        Session session = SessionManger.getSessionFactory().getCurrentSession();
+        DaoComment comment = new DaoComment(member, text);
+        try {
+            session.save(comment);
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            session.beginTransaction();
+            throw e;
+        }
+        return comment;
+    }
 
-	protected DaoComment(DaoMember member, String text) {
-		super(member);
-		this.text = text;
-	}
+    protected DaoComment(DaoMember member, String text) {
+        super(member);
+        this.text = text;
+    }
 
-	public String getText() {
-		return text;
-	}
+    public String getText() {
+        return text;
+    }
 
-	public Set<DaoComment> getChildren() {
-		return children;
-	}
+    public PageIterable<DaoComment> getChildrenFromQuery() {
+        Query q = SessionManger.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoComment as c where c.comment = :this");
+        q.setEntity("this", this);
+        return new QueryCollection<DaoComment>(q);
+    }
 
-	public void addChildComment(DaoComment Comment) {
-		children.add(Comment);
-	}
+    public Set<DaoComment> getChildren() {
+        return children;
+    }
 
-	protected DaoComment() {
-		super();
-	}
+    public void addChildComment(DaoComment Comment) {
+        children.add(Comment);
+    }
 
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    protected DaoComment() {
+        super();
+    }
 
-	@ManyToOne
-	private DaoComment comment;
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
-	protected void setText(String text) {
-		this.text = text;
-	}
+    @ManyToOne
+    private DaoComment comment;
 
-	protected void setChildren(Set<DaoComment> children) {
-		this.children = children;
-	}
+    protected void setText(String text) {
+        this.text = text;
+    }
 
-	protected void setComment(DaoComment Comment) {
-		this.comment = Comment;
-	}
+    protected void setChildren(Set<DaoComment> children) {
+        this.children = children;
+    }
 
-	protected DaoComment getComment() {
-		return comment;
-	}
+    protected void setComment(DaoComment Comment) {
+        this.comment = Comment;
+    }
+
+    protected DaoComment getComment() {
+        return comment;
+    }
 }

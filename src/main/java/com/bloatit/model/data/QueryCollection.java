@@ -1,12 +1,12 @@
 package com.bloatit.model.data;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.hibernate.Query;
 
-// TODO create a page iterator ?
-public class QueryCollection<T> implements Iterable<T> {
+import com.bloatit.common.PageIterable;
+
+public class QueryCollection<T> implements PageIterable<T> {
 
     private Query query;
     private int pageSize;
@@ -28,7 +28,7 @@ public class QueryCollection<T> implements Iterable<T> {
      * @return a list of entity.
      */
     @SuppressWarnings("unchecked")
-    public List<T> getPage(int page){
+    public Iterable<T> getPage(int page){
         query.setFirstResult(page * pageSize);
         return query.list();
     }

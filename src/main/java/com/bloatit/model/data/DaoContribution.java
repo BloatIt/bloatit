@@ -8,6 +8,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.bloatit.common.FatalErrorException;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
+
 @Entity
 public class DaoContribution extends DaoUserContent {
 
@@ -27,13 +30,17 @@ public class DaoContribution extends DaoUserContent {
 
     @OneToOne(optional = true)
     private DaoTransaction transaction;
+    
+    // TODO add the possibility to add some text (144 c for auto tweet ?)
 
     public DaoContribution() {}
 
     // the demand is associated into the DaoDemand class by hibernate.
     public DaoContribution(DaoMember member, BigDecimal amount) {
-        // TODO make sure amount > 0
         super(member);
+        if (amount.compareTo(new BigDecimal("0")) <= 0) {
+            throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
+        }
         this.amount = amount;
         this.setState(State.WAITING);
         getAuthor().getInternalAccount().block(amount);
@@ -41,9 +48,14 @@ public class DaoContribution extends DaoUserContent {
 
     public void accept(DaoOffer Offer) {
         // TODO verify that the state is WAITING
-        getAuthor().getInternalAccount().unBlock(amount);
-        transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor().getInternalAccount(), amount);
-        setState(State.ACCEPTED);
+        try {
+            transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor().getInternalAccount(), amount);
+            getAuthor().getInternalAccount().unBlock(amount);
+            setState(State.ACCEPTED);
+        } catch (NotEnoughMoneyException e) {
+            cancel();
+            e.printStackTrace(); // TODO do something more constructive ...
+        }
     }
 
     public void cancel() {

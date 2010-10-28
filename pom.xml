@@ -80,6 +80,12 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.4.0.GA</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-tools</artifactId>
+			<version>3.2.3.GA</version>
+		</dependency>
+
 
 		<!-- we need sl4j for logging with hibernate -->
 		<dependency>
