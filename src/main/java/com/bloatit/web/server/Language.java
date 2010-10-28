@@ -28,52 +28,52 @@ import org.xnap.commons.i18n.I18nFactory;
 
 public class Language {
 
-    private static Map<String, String> languageCode = new HashMap<String, String>() {
+    private static Map<String, Locale> languageCode = new HashMap<String, Locale>() {
 
         {
-            put("en", "en");
-            put("en-us", "en");
-            put("fr", "fr");
-            put("fr-fr", "fr");
+            put("en", Locale.ENGLISH );
+            put("en-us", Locale.ENGLISH);
+            put("fr", Locale.FRENCH);
+            put("fr-fr", Locale.FRENCH);
         }
     };
-    private static Map<String, LanguageTemplate> languageList = new HashMap<String, LanguageTemplate>() {
+    private static Map<Locale, LanguageTemplate> languageList = new HashMap<Locale, LanguageTemplate>() {
 
         {
-            put("en", new LanguageTemplate("en", "English", java.util.Locale.ENGLISH));
-            put("fr", new LanguageTemplate("fr", "Français", java.util.Locale.FRENCH));
-            put("de", new LanguageTemplate("de", "German",java.util.Locale.GERMAN));
+            put(Locale.ENGLISH, new LanguageTemplate("en", "English", Locale.ENGLISH));
+            put(Locale.FRENCH, new LanguageTemplate("fr", "Français", Locale.FRENCH));
+            put(Locale.GERMAN, new LanguageTemplate("de", "German",Locale.GERMAN));
 
         }
     };
     private LanguageTemplate template;
 
     public Language() {
-        this.template = languageList.get("en");
+        this.template = languageList.get(Locale.ENGLISH);
     }
 
-    public Language(String code){
+    public Language(Locale code){
         this.template = languageList.get(code);
         if(this.template == null){
-            this.template = languageList.get("en");
+            this.template = languageList.get(Locale.ENGLISH);
         }
     }
 
     public String getCode() {
-        return template.key;
+        return template.locale.getLanguage();
     }
 
     public void findPrefered(List<String> preferredLangs) {
-        String code;
+        Locale locale;
         for (String preferredLang : preferredLangs) {
             String lang = preferredLang.split(";")[0];
             if (Language.languageCode.containsKey(lang)) {
-                code = Language.languageCode.get(lang);
-                if (languageList.containsKey(code)) {
-                    template = languageList.get(code);
+                locale = Language.languageCode.get(lang);
+                if (languageList.containsKey(locale)) {
+                    template = languageList.get(locale);
                     break;
                 } else {
-                    System.err.println("Unknow language code" + code);
+                    System.err.println("Unknow language code" + locale);
                 }
             } else {
                 System.err.println("Unknow language" + lang);
@@ -99,13 +99,13 @@ public class Language {
      */
     private static class LanguageTemplate {
 
-        final public String key;
+        final public Locale locale;
         final public String label;
         final public I18n i18n;
 
         private LanguageTemplate(String key, String label, Locale locale) {
             this.label = label;
-            this.key = key;
+            this.locale = locale;
             i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);
 
         }
@@ -125,9 +125,13 @@ public class Language {
         @Override
         public int hashCode() {
             int hash = 3;
-            hash = 29 * hash + (this.key != null ? this.key.hashCode() : 0);
+            hash = 59 * hash + (this.locale != null ? this.locale.hashCode() : 0);
+            hash = 59 * hash + (this.label != null ? this.label.hashCode() : 0);
+            hash = 59 * hash + (this.i18n != null ? this.i18n.hashCode() : 0);
             return hash;
         }
+
+        
     }
 
     @Override

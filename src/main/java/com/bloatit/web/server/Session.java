@@ -48,7 +48,7 @@ public class Session {
 
         // TODO : Following lines are for testing purposes only
         preferredLocales = new ArrayList<Language>();
-        preferredLocales.add(new Language("fr")); // TODO : ONLY FOR TEST
+        preferredLocales.add(new Language(Locale.ENGLISH)); // TODO : ONLY FOR TEST
     }
     public String tr(String s){
         return this.language.tr(s);

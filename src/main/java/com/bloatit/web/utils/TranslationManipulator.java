@@ -20,17 +20,17 @@
 package com.bloatit.web.utils;
 
 import java.util.List;
-import java.util.Locale;
 
 import com.bloatit.framework.Translation;
+import com.bloatit.web.server.Language;
 
 /**
  * Helps manipulating translations
  */
 public class TranslationManipulator {
-    private final List<Locale> preferredLocales;
+    private final List<Language> preferredLocales;
 
-    public TranslationManipulator( List<Locale> preferredLocales){
+    public TranslationManipulator( List<Language> preferredLocales){
         this.preferredLocales = preferredLocales;
     }
     
@@ -39,7 +39,7 @@ public class TranslationManipulator {
      * @return the element in the good language or null if there is no match
      */
     public Translation getPreferedTranslation(Translatable toTranslate){
-        for(Locale lang : this.preferredLocales){
+        for(Language lang : this.preferredLocales){
             if(toTranslate.containsLang(lang)){
                 return toTranslate.getTranslationForLang(lang);
             }
