@@ -18,8 +18,13 @@
  */
 package com.bloatit.framework.managers;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Member;
+import com.bloatit.framework.lists.MemberList;
+import com.bloatit.model.data.DBRequests;
 import com.bloatit.model.data.DaoMember;
+import java.util.Iterator;
+import java.util.List;
 
 public class MemberManager {
 
@@ -29,6 +34,14 @@ public class MemberManager {
 
     public static boolean existsMember(String login) {
         return DaoMember.exist(login);
+    }
+
+    public static Member getMemberById(Integer id) {
+        return new Member(DBRequests.getById(DaoMember.class, id));
+    }
+
+    public static PageIterable<Member> getMembers() {
+        return new MemberList(DBRequests.getAll(DaoMember.class));
     }
 
 }

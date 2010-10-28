@@ -133,6 +133,9 @@ public class TestDB {
     public DaoDemand getDemand() {
         return demand;
     }
-    
+
+    public static void main(String[] args) {
+        new TestDB();
+    }
     
 }

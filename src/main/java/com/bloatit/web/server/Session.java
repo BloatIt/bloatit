@@ -32,11 +32,11 @@ public class Session {
     private boolean logged;
     private Deque<Action> actionList;
     private Deque<Notification> notificationList;
-    private Locale language;
+    private Language language;
     private Page lastStablePage;
     private AuthToken authToken;
 
-    private List<Locale> preferredLocales;
+    private List<Language> preferredLocales;
     
 
     Session(String key) {
@@ -47,18 +47,18 @@ public class Session {
         this.notificationList = new ArrayDeque<Notification>();
 
         // TODO : Following lines are for testing purposes only
-        preferredLocales = new ArrayList<Locale>();
-        preferredLocales.add(new Locale("fr")); // TODO : ONLY FOR TEST
+        preferredLocales = new ArrayList<Language>();
+        preferredLocales.add(new Language("fr")); // TODO : ONLY FOR TEST
     }
     public String tr(String s){
-        return null; //this.language.tr(s);
+        return this.language.tr(s);
     }
 
-    public Locale getLocale() {
+    public Language getLanguage() {
         return this.language;
     }
 
-    public void setLocale(Locale newLang){
+    public void setLanguage(Language newLang){
         this.language = newLang;
     }
 
@@ -114,7 +114,7 @@ public class Session {
         return notificationList;
     }
 
-    public List<Locale> getPreferredLangs(){
+    public List<Language> getPreferredLangs(){
         return this.preferredLocales;
     }
 }

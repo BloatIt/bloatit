@@ -25,15 +25,15 @@ import com.bloatit.web.server.Session;
 public class HtmlTools {
 
     public static String generateLink(Session session, String displayedText, Page linkPage) {
-        return "<a href=\"/" + session.getLocale() + "/" + linkPage.getCode() + "\">" + displayedText + "</a>";
+        return "<a href=\"/" + session.getLanguage() + "/" + linkPage.getCode() + "\">" + displayedText + "</a>";
     }
 
     public static String generateActionLink(Session session, String text, Action linkAction) {
-        return "<a href=\"/" + session.getLocale() + "/action/" + linkAction.getCode() + "\">" + text + "</a>";
+        return "<a href=\"/" + session.getLanguage() + "/action/" + linkAction.getCode() + "\">" + text + "</a>";
     }
 
     public static String generateUrl(Session session, Page urlPage) {
-        return "/" + session.getLocale() + "/" + urlPage.getCode();
+        return "/" + session.getLanguage() + "/" + urlPage.getCode();
     }
 
     public static String generateLogo() {
