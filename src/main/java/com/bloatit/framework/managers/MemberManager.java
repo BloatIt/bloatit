@@ -29,7 +29,12 @@ import java.util.List;
 public class MemberManager {
 
     public static Member getMemberByLogin(String login) {
-        return new Member(DaoMember.getByLogin(login));
+        DaoMember daoMember = DaoMember.getByLogin(login);
+        if(daoMember == null) {
+            return null;
+        }
+        
+        return new Member(daoMember);
     }
 
     public static boolean existsMember(String login) {

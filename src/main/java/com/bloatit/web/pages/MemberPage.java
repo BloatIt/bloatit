@@ -75,7 +75,9 @@ public class MemberPage extends Page {
             
             memberTitle.add(new HtmlText("Full name: " + member.getFullName()));
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
-            memberTitle.add(new HtmlText("Email: " + member.getEmail()));
+            if(member.canGetEmail()) {
+                memberTitle.add(new HtmlText("Email: " + member.getEmail()));
+            }
             memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
 
             return memberTitle;
