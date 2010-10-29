@@ -1,5 +1,7 @@
 package com.bloatit.framework;
 
+import javassist.NotFoundException;
+
 import com.bloatit.framework.managers.GroupManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.model.data.util.SessionManager;
@@ -7,21 +9,20 @@ import com.bloatit.model.data.util.SessionManager;
 import junit.framework.TestCase;
 
 public class MemberTest extends TestCase {
-    
+
     AuthToken yoAuthToken;
     AuthToken tomAuthToken;
     AuthToken fredAuthToken;
     TestDB db;
-
 
     protected void setUp() throws Exception {
         super.setUp();
         SessionManager.reCreateSessionFactory();
         db = new TestDB();
         SessionManager.beginWorkUnit();
-        yoAuthToken = new AuthToken(MemberManager.getMemberByLogin("Yo"), "plop");
-        tomAuthToken = new AuthToken(MemberManager.getMemberByLogin("Thomas"), "plip");
-        fredAuthToken = new AuthToken(MemberManager.getMemberByLogin("Fred"), "plap");
+        yoAuthToken = new AuthToken("Yo", "plop");
+        tomAuthToken = new AuthToken("Thomas", "password");
+        fredAuthToken = new AuthToken("Fred", "other");
         SessionManager.endWorkUnitAndFlush();
     }
 
@@ -34,13 +35,15 @@ public class MemberTest extends TestCase {
     }
 
     public void testAddToGroup() {
+        // TODO correct the right management in groups
         SessionManager.beginWorkUnit();
         Member yo = MemberManager.getMemberByLogin("Yo");
-        
+
         yo.unLock(yoAuthToken);
         yo.addToGroup(GroupManager.getByName("ubuntuUsers"), false);
-        yo.lock();
-        
+
+        assertTrue(yo.isInGroup(GroupManager.getByName("ubuntuUsers")));
+
         try {
             yo.unLock(fredAuthToken);
             yo.addToGroup(GroupManager.getByName("ubuntuUsers"), false);
@@ -48,53 +51,109 @@ public class MemberTest extends TestCase {
         } catch (Exception e) {
             yo.lock();
         }
-        
-        
+
         SessionManager.endWorkUnitAndFlush();
     }
 
     public void testRemoveFromGroup() {
-        fail("Not yet implemented");
+        SessionManager.beginWorkUnit();
+        Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.unLock(yoAuthToken);
+        yo.removeFromGroup(GroupManager.getByName("b219"));
+        assertFalse(yo.isInGroup(GroupManager.getByName("b219")));
+
+        try {
+            yo.unLock(fredAuthToken);
+            yo.removeFromGroup(GroupManager.getByName("b219"));
+            fail();
+        } catch (Exception e) {
+            yo.lock();
+        }
+
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testGetGroups() {
+        // Here the right thing would be to show all
+        // the public and protected group to everyone
+        // the private group to the member of the private group
+
         fail("Not yet implemented");
     }
 
     public void testGetKarma() {
-        fail("Not yet implemented");
+        SessionManager.beginWorkUnit();
+        Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.unLock(yoAuthToken);
+        assertEquals(0, yo.getKarma());
+        yo.unLock(fredAuthToken);
+        assertEquals(0, yo.getKarma());
+        yo.unLock(tomAuthToken);
+        assertEquals(0, yo.getKarma());
+
+        SessionManager.endWorkUnitAndFlush();
     }
 
-    public void testAddToKarma() {
-        fail("Not yet implemented");
+    public void testSetFullName() {
+        SessionManager.beginWorkUnit();
+        Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.unLock(yoAuthToken);
+        assertEquals(0, yo.getKarma());
+        yo.unLock(fredAuthToken);
+        assertEquals(0, yo.getKarma());
+        yo.unLock(tomAuthToken);
+        assertEquals(0, yo.getKarma());
+
+        SessionManager.endWorkUnitAndFlush();
     }
 
-    public void testGetFirstname() {
-        fail("Not yet implemented");
+    public void testGetFullname() {
+        SessionManager.beginWorkUnit();
+        Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.unLock(yoAuthToken);
+        assertEquals("Yoann Plénet", yo.getFullname());
+        yo.unLock(fredAuthToken);
+        assertEquals("Yoann Plénet", yo.getFullname());
+        yo.unLock(tomAuthToken);
+        assertEquals("Yoann Plénet", yo.getFullname());
+
+        SessionManager.endWorkUnitAndFlush();
     }
 
-    public void testSetFirstname() {
-        fail("Not yet implemented");
-    }
+    public void testSetFullname() {
+        SessionManager.beginWorkUnit();
+        Member yo = MemberManager.getMemberByLogin("Yo");
 
-    public void testGetFullName() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetLastname() {
-        fail("Not yet implemented");
-    }
-
-    public void testSetLastname() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetPassword() {
-        fail("Not yet implemented");
+        yo.unLock(yoAuthToken);
+        yo.setFullname("Plénet Yoann");
+        
+        try {
+            yo.unLock(fredAuthToken);
+            yo.setFullname("plop");
+            fail();
+        } catch (Exception e) {}
+        
+        assertEquals("Yoann Plénet", yo.getFullname());
+        
+        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testSetPassword() {
-        fail("Not yet implemented");
+        SessionManager.beginWorkUnit();
+        Member yo = MemberManager.getMemberByLogin("Yo");
+        
+        yo.unLock(yoAuthToken);
+        yo.setPassword("Coucou");
+        
+        try {
+            new AuthToken("Yo", "Coucou");
+        } catch (NotFoundException e) {
+            fail();
+        }
     }
 
     public void testGetDemands() {

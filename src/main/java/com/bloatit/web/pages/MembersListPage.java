@@ -58,7 +58,7 @@ public class MembersListPage extends Page {
         for(Member member:memberList) {
 
             MemberPage memberPage = new MemberPage(session, member);
-            HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(this.session, member.getFullName() ,memberPage)+ "<span class=\"karma\">"+ HtmlTools.compressKarma(member.getKarma()) + "</span>");
+            HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(this.session, member.getFullname() ,memberPage)+ "<span class=\"karma\">"+ HtmlTools.compressKarma(member.getKarma()) + "</span>");
             htmlMemberList.addItem(item);
         }
         

@@ -1,7 +1,6 @@
 package com.bloatit.model.data;
 
 import java.util.Iterator;
-import java.util.List;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -45,20 +44,17 @@ public class GroupMemberTest extends TestCase {
         SessionManager.beginWorkUnit();
         {
             DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
-            theMember.setFirstname("Thomas");
-            theMember.setLastname("Guyard");
+            theMember.setFullname("Thomas Guyard");
             SessionManager.flush();
         }
         {
             DaoMember theMember = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
-            theMember.setFirstname("Frédéric");
-            theMember.setLastname("Bertolus");
+            theMember.setFullname("Frédéric Bertolus");
             SessionManager.flush();
         }
         {
             DaoMember theMember = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
-            theMember.setFirstname("Yoann");
-            theMember.setLastname("Plénet");
+            theMember.setFullname("Yoann Plénet");
             SessionManager.endWorkUnitAndFlush();
         }
 
@@ -80,7 +76,7 @@ public class GroupMemberTest extends TestCase {
     public void testGetMemberByLogin() {
         testCreateMember();
         SessionManager.beginWorkUnit();
-        assertEquals("Bertolus", DaoMember.getByLogin("Fred").getLastname());
+        assertNotNull(DaoMember.getByLogin("Fred"));
         assertNull(DaoMember.getByLogin("Inexistant"));
         SessionManager.endWorkUnitAndFlush();
     }
@@ -148,8 +144,8 @@ public class GroupMemberTest extends TestCase {
         SessionManager.beginWorkUnit();
         PageIterable<DaoMember> Members = DaoGroup.getByName("b219").getMembers();
         Iterator<DaoMember> it = Members.iterator();
-        assertEquals(it.next().getFirstname(), "Frédéric");
-        assertEquals(it.next().getFirstname(), "Yoann");
+        assertEquals(it.next().getFullname(), "Frédéric Bertolus");
+        assertEquals(it.next().getFullname(), "Yoann Plénet");
         assertFalse(it.hasNext());
         SessionManager.endWorkUnitAndFlush();
     }

@@ -20,34 +20,22 @@ package com.bloatit.framework.managers;
 
 import java.util.HashMap;
 
-import com.bloatit.common.CryptoTools;
-import com.bloatit.common.FatalErrorException;
+import javassist.NotFoundException;
+
 import com.bloatit.framework.AuthToken;
-import com.bloatit.framework.Member;
 
 public class LoginManager {
 
     private static final HashMap<String, AuthToken> authTokenList = new HashMap<String, AuthToken>();
-    
-    public static AuthToken loginByPassword(String login, String password) {
-        Member member = MemberManager.getByLoginAndPassword(login, password);
 
-        if (member != null) {
-            return newAuthToken(member);
-        } else {
+    public static AuthToken loginByPassword(String login, String password) {
+        try {
+            AuthToken token = new AuthToken(login, password);
+            authTokenList.put(token.getKey(), token);
+            return token;
+        } catch (NotFoundException e) {
             return null;
         }
-    }
-
-    public static AuthToken newAuthToken(Member member) {
-
-        String key = CryptoTools.generateKey();
-
-        AuthToken newToken = new AuthToken(member, key);
-
-        authTokenList.put(key, newToken);
-
-        return newToken;
     }
 
     public static AuthToken getByKey(String key) {

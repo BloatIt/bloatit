@@ -33,14 +33,11 @@ public class TestDB {
         SessionManager.beginWorkUnit();
         
         tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
-        tom.setFirstname("Thomas");
-        tom.setLastname("Guyard");
+        tom.setFullname("Thomas Guyard");
         fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
-        fred.setFirstname("Frédéric");
-        fred.setLastname("Bertolus");
+        fred.setFullname("Frédéric Bertolus");
         yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
-        yo.setFirstname("Yoann");
-        yo.setLastname("Plénet");
+        yo.setFullname("Yoann Plénet");
 
         other = DaoGroup.createAndPersiste("other", "plop@plop.com", DaoGroup.Right.PROTECTED);
         b219 = DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PRIVATE);

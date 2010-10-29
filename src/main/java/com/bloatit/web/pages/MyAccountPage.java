@@ -43,9 +43,9 @@ public class MyAccountPage extends Page {
         if (this.session.getAuthToken() != null) {
             Member member = this.session.getAuthToken().getMember();
             member.unLock(this.session.getAuthToken());
-            HtmlTitle memberTitle = new HtmlTitle(member.getFullName(), "");
+            HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
             
-            memberTitle.add(new HtmlText("Full name: " + member.getFullName()));
+            memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
             memberTitle.add(new HtmlText("Email: " + member.getEmail()));
             memberTitle.add(new HtmlText("Karma: " + member.getKarma()));

@@ -24,15 +24,11 @@ import com.bloatit.model.data.util.SessionManager;
         + "where m = :member order by g.login")
 public class DaoMember extends DaoActor {
 
-
-
-    private String firstname;
+    private String fullname;
     @Basic(optional = false)
     private String password;
-    @Basic(optional = true)
-    private String lastName;
     @Basic(optional = false)
-    private Integer karama;
+    private Integer karma;
 
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member")
@@ -97,7 +93,7 @@ public class DaoMember extends DaoActor {
     protected DaoMember(String login, String password, String email) {
         super(login, email);
         this.password = password;
-        this.karama = 0;
+        this.karma = 0;
     }
 
     /**
@@ -127,12 +123,12 @@ public class DaoMember extends DaoActor {
         return new QueryCollection<DaoGroup>(q);
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFullname(String firstname) {
+        this.fullname = firstname;
     }
 
     public String getPassword() {
@@ -141,14 +137,6 @@ public class DaoMember extends DaoActor {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getLastname() {
-        return lastName;
-    }
-
-    public void setLastname(String name) {
-        this.lastName = name;
     }
 
     public PageIterable<DaoDemand> getDemands() {
@@ -181,36 +169,36 @@ public class DaoMember extends DaoActor {
 
     private <T> PageIterable<T> getUserContent(Class<T> theClass, String className) {
         Query q = SessionManager.getSessionFactory()
-                               .getCurrentSession()
-                               .createQuery("from com.bloatit.model.data." + className + " as x where x.member = :author");
+                                .getCurrentSession()
+                                .createQuery("from com.bloatit.model.data." + className + " as x where x.member = :author");
         q.setEntity("author", this);
         return new QueryCollection<T>(q);
     }
 
-    public boolean isInGroup(Group group) {
+    public boolean isInGroup(DaoGroup group) {
         Query q = SessionManager.getSessionFactory()
-                               .getCurrentSession()
-                               .createQuery("select count(*) from com.bloatit.model.data.DaoMember m join m.groupMembership as gm "
-                                       + "join gm.group as g where m = :member and g = :group");
+                                .getCurrentSession()
+                                .createQuery("select count(*) from com.bloatit.model.data.DaoMember m join m.groupMembership as gm "
+                                        + "join gm.group as g where m = :member and g = :group");
         q.setEntity("member", this);
         q.setEntity("group", group);
-        return ((Integer) q.uniqueResult()) >= 1;
+        return ((Long) q.uniqueResult()) >= 1;
     }
 
-    public void addToKarama(int value) {
-        karama += value;
+    public void addToKarma(int value) {
+        karma += value;
     }
 
-    public Integer getKaram() {
-        return karama;
+    public Integer getKarma() {
+        return karma;
     }
 
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    protected void setKaram(Integer karama) {
-        this.karama = karama;
+    protected void setKarma(Integer karama) {
+        this.karma = karama;
     }
 
     protected void setGroupMembership(Set<DaoGroupMembership> GroupMembership) {

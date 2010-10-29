@@ -27,20 +27,17 @@ public class DemandTest extends TestCase {
         SessionManager.beginWorkUnit();
         {
             tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
-            tom.setFirstname("Thomas");
-            tom.setLastname("Guyard");
+            tom.setFullname("Thomas Guyard");
             SessionManager.flush();
         }
         {
             fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
-            fred.setFirstname("Frédéric");
-            fred.setLastname("Bertolus");
+            fred.setFullname("Frédéric Bertolus");
             SessionManager.flush();
         }
         {
             yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
-            yo.setFirstname("Yoann");
-            yo.setLastname("Plénet");
+            yo.setFullname("Yoann Plénet");
             SessionManager.flush();
 
             DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);

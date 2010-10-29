@@ -103,7 +103,7 @@ public abstract class Page extends Request {
         this.htmlResult.write("<div id=\"top_bar\">");
         this.htmlResult.indent();
         if (this.session.isLogged()) {
-            String full_name = this.session.getAuthToken().getMember().getFullName();
+            String full_name = this.session.getAuthToken().getMember().getFullname();
             String karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
             String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma + "</span>";
             String logoutLink = HtmlTools.generateActionLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));

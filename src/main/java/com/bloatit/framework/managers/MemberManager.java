@@ -47,7 +47,7 @@ public class MemberManager {
         return new MemberList(DBRequests.getAll(DaoMember.class));
     }
 
-    static Member getByLoginAndPassword(String login, String password) {
+    public static Member getByLoginAndPassword(String login, String password) {
         DaoMember daoMember = DaoMember.getByLoginAndPassword(login, password);
         if (daoMember == null) {
             return null;

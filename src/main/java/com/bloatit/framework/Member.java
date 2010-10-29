@@ -23,10 +23,6 @@ public class Member extends Actor {
         this.dao = dao;
     }
 
-    protected DaoMember getDao() {
-        return dao;
-    }
-
     public boolean canAccessGroups(Action action) {
         return new MemberRight.GroupList().canAccess(calculateRole(this), action);
     }
@@ -46,56 +42,31 @@ public class Member extends Actor {
         return new GroupList(dao.getGroups());
     }
 
-    public boolean canAccessKaram(Action action) {
-        return new MemberRight.Karma().canAccess(calculateRole(this), action);
+    public boolean canGetKaram() {
+        return new MemberRight.Karma().canAccess(calculateRole(this), Action.READ);
     }
 
     public int getKarma() {
         new MemberRight.Karma().tryAccess(calculateRole(this), Action.READ);
-        return dao.getKaram();
-    }
-
-    public void addToKarma(int value) {
-        new MemberRight.Karma().tryAccess(calculateRole(this), Action.WRITE);
-        dao.addToKarama(value);
+        return dao.getKarma();
     }
 
     public boolean canAccessName(Action action) {
         return new MemberRight.Name().canAccess(calculateRole(this), action);
     }
 
-    public String getFirstname() {
+    public String getFullname() {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
-        return dao.getFirstname();
+        return dao.getFullname();
     }
 
-    public void setFirstname(String firstname) {
+    public void setFullname(String fullname) {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setFirstname(firstname);
+        dao.setFullname(fullname);
     }
 
-    public String getFullName() {
-        new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
-        return getFirstname() + " " + getLastname();
-    }
-
-    public String getLastname() {
-        new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
-        return dao.getLastname();
-    }
-
-    public void setLastname(String name) {
-        new MemberRight.Name().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setLastname(name);
-    }
-
-    public boolean canAccessPassword(Action action) {
-        return new MemberRight.Password().canAccess(calculateRole(this), action);
-    }
-
-    public String getPassword() {
-        new MemberRight.Password().tryAccess(calculateRole(this), Action.READ);
-        return dao.getPassword();
+    public boolean canSetPassword() {
+        return new MemberRight.Password().canAccess(calculateRole(this), Action.WRITE);
     }
 
     public void setPassword(String password) {
@@ -137,11 +108,22 @@ public class Member extends Actor {
     }
 
     protected boolean isInGroupUnprotected(Group group) {
-        return dao.isInGroup(group);
+        return dao.isInGroup(group.getDao());
     }
 
     public boolean isInGroup(Group group) {
         return isInGroupUnprotected(group);
     }
 
+    protected DaoMember getDao() {
+        return dao;
+    }
+
+    protected void addToKarma(int value) {
+        dao.addToKarma(value);
+    }
+
+    protected String getPassword() {
+        return dao.getPassword();
+    }
 }

@@ -73,9 +73,9 @@ public class MemberPage extends Page {
         if (this.member != null) {
             member.unLock(session.getAuthToken());
 
-            HtmlTitle memberTitle = new HtmlTitle(member.getFullName(), "");
+            HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
             
-            memberTitle.add(new HtmlText("Full name: " + member.getFullName()));
+            memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
             if(member.canGetEmail()) {
                 memberTitle.add(new HtmlText("Email: " + member.getEmail()));
