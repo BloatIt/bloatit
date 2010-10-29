@@ -47,7 +47,7 @@ public abstract class Account extends Identifiable {
 
     protected Actor getActorUnprotected() {
         if (getDaoAccount().getActor().getClass() == DaoMember.class) {
-            return new Member((DaoMember) getDaoAccount().getActor());
+            return Member.create((DaoMember) getDaoAccount().getActor());
         } else if (getDaoAccount().getActor().getClass() == DaoGroup.class) {
             return new Group((DaoGroup) getDaoAccount().getActor());
         }

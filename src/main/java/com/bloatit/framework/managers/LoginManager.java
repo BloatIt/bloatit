@@ -19,6 +19,7 @@
 package com.bloatit.framework.managers;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import javassist.NotFoundException;
 
@@ -26,7 +27,7 @@ import com.bloatit.framework.AuthToken;
 
 public class LoginManager {
 
-    private static final HashMap<String, AuthToken> authTokenList = new HashMap<String, AuthToken>();
+    private static final HashMap<UUID, AuthToken> authTokenList = new HashMap<UUID, AuthToken>();
 
     public static AuthToken loginByPassword(String login, String password) {
         try {

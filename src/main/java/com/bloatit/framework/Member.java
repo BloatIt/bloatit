@@ -18,7 +18,14 @@ public class Member extends Actor {
 
     private DaoMember dao;
 
-    public Member(DaoMember dao) {
+    public static Member create(DaoMember dao){
+        if (dao == null){
+            return null;
+        }
+        return new Member(dao);
+    }
+    
+    private Member(DaoMember dao) {
         super();
         this.dao = dao;
     }

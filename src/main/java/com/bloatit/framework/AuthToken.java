@@ -19,14 +19,15 @@
 
 package com.bloatit.framework;
 
+import java.util.UUID;
+
 import javassist.NotFoundException;
 
-import com.bloatit.common.CryptoTools;
 import com.bloatit.framework.managers.MemberManager;
 
 public class AuthToken {
     private Member member;
-    private String key;
+    private UUID key;
 
     public AuthToken(String login, String password) throws NotFoundException {
         Member tmp = MemberManager.getByLoginAndPassword(login, password);
@@ -34,10 +35,10 @@ public class AuthToken {
             throw new NotFoundException("Identifiaction or authentification failed");
         }
         this.member = tmp;
-        this.key = CryptoTools.generateKey();
+        this.key = UUID.randomUUID();
     }
 
-    public String getKey() {
+    public UUID getKey() {
         return key;
     }
 

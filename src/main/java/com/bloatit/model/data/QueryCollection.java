@@ -10,12 +10,12 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     private Query query;
     private int pageSize;
-    
-    protected QueryCollection(Query  query){
+
+    protected QueryCollection(Query query) {
         pageSize = 0;
         this.query = query;
     }
-    
+
     @Override
     @SuppressWarnings("unchecked")
     public Iterator<T> iterator() {
@@ -24,15 +24,16 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     /**
      * by default a this will return a page with all the elements.
+     * 
      * @param page the page number
      * @return a list of entity.
      */
     @SuppressWarnings("unchecked")
-    public Iterable<T> getPage(int page){
+    public Iterable<T> getPage(int page) {
         query.setFirstResult(page * pageSize);
         return query.list();
     }
-    
+
     public void setPageSize(int pageSize) {
         query.setFetchSize(pageSize);
         this.pageSize = pageSize;
@@ -40,6 +41,21 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     public int getPageSize() {
         return pageSize;
+    }
+
+    @Override
+    public long size() {
+        // TODO optimize me !
+        return query.list().size();
+    }
+
+    @Override
+    public long pageNumber() {
+        if (pageSize != 0) {
+            return size() / pageSize;
+        } else {
+            return 1;
+        }
     }
 
 }

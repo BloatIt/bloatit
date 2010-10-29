@@ -55,8 +55,11 @@ public class GroupMemberTest extends TestCase {
         {
             DaoMember theMember = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
             theMember.setFullname("Yoann Plénet");
-            SessionManager.endWorkUnitAndFlush();
         }
+
+        assertEquals(3, DBRequests.getAll(DaoMember.class).size());
+        
+        SessionManager.endWorkUnitAndFlush();
 
     }
 
@@ -191,7 +194,7 @@ public class GroupMemberTest extends TestCase {
 
         b218.removeMember(yo);
 
-        Iterator<DaoGroup> it = yo.getGroups().iterator(); 
+        Iterator<DaoGroup> it = yo.getGroups().iterator();
         assertEquals(it.next().getLogin(), "b216");
         assertEquals(it.next().getLogin(), "b217");
         assertEquals(it.next().getLogin(), "b219");

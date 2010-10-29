@@ -23,104 +23,104 @@ import com.bloatit.model.data.util.SessionManager;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DaoActor {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
-	@Basic(optional = false)
-	@Column(unique = true, updatable = false)
-	private String login;
-	@Basic(optional = false)
-	private String email;
-	@Basic(optional = false)
-	private Date dateCreation;
+    @Basic(optional = false)
+    @Column(unique = true, updatable = false)
+    private String login;
+    @Basic(optional = false)
+    private String email;
+    @Basic(optional = false)
+    private Date dateCreation;
 
-	@OneToOne(optional = false)
-	@Cascade(value = { CascadeType.ALL })
-	private DaoInternalAccount internalAccount;
+    @OneToOne(optional = false)
+    @Cascade(value = { CascadeType.ALL })
+    private DaoInternalAccount internalAccount;
 
-	@OneToOne
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	private DaoExternalAccount externalAccount;
+    @OneToOne
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    private DaoExternalAccount externalAccount;
 
-	protected DaoActor() {
-		super();
-	}
+    protected DaoActor() {
+        super();
+    }
 
-	protected DaoActor(String login, String email) {
-		super();
-		this.dateCreation = new Date();
-		this.login = login;
-		this.email = email;
-		this.internalAccount = new DaoInternalAccount(this);
-	}
+    protected DaoActor(String login, String email) {
+        super();
+        this.dateCreation = new Date();
+        this.login = login;
+        this.email = email;
+        this.internalAccount = new DaoInternalAccount(this);
+    }
 
-	/**
-	 * This method use a HQL request. If you intend to use "getByLogin", "exist"
-	 * is useless. (In that case you'd better test if getByLogin != null, to
-	 * minimize the number of HQL request).
-	 */
-	public static boolean exist(String login) {
-		Session session = SessionManager.getSessionFactory().getCurrentSession();
-		// TODO use the count() in HQL
-		Query q = session.createQuery("from com.bloatit.model.data.DaoActor as m where login = :login");
-		q.setString("login", login);
-		return (q.uniqueResult() != null);
-	}
+    /**
+     * This method use a HQL request. If you intend to use "getByLogin", "exist"
+     * is useless. (In that case you'd better test if getByLogin != null, to
+     * minimize the number of HQL request).
+     */
+    public static boolean exist(String login) {
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
+        // TODO use the count() in HQL
+        Query q = session.createQuery("select count(*) from com.bloatit.model.data.DaoActor as m where login = :login");
+        q.setString("login", login);
+        return ((Long) q.uniqueResult()) > 0;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public Date getDateCreation() {
-		return dateCreation;
-	}
+    public Date getDateCreation() {
+        return dateCreation;
+    }
 
-	public DaoInternalAccount getInternalAccount() {
-		return internalAccount;
-	}
+    public DaoInternalAccount getInternalAccount() {
+        return internalAccount;
+    }
 
-	public DaoExternalAccount getExternalAccount() {
-		return externalAccount;
-	}
+    public DaoExternalAccount getExternalAccount() {
+        return externalAccount;
+    }
 
-	public void setExternalAccount(DaoExternalAccount externalAccount) {
-		if (externalAccount.getActor() != this) {
-			throw new FatalErrorException("Add an external account to the wrong user.", null);
-		}
-		this.externalAccount = externalAccount;
-	}
+    public void setExternalAccount(DaoExternalAccount externalAccount) {
+        if (externalAccount.getActor() != this) {
+            throw new FatalErrorException("Add an external account to the wrong user.", null);
+        }
+        this.externalAccount = externalAccount;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
-	protected void setInternalAccount(DaoInternalAccount InternalAccount) {
-		this.internalAccount = InternalAccount;
-	}
+    protected void setInternalAccount(DaoInternalAccount InternalAccount) {
+        this.internalAccount = InternalAccount;
+    }
 
-	protected void setLogin(String login) {
-		this.login = login;
-	}
+    protected void setLogin(String login) {
+        this.login = login;
+    }
 
-	protected void setDateCreation(Date dateJoin) {
-		this.dateCreation = dateJoin;
-	}
+    protected void setDateCreation(Date dateJoin) {
+        this.dateCreation = dateJoin;
+    }
 
-	protected void setId(Integer id) {
-		this.id = id;
-	}
+    protected void setId(Integer id) {
+        this.id = id;
+    }
 
 }

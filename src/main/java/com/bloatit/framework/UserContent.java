@@ -9,7 +9,7 @@ public abstract class UserContent extends Identifiable {
     protected abstract DaoUserContent getDaoUserContent();
     
 	public Member getAuthor() {
-		return new Member(getDaoUserContent().getAuthor());
+		return Member.create(getDaoUserContent().getAuthor());
 	}
 
 	public Date getCreationDate() {

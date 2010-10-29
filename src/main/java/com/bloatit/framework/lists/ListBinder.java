@@ -34,6 +34,17 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E>{
         return daoCollection.getPageSize();
     }
     
+    @Override
+    public long size() {
+         return daoCollection.size();
+    }
+
+    @Override
+    public long pageNumber() {
+        return daoCollection.pageNumber();
+    }
+
+    
     protected abstract Iterator<E> createFromDaoIterator(Iterator<DAO> dao);
 
 }

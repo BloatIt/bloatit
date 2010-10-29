@@ -32,7 +32,7 @@ public class MemberManager {
             return null;
         }
 
-        return new Member(daoMember);
+        return Member.create(daoMember);
     }
 
     public static boolean existsMember(String login) {
@@ -40,7 +40,7 @@ public class MemberManager {
     }
 
     public static Member getMemberById(Integer id) {
-        return new Member(DBRequests.getById(DaoMember.class, id));
+        return Member.create(DBRequests.getById(DaoMember.class, id));
     }
 
     public static PageIterable<Member> getMembers() {
@@ -53,6 +53,6 @@ public class MemberManager {
             return null;
         }
         
-        return new Member(daoMember);
+        return  Member.create(daoMember);
     }
 }
