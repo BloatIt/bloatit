@@ -49,7 +49,7 @@ public class Member extends Actor {
         return new GroupList(dao.getGroups());
     }
 
-    public boolean canGetKaram() {
+    public boolean canGetKarma() {
         return new MemberRight.Karma().canAccess(calculateRole(this), Action.READ);
     }
 

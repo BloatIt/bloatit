@@ -13,7 +13,14 @@ import com.bloatit.model.data.DaoKudosable;
 public class Demand extends Kudosable {
     private DaoDemand dao;
 
-    public Demand(DaoDemand dao) {
+    public static Demand create(DaoDemand dao) {
+        if (dao == null) {
+            return null;
+        }
+        return new Demand(dao);
+    }
+
+    private Demand(DaoDemand dao) {
         super();
         this.dao = dao;
     }
@@ -21,8 +28,8 @@ public class Demand extends Kudosable {
     public DaoDemand getDao() {
         return dao;
     }
-    
-    public String getTitle(){
+
+    public String getTitle() {
         return getDescription().getDefaultTranslation().getTitle();
     }
 

@@ -18,6 +18,9 @@
  */
 package com.bloatit.web.pages;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.model.exceptions.ElementNotFoundException;
@@ -25,11 +28,8 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DemandPage extends Page {
 

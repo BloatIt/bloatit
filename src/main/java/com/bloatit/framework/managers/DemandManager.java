@@ -18,20 +18,20 @@
  */
 package com.bloatit.framework.managers;
 
-import java.util.ArrayList;
-
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.lists.DemandList;
+import com.bloatit.model.data.DBRequests;
+import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.exceptions.ElementNotFoundException;
 
 public class DemandManager {
 
-    // TODO 
-    public static ArrayList<Demand> GetAllDemands() {
-        return null;
+    public static PageIterable<Demand> GetAllDemands() {
+        return new DemandList(DBRequests.getAll(DaoDemand.class));
     }
 
-    // TODO 
     public static Demand GetDemandById(Integer id) throws ElementNotFoundException {
-        return null;
+        return Demand.create(DBRequests.getById(DaoDemand.class, id));
     }
 }

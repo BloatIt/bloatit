@@ -34,7 +34,7 @@ public class Offer extends Kudosable {
     }
 
     public Demand getDemand() {
-        return new Demand(dao.getDemand());
+        return Demand.create(dao.getDemand());
     }
 
     public Description getDescription() {

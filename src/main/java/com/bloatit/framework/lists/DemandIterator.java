@@ -17,7 +17,7 @@ public class DemandIterator extends com.bloatit.framework.lists.IteratorBinder<D
 
     @Override
     protected Demand createFromDao(DaoDemand dao) {
-        return new Demand(dao);
+        return Demand.create(dao);
     }
 
 }

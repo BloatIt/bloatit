@@ -43,6 +43,9 @@ public class SessionManager {
 	public static void flush(){
 		sessionFactory.getCurrentSession().flush();
 	}
+	public static void clear(){
+	    sessionFactory.getCurrentSession().clear();
+	}
 	
 	public static void rollback(){
 		sessionFactory.getCurrentSession().getTransaction().rollback();

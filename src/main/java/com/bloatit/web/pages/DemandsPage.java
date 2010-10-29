@@ -19,21 +19,19 @@
 
 package com.bloatit.web.pages;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
-import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.server.Language;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.TranslationManipulator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DemandsPage extends Page {
 
@@ -47,7 +45,7 @@ public class DemandsPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        ArrayList<Demand> demands = DemandManager.GetAllDemands();
+        PageIterable<Demand> demands = DemandManager.GetAllDemands();
         TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
         
         HtmlBlock demandTableAll = new HtmlBlock("demand_table");
