@@ -7,8 +7,11 @@ import javax.persistence.Basic;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.hibernate.Query;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import com.bloatit.model.data.util.SessionManager;
 
 @MappedSuperclass
 public abstract class DaoKudosable extends DaoUserContent {
@@ -20,7 +23,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     @Basic(optional = false)
     private int popularity;
     @OneToMany
-    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
     @Basic(optional = false)
     private State state;
@@ -37,8 +40,6 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     /**
-     * Trivial calculation of the popularity
-     * 
      * @return the new popularity
      */
     public int addKudos(DaoMember member, int value) {
@@ -58,16 +59,22 @@ public abstract class DaoKudosable extends DaoUserContent {
         this.state = State.REJECTED;
     }
 
+    public int getPopularity() {
+        return popularity;
+    }
+
+    public boolean hasKudosed(DaoMember member) {
+        Query f = SessionManager.getSessionFactory().getCurrentSession().createFilter(kudos, "where this.author = :author");
+        f.setEntity("author", getAuthor());
+        return f.uniqueResult() != null;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
     protected void setState(State state) {
         this.state = state;
-    }
-
-    protected int getPopularity() {
-        return popularity;
     }
 
     protected void setPopularity(int popularity) {

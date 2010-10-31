@@ -1,5 +1,6 @@
 package com.bloatit.framework;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoKudosable.State;
 import com.bloatit.model.data.DaoUserContent;
@@ -8,7 +9,14 @@ public abstract class Kudosable extends UserContent {
 
     protected abstract DaoKudosable getDaoKudosable();
 
+    public boolean canKudos(Member member) {
+        return !getDaoKudosable().hasKudosed(member.getDao());
+    }
+
     public void unkudos(Member member) {
+        if (getDaoKudosable().hasKudosed(member.getDao())) {
+            throw new UnauthorizedOperationException();
+        }
         int influence = member.calculateInfluence();
         if (influence > 0) {
             getAuthor().addToKarma(-influence);
@@ -17,6 +25,9 @@ public abstract class Kudosable extends UserContent {
     }
 
     public void kudos(Member member) {
+        if (getDaoKudosable().hasKudosed(member.getDao())) {
+            throw new UnauthorizedOperationException();
+        }
         int influence = member.calculateInfluence();
         if (influence > 0) {
             getAuthor().addToKarma(influence);
