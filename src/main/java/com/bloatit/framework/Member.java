@@ -18,13 +18,13 @@ public class Member extends Actor {
 
     private DaoMember dao;
 
-    public static Member create(DaoMember dao){
-        if (dao == null){
+    public static Member create(DaoMember dao) {
+        if (dao == null) {
             return null;
         }
         return new Member(dao);
     }
-    
+
     private Member(DaoMember dao) {
         super();
         this.dao = dao;
@@ -56,6 +56,16 @@ public class Member extends Actor {
     public int getKarma() {
         new MemberRight.Karma().tryAccess(calculateRole(this), Action.READ);
         return dao.getKarma();
+    }
+
+    protected int calculateInfluence() {
+        int karma = getKarma();
+        if (karma > 0) {
+            return (int) (Math.log10(karma) * 10 + 1);
+        } else if (karma == 0) {
+            return 1;
+        }
+        return 0;
     }
 
     public boolean canAccessName(Action action) {

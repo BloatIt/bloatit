@@ -7,9 +7,21 @@ import com.bloatit.model.data.DaoUserContent;
 public abstract class Kudosable extends UserContent {
 
     protected abstract DaoKudosable getDaoKudosable();
-    
-    public int addKudos(Member member, int value) {
-        return getDaoKudosable().addKudos(member.getDao(), value);
+
+    public void unkudos(Member member) {
+        int influence = member.calculateInfluence();
+        if (influence > 0) {
+            getAuthor().addToKarma(-influence);
+            getDaoKudosable().addKudos(member.getDao(), -influence);
+        }
+    }
+
+    public void kudos(Member member) {
+        int influence = member.calculateInfluence();
+        if (influence > 0) {
+            getAuthor().addToKarma(influence);
+            getDaoKudosable().addKudos(member.getDao(), influence);
+        }
     }
 
     public State getState() {
@@ -23,9 +35,9 @@ public abstract class Kudosable extends UserContent {
     protected void setRejected() {
         getDaoKudosable().setRejected();
     }
-    
+
     @Override
-    protected final DaoUserContent getDaoUserContent(){
+    protected final DaoUserContent getDaoUserContent() {
         return getDaoKudosable();
     }
 
