@@ -1,6 +1,7 @@
 package com.bloatit.framework;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.framework.lists.ContributionList;
 import com.bloatit.framework.lists.DemandList;
@@ -12,6 +13,7 @@ import com.bloatit.framework.lists.TranslationList;
 import com.bloatit.framework.right.MemberRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoActor;
+import com.bloatit.model.data.DaoGroup.Right;
 import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoMember.Role;
 
@@ -35,9 +37,12 @@ public class Member extends Actor {
         return new MemberRight.GroupList().canAccess(calculateRole(this), action);
     }
 
-    public void addToGroup(Group aGroup, boolean isAdmin) {
+    public void addToPublicGroup(Group group) {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
-        dao.addToGroup(aGroup.getDao(), isAdmin);
+        if (group.getRight() != Right.PUBLIC) {
+            throw new UnauthorizedOperationException();
+        }
+        dao.addToGroup(group.getDao(), false);
     }
 
     public void removeFromGroup(Group aGroup) {

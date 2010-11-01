@@ -12,13 +12,13 @@ public class MemberTest extends FrameworkTestUnit {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
-        yo.addToGroup(GroupManager.getByName("ubuntuUsers"), false);
+        yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
 
         assertTrue(yo.isInGroup(GroupManager.getByName("ubuntuUsers")));
 
         try {
             yo.authenticate(fredAuthToken);
-            yo.addToGroup(GroupManager.getByName("ubuntuUsers"), false);
+            yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
             fail();
         } catch (final Exception e) {}
 
