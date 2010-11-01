@@ -47,6 +47,11 @@ public class Member extends Actor {
         dao.addToGroup(group.getDao(), false);
     }
 
+    /**
+     * @param group the group in which you want to invite somebody
+     * @param action write for create a new invitation and read to accept/refuse it
+     * @return true if you can invite/accept/refuse.
+     */
     public boolean canInvite(Group group, Action action) {
         return new MemberRight.InviteInGroup().canAccess(calculateRole(this, group), action);
     }
@@ -58,7 +63,12 @@ public class Member extends Actor {
 
     public void acceptInvitation(JoinGroupDemand demand) {
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
-        // TODO implement the accept !! 
+        demand.accept();
+    }
+
+    public void refuseInvitation(JoinGroupDemand demand) {
+        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
+        demand.refuse();
     }
 
     public void removeFromGroup(Group aGroup) {

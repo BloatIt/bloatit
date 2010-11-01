@@ -1,6 +1,8 @@
 package com.bloatit.model.data;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
@@ -10,6 +12,9 @@ import com.bloatit.model.data.util.SessionManager;
 
 @Entity
 public class DaoJoinGroupDemand extends DaoIdentifiable {
+    enum State {
+        ACCEPTED, REFUSED, PENDING
+    }
 
     @ManyToOne(optional = false)
     private DaoMember sender;
@@ -17,6 +22,9 @@ public class DaoJoinGroupDemand extends DaoIdentifiable {
     private DaoMember reciever;
     @ManyToOne(optional = false)
     private DaoGroup group;
+    @Basic(optional = false)
+    @Enumerated
+    private State state;
 
     public static DaoJoinGroupDemand createAndPersist(DaoMember sender, DaoMember reciever, DaoGroup group) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -35,6 +43,18 @@ public class DaoJoinGroupDemand extends DaoIdentifiable {
         this.sender = sender;
         this.reciever = reciever;
         this.group = group;
+        this.setState(State.PENDING);
+    }
+
+    public void accept() {
+        // TODO if pending ??
+        reciever.addToGroup(group, false);
+        setState(State.ACCEPTED);
+    }
+
+    public void refuse() {
+        // TODO if pending ??
+        setState(State.REFUSED);
     }
 
     public DaoMember getSender() {
@@ -43,6 +63,10 @@ public class DaoJoinGroupDemand extends DaoIdentifiable {
 
     public DaoMember getReciever() {
         return reciever;
+    }
+
+    public State getState() {
+        return state;
     }
 
     public DaoGroup getGroup() {
@@ -66,5 +90,9 @@ public class DaoJoinGroupDemand extends DaoIdentifiable {
     }
 
     protected DaoJoinGroupDemand() {}
+
+    protected void setState(State state) {
+        this.state = state;
+    }
 
 }
