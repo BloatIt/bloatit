@@ -5,7 +5,7 @@ import javassist.NotFoundException;
 import com.bloatit.framework.managers.GroupManager;
 import com.bloatit.framework.managers.MemberManager;
 
-public class MemberTest extends SuperTest {
+public class MemberTest extends FrameworkTestUnit {
 
     public void testAddToGroup() {
         // TODO correct the right management in groups

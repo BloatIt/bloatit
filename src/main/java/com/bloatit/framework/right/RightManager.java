@@ -1,49 +1,52 @@
 package com.bloatit.framework.right;
 
+import java.util.EnumSet;
+
 public abstract class RightManager {
 
+    // WARNING order is important
     public enum Role {
-        OTHER, OWNER, GROUP, MODERATOR, ADMIN
+        GROUP, OTHER, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
     }
 
     public enum Action {
         READ, WRITE, DELETE
     }
 
-    protected static boolean ownerCanRead(Role role, Action action) {
-        return role == Role.OWNER && Action.READ == action;
+    protected static boolean ownerCanRead(EnumSet<Role> role, Action action) {
+        return role.contains(Role.OWNER) && Action.READ == action;
     }
 
-    protected static boolean ownerCanWrite(Role role, Action action) {
-        return role == Role.OWNER && Action.WRITE == action;
+    protected static boolean ownerCanWrite(EnumSet<Role> role, Action action) {
+        return role.contains(Role.OWNER) && Action.WRITE == action;
     }
 
-    protected static boolean ownerCanDelete(Role role, Action action) {
-        return role == Role.OWNER && Action.DELETE == action;
+    protected static boolean ownerCanDelete(EnumSet<Role> role, Action action) {
+        return role.contains(Role.OWNER) && Action.DELETE == action;
     }
 
-    protected static boolean otherCanRead(Role role, Action action) {
-        return role == Role.OTHER && Action.READ == action;
+    protected static boolean otherCanRead(EnumSet<Role> role, Action action) {
+        return role.contains(Role.OTHER) && Action.READ == action;
     }
 
-    protected static boolean otherCanWrite(Role role, Action action) {
-        return role == Role.OTHER && Action.WRITE == action;
+    protected static boolean otherCanWrite(EnumSet<Role> role, Action action) {
+        return role.contains(Role.OTHER) && Action.WRITE == action;
     }
 
-    protected static boolean otherCanDelete(Role role, Action action) {
-        return role == Role.OTHER && Action.DELETE == action;
+    protected static boolean otherCanDelete(EnumSet<Role> role, Action action) {
+        return role.contains(Role.OTHER) && Action.DELETE == action;
     }
 
-    protected static boolean modoCanRead(Role role, Action action) {
-        return role == Role.MODERATOR && Action.READ == action;
+    protected static boolean modoCanRead(EnumSet<Role> role, Action action) {
+        return role.contains(Role.MODERATOR) && Action.READ == action;
     }
 
-    protected static boolean modoCanWrite(Role role, Action action) {
-        return role == Role.MODERATOR && Action.WRITE == action;
+    protected static boolean modoCanWrite(EnumSet<Role> role, Action action) {
+        return role.contains(Role.MODERATOR) && Action.WRITE == action;
     }
 
-    protected static boolean modoCanDelete(Role role, Action action) {
-        return role == Role.MODERATOR && Action.DELETE == action;
+    protected static boolean modoCanDelete(EnumSet<Role> role, Action action) {
+        return role.contains(Role.MODERATOR) && Action.DELETE == action;
     }
 
     protected static boolean canRead(Action action) {
@@ -60,35 +63,35 @@ public abstract class RightManager {
 
     public static class ReadOnly extends Accessor {
         @Override
-        protected boolean can(Role role, Action action) {
+        protected boolean can(EnumSet<Role> role, Action action) {
             return Action.READ == action;
         }
     }
 
     public static class Private extends Accessor {
         @Override
-        protected boolean can(Role role, Action action) {
+        protected boolean can(EnumSet<Role> role, Action action) {
             return ownerCanRead(role, action) || ownerCanWrite(role, action);
         }
     }
 
     public static class Public extends Accessor {
         @Override
-        protected boolean can(Role role, Action action) {
+        protected boolean can(EnumSet<Role> role, Action action) {
             return canRead(action) || ownerCanWrite(role, action);
         }
     }
 
     public static class PublicModerable extends Accessor {
         @Override
-        protected boolean can(Role role, Action action) {
+        protected boolean can(EnumSet<Role> role, Action action) {
             return canRead(action) || ownerCanWrite(role, action) || modoCanDelete(role, action) || modoCanWrite(role, action);
         }
     }
 
     public static class PrivateReadOnly extends Accessor {
         @Override
-        protected boolean can(Role role, Action action) {
+        protected boolean can(EnumSet<Role> role, Action action) {
             return ownerCanRead(role, action);
         }
     }

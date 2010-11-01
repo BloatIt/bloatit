@@ -13,6 +13,7 @@ import com.bloatit.framework.right.MemberRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoActor;
 import com.bloatit.model.data.DaoMember;
+import com.bloatit.model.data.DaoMember.Role;
 
 public class Member extends Actor {
 
@@ -142,5 +143,9 @@ public class Member extends Actor {
 
     protected String getPassword() {
         return dao.getPassword();
+    }
+
+    public Role getRole() {
+        return dao.getRole();
     }
 }

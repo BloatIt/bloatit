@@ -2,7 +2,7 @@ package com.bloatit.framework;
 
 import com.bloatit.common.UnauthorizedOperationException;
 
-public class KudosableTest extends SuperTest {
+public class KudosableTest extends FrameworkTestUnit {
 
     public void testCanKudos() {
         Demand demand = Demand.create(db.getDemand());

@@ -19,6 +19,8 @@
 
 package com.bloatit.framework;
 
+import java.util.EnumSet;
+
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.RightManager.Role;
 
@@ -31,47 +33,49 @@ public class Unlockable {
     }
 
     protected AuthToken getToken() {
-        if(token == null){
+        if (token == null) {
             throw new UnauthorizedOperationException();
         }
         return token;
     }
 
-    protected Role calculateRole(Member member) {
+    protected EnumSet<Role> calculateRole(Member member) {
         return calculateRole(member, null);
     }
 
-    protected Role calculateRole(String login) {
+    protected EnumSet<Role> calculateRole(String login) {
         if (token == null) {
-            return Role.OTHER;
-        }
-        if (token.getMember().getUnprotectedLogin().equals("admin")) {
-            return Role.ADMIN;
+            return EnumSet.of(Role.OTHER);
         }
         if (token.getMember().getUnprotectedLogin().equals(login)) {
-            return Role.OWNER;
+            switch (token.getMember().getRole()) {
+            case NORMAL:
+                return EnumSet.of(Role.OWNER);
+            case PRIVILEGED:
+                return EnumSet.range(Role.OWNER, Role.PRIVILEGED);
+            case REVIEWER:
+                return EnumSet.range(Role.OWNER, Role.REVIEWER);
+            case MODERATOR:
+                return EnumSet.range(Role.OWNER, Role.MODERATOR);
+            case ADMIN:
+                return EnumSet.range(Role.OWNER, Role.ADMIN);
+            }
         }
-        return Role.OTHER;
+        return EnumSet.of(Role.OTHER);
     }
 
-    protected Role calculateRole(UserContent userContent) {
+    protected EnumSet<Role> calculateRole(UserContent userContent) {
         return calculateRole(userContent.getAuthor());
     }
 
-    protected Role calculateRole(Member member, Group group) {
+    protected EnumSet<Role> calculateRole(Member member, Group group) {
         if (token == null) {
-            return Role.OTHER;
+            return EnumSet.of(Role.OTHER);
         }
-        if (token.getMember().getUnprotectedLogin().equals("admin")) {
-            return Role.ADMIN;
-        }
-        if (token.getMember().getUnprotectedLogin().equals(member.getUnprotectedLogin())) {
-            return Role.OWNER;
-        }
+        EnumSet<Role> roles = calculateRole(member.getUnprotectedLogin());
         if (group != null && token.getMember().isInGroupUnprotected(group)) {
-            return Role.GROUP;
+            roles.add(Role.GROUP);
         }
-        return Role.OTHER;
-
+        return roles;
     }
 }
