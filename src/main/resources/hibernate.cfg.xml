@@ -39,6 +39,7 @@
   <mapping class="com.bloatit.model.data.DaoDemand"/>
   <mapping class="com.bloatit.model.data.DaoMember"/>
   <mapping class="com.bloatit.model.data.DaoOffer"/>
+  <mapping class="com.bloatit.model.data.DaoJoinGroupDemand"/>
   <!--<mapping class="com.bloatit.model.data.DaoUserContent" />
 		<mapping class="com.bloatit.model.data.DaoKudosable" />
 		<mapping class="com.bloatit.model.data.DaoIdentifiable" />-->
