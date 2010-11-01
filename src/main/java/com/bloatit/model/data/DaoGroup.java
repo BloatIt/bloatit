@@ -27,6 +27,10 @@ public class DaoGroup extends DaoActor {
         PUBLIC, PROTECTED;
     }
 
+    public enum MemberStatus {
+        UNKNOWN, IN_GROUP, ADMIN
+    }
+
     // right is a SQL keyword.
     @Basic(optional = false)
     @Column(name = "group_right")
@@ -64,13 +68,7 @@ public class DaoGroup extends DaoActor {
         return Group;
     }
 
-    /**
-     * Find a DaoGroup using its login.
-     * 
-     * @param name
-     *            the member login.
-     * @return null if not found.
-     */
+    // TODO test me correctly !
     public static DaoGroup getByName(String name) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.createQuery("from com.bloatit.model.data.DaoGroup where login = :login");
@@ -106,6 +104,22 @@ public class DaoGroup extends DaoActor {
 
     public void setRight(Right right) {
         this.right = right;
+    }
+
+    public MemberStatus getMemberStatus(DaoMember member) {
+        Query q = SessionManager.getSessionFactory()
+                                .getCurrentSession()
+                                .createQuery("select gm from com.bloatit.model.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
+        q.setEntity("member", member);
+        q.setEntity("group", this);
+        DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
+        if (gm == null) {
+            return MemberStatus.UNKNOWN;
+        }
+        if (gm.isAdmin()) {
+            return MemberStatus.ADMIN;
+        }
+        return MemberStatus.IN_GROUP;
     }
 
     // ======================================================================
