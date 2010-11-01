@@ -8,13 +8,14 @@ import com.bloatit.model.data.DaoGroup.Right;
 
 public class Group extends Actor {
 
-    private DaoGroup dao;
+    private final DaoGroup dao;
 
     public Group(DaoGroup dao) {
         super();
         this.dao = dao;
     }
 
+    @Override
     public DaoGroup getDao() {
         return dao;
     }

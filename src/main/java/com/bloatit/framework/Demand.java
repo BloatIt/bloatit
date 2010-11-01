@@ -13,15 +13,14 @@ import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.util.SessionManager;
 
 public class Demand extends Kudosable {
-    private DaoDemand dao;
-    
+    private final DaoDemand dao;
+
     public static Demand create(DaoDemand dao) {
         if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
             return null;
         }
         return new Demand(dao);
     }
-
 
     private Demand(DaoDemand dao) {
         super();

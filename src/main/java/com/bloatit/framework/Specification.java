@@ -7,7 +7,7 @@ import com.bloatit.model.data.DaoUserContent;
 
 public class Specification extends UserContent {
 
-    private DaoSpecification dao;
+    private final DaoSpecification dao;
 
     public Specification(DaoSpecification dao) {
         super();

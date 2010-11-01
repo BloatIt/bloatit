@@ -1,43 +1,42 @@
 /*
  * Copyright (C) 2010 BloatIt.
- *
+ * 
  * This file is part of BloatIt.
- *
+ * 
  * BloatIt is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * BloatIt is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.bloatit.web.server;
 
-import com.bloatit.framework.AuthToken;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 
+import com.bloatit.framework.AuthToken;
 
 public class Session {
     private final String key;
     private boolean logged;
-    private Deque<Action> actionList;
-    private Deque<Notification> notificationList;
+    private final Deque<Action> actionList;
+    private final Deque<Notification> notificationList;
     private Language language;
     private Page lastStablePage;
     private AuthToken authToken;
 
-    private List<Language> preferredLocales;
-    
+    private final List<Language> preferredLocales;
 
     Session(String key) {
         this.key = key;
@@ -50,7 +49,8 @@ public class Session {
         preferredLocales = new ArrayList<Language>();
         preferredLocales.add(new Language(Locale.ENGLISH)); // TODO : ONLY FOR TEST
     }
-    public String tr(String s){
+
+    public String tr(String s) {
         return this.language.tr(s);
     }
 
@@ -58,7 +58,7 @@ public class Session {
         return this.language;
     }
 
-    public void setLanguage(Language newLang){
+    public void setLanguage(Language newLang) {
         this.language = newLang;
     }
 
@@ -86,7 +86,7 @@ public class Session {
         return actionList;
     }
 
-    public void setLastStablePage(Page p){
+    public void setLastStablePage(Page p) {
         this.lastStablePage = p;
     }
 
@@ -114,7 +114,7 @@ public class Session {
         return notificationList;
     }
 
-    public List<Language> getPreferredLangs(){
+    public List<Language> getPreferredLangs() {
         return this.preferredLocales;
     }
 }

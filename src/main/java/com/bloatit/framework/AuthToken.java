@@ -26,11 +26,11 @@ import javassist.NotFoundException;
 import com.bloatit.framework.managers.MemberManager;
 
 public class AuthToken {
-    private Member member;
-    private UUID key;
+    private final Member member;
+    private final UUID key;
 
     public AuthToken(String login, String password) throws NotFoundException {
-        Member tmp = MemberManager.getByLoginAndPassword(login, password);
+        final Member tmp = MemberManager.getByLoginAndPassword(login, password);
         if (tmp == null) {
             throw new NotFoundException("Identifiaction or authentification failed");
         }

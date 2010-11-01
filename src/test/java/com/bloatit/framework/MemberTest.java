@@ -9,7 +9,7 @@ public class MemberTest extends FrameworkTestUnit {
 
     public void testAddToGroup() {
         // TODO correct the right management in groups
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
         yo.addToGroup(GroupManager.getByName("ubuntuUsers"), false);
@@ -20,13 +20,12 @@ public class MemberTest extends FrameworkTestUnit {
             yo.authenticate(fredAuthToken);
             yo.addToGroup(GroupManager.getByName("ubuntuUsers"), false);
             fail();
-        } catch (Exception e) {
-        }
+        } catch (final Exception e) {}
 
     }
 
     public void testRemoveFromGroup() {
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
         yo.removeFromGroup(GroupManager.getByName("b219"));
@@ -36,8 +35,7 @@ public class MemberTest extends FrameworkTestUnit {
             yo.authenticate(fredAuthToken);
             yo.removeFromGroup(GroupManager.getByName("b219"));
             fail();
-        } catch (Exception e) {
-        }
+        } catch (final Exception e) {}
     }
 
     public void testGetGroups() {
@@ -49,7 +47,7 @@ public class MemberTest extends FrameworkTestUnit {
     }
 
     public void testGetKarma() {
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
         assertEquals(0, yo.getKarma());
@@ -60,7 +58,7 @@ public class MemberTest extends FrameworkTestUnit {
     }
 
     public void testSetFullName() {
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
         assertEquals(0, yo.getKarma());
@@ -71,7 +69,7 @@ public class MemberTest extends FrameworkTestUnit {
     }
 
     public void testGetFullname() {
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
         assertEquals("Yoann Plénet", yo.getFullname());
@@ -82,7 +80,7 @@ public class MemberTest extends FrameworkTestUnit {
     }
 
     public void testSetFullname() {
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
         yo.setFullname("Plénet Yoann");
@@ -91,26 +89,26 @@ public class MemberTest extends FrameworkTestUnit {
             yo.authenticate(fredAuthToken);
             yo.setFullname("plop");
             fail();
-        } catch (Exception e) {}
+        } catch (final Exception e) {}
 
         assertEquals("Plénet Yoann", yo.getFullname());
     }
 
     public void testSetPassword() {
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
         yo.setPassword("Coucou");
 
         try {
             new AuthToken("Yo", "Coucou");
-        } catch (NotFoundException e) {
+        } catch (final NotFoundException e) {
             fail();
         }
     }
 
     public void testGetDemands() {
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         assertEquals("Mon titre", yo.getDemands().iterator().next().getTitle());
 
@@ -122,7 +120,7 @@ public class MemberTest extends FrameworkTestUnit {
     }
 
     public void testGetKudos() {
-        Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
         assertEquals(1, yo.getKudos().size());
 

@@ -8,10 +8,10 @@ package com.bloatit.web.htmlrenderer.htmlcomponent;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 
 /**
- *
+ * 
  * @author fred
  */
-public class HtmlListItem extends HtmlComponent{
+public class HtmlListItem extends HtmlComponent {
 
     final private String text;
     final private String cssClass;
@@ -31,7 +31,7 @@ public class HtmlListItem extends HtmlComponent{
         if (cssClass == null) {
             htmlResult.write("<li>" + text + "</li>");
         } else {
-            htmlResult.write("<li class=\""+cssClass+"\">" + text + "</li>");
+            htmlResult.write("<li class=\"" + cssClass + "\">" + text + "</li>");
         }
     }
 

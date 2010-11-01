@@ -10,7 +10,7 @@ import com.bloatit.model.data.DaoUserContent;
 
 public class Contribution extends UserContent {
 
-    private DaoContribution dao;
+    private final DaoContribution dao;
 
     public Contribution(DaoContribution dao) {
         super();

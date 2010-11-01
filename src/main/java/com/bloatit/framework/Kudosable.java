@@ -14,11 +14,11 @@ public abstract class Kudosable extends UserContent {
     }
 
     public void unkudos() {
-        Member member = getToken().getMember();
+        final Member member = getToken().getMember();
         if (getDaoKudosable().hasKudosed(member.getDao())) {
             throw new UnauthorizedOperationException();
         }
-        int influence = member.calculateInfluence();
+        final int influence = member.calculateInfluence();
         if (influence > 0) {
             getAuthor().addToKarma(-influence);
             getDaoKudosable().addKudos(member.getDao(), -influence);
@@ -26,11 +26,11 @@ public abstract class Kudosable extends UserContent {
     }
 
     public void kudos() {
-        Member member = getToken().getMember();
+        final Member member = getToken().getMember();
         if (getDaoKudosable().hasKudosed(member.getDao())) {
             throw new UnauthorizedOperationException();
         }
-        int influence = member.calculateInfluence();
+        final int influence = member.calculateInfluence();
         if (influence > 0) {
             getAuthor().addToKarma(influence);
             getDaoKudosable().addKudos(member.getDao(), influence);

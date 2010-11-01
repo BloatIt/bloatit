@@ -7,7 +7,7 @@ import com.bloatit.model.data.DaoTranslation;
 
 public class Translation extends Kudosable {
 
-    private DaoTranslation dao;
+    private final DaoTranslation dao;
 
     public static Translation create(DaoTranslation dao) {
         if (dao == null) {

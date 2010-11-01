@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class IterableFromIterator<T> implements Iterable<T> {
 
-    private Iterator<T> it;
+    private final Iterator<T> it;
 
     public IterableFromIterator(Iterator<T> it) {
         super();

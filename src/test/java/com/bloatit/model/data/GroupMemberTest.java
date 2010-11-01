@@ -20,11 +20,13 @@ public class GroupMemberTest extends TestCase {
         super(testName);
     }
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         SessionManager.reCreateSessionFactory();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
@@ -43,22 +45,22 @@ public class GroupMemberTest extends TestCase {
     public void testCreateMember() {
         SessionManager.beginWorkUnit();
         {
-            DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
+            final DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
             theMember.setFullname("Thomas Guyard");
             SessionManager.flush();
         }
         {
-            DaoMember theMember = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
+            final DaoMember theMember = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
             theMember.setFullname("Frédéric Bertolus");
             SessionManager.flush();
         }
         {
-            DaoMember theMember = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
+            final DaoMember theMember = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
             theMember.setFullname("Yoann Plénet");
         }
 
         assertEquals(3, DBRequests.getAll(DaoMember.class).size());
-        
+
         SessionManager.endWorkUnitAndFlush();
 
     }
@@ -71,7 +73,7 @@ public class GroupMemberTest extends TestCase {
             DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com"); // duplicate login
             SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
-        } catch (HibernateException e) {
+        } catch (final HibernateException e) {
             assertTrue(true);
         }
     }
@@ -87,9 +89,9 @@ public class GroupMemberTest extends TestCase {
     public void testExistMemberByLogin() {
         testCreateMember();
         SessionManager.beginWorkUnit();
-        assertTrue(DaoMember.exist("Fred"));
-        assertFalse(DaoMember.exist("Inexistant"));
-        assertFalse(DaoMember.exist(null));
+        assertTrue(DaoActor.exist("Fred"));
+        assertFalse(DaoActor.exist("Inexistant"));
+        assertFalse(DaoActor.exist(null));
         SessionManager.endWorkUnitAndFlush();
     }
 
@@ -114,7 +116,7 @@ public class GroupMemberTest extends TestCase {
             assertTrue(true);
             SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
-        } catch (HibernateException e) {
+        } catch (final HibernateException e) {
             assertTrue(true);
         }
     }
@@ -145,8 +147,8 @@ public class GroupMemberTest extends TestCase {
         testAddUserToGroup();
 
         SessionManager.beginWorkUnit();
-        PageIterable<DaoMember> Members = DaoGroup.getByName("b219").getMembers();
-        Iterator<DaoMember> it = Members.iterator();
+        final PageIterable<DaoMember> Members = DaoGroup.getByName("b219").getMembers();
+        final Iterator<DaoMember> it = Members.iterator();
         assertEquals(it.next().getFullname(), "Frédéric Bertolus");
         assertEquals(it.next().getFullname(), "Yoann Plénet");
         assertFalse(it.hasNext());
@@ -157,8 +159,8 @@ public class GroupMemberTest extends TestCase {
         testAddUserToGroup();
 
         SessionManager.beginWorkUnit();
-        PageIterable<DaoGroup> Groups = DaoMember.getByLogin("Yo").getGroups();
-        Iterator<DaoGroup> it = Groups.iterator();
+        final PageIterable<DaoGroup> Groups = DaoMember.getByLogin("Yo").getGroups();
+        final Iterator<DaoGroup> it = Groups.iterator();
         assertEquals(it.next().getLogin(), "b216");
         assertEquals(it.next().getLogin(), "b217");
         assertEquals(it.next().getLogin(), "b218");
@@ -171,12 +173,12 @@ public class GroupMemberTest extends TestCase {
         testAddUserToGroup();
 
         SessionManager.beginWorkUnit();
-        DaoGroup b219 = DaoGroup.getByName("b219");
-        DaoMember yo = DaoMember.getByLogin("Yo");
+        final DaoGroup b219 = DaoGroup.getByName("b219");
+        final DaoMember yo = DaoMember.getByLogin("Yo");
 
         yo.removeFromGroup(b219);
 
-        Iterator<DaoGroup> it = yo.getGroups().iterator();
+        final Iterator<DaoGroup> it = yo.getGroups().iterator();
         assertEquals(it.next().getLogin(), "b216");
         assertEquals(it.next().getLogin(), "b217");
         assertEquals(it.next().getLogin(), "b218");
@@ -189,12 +191,12 @@ public class GroupMemberTest extends TestCase {
         testAddUserToGroup();
 
         SessionManager.beginWorkUnit();
-        DaoGroup b218 = DaoGroup.getByName("b218");
-        DaoMember yo = DaoMember.getByLogin("Yo");
+        final DaoGroup b218 = DaoGroup.getByName("b218");
+        final DaoMember yo = DaoMember.getByLogin("Yo");
 
         b218.removeMember(yo);
 
-        Iterator<DaoGroup> it = yo.getGroups().iterator();
+        final Iterator<DaoGroup> it = yo.getGroups().iterator();
         assertEquals(it.next().getLogin(), "b216");
         assertEquals(it.next().getLogin(), "b217");
         assertEquals(it.next().getLogin(), "b219");

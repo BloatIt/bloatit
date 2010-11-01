@@ -27,11 +27,11 @@ public class DaoComment extends DaoKudosable {
     private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
     public static DaoComment createAndPersist(DaoMember member, String text) {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        DaoComment comment = new DaoComment(member, text);
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoComment comment = new DaoComment(member, text);
         try {
             session.save(comment);
-        } catch (HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
@@ -49,7 +49,9 @@ public class DaoComment extends DaoKudosable {
     }
 
     public PageIterable<DaoComment> getChildrenFromQuery() {
-        Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoComment as c where c.comment = :this");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("from com.bloatit.model.data.DaoComment as c where c.comment = :this");
         q.setEntity("this", this);
         return new QueryCollection<DaoComment>(q);
     }

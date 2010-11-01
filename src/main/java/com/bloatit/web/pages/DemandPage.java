@@ -47,7 +47,7 @@ public class DemandPage extends Page {
                 Integer id = null;
                 try {
                     id = new Integer(parameters.get("id"));
-                } catch (NumberFormatException e) {
+                } catch (final NumberFormatException e) {
 
                 }
                 if (id != null) {
@@ -67,9 +67,9 @@ public class DemandPage extends Page {
     @Override
     protected HtmlComponent generateContent() {
         if (this.demand == null) {
-            return this.generateEmptyBody();
+            return generateEmptyBody();
         } else {
-            return this.generateNotEmptyBody();
+            return generateNotEmptyBody();
         }
     }
 
@@ -79,7 +79,7 @@ public class DemandPage extends Page {
 
     private HtmlComponent generateNotEmptyBody() {
 
-        HtmlBlock demandBlock = new HtmlBlock("demand");
+        final HtmlBlock demandBlock = new HtmlBlock("demand");
 
         // TODO CORRECT ME
         // HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session, this.demand.getTitle()), "demand_title");
@@ -98,6 +98,7 @@ public class DemandPage extends Page {
         }
     }
 
+    @Override
     public String getTitle() {
         return "Demand ...";
     }

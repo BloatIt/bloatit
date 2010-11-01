@@ -1,22 +1,25 @@
 /*
  * Copyright (C) 2010 BloatIt.
- *
+ * 
  * This file is part of BloatIt.
- *
+ * 
  * BloatIt is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * BloatIt is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.pages;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
@@ -29,8 +32,6 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginPage extends Page {
 
@@ -44,12 +45,12 @@ public class LoginPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        LoginAction logAction = new LoginAction(this.session);
+        final LoginAction logAction = new LoginAction(this.session);
 
-        HtmlForm loginForm = new HtmlForm(logAction);
-        HtmlTextField loginField = new HtmlTextField();
-        HtmlPasswordField passwordField =  new HtmlPasswordField();
-        HtmlButton submitButton = new HtmlButton(this.session.tr("Login"));
+        final HtmlForm loginForm = new HtmlForm(logAction);
+        final HtmlTextField loginField = new HtmlTextField();
+        final HtmlPasswordField passwordField = new HtmlPasswordField();
+        final HtmlButton submitButton = new HtmlButton(this.session.tr("Login"));
 
         loginForm.add(loginField);
         loginForm.add(passwordField);
@@ -58,13 +59,13 @@ public class LoginPage extends Page {
         loginField.setName(logAction.getLoginCode());
         passwordField.setName(logAction.getPasswordCode());
 
-        HtmlTitle loginTitle = new HtmlTitle(this.session.tr("Login"), "");
+        final HtmlTitle loginTitle = new HtmlTitle(this.session.tr("Login"), "");
         loginTitle.add(loginForm);
 
-        HtmlTitle sigupTitle = new HtmlTitle(this.session.tr("Sigup"), "");
+        final HtmlTitle sigupTitle = new HtmlTitle(this.session.tr("Sigup"), "");
         sigupTitle.add(new HtmlText("Not yet implemented."));
 
-        HtmlContainer group = new HtmlContainer();
+        final HtmlContainer group = new HtmlContainer();
 
         group.add(loginTitle);
         group.add(sigupTitle);

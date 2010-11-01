@@ -17,7 +17,7 @@ import com.bloatit.model.data.DaoMember.Role;
 
 public class Member extends Actor {
 
-    private DaoMember dao;
+    private final DaoMember dao;
 
     public static Member create(DaoMember dao) {
         if (dao == null) {
@@ -60,7 +60,7 @@ public class Member extends Actor {
     }
 
     protected int calculateInfluence() {
-        int karma = getKarma();
+        final int karma = getKarma();
         if (karma > 0) {
             return (int) (Math.log10(karma) * 10 + 1);
         } else if (karma == 0) {
@@ -133,6 +133,7 @@ public class Member extends Actor {
         return isInGroupUnprotected(group);
     }
 
+    @Override
     protected DaoMember getDao() {
         return dao;
     }

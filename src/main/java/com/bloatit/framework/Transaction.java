@@ -14,7 +14,7 @@ import com.bloatit.model.data.DaoTransaction;
 
 public class Transaction extends Identifiable {
 
-    private DaoTransaction dao;
+    private final DaoTransaction dao;
 
     public Transaction(DaoTransaction dao) {
         super();

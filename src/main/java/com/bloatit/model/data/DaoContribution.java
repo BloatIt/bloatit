@@ -30,7 +30,7 @@ public class DaoContribution extends DaoUserContent {
 
     @OneToOne(optional = true)
     private DaoTransaction transaction;
-    
+
     // TODO add the possibility to add some text (144 c for auto tweet ?)
 
     public DaoContribution() {}
@@ -42,7 +42,7 @@ public class DaoContribution extends DaoUserContent {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         this.amount = amount;
-        this.setState(State.WAITING);
+        setState(State.WAITING);
         getAuthor().getInternalAccount().block(amount);
     }
 
@@ -52,7 +52,7 @@ public class DaoContribution extends DaoUserContent {
             transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor().getInternalAccount(), amount);
             getAuthor().getInternalAccount().unBlock(amount);
             setState(State.ACCEPTED);
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             cancel();
             e.printStackTrace(); // TODO do something more constructive ...
         }

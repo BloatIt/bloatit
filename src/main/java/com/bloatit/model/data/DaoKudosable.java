@@ -43,7 +43,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return the new popularity
      */
     public int addKudos(DaoMember member, int value) {
-        DaoKudos ku = DaoKudos.createAndPersist(member, value);
+        final DaoKudos ku = DaoKudos.createAndPersist(member, value);
         kudos.add(ku);
         SessionManager.flush();
 
@@ -69,10 +69,10 @@ public abstract class DaoKudosable extends DaoUserContent {
     public boolean hasKudosed(DaoMember member) {
         // Query f = SessionManager.getSessionFactory().getCurrentSession().createFilter(kudos, "where author = :author");
         // f.setEntity("author", getAuthor());
-        Query q = SessionManager.getSessionFactory()
-                                .getCurrentSession()
-                                .createQuery("select count(k) from " + this.getClass().getName()
-                                        + " as a join a.kudos as k where k.member = :member and a = :this");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select count(k) from " + this.getClass().getName()
+                                              + " as a join a.kudos as k where k.member = :member and a = :this");
         q.setEntity("member", member);
         q.setEntity("this", this);
         return (Long) q.uniqueResult() > 0;

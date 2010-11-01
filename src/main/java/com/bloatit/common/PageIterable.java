@@ -1,6 +1,5 @@
 package com.bloatit.common;
 
-
 /**
  * A PageIterable should always be an ordered collection.
  * 
@@ -15,8 +14,8 @@ public interface PageIterable<T> extends Iterable<T> {
     public void setPageSize(int pageSize);
 
     public int getPageSize();
-    
+
     public long size();
-    
+
     public long pageNumber();
 }

@@ -13,15 +13,15 @@ public class DaoKudos extends DaoUserContent {
 
     @Basic(optional = false)
     private int value;
-    
+
     public DaoKudos() {}
 
     public static DaoKudos createAndPersist(DaoMember member, int value) {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        DaoKudos kudos = new DaoKudos(member, value);
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoKudos kudos = new DaoKudos(member, value);
         try {
             session.save(kudos);
-        } catch (HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;

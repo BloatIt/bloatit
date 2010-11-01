@@ -9,7 +9,7 @@ import com.bloatit.model.data.DaoOffer;
 
 public class Offer extends Kudosable {
 
-    private DaoOffer dao;
+    private final DaoOffer dao;
 
     public Offer(DaoOffer dao) {
         super();

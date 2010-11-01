@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2010 BloatIt.
- *
+ * 
  * This file is part of BloatIt.
- *
+ * 
  * BloatIt is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * BloatIt is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,8 +30,13 @@ public class Language {
 
     private static Map<String, Locale> languageCode = new HashMap<String, Locale>() {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 9019121360450239715L;
+
         {
-            put("en", Locale.ENGLISH );
+            put("en", Locale.ENGLISH);
             put("en-us", Locale.ENGLISH);
             put("fr", Locale.FRENCH);
             put("fr-fr", Locale.FRENCH);
@@ -39,10 +44,15 @@ public class Language {
     };
     private static Map<Locale, LanguageTemplate> languageList = new HashMap<Locale, LanguageTemplate>() {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -2144420475764085797L;
+
         {
             put(Locale.ENGLISH, new LanguageTemplate("en", "English", Locale.ENGLISH));
             put(Locale.FRENCH, new LanguageTemplate("fr", "Français", Locale.FRENCH));
-            put(Locale.GERMAN, new LanguageTemplate("de", "German",Locale.GERMAN));
+            put(Locale.GERMAN, new LanguageTemplate("de", "German", Locale.GERMAN));
 
         }
     };
@@ -52,9 +62,9 @@ public class Language {
         this.template = languageList.get(Locale.ENGLISH);
     }
 
-    public Language(Locale code){
+    public Language(Locale code) {
         this.template = languageList.get(code);
-        if(this.template == null){
+        if (this.template == null) {
             this.template = languageList.get(Locale.ENGLISH);
         }
     }
@@ -65,8 +75,8 @@ public class Language {
 
     public void findPrefered(List<String> preferredLangs) {
         Locale locale;
-        for (String preferredLang : preferredLangs) {
-            String lang = preferredLang.split(";")[0];
+        for (final String preferredLang : preferredLangs) {
+            final String lang = preferredLang.split(";")[0];
             if (Language.languageCode.containsKey(lang)) {
                 locale = Language.languageCode.get(lang);
                 if (languageList.containsKey(locale)) {
@@ -118,7 +128,6 @@ public class Language {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            final LanguageTemplate other = (LanguageTemplate) obj;
             return true;
         }
 
@@ -131,7 +140,6 @@ public class Language {
             return hash;
         }
 
-        
     }
 
     @Override
@@ -156,5 +164,4 @@ public class Language {
         return hash;
     }
 
-    
 }

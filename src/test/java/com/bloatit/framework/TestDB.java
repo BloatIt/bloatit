@@ -9,29 +9,28 @@ import com.bloatit.model.data.DaoContribution;
 import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDescription;
 import com.bloatit.model.data.DaoExternalAccount;
+import com.bloatit.model.data.DaoExternalAccount.AccountType;
 import com.bloatit.model.data.DaoGroup;
 import com.bloatit.model.data.DaoMember;
-import com.bloatit.model.data.DaoExternalAccount.AccountType;
 import com.bloatit.model.data.DaoTransaction;
 import com.bloatit.model.data.DaoTranslation;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 public class TestDB {
-    
-    
-    private DaoMember tom;
-    private DaoMember fred;
-    private DaoMember yo;
-    private DaoGroup other;
-    private DaoGroup b219;
-    private DaoGroup ubuntuUsers;
-    private DaoDemand demand;
 
-    public TestDB(){
+    private final DaoMember tom;
+    private final DaoMember fred;
+    private final DaoMember yo;
+    private final DaoGroup other;
+    private final DaoGroup b219;
+    private final DaoGroup ubuntuUsers;
+    private final DaoDemand demand;
+
+    public TestDB() {
 
         SessionManager.beginWorkUnit();
-        
+
         tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
         tom.setFullname("Thomas Guyard");
         fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
@@ -59,29 +58,28 @@ public class TestDB {
             DaoTransaction.createAndPersist(yo.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
             DaoTransaction.createAndPersist(tom.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
             DaoTransaction.createAndPersist(fred.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             e.printStackTrace();
         }
 
         demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Mon titre", "Ceci est une description"));
-        DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
-        DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
-        DaoComment c21 = DaoComment.createAndPersist(tom, "plup");
-        DaoComment c22 = DaoComment.createAndPersist(tom, "CCC-Combo Breaker ;) ");
-        DaoComment c23 = DaoComment.createAndPersist(fred, "Plip");
+        final DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
+        final DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
+        final DaoComment c21 = DaoComment.createAndPersist(tom, "plup");
+        final DaoComment c22 = DaoComment.createAndPersist(tom, "CCC-Combo Breaker ;) ");
+        final DaoComment c23 = DaoComment.createAndPersist(fred, "Plip");
         demand.addComment(c1);
         demand.addComment(c2);
         c1.addChildComment(DaoComment.createAndPersist(yo, "Je sais c'est just un test"));
         c2.addChildComment(c21);
         c2.addChildComment(c22);
         c2.addChildComment(c23);
-        
+
         c22.addKudos(yo, 12);
         c22.addKudos(fred, 22);
         c2.addKudos(tom, 42);
         c1.addKudos(tom, -12);
         c21.addKudos(fred, -1);
-        
 
         demand.createSpecification(fred, "Tiens voila une spécif vraiment précise");
         demand.addContribution(yo, new BigDecimal("120"));
@@ -91,11 +89,11 @@ public class TestDB {
 
         demand.getOffers().iterator().next().setValidated();
 
-        for (DaoContribution contribution : demand.getContributions()) {
+        for (final DaoContribution contribution : demand.getContributions()) {
             contribution.accept(demand.getOffers().iterator().next());
         }
 
-        DaoDemand demand1 = DaoDemand.createAndPersist(fred, new DaoDescription(fred, new Locale("en"), "I try it in English", "Hello world"));
+        final DaoDemand demand1 = DaoDemand.createAndPersist(fred, new DaoDescription(fred, new Locale("en"), "I try it in English", "Hello world"));
         demand1.getDescription().addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais", "Salut le monde"));
         demand1.addContribution(yo, new BigDecimal("12"));
         demand1.addContribution(fred, new BigDecimal("11"));
@@ -135,5 +133,5 @@ public class TestDB {
     public static void main(String[] args) {
         new TestDB();
     }
-    
+
 }

@@ -1,8 +1,8 @@
 package com.bloatit.framework;
 
-import com.bloatit.model.data.util.SessionManager;
-
 import junit.framework.TestCase;
+
+import com.bloatit.model.data.util.SessionManager;
 
 public class FrameworkTestUnit extends TestCase {
     protected AuthToken yoAuthToken;
@@ -10,6 +10,7 @@ public class FrameworkTestUnit extends TestCase {
     protected AuthToken fredAuthToken;
     protected TestDB db;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         SessionManager.reCreateSessionFactory();
@@ -22,6 +23,7 @@ public class FrameworkTestUnit extends TestCase {
         SessionManager.beginWorkUnit();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {

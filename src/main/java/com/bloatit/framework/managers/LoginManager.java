@@ -31,10 +31,10 @@ public class LoginManager {
 
     public static AuthToken loginByPassword(String login, String password) {
         try {
-            AuthToken token = new AuthToken(login, password);
+            final AuthToken token = new AuthToken(login, password);
             authTokenList.put(token.getKey(), token);
             return token;
-        } catch (NotFoundException e) {
+        } catch (final NotFoundException e) {
             return null;
         }
     }

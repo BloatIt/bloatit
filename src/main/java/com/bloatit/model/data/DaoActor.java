@@ -61,9 +61,9 @@ public abstract class DaoActor {
      * minimize the number of HQL request).
      */
     public static boolean exist(String login) {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
         // TODO use the count() in HQL
-        Query q = session.createQuery("select count(*) from com.bloatit.model.data.DaoActor as m where login = :login");
+        final Query q = session.createQuery("select count(*) from com.bloatit.model.data.DaoActor as m where login = :login");
         q.setString("login", login);
         return ((Long) q.uniqueResult()) > 0;
     }

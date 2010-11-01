@@ -68,7 +68,7 @@ public class HtmlTools {
      * @return the compressed String to display
      */
     public static String compressKarma(long karma) {
-        Double abs_karma = new Double(Math.abs(karma));
+        final Double abs_karma = new Double(Math.abs(karma));
         String result = "";
         if (abs_karma < 1000) {
             result = cutNumber(abs_karma.toString());

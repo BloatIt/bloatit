@@ -9,9 +9,9 @@ import com.bloatit.framework.right.RightManager.Role;
 public abstract class Accessor {
 
     protected abstract boolean can(EnumSet<Role> role, Action action);
-    
-    public boolean canAccess(EnumSet<Role> role, Action action){
-        if (role.contains(Role.ADMIN)){
+
+    public boolean canAccess(EnumSet<Role> role, Action action) {
+        if (role.contains(Role.ADMIN)) {
             return true;
         }
         return can(role, action);

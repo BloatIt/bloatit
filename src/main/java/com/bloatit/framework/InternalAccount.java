@@ -9,7 +9,7 @@ import com.bloatit.model.data.DaoInternalAccount;
 
 public class InternalAccount extends Account {
 
-    private DaoInternalAccount dao;
+    private final DaoInternalAccount dao;
 
     protected InternalAccount(DaoInternalAccount dao) {
         super();

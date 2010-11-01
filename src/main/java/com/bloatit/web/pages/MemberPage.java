@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2010 BloatIt.
- *
+ * 
  * This file is part of BloatIt.
- *
+ * 
  * BloatIt is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * BloatIt is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.bloatit.web.pages;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.MemberManager;
@@ -27,14 +30,10 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class MemberPage extends Page {
 
     private final Member member;
-    
 
     public MemberPage(Session session, Map<String, String> parameters) {
         this(session, parameters, null);
@@ -51,9 +50,9 @@ public class MemberPage extends Page {
         if (member == null) {
             if (parameters.containsKey("id")) {
                 Integer id = null;
-                try{
+                try {
                     id = new Integer(parameters.get("id"));
-                } catch(NumberFormatException e){
+                } catch (final NumberFormatException e) {
 
                 }
                 if (id != null) {
@@ -63,21 +62,20 @@ public class MemberPage extends Page {
         } else {
             d = member;
         }
-        
+
         this.member = d;
     }
-
 
     @Override
     protected HtmlComponent generateContent() {
         if (this.member != null) {
             member.authenticate(session.getAuthToken());
 
-            HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
-            
+            final HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
+
             memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
-            if(member.canGetEmail()) {
+            if (member.canGetEmail()) {
                 memberTitle.add(new HtmlText("Email: " + member.getEmail()));
             }
             memberTitle.add(new HtmlText("Karma: " + member.getKarma()));

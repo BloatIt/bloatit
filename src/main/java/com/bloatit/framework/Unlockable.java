@@ -72,7 +72,7 @@ public class Unlockable {
         if (token == null) {
             return EnumSet.of(Role.OTHER);
         }
-        EnumSet<Role> roles = calculateRole(member.getUnprotectedLogin());
+        final EnumSet<Role> roles = calculateRole(member.getUnprotectedLogin());
         if (group != null && token.getMember().isInGroupUnprotected(group)) {
             roles.add(Role.GROUP);
         }

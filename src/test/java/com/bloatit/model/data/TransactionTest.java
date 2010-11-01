@@ -27,7 +27,7 @@ public class TransactionTest extends TestCase {
             DaoTransaction.createAndPersist(fred.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("120"));
             assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("80")));
             assertEquals(0, b219.getExternalAccount().getAmount().compareTo(new BigDecimal("120")));
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             fail();
         }
 
@@ -40,6 +40,7 @@ public class TransactionTest extends TestCase {
 
     private DaoGroup b219;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         SessionManager.reCreateSessionFactory();
@@ -67,6 +68,7 @@ public class TransactionTest extends TestCase {
         SessionManager.endWorkUnitAndFlush();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {

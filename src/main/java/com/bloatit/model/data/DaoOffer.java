@@ -16,7 +16,7 @@ public class DaoOffer extends DaoKudosable {
     @ManyToOne
     private DaoDemand demand;
     @OneToOne
-    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private DaoDescription description;
     @Basic(optional = false)
     private Date dateExpire;

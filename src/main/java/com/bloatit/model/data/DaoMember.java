@@ -58,11 +58,11 @@ public class DaoMember extends DaoActor {
      * 
      */
     public static DaoMember createAndPersist(String login, String password, String email) throws HibernateException {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        DaoMember theMember = new DaoMember(login, password, email);
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoMember theMember = new DaoMember(login, password, email);
         try {
             session.save(theMember);
-        } catch (HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
@@ -78,15 +78,15 @@ public class DaoMember extends DaoActor {
      * @return null if not found.
      */
     public static DaoMember getByLogin(String login) {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login");
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login");
         q.setString("login", login);
         return (DaoMember) q.uniqueResult();
     }
 
     public static DaoMember getByLoginAndPassword(String login, String password) {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login and password = :password");
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login and password = :password");
         q.setString("login", login);
         q.setString("password", password);
         return (DaoMember) q.uniqueResult();
@@ -98,7 +98,7 @@ public class DaoMember extends DaoActor {
 
     protected DaoMember(String login, String password, String email) {
         super(login, email);
-        this.setRole(Role.NORMAL);
+        setRole(Role.NORMAL);
         this.password = password;
         this.karma = 0;
     }
@@ -118,14 +118,14 @@ public class DaoMember extends DaoActor {
      *            the group from which this member is removed.
      */
     public void removeFromGroup(DaoGroup aGroup) {
-        DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
+        final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
         groupMembership.remove(link);
         aGroup.getGroupMembership().remove(link);
     }
 
     public PageIterable<DaoGroup> getGroups() {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        Query q = session.getNamedQuery("getGroups");
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query q = session.getNamedQuery("getGroups");
         q.setParameter("member", this);
         return new QueryCollection<DaoGroup>(q);
     }
@@ -175,18 +175,18 @@ public class DaoMember extends DaoActor {
     }
 
     private <T> PageIterable<T> getUserContent(Class<T> theClass, String className) {
-        Query q = SessionManager.getSessionFactory()
-                                .getCurrentSession()
-                                .createQuery("from com.bloatit.model.data." + className + " as x where x.member = :author");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("from com.bloatit.model.data." + className + " as x where x.member = :author");
         q.setEntity("author", this);
         return new QueryCollection<T>(q);
     }
 
     public boolean isInGroup(DaoGroup group) {
-        Query q = SessionManager.getSessionFactory()
-                                .getCurrentSession()
-                                .createQuery("select count(*) from com.bloatit.model.data.DaoMember m join m.groupMembership as gm "
-                                        + "join gm.group as g where m = :member and g = :group");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select count(*) from com.bloatit.model.data.DaoMember m join m.groupMembership as gm "
+                                              + "join gm.group as g where m = :member and g = :group");
         q.setEntity("member", this);
         q.setEntity("group", group);
         return ((Long) q.uniqueResult()) >= 1;
