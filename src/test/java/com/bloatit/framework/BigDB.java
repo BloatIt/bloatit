@@ -86,13 +86,13 @@ public class BigDB {
     }
 
     private void createComment(DaoComment comment) {
-        final int nbComment = ((int) Math.random() * 15);
+        final int nbComment = (int) (Math.random() * 15);
         for (int i = 0; i < nbComment; i++) {
-            final int memberNum = ((int) Math.random() * nbUsers);
+            final int memberNum = (int) (Math.random() * nbUsers);
             final DaoComment other = DaoComment.createAndPersist(DaoMember.getByLogin("member " + memberNum),
                                                                  Long.toHexString(Double.doubleToLongBits(Math.random())));
             comment.addChildComment(other);
-            if (((int) Math.random() * 2) % 2 == 0) {
+            if ((int) (Math.random() * 15) % 15  == 0) {
                 createComment(other);
             }
         }

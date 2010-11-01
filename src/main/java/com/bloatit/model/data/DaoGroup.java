@@ -24,7 +24,7 @@ import com.bloatit.model.data.util.SessionManager;
 public class DaoGroup extends DaoActor {
 
     public enum Right {
-        PUBLIC, PRIVATE, PROTECTED;
+        PUBLIC, PROTECTED;
     }
 
     // right is a SQL keyword.

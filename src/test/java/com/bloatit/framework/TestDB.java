@@ -40,7 +40,7 @@ public class TestDB {
         yo.setFullname("Yoann Plénet");
 
         other = DaoGroup.createAndPersiste("other", "plop@plop.com", DaoGroup.Right.PROTECTED);
-        b219 = DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PRIVATE);
+        b219 = DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PROTECTED);
         ubuntuUsers = DaoGroup.createAndPersiste("ubuntuUsers", "plop@plop.com", DaoGroup.Right.PUBLIC);
 
         other.addMember(yo, true);
