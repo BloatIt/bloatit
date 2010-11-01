@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 @Entity
@@ -39,6 +40,7 @@ public class DaoContribution extends DaoUserContent {
     public DaoContribution(DaoMember member, BigDecimal amount) {
         super(member);
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
+            Log.data().error("The amount of a contribution cannot be <= 0.");
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         this.amount = amount;
@@ -46,7 +48,7 @@ public class DaoContribution extends DaoUserContent {
         getAuthor().getInternalAccount().block(amount);
     }
 
-    public void accept(DaoOffer Offer) {
+    public void accept(DaoOffer Offer) throws NotEnoughMoneyException {
         // TODO verify that the state is WAITING
         try {
             transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor().getInternalAccount(), amount);
@@ -54,7 +56,8 @@ public class DaoContribution extends DaoUserContent {
             setState(State.ACCEPTED);
         } catch (final NotEnoughMoneyException e) {
             cancel();
-            e.printStackTrace(); // TODO do something more constructive ...
+            Log.data().error(e);
+            throw e;
         }
     }
 

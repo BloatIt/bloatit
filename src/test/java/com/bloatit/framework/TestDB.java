@@ -91,7 +91,11 @@ public class TestDB {
         demand.getOffers().iterator().next().setState(State.VALIDATED);
 
         for (final DaoContribution contribution : demand.getContributions()) {
-            contribution.accept(demand.getOffers().iterator().next());
+            try {
+                contribution.accept(demand.getOffers().iterator().next());
+            } catch (NotEnoughMoneyException e) {
+                e.printStackTrace();
+            }
         }
 
         final DaoDemand demand1 = DaoDemand.createAndPersist(fred, new DaoDescription(fred, new Locale("en"), "I try it in English", "Hello world"));
