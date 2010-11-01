@@ -15,7 +15,7 @@ import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoActor;
 import com.bloatit.model.data.DaoGroup.MemberStatus;
 import com.bloatit.model.data.DaoGroup.Right;
-import com.bloatit.model.data.DaoJoinGroupDemand;
+import com.bloatit.model.data.DaoJoinGroupInvitation;
 import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoMember.Role;
 
@@ -58,15 +58,15 @@ public class Member extends Actor {
 
     public void invite(Member member, Group group) {
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, group), Action.WRITE);
-        DaoJoinGroupDemand.createAndPersist(this.getDao(), member.getDao(), group.getDao());
+        DaoJoinGroupInvitation.createAndPersist(this.getDao(), member.getDao(), group.getDao());
     }
 
-    public void acceptInvitation(JoinGroupDemand demand) {
+    public void acceptInvitation(JoinGroupInvitation demand) {
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
         demand.accept();
     }
 
-    public void refuseInvitation(JoinGroupDemand demand) {
+    public void refuseInvitation(JoinGroupInvitation demand) {
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
         demand.refuse();
     }

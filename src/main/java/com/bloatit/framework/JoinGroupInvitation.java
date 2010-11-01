@@ -1,10 +1,10 @@
 package com.bloatit.framework;
 
-import com.bloatit.model.data.DaoJoinGroupDemand;
+import com.bloatit.model.data.DaoJoinGroupInvitation;
 
-public class JoinGroupDemand extends Identifiable {
+public class JoinGroupInvitation extends Identifiable {
 
-    private DaoJoinGroupDemand dao;
+    private DaoJoinGroupInvitation dao;
 
     public Member getSender() {
         return Member.create(dao.getSender());

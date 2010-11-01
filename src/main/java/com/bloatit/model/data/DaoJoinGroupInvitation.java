@@ -11,7 +11,7 @@ import org.hibernate.Session;
 import com.bloatit.model.data.util.SessionManager;
 
 @Entity
-public class DaoJoinGroupDemand extends DaoIdentifiable {
+public class DaoJoinGroupInvitation extends DaoIdentifiable {
     enum State {
         ACCEPTED, REFUSED, PENDING
     }
@@ -26,9 +26,9 @@ public class DaoJoinGroupDemand extends DaoIdentifiable {
     @Enumerated
     private State state;
 
-    public static DaoJoinGroupDemand createAndPersist(DaoMember sender, DaoMember reciever, DaoGroup group) {
+    public static DaoJoinGroupInvitation createAndPersist(DaoMember sender, DaoMember reciever, DaoGroup group) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoJoinGroupDemand joinDemand = new DaoJoinGroupDemand(sender, reciever, group);
+        final DaoJoinGroupInvitation joinDemand = new DaoJoinGroupInvitation(sender, reciever, group);
         try {
             session.save(joinDemand);
         } catch (final HibernateException e) {
@@ -38,7 +38,7 @@ public class DaoJoinGroupDemand extends DaoIdentifiable {
         return joinDemand;
     }
 
-    private DaoJoinGroupDemand(DaoMember sender, DaoMember reciever, DaoGroup group) {
+    private DaoJoinGroupInvitation(DaoMember sender, DaoMember reciever, DaoGroup group) {
         super();
         this.sender = sender;
         this.reciever = reciever;
@@ -89,7 +89,7 @@ public class DaoJoinGroupDemand extends DaoIdentifiable {
         this.group = group;
     }
 
-    protected DaoJoinGroupDemand() {}
+    protected DaoJoinGroupInvitation() {}
 
     protected void setState(State state) {
         this.state = state;
