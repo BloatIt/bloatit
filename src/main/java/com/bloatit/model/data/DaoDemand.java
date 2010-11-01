@@ -67,7 +67,7 @@ public class DaoDemand extends DaoKudosable {
 
     protected DaoDemand(DaoMember member, DaoDescription Description) {
         super(member);
-        setValidated();
+        setState(State.VALIDATED);
         this.description = Description;
         this.specification = null;
     }

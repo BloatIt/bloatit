@@ -10,6 +10,7 @@ import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDescription;
 import com.bloatit.model.data.DaoExternalAccount;
 import com.bloatit.model.data.DaoExternalAccount.AccountType;
+import com.bloatit.model.data.DaoKudosable.State;
 import com.bloatit.model.data.DaoGroup;
 import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoTransaction;
@@ -87,7 +88,7 @@ public class TestDB {
 
         demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Mon Offre", "Voici la description"), new Date());
 
-        demand.getOffers().iterator().next().setValidated();
+        demand.getOffers().iterator().next().setState(State.VALIDATED);
 
         for (final DaoContribution contribution : demand.getContributions()) {
             contribution.accept(demand.getOffers().iterator().next());

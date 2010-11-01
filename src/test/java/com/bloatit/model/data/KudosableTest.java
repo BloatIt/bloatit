@@ -14,15 +14,6 @@ public class KudosableTest extends TestCase {
         demand.addKudos(tom, 42);
     }
 
-    public void testSetValidated() {
-        demand.setValidated();
-        assertEquals(DaoKudosable.State.VALIDATED, demand.getState());
-    }
-
-    public void testSetRejected() {
-        demand.setRejected();
-        assertEquals(DaoKudosable.State.REJECTED, demand.getState());
-    }
 
     private DaoMember yo;
     private DaoMember tom;
