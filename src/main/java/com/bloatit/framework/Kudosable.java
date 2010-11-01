@@ -9,11 +9,12 @@ public abstract class Kudosable extends UserContent {
 
     protected abstract DaoKudosable getDaoKudosable();
 
-    public boolean canKudos(Member member) {
-        return !getDaoKudosable().hasKudosed(member.getDao());
+    public boolean canKudos() {
+        return !getDaoKudosable().hasKudosed(getToken().getMember().getDao());
     }
 
-    public void unkudos(Member member) {
+    public void unkudos() {
+        Member member = getToken().getMember();
         if (getDaoKudosable().hasKudosed(member.getDao())) {
             throw new UnauthorizedOperationException();
         }
@@ -24,7 +25,8 @@ public abstract class Kudosable extends UserContent {
         }
     }
 
-    public void kudos(Member member) {
+    public void kudos() {
+        Member member = getToken().getMember();
         if (getDaoKudosable().hasKudosed(member.getDao())) {
             throw new UnauthorizedOperationException();
         }

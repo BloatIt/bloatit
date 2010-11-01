@@ -19,6 +19,9 @@
 
 package com.bloatit.web.pages;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.MemberManager;
@@ -26,13 +29,9 @@ import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class MembersListPage extends Page {

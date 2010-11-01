@@ -71,7 +71,7 @@ public class MemberPage extends Page {
     @Override
     protected HtmlComponent generateContent() {
         if (this.member != null) {
-            member.unLock(session.getAuthToken());
+            member.authenticate(session.getAuthToken());
 
             HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
             

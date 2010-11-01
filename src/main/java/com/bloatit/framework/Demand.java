@@ -7,12 +7,13 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.framework.lists.ContributionList;
 import com.bloatit.framework.lists.OfferList;
+import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoKudosable;
 
 public class Demand extends Kudosable {
     private DaoDemand dao;
-
+    
     public static Demand create(DaoDemand dao) {
         if (dao == null) {
             return null;
@@ -20,37 +21,43 @@ public class Demand extends Kudosable {
         return new Demand(dao);
     }
 
+
     private Demand(DaoDemand dao) {
         super();
         this.dao = dao;
+    }
+
+    public void addComment(String text) {
+        dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
+    }
+
+    public void addContribution(BigDecimal amount) throws Throwable {
+        dao.addContribution(getToken().getMember().getDao(), amount);
+    }
+
+    public Offer addOffer(Description description, Date dateExpir) {
+        return new Offer(dao.addOffer(getToken().getMember().getDao(), description.getDao(), dateExpir));
+    }
+
+    public void createSpecification(String content) {
+        dao.createSpecification(getToken().getMember().getDao(), content);
+    }
+
+    public PageIterable<Comment> getComments() {
+        return new CommentList(dao.getCommentsFromQuery());
+    }
+
+    public PageIterable<Contribution> getContributions() {
+        return new ContributionList(dao.getContributionsFromQuery());
     }
 
     public DaoDemand getDao() {
         return dao;
     }
 
-    public String getTitle() {
-        return getDescription().getDefaultTranslation().getTitle();
-    }
-
-    public void createSpecification(Member member, String content) {
-        dao.createSpecification(member.getDao(), content);
-    }
-
-    public Offer addOffer(Member member, Description description, Date dateExpir) {
-        return new Offer(dao.addOffer(member.getDao(), description.getDao(), dateExpir));
-    }
-
-    public void removeOffer(Offer offer) {
-        dao.removeOffer(offer.getDao());
-    }
-
-    public void addContribution(Member member, BigDecimal amount) throws Throwable {
-        dao.addContribution(member.getDao(), amount);
-    }
-
-    public Specification getSpecification() {
-        return new Specification(dao.getSpecification());
+    @Override
+    protected DaoKudosable getDaoKudosable() {
+        return dao;
     }
 
     public Description getDescription() {
@@ -61,21 +68,21 @@ public class Demand extends Kudosable {
         return new OfferList(dao.getOffersFromQuery());
     }
 
-    public PageIterable<Contribution> getContributions() {
-        return new ContributionList(dao.getContributionsFromQuery());
+    public int getPopularity() {
+        return dao.getPopularity();
     }
 
-    public PageIterable<Comment> getComments() {
-        return new CommentList(dao.getCommentsFromQuery());
+    public Specification getSpecification() {
+        return new Specification(dao.getSpecification());
     }
 
-    public void addComment(Comment comment) {
-        dao.addComment(comment.getDao());
+    public String getTitle() {
+        return getDescription().getDefaultTranslation().getTitle();
     }
 
-    @Override
-    protected DaoKudosable getDaoKudosable() {
-        return dao;
+    // TODO right management
+    public void removeOffer(Offer offer) {
+        dao.removeOffer(offer.getDao());
     }
 
 }

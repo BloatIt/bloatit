@@ -77,7 +77,9 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     public DaoTranslation getDefaultTranslation() {
-        return (DaoTranslation) SessionManager.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal").uniqueResult();
+        Query q = SessionManager.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal");
+        q.setLocale("locale", getDefaultLocale());
+        return (DaoTranslation) q.uniqueResult();
     }
 
     public void setDefaultLocale(Locale defaultLocale) {

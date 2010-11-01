@@ -19,20 +19,21 @@
 
 package com.bloatit.framework;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.RightManager.Role;
 
 public class Unlockable {
 
     private AuthToken token = null;
 
-    public void unLock(AuthToken token) {
+    public void authenticate(AuthToken token) {
         this.token = token;
-    }
-    public void lock() {
-        this.token = null;
     }
 
     protected AuthToken getToken() {
+        if(token == null){
+            throw new UnauthorizedOperationException();
+        }
         return token;
     }
 
