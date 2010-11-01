@@ -21,7 +21,7 @@ public abstract class UserContent extends Identifiable {
     }
 
     public Group getAsGroup() {
-        return new Group(getDaoUserContent().getAsGroup());
+        return Group.create(getDaoUserContent().getAsGroup());
     }
 
     @Override

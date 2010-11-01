@@ -49,7 +49,7 @@ public abstract class Account extends Identifiable {
         if (getDaoAccount().getActor().getClass() == DaoMember.class) {
             return Member.create((DaoMember) getDaoAccount().getActor());
         } else if (getDaoAccount().getActor().getClass() == DaoGroup.class) {
-            return new Group((DaoGroup) getDaoAccount().getActor());
+            return Group.create((DaoGroup) getDaoAccount().getActor());
         }
         throw new FatalErrorException("Cannot find the right Actor child class.", null);
     }

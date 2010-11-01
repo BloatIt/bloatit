@@ -5,7 +5,7 @@ import com.bloatit.model.data.DaoGroup;
 
 public class GroupManager {
     public static Group getByName(String name) {
-        return new Group(DaoGroup.getByName(name));
+        return Group.create(DaoGroup.getByName(name));
     }
 
     public static boolean exist(String name) {

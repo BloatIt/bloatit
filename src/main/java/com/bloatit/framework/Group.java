@@ -17,7 +17,7 @@ public class Group extends Actor {
         return new Group(dao);
     }
 
-    public Group(DaoGroup dao) {
+    private Group(DaoGroup dao) {
         super();
         this.dao = dao;
     }
