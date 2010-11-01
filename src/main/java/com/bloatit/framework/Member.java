@@ -13,7 +13,9 @@ import com.bloatit.framework.lists.TranslationList;
 import com.bloatit.framework.right.MemberRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoActor;
+import com.bloatit.model.data.DaoGroup.MemberStatus;
 import com.bloatit.model.data.DaoGroup.Right;
+import com.bloatit.model.data.DaoJoinGroupDemand;
 import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoMember.Role;
 
@@ -38,11 +40,25 @@ public class Member extends Actor {
     }
 
     public void addToPublicGroup(Group group) {
-        new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
         if (group.getRight() != Right.PUBLIC) {
             throw new UnauthorizedOperationException();
         }
+        new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
         dao.addToGroup(group.getDao(), false);
+    }
+
+    public boolean canInvite(Group group, Action action) {
+        return new MemberRight.InviteInGroup().canAccess(calculateRole(this, group), action);
+    }
+
+    public void invite(Member member, Group group) {
+        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, group), Action.WRITE);
+        DaoJoinGroupDemand.createAndPersist(this.getDao(), member.getDao(), group.getDao());
+    }
+
+    public void acceptInvitation(JoinGroupDemand demand) {
+        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
+        // TODO implement the accept !! 
     }
 
     public void removeFromGroup(Group aGroup) {
@@ -125,17 +141,21 @@ public class Member extends Actor {
         return new TranslationList(dao.getTranslations());
     }
 
+    public boolean isInGroup(Group group) {
+        return isInGroupUnprotected(group);
+    }
+
     @Override
     protected DaoActor getDaoActor() {
         return dao;
     }
 
-    protected boolean isInGroupUnprotected(Group group) {
-        return dao.isInGroup(group.getDao());
+    protected MemberStatus getStatusUnprotected(Group group) {
+        return group.getDao().getMemberStatus(dao);
     }
 
-    public boolean isInGroup(Group group) {
-        return isInGroupUnprotected(group);
+    protected boolean isInGroupUnprotected(Group group) {
+        return dao.isInGroup(group.getDao());
     }
 
     @Override

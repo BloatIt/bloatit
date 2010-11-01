@@ -23,6 +23,7 @@ import java.util.EnumSet;
 
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.RightManager.Role;
+import com.bloatit.model.data.DaoGroup.MemberStatus;
 
 public class Unlockable {
 
@@ -73,8 +74,14 @@ public class Unlockable {
             return EnumSet.of(Role.OTHER);
         }
         final EnumSet<Role> roles = calculateRole(member.getUnprotectedLogin());
-        if (group != null && token.getMember().isInGroupUnprotected(group)) {
-            roles.add(Role.GROUP);
+        if (group != null) {
+            MemberStatus status = token.getMember().getStatusUnprotected(group);
+            if (status == MemberStatus.ADMIN) {
+                roles.add(Role.GROUP_ADMIN);
+            }
+            if (status == MemberStatus.IN_GROUP) {
+                roles.add(Role.IN_GROUP);
+            }
         }
         return roles;
     }

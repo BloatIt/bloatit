@@ -11,6 +11,15 @@ public class MemberRight extends RightManager {
         }
     }
 
+    // Read for accept/refuse 
+    // write to create a new
+    public static class InviteInGroup extends Accessor {
+        @Override
+        protected boolean can(EnumSet<Role> role, Action action) {
+            return role.contains(Role.IN_GROUP);
+        }
+    }
+    
     public static class Karma extends Public {}
 
     public static class Password extends Private {}

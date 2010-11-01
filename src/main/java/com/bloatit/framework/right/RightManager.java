@@ -6,7 +6,7 @@ public abstract class RightManager {
 
     // WARNING order is important
     public enum Role {
-        GROUP, OTHER, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
+        GROUP_ADMIN, IN_GROUP, OTHER, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
     }
 
     public enum Action {
