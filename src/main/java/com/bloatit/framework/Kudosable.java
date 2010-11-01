@@ -7,6 +7,11 @@ import com.bloatit.model.data.DaoUserContent;
 
 public abstract class Kudosable extends UserContent {
 
+    private static final int TURN_VALIDE = 100;
+    private static final int TURN_REJECTED = -100;
+    private static final int TURN_HIDDEN = -10;
+    private static final int TURN_PENDING = 10;
+
     protected abstract DaoKudosable getDaoKudosable();
 
     public boolean canKudos() {
@@ -14,39 +19,19 @@ public abstract class Kudosable extends UserContent {
     }
 
     public void unkudos() {
-        final Member member = getToken().getMember();
-        if (getDaoKudosable().hasKudosed(member.getDao())) {
-            throw new UnauthorizedOperationException();
-        }
-        final int influence = member.calculateInfluence();
-        if (influence > 0) {
-            getAuthor().addToKarma(-influence);
-            getDaoKudosable().addKudos(member.getDao(), -influence);
-        }
+        addKudos(-1);
     }
 
     public void kudos() {
-        final Member member = getToken().getMember();
-        if (getDaoKudosable().hasKudosed(member.getDao())) {
-            throw new UnauthorizedOperationException();
-        }
-        final int influence = member.calculateInfluence();
-        if (influence > 0) {
-            getAuthor().addToKarma(influence);
-            getDaoKudosable().addKudos(member.getDao(), influence);
-        }
+        addKudos(1);
     }
 
     public State getState() {
         return getDaoKudosable().getState();
     }
 
-    protected void setValidated() {
-        getDaoKudosable().setValidated();
-    }
-
-    protected void setRejected() {
-        getDaoKudosable().setRejected();
+    protected void setState(State newState) {
+        getDaoKudosable().setState(newState);
     }
 
     @Override
@@ -54,4 +39,46 @@ public abstract class Kudosable extends UserContent {
         return getDaoKudosable();
     }
 
+    private void addKudos(int signe) {
+        final Member member = getToken().getMember();
+        if (getDaoKudosable().hasKudosed(member.getDao())) {
+            throw new UnauthorizedOperationException();
+        }
+        final int influence = member.calculateInfluence();
+        if (influence > 0) {
+            getAuthor().addToKarma(influence);
+            calculateNewState(getDaoKudosable().addKudos(member.getDao(), signe * influence));
+        }
+    }
+
+    private void calculateNewState(int newPop) {
+        switch (getState()) {
+        case PENDING:
+            if (newPop >= TURN_VALIDE) {
+                setState(State.VALIDATED);
+            } else if (newPop <= TURN_HIDDEN && newPop > TURN_REJECTED) {
+                setState(State.HIDDEN);
+            } else if (newPop <= TURN_REJECTED) {
+                setState(State.REJECTED);
+            }
+            // NO BREAK IT IS OK !!
+        case VALIDATED:
+            if (newPop <= TURN_PENDING) {
+                setState(State.PENDING);
+            }
+            break;
+        case HIDDEN:
+        case REJECTED:
+            if (newPop >= TURN_PENDING && newPop < TURN_VALIDE) {
+                setState(State.PENDING);
+            } else if (newPop >= TURN_VALIDE) {
+                setState(State.VALIDATED);
+            } else if (newPop <= TURN_HIDDEN && newPop > TURN_REJECTED) {
+                setState(State.VALIDATED);
+            } else if (newPop <= TURN_REJECTED) {
+                setState(State.REJECTED);
+            }
+            break;
+        }
+    }
 }

@@ -54,14 +54,6 @@ public abstract class DaoKudosable extends DaoUserContent {
         return state;
     }
 
-    public void setValidated() {
-        this.state = State.VALIDATED;
-    }
-
-    public void setRejected() {
-        this.state = State.REJECTED;
-    }
-
     public int getPopularity() {
         return popularity;
     }
@@ -78,13 +70,14 @@ public abstract class DaoKudosable extends DaoUserContent {
         return (Long) q.uniqueResult() > 0;
     }
 
+    public void setState(State state) {
+        this.state = state;
+    }
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    protected void setState(State state) {
-        this.state = state;
-    }
 
     protected void setPopularity(int popularity) {
         this.popularity = popularity;
