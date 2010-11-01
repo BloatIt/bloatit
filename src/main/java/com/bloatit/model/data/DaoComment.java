@@ -14,6 +14,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
@@ -33,6 +34,7 @@ public class DaoComment extends DaoKudosable {
             session.save(comment);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
+            Log.data().error(e);
             session.beginTransaction();
             throw e;
         }
@@ -48,6 +50,7 @@ public class DaoComment extends DaoKudosable {
         return text;
     }
 
+    // TODO use a filtered collection
     public PageIterable<DaoComment> getChildrenFromQuery() {
         final Query q = SessionManager.getSessionFactory()
                                       .getCurrentSession()

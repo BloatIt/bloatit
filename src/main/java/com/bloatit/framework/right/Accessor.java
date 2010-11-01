@@ -2,6 +2,7 @@ package com.bloatit.framework.right;
 
 import java.util.EnumSet;
 
+import com.bloatit.common.Log;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.framework.right.RightManager.Role;
@@ -27,6 +28,7 @@ public abstract class Accessor {
 
     public void tryAccess(EnumSet<Role> role, Action action) {
         if (!canAccess(role, action)) {
+            Log.framework().error("UnauthorizedOperationException - " + role + " - " + action + " - " + getClass().getName());
             throw new UnauthorizedOperationException();
         }
     }
