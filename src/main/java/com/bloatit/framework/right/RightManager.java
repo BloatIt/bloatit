@@ -3,7 +3,7 @@ package com.bloatit.framework.right;
 public abstract class RightManager {
 
     public enum Role {
-        OWNER, GROUP, OTHER, ADMIN
+        OTHER, OWNER, GROUP, MODERATOR, ADMIN
     }
 
     public enum Action {
@@ -34,6 +34,18 @@ public abstract class RightManager {
         return role == Role.OTHER && Action.DELETE == action;
     }
 
+    protected static boolean modoCanRead(Role role, Action action) {
+        return role == Role.MODERATOR && Action.READ == action;
+    }
+
+    protected static boolean modoCanWrite(Role role, Action action) {
+        return role == Role.MODERATOR && Action.WRITE == action;
+    }
+
+    protected static boolean modoCanDelete(Role role, Action action) {
+        return role == Role.MODERATOR && Action.DELETE == action;
+    }
+
     protected static boolean canRead(Action action) {
         return Action.READ == action;
     }
@@ -59,11 +71,18 @@ public abstract class RightManager {
             return ownerCanRead(role, action) || ownerCanWrite(role, action);
         }
     }
-    
+
     public static class Public extends Accessor {
         @Override
         protected boolean can(Role role, Action action) {
             return canRead(action) || ownerCanWrite(role, action);
+        }
+    }
+
+    public static class PublicModerable extends Accessor {
+        @Override
+        protected boolean can(Role role, Action action) {
+            return canRead(action) || ownerCanWrite(role, action) || modoCanDelete(role, action) || modoCanWrite(role, action);
         }
     }
 
