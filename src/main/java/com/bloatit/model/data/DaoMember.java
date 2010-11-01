@@ -16,6 +16,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.model.data.DaoJoinGroupInvitation.State;
 import com.bloatit.model.data.util.SessionManager;
 
 // member is a SQL keyword (in some specific implementations)
@@ -172,6 +173,26 @@ public class DaoMember extends DaoActor {
 
     public PageIterable<DaoTranslation> getTranslations() {
         return getUserContent(DaoTranslation.class, "DaoTranslation");
+    }
+
+    // TODO test
+    public PageIterable<DaoJoinGroupInvitation> getRecievedInvitation(State state) {
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("from com.bloatit.model.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state");
+        q.setEntity("reciever", this);
+        q.setEntity("state", state);
+        return new QueryCollection<DaoJoinGroupInvitation>(q);
+    }
+
+    // TODO test
+    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(State state) {
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("from com.bloatit.model.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state");
+        q.setEntity("sender", this);
+        q.setEntity("state", state);
+        return new QueryCollection<DaoJoinGroupInvitation>(q);
     }
 
     private <T> PageIterable<T> getUserContent(Class<T> theClass, String className) {
