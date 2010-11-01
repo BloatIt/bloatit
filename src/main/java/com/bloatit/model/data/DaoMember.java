@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
@@ -23,11 +24,18 @@ import com.bloatit.model.data.util.SessionManager;
         + "where m = :member order by g.login")
 public class DaoMember extends DaoActor {
 
+    public enum Role {
+        NORMAL, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
+    }
+
     private String fullname;
     @Basic(optional = false)
     private String password;
     @Basic(optional = false)
     private Integer karma;
+    @Basic(optional = false)
+    @Enumerated
+    private Role role;
 
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member")
@@ -91,6 +99,7 @@ public class DaoMember extends DaoActor {
 
     protected DaoMember(String login, String password, String email) {
         super(login, email);
+        this.setRole(Role.NORMAL);
         this.password = password;
         this.karma = 0;
     }
@@ -190,6 +199,14 @@ public class DaoMember extends DaoActor {
 
     public Integer getKarma() {
         return karma;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     // ======================================================================
