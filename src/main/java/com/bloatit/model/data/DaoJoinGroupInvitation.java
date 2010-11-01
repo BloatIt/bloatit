@@ -12,7 +12,7 @@ import com.bloatit.model.data.util.SessionManager;
 
 @Entity
 public class DaoJoinGroupInvitation extends DaoIdentifiable {
-    enum State {
+    public enum State {
         ACCEPTED, REFUSED, PENDING
     }
 
