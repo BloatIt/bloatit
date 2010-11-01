@@ -9,6 +9,13 @@ import com.bloatit.model.data.DaoGroup.Right;
 public class Group extends Actor {
 
     private final DaoGroup dao;
+    
+    public static Group create(DaoGroup dao){
+        if(dao == null){
+            return null;
+        }
+        return new Group(dao);
+    }
 
     public Group(DaoGroup dao) {
         super();
