@@ -29,11 +29,11 @@ public class Description extends Identifiable {
 	}
 
 	public Translation getTranslation(Locale locale) {
-	    return new Translation(dao.getTranslation(locale));
+	    return Translation.create(dao.getTranslation(locale));
 	}
 
 	public Translation getDefaultTranslation() {
-	    return new Translation(dao.getDefaultTranslation());
+	    return Translation.create(dao.getDefaultTranslation());
 	}
 
 	public void setDefaultLocale(Locale defaultLocale) {

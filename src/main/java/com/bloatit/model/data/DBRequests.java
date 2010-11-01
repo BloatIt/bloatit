@@ -14,7 +14,6 @@ public class DBRequests {
 
     public static <T> PageIterable<T> getAll(Class<T> persistent) {
         ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
-        System.out.println("from " + meta.getEntityName());
         return new QueryCollection<T>(SessionManager.getSessionFactory().getCurrentSession().createQuery("from " + meta.getEntityName()));
     }
 

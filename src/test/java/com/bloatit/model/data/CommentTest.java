@@ -81,8 +81,6 @@ public class CommentTest extends TestCase {
 		DaoComment first = it.next();
 		DaoComment next = it.next();
 		
-		System.out.println(first.getAuthor().getLogin());
-		
 		// TODO find why it does not work directly 
 		assertEquals(yo.getLogin(), first.getAuthor().getLogin());
 		assertEquals(tom.getLogin(), next.getAuthor().getLogin());

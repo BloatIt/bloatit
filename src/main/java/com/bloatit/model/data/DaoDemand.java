@@ -20,9 +20,6 @@ import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
-/**
- * 
- */
 @Entity
 public class DaoDemand extends DaoKudosable {
 

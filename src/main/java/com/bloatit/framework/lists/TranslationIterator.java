@@ -17,7 +17,7 @@ public class TranslationIterator extends com.bloatit.framework.lists.IteratorBin
 
     @Override
     protected Translation createFromDao(DaoTranslation dao) {
-        return new Translation(dao);
+        return Translation.create(dao);
     }
 
 }

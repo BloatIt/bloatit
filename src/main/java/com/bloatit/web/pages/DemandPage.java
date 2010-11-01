@@ -23,7 +23,6 @@ import java.util.Map;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.model.exceptions.ElementNotFoundException;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
@@ -52,9 +51,7 @@ public class DemandPage extends Page {
 
                 }
                 if (id != null) {
-                    try {
-                        d = DemandManager.GetDemandById(id);
-                    } catch (ElementNotFoundException ex) {}
+                    d = DemandManager.GetDemandById(id);
                 }
             }
         } else {
@@ -84,9 +81,9 @@ public class DemandPage extends Page {
 
         HtmlBlock demandBlock = new HtmlBlock("demand");
 
-//        TODO CORRECT ME
-//        HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session, this.demand.getTitle()), "demand_title");
-//        demandBlock.add(demandTitle);
+        // TODO CORRECT ME
+        // HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session, this.demand.getTitle()), "demand_title");
+        // demandBlock.add(demandTitle);
 
         return demandBlock;
 

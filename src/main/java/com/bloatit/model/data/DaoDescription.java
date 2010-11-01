@@ -12,12 +12,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
-@NamedQuery(name = "translation.getTextByLocal", query = "from DaoTranslation as t where t.locale = :locale")
 @Entity
 public class DaoDescription extends DaoIdentifiable {
 
@@ -37,7 +35,6 @@ public class DaoDescription extends DaoIdentifiable {
         try {
             session.save(descr);
         } catch (HibernateException e) {
-            System.out.println(e);
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
@@ -77,9 +74,7 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     public DaoTranslation getDefaultTranslation() {
-        Query q = SessionManager.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal");
-        q.setLocale("locale", getDefaultLocale());
-        return (DaoTranslation) q.uniqueResult();
+        return getTranslation(getDefaultLocale());
     }
 
     public void setDefaultLocale(Locale defaultLocale) {

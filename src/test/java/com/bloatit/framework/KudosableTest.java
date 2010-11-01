@@ -1,11 +1,12 @@
 package com.bloatit.framework;
 
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.framework.managers.DemandManager;
 
 public class KudosableTest extends FrameworkTestUnit {
 
     public void testCanKudos() {
-        Demand demand = Demand.create(db.getDemand());
+        Demand demand = DemandManager.GetDemandById(db.getDemand().getId());
 
         try {
             demand.canKudos();
@@ -21,19 +22,19 @@ public class KudosableTest extends FrameworkTestUnit {
         assertTrue(demand.canKudos());
         demand.kudos();
         assertFalse(demand.canKudos());
-
     }
 
     public void testUnkudos() {
-        Demand demand = Demand.create(db.getDemand());
+        Demand demand = DemandManager.GetDemandById(db.getDemand().getId());
 
+        assertEquals(0, demand.getPopularity());
         demand.authenticate(yoAuthToken);
         demand.unkudos();
-        assertEquals(1, demand.getPopularity());
+        assertEquals(-1, demand.getPopularity());
     }
 
     public void testKudos() {
-        Demand demand = Demand.create(db.getDemand());
+        Demand demand = DemandManager.GetDemandById(db.getDemand().getId());
 
         demand.authenticate(yoAuthToken);
         demand.kudos();

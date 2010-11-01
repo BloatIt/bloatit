@@ -63,7 +63,6 @@ public class DaoMember extends DaoActor {
         try {
             session.save(theMember);
         } catch (HibernateException e) {
-            System.out.println(e);
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;

@@ -57,6 +57,7 @@ public class KudosableTest extends TestCase {
 		demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
 
 		SessionManager.endWorkUnitAndFlush();
+		SessionManager.beginWorkUnit();
 	}
 
 	protected void tearDown() throws Exception {
@@ -68,3 +69,4 @@ public class KudosableTest extends TestCase {
 	}
 
 }
+

@@ -57,7 +57,9 @@ public class SessionManager {
 	public static void reCreateSessionFactory(){
 	    try {
             // Create the SessionFactory from hibernate.cfg.xml
-	        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+	        AnnotationConfiguration configure = new AnnotationConfiguration().configure();
+	        configure.setProperty("hbm2ddl.auto", "create-drop");
+            sessionFactory = configure.buildSessionFactory();
         } catch (Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);

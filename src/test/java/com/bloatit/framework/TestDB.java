@@ -81,6 +81,7 @@ public class TestDB {
         c2.addKudos(tom, 42);
         c1.addKudos(tom, -12);
         c21.addKudos(fred, -1);
+        
 
         demand.createSpecification(fred, "Tiens voila une spécif vraiment précise");
         demand.addContribution(yo, new BigDecimal("120"));

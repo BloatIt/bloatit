@@ -23,7 +23,6 @@ import com.bloatit.framework.Demand;
 import com.bloatit.framework.lists.DemandList;
 import com.bloatit.model.data.DBRequests;
 import com.bloatit.model.data.DaoDemand;
-import com.bloatit.model.exceptions.ElementNotFoundException;
 
 public class DemandManager {
 
@@ -31,7 +30,7 @@ public class DemandManager {
         return new DemandList(DBRequests.getAll(DaoDemand.class));
     }
 
-    public static Demand GetDemandById(Integer id) throws ElementNotFoundException {
+    public static Demand GetDemandById(Integer id) {
         return Demand.create(DBRequests.getById(DaoDemand.class, id));
     }
 }
