@@ -113,18 +113,20 @@ public class DemandTest extends TestCase {
     public void testAddContribution() throws Throwable {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+        DaoDemand demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
                 "Ceci est la descption de ma demande :) "));
-        Demand.createSpecification(tom, "This is the spécification");
+        demand.createSpecification(tom, "This is the spécification");
 
         SessionManager.flush();
 
-        Demand.addContribution(fred, new BigDecimal("25.00"));
-        Demand.addContribution(yo, new BigDecimal("18.00"));
+        demand.addContribution(fred, new BigDecimal("25.00"));
+        demand.addContribution(yo, new BigDecimal("18.00"));
 
-        SessionManager.flush();
-
-        assertEquals(2, Demand.getContributions().size());
+        SessionManager.endWorkUnitAndFlush();
+        SessionManager.beginWorkUnit();
+        demand = DBRequests.getById(DaoDemand.class, demand.getId());
+        
+        assertEquals(2, demand.getContributions().size());
 
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("25")));
         assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("-25")));
@@ -137,18 +139,20 @@ public class DemandTest extends TestCase {
     public void testAddOffer() throws Throwable {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+        DaoDemand demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
                 "Ceci est la descption de ma demande :) "));
-        Demand.createSpecification(tom, "This is the spécification");
+        demand.createSpecification(tom, "This is the spécification");
 
-        SessionManager.flush();
+        SessionManager.endWorkUnitAndFlush();
+        SessionManager.beginWorkUnit();
+        demand = DBRequests.getById(DaoDemand.class, demand.getId());
 
-        Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !",
+        demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !",
                 "Ceci est la descption de mon Offre:) "), new Date());
 
         SessionManager.flush();
 
-        assertEquals(1, Demand.getOffers().size());
+        assertEquals(1, demand.getOffers().size());
 
         SessionManager.endWorkUnitAndFlush();
 

@@ -10,8 +10,8 @@ import org.hibernate.annotations.CascadeType;
 public class DaoSpecification extends DaoUserContent {
 
     private String content;
-    @OneToOne(optional = true)
-    @Cascade(value = { CascadeType.ALL})
+    
+    @OneToOne(optional = false)
     private DaoDemand demand;
 
     protected DaoSpecification() {
@@ -20,6 +20,7 @@ public class DaoSpecification extends DaoUserContent {
 
     public DaoSpecification(DaoMember member, String content, DaoDemand Demand) {
         super(member);
+        // TODO make sure demand != null
         this.content = content;
         this.demand = Demand;
     }
