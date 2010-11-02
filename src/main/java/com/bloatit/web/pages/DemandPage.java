@@ -87,6 +87,8 @@ public class DemandPage extends Page {
         page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
         page.add(left);
         page.add(right);
+
+
         
         // block avec la progression
         float progressValue = 0;
@@ -118,11 +120,6 @@ public class DemandPage extends Page {
         progressBlock.add(progressBarBlock);
 
 
-
-        
-        
-        
-        
 
         left.add(progressBlock);
         
@@ -159,7 +156,21 @@ public class DemandPage extends Page {
         
         // droite process
         
-       
+
+        HtmlBlock rightBlock = new HtmlBlock("right_block");
+
+        HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
+        HtmlBlock timelineBlock = new HtmlBlock("timeline_block");
+        HtmlBlock contributorsBlock = new HtmlBlock("contributors_block");
+
+        rightBlock.add(abstractBlock);
+        rightBlock.add(timelineBlock);
+        rightBlock.add(contributorsBlock);
+
+        generateContributorsBlock(contributorsBlock);
+
+
+        right.add(rightBlock);
 
         return page;
 
@@ -183,5 +194,24 @@ public class DemandPage extends Page {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    private void generateContributorsBlock(HtmlBlock contributorsBlock) {
+
+
+        int contributionCount = demand.getContributions().size();
+        contributorsBlock.add(new HtmlText(""+contributionCount+session.tr("&nbsp;contributions")));
+
+        if(contributionCount > 0) {
+            float contributionMean = demand.getContribution().floatValue()/contributionCount;
+            String contributionMin = demand.getContributionMin().toPlainString();
+            String contributionMax = demand.getContributionMax().toPlainString();
+
+
+            contributorsBlock.add(new HtmlText(session.tr("Min:&nbsp;")+contributionMin));
+            contributorsBlock.add(new HtmlText(session.tr("Max:&nbsp;")+contributionMax));
+            contributorsBlock.add(new HtmlText(session.tr("Mean:&nbsp;")+contributionMean));
+        }
+
     }
 }
