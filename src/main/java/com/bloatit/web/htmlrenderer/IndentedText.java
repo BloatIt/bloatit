@@ -21,7 +21,7 @@ package com.bloatit.web.htmlrenderer;
 
 class IndentedText {
     private int indentCount;
-    private String text;
+    private StringBuilder text;
     private final String indentSeparator;
     private final String lineSeparator;
 
@@ -33,15 +33,15 @@ class IndentedText {
         this.indentSeparator = indentSeparator;
         this.lineSeparator = lineSeparator;
         this.indentCount = 0;
-        this.text = "";
+        this.text = new StringBuilder();
     }
 
     public void write(String newText) {
         for (int i = 0; i < this.indentCount; i++) {
-            this.text += this.indentSeparator;
+            this.text.append(this.indentSeparator);
         }
-        this.text += newText;
-        this.text += this.lineSeparator;
+        this.text.append(newText);
+        this.text.append(this.lineSeparator);
     }
 
     public void indent() {
@@ -53,10 +53,10 @@ class IndentedText {
     }
 
     public String getText() {
-        return text;
+        return text.toString();
     }
 
     public boolean hasContent() {
-        return !text.isEmpty();
+        return text.length() != 0;
     }
 }
