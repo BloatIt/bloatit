@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -22,6 +23,9 @@ import com.bloatit.model.data.util.SessionManager;
 
 @Entity
 public class DaoDemand extends DaoKudosable {
+
+    @Basic(optional = false)
+    private BigDecimal contribution;
 
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -49,7 +53,8 @@ public class DaoDemand extends DaoKudosable {
     /**
      * It is automatically in validated state (temporary)
      * 
-     * @param member the author of the demand
+     * @param member
+     *            the author of the demand
      * @param description
      */
     public static DaoDemand createAndPersist(DaoMember member, DaoDescription Description) {
@@ -70,6 +75,7 @@ public class DaoDemand extends DaoKudosable {
         setState(State.VALIDATED);
         this.description = Description;
         this.specification = null;
+        this.contribution = new BigDecimal("0");
     }
 
     protected DaoDemand() {
@@ -94,7 +100,8 @@ public class DaoDemand extends DaoKudosable {
     /**
      * delete offer from this demand AND FROM DB !
      * 
-     * @param Offer the offer we want to delete.
+     * @param Offer
+     *            the offer we want to delete.
      */
     public void removeOffer(DaoOffer Offer) {
         offers.remove(Offer);
@@ -105,6 +112,7 @@ public class DaoDemand extends DaoKudosable {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         contributions.add(new DaoContribution(member, amount));
+        contribution = contribution.add(amount);
     }
 
     public DaoSpecification getSpecification() {
@@ -126,9 +134,8 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoContribution> getContributionsFromQuery() {
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("from com.bloatit.model.data.DaoContribution as f where f.demand = :this");
+        final Query q = SessionManager.getSessionFactory().getCurrentSession()
+                .createQuery("from com.bloatit.model.data.DaoContribution as f where f.demand = :this");
         q.setEntity("this", this);
         return new QueryCollection<DaoContribution>(q);
     }
@@ -138,9 +145,8 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("from com.bloatit.model.data.DaoComment as f where f.demand = :this");
+        final Query q = SessionManager.getSessionFactory().getCurrentSession()
+                .createQuery("from com.bloatit.model.data.DaoComment as f where f.demand = :this");
         q.setEntity("this", this);
         return new QueryCollection<DaoComment>(q);
     }
@@ -151,6 +157,10 @@ public class DaoDemand extends DaoKudosable {
 
     public void addComment(DaoComment comment) {
         comments.add(comment);
+    }
+
+    public BigDecimal getContribution() {
+        return contribution;
     }
 
     // ======================================================================
@@ -175,6 +185,10 @@ public class DaoDemand extends DaoKudosable {
 
     public void setComments(Set<DaoComment> comments) {
         this.comments = comments;
+    }
+
+    protected void setContribution(BigDecimal contribution) {
+        this.contribution = contribution;
     }
 
 }
