@@ -1,6 +1,7 @@
 package com.bloatit.model.data.util;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
@@ -17,6 +18,10 @@ public class SessionManager {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
+    }
+    
+    public static Query createQuery(String str){
+        return getSessionFactory().getCurrentSession().createQuery(str);
     }
 
     /**
