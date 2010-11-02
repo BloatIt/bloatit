@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -31,14 +30,13 @@ public class DaoDemand extends DaoKudosable {
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private DaoDescription description;
 
-    @OneToOne(mappedBy = "demand", optional = true)
+    @OneToOne(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private DaoSpecification specification;
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @OrderBy(clause = "DaoOffer.popularity")
-    // TODO test me !
+    @OrderBy(clause = "popularity")
     private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
     // TODO make sure it is read only !
@@ -91,8 +89,8 @@ public class DaoDemand extends DaoKudosable {
         specification = new DaoSpecification(member, content, this);
     }
 
-    public DaoOffer addOffer(DaoMember member, DaoDescription Description, Date dateExpir) {
-        final DaoOffer Offer = new DaoOffer(member, this, Description, dateExpir);
+    public DaoOffer addOffer(DaoMember member, DaoDescription description, Date dateExpir) {
+        final DaoOffer Offer = new DaoOffer(member, this, description, dateExpir);
         offers.add(Offer);
         return Offer;
     }
@@ -111,7 +109,8 @@ public class DaoDemand extends DaoKudosable {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
-        contributions.add(new DaoContribution(member, amount));
+
+        contributions.add(new DaoContribution(member, this, amount));
         contribution = contribution.add(amount);
     }
 
@@ -158,11 +157,13 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public BigDecimal getContributionMin() {
-        return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
+                .setEntity("this", this).uniqueResult();
     }
 
     public BigDecimal getContributionMax() {
-        return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")
+                .setEntity("this", this).uniqueResult();
     }
 
     // ======================================================================

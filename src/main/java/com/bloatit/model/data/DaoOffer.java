@@ -13,8 +13,7 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 public class DaoOffer extends DaoKudosable {
 
-    @ManyToOne
-    @Cascade(value = { CascadeType.ALL})
+    @ManyToOne(optional = false)
     private DaoDemand demand;
     @OneToOne
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
