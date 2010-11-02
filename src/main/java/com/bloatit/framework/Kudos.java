@@ -5,7 +5,7 @@ import com.bloatit.model.data.DaoUserContent;
 
 public class Kudos extends UserContent {
 
-    private DaoKudos dao;
+    private final DaoKudos dao;
 
     public Kudos(DaoKudos dao) {
         super();

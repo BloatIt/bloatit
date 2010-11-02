@@ -1,164 +1,190 @@
 package com.bloatit.framework;
 
+import javassist.NotFoundException;
+
 import com.bloatit.framework.managers.GroupManager;
 import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.model.data.util.SessionManager;
 
-import junit.framework.TestCase;
-
-public class MemberTest extends TestCase {
-    
-    AuthToken yoAuthToken;
-    AuthToken tomAuthToken;
-    AuthToken fredAuthToken;
-    TestDB db;
-
-
-    protected void setUp() throws Exception {
-        super.setUp();
-        SessionManager.reCreateSessionFactory();
-        db = new TestDB();
-        SessionManager.beginWorkUnit();
-        yoAuthToken = new AuthToken(MemberManager.getMemberByLogin("Yo"), "plop");
-        tomAuthToken = new AuthToken(MemberManager.getMemberByLogin("Thomas"), "plip");
-        fredAuthToken = new AuthToken(MemberManager.getMemberByLogin("Fred"), "plap");
-        SessionManager.endWorkUnitAndFlush();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            SessionManager.endWorkUnitAndFlush();
-        }
-        SessionManager.getSessionFactory().close();
-    }
+public class MemberTest extends FrameworkTestUnit {
 
     public void testAddToGroup() {
-        SessionManager.beginWorkUnit();
-        Member yo = MemberManager.getMemberByLogin("Yo");
-        
-        yo.unLock(yoAuthToken);
-        yo.addToGroup(GroupManager.getByName("ubuntuUsers"), false);
-        yo.lock();
-        
+        // TODO correct the right management in groups
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.authenticate(yoAuthToken);
+        yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
+
+        assertTrue(yo.isInGroup(GroupManager.getByName("ubuntuUsers")));
+
         try {
-            yo.unLock(fredAuthToken);
-            yo.addToGroup(GroupManager.getByName("ubuntuUsers"), false);
+            yo.authenticate(fredAuthToken);
+            yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
             fail();
-        } catch (Exception e) {
-            yo.lock();
-        }
-        
-        
-        SessionManager.endWorkUnitAndFlush();
+        } catch (final Exception e) {}
+
     }
 
     public void testRemoveFromGroup() {
-        fail("Not yet implemented");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.authenticate(yoAuthToken);
+        yo.removeFromGroup(GroupManager.getByName("b219"));
+        assertFalse(yo.isInGroup(GroupManager.getByName("b219")));
+
+        try {
+            yo.authenticate(fredAuthToken);
+            yo.removeFromGroup(GroupManager.getByName("b219"));
+            fail();
+        } catch (final Exception e) {}
     }
 
     public void testGetGroups() {
+        // Here the right thing would be to show all
+        // the public and protected group to everyone
+        // the private group to the member of the private group
+
         fail("Not yet implemented");
     }
 
     public void testGetKarma() {
-        fail("Not yet implemented");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.authenticate(yoAuthToken);
+        assertEquals(0, yo.getKarma());
+        yo.authenticate(fredAuthToken);
+        assertEquals(0, yo.getKarma());
+        yo.authenticate(tomAuthToken);
+        assertEquals(0, yo.getKarma());
     }
 
-    public void testAddToKarma() {
-        fail("Not yet implemented");
+    public void testSetFullName() {
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.authenticate(yoAuthToken);
+        assertEquals(0, yo.getKarma());
+        yo.authenticate(fredAuthToken);
+        assertEquals(0, yo.getKarma());
+        yo.authenticate(tomAuthToken);
+        assertEquals(0, yo.getKarma());
     }
 
-    public void testGetFirstname() {
-        fail("Not yet implemented");
+    public void testGetFullname() {
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.authenticate(yoAuthToken);
+        assertEquals("Yoann Plénet", yo.getFullname());
+        yo.authenticate(fredAuthToken);
+        assertEquals("Yoann Plénet", yo.getFullname());
+        yo.authenticate(tomAuthToken);
+        assertEquals("Yoann Plénet", yo.getFullname());
     }
 
-    public void testSetFirstname() {
-        fail("Not yet implemented");
-    }
+    public void testSetFullname() {
+        final Member yo = MemberManager.getMemberByLogin("Yo");
 
-    public void testGetFullName() {
-        fail("Not yet implemented");
-    }
+        yo.authenticate(yoAuthToken);
+        yo.setFullname("Plénet Yoann");
 
-    public void testGetLastname() {
-        fail("Not yet implemented");
-    }
+        try {
+            yo.authenticate(fredAuthToken);
+            yo.setFullname("plop");
+            fail();
+        } catch (final Exception e) {}
 
-    public void testSetLastname() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetPassword() {
-        fail("Not yet implemented");
+        assertEquals("Plénet Yoann", yo.getFullname());
     }
 
     public void testSetPassword() {
-        fail("Not yet implemented");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+
+        yo.authenticate(yoAuthToken);
+        yo.setPassword("Coucou");
+
+        try {
+            new AuthToken("Yo", "Coucou");
+        } catch (final NotFoundException e) {
+            fail();
+        }
     }
 
     public void testGetDemands() {
-        fail("Not yet implemented");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+
+        assertEquals("Mon titre", yo.getDemands().iterator().next().getTitle());
+
+        yo.authenticate(yoAuthToken);
+        assertEquals("Mon titre", yo.getDemands().iterator().next().getTitle());
+
+        yo.authenticate(fredAuthToken);
+        assertEquals("Mon titre", yo.getDemands().iterator().next().getTitle());
     }
 
     public void testGetKudos() {
-        fail("Not yet implemented");
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+
+        assertEquals(1, yo.getKudos().size());
+
+        yo.authenticate(yoAuthToken);
+        assertEquals(1, yo.getKudos().size());
+
+        yo.authenticate(fredAuthToken);
+        assertEquals(1, yo.getKudos().size());
     }
 
-    public void testGetSpecifications() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetContributions() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetComments() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetOffers() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetTranslations() {
-        fail("Not yet implemented");
-    }
-
-    public void testIsInGroup() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetEmail() {
-        fail("Not yet implemented");
-    }
-
-    public void testSetEmail() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetLogin() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetDateCreation() {
-        fail("Not yet implemented");
-    }
-
-    public void testCanGetInternalAccount() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetInternalAccount() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetExternalAccount() {
-        fail("Not yet implemented");
-    }
-
-    public void testSetExternalAccount() {
-        fail("Not yet implemented");
-    }
+    // public void testGetSpecifications() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetContributions() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetComments() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetOffers() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetTranslations() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testIsInGroup() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetEmail() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testSetEmail() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetLogin() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetDateCreation() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testCanGetInternalAccount() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetInternalAccount() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetExternalAccount() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testSetExternalAccount() {
+    // fail("Not yet implemented");
+    // }
 
 }

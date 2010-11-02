@@ -1,22 +1,25 @@
 /*
  * Copyright (C) 2010 BloatIt.
- *
+ * 
  * This file is part of BloatIt.
- *
+ * 
  * BloatIt is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * BloatIt is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.server;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlTools;
@@ -31,8 +34,6 @@ import com.bloatit.web.pages.MembersListPage;
 import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class Page extends Request {
 
@@ -43,7 +44,7 @@ public abstract class Page extends Request {
         this.design = "/resources/css/design.css";
     }
 
-    public Page(Session session){
+    public Page(Session session) {
         this(session, new HashMap<String, String>());
     }
 
@@ -53,8 +54,8 @@ public abstract class Page extends Request {
         this.htmlResult.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
         this.htmlResult.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
         this.htmlResult.indent();
-        this.generate_head();
-        this.generate_body();
+        generate_head();
+        generate_body();
         this.htmlResult.unindent();
         this.htmlResult.write("</html>");
         this.session.flushNotifications();
@@ -66,7 +67,7 @@ public abstract class Page extends Request {
         this.htmlResult.write("<metahttp-equiv=\"content-type\" content=\"text/html;charset=utf-8\"/>");
         this.htmlResult.write("<link rel=\"stylesheet\" href=" + this.design + " type=\"text/css\" media=\"handheld, all\" />");
 
-        this.htmlResult.write("<title>BloatIt - " + this.getTitle() + "</title>");
+        this.htmlResult.write("<title>BloatIt - " + getTitle() + "</title>");
         this.htmlResult.unindent();
         this.htmlResult.write("</head>");
     }
@@ -76,23 +77,23 @@ public abstract class Page extends Request {
         this.htmlResult.indent();
         this.htmlResult.write("<div id=\"page\">");
         this.htmlResult.indent();
-        this.generateTopBar();
-        this.generateTitle();
+        generateTopBar();
+        generateTitle();
         this.htmlResult.write("<div id=\"center\">");
         this.htmlResult.indent();
-        this.generateMainMenu();
+        generateMainMenu();
 
         this.htmlResult.write("<div id=\"body_content\">");
         this.htmlResult.indent();
 
-        this.generateNotifications();
-        this.generateContent().generate(htmlResult);
+        generateNotifications();
+        generateContent().generate(htmlResult);
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
 
-        this.generateFooter();
+        generateFooter();
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
         this.htmlResult.unindent();
@@ -103,15 +104,17 @@ public abstract class Page extends Request {
         this.htmlResult.write("<div id=\"top_bar\">");
         this.htmlResult.indent();
         if (this.session.isLogged()) {
-            String full_name = this.session.getAuthToken().getMember().getFullName();
-            String karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
-            String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma + "</span>";
-            String logoutLink = HtmlTools.generateActionLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));
+            final String full_name = this.session.getAuthToken().getMember().getFullname();
+            final String karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
+            final String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma
+                    + "</span>";
+            final String logoutLink = HtmlTools.generateActionLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));
             this.htmlResult.write("<span class=\"top_bar_component\">" + memberLink + "</span><span class=\"top_bar_component\">" + logoutLink + "</span>");
 
         } else {
-            this.htmlResult.write("<span class=\"top_bar_component\">" + HtmlTools.generateLink(this.session, this.session.tr("Login / Signup"), new LoginPage(this.session)) + "</span>");
-            
+            this.htmlResult.write("<span class=\"top_bar_component\">"
+                    + HtmlTools.generateLink(this.session, this.session.tr("Login / Signup"), new LoginPage(this.session)) + "</span>");
+
         }
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
@@ -119,17 +122,17 @@ public abstract class Page extends Request {
 
     private void generateMainMenu() {
 
-        Session s = this.session;
-        HtmlBlock mainMenu = new HtmlBlock("main_menu");
+        final Session s = this.session;
+        final HtmlBlock mainMenu = new HtmlBlock("main_menu");
 
-        HtmlList primaryList = new HtmlList();
+        final HtmlList primaryList = new HtmlList();
 
         primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Demands"), new DemandsPage(s))));
         primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Projects"), new IndexPage(s))));
         primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Groups"), new IndexPage(s))));
         primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Members"), new MembersListPage(s))));
 
-        HtmlList secondaryList = new HtmlList();
+        final HtmlList secondaryList = new HtmlList();
 
         secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Specials page"), new SpecialsPage(s))));
         secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Contact"), new PageNotFound(s))));
@@ -145,7 +148,7 @@ public abstract class Page extends Request {
 
     private void generateTitle() {
         this.htmlResult.pushTitle();
-        this.htmlResult.write("<h1>" + HtmlTools.generateLink(this.session, this.generateLogo(), new IndexPage(this.session)) + "</h1>");
+        this.htmlResult.write("<h1>" + HtmlTools.generateLink(this.session, generateLogo(), new IndexPage(this.session)) + "</h1>");
     }
 
     private void generateFooter() {
@@ -157,7 +160,7 @@ public abstract class Page extends Request {
     }
 
     protected abstract HtmlComponent generateContent();
-    
+
     @Override
     public abstract String getCode();
 
@@ -170,7 +173,7 @@ public abstract class Page extends Request {
     private void generateNotifications() {
         this.htmlResult.write("<div id='notifications'>");
         this.htmlResult.indent();
-        for(Notification notification: session.getNotifications()) {
+        for (final Notification notification : session.getNotifications()) {
             generateNotification(notification);
         }
         this.htmlResult.unindent();
@@ -181,7 +184,7 @@ public abstract class Page extends Request {
 
         String notificationClass = "";
 
-        if(notification.getType() == Notification.Type.BAD) {
+        if (notification.getType() == Notification.Type.BAD) {
             notificationClass = "notification_bad";
         } else if (notification.getType() == Notification.Type.GOOD) {
             notificationClass = "notification_good";
@@ -189,7 +192,7 @@ public abstract class Page extends Request {
             notificationClass = "notification_error";
         }
 
-        this.htmlResult.write("<div class=\""+notificationClass+"\">");
+        this.htmlResult.write("<div class=\"" + notificationClass + "\">");
         this.htmlResult.indent();
         this.htmlResult.write(notification.getMessage());
         this.htmlResult.unindent();

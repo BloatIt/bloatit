@@ -14,57 +14,57 @@ import com.bloatit.model.data.util.SessionManager;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class DaoExternalAccount extends DaoAccount {
-	public enum AccountType {
-		IBAN
-	}
+    public enum AccountType {
+        IBAN
+    }
 
-	@Basic(optional = false)
-	private String bankCode;
-	@Basic(optional = false)
-	@Enumerated
-	private AccountType type;
+    @Basic(optional = false)
+    private String bankCode;
+    @Basic(optional = false)
+    @Enumerated
+    private AccountType type;
 
-	public DaoExternalAccount() {
-		super();
-	}
+    public DaoExternalAccount() {
+        super();
+    }
 
-	public static DaoExternalAccount createAndPersist(DaoActor Actor, AccountType type, String bankCode) {
-		Session session = SessionManager.getSessionFactory().getCurrentSession();
-		DaoExternalAccount account = new DaoExternalAccount(Actor, type, bankCode);
-		try {
-			session.save(account);
-		} catch (HibernateException e) {
-			session.getTransaction().rollback();
-			throw e;
-		}
-		return account;
-	}
+    public static DaoExternalAccount createAndPersist(DaoActor Actor, AccountType type, String bankCode) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoExternalAccount account = new DaoExternalAccount(Actor, type, bankCode);
+        try {
+            session.save(account);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            throw e;
+        }
+        return account;
+    }
 
-	// TODO verify the bank code validity
-	private DaoExternalAccount(DaoActor Actor, AccountType type, String bankCode) {
-		super(Actor);
-		this.type = type;
-		this.bankCode = bankCode;
-	}
+    // TODO verify the bank code validity
+    private DaoExternalAccount(DaoActor Actor, AccountType type, String bankCode) {
+        super(Actor);
+        this.type = type;
+        this.bankCode = bankCode;
+    }
 
-	public String getBankCode() {
-		return bankCode;
-	}
+    public String getBankCode() {
+        return bankCode;
+    }
 
-	public AccountType getType() {
-		return type;
-	}
+    public AccountType getType() {
+        return type;
+    }
 
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
-	protected void setBankCode(String bankCode) {
-		this.bankCode = bankCode;
-	}
+    protected void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
 
-	protected void setType(AccountType type) {
-		this.type = type;
-	}
+    protected void setType(AccountType type) {
+        this.type = type;
+    }
 
 }

@@ -26,7 +26,7 @@ import com.bloatit.web.utils.TranslationManipulator;
 
 public class HtmlString {
 
-    private StringBuilder stringBuilder = new StringBuilder();
+    private final StringBuilder stringBuilder = new StringBuilder();
     private Session session = null;
 
     public HtmlString() {}
@@ -46,12 +46,12 @@ public class HtmlString {
     }
 
     public HtmlString add(Translatable translatable) {
-        TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
+        final TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
         return add(tm.tr(translatable).getText()); // TODO correct me !
     }
 
     public HtmlString secure(Translatable translatable) {
-        TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
+        final TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
         return secure(tm.tr(translatable).getText()); // TODO correct me !
     }
 
@@ -61,7 +61,7 @@ public class HtmlString {
     }
 
     public static String Translate(Session session, Translatable text) {
-        HtmlString string = new HtmlString(session);
+        final HtmlString string = new HtmlString(session);
         string.add(text);
         return string.toString();
     }

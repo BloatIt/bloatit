@@ -19,35 +19,24 @@
 package com.bloatit.framework.managers;
 
 import java.util.HashMap;
+import java.util.UUID;
 
-import com.bloatit.common.CryptoTools;
-import com.bloatit.common.FatalErrorException;
+import javassist.NotFoundException;
+
 import com.bloatit.framework.AuthToken;
-import com.bloatit.framework.Member;
 
 public class LoginManager {
 
-    private static final HashMap<String, AuthToken> authTokenList = new HashMap<String, AuthToken>();
-    
-    public static AuthToken loginByPassword(String login, String password) {
-        Member member = MemberManager.getByLoginAndPassword(login, password);
+    private static final HashMap<UUID, AuthToken> authTokenList = new HashMap<UUID, AuthToken>();
 
-        if (member != null) {
-            return newAuthToken(member);
-        } else {
+    public static AuthToken loginByPassword(String login, String password) {
+        try {
+            final AuthToken token = new AuthToken(login, password);
+            authTokenList.put(token.getKey(), token);
+            return token;
+        } catch (final NotFoundException e) {
             return null;
         }
-    }
-
-    public static AuthToken newAuthToken(Member member) {
-
-        String key = CryptoTools.generateKey();
-
-        AuthToken newToken = new AuthToken(member, key);
-
-        authTokenList.put(key, newToken);
-
-        return newToken;
     }
 
     public static AuthToken getByKey(String key) {

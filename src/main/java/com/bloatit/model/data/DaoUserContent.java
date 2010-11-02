@@ -9,58 +9,58 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class DaoUserContent extends DaoIdentifiable {
 
-	@ManyToOne(optional = false)
-	private DaoMember member;
-	@ManyToOne(optional = true)
-	private DaoGroup asGroup;
+    @ManyToOne(optional = false)
+    private DaoMember member;
+    @ManyToOne(optional = true)
+    private DaoGroup asGroup;
 
-	@Basic(optional = false)
-	private Date creationDate;
+    @Basic(optional = false)
+    private Date creationDate;
 
-	protected DaoUserContent() {
-		creationDate = new Date();
-	}
+    protected DaoUserContent() {
+        creationDate = new Date();
+    }
 
-	public DaoUserContent(DaoMember member) {
-		super();
-		this.member = member;
-		creationDate = new Date();
-	}
+    public DaoUserContent(DaoMember member) {
+        super();
+        this.member = member;
+        creationDate = new Date();
+    }
 
-	/**
-	 * No final because it is depreciated for hibernate. but you should
-	 * considered me as final
-	 */
-	public DaoMember getAuthor() {
-		return member;
-	}
+    /**
+     * No final because it is depreciated for hibernate. but you should
+     * considered me as final
+     */
+    public DaoMember getAuthor() {
+        return member;
+    }
 
-	/**
-	 * No final because it is depreciated for hibernate. but you should
-	 * considered me as final
-	 */
-	public Date getCreationDate() {
-		return creationDate;
-	}
+    /**
+     * No final because it is depreciated for hibernate. but you should
+     * considered me as final
+     */
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
-	public void setAsGroup(DaoGroup asGroup) {
-		this.asGroup = asGroup;
-	}
+    public void setAsGroup(DaoGroup asGroup) {
+        this.asGroup = asGroup;
+    }
 
-	public DaoGroup getAsGroup() {
-		return asGroup;
-	}
+    public DaoGroup getAsGroup() {
+        return asGroup;
+    }
 
-	// ======================================================================
-	// For hibernate mapping
-	// ======================================================================
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
-	protected void setAuthor(DaoMember author) {
-		this.member = author;
-	}
+    protected void setAuthor(DaoMember author) {
+        this.member = author;
+    }
 
-	protected void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
+    protected void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
 }

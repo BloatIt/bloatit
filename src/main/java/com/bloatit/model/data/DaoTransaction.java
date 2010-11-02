@@ -18,9 +18,9 @@ public class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
     private DaoInternalAccount from;
-    @ManyToOne(optional=false)
+    @ManyToOne(optional = false)
     private DaoAccount to;
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
@@ -35,14 +35,14 @@ public class DaoTransaction extends DaoIdentifiable {
      * @param from is the account from which we will take money.
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
-     * @throws NotEnoughMoneyException 
+     * @throws NotEnoughMoneyException
      */
     public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        DaoTransaction Transaction = new DaoTransaction(from, to, amount);
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoTransaction Transaction = new DaoTransaction(from, to, amount);
         try {
             session.save(Transaction);
-        } catch (HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
@@ -54,7 +54,7 @@ public class DaoTransaction extends DaoIdentifiable {
     private DaoTransaction(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
         super();
         // TODO Find how to manage this for the other account
-        if(from.getAmount().compareTo(amount)<0){
+        if (from.getAmount().compareTo(amount) < 0) {
             throw new NotEnoughMoneyException();
         }
         this.from = from;

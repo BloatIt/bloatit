@@ -2,7 +2,7 @@ package com.bloatit.framework.lists;
 
 public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
 
-    private java.util.Iterator<DAO> daoIterator;
+    private final java.util.Iterator<DAO> daoIterator;
 
     public IteratorBinder(java.util.Iterator<DAO> daoIterator) {
         super();
@@ -20,8 +20,7 @@ public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
     }
 
     @Override
-    public E next()
-    {
+    public E next() {
         return createFromDao(daoIterator.next());
     }
 
@@ -29,7 +28,7 @@ public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
     public void remove() {
         daoIterator.remove();
     }
-    
+
     protected abstract E createFromDao(DAO dao);
 
 }

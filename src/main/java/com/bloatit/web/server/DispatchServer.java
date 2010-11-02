@@ -20,7 +20,6 @@ package com.bloatit.web.server;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.web.actions.LoginAction;
@@ -35,9 +34,6 @@ import com.bloatit.web.pages.MembersListPage;
 import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DispatchServer {
 
@@ -68,16 +64,16 @@ public class DispatchServer {
             }
         };
     }
-    private Map<String, String> cookies;
-    private List<String> preferred_langs;
-    private Session session;
+    private final Map<String, String> cookies;
+    private final List<String> preferred_langs;
+    private final Session session;
     private final Map<String, String> query;
     private final Map<String, String> post;
 
     public DispatchServer(Map<String, String> query, Map<String, String> post, Map<String, String> cookies, List<String> preferred_langs) {
         this.cookies = cookies;
         this.preferred_langs = preferred_langs;
-        this.session = this.findSession(query);
+        this.session = findSession(query);
 
         this.query = query;
         this.post = post;
@@ -87,12 +83,12 @@ public class DispatchServer {
     public String process() {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
-        Request request = this.initCurrentRequest(query, post);
+        final Request request = initCurrentRequest(query, post);
 
-        HtmlResult htmlResult = new HtmlResult(session);
+        final HtmlResult htmlResult = new HtmlResult(session, request);
         request.doProcess(htmlResult);
 
-        String result = htmlResult.generate();
+        final String result = htmlResult.generate();
 
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
 
@@ -108,7 +104,7 @@ public class DispatchServer {
      */
     private Session findSession(Map<String, String> query) {
         Session sess = null;
-        Language l = this.userLocale(query);
+        final Language l = userLocale(query);
 
         if (this.cookies.containsKey("session_key")) {
             sess = SessionManager.getByKey(cookies.get("session_key"));
@@ -121,7 +117,7 @@ public class DispatchServer {
     }
 
     private Language userLocale(Map<String, String> query) {
-        Language language = new Language();
+        final Language language = new Language();
         if (query.containsKey("lang")) {
             if (query.get("lang").equals("default")) {
                 language.findPrefered(preferred_langs);
@@ -136,11 +132,11 @@ public class DispatchServer {
     private Request initCurrentRequest(Map<String, String> query, Map<String, String> post) {
         // Parse query string
         if (query.containsKey("page")) {
-            QueryString queryString = parseQueryString(query.get("page"));
+            final QueryString queryString = parseQueryString(query.get("page"));
             // Merge Post & Get
-            Map<String, String> parameters = this.MergePostGet(queryString.parameters, post);
+            final Map<String, String> parameters = MergePostGet(queryString.parameters, post);
 
-            Request currentRequest = this.findRequest(queryString.page, parameters);
+            final Request currentRequest = findRequest(queryString.page, parameters);
             return currentRequest;
         }
         return new PageNotFound(this.session);
@@ -169,7 +165,7 @@ public class DispatchServer {
      * @return the new map
      */
     private Map<String, String> MergePostGet(Map<String, String> query, Map<String, String> post) {
-        HashMap<String, String> mergedList = new HashMap<String, String>();
+        final HashMap<String, String> mergedList = new HashMap<String, String>();
         mergedList.putAll(query);
         mergedList.putAll(post);
 
@@ -177,9 +173,9 @@ public class DispatchServer {
     }
 
     private QueryString parseQueryString(String queryString) {
-        String[] splitted = strip(queryString, '/').split("/");
+        final String[] splitted = strip(queryString, '/').split("/");
         String page = "";
-        Map<String, String> parameters = new HashMap<String, String>();
+        final Map<String, String> parameters = new HashMap<String, String>();
 
         int i = 0;
         // Parsing, finding
@@ -194,7 +190,7 @@ public class DispatchServer {
         // Parsing, finding page parameters
         while (i < splitted.length) {
             if (splitted[i].contains("-")) {
-                String[] p = splitted[i].split("-");
+                final String[] p = splitted[i].split("-");
                 parameters.put(p[0], p[1]);
             }
             i = i + 1;
@@ -206,9 +202,6 @@ public class DispatchServer {
 
         public String page;
         public Map<String, String> parameters;
-
-        public QueryString() {
-        }
 
         private QueryString(String page, Map<String, String> parameters) {
             this.page = page;

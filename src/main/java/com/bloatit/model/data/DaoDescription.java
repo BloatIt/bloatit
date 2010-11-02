@@ -12,12 +12,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
-@NamedQuery(name = "translation.getTextByLocal", query = "from DaoTranslation as t where t.locale = :locale")
 @Entity
 public class DaoDescription extends DaoIdentifiable {
 
@@ -32,12 +30,11 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     static public DaoDescription createAndPersist(DaoMember member, Locale locale, String title, String description) {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-        DaoDescription descr = new DaoDescription(member, locale, title, description);
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoDescription descr = new DaoDescription(member, locale, title, description);
         try {
             session.save(descr);
-        } catch (HibernateException e) {
-            System.out.println(e);
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
@@ -52,9 +49,9 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     public PageIterable<DaoTranslation> getTranslationsFromQuery() {
-        Query q = SessionManager.getSessionFactory()
-                               .getCurrentSession()
-                               .createQuery("from com.bloatit.model.data.DaoTransaltion as t where t.description = :this");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("from com.bloatit.model.data.DaoTransaltion as t where t.description = :this");
         q.setEntity("this", this);
         return new QueryCollection<DaoTranslation>(q);
     }
@@ -68,16 +65,16 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     public DaoTranslation getTranslation(Locale locale) {
-        Query q = SessionManager.getSessionFactory()
-                               .getCurrentSession()
-                               .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
         q.setLocale("locale", locale);
         q.setEntity("this", this);
         return (DaoTranslation) q.uniqueResult();
     }
 
     public DaoTranslation getDefaultTranslation() {
-        return (DaoTranslation) SessionManager.getSessionFactory().getCurrentSession().getNamedQuery("translation.getTextByLocal").uniqueResult();
+        return getTranslation(getDefaultLocale());
     }
 
     public void setDefaultLocale(Locale defaultLocale) {

@@ -8,7 +8,7 @@ import com.bloatit.model.data.DaoExternalAccount.AccountType;
 
 public class ExternalAccount extends Account {
 
-    private DaoExternalAccount dao;
+    private final DaoExternalAccount dao;
 
     public ExternalAccount(Actor actor, AccountType type, String bankCode) {
         this.dao = DaoExternalAccount.createAndPersist(actor.getDao(), type, bankCode);

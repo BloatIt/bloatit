@@ -2,6 +2,7 @@ package com.bloatit.framework;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.EnumSet;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.framework.right.MoneyRight;
@@ -13,7 +14,7 @@ import com.bloatit.model.data.DaoTransaction;
 
 public class Transaction extends Identifiable {
 
-    private DaoTransaction dao;
+    private final DaoTransaction dao;
 
     public Transaction(DaoTransaction dao) {
         super();
@@ -58,19 +59,13 @@ public class Transaction extends Identifiable {
         return dao;
     }
 
-    protected Role calculateRole() {
-        Role fromRole = calculateRole(dao.getFrom().getActor().getLogin());
-        if (fromRole == Role.OTHER) {
+    protected EnumSet<Role> calculateRole() {
+        if (getToken().getMember().getUnprotectedLogin().equals(dao.getFrom().getActor().getLogin())) {
+            return calculateRole(dao.getFrom().getActor().getLogin());
+        } else if (getToken().getMember().getUnprotectedLogin().equals(dao.getTo().getActor().getLogin())) {
             return calculateRole(dao.getTo().getActor().getLogin());
-        } else if (fromRole == Role.ADMIN) {
-            return fromRole;
         } else {
-            Role toRole = calculateRole(dao.getTo().getActor().getLogin());
-            if (toRole == Role.ADMIN) {
-                return toRole;
-            } else {
-                return fromRole;
-            }
+            return EnumSet.of(Role.OTHER);
         }
     }
 }

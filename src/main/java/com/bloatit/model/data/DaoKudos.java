@@ -3,6 +3,11 @@ package com.bloatit.model.data;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
+import com.bloatit.model.data.util.SessionManager;
+
 @Entity
 public class DaoKudos extends DaoUserContent {
 
@@ -11,7 +16,20 @@ public class DaoKudos extends DaoUserContent {
 
     public DaoKudos() {}
 
-    public DaoKudos(DaoMember member, int value) {
+    public static DaoKudos createAndPersist(DaoMember member, int value) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoKudos kudos = new DaoKudos(member, value);
+        try {
+            session.save(kudos);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            session.beginTransaction();
+            throw e;
+        }
+        return kudos;
+    }
+
+    private DaoKudos(DaoMember member, int value) {
         super(member);
         this.value = value;
     }

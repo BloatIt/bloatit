@@ -10,6 +10,7 @@ public abstract class Actor extends Identifiable {
 
     protected abstract DaoActor getDaoActor();
 
+    @Override
     public int getId() {
         return getDaoActor().getId();
     }

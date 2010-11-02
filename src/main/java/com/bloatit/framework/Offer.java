@@ -9,7 +9,7 @@ import com.bloatit.model.data.DaoOffer;
 
 public class Offer extends Kudosable {
 
-    private DaoOffer dao;
+    private final DaoOffer dao;
 
     public Offer(DaoOffer dao) {
         super();
@@ -34,7 +34,7 @@ public class Offer extends Kudosable {
     }
 
     public Demand getDemand() {
-        return new Demand(dao.getDemand());
+        return Demand.create(dao.getDemand());
     }
 
     public Description getDescription() {

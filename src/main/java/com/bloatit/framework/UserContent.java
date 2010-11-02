@@ -7,26 +7,26 @@ import com.bloatit.model.data.DaoUserContent;
 public abstract class UserContent extends Identifiable {
 
     protected abstract DaoUserContent getDaoUserContent();
-    
-	public Member getAuthor() {
-		return new Member(getDaoUserContent().getAuthor());
-	}
 
-	public Date getCreationDate() {
-		return getDaoUserContent().getCreationDate();
-	}
+    public Member getAuthor() {
+        return Member.create(getDaoUserContent().getAuthor());
+    }
 
-	public void setAsGroup(Group asGroup) {
-		getDaoUserContent().setAsGroup(asGroup.getDao());
-	}
+    public Date getCreationDate() {
+        return getDaoUserContent().getCreationDate();
+    }
 
-	public Group getAsGroup() {
-		return new Group(getDaoUserContent().getAsGroup());
-	}
+    public void setAsGroup(Group asGroup) {
+        getDaoUserContent().setAsGroup(asGroup.getDao());
+    }
 
-	@Override
-	public final int getId(){
-	    return getDaoUserContent().getId();
-	}
-	
+    public Group getAsGroup() {
+        return Group.create(getDaoUserContent().getAsGroup());
+    }
+
+    @Override
+    public final int getId() {
+        return getDaoUserContent().getId();
+    }
+
 }

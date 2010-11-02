@@ -21,7 +21,7 @@
   <!-- Echo all executed SQL to stdout -->
   <property name="show_sql">true</property>
   <!-- Drop and re-create the database schema on startup -->
-  <property name="hbm2ddl.auto">update</property>
+  <property name="hbm2ddl.auto">create-drop</property>
   <property name="hibernate.jdbc.batch_size">25</property>
   
   <mapping class="com.bloatit.model.data.DaoAccount"/>
@@ -39,6 +39,7 @@
   <mapping class="com.bloatit.model.data.DaoDemand"/>
   <mapping class="com.bloatit.model.data.DaoMember"/>
   <mapping class="com.bloatit.model.data.DaoOffer"/>
+  <mapping class="com.bloatit.model.data.DaoJoinGroupInvitation"/>
   <!--<mapping class="com.bloatit.model.data.DaoUserContent" />
 		<mapping class="com.bloatit.model.data.DaoKudosable" />
 		<mapping class="com.bloatit.model.data.DaoIdentifiable" />-->

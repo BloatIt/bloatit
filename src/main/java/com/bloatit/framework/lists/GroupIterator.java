@@ -17,7 +17,7 @@ public class GroupIterator extends com.bloatit.framework.lists.IteratorBinder<Gr
 
     @Override
     protected Group createFromDao(DaoGroup dao) {
-        return new Group(dao);
+        return Group.create(dao);
     }
 
 }

@@ -20,6 +20,7 @@ package com.bloatit.web.htmlrenderer;
 
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Page;
+import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
 
 public class HtmlTools {
@@ -32,7 +33,7 @@ public class HtmlTools {
         return "<a href=\"/" + session.getLanguage().getCode() + "/action/" + linkAction.getCode() + "\">" + text + "</a>";
     }
 
-    public static String generateUrl(Session session, Page urlPage) {
+    public static String generateUrl(Session session, Request urlPage) {
         return "/" + session.getLanguage().getCode() + "/" + urlPage.getCode();
     }
 
@@ -68,7 +69,7 @@ public class HtmlTools {
      * @return the compressed String to display
      */
     public static String compressKarma(long karma) {
-        Double abs_karma = new Double(Math.abs(karma));
+        final Double abs_karma = new Double(Math.abs(karma));
         String result = "";
         if (abs_karma < 1000) {
             result = cutNumber(abs_karma.toString());

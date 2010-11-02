@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.framework.Member;
 import com.bloatit.model.data.DaoMember;
 
-public class MemberIterator extends com.bloatit.framework.lists.IteratorBinder<Member, DaoMember> {
+public class MemberIterator extends IteratorBinder<Member, DaoMember> {
 
     public MemberIterator(Iterable<DaoMember> daoIterator) {
         super(daoIterator);
@@ -17,7 +17,7 @@ public class MemberIterator extends com.bloatit.framework.lists.IteratorBinder<M
 
     @Override
     protected Member createFromDao(DaoMember dao) {
-        return new Member(dao);
+        return Member.create(dao);
     }
 
 }

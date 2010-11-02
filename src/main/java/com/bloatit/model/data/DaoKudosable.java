@@ -7,8 +7,11 @@ import javax.persistence.Basic;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.hibernate.Query;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import com.bloatit.model.data.util.SessionManager;
 
 @MappedSuperclass
 public abstract class DaoKudosable extends DaoUserContent {
@@ -20,7 +23,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     @Basic(optional = false)
     private int popularity;
     @OneToMany
-    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
     @Basic(optional = false)
     private State state;
@@ -37,12 +40,13 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     /**
-     * Trivial calculation of the popularity
-     * 
      * @return the new popularity
      */
     public int addKudos(DaoMember member, int value) {
-        kudos.add(new DaoKudos(member, value));
+        final DaoKudos ku = DaoKudos.createAndPersist(member, value);
+        kudos.add(ku);
+        SessionManager.flush();
+
         return popularity += value;
     }
 
@@ -50,25 +54,30 @@ public abstract class DaoKudosable extends DaoUserContent {
         return state;
     }
 
-    public void setValidated() {
-        this.state = State.VALIDATED;
+    public int getPopularity() {
+        return popularity;
     }
 
-    public void setRejected() {
-        this.state = State.REJECTED;
+    public boolean hasKudosed(DaoMember member) {
+        // Query f = SessionManager.getSessionFactory().getCurrentSession().createFilter(kudos, "where author = :author");
+        // f.setEntity("author", getAuthor());
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select count(k) from " + this.getClass().getName()
+                                              + " as a join a.kudos as k where k.member = :member and a = :this");
+        q.setEntity("member", member);
+        q.setEntity("this", this);
+        return (Long) q.uniqueResult() > 0;
     }
 
+    public void setState(State state) {
+        this.state = state;
+    }
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    protected void setState(State state) {
-        this.state = state;
-    }
-
-    protected int getPopularity() {
-        return popularity;
-    }
 
     protected void setPopularity(int popularity) {
         this.popularity = popularity;

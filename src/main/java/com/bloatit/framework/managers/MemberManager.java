@@ -22,37 +22,38 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.lists.MemberList;
 import com.bloatit.model.data.DBRequests;
+import com.bloatit.model.data.DaoActor;
 import com.bloatit.model.data.DaoMember;
 
 public class MemberManager {
 
     public static Member getMemberByLogin(String login) {
-        DaoMember daoMember = DaoMember.getByLogin(login);
+        final DaoMember daoMember = DaoMember.getByLogin(login);
         if (daoMember == null) {
             return null;
         }
 
-        return new Member(daoMember);
+        return Member.create(daoMember);
     }
 
     public static boolean existsMember(String login) {
-        return DaoMember.exist(login);
+        return DaoActor.exist(login);
     }
 
     public static Member getMemberById(Integer id) {
-        return new Member(DBRequests.getById(DaoMember.class, id));
+        return Member.create(DBRequests.getById(DaoMember.class, id));
     }
 
     public static PageIterable<Member> getMembers() {
         return new MemberList(DBRequests.getAll(DaoMember.class));
     }
 
-    static Member getByLoginAndPassword(String login, String password) {
-        DaoMember daoMember = DaoMember.getByLoginAndPassword(login, password);
+    public static Member getByLoginAndPassword(String login, String password) {
+        final DaoMember daoMember = DaoMember.getByLoginAndPassword(login, password);
         if (daoMember == null) {
             return null;
         }
-        
-        return new Member(daoMember);
+
+        return Member.create(daoMember);
     }
 }
