@@ -21,15 +21,17 @@ package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
 
-public class HtmlButton extends HtmlComponent {
-    private final String label;
+public class HtmlProgressBar extends HtmlComponent {
 
-    public HtmlButton(String label) {
-        this.label = label;
+    final float progress;
+    
+    public HtmlProgressBar(float progress) {
+        this.progress = progress;
+        //this.progress = 10f;
     }
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<p><input class=\"button\" type=\"submit\" value=\"" + this.label + "\" /><p>");
+        htmlResult.write("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: "+progress+"%;\"></div></div></div>");
     }
 }

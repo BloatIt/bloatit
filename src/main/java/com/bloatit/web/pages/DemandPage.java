@@ -26,9 +26,13 @@ import com.bloatit.framework.Demand;
 import com.bloatit.framework.Transaction;
 import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlProgressBar;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
@@ -84,12 +88,42 @@ public class DemandPage extends Page {
         page.add(right);
         
         // block avec la progression
-        final HtmlBlock progress = new HtmlBlock("progress");
-        right.add(progress);
+        float progressValue = 0;
+        //if(demand.getOffers().size() == 0) {
+            progressValue = 100*(1-1/(1+demand.getContribution().floatValue()/200));
+        //} else {
+            //TODO
+        //}
+
+
+        HtmlForm contributeForm = new HtmlForm(new LoginAction(session));
+        HtmlButton contributeButton = new HtmlButton(session.tr("Contribuer"));
+
+        contributeForm.add(contributeButton);
+
+        final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
+        contributeBlock.add(contributeForm);
+
+
+        final HtmlBlock progressBlock = new HtmlBlock("progress_block");
+        final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
         
-        // get the contribution
-        progress.add(new HtmlText(demand.getContribution().toPlainString()));
+        final HtmlBlock progressBarBlock = new HtmlBlock("column");
+        progressBarBlock.add(progressBar);
+
+
+        progressBlock.add(contributeBlock);
+        progressBlock.add(new HtmlText(demand.getContribution().toPlainString()+"€"));
+        progressBlock.add(progressBarBlock);
+
+
+
         
+        
+        
+        
+
+        left.add(progressBlock);
         
         
         // description
