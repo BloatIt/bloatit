@@ -56,10 +56,8 @@ public class DemandTest extends TestCase {
     public void testCreateDemand() {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo,
-                                                                                   new Locale("fr"),
-                                                                                   "Ma super demande !",
-                                                                                   "Ceci est la descption de ma demande :) "));
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
 
         assertEquals(Demand, yo.getDemands().iterator().next());
 
@@ -70,10 +68,8 @@ public class DemandTest extends TestCase {
     public void testAddSpecification() {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo,
-                                                                                   new Locale("fr"),
-                                                                                   "Ma super demande !",
-                                                                                   "Ceci est la descption de ma demande :) "));
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
 
         Demand.createSpecification(tom, "This is the spécification");
 
@@ -85,10 +81,8 @@ public class DemandTest extends TestCase {
     public void testRetrieveDemand() {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo,
-                                                                                   new Locale("fr"),
-                                                                                   "Ma super demande !",
-                                                                                   "Ceci est la descption de ma demande :) "));
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
 
         Demand.createSpecification(tom, "This is the spécification");
 
@@ -102,10 +96,8 @@ public class DemandTest extends TestCase {
     public void testDeleteDemand() {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo,
-                                                                                   new Locale("fr"),
-                                                                                   "Ma super demande !",
-                                                                                   "Ceci est la descption de ma demande :) "));
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
         SessionManager.flush();
@@ -121,10 +113,8 @@ public class DemandTest extends TestCase {
     public void testAddContribution() throws Throwable {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo,
-                                                                                   new Locale("fr"),
-                                                                                   "Ma super demande !",
-                                                                                   "Ceci est la descption de ma demande :) "));
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
         SessionManager.flush();
@@ -147,15 +137,14 @@ public class DemandTest extends TestCase {
     public void testAddOffer() throws Throwable {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo,
-                                                                                   new Locale("fr"),
-                                                                                   "Ma super demande !",
-                                                                                   "Ceci est la descption de ma demande :) "));
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
         SessionManager.flush();
 
-        Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
+        Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !",
+                "Ceci est la descption de mon Offre:) "), new Date());
 
         SessionManager.flush();
 
@@ -171,15 +160,12 @@ public class DemandTest extends TestCase {
         fred.getInternalAccount().setAmount(new BigDecimal(50));
         yo.getInternalAccount().setAmount(new BigDecimal(50));
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo,
-                                                                                   new Locale("fr"),
-                                                                                   "Ma super demande !",
-                                                                                   "Ceci est la descption de ma demande :) "));
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
-        final DaoOffer Offer = Demand.addOffer(fred,
-                                               new DaoDescription(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
-                                               new Date());
+        final DaoOffer Offer = Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !",
+                "Ceci est la descption de mon Offre:) "), new Date());
         SessionManager.flush();
 
         Demand.addContribution(fred, new BigDecimal("25.00"));
@@ -203,13 +189,12 @@ public class DemandTest extends TestCase {
     public void testRejectContribution() throws Throwable {
         SessionManager.beginWorkUnit();
 
-        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo,
-                                                                                   new Locale("fr"),
-                                                                                   "Ma super demande !",
-                                                                                   "Ceci est la descption de ma demande :) "));
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
         Demand.createSpecification(tom, "This is the spécification");
 
-        Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
+        Demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !",
+                "Ceci est la descption de mon Offre:) "), new Date());
         SessionManager.flush();
 
         Demand.addContribution(fred, new BigDecimal("25.00"));
@@ -228,6 +213,18 @@ public class DemandTest extends TestCase {
 
         SessionManager.endWorkUnitAndFlush();
 
+    }
+
+    public void testGetComment() {
+        SessionManager.beginWorkUnit();
+
+        final DaoDemand Demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
+        Demand.addComment(DaoComment.createAndPersist(yo, "plop"));
+
+        assertNotNull(Demand.getCommentsFromQuery().iterator().next());
+
+        SessionManager.endWorkUnitAndFlush();
     }
 
 }

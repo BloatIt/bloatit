@@ -139,7 +139,9 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>("DaoComment as f where f.demand = :this").setEntity("this", this);
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession()
+                .createFilter(getComments(), ""), SessionManager.getSessionFactory().getCurrentSession()
+                .createFilter(getComments(), "select count(*)"));
     }
 
     public Set<DaoComment> getComments() {
