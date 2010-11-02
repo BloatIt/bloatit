@@ -23,10 +23,15 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Transaction;
+import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.PageNotFoundException;
@@ -68,8 +73,32 @@ public class DemandPage extends Page {
     @Override
     protected HtmlComponent generateContent() {
 
-        final HtmlBlock demandBlock = new HtmlBlock("demand");
         Locale defaultLocale = session.getLanguage().getLocale();
+        Translation translation = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        final HtmlContainer page = new HtmlContainer();
+        
+        final HtmlBlock left = new HtmlBlock("leftColumn");
+        final HtmlBlock right = new HtmlBlock("rightColumn");
+        page.add(new HtmlTitle(translation.getTitle(), "pageTitle"));
+        page.add(left);
+        page.add(right);
+        
+        // block avec la progression
+        final HtmlBlock progress = new HtmlBlock("progress");
+        right.add(progress);
+        
+        // get the contribution
+        progress.add(new HtmlText(demand.getContribution().toPlainString()));
+        
+        
+        
+        // description
+        
+        // com
+        
+        // droite process
+        
+        
         
 
         // TODO CORRECT ME
@@ -77,7 +106,7 @@ public class DemandPage extends Page {
         // this.demand.getTitle()), "demand_title");
         // demandBlock.add(demandTitle);
 
-        return demandBlock;
+        return page;
 
     }
 
