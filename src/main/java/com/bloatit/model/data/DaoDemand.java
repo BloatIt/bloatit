@@ -14,25 +14,31 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
 @Entity
+@Indexed
 public class DaoDemand extends DaoKudosable {
 
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @IndexedEmbedded
     private DaoDescription description;
 
     @OneToOne(mappedBy = "demand", optional = true)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @IndexedEmbedded
     private DaoSpecification specification;
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @OrderBy(clause = "DaoOffer.popularity")
+    @IndexedEmbedded
     // TODO test me !
     private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
@@ -43,6 +49,7 @@ public class DaoDemand extends DaoKudosable {
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @IndexedEmbedded
     private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**

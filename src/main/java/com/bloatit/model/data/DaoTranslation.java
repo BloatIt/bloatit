@@ -6,6 +6,10 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
+
 // This class should handle some versions.
 // version are managed by date.
 @Entity
@@ -14,8 +18,10 @@ public class DaoTranslation extends DaoKudosable {
     @Basic(optional = false)
     private Locale locale;
     @Basic(optional = false)
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String title;
     @Basic(optional = false)
+    @Field(index = Index.TOKENIZED, store=Store.NO)
     private String text;
 
     @ManyToOne(optional = false)
