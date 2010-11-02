@@ -31,8 +31,8 @@ public class Description extends Identifiable {
         return Translation.create(dao.getTranslation(locale));
     }
     
-    public Translation getTranslationOrDefault(Locale local){
-        Translation tr = getTranslation(local);
+    public Translation getTranslationOrDefault(Locale locale){
+        Translation tr = getTranslation(locale);
         if(tr == null){
             return getTranslation(getDefaultLocale());
         }
