@@ -25,27 +25,31 @@ import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.managers.MemberManager;
+import com.bloatit.model.data.util.SessionManager;
 
 public class AuthToken {
-	private final Member member;
-	private final UUID key;
+    private final Member member;
+    private final UUID key;
 
-	public AuthToken(String login, String password) throws NotFoundException {
-		final Member tmp = MemberManager.getByLoginAndPassword(login, password);
-		if (tmp == null) {
-			Log.framework().warn("Authentication error " + login + " " + password);
-			throw new NotFoundException("Identifiaction or authentication failed");
-		}
-		this.member = tmp;
-		this.key = UUID.randomUUID();
-	}
+    public AuthToken(String login, String password) throws NotFoundException {
+        final Member tmp = MemberManager.getByLoginAndPassword(login, password);
+        if (tmp == null) {
+            Log.framework().warn("Authentication error " + login + " " + password);
+            throw new NotFoundException("Identifiaction or authentication failed");
+        }
+        this.member = tmp;
+        this.key = UUID.randomUUID();
+    }
 
-	public UUID getKey() {
-		return key;
-	}
+    public UUID getKey() {
+        return key;
+    }
 
-	public Member getMember() {
-		return member;
-	}
+    public Member getMember() {
+        if (SessionManager.getSessionFactory().getCurrentSession().contains(member.getDao())) {
+            return member;
+        }
+        return MemberManager.getMemberById(member.getId());
+    }
 
 }
