@@ -17,7 +17,7 @@ public class CommentIterator extends com.bloatit.framework.lists.IteratorBinder<
 
     @Override
     protected Comment createFromDao(DaoComment dao) {
-        return new Comment(dao);
+        return Comment.create(dao);
     }
 
 }

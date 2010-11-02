@@ -7,36 +7,43 @@ import com.bloatit.model.data.DaoKudosable;
 
 public class Comment extends Kudosable {
 
-    private DaoComment dao;
+	private DaoComment dao;
 
-    public String getText() {
-        return dao.getText();
-    }
+	public String getText() {
+		return dao.getText();
+	}
 
-    public Comment(DaoComment dao) {
-        super();
-        this.dao = dao;
-    }
+	public static Comment create(DaoComment dao) {
+		if (dao == null) {
+			return null;
+		}
+		return new Comment(dao);
+	}
 
-    public PageIterable<Comment> getChildren() {
-        return new CommentList(dao.getChildrenFromQuery());
-    }
+	private Comment(DaoComment dao) {
+		super();
+		this.dao = dao;
+	}
 
-    public void addChildComment(Comment Comment) {
-        dao.getChildren().add(Comment.getDao());
-    }
+	public PageIterable<Comment> getChildren() {
+		return new CommentList(dao.getChildrenFromQuery());
+	}
 
-    protected Comment() {
-        super();
-    }
+	public void addChildComment(Comment Comment) {
+		dao.getChildren().add(Comment.getDao());
+	}
 
-    @Override
-    protected DaoKudosable getDaoKudosable() {
-        return dao;
-    }
+	protected Comment() {
+		super();
+	}
 
-    protected DaoComment getDao() {
-        return dao;
-    }
+	@Override
+	protected DaoKudosable getDaoKudosable() {
+		return dao;
+	}
+
+	protected DaoComment getDao() {
+		return dao;
+	}
 
 }
