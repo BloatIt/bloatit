@@ -17,4 +17,11 @@ public class DBRequests {
         return new QueryCollection<T>(SessionManager.getSessionFactory().getCurrentSession().createQuery("from " + meta.getEntityName()));
     }
 
+    public static <T> int count(Class<T> persistent) {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+        return ((Long) SessionManager.getSessionFactory().getCurrentSession().createQuery("select count(*) from " + meta.getEntityName()).uniqueResult()).intValue();
+    }
+
+
+
 }

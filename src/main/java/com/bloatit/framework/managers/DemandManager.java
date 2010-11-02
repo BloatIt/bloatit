@@ -33,4 +33,9 @@ public class DemandManager {
     public static Demand GetDemandById(Integer id) {
         return Demand.create(DBRequests.getById(DaoDemand.class, id));
     }
+
+    public static int getDemandsCount() {
+        return DBRequests.count(DaoDemand.class);
+    }
+
 }

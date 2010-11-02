@@ -19,12 +19,20 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.managers.MemberManager;
+import com.bloatit.web.actions.GlobalSearchAction;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
@@ -42,10 +50,24 @@ public class IndexPage extends Page {
     @Override
     protected HtmlComponent generateContent() {
 
-        final HtmlTitle welcomeTitle = new HtmlTitle("Welcome in " + HtmlTools.generateLogo() + " website", "");
-        welcomeTitle.add(new HtmlText(HtmlTools.generateLogo() + " is a wonderful website !"));
+        HtmlContainer allPage = new HtmlContainer();
 
-        return welcomeTitle;
+        HtmlBlock searchBlock = new HtmlBlock("index_search_block");
+        generateSearchBlock(searchBlock);
+
+        HtmlBlock statsBlock = new HtmlBlock("index_stats_block");
+        generateStatsBlock(searchBlock);
+
+        HtmlBlock dualColumnBlock = new HtmlBlock("dual_column_block");
+        generateDualColumnBlock(searchBlock);
+
+
+
+        allPage.add(searchBlock);
+        allPage.add(statsBlock);
+        allPage.add(dualColumnBlock);
+
+        return allPage;
 
     }
 
@@ -62,5 +84,42 @@ public class IndexPage extends Page {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    private void generateSearchBlock(HtmlBlock searchBlock) {
+        GlobalSearchAction globalSearchAction = new GlobalSearchAction(session);
+        HtmlForm searchForm = new HtmlForm(globalSearchAction);
+        HtmlTextField searchField = new HtmlTextField();
+        searchField.setName(globalSearchAction.getSearchCode());
+
+        HtmlButton searchButton = new HtmlButton(session.tr("Search"));
+        searchForm.add(searchField);
+        searchForm.add(searchButton);
+        searchBlock.add(searchForm);
+    }
+
+    private void generateStatsBlock(HtmlBlock statsBlock) {
+        statsBlock.add(new HtmlText(""+DemandManager.getDemandsCount()+ " demands, "+MemberManager.getMembersCount()+" members..."));
+    }
+
+    private void generateDualColumnBlock(HtmlBlock dualColumnBlock) {
+        HtmlBlock descriptionBlock = new HtmlBlock("index_description_block");
+        generateDescriptionBlock(descriptionBlock);
+
+        HtmlBlock hightlightDemandsBlock = new HtmlBlock("index_hightlight_demands_block");
+        generateHightlightDemandsBlock(hightlightDemandsBlock);
+
+
+        dualColumnBlock.add(descriptionBlock);
+        dualColumnBlock.add(hightlightDemandsBlock);
+    }
+
+    private void generateHightlightDemandsBlock(HtmlBlock hightlightDemandsBlock) {
+        
+    }
+
+    private void generateDescriptionBlock(HtmlBlock descriptionBlock) {
+        String description = session.tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
+        descriptionBlock.add(new HtmlText(description));
     }
 }

@@ -56,4 +56,8 @@ public class MemberManager {
 
         return Member.create(daoMember);
     }
+
+    public static int getMembersCount() {
+        return DBRequests.count(DaoMember.class);
+    }
 }
