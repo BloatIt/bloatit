@@ -3,11 +3,15 @@ package com.bloatit.model.data;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 public class DaoSpecification extends DaoUserContent {
 
     private String content;
     @OneToOne(optional = true)
+    @Cascade(value = { CascadeType.ALL})
     private DaoDemand demand;
 
     protected DaoSpecification() {
