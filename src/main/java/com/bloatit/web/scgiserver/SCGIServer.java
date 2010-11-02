@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.web.server.DispatchServer;
+import java.util.ArrayList;
 
 public class SCGIServer {
 
@@ -167,6 +168,10 @@ public class SCGIServer {
     }
 
     private List<String> parseLanguageString(String languages) {
-        return Arrays.asList(languages.split(","));
+        if(languages == null) {
+            return new ArrayList<String>();
+        } else {
+            return Arrays.asList(languages.split(","));
+        }
     }
 }
