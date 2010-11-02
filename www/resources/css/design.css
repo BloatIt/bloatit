@@ -316,10 +316,22 @@ li {
     -ms-border-radius:5px;
     -khtml-border-radius:5px;
     border-radius:5px;
-    padding: 0.5em;
+    
+    padding: 2.0em;
+    padding-top: 1.0em;
+    padding-bottom: 0.5em;
+
     margin: 1em;
-    background:rgb(240,240,240);
-    font-size: 0.9em;
+    margin-right: 0.1em;
+    padding-right: 0.1em;
+    background:rgb(250,250,250);
+    
+    font-size: 1.0em;
+}
+
+.main_comment_block p{
+    padding: 0.3em;
+    margin-bottom : 1.6em;
 }
 
 .comments_block{
@@ -332,7 +344,32 @@ li {
     padding: 0.5em;
     margin-top: 1em;
     border: 1px solid rgb(230,230,230);
+    font-size: 0.9em;
+    background:rgb(240,240,240);
 }
+
+.child_comment_block{
+    
+    padding: 0.5em;
+    margin: 0.5em;
+    margin-left: 2em;
+    margin-right: 0.1em;
+    padding-right: 0.1em;
+    
+    
+    font-size: 0.95em;
+    border-top: 1px dashed rgb(200,200,200);
+
+
+
+    
+}
+
+.child_comment_block p{
+    padding: 0px;
+    margin: 0px;
+}
+
 
 .description_block {
     -moz-border-radius:5px;

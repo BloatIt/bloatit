@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
 import java.util.HashMap;
 import java.util.Locale;
@@ -144,11 +145,8 @@ public class DemandPage extends Page {
 
             
 
-            for(Comment childComment : comment.getChildren()) {
-                HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
-                childCommentBlock.add(new HtmlText(childComment.getText()));
-                commentBlock.add(childCommentBlock);
-            }
+            generateChildComment(commentBlock, comment.getChildren());
+            
 
             commentsBlock.add(commentBlock);
 
@@ -249,5 +247,15 @@ public class DemandPage extends Page {
         descriptionBlock.add(description);
         left.add(descriptionBlock);
 
+    }
+
+    private void generateChildComment(HtmlBlock commentBlock, PageIterable<Comment> children) {
+            for(Comment childComment : children) {
+                HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
+                childCommentBlock.add(new HtmlText(childComment.getText()));
+                generateChildComment(childCommentBlock, childComment.getChildren());
+
+                commentBlock.add(childCommentBlock);
+            }
     }
 }
