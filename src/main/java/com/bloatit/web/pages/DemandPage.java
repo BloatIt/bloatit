@@ -18,46 +18,57 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.Comment;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Transaction;
+import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlProgressBar;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.PageNotFoundException;
 
 public class DemandPage extends Page {
 
     private final Demand demand;
 
     public DemandPage(Session session, Map<String, String> parameters) {
-        this(session, parameters, null);
+        super(session, parameters);
+
+        
+        if (parameters.containsKey("id")) {
+            Integer id = null;
+            try {
+                id = new Integer(parameters.get("id"));
+                this.demand = DemandManager.GetDemandById(id);
+            } catch (final NumberFormatException e) {
+                throw new PageNotFoundException("Demand id not found " + id, null);
+            }
+        } else {
+            demand = null;
+        }
+
     }
 
     public DemandPage(Session session, Map<String, String> parameters, Demand demand) {
         super(session, parameters);
-        Demand d = null;
-
         if (demand == null) {
-            if (parameters.containsKey("id")) {
-                Integer id = null;
-                try {
-                    id = new Integer(parameters.get("id"));
-                } catch (final NumberFormatException e) {
-
-                }
-                if (id != null) {
-                    d = DemandManager.GetDemandById(id);
-                }
-            }
-        } else {
-            d = demand;
+            throw new PageNotFoundException("Demand shouldn't be null", null);
         }
-        this.demand = d;
+        this.demand = demand;
     }
 
     public DemandPage(Session session, Demand demand) {
@@ -66,26 +77,91 @@ public class DemandPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        if (this.demand == null) {
-            return generateEmptyBody();
-        } else {
-            return generateNotEmptyBody();
+
+        Locale defaultLocale = session.getLanguage().getLocale();
+        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        final HtmlContainer page = new HtmlContainer();
+        
+        final HtmlBlock left = new HtmlBlock("leftColumn");
+        final HtmlBlock right = new HtmlBlock("rightColumn");
+        page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
+        page.add(left);
+        page.add(right);
+        
+        // block avec la progression
+        float progressValue = 0;
+        //if(demand.getOffers().size() == 0) {
+            progressValue = 100*(1-1/(1+demand.getContribution().floatValue()/200));
+        //} else {
+            //TODO
+        //}
+
+
+        HtmlForm contributeForm = new HtmlForm(new LoginAction(session));
+        HtmlButton contributeButton = new HtmlButton(session.tr("Contribuer"));
+
+        contributeForm.add(contributeButton);
+
+        final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
+        contributeBlock.add(contributeForm);
+
+
+        final HtmlBlock progressBlock = new HtmlBlock("progress_block");
+        final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
+        
+        final HtmlBlock progressBarBlock = new HtmlBlock("column");
+        progressBarBlock.add(progressBar);
+
+
+        progressBlock.add(contributeBlock);
+        progressBlock.add(new HtmlText(demand.getContribution().toPlainString()+"€"));
+        progressBlock.add(progressBarBlock);
+
+
+
+        
+        
+        
+        
+
+        left.add(progressBlock);
+        
+        
+        // Description
+        HtmlBlock descriptionBlock = new HtmlBlock("description_block");
+        HtmlText description = new HtmlText(translatedDescription.getText());
+        descriptionBlock.add(description);
+        left.add(descriptionBlock);
+
+
+        // Comments
+
+        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
+
+        commentsBlock.add(new HtmlTitle(session.tr("Comments"),"comments_title"));
+
+        for(Comment comment: demand.getComments()) {
+            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
+            commentBlock.add(new HtmlText(comment.getText()));
+
+            
+
+            for(Comment childComment : comment.getChildren()) {
+                HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
+                childCommentBlock.add(new HtmlText(childComment.getText()));
+            }
+
+            commentsBlock.add(commentBlock);
+
         }
-    }
 
-    private HtmlComponent generateEmptyBody() {
-        return new HtmlText("Error : Specified demand Id incorrect");
-    }
+        left.add(commentsBlock);
+        
+        // droite process
+        
+       
 
-    private HtmlComponent generateNotEmptyBody() {
-
-        final HtmlBlock demandBlock = new HtmlBlock("demand");
-
-        // TODO CORRECT ME
-        // HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session, this.demand.getTitle()), "demand_title");
-        // demandBlock.add(demandTitle);
-
-        return demandBlock;
+        return page;
 
     }
 
@@ -94,7 +170,8 @@ public class DemandPage extends Page {
         if (this.demand != null) {
             return new HtmlString(session).add("demand/id-" + this.demand.getId() + "/title-").secure(demand.getTitle()).toString();
         } else {
-            return "demand"; // TODO Faire un système pour afficher une page d'erreur
+            return "demand"; // TODO Faire un système pour afficher une page
+                             // d'erreur
         }
     }
 

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -21,6 +22,9 @@ import com.bloatit.model.data.util.SessionManager;
 
 @Entity
 public class DaoDemand extends DaoKudosable {
+
+    @Basic(optional = false)
+    private BigDecimal contribution;
 
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -70,6 +74,7 @@ public class DaoDemand extends DaoKudosable {
         setState(State.VALIDATED);
         this.description = Description;
         this.specification = null;
+        this.contribution = new BigDecimal("0");
     }
 
     protected DaoDemand() {
@@ -106,6 +111,7 @@ public class DaoDemand extends DaoKudosable {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         contributions.add(new DaoContribution(member, amount));
+        contribution = contribution.add(amount);
     }
 
     public DaoSpecification getSpecification() {
@@ -146,6 +152,10 @@ public class DaoDemand extends DaoKudosable {
         comments.add(comment);
     }
 
+    public BigDecimal getContribution() {
+        return contribution;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -168,6 +178,10 @@ public class DaoDemand extends DaoKudosable {
 
     public void setComments(Set<DaoComment> comments) {
         this.comments = comments;
+    }
+
+    protected void setContribution(BigDecimal contribution) {
+        this.contribution = contribution;
     }
 
 }

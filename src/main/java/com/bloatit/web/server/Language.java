@@ -30,9 +30,6 @@ public class Language {
 
     private static Map<String, Locale> languageCode = new HashMap<String, Locale>() {
 
-        /**
-         * 
-         */
         private static final long serialVersionUID = 9019121360450239715L;
 
         {
@@ -44,9 +41,6 @@ public class Language {
     };
     private static Map<Locale, LanguageTemplate> languageList = new HashMap<Locale, LanguageTemplate>() {
 
-        /**
-         * 
-         */
         private static final long serialVersionUID = -2144420475764085797L;
 
         {
@@ -164,4 +158,7 @@ public class Language {
         return hash;
     }
 
+    public Locale getLocale() {
+        return template.locale;
+    }
 }

@@ -24,6 +24,11 @@ import com.bloatit.web.htmlrenderer.HtmlResult;
 public class HtmlBlock extends HtmlContainer {
 
     private final String cssClass;
+    private String id;
+
+    public HtmlBlock() {
+        this.cssClass = null;
+    }
 
     public HtmlBlock(String cssClass) {
         this.cssClass = cssClass;
@@ -31,12 +36,30 @@ public class HtmlBlock extends HtmlContainer {
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<div class=\"" + cssClass + "\">");
+        if(id != null) {
+            if(cssClass == null) {
+                htmlResult.write("<div id=\"" + id + "\">");
+            } else {
+                htmlResult.write("<div id=\"" + id + "\" class=\"" + cssClass + "\">");
+            }
+        } else {
+            if(cssClass == null) {
+                htmlResult.write("<div>");
+            } else {
+                htmlResult.write("<div class=\"" + cssClass + "\">");
+            }
+            
+        }
+        
         htmlResult.indent();
 
         super.generate(htmlResult);
 
         htmlResult.unindent();
         htmlResult.write("</div>");
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

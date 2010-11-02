@@ -123,7 +123,8 @@ public abstract class Page extends Request {
     private void generateMainMenu() {
 
         final Session s = this.session;
-        final HtmlBlock mainMenu = new HtmlBlock("main_menu");
+        final HtmlBlock mainMenu = new HtmlBlock();
+        mainMenu.setId("main_menu");
 
         final HtmlList primaryList = new HtmlList();
 
