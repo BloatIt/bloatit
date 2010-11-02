@@ -30,7 +30,7 @@ public class DaoComment extends DaoKudosable {
     
     @OneToMany(mappedBy = "comment", cascade = { CascadeType.ALL })
     @OrderBy(value = "creationDate")
-    @IndexedEmbedded
+//    @IndexedEmbedded
     private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
     public static DaoComment createAndPersist(DaoMember member, String text) {

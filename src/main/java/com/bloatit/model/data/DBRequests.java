@@ -21,12 +21,12 @@ public class DBRequests {
     }
 
     public static PageIterable<DaoDemand> search(String searchStr) {
-        String[] fields = new String[] { "description", "specification" };
+        String[] fields = new String[] { "description.translation.title", "offers.description.translation.title" };
         MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
         try {
             org.apache.lucene.search.Query query = parser.parse(searchStr);
             // wrap Lucene query in a org.hibernate.Query
-            return new QueryCollection<DaoDemand>(SessionManager.getCurrentFullTextSession().createFullTextQuery(query,
+            return new SearchCollection<DaoDemand>(SessionManager.getCurrentFullTextSession().createFullTextQuery(query,
                     DaoDemand.class));
 
         } catch (ParseException e) {

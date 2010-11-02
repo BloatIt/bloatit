@@ -12,8 +12,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 import com.bloatit.common.PageIterable;
@@ -22,7 +20,7 @@ import com.bloatit.model.data.util.SessionManager;
 @Entity
 public class DaoDescription extends DaoIdentifiable {
 
-    @Field(index = Index.UN_TOKENIZED)
+//    @Field(index = Index.UN_TOKENIZED)
     private Locale defaultLocale;
 
     @OneToMany(mappedBy = "description")
