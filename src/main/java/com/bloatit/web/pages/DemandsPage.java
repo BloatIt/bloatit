@@ -91,4 +91,9 @@ public class DemandsPage extends Page {
     public String getCode() {
         return "demands";
     }
+
+    @Override
+    public boolean isStable() {
+        return true;
+    }
 }

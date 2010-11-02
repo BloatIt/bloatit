@@ -58,4 +58,9 @@ public class IndexPage extends Page {
     protected String getTitle() {
         return "Finance free software";
     }
+
+    @Override
+    public boolean isStable() {
+        return true;
+    }
 }

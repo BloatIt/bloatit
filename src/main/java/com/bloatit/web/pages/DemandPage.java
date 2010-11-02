@@ -102,4 +102,9 @@ public class DemandPage extends Page {
     public String getTitle() {
         return "Demand ...";
     }
+
+    @Override
+    public boolean isStable() {
+        return true;
+    }
 }

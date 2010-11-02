@@ -55,4 +55,8 @@ class IndentedText {
     public String getText() {
         return text;
     }
+
+    public boolean hasContent() {
+        return !text.isEmpty();
+    }
 }

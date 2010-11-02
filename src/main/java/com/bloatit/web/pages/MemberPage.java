@@ -104,4 +104,8 @@ public class MemberPage extends Page {
         }
     }
 
+    @Override
+    public boolean isStable() {
+        return true;
+    }
 }

@@ -32,11 +32,14 @@ public abstract class Action extends Request {
 
     @Override
     protected void process() {
-        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new IndexPage(this.session)));
     }
 
     public String getUrl() {
         return "/" + this.session.getLanguage().getCode() + "/action/" + getCode();
+    }
+
+    public boolean isStable() {
+        return false;
     }
 
 }

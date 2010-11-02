@@ -52,4 +52,9 @@ public class PageNotFound extends Page {
     protected String getTitle() {
         return "Page not found";
     }
+
+    @Override
+    public boolean isStable() {
+        return false;
+    }
 }

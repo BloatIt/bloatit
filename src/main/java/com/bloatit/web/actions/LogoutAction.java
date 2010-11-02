@@ -47,7 +47,6 @@ public class LogoutAction extends Action {
         this.session.setLogged(false);
         this.session.setAuthToken(null);
 
-        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new IndexPage(this.session)));
         this.session.notifyGood(this.session.tr("Logout sucess."));
     }
 }

@@ -85,7 +85,7 @@ public class DispatchServer {
 
         final Request request = initCurrentRequest(query, post);
 
-        final HtmlResult htmlResult = new HtmlResult(session);
+        final HtmlResult htmlResult = new HtmlResult(session, request);
         request.doProcess(htmlResult);
 
         final String result = htmlResult.generate();

@@ -74,4 +74,9 @@ public class MembersListPage extends Page {
     protected String getTitle() {
         return "Members list";
     }
+
+    @Override
+    public boolean isStable() {
+        return true;
+    }
 }

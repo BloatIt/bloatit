@@ -73,14 +73,13 @@ public class LoginAction extends Action {
     private void loginSuccess(AuthToken token) {
         this.session.setLogged(true);
         this.session.setAuthToken(token);
-        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new IndexPage(this.session)));
         this.session.notifyGood(this.session.tr("Login success."));
     }
 
     private void loginFailed() {
         this.session.setLogged(false);
         this.session.setAuthToken(null);
-        this.htmlResult.setRedirect(HtmlTools.generateUrl(this.session, new LoginPage(this.session)));
+        this.htmlResult.setRedirect(new LoginPage(this.session));
         this.session.notifyBad(this.session.tr("Login failed. Wrong login or password."));
     }
 }

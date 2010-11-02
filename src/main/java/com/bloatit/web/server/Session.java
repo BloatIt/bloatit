@@ -33,7 +33,8 @@ public class Session {
     private final Deque<Action> actionList;
     private final Deque<Notification> notificationList;
     private Language language;
-    private Page lastStablePage;
+    private Request lastStablePage = null;
+    private Request targetPage = null;
     private AuthToken authToken;
 
     private final List<Language> preferredLocales;
@@ -86,12 +87,20 @@ public class Session {
         return actionList;
     }
 
-    public void setLastStablePage(Page p) {
+    public void setLastStablePage(Request p) {
         this.lastStablePage = p;
     }
 
-    public Page getLastStablePage() {
+    public Request getLastStablePage() {
         return lastStablePage;
+    }
+
+    public Request getTargetPage() {
+        return targetPage;
+    }
+
+    public void setTargetPage(Request targetPage) {
+        this.targetPage = targetPage;
     }
 
     public void notifyGood(String message) {

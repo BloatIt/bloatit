@@ -16,45 +16,77 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.htmlrenderer;
 
+import com.bloatit.web.pages.IndexPage;
+import com.bloatit.web.server.Page;
+import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
 
 public class HtmlResult extends IndentedText {
-    private final Session session;
-    private String redirect;
-    private int titleCount = 0;
 
-    public HtmlResult(Session session) {
+    private final Session session;
+    private Page redirect = null;
+    private int titleCount = 0;
+    private boolean valid = true;
+    private StringBuilder result;
+    private final Request currentRequest;
+
+    public HtmlResult(Session session,Request currentRequest) {
         super();
         this.session = session;
         this.redirect = null;
+        this.currentRequest = currentRequest;
     }
 
-    public void setRedirect(String redirect) {
+    public void setRedirect(Page redirect) {
         this.redirect = redirect;
     }
 
     public String generate() {
-        String result;
 
-        result = "Set-Cookie: session_key=" + this.session.getKey() + "; path=/; Max-Age=1296000; Version=1 \r\n";
+        result = new StringBuilder();
+        result.append("Set-Cookie: session_key=");
+        result.append(this.session.getKey());
+        result.append("; path=/; Max-Age=1296000; Version=1 \r\n");
 
-        if (this.redirect != null) {
-            result += "Location: " + this.redirect + "\r\n";
+        if (valid) {
+            if (hasContent()) {
+                if (currentRequest.isStable()) {
+                    session.setLastStablePage(currentRequest);
+                    session.setTargetPage(null);
+                }
+
+                result.append("Content-Type: text/html\r\n");
+                closeHeaders();
+                result.append(getText());
+
+            } else {
+                if (redirect == null) {
+                    if (session.getTargetPage() != null) {
+                        writeRedirect(session.getTargetPage());
+                    } else {
+                        if (session.getLastStablePage() != null) {
+                            writeRedirect(session.getLastStablePage());
+                        } else {
+                            writeRedirect(new IndexPage(session));
+                        }
+                    }
+                } else {
+                    writeRedirect(redirect);
+                }
+                closeHeaders();
+            }
+        } else {
+            if (session.getLastStablePage() == null) {
+                writeRedirect(new IndexPage(session));
+            } else {
+                writeRedirect(session.getLastStablePage());
+            }
+            closeHeaders();
         }
 
-        final String text = getText();
-
-        if (text.length() > 0) {
-            result += "Content-Type: text/html\r\n";
-        }
-
-        result += "\r\n";
-        result += text;
-
-        return result;
+        return result.toString();
     }
 
     public String pushTitle() {
@@ -64,5 +96,23 @@ public class HtmlResult extends IndentedText {
 
     public void popTitle() {
         titleCount--;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    private void writeRedirect(Request redirectPage) {
+        result.append("Location: ");
+        result.append(HtmlTools.generateUrl(this.session, redirectPage));
+        result.append("\r\n");
+    }
+
+    private void closeHeaders() {
+        result.append("\r\n");
     }
 }

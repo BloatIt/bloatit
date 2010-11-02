@@ -82,4 +82,9 @@ public class LoginPage extends Page {
     protected String getTitle() {
         return "Login or signup";
     }
+
+    @Override
+    public boolean isStable() {
+        return false;
+    }
 }

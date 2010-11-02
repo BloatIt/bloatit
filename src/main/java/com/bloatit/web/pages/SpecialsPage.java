@@ -64,4 +64,9 @@ public class SpecialsPage extends Page {
     public String getCode() {
         return "specials";
     }
+
+    @Override
+    public boolean isStable() {
+        return true;
+    }
 }

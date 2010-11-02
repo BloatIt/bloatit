@@ -27,7 +27,7 @@ public abstract class Request {
     protected HtmlResult htmlResult;
     protected Map<String, String> parameters;
     protected Session session;
-
+    
     protected Request(Session session, Map<String, String> parameters) {
         this.session = session;
         this.parameters = parameters;
@@ -41,4 +41,8 @@ public abstract class Request {
         this.htmlResult = htmlResult;
         process();
     }
+
+    public abstract boolean isStable();
+
+
 }

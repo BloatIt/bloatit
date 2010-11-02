@@ -70,4 +70,8 @@ public class MyAccountPage extends Page {
         }
     }
 
+    @Override
+    public boolean isStable() {
+        return true;
+    }
 }
