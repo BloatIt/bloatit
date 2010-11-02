@@ -302,8 +302,53 @@ li {
     border: 1px solid rgb(200,200,200);
     background: rgb(250,250,250);
     cursor: pointer;
+    font-weight: bold;
 }
 
 .button:hover {
     background: rgb(230,230,255);
+}
+
+.main_comment_block {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -o-border-radius:5px;
+    -ms-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    padding: 0.5em;
+    margin: 1em;
+    background:rgb(240,240,240);
+    font-size: 0.9em;
+}
+
+.comments_block{
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -o-border-radius:5px;
+    -ms-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    padding: 0.5em;
+    margin-top: 1em;
+    border: 1px solid rgb(230,230,230);
+}
+
+.description_block {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -o-border-radius:5px;
+    -ms-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    padding: 0.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    background:rgb(240,240,240);
+    border: 1px solid rgb(230,230,230);
+}
+
+.comments_title{
+    font-size: 0.9em;
+    font-weight: bold;
 }
