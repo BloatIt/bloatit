@@ -22,11 +22,19 @@ import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
+import java.util.Map.Entry;
 
 public class HtmlTools {
 
-    public static String generateLink(Session session, String displayedText, Page linkPage) {
-        return "<a href=\"/" + session.getLanguage().getCode() + "/" + linkPage.getCode() + "\">" + displayedText + "</a>";
+    public static String generateLink(Session session, String displayedText, Request linkRequest) {
+        String link = "<a href=\"/" + session.getLanguage().getCode() + "/" + linkRequest.getCode();
+
+        for(Entry<String, String> entry : linkRequest.getOutputParameters().entrySet()) {
+            link += "/"+entry.getKey()+"-"+entry.getValue();
+        }
+
+        link += "\">" + displayedText + "</a>";
+        return  link;
     }
 
     public static String generateActionLink(Session session, String text, Action linkAction) {

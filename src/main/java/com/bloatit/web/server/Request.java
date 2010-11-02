@@ -22,10 +22,12 @@ package com.bloatit.web.server;
 import java.util.Map;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
+import java.util.HashMap;
 
 public abstract class Request {
     protected HtmlResult htmlResult;
     protected Map<String, String> parameters;
+    protected Map<String, String> outputParameters = new HashMap<String, String>();
     protected Session session;
     
     protected Request(Session session, Map<String, String> parameters) {
@@ -43,6 +45,18 @@ public abstract class Request {
     }
 
     public abstract boolean isStable();
+
+    public void setOutputParam(String key, String value) {
+        outputParameters.put(key,value);
+    }
+
+    public void resetOutputParameters() {
+        outputParameters.clear();
+    }
+
+    public Map<String, String> getOutputParameters() {
+        return outputParameters;
+    }
 
 
 }
