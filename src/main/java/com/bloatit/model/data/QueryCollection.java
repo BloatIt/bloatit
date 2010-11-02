@@ -45,6 +45,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     @Override
     public void setPageSize(int pageSize) {
+        query.setMaxResults(pageSize);
         query.setFetchSize(pageSize);
         this.pageSize = pageSize;
     }
