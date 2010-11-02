@@ -175,20 +175,16 @@ public class DaoMember extends DaoActor {
 
     // TODO test
     public PageIterable<DaoJoinGroupInvitation> getRecievedInvitation(State state) {
-        QueryCollection<DaoJoinGroupInvitation> q = new QueryCollection<DaoJoinGroupInvitation>(
-                "from com.bloatit.model.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state");
-        q.setEntity("reciever", this);
-        q.setEntity("state", state);
-        return q;
+        return new QueryCollection<DaoJoinGroupInvitation>(
+                "from com.bloatit.model.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state  ")
+                .setEntity("reciever", this).setEntity("state", state);
     }
 
     // TODO test
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(State state) {
-        QueryCollection<DaoJoinGroupInvitation> q = new QueryCollection<DaoJoinGroupInvitation>(
-                "from com.bloatit.model.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state");
-        q.setEntity("sender", this);
-        q.setEntity("state", state);
-        return q;
+        return new QueryCollection<DaoJoinGroupInvitation>(
+                "from com.bloatit.model.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state")
+                .setEntity("sender", this).setEntity("state", state);
     }
 
     private <T> PageIterable<T> getUserContent(Class<T> theClass, String className) {

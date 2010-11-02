@@ -51,10 +51,7 @@ public class DaoComment extends DaoKudosable {
 
     // TODO use a filtered collection
     public PageIterable<DaoComment> getChildrenFromQuery() {
-        QueryCollection<DaoComment> q = new QueryCollection<DaoComment>(
-                "from com.bloatit.model.data.DaoComment as c where c.comment = :this");
-        q.setEntity("this", this);
-        return q;
+        return new QueryCollection<DaoComment>("from DaoComment as c where c.comment = :this").setEntity("this", this);
     }
 
     public Set<DaoComment> getChildren() {

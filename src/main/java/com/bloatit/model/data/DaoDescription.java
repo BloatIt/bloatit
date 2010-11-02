@@ -49,10 +49,8 @@ public class DaoDescription extends DaoIdentifiable {
     }
 
     public PageIterable<DaoTranslation> getTranslationsFromQuery() {
-        QueryCollection<DaoTranslation> q = new QueryCollection<DaoTranslation>(
-                "from com.bloatit.model.data.DaoTransaltion as t where t.description = :this");
-        q.setEntity("this", this);
-        return q;
+        return new QueryCollection<DaoTranslation>("from DaoTransaltion as t where t.description = :this")
+                .setEntity("this", this);
     }
 
     public Set<DaoTranslation> getTranslations() {
@@ -65,8 +63,6 @@ public class DaoDescription extends DaoIdentifiable {
 
     public DaoTranslation getTranslation(Locale locale) {
         final Query q = SessionManager
-                .getSessionFactory()
-                .getCurrentSession()
                 .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
         q.setLocale("locale", locale);
         q.setEntity("this", this);

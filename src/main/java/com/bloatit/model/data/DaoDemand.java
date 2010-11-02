@@ -117,10 +117,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoOffer> getOffersFromQuery() {
-        QueryCollection<DaoOffer> q = new QueryCollection<DaoOffer>(
-                "from com.bloatit.model.data.DaoOffer as f where f.demand = :this");
-        q.setEntity("this", this);
-        return q;
+        return new QueryCollection<DaoOffer>("from DaoOffer as f where f.demand = :this").setEntity("this", this);
     }
 
     public Set<DaoOffer> getOffers() {
@@ -128,10 +125,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoContribution> getContributionsFromQuery() {
-        QueryCollection<DaoContribution> q = new QueryCollection<DaoContribution>(
-                "from com.bloatit.model.data.DaoContribution as f where f.demand = :this");
-        q.setEntity("this", this);
-        return q;
+        return new QueryCollection<DaoContribution>("from DaoContribution as f where f.demand = :this").setEntity("this", this);
     }
 
     public Set<DaoContribution> getContributions() {
@@ -139,10 +133,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        QueryCollection<DaoComment> q = new QueryCollection<DaoComment>(
-                "from com.bloatit.model.data.DaoComment as f where f.demand = :this");
-        q.setEntity("this", this);
-        return q;
+        return new QueryCollection<DaoComment>("DaoComment as f where f.demand = :this").setEntity("this", this);
     }
 
     public Set<DaoComment> getComments() {
