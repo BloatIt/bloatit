@@ -3,9 +3,14 @@ package com.bloatit.model.data;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Store;
+
 @Entity
 public class DaoSpecification extends DaoUserContent {
 
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String content;
     @OneToOne(optional = true)
     private DaoDemand demand;

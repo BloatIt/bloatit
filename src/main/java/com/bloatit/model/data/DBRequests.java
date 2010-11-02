@@ -1,5 +1,8 @@
 package com.bloatit.model.data;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.apache.lucene.queryParser.ParseException;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.PageIterable;
@@ -15,6 +18,21 @@ public class DBRequests {
     public static <T> PageIterable<T> getAll(Class<T> persistent) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return new QueryCollection<T>("from " + meta.getEntityName());
+    }
+
+    public static PageIterable<DaoDemand> search(String searchStr) {
+        String[] fields = new String[] { "description", "specification" };
+        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
+        try {
+            org.apache.lucene.search.Query query = parser.parse(searchStr);
+            // wrap Lucene query in a org.hibernate.Query
+            return new QueryCollection<DaoDemand>(SessionManager.getCurrentFullTextSession().createFullTextQuery(query,
+                    DaoDemand.class));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

@@ -12,6 +12,10 @@ import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
@@ -21,9 +25,12 @@ import com.bloatit.model.data.util.SessionManager;
 public class DaoComment extends DaoKudosable {
 
     @Basic(optional = false)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String text;
+    
     @OneToMany(mappedBy = "comment", cascade = { CascadeType.ALL })
     @OrderBy(value = "creationDate")
+    @IndexedEmbedded
     private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
     public static DaoComment createAndPersist(DaoMember member, String text) {

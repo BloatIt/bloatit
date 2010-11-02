@@ -9,16 +9,27 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.search.annotations.DateBridge;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.Store;
 
 @Entity
 public class DaoOffer extends DaoKudosable {
 
     @ManyToOne
     private DaoDemand demand;
+    
     @OneToOne
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @IndexedEmbedded
     private DaoDescription description;
+    
     @Basic(optional = false)
+    @Field(index = Index.UN_TOKENIZED, store = Store.YES)
+    @DateBridge(resolution = Resolution.DAY)
     private Date dateExpire;
 
     protected DaoOffer() {
