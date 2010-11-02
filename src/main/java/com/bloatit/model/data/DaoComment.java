@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -12,6 +11,8 @@ import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
@@ -22,7 +23,8 @@ public class DaoComment extends DaoKudosable {
 
     @Basic(optional = false)
     private String text;
-    @OneToMany(mappedBy = "comment", cascade = { CascadeType.ALL })
+    @OneToMany(mappedBy = "comment")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @OrderBy(value = "creationDate")
     private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
