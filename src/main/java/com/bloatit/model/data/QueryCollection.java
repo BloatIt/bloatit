@@ -13,6 +13,7 @@ public class QueryCollection<T> implements PageIterable<T> {
     private final Query sizeQuery;
     private int pageSize;
     private int size;
+    private int currentPage;
 
     /**
      * Use this constructor with string that start with "from ..."
@@ -49,11 +50,13 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     @Override
     public void setPage(int page) {
+        currentPage = page;
         query.setFirstResult(page * pageSize);
     }
 
     @Override
     public void setPageSize(int pageSize) {
+        query.setMaxResults(pageSize);
         query.setFetchSize(pageSize);
         this.pageSize = pageSize;
     }
@@ -80,4 +83,8 @@ public class QueryCollection<T> implements PageIterable<T> {
         }
     }
 
+    @Override
+    public int getCurrentPage() {
+        return currentPage;
+    }
 }

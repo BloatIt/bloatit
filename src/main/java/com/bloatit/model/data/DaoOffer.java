@@ -19,7 +19,7 @@ import org.hibernate.search.annotations.Store;
 @Entity
 public class DaoOffer extends DaoKudosable {
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private DaoDemand demand;
     
     @OneToOne

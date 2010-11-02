@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.pages;
 
+import com.bloatit.web.htmlrenderer.HtmlResult;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +29,8 @@ import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
@@ -50,16 +52,42 @@ public class MembersListPage extends Page {
 
         final PageIterable<Member> memberList = MemberManager.getMembers();
 
-        final HtmlList htmlMemberList = new HtmlList();
-        pageTitle.add(htmlMemberList);
+        HtmlRenderer<Member> memberItemRenderer = new HtmlRenderer<Member>() {
 
-        for (final Member member : memberList) {
+            @Override
+            public void generate(HtmlResult htmlResult, Member member) {
+                final MemberPage memberPage = new MemberPage(session, member);
+                final HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(session, member.getFullname(), memberPage) + "<span class=\"karma\">"
+                        + HtmlTools.compressKarma(member.getKarma()) + "</span>");
+                item.generate(htmlResult);
+            }
+        };
 
-            final MemberPage memberPage = new MemberPage(session, member);
-            final HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(this.session, member.getFullname(), memberPage) + "<span class=\"karma\">"
-                    + HtmlTools.compressKarma(member.getKarma()) + "</span>");
-            htmlMemberList.addItem(item);
+
+        HtmlPagedList<Member> pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, this, session);
+
+        int pageSize = 42;
+        int currentPage = 0;
+
+
+        if (parameters.containsKey("page_size")) {
+            try {
+                pageSize = Integer.parseInt(parameters.get("page_size"));
+            } catch (NumberFormatException e) {
+            }
         }
+
+        if (parameters.containsKey("page")) {
+            try {
+                currentPage = Integer.parseInt(parameters.get("page"))-1;
+            } catch (NumberFormatException e) {
+            }
+        }
+
+        pagedMemberList.setPageSize(pageSize);
+        pagedMemberList.setCurrentPage(currentPage);
+
+        pageTitle.add(pagedMemberList);
 
         return pageTitle;
 

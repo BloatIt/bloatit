@@ -60,6 +60,18 @@ public class Demand extends Kudosable {
 	public DaoDemand getDao() {
 		return dao;
 	}
+	
+	public BigDecimal getContribution(){
+	    return dao.getContribution();
+	}
+
+        public BigDecimal getContributionMax(){
+	    return dao.getContributionMax();
+	}
+
+        public BigDecimal getContributionMin(){
+	    return dao.getContributionMin();
+	}
 
 	@Override
 	protected DaoKudosable getDaoKudosable() {

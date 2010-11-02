@@ -56,6 +56,12 @@ public class SearchCollection<T> implements PageIterable<T> {
     @Override
     public void setPage(int page) {
         currentPage = page;
+        query.setFirstResult(page * pageSize);
+    }
+
+    @Override
+    public int getCurrentPage() {
+        return currentPage;
     }
 
 }

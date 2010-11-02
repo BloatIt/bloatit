@@ -6,13 +6,16 @@ import javax.persistence.OneToOne;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 public class DaoSpecification extends DaoUserContent {
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String content;
-    @OneToOne(optional = true)
+    
+    @OneToOne(optional = false)
     private DaoDemand demand;
 
     protected DaoSpecification() {
@@ -21,6 +24,7 @@ public class DaoSpecification extends DaoUserContent {
 
     public DaoSpecification(DaoMember member, String content, DaoDemand Demand) {
         super(member);
+        // TODO make sure demand != null
         this.content = content;
         this.demand = Demand;
     }

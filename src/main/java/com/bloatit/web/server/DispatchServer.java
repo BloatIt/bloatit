@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.server;
 
+import com.bloatit.web.actions.GlobalSearchAction;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,8 @@ public class DispatchServer {
             {
                 put("login", LoginAction.class);
                 put("logout", LogoutAction.class);
+                put("global_search", GlobalSearchAction.class);
+
 
             }
         };

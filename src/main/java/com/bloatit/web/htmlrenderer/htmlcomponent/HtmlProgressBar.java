@@ -16,26 +16,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.framework.managers;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Demand;
-import com.bloatit.framework.lists.DemandList;
-import com.bloatit.model.data.DBRequests;
-import com.bloatit.model.data.DaoDemand;
+package com.bloatit.web.htmlrenderer.htmlcomponent;
 
-public class DemandManager {
+import com.bloatit.web.htmlrenderer.HtmlResult;
 
-    public static PageIterable<Demand> GetAllDemands() {
-        return new DemandList(DBRequests.getAll(DaoDemand.class));
+public class HtmlProgressBar extends HtmlComponent {
+
+    final float progress;
+    
+    public HtmlProgressBar(float progress) {
+        this.progress = progress;
+        //this.progress = 10f;
     }
 
-    public static Demand GetDemandById(Integer id) {
-        return Demand.create(DBRequests.getById(DaoDemand.class, id));
+    @Override
+    public void generate(HtmlResult htmlResult) {
+        htmlResult.write("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: "+progress+"%;\"></div></div></div>");
     }
-
-    public static int getDemandsCount() {
-        return DBRequests.count(DaoDemand.class);
-    }
-
 }

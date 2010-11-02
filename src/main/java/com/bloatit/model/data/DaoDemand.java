@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -25,21 +26,23 @@ import com.bloatit.model.data.util.SessionManager;
 @Indexed
 public class DaoDemand extends DaoKudosable {
 
+    @Basic(optional = false)
+    private BigDecimal contribution;
+
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @IndexedEmbedded
     private DaoDescription description;
 
-    @OneToOne(mappedBy = "demand", optional = true)
+    @OneToOne(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @IndexedEmbedded
     private DaoSpecification specification;
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @OrderBy(clause = "DaoOffer.popularity")
     @IndexedEmbedded
-    // TODO test me !
+    @OrderBy(clause = "popularity")
     private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
     // TODO make sure it is read only !
@@ -77,6 +80,7 @@ public class DaoDemand extends DaoKudosable {
         setState(State.VALIDATED);
         this.description = Description;
         this.specification = null;
+        this.contribution = new BigDecimal("0");
     }
 
     protected DaoDemand() {
@@ -92,8 +96,8 @@ public class DaoDemand extends DaoKudosable {
         specification = new DaoSpecification(member, content, this);
     }
 
-    public DaoOffer addOffer(DaoMember member, DaoDescription Description, Date dateExpir) {
-        final DaoOffer Offer = new DaoOffer(member, this, Description, dateExpir);
+    public DaoOffer addOffer(DaoMember member, DaoDescription description, Date dateExpir) {
+        final DaoOffer Offer = new DaoOffer(member, this, description, dateExpir);
         offers.add(Offer);
         return Offer;
     }
@@ -112,7 +116,9 @@ public class DaoDemand extends DaoKudosable {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
-        contributions.add(new DaoContribution(member, amount));
+
+        contributions.add(new DaoContribution(member, this, amount));
+        contribution = contribution.add(amount);
     }
 
     public DaoSpecification getSpecification() {
@@ -140,7 +146,9 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>("DaoComment as f where f.demand = :this").setEntity("this", this);
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession()
+                .createFilter(getComments(), ""), SessionManager.getSessionFactory().getCurrentSession()
+                .createFilter(getComments(), "select count(*)"));
     }
 
     public Set<DaoComment> getComments() {
@@ -149,6 +157,20 @@ public class DaoDemand extends DaoKudosable {
 
     public void addComment(DaoComment comment) {
         comments.add(comment);
+    }
+
+    public BigDecimal getContribution() {
+        return contribution;
+    }
+
+    public BigDecimal getContributionMin() {
+        return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
+                .setEntity("this", this).uniqueResult();
+    }
+
+    public BigDecimal getContributionMax() {
+        return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")
+                .setEntity("this", this).uniqueResult();
     }
 
     // ======================================================================
@@ -173,6 +195,10 @@ public class DaoDemand extends DaoKudosable {
 
     public void setComments(Set<DaoComment> comments) {
         this.comments = comments;
+    }
+
+    protected void setContribution(BigDecimal contribution) {
+        this.contribution = contribution;
     }
 
 }

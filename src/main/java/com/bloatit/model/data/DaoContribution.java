@@ -22,7 +22,7 @@ public class DaoContribution extends DaoUserContent {
     @Basic(optional = false)
     private BigDecimal amount;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private DaoDemand demand;
 
     @Basic(optional = false)
@@ -34,24 +34,27 @@ public class DaoContribution extends DaoUserContent {
 
     // TODO add the possibility to add some text (144 c for auto tweet ?)
 
-    public DaoContribution() {}
+    public DaoContribution() {
+    }
 
-    // the demand is associated into the DaoDemand class by hibernate.
-    public DaoContribution(DaoMember member, BigDecimal amount) {
+    public DaoContribution(DaoMember member, DaoDemand demand, BigDecimal amount) {
         super(member);
+        // TODO make sure demand != null
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             Log.data().error("The amount of a contribution cannot be <= 0.");
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         this.amount = amount;
-        setState(State.WAITING);
+        this.state = State.WAITING;
+        this.demand = demand;
         getAuthor().getInternalAccount().block(amount);
     }
 
     public void accept(DaoOffer Offer) throws NotEnoughMoneyException {
         // TODO verify that the state is WAITING
         try {
-            transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor().getInternalAccount(), amount);
+            transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor()
+                    .getInternalAccount(), amount);
             getAuthor().getInternalAccount().unBlock(amount);
             setState(State.ACCEPTED);
         } catch (final NotEnoughMoneyException e) {

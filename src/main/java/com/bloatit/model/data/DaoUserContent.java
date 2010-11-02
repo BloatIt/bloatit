@@ -23,6 +23,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     public DaoUserContent(DaoMember member) {
         super();
+        // TODO make sure member != null
         this.member = member;
         creationDate = new Date();
     }
