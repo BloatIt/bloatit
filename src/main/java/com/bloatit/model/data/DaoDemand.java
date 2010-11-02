@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -124,9 +123,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoOffer> getOffersFromQuery() {
-        final Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery("from com.bloatit.model.data.DaoOffer as f where f.demand = :this");
-        q.setEntity("this", this);
-        return new QueryCollection<DaoOffer>(q);
+        return new QueryCollection<DaoOffer>("from DaoOffer as f where f.demand = :this").setEntity("this", this);
     }
 
     public Set<DaoOffer> getOffers() {
@@ -134,10 +131,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoContribution> getContributionsFromQuery() {
-        final Query q = SessionManager.getSessionFactory().getCurrentSession()
-                .createQuery("from com.bloatit.model.data.DaoContribution as f where f.demand = :this");
-        q.setEntity("this", this);
-        return new QueryCollection<DaoContribution>(q);
+        return new QueryCollection<DaoContribution>("from DaoContribution as f where f.demand = :this").setEntity("this", this);
     }
 
     public Set<DaoContribution> getContributions() {
@@ -145,10 +139,7 @@ public class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        final Query q = SessionManager.getSessionFactory().getCurrentSession()
-                .createQuery("from com.bloatit.model.data.DaoComment as f where f.demand = :this");
-        q.setEntity("this", this);
-        return new QueryCollection<DaoComment>(q);
+        return new QueryCollection<DaoComment>("DaoComment as f where f.demand = :this").setEntity("this", this);
     }
 
     public Set<DaoComment> getComments() {

@@ -16,11 +16,16 @@ public class QueryCollection<T> implements PageIterable<T> {
     private int currentPage;
 
     /**
-     * Use this constructor with query that start with "from ..."
-     *
-     * @param query
+     * Use this constructor with string that start with "from ..."
      */
-    protected QueryCollection(Query query) {
+    protected QueryCollection(String queryStr) {
+        this(SessionManager.createQuery(queryStr));
+    }
+
+    /**
+     * Use this constructor with query that start with "from ..."
+     */
+    private QueryCollection(Query query) {
         this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
     }
 
@@ -29,6 +34,12 @@ public class QueryCollection<T> implements PageIterable<T> {
         size = -1;
         this.query = query;
         this.sizeQuery = sizeQuery;
+    }
+
+    public QueryCollection<T> setEntity(String name, Object entity) {
+        query.setEntity(name, entity);
+        sizeQuery.setEntity(name, entity);
+        return this;
     }
 
     @Override

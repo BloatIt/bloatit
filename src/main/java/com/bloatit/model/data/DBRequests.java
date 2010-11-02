@@ -14,7 +14,7 @@ public class DBRequests {
 
     public static <T> PageIterable<T> getAll(Class<T> persistent) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
-        return new QueryCollection<T>(SessionManager.getSessionFactory().getCurrentSession().createQuery("from " + meta.getEntityName()));
+        return new QueryCollection<T>("from " + meta.getEntityName());
     }
 
     public static <T> int count(Class<T> persistent) {
