@@ -2,7 +2,6 @@ package com.bloatit.framework.lists;
 
 import java.util.Iterator;
 
-import com.bloatit.common.IterableFromIterator;
 import com.bloatit.common.PageIterable;
 
 public abstract class ListBinder<E, DAO> implements PageIterable<E> {
@@ -20,8 +19,8 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
     }
 
     @Override
-    public Iterable<E> getPage(int page) {
-        return new IterableFromIterator<E>(createFromDaoIterator(daoCollection.getPage(page).iterator()));
+    public void setPage(int page) {
+    	daoCollection.setPage(page);
     }
 
     @Override

@@ -5,60 +5,68 @@ import java.util.Iterator;
 import org.hibernate.Query;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.model.data.util.SessionManager;
 
 public class QueryCollection<T> implements PageIterable<T> {
 
-    private final Query query;
-    private int pageSize;
+	private final Query query;
+	private final Query sizeQuery;
+	private int pageSize;
+	private long size;
 
-    protected QueryCollection(Query query) {
-        pageSize = 0;
-        this.query = query;
-    }
+	/**
+	 * Use this constructor with query that start with "from ..."
+	 * 
+	 * @param query
+	 */
+	protected QueryCollection(Query query) {
+		this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public Iterator<T> iterator() {
-        return query.iterate();
-    }
+	protected QueryCollection(Query query, Query sizeQuery) {
+		pageSize = 0;
+		size = -1;
+		this.query = query;
+		this.sizeQuery = sizeQuery;
+	}
 
-    /**
-     * by default a this will return a page with all the elements.
-     * 
-     * @param page the page number
-     * @return a list of entity.
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public Iterable<T> getPage(int page) {
-        query.setFirstResult(page * pageSize);
-        return query.list();
-    }
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterator<T> iterator() {
+		return query.list().iterator();
+	}
 
-    @Override
-    public void setPageSize(int pageSize) {
-        query.setFetchSize(pageSize);
-        this.pageSize = pageSize;
-    }
+	@Override
+	public void setPage(int page) {
+		query.setFirstResult(page * pageSize);
+	}
 
-    @Override
-    public int getPageSize() {
-        return pageSize;
-    }
+	@Override
+	public void setPageSize(int pageSize) {
+		query.setFetchSize(pageSize);
+		this.pageSize = pageSize;
+	}
 
-    @Override
-    public long size() {
-        // TODO optimize me !
-        return query.list().size();
-    }
+	@Override
+	public int getPageSize() {
+		return pageSize;
+	}
 
-    @Override
-    public long pageNumber() {
-        if (pageSize != 0) {
-            return size() / pageSize;
-        } else {
-            return 1;
-        }
-    }
+	@Override
+	public long size() {
+		if (size == -1) {
+			return size = (Long) sizeQuery.uniqueResult();
+		}
+		return size;
+	}
+
+	@Override
+	public long pageNumber() {
+		if (pageSize != 0) {
+			return size() / pageSize;
+		} else {
+			return 1;
+		}
+	}
 
 }

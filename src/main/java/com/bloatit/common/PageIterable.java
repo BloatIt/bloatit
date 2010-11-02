@@ -9,8 +9,6 @@ package com.bloatit.common;
  */
 public interface PageIterable<T> extends Iterable<T> {
 
-    public Iterable<T> getPage(int page);
-
     public void setPageSize(int pageSize);
 
     public int getPageSize();
@@ -18,4 +16,6 @@ public interface PageIterable<T> extends Iterable<T> {
     public long size();
 
     public long pageNumber();
+
+	void setPage(int page);
 }

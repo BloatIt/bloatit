@@ -147,11 +147,14 @@ public class GroupMemberTest extends TestCase {
         testAddUserToGroup();
 
         SessionManager.beginWorkUnit();
-        final PageIterable<DaoMember> Members = DaoGroup.getByName("b219").getMembers();
-        final Iterator<DaoMember> it = Members.iterator();
+        final PageIterable<DaoMember> members = DaoGroup.getByName("b219").getMembers();
+        final Iterator<DaoMember> it = members.iterator();
         assertEquals(it.next().getFullname(), "Frédéric Bertolus");
         assertEquals(it.next().getFullname(), "Yoann Plénet");
         assertFalse(it.hasNext());
+        
+        assertEquals(2, members.size());
+        
         SessionManager.endWorkUnitAndFlush();
     }
 
@@ -159,13 +162,16 @@ public class GroupMemberTest extends TestCase {
         testAddUserToGroup();
 
         SessionManager.beginWorkUnit();
-        final PageIterable<DaoGroup> Groups = DaoMember.getByLogin("Yo").getGroups();
-        final Iterator<DaoGroup> it = Groups.iterator();
+        final PageIterable<DaoGroup> groups = DaoMember.getByLogin("Yo").getGroups();
+        final Iterator<DaoGroup> it = groups.iterator();
         assertEquals(it.next().getLogin(), "b216");
         assertEquals(it.next().getLogin(), "b217");
         assertEquals(it.next().getLogin(), "b218");
         assertEquals(it.next().getLogin(), "b219");
         assertFalse(it.hasNext());
+        
+        assertEquals(4, groups.size());
+        
         SessionManager.endWorkUnitAndFlush();
     }
 
