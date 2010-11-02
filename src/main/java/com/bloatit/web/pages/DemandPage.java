@@ -28,11 +28,14 @@ import com.bloatit.framework.Transaction;
 import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.LoginAction;
+import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlProgressBar;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
@@ -99,7 +102,7 @@ public class DemandPage extends Page {
         //}
 
 
-        HtmlForm contributeForm = new HtmlForm(new LoginAction(session));
+        HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
         HtmlButton contributeButton = new HtmlButton(session.tr("Contribuer"));
 
         contributeForm.add(contributeButton);
@@ -167,6 +170,8 @@ public class DemandPage extends Page {
         rightBlock.add(timelineBlock);
         rightBlock.add(contributorsBlock);
 
+        generateAbstractBlock(abstractBlock);
+        generateTimelineBlock(timelineBlock);
         generateContributorsBlock(contributorsBlock);
 
 
@@ -213,5 +218,22 @@ public class DemandPage extends Page {
             contributorsBlock.add(new HtmlText(session.tr("Mean:&nbsp;")+contributionMean));
         }
 
+    }
+
+    private void generateAbstractBlock(HtmlBlock abstractBlock) {
+        HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
+        HtmlButton contributeButton = new HtmlButton(session.tr("Make an offer"));
+
+        contributeForm.add(contributeButton);
+        abstractBlock.add(contributeForm);
+
+    }
+
+    private void generateTimelineBlock(HtmlBlock contributorsBlock) {
+        HtmlList timelineList = new HtmlList();
+
+        HtmlListItem creationDate = new HtmlListItem("Creation: "+demand.getCreationDate().toString());
+        timelineList.addItem(creationDate);
+        contributorsBlock.add(timelineList);
     }
 }

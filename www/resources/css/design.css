@@ -361,7 +361,7 @@ li {
     -ms-border-radius:5px;
     -khtml-border-radius:5px;
     border-radius:5px;
-    padding: 0.5em;
+    padding: 0.2em;
     
     border: 1px solid rgb(230,230,230);
 }
@@ -370,4 +370,19 @@ li {
     display:table-cell;
     width: 100%;
     padding-right: 0.5em;
+}
+
+.abstract_block{
+    border-bottom: 1px dashed rgb(200,200,200);
+    font-size: 0.7em;
+}
+
+.contributors_block{
+    font-size: 0.7em;
+}
+
+
+.timeline_block{
+    border-bottom: 1px dashed rgb(200,200,200);
+    font-size: 0.7em;
 }
