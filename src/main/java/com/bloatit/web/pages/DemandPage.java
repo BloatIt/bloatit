@@ -147,6 +147,7 @@ public class DemandPage extends Page {
             for(Comment childComment : comment.getChildren()) {
                 HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
                 childCommentBlock.add(new HtmlText(childComment.getText()));
+                commentBlock.add(childCommentBlock);
             }
 
             commentsBlock.add(commentBlock);

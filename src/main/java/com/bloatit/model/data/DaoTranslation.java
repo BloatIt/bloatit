@@ -3,8 +3,10 @@ package com.bloatit.model.data;
 import java.util.Locale;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import org.hibernate.annotations.Type;
 
 // This class should handle some versions.
 // version are managed by date.
@@ -14,8 +16,10 @@ public class DaoTranslation extends DaoKudosable {
     @Basic(optional = false)
     private Locale locale;
     @Basic(optional = false)
+    @Column(length=300)
     private String title;
     @Basic(optional = false)
+    @Column(length=5000)
     private String text;
 
     @ManyToOne(optional = false)

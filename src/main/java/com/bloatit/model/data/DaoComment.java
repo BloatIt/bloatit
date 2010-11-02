@@ -17,11 +17,13 @@ import org.hibernate.annotations.CascadeType;
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
+import javax.persistence.Column;
 
 @Entity
 public class DaoComment extends DaoKudosable {
 
     @Basic(optional = false)
+    @Column(length=5000)
     private String text;
     @OneToMany(mappedBy = "father")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -53,7 +55,7 @@ public class DaoComment extends DaoKudosable {
 
     // TODO use a filtered collection
     public PageIterable<DaoComment> getChildrenFromQuery() {
-        return new QueryCollection<DaoComment>("from DaoComment as c where c.comment = :this").setEntity("this", this);
+        return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this").setEntity("this", this);
     }
 
     public Set<DaoComment> getChildren() {

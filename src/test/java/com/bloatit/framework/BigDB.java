@@ -13,10 +13,12 @@ import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoTransaction;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class BigDB {
 
-    private static final int nbUsers = 1000;
+    private static final int nbUsers = 100;
 
     public BigDB() {
 
@@ -53,22 +55,24 @@ public class BigDB {
         }
         for (int i = 0; i < nbUsers; i++) {
             final DaoDemand demand1 = DaoDemand.createAndPersist(DaoMember.getByLogin("member " + i), new DaoDescription(DaoMember.getByLogin("member " + i),
-                                                                                                                         new Locale("fr"),
-                                                                                                                         "titre " + i,
-                                                                                                                         "Description " + i));
+                    new Locale("fr"),
+                    fortune(140),
+                    fortune() + fortune() + fortune()));
             final DaoDemand demand2 = DaoDemand.createAndPersist(DaoMember.getByLogin("member " + i), new DaoDescription(DaoMember.getByLogin("member " + i),
-                                                                                                                         new Locale("fr"),
-                                                                                                                         "titre " + (i * 2),
-                                                                                                                         "Description " + (i * 2)));
+                    new Locale("fr"),
+                    fortune(140),
+                    fortune() + fortune() + fortune() + fortune()));
 
-            final DaoComment comment1 = DaoComment.createAndPersist(DaoMember.getByLogin("member " + i),
-                                                                    Long.toHexString(Double.doubleToLongBits(Math.random())));
-            final DaoComment comment2 = DaoComment.createAndPersist(DaoMember.getByLogin("member " + i),
-                                                                    Long.toHexString(Double.doubleToLongBits(Math.random())));
-            createComment(comment1);
-            createComment(comment2);
-            demand1.addComment(comment1);
-            demand2.addComment(comment2);
+            int commentCount = (int) (Math.random() * 5);
+
+            for (int j = 0; j < commentCount; j++) {
+
+                final DaoComment comment = DaoComment.createAndPersist(DaoMember.getByLogin("member " + i), fortune());
+                createComment(comment);
+                demand1.addComment(comment);
+            }
+
+
 
             // TODO add Transaction
             // TODO add Translation
@@ -90,9 +94,9 @@ public class BigDB {
         for (int i = 0; i < nbComment; i++) {
             final int memberNum = (int) (Math.random() * nbUsers);
             final DaoComment other = DaoComment.createAndPersist(DaoMember.getByLogin("member " + memberNum),
-                                                                 Long.toHexString(Double.doubleToLongBits(Math.random())));
+                    fortune());
             comment.addChildComment(other);
-            if ((int) (Math.random() * 15) % 15  == 0) {
+            if ((int) (Math.random() * 15) % 15 == 0) {
                 createComment(other);
             }
         }
@@ -100,5 +104,37 @@ public class BigDB {
 
     public static void main(String[] args) {
         new BigDB();
+    }
+
+    public static String fortune() {
+        String text = "";
+        try {
+            String line;
+            Process p = Runtime.getRuntime().exec("fortune");
+            BufferedReader input =
+                    new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((line = input.readLine()) != null) {
+                text += line;
+            }
+            input.close();
+        } catch (Exception err) {
+            err.printStackTrace();
+        }
+
+        if (text.isEmpty()) {
+            System.err.println("please install fortune for more fun (sudo apt-get install fortune-mod)");
+            text = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        }
+
+        return text;
+    }
+
+    private String fortune(int i) {
+        String text = fortune();
+        if (text.length() > i) {
+            text = text.substring(0, i);
+        }
+
+        return text;
     }
 }
