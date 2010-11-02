@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -154,6 +155,14 @@ public class DaoDemand extends DaoKudosable {
 
     public BigDecimal getContribution() {
         return contribution;
+    }
+
+    public BigDecimal getContributionMin() {
+        return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this").setEntity("this", this).uniqueResult();
+    }
+
+    public BigDecimal getContributionMax() {
+        return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this").setEntity("this", this).uniqueResult();
     }
 
     // ======================================================================

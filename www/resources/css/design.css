@@ -190,7 +190,7 @@ li {
     display: table-cell;
     vertical-align: top;
     margin: 1em;
-    padding: 2em;
+    padding: 1em;
     font-family: "Verdena";
 
     width:100%;
@@ -351,4 +351,23 @@ li {
 .comments_title{
     font-size: 0.9em;
     font-weight: bold;
+}
+
+.rightColumn {
+    display:table-cell;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -o-border-radius:5px;
+    -ms-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    padding: 0.5em;
+    
+    border: 1px solid rgb(230,230,230);
+}
+
+.leftColumn {
+    display:table-cell;
+    width: 100%;
+    padding-right: 0.5em;
 }
