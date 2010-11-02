@@ -19,6 +19,7 @@
 package com.bloatit.web.pages;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.framework.Demand;
@@ -26,38 +27,38 @@ import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.PageNotFoundException;
 
 public class DemandPage extends Page {
 
     private final Demand demand;
 
     public DemandPage(Session session, Map<String, String> parameters) {
-        this(session, parameters, null);
+        super(session, parameters);
+
+        
+        if (parameters.containsKey("id")) {
+            Integer id = null;
+            try {
+                id = new Integer(parameters.get("id"));
+                this.demand = DemandManager.GetDemandById(id);
+            } catch (final NumberFormatException e) {
+                throw new PageNotFoundException("Demand id not found " + id, null);
+            }
+        } else {
+            demand = null;
+        }
+
     }
 
     public DemandPage(Session session, Map<String, String> parameters, Demand demand) {
         super(session, parameters);
-        Demand d = null;
-
         if (demand == null) {
-            if (parameters.containsKey("id")) {
-                Integer id = null;
-                try {
-                    id = new Integer(parameters.get("id"));
-                } catch (final NumberFormatException e) {
-
-                }
-                if (id != null) {
-                    d = DemandManager.GetDemandById(id);
-                }
-            }
-        } else {
-            d = demand;
+            throw new PageNotFoundException("Demand shouldn't be null", null);
         }
-        this.demand = d;
+        this.demand = demand;
     }
 
     public DemandPage(Session session, Demand demand) {
@@ -66,23 +67,14 @@ public class DemandPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        if (this.demand == null) {
-            return generateEmptyBody();
-        } else {
-            return generateNotEmptyBody();
-        }
-    }
-
-    private HtmlComponent generateEmptyBody() {
-        return new HtmlText("Error : Specified demand Id incorrect");
-    }
-
-    private HtmlComponent generateNotEmptyBody() {
 
         final HtmlBlock demandBlock = new HtmlBlock("demand");
+        Locale defaultLocale = session.getLanguage().getLocale();
+        
 
         // TODO CORRECT ME
-        // HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session, this.demand.getTitle()), "demand_title");
+        // HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session,
+        // this.demand.getTitle()), "demand_title");
         // demandBlock.add(demandTitle);
 
         return demandBlock;
@@ -94,7 +86,8 @@ public class DemandPage extends Page {
         if (this.demand != null) {
             return new HtmlString(session).add("demand/id-" + this.demand.getId() + "/title-").secure(demand.getTitle()).toString();
         } else {
-            return "demand"; // TODO Faire un système pour afficher une page d'erreur
+            return "demand"; // TODO Faire un système pour afficher une page
+                             // d'erreur
         }
     }
 
