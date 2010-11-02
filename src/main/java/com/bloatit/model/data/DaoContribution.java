@@ -8,6 +8,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
@@ -23,6 +26,7 @@ public class DaoContribution extends DaoUserContent {
     private BigDecimal amount;
 
     @ManyToOne
+    @Cascade(value = { CascadeType.ALL})
     private DaoDemand demand;
 
     @Basic(optional = false)

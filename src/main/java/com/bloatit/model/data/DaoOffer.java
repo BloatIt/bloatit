@@ -14,6 +14,7 @@ import org.hibernate.annotations.CascadeType;
 public class DaoOffer extends DaoKudosable {
 
     @ManyToOne
+    @Cascade(value = { CascadeType.ALL})
     private DaoDemand demand;
     @OneToOne
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
