@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.bloatit.common.Log;
@@ -52,11 +51,10 @@ public class DaoComment extends DaoKudosable {
 
     // TODO use a filtered collection
     public PageIterable<DaoComment> getChildrenFromQuery() {
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("from com.bloatit.model.data.DaoComment as c where c.comment = :this");
+        QueryCollection<DaoComment> q = new QueryCollection<DaoComment>(
+                "from com.bloatit.model.data.DaoComment as c where c.comment = :this");
         q.setEntity("this", this);
-        return new QueryCollection<DaoComment>(q);
+        return q;
     }
 
     public Set<DaoComment> getChildren() {

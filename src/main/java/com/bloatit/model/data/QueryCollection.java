@@ -9,64 +9,74 @@ import com.bloatit.model.data.util.SessionManager;
 
 public class QueryCollection<T> implements PageIterable<T> {
 
-	private final Query query;
-	private final Query sizeQuery;
-	private int pageSize;
-	private int size;
+    private final Query query;
+    private final Query sizeQuery;
+    private int pageSize;
+    private int size;
 
-	/**
-	 * Use this constructor with query that start with "from ..."
-	 * 
-	 * @param query
-	 */
-	protected QueryCollection(Query query) {
-		this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
-	}
+    /**
+     * Use this constructor with string that start with "from ..."
+     */
+    protected QueryCollection(String queryStr) {
+        this(SessionManager.createQuery(queryStr));
+    }
 
-	protected QueryCollection(Query query, Query sizeQuery) {
-		pageSize = 0;
-		size = -1;
-		this.query = query;
-		this.sizeQuery = sizeQuery;
-	}
+    /**
+     * Use this constructor with query that start with "from ..."
+     */
+    protected QueryCollection(Query query) {
+        this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
+    }
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public Iterator<T> iterator() {
-		return query.list().iterator();
-	}
+    protected QueryCollection(Query query, Query sizeQuery) {
+        pageSize = 0;
+        size = -1;
+        this.query = query;
+        this.sizeQuery = sizeQuery;
+    }
 
-	@Override
-	public void setPage(int page) {
-		query.setFirstResult(page * pageSize);
-	}
+    public void setEntity(String name, Object entity) {
+        query.setEntity(name, entity);
+        sizeQuery.setEntity(name, entity);
+    }
 
-	@Override
-	public void setPageSize(int pageSize) {
-		query.setFetchSize(pageSize);
-		this.pageSize = pageSize;
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public Iterator<T> iterator() {
+        return query.list().iterator();
+    }
 
-	@Override
-	public int getPageSize() {
-		return pageSize;
-	}
+    @Override
+    public void setPage(int page) {
+        query.setFirstResult(page * pageSize);
+    }
 
-	@Override
-	public int size() {
-		if (size == -1) {
-			return size = ((Long) sizeQuery.uniqueResult()).intValue();
-		}
-		return size;
-	}
+    @Override
+    public void setPageSize(int pageSize) {
+        query.setFetchSize(pageSize);
+        this.pageSize = pageSize;
+    }
 
-	@Override
-	public int pageNumber() {
-		if (pageSize != 0) {
-			return size() / pageSize;
-		} else {
-			return 1;
-		}
-	}
+    @Override
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    @Override
+    public int size() {
+        if (size == -1) {
+            return size = ((Long) sizeQuery.uniqueResult()).intValue();
+        }
+        return size;
+    }
+
+    @Override
+    public int pageNumber() {
+        if (pageSize != 0) {
+            return size() / pageSize;
+        } else {
+            return 1;
+        }
+    }
 
 }

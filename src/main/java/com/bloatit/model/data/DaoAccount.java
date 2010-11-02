@@ -12,6 +12,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import org.hibernate.Query;
+
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
@@ -62,9 +64,9 @@ public abstract class DaoAccount {
     }
 
     public PageIterable<DaoTransaction> getTransactions() {
-        return new QueryCollection<DaoTransaction>(SessionManager.getSessionFactory()
-                                                                 .getCurrentSession()
-                                                                 .createQuery("from DaoTransaction as t where t.from = this or t.to = this"));
+        QueryCollection<DaoTransaction> collection = new QueryCollection<DaoTransaction>("from DaoTransaction as t where t.from = :this or t.to = :this");
+        collection.setEntity("this", this);
+        return collection;
     }
 
     protected void resetModificationDate() {
