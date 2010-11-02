@@ -34,6 +34,7 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlKudoBox;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlProgressBar;
@@ -128,11 +129,8 @@ public class DemandPage extends Page {
         
         
         // Description
-        HtmlBlock descriptionBlock = new HtmlBlock("description_block");
-        HtmlText description = new HtmlText(translatedDescription.getText());
-        descriptionBlock.add(description);
-        left.add(descriptionBlock);
-
+        generateDescription(left, translatedDescription);
+        
 
         // Comments
 
@@ -235,5 +233,20 @@ public class DemandPage extends Page {
         HtmlListItem creationDate = new HtmlListItem("Creation: "+demand.getCreationDate().toString());
         timelineList.addItem(creationDate);
         contributorsBlock.add(timelineList);
+    }
+
+    private void generateDescription(HtmlBlock left,Translation translatedDescription) {
+        HtmlBlock descriptionBlock = new HtmlBlock("description_block");
+
+
+        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
+        HtmlKudoBox kudoBox = new HtmlKudoBox(demand);
+        descriptionKudoBlock.add(kudoBox);
+
+        HtmlText description = new HtmlText(translatedDescription.getText());
+        descriptionBlock.add(descriptionKudoBlock);
+        descriptionBlock.add(description);
+        left.add(descriptionBlock);
+
     }
 }

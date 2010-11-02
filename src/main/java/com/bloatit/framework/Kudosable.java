@@ -81,4 +81,8 @@ public abstract class Kudosable extends UserContent {
             break;
         }
     }
+
+    public int getPopularity() {
+        return getDaoKudosable().getPopularity();
+    }
 }
