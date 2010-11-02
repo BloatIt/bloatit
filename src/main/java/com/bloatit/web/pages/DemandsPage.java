@@ -19,14 +19,22 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Demand;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.htmlrenderer.HtmlResult;
+import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.TranslationManipulator;
@@ -43,42 +51,48 @@ public class DemandsPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        DemandManager.GetAllDemands();
-        new TranslationManipulator(session.getPreferredLangs());
+        
+        final HtmlTitle pageTitle = new HtmlTitle(session.tr("Demands list"), "");
 
-        final HtmlBlock demandTableAll = new HtmlBlock("demand_table");
+        final PageIterable<Demand> demandList = DemandManager.GetAllDemands();
 
-        demandTableAll.add(new HtmlText("<a href=\"demands/show-all\">Show me demands not in my language too (Doesn't work yet)</a>"));
-        if (this.parameters.containsKey("show") && this.parameters.get("show").equals("all")) {}
+        HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
-        final HtmlBlock demandTable = new HtmlBlock("demand_table");
+            @Override
+            public void generate(HtmlResult htmlResult, Demand demand) {
+                final DemandPage demandPage = new DemandPage(session, demand);
+                final HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(session, demand.getTitle(), demandPage));
+                item.generate(htmlResult);
+            }
+        };
 
-        // TODO correct me
-        // for (Demand demand : demands){
-        // Translation title = tm.tr(demand.getTitle());
-        // Translation decription = tm.tr(demand.getDescription());
-        //
-        // if(showAll || title != null){
-        // DemandPage view = new DemandPage(session, demand);
-        // HtmlBlock demandEntry = new HtmlBlock("demand_entry");
-        //
-        // demandEntry.add(new HtmlText("demand_title", HtmlTools.generateLink(this.session, title.getTitle() ,view)));
-        // demandEntry.add(new HtmlText("demand_description", decription.getText()));
-        // demandEntry.add(new HtmlText("demand_author", demand.getAuthor().getLogin()));
-        // demandEntry.add(new HtmlText("demand_list_langs", "Langs :"));
-        //
-        // for(Language l : demand.getDescription().getAvailableLangs() ){
-        // demandEntry.add(new HtmlText("demand_lang", l.getCode()));
-        // }
-        // demandTable.add(demandEntry);
-        // }
-        // }
 
-        final HtmlContainer page = new HtmlContainer();
-        page.add(demandTableAll);
-        page.add(demandTable);
+        HtmlPagedList<Demand> pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, this, session);
 
-        return page;
+        int pageSize = 10;
+        int currentPage = 0;
+
+
+        if (parameters.containsKey("page_size")) {
+            try {
+                pageSize = Integer.parseInt(parameters.get("page_size"));
+            } catch (NumberFormatException e) {
+            }
+        }
+
+        if (parameters.containsKey("page")) {
+            try {
+                currentPage = Integer.parseInt(parameters.get("page"))-1;
+            } catch (NumberFormatException e) {
+            }
+        }
+
+        pagedMemberList.setPageSize(pageSize);
+        pagedMemberList.setCurrentPage(currentPage);
+
+        pageTitle.add(pagedMemberList);
+
+        return pageTitle;
 
     }
 
