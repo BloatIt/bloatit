@@ -19,9 +19,11 @@
 package com.bloatit.web.server;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
-import com.bloatit.common.FatalErrorException;
+import com.bloatit.web.pages.PageNotFound;
+import com.bloatit.web.utils.PageNotFoundException;
 
 public class RequestFactory {
 
@@ -34,8 +36,20 @@ public class RequestFactory {
 
             request = constructor.newInstance(session, parameters);
 
-        } catch (final Exception ex) {
-            throw new FatalErrorException("Request factory failed to build " + requestClass.getName(), ex);
+        } catch (final PageNotFoundException ex) {
+            return new PageNotFound(session);
+        } catch (SecurityException e) {
+            return new PageNotFound(session);
+        } catch (NoSuchMethodException e) {
+            return new PageNotFound(session);
+        } catch (IllegalArgumentException e) {
+            return new PageNotFound(session);
+        } catch (InstantiationException e) {
+            return new PageNotFound(session);
+        } catch (IllegalAccessException e) {
+            return new PageNotFound(session);
+        } catch (InvocationTargetException e) {
+            return new PageNotFound(session);
         }
 
         return request;
