@@ -25,6 +25,7 @@ public class HtmlBlock extends HtmlContainer {
 
     private final String cssClass;
     private String id;
+    private String text = null;
 
     public HtmlBlock() {
         this.cssClass = null;
@@ -53,6 +54,9 @@ public class HtmlBlock extends HtmlContainer {
         
         htmlResult.indent();
 
+        if(text != null) {
+            htmlResult.write(text);
+        }
         super.generate(htmlResult);
 
         htmlResult.unindent();
@@ -61,5 +65,9 @@ public class HtmlBlock extends HtmlContainer {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    void setText(String text) {
+        this.text = text;
     }
 }

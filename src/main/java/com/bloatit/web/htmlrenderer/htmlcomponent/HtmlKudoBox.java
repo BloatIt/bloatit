@@ -19,28 +19,41 @@
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.framework.Kudosable;
+import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.server.Session;
 
 public class HtmlKudoBox extends HtmlComponent {
 
     private final Kudosable kudosable;
+    private final Session session;
 
-    public HtmlKudoBox(Kudosable kudosable) {
+    public HtmlKudoBox(Kudosable kudosable, Session session) {
         this.kudosable = kudosable;
+        this.session = session;
     }
+
+    
     
     @Override
     public void generate(HtmlResult htmlResult) {
         HtmlBlock kudoBox = new HtmlBlock("kudo_box");
 
+
         HtmlBlock kudoBoxUp = new HtmlBlock("kudo_box_up");
         
         HtmlBlock kudoBoxDown = new HtmlBlock("kudo_box_down");
 
-        kudoBox.add(kudoBoxUp);
+        kudoBoxUp.setText("kudo up");
+        kudoBoxDown.setText("kudo down");
+
+        String kudoUpLink = HtmlTools.getActionLink(session,  new LogoutAction(session));
+        String kudoDownLink = HtmlTools.getActionLink(session,  new LogoutAction(session));
+
+        kudoBox.add(new HtmlLinkComponent(kudoUpLink, kudoBoxUp));
         kudoBox.add(new HtmlText("kudo_box_score", HtmlTools.compressKarma(kudosable.getPopularity())));
-        kudoBox.add(kudoBoxDown);
+        kudoBox.add(new HtmlLinkComponent(kudoDownLink, kudoBoxDown));
 
         
         kudoBox.generate(htmlResult);

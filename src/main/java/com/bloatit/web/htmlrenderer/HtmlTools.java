@@ -19,7 +19,6 @@
 package com.bloatit.web.htmlrenderer;
 
 import com.bloatit.web.server.Action;
-import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
 import java.util.Map.Entry;
@@ -38,7 +37,7 @@ public class HtmlTools {
     }
 
     public static String generateActionLink(Session session, String text, Action linkAction) {
-        return "<a href=\"/" + session.getLanguage().getCode() + "/action/" + linkAction.getCode() + "\">" + text + "</a>";
+        return "<a href=\"" + getActionLink(session, linkAction) + "\">" + text + "</a>";
     }
 
     public static String generateUrl(Session session, Request urlPage) {
@@ -118,5 +117,9 @@ public class HtmlTools {
             }
         }
         return result;
+    }
+
+    public static String getActionLink(Session session, Action linkAction) {
+        return "/" + session.getLanguage().getCode() + "/action/" + linkAction.getCode();
     }
 }

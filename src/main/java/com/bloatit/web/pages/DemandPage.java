@@ -240,7 +240,7 @@ public class DemandPage extends Page {
 
 
         HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        HtmlKudoBox kudoBox = new HtmlKudoBox(demand);
+        HtmlKudoBox kudoBox = new HtmlKudoBox(demand, session);
         descriptionKudoBlock.add(kudoBox);
 
         HtmlText description = new HtmlText(translatedDescription.getText());

@@ -403,6 +403,15 @@ li {
     border-right: 14px solid rgba(0,0,0,0);
 }
 
+.kudo_box_down:hover {
+    border-top: 14px solid rgb(188,32,32);
+    
+}
+
+.kudo_box_up:hover {
+    border-bottom: 14px solid rgb(22, 160 ,22);
+}
+
 .kudo_box_down {
     font-size: 0px; line-height: 0%; width: 0px;
     border-top: 14px solid rgb(32,141,188);
