@@ -12,7 +12,7 @@ public class QueryCollection<T> implements PageIterable<T> {
 	private final Query query;
 	private final Query sizeQuery;
 	private int pageSize;
-	private long size;
+	private int size;
 
 	/**
 	 * Use this constructor with query that start with "from ..."
@@ -53,15 +53,15 @@ public class QueryCollection<T> implements PageIterable<T> {
 	}
 
 	@Override
-	public long size() {
+	public int size() {
 		if (size == -1) {
-			return size = (Long) sizeQuery.uniqueResult();
+			return size = ((Long) sizeQuery.uniqueResult()).intValue();
 		}
 		return size;
 	}
 
 	@Override
-	public long pageNumber() {
+	public int pageNumber() {
 		if (pageSize != 0) {
 			return size() / pageSize;
 		} else {

@@ -13,9 +13,9 @@ public interface PageIterable<T> extends Iterable<T> {
 
     public int getPageSize();
 
-    public long size();
+    public int size();
 
-    public long pageNumber();
+    public int pageNumber();
 
 	void setPage(int page);
 }
