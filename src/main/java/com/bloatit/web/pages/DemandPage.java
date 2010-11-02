@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.Comment;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -78,12 +79,12 @@ public class DemandPage extends Page {
     protected HtmlComponent generateContent() {
 
         Locale defaultLocale = session.getLanguage().getLocale();
-        Translation translation = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         final HtmlContainer page = new HtmlContainer();
         
         final HtmlBlock left = new HtmlBlock("leftColumn");
         final HtmlBlock right = new HtmlBlock("rightColumn");
-        page.add(new HtmlTitle(translation.getTitle(), "pageTitle"));
+        page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
         page.add(left);
         page.add(right);
         
@@ -126,19 +127,39 @@ public class DemandPage extends Page {
         left.add(progressBlock);
         
         
-        // description
-        
-        // com
+        // Description
+        HtmlBlock descriptionBlock = new HtmlBlock("description_block");
+        HtmlText description = new HtmlText(translatedDescription.getText());
+        descriptionBlock.add(description);
+        left.add(descriptionBlock);
+
+
+        // Comments
+
+        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
+
+        commentsBlock.add(new HtmlTitle(session.tr("Comments"),"comments_title"));
+
+        for(Comment comment: demand.getComments()) {
+            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
+            commentBlock.add(new HtmlText(comment.getText()));
+
+            
+
+            for(Comment childComment : comment.getChildren()) {
+                HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
+                childCommentBlock.add(new HtmlText(childComment.getText()));
+            }
+
+            commentsBlock.add(commentBlock);
+
+        }
+
+        left.add(commentsBlock);
         
         // droite process
         
-        
-        
-
-        // TODO CORRECT ME
-        // HtmlTitle demandTitle = new HtmlTitle(HtmlString.Translate(session,
-        // this.demand.getTitle()), "demand_title");
-        // demandBlock.add(demandTitle);
+       
 
         return page;
 

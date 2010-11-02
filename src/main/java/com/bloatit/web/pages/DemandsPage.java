@@ -27,17 +27,13 @@ import java.util.Map;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.TranslationManipulator;
 
 public class DemandsPage extends Page {
 
