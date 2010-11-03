@@ -31,8 +31,8 @@ public class DaoComment extends DaoKudosable {
 
     @OneToMany(mappedBy = "father")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @OrderBy(value = "creationDate")
-//    @IndexedEmbedded
+    @OrderBy("creationDate desc")
+    @IndexedEmbedded(depth = 1)
     private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
     public static DaoComment createAndPersist(DaoMember member, String text) {

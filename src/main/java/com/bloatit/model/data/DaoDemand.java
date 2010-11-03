@@ -41,17 +41,19 @@ public class DaoDemand extends DaoKudosable {
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
-    @OrderBy(clause = "popularity")
     private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
     // TODO make sure it is read only !
     @OneToMany(mappedBy = "demand")
+    @OrderBy(clause = "creationDate desc")
     @Cascade(value = { CascadeType.ALL })
     private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OrderBy(clause = "creationDate desc")
     @IndexedEmbedded
     private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 

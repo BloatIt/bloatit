@@ -6,8 +6,6 @@ import javax.persistence.OneToOne;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 public class DaoSpecification extends DaoUserContent {

@@ -20,14 +20,24 @@ public class DBRequests {
         return new QueryCollection<T>("from " + meta.getEntityName());
     }
 
-    public static PageIterable<DaoDemand> search(String searchStr) {
-        String[] fields = new String[] { "description.translation.title", "offers.description.translation.title" };
+    public static PageIterable<DaoDemand> searchDemands(String searchStr) {
+        return search(DaoDemand.class, new String[] { "description.translations.title", "offers.description.translations.title" }, searchStr);
+    }
+
+    /**
+     * Create a search on the db using Hibernate Search and Lucene
+     * 
+     * @param <T> is a persistent class (something like Dao...)
+     * @param persistent is the class object associated with T.
+     * @param fields is a list of field on which we are doing the search. These field are relative to the persistent class.
+     * @param searchStr is the string we are looking for.
+     * @return a PageIterable with the search results.
+     */
+    private static <T> PageIterable<T> search(Class<T> persistent, String[] fields, String searchStr) {
         MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
         try {
             org.apache.lucene.search.Query query = parser.parse(searchStr);
-            // wrap Lucene query in a org.hibernate.Query
-            return new SearchCollection<DaoDemand>(SessionManager.getCurrentFullTextSession().createFullTextQuery(query,
-                    DaoDemand.class));
+            return new SearchCollection<T>(SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent));
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -39,6 +49,5 @@ public class DBRequests {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return ((Long) SessionManager.getSessionFactory().getCurrentSession().createQuery("select count(*) from " + meta.getEntityName()).uniqueResult()).intValue();
     }
-
 
 }
