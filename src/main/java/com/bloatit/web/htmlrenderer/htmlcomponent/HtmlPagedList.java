@@ -84,8 +84,9 @@ public class HtmlPagedList<T> extends HtmlComponent {
 
 
         htmlResult.unindent();
-
-        generateLinksBar();
+        if(pageCount > 1) {
+            generateLinksBar();
+        }
 
         htmlResult.write("</ul>");
 

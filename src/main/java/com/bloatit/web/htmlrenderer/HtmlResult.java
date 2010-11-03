@@ -108,7 +108,7 @@ public class HtmlResult extends IndentedText {
 
     private void writeRedirect(Request redirectPage) {
         result.append("Location: ");
-        result.append(HtmlTools.generateUrl(this.session, redirectPage));
+        result.append(redirectPage.getUrl());
         result.append("\r\n");
     }
 

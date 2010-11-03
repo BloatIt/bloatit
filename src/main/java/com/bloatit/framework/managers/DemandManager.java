@@ -38,4 +38,8 @@ public class DemandManager {
         return DBRequests.count(DaoDemand.class);
     }
 
+    public static PageIterable<Demand> search(String searchString) {
+        return new DemandList(DBRequests.searchDemands(searchString));
+    }
+
 }

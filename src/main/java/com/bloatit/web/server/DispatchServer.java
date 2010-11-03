@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.server;
 
-import com.bloatit.web.actions.GlobalSearchAction;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.pages.DemandPage;
 import com.bloatit.web.pages.DemandsPage;
+import com.bloatit.web.pages.GlobalSearchPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MemberPage;
@@ -53,6 +53,7 @@ public class DispatchServer {
                 put("specials", SpecialsPage.class);
                 put("members_list", MembersListPage.class);
                 put("member", MemberPage.class);
+                put("global_search", GlobalSearchPage.class);
             }
         };
 
@@ -61,8 +62,7 @@ public class DispatchServer {
             {
                 put("login", LoginAction.class);
                 put("logout", LogoutAction.class);
-                put("global_search", GlobalSearchAction.class);
-
+                
 
             }
         };
@@ -137,8 +137,7 @@ public class DispatchServer {
         if (query.containsKey("page")) {
             final QueryString queryString = parseQueryString(query.get("page"));
             // Merge Post & Get
-            final Map<String, String> parameters = MergePostGet(queryString.parameters, post);
-
+            final Map<String, String> parameters = mergePostGet(queryString.parameters, post, query);
             final Request currentRequest = findRequest(queryString.page, parameters);
             return currentRequest;
         }
@@ -167,8 +166,9 @@ public class DispatchServer {
      * @param post the Map containing the post parameters
      * @return the new map
      */
-    private Map<String, String> MergePostGet(Map<String, String> query, Map<String, String> post) {
+    private Map<String, String> mergePostGet(Map<String, String> query, Map<String, String> post, Map<String, String> get) {
         final HashMap<String, String> mergedList = new HashMap<String, String>();
+        mergedList.putAll(get);
         mergedList.putAll(query);
         mergedList.putAll(post);
 

@@ -21,11 +21,9 @@ package com.bloatit.web.pages;
 
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.web.actions.GlobalSearchAction;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
@@ -33,7 +31,6 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 
@@ -87,10 +84,11 @@ public class IndexPage extends Page {
     }
 
     private void generateSearchBlock(HtmlBlock searchBlock) {
-        GlobalSearchAction globalSearchAction = new GlobalSearchAction(session);
-        HtmlForm searchForm = new HtmlForm(globalSearchAction);
+        GlobalSearchPage globalSearchPage = new GlobalSearchPage(session);
+        HtmlForm searchForm = new HtmlForm(globalSearchPage);
+        searchForm.setMethod(HtmlForm.Method.GET);
         HtmlTextField searchField = new HtmlTextField();
-        searchField.setName(globalSearchAction.getSearchCode());
+        searchField.setName(globalSearchPage.getSearchCode());
 
         HtmlButton searchButton = new HtmlButton(session.tr("Search"));
         searchForm.add(searchField);

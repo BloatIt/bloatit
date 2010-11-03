@@ -20,18 +20,41 @@
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
-import com.bloatit.web.server.Action;
+import com.bloatit.web.server.Request;
 
 public class HtmlForm extends HtmlContainer {
-    private final Action action;
+    private final Request action;
+    private Method method = Method.POST;
 
-    public HtmlForm(Action action) {
+    public enum Method {
+        GET,
+        POST
+    }
+
+    public HtmlForm(Request action) {
         this.action = action;
     }
 
+    public Method getMethod() {
+        return method;
+    }
+
+    public void setMethod(Method method) {
+        this.method = method;
+    }
+
+    
+
     @Override
     public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<form action=\"" + this.action.getUrl() + "\" method=\"POST\">");
+        String methodString = "";
+        if(method == Method.GET) {
+            methodString ="GET";
+        }else {
+            methodString ="POST";
+        }
+
+        htmlResult.write("<form action=\"" + this.action.getUrl() + "\" method=\""+methodString+"\">");
         htmlResult.indent();
 
         super.generate(htmlResult);

@@ -21,27 +21,11 @@ package com.bloatit.web.htmlrenderer;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
-import java.util.Map.Entry;
 
 public class HtmlTools {
 
-    public static String generateLink(Session session, String displayedText, Request linkRequest) {
-        String link = "<a href=\"/" + session.getLanguage().getCode() + "/" + linkRequest.getCode();
-
-        for(Entry<String, String> entry : linkRequest.getOutputParameters().entrySet()) {
-            link += "/"+entry.getKey()+"-"+entry.getValue();
-        }
-
-        link += "\">" + displayedText + "</a>";
-        return  link;
-    }
-
-    public static String generateActionLink(Session session, String text, Action linkAction) {
-        return "<a href=\"" + getActionLink(session, linkAction) + "\">" + text + "</a>";
-    }
-
-    public static String generateUrl(Session session, Request urlPage) {
-        return "/" + session.getLanguage().getCode() + "/" + urlPage.getCode();
+    public static String generateLink(Session session, String text, Request linkRequest) {
+        return "<a href=\"" + linkRequest.getUrl() + "\">" + text + "</a>";
     }
 
     public static String generateLogo() {

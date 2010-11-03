@@ -34,6 +34,7 @@ import com.bloatit.web.pages.MembersListPage;
 import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
+import java.util.Map.Entry;
 
 public abstract class Page extends Request {
 
@@ -108,7 +109,7 @@ public abstract class Page extends Request {
             final String karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
             final String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma
                     + "</span>";
-            final String logoutLink = HtmlTools.generateActionLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));
+            final String logoutLink = HtmlTools.generateLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));
             this.htmlResult.write("<span class=\"top_bar_component\">" + memberLink + "</span><span class=\"top_bar_component\">" + logoutLink + "</span>");
 
         } else {
@@ -199,4 +200,17 @@ public abstract class Page extends Request {
         this.htmlResult.unindent();
         this.htmlResult.write("</div>");
     }
+
+    @Override
+    public String getUrl() {
+         String link = "/" + session.getLanguage().getCode() + "/" + getCode();
+
+        for(Entry<String, String> entry : getOutputParameters().entrySet()) {
+            link += "/"+entry.getKey()+"-"+entry.getValue();
+        }
+
+        return link;
+    }
+
+
 }
