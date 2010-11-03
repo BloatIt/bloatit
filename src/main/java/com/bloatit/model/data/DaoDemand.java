@@ -53,7 +53,7 @@ public class DaoDemand extends DaoKudosable {
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @OrderBy(clause = "creationDate desc")
+    //@OrderBy(clause = "creationDate desc") // TODO find how to make this works
     @IndexedEmbedded
     private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 

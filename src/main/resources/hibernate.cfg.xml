@@ -23,7 +23,7 @@
 
 		 
 		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
-		<property name="hibernate.search.default.indexBase">/var/lucene/indexes</property>
+		<property name="hibernate.search.default.indexBase">/var/local/lucene/indexes</property>
 	
 		<mapping class="com.bloatit.model.data.DaoAccount" />
 		<mapping class="com.bloatit.model.data.DaoInternalAccount" />
