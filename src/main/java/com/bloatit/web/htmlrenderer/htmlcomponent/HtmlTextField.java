@@ -23,8 +23,18 @@ import com.bloatit.web.htmlrenderer.HtmlResult;
 
 public class HtmlTextField extends HtmlComponent {
 
+    private String defaultValue = null;
+
     @Override
     public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<p><input name=\"" + this.name + "\" type=\"text\" /></p>");
+        if(defaultValue == null) {
+            htmlResult.write("<p><input name=\"" + this.name + "\" type=\"text\" /></p>");
+        } else {
+            htmlResult.write("<p><input name=\"" + this.name + "\" type=\"text\" value=\""+defaultValue+"\" /></p>");
+        }
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 }

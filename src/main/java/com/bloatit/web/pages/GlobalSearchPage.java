@@ -26,10 +26,14 @@ import java.util.Map;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.HtmlTools;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
@@ -49,6 +53,10 @@ public class GlobalSearchPage extends Page {
 
         final HtmlTitle pageTitle = new HtmlTitle(session.tr("Search result"), "");
 
+        HtmlBlock searchBlock = new HtmlBlock("global_search_block");
+        generateSearchBlock(searchBlock);
+
+        pageTitle.add(searchBlock);
 
         if (parameters.containsKey(getSearchCode())) {
 
@@ -66,6 +74,7 @@ public class GlobalSearchPage extends Page {
                     item.generate(htmlResult);
                 }
             };
+
 
 
             HtmlPagedList<Demand> pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, this, session);
@@ -116,5 +125,23 @@ public class GlobalSearchPage extends Page {
 
     String getSearchCode() {
         return "search";
+    }
+
+    private void generateSearchBlock(HtmlBlock searchBlock) {
+        GlobalSearchPage globalSearchPage = new GlobalSearchPage(session);
+        HtmlForm searchForm = new HtmlForm(globalSearchPage);
+        searchForm.setMethod(HtmlForm.Method.GET);
+        HtmlTextField searchField = new HtmlTextField();
+        searchField.setName(globalSearchPage.getSearchCode());
+
+
+        if (parameters.containsKey(getSearchCode())) {
+            searchField.setDefaultValue(parameters.get(getSearchCode()));
+        }
+
+        HtmlButton searchButton = new HtmlButton(session.tr("Search"));
+        searchForm.add(searchField);
+        searchForm.add(searchButton);
+        searchBlock.add(searchForm);
     }
 }
