@@ -2,8 +2,11 @@ package com.bloatit.model.data.util;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
 
 public class SessionManager {
 	// SHOULD BE FINAL see reCreateSessionFactory
@@ -12,7 +15,8 @@ public class SessionManager {
     private static SessionFactory buildSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            return new AnnotationConfiguration().configure().buildSessionFactory();
+            SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+            return sessionFactory;
         } catch (final Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);
@@ -31,6 +35,9 @@ public class SessionManager {
      */
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+    public static FullTextSession getCurrentFullTextSession(){
+        return Search.getFullTextSession(sessionFactory.getCurrentSession());
     }
 
     public static void beginWorkUnit() {

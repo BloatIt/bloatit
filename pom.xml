@@ -45,6 +45,20 @@
 			<id>gettext-commons-site</id>
 			<url>http://gettext-commons.googlecode.com/svn/maven-repository/</url>
 		</repository>
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Maven Repository Group</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -77,6 +91,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search</artifactId>
+			<version>3.1.0.GA</version>
+		</dependency>
+		
+		<!-- Unneeded ?? -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.4.0.GA</version>
 		</dependency>
@@ -85,7 +106,6 @@
 			<artifactId>hibernate-tools</artifactId>
 			<version>3.2.3.GA</version>
 		</dependency>
-
 
 		<!-- we need sl4j for logging with hibernate -->
 		<dependency>
@@ -109,6 +129,21 @@
 			<id>gettext-commons-site</id>
 			<url>http://gettext-commons.googlecode.com/svn/maven-repository</url>
 		</pluginRepository>
+		<pluginRepository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Maven Repository Group</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</pluginRepository>
+
 	</pluginRepositories>
 
 </project>

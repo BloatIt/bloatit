@@ -2,46 +2,50 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
                                          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- <session-factory>
-  <!--  
-		<property   name="connection.driver_class">org.hsqldb.jdbcDriver</property>
-		<property   name="connection.url">jdbc:hsqldb:hsql://localhost</property>
-		<property   name="connection.username">bloatit</property>
-		<property   name="connection.password"></property>
-		-->
-  <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-  <property name="hibernate.connection.url">jdbc:postgresql://localhost/bloatit</property>
-  <property name="hibernate.connection.username">bloatit</property>
-  <property name="hibernate.connection.password">passe</property>
-  <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-  <!-- JDBC connection pool (use the built-in) -->
-  <property name="connection.pool_size">1</property>
-  <!-- Enable Hibernate's automatic session context management -->
-  <property name="current_session_context_class">thread</property>
-  <!-- Echo all executed SQL to stdout -->
-  <property name="show_sql">true</property>
-  <!-- Drop and re-create the database schema on startup -->
-  <property name="hbm2ddl.auto">create-drop</property>
-  <property name="hibernate.jdbc.batch_size">25</property>
-  
-  <mapping class="com.bloatit.model.data.DaoAccount"/>
-  <mapping class="com.bloatit.model.data.DaoInternalAccount"/>
-  <mapping class="com.bloatit.model.data.DaoExternalAccount"/>
-  <mapping class="com.bloatit.model.data.DaoContribution"/>
-  <mapping class="com.bloatit.model.data.DaoTranslation"/>
-  <mapping class="com.bloatit.model.data.DaoTransaction"/>
-  <mapping class="com.bloatit.model.data.DaoDescription"/>
-  <mapping class="com.bloatit.model.data.DaoSpecification"/>
-  <mapping class="com.bloatit.model.data.DaoKudos"/>
-  <mapping class="com.bloatit.model.data.DaoComment"/>
-  <mapping class="com.bloatit.model.data.DaoGroupMembership"/>
-  <mapping class="com.bloatit.model.data.DaoGroup"/>
-  <mapping class="com.bloatit.model.data.DaoDemand"/>
-  <mapping class="com.bloatit.model.data.DaoMember"/>
-  <mapping class="com.bloatit.model.data.DaoOffer"/>
-  <mapping class="com.bloatit.model.data.DaoJoinGroupInvitation"/>
-  <!--<mapping class="com.bloatit.model.data.DaoUserContent" />
-		<mapping class="com.bloatit.model.data.DaoKudosable" />
-		<mapping class="com.bloatit.model.data.DaoIdentifiable" />-->
- </session-factory>
+	<session-factory>
+		<!-- <property   name="connection.driver_class">org.hsqldb.jdbcDriver</property> 
+			<property   name="connection.url">jdbc:hsqldb:hsql://localhost</property> 
+			<property   name="connection.username">bloatit</property> <property   name="connection.password"></property> -->
+		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost/bloatit</property>
+		<property name="hibernate.connection.username">bloatit</property>
+		<property name="hibernate.connection.password">passe</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<!-- JDBC connection pool (use the built-in) -->
+		<property name="connection.pool_size">1</property>
+		<!-- Enable Hibernate's automatic session context management -->
+		<property name="current_session_context_class">thread</property>
+		<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">true</property>
+		<!-- Drop and re-create the database schema on startup -->
+		<property name="hbm2ddl.auto">create-drop</property>
+		<property name="hibernate.jdbc.batch_size">25</property>
+
+		 
+		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
+		<property name="hibernate.search.default.indexBase">/var/local/lucene/indexes</property>
+	
+		<mapping class="com.bloatit.model.data.DaoAccount" />
+		<mapping class="com.bloatit.model.data.DaoInternalAccount" />
+		<mapping class="com.bloatit.model.data.DaoExternalAccount" />
+		<mapping class="com.bloatit.model.data.DaoContribution" />
+		<mapping class="com.bloatit.model.data.DaoTranslation" />
+		<mapping class="com.bloatit.model.data.DaoTransaction" />
+		<mapping class="com.bloatit.model.data.DaoDescription" />
+		<mapping class="com.bloatit.model.data.DaoSpecification" />
+		<mapping class="com.bloatit.model.data.DaoKudos" />
+		<mapping class="com.bloatit.model.data.DaoComment" />
+		<mapping class="com.bloatit.model.data.DaoGroupMembership" />
+		<mapping class="com.bloatit.model.data.DaoGroup" />
+		<mapping class="com.bloatit.model.data.DaoDemand" />
+		<mapping class="com.bloatit.model.data.DaoMember" />
+		<mapping class="com.bloatit.model.data.DaoOffer" />
+		<mapping class="com.bloatit.model.data.DaoJoinGroupInvitation" />
+		<!--<mapping class="com.bloatit.model.data.DaoUserContent" /> <mapping 
+			class="com.bloatit.model.data.DaoKudosable" /> <mapping class="com.bloatit.model.data.DaoIdentifiable" 
+			/> -->
+	</session-factory>
+	
+
+
 </hibernate-configuration>

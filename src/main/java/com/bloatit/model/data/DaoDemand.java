@@ -15,12 +15,15 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
 @Entity
+@Indexed
 public class DaoDemand extends DaoKudosable {
 
     @Basic(optional = false)
@@ -28,24 +31,30 @@ public class DaoDemand extends DaoKudosable {
 
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @IndexedEmbedded
     private DaoDescription description;
 
     @OneToOne(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @IndexedEmbedded
     private DaoSpecification specification;
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @OrderBy(clause = "popularity")
+    @OrderBy(clause = "popularity desc")
+    @IndexedEmbedded
     private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
     // TODO make sure it is read only !
     @OneToMany(mappedBy = "demand")
+    @OrderBy(clause = "creationDate desc")
     @Cascade(value = { CascadeType.ALL })
     private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    //@OrderBy(clause = "creationDate desc") // TODO find how to make this works
+    @IndexedEmbedded
     private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**

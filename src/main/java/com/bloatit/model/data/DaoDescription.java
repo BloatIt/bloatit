@@ -12,6 +12,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
@@ -19,10 +20,12 @@ import com.bloatit.model.data.util.SessionManager;
 @Entity
 public class DaoDescription extends DaoIdentifiable {
 
+//    @Field(index = Index.UN_TOKENIZED)
     private Locale defaultLocale;
 
     @OneToMany(mappedBy = "description")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @IndexedEmbedded
     private Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
 
     protected DaoDescription() {
