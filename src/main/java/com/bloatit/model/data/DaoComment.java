@@ -53,6 +53,9 @@ public class DaoComment extends DaoKudosable {
 
     protected DaoComment(DaoMember member, String text) {
         super(member);
+        if(text == null){
+            throw new NullPointerException();
+        }
         this.text = text;
     }
 
@@ -70,7 +73,6 @@ public class DaoComment extends DaoKudosable {
     }
 
     public void addChildComment(DaoComment comment) {
-        // TODO make sure it is not null;
         comment.setFather(this);
         children.add(comment);
     }

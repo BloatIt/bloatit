@@ -12,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 
 @Entity
@@ -36,6 +37,9 @@ public abstract class DaoAccount {
     }
 
     public DaoAccount(DaoActor Actor) {
+        if (actor == null) {
+            throw new NullPointerException();
+        }
         actor = Actor;
         creationDate = new Date();
         lastModificationDate = new Date();
@@ -51,11 +55,17 @@ public abstract class DaoAccount {
     }
 
     protected void addToAmountValue(BigDecimal blocked) {
+        if (blocked.compareTo(new BigDecimal("0")) < 0) {
+            throw new FatalErrorException("You cannot block a negative value", null);
+        }
         lastModificationDate = new Date();
         amount = amount.add(blocked);
     }
 
     protected void substractToAmountValue(BigDecimal blocked) {
+        if (blocked.compareTo(new BigDecimal("0")) < 0) {
+            throw new FatalErrorException("You cannot unblock a negative value", null);
+        }
         lastModificationDate = new Date();
         amount = amount.subtract(blocked);
     }

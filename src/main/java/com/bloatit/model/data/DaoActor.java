@@ -49,6 +49,9 @@ public abstract class DaoActor {
 
     protected DaoActor(String login, String email) {
         super();
+        if (login == null || email == null) {
+            throw new NullPointerException();
+        }
         dateCreation = new Date();
         this.login = login;
         this.email = email;
