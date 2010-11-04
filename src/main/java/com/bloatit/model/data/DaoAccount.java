@@ -36,14 +36,14 @@ public abstract class DaoAccount {
         super();
     }
 
-    public DaoAccount(DaoActor Actor) {
+    public DaoAccount(DaoActor actor) {
         if (actor == null) {
             throw new NullPointerException();
         }
-        actor = Actor;
-        creationDate = new Date();
-        lastModificationDate = new Date();
-        amount = new BigDecimal("0");
+        this.actor = actor;
+        this.creationDate = new Date();
+        this.lastModificationDate = new Date();
+        this.amount = new BigDecimal("0");
     }
 
     public Date getLastModificationDate() {
