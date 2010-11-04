@@ -115,12 +115,22 @@ public class DaoDemand extends DaoKudosable {
         offers.remove(Offer);
     }
 
-    public void addContribution(DaoMember member, BigDecimal amount) {
+    /**
+     * Add a contribution to a demand.
+     * 
+     * @param member the author of the contribution
+     * @param amount the > 0 amount of euros on this contribution
+     * @param comment a <= 144 char comment on this contribution
+     */
+    public void addContribution(DaoMember member, BigDecimal amount, String comment) {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
+        if (comment.length() > 144) {
+            throw new FatalErrorException("Comments lenght of Contribution must be < 144.", null);
+        }
 
-        contributions.add(new DaoContribution(member, this, amount));
+        contributions.add(new DaoContribution(member, this, amount, comment));
         contribution = contribution.add(amount);
     }
 

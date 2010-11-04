@@ -97,8 +97,8 @@ public class DemandTest extends TestCase {
         DaoDemand demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
                 "Ceci est la descption de ma demande :) "));
         demand.createSpecification(tom, "This is the spécification");
-        demand.addContribution(fred, new BigDecimal("25.00"));
-        demand.addContribution(yo, new BigDecimal("18.00"));
+        demand.addContribution(fred, new BigDecimal("25.00"), "Contribution");
+        demand.addContribution(yo, new BigDecimal("18.00"),"I'm so generous");
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
@@ -154,8 +154,8 @@ public class DemandTest extends TestCase {
         final DaoOffer Offer = demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !",
                 "Ceci est la descption de mon Offre:) "), new Date());
 
-        demand.addContribution(fred, new BigDecimal("25.00"));
-        demand.addContribution(yo, new BigDecimal("18.00"));
+        demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
+        demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
         for (final DaoContribution Contribution : demand.getContributions()) {
             Contribution.accept(Offer);
@@ -175,8 +175,8 @@ public class DemandTest extends TestCase {
         demand.createSpecification(tom, "This is the spécification");
         demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Ma super offre !",
                 "Ceci est la descption de mon Offre:) "), new Date());
-        demand.addContribution(fred, new BigDecimal("25.00"));
-        demand.addContribution(yo, new BigDecimal("18.00"));
+        demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
+        demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();

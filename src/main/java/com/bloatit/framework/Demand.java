@@ -37,8 +37,8 @@ public class Demand extends Kudosable {
         dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
     }
 
-    public void addContribution(BigDecimal amount) throws Throwable {
-        dao.addContribution(getToken().getMember().getDao(), amount);
+    public void addContribution(BigDecimal amount, String comment) throws Throwable {
+        dao.addContribution(getToken().getMember().getDao(), amount, comment);
     }
 
     public Offer addOffer(Description description, Date dateExpir) {
