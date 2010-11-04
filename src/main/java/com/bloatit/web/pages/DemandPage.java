@@ -81,87 +81,15 @@ public class DemandPage extends Page {
     @Override
     protected HtmlComponent generateContent() {
 
-        Locale defaultLocale = session.getLanguage().getLocale();
-        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         final HtmlContainer page = new HtmlContainer();
 
-        final HtmlBlock left = new HtmlBlock("leftColumn");
-        final HtmlBlock right = new HtmlBlock("rightColumn");
+        Locale defaultLocale = session.getLanguage().getLocale();
+        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+
         page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
-        page.add(left);
-        page.add(right);
-
-        // block avec la progression
-        float progressValue = 0;
-        // if(demand.getOffers().size() == 0) {
-        progressValue = 100 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
-        // } else {
-        // TODO
-        // }
-
-        HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
-        HtmlButton contributeButton = new HtmlButton(session.tr("Contribuer"));
-
-        contributeForm.add(contributeButton);
-
-        final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
-        contributeBlock.add(contributeForm);
-
-        final HtmlBlock progressBlock = new HtmlBlock("progress_block");
-        final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
-
-        final HtmlBlock progressBarBlock = new HtmlBlock("column");
-        progressBarBlock.add(progressBar);
-
-        progressBlock.add(contributeBlock);
-        progressBlock.add(new HtmlText(demand.getContribution().toPlainString() + "€"));
-        progressBlock.add(progressBarBlock);
-
-        left.add(progressBlock);
-
-        // Description
-        left.add(generateDescription(translatedDescription));
-
-        // Comments
-
-        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
-
-        commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
-
-        for (Comment comment : demand.getComments()) {
-            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
-
-            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
-            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
-
-            
-            commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
-
-            generateChildComment(commentBlock, comment.getChildren());
-
-            commentsBlock.add(commentBlock);
-
-        }
-
-        left.add(commentsBlock);
-
-        // droite process
-
-        HtmlBlock rightBlock = new HtmlBlock("right_block");
-
-        HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
-        HtmlBlock timelineBlock = new HtmlBlock("timeline_block");
-        HtmlBlock contributorsBlock = new HtmlBlock("contributors_block");
-
-        rightBlock.add(abstractBlock);
-        rightBlock.add(timelineBlock);
-        rightBlock.add(contributorsBlock);
-
-        generateAbstractBlock(abstractBlock);
-        generateTimelineBlock(timelineBlock);
-        generateContributorsBlock(contributorsBlock);
-
-        right.add(rightBlock);
+        
+        page.add(generateLeft());
+        page.add(generateRight());
 
         return page;
 
@@ -271,5 +199,100 @@ public class DemandPage extends Page {
         
 
         return descriptionDetails;
+    }
+
+    private HtmlBlock generateContributeButton() {
+        HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
+        HtmlButton contributeButton = new HtmlButton(session.tr("Contribuer"));
+
+        contributeForm.add(contributeButton);
+
+        final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
+        contributeBlock.add(contributeForm);
+        return contributeBlock;
+    }
+
+    private HtmlComponent generateProgressBlock() {
+
+        // block avec la progression
+        float progressValue = 0;
+        // if(demand.getOffers().size() == 0) {
+        progressValue = 100 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
+        // } else {
+        // TODO
+        // }
+
+
+        final HtmlBlock progressBlock = new HtmlBlock("progress_block");
+        final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
+
+        final HtmlBlock progressBarBlock = new HtmlBlock("column");
+        progressBarBlock.add(progressBar);
+
+        progressBlock.add(generateContributeButton());
+        progressBlock.add(new HtmlText(demand.getContribution().toPlainString() + "€"));
+        progressBlock.add(progressBarBlock);
+
+        return progressBlock;
+    }
+
+    private HtmlComponent generateLeft() {
+        final HtmlBlock left = new HtmlBlock("leftColumn");
+
+        left.add(generateProgressBlock());
+
+        // Description
+        Locale defaultLocale = session.getLanguage().getLocale();
+        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        
+        left.add(generateDescription(translatedDescription));
+
+        // Comments
+
+        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
+
+        commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
+
+        for (Comment comment : demand.getComments()) {
+            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
+
+            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
+            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
+
+
+            commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
+
+            generateChildComment(commentBlock, comment.getChildren());
+
+            commentsBlock.add(commentBlock);
+
+        }
+
+        left.add(commentsBlock);
+
+        return left;
+
+    }
+
+    private HtmlComponent generateRight() {
+        final HtmlBlock right = new HtmlBlock("rightColumn");
+
+        HtmlBlock rightBlock = new HtmlBlock("right_block");
+
+        HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
+        HtmlBlock timelineBlock = new HtmlBlock("timeline_block");
+        HtmlBlock contributorsBlock = new HtmlBlock("contributors_block");
+
+        rightBlock.add(abstractBlock);
+        rightBlock.add(timelineBlock);
+        rightBlock.add(contributorsBlock);
+
+        generateAbstractBlock(abstractBlock);
+        generateTimelineBlock(timelineBlock);
+        generateContributorsBlock(contributorsBlock);
+
+        right.add(rightBlock);
+
+        return right;
     }
 }
