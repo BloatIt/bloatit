@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +34,6 @@ import java.util.logging.Logger;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.web.server.DispatchServer;
-import java.util.ArrayList;
 
 public class SCGIServer {
 
@@ -50,7 +50,8 @@ public class SCGIServer {
         try {
             final Socket cleanSocket = new Socket("127.0.0.1", 4000);
             cleanSocket.close();
-        } catch (final IOException ex) {}
+        } catch (final IOException ex) {
+        }
         try {
             Thread.sleep(100);
         } catch (final InterruptedException ex) {
@@ -168,7 +169,7 @@ public class SCGIServer {
     }
 
     private List<String> parseLanguageString(String languages) {
-        if(languages == null) {
+        if (languages == null) {
             return new ArrayList<String>();
         } else {
             return Arrays.asList(languages.split(","));

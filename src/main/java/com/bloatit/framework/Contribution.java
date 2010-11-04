@@ -17,9 +17,11 @@ public class Contribution extends UserContent {
         this.dao = dao;
     }
 
-    public void accept(Offer Offer) {}
+    public void accept(Offer Offer) {
+    }
 
-    public void cancel() {}
+    public void cancel() {
+    }
 
     public BigDecimal getAmount() {
         return dao.getAmount();

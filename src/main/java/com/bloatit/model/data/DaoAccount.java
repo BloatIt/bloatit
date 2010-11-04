@@ -36,10 +36,10 @@ public abstract class DaoAccount {
     }
 
     public DaoAccount(DaoActor Actor) {
-        this.actor = Actor;
-        this.creationDate = new Date();
-        this.lastModificationDate = new Date();
-        this.amount = new BigDecimal("0");
+        actor = Actor;
+        creationDate = new Date();
+        lastModificationDate = new Date();
+        amount = new BigDecimal("0");
     }
 
     public Date getLastModificationDate() {
@@ -51,13 +51,13 @@ public abstract class DaoAccount {
     }
 
     protected void addToAmountValue(BigDecimal blocked) {
-        this.lastModificationDate = new Date();
-        this.amount = this.amount.add(blocked);
+        lastModificationDate = new Date();
+        amount = amount.add(blocked);
     }
 
     protected void substractToAmountValue(BigDecimal blocked) {
-        this.lastModificationDate = new Date();
-        this.amount = this.amount.subtract(blocked);
+        lastModificationDate = new Date();
+        amount = amount.subtract(blocked);
     }
 
     public PageIterable<DaoTransaction> getTransactions() {
@@ -98,7 +98,7 @@ public abstract class DaoAccount {
     }
 
     protected void setActor(DaoActor Actor) {
-        this.actor = Actor;
+        actor = Actor;
     }
 
     protected void setCreationDate(Date creationDate) {

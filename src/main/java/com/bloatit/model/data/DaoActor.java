@@ -49,10 +49,10 @@ public abstract class DaoActor {
 
     protected DaoActor(String login, String email) {
         super();
-        this.dateCreation = new Date();
+        dateCreation = new Date();
         this.login = login;
         this.email = email;
-        this.internalAccount = new DaoInternalAccount(this);
+        internalAccount = new DaoInternalAccount(this);
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class DaoActor {
     // ======================================================================
 
     protected void setInternalAccount(DaoInternalAccount InternalAccount) {
-        this.internalAccount = InternalAccount;
+        internalAccount = InternalAccount;
     }
 
     protected void setLogin(String login) {
@@ -116,7 +116,7 @@ public abstract class DaoActor {
     }
 
     protected void setDateCreation(Date dateJoin) {
-        this.dateCreation = dateJoin;
+        dateCreation = dateJoin;
     }
 
     protected void setId(Integer id) {

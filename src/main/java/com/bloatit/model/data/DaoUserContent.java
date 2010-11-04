@@ -57,7 +57,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     // ======================================================================
 
     protected void setAuthor(DaoMember author) {
-        this.member = author;
+        member = author;
     }
 
     protected void setCreationDate(Date creationDate) {

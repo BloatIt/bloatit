@@ -26,7 +26,8 @@ public class QueryCollection<T> implements PageIterable<T> {
      * Use this constructor with query that start with "from ..."
      */
     protected QueryCollection(Query query) {
-        this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
+        this(query, SessionManager.getSessionFactory().getCurrentSession()
+                .createQuery("select count (*) " + query.getQueryString()));
     }
 
     protected QueryCollection(Query query, Query sizeQuery) {

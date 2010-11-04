@@ -21,8 +21,7 @@ package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
 
-
-public class HtmlLinkComponent extends HtmlComponent{
+public class HtmlLinkComponent extends HtmlComponent {
 
     final private String link;
     final private HtmlComponent component;
@@ -34,12 +33,11 @@ public class HtmlLinkComponent extends HtmlComponent{
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<a href=\""+link+"\">");
+        htmlResult.write("<a href=\"" + link + "\">");
         htmlResult.indent();
         component.generate(htmlResult);
         htmlResult.unindent();
         htmlResult.write("</a>");
     }
-
 
 }

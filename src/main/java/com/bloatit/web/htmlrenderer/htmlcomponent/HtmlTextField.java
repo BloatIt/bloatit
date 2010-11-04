@@ -27,10 +27,10 @@ public class HtmlTextField extends HtmlComponent {
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        if(defaultValue == null) {
-            htmlResult.write("<p><input name=\"" + this.name + "\" type=\"text\" /></p>");
+        if (defaultValue == null) {
+            htmlResult.write("<p><input name=\"" + name + "\" type=\"text\" /></p>");
         } else {
-            htmlResult.write("<p><input name=\"" + this.name + "\" type=\"text\" value=\""+defaultValue+"\" /></p>");
+            htmlResult.write("<p><input name=\"" + name + "\" type=\"text\" value=\"" + defaultValue + "\" /></p>");
         }
     }
 

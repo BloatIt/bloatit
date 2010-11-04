@@ -19,11 +19,11 @@
 
 package com.bloatit.web.pages;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Demand;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.HtmlTools;
@@ -47,7 +47,7 @@ public class DemandsPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        
+
         final HtmlTitle pageTitle = new HtmlTitle(session.tr("Demands list"), "");
 
         final PageIterable<Demand> demandList = DemandManager.GetAllDemands();
@@ -62,12 +62,10 @@ public class DemandsPage extends Page {
             }
         };
 
-
         HtmlPagedList<Demand> pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, this, session);
 
         int pageSize = 10;
         int currentPage = 0;
-
 
         if (parameters.containsKey("page_size")) {
             try {
@@ -78,7 +76,7 @@ public class DemandsPage extends Page {
 
         if (parameters.containsKey("page")) {
             try {
-                currentPage = Integer.parseInt(parameters.get("page"))-1;
+                currentPage = Integer.parseInt(parameters.get("page")) - 1;
             } catch (NumberFormatException e) {
             }
         }

@@ -53,7 +53,8 @@ public class DaoDemand extends DaoKudosable {
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    //@OrderBy(clause = "creationDate desc") // TODO find how to make this works
+    // @OrderBy(clause = "creationDate desc") // TODO find how to make this
+    // works
     @IndexedEmbedded
     private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
@@ -61,7 +62,7 @@ public class DaoDemand extends DaoKudosable {
      * It is automatically in validated state (temporary)
      * 
      * @param member
-     *            the author of the demand
+     *        the author of the demand
      * @param description
      */
     public static DaoDemand createAndPersist(DaoMember member, DaoDescription Description) {
@@ -80,9 +81,9 @@ public class DaoDemand extends DaoKudosable {
     protected DaoDemand(DaoMember member, DaoDescription Description) {
         super(member);
         setState(State.VALIDATED);
-        this.description = Description;
-        this.specification = null;
-        this.contribution = new BigDecimal("0");
+        description = Description;
+        specification = null;
+        contribution = new BigDecimal("0");
     }
 
     protected DaoDemand() {
@@ -108,7 +109,7 @@ public class DaoDemand extends DaoKudosable {
      * delete offer from this demand AND FROM DB !
      * 
      * @param Offer
-     *            the offer we want to delete.
+     *        the offer we want to delete.
      */
     public void removeOffer(DaoOffer Offer) {
         offers.remove(Offer);
@@ -180,19 +181,19 @@ public class DaoDemand extends DaoKudosable {
     // ======================================================================
 
     protected void setSpecification(DaoSpecification Specification) {
-        this.specification = Specification;
+        specification = Specification;
     }
 
     protected void setDescription(DaoDescription Description) {
-        this.description = Description;
+        description = Description;
     }
 
     protected void setOffers(Set<DaoOffer> Offers) {
-        this.offers = Offers;
+        offers = Offers;
     }
 
     protected void setContributions(Set<DaoContribution> Contributions) {
-        this.contributions = Contributions;
+        contributions = Contributions;
     }
 
     public void setComments(Set<DaoComment> comments) {

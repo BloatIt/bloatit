@@ -21,8 +21,7 @@ package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
 
-
-public abstract interface HtmlRenderer<T>{
+public abstract interface HtmlRenderer<T> {
 
     public abstract void generate(HtmlResult htmlResult, T item);
 }

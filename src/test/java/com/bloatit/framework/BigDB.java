@@ -1,5 +1,7 @@
 package com.bloatit.framework;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.Locale;
 
@@ -13,8 +15,6 @@ import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoTransaction;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 public class BigDB {
 
@@ -31,7 +31,8 @@ public class BigDB {
             member.setFullname("User " + i + " Fullname");
             member.setExternalAccount(DaoExternalAccount.createAndPersist(member, AccountType.IBAN, "code"));
             try {
-                DaoTransaction.createAndPersist(member.getInternalAccount(), member.getExternalAccount(), new BigDecimal("-1000"));
+                DaoTransaction
+                        .createAndPersist(member.getInternalAccount(), member.getExternalAccount(), new BigDecimal("-1000"));
             } catch (final NotEnoughMoneyException e) {
                 e.printStackTrace();
             }
@@ -54,14 +55,11 @@ public class BigDB {
             }
         }
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand1 = DaoDemand.createAndPersist(DaoMember.getByLogin("member " + i), new DaoDescription(DaoMember.getByLogin("member " + i),
-                    new Locale("fr"),
-                    fortune(140),
-                    fortune() + fortune() + fortune()));
-            final DaoDemand demand2 = DaoDemand.createAndPersist(DaoMember.getByLogin("member " + i), new DaoDescription(DaoMember.getByLogin("member " + i),
-                    new Locale("fr"),
-                    fortune(140),
-                    fortune() + fortune() + fortune() + fortune()));
+            final DaoDemand demand1 = DaoDemand.createAndPersist(DaoMember.getByLogin("member " + i), new DaoDescription(
+                    DaoMember.getByLogin("member " + i), new Locale("fr"), fortune(140), fortune() + fortune() + fortune()));
+            DaoDemand.createAndPersist(DaoMember.getByLogin("member " + i),
+                    new DaoDescription(DaoMember.getByLogin("member " + i), new Locale("fr"), fortune(140), fortune() + fortune()
+                            + fortune() + fortune()));
 
             int commentCount = (int) (Math.random() * 5);
 
@@ -71,8 +69,6 @@ public class BigDB {
                 createComment(comment);
                 demand1.addComment(comment);
             }
-
-
 
             // TODO add Transaction
             // TODO add Translation
@@ -93,8 +89,7 @@ public class BigDB {
         final int nbComment = (int) (Math.random() * 15);
         for (int i = 0; i < nbComment; i++) {
             final int memberNum = (int) (Math.random() * nbUsers);
-            final DaoComment other = DaoComment.createAndPersist(DaoMember.getByLogin("member " + memberNum),
-                    fortune());
+            final DaoComment other = DaoComment.createAndPersist(DaoMember.getByLogin("member " + memberNum), fortune());
             comment.addChildComment(other);
             if ((int) (Math.random() * 15) % 15 == 0) {
                 createComment(other);
@@ -111,8 +106,7 @@ public class BigDB {
         try {
             String line;
             Process p = Runtime.getRuntime().exec("fortune");
-            BufferedReader input =
-                    new BufferedReader(new InputStreamReader(p.getInputStream()));
+            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
                 text += line;
             }

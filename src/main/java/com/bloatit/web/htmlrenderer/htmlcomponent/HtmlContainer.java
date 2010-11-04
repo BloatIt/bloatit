@@ -30,7 +30,7 @@ public class HtmlContainer extends HtmlComponent {
     private final ArrayList<HtmlComponent> components;
 
     public HtmlContainer() {
-        this.components = new ArrayList<HtmlComponent>();
+        components = new ArrayList<HtmlComponent>();
     }
 
     /**
@@ -39,13 +39,13 @@ public class HtmlContainer extends HtmlComponent {
      * @param newComponent the added component
      */
     public void add(HtmlComponent newComponent) {
-        this.components.add(newComponent);
+        components.add(newComponent);
 
     }
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        for (final HtmlComponent component : this.components) {
+        for (final HtmlComponent component : components) {
             component.generate(htmlResult);
         }
     }

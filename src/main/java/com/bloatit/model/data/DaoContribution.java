@@ -45,7 +45,7 @@ public class DaoContribution extends DaoUserContent {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         this.amount = amount;
-        this.state = State.WAITING;
+        state = State.WAITING;
         this.demand = demand;
         getAuthor().getInternalAccount().block(amount);
     }
@@ -91,7 +91,7 @@ public class DaoContribution extends DaoUserContent {
     }
 
     protected void setDemand(DaoDemand Demand) {
-        this.demand = Demand;
+        demand = Demand;
     }
 
     protected void setAmount(BigDecimal amount) {
@@ -103,7 +103,7 @@ public class DaoContribution extends DaoUserContent {
     }
 
     protected void setTransaction(DaoTransaction Transaction) {
-        this.transaction = Transaction;
+        transaction = Transaction;
     }
 
 }

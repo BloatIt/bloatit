@@ -59,12 +59,15 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     public boolean hasKudosed(DaoMember member) {
-        // Query f = SessionManager.getSessionFactory().getCurrentSession().createFilter(kudos, "where author = :author");
+        // Query f =
+        // SessionManager.getSessionFactory().getCurrentSession().createFilter(kudos,
+        // "where author = :author");
         // f.setEntity("author", getAuthor());
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("select count(k) from " + this.getClass().getName()
-                                              + " as a join a.kudos as k where k.member = :member and a = :this");
+        final Query q = SessionManager
+                .getSessionFactory()
+                .getCurrentSession()
+                .createQuery("select count(k) from " + this.getClass().getName()
+                        + " as a join a.kudos as k where k.member = :member and a = :this");
         q.setEntity("member", member);
         q.setEntity("this", this);
         return (Long) q.uniqueResult() > 0;
@@ -73,11 +76,10 @@ public abstract class DaoKudosable extends DaoUserContent {
     public void setState(State state) {
         this.state = state;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
-
 
     protected void setPopularity(int popularity) {
         this.popularity = popularity;
@@ -88,7 +90,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     protected void setKudos(Set<DaoKudos> Kudos) {
-        this.kudos = Kudos;
+        kudos = Kudos;
     }
 
 }

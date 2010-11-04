@@ -53,13 +53,13 @@ public class Language {
     private LanguageTemplate template;
 
     public Language() {
-        this.template = languageList.get(Locale.ENGLISH);
+        template = languageList.get(Locale.ENGLISH);
     }
 
     public Language(Locale code) {
-        this.template = languageList.get(code);
-        if (this.template == null) {
-            this.template = languageList.get(Locale.ENGLISH);
+        template = languageList.get(code);
+        if (template == null) {
+            template = languageList.get(Locale.ENGLISH);
         }
     }
 
@@ -128,9 +128,9 @@ public class Language {
         @Override
         public int hashCode() {
             int hash = 3;
-            hash = 59 * hash + (this.locale != null ? this.locale.hashCode() : 0);
-            hash = 59 * hash + (this.label != null ? this.label.hashCode() : 0);
-            hash = 59 * hash + (this.i18n != null ? this.i18n.hashCode() : 0);
+            hash = 59 * hash + (locale != null ? locale.hashCode() : 0);
+            hash = 59 * hash + (label != null ? label.hashCode() : 0);
+            hash = 59 * hash + (i18n != null ? i18n.hashCode() : 0);
             return hash;
         }
 
@@ -145,7 +145,7 @@ public class Language {
             return false;
         }
         final Language other = (Language) obj;
-        if (this.template != other.template && (this.template == null || !this.template.equals(other.template))) {
+        if (template != other.template && (template == null || !template.equals(other.template))) {
             return false;
         }
         return true;
@@ -154,7 +154,7 @@ public class Language {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 11 * hash + (this.template != null ? this.template.hashCode() : 0);
+        hash = 11 * hash + (template != null ? template.hashCode() : 0);
         return hash;
     }
 

@@ -21,7 +21,9 @@ public class DBRequests {
     }
 
     public static PageIterable<DaoDemand> searchDemands(String searchStr) {
-        return search(DaoDemand.class, new String[] { "description.translations.title", "offers.description.translations.title" }, searchStr);
+        return search(DaoDemand.class,
+                new String[] { "description.translations.title", "offers.description.translations.title" },
+                searchStr);
     }
 
     /**
@@ -29,7 +31,8 @@ public class DBRequests {
      * 
      * @param <T> is a persistent class (something like Dao...)
      * @param persistent is the class object associated with T.
-     * @param fields is a list of field on which we are doing the search. These field are relative to the persistent class.
+     * @param fields is a list of field on which we are doing the search. These
+     *        field are relative to the persistent class.
      * @param searchStr is the string we are looking for.
      * @return a PageIterable with the search results.
      */
@@ -47,7 +50,8 @@ public class DBRequests {
 
     public static <T> int count(Class<T> persistent) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
-        return ((Long) SessionManager.getSessionFactory().getCurrentSession().createQuery("select count(*) from " + meta.getEntityName()).uniqueResult()).intValue();
+        return ((Long) SessionManager.getSessionFactory().getCurrentSession()
+                .createQuery("select count(*) from " + meta.getEntityName()).uniqueResult()).intValue();
     }
 
 }

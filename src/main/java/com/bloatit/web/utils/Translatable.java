@@ -40,8 +40,8 @@ public class Translatable {
      * @param defaultLocale
      */
     public Translatable(Translation entry) {
-        this.translations = new HashMap<Language, Translation>();
-        this.translations.put(new Language(entry.getLocale()), entry);
+        translations = new HashMap<Language, Translation>();
+        translations.put(new Language(entry.getLocale()), entry);
     }
 
     /**
@@ -50,9 +50,9 @@ public class Translatable {
      * @param translationList
      */
     public Translatable(List<Translation> translationList) {
-        this.translations = new HashMap<Language, Translation>();
+        translations = new HashMap<Language, Translation>();
         for (final Translation t : translationList) {
-            this.translations.put(new Language(t.getLocale()), t);
+            translations.put(new Language(t.getLocale()), t);
         }
     }
 
@@ -62,7 +62,7 @@ public class Translatable {
      * @param translation
      */
     public void addTranslation(Translation translation) {
-        this.translations.put(new Language(translation.getLocale()), translation);
+        translations.put(new Language(translation.getLocale()), translation);
     }
 
     /**
@@ -75,14 +75,15 @@ public class Translatable {
         if (!containsLang(lang)) {
             return null;
         }
-        return this.translations.get(lang);
+        return translations.get(lang);
     }
 
     /**
      * indicated wether the item have been translated to a given lang
      * 
      * @param lang the language
-     * @return <i>true</i> if it has been translated to lang <i>false</i> otherwise
+     * @return <i>true</i> if it has been translated to lang <i>false</i>
+     *         otherwise
      */
     public boolean containsLang(Language lang) {
         return translations.containsKey(lang);
@@ -92,7 +93,7 @@ public class Translatable {
      * @return the list of available languages for the translation
      */
     public Set<Language> getAvailableLangs() {
-        return this.translations.keySet();
+        return translations.keySet();
     }
 
 }

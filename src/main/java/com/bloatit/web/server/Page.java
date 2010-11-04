@@ -20,6 +20,7 @@ package com.bloatit.web.server;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlTools;
@@ -34,7 +35,6 @@ import com.bloatit.web.pages.MembersListPage;
 import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
-import java.util.Map.Entry;
 
 public abstract class Page extends Request {
 
@@ -42,7 +42,7 @@ public abstract class Page extends Request {
 
     public Page(Session session, Map<String, String> parameters) {
         super(session, parameters);
-        this.design = "/resources/css/design.css";
+        design = "/resources/css/design.css";
     }
 
     public Page(Session session) {
@@ -51,79 +51,81 @@ public abstract class Page extends Request {
 
     @Override
     protected void process() {
-        this.htmlResult.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        this.htmlResult.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
-        this.htmlResult.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-        this.htmlResult.indent();
+        htmlResult.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        htmlResult
+                .write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+        htmlResult.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+        htmlResult.indent();
         generate_head();
         generate_body();
-        this.htmlResult.unindent();
-        this.htmlResult.write("</html>");
-        this.session.flushNotifications();
+        htmlResult.unindent();
+        htmlResult.write("</html>");
+        session.flushNotifications();
     }
 
     private void generate_head() {
-        this.htmlResult.write("<head>");
-        this.htmlResult.indent();
-        this.htmlResult.write("<metahttp-equiv=\"content-type\" content=\"text/html;charset=utf-8\"/>");
-        this.htmlResult.write("<link rel=\"stylesheet\" href=" + this.design + " type=\"text/css\" media=\"handheld, all\" />");
+        htmlResult.write("<head>");
+        htmlResult.indent();
+        htmlResult.write("<metahttp-equiv=\"content-type\" content=\"text/html;charset=utf-8\"/>");
+        htmlResult.write("<link rel=\"stylesheet\" href=" + design + " type=\"text/css\" media=\"handheld, all\" />");
 
-        this.htmlResult.write("<title>BloatIt - " + getTitle() + "</title>");
-        this.htmlResult.unindent();
-        this.htmlResult.write("</head>");
+        htmlResult.write("<title>BloatIt - " + getTitle() + "</title>");
+        htmlResult.unindent();
+        htmlResult.write("</head>");
     }
 
     private void generate_body() {
-        this.htmlResult.write("<body>");
-        this.htmlResult.indent();
-        this.htmlResult.write("<div id=\"page\">");
-        this.htmlResult.indent();
+        htmlResult.write("<body>");
+        htmlResult.indent();
+        htmlResult.write("<div id=\"page\">");
+        htmlResult.indent();
         generateTopBar();
         generateTitle();
-        this.htmlResult.write("<div id=\"center\">");
-        this.htmlResult.indent();
+        htmlResult.write("<div id=\"center\">");
+        htmlResult.indent();
         generateMainMenu();
 
-        this.htmlResult.write("<div id=\"body_content\">");
-        this.htmlResult.indent();
+        htmlResult.write("<div id=\"body_content\">");
+        htmlResult.indent();
 
         generateNotifications();
         generateContent().generate(htmlResult);
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
+        htmlResult.unindent();
+        htmlResult.write("</div>");
+        htmlResult.unindent();
+        htmlResult.write("</div>");
 
         generateFooter();
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
-        this.htmlResult.unindent();
-        this.htmlResult.write("</body>");
+        htmlResult.unindent();
+        htmlResult.write("</div>");
+        htmlResult.unindent();
+        htmlResult.write("</body>");
     }
 
     private void generateTopBar() {
-        this.htmlResult.write("<div id=\"top_bar\">");
-        this.htmlResult.indent();
-        if (this.session.isLogged()) {
-            final String full_name = this.session.getAuthToken().getMember().getFullname();
-            final String karma = HtmlTools.compressKarma(this.session.getAuthToken().getMember().getKarma());
-            final String memberLink = HtmlTools.generateLink(this.session, full_name, new MyAccountPage(this.session)) + "<span class=\"karma\">" + karma
-                    + "</span>";
-            final String logoutLink = HtmlTools.generateLink(this.session, this.session.tr("Logout"), new LogoutAction(this.session));
-            this.htmlResult.write("<span class=\"top_bar_component\">" + memberLink + "</span><span class=\"top_bar_component\">" + logoutLink + "</span>");
+        htmlResult.write("<div id=\"top_bar\">");
+        htmlResult.indent();
+        if (session.isLogged()) {
+            final String full_name = session.getAuthToken().getMember().getFullname();
+            final String karma = HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma());
+            final String memberLink = HtmlTools.generateLink(session, full_name, new MyAccountPage(session))
+                    + "<span class=\"karma\">" + karma + "</span>";
+            final String logoutLink = HtmlTools.generateLink(session, session.tr("Logout"), new LogoutAction(session));
+            htmlResult.write("<span class=\"top_bar_component\">" + memberLink + "</span><span class=\"top_bar_component\">"
+                    + logoutLink + "</span>");
 
         } else {
-            this.htmlResult.write("<span class=\"top_bar_component\">"
-                    + HtmlTools.generateLink(this.session, this.session.tr("Login / Signup"), new LoginPage(this.session)) + "</span>");
+            htmlResult.write("<span class=\"top_bar_component\">"
+                    + HtmlTools.generateLink(session, session.tr("Login / Signup"), new LoginPage(session)) + "</span>");
 
         }
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
+        htmlResult.unindent();
+        htmlResult.write("</div>");
     }
 
     private void generateMainMenu() {
 
-        final Session s = this.session;
+        final Session s = session;
         final HtmlBlock mainMenu = new HtmlBlock();
         mainMenu.setId("main_menu");
 
@@ -149,16 +151,16 @@ public abstract class Page extends Request {
     }
 
     private void generateTitle() {
-        this.htmlResult.pushTitle();
-        this.htmlResult.write("<h1>" + HtmlTools.generateLink(this.session, generateLogo(), new IndexPage(this.session)) + "</h1>");
+        htmlResult.pushTitle();
+        htmlResult.write("<h1>" + HtmlTools.generateLink(session, generateLogo(), new IndexPage(session)) + "</h1>");
     }
 
     private void generateFooter() {
-        this.htmlResult.write("<div id='footer'>");
-        this.htmlResult.indent();
-        this.htmlResult.write(this.session.tr("This website is under GNU Affero Public Licence."));
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
+        htmlResult.write("<div id='footer'>");
+        htmlResult.indent();
+        htmlResult.write(session.tr("This website is under GNU Affero Public Licence."));
+        htmlResult.unindent();
+        htmlResult.write("</div>");
     }
 
     protected abstract HtmlComponent generateContent();
@@ -173,13 +175,13 @@ public abstract class Page extends Request {
     }
 
     private void generateNotifications() {
-        this.htmlResult.write("<div id='notifications'>");
-        this.htmlResult.indent();
+        htmlResult.write("<div id='notifications'>");
+        htmlResult.indent();
         for (final Notification notification : session.getNotifications()) {
             generateNotification(notification);
         }
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
+        htmlResult.unindent();
+        htmlResult.write("</div>");
     }
 
     private void generateNotification(Notification notification) {
@@ -194,23 +196,22 @@ public abstract class Page extends Request {
             notificationClass = "notification_error";
         }
 
-        this.htmlResult.write("<div class=\"" + notificationClass + "\">");
-        this.htmlResult.indent();
-        this.htmlResult.write(notification.getMessage());
-        this.htmlResult.unindent();
-        this.htmlResult.write("</div>");
+        htmlResult.write("<div class=\"" + notificationClass + "\">");
+        htmlResult.indent();
+        htmlResult.write(notification.getMessage());
+        htmlResult.unindent();
+        htmlResult.write("</div>");
     }
 
     @Override
     public String getUrl() {
-         String link = "/" + session.getLanguage().getCode() + "/" + getCode();
+        String link = "/" + session.getLanguage().getCode() + "/" + getCode();
 
-        for(Entry<String, String> entry : getOutputParameters().entrySet()) {
-            link += "/"+entry.getKey()+"-"+entry.getValue();
+        for (Entry<String, String> entry : getOutputParameters().entrySet()) {
+            link += "/" + entry.getKey() + "-" + entry.getValue();
         }
 
         return link;
     }
-
 
 }

@@ -20,7 +20,8 @@ public class MemberTest extends FrameworkTestUnit {
             yo.authenticate(fredAuthToken);
             yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
             fail();
-        } catch (final Exception e) {}
+        } catch (final Exception e) {
+        }
 
     }
 
@@ -35,7 +36,8 @@ public class MemberTest extends FrameworkTestUnit {
             yo.authenticate(fredAuthToken);
             yo.removeFromGroup(GroupManager.getByName("b219"));
             fail();
-        } catch (final Exception e) {}
+        } catch (final Exception e) {
+        }
     }
 
     public void testGetGroups() {
@@ -89,7 +91,8 @@ public class MemberTest extends FrameworkTestUnit {
             yo.authenticate(fredAuthToken);
             yo.setFullname("plop");
             fail();
-        } catch (final Exception e) {}
+        } catch (final Exception e) {
+        }
 
         assertEquals("Plénet Yoann", yo.getFullname());
     }

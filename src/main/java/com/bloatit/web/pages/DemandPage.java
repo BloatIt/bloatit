@@ -18,17 +18,15 @@
  */
 package com.bloatit.web.pages;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Comment;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
-import com.bloatit.framework.Transaction;
 import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
@@ -53,12 +51,11 @@ public class DemandPage extends Page {
     public DemandPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
 
-        
         if (parameters.containsKey("id")) {
             Integer id = null;
             try {
                 id = new Integer(parameters.get("id"));
-                this.demand = DemandManager.GetDemandById(id);
+                demand = DemandManager.GetDemandById(id);
             } catch (final NumberFormatException e) {
                 throw new PageNotFoundException("Demand id not found " + id, null);
             }
@@ -86,23 +83,20 @@ public class DemandPage extends Page {
         Locale defaultLocale = session.getLanguage().getLocale();
         Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         final HtmlContainer page = new HtmlContainer();
-        
+
         final HtmlBlock left = new HtmlBlock("leftColumn");
         final HtmlBlock right = new HtmlBlock("rightColumn");
         page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
         page.add(left);
         page.add(right);
 
-
-        
         // block avec la progression
         float progressValue = 0;
-        //if(demand.getOffers().size() == 0) {
-            progressValue = 100*(1-1/(1+demand.getContribution().floatValue()/200));
-        //} else {
-            //TODO
-        //}
-
+        // if(demand.getOffers().size() == 0) {
+        progressValue = 100 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
+        // } else {
+        // TODO
+        // }
 
         HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
         HtmlButton contributeButton = new HtmlButton(session.tr("Contribuer"));
@@ -112,50 +106,40 @@ public class DemandPage extends Page {
         final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
         contributeBlock.add(contributeForm);
 
-
         final HtmlBlock progressBlock = new HtmlBlock("progress_block");
         final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
-        
+
         final HtmlBlock progressBarBlock = new HtmlBlock("column");
         progressBarBlock.add(progressBar);
 
-
         progressBlock.add(contributeBlock);
-        progressBlock.add(new HtmlText(demand.getContribution().toPlainString()+"€"));
+        progressBlock.add(new HtmlText(demand.getContribution().toPlainString() + "€"));
         progressBlock.add(progressBarBlock);
 
-
-
         left.add(progressBlock);
-        
-        
+
         // Description
         generateDescription(left, translatedDescription);
-        
 
         // Comments
 
         HtmlBlock commentsBlock = new HtmlBlock("comments_block");
 
-        commentsBlock.add(new HtmlTitle(session.tr("Comments"),"comments_title"));
+        commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
 
-        for(Comment comment: demand.getComments()) {
+        for (Comment comment : demand.getComments()) {
             HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
             commentBlock.add(new HtmlText(comment.getText()));
 
-            
-
             generateChildComment(commentBlock, comment.getChildren());
-            
 
             commentsBlock.add(commentBlock);
 
         }
 
         left.add(commentsBlock);
-        
+
         // droite process
-        
 
         HtmlBlock rightBlock = new HtmlBlock("right_block");
 
@@ -171,7 +155,6 @@ public class DemandPage extends Page {
         generateTimelineBlock(timelineBlock);
         generateContributorsBlock(contributorsBlock);
 
-
         right.add(rightBlock);
 
         return page;
@@ -180,8 +163,8 @@ public class DemandPage extends Page {
 
     @Override
     public String getCode() {
-        if (this.demand != null) {
-            return new HtmlString(session).add("demand/id-" + this.demand.getId() + "/title-").secure(demand.getTitle()).toString();
+        if (demand != null) {
+            return new HtmlString(session).add("demand/id-" + demand.getId() + "/title-").secure(demand.getTitle()).toString();
         } else {
             return "demand"; // TODO Faire un système pour afficher une page
                              // d'erreur
@@ -200,19 +183,17 @@ public class DemandPage extends Page {
 
     private void generateContributorsBlock(HtmlBlock contributorsBlock) {
 
-
         int contributionCount = demand.getContributions().size();
-        contributorsBlock.add(new HtmlText(""+contributionCount+session.tr("&nbsp;contributions")));
+        contributorsBlock.add(new HtmlText("" + contributionCount + session.tr("&nbsp;contributions")));
 
-        if(contributionCount > 0) {
-            float contributionMean = demand.getContribution().floatValue()/contributionCount;
+        if (contributionCount > 0) {
+            float contributionMean = demand.getContribution().floatValue() / contributionCount;
             String contributionMin = demand.getContributionMin().toPlainString();
             String contributionMax = demand.getContributionMax().toPlainString();
 
-
-            contributorsBlock.add(new HtmlText(session.tr("Min:&nbsp;")+contributionMin));
-            contributorsBlock.add(new HtmlText(session.tr("Max:&nbsp;")+contributionMax));
-            contributorsBlock.add(new HtmlText(session.tr("Mean:&nbsp;")+contributionMean));
+            contributorsBlock.add(new HtmlText(session.tr("Min:&nbsp;") + contributionMin));
+            contributorsBlock.add(new HtmlText(session.tr("Max:&nbsp;") + contributionMax));
+            contributorsBlock.add(new HtmlText(session.tr("Mean:&nbsp;") + contributionMean));
         }
 
     }
@@ -229,14 +210,13 @@ public class DemandPage extends Page {
     private void generateTimelineBlock(HtmlBlock contributorsBlock) {
         HtmlList timelineList = new HtmlList();
 
-        HtmlListItem creationDate = new HtmlListItem("Creation: "+demand.getCreationDate().toString());
+        HtmlListItem creationDate = new HtmlListItem("Creation: " + demand.getCreationDate().toString());
         timelineList.addItem(creationDate);
         contributorsBlock.add(timelineList);
     }
 
-    private void generateDescription(HtmlBlock left,Translation translatedDescription) {
+    private void generateDescription(HtmlBlock left, Translation translatedDescription) {
         HtmlBlock descriptionBlock = new HtmlBlock("description_block");
-
 
         HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
         HtmlKudoBox kudoBox = new HtmlKudoBox(demand, session);
@@ -250,12 +230,12 @@ public class DemandPage extends Page {
     }
 
     private void generateChildComment(HtmlBlock commentBlock, PageIterable<Comment> children) {
-            for(Comment childComment : children) {
-                HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
-                childCommentBlock.add(new HtmlText(childComment.getText()));
-                generateChildComment(childCommentBlock, childComment.getChildren());
+        for (Comment childComment : children) {
+            HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
+            childCommentBlock.add(new HtmlText(childComment.getText()));
+            generateChildComment(childCommentBlock, childComment.getChildren());
 
-                commentBlock.add(childCommentBlock);
-            }
+            commentBlock.add(childCommentBlock);
+        }
     }
 }

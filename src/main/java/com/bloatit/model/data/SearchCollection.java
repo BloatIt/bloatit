@@ -11,9 +11,7 @@ public class SearchCollection<T> implements PageIterable<T> {
     private final FullTextQuery query;
     private int pageSize;
     private int currentPage;
-    
-    
-    
+
     protected SearchCollection(FullTextQuery query) {
         super();
         this.query = query;

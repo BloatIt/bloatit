@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -11,23 +12,22 @@ import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
-import javax.persistence.Column;
 
 @Entity
 public class DaoComment extends DaoKudosable {
 
     @Basic(optional = false)
-    @Column(length=5000)
+    @Column(length = 5000)
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String text;
 
@@ -95,7 +95,7 @@ public class DaoComment extends DaoKudosable {
     }
 
     protected void setFather(DaoComment Comment) {
-        this.father = Comment;
+        father = Comment;
     }
 
     protected DaoComment getFather() {

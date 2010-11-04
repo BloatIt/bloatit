@@ -70,7 +70,8 @@ public class GroupMemberTest extends TestCase {
             SessionManager.beginWorkUnit();
             DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
             SessionManager.flush();
-            DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com"); // duplicate login
+            DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com"); // duplicate
+                                                                        // login
             SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
         } catch (final HibernateException e) {
@@ -152,9 +153,9 @@ public class GroupMemberTest extends TestCase {
         assertEquals(it.next().getFullname(), "Frédéric Bertolus");
         assertEquals(it.next().getFullname(), "Yoann Plénet");
         assertFalse(it.hasNext());
-        
+
         assertEquals(2, members.size());
-        
+
         SessionManager.endWorkUnitAndFlush();
     }
 
@@ -169,9 +170,9 @@ public class GroupMemberTest extends TestCase {
         assertEquals(it.next().getLogin(), "b218");
         assertEquals(it.next().getLogin(), "b219");
         assertFalse(it.hasNext());
-        
+
         assertEquals(4, groups.size());
-        
+
         SessionManager.endWorkUnitAndFlush();
     }
 

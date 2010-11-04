@@ -21,12 +21,12 @@ public class DaoOffer extends DaoKudosable {
 
     @ManyToOne(optional = false)
     private DaoDemand demand;
-    
+
     @OneToOne
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @IndexedEmbedded
     private DaoDescription description;
-    
+
     @Basic(optional = false)
     @Field(index = Index.UN_TOKENIZED, store = Store.YES)
     @DateBridge(resolution = Resolution.DAY)
@@ -38,8 +38,8 @@ public class DaoOffer extends DaoKudosable {
 
     public DaoOffer(DaoMember member, DaoDemand Demand, DaoDescription text, Date dateExpire) {
         super(member);
-        this.demand = Demand;
-        this.description = text;
+        demand = Demand;
+        description = text;
         this.dateExpire = dateExpire;
     }
 
@@ -64,10 +64,10 @@ public class DaoOffer extends DaoKudosable {
     // ======================================================================
 
     protected void setDemand(DaoDemand Demand) {
-        this.demand = Demand;
+        demand = Demand;
     }
 
     protected void setDescription(DaoDescription text) {
-        this.description = text;
+        description = text;
     }
 }

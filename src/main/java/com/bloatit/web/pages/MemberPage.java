@@ -68,7 +68,7 @@ public class MemberPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        if (this.member != null) {
+        if (member != null) {
             member.authenticate(session.getAuthToken());
 
             final HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
@@ -88,16 +88,17 @@ public class MemberPage extends Page {
 
     @Override
     public String getCode() {
-        if (this.member != null) {
-            return new HtmlString(session).add("member/id-" + this.member.getId() + "/title-").secure(member.getLogin()).toString();
+        if (member != null) {
+            return new HtmlString(session).add("member/id-" + member.getId() + "/title-").secure(member.getLogin()).toString();
         } else {
-            return "member"; // TODO Faire un système pour afficher une page d'erreur
+            return "member"; // TODO Faire un système pour afficher une page
+                             // d'erreur
         }
     }
 
     @Override
     protected String getTitle() {
-        if (this.member != null) {
+        if (member != null) {
             return "Member - " + member.getLogin();
         } else {
             return "Member - No member";

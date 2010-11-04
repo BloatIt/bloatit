@@ -40,9 +40,9 @@ public class MyAccountPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        if (this.session.getAuthToken() != null) {
-            final Member member = this.session.getAuthToken().getMember();
-            member.authenticate(this.session.getAuthToken());
+        if (session.getAuthToken() != null) {
+            final Member member = session.getAuthToken().getMember();
+            member.authenticate(session.getAuthToken());
             final HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
 
             memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
@@ -63,8 +63,8 @@ public class MyAccountPage extends Page {
 
     @Override
     protected String getTitle() {
-        if (this.session.getAuthToken() != null) {
-            return "My account - " + this.session.getAuthToken().getMember().getLogin();
+        if (session.getAuthToken() != null) {
+            return "My account - " + session.getAuthToken().getMember().getLogin();
         } else {
             return "My account - No account";
         }

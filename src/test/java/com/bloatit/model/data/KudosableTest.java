@@ -14,7 +14,6 @@ public class KudosableTest extends TestCase {
         demand.addKudos(tom, 42);
     }
 
-
     private DaoMember yo;
     private DaoMember tom;
     private DaoMember fred;
@@ -46,7 +45,8 @@ public class KudosableTest extends TestCase {
             (DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PROTECTED)).addMember(yo, true);
         }
 
-        demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Ma super demande !",
+                "Ceci est la descption de ma demande :) "));
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();

@@ -30,6 +30,6 @@ public class HtmlButton extends HtmlComponent {
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<p><input class=\"button\" type=\"submit\" value=\"" + this.label + "\" /><p>");
+        htmlResult.write("<p><input class=\"button\" type=\"submit\" value=\"" + label + "\" /><p>");
     }
 }

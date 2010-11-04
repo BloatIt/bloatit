@@ -43,7 +43,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
         this.sender = sender;
         this.reciever = reciever;
         this.group = group;
-        this.setState(State.PENDING);
+        setState(State.PENDING);
     }
 
     public void accept() {
@@ -89,7 +89,8 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
         this.group = group;
     }
 
-    protected DaoJoinGroupInvitation() {}
+    protected DaoJoinGroupInvitation() {
+    }
 
     protected void setState(State state) {
         this.state = state;

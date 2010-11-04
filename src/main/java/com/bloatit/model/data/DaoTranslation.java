@@ -6,7 +6,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import org.hibernate.annotations.Type;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -20,18 +19,19 @@ public class DaoTranslation extends DaoKudosable {
     @Basic(optional = false)
     private Locale locale;
     @Basic(optional = false)
-    @Column(length=300)
-    @Field(index = Index.TOKENIZED, store=Store.NO)
+    @Column(length = 300)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String title;
-    @Column(length=5000)
+    @Column(length = 5000)
     @Basic(optional = false)
-    @Field(index = Index.TOKENIZED, store=Store.NO)
+    @Field(index = Index.TOKENIZED, store = Store.NO)
     private String text;
 
     @ManyToOne(optional = false)
     private DaoDescription description;
 
-    protected DaoTranslation() {}
+    protected DaoTranslation() {
+    }
 
     public DaoTranslation(DaoMember member, DaoDescription description, Locale locale, String title, String text) {
         super(member);

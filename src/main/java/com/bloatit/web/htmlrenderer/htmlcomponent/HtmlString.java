@@ -29,19 +29,20 @@ public class HtmlString {
     private final StringBuilder stringBuilder = new StringBuilder();
     private Session session = null;
 
-    public HtmlString() {}
+    public HtmlString() {
+    }
 
     public HtmlString(Session session) {
         this.session = session;
     }
 
     public HtmlString add(String string) {
-        this.stringBuilder.append(string);
+        stringBuilder.append(string);
         return this;
     }
 
     public HtmlString secure(String string) {
-        this.stringBuilder.append(HtmlTools.escapeUrlString(string));
+        stringBuilder.append(HtmlTools.escapeUrlString(string));
         return this;
     }
 
@@ -57,7 +58,7 @@ public class HtmlString {
 
     @Override
     public String toString() {
-        return this.stringBuilder.toString();
+        return stringBuilder.toString();
     }
 
     public static String Translate(Session session, Translatable text) {

@@ -9,9 +9,9 @@ import com.bloatit.model.data.DaoGroup.Right;
 public class Group extends Actor {
 
     private final DaoGroup dao;
-    
-    public static Group create(DaoGroup dao){
-        if(dao == null){
+
+    public static Group create(DaoGroup dao) {
+        if (dao == null) {
             return null;
         }
         return new Group(dao);
@@ -31,15 +31,15 @@ public class Group extends Actor {
         return new MemberList(dao.getMembers());
     }
 
-//    These methods are directly available in Member
-//    These ones are disactivated to make sure there are no synchro pb.
-//    public void addMember(Member member, boolean isAdmin) {
-//        dao.addMember(member.getDao(), isAdmin);
-//    }
-//
-//    public void removeMember(Member member) {
-//        dao.removeMember(member.getDao());
-//    }
+    // These methods are directly available in Member
+    // These ones are disactivated to make sure there are no synchro pb.
+    // public void addMember(Member member, boolean isAdmin) {
+    // dao.addMember(member.getDao(), isAdmin);
+    // }
+    //
+    // public void removeMember(Member member) {
+    // dao.removeMember(member.getDao());
+    // }
 
     public Right getRight() {
         return dao.getRight();

@@ -40,7 +40,7 @@ public class TranslationManipulator {
      * @return the element in the good language or null if there is no match
      */
     public Translation getPreferedTranslation(Translatable toTranslate) {
-        for (final Language lang : this.preferredLocales) {
+        for (final Language lang : preferredLocales) {
             if (toTranslate.containsLang(lang)) {
                 return toTranslate.getTranslationForLang(lang);
             }

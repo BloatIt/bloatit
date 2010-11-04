@@ -11,7 +11,7 @@ public class MemberRight extends RightManager {
         }
     }
 
-    // Read for accept/refuse 
+    // Read for accept/refuse
     // write to create a new
     public static class InviteInGroup extends Accessor {
         @Override
@@ -19,11 +19,14 @@ public class MemberRight extends RightManager {
             return role.contains(Role.IN_GROUP);
         }
     }
-    
-    public static class Karma extends Public {}
 
-    public static class Password extends Private {}
+    public static class Karma extends Public {
+    }
 
-    public static class Name extends Public {}
+    public static class Password extends Private {
+    }
+
+    public static class Name extends Public {
+    }
 
 }

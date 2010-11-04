@@ -32,7 +32,7 @@ public class HtmlList extends HtmlComponent {
 
     public HtmlList(String text) {
         this.text = text;
-        this.cssClass = null;
+        cssClass = null;
     }
 
     public HtmlList(String cssClass, String text) {
@@ -41,8 +41,8 @@ public class HtmlList extends HtmlComponent {
     }
 
     public HtmlList() {
-        this.text = "";
-        this.cssClass = null;
+        text = "";
+        cssClass = null;
     }
 
     public void addItem(HtmlListItem item) {
