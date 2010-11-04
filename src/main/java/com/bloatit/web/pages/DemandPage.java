@@ -55,7 +55,7 @@ public class DemandPage extends Page {
             Integer id = null;
             try {
                 id = new Integer(parameters.get("id"));
-                demand = DemandManager.GetDemandById(id);
+                demand = DemandManager.getDemandById(id);
             } catch (final NumberFormatException e) {
                 throw new PageNotFoundException("Demand id not found " + id, null);
             }

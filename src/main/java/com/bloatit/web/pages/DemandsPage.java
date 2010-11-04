@@ -50,7 +50,7 @@ public class DemandsPage extends Page {
 
         final HtmlTitle pageTitle = new HtmlTitle(session.tr("Demands list"), "");
 
-        final PageIterable<Demand> demandList = DemandManager.GetAllDemands();
+        final PageIterable<Demand> demandList = DemandManager.getDemands();
 
         HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
