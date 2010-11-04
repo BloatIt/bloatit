@@ -63,6 +63,8 @@ public class DemandPage extends Page {
         } else {
             demand = null;
         }
+        generateOutputParams();
+
 
     }
 
@@ -72,6 +74,7 @@ public class DemandPage extends Page {
             throw new PageNotFoundException("Demand shouldn't be null", null);
         }
         this.demand = demand;
+        generateOutputParams();
     }
 
     public DemandPage(Session session, Demand demand) {
@@ -80,6 +83,8 @@ public class DemandPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
+        
+        needCustomDesign();
 
         final HtmlContainer page = new HtmlContainer();
 
@@ -87,9 +92,11 @@ public class DemandPage extends Page {
         Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
         page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
+
+        page.add(generateHead());
+        page.add(generateBody());
+
         
-        page.add(generateLeft());
-        page.add(generateRight());
 
         return page;
 
@@ -97,12 +104,7 @@ public class DemandPage extends Page {
 
     @Override
     public String getCode() {
-        if (demand != null) {
-            return new HtmlString(session).add("demand/id-" + demand.getId() + "/title-").secure(demand.getTitle()).toString();
-        } else {
-            return "demand"; // TODO Faire un système pour afficher une page
-                             // d'erreur
-        }
+        return "demand";
     }
 
     @Override
@@ -236,11 +238,10 @@ public class DemandPage extends Page {
         return progressBlock;
     }
 
-    private HtmlComponent generateLeft() {
+    private HtmlComponent generateBodyLeft() {
         final HtmlBlock left = new HtmlBlock("leftColumn");
 
-        left.add(generateProgressBlock());
-
+        
         // Description
         Locale defaultLocale = session.getLanguage().getLocale();
         Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
@@ -274,7 +275,7 @@ public class DemandPage extends Page {
 
     }
 
-    private HtmlComponent generateRight() {
+    private HtmlComponent generateBodyRight() {
         final HtmlBlock right = new HtmlBlock("rightColumn");
 
         HtmlBlock rightBlock = new HtmlBlock("right_block");
@@ -294,5 +295,29 @@ public class DemandPage extends Page {
         right.add(rightBlock);
 
         return right;
+    }
+
+    private HtmlComponent generateBody() {
+
+        HtmlBlock demandBody = new HtmlBlock("demand_body");
+
+        demandBody.add(generateBodyLeft());
+        demandBody.add(generateBodyRight());
+
+        return demandBody;
+    }
+
+    private HtmlComponent generateHead() {
+        HtmlBlock demandHead = new HtmlBlock("demand_head");
+
+        demandHead.add(generateProgressBlock());
+
+
+        return demandHead;
+    }
+
+    private void generateOutputParams() {
+        outputParameters.put("id", new Integer(demand.getId()).toString());
+        outputParameters.put("title", demand.getTitle());
     }
 }
