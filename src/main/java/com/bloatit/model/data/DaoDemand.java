@@ -78,12 +78,15 @@ public class DaoDemand extends DaoKudosable {
         return Demand;
     }
 
-    protected DaoDemand(DaoMember member, DaoDescription Description) {
+    protected DaoDemand(DaoMember member, DaoDescription description) {
         super(member);
+        if(description == null){
+            throw new NullPointerException();
+        }
         setState(State.VALIDATED);
-        description = Description;
-        specification = null;
-        contribution = new BigDecimal("0");
+        this.description = description;
+        this.specification = null;
+        this.contribution = new BigDecimal("0");
     }
 
     protected DaoDemand() {
@@ -206,7 +209,7 @@ public class DaoDemand extends DaoKudosable {
         contributions = Contributions;
     }
 
-    public void setComments(Set<DaoComment> comments) {
+    protected void setComments(Set<DaoComment> comments) {
         this.comments = comments;
     }
 
