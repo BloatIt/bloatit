@@ -21,8 +21,15 @@ package com.bloatit.web.htmlrenderer;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class HtmlTools {
+
+    public final static long SECOND = 1000;
+    public final static long MINUTE = 60*SECOND;
+    public final static long HOUR = 60*MINUTE;
+    public final static long DAY = 24*HOUR;
 
     public static String generateLink(Session session, String text, Request linkRequest) {
         return "<a href=\"" + linkRequest.getUrl() + "\">" + text + "</a>";
@@ -109,5 +116,22 @@ public class HtmlTools {
 
     public static String getActionLink(Session session, Action linkAction) {
         return "/" + session.getLanguage().getCode() + "/action/" + linkAction.getCode();
+    }
+
+    public static String formatDate(Session session, Date date) {
+        Date currentDate = new Date();
+
+        long diff = currentDate.getTime() - date.getTime();
+
+        if(diff < SECOND) {
+            return session.tr("now");
+        } else if (diff < MINUTE) {
+            return session.tr("%d seconds ago", new Object[]{new Long(diff/SECOND)});
+        }
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(session.tr("MMM d, ''yy 'at' HH:mm"));
+        
+        return dateFormat.format(date);
     }
 }

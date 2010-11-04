@@ -45,7 +45,7 @@ h2 {
 #page {
     margin: 0;
     padding: 0;
-
+    
 }
 
 #footer {
@@ -167,9 +167,16 @@ li {
     margin: 0px;
     margin-bottom: 2em;
 
+    text-align: center;
+
 }
 
-
+#center_column {
+    text-align: left;
+    max-width: 1024px;
+    min-width: 200px;
+    margin: 0px auto;
+}
 
 
 #main_menu {
@@ -194,7 +201,7 @@ li {
     font-family: "Verdena";
 
     width:100%;
-
+    
 }
 
 
@@ -401,12 +408,15 @@ li {
     padding: 0.2em;
 
     border: 1px solid rgb(230,230,230);
+    /*max-width: 500px;
+    min-width: 100px;*/
 }
 
 .leftColumn {
     display:table-cell;
     width: 100%;
     padding-right: 0.5em;
+    
 }
 
 .abstract_block{
@@ -462,4 +472,24 @@ li {
     color: rgb(32,41,88);
     margin-top: 3px;
     margin-bottom: 2px;
+}
+
+.comment_author {
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+.comment_author a{
+    color: rgb(152,151,220);
+}
+
+.comment_author a:hover{
+    color: rgb(182,181,220);
+}
+
+
+.comment_date {
+    font-size: 0.8em;
+    font-style: italic;
+    color: rgb(150,150,150);
 }

@@ -28,6 +28,7 @@ import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.LogoutAction;
+import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
@@ -129,7 +130,12 @@ public class DemandPage extends Page {
 
         for (Comment comment : demand.getComments()) {
             HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
-            commentBlock.add(new HtmlText(comment.getText()));
+
+            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
+            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
+
+            
+            commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
 
             generateChildComment(commentBlock, comment.getChildren());
 
@@ -232,7 +238,9 @@ public class DemandPage extends Page {
     private void generateChildComment(HtmlBlock commentBlock, PageIterable<Comment> children) {
         for (Comment childComment : children) {
             HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
-            childCommentBlock.add(new HtmlText(childComment.getText()));
+            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,childComment.getCreationDate())+"</span>";
+            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, childComment.getAuthor().getLogin() , new MemberPage(session, childComment.getAuthor()))+"</span>";
+            childCommentBlock.add(new HtmlText(childComment.getText()+" – "+author+" "+date));
             generateChildComment(childCommentBlock, childComment.getChildren());
 
             commentBlock.add(childCommentBlock);

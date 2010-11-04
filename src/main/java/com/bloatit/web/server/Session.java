@@ -56,6 +56,10 @@ public class Session {
         return language.tr(s);
     }
 
+    public String tr(String s, Object[] objects) {
+        return language.tr(s, objects);
+    }
+
     public Language getLanguage() {
         return language;
     }
