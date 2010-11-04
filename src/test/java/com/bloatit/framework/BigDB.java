@@ -3,6 +3,8 @@ package com.bloatit.framework;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.model.data.DaoComment;
@@ -25,11 +27,14 @@ public class BigDB {
         SessionManager.beginWorkUnit();
 
         // Create some users
+        List<DaoMember> members = new ArrayList<DaoMember>();
         for (int i = 0; i < nbUsers; i++) {
             DaoMember member;
             member = DaoMember.createAndPersist("member " + i, new Integer(i).toString(), "mail@nowhere.com");
             member.setFullname("User " + i + " Fullname");
             member.setExternalAccount(DaoExternalAccount.createAndPersist(member, AccountType.IBAN, "code"));
+            members.add(member);
+            
             try {
                 DaoTransaction
                         .createAndPersist(member.getInternalAccount(), member.getExternalAccount(), new BigDecimal("-1000"));
@@ -45,27 +50,27 @@ public class BigDB {
         // Create Some Groups
         for (int i = 0; i < nbUsers / 4; i += 4) {
             final DaoGroup group = DaoGroup.createAndPersiste("group " + (i / 4), "plop@plop.com", DaoGroup.Right.PUBLIC);
-            group.addMember(DaoMember.getByLogin("member " + i), true);
-            group.addMember(DaoMember.getByLogin("member " + (i + 1)), false);
-            group.addMember(DaoMember.getByLogin("member " + (i + 2)), false);
-            group.addMember(DaoMember.getByLogin("member " + (i + 3)), false);
+            group.addMember(members.get(i), true);
+            group.addMember(members.get(i + 1), false);
+            group.addMember(members.get(i + 2), false);
+            group.addMember(members.get(i + 3), false);
             if (i % 500 == 0) {
                 SessionManager.flush();
                 SessionManager.clear();
             }
         }
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand1 = DaoDemand.createAndPersist(DaoMember.getByLogin("member " + i), new DaoDescription(
-                    DaoMember.getByLogin("member " + i), new Locale("fr"), fortune(140), fortune() + fortune() + fortune()));
-            DaoDemand.createAndPersist(DaoMember.getByLogin("member " + i),
-                    new DaoDescription(DaoMember.getByLogin("member " + i), new Locale("fr"), fortune(140), fortune() + fortune()
+            final DaoDemand demand1 = DaoDemand.createAndPersist(members.get(i), new DaoDescription(
+                    members.get(i), new Locale("fr"), fortune(140), fortune() + fortune() + fortune()));
+            DaoDemand.createAndPersist(members.get(i),
+                    new DaoDescription(members.get(i), new Locale("fr"), fortune(140), fortune() + fortune()
                             + fortune() + fortune()));
 
             int commentCount = (int) (Math.random() * 5);
 
             for (int j = 0; j < commentCount; j++) {
 
-                final DaoComment comment = DaoComment.createAndPersist(DaoMember.getByLogin("member " + i), fortune());
+                final DaoComment comment = DaoComment.createAndPersist(members.get(i), fortune());
                 createComment(comment);
                 demand1.addComment(comment);
             }
