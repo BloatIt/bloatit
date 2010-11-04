@@ -28,6 +28,7 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
@@ -39,10 +40,12 @@ import com.bloatit.web.pages.SpecialsPage;
 public abstract class Page extends Request {
 
     private final String design;
+    private boolean customDesign = false;
+    private HtmlComponent content;
 
     public Page(Session session, Map<String, String> parameters) {
         super(session, parameters);
-        design = "/resources/css/design.css";
+        design = "/resources/css/core.css";
     }
 
     public Page(Session session) {
@@ -51,6 +54,9 @@ public abstract class Page extends Request {
 
     @Override
     protected void process() {
+
+        content = generateContent();
+
         htmlResult.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         htmlResult
                 .write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
@@ -61,6 +67,8 @@ public abstract class Page extends Request {
         htmlResult.unindent();
         htmlResult.write("</html>");
         session.flushNotifications();
+
+        content = null;
     }
 
     private void generate_head() {
@@ -68,6 +76,10 @@ public abstract class Page extends Request {
         htmlResult.indent();
         htmlResult.write("<metahttp-equiv=\"content-type\" content=\"text/html;charset=utf-8\"/>");
         htmlResult.write("<link rel=\"stylesheet\" href=" + design + " type=\"text/css\" media=\"handheld, all\" />");
+        if(customDesign) {
+            String customDesignLink = "/resources/css/"+getCode()+".css";
+            htmlResult.write("<link rel=\"stylesheet\" href=" + customDesignLink + " type=\"text/css\" media=\"handheld, all\" />");
+        }
 
         htmlResult.write("<title>BloatIt - " + getTitle() + "</title>");
         htmlResult.unindent();
@@ -92,7 +104,7 @@ public abstract class Page extends Request {
         htmlResult.indent();
 
         generateNotifications();
-        generateContent().generate(htmlResult);
+        content.generate(htmlResult);
         htmlResult.unindent();
         htmlResult.write("</div>");
         htmlResult.unindent();
@@ -210,13 +222,22 @@ public abstract class Page extends Request {
 
     @Override
     public String getUrl() {
-        String link = "/" + session.getLanguage().getCode() + "/" + getCode();
+
+
+
+        HtmlString link = new HtmlString(session);
+        link.add("/" + session.getLanguage().getCode() + "/" + getCode());
 
         for (Entry<String, String> entry : getOutputParameters().entrySet()) {
-            link += "/" + entry.getKey() + "-" + entry.getValue();
+            link.add("/" + entry.getKey() + "-");
+            link.secure(entry.getValue());
         }
 
-        return link;
+        return link.toString();
+    }
+
+    protected void needCustomDesign() {
+        customDesign = true;
     }
 
 }

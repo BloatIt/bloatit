@@ -63,6 +63,8 @@ public class DemandPage extends Page {
         } else {
             demand = null;
         }
+        generateOutputParams();
+
 
     }
 
@@ -72,6 +74,7 @@ public class DemandPage extends Page {
             throw new PageNotFoundException("Demand shouldn't be null", null);
         }
         this.demand = demand;
+        generateOutputParams();
     }
 
     public DemandPage(Session session, Demand demand) {
@@ -80,88 +83,20 @@ public class DemandPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
+        
+        needCustomDesign();
+
+        final HtmlContainer page = new HtmlContainer();
 
         Locale defaultLocale = session.getLanguage().getLocale();
         Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
-        final HtmlContainer page = new HtmlContainer();
 
-        final HtmlBlock left = new HtmlBlock("leftColumn");
-        final HtmlBlock right = new HtmlBlock("rightColumn");
         page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
-        page.add(left);
-        page.add(right);
 
-        // block avec la progression
-        float progressValue = 0;
-        // if(demand.getOffers().size() == 0) {
-        progressValue = 100 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
-        // } else {
-        // TODO
-        // }
+        page.add(generateHead());
+        page.add(generateBody());
 
-        HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
-        HtmlButton contributeButton = new HtmlButton(session.tr("Contribuer"));
-
-        contributeForm.add(contributeButton);
-
-        final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
-        contributeBlock.add(contributeForm);
-
-        final HtmlBlock progressBlock = new HtmlBlock("progress_block");
-        final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
-
-        final HtmlBlock progressBarBlock = new HtmlBlock("column");
-        progressBarBlock.add(progressBar);
-
-        progressBlock.add(contributeBlock);
-        progressBlock.add(new HtmlText(demand.getContribution().toPlainString() + "€"));
-        progressBlock.add(progressBarBlock);
-
-        left.add(progressBlock);
-
-        // Description
-        generateDescription(left, translatedDescription);
-
-        // Comments
-
-        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
-
-        commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
-
-        for (Comment comment : demand.getComments()) {
-            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
-
-            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
-            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
-
-            
-            commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
-
-            generateChildComment(commentBlock, comment.getChildren());
-
-            commentsBlock.add(commentBlock);
-
-        }
-
-        left.add(commentsBlock);
-
-        // droite process
-
-        HtmlBlock rightBlock = new HtmlBlock("right_block");
-
-        HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
-        HtmlBlock timelineBlock = new HtmlBlock("timeline_block");
-        HtmlBlock contributorsBlock = new HtmlBlock("contributors_block");
-
-        rightBlock.add(abstractBlock);
-        rightBlock.add(timelineBlock);
-        rightBlock.add(contributorsBlock);
-
-        generateAbstractBlock(abstractBlock);
-        generateTimelineBlock(timelineBlock);
-        generateContributorsBlock(contributorsBlock);
-
-        right.add(rightBlock);
+        
 
         return page;
 
@@ -169,12 +104,7 @@ public class DemandPage extends Page {
 
     @Override
     public String getCode() {
-        if (demand != null) {
-            return new HtmlString(session).add("demand/id-" + demand.getId() + "/title-").secure(demand.getTitle()).toString();
-        } else {
-            return "demand"; // TODO Faire un système pour afficher une page
-                             // d'erreur
-        }
+        return "demand";
     }
 
     @Override
@@ -221,17 +151,23 @@ public class DemandPage extends Page {
         contributorsBlock.add(timelineList);
     }
 
-    private void generateDescription(HtmlBlock left, Translation translatedDescription) {
+    private HtmlBlock generateDescription(Translation translatedDescription) {
         HtmlBlock descriptionBlock = new HtmlBlock("description_block");
 
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        HtmlKudoBox kudoBox = new HtmlKudoBox(demand, session);
-        descriptionKudoBlock.add(kudoBox);
+        
+        
+        
 
         HtmlText description = new HtmlText(translatedDescription.getText());
-        descriptionBlock.add(descriptionKudoBlock);
+        
+        HtmlBlock descriptionFooter = new HtmlBlock("description_footer");
+
+
+        descriptionBlock.add(generateDescriptionDetails());
+
         descriptionBlock.add(description);
-        left.add(descriptionBlock);
+        descriptionBlock.add(descriptionFooter);
+        return descriptionBlock;
 
     }
 
@@ -245,5 +181,143 @@ public class DemandPage extends Page {
 
             commentBlock.add(childCommentBlock);
         }
+    }
+    
+    private HtmlBlock generateDescriptionDetails() {
+
+        HtmlBlock descriptionDetails = new HtmlBlock("description_details");
+
+        HtmlText date = new HtmlText("description_date", HtmlTools.formatDate(session,demand.getCreationDate()));
+        HtmlText author = new HtmlText("description_author", HtmlTools.generateLink(session, demand.getAuthor().getLogin() , new MemberPage(session, demand.getAuthor())));
+
+        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
+        HtmlKudoBox kudoBox = new HtmlKudoBox(demand, session);
+        descriptionKudoBlock.add(kudoBox);
+
+
+        descriptionDetails.add(descriptionKudoBlock);
+        descriptionDetails.add(author);
+        descriptionDetails.add(date);
+        
+
+        return descriptionDetails;
+    }
+
+    private HtmlBlock generateContributeButton() {
+        HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
+        HtmlButton contributeButton = new HtmlButton(session.tr("Contribuer"));
+
+        contributeForm.add(contributeButton);
+
+        final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
+        contributeBlock.add(contributeForm);
+        return contributeBlock;
+    }
+
+    private HtmlComponent generateProgressBlock() {
+
+        // block avec la progression
+        float progressValue = 0;
+        // if(demand.getOffers().size() == 0) {
+        progressValue = 100 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
+        // } else {
+        // TODO
+        // }
+
+
+        final HtmlBlock progressBlock = new HtmlBlock("progress_block");
+        final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
+
+        final HtmlBlock progressBarBlock = new HtmlBlock("column");
+        progressBarBlock.add(progressBar);
+
+        progressBlock.add(generateContributeButton());
+        progressBlock.add(new HtmlText(demand.getContribution().toPlainString() + "€"));
+        progressBlock.add(progressBarBlock);
+
+        return progressBlock;
+    }
+
+    private HtmlComponent generateBodyLeft() {
+        final HtmlBlock left = new HtmlBlock("leftColumn");
+
+        
+        // Description
+        Locale defaultLocale = session.getLanguage().getLocale();
+        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        
+        left.add(generateDescription(translatedDescription));
+
+        // Comments
+
+        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
+
+        commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
+
+        for (Comment comment : demand.getComments()) {
+            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
+
+            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
+            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
+
+
+            commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
+
+            generateChildComment(commentBlock, comment.getChildren());
+
+            commentsBlock.add(commentBlock);
+
+        }
+
+        left.add(commentsBlock);
+
+        return left;
+
+    }
+
+    private HtmlComponent generateBodyRight() {
+        final HtmlBlock right = new HtmlBlock("rightColumn");
+
+        HtmlBlock rightBlock = new HtmlBlock("right_block");
+
+        HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
+        HtmlBlock timelineBlock = new HtmlBlock("timeline_block");
+        HtmlBlock contributorsBlock = new HtmlBlock("contributors_block");
+
+        rightBlock.add(abstractBlock);
+        rightBlock.add(timelineBlock);
+        rightBlock.add(contributorsBlock);
+
+        generateAbstractBlock(abstractBlock);
+        generateTimelineBlock(timelineBlock);
+        generateContributorsBlock(contributorsBlock);
+
+        right.add(rightBlock);
+
+        return right;
+    }
+
+    private HtmlComponent generateBody() {
+
+        HtmlBlock demandBody = new HtmlBlock("demand_body");
+
+        demandBody.add(generateBodyLeft());
+        demandBody.add(generateBodyRight());
+
+        return demandBody;
+    }
+
+    private HtmlComponent generateHead() {
+        HtmlBlock demandHead = new HtmlBlock("demand_head");
+
+        demandHead.add(generateProgressBlock());
+
+
+        return demandHead;
+    }
+
+    private void generateOutputParams() {
+        outputParameters.put("id", new Integer(demand.getId()).toString());
+        outputParameters.put("title", demand.getTitle());
     }
 }
