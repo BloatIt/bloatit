@@ -61,10 +61,10 @@ public class BigDB {
         }
         for (int i = 0; i < nbUsers; i++) {
             final DaoDemand demand1 = DaoDemand.createAndPersist(members.get(i), new DaoDescription(
-                    members.get(i), new Locale("fr"), fortune(140), fortune() + fortune() + fortune()));
+                    members.get(i), new Locale("fr"), fortune(140), fortune(1000) + fortune(1000) + fortune(1000)));
             DaoDemand.createAndPersist(members.get(i),
-                    new DaoDescription(members.get(i), new Locale("fr"), fortune(140), fortune() + fortune()
-                            + fortune() + fortune()));
+                    new DaoDescription(members.get(i), new Locale("fr"), fortune(140), fortune(1000) + fortune(1000)
+                            + fortune(1000) + fortune(1000)));
 
             int commentCount = (int) (Math.random() * 5);
 
