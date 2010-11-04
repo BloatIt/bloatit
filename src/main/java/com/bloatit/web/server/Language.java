@@ -90,6 +90,10 @@ public class Language {
         return template.i18n.tr(s);
     }
 
+    public String tr(String s, Object[] objects) {
+        return template.i18n.tr(s, objects);
+    }
+
     void setCode(String code) {
         if (languageList.containsKey(code)) {
             template = languageList.get(code);
