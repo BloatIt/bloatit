@@ -41,8 +41,8 @@ public class Demand extends Kudosable {
         dao.addContribution(getToken().getMember().getDao(), amount, comment);
     }
 
-    public Offer addOffer(Description description, Date dateExpir) {
-        return new Offer(dao.addOffer(getToken().getMember().getDao(), description.getDao(), dateExpir));
+    public Offer addOffer(BigDecimal amount, Description description, Date dateExpir) {
+        return new Offer(dao.addOffer(getToken().getMember().getDao(), amount, description.getDao(), dateExpir));
     }
 
     public void createSpecification(String content) {

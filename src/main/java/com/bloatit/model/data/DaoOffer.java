@@ -1,5 +1,6 @@
 package com.bloatit.model.data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -32,15 +33,19 @@ public class DaoOffer extends DaoKudosable {
     @DateBridge(resolution = Resolution.DAY)
     private Date dateExpire;
 
+    @Basic(optional = false)
+    private BigDecimal amount;
+
     protected DaoOffer() {
         super();
     }
 
-    public DaoOffer(DaoMember member, DaoDemand Demand, DaoDescription text, Date dateExpire) {
+    public DaoOffer(DaoMember member, DaoDemand Demand, BigDecimal amount, DaoDescription text, Date dateExpire) {
         super(member);
         demand = Demand;
         description = text;
         this.dateExpire = dateExpire;
+        this.setAmount(amount);
     }
 
     public Date getDateExpire() {
@@ -59,6 +64,10 @@ public class DaoOffer extends DaoKudosable {
         return description;
     }
 
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -70,4 +79,9 @@ public class DaoOffer extends DaoKudosable {
     protected void setDescription(DaoDescription text) {
         description = text;
     }
+
+    protected void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
 }

@@ -87,7 +87,8 @@ public class TestDB {
         demand.addContribution(yo, new BigDecimal("120"), "I'm so generous too");
         demand.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
 
-        demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Mon Offre", "Voici la description"), new Date());
+        demand.addOffer(fred, new BigDecimal("200"), new DaoDescription(fred, new Locale("fr"), "Mon Offre",
+                "Voici la description"), new Date());
 
         demand.getOffers().iterator().next().setState(State.VALIDATED);
 

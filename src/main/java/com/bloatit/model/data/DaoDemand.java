@@ -102,8 +102,8 @@ public class DaoDemand extends DaoKudosable {
         specification = new DaoSpecification(member, content, this);
     }
 
-    public DaoOffer addOffer(DaoMember member, DaoDescription description, Date dateExpir) {
-        final DaoOffer Offer = new DaoOffer(member, this, description, dateExpir);
+    public DaoOffer addOffer(DaoMember member, BigDecimal amount, DaoDescription description, Date dateExpir) {
+        final DaoOffer Offer = new DaoOffer(member, this, amount, description, dateExpir);
         offers.add(Offer);
         return Offer;
     }
