@@ -252,6 +252,7 @@ li {
 .progress_bar_block {
     margin-left: 1em;
     margin-left: 1em;
+    max-width: 200px;
 }
 
 
@@ -434,9 +435,6 @@ li {
     font-size: 0.7em;
 }
 
-.description_kudo_block{
-    float:right;
-}
 
 .kudo_box {
 
@@ -492,4 +490,50 @@ li {
     font-size: 0.8em;
     font-style: italic;
     color: rgb(150,150,150);
+}
+
+.description_details {
+    float:right;
+    text-align: center;
+    border-left: 1px dashed rgb(200,200,200);
+    /*border-bottom: 1px dashed rgb(200,200,200);*/
+    margin:0px;
+    padding:2px;
+    padding-left:6px;
+
+   
+    
+}
+
+.description_kudo_block {
+    padding:0px;
+    width:28px;
+    margin : 0px auto;
+    margin-bottom: 2em;
+}
+
+.description_date {
+    margin:0px;
+    padding:0px;
+   font-size: 0.8em;
+    font-style: italic;
+    color: rgb(150,150,150);
+}
+.description_author {
+    margin:0px;
+    padding:0px;
+}
+.description_author a{
+    margin:0px;
+    padding:0px;
+    font-size: 0.9em;
+    color: rgb(152,151,220);
+}
+
+.description_author a:hover{
+    color: rgb(182,181,220);
+}
+
+.description_footer {
+    clear: both;
 }

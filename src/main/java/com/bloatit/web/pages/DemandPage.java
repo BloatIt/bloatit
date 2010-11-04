@@ -120,7 +120,7 @@ public class DemandPage extends Page {
         left.add(progressBlock);
 
         // Description
-        generateDescription(left, translatedDescription);
+        left.add(generateDescription(translatedDescription));
 
         // Comments
 
@@ -221,17 +221,23 @@ public class DemandPage extends Page {
         contributorsBlock.add(timelineList);
     }
 
-    private void generateDescription(HtmlBlock left, Translation translatedDescription) {
+    private HtmlBlock generateDescription(Translation translatedDescription) {
         HtmlBlock descriptionBlock = new HtmlBlock("description_block");
 
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        HtmlKudoBox kudoBox = new HtmlKudoBox(demand, session);
-        descriptionKudoBlock.add(kudoBox);
+        
+        
+        
 
         HtmlText description = new HtmlText(translatedDescription.getText());
-        descriptionBlock.add(descriptionKudoBlock);
+        
+        HtmlBlock descriptionFooter = new HtmlBlock("description_footer");
+
+
+        descriptionBlock.add(generateDescriptionDetails());
+
         descriptionBlock.add(description);
-        left.add(descriptionBlock);
+        descriptionBlock.add(descriptionFooter);
+        return descriptionBlock;
 
     }
 
@@ -245,5 +251,25 @@ public class DemandPage extends Page {
 
             commentBlock.add(childCommentBlock);
         }
+    }
+    
+    private HtmlBlock generateDescriptionDetails() {
+
+        HtmlBlock descriptionDetails = new HtmlBlock("description_details");
+
+        HtmlText date = new HtmlText("description_date", HtmlTools.formatDate(session,demand.getCreationDate()));
+        HtmlText author = new HtmlText("description_author", HtmlTools.generateLink(session, demand.getAuthor().getLogin() , new MemberPage(session, demand.getAuthor())));
+
+        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
+        HtmlKudoBox kudoBox = new HtmlKudoBox(demand, session);
+        descriptionKudoBlock.add(kudoBox);
+
+
+        descriptionDetails.add(descriptionKudoBlock);
+        descriptionDetails.add(author);
+        descriptionDetails.add(date);
+        
+
+        return descriptionDetails;
     }
 }
