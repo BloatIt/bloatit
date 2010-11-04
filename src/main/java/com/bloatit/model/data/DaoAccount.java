@@ -12,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 
 @Entity
@@ -37,6 +38,7 @@ public abstract class DaoAccount {
 
     public DaoAccount(DaoActor actor) {
         if (actor == null) {
+            Log.data().fatal("Cannot create account with a null actor.");
             throw new NullPointerException();
         }
         this.actor = actor;
