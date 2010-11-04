@@ -83,6 +83,9 @@ public abstract class Page extends Request {
         generateTitle();
         htmlResult.write("<div id=\"center\">");
         htmlResult.indent();
+        htmlResult.write("<div id=\"center_column\">");
+        htmlResult.indent();
+        
         generateMainMenu();
 
         htmlResult.write("<div id=\"body_content\">");
@@ -90,6 +93,8 @@ public abstract class Page extends Request {
 
         generateNotifications();
         generateContent().generate(htmlResult);
+        htmlResult.unindent();
+        htmlResult.write("</div>");
         htmlResult.unindent();
         htmlResult.write("</div>");
         htmlResult.unindent();

@@ -45,7 +45,7 @@ h2 {
 #page {
     margin: 0;
     padding: 0;
-
+    
 }
 
 #footer {
@@ -167,9 +167,16 @@ li {
     margin: 0px;
     margin-bottom: 2em;
 
+    text-align: center;
+
 }
 
-
+#center_column {
+    text-align: left;
+    max-width: 1024px;
+    min-width: 200px;
+    margin: 0px auto;
+}
 
 
 #main_menu {
@@ -194,7 +201,7 @@ li {
     font-family: "Verdena";
 
     width:100%;
-
+    
 }
 
 
@@ -401,12 +408,15 @@ li {
     padding: 0.2em;
 
     border: 1px solid rgb(230,230,230);
+    /*max-width: 500px;
+    min-width: 100px;*/
 }
 
 .leftColumn {
     display:table-cell;
     width: 100%;
     padding-right: 0.5em;
+    
 }
 
 .abstract_block{
