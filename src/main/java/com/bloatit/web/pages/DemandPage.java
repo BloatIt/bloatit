@@ -290,6 +290,7 @@ public class DemandPage extends Page {
 
         HtmlBlock rightBlock = new HtmlBlock("right_block");
 
+        rightBlock.add(generateAbstractBlock());
         
         right.add(rightBlock);
 
@@ -311,18 +312,15 @@ public class DemandPage extends Page {
 
         HtmlBlock demandHeadKudo = new HtmlBlock("demand_head_kudo");
         HtmlBlock demandHeadProgress = new HtmlBlock("demand_head_progress");
-        HtmlBlock demandHeadAbstract = new HtmlBlock("demand_head_abstract");
+        
 
 
         demandHeadKudo.add(generateDemandKudoBlock());
         demandHeadProgress.add(generateProgressBlock());
-        demandHeadAbstract.add(generateAbstractBlock());
-
+        
         demandHead.add(demandHeadProgress);
         demandHead.add(demandHeadKudo);
         
-        demandHead.add(demandHeadAbstract);
-
         return demandHead;
     }
 
