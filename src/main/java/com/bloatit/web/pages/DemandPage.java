@@ -226,7 +226,7 @@ public class DemandPage extends Page {
         // block avec la progression
         float progressValue = 0;
         // if(demand.getOffers().size() == 0) {
-        progressValue = 100 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
+        progressValue = 42 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
         // } else {
         // TODO
         // }
