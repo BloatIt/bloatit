@@ -1,7 +1,5 @@
 package com.bloatit.model.data;
 
-import java.util.NoSuchElementException;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
@@ -50,10 +48,8 @@ public class DBRequests {
         try {
             org.apache.lucene.search.Query query = parser.parse(searchStr);
             return new SearchCollection<T>(SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent));
-
         } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+            return new NullCollection<T>();
         }
     }
 
