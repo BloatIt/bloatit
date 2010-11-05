@@ -22,7 +22,7 @@ public class DBRequests {
 
     public static PageIterable<DaoDemand> searchDemands(String searchStr) {
         return search(DaoDemand.class,
-                new String[] { "description.translations.title", "offers.description.translations.title" },
+                new String[] { "description.translations.title","description.translations.text", "offers.description.translations.title" },
                 searchStr);
     }
 
