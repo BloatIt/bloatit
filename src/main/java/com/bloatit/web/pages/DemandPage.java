@@ -39,6 +39,7 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlProgressBar;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTabBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
@@ -151,7 +152,13 @@ public class DemandPage extends Page {
         return timelineBlock;
     }
 
-    private HtmlBlock generateDescription(Translation translatedDescription) {
+    private HtmlBlock generateDescription() {
+
+        // Description
+        Locale defaultLocale = session.getLanguage().getLocale();
+        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+
+
         HtmlBlock descriptionBlock = new HtmlBlock("description_block");
 
         
@@ -252,35 +259,13 @@ public class DemandPage extends Page {
         final HtmlBlock left = new HtmlBlock("leftColumn");
 
         
-        // Description
-        Locale defaultLocale = session.getLanguage().getLocale();
-        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         
-        left.add(generateDescription(translatedDescription));
+        left.add(generateTabPane());
 
         // Comments
 
-        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
-
-        commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
-
-        for (Comment comment : demand.getComments()) {
-            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
-
-            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
-            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
-
-
-            commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
-
-            generateChildComment(commentBlock, comment.getChildren());
-
-            commentsBlock.add(commentBlock);
-
-        }
-
-        left.add(commentsBlock);
-
+        
+        
         return left;
 
     }
@@ -290,6 +275,7 @@ public class DemandPage extends Page {
 
         HtmlBlock rightBlock = new HtmlBlock("right_block");
 
+        rightBlock.add(generateCommentsBlock());
         rightBlock.add(generateAbstractBlock());
         
         right.add(rightBlock);
@@ -345,4 +331,50 @@ public class DemandPage extends Page {
         descriptionKudoBlock.add(kudoBox);
         return descriptionKudoBlock;
     }
+
+    private HtmlComponent generateCommentsBlock() {
+        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
+
+        commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
+
+        for (Comment comment : demand.getComments()) {
+            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
+
+            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
+            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
+
+
+            commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
+
+            generateChildComment(commentBlock, comment.getChildren());
+
+            commentsBlock.add(commentBlock);
+
+        }
+        return commentsBlock;
+    }
+
+    private HtmlComponent generateTabPane() {
+        HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab");
+
+
+        HtmlTabBlock.HtmlTab descriptionTab = new HtmlTabBlock.HtmlTab("description_tab", session.tr("Description") ,this, generateDescription());
+        HtmlTabBlock.HtmlTab commentTab = new HtmlTabBlock.HtmlTab("comment_tab", session.tr("Comments") ,this, generateCommentsBlock());
+
+        tabPane.addTab(descriptionTab);
+        tabPane.addTab(commentTab);
+
+
+        if(parameters.containsKey("demand_tab_key")) {
+            tabPane.selectTab(parameters.get("demand_tab_key"));
+        } else {
+            tabPane.selectTab("description_tab");
+        }
+        
+
+
+
+        return tabPane;
+    }
+
 }
