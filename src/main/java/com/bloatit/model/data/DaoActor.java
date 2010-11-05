@@ -40,7 +40,7 @@ public abstract class DaoActor {
     private DaoInternalAccount internalAccount;
 
     @OneToOne
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     private DaoExternalAccount externalAccount;
 
     protected DaoActor() {

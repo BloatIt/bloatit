@@ -45,7 +45,9 @@ public class SearchCollection<T> implements PageIterable<T> {
     @Override
     public int pageNumber() {
         if (pageSize != 0) {
-            return size() / pageSize;
+            // make sure every element is in a page :
+            // round to superior.
+            return size() / pageSize + (size() % pageSize != 0 ? 1 : 0);
         } else {
             return 1;
         }

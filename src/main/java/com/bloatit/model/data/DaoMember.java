@@ -37,7 +37,7 @@ public class DaoMember extends DaoActor {
 
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     private Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
     /**

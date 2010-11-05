@@ -59,6 +59,7 @@ public class GlobalSearchPage extends Page {
         pageTitle.add(searchBlock);
 
         if (parameters.containsKey(getSearchCode())) {
+            outputParameters.put(getSearchCode(), parameters.get(getSearchCode()));
 
             String searchString = parameters.get(getSearchCode());
 
