@@ -24,7 +24,7 @@ public class DaoOffer extends DaoKudosable {
     private DaoDemand demand;
 
     @OneToOne
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @IndexedEmbedded
     private DaoDescription description;
 

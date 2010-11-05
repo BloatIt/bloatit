@@ -3,6 +3,7 @@ package com.bloatit.model.data;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.util.Version;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.PageIterable;
@@ -37,7 +38,7 @@ public class DBRequests {
      * @return a PageIterable with the search results.
      */
     private static <T> PageIterable<T> search(Class<T> persistent, String[] fields, String searchStr) {
-        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
+        MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
         try {
             org.apache.lucene.search.Query query = parser.parse(searchStr);
             return new SearchCollection<T>(SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent));

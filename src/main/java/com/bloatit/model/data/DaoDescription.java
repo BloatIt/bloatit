@@ -24,7 +24,7 @@ public class DaoDescription extends DaoIdentifiable {
     private Locale defaultLocale;
 
     @OneToMany(mappedBy = "description")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @IndexedEmbedded
     private Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
 

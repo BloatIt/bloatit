@@ -23,7 +23,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     @Basic(optional = false)
     private int popularity;
     @OneToMany
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
     @Basic(optional = false)
     private State state;

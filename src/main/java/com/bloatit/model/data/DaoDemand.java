@@ -30,17 +30,17 @@ public class DaoDemand extends DaoKudosable {
     private BigDecimal contribution;
 
     @OneToOne(optional = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @IndexedEmbedded
     private DaoDescription description;
 
     @OneToOne(mappedBy = "demand")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @IndexedEmbedded
     private DaoSpecification specification;
 
     @OneToMany(mappedBy = "demand")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
     private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
@@ -52,7 +52,7 @@ public class DaoDemand extends DaoKudosable {
     private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
     @OneToMany
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     // @OrderBy(clause = "creationDate desc") // TODO find how to make this
     // works
     @IndexedEmbedded

@@ -35,7 +35,7 @@ public class DaoGroup extends DaoActor {
     private Right right;
 
     @OneToMany(mappedBy = "group")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     private Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
     protected DaoGroup() {
