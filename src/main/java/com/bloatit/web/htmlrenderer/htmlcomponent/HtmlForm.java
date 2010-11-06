@@ -27,8 +27,7 @@ public class HtmlForm extends HtmlContainer {
     private Method method = Method.POST;
 
     public enum Method {
-        GET,
-        POST
+        GET, POST
     }
 
     public HtmlForm(Request action) {
@@ -43,18 +42,16 @@ public class HtmlForm extends HtmlContainer {
         this.method = method;
     }
 
-    
-
     @Override
     public void generate(HtmlResult htmlResult) {
         String methodString = "";
-        if(method == Method.GET) {
-            methodString ="GET";
-        }else {
-            methodString ="POST";
+        if (method == Method.GET) {
+            methodString = "GET";
+        } else {
+            methodString = "POST";
         }
 
-        htmlResult.write("<form action=\"" + this.action.getUrl() + "\" method=\""+methodString+"\">");
+        htmlResult.write("<form action=\"" + action.getUrl() + "\" method=\"" + methodString + "\">");
         htmlResult.indent();
 
         super.generate(htmlResult);

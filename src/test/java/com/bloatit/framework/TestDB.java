@@ -10,8 +10,8 @@ import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDescription;
 import com.bloatit.model.data.DaoExternalAccount;
 import com.bloatit.model.data.DaoExternalAccount.AccountType;
-import com.bloatit.model.data.DaoKudosable.State;
 import com.bloatit.model.data.DaoGroup;
+import com.bloatit.model.data.DaoKudosable.State;
 import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoTransaction;
 import com.bloatit.model.data.DaoTranslation;
@@ -63,7 +63,8 @@ public class TestDB {
             e.printStackTrace();
         }
 
-        demand = DaoDemand.createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Mon titre", "Ceci est une description"));
+        demand = DaoDemand
+                .createAndPersist(yo, new DaoDescription(yo, new Locale("fr"), "Mon titre", "Ceci est une description"));
         final DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
         final DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
         final DaoComment c21 = DaoComment.createAndPersist(tom, "plup");
@@ -83,10 +84,11 @@ public class TestDB {
         c21.addKudos(fred, -1);
 
         demand.createSpecification(fred, "Tiens voila une spécif vraiment précise");
-        demand.addContribution(yo, new BigDecimal("120"));
-        demand.addContribution(tom, new BigDecimal("121"));
+        demand.addContribution(yo, new BigDecimal("120"), "I'm so generous too");
+        demand.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
 
-        demand.addOffer(fred, new DaoDescription(fred, new Locale("fr"), "Mon Offre", "Voici la description"), new Date());
+        demand.addOffer(fred, new BigDecimal("200"), new DaoDescription(fred, new Locale("fr"), "Mon Offre",
+                "Voici la description"), new Date());
 
         demand.getOffers().iterator().next().setState(State.VALIDATED);
 
@@ -98,10 +100,12 @@ public class TestDB {
             }
         }
 
-        final DaoDemand demand1 = DaoDemand.createAndPersist(fred, new DaoDescription(fred, new Locale("en"), "I try it in English", "Hello world"));
-        demand1.getDescription().addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais", "Salut le monde"));
-        demand1.addContribution(yo, new BigDecimal("12"));
-        demand1.addContribution(fred, new BigDecimal("11"));
+        final DaoDemand demand1 = DaoDemand.createAndPersist(fred, new DaoDescription(fred, new Locale("en"),
+                "I try it in English", "Hello world"));
+        demand1.getDescription().addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"),
+                "J'essaie en anglais", "Salut le monde"));
+        demand1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");
+        demand1.addContribution(fred, new BigDecimal("11"), "I'm so generous too");
 
         SessionManager.endWorkUnitAndFlush();
 

@@ -44,6 +44,8 @@ public class DispatchServer {
     static {
         pageMap = new HashMap<String, Class<? extends Request>>() {
 
+            private static final long serialVersionUID = -1990148160288171599L;
+
             {
                 put("index", IndexPage.class);
                 put("login", LoginPage.class);
@@ -59,10 +61,11 @@ public class DispatchServer {
 
         actionMap = new HashMap<String, Class<? extends Request>>() {
 
+            private static final long serialVersionUID = -3732663492018224362L;
+
             {
                 put("login", LoginAction.class);
                 put("logout", LogoutAction.class);
-                
 
             }
         };
@@ -73,10 +76,13 @@ public class DispatchServer {
     private final Map<String, String> query;
     private final Map<String, String> post;
 
-    public DispatchServer(Map<String, String> query, Map<String, String> post, Map<String, String> cookies, List<String> preferred_langs) {
+    public DispatchServer(Map<String, String> query,
+                          Map<String, String> post,
+                          Map<String, String> cookies,
+                          List<String> preferred_langs) {
         this.cookies = cookies;
         this.preferred_langs = preferred_langs;
-        this.session = findSession(query);
+        session = findSession(query);
 
         this.query = query;
         this.post = post;
@@ -109,7 +115,7 @@ public class DispatchServer {
         Session sess = null;
         final Language l = userLocale(query);
 
-        if (this.cookies.containsKey("session_key")) {
+        if (cookies.containsKey("session_key")) {
             sess = SessionManager.getByKey(cookies.get("session_key"));
         }
         if (sess == null) {
@@ -141,17 +147,17 @@ public class DispatchServer {
             final Request currentRequest = findRequest(queryString.page, parameters);
             return currentRequest;
         }
-        return new PageNotFound(this.session);
+        return new PageNotFound(session);
     }
 
     private Request findRequest(String page, Map<String, String> parameters) {
         if (page.startsWith("action/") && actionMap.containsKey(page.substring(7))) {
             // Find Action
-            return RequestFactory.build(actionMap.get(page.substring(7)), this.session, parameters);
+            return RequestFactory.build(actionMap.get(page.substring(7)), session, parameters);
         }
         if (pageMap.containsKey(page)) {
             // Find page
-            return RequestFactory.build(pageMap.get(page), this.session, parameters);
+            return RequestFactory.build(pageMap.get(page), session, parameters);
         }
         return new PageNotFound(session, parameters);
     }
@@ -159,7 +165,8 @@ public class DispatchServer {
     /**
      * Merges the list of query attributes and the list of post attributes.
      * 
-     * If an attribute with the same key is found in Query and Post, the attribute
+     * If an attribute with the same key is found in Query and Post, the
+     * attribute
      * from post is kept.
      * 
      * @param query the Map containing the query parameters

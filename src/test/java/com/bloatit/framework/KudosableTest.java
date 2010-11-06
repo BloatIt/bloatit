@@ -6,12 +6,13 @@ import com.bloatit.framework.managers.DemandManager;
 public class KudosableTest extends FrameworkTestUnit {
 
     public void testCanKudos() {
-        final Demand demand = DemandManager.GetDemandById(db.getDemand().getId());
+        final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
 
         try {
             demand.canKudos();
             fail();
-        } catch (final UnauthorizedOperationException e) {}
+        } catch (final UnauthorizedOperationException e) {
+        }
 
         demand.authenticate(yoAuthToken);
         assertTrue(demand.canKudos());
@@ -25,7 +26,7 @@ public class KudosableTest extends FrameworkTestUnit {
     }
 
     public void testUnkudos() {
-        final Demand demand = DemandManager.GetDemandById(db.getDemand().getId());
+        final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
 
         assertEquals(0, demand.getPopularity());
         demand.authenticate(yoAuthToken);
@@ -34,7 +35,7 @@ public class KudosableTest extends FrameworkTestUnit {
     }
 
     public void testKudos() {
-        final Demand demand = DemandManager.GetDemandById(db.getDemand().getId());
+        final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
 
         demand.authenticate(yoAuthToken);
         demand.kudos();

@@ -27,7 +27,7 @@ public class HtmlText extends HtmlComponent {
 
     public HtmlText(String text) {
         this.text = text;
-        this.cssClass = null;
+        cssClass = null;
     }
 
     public HtmlText(String cssClass, String text) {

@@ -12,7 +12,7 @@ public class DaoSpecification extends DaoUserContent {
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String content;
-    
+
     @OneToOne(optional = false)
     private DaoDemand demand;
 
@@ -24,7 +24,7 @@ public class DaoSpecification extends DaoUserContent {
         super(member);
         // TODO make sure demand != null
         this.content = content;
-        this.demand = Demand;
+        demand = Demand;
     }
 
     public String getContent() {
@@ -44,7 +44,7 @@ public class DaoSpecification extends DaoUserContent {
     }
 
     protected void setDemand(DaoDemand Demand) {
-        this.demand = Demand;
+        demand = Demand;
     }
 
 }

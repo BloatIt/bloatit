@@ -20,11 +20,11 @@ import com.bloatit.model.data.util.SessionManager;
 @Entity
 public class DaoDescription extends DaoIdentifiable {
 
-//    @Field(index = Index.UN_TOKENIZED)
+    // @Field(index = Index.UN_TOKENIZED)
     private Locale defaultLocale;
 
     @OneToMany(mappedBy = "description")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @IndexedEmbedded
     private Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
 
@@ -48,7 +48,7 @@ public class DaoDescription extends DaoIdentifiable {
     public DaoDescription(DaoMember member, Locale locale, String title, String description) {
         super();
         setDefaultLocale(locale);
-        this.translations.add(new DaoTranslation(member, this, locale, title, description));
+        translations.add(new DaoTranslation(member, this, locale, title, description));
     }
 
     public PageIterable<DaoTranslation> getTranslationsFromQuery() {
@@ -89,6 +89,6 @@ public class DaoDescription extends DaoIdentifiable {
     // ======================================================================
 
     protected void setTranslations(Set<DaoTranslation> Translations) {
-        this.translations = Translations;
+        translations = Translations;
     }
 }

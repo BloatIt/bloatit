@@ -15,92 +15,93 @@ import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.util.SessionManager;
 
 public class Demand extends Kudosable {
-	private final DaoDemand dao;
+    private final DaoDemand dao;
 
-	public static Demand create(DaoDemand dao) {
-		if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
-			return null;
-		}
-		return new Demand(dao);
-	}
+    public static Demand create(DaoDemand dao) {
+        if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
+            return null;
+        }
+        return new Demand(dao);
+    }
 
-	public Demand(Member member, Locale locale, String title, String description) {
-		dao = DaoDemand.createAndPersist(member.getDao(), new DaoDescription(member.getDao(), locale, title, description));
-	}
+    public Demand(Member member, Locale locale, String title, String description) {
+        dao = DaoDemand.createAndPersist(member.getDao(), new DaoDescription(member.getDao(), locale, title, description));
+    }
 
-	private Demand(DaoDemand dao) {
-		super();
-		this.dao = dao;
-	}
+    private Demand(DaoDemand dao) {
+        super();
+        this.dao = dao;
+    }
 
-	public void addComment(String text) {
-		dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
-	}
+    public void addComment(String text) {
+        dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
+    }
 
-	public void addContribution(BigDecimal amount) throws Throwable {
-		dao.addContribution(getToken().getMember().getDao(), amount);
-	}
+    public void addContribution(BigDecimal amount, String comment) throws Throwable {
+        dao.addContribution(getToken().getMember().getDao(), amount, comment);
+    }
 
-	public Offer addOffer(Description description, Date dateExpir) {
-		return new Offer(dao.addOffer(getToken().getMember().getDao(), description.getDao(), dateExpir));
-	}
+    public Offer addOffer(BigDecimal amount, Description description, Date dateExpir) {
+        return new Offer(dao.addOffer(getToken().getMember().getDao(), amount, description.getDao(), dateExpir));
+    }
 
-	public void createSpecification(String content) {
-		dao.createSpecification(getToken().getMember().getDao(), content);
-	}
+    public void createSpecification(String content) {
+        dao.createSpecification(getToken().getMember().getDao(), content);
+    }
 
-	public PageIterable<Comment> getComments() {
-		return new CommentList(dao.getCommentsFromQuery());
-	}
+    public PageIterable<Comment> getComments() {
+        return new CommentList(dao.getCommentsFromQuery());
+    }
 
-	public PageIterable<Contribution> getContributions() {
-		return new ContributionList(dao.getContributionsFromQuery());
-	}
+    public PageIterable<Contribution> getContributions() {
+        return new ContributionList(dao.getContributionsFromQuery());
+    }
 
-	public DaoDemand getDao() {
-		return dao;
-	}
-	
-	public BigDecimal getContribution(){
-	    return dao.getContribution();
-	}
+    public DaoDemand getDao() {
+        return dao;
+    }
 
-        public BigDecimal getContributionMax(){
-	    return dao.getContributionMax();
-	}
+    public BigDecimal getContribution() {
+        return dao.getContribution();
+    }
 
-        public BigDecimal getContributionMin(){
-	    return dao.getContributionMin();
-	}
+    public BigDecimal getContributionMax() {
+        return dao.getContributionMax();
+    }
 
-	@Override
-	protected DaoKudosable getDaoKudosable() {
-		return dao;
-	}
+    public BigDecimal getContributionMin() {
+        return dao.getContributionMin();
+    }
 
-	public Description getDescription() {
-		return new Description(dao.getDescription());
-	}
+    @Override
+    protected DaoKudosable getDaoKudosable() {
+        return dao;
+    }
 
-	public PageIterable<Offer> getOffers() {
-		return new OfferList(dao.getOffersFromQuery());
-	}
+    public Description getDescription() {
+        return new Description(dao.getDescription());
+    }
 
-	public int getPopularity() {
-		return dao.getPopularity();
-	}
+    public PageIterable<Offer> getOffers() {
+        return new OfferList(dao.getOffersFromQuery());
+    }
 
-	public Specification getSpecification() {
-		return new Specification(dao.getSpecification());
-	}
+    @Override
+    public int getPopularity() {
+        return dao.getPopularity();
+    }
 
-	public String getTitle() {
-		return getDescription().getDefaultTranslation().getTitle();
-	}
+    public Specification getSpecification() {
+        return new Specification(dao.getSpecification());
+    }
 
-	// TODO right management
-	public void removeOffer(Offer offer) {
-		dao.removeOffer(offer.getDao());
-	}
+    public String getTitle() {
+        return getDescription().getDefaultTranslation().getTitle();
+    }
+
+    // TODO right management
+    public void removeOffer(Offer offer) {
+        dao.removeOffer(offer.getDao());
+    }
 
 }

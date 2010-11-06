@@ -24,14 +24,16 @@ import com.bloatit.web.htmlrenderer.HtmlResult;
 public class HtmlProgressBar extends HtmlComponent {
 
     final float progress;
-    
+
     public HtmlProgressBar(float progress) {
         this.progress = progress;
-        //this.progress = 10f;
+        // this.progress = 10f;
     }
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: "+progress+"%;\"></div></div></div>");
+        htmlResult
+                .write("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: "
+                        + progress + "%;\"></div></div></div>");
     }
 }

@@ -18,11 +18,11 @@
  */
 package com.bloatit.web.pages;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Demand;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.HtmlTools;
@@ -59,6 +59,7 @@ public class GlobalSearchPage extends Page {
         pageTitle.add(searchBlock);
 
         if (parameters.containsKey(getSearchCode())) {
+            outputParameters.put(getSearchCode(), parameters.get(getSearchCode()));
 
             String searchString = parameters.get(getSearchCode());
 
@@ -75,13 +76,10 @@ public class GlobalSearchPage extends Page {
                 }
             };
 
-
-
             HtmlPagedList<Demand> pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, this, session);
 
             int pageSize = 10;
             int currentPage = 0;
-
 
             if (parameters.containsKey("page_size")) {
                 try {
@@ -133,7 +131,6 @@ public class GlobalSearchPage extends Page {
         searchForm.setMethod(HtmlForm.Method.GET);
         HtmlTextField searchField = new HtmlTextField();
         searchField.setName(globalSearchPage.getSearchCode());
-
 
         if (parameters.containsKey(getSearchCode())) {
             searchField.setDefaultValue(parameters.get(getSearchCode()));

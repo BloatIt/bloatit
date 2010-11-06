@@ -37,8 +37,8 @@ public class AuthToken {
             Log.framework().warn("Authentication error " + login + " " + password);
             throw new NotFoundException("Identifiaction or authentication failed");
         }
-        this.member = tmp;
-        this.key = UUID.randomUUID();
+        member = tmp;
+        key = UUID.randomUUID();
     }
 
     public UUID getKey() {

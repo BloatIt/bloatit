@@ -37,7 +37,7 @@ public class PageNotFound extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        final HtmlTitle errorTitle = new HtmlTitle(this.session.tr("Page not found"), "");
+        final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"), "");
 
         return errorTitle;
 

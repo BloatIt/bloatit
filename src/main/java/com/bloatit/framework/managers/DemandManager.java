@@ -26,11 +26,11 @@ import com.bloatit.model.data.DaoDemand;
 
 public class DemandManager {
 
-    public static PageIterable<Demand> GetAllDemands() {
+    public static PageIterable<Demand> getDemands() {
         return new DemandList(DBRequests.getAll(DaoDemand.class));
     }
 
-    public static Demand GetDemandById(Integer id) {
+    public static Demand getDemandById(Integer id) {
         return Demand.create(DBRequests.getById(DaoDemand.class, id));
     }
 

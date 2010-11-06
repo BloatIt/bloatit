@@ -42,9 +42,11 @@ public class SCGI {
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
 
     /**
-     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGI</a> request headers.<br>
+     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGI</a> request
+     * headers.<br>
      * After the headers had been loaded,
-     * you can read the body of the request manually from the same {@code input} stream:
+     * you can read the body of the request manually from the same {@code input}
+     * stream:
      * 
      * <pre>
      * // Load the SCGI headers.
@@ -58,7 +60,7 @@ public class SCGI {
      * @param input an efficient (buffered) input stream.
      * @return strings passed via the SCGI request.
      */
-    public static HashMap parse(InputStream input) throws IOException {
+    public static HashMap<String, String> parse(InputStream input) throws IOException {
         final StringBuilder lengthString = new StringBuilder(12);
         String headers = "";
         for (;;) {
@@ -82,7 +84,7 @@ public class SCGI {
                 throw new SCGIException("Wrong SCGI header length: " + lengthString);
             }
         }
-        final HashMap env = new HashMap();
+        final HashMap<String, String> env = new HashMap<String, String>();
         while (headers.length() != 0) {
             final int sep1 = headers.indexOf(0);
             final int sep2 = headers.indexOf(0, sep1 + 1);

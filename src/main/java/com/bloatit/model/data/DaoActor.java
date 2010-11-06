@@ -40,7 +40,7 @@ public abstract class DaoActor {
     private DaoInternalAccount internalAccount;
 
     @OneToOne
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     private DaoExternalAccount externalAccount;
 
     protected DaoActor() {
@@ -49,10 +49,13 @@ public abstract class DaoActor {
 
     protected DaoActor(String login, String email) {
         super();
-        this.dateCreation = new Date();
+        if (login == null || email == null) {
+            throw new NullPointerException();
+        }
+        dateCreation = new Date();
         this.login = login;
         this.email = email;
-        this.internalAccount = new DaoInternalAccount(this);
+        internalAccount = new DaoInternalAccount(this);
     }
 
     /**
@@ -62,7 +65,6 @@ public abstract class DaoActor {
      */
     public static boolean exist(String login) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        // TODO use the count() in HQL
         final Query q = session.createQuery("select count(*) from com.bloatit.model.data.DaoActor as m where login = :login");
         q.setString("login", login);
         return ((Long) q.uniqueResult()) > 0;
@@ -108,7 +110,7 @@ public abstract class DaoActor {
     // ======================================================================
 
     protected void setInternalAccount(DaoInternalAccount InternalAccount) {
-        this.internalAccount = InternalAccount;
+        internalAccount = InternalAccount;
     }
 
     protected void setLogin(String login) {
@@ -116,7 +118,7 @@ public abstract class DaoActor {
     }
 
     protected void setDateCreation(Date dateJoin) {
-        this.dateCreation = dateJoin;
+        dateCreation = dateJoin;
     }
 
     protected void setId(Integer id) {

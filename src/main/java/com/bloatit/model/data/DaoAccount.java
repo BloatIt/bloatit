@@ -12,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 
 @Entity
@@ -35,8 +36,12 @@ public abstract class DaoAccount {
         super();
     }
 
-    public DaoAccount(DaoActor Actor) {
-        this.actor = Actor;
+    public DaoAccount(DaoActor actor) {
+        if (actor == null) {
+            Log.data().fatal("Cannot create account with a null actor.");
+            throw new NullPointerException();
+        }
+        this.actor = actor;
         this.creationDate = new Date();
         this.lastModificationDate = new Date();
         this.amount = new BigDecimal("0");
@@ -51,13 +56,15 @@ public abstract class DaoAccount {
     }
 
     protected void addToAmountValue(BigDecimal blocked) {
-        this.lastModificationDate = new Date();
-        this.amount = this.amount.add(blocked);
+        resetModificationDate();
+        lastModificationDate = new Date();
+        amount = amount.add(blocked);
     }
 
     protected void substractToAmountValue(BigDecimal blocked) {
-        this.lastModificationDate = new Date();
-        this.amount = this.amount.subtract(blocked);
+        resetModificationDate();
+        lastModificationDate = new Date();
+        amount = amount.subtract(blocked);
     }
 
     public PageIterable<DaoTransaction> getTransactions() {
@@ -98,7 +105,7 @@ public abstract class DaoAccount {
     }
 
     protected void setActor(DaoActor Actor) {
-        this.actor = Actor;
+        actor = Actor;
     }
 
     protected void setCreationDate(Date creationDate) {

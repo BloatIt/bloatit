@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -11,28 +12,27 @@ import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
-import javax.persistence.Column;
 
 @Entity
 public class DaoComment extends DaoKudosable {
 
     @Basic(optional = false)
-    @Column(length=5000)
+    @Column(length = 5000)
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String text;
 
     @OneToMany(mappedBy = "father")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @OrderBy("creationDate desc")
     @IndexedEmbedded(depth = 1)
     private Set<DaoComment> children = new HashSet<DaoComment>(0);
@@ -53,6 +53,9 @@ public class DaoComment extends DaoKudosable {
 
     protected DaoComment(DaoMember member, String text) {
         super(member);
+        if(text == null){
+            throw new NullPointerException();
+        }
         this.text = text;
     }
 
@@ -70,7 +73,6 @@ public class DaoComment extends DaoKudosable {
     }
 
     public void addChildComment(DaoComment comment) {
-        // TODO make sure it is not null;
         comment.setFather(this);
         children.add(comment);
     }
@@ -95,7 +97,7 @@ public class DaoComment extends DaoKudosable {
     }
 
     protected void setFather(DaoComment Comment) {
-        this.father = Comment;
+        father = Comment;
     }
 
     protected DaoComment getFather() {

@@ -2,29 +2,28 @@ package com.bloatit.model.data.util;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 
 public class SessionManager {
-	// SHOULD BE FINAL see reCreateSessionFactory
+    // SHOULD BE FINAL see reCreateSessionFactory
     private static SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-            return sessionFactory;
+            return sessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "update")
+                    .buildSessionFactory();
         } catch (final Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
-    
-    public static Query createQuery(String str){
+
+    public static Query createQuery(String str) {
         return getSessionFactory().getCurrentSession().createQuery(str);
     }
 
@@ -36,7 +35,8 @@ public class SessionManager {
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-    public static FullTextSession getCurrentFullTextSession(){
+
+    public static FullTextSession getCurrentFullTextSession() {
         return Search.getFullTextSession(sessionFactory.getCurrentSession());
     }
 
@@ -71,9 +71,8 @@ public class SessionManager {
     public static void reCreateSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            final AnnotationConfiguration configure = new AnnotationConfiguration().configure();
-            configure.setProperty("hbm2ddl.auto", "create-drop");
-            sessionFactory = configure.buildSessionFactory();
+            sessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "create-drop")
+                    .buildSessionFactory();
         } catch (final Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);

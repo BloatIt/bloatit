@@ -3,6 +3,7 @@ package com.bloatit.model.data;
 import java.math.BigDecimal;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
@@ -29,24 +30,29 @@ public class DaoContribution extends DaoUserContent {
     @Enumerated
     private State state;
 
+    @Column(length = 144, nullable = false, updatable = false)
+    private String comment;
+
     @OneToOne(optional = true)
     private DaoTransaction transaction;
 
-    // TODO add the possibility to add some text (144 c for auto tweet ?)
 
-    public DaoContribution() {
+    protected DaoContribution() {
     }
 
-    public DaoContribution(DaoMember member, DaoDemand demand, BigDecimal amount) {
+    public DaoContribution(DaoMember member, DaoDemand demand, BigDecimal amount, String comment) {
         super(member);
-        // TODO make sure demand != null
+        if(comment == null || demand == null){
+            throw new NullPointerException();
+        }
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             Log.data().error("The amount of a contribution cannot be <= 0.");
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         this.amount = amount;
-        this.state = State.WAITING;
+        state = State.WAITING;
         this.demand = demand;
+        this.comment = comment;
         getAuthor().getInternalAccount().block(amount);
     }
 
@@ -81,6 +87,10 @@ public class DaoContribution extends DaoUserContent {
     public DaoTransaction getTransaction() {
         return transaction;
     }
+    
+    public String getComment() {
+        return comment;
+    }
 
     // ======================================================================
     // For hibernate mapping
@@ -91,7 +101,7 @@ public class DaoContribution extends DaoUserContent {
     }
 
     protected void setDemand(DaoDemand Demand) {
-        this.demand = Demand;
+        demand = Demand;
     }
 
     protected void setAmount(BigDecimal amount) {
@@ -103,7 +113,11 @@ public class DaoContribution extends DaoUserContent {
     }
 
     protected void setTransaction(DaoTransaction Transaction) {
-        this.transaction = Transaction;
+        transaction = Transaction;
+    }
+
+    protected void setComment(String comment) {
+        this.comment = comment;
     }
 
 }

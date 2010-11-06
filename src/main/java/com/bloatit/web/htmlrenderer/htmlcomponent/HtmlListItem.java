@@ -18,7 +18,7 @@ public class HtmlListItem extends HtmlComponent {
 
     public HtmlListItem(String text) {
         this.text = text;
-        this.cssClass = null;
+        cssClass = null;
     }
 
     public HtmlListItem(String cssClass, String text) {

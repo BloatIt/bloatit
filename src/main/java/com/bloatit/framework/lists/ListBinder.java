@@ -20,7 +20,7 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     @Override
     public void setPage(int page) {
-    	daoCollection.setPage(page);
+        daoCollection.setPage(page);
     }
 
     @Override
@@ -47,8 +47,6 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
     public int getCurrentPage() {
         return daoCollection.getCurrentPage();
     }
-
-
 
     protected abstract Iterator<E> createFromDaoIterator(Iterator<DAO> dao);
 

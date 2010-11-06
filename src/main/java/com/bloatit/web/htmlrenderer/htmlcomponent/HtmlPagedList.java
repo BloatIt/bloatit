@@ -19,14 +19,10 @@
 package com.bloatit.web.htmlrenderer.htmlcomponent;
 
 import com.bloatit.common.PageIterable;
-
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HtmlPagedList<T> extends HtmlComponent {
 
@@ -48,7 +44,11 @@ public class HtmlPagedList<T> extends HtmlComponent {
         this.session = session;
     }
 
-    public HtmlPagedList(String cssClass, HtmlRenderer<T> itemRenderer, PageIterable<T> itemList, Request currentRequest, Session session) {
+    public HtmlPagedList(String cssClass,
+                         HtmlRenderer<T> itemRenderer,
+                         PageIterable<T> itemList,
+                         Request currentRequest,
+                         Session session) {
         this.itemRenderer = itemRenderer;
         this.itemList = itemList;
         this.cssClass = cssClass;
@@ -70,21 +70,18 @@ public class HtmlPagedList<T> extends HtmlComponent {
             htmlResult.write("<ul class=\"" + cssClass + "\">");
         }
 
-        if(currentPage > 1) {
+        if (currentPage > 1) {
             generateLinksBar();
         }
 
         htmlResult.indent();
 
-
-
         for (T item : itemList) {
             itemRenderer.generate(htmlResult, item);
         }
 
-
         htmlResult.unindent();
-        if(pageCount > 1) {
+        if (pageCount > 1) {
             generateLinksBar();
         }
 
@@ -113,7 +110,7 @@ public class HtmlPagedList<T> extends HtmlComponent {
         // first page
         generateLink(1);
 
-        if(currentPage - 4 > 1) {
+        if (currentPage - 4 > 1) {
             htmlResult.write("...");
         }
 
@@ -124,19 +121,16 @@ public class HtmlPagedList<T> extends HtmlComponent {
             }
         }
 
-        if(currentPage + 4 < pageCount) {
+        if (currentPage + 4 < pageCount) {
             htmlResult.write("...");
         }
 
-        //Last page
+        // Last page
         generateLink(pageCount);
 
-
-
-        if (currentPage < pageCount ) {
+        if (currentPage < pageCount) {
             generateLink(currentPage + 1, session.tr("Next"));
         }
-
 
         htmlResult.unindent();
         htmlResult.write("</span>");

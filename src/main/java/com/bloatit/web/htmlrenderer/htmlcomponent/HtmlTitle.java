@@ -33,7 +33,7 @@ public class HtmlTitle extends HtmlContainer {
     @Override
     public void generate(HtmlResult htmlResult) {
         final String titleNum = htmlResult.pushTitle();
-        htmlResult.write("<h" + titleNum + " class=\"" + this.cssClass + "\">" + this.title + "</h" + titleNum + ">");
+        htmlResult.write("<h" + titleNum + " class=\"" + cssClass + "\">" + title + "</h" + titleNum + ">");
         super.generate(htmlResult);
         htmlResult.popTitle();
     }

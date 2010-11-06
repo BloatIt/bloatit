@@ -23,9 +23,9 @@ public class DaoInternalAccount extends DaoAccount {
     }
 
     // Used in Member constructor.
-    protected DaoInternalAccount(DaoActor Actor) {
-        super(Actor);
-        this.blocked = new BigDecimal("0");
+    protected DaoInternalAccount(DaoActor actor) {
+        super(actor);
+        blocked = new BigDecimal("0");
     }
 
     public BigDecimal getBlocked() {

@@ -37,7 +37,7 @@ public class DaoMember extends DaoActor {
 
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     private Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
     /**
@@ -45,14 +45,14 @@ public class DaoMember extends DaoActor {
      * it.
      * 
      * @param login
-     *            The login of the member.
+     *        The login of the member.
      * @param password
-     *            The password of the member (md5 ??)
+     *        The password of the member (md5 ??)
      * @return The newly created DaoMember
      * @throws HibernateException
-     *             If there is any problem connecting to the db. Or if the
-     *             member as a non unique login. If an exception is thrown then
-     *             the transaction is rolled back and reopened.
+     *         If there is any problem connecting to the db. Or if the
+     *         member as a non unique login. If an exception is thrown then
+     *         the transaction is rolled back and reopened.
      * 
      */
     public static DaoMember createAndPersist(String login, String password, String email) throws HibernateException {
@@ -72,7 +72,7 @@ public class DaoMember extends DaoActor {
      * Find a DaoMember using its login.
      * 
      * @param login
-     *            the member login.
+     *        the member login.
      * @return null if not found.
      */
     public static DaoMember getByLogin(String login) {
@@ -99,14 +99,14 @@ public class DaoMember extends DaoActor {
         super(login, email);
         setRole(Role.NORMAL);
         this.password = password;
-        this.karma = 0;
+        karma = 0;
     }
 
     /**
      * @param aGroup
-     *            the group in which this member is added.
+     *        the group in which this member is added.
      * @param isAdmin
-     *            tell if the member is an admin of the group 'aGroup'
+     *        tell if the member is an admin of the group 'aGroup'
      */
     public void addToGroup(DaoGroup aGroup, boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(this, aGroup, isAdmin));
@@ -114,7 +114,7 @@ public class DaoMember extends DaoActor {
 
     /**
      * @param aGroup
-     *            the group from which this member is removed.
+     *        the group from which this member is removed.
      */
     public void removeFromGroup(DaoGroup aGroup) {
         final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
@@ -134,7 +134,7 @@ public class DaoMember extends DaoActor {
     }
 
     public void setFullname(String firstname) {
-        this.fullname = firstname;
+        fullname = firstname;
     }
 
     public String getPassword() {
@@ -226,11 +226,11 @@ public class DaoMember extends DaoActor {
     // ======================================================================
 
     protected void setKarma(Integer karama) {
-        this.karma = karama;
+        karma = karama;
     }
 
     protected void setGroupMembership(Set<DaoGroupMembership> GroupMembership) {
-        this.groupMembership = GroupMembership;
+        groupMembership = GroupMembership;
     }
 
     protected Set<DaoGroupMembership> getGroupMembership() {

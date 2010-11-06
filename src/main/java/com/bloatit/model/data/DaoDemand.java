@@ -30,17 +30,17 @@ public class DaoDemand extends DaoKudosable {
     private BigDecimal contribution;
 
     @OneToOne(optional = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @IndexedEmbedded
     private DaoDescription description;
 
     @OneToOne(mappedBy = "demand")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @IndexedEmbedded
     private DaoSpecification specification;
 
     @OneToMany(mappedBy = "demand")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL})
     @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
     private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
@@ -52,8 +52,9 @@ public class DaoDemand extends DaoKudosable {
     private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
     @OneToMany
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    //@OrderBy(clause = "creationDate desc") // TODO find how to make this works
+    @Cascade(value = { CascadeType.ALL})
+    // @OrderBy(clause = "creationDate desc") // TODO find how to make this
+    // works
     @IndexedEmbedded
     private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
@@ -61,7 +62,7 @@ public class DaoDemand extends DaoKudosable {
      * It is automatically in validated state (temporary)
      * 
      * @param member
-     *            the author of the demand
+     *        the author of the demand
      * @param description
      */
     public static DaoDemand createAndPersist(DaoMember member, DaoDescription Description) {
@@ -77,10 +78,13 @@ public class DaoDemand extends DaoKudosable {
         return Demand;
     }
 
-    protected DaoDemand(DaoMember member, DaoDescription Description) {
+    protected DaoDemand(DaoMember member, DaoDescription description) {
         super(member);
+        if(description == null){
+            throw new NullPointerException();
+        }
         setState(State.VALIDATED);
-        this.description = Description;
+        this.description = description;
         this.specification = null;
         this.contribution = new BigDecimal("0");
     }
@@ -98,8 +102,8 @@ public class DaoDemand extends DaoKudosable {
         specification = new DaoSpecification(member, content, this);
     }
 
-    public DaoOffer addOffer(DaoMember member, DaoDescription description, Date dateExpir) {
-        final DaoOffer Offer = new DaoOffer(member, this, description, dateExpir);
+    public DaoOffer addOffer(DaoMember member, BigDecimal amount, DaoDescription description, Date dateExpir) {
+        final DaoOffer Offer = new DaoOffer(member, this, amount, description, dateExpir);
         offers.add(Offer);
         return Offer;
     }
@@ -108,18 +112,28 @@ public class DaoDemand extends DaoKudosable {
      * delete offer from this demand AND FROM DB !
      * 
      * @param Offer
-     *            the offer we want to delete.
+     *        the offer we want to delete.
      */
     public void removeOffer(DaoOffer Offer) {
         offers.remove(Offer);
     }
 
-    public void addContribution(DaoMember member, BigDecimal amount) {
+    /**
+     * Add a contribution to a demand.
+     * 
+     * @param member the author of the contribution
+     * @param amount the > 0 amount of euros on this contribution
+     * @param comment a <= 144 char comment on this contribution
+     */
+    public void addContribution(DaoMember member, BigDecimal amount, String comment) {
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
+        if (comment.length() > 144) {
+            throw new FatalErrorException("Comments lenght of Contribution must be < 144.", null);
+        }
 
-        contributions.add(new DaoContribution(member, this, amount));
+        contributions.add(new DaoContribution(member, this, amount, comment));
         contribution = contribution.add(amount);
     }
 
@@ -180,22 +194,22 @@ public class DaoDemand extends DaoKudosable {
     // ======================================================================
 
     protected void setSpecification(DaoSpecification Specification) {
-        this.specification = Specification;
+        specification = Specification;
     }
 
     protected void setDescription(DaoDescription Description) {
-        this.description = Description;
+        description = Description;
     }
 
     protected void setOffers(Set<DaoOffer> Offers) {
-        this.offers = Offers;
+        offers = Offers;
     }
 
     protected void setContributions(Set<DaoContribution> Contributions) {
-        this.contributions = Contributions;
+        contributions = Contributions;
     }
 
-    public void setComments(Set<DaoComment> comments) {
+    protected void setComments(Set<DaoComment> comments) {
         this.comments = comments;
     }
 

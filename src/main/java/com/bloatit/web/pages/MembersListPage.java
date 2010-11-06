@@ -18,16 +18,15 @@
  */
 package com.bloatit.web.pages;
 
-import com.bloatit.web.htmlrenderer.HtmlResult;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.MemberManager;
+import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
@@ -57,18 +56,16 @@ public class MembersListPage extends Page {
             @Override
             public void generate(HtmlResult htmlResult, Member member) {
                 final MemberPage memberPage = new MemberPage(session, member);
-                final HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(session, member.getFullname(), memberPage) + "<span class=\"karma\">"
-                        + HtmlTools.compressKarma(member.getKarma()) + "</span>");
+                final HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(session, member.getFullname(), memberPage)
+                        + "<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 item.generate(htmlResult);
             }
         };
-
 
         HtmlPagedList<Member> pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, this, session);
 
         int pageSize = 42;
         int currentPage = 0;
-
 
         if (parameters.containsKey("page_size")) {
             try {
@@ -79,7 +76,7 @@ public class MembersListPage extends Page {
 
         if (parameters.containsKey("page")) {
             try {
-                currentPage = Integer.parseInt(parameters.get("page"))-1;
+                currentPage = Integer.parseInt(parameters.get("page")) - 1;
             } catch (NumberFormatException e) {
             }
         }

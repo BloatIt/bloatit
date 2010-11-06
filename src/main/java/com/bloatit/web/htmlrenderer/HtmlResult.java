@@ -32,10 +32,10 @@ public class HtmlResult extends IndentedText {
     private StringBuilder result;
     private final Request currentRequest;
 
-    public HtmlResult(Session session,Request currentRequest) {
+    public HtmlResult(Session session, Request currentRequest) {
         super();
         this.session = session;
-        this.redirect = null;
+        redirect = null;
         this.currentRequest = currentRequest;
     }
 
@@ -47,7 +47,7 @@ public class HtmlResult extends IndentedText {
 
         result = new StringBuilder();
         result.append("Set-Cookie: session_key=");
-        result.append(this.session.getKey());
+        result.append(session.getKey());
         result.append("; path=/; Max-Age=1296000; Version=1 \r\n");
 
         if (valid) {

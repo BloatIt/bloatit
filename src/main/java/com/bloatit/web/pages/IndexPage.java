@@ -19,11 +19,11 @@
 
 package com.bloatit.web.pages;
 
-import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.framework.managers.MemberManager;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
@@ -57,8 +57,6 @@ public class IndexPage extends Page {
 
         HtmlBlock dualColumnBlock = new HtmlBlock("dual_column_block");
         generateDualColumnBlock(searchBlock);
-
-
 
         allPage.add(searchBlock);
         allPage.add(statsBlock);
@@ -97,7 +95,8 @@ public class IndexPage extends Page {
     }
 
     private void generateStatsBlock(HtmlBlock statsBlock) {
-        statsBlock.add(new HtmlText(""+DemandManager.getDemandsCount()+ " demands, "+MemberManager.getMembersCount()+" members..."));
+        statsBlock.add(new HtmlText("" + DemandManager.getDemandsCount() + " demands, " + MemberManager.getMembersCount()
+                + " members..."));
     }
 
     private void generateDualColumnBlock(HtmlBlock dualColumnBlock) {
@@ -107,17 +106,17 @@ public class IndexPage extends Page {
         HtmlBlock hightlightDemandsBlock = new HtmlBlock("index_hightlight_demands_block");
         generateHightlightDemandsBlock(hightlightDemandsBlock);
 
-
         dualColumnBlock.add(descriptionBlock);
         dualColumnBlock.add(hightlightDemandsBlock);
     }
 
     private void generateHightlightDemandsBlock(HtmlBlock hightlightDemandsBlock) {
-        
+
     }
 
     private void generateDescriptionBlock(HtmlBlock descriptionBlock) {
-        String description = session.tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
+        String description = session
+                .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlText(description));
     }
 }

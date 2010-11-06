@@ -22,8 +22,6 @@ package com.bloatit.web.actions;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Session;
 
@@ -44,9 +42,9 @@ public class LogoutAction extends Action {
 
     @Override
     protected void process() {
-        this.session.setLogged(false);
-        this.session.setAuthToken(null);
+        session.setLogged(false);
+        session.setAuthToken(null);
 
-        this.session.notifyGood(this.session.tr("Logout sucess."));
+        session.notifyGood(session.tr("Logout sucess."));
     }
 }

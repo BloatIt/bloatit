@@ -34,28 +34,24 @@ public class HtmlKudoBox extends HtmlComponent {
         this.session = session;
     }
 
-    
-    
     @Override
     public void generate(HtmlResult htmlResult) {
         HtmlBlock kudoBox = new HtmlBlock("kudo_box");
 
-
         HtmlBlock kudoBoxUp = new HtmlBlock("kudo_box_up");
-        
+
         HtmlBlock kudoBoxDown = new HtmlBlock("kudo_box_down");
 
         kudoBoxUp.setText("kudo up");
         kudoBoxDown.setText("kudo down");
 
-        String kudoUpLink = HtmlTools.getActionLink(session,  new LogoutAction(session));
-        String kudoDownLink = HtmlTools.getActionLink(session,  new LogoutAction(session));
+        String kudoUpLink = HtmlTools.getActionLink(session, new LogoutAction(session));
+        String kudoDownLink = HtmlTools.getActionLink(session, new LogoutAction(session));
 
         kudoBox.add(new HtmlLinkComponent(kudoUpLink, kudoBoxUp));
         kudoBox.add(new HtmlText("kudo_box_score", HtmlTools.compressKarma(kudosable.getPopularity())));
         kudoBox.add(new HtmlLinkComponent(kudoDownLink, kudoBoxDown));
 
-        
         kudoBox.generate(htmlResult);
     }
 }

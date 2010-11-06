@@ -25,6 +25,6 @@ public class HtmlPasswordField extends HtmlComponent {
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<p><input name=\"" + this.name + "\"type=\"password\" /></p>");
+        htmlResult.write("<p><input name=\"" + name + "\"type=\"password\" /></p>");
     }
 }

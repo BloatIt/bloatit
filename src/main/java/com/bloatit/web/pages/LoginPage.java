@@ -45,12 +45,12 @@ public class LoginPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        final LoginAction logAction = new LoginAction(this.session);
+        final LoginAction logAction = new LoginAction(session);
 
         final HtmlForm loginForm = new HtmlForm(logAction);
         final HtmlTextField loginField = new HtmlTextField();
         final HtmlPasswordField passwordField = new HtmlPasswordField();
-        final HtmlButton submitButton = new HtmlButton(this.session.tr("Login"));
+        final HtmlButton submitButton = new HtmlButton(session.tr("Login"));
 
         loginForm.add(loginField);
         loginForm.add(passwordField);
@@ -59,10 +59,10 @@ public class LoginPage extends Page {
         loginField.setName(logAction.getLoginCode());
         passwordField.setName(logAction.getPasswordCode());
 
-        final HtmlTitle loginTitle = new HtmlTitle(this.session.tr("Login"), "");
+        final HtmlTitle loginTitle = new HtmlTitle(session.tr("Login"), "");
         loginTitle.add(loginForm);
 
-        final HtmlTitle sigupTitle = new HtmlTitle(this.session.tr("Sigup"), "");
+        final HtmlTitle sigupTitle = new HtmlTitle(session.tr("Sigup"), "");
         sigupTitle.add(new HtmlText("Not yet implemented."));
 
         final HtmlContainer group = new HtmlContainer();

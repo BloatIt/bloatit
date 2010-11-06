@@ -28,7 +28,7 @@ public class HtmlBlock extends HtmlContainer {
     private String text = null;
 
     public HtmlBlock() {
-        this.cssClass = null;
+        cssClass = null;
     }
 
     public HtmlBlock(String cssClass) {
@@ -37,24 +37,24 @@ public class HtmlBlock extends HtmlContainer {
 
     @Override
     public void generate(HtmlResult htmlResult) {
-        if(id != null) {
-            if(cssClass == null) {
+        if (id != null) {
+            if (cssClass == null) {
                 htmlResult.write("<div id=\"" + id + "\">");
             } else {
                 htmlResult.write("<div id=\"" + id + "\" class=\"" + cssClass + "\">");
             }
         } else {
-            if(cssClass == null) {
+            if (cssClass == null) {
                 htmlResult.write("<div>");
             } else {
                 htmlResult.write("<div class=\"" + cssClass + "\">");
             }
-            
+
         }
-        
+
         htmlResult.indent();
 
-        if(text != null) {
+        if (text != null) {
             htmlResult.write(text);
         }
         super.generate(htmlResult);

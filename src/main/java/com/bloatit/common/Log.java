@@ -10,11 +10,14 @@ import org.apache.log4j.Logger;
 // FATAL -> should be reported to the admin
 
 public class Log {
+    public static final Logger framework = Logger.getLogger("com.bloatit.framework");
+    public static final Logger data = Logger.getLogger("com.bloatit.model.data");
+    
     public static Logger framework() {
-        return Logger.getLogger("com.bloatit.framework");
+        return framework;
     }
 
     public static Logger data() {
-        return Logger.getLogger("com.bloatit.model.data");
+        return data;
     }
 }

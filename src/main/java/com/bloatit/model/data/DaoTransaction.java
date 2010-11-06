@@ -37,7 +37,8 @@ public class DaoTransaction extends DaoIdentifiable {
      * @param amount is the quantity of money transfered.
      * @throws NotEnoughMoneyException
      */
-    public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
+    public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount)
+            throws NotEnoughMoneyException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoTransaction Transaction = new DaoTransaction(from, to, amount);
         try {
@@ -60,7 +61,7 @@ public class DaoTransaction extends DaoIdentifiable {
         this.from = from;
         this.to = to;
         this.amount = amount;
-        this.creationDate = new Date();
+        creationDate = new Date();
         from.substractToAmountValue(amount);
         to.addToAmountValue(amount);
     }

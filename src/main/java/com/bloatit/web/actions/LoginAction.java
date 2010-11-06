@@ -23,8 +23,6 @@ import java.util.Map;
 
 import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.managers.LoginManager;
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Session;
@@ -54,10 +52,10 @@ public class LoginAction extends Action {
 
     @Override
     protected void process() {
-        if (this.parameters.containsKey(getLoginCode()) && this.parameters.containsKey(getPasswordCode())) {
+        if (parameters.containsKey(getLoginCode()) && parameters.containsKey(getPasswordCode())) {
 
-            final String login = this.parameters.get(getLoginCode());
-            final String password = this.parameters.get(getPasswordCode());
+            final String login = parameters.get(getLoginCode());
+            final String password = parameters.get(getPasswordCode());
             AuthToken token = null;
             token = LoginManager.loginByPassword(login, password);
 
@@ -71,15 +69,15 @@ public class LoginAction extends Action {
     }
 
     private void loginSuccess(AuthToken token) {
-        this.session.setLogged(true);
-        this.session.setAuthToken(token);
-        this.session.notifyGood(this.session.tr("Login success."));
+        session.setLogged(true);
+        session.setAuthToken(token);
+        session.notifyGood(session.tr("Login success."));
     }
 
     private void loginFailed() {
-        this.session.setLogged(false);
-        this.session.setAuthToken(null);
-        this.htmlResult.setRedirect(new LoginPage(this.session));
-        this.session.notifyBad(this.session.tr("Login failed. Wrong login or password."));
+        session.setLogged(false);
+        session.setAuthToken(null);
+        htmlResult.setRedirect(new LoginPage(session));
+        session.notifyBad(session.tr("Login failed. Wrong login or password."));
     }
 }

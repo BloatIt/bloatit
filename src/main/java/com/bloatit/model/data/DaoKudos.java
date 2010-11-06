@@ -14,7 +14,8 @@ public class DaoKudos extends DaoUserContent {
     @Basic(optional = false)
     private int value;
 
-    public DaoKudos() {}
+    public DaoKudos() {
+    }
 
     public static DaoKudos createAndPersist(DaoMember member, int value) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();

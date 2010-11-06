@@ -41,34 +41,39 @@ public class Session {
 
     Session(String key) {
         this.key = key;
-        this.authToken = null;
-        this.logged = false;
-        this.actionList = new ArrayDeque<Action>();
-        this.notificationList = new ArrayDeque<Notification>();
+        authToken = null;
+        logged = false;
+        actionList = new ArrayDeque<Action>();
+        notificationList = new ArrayDeque<Notification>();
 
         // TODO : Following lines are for testing purposes only
         preferredLocales = new ArrayList<Language>();
-        preferredLocales.add(new Language(Locale.ENGLISH)); // TODO : ONLY FOR TEST
+        preferredLocales.add(new Language(Locale.ENGLISH)); // TODO : ONLY FOR
+                                                            // TEST
     }
 
     public String tr(String s) {
-        return this.language.tr(s);
+        return language.tr(s);
+    }
+
+    public String tr(String s, Object[] objects) {
+        return language.tr(s, objects);
     }
 
     public Language getLanguage() {
-        return this.language;
+        return language;
     }
 
     public void setLanguage(Language newLang) {
-        this.language = newLang;
+        language = newLang;
     }
 
     public void setAuthToken(AuthToken token) {
-        this.authToken = token;
+        authToken = token;
     }
 
     public AuthToken getAuthToken() {
-        return this.authToken;
+        return authToken;
     }
 
     public void setLogged(boolean logged) {
@@ -76,7 +81,7 @@ public class Session {
     }
 
     public boolean isLogged() {
-        return this.logged;
+        return logged;
     }
 
     public String getKey() {
@@ -88,7 +93,7 @@ public class Session {
     }
 
     public void setLastStablePage(Request p) {
-        this.lastStablePage = p;
+        lastStablePage = p;
     }
 
     public Request getLastStablePage() {
@@ -104,19 +109,19 @@ public class Session {
     }
 
     public void notifyGood(String message) {
-        this.notificationList.add(new Notification(message, Notification.Type.GOOD));
+        notificationList.add(new Notification(message, Notification.Type.GOOD));
     }
 
     public void notifyBad(String message) {
-        this.notificationList.add(new Notification(message, Notification.Type.BAD));
+        notificationList.add(new Notification(message, Notification.Type.BAD));
     }
 
     public void notifyError(String message) {
-        this.notificationList.add(new Notification(message, Notification.Type.ERROR));
+        notificationList.add(new Notification(message, Notification.Type.ERROR));
     }
 
     void flushNotifications() {
-        this.notificationList.clear();
+        notificationList.clear();
     }
 
     Deque<Notification> getNotifications() {
@@ -124,6 +129,6 @@ public class Session {
     }
 
     public List<Language> getPreferredLangs() {
-        return this.preferredLocales;
+        return preferredLocales;
     }
 }

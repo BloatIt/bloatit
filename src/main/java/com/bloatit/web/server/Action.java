@@ -21,9 +21,6 @@ package com.bloatit.web.server;
 
 import java.util.Map;
 
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.pages.IndexPage;
-
 public abstract class Action extends Request {
 
     public Action(Session session, Map<String, String> parameters) {
@@ -34,10 +31,12 @@ public abstract class Action extends Request {
     protected void process() {
     }
 
+    @Override
     public String getUrl() {
-        return "/" + this.session.getLanguage().getCode() + "/action/" + getCode();
+        return "/" + session.getLanguage().getCode() + "/action/" + getCode();
     }
 
+    @Override
     public boolean isStable() {
         return false;
     }
