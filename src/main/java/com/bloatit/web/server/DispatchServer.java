@@ -26,6 +26,7 @@ import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.pages.CreateDemandPage;
+import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.DemandPage;
 import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.GlobalSearchPage;
@@ -58,6 +59,7 @@ public class DispatchServer {
                 put("members_list", MembersListPage.class);
                 put("member", MemberPage.class);
                 put("global_search", GlobalSearchPage.class);
+                put("contribute", ContributePage.class);
             }
         };
 

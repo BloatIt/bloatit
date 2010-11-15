@@ -231,7 +231,12 @@ public class DemandPage extends Page {
     }
 
     private HtmlBlock generateContributeButton() {
-        HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("idea", String.valueOf(this.demand.getId()));
+
+        HtmlForm contributeForm = new HtmlForm(new ContributePage(session, params));
+        contributeForm.setMethod(HtmlForm.Method.GET);
+
         HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));
 
         contributeForm.add(contributeButton);

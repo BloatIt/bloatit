@@ -24,17 +24,33 @@ import com.bloatit.web.htmlrenderer.HtmlResult;
 public class HtmlTextField extends HtmlComponent {
 
     private String defaultValue = null;
+    private final String label;
+
+    public HtmlTextField(String label){
+        this.label = label;
+    }
+
+    public HtmlTextField(){
+        this("");
+    }
 
     @Override
     public void generate(HtmlResult htmlResult) {
         if (defaultValue == null) {
-            htmlResult.write("<p><input name=\"" + name + "\" type=\"text\" /></p>");
+            htmlResult.write("<p>"+ this.generateLabel() + "<input name=\"" + name + "\" type=\"text\" id=\""+this.name+"\"/></p>");
         } else {
-            htmlResult.write("<p><input name=\"" + name + "\" type=\"text\" value=\"" + defaultValue + "\" /></p>");
+            htmlResult.write("<p>"+ this.generateLabel() + "<input name=\"" + name + "\" type=\"text\" id=\""+this.name+"\" value=\"" + defaultValue + "\" /></p>");
         }
     }
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    private String generateLabel(){
+        if(this.label.equals("")){
+            return "";
+        }
+        return "<label for=\""+this.name+"\">"+this.label+"</label>";
     }
 }

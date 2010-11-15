@@ -43,6 +43,16 @@ public abstract class Request {
         process();
     }
 
+    /**
+     * <p>Indicates wether the page is considered stable or not.
+     * When the user is interrupted in his navigation (he is not logged ...)
+     * he'll return to the last stable page he visited. </p>
+     * <p> Therefore stable pages should only be main pages of the website
+     * navigation, and not the result of an action</p>
+     * @return
+     *      <i>true</i> if the page is stable
+     *      <i>false</i> otherwise
+     */
     public abstract boolean isStable();
 
     public abstract String getUrl();
