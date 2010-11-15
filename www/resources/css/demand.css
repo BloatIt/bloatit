@@ -193,17 +193,20 @@
 
 
 .description_block {
-    -moz-border-radius:5px;
+    /*-moz-border-radius:5px;
     -webkit-border-radius:5px;
     -o-border-radius:5px;
     -ms-border-radius:5px;
     -khtml-border-radius:5px;
     border-radius:5px;
+    border: 1px solid rgb(230,230,230);
+    background:rgb(240,240,240);
+    */
     padding: 0.5em;
     margin-top: 0em;
     margin-bottom: 1em;
-    background:rgb(240,240,240);
-    border: 1px solid rgb(230,230,230);
+    
+    
 }
 
 .comments_title{

@@ -18,12 +18,15 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.web.htmlrenderer.HtmlResult;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
+import com.bloatit.framework.Contribution;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
@@ -37,6 +40,7 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlKudoBox;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlProgressBar;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTabBlock;
@@ -135,6 +139,27 @@ public class DemandPage extends Page {
             contributorsBlock.add(new HtmlText(session.tr("Max:&nbsp;") + contributionMax));
             contributorsBlock.add(new HtmlText(session.tr("Mean:&nbsp;") + contributionMean));
         }
+
+
+        HtmlRenderer<Contribution> participationRenderer = new HtmlRenderer<Contribution>() {
+
+            @Override
+            public void generate(HtmlResult htmlResult, Contribution item) {
+               
+                String itemString =  item.getAuthor().getLogin() + " "+ item.getAmount().toPlainString() + " " + item.getCreationDate().toString();
+
+                HtmlListItem htmlItem = new HtmlListItem(itemString);
+
+                htmlItem.generate(htmlResult);
+            }
+        };
+
+
+
+        HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("participation_list", participationRenderer, demand.getContributions(), this, session);
+
+
+        contributorsBlock.add(participationsList);
 
         return contributorsBlock;
 
@@ -263,7 +288,7 @@ public class DemandPage extends Page {
         left.add(generateTabPane());
 
         // Comments
-
+        left.add(generateCommentsBlock());
         
         
         return left;
@@ -275,7 +300,6 @@ public class DemandPage extends Page {
 
         HtmlBlock rightBlock = new HtmlBlock("right_block");
 
-        rightBlock.add(generateCommentsBlock());
         rightBlock.add(generateAbstractBlock());
         
         right.add(rightBlock);
@@ -319,7 +343,7 @@ public class DemandPage extends Page {
         HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
         
         abstractBlock.add(generateTimelineBlock());
-        abstractBlock.add(generateContributorsBlock());
+        //abstractBlock.add(generateContributorsBlock());
 
         
         return abstractBlock;
@@ -360,9 +384,12 @@ public class DemandPage extends Page {
 
         HtmlTabBlock.HtmlTab descriptionTab = new HtmlTabBlock.HtmlTab("description_tab", session.tr("Description") ,this, generateDescription());
         HtmlTabBlock.HtmlTab commentTab = new HtmlTabBlock.HtmlTab("comment_tab", session.tr("Comments") ,this, generateCommentsBlock());
+        HtmlTabBlock.HtmlTab participationsTab = new HtmlTabBlock.HtmlTab("participations_tab", session.tr("Participations") ,this, generateContributorsBlock());
+
 
         tabPane.addTab(descriptionTab);
         tabPane.addTab(commentTab);
+        tabPane.addTab(participationsTab);
 
 
         if(parameters.containsKey("demand_tab_key")) {
