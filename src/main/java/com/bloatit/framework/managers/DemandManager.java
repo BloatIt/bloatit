@@ -19,6 +19,7 @@
 package com.bloatit.framework.managers;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.lists.DemandList;
 import com.bloatit.model.data.DBRequests;
@@ -40,6 +41,11 @@ public class DemandManager {
 
     public static PageIterable<Demand> search(String searchString) {
         return new DemandList(DBRequests.searchDemands(searchString));
+    }
+
+    public static boolean canCreate(AuthToken authToken) {
+        //TODO: set right right
+        return true;
     }
 
 }

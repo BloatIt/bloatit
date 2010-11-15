@@ -23,6 +23,7 @@ import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class HtmlTools {
 
@@ -33,6 +34,10 @@ public class HtmlTools {
 
     public static String generateLink(Session session, String text, Request linkRequest) {
         return "<a href=\"" + linkRequest.getUrl() + "\">" + text + "</a>";
+    }
+
+    public static String generateLink(Session session, String text, Request linkRequest, Map<String, String> outputParams) {
+        return "<a href=\"" + linkRequest.getUrl(outputParams) + "\">" + text + "</a>";
     }
 
     public static String generateLogo() {
@@ -118,6 +123,7 @@ public class HtmlTools {
         return "/" + session.getLanguage().getCode() + "/action/" + linkAction.getCode();
     }
 
+
     public static String formatDate(Session session, Date date) {
         Date currentDate = new Date();
 
@@ -134,4 +140,6 @@ public class HtmlTools {
         
         return dateFormat.format(date);
     }
+
+
 }

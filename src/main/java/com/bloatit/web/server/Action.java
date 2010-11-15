@@ -19,6 +19,7 @@
 
 package com.bloatit.web.server;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Action extends Request {
@@ -35,6 +36,20 @@ public abstract class Action extends Request {
     public String getUrl() {
         return "/" + session.getLanguage().getCode() + "/action/" + getCode();
     }
+
+    @Override
+    public String getUrl(Map<String, String> outputParameters) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.putAll(parameters);
+        params.putAll(outputParameters);
+        
+
+        return "/" + session.getLanguage().getCode() + "/action/" + getCode();
+    }
+
+
+
 
     @Override
     public boolean isStable() {

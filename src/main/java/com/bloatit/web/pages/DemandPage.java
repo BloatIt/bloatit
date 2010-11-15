@@ -69,8 +69,7 @@ public class DemandPage extends Page {
             demand = null;
         }
         generateOutputParams();
-
-
+        
     }
 
     public DemandPage(Session session, Map<String, String> parameters, Demand demand) {
@@ -335,8 +334,8 @@ public class DemandPage extends Page {
     }
 
     private void generateOutputParams() {
-        outputParameters.put("id", new Integer(demand.getId()).toString());
-        outputParameters.put("title", demand.getTitle());
+        parameters.put("id", new Integer(demand.getId()).toString());
+        parameters.put("title", demand.getTitle());
     }
 
     private HtmlComponent generateAbstractBlock() {
@@ -383,12 +382,12 @@ public class DemandPage extends Page {
 
 
         HtmlTabBlock.HtmlTab descriptionTab = new HtmlTabBlock.HtmlTab("description_tab", session.tr("Description") ,this, generateDescription());
-        HtmlTabBlock.HtmlTab commentTab = new HtmlTabBlock.HtmlTab("comment_tab", session.tr("Comments") ,this, generateCommentsBlock());
+        //HtmlTabBlock.HtmlTab commentTab = new HtmlTabBlock.HtmlTab("comment_tab", session.tr("Comments") ,this, generateCommentsBlock());
         HtmlTabBlock.HtmlTab participationsTab = new HtmlTabBlock.HtmlTab("participations_tab", session.tr("Participations") ,this, generateContributorsBlock());
 
 
         tabPane.addTab(descriptionTab);
-        tabPane.addTab(commentTab);
+        //tabPane.addTab(commentTab);
         tabPane.addTab(participationsTab);
 
 
