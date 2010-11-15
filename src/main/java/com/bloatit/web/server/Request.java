@@ -46,7 +46,7 @@ public abstract class Request {
 
     public abstract boolean isStable();
 
-    public void setOutputParam(String key, String value) {
+    /*public void setOutputParam(String key, String value) {
         outputParameters.put(key, value);
     }
 
@@ -56,8 +56,10 @@ public abstract class Request {
 
     public Map<String, String> getOutputParameters() {
         return outputParameters;
-    }
+    }*/
 
     public abstract String getUrl();
+
+    public abstract String getUrl(Map<String, String> outputParameters);
 
 }

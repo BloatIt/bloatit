@@ -66,6 +66,10 @@ public class HtmlResult extends IndentedText {
                     if (session.getTargetPage() != null) {
                         writeRedirect(session.getTargetPage());
                     } else {
+                        if(session.getTargetPage() != null) {
+                            writeRedirect(session.getTargetPage());
+                            session.setTargetPage(null);
+                        }
                         if (session.getLastStablePage() != null) {
                             writeRedirect(session.getLastStablePage());
                         } else {
