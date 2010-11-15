@@ -25,7 +25,7 @@ import java.util.Map;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlResult;
-import com.bloatit.web.pages.CreateDemandPage;
+import com.bloatit.web.pages.CreateIdeaPage;
 import com.bloatit.web.pages.DemandPage;
 import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.GlobalSearchPage;
@@ -51,7 +51,7 @@ public class DispatchServer {
                 put("index", IndexPage.class);
                 put("login", LoginPage.class);
                 put("demands", DemandsPage.class);
-                put("demand/create", CreateDemandPage.class);
+                put("idea/create", CreateIdeaPage.class);
                 put("demand", DemandPage.class);
                 put("my_account", MyAccountPage.class);
                 put("specials", SpecialsPage.class);
