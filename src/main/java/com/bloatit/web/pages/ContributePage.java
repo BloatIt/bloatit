@@ -22,19 +22,15 @@ import com.bloatit.web.actions.ContributionAction;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPasswordField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 
-public class ContributePage extends Page {
+public class ContributePage extends LoggedPage {
 
     public ContributePage(Session session) {
         this(session, new HashMap<String, String>());
@@ -45,14 +41,28 @@ public class ContributePage extends Page {
     }
 
     @Override
-    protected HtmlComponent generateContent() {
-        final ContributionAction contribAction = new ContributionAction(session);
+    public HtmlComponent generateRestrictedContent() {
+        final ContributionAction contribAction = new ContributionAction(session, this.parameters);
 
         final HtmlForm contribForm = new HtmlForm(contribAction);
-        final HtmlTextField contribField = new HtmlTextField(session.tr("Choose amount : "));
-        final HtmlButton submitButton = new HtmlButton(session.tr("Contribute"));
+        contribForm.setMethod(HtmlForm.Method.POST);
 
+        // Input field : chose amount
+        final HtmlTextField contribField = new HtmlTextField(session.tr("Choose amount : "));
+        
+        if(this.parameters.containsKey(contribAction.getContributionCode())){
+            contribField.setDefaultValue(this.parameters.get(contribAction.getContributionCode()));
+        }
+        
+        // Input field : comment
+        /*final HtmlTextField commentField = new HtmlText(session.tr("Comment (optionnal) : "));
+        if(this.parameters.containsKey(contribAction.getCommentCode())){
+            contribField.setDefaultValue(this.parameters.get(contribAction.getCommentCode()));
+        }*/
+
+        final HtmlButton submitButton = new HtmlButton(session.tr("Contribute"));
         contribForm.add(contribField);
+        //contribForm.add(commentField);
         contribForm.add(submitButton);
 
         contribField.setName(contribAction.getContributionCode());
@@ -80,5 +90,10 @@ public class ContributePage extends Page {
     @Override
     public boolean isStable() {
         return false;
+    }
+
+    @Override
+    public String getRefusalReason() {
+        return session.tr("You must be logged to contribute");
     }
 }

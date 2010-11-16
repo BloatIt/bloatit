@@ -19,8 +19,10 @@
 
 package com.bloatit.web.server;
 
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public abstract class Action extends Request {
 
@@ -34,18 +36,36 @@ public abstract class Action extends Request {
 
     @Override
     public String getUrl() {
-        return "/" + session.getLanguage().getCode() + "/action/" + getCode();
+        HtmlString link = new HtmlString(session);
+        link.add("/" + session.getLanguage().getCode() + "/action/" + getCode());
+
+        for (Entry<String, String> entry : parameters.entrySet()) {
+            if(!entry.getKey().equals("page") && !entry.getKey().equals("lang")) {
+                link.add("/" + entry.getKey() + "-");
+                link.secure(entry.getValue());
+            }
+        }
+
+        return link.toString();
     }
 
     @Override
     public String getUrl(Map<String, String> outputParameters) {
-
         Map<String, String> params = new HashMap<String, String>();
-        params.putAll(parameters);
+        params.putAll(this.parameters);
         params.putAll(outputParameters);
-        
 
-        return "/" + session.getLanguage().getCode() + "/action/" + getCode();
+
+        HtmlString link = new HtmlString(session);
+        link.add("/" + session.getLanguage().getCode() + "/action/" + getCode());
+
+        for (Entry<String, String> entry : params.entrySet()) {
+            if(!entry.getKey().equals("page") && !entry.getKey().equals("lang")) {
+                link.add("/" + entry.getKey() + "-");
+                link.secure(entry.getValue());
+            }
+        }
+        return link.toString();
     }
 
 
