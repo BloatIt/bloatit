@@ -23,6 +23,8 @@ import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Request;
 import com.bloatit.web.server.Session;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HtmlPagedList<T> extends HtmlComponent {
 
@@ -101,8 +103,6 @@ public class HtmlPagedList<T> extends HtmlComponent {
         htmlResult.write("<span>");
         htmlResult.indent();
 
-        currentRequest.setOutputParam("page_size", new Long(pageSize).toString());
-
         if (currentPage > 1) {
             generateLink(currentPage - 1, session.tr("Previous"));
         }
@@ -139,8 +139,12 @@ public class HtmlPagedList<T> extends HtmlComponent {
     private void generateLink(int i) {
         String iString = new Integer(i).toString();
         if (i != currentPage) {
-            currentRequest.setOutputParam("page", iString);
-            htmlResult.write(HtmlTools.generateLink(session, iString, currentRequest));
+
+            Map<String,String> outputParams = new HashMap<String, String>();
+            outputParams.put("list_page", iString);
+            outputParams.put("list_page_size", new Long(pageSize).toString());
+
+            htmlResult.write(HtmlTools.generateLink(session, iString, currentRequest, outputParams));
         } else {
             htmlResult.write(iString);
 
@@ -151,8 +155,11 @@ public class HtmlPagedList<T> extends HtmlComponent {
     private void generateLink(int i, String text) {
         String iString = new Integer(i).toString();
         if (i != currentPage) {
-            currentRequest.setOutputParam("page", iString);
-            htmlResult.write(HtmlTools.generateLink(session, text, currentRequest));
+            Map<String,String> outputParams = new HashMap<String, String>();
+            outputParams.put("list_page", iString);
+            outputParams.put("list_page_size", new Long(pageSize).toString());
+            
+            htmlResult.write(HtmlTools.generateLink(session, text, currentRequest, outputParams));
         } else {
             htmlResult.write(iString);
 

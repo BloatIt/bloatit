@@ -59,8 +59,7 @@ public class GlobalSearchPage extends Page {
         pageTitle.add(searchBlock);
 
         if (parameters.containsKey(getSearchCode())) {
-            outputParameters.put(getSearchCode(), parameters.get(getSearchCode()));
-
+            
             String searchString = parameters.get(getSearchCode());
 
             final PageIterable<Demand> demandList = DemandManager.search(searchString);
@@ -81,16 +80,16 @@ public class GlobalSearchPage extends Page {
             int pageSize = 10;
             int currentPage = 0;
 
-            if (parameters.containsKey("page_size")) {
+            if (parameters.containsKey("list_page_size")) {
                 try {
-                    pageSize = Integer.parseInt(parameters.get("page_size"));
+                    pageSize = Integer.parseInt(parameters.get("list_page_size"));
                 } catch (NumberFormatException e) {
                 }
             }
 
-            if (parameters.containsKey("page")) {
+            if (parameters.containsKey("list_list_page")) {
                 try {
-                    currentPage = Integer.parseInt(parameters.get("page")) - 1;
+                    currentPage = Integer.parseInt(parameters.get("list_page")) - 1;
                 } catch (NumberFormatException e) {
                 }
             }

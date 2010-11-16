@@ -59,9 +59,12 @@ public class HtmlTabBlock extends HtmlComponent {
                 htmlResult.indent();
 
                 Request currentLink = tab.getLink();
-                currentLink.setOutputParam(id+"_key", tab.getId());
 
-                htmlResult.write("<a href=\""+currentLink.getUrl()+"\" >");
+                Map<String,String> outputParams = new HashMap<String, String>();
+
+                outputParams.put(id+"_key", tab.getId());
+
+                htmlResult.write("<a href=\""+currentLink.getUrl(outputParams)+"\" >");
                 htmlResult.indent();
 
                 htmlResult.write("<div class=\"inactive_tab_title_content\">");

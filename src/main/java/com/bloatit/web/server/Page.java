@@ -56,17 +56,18 @@ public abstract class Page extends Request {
     protected void process() {
 
         content = generateContent();
-
-        htmlResult.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        htmlResult
-                .write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
-        htmlResult.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
-        htmlResult.indent();
-        generate_head();
-        generate_body();
-        htmlResult.unindent();
-        htmlResult.write("</html>");
-        session.flushNotifications();
+        if(content != null) {
+            htmlResult.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            htmlResult
+                    .write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+            htmlResult.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+            htmlResult.indent();
+            generate_head();
+            generate_body();
+            htmlResult.unindent();
+            htmlResult.write("</html>");
+            session.flushNotifications();
+        }
 
         content = null;
     }
@@ -228,13 +229,40 @@ public abstract class Page extends Request {
         HtmlString link = new HtmlString(session);
         link.add("/" + session.getLanguage().getCode() + "/" + getCode());
 
-        for (Entry<String, String> entry : getOutputParameters().entrySet()) {
-            link.add("/" + entry.getKey() + "-");
-            link.secure(entry.getValue());
+        for (Entry<String, String> entry : parameters.entrySet()) {
+            if(!entry.getKey().equals("page") && !entry.getKey().equals("lang")) {
+                link.add("/" + entry.getKey() + "-");
+                link.secure(entry.getValue());
+            }
         }
 
         return link.toString();
     }
+
+    @Override
+    public String getUrl(Map<String, String> outputParameters) {
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.putAll(this.parameters);
+        params.putAll(outputParameters);
+
+
+        HtmlString link = new HtmlString(session);
+        link.add("/" + session.getLanguage().getCode() + "/" + getCode());
+
+        for (Entry<String, String> entry : params.entrySet()) {
+            if(!entry.getKey().equals("page") && !entry.getKey().equals("lang")) {
+                link.add("/" + entry.getKey() + "-");
+                link.secure(entry.getValue());
+            }
+        }
+
+        return link.toString();
+    }
+
+
+
+
 
     protected void needCustomDesign() {
         customDesign = true;

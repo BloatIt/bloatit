@@ -80,4 +80,5 @@ public class LoginAction extends Action {
         htmlResult.setRedirect(new LoginPage(session));
         session.notifyBad(session.tr("Login failed. Wrong login or password."));
     }
+
 }
