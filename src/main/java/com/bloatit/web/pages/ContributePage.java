@@ -26,6 +26,7 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextArea;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Session;
@@ -53,20 +54,21 @@ public class ContributePage extends LoggedPage {
         if(this.parameters.containsKey(contribAction.getContributionCode())){
             contribField.setDefaultValue(this.parameters.get(contribAction.getContributionCode()));
         }
+        contribField.setName(contribAction.getContributionCode());
         
         // Input field : comment
-        /*final HtmlTextField commentField = new HtmlText(session.tr("Comment (optionnal) : "));
+        final HtmlTextArea commentField = new HtmlTextArea(session.tr("Comment (optionnal) : "));
         if(this.parameters.containsKey(contribAction.getCommentCode())){
-            contribField.setDefaultValue(this.parameters.get(contribAction.getCommentCode()));
-        }*/
+            commentField.setDefaultValue(this.parameters.get(contribAction.getCommentCode()));
+        }
+        commentField.setName(contribAction.getCommentCode());
 
         final HtmlButton submitButton = new HtmlButton(session.tr("Contribute"));
+
+        // Create the form
         contribForm.add(contribField);
-        //contribForm.add(commentField);
+        contribForm.add(commentField);
         contribForm.add(submitButton);
-
-        contribField.setName(contribAction.getContributionCode());
-
         final HtmlTitle contribTitle = new HtmlTitle(session.tr("Contribute"), "");
         contribTitle.add(contribForm);
 

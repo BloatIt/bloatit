@@ -27,6 +27,7 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Session;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,6 +63,7 @@ public class ContributionAction extends Action {
         Demand targetDemand = null;
         String idea = null;
         String amountStr = null;
+        String comment = "";
         BigDecimal amount = BigDecimal.ZERO;
 
         // Get parameters
@@ -73,12 +75,16 @@ public class ContributionAction extends Action {
             }
         }
 
-        if(parameters.containsKey(getContributionCode()) ){
+        if(parameters.containsKey(this.getContributionCode()) ){
             amountStr = parameters.get(getContributionCode());
             try{
                 amount = new BigDecimal(amountStr);
             }catch (NumberFormatException nfe) {
             }
+        }
+
+        if(parameters.containsKey(this.getCommentCode())){
+            comment = this.parameters.get(this.getCommentCode());
         }
 
         // Check validity of values
@@ -94,13 +100,20 @@ public class ContributionAction extends Action {
             return;
         }
 
+        if( amount.compareTo(new BigDecimal("10000000")) > 0 ){
+            htmlResult.setRedirect(new ContributePage(session, parameters));
+            session.notifyBad(session.tr("Thank you for being so generous ... "
+                    + "but we can't accept such a big amount : " +amountStr));
+            return;
+        }
+
         // Authentication
         targetDemand.authenticate(session.getAuthToken());
 
         // Case everything OK
-        targetDemand.addContribution(amount, "");
+        targetDemand.addContribution(amount, comment);
         htmlResult.setRedirect(new DemandPage(session, targetDemand));
-        session.notifyGood(session.tr("You credited "+amount+" on the idea"));
+        session.notifyGood(session.tr("Thanks you for crediting "+amount+" on this idea"));
     }
 
 }
