@@ -120,7 +120,7 @@ public class IndexPage extends Page {
                 .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlText(description));
 
-        descriptionBlock.add(new HtmlText(HtmlTools.generateLink(session, "Create a new idea", new CreateDemandPage(session))));
+        descriptionBlock.add(new HtmlText(HtmlTools.generateLink(session, "Create a new idea", new CreateIdeaPage(session))));
 
         return descriptionBlock;
     }

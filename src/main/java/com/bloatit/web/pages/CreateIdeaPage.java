@@ -34,24 +34,24 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 
-public class CreateDemandPage extends LoggedPage {
+public class CreateIdeaPage extends LoggedPage {
 
-    public CreateDemandPage(Session session) {
+    public CreateIdeaPage(Session session) {
         this(session, new HashMap<String, String>());
     }
 
-    public CreateDemandPage(Session session, Map<String, String> parameters) {
+    public CreateIdeaPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }
 
     @Override
     public String getCode() {
-        return "demand/create";
+        return "idea/create";
     }
 
     @Override
     protected String getTitle() {
-        return "Create new demand";
+        return "Create new idea";
     }
 
     @Override
@@ -76,7 +76,7 @@ public class CreateDemandPage extends LoggedPage {
         final HtmlForm loginForm = new HtmlForm(logAction);
         final HtmlTextField loginField = new HtmlTextField();
         final HtmlPasswordField passwordField = new HtmlPasswordField();
-        final HtmlButton submitButton = new HtmlButton(session.tr("Create demand"));
+        final HtmlButton submitButton = new HtmlButton(session.tr("Create idea"));
 
         loginForm.add(loginField);
         loginForm.add(passwordField);
