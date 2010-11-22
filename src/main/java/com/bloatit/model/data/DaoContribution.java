@@ -17,7 +17,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 public class DaoContribution extends DaoUserContent {
 
     public enum State {
-        WAITING, ACCEPTED, CANCELED
+        PENDING, ACCEPTED, CANCELED
     }
 
     @Basic(optional = false)
@@ -50,14 +50,14 @@ public class DaoContribution extends DaoUserContent {
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         this.amount = amount;
-        state = State.WAITING;
+        state = State.PENDING;
         this.demand = demand;
         this.comment = comment;
         getAuthor().getInternalAccount().block(amount);
     }
 
     public void accept(DaoOffer Offer) throws NotEnoughMoneyException {
-        // TODO verify that the state is WAITING
+        // TODO verify that the state is PENDING
         try {
             transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor()
                     .getInternalAccount(), amount);
