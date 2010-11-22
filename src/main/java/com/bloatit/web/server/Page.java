@@ -223,9 +223,6 @@ public abstract class Page extends Request {
 
     @Override
     public String getUrl() {
-
-
-
         HtmlString link = new HtmlString(session);
         link.add("/" + session.getLanguage().getCode() + "/" + getCode());
 
@@ -256,7 +253,6 @@ public abstract class Page extends Request {
                 link.secure(entry.getValue());
             }
         }
-
         return link.toString();
     }
 

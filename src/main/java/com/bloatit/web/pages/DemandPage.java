@@ -42,7 +42,6 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlProgressBar;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTabBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
@@ -87,7 +86,6 @@ public class DemandPage extends Page {
 
     @Override
     protected HtmlComponent generateContent() {
-        
         needCustomDesign();
 
         final HtmlContainer page = new HtmlContainer();
@@ -96,14 +94,10 @@ public class DemandPage extends Page {
         Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
         page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
-
         page.add(generateHead());
         page.add(generateBody());
-
-        
-
+       
         return page;
-
     }
 
     @Override
@@ -122,9 +116,7 @@ public class DemandPage extends Page {
     }
 
     private HtmlBlock generateContributorsBlock() {
-
         HtmlBlock contributorsBlock = new HtmlBlock("contributors_block");
-
 
         int contributionCount = demand.getContributions().size();
         contributorsBlock.add(new HtmlText("" + contributionCount + session.tr("&nbsp;contributions")));
@@ -139,9 +131,7 @@ public class DemandPage extends Page {
             contributorsBlock.add(new HtmlText(session.tr("Mean:&nbsp;") + contributionMean));
         }
 
-
         HtmlRenderer<Contribution> participationRenderer = new HtmlRenderer<Contribution>() {
-
             @Override
             public void generate(HtmlResult htmlResult, Contribution item) {
                
@@ -153,13 +143,8 @@ public class DemandPage extends Page {
             }
         };
 
-
-
         HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("participation_list", participationRenderer, demand.getContributions(), this, session);
-
-
         contributorsBlock.add(participationsList);
-
         return contributorsBlock;
 
     }
@@ -177,29 +162,19 @@ public class DemandPage extends Page {
     }
 
     private HtmlBlock generateDescription() {
-
         // Description
         Locale defaultLocale = session.getLanguage().getLocale();
         Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
-
         HtmlBlock descriptionBlock = new HtmlBlock("description_block");
-
-        
-        
-        
-
         HtmlText description = new HtmlText(translatedDescription.getText());
-        
         HtmlBlock descriptionFooter = new HtmlBlock("description_footer");
-
 
         descriptionBlock.add(generateDescriptionDetails());
 
         descriptionBlock.add(description);
         descriptionBlock.add(descriptionFooter);
         return descriptionBlock;
-
     }
 
     private void generateChildComment(HtmlBlock commentBlock, PageIterable<Comment> children) {
@@ -221,19 +196,20 @@ public class DemandPage extends Page {
         HtmlText date = new HtmlText("description_date", HtmlTools.formatDate(session,demand.getCreationDate()));
         HtmlText author = new HtmlText("description_author", HtmlTools.generateLink(session, demand.getAuthor().getLogin() , new MemberPage(session, demand.getAuthor())));
 
-        
-
         descriptionDetails.add(author);
         descriptionDetails.add(date);
         
-
         return descriptionDetails;
     }
 
     private HtmlBlock generateContributeButton() {
-        HtmlForm contributeForm = new HtmlForm(new LogoutAction(session));
-        HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("idea", String.valueOf(this.demand.getId()));
 
+        HtmlForm contributeForm = new HtmlForm(new ContributePage(session, params));
+        contributeForm.setMethod(HtmlForm.Method.GET);
+
+        HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));
         contributeForm.add(contributeButton);
 
         final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
@@ -261,8 +237,6 @@ public class DemandPage extends Page {
         // } else {
         // TODO
         // }
-
-
         final HtmlBlock progressBlock = new HtmlBlock("progress_block");
         final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
 
@@ -281,15 +255,9 @@ public class DemandPage extends Page {
 
     private HtmlComponent generateBodyLeft() {
         final HtmlBlock left = new HtmlBlock("leftColumn");
-
-        
-        
         left.add(generateTabPane());
-
         // Comments
         left.add(generateCommentsBlock());
-        
-        
         return left;
 
     }
@@ -298,16 +266,13 @@ public class DemandPage extends Page {
         final HtmlBlock right = new HtmlBlock("rightColumn");
 
         HtmlBlock rightBlock = new HtmlBlock("right_block");
-
         rightBlock.add(generateAbstractBlock());
-        
         right.add(rightBlock);
 
         return right;
     }
 
     private HtmlComponent generateBody() {
-
         HtmlBlock demandBody = new HtmlBlock("demand_body");
 
         demandBody.add(generateBodyLeft());
@@ -321,8 +286,6 @@ public class DemandPage extends Page {
 
         HtmlBlock demandHeadKudo = new HtmlBlock("demand_head_kudo");
         HtmlBlock demandHeadProgress = new HtmlBlock("demand_head_progress");
-        
-
 
         demandHeadKudo.add(generateDemandKudoBlock());
         demandHeadProgress.add(generateProgressBlock());
@@ -340,11 +303,10 @@ public class DemandPage extends Page {
 
     private HtmlComponent generateAbstractBlock() {
         HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
-        
+       
         abstractBlock.add(generateTimelineBlock());
         //abstractBlock.add(generateContributorsBlock());
 
-        
         return abstractBlock;
     }
 
@@ -357,7 +319,6 @@ public class DemandPage extends Page {
 
     private HtmlComponent generateCommentsBlock() {
         HtmlBlock commentsBlock = new HtmlBlock("comments_block");
-
         commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
 
         for (Comment comment : demand.getComments()) {
@@ -366,40 +327,28 @@ public class DemandPage extends Page {
             String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
             String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
 
-
             commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
-
             generateChildComment(commentBlock, comment.getChildren());
-
             commentsBlock.add(commentBlock);
-
         }
         return commentsBlock;
     }
 
     private HtmlComponent generateTabPane() {
         HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab");
-
-
         HtmlTabBlock.HtmlTab descriptionTab = new HtmlTabBlock.HtmlTab("description_tab", session.tr("Description") ,this, generateDescription());
         //HtmlTabBlock.HtmlTab commentTab = new HtmlTabBlock.HtmlTab("comment_tab", session.tr("Comments") ,this, generateCommentsBlock());
         HtmlTabBlock.HtmlTab participationsTab = new HtmlTabBlock.HtmlTab("participations_tab", session.tr("Participations") ,this, generateContributorsBlock());
 
-
         tabPane.addTab(descriptionTab);
         //tabPane.addTab(commentTab);
         tabPane.addTab(participationsTab);
-
 
         if(parameters.containsKey("demand_tab_key")) {
             tabPane.selectTab(parameters.get("demand_tab_key"));
         } else {
             tabPane.selectTab("description_tab");
         }
-        
-
-
-
         return tabPane;
     }
 

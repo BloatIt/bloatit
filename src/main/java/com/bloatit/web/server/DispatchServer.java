@@ -24,7 +24,9 @@ import java.util.Map;
 
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
+import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.htmlrenderer.HtmlResult;
+import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateIdeaPage;
 import com.bloatit.web.pages.DemandPage;
 import com.bloatit.web.pages.DemandsPage;
@@ -58,6 +60,7 @@ public class DispatchServer {
                 put("members_list", MembersListPage.class);
                 put("member", MemberPage.class);
                 put("global_search", GlobalSearchPage.class);
+                put("contribute", ContributePage.class);
             }
         };
 
@@ -68,6 +71,7 @@ public class DispatchServer {
             {
                 put("login", LoginAction.class);
                 put("logout", LogoutAction.class);
+                put("contribute", ContributionAction.class);
 
             }
         };
@@ -202,7 +206,7 @@ public class DispatchServer {
         // Parsing, finding page parameters
         while (i < splitted.length) {
             if (splitted[i].contains("-")) {
-                final String[] p = splitted[i].split("-");
+                final String[] p = splitted[i].split("-",2);
                 parameters.put(p[0], p[1]);
             }
             i = i + 1;
