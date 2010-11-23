@@ -8,6 +8,8 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.framework.lists.ContributionList;
 import com.bloatit.framework.lists.OfferList;
+import com.bloatit.framework.right.DemandRight;
+import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDescription;
@@ -103,6 +105,10 @@ public class Demand extends Kudosable {
     // TODO right management
     public void removeOffer(Offer offer) {
         dao.removeOffer(offer.getDao());
+    }
+
+    public boolean canContribute() {
+        return new DemandRight.Contribute().canAccess(calculateRole(this), Action.WRITE);
     }
 
 }

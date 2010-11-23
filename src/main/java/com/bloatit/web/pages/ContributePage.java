@@ -18,6 +18,8 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.Demand;
+import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.ContributionAction;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextArea;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
@@ -43,8 +46,33 @@ public class ContributePage extends LoggedPage {
 
     @Override
     public HtmlComponent generateRestrictedContent() {
-        final ContributionAction contribAction = new ContributionAction(session, this.parameters);
+        // Checking parameters
+        // TODO : do something when id is invalid / there is no id
+        int ideaId = -1;
+        Demand targetIdea = null;
+        if(this.parameters.containsKey("idea")){
+            try{
+                ideaId = Integer.parseInt(this.parameters.get("idea"));
+                targetIdea = DemandManager.getDemandById(ideaId);
+            } catch (NumberFormatException nfe){
+            }
+        }
 
+        if (ideaId == -1 ){
+            session.notifyBad(session.tr("You need to choose an idea on which you'll contribute"));
+            htmlResult.setRedirect(new DemandsPage(session));
+            return null;
+        }
+
+        if (targetIdea == null){
+            session.notifyBad(session.tr("The idea you chose does not exists (id :"+ideaId+")"));
+            htmlResult.setRedirect(new DemandsPage(session));
+            return null;
+        }
+
+        // Case: OK
+        final ContributionAction contribAction = new ContributionAction(session, this.parameters);
+        
         final HtmlForm contribForm = new HtmlForm(contribAction);
         contribForm.setMethod(HtmlForm.Method.POST);
 
@@ -65,15 +93,21 @@ public class ContributePage extends LoggedPage {
 
         final HtmlButton submitButton = new HtmlButton(session.tr("Contribute"));
 
+        // Summary of the idea
+        HtmlTitle summary = new HtmlTitle(targetIdea.getTitle(),"");
+        HtmlText textSummary = new HtmlText(targetIdea.getDescription().toString());
+        summary.add(textSummary);
+
         // Create the form
         contribForm.add(contribField);
         contribForm.add(commentField);
         contribForm.add(submitButton);
+
         final HtmlTitle contribTitle = new HtmlTitle(session.tr("Contribute"), "");
+        contribTitle.add(summary);
         contribTitle.add(contribForm);
 
         final HtmlContainer group = new HtmlContainer();
-
         group.add(contribTitle);
 
         return group;

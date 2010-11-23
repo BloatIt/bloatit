@@ -27,7 +27,6 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Session;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,11 +108,15 @@ public class ContributionAction extends Action {
 
         // Authentication
         targetDemand.authenticate(session.getAuthToken());
-
-        // Case everything OK
-        targetDemand.addContribution(amount, comment);
-        htmlResult.setRedirect(new DemandPage(session, targetDemand));
-        session.notifyGood(session.tr("Thanks you for crediting "+amount+" on this idea"));
+        if (targetDemand.canContribute()){
+            targetDemand.addContribution(amount, comment);
+            htmlResult.setRedirect(new DemandPage(session, targetDemand));
+            session.notifyGood(session.tr("Thanks you for crediting "+amount+" on this idea"));
+        }else{
+            // Should never happen
+            htmlResult.setRedirect(new ContributePage(session, parameters));
+            session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));
+            return;
+        }
     }
-
 }
