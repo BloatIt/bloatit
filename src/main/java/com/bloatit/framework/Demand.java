@@ -13,6 +13,7 @@ import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDescription;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.util.SessionManager;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 public class Demand extends Kudosable {
     private final DaoDemand dao;
@@ -37,7 +38,7 @@ public class Demand extends Kudosable {
         dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
     }
 
-    public void addContribution(BigDecimal amount, String comment)  {
+    public void addContribution(BigDecimal amount, String comment) throws NotEnoughMoneyException  {
         // TODO : Vérifier que l'utilisateur a le droit de contribuer
         dao.addContribution(getToken().getMember().getDao(), amount, comment);
     }
