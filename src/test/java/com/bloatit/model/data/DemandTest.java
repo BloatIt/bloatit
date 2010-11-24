@@ -25,16 +25,19 @@ public class DemandTest extends TestCase {
         {
             tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
             tom.setFullname("Thomas Guyard");
+            tom.getInternalAccount().setAmount(new BigDecimal(100));
             SessionManager.flush();
         }
         {
             fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
             fred.setFullname("Frédéric Bertolus");
+            fred.getInternalAccount().setAmount(new BigDecimal(100));
             SessionManager.flush();
         }
         {
             yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
             yo.setFullname("Yoann Plénet");
+            yo.getInternalAccount().setAmount(new BigDecimal(100));
             SessionManager.flush();
 
             DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
@@ -107,9 +110,9 @@ public class DemandTest extends TestCase {
 
         assertEquals(2, demand.getContributions().size());
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("25")));
-        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("-25")));
+        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("75")));
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("18")));
-        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("-18")));
+        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("82")));
     }
 
     public void testAddOffer() throws Throwable {
@@ -189,9 +192,9 @@ public class DemandTest extends TestCase {
         }
 
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
-        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("0")));
+        assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("100")));
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
-        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("0")));
+        assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("100")));
     }
 
     public void testSearchDemand() {
