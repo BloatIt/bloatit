@@ -95,6 +95,7 @@ public class DaoGroup extends DaoActor {
         final DaoGroupMembership link = DaoGroupMembership.get(this, Member);
         groupMembership.remove(link);
         Member.getGroupMembership().remove(link);
+        SessionManager.getSessionFactory().getCurrentSession().delete(link);
     }
 
     public Right getRight() {

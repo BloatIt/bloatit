@@ -120,6 +120,7 @@ public class DaoMember extends DaoActor {
         final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
         groupMembership.remove(link);
         aGroup.getGroupMembership().remove(link);
+        SessionManager.getSessionFactory().getCurrentSession().delete(link);
     }
 
     public PageIterable<DaoGroup> getGroups() {
