@@ -36,45 +36,6 @@ Create a symbolic link of 'lighttpd/rewrite.lighttpd.conf' in '/etc/lighttpd/con
 cd /etc/lighttpd/conf-enabled/
 ln -s /home/fred/projets/bloatit/lighttpd/rewrite.lighttpd.conf
 
-******************
-*  Install scgi  *
-******************
-
-Install python headers:
-sudo apt-get install python3-dev
-
-Build and install scgi
-cd lib/scgi
-sudo python3 setup.py install
-
-**********************
-* Update python path *
-**********************
-
-Create a link for python to find the project :
-cd /usr/lib/python3.1/dist-packages/
-sudo ln -s /home/.............bloatit/src/bloatit
-
-(You can also modify PYTHONPATH)
-
-*****************
-* Build locales *
-*****************
-Install internationnalize tools :
-sudo apt-get install gettext
-
-Compile languages:
-
-cd po
-./compilepo.sh
-
-**************************
-*  Start BloatIt server  *
-**************************
-
-python3 src/bloatit/scgiserver/serve.py
-
-
 
 
 **********************
@@ -87,5 +48,4 @@ service lighttpd restart
 Verify the loading in logs:
 cat /var/log/lighttpd/error.log
 
-Test it: http://127.0.0.1/serve.py
 
