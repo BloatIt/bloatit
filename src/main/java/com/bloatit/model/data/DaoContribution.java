@@ -46,7 +46,8 @@ public class DaoContribution extends DaoUserContent {
     /**
      * If the demand is validated then the contribution is also validated and then we
      * create a transaction. So there should be a non null transaction on each validated
-     * contribution and only on those.
+     * contribution and only on those. (Except when a user add on offer on his own offer
+     * -> no transaction)
      */
     @OneToOne(optional = true)
     private DaoTransaction transaction;
@@ -83,15 +84,17 @@ public class DaoContribution extends DaoUserContent {
      * Set the state to ACCEPTED, and create the transaction. If there is not enough money
      * then throw and call cancel.
      * 
-     * @param Offer the offer that is accepted.
+     * @param offer the offer that is accepted.
      * @throws NotEnoughMoneyException if there is not enough money to create the
      * transaction.
      * @see DaoContribution#cancel()
      */
-    public void accept(DaoOffer Offer) throws NotEnoughMoneyException {
+    public void accept(DaoOffer offer) throws NotEnoughMoneyException {
         // TODO verify that the state is PENDING
         try {
-            transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), Offer.getAuthor().getInternalAccount(), amount);
+            if (getAuthor() != offer.getAuthor()) {
+                transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), amount);
+            }
             getAuthor().getInternalAccount().unBlock(amount);
             setState(State.ACCEPTED);
         } catch (final NotEnoughMoneyException e) {
