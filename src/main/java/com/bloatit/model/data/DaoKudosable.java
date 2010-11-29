@@ -11,7 +11,6 @@ import org.hibernate.Query;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.model.data.util.SessionManager;
@@ -38,14 +37,14 @@ public abstract class DaoKudosable extends DaoUserContent {
      * kudosable. it is a cached value (It could be calculated)
      */
     @Basic(optional = false)
-    @Field(index = Index.NO, store = Store.NO)
+    @Field(store = Store.NO)
     private int popularity;
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
     @Basic(optional = false)
-    @Field(index = Index.NO, store = Store.NO)
+    @Field(store = Store.NO)
     private State state;
 
     /**

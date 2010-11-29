@@ -26,7 +26,7 @@ public class Demand extends Kudosable {
     }
 
     public Demand(Member member, Locale locale, String title, String description) {
-        dao = DaoDemand.createAndPersist(member.getDao(), new DaoDescription(member.getDao(), locale, title, description));
+        dao = DaoDemand.createAndPersist(member.getDao(), DaoDescription.createAndPersist(member.getDao(), locale, title, description));
     }
 
     private Demand(DaoDemand dao) {

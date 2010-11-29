@@ -7,8 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.bloatit.common.Log;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
+/**
+ * This is an internal account that store the amount of money a member have given us.
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class DaoInternalAccount extends DaoAccount {
@@ -20,22 +24,26 @@ public class DaoInternalAccount extends DaoAccount {
     @Basic(optional = false)
     private BigDecimal blocked;
 
-    public DaoInternalAccount() {
-        super();
-    }
-
     // Used in Member constructor.
     protected DaoInternalAccount(DaoActor actor) {
         super(actor);
-        blocked = new BigDecimal("0");
+        blocked = BigDecimal.ZERO;
     }
 
     public BigDecimal getBlocked() {
         return blocked;
     }
 
+    /**
+     * bloc an amount of money, and reset the modification date.
+     * 
+     * @param blocked the amount we want to block
+     * @throws NotEnoughMoneyException if there is not enough money to block. (nothing is
+     * done, modification date is unchanged)
+     */
     protected void block(BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(this.getAmount()) > 0) {
+            Log.data().fatal("Cannot block " + blocked.toEngineeringString() + " on account " + getId() + "Throwing NotEnougthMoneyEcception.");
             throw new NotEnoughMoneyException();
         }
         resetModificationDate();
@@ -43,8 +51,18 @@ public class DaoInternalAccount extends DaoAccount {
         substractToAmountValue(blocked);
     }
 
-    protected void unBlock(BigDecimal blocked) {
-        // TODO verify that an amount is blocked
+    /**
+     * unbloc an amount of money, and reset the modification date.
+     * 
+     * @param blocked the amount of money we want to unblock.
+     * @throws NotEnoughMoneyException if there is not enough money already bloken.
+     * (nothing is done, modification date is unchanged)
+     */
+    protected void unBlock(BigDecimal blocked) throws NotEnoughMoneyException {
+        if (blocked.compareTo(this.blocked) > 0) {
+            Log.data().fatal("Cannot unblock " + blocked.toEngineeringString() + " on account " + getId() + "Throwing NotEnougthMoneyEcception.");
+            throw new NotEnoughMoneyException();
+        }
         resetModificationDate();
         this.blocked = this.blocked.subtract(blocked);
         addToAmountValue(blocked);
@@ -54,6 +72,16 @@ public class DaoInternalAccount extends DaoAccount {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
+    protected DaoInternalAccount() {
+        super();
+    }
+
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setBlocked(BigDecimal blocked) {
         this.blocked = blocked;
     }

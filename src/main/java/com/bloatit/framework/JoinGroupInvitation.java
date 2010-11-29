@@ -11,7 +11,7 @@ public class JoinGroupInvitation extends Identifiable {
     }
 
     public Member getReciever() {
-        return Member.create(dao.getReciever());
+        return Member.create(dao.getReceiver());
     }
 
     public Group getGroup() {

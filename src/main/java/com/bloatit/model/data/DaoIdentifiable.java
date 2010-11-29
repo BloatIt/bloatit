@@ -21,11 +21,18 @@ public abstract class DaoIdentifiable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    protected void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
+    }
+
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
+
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
+    protected void setId(Integer id) {
+        this.id = id;
     }
 }

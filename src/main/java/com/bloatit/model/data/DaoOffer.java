@@ -17,6 +17,9 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
+/**
+ * An offer is a developer offer to a demand.
+ */
 @Entity
 public class DaoOffer extends DaoKudosable {
 
@@ -42,6 +45,7 @@ public class DaoOffer extends DaoKudosable {
 
     public DaoOffer(DaoMember member, DaoDemand Demand, BigDecimal amount, DaoDescription text, Date dateExpire) {
         super(member);
+        // TODO check for null.
         demand = Demand;
         description = text;
         this.dateExpire = dateExpire;

@@ -61,7 +61,7 @@ public class BigDB {
             }
         }
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), new DaoDescription(members.get(i),
+            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
                                                                                                    new Locale("fr"),
                                                                                                    fortune(140),
                                                                                                    fortune(1000) + fortune(1000) + fortune(1000)));
@@ -87,7 +87,7 @@ public class BigDB {
 
             DaoMember member = members.get(pick(nbUsers));
             if (pick(2) == 0) {
-                demand.addOffer(member, new BigDecimal((pick(50) + 10) * 10), new DaoDescription(member, new Locale("fr"), "Offre", fortune(254)), new Date());
+                demand.addOffer(member, new BigDecimal((pick(50) + 10) * 10), DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)), new Date());
                 if (pick(2) == 0) {
                     for (DaoContribution contrib : demand.getContributions()) {
                         try {

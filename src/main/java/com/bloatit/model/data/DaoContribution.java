@@ -107,7 +107,11 @@ public class DaoContribution extends DaoUserContent {
      */
     public void cancel() {
         // TODO verify that the state is PENDING
-        getAuthor().getInternalAccount().unBlock(amount);
+        try {
+            getAuthor().getInternalAccount().unBlock(amount);
+        } catch (NotEnoughMoneyException e) {
+            throw new FatalErrorException("Not enough money exception on cancel !!", e);
+        }
         setState(State.CANCELED);
     }
 
