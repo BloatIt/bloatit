@@ -11,8 +11,9 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
-// This class should handle some versions.
-// version are managed by date.
+/**
+ * A translation store the data of a description in a for a locale.
+ */
 @Entity
 public class DaoTranslation extends DaoKudosable {
 
@@ -20,21 +21,33 @@ public class DaoTranslation extends DaoKudosable {
     private Locale locale;
     @Basic(optional = false)
     @Column(length = 300)
+    // TODO manage string lenght
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String title;
     @Column(length = 5000)
     @Basic(optional = false)
     @Field(index = Index.TOKENIZED, store = Store.NO)
+    // TODO manage string lenght
     private String text;
 
     @ManyToOne(optional = false)
     private DaoDescription description;
 
-    protected DaoTranslation() {
-    }
-
+    /**
+     * Create a new translation.
+     * 
+     * @param member
+     * @param description
+     * @param locale
+     * @param title
+     * @param text
+     * @throws NullPointerException if any of the field is null
+     */
     public DaoTranslation(DaoMember member, DaoDescription description, Locale locale, String title, String text) {
         super(member);
+        if(description == null || locale == null || title == null || text == null){
+            throw new NullPointerException();
+        }
         this.locale = locale;
         this.title = title;
         this.text = text;
@@ -53,24 +66,49 @@ public class DaoTranslation extends DaoKudosable {
         return text;
     }
 
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
+
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
+    protected DaoTranslation() {
+        super();
+    }
+
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setLocale(Locale locale) {
         this.locale = locale;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected DaoDescription getDescription() {
         return description;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setDescription(DaoDescription description) {
         this.description = description;
     }
-
 }

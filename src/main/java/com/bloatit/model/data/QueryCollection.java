@@ -7,6 +7,10 @@ import org.hibernate.Query;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
+/**
+ * This is the implementation of the {@link PageIterable} interface using a Hibernate HQL
+ * query.
+ */
 public class QueryCollection<T> implements PageIterable<T> {
 
     private final Query query;
@@ -26,8 +30,7 @@ public class QueryCollection<T> implements PageIterable<T> {
      * Use this constructor with query that start with "from ..."
      */
     protected QueryCollection(Query query) {
-        this(query, SessionManager.getSessionFactory().getCurrentSession()
-                .createQuery("select count (*) " + query.getQueryString()));
+        this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
     }
 
     protected QueryCollection(Query query, Query sizeQuery) {

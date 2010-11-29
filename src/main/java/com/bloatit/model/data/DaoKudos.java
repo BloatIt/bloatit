@@ -50,7 +50,7 @@ public class DaoKudos extends DaoUserContent {
         this.value = value;
     }
 
-    protected int getValue() {
+    public int getValue() {
         return value;
     }
 
