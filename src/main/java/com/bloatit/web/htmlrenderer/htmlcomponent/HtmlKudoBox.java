@@ -49,7 +49,7 @@ public class HtmlKudoBox extends HtmlComponent {
         String kudoDownLink = HtmlTools.getActionLink(session, new LogoutAction(session));
 
         kudoBox.add(new HtmlLinkComponent(kudoUpLink, kudoBoxUp));
-        kudoBox.add(new HtmlText("kudo_box_score", HtmlTools.compressKarma(kudosable.getPopularity())));
+        kudoBox.add(new HtmlText(HtmlTools.compressKarma(kudosable.getPopularity()), "kudo_box_score" ));
         kudoBox.add(new HtmlLinkComponent(kudoDownLink, kudoBoxDown));
 
         kudoBox.generate(htmlResult);
