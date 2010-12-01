@@ -34,9 +34,26 @@ public class OfferAction extends Action {
         super(session, parameters);
     }
 
+    public String getPriceCode(){
+        return "offer_price";
+    }
+
+    public String getExpiryDateCode(){
+        return "offer_expiry_date";
+    }
+
+    public String getTitleCode(){
+        return "offer_title";
+    }
+
+    public String getDescriptionCode(){
+        return "offer_description";
+    }
+
     @Override
     public String getCode() {
         return "offer";
     }
+
 
 }
