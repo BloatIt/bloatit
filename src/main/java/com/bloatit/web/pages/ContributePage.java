@@ -77,7 +77,8 @@ public class ContributePage extends LoggedPage {
         contribForm.setMethod(HtmlForm.Method.POST);
 
         // Input field : chose amount
-        final HtmlTextField contribField = new HtmlTextField(session.tr("Choose amount : "));
+        final HtmlTextField contribField = new HtmlTextField();
+        contribField.setLabel(session.tr("Choose amount : "));
         
         if(this.parameters.containsKey(contribAction.getContributionCode())){
             contribField.setDefaultValue(this.parameters.get(contribAction.getContributionCode()));
@@ -120,7 +121,7 @@ public class ContributePage extends LoggedPage {
 
     @Override
     protected String getTitle() {
-        return "Contribute to a project";
+        return session.tr("Contribute to a project");
     }
 
     @Override

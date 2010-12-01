@@ -25,6 +25,7 @@ import java.util.Map;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.actions.ContributionAction;
+import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateIdeaPage;
@@ -36,6 +37,7 @@ import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MemberPage;
 import com.bloatit.web.pages.MembersListPage;
 import com.bloatit.web.pages.MyAccountPage;
+import com.bloatit.web.pages.OfferPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
 
@@ -61,6 +63,7 @@ public class DispatchServer {
                 put("member", MemberPage.class);
                 put("global_search", GlobalSearchPage.class);
                 put("contribute", ContributePage.class);
+                put("offer", OfferPage.class);
             }
         };
 
@@ -72,6 +75,7 @@ public class DispatchServer {
                 put("login", LoginAction.class);
                 put("logout", LogoutAction.class);
                 put("contribute", ContributionAction.class);
+                put("offer", OfferAction.class);
 
             }
         };
