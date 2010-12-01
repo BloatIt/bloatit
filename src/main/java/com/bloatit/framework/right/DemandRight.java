@@ -1,8 +1,14 @@
 package com.bloatit.framework.right;
 
+import java.util.EnumSet;
+
 public class DemandRight extends RightManager {
 
-    public static class Contribute extends Public {
+    public static class Contribute extends Accessor {
+        @Override
+        protected boolean can(EnumSet<Role> role, Action action) {
+            return canRead(action) || canWrite(action);
+        }
     }
 
     public static class DemandContent extends PublicModerable {
