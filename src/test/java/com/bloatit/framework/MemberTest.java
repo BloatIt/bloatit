@@ -7,7 +7,7 @@ import com.bloatit.framework.managers.MemberManager;
 
 public class MemberTest extends FrameworkTestUnit {
 
-    public void testAddToGroup() {
+    public void testAddToPublicGroup() {
         // TODO correct the right management in groups
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
@@ -18,6 +18,7 @@ public class MemberTest extends FrameworkTestUnit {
 
         try {
             yo.authenticate(fredAuthToken);
+            // A user can only add himself to a public group.
             yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
             fail();
         } catch (final Exception e) {
@@ -34,10 +35,24 @@ public class MemberTest extends FrameworkTestUnit {
 
         try {
             yo.authenticate(fredAuthToken);
+            // A user can only remove himself from a group.
+            // TODO : the admin should be able to remove a user from a group.
             yo.removeFromGroup(GroupManager.getByName("b219"));
             fail();
         } catch (final Exception e) {
         }
+    }
+    
+    public void testInviteIntoProtectedGroup(){
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member fred = MemberManager.getMemberByLogin("Fred");
+        
+        yo.authenticate(yoAuthToken);
+        yo.invite(fred, GroupManager.getByName("other"));
+        assertFalse(fred.isInGroup(GroupManager.getByName("other")));
+        
+        fred.acceptInvitation(GroupManager.getInvitation(GroupManager.getByName("other"), fred));
+        assertTrue(fred.isInGroup(GroupManager.getByName("other")));
     }
 
     public void testGetGroups() {

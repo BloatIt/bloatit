@@ -170,7 +170,7 @@ public class Member extends Actor {
     }
 
     @Override
-    protected DaoMember getDao() {
+    public DaoMember getDao() {
         return dao;
     }
 
