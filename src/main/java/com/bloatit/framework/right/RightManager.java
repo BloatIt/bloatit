@@ -2,6 +2,8 @@ package com.bloatit.framework.right;
 
 import java.util.EnumSet;
 
+import com.bloatit.framework.Unlockable;
+
 /**
  * The RightManager class contains some useful methods to create the Accessor classes.
  * 
@@ -21,7 +23,11 @@ public abstract class RightManager {
      * REMEMBER: The order is important: first the group related roles, then the other
      * roles, from the less privileged to the more.
      * 
+     * You can calculate the role of a user using the {@link Unlockable} object (and calculateRole.)
+     * 
      * For now some of the roles are not used.
+     * 
+     * @see Unlockable
      */
     public enum Role {
         GROUP_ADMIN, IN_GROUP, OTHER, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
