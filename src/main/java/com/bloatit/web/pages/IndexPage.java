@@ -24,6 +24,7 @@ import java.util.Map;
 
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
+import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
@@ -100,13 +101,11 @@ public class IndexPage extends Page {
     }
 
     private void generateDualColumnBlock(HtmlBlock dualColumnBlock) {
-        HtmlBlock descriptionBlock = new HtmlBlock("index_description_block");
-        generateDescriptionBlock(descriptionBlock);
-
+        
         HtmlBlock hightlightDemandsBlock = new HtmlBlock("index_hightlight_demands_block");
         generateHightlightDemandsBlock(hightlightDemandsBlock);
 
-        dualColumnBlock.add(descriptionBlock);
+        dualColumnBlock.add(generateDescriptionBlock());
         dualColumnBlock.add(hightlightDemandsBlock);
     }
 
@@ -114,9 +113,15 @@ public class IndexPage extends Page {
 
     }
 
-    private void generateDescriptionBlock(HtmlBlock descriptionBlock) {
+    private HtmlBlock generateDescriptionBlock() {
+        HtmlBlock descriptionBlock = new HtmlBlock("index_description_block");
+
         String description = session
                 .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlText(description));
+
+        descriptionBlock.add(new HtmlText(HtmlTools.generateLink(session, "Create a new idea", new CreateIdeaPage(session))));
+
+        return descriptionBlock;
     }
 }

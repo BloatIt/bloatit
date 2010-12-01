@@ -45,7 +45,7 @@ h2 {
 #page {
     margin: 0;
     padding: 0;
-    
+
 }
 
 #footer {
@@ -168,7 +168,7 @@ li {
     margin-bottom: 2em;
 
     text-align: center;
-    
+
 
 }
 
@@ -202,7 +202,7 @@ li {
     font-family: "sans";
 
     width:100%;
-    
+
 }
 
 
@@ -245,5 +245,91 @@ li {
 
 .button:hover {
     background: rgb(230,230,255);
+}
+
+.tab_pane {
+    /*border: 1px solid red;*/
+}
+
+.tab_header {
+    /*border: 1px solid green;*/
+    /*border-collapse: collapse;*/
+}
+
+.active_tab_title {
+
+    -moz-border-radius-topright:8px;
+    border-top-right-radius:8px;
+    -webkit-border-top-right-radius:8px;
+    -moz-border-radius-topleft:8px;
+    border-top-left-radius:8px;
+    -webkit-border-top-left-radius:8px;
+
+    display:table-cell;
+    border: 1px solid rgb(200,200,200);
+    border-bottom: none;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-weight: bold;
+    background:rgb(240,240,240);
+}
+
+.inactive_tab_title {
+
+    -moz-border-radius-topright:8px;
+    border-top-right-radius:8px;
+    -webkit-border-top-right-radius:8px;
+    -moz-border-radius-topleft:8px;
+    border-top-left-radius:8px;
+    -webkit-border-top-left-radius:8px;
+    /*    -moz-border-radius:5px;
+        -webkit-border-radius:5px;
+        -o-border-radius:5px;
+        -ms-border-radius:5px;
+        -khtml-border-radius:5px;
+        border-radius:5px;*/
+
+    display:table-cell;
+    border: 1px solid rgb(200,200,200);
+    
+}
+
+.inactive_tab_title_content {
+    padding: 0.2em;
+    padding-left: 1em;
+    padding-right: 1em;
+    
+}
+
+.inactive_tab_title_content:hover {
+    padding: 0.2em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+
+.tab_header:after {
+    content:"";
+    display:table-cell;
+    width : 100%;
+    
+    border-bottom:  1px solid rgb(200,200,200);
+
+}
+
+.tab_body {
+    background: rgb(250,250,250);
+    /*border: 1px solid blue;
+    border-top: none;*/
+
+    border-bottom : 1px solid rgb(200,200,200);
+    border-left:  1px solid rgb(200,200,200);
+    border-right:  1px solid rgb(200,200,200);
+    height: 100%;
+    padding: 1px;
+    margin: 0px;
+    background:rgb(240,240,240);
+
+
 }
 

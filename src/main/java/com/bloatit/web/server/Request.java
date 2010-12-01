@@ -27,7 +27,6 @@ import com.bloatit.web.htmlrenderer.HtmlResult;
 public abstract class Request {
     protected HtmlResult htmlResult;
     protected Map<String, String> parameters;
-    protected Map<String, String> outputParameters = new HashMap<String, String>();
     protected Session session;
 
     protected Request(Session session, Map<String, String> parameters) {
@@ -44,20 +43,20 @@ public abstract class Request {
         process();
     }
 
+    /**
+     * <p>Indicates wether the page is considered stable or not.
+     * When the user is interrupted in his navigation (he is not logged ...)
+     * he'll return to the last stable page he visited. </p>
+     * <p> Therefore stable pages should only be main pages of the website
+     * navigation, and not the result of an action</p>
+     * @return
+     *      <i>true</i> if the page is stable
+     *      <i>false</i> otherwise
+     */
     public abstract boolean isStable();
 
-    public void setOutputParam(String key, String value) {
-        outputParameters.put(key, value);
-    }
-
-    public void resetOutputParameters() {
-        outputParameters.clear();
-    }
-
-    public Map<String, String> getOutputParameters() {
-        return outputParameters;
-    }
-
     public abstract String getUrl();
+
+    public abstract String getUrl(Map<String, String> outputParameters);
 
 }
