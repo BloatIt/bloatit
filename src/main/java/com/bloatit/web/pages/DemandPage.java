@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlImage;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
@@ -221,7 +222,10 @@ public class DemandPage extends Page {
     }
 
     private HtmlBlock generateMakeOfferButton() {
-        HtmlForm makeOfferForm = new HtmlForm(new LogoutAction(session));
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("idea", String.valueOf(this.demand.getId()));
+
+        HtmlForm makeOfferForm = new HtmlForm(new OfferPage(session, params));
         HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
 
         makeOfferForm.add(makeOfferButton);
