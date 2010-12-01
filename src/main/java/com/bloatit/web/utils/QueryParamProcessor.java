@@ -144,25 +144,25 @@ public class QueryParamProcessor {
     @SuppressWarnings("unchecked")
     private <T extends QueryParam.FromString<U>, U> Class<T> findConversionType(Class<U> theClass) {
         if (theClass.equals(Integer.class)) {
-            return (Class<T>) ToInteger.class;
+            return Class.class.cast(ToInteger.class);
         } else if (theClass.equals(Byte.class)) {
-            return (Class<T>) ToByte.class;
+            return Class.class.cast(ToByte.class);
         } else if (theClass.equals(Short.class)) {
-            return (Class<T>) ToShort.class;
+            return Class.class.cast(ToShort.class);
         } else if (theClass.equals(Long.class)) {
-            return (Class<T>) ToLong.class;
+            return Class.class.cast(ToLong.class);
         } else if (theClass.equals(Float.class)) {
-            return (Class<T>) ToFloat.class;
+            return Class.class.cast(ToFloat.class);
         } else if (theClass.equals(Double.class)) {
-            return (Class<T>) ToDouble.class;
+            return Class.class.cast(ToDouble.class);
         } else if (theClass.equals(Character.class)) {
-            return (Class<T>) ToCharacter.class;
+            return Class.class.cast(ToCharacter.class);
         } else if (theClass.equals(Boolean.class)) {
-            return (Class<T>) ToBoolean.class;
+            return Class.class.cast(ToBoolean.class);
         } else if (theClass.equals(BigDecimal.class)) {
-            return (Class<T>) ToBigdecimal.class;
+            return Class.class.cast(ToBigdecimal.class);
         } else if (theClass.equals(String.class)) {
-            return (Class<T>) ToString.class;
+            return Class.class.cast(ToString.class);
         }
         return null;
     }
