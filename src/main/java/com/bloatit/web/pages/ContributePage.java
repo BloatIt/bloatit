@@ -120,7 +120,7 @@ public class ContributePage extends LoggedPage {
 
     @Override
     protected String getTitle() {
-        return "Contribute to a project";
+        return session.tr("Contribute to a project");
     }
 
     @Override
