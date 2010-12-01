@@ -60,6 +60,7 @@ public class ContributionAction extends Action {
         Demand targetDemand = null;
         String idea = null;
         String amountStr = null;
+        String comment = "";
         BigDecimal amount = BigDecimal.ZERO;
 
         // Get parameters
@@ -70,11 +71,15 @@ public class ContributionAction extends Action {
             } catch (NumberFormatException nfe) {}
         }
 
-        if (parameters.containsKey(getContributionCode())) {
+        if (parameters.containsKey(this.getContributionCode())) {
             amountStr = parameters.get(getContributionCode());
             try {
                 amount = new BigDecimal(amountStr);
             } catch (NumberFormatException nfe) {}
+        }
+
+        if (parameters.containsKey(this.getCommentCode())) {
+            comment = this.parameters.get(this.getCommentCode());
         }
 
         // Check validity of values
@@ -90,18 +95,28 @@ public class ContributionAction extends Action {
             return;
         }
 
+        if (amount.compareTo(new BigDecimal("10000000")) > 0) {
+            htmlResult.setRedirect(new ContributePage(session, parameters));
+            session.notifyBad(session.tr("Thank you for being so generous ... " + "but we can't accept such a big amount : " + amountStr));
+            return;
+        }
+
         // Authentication
         targetDemand.authenticate(session.getAuthToken());
 
-        // Case everything OK
         try {
-            targetDemand.addContribution(amount, "");
-            htmlResult.setRedirect(new DemandPage(session, targetDemand));
-            session.notifyGood(session.tr("You credited " + amount + " on the idea"));
+            if (targetDemand.canContribute()) {
+                targetDemand.addContribution(amount, comment);
+                htmlResult.setRedirect(new DemandPage(session, targetDemand));
+                session.notifyGood(session.tr("Thanks you for crediting " + amount + " on this idea"));
+            } else {
+                // Should never happen
+                htmlResult.setRedirect(new ContributePage(session, parameters));
+                session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));
+                return;
+            }
         } catch (NotEnoughMoneyException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            session.notifyBad(session.tr("You have not enought money left."));
         }
     }
-
 }
