@@ -355,3 +355,32 @@
 .description_footer {
     clear: both;
 }
+
+/* displays the list of offers */
+.offers_block{
+    margin :1em;
+    line-height: 0.9em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -o-border-radius:5px;
+    -ms-border-radius:5px;
+    -khtml-border-radius:5px;
+    border-radius:5px;
+    border: 1px solid rgb(230,230,230);
+    background:rgb(250,250,250);
+}
+
+/* displays the description of the offer*/
+.offer_info_block{
+    padding-left: 1em;
+}
+
+.offer_avatar{
+    float: left;
+    max-height: 120px;
+    max-width: 100px;
+    margin-right: 1em;
+}

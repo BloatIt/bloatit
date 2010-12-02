@@ -97,6 +97,11 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     public DaoGroup getGroup() {
         return group;
     }
+    
+    public static DaoJoinGroupInvitation getInvitation(DaoGroup group, DaoMember member) {
+        return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and reciever = :member")
+                .setEntity("group", group).setEntity("member", member).uniqueResult();
+    }
 
     // ======================================================================
     // For hibernate mapping
@@ -134,5 +139,4 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     protected void setState(State state) {
         this.state = state;
     }
-
 }

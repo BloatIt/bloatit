@@ -78,10 +78,8 @@ public class DBRequests {
         try {
             org.apache.lucene.search.Query query = parser.parse(searchStr);
             return new SearchCollection<T>(SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent));
-
         } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
+            return new NullCollection<T>();
         }
     }
 

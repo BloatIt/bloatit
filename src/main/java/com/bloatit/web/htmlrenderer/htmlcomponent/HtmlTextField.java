@@ -24,14 +24,54 @@ import com.bloatit.web.htmlrenderer.HtmlResult;
 public class HtmlTextField extends HtmlComponent {
 
     private String defaultValue = null;
-    private final String label;
+    private String label;
 
-    public HtmlTextField(String label){
+    /**
+     * Creates a textField with a default value and the label
+     * @param defaultValue
+     *      The value displayed by default in the textField after page
+     *      loaded
+     * @param label
+     *      The text displayed next to the textField
+     */
+    public HtmlTextField(String defaultValue, String label){
+        this.label = label;
+        this.defaultValue = defaultValue;
+    }
+
+    /**
+     * Creates a textField with a default value
+     * @param defaultValue
+     *      The value displayed by default in the textField after page
+     *      loaded
+     */
+    public HtmlTextField(String defaultValue){
+        this(defaultValue, "");
+    }
+
+    /**
+     * Creates a textField with no default value and no associated label
+     */
+    public HtmlTextField(){
+        this("");
+    }
+
+    /**
+     * Sets the display that will be used along with the text field
+     * @param label
+     *      The string that will ne displayed next to the text field
+     */
+    public void setLabel(String label){
         this.label = label;
     }
 
-    public HtmlTextField(){
-        this("");
+    /**
+     * Sets the value displayed in the text field after page is loaded
+     * @param defaultValue
+     *      The displayed value
+     */
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -41,10 +81,6 @@ public class HtmlTextField extends HtmlComponent {
         } else {
             htmlResult.write("<p>"+ this.generateLabel() + "<input name=\"" + name + "\" type=\"text\" id=\""+this.name+"\" value=\"" + defaultValue + "\" /></p>");
         }
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
     }
 
     private String generateLabel(){

@@ -1,5 +1,6 @@
 package com.bloatit.framework;
 
+import com.bloatit.common.Image;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.lists.CommentList;
@@ -170,7 +171,7 @@ public class Member extends Actor {
     }
 
     @Override
-    protected DaoMember getDao() {
+    public DaoMember getDao() {
         return dao;
     }
 
@@ -184,5 +185,10 @@ public class Member extends Actor {
 
     public Role getRole() {
         return dao.getRole();
+    }
+
+    public Image getAvatar() {
+        // TODO : Do it properly
+        return new Image("none.png", Image.ImageType.LOCAL);
     }
 }

@@ -24,7 +24,7 @@ import com.bloatit.web.htmlrenderer.HtmlResult;
 public class HtmlTextArea extends HtmlComponent {
 
     private String defaultValue = null;
-    private final String label;
+    private String label;
 
     public HtmlTextArea(String label){
         this.label = label;
@@ -57,5 +57,9 @@ public class HtmlTextArea extends HtmlComponent {
             return "";
         }
         return "<label for=\""+this.name+"\">"+this.label+"</label>";
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

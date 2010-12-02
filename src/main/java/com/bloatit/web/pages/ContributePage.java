@@ -60,13 +60,13 @@ public class ContributePage extends LoggedPage {
 
         if (ideaId == -1 ){
             session.notifyBad(session.tr("You need to choose an idea on which you'll contribute"));
-            htmlResult.setRedirect(new DemandsPage(session));
+            htmlResult.setRedirect(new PageNotFound(session));
             return null;
         }
 
         if (targetIdea == null){
             session.notifyBad(session.tr("The idea you chose does not exists (id :"+ideaId+")"));
-            htmlResult.setRedirect(new DemandsPage(session));
+            htmlResult.setRedirect(new PageNotFound(session));
             return null;
         }
 
@@ -77,7 +77,8 @@ public class ContributePage extends LoggedPage {
         contribForm.setMethod(HtmlForm.Method.POST);
 
         // Input field : chose amount
-        final HtmlTextField contribField = new HtmlTextField(session.tr("Choose amount : "));
+        final HtmlTextField contribField = new HtmlTextField();
+        contribField.setLabel(session.tr("Choose amount : "));
         
         if(this.parameters.containsKey(contribAction.getContributionCode())){
             contribField.setDefaultValue(this.parameters.get(contribAction.getContributionCode()));
@@ -120,7 +121,7 @@ public class ContributePage extends LoggedPage {
 
     @Override
     protected String getTitle() {
-        return "Contribute to a project";
+        return session.tr("Contribute to a project");
     }
 
     @Override

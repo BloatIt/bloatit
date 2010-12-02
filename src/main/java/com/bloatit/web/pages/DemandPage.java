@@ -18,6 +18,8 @@
  */
 package com.bloatit.web.pages;
 
+import com.bloatit.web.actions.OfferAction;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlImage;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
 import java.util.HashMap;
@@ -28,6 +30,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.Contribution;
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Offer;
 import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.LogoutAction;
@@ -68,7 +71,7 @@ public class DemandPage extends Page {
             demand = null;
         }
         generateOutputParams();
-        
+
     }
 
     public DemandPage(Session session, Map<String, String> parameters, Demand demand) {
@@ -96,7 +99,7 @@ public class DemandPage extends Page {
         page.add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
         page.add(generateHead());
         page.add(generateBody());
-       
+
         return page;
     }
 
@@ -132,10 +135,11 @@ public class DemandPage extends Page {
         }
 
         HtmlRenderer<Contribution> participationRenderer = new HtmlRenderer<Contribution>() {
+
             @Override
             public void generate(HtmlResult htmlResult, Contribution item) {
-               
-                String itemString =  item.getAuthor().getLogin() + " "+ item.getAmount().toPlainString() + " " + item.getCreationDate().toString();
+
+                String itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " " + item.getCreationDate().toString();
 
                 HtmlListItem htmlItem = new HtmlListItem(itemString);
 
@@ -180,25 +184,25 @@ public class DemandPage extends Page {
     private void generateChildComment(HtmlBlock commentBlock, PageIterable<Comment> children) {
         for (Comment childComment : children) {
             HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
-            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,childComment.getCreationDate())+"</span>";
-            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, childComment.getAuthor().getLogin() , new MemberPage(session, childComment.getAuthor()))+"</span>";
-            childCommentBlock.add(new HtmlText(childComment.getText()+" – "+author+" "+date));
+            String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, childComment.getCreationDate()) + "</span>";
+            String author = "<span class=\"comment_author\">" + HtmlTools.generateLink(session, childComment.getAuthor().getLogin(), new MemberPage(session, childComment.getAuthor())) + "</span>";
+            childCommentBlock.add(new HtmlText(childComment.getText() + " – " + author + " " + date));
             generateChildComment(childCommentBlock, childComment.getChildren());
 
             commentBlock.add(childCommentBlock);
         }
     }
-    
+
     private HtmlBlock generateDescriptionDetails() {
 
         HtmlBlock descriptionDetails = new HtmlBlock("description_details");
 
-        HtmlText date = new HtmlText("description_date", HtmlTools.formatDate(session,demand.getCreationDate()));
-        HtmlText author = new HtmlText("description_author", HtmlTools.generateLink(session, demand.getAuthor().getLogin() , new MemberPage(session, demand.getAuthor())));
+        HtmlText date = new HtmlText( HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
+        HtmlText author = new HtmlText( HtmlTools.generateLink(session, demand.getAuthor().getLogin(), new MemberPage(session, demand.getAuthor())), "description_author");
 
         descriptionDetails.add(author);
         descriptionDetails.add(date);
-        
+
         return descriptionDetails;
     }
 
@@ -216,9 +220,12 @@ public class DemandPage extends Page {
         contributeBlock.add(contributeForm);
         return contributeBlock;
     }
-    
+
     private HtmlBlock generateMakeOfferButton() {
-        HtmlForm makeOfferForm = new HtmlForm(new LogoutAction(session));
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("idea", String.valueOf(this.demand.getId()));
+
+        HtmlForm makeOfferForm = new HtmlForm(new OfferPage(session, params));
         HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
 
         makeOfferForm.add(makeOfferButton);
@@ -289,10 +296,10 @@ public class DemandPage extends Page {
 
         demandHeadKudo.add(generateDemandKudoBlock());
         demandHeadProgress.add(generateProgressBlock());
-        
+
         demandHead.add(demandHeadProgress);
         demandHead.add(demandHeadKudo);
-        
+
         return demandHead;
     }
 
@@ -303,7 +310,7 @@ public class DemandPage extends Page {
 
     private HtmlComponent generateAbstractBlock() {
         HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
-       
+
         abstractBlock.add(generateTimelineBlock());
         //abstractBlock.add(generateContributorsBlock());
 
@@ -324,32 +331,69 @@ public class DemandPage extends Page {
         for (Comment comment : demand.getComments()) {
             HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
 
-            String date = "<span class=\"comment_date\">"+HtmlTools.formatDate(session,comment.getCreationDate())+"</span>";
-            String author = "<span class=\"comment_author\">"+HtmlTools.generateLink(session, comment.getAuthor().getLogin() , new MemberPage(session, comment.getAuthor()))+"</span>";
+            String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, comment.getCreationDate()) + "</span>";
+            String author = "<span class=\"comment_author\">" + HtmlTools.generateLink(session, comment.getAuthor().getLogin(), new MemberPage(session, comment.getAuthor())) + "</span>";
 
-            commentBlock.add(new HtmlText(comment.getText()+" – "+ author+" "+date));
+            commentBlock.add(new HtmlText(comment.getText() + " – " + author + " " + date));
             generateChildComment(commentBlock, comment.getChildren());
             commentsBlock.add(commentBlock);
         }
         return commentsBlock;
     }
 
+    /**
+     * Creates the block that will be displayed in the offer tab.
+     */
+    private HtmlComponent generateOfferBlock() {
+        HtmlBlock offersBlock = new HtmlBlock("offers_block");
+
+        for (Offer offer : this.demand.getOffers() ){
+            HtmlBlock offerBlock = new HtmlBlock("offer_block");
+            HtmlBlock offerInfoBlock = new HtmlBlock("offer_info_block");
+
+            HtmlText author = new HtmlText(session.tr("Author : ") + offer.getAuthor().getFullname() , "offer_author");
+            HtmlText price = new HtmlText(session.tr("Price : ") + "Unknown yet", "offer_price");
+            HtmlText expirationDate = new HtmlText(session.tr("Expiration date : ") + offer.getDateExpire().toString(), "offer_expiry_date");
+            HtmlImage authorAvatar = new HtmlImage(offer.getAuthor().getAvatar(), "offer_avatar");
+            HtmlText creationDate = new HtmlText(session.tr("Creation Date : ") + offer.getCreationDate().toString(), "offer_creation_date");
+
+            HtmlText title = new HtmlText(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
+            HtmlText description = new HtmlText(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
+            
+            offerInfoBlock.add(author);
+            offerInfoBlock.add(price);
+            offerInfoBlock.add(expirationDate);
+            offerInfoBlock.add(creationDate);
+
+            offerBlock.add(authorAvatar);
+            offerBlock.add(offerInfoBlock);
+            offerBlock.add(title);
+            offerBlock.add(description);
+
+            offersBlock.add(offerBlock);
+        }
+
+        return offersBlock;
+    }
+
     private HtmlComponent generateTabPane() {
         HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab");
-        HtmlTabBlock.HtmlTab descriptionTab = new HtmlTabBlock.HtmlTab("description_tab", session.tr("Description") ,this, generateDescription());
+        HtmlTabBlock.HtmlTab descriptionTab = new HtmlTabBlock.HtmlTab("description_tab", session.tr("Description"), this, generateDescription());
         //HtmlTabBlock.HtmlTab commentTab = new HtmlTabBlock.HtmlTab("comment_tab", session.tr("Comments") ,this, generateCommentsBlock());
-        HtmlTabBlock.HtmlTab participationsTab = new HtmlTabBlock.HtmlTab("participations_tab", session.tr("Participations") ,this, generateContributorsBlock());
+        HtmlTabBlock.HtmlTab participationsTab = new HtmlTabBlock.HtmlTab("participations_tab", session.tr("Participations"), this, generateContributorsBlock());
+
+        HtmlTabBlock.HtmlTab offerTab = new HtmlTabBlock.HtmlTab("offer_tab", session.tr("Offers"), this, generateOfferBlock());
 
         tabPane.addTab(descriptionTab);
         //tabPane.addTab(commentTab);
         tabPane.addTab(participationsTab);
+        tabPane.addTab(offerTab);
 
-        if(parameters.containsKey("demand_tab_key")) {
+        if (parameters.containsKey("demand_tab_key")) {
             tabPane.selectTab(parameters.get("demand_tab_key"));
         } else {
             tabPane.selectTab("description_tab");
         }
         return tabPane;
     }
-
 }
