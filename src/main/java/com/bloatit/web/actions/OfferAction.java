@@ -62,7 +62,7 @@ public class OfferAction extends Action {
     }
 
     public OfferAction(Session session, Map<String, String> parameters) {
-        super(session, parameters);import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
+        super(session, parameters);
     }
 
     /**
@@ -101,6 +101,7 @@ public class OfferAction extends Action {
     @Override
     protected void process() {
         // Handle errors here
+
 
         // targetIdea.addOffer(price, , expiryDate);
         
