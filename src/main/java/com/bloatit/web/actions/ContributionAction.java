@@ -48,7 +48,7 @@ public class ContributionAction extends Action {
     /**
      * Use to determine an identifier to use for forms.
      */
-    public String getContributionCode(){
+    public String getContributionCode() {
         return "bloatit_contribute";
     }
 
@@ -108,6 +108,7 @@ public class ContributionAction extends Action {
 
         // Authentication
         targetDemand.authenticate(session.getAuthToken());
+
         if (targetDemand.canContribute()){
             targetDemand.addContribution(amount, comment);
             htmlResult.setRedirect(new DemandPage(session, targetDemand));

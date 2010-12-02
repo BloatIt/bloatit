@@ -142,7 +142,7 @@ public class QueryParamProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends QueryParam.FromString<U>, U> Class<T> findConversionType(Class<U> theClass) {
+    private <T extends QueryParam.FromString<?>, U> Class<T> findConversionType(Class<U> theClass) {
         if (theClass.equals(Integer.class)) {
             return Class.class.cast(ToInteger.class);
         } else if (theClass.equals(Byte.class)) {

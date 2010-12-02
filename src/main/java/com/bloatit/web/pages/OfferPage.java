@@ -25,32 +25,34 @@ import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextArea;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.QueryParam;
+import com.bloatit.web.utils.QueryParamProcessor;
+import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OfferPage extends LoggedPage {
 
-    // TODO : @QueryParam
+    @QueryParam(name="idea", loader = DemandLoader.class, error="Invalid idea")
     private Demand targetIdea = null;
 
-    // TODO : @QueryParam
+    @QueryParam(name="price")
     private int price;
 
-    // TODO : @QueryParam
+    @QueryParam(name="expiry")
     private Date expiryDate;
 
-    // TODO : @QueryParam
+    @QueryParam(name="title")
     private String title;
 
-    // TODO : @QueryParam
+    @QueryParam(name="description")
     private String description;
 
     public OfferPage(Session session) {
@@ -83,8 +85,16 @@ public class OfferPage extends LoggedPage {
 
     @Override
     public HtmlComponent generateRestrictedContent() {
+        QueryParamProcessor processor = new QueryParamProcessor();
+        processor.run(this, this.parameters);
+
+        if(processor.getErrors().size() > 0){
+            
+            //return null;
+        }
+
         // TODO : remove and replace with parameter loading machanism
-        int ideaId = -1;
+        /*int ideaId = -1;
         if(this.parameters.containsKey("idea")){
             try{
                 ideaId = Integer.parseInt(this.parameters.get("idea"));
@@ -103,12 +113,15 @@ public class OfferPage extends LoggedPage {
             session.notifyBad(session.tr("The idea you chose does not exists (id :"+ideaId+")"));
             htmlResult.setRedirect(new DemandsPage(session));
             return null;
-        }
+        }*/
         // !TODO
         
         HtmlTitle offerPageContainer = new HtmlTitle(this.session.tr("Make an offer"), "");
         final OfferAction offerAction = new OfferAction(this.session, this.parameters);
         HtmlForm offerForm = new HtmlForm(offerAction);
+
+        HtmlText t = new HtmlText(this.targetIdea.getTitle());
+        offerPageContainer.add(t);
 
         HtmlTextField priceField = new HtmlTextField(new Integer(this.price).toString()); // TODO
         priceField.setLabel(this.session.tr("Offer price : "));
