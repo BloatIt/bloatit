@@ -43,12 +43,12 @@ public abstract class Page extends Request {
     private boolean customDesign = false;
     private HtmlComponent content;
 
-    public Page(Session session, Map<String, String> parameters) {
+    protected Page(Session session, Map<String, String> parameters) {
         super(session, parameters);
         design = "/resources/css/core.css";
     }
 
-    public Page(Session session) {
+    protected Page(Session session) {
         this(session, new HashMap<String, String>());
     }
 

@@ -22,7 +22,7 @@ import com.bloatit.framework.Demand;
 import com.bloatit.framework.Description;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.QueryParam;
+import com.bloatit.web.utils.RequestParam;
 import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,27 +34,27 @@ public class OfferAction extends Action {
     /**
      * The idea on which the author wants to create a new offer
      */
-    @QueryParam(name = "idea", loader = DemandLoader.class, error = "Invalid idea")
+    @RequestParam(name = "idea", loader = DemandLoader.class, errorMsg = "Invalid idea")
     private Demand targetIdea = null;
     /**
      * The desired price for the offer
      */
-    @QueryParam(name = "offer_price")
+    @RequestParam(name = "offer_price")
     private BigDecimal price;
     /**
      * The expiration date for the offer
      */
-    @QueryParam(name = "offer_expiry_date")
+    @RequestParam(name = "offer_expiry_date")
     private Date expiryDate;
     /**
      * The title of the offer
      */
-    @QueryParam(name = "offer_title")
+    @RequestParam(name = "offer_title")
     private String title;
     /**
      * The short description of the offer
      */
-    @QueryParam(name = "offer_description")
+    @RequestParam(name = "offer_description")
     private String description;
 
     public OfferAction(Session session) {

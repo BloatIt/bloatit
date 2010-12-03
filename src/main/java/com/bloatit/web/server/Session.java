@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.framework.AuthToken;
+import com.bloatit.web.utils.Message;
 
 public class Session {
     private final String key;
@@ -124,9 +125,21 @@ public class Session {
      * Notifies all elements in a list as warnings
      * TODO : DELETE, for test purposes only
      */
-    public void notifyList(List<String> errors){
-        for(String error : errors ){
-            this.notifyBad(error);
+    public void notifyList(List<Message> errors){
+        for(Message error : errors ){
+            switch (error.getLevel()) {
+            case ERROR:
+                this.notifyBad(error.getMessage());
+                break;
+            case WARNING:
+                this.notifyBad(error.getMessage());
+                break;
+            case INFO:
+                this.notifyGood(error.getMessage());
+                break;
+            default:
+                break;
+            }
         }
     }
 
