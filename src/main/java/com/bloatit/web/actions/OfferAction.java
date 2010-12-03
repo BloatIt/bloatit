@@ -16,37 +16,80 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.actions;
 
+import com.bloatit.framework.Demand;
+import com.bloatit.framework.Description;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.QueryParam;
+import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OfferAction extends Action {
 
-    public OfferAction(Session session){
+    /**
+     * The idea on which the author wants to create a new offer
+     */
+    @QueryParam(name = "idea", loader = DemandLoader.class, error = "Invalid idea")
+    private Demand targetIdea = null;
+    /**
+     * The desired price for the offer
+     */
+    @QueryParam(name = "offer_price")
+    private BigDecimal price;
+    /**
+     * The expiration date for the offer
+     */
+    @QueryParam(name = "offer_expiry_date")
+    private Date expiryDate;
+    /**
+     * The title of the offer
+     */
+    @QueryParam(name = "offer_title")
+    private String title;
+    /**
+     * The short description of the offer
+     */
+    @QueryParam(name = "offer_description")
+    private String description;
+
+    public OfferAction(Session session) {
         super(session, new HashMap<String, String>());
     }
 
-    public OfferAction(Session session, Map<String, String> parameters){
+    public OfferAction(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }
 
-    public String getPriceCode(){
+    /**
+     * @return the code used to generate the form input field for the price
+     */
+    public String getPriceCode() {
         return "offer_price";
     }
 
-    public String getExpiryDateCode(){
+    /**
+     * @return the code used to generate the form input field for the expiration date
+     */
+    public String getExpiryDateCode() {
         return "offer_expiry_date";
     }
 
-    public String getTitleCode(){
+    /**
+     * @return the code used to generate the form input field for the offer title
+     */
+    public String getTitleCode() {
         return "offer_title";
     }
 
-    public String getDescriptionCode(){
+    /**
+     * @return the code used to generate the form input field for description of the offer
+     */
+    public String getDescriptionCode() {
         return "offer_description";
     }
 
@@ -55,5 +98,12 @@ public class OfferAction extends Action {
         return "offer";
     }
 
+    @Override
+    protected void process() {
+        // Handle errors here
 
+
+        // targetIdea.addOffer(price, , expiryDate);
+        
+    }
 }
