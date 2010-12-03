@@ -19,6 +19,7 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.web.pages.demand.DemandPage;
 import java.util.HashMap;
 import java.util.Map;
 
