@@ -59,4 +59,12 @@ public abstract class Request {
 
     public abstract String getUrl(Map<String, String> outputParameters);
 
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
 }

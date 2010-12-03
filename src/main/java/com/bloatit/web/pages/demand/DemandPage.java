@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages;
+package com.bloatit.web.pages.demand;
 
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlImage;
@@ -48,6 +48,9 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlProgressBar;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTabBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
+import com.bloatit.web.pages.ContributePage;
+import com.bloatit.web.pages.MemberPage;
+import com.bloatit.web.pages.OfferPage;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.PageNotFoundException;
@@ -118,39 +121,8 @@ public class DemandPage extends Page {
         return true;
     }
 
-    private HtmlBlock generateContributorsBlock() {
-        HtmlBlock contributorsBlock = new HtmlBlock("contributors_block");
-
-        int contributionCount = demand.getContributions().size();
-        contributorsBlock.add(new HtmlText("" + contributionCount + session.tr("&nbsp;contributions")));
-
-        if (contributionCount > 0) {
-            float contributionMean = demand.getContribution().floatValue() / contributionCount;
-            String contributionMin = demand.getContributionMin().toPlainString();
-            String contributionMax = demand.getContributionMax().toPlainString();
-
-            contributorsBlock.add(new HtmlText(session.tr("Min:&nbsp;") + contributionMin));
-            contributorsBlock.add(new HtmlText(session.tr("Max:&nbsp;") + contributionMax));
-            contributorsBlock.add(new HtmlText(session.tr("Mean:&nbsp;") + contributionMean));
-        }
-
-        HtmlRenderer<Contribution> participationRenderer = new HtmlRenderer<Contribution>() {
-
-            @Override
-            public void generate(HtmlResult htmlResult, Contribution item) {
-
-                String itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " " + item.getCreationDate().toString();
-
-                HtmlListItem htmlItem = new HtmlListItem(itemString);
-
-                htmlItem.generate(htmlResult);
-            }
-        };
-
-        HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("participation_list", participationRenderer, demand.getContributions(), this, session);
-        contributorsBlock.add(participationsList);
-        return contributorsBlock;
-
+    public Demand getDemand() {
+        return demand;
     }
 
     private HtmlBlock generateTimelineBlock() {
@@ -165,46 +137,8 @@ public class DemandPage extends Page {
         return timelineBlock;
     }
 
-    private HtmlBlock generateDescription() {
-        // Description
-        Locale defaultLocale = session.getLanguage().getLocale();
-        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
-
-        HtmlBlock descriptionBlock = new HtmlBlock("description_block");
-        HtmlText description = new HtmlText(translatedDescription.getText());
-        HtmlBlock descriptionFooter = new HtmlBlock("description_footer");
-
-        descriptionBlock.add(generateDescriptionDetails());
-
-        descriptionBlock.add(description);
-        descriptionBlock.add(descriptionFooter);
-        return descriptionBlock;
-    }
-
-    private void generateChildComment(HtmlBlock commentBlock, PageIterable<Comment> children) {
-        for (Comment childComment : children) {
-            HtmlBlock childCommentBlock = new HtmlBlock("child_comment_block");
-            String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, childComment.getCreationDate()) + "</span>";
-            String author = "<span class=\"comment_author\">" + HtmlTools.generateLink(session, childComment.getAuthor().getLogin(), new MemberPage(session, childComment.getAuthor())) + "</span>";
-            childCommentBlock.add(new HtmlText(childComment.getText() + " – " + author + " " + date));
-            generateChildComment(childCommentBlock, childComment.getChildren());
-
-            commentBlock.add(childCommentBlock);
-        }
-    }
-
-    private HtmlBlock generateDescriptionDetails() {
-
-        HtmlBlock descriptionDetails = new HtmlBlock("description_details");
-
-        HtmlText date = new HtmlText( HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
-        HtmlText author = new HtmlText( HtmlTools.generateLink(session, demand.getAuthor().getLogin(), new MemberPage(session, demand.getAuthor())), "description_author");
-
-        descriptionDetails.add(author);
-        descriptionDetails.add(date);
-
-        return descriptionDetails;
-    }
+   
+    
 
     private HtmlBlock generateContributeButton() {
         HashMap<String, String> params = new HashMap<String, String>();
@@ -262,9 +196,9 @@ public class DemandPage extends Page {
 
     private HtmlComponent generateBodyLeft() {
         final HtmlBlock left = new HtmlBlock("leftColumn");
-        left.add(generateTabPane());
+        left.add(new DemandTabPane(this));
         // Comments
-        left.add(generateCommentsBlock());
+        left.add(new DemandCommentListComponent(this));
         return left;
 
     }
@@ -324,76 +258,4 @@ public class DemandPage extends Page {
         return descriptionKudoBlock;
     }
 
-    private HtmlComponent generateCommentsBlock() {
-        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
-        commentsBlock.add(new HtmlTitle(session.tr("Comments"), "comments_title"));
-
-        for (Comment comment : demand.getComments()) {
-            HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
-
-            String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, comment.getCreationDate()) + "</span>";
-            String author = "<span class=\"comment_author\">" + HtmlTools.generateLink(session, comment.getAuthor().getLogin(), new MemberPage(session, comment.getAuthor())) + "</span>";
-
-            commentBlock.add(new HtmlText(comment.getText() + " – " + author + " " + date));
-            generateChildComment(commentBlock, comment.getChildren());
-            commentsBlock.add(commentBlock);
-        }
-        return commentsBlock;
-    }
-
-    /**
-     * Creates the block that will be displayed in the offer tab.
-     */
-    private HtmlComponent generateOfferBlock() {
-        HtmlBlock offersBlock = new HtmlBlock("offers_block");
-
-        for (Offer offer : this.demand.getOffers() ){
-            HtmlBlock offerBlock = new HtmlBlock("offer_block");
-            HtmlBlock offerInfoBlock = new HtmlBlock("offer_info_block");
-
-            HtmlText author = new HtmlText(session.tr("Author : ") + offer.getAuthor().getFullname() , "offer_author");
-            HtmlText price = new HtmlText(session.tr("Price : ") + "Unknown yet", "offer_price");
-            HtmlText expirationDate = new HtmlText(session.tr("Expiration date : ") + offer.getDateExpire().toString(), "offer_expiry_date");
-            HtmlImage authorAvatar = new HtmlImage(offer.getAuthor().getAvatar(), "offer_avatar");
-            HtmlText creationDate = new HtmlText(session.tr("Creation Date : ") + offer.getCreationDate().toString(), "offer_creation_date");
-
-            HtmlText title = new HtmlText(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
-            HtmlText description = new HtmlText(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
-            
-            offerInfoBlock.add(author);
-            offerInfoBlock.add(price);
-            offerInfoBlock.add(expirationDate);
-            offerInfoBlock.add(creationDate);
-
-            offerBlock.add(authorAvatar);
-            offerBlock.add(offerInfoBlock);
-            offerBlock.add(title);
-            offerBlock.add(description);
-
-            offersBlock.add(offerBlock);
-        }
-
-        return offersBlock;
-    }
-
-    private HtmlComponent generateTabPane() {
-        HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab");
-        HtmlTabBlock.HtmlTab descriptionTab = new HtmlTabBlock.HtmlTab("description_tab", session.tr("Description"), this, generateDescription());
-        //HtmlTabBlock.HtmlTab commentTab = new HtmlTabBlock.HtmlTab("comment_tab", session.tr("Comments") ,this, generateCommentsBlock());
-        HtmlTabBlock.HtmlTab participationsTab = new HtmlTabBlock.HtmlTab("participations_tab", session.tr("Participations"), this, generateContributorsBlock());
-
-        HtmlTabBlock.HtmlTab offerTab = new HtmlTabBlock.HtmlTab("offer_tab", session.tr("Offers"), this, generateOfferBlock());
-
-        tabPane.addTab(descriptionTab);
-        //tabPane.addTab(commentTab);
-        tabPane.addTab(participationsTab);
-        tabPane.addTab(offerTab);
-
-        if (parameters.containsKey("demand_tab_key")) {
-            tabPane.selectTab(parameters.get("demand_tab_key"));
-        } else {
-            tabPane.selectTab("description_tab");
-        }
-        return tabPane;
-    }
 }

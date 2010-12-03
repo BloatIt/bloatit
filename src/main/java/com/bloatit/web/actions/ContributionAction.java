@@ -22,7 +22,7 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.pages.ContributePage;
-import com.bloatit.web.pages.DemandPage;
+import com.bloatit.web.pages.demand.DemandPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Session;
