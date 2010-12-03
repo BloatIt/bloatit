@@ -38,8 +38,7 @@ public class BigDB {
             members.add(member);
 
             try {
-                DaoTransaction
-                        .createAndPersist(member.getInternalAccount(), member.getExternalAccount(), new BigDecimal("-1000"));
+                DaoTransaction.createAndPersist(member.getInternalAccount(), member.getExternalAccount(), new BigDecimal("-1000"));
             } catch (final NotEnoughMoneyException e) {
                 e.printStackTrace();
             }
@@ -62,8 +61,10 @@ public class BigDB {
             }
         }
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), new DaoDescription(members.get(i), new Locale(
-                    "fr"), fortune(140), fortune(1000) + fortune(1000) + fortune(1000)));
+            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
+                                                                                                   new Locale("fr"),
+                                                                                                   fortune(140),
+                                                                                                   fortune(1000) + fortune(1000) + fortune(1000)));
 
             int commentCount = (int) (Math.random() * 5);
 
@@ -77,13 +78,17 @@ public class BigDB {
             int nbContrib = pick(12);
             for (int j = 0; j < nbContrib; j++) {
                 DaoMember m = members.get(pick(nbUsers));
-                demand.addContribution(m, new BigDecimal((pick(10) + 1) * 10), fortune(144));
+                try {
+                    demand.addContribution(m, new BigDecimal((pick(10) + 1) * 10), fortune(144));
+                } catch (NotEnoughMoneyException e) {
+                    e.printStackTrace();
+                }
             }
-            
+
             DaoMember member = members.get(pick(nbUsers));
-            if(pick(2) == 0){
-                demand.addOffer(member, new BigDecimal((pick(50) +10) *10), new DaoDescription(member, new Locale("fr"), "Offre", fortune(254)), new Date());
-                if(pick(2) == 0){
+            if (pick(2) == 0) {
+                demand.addOffer(member, new BigDecimal((pick(50) + 10) * 10), DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)), new Date());
+                if (pick(2) == 0) {
                     for (DaoContribution contrib : demand.getContributions()) {
                         try {
                             contrib.accept(demand.getOffers().iterator().next());
@@ -93,8 +98,6 @@ public class BigDB {
                     }
                 }
             }
-            
-            
 
             // TODO add Translation
 

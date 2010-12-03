@@ -10,9 +10,13 @@ import javax.persistence.ManyToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
+/**
+ * A transaction is a transaction between an internal account and an other account.
+ */
 @Entity
 public class DaoTransaction extends DaoIdentifiable {
 
@@ -25,20 +29,7 @@ public class DaoTransaction extends DaoIdentifiable {
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 
-    protected DaoTransaction() {
-        super();
-    }
-
-    /**
-     * Create a new transaction and update the two accounts.
-     * 
-     * @param from is the account from which we will take money.
-     * @param to is the account where the money goes
-     * @param amount is the quantity of money transfered.
-     * @throws NotEnoughMoneyException
-     */
-    public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount)
-            throws NotEnoughMoneyException {
+    public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoTransaction Transaction = new DaoTransaction(from, to, amount);
         try {
@@ -52,10 +43,24 @@ public class DaoTransaction extends DaoIdentifiable {
 
     }
 
+    /**
+     * Create a new transaction and update the two accounts.
+     * 
+     * @param from is the account from which we will take money.
+     * @param to is the account where the money goes
+     * @param amount is the quantity of money transfered.
+     * @throws NotEnoughMoneyException if there is not enough money to make the
+     * transaction
+     * @throws FatalErrorException if to == from
+     * @throws NullPointerException if any of the parameters = null
+     */
     private DaoTransaction(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
         super();
-        // TODO Find how to manage this for the other account
-        if (from.getAmount().compareTo(amount) < 0) {
+        // TODO TEST ME MORE
+        if (from == to) {
+            throw new FatalErrorException("Cannot create a transaction on the same account.", null);
+        }
+        if (from.getAmount().compareTo(amount) < 0 || to.getAmount().compareTo(amount.negate()) < 0) {
             throw new NotEnoughMoneyException();
         }
         this.from = from;
@@ -86,18 +91,37 @@ public class DaoTransaction extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
+    protected DaoTransaction() {
+        super();
+    }
+
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setTo(DaoAccount to) {
         this.to = to;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setFrom(DaoInternalAccount from) {
         this.from = from;
     }

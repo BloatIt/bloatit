@@ -7,15 +7,21 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 
+import com.bloatit.model.data.DaoDemand;
+
+/**
+ * These are some simple static utils to manage Hibernate sessions (and hibernate Search)
+ */
 public class SessionManager {
     // SHOULD BE FINAL see reCreateSessionFactory
     private static SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
         try {
-            // Create the SessionFactory from hibernate.cfg.xml
-            return sessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "update")
-                    .buildSessionFactory();
+            SessionFactory buildSessionFactory = new AnnotationConfiguration().configure()
+                    .setProperty("hibernate.hbm2ddl.auto", "update").buildSessionFactory();
+                Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoDemand.class).startAndWait();
+            return buildSessionFactory;
         } catch (final Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);
@@ -71,8 +77,7 @@ public class SessionManager {
     public static void reCreateSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            sessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "create-drop")
-                    .buildSessionFactory();
+            sessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "create-drop").buildSessionFactory();
         } catch (final Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);

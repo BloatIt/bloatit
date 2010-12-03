@@ -19,20 +19,21 @@
 
 package com.bloatit.web.pages;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public abstract class LoggedPage extends Page {
 
-    public LoggedPage(Session session) {
+    protected LoggedPage(Session session) {
         this(session, new HashMap<String, String>());
     }
 
-    public LoggedPage(Session session, Map<String, String> parameters) {
+    protected LoggedPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }
 

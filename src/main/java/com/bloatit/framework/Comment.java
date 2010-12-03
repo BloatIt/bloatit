@@ -29,8 +29,9 @@ public class Comment extends Kudosable {
         return new CommentList(dao.getChildrenFromQuery());
     }
 
-    public void addChildComment(Comment Comment) {
-        dao.getChildren().add(Comment.getDao());
+    // TODO make sure it still works
+    public void addChildComment(Comment comment) {
+        dao.addChildComment(comment.getDao());
     }
 
     protected Comment() {

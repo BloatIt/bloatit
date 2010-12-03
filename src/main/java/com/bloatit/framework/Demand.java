@@ -15,6 +15,7 @@ import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDescription;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.util.SessionManager;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 public class Demand extends Kudosable {
     private final DaoDemand dao;
@@ -26,8 +27,9 @@ public class Demand extends Kudosable {
         return new Demand(dao);
     }
 
-    public Demand(Member member, Locale locale, String title, String description) {
-        dao = DaoDemand.createAndPersist(member.getDao(), new DaoDescription(member.getDao(), locale, title, description));
+    public Demand(Locale locale, String title, String description) {
+        dao = DaoDemand.createAndPersist(getToken().getMember().getDao(),
+                DaoDescription.createAndPersist(getToken().getMember().getDao(), locale, title, description));
     }
 
     private Demand(DaoDemand dao) {
@@ -39,13 +41,14 @@ public class Demand extends Kudosable {
         dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
     }
 
-    public void addContribution(BigDecimal amount, String comment)  {
+    public void addContribution(BigDecimal amount, String comment) throws NotEnoughMoneyException {
         // TODO : Vérifier que l'utilisateur a le droit de contribuer
         dao.addContribution(getToken().getMember().getDao(), amount, comment);
     }
 
-    public Offer addOffer(BigDecimal amount, Description description, Date dateExpir) {
-        return new Offer(dao.addOffer(getToken().getMember().getDao(), amount, description.getDao(), dateExpir));
+    public Offer addOffer(BigDecimal amount, Locale locale, String title, String text, Date dateExpir) {
+        return new Offer(dao.addOffer(getToken().getMember().getDao(), amount, new Description(getToken().getMember(), locale,
+                title, text).getDao(), dateExpir));
     }
 
     public void createSpecification(String content) {

@@ -63,9 +63,9 @@ public class Member extends Actor {
         DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(), group.getDao());
     }
 
-    public void acceptInvitation(JoinGroupInvitation demand) {
-        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
-        demand.accept();
+    public void acceptInvitation(JoinGroupInvitation invitation) {
+        invitation.authenticate(getToken());
+        invitation.accept();
     }
 
     public void refuseInvitation(JoinGroupInvitation demand) {
@@ -171,7 +171,7 @@ public class Member extends Actor {
     }
 
     @Override
-    protected DaoMember getDao() {
+    public DaoMember getDao() {
         return dao;
     }
 

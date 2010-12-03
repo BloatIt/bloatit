@@ -19,19 +19,28 @@
 
 package com.bloatit.web.server;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
+import com.bloatit.web.utils.RequestParamResult;
 
 public abstract class Request {
     protected HtmlResult htmlResult;
     protected Map<String, String> parameters;
     protected Session session;
+    private RequestParamResult query;
+
+    static public class ParserInit {
+    }
 
     protected Request(Session session, Map<String, String> parameters) {
         this.session = session;
         this.parameters = parameters;
+        this.query = new RequestParamResult(parameters);
+    }
+
+    protected void init(Object obj) {
+        query.parse(obj);
     }
 
     abstract public String getCode();
@@ -44,14 +53,19 @@ public abstract class Request {
     }
 
     /**
-     * <p>Indicates wether the page is considered stable or not.
-     * When the user is interrupted in his navigation (he is not logged ...)
-     * he'll return to the last stable page he visited. </p>
-     * <p> Therefore stable pages should only be main pages of the website
-     * navigation, and not the result of an action</p>
+     * <p>
+     * Indicates wether the page is considered stable or not. When the user is
+     * interrupted in his navigation (he is not logged ...) he'll return to the
+     * last stable page he visited.
+     * </p>
+     * <p>
+     * Therefore stable pages should only be main pages of the website
+     * navigation, and not the result of an action
+     * </p>
+     * 
      * @return
-     *      <i>true</i> if the page is stable
-     *      <i>false</i> otherwise
+     *         <i>true</i> if the page is stable
+     *         <i>false</i> otherwise
      */
     public abstract boolean isStable();
 
@@ -65,6 +79,10 @@ public abstract class Request {
 
     public Session getSession() {
         return session;
+     }
+
+    public RequestParamResult getQuery() {
+        return query;
     }
 
 }

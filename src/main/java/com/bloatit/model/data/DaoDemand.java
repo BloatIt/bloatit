@@ -19,28 +19,43 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
+/**
+ * A DaoDemand is a kudosable content. It has a translatable description, and can have a
+ * specification and some offers.
+ * 
+ * The state of the demand is managed by its super class DaoKudosable. On a demand we can
+ * add some comment and some contriutions.
+ */
 @Entity
 @Indexed
 public class DaoDemand extends DaoKudosable {
 
+    /**
+     * This is a calculated value with the sum of the value of all contributions.
+     */
     @Basic(optional = false)
     private BigDecimal contribution;
 
+    /**
+     * A description is a translatable text with an title.
+     */
     @OneToOne(optional = false)
-    @Cascade(value = { CascadeType.ALL})
+    @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
     private DaoDescription description;
 
     @OneToOne(mappedBy = "demand")
-    @Cascade(value = { CascadeType.ALL})
+    @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
     private DaoSpecification specification;
 
     @OneToMany(mappedBy = "demand")
-    @Cascade(value = { CascadeType.ALL})
+    @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
     private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
@@ -52,7 +67,7 @@ public class DaoDemand extends DaoKudosable {
     private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
     @OneToMany
-    @Cascade(value = { CascadeType.ALL})
+    @Cascade(value = { CascadeType.ALL })
     // @OrderBy(clause = "creationDate desc") // TODO find how to make this
     // works
     @IndexedEmbedded
@@ -61,8 +76,7 @@ public class DaoDemand extends DaoKudosable {
     /**
      * It is automatically in validated state (temporary)
      * 
-     * @param member
-     *        the author of the demand
+     * @param member the author of the demand
      * @param description
      */
     public static DaoDemand createAndPersist(DaoMember member, DaoDescription Description) {
@@ -78,30 +92,53 @@ public class DaoDemand extends DaoKudosable {
         return Demand;
     }
 
+    /**
+     * Create a DaoDemand and set it to the state validated.
+     * 
+     * @param member is the author of the demand
+     * @param description is the description ...
+     * @throws NullPointerException if any of the parameter is null.
+     */
     protected DaoDemand(DaoMember member, DaoDescription description) {
         super(member);
-        if(description == null){
+        if (description == null) {
             throw new NullPointerException();
         }
         setState(State.VALIDATED);
         this.description = description;
         this.specification = null;
-        this.contribution = new BigDecimal("0");
+        this.contribution = BigDecimal.ZERO;
     }
 
-    protected DaoDemand() {
-        super();
-    }
-
+    /**
+     * Delete this DaoDemand from the database. "this" will remain, but unmapped. (You
+     * shoudn't use it then)
+     */
     public void delete() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         session.delete(this);
     }
 
+    /**
+     * Create a specification.
+     * 
+     * @param member author (must be non null).
+     * @param content a string contain the specification (WARNING : UNTESTED)(must be non
+     * null).
+     */
     public void createSpecification(DaoMember member, String content) {
         specification = new DaoSpecification(member, content, this);
     }
 
+    /**
+     * Add a new offer for this demand.
+     * 
+     * @param member the author of the offer
+     * @param amount the amount that the author want to make the offer
+     * @param description this is a description of the offer
+     * @param dateExpir this is when the offer should be finish ?
+     * @return the newly created offer.
+     */
     public DaoOffer addOffer(DaoMember member, BigDecimal amount, DaoDescription description, Date dateExpir) {
         final DaoOffer Offer = new DaoOffer(member, this, amount, description, dateExpir);
         offers.add(Offer);
@@ -111,11 +148,12 @@ public class DaoDemand extends DaoKudosable {
     /**
      * delete offer from this demand AND FROM DB !
      * 
-     * @param Offer
-     *        the offer we want to delete.
+     * @param Offer the offer we want to delete.
      */
-    public void removeOffer(DaoOffer Offer) {
-        offers.remove(Offer);
+    public void removeOffer(DaoOffer offer) {
+        // TODO test me !
+        offers.remove(offer);
+        SessionManager.getSessionFactory().getCurrentSession().delete(offer);
     }
 
     /**
@@ -124,12 +162,15 @@ public class DaoDemand extends DaoKudosable {
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
+     * @throws NotEnoughMoneyException
      */
-    public void addContribution(DaoMember member, BigDecimal amount, String comment) {
-        if (amount.compareTo(new BigDecimal("0")) <= 0) {
+    public void addContribution(DaoMember member, BigDecimal amount, String comment) throws NotEnoughMoneyException {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            Log.data().fatal("Cannot create a contribution with this amount " + amount.toEngineeringString() + " by member " + member.getId());
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         if (comment.length() > 144) {
+            Log.data().fatal("The comment of a contribution must be <= 144 chars long.");
             throw new FatalErrorException("Comments lenght of Contribution must be < 144.", null);
         }
 
@@ -145,6 +186,9 @@ public class DaoDemand extends DaoKudosable {
         return description;
     }
 
+    /**
+     * Use a HQL query to get the offers as a PageIterable collection
+     */
     public PageIterable<DaoOffer> getOffersFromQuery() {
         return new QueryCollection<DaoOffer>("from DaoOffer as f where f.demand = :this").setEntity("this", this);
     }
@@ -153,6 +197,9 @@ public class DaoDemand extends DaoKudosable {
         return offers;
     }
 
+    /**
+     * Use a HQL query to get the contributions as a PageIterable collection
+     */
     public PageIterable<DaoContribution> getContributionsFromQuery() {
         return new QueryCollection<DaoContribution>("from DaoContribution as f where f.demand = :this").setEntity("this", this);
     }
@@ -161,10 +208,12 @@ public class DaoDemand extends DaoKudosable {
         return contributions;
     }
 
+    /**
+     * Use a HQL query to get the first level comments as a PageIterable collection
+     */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession()
-                .createFilter(getComments(), ""), SessionManager.getSessionFactory().getCurrentSession()
-                .createFilter(getComments(), "select count(*)"));
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(getComments(), ""),
+                                               SessionManager.getSessionFactory().getCurrentSession().createFilter(getComments(), "select count(*)"));
     }
 
     public Set<DaoComment> getComments() {
@@ -179,42 +228,74 @@ public class DaoDemand extends DaoKudosable {
         return contribution;
     }
 
+    /**
+     * @return the minimum value of the contribution on this demand.
+     */
     public BigDecimal getContributionMin() {
         return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
-                .setEntity("this", this).uniqueResult();
+                                          .setEntity("this", this)
+                                          .uniqueResult();
     }
 
+    /**
+     * @return the maximum value of the contribution on this demand.
+     */
     public BigDecimal getContributionMax() {
         return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")
-                .setEntity("this", this).uniqueResult();
+                                          .setEntity("this", this)
+                                          .uniqueResult();
     }
 
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
+    protected DaoDemand() {
+        super();
+    }
+
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setSpecification(DaoSpecification Specification) {
         specification = Specification;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setDescription(DaoDescription Description) {
         description = Description;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setOffers(Set<DaoOffer> Offers) {
         offers = Offers;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setContributions(Set<DaoContribution> Contributions) {
         contributions = Contributions;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setComments(Set<DaoComment> comments) {
         this.comments = comments;
     }
 
+    /**
+     * This is only for Hibernate. You should never use it.
+     */
     protected void setContribution(BigDecimal contribution) {
         this.contribution = contribution;
     }
-
 }
