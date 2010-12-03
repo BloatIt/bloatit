@@ -9,7 +9,12 @@ import com.bloatit.model.data.DaoDescription;
 public class Description extends Identifiable {
 
     private final DaoDescription dao;
-
+    
+    public Description(Member member, Locale locale, String title, String description) {
+        super();
+        this.dao = DaoDescription.createAndPersist(member.getDao(), locale, title, description);
+    }
+    
     public Description(DaoDescription dao) {
         super();
         this.dao = dao;
