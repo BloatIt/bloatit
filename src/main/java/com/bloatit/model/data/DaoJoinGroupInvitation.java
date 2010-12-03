@@ -99,7 +99,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
     
     public static DaoJoinGroupInvitation getInvitation(DaoGroup group, DaoMember member) {
-        return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and reciever = :member")
+        return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
                 .setEntity("group", group).setEntity("member", member).uniqueResult();
     }
 

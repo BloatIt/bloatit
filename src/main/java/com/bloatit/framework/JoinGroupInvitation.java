@@ -1,5 +1,7 @@
 package com.bloatit.framework;
 
+import com.bloatit.framework.right.MemberRight;
+import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoJoinGroupInvitation;
 
 public class JoinGroupInvitation extends Identifiable {
@@ -30,6 +32,7 @@ public class JoinGroupInvitation extends Identifiable {
     }
 
     public void accept() {
+        new MemberRight.InviteInGroup().tryAccess(calculateRole(getReciever(), getGroup()), Action.READ);
         dao.accept();
     }
 

@@ -111,6 +111,7 @@ public class Unlockable {
             MemberStatus status = token.getMember().getStatusUnprotected(group);
             if (status == MemberStatus.ADMIN) {
                 roles.add(Role.GROUP_ADMIN);
+                roles.add(Role.IN_GROUP);
             }
             if (status == MemberStatus.IN_GROUP) {
                 roles.add(Role.IN_GROUP);

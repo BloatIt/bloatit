@@ -51,6 +51,7 @@ public class MemberTest extends FrameworkTestUnit {
         yo.invite(fred, GroupManager.getByName("other"));
         assertFalse(fred.isInGroup(GroupManager.getByName("other")));
         
+        fred.authenticate(fredAuthToken);
         fred.acceptInvitation(GroupManager.getInvitation(GroupManager.getByName("other"), fred));
         assertTrue(fred.isInGroup(GroupManager.getByName("other")));
     }
