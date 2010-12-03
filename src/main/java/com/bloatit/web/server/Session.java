@@ -120,6 +120,16 @@ public class Session {
         notificationList.add(new Notification(message, Notification.Type.ERROR));
     }
 
+    /**
+     * Notifies all elements in a list as warnings
+     * TODO : DELETE, for test purposes only
+     */
+    public void notifyList(List<String> errors){
+        for(String error : errors ){
+            this.notifyBad(error);
+        }
+    }
+
     void flushNotifications() {
         notificationList.clear();
     }

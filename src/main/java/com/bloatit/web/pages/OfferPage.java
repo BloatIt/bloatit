@@ -89,8 +89,7 @@ public class OfferPage extends LoggedPage {
         processor.run(this, this.parameters);
 
         if(processor.getErrors().size() > 0){
-            
-            //return null;
+            session.notifyList(processor.getErrors());
         }
 
         // TODO : remove and replace with parameter loading machanism
