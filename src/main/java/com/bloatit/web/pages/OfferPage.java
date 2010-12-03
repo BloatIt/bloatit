@@ -19,40 +19,40 @@
 
 package com.bloatit.web.pages;
 
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlDateField;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.bloatit.framework.Demand;
-import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlDateField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextArea;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.QueryParam;
-import com.bloatit.web.utils.QueryParamProcessor;
+import com.bloatit.web.utils.RequestParam;
 import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class OfferPage extends LoggedPage {
 
-    @QueryParam(name="idea", loader = DemandLoader.class, error="Invalid idea")
+    @RequestParam(name = "idea", loader = DemandLoader.class, errorMsg = "Invalid idea")
     private Demand targetIdea = null;
 
-    @QueryParam(name="price")
-    private int price;
+    @RequestParam(name = "price")
+    private BigDecimal price;
 
-    @QueryParam(name="expiry")
+    @RequestParam(name = "expiry")
     private Date expiryDate;
 
-    @QueryParam(name="title")
+    @RequestParam(name = "title")
     private String title;
 
-    @QueryParam(name="description")
+    @RequestParam(name = "description")
     private String description;
 
     public OfferPage(Session session) {
@@ -61,6 +61,7 @@ public class OfferPage extends LoggedPage {
 
     public OfferPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
+        init(this);
     }
 
     @Override
@@ -85,36 +86,39 @@ public class OfferPage extends LoggedPage {
 
     @Override
     public HtmlComponent generateRestrictedContent() {
-        QueryParamProcessor processor = new QueryParamProcessor();
-        processor.run(this, this.parameters);
 
-        if(processor.getErrors().size() > 0){
-            session.notifyList(processor.getErrors());
+        if (getQuery().getMessages().size() > 0) {
+            session.notifyList(getQuery().getMessages());
+            // return null;
         }
 
         // TODO : remove and replace with parameter loading machanism
-        /*int ideaId = -1;
-        if(this.parameters.containsKey("idea")){
-            try{
-                ideaId = Integer.parseInt(this.parameters.get("idea"));
-                targetIdea = DemandManager.getDemandById(ideaId);
-            } catch (NumberFormatException nfe){
-            }
-        }
-
-        if (ideaId == -1 ){
-            session.notifyBad(session.tr("You need to choose an idea on which you'll contribute"));
-            htmlResult.setRedirect(new DemandsPage(session));
-            return null;
-        }
-
-        if (targetIdea == null){
-            session.notifyBad(session.tr("The idea you chose does not exists (id :"+ideaId+")"));
-            htmlResult.setRedirect(new DemandsPage(session));
-            return null;
-        }*/
+        /*
+         * int ideaId = -1;
+         * if(this.parameters.containsKey("idea")){
+         * try{
+         * ideaId = Integer.parseInt(this.parameters.get("idea"));
+         * targetIdea = DemandManager.getDemandById(ideaId);
+         * } catch (NumberFormatException nfe){
+         * }
+         * }
+         * 
+         * if (ideaId == -1 ){
+         * session.notifyBad(session.tr(
+         * "You need to choose an idea on which you'll contribute"));
+         * htmlResult.setRedirect(new DemandsPage(session));
+         * return null;
+         * }
+         * 
+         * if (targetIdea == null){
+         * session.notifyBad(session.tr("The idea you chose does not exists (id :"
+         * +ideaId+")"));
+         * htmlResult.setRedirect(new DemandsPage(session));
+         * return null;
+         * }
+         */
         // !TODO
-        
+
         HtmlTitle offerPageContainer = new HtmlTitle(this.session.tr("Make an offer"), "");
         final OfferAction offerAction = new OfferAction(this.session, this.parameters);
         HtmlForm offerForm = new HtmlForm(offerAction);
@@ -122,7 +126,7 @@ public class OfferPage extends LoggedPage {
         HtmlText t = new HtmlText(this.targetIdea.getTitle());
         offerPageContainer.add(t);
 
-        HtmlTextField priceField = new HtmlTextField(new Integer(this.price).toString()); // TODO
+        HtmlTextField priceField = new HtmlTextField(price == null ? "" : price.toPlainString()); // TODO
         priceField.setLabel(this.session.tr("Offer price : "));
         priceField.setName(offerAction.getPriceCode());
         offerForm.add(priceField);

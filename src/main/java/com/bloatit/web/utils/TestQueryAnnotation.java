@@ -7,24 +7,23 @@ import java.util.Map;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.model.data.util.SessionManager;
-import com.bloatit.web.utils.QueryParam.FromString;
 
 public class TestQueryAnnotation {
 
-    static public class DemandLoader implements FromString<Demand> {
+    static public class DemandLoader extends Loader<Demand> {
         @Override
         public Demand convert(String data) {
             return DemandManager.getDemandById(Integer.valueOf(data));
         }
     }
 
-    @QueryParam(error = "T'es un boulet ! ", defaultValue = "12")
+    @RequestParam(errorMsg = "T'es un boulet ! ", defaultValue = "12")
     Integer value;
-    @QueryParam(error = "error 2")
+    @RequestParam(errorMsg = "error 2")
     String other;
-    @QueryParam(error = "error 3")
+    @RequestParam(errorMsg = "error 3")
     BigDecimal money;
-    @QueryParam(loader = DemandLoader.class, error = "Id demand not found.")
+    @RequestParam(loader = DemandLoader.class, errorMsg = "Id demand not found.")
     Demand demand;
 
     protected TestQueryAnnotation() {
@@ -37,8 +36,8 @@ public class TestQueryAnnotation {
 
         SessionManager.beginWorkUnit();
         
-        QueryParamProcessor processor = new QueryParamProcessor();
-        processor.run(this, plop);
+        RequestParamResult processor = new RequestParamResult(plop);
+        processor.parse(this);
 
         System.out.println(value);
         System.out.println(other);
@@ -47,8 +46,8 @@ public class TestQueryAnnotation {
         
         SessionManager.endWorkUnitAndFlush();
 
-        for (String error : processor.getErrors()) {
-            System.out.println("error " + error);
+        for (Message error : processor.getMessages()) {
+            System.out.println("error " + error.getMessage());
         }
 
     }

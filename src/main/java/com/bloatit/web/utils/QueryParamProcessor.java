@@ -14,7 +14,7 @@ public class QueryParamProcessor {
 
     private List<String> errors = new ArrayList<String>();
 
-    public void run(Object instance, Map<String, String> parameters) {
+    public void parse(Object instance, Map<String, String> parameters) {
         Class<?> aClass = instance.getClass();
         for (Field f : aClass.getDeclaredFields()) {
             QueryParam param = f.getAnnotation(QueryParam.class);

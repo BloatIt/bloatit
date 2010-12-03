@@ -55,13 +55,18 @@ public class MemberTest extends FrameworkTestUnit {
         fred.acceptInvitation(GroupManager.getInvitation(GroupManager.getByName("other"), fred));
         assertTrue(fred.isInGroup(GroupManager.getByName("other")));
     }
-
-    public void testGetGroups() {
-        // Here the right thing would be to show all
-        // the public and protected group to everyone
-        // the private group to the member of the private group
-
-        fail("Not yet implemented");
+    
+    public void testInviteIntoProtectedAndRefuseGroup(){
+        final Member yo = MemberManager.getMemberByLogin("Yo");
+        final Member fred = MemberManager.getMemberByLogin("Fred");
+        
+        yo.authenticate(yoAuthToken);
+        yo.invite(fred, GroupManager.getByName("other"));
+        assertFalse(fred.isInGroup(GroupManager.getByName("other")));
+        
+        fred.authenticate(fredAuthToken);
+        fred.refuseInvitation(GroupManager.getInvitation(GroupManager.getByName("other"), fred));
+        assertFalse(fred.isInGroup(GroupManager.getByName("other")));
     }
 
     public void testGetKarma() {
