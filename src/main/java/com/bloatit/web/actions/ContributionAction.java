@@ -116,6 +116,7 @@ public class ContributionAction extends Action {
                 return;
             }
         } catch (NotEnoughMoneyException e) {
+            htmlResult.setRedirect(new ContributePage(session, parameters));
             session.notifyBad(session.tr("You have not enought money left."));
         }
     }
