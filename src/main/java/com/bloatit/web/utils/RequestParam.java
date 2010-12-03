@@ -11,11 +11,11 @@ public @interface RequestParam {
 
     String name() default "";
 
-    String errorMsg() default "Error: invalid value (%value) for parameter \"%param\"";
-    
-    Message.Level message() default Message.Level.ERROR;
-
     Class<? extends Loader<?>> loader() default Loader.DefaultConvertor.class;
+
+    String message() default "Error: invalid value (%value) for parameter \"%param\"";
+
+    Message.Level level() default Message.Level.ERROR;
 
     String defaultValue() default "";
 

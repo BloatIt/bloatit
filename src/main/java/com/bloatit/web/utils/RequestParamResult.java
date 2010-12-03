@@ -59,7 +59,7 @@ public class RequestParamResult {
             super();
             this.f = f;
             this.param = param;
-            this.error = param.errorMsg();
+            this.error = param.message();
             setValue();
 
         }
@@ -117,7 +117,7 @@ public class RequestParamResult {
     }
 
     private void addError(RequestParam param, Message.What what, String error) {
-        errors.add(new Message(param.message(), what, error));
+        errors.add(new Message(param.level(), what, error));
     }
 
     public static class ParamNotFoundException extends Exception {

@@ -18,23 +18,23 @@
  */
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.Demand;
-import com.bloatit.framework.Description;
-import com.bloatit.web.server.Action;
-import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.RequestParam;
-import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.bloatit.framework.Demand;
+import com.bloatit.web.server.Action;
+import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.RequestParam;
+import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
 
 public class OfferAction extends Action {
 
     /**
      * The idea on which the author wants to create a new offer
      */
-    @RequestParam(name = "idea", loader = DemandLoader.class, errorMsg = "Invalid idea")
+    @RequestParam(name = "idea", loader = DemandLoader.class, message = "Invalid idea")
     private Demand targetIdea = null;
     /**
      * The desired price for the offer

@@ -40,7 +40,7 @@ import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
 
 public class OfferPage extends LoggedPage {
 
-    @RequestParam(name = "idea", loader = DemandLoader.class, errorMsg = "Invalid idea")
+    @RequestParam(name = "idea", loader = DemandLoader.class)
     private Demand targetIdea = null;
 
     @RequestParam(name = "price")
