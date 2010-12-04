@@ -31,6 +31,10 @@ import java.util.Map;
 
 public class ContributionAction extends Action {
 
+    public ContributionAction(Session session, Parameters parameters) {
+        super(session, parameters);
+    }
+    
     public ContributionAction(Session session, Map<String, String> parameters) {
         super(session, parameters);
     }
@@ -64,22 +68,22 @@ public class ContributionAction extends Action {
         BigDecimal amount = BigDecimal.ZERO;
 
         // Get parameters
-        if (parameters.containsKey("idea")) {
-            idea = parameters.get("idea");
+        if (getParameters().contains("idea")) {
+            idea = getParameters().getValue("idea");
             try {
                 targetDemand = DemandManager.getDemandById(Integer.parseInt(idea));
             } catch (NumberFormatException nfe) {}
         }
 
-        if (parameters.containsKey(this.getContributionCode())) {
-            amountStr = parameters.get(getContributionCode());
+        if (getParameters().contains(this.getContributionCode())) {
+            amountStr = getParameters().getValue(getContributionCode());
             try {
                 amount = new BigDecimal(amountStr);
             } catch (NumberFormatException nfe) {}
         }
 
-        if (parameters.containsKey(this.getCommentCode())) {
-            comment = this.parameters.get(this.getCommentCode());
+        if (getParameters().contains(this.getCommentCode())) {
+            comment = this.getParameters().getValue(this.getCommentCode());
         }
 
         // Check validity of values
@@ -90,13 +94,13 @@ public class ContributionAction extends Action {
         }
 
         if (amount.compareTo(BigDecimal.ZERO) < 1) {
-            htmlResult.setRedirect(new ContributePage(session, parameters));
+            htmlResult.setRedirect(new ContributePage(session, getParameters()));
             session.notifyBad(session.tr("The amount " + amountStr + " is not a valid entry"));
             return;
         }
 
         if (amount.compareTo(new BigDecimal("10000000")) > 0) {
-            htmlResult.setRedirect(new ContributePage(session, parameters));
+            htmlResult.setRedirect(new ContributePage(session, getParameters()));
             session.notifyBad(session.tr("Thank you for being so generous ... " + "but we can't accept such a big amount : " + amountStr));
             return;
         }
@@ -111,12 +115,12 @@ public class ContributionAction extends Action {
                 session.notifyGood(session.tr("Thanks you for crediting " + amount + " on this idea"));
             } else {
                 // Should never happen
-                htmlResult.setRedirect(new ContributePage(session, parameters));
+                htmlResult.setRedirect(new ContributePage(session, getParameters()));
                 session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));
                 return;
             }
         } catch (NotEnoughMoneyException e) {
-            htmlResult.setRedirect(new ContributePage(session, parameters));
+            htmlResult.setRedirect(new ContributePage(session, getParameters()));
             session.notifyBad(session.tr("You have not enought money left."));
         }
     }

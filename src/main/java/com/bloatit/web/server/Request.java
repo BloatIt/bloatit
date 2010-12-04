@@ -17,55 +17,114 @@
 
 package com.bloatit.web.server;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.bloatit.web.htmlrenderer.HtmlResult;
-import com.bloatit.web.utils.RequestParamResult;
+import com.bloatit.web.utils.RequestParamSetter;
 
 public abstract class Request {
     protected HtmlResult htmlResult;
     protected Session session;
-    private Parameters queryParam;
-    protected Map<String, String> parameters;
+    private Parameters parameters;
 
-    public static class Parameters {
+    public static class Parameter {
+        private String value;
+        private String name;
+
+        public Parameter(String value, String name) {
+            super();
+            this.value = value;
+            this.name = name;
+        }
+
+        protected String getValue() {
+            return value;
+        }
+
+        protected String getName() {
+            return name;
+        }
+
+    }
+
+    public static class Parameters implements Iterable<Entry<String, String>> {
         private Map<String, String> parameters;
-        private RequestParamResult query;
-        private RequestParamResult.Messages messages;
+        private RequestParamSetter query;
+        private RequestParamSetter.Messages messages;
 
-        private Parameters(Map<String, String> parameters) {
+        protected Parameters(Map<String, String> parameters) {
             super();
             this.parameters = parameters;
-            this.query = new RequestParamResult(parameters);
+            this.query = new RequestParamSetter(parameters);
         }
 
-        public boolean containsKey(String name){
+        public Parameters(Parameters other) {
+            this(other.parameters);
+            this.messages = other.messages;
+        }
+
+        private void setValue(Object obj) {
+            query.setValues(obj);
+        }
+
+        public boolean contains(String name) {
             return parameters.containsKey(name);
         }
-        
-        public String get(String name) {
+
+        public String getValue(String name) {
             String value;
             if ((value = parameters.get(name)) == null) {
                 return "";
             }
             return value;
         }
-        
-        public RequestParamResult.Messages getMessages() {
+
+        public Set<String> getNames() {
+            return parameters.keySet();
+        }
+
+        public RequestParamSetter.Messages getMessages() {
             return messages;
         }
+
+        public void add(String name, String value) {
+            parameters.put(name, value);
+        }
+
+        public void addAll(Map<String, String> parameters) {
+            parameters.putAll(parameters);
+        }
+
+        @Override
+        public Iterator<Entry<String, String>> iterator() {
+            return parameters.entrySet().iterator();
+        }
+
     }
 
     static public class ParserInit {}
 
+    /**
+     * Do not forget to call load !
+     * 
+     * @param session
+     * @param parameters
+     */
     protected Request(Session session, Map<String, String> parameters) {
         this.session = session;
-        this.parameters = parameters;
-        this.queryParam = new Parameters(parameters);
+        this.parameters = new Parameters(parameters);
     }
 
-    protected void init(Object obj) {
-        queryParam.query.setValues(obj);
+    protected Request(Session session, Parameters results) {
+        this.session = session;
+        this.parameters = results;
+    }
+
+    public final void load() {
+        parameters.setValue(this);
     }
 
     abstract public String getCode();
@@ -97,7 +156,7 @@ public abstract class Request {
     public abstract String getUrl(Map<String, String> outputParameters);
 
     public Parameters getParameters() {
-        return queryParam;
+        return parameters;
     }
 
     public Session getSession() {

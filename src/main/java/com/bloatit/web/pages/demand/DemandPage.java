@@ -69,8 +69,8 @@ public class DemandPage extends Page {
     }
 
     private void generateOutputParams() {
-        parameters.put("id", new Integer(demand.getId()).toString());
-        parameters.put("title", demand.getTitle());
+        getParameters().add("id", new Integer(demand.getId()).toString());
+        getParameters().add("title", demand.getTitle());
     }
 
     @Override

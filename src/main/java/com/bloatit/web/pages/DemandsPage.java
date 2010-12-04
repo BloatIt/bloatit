@@ -68,16 +68,16 @@ public class DemandsPage extends Page {
         int pageSize = 10;
         int currentPage = 0;
 
-        if (parameters.containsKey("list_page_size")) {
+        if (getParameters().contains("list_page_size")) {
             try {
-                pageSize = Integer.parseInt(parameters.get("list_page_size"));
+                pageSize = Integer.parseInt(getParameters().getValue("list_page_size"));
             } catch (NumberFormatException e) {
             }
         }
 
-        if (parameters.containsKey("list_page")) {
+        if (getParameters().contains("list_page")) {
             try {
-                currentPage = Integer.parseInt(parameters.get("list_page")) - 1;
+                currentPage = Integer.parseInt(getParameters().getValue("list_page")) - 1;
             } catch (NumberFormatException e) {
             }
         }

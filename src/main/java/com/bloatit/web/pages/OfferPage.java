@@ -61,7 +61,6 @@ public class OfferPage extends LoggedPage {
 
     public OfferPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
-        init(this);
     }
 
     @Override
@@ -87,8 +86,8 @@ public class OfferPage extends LoggedPage {
     @Override
     public HtmlComponent generateRestrictedContent() {
 
-        if (getParameters().getMessages().getMessages().size() > 0) {
-            session.notifyList(getParameters().getMessages().getMessages());
+        if (getParameters().getMessages().size() > 0) {
+            session.notifyList(getParameters().getMessages());
             // return null;
         }
 
@@ -120,7 +119,7 @@ public class OfferPage extends LoggedPage {
         // !TODO
 
         HtmlTitle offerPageContainer = new HtmlTitle(this.session.tr("Make an offer"), "");
-        final OfferAction offerAction = new OfferAction(this.session, this.parameters);
+        final OfferAction offerAction = new OfferAction(this.session, this.getParameters());
         HtmlForm offerForm = new HtmlForm(offerAction);
 
         HtmlText t = new HtmlText(this.targetIdea.getTitle());

@@ -3,7 +3,6 @@ package com.bloatit.web.utils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import com.bloatit.common.FatalErrorException;
@@ -13,7 +12,7 @@ import com.bloatit.web.utils.Message.What;
  * This class uses RequestParam annotation to set the parameters using a map of
  * String/String name value.
  */
-public class RequestParamResult {
+public class RequestParamSetter {
     private Map<String, String> parameters;
 
     /**
@@ -22,7 +21,7 @@ public class RequestParamResult {
      * 
      * @param parameters is a map of name->value. It represent a request.
      */
-    public RequestParamResult(Map<String, String> parameters) {
+    public RequestParamSetter(Map<String, String> parameters) {
         super();
         this.parameters = parameters;
     }
@@ -59,19 +58,15 @@ public class RequestParamResult {
      * Store some error messages that could append during the reflexive procedure
      * "setValues".
      */
-    public static class Messages {
-        private List<Message> errors = new ArrayList<Message>();
+    public static class Messages extends ArrayList<Message>{
+        private static final long serialVersionUID = -7080211414458545384L;
 
         private Messages() {
             super();
         }
 
-        public List<Message> getMessages() {
-            return errors;
-        }
-
         public boolean hasMessage(Message.Level level) {
-            for (Message error : errors) {
+            for (Message error : this) {
                 if (error.getLevel() == level) {
                     return true;
                 }
@@ -80,7 +75,7 @@ public class RequestParamResult {
         }
 
         private void addError(RequestParam param, Message.What what, String error) {
-            errors.add(new Message(param.level(), what, error));
+            this.add(new Message(param.level(), what, error));
         }
 
     }

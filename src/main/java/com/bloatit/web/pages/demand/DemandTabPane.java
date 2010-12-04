@@ -18,18 +18,9 @@
  */
 package com.bloatit.web.pages.demand;
 
-import com.bloatit.web.pages.demand.DemandOfferListComponent;
-import com.bloatit.web.pages.demand.DemandDescriptionComponent;
-import com.bloatit.web.pages.demand.DemandContributorsComponent;
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Demand;
-import com.bloatit.framework.Offer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTabBlock;
 import com.bloatit.web.pages.components.PageComponent;
-import com.bloatit.web.pages.demand.DemandPage;
-import com.bloatit.web.server.Session;
 
 public class DemandTabPane extends PageComponent {
 
@@ -70,8 +61,8 @@ public class DemandTabPane extends PageComponent {
         tabPane.addTab(offerTab);
 
         //Select the right tab from params
-        if (demandPage.getParameters().containsKey("demand_tab_key")) {
-            tabPane.selectTab(demandPage.getParameters().get("demand_tab_key"));
+        if (demandPage.getParameters().contains("demand_tab_key")) {
+            tabPane.selectTab(demandPage.getParameters().getValue("demand_tab_key"));
         } else {
             tabPane.selectTab("description_tab");
         }

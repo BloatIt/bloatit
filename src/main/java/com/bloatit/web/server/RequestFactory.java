@@ -35,6 +35,7 @@ public class RequestFactory {
             final Constructor<? extends Request> constructor = requestClass.getConstructor(Session.class, Map.class);
 
             request = constructor.newInstance(session, parameters);
+            request.load();
 
         } catch (final PageNotFoundException ex) {
             return new PageNotFound(session);

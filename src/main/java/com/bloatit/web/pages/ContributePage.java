@@ -44,15 +44,19 @@ public class ContributePage extends LoggedPage {
         super(session, parameters);
     }
 
+    public ContributePage(Session session, Parameters parameters) {
+        super(session, parameters);
+    }
+
     @Override
     public HtmlComponent generateRestrictedContent() {
         // Checking parameters
         // TODO : do something when id is invalid / there is no id
         int ideaId = -1;
         Demand targetIdea = null;
-        if(this.parameters.containsKey("idea")){
+        if(this.getParameters().contains("idea")){
             try{
-                ideaId = Integer.parseInt(this.parameters.get("idea"));
+                ideaId = Integer.parseInt(this.getParameters().getValue("idea"));
                 targetIdea = DemandManager.getDemandById(ideaId);
             } catch (NumberFormatException nfe){
             }
@@ -71,7 +75,7 @@ public class ContributePage extends LoggedPage {
         }
 
         // Case: OK
-        final ContributionAction contribAction = new ContributionAction(session, this.parameters);
+        final ContributionAction contribAction = new ContributionAction(session, this.getParameters());
         
         final HtmlForm contribForm = new HtmlForm(contribAction);
         contribForm.setMethod(HtmlForm.Method.POST);
@@ -80,15 +84,15 @@ public class ContributePage extends LoggedPage {
         final HtmlTextField contribField = new HtmlTextField();
         contribField.setLabel(session.tr("Choose amount : "));
         
-        if(this.parameters.containsKey(contribAction.getContributionCode())){
-            contribField.setDefaultValue(this.parameters.get(contribAction.getContributionCode()));
+        if(this.getParameters().contains(contribAction.getContributionCode())){
+            contribField.setDefaultValue(this.getParameters().getValue(contribAction.getContributionCode()));
         }
         contribField.setName(contribAction.getContributionCode());
         
         // Input field : comment
         final HtmlTextArea commentField = new HtmlTextArea(session.tr("Comment (optionnal) : "));
-        if(this.parameters.containsKey(contribAction.getCommentCode())){
-            commentField.setDefaultValue(this.parameters.get(contribAction.getCommentCode()));
+        if(this.getParameters().contains(contribAction.getCommentCode())){
+            commentField.setDefaultValue(this.getParameters().getValue(contribAction.getCommentCode()));
         }
         commentField.setName(contribAction.getCommentCode());
 

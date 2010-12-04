@@ -37,6 +37,10 @@ public abstract class LoggedPage extends Page {
         super(session, parameters);
     }
 
+    public LoggedPage(Session session, Parameters parameters) {
+        super(session, parameters);
+    }
+
     @Override
     final protected HtmlComponent generateContent() {
         if(session.isLogged()) {

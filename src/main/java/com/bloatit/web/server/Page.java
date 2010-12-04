@@ -52,6 +52,11 @@ public abstract class Page extends Request {
         this(session, new HashMap<String, String>());
     }
 
+    public Page(Session session, Parameters parameters) {
+        super(session, parameters);
+        design = "/resources/css/core.css";
+    }
+
     @Override
     protected void process() {
 
@@ -226,7 +231,7 @@ public abstract class Page extends Request {
         HtmlString link = new HtmlString(session);
         link.add("/" + session.getLanguage().getCode() + "/" + getCode());
 
-        for (Entry<String, String> entry : parameters.entrySet()) {
+        for (Entry<String, String> entry : getParameters()) {
             if(!entry.getKey().equals("page") && !entry.getKey().equals("lang")) {
                 link.add("/" + entry.getKey() + "-");
                 link.secure(entry.getValue());
@@ -239,15 +244,14 @@ public abstract class Page extends Request {
     @Override
     public String getUrl(Map<String, String> outputParameters) {
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.putAll(this.parameters);
-        params.putAll(outputParameters);
+        Parameters params = new Parameters(getParameters());
+        params.addAll(outputParameters);
 
 
         HtmlString link = new HtmlString(session);
         link.add("/" + session.getLanguage().getCode() + "/" + getCode());
 
-        for (Entry<String, String> entry : params.entrySet()) {
+        for (Entry<String, String> entry : params) {
             if(!entry.getKey().equals("page") && !entry.getKey().equals("lang")) {
                 link.add("/" + entry.getKey() + "-");
                 link.secure(entry.getValue());

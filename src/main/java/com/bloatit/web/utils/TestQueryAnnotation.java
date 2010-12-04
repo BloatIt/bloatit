@@ -36,8 +36,8 @@ public class TestQueryAnnotation {
 
         SessionManager.beginWorkUnit();
 
-        RequestParamResult processor = new RequestParamResult(plop);
-        RequestParamResult.Messages errors = processor.setValues(this);
+        RequestParamSetter processor = new RequestParamSetter(plop);
+        RequestParamSetter.Messages errors = processor.setValues(this);
 
         System.out.println(value);
         System.out.println(other);
@@ -46,7 +46,7 @@ public class TestQueryAnnotation {
 
         SessionManager.endWorkUnitAndFlush();
 
-        for (Message error : errors.getMessages()) {
+        for (Message error : errors) {
             System.out.println("error " + error.getMessage());
         }
 

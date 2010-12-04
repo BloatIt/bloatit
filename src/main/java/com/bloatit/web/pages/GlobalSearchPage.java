@@ -59,13 +59,13 @@ public class GlobalSearchPage extends Page {
 
         pageTitle.add(searchBlock);
 
-        if (parameters.containsKey(getSearchCode())) {
+        if (getParameters().contains(getSearchCode())) {
             
-            String searchString = parameters.get(getSearchCode());
+            String searchString = getParameters().getValue(getSearchCode());
 
             final PageIterable<Demand> demandList = DemandManager.search(searchString);
             System.err.println("demandList " + demandList.size());
-            System.err.println("params " + parameters);
+            System.err.println("params " + getParameters());
             HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
                 @Override
@@ -81,16 +81,16 @@ public class GlobalSearchPage extends Page {
             int pageSize = 10;
             int currentPage = 0;
 
-            if (parameters.containsKey("list_page_size")) {
+            if (getParameters().contains("list_page_size")) {
                 try {
-                    pageSize = Integer.parseInt(parameters.get("list_page_size"));
+                    pageSize = Integer.parseInt(getParameters().getValue("list_page_size"));
                 } catch (NumberFormatException e) {
                 }
             }
 
-            if (parameters.containsKey("list_list_page")) {
+            if (getParameters().contains("list_list_page")) {
                 try {
-                    currentPage = Integer.parseInt(parameters.get("list_page")) - 1;
+                    currentPage = Integer.parseInt(getParameters().getValue("list_page")) - 1;
                 } catch (NumberFormatException e) {
                 }
             }
@@ -132,8 +132,8 @@ public class GlobalSearchPage extends Page {
         HtmlTextField searchField = new HtmlTextField();
         searchField.setName(globalSearchPage.getSearchCode());
 
-        if (parameters.containsKey(getSearchCode())) {
-            searchField.setDefaultValue(parameters.get(getSearchCode()));
+        if (getParameters().contains(getSearchCode())) {
+            searchField.setDefaultValue(getParameters().getValue(getSearchCode()));
         }
 
         HtmlButton searchButton = new HtmlButton(session.tr("Search"));

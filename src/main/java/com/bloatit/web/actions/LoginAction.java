@@ -52,10 +52,10 @@ public class LoginAction extends Action {
 
     @Override
     protected void process() {
-        if (parameters.containsKey(getLoginCode()) && parameters.containsKey(getPasswordCode())) {
+        if (getParameters().contains(getLoginCode()) && getParameters().contains(getPasswordCode())) {
 
-            final String login = parameters.get(getLoginCode());
-            final String password = parameters.get(getPasswordCode());
+            final String login = getParameters().getValue(getLoginCode());
+            final String password = getParameters().getValue(getPasswordCode());
             AuthToken token = null;
             token = LoginManager.loginByPassword(login, password);
 

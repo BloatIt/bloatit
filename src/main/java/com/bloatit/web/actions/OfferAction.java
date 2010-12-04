@@ -66,6 +66,10 @@ public class OfferAction extends Action {
         super(session, parameters);
     }
 
+    public OfferAction(Session session, Parameters parameters) {
+        super(session, parameters);
+    }
+
     /**
      * @return the code used to generate the form input field for the price
      */
