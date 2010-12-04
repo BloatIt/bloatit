@@ -17,13 +17,13 @@ public class TestQueryAnnotation {
         }
     }
 
-    @RequestParam(message = "T'es un boulet ! ", defaultValue = "12")
+    @RequestParam(defaultValue = "12", message = @tr("T'es un boulet !"))
     Integer value;
-    @RequestParam(message = "error 2")
+    @RequestParam(message = @tr("error 2"))
     String other;
-    @RequestParam(message = "error 3")
+    @RequestParam(message = @tr("error 3"))
     BigDecimal money;
-    @RequestParam(loader = DemandLoader.class, message = "Id demand not found.")
+    @RequestParam(loader = DemandLoader.class, message = @tr("Id demand not found."))
     Demand demand;
 
     protected TestQueryAnnotation() {
@@ -37,7 +37,7 @@ public class TestQueryAnnotation {
         SessionManager.beginWorkUnit();
 
         RequestParamResult processor = new RequestParamResult(plop);
-        processor.parse(this);
+        RequestParamResult.Messages errors = processor.setValues(this);
 
         System.out.println(value);
         System.out.println(other);
@@ -46,7 +46,7 @@ public class TestQueryAnnotation {
 
         SessionManager.endWorkUnitAndFlush();
 
-        for (Message error : processor.getMessages()) {
+        for (Message error : errors.getMessages()) {
             System.out.println("error " + error.getMessage());
         }
 

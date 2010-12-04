@@ -8,12 +8,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface RequestParam {
-
+    
     String name() default "";
-
+    
     Class<? extends Loader<?>> loader() default Loader.DefaultConvertor.class;
 
-    String message() default "Error: invalid value (%value) for parameter \"%param\"";
+    tr message() default @tr("Error: invalid value (%value) for parameter \"%param\"");
 
     Message.Level level() default Message.Level.ERROR;
 

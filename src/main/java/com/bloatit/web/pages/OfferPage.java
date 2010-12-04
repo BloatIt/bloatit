@@ -87,8 +87,8 @@ public class OfferPage extends LoggedPage {
     @Override
     public HtmlComponent generateRestrictedContent() {
 
-        if (getQuery().getMessages().size() > 0) {
-            session.notifyList(getQuery().getMessages());
+        if (getParameters().getMessages().getMessages().size() > 0) {
+            session.notifyList(getParameters().getMessages().getMessages());
             // return null;
         }
 
