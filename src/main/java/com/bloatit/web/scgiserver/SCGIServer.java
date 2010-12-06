@@ -136,7 +136,6 @@ public class SCGIServer {
         final Map<String, String> params = new HashMap<String, String>();
         for (final String param : url.split("&")) {
             try {
-
                 final String[] pair = param.split("=");
                 String key;
                 if (pair.length >= 2) {
