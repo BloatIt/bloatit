@@ -19,12 +19,10 @@
 package com.bloatit.web.utils;
 
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 /**
  * <p>A class to handle dates for the front web</p>
@@ -47,17 +45,16 @@ import java.util.regex.Pattern;
  * matches the pattern. Therefore, the methods getPattern need only be used
  * for display purpose, to indicate the user how he should input the date</p>
  * </p>Also note that parser is fairly tolerant to structure of the date.
- * For the US date 1/20/1990, the following input string will <b>all</b> give
+ * For the US date 1/20/1990, the following input strings will <b>all</b> give
  * correct result :
  * * 1/20/1990
  * * 01/20/1990
  * * 1/20/90
  * * 01/20/90</p>
- * <p>While tolerant with short months/years, parser is not tolerant with
+ * <p>While tolerant with short day/months/years, parser is not tolerant with
  * incorrect use of separator. Therefore, patterns using a '/' must be
  * inputed using a '/' to separate months, days and years. No other symbol
  * (such as '-' or '.') will be valid.</p>
- *
  */
 public final class BloatitDate {
 
