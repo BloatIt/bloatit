@@ -19,7 +19,6 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.framework.Demand;
-import com.bloatit.framework.Description;
 import com.bloatit.web.server.Action;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.QueryParam;
@@ -31,30 +30,40 @@ import java.util.Map;
 
 public class OfferAction extends Action {
 
+    public final static String IDEA_CODE = "offer_idea";
+    public final static String PRICE_CODE = "offer_price";
+    public final static String EXPIRY_CODE = "offer_expiry";
+    public final static String TITLE_CODE = "offer_title";
+    public final static String DESCRIPTION_CODE = "offer_description";
+    
     /**
      * The idea on which the author wants to create a new offer
      */
-    @QueryParam(name = "idea", loader = DemandLoader.class, error = "Invalid idea")
+    @QueryParam(name = IDEA_CODE, loader = DemandLoader.class, error = "Invalid idea")
     private Demand targetIdea = null;
+
     /**
      * The desired price for the offer
      */
-    @QueryParam(name = "offer_price")
+    @QueryParam(name = PRICE_CODE)
     private BigDecimal price;
+
     /**
      * The expiration date for the offer
      */
-    @QueryParam(name = "offer_expiry_date")
+    @QueryParam(name = EXPIRY_CODE)
     private Date expiryDate;
+
     /**
      * The title of the offer
      */
-    @QueryParam(name = "offer_title")
+    @QueryParam(name = TITLE_CODE)
     private String title;
+
     /**
      * The short description of the offer
      */
-    @QueryParam(name = "offer_description")
+    @QueryParam(name = DESCRIPTION_CODE)
     private String description;
 
     public OfferAction(Session session) {

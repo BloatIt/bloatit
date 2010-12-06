@@ -21,7 +21,6 @@ package com.bloatit.web.pages;
 
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlDateField;
 import com.bloatit.framework.Demand;
-import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
@@ -34,25 +33,43 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.QueryParam;
 import com.bloatit.web.utils.QueryParamProcessor;
 import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class OfferPage extends LoggedPage {
 
-    @QueryParam(name="idea", loader = DemandLoader.class, error="Invalid idea")
+    public final static String PLOP = "plop";
+
+    /**
+     * The idea on which the author wants to create a new offer
+     */
+    @QueryParam(name = OfferAction.IDEA_CODE, loader = DemandLoader.class, error = "Invalid idea")
     private Demand targetIdea = null;
 
-    @QueryParam(name="price")
-    private int price;
+    /**
+     * The desired price for the offer
+     */
+    @QueryParam(name = OfferAction.PRICE_CODE)
+    private BigDecimal price;
 
-    @QueryParam(name="expiry")
+    /**
+     * The expiration date for the offer
+     */
+    @QueryParam(name = OfferAction.EXPIRY_CODE)
     private Date expiryDate;
 
-    @QueryParam(name="title")
+    /**
+     * The title of the offer
+     */
+    @QueryParam(name = OfferAction.TITLE_CODE)
     private String title;
 
-    @QueryParam(name="description")
+    /**
+     * The short description of the offer
+     */
+    @QueryParam(name = OfferAction.DESCRIPTION_CODE)
     private String description;
 
     public OfferPage(Session session) {
@@ -122,7 +139,7 @@ public class OfferPage extends LoggedPage {
         HtmlText t = new HtmlText(this.targetIdea.getTitle());
         offerPageContainer.add(t);
 
-        HtmlTextField priceField = new HtmlTextField(new Integer(this.price).toString()); // TODO
+        HtmlTextField priceField = new HtmlTextField(this.price.toString()); // TODO
         priceField.setLabel(this.session.tr("Offer price : "));
         priceField.setName(offerAction.getPriceCode());
         offerForm.add(priceField);
