@@ -17,18 +17,13 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 package com.bloatit.web.utils;
-
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.utils.QueryParam.FromString;
-
 
 public class TupleLoader {
-    static public class DemandLoader implements FromString<Demand> {
+    static public class DemandLoader extends Loader<Demand> {
         @Override
         public Demand convert(String data) {
             return DemandManager.getDemandById(Integer.valueOf(data));

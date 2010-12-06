@@ -17,40 +17,31 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.pages;
+package com.bloatit.web.pages.components;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 
 
-public abstract class LoggedPage extends Page {
+public abstract  class PageComponent extends HtmlComponent{
 
-    protected LoggedPage(Session session) {
-        this(session, new HashMap<String, String>());
-    }
+    public Session session;
 
-    protected LoggedPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
+    public PageComponent(Session session) {
+        this.session = session;
     }
 
     @Override
-    final protected HtmlComponent generateContent() {
-        if(session.isLogged()) {
-            return generateRestrictedContent();
-        } else {
-            session.notifyBad(getRefusalReason());
-            session.setTargetPage(this);
-            htmlResult.setRedirect(new LoginPage(session));
-            return null;
-        }
+    public void generate(HtmlResult htmlResult) {
+        extractData();
+        produce().generate(htmlResult);
     }
 
-    
-    public abstract HtmlComponent generateRestrictedContent();
-    public abstract String getRefusalReason();
 
+   
+    protected abstract HtmlComponent produce();
+    protected abstract void extractData();
+    
+    
 }

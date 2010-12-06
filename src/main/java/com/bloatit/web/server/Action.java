@@ -19,10 +19,11 @@
 
 package com.bloatit.web.server;
 
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
 
 public abstract class Action extends Request {
 

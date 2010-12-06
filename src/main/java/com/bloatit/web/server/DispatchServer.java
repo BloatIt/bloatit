@@ -29,7 +29,7 @@ import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.HtmlResult;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateIdeaPage;
-import com.bloatit.web.pages.DemandPage;
+import com.bloatit.web.pages.demand.DemandPage;
 import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.GlobalSearchPage;
 import com.bloatit.web.pages.IndexPage;

@@ -19,57 +19,56 @@
 
 package com.bloatit.web.pages;
 
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlDateField;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
+import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlDateField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextArea;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.QueryParam;
-import com.bloatit.web.utils.QueryParamProcessor;
+import com.bloatit.web.utils.RequestParam;
 import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
+import com.bloatit.web.utils.tr;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OfferPage extends LoggedPage {
 
-    public final static String PLOP = "plop";
+public class OfferPage extends LoggedPage {
 
     /**
      * The idea on which the author wants to create a new offer
      */
-    @QueryParam(name = OfferAction.IDEA_CODE, loader = DemandLoader.class, error = "Invalid idea")
+    @RequestParam(name = OfferAction.IDEA_CODE, loader = DemandLoader.class, message = @tr("Invalid idea"))
     private Demand targetIdea = null;
 
     /**
      * The desired price for the offer
      */
-    @QueryParam(name = OfferAction.PRICE_CODE)
+    @RequestParam(name = OfferAction.PRICE_CODE)
     private BigDecimal price;
 
     /**
      * The expiration date for the offer
      */
-    @QueryParam(name = OfferAction.EXPIRY_CODE)
+    @RequestParam(name = OfferAction.EXPIRY_CODE)
     private Date expiryDate;
 
     /**
      * The title of the offer
      */
-    @QueryParam(name = OfferAction.TITLE_CODE)
+    @RequestParam(name = OfferAction.TITLE_CODE)
     private String title;
 
     /**
      * The short description of the offer
      */
-    @QueryParam(name = OfferAction.DESCRIPTION_CODE)
+    @RequestParam(name = OfferAction.DESCRIPTION_CODE)
     private String description;
 
     public OfferPage(Session session) {
@@ -78,6 +77,7 @@ public class OfferPage extends LoggedPage {
 
     public OfferPage(Session session, Map<String, String> parameters) {
         super(session, parameters);
+        init(this);
     }
 
     @Override
@@ -102,36 +102,39 @@ public class OfferPage extends LoggedPage {
 
     @Override
     public HtmlComponent generateRestrictedContent() {
-        QueryParamProcessor processor = new QueryParamProcessor();
-        processor.run(this, this.parameters);
 
-        if(processor.getErrors().size() > 0){
-            session.notifyList(processor.getErrors());
+        if (getParameters().getMessages().getMessages().size() > 0) {
+            session.notifyList(getParameters().getMessages().getMessages());
+            // return null;
         }
 
         // TODO : remove and replace with parameter loading machanism
-        /*int ideaId = -1;
-        if(this.parameters.containsKey("idea")){
-            try{
-                ideaId = Integer.parseInt(this.parameters.get("idea"));
-                targetIdea = DemandManager.getDemandById(ideaId);
-            } catch (NumberFormatException nfe){
-            }
-        }
-
-        if (ideaId == -1 ){
-            session.notifyBad(session.tr("You need to choose an idea on which you'll contribute"));
-            htmlResult.setRedirect(new DemandsPage(session));
-            return null;
-        }
-
-        if (targetIdea == null){
-            session.notifyBad(session.tr("The idea you chose does not exists (id :"+ideaId+")"));
-            htmlResult.setRedirect(new DemandsPage(session));
-            return null;
-        }*/
+        /*
+         * int ideaId = -1;
+         * if(this.parameters.containsKey("idea")){
+         * try{
+         * ideaId = Integer.parseInt(this.parameters.get("idea"));
+         * targetIdea = DemandManager.getDemandById(ideaId);
+         * } catch (NumberFormatException nfe){
+         * }
+         * }
+         * 
+         * if (ideaId == -1 ){
+         * session.notifyBad(session.tr(
+         * "You need to choose an idea on which you'll contribute"));
+         * htmlResult.setRedirect(new DemandsPage(session));
+         * return null;
+         * }
+         * 
+         * if (targetIdea == null){
+         * session.notifyBad(session.tr("The idea you chose does not exists (id :"
+         * +ideaId+")"));
+         * htmlResult.setRedirect(new DemandsPage(session));
+         * return null;
+         * }
+         */
         // !TODO
-        
+
         HtmlTitle offerPageContainer = new HtmlTitle(this.session.tr("Make an offer"), "");
         final OfferAction offerAction = new OfferAction(this.session, this.parameters);
         HtmlForm offerForm = new HtmlForm(offerAction);
@@ -139,7 +142,8 @@ public class OfferPage extends LoggedPage {
         HtmlText t = new HtmlText(this.targetIdea.getTitle());
         offerPageContainer.add(t);
 
-        HtmlTextField priceField = new HtmlTextField(this.price.toString()); // TODO
+
+        HtmlTextField priceField = new HtmlTextField(price == null ? "" : price.toPlainString()); // TODO
         priceField.setLabel(this.session.tr("Offer price : "));
         priceField.setName(offerAction.getPriceCode());
         offerForm.add(priceField);
