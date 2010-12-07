@@ -1,33 +1,34 @@
 /*
  * Copyright (C) 2010 BloatIt.
- *
+ * 
  * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * BloatIt is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * 
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with
+ * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages.demand;
+package test.pages.demand;
+
+import test.Context;
+import test.HtmlElement;
+import test.pages.components.HtmlBlock;
+import test.pages.components.HtmlImage;
+import test.pages.components.HtmlText;
+import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.framework.Offer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlImage;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.pages.components.PageComponent;
+import com.bloatit.web.server.Session;
 
-public class DemandOfferComponent extends PageComponent {
+public class DemandOfferComponent extends HtmlElement {
 
-    //private Offer offer;
+    // private Offer offer;
     private HtmlText description;
     private HtmlText title;
     private HtmlText price;
@@ -35,18 +36,16 @@ public class DemandOfferComponent extends PageComponent {
     private HtmlText creationDate;
     private HtmlImage authorAvatar;
     private HtmlText author;
-    private final DemandPage demandPage;
     private Offer offer;
 
-    public DemandOfferComponent(DemandPage demandPage, Offer offer) {
-        super(demandPage.getSession());
-        this.demandPage = demandPage;
+    public DemandOfferComponent(Request request, Offer offer) {
+        super();
         this.offer = offer;
-
+        extractData(request);
+        add(produce(request));
     }
 
-    @Override
-    protected HtmlComponent produce() {
+    protected HtmlElement produce(Request request) {
         HtmlBlock offerBlock = new HtmlBlock("offer_block");
         {
             offerBlock.add(authorAvatar);
@@ -58,7 +57,7 @@ public class DemandOfferComponent extends PageComponent {
                 offerInfoBlock.add(expirationDate);
                 offerInfoBlock.add(creationDate);
             }
-            
+
             offerBlock.add(offerInfoBlock);
             offerBlock.add(title);
             offerBlock.add(description);
@@ -67,9 +66,9 @@ public class DemandOfferComponent extends PageComponent {
         return offerBlock;
     }
 
-    @Override
-    protected void extractData() {
+    protected void extractData(Request request) {
 
+        Session session = Context.getSession();
         author = new HtmlText(session.tr("Author : ") + offer.getAuthor().getFullname(), "offer_author");
         price = new HtmlText(session.tr("Price : ") + "Unknown yet", "offer_price");
         expirationDate = new HtmlText(session.tr("Expiration date : ") + offer.getDateExpire().toString(), "offer_expiry_date");

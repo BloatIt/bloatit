@@ -42,7 +42,7 @@ public class RequestParamSetter {
             RequestParam param = f.getAnnotation(RequestParam.class);
             if (param != null) {
                 try {
-                    FieldParser fieldParser = new FieldParser(f, param);
+                    FieldParser fieldParser = new FieldParser(f, param, parameters);
                     fieldParser.performChangeInInstance(instance);
                 } catch (ParamNotFoundException e) {
                     messages.addError(param, What.NOT_FOUND, e.getMessage());
@@ -58,7 +58,7 @@ public class RequestParamSetter {
      * Store some error messages that could append during the reflexive procedure
      * "setValues".
      */
-    public static class Messages extends ArrayList<Message>{
+    public static class Messages extends ArrayList<Message> {
         private static final long serialVersionUID = -7080211414458545384L;
 
         private Messages() {
@@ -107,23 +107,27 @@ public class RequestParamSetter {
      * The fieldParser class perform the reflexive work for a field. It is an internal
      * class and should never be used outside of the RequestParamResult class.
      */
-    public class FieldParser {
+    public static class FieldParser {
         private Field f;
         private RequestParam param;
         private String value;
+        private String name;
         private String error;
 
-        private FieldParser(Field f, RequestParam param) throws ConversionErrorException, ParamNotFoundException {
+        public FieldParser(Field f, RequestParam param, Map<String, String> parameters) throws ParamNotFoundException {
             super();
             this.f = f;
             this.param = param;
             this.error = param.message().value();
-            this.value = getValue();
+            this.value = findValueAndSetName(parameters);
         }
 
         /**
-         * Convert the value string to the right type and set the attribute of instance with this value.
-         * @throws ConversionErrorException if the value is not convertible in the right type.
+         * Convert the value string to the right type and set the attribute of instance
+         * with this value.
+         * 
+         * @throws ConversionErrorException if the value is not convertible in the right
+         * type.
          */
         private void performChangeInInstance(Object instance) throws ConversionErrorException {
             try {
@@ -142,6 +146,7 @@ public class RequestParamSetter {
 
         /**
          * Find the right class to convert a String into some type.
+         * 
          * @return a Loader class corresponding to the type
          */
         private Class<? extends Loader<?>> findLoaderType() {
@@ -163,12 +168,13 @@ public class RequestParamSetter {
         }
 
         /**
-         * Find the name of a parameter using annotation, and then find the value string the parameters map.
+         * Find the name (and set it) of a parameter using annotation, and then find the
+         * value string the parameters map.
+         * 
          * @return the value of the current field
          * @throws ParamNotFoundException if the value is not found in the parameters map.
          */
-        private String getValue() throws ParamNotFoundException {
-            String name;
+        private String findValueAndSetName(Map<String, String> parameters) throws ParamNotFoundException {
             String value;
             if (param.name().isEmpty()) {
                 name = f.getName();
@@ -185,6 +191,14 @@ public class RequestParamSetter {
                 throw new ParamNotFoundException(error);
             }
             error = error.replaceAll("\\%value", value);
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getvalue() {
             return value;
         }
     } // End of FieldParser

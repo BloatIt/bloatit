@@ -23,7 +23,8 @@ import java.util.HashMap;
 import com.bloatit.common.CryptoTools;
 import com.bloatit.common.FatalErrorException;
 
-class SessionManager {
+// TODO make me non public !
+public class SessionManager {
 
     private static HashMap<String, Session> activeSessions = new HashMap<String, Session>();
 

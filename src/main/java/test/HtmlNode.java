@@ -5,16 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import test.pages.components.HtmlBlock;
+import test.pages.components.HtmlButton;
+import test.pages.components.HtmlDateField;
+import test.pages.components.HtmlImage;
+import test.pages.components.HtmlInput;
+import test.pages.components.HtmlLinkComponent;
+import test.pages.demand.DemandPage;
+
 import com.bloatit.common.Image;
 import com.bloatit.common.Image.ImageType;
+import com.bloatit.web.server.Language;
+import com.bloatit.web.server.SessionManager;
 
-import test.htmlComponents.HtmlBlock;
-import test.htmlComponents.HtmlButton;
-import test.htmlComponents.HtmlDateField;
-import test.htmlComponents.HtmlForm;
-import test.htmlComponents.HtmlImage;
-import test.htmlComponents.HtmlInput;
-import test.htmlComponents.HtmlLinkComponent;
 
 public abstract class HtmlNode implements Iterable<HtmlNode> {
     public static class Tag {
@@ -60,21 +63,26 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
     protected abstract void write(Text txt);
     
     public static void main(String[] args) {
-        IndentedHtmlText plop = new IndentedHtmlText() {
+        Text txt = new IndentedHtmlText() {
             @Override
             protected void append(String text) {
                 System.out.print(text);
-            }};
-        new HtmlBlock().write(plop);
-        
-        new HtmlBlock("cssClass").add(new HtmlButton("button"))
-                                 .add(new HtmlDateField(new Date(), "date !"))
-                                 .add(new HtmlImage(new Image("plop", ImageType.LOCAL)))
-                                 .add(new HtmlInput("text"))
-                                 .add(new HtmlLinkComponent("link", "other"))
-                                 .write(plop);
-        
-        
-        
+            }
+        };
+//        new HtmlBlock().write(plop);
+//        
+//        new HtmlBlock("cssClass").add(new HtmlButton("button"))
+//                                 .add(new HtmlDateField(new Date(), "date !"))
+//                                 .add(new HtmlImage(new Image("plop", ImageType.LOCAL)))
+//                                 .add(new HtmlInput("text"))
+//                                 .add(new HtmlLinkComponent("link", "other"))
+//                                 .write(txt);
+        com.bloatit.model.data.util.SessionManager.beginWorkUnit();
+        Context.setSession(SessionManager.createSession());
+        Context.getSession().setLanguage(new Language());
+        DemandPage page = new DemandPage(new Parameters("id", "321").add("title", "Hello"));
+        page.create();
+        page.write(txt);
+        com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
     }
 }

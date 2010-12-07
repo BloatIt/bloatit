@@ -14,6 +14,11 @@ public class HtmlElement extends HtmlNode {
         this.tag = new Tag(tag);
     }
 
+    public HtmlElement() {
+        super();
+        this.tag = null;
+    }
+
     public HtmlElement addAttribute(String name, String value) {
         tag.addAttribute(name, value);
         return this;
@@ -23,9 +28,19 @@ public class HtmlElement extends HtmlNode {
         children.add(html);
         return this;
     }
-    
+
     public HtmlElement addText(String text) {
         children.add(new HtmlText(text));
+        return this;
+    }
+
+    public HtmlElement setId(String id) {
+        addAttribute("id", id);
+        return this;
+    }
+
+    public HtmlElement setClass(String cssClass) {
+        addAttribute("class", cssClass);
         return this;
     }
 
@@ -36,16 +51,24 @@ public class HtmlElement extends HtmlNode {
 
     @Override
     public void write(Text txt) {
-        if (this.iterator().hasNext()) {
-            txt.writeLine(tag.getOpenTag());
+        if (tag != null) {
+            if (this.iterator().hasNext()) {
+                txt.writeLine(tag.getOpenTag());
+                for (HtmlNode html : this) {
+                    txt.indent();
+                    html.write(txt);
+                    txt.unindent();
+                }
+                txt.writeLine(tag.getCloseTag());
+            } else {
+                txt.writeLine(tag.getClosedTag());
+            }
+        } else {
             for (HtmlNode html : this) {
                 txt.indent();
                 html.write(txt);
                 txt.unindent();
             }
-            txt.writeLine(tag.getCloseTag());
-        } else {
-            txt.writeLine(tag.getClosedTag());
         }
     }
 

@@ -9,6 +9,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface RequestParam {
     
+    public enum Role {
+        POST, GET, PRETTY
+    }
+    
     String name() default "";
     
     Class<? extends Loader<?>> loader() default Loader.DefaultConvertor.class;
@@ -18,5 +22,9 @@ public @interface RequestParam {
     Message.Level level() default Message.Level.ERROR;
 
     String defaultValue() default "";
+    
+    Role role() default Role.GET;
+    
+    String inputCode() default "";
 
 }
