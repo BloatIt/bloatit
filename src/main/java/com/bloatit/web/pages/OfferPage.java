@@ -19,11 +19,6 @@
 
 package com.bloatit.web.pages;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
@@ -37,22 +32,43 @@ import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.RequestParam;
 import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
+import com.bloatit.web.utils.tr;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class OfferPage extends LoggedPage {
 
-    @RequestParam(name = "idea", loader = DemandLoader.class)
+    /**
+     * The idea on which the author wants to create a new offer
+     */
+    @RequestParam(name = OfferAction.IDEA_CODE, loader = DemandLoader.class, message = @tr("Invalid idea"))
     private Demand targetIdea = null;
 
-    @RequestParam(name = "price")
+    /**
+     * The desired price for the offer
+     */
+    @RequestParam(name = OfferAction.PRICE_CODE)
     private BigDecimal price;
 
-    @RequestParam(name = "expiry")
+    /**
+     * The expiration date for the offer
+     */
+    @RequestParam(name = OfferAction.EXPIRY_CODE)
     private Date expiryDate;
 
-    @RequestParam(name = "title")
+    /**
+     * The title of the offer
+     */
+    @RequestParam(name = OfferAction.TITLE_CODE)
     private String title;
 
-    @RequestParam(name = "description")
+    /**
+     * The short description of the offer
+     */
+    @RequestParam(name = OfferAction.DESCRIPTION_CODE)
     private String description;
 
     public OfferPage(Session session) {
@@ -124,6 +140,7 @@ public class OfferPage extends LoggedPage {
 
         HtmlText t = new HtmlText(this.targetIdea.getTitle());
         offerPageContainer.add(t);
+
 
         HtmlTextField priceField = new HtmlTextField(price == null ? "" : price.toPlainString()); // TODO
         priceField.setLabel(this.session.tr("Offer price : "));

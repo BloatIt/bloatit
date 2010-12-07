@@ -32,30 +32,40 @@ import com.bloatit.web.utils.tr;
 
 public class OfferAction extends Action {
 
+    public final static String IDEA_CODE = "offer_idea";
+    public final static String PRICE_CODE = "offer_price";
+    public final static String EXPIRY_CODE = "offer_expiry";
+    public final static String TITLE_CODE = "offer_title";
+    public final static String DESCRIPTION_CODE = "offer_description";
+    
     /**
      * The idea on which the author wants to create a new offer
      */
-    @RequestParam(name = "idea", loader = DemandLoader.class, message = @tr("Invalid idea"))
+    @RequestParam(name = IDEA_CODE, loader = DemandLoader.class, message = @tr("Invalid idea"))
     private Demand targetIdea = null;
+
     /**
      * The desired price for the offer
      */
-    @RequestParam(name = "offer_price")
+    @RequestParam(name = PRICE_CODE)
     private BigDecimal price;
+
     /**
      * The expiration date for the offer
      */
-    @RequestParam(name = "offer_expiry_date")
+    @RequestParam(name = EXPIRY_CODE)
     private Date expiryDate;
+
     /**
      * The title of the offer
      */
-    @RequestParam(name = "offer_title")
+    @RequestParam(name = TITLE_CODE)
     private String title;
+
     /**
      * The short description of the offer
      */
-    @RequestParam(name = "offer_description")
+    @RequestParam(name = DESCRIPTION_CODE)
     private String description;
 
     public OfferAction(Session session) {
