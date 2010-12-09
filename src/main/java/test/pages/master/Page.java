@@ -1,5 +1,10 @@
-package test;
+package test.pages.master;
 
+import test.Context;
+import test.HtmlElement;
+import test.HtmlNode;
+import test.HtmlText;
+import test.Notification;
 import test.Notification.Level;
 import test.pages.components.HtmlBlock;
 import test.pages.components.HtmlList;
@@ -16,11 +21,11 @@ import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Message;
+import com.bloatit.web.utils.PageName;
 import com.bloatit.web.utils.RequestParamSetter.Messages;
 
 public abstract class Page extends HtmlElement {
 
-    private static final String DESIGN = "/resources/css/core.css";
     private HtmlElement content;
     private HtmlElement notifications;
 
@@ -32,47 +37,33 @@ public abstract class Page extends HtmlElement {
     }
 
     public Page create() {
-        HtmlElement head = new HtmlElement("head");
-        HtmlElement meta = new HtmlElement("meta").addAttribute("http-equiv", "content-type").addAttribute("content", "text/html;charset=utf-8");
-
-        HtmlElement link = new HtmlElement("link").addAttribute("rel", "stylesheet")
-                                                  .addAttribute("href", DESIGN)
-                                                  .addAttribute("type", "text/css")
-                                                  .addAttribute("media", "handheld, all");
-
-        head.add(meta).add(link);
-
-        String customCss;
-        if ((customCss = getCustomCss()) != null) {
-            HtmlElement customlink = new HtmlElement("link").addAttribute("rel", "stylesheet")
-                                                            .addAttribute("href", "/resources/css/" + customCss)
-                                                            .addAttribute("type", "text/css")
-                                                            .addAttribute("media", "handheld, all");
-            head.add(customlink);
-        }
-
-        head.add(new HtmlElement("title").addText("Bloatit - " + getTitle()));
-
-        super.add(head);
-
+        super.add(new Header(getTitle(), getCustomCss()));
         super.add(generate_body());
         return this;
     }
 
     // TODO correct empty div for notifications ?
     private HtmlElement generate_body() {
-        return new HtmlElement("body").add(new HtmlBlock().setId("page")
-                                                          .add(generateTopBar())
-                                                          .add(generateTitle())
-                                                          .add(new HtmlBlock().setId("center").add(new HtmlBlock().setId("center_column")
-                                                                                                                  .add(generateMainMenu())
-                                                                                                                  .add(content.add(notifications))))
-                                                          .add(generateFooter()));
+        return new HtmlElement("body").add(new HtmlBlock()
+                .setId("page")
+                .add(generateTopBar())
+                .add(generateTitle())
+                .add(new HtmlBlock().setId("center").add(new HtmlBlock().setId("center_column").add(generateMainMenu())
+                        .add(content.add(notifications)))).add(new Footer()));
     }
 
     protected abstract String getTitle();
 
     public abstract boolean isStable();
+    
+
+    public String getName(){
+        if (getClass().getAnnotation(PageName.class) != null) {
+            return getClass().getAnnotation(PageName.class).value();
+        } else {
+            return getClass().getName().toLowerCase();
+        }
+    }
 
     protected String getCustomCss() {
         return null;
@@ -129,7 +120,8 @@ public abstract class Page extends HtmlElement {
         if (session.isLogged()) {
             final String full_name = session.getAuthToken().getMember().getFullname();
             final String karma = HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma());
-            final String memberLink = HtmlTools.generateLink(session, full_name, new MyAccountPage(session)) + "<span class=\"karma\">" + karma + "</span>";
+            final String memberLink = HtmlTools.generateLink(session, full_name, new MyAccountPage(session))
+                    + "<span class=\"karma\">" + karma + "</span>";
             final String logoutLink = HtmlTools.generateLink(session, session.tr("Logout"), new LogoutAction(session));
 
             topBar.add(new HtmlElement("span").setClass("top_bar_component").addText(memberLink));
@@ -137,8 +129,8 @@ public abstract class Page extends HtmlElement {
 
         } else {
             topBar.add(new HtmlElement("span").setClass("top_bar_component").addText(HtmlTools.generateLink(session,
-                                                                                                            session.tr("Login / Signup"),
-                                                                                                            new LoginPage(session))));
+                    session.tr("Login / Signup"),
+                    new LoginPage(session))));
 
         }
         return topBar;
@@ -174,10 +166,6 @@ public abstract class Page extends HtmlElement {
         // TODO handle titles level !
         Session session = Context.getSession();
         return new HtmlElement("h1").addText(HtmlTools.generateLink(session, generateLogo(), new IndexPage(session)));
-    }
-
-    private HtmlElement generateFooter() {
-        return new HtmlBlock().setId("footer").addText(Context.tr("This website is under GNU Affero Public Licence."));
     }
 
 }

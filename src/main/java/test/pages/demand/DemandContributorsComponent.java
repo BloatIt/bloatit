@@ -21,15 +21,16 @@ package test.pages.demand;
 import test.Context;
 import test.HtmlElement;
 import test.HtmlNode;
+import test.Request;
 import test.pages.components.HtmlBlock;
 import test.pages.components.HtmlListItem;
 import test.pages.components.HtmlPagedList;
 import test.pages.components.HtmlRenderer;
 import test.pages.components.HtmlText;
-import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Contribution;
+import com.bloatit.framework.Demand;
 import com.bloatit.web.server.Session;
 
 public class DemandContributorsComponent extends HtmlBlock {
@@ -39,9 +40,11 @@ public class DemandContributorsComponent extends HtmlBlock {
     private HtmlText contributionMax;
     private HtmlText contributionMean;
     private PageIterable<Contribution> contributions;
+    private Demand demand;
 
-    public DemandContributorsComponent(Request request) {
+    public DemandContributorsComponent(Request request, Demand demand) {
         super();
+        this.demand = demand;
         extractData(request);
         produce(request);
 
@@ -78,17 +81,17 @@ public class DemandContributorsComponent extends HtmlBlock {
     protected void extractData(Request request) {
 
         Session session = Context.getSession();
-        contributionCount = request.demand.getContributions().size();
+        contributionCount = demand.getContributions().size();
 
-        float contributionMeanValue = request.demand.getContribution().floatValue() / contributionCount;
-        String contributionMinValue = request.demand.getContributionMin().toPlainString();
-        String contributionMaxValue = request.demand.getContributionMax().toPlainString();
+        float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
+        String contributionMinValue = demand.getContributionMin().toPlainString();
+        String contributionMaxValue = demand.getContributionMax().toPlainString();
 
         contributionMin = new HtmlText(session.tr("Min:&nbsp;") + contributionMinValue);
         contributionMax = new HtmlText(session.tr("Max:&nbsp;") + contributionMaxValue);
         contributionMean = new HtmlText(session.tr("Mean:&nbsp;") + contributionMeanValue);
 
-        contributions = request.demand.getContributions();
+        contributions = demand.getContributions();
     }
 
     private HtmlRenderer<Contribution> generateContributionRenderer() {

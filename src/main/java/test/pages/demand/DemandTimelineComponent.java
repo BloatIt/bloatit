@@ -16,22 +16,24 @@
  */
 package test.pages.demand;
 
+import com.bloatit.framework.Demand;
+
 import test.HtmlElement;
+import test.Request;
 import test.pages.components.HtmlBlock;
 import test.pages.components.HtmlList;
 import test.pages.components.HtmlListItem;
-import test.pages.demand.DemandPage.Request;
 
 public class DemandTimelineComponent extends HtmlElement {
 
-    public DemandTimelineComponent(Request request) {
+    public DemandTimelineComponent(Request request, Demand demand) {
         super();
 
         HtmlBlock timelineBlock = new HtmlBlock("timeline_block");
         {
             HtmlList timelineList = new HtmlList();
 
-            HtmlListItem creationDate = new HtmlListItem("Creation: " + request.demand.getCreationDate().toString());
+            HtmlListItem creationDate = new HtmlListItem("Creation: " + demand.getCreationDate().toString());
             {
                 timelineList.addItem(creationDate);
             }

@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import test.pages.demand.DemandPage;
+
 import com.bloatit.web.utils.RequestParam;
 import com.bloatit.web.utils.RequestParam.Role;
 import com.bloatit.web.utils.RequestParamSetter;
@@ -66,8 +68,8 @@ public class Request {
         return errors;
     }
 
-    protected void setValues() {
-        errors = (new RequestParamSetter(parameters).setValues(this));
+    public void setValues(Object demandPage) {
+        errors = (new RequestParamSetter(parameters).setValues(demandPage));
     }
 
     public void clone(Request other) {

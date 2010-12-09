@@ -15,7 +15,7 @@ public @interface RequestParam {
     
     String name() default "";
     
-    Class<? extends Loader<?>> loader() default Loader.DefaultConvertor.class;
+    Class<? extends Loader<?>> loader() default Loaders.DefaultConvertor.class;
 
     tr message() default @tr("Error: invalid value (%value) for parameter \"%param\"");
 

@@ -1,4 +1,4 @@
-package com.bloatit.web.utils;
+package test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -6,33 +6,34 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.web.utils.Loader;
+import com.bloatit.web.utils.Loaders;
+import com.bloatit.web.utils.Message;
 import com.bloatit.web.utils.Message.What;
+import com.bloatit.web.utils.PageComponent;
+import com.bloatit.web.utils.RequestParam;
 
-/**
- * This class uses RequestParam annotation to set the parameters using a map of
- * String/String name value.
- */
-public class RequestParamSetter {
-    private Map<String, String> parameters;
+public class UrlReader extends UrlManipulator {
+
+    private final Url url;
 
     /**
-     * Read a request and construct a RequestParamResult. (The actual work is done in
-     * setValues.)
-     * 
-     * @param parameters is a map of name->value. It represent a request.
+     * TODO
      */
-    public RequestParamSetter(Map<String, String> parameters) {
+    public UrlReader(Url url) {
         super();
-        this.parameters = parameters;
+        this.url = url;
     }
 
     /**
-     * Set the value of the parameters annotated with RequestParam, using the parameters
+     * Set the value of the parameters annotated with RequestParam, using the
+     * parameters
      * name->value map and the annotations informations.
      * 
      * @param instance is the object that has attributes to fill.
-     * @return Some messages on the filling process. The messages is basically a list of
-     * strings with some level.
+     * @return Some messages on the filling process. The messages is basically a
+     *         list of
+     *         strings with some level.
      * @see Messages
      */
     public Messages setValues(Object instance) {
@@ -42,12 +43,23 @@ public class RequestParamSetter {
             RequestParam param = f.getAnnotation(RequestParam.class);
             if (param != null) {
                 try {
-                    FieldParser fieldParser = new FieldParser(f, param, parameters);
+                    FieldParser fieldParser = new FieldParser(f, param, url.getParameters());
                     fieldParser.performChangeInInstance(instance);
                 } catch (ParamNotFoundException e) {
                     messages.addError(param, What.NOT_FOUND, e.getMessage());
                 } catch (ConversionErrorException e) {
                     messages.addError(param, What.CONVERSION_ERROR, e.getMessage());
+                }
+            } else if (f.getAnnotation(PageComponent.class) != null) {
+                try {
+                    if (!f.isAccessible()) {
+                        f.setAccessible(true);
+                    }
+                    messages.addAll(setValues(f.get(instance)));
+                } catch (IllegalArgumentException e) {
+                    throw new FatalErrorException("Cannot parse the pageComponent", e);
+                } catch (IllegalAccessException e) {
+                    throw new FatalErrorException("Cannot parse the pageComponent", e);
                 }
             }
         }
@@ -55,7 +67,8 @@ public class RequestParamSetter {
     }
 
     /**
-     * Store some error messages that could append during the reflexive procedure
+     * Store some error messages that could append during the reflexive
+     * procedure
      * "setValues".
      */
     public static class Messages extends ArrayList<Message> {
@@ -92,7 +105,8 @@ public class RequestParamSetter {
     }
 
     /**
-     * This exception is thrown when a parameter is found, but cannot be converted to the
+     * This exception is thrown when a parameter is found, but cannot be
+     * converted to the
      * right type.
      */
     public static class ConversionErrorException extends Exception {
@@ -104,7 +118,8 @@ public class RequestParamSetter {
     }
 
     /**
-     * The fieldParser class perform the reflexive work for a field. It is an internal
+     * The fieldParser class perform the reflexive work for a field. It is an
+     * internal
      * class and should never be used outside of the RequestParamResult class.
      */
     public static class FieldParser {
@@ -123,11 +138,13 @@ public class RequestParamSetter {
         }
 
         /**
-         * Convert the value string to the right type and set the attribute of instance
+         * Convert the value string to the right type and set the attribute of
+         * instance
          * with this value.
          * 
-         * @throws ConversionErrorException if the value is not convertible in the right
-         * type.
+         * @throws ConversionErrorException if the value is not convertible in
+         *         the right
+         *         type.
          */
         private void performChangeInInstance(Object instance) throws ConversionErrorException {
             try {
@@ -168,11 +185,13 @@ public class RequestParamSetter {
         }
 
         /**
-         * Find the name (and set it) of a parameter using annotation, and then find the
+         * Find the name (and set it) of a parameter using annotation, and then
+         * find the
          * value string the parameters map.
          * 
          * @return the value of the current field
-         * @throws ParamNotFoundException if the value is not found in the parameters map.
+         * @throws ParamNotFoundException if the value is not found in the
+         *         parameters map.
          */
         private String findValueAndSetName(Map<String, String> parameters) throws ParamNotFoundException {
             String value;
@@ -202,4 +221,5 @@ public class RequestParamSetter {
             return value;
         }
     } // End of FieldParser
+
 }

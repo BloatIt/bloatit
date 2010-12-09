@@ -1,20 +1,11 @@
 package test;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import test.pages.components.HtmlBlock;
-import test.pages.components.HtmlButton;
-import test.pages.components.HtmlDateField;
-import test.pages.components.HtmlImage;
-import test.pages.components.HtmlInput;
-import test.pages.components.HtmlLinkComponent;
 import test.pages.demand.DemandPage;
 
-import com.bloatit.common.Image;
-import com.bloatit.common.Image.ImageType;
 import com.bloatit.web.server.Language;
 import com.bloatit.web.server.SessionManager;
 
@@ -80,7 +71,7 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
         Context.setSession(SessionManager.createSession());
         Context.getSession().setLanguage(new Language());
-        DemandPage page = new DemandPage(new Parameters("id", "321").add("title", "Hello"));
+        DemandPage page = new DemandPage(new Request("demand", new Parameters("id", "321").add("title", "Hello")));
         page.create();
         page.write(txt);
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();

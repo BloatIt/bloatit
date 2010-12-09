@@ -17,13 +17,13 @@
 package test.pages.demand;
 
 import java.util.Locale;
-import java.util.Map;
 
 import test.Context;
 import test.HtmlElement;
-import test.Page;
+import test.Request;
 import test.pages.components.HtmlBlock;
 import test.pages.components.HtmlTitle;
+import test.pages.master.Page;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
@@ -34,38 +34,25 @@ import com.bloatit.web.utils.RequestParam.Role;
 
 public class DemandPage extends Page {
 
+    @RequestParam(name = "id", loader = BloatitLoaders.DemandLoader.class, level = Level.ERROR)
+    protected Demand demand;
+
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title")
+    protected String title;
+
     private final Request request;
 
-    public static class Request extends test.Request {
-        @RequestParam(name = "id", loader = BloatitLoaders.DemandLoader.class, level = Level.ERROR)
-        protected Demand demand;
-        
-        @RequestParam(role = Role.PRETTY, defaultValue="Title")
-        protected String title;
-        
-        @RequestParam(name = "demand_tab_key", defaultValue="description_tab")
-        protected String activeTabKey;
-        
-        public Request() {
-            super("demand");
-        }
-
-        public Request(Map<String, String> parameters) {
-            super("demand", parameters);
-            this.setValues();
-        }
-    }
-
-    public DemandPage(Map<String, String> parameters) {
+    public DemandPage(final Request request) {
         super();
-        request = new Request(parameters);
+        this.request = request;
+        this.request.setValues(this);
         addNotifications(request.getMessages());
-        
-        if(request.getMessages().hasMessage(Level.ERROR)){
+
+        if (request.getMessages().hasMessage(Level.ERROR)) {
             setPageNotFound();
             return;
         }
-        
+
         generateContent();
     }
 
@@ -82,22 +69,22 @@ public class DemandPage extends Page {
 
     @Override
     protected String getCustomCss() {
-        return request.getPageName() + ".css";
+        return "demand.css";
     }
 
     public Demand getDemand() {
-        return request.demand;
+        return demand;
     }
 
     protected void generateContent() {
-            Locale defaultLocale = Context.getSession().getLanguage().getLocale();
-            Translation translatedDescription = request.demand.getDescription().getTranslationOrDefault(defaultLocale);
+        Locale defaultLocale = Context.getSession().getLanguage().getLocale();
+        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
-            add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
-            add(new DemandHeadComponent(request));
-            add(generateBody());
+        add(new HtmlTitle(translatedDescription.getTitle(), "pageTitle"));
+        add(new DemandHeadComponent(request, demand));
+        add(generateBody());
     }
-    
+
     private HtmlElement generateBody() {
         HtmlBlock demandBody = new HtmlBlock("demand_body");
         {
@@ -110,9 +97,9 @@ public class DemandPage extends Page {
     private HtmlElement generateBodyLeft() {
         final HtmlBlock left = new HtmlBlock("leftColumn");
         {
-            left.add(new DemandTabPane(request));
+            left.add(new DemandTabPane(request, demand));
             // Comments
-            left.add(new DemandCommentListComponent(request));
+            left.add(new DemandCommentListComponent(request, demand));
         }
         return left;
 
@@ -123,12 +110,11 @@ public class DemandPage extends Page {
         {
             HtmlBlock rightBlock = new HtmlBlock("right_block");
             {
-                rightBlock.add(new DemandSummaryComponent(request));
+                rightBlock.add(new DemandSummaryComponent(request, demand));
             }
             right.add(rightBlock);
         }
         return right;
     }
-
 
 }

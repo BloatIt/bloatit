@@ -19,17 +19,22 @@ package test.pages.demand;
 import test.Context;
 import test.HtmlElement;
 import test.Parameters;
+import test.Request;
 import test.pages.components.HtmlTabBlock;
 import test.pages.components.HtmlTabBlock.HtmlTabHeader;
-import test.pages.demand.DemandPage.Request;
 
+import com.bloatit.framework.Demand;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.RequestParam;
 
 public class DemandTabPane extends HtmlElement {
 
+    @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
+    private String activeTabKey;
 
-    public DemandTabPane(Request request) {
+    public DemandTabPane(Request request, Demand demand) {
         super();
+        request.setValues(this);
         Session session = Context.getSession();
 
         // Create description tab
@@ -46,18 +51,18 @@ public class DemandTabPane extends HtmlElement {
         HtmlTabBlock tabPane = new HtmlTabBlock(); // id = participations_tab
 
         // Add all tabs from left to right
-        if (request.activeTabKey == "description_tab") {
-            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(descriptionTab, new DemandDescriptionComponent(request)));
+        if (activeTabKey == "description_tab") {
+            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(descriptionTab, new DemandDescriptionComponent(request, demand)));
         } else {
             tabPane.addTabHeader(descriptionTab);
         }
-        if (request.activeTabKey == "participations_tab") {
-            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(participationsTab, new DemandContributorsComponent(request)));
+        if (activeTabKey == "participations_tab") {
+            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(participationsTab, new DemandContributorsComponent(request, demand)));
         } else {
             tabPane.addTabHeader(participationsTab);
         }
-        if (request.activeTabKey == "offer_tab") {
-            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(offerTab, new DemandOfferListComponent(request)));
+        if (activeTabKey == "offer_tab") {
+            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(offerTab, new DemandOfferListComponent(request, demand)));
         } else {
             tabPane.addTabHeader(offerTab);
         }

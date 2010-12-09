@@ -20,9 +20,9 @@ package test.pages.demand;
 
 import test.Context;
 import test.HtmlElement;
+import test.Request;
 import test.pages.components.HtmlBlock;
 import test.pages.components.HtmlText;
-import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.framework.Comment;
 import com.bloatit.web.htmlrenderer.HtmlTools;

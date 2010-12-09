@@ -20,20 +20,21 @@ package test.pages.demand;
 
 import test.Context;
 import test.HtmlElement;
+import test.Request;
 import test.pages.components.HtmlBlock;
 import test.pages.components.HtmlTitle;
-import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
+import com.bloatit.framework.Demand;
 
 public class DemandCommentListComponent extends HtmlElement {
 
     private PageIterable<Comment> comments;
 
-    public DemandCommentListComponent(Request request) {
+    public DemandCommentListComponent(Request request, Demand demand) {
         super();
-        extractData(request);
+        comments = demand.getComments();
         add(produce(request));
     }
 
@@ -53,7 +54,4 @@ public class DemandCommentListComponent extends HtmlElement {
         return commentsBlock;
     }
 
-    protected void extractData(Request request) {
-        comments = request.demand.getComments();
-    }
 }

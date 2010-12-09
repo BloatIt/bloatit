@@ -18,10 +18,10 @@ package test.pages.demand;
 
 import test.Context;
 import test.HtmlElement;
+import test.Request;
 import test.pages.components.HtmlBlock;
 import test.pages.components.HtmlImage;
 import test.pages.components.HtmlText;
-import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.framework.Offer;
 import com.bloatit.web.server.Session;

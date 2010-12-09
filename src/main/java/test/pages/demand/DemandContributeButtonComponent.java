@@ -20,11 +20,12 @@ import java.util.HashMap;
 
 import test.Context;
 import test.HtmlElement;
+import test.Request;
 import test.pages.components.HtmlBlock;
 import test.pages.components.HtmlButton;
 import test.pages.components.HtmlForm;
-import test.pages.demand.DemandPage.Request;
 
+import com.bloatit.framework.Demand;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.server.Session;
 
@@ -32,9 +33,10 @@ public class DemandContributeButtonComponent extends HtmlElement {
 
     private HashMap<String, String> params;
 
-    public DemandContributeButtonComponent(Request request) {
+    public DemandContributeButtonComponent(Request request, Demand demand) {
         super();
-        extractData(request);
+        params = new HashMap<String, String>();
+        params.put("idea", String.valueOf(demand.getId()));
         add(produce(request));
     }
 
@@ -57,8 +59,4 @@ public class DemandContributeButtonComponent extends HtmlElement {
         return contributeBlock;
     }
 
-    protected void extractData(Request request) {
-        params = new HashMap<String, String>();
-        params.put("idea", String.valueOf(request.demand.getId()));
-    }
 }
