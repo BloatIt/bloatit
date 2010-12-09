@@ -7,18 +7,9 @@ import test.HtmlText;
 import test.Notification;
 import test.Notification.Level;
 import test.pages.components.HtmlBlock;
-import test.pages.components.HtmlList;
-import test.pages.components.HtmlListItem;
 
-import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.pages.DemandsPage;
 import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.LoginPage;
-import com.bloatit.web.pages.MembersListPage;
-import com.bloatit.web.pages.MyAccountPage;
-import com.bloatit.web.pages.PageNotFound;
-import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Message;
 import com.bloatit.web.utils.PageName;
@@ -46,9 +37,9 @@ public abstract class Page extends HtmlElement {
     private HtmlElement generate_body() {
         return new HtmlElement("body").add(new HtmlBlock()
                 .setId("page")
-                .add(generateTopBar())
+                .add(new TopBar())
                 .add(generateTitle())
-                .add(new HtmlBlock().setId("center").add(new HtmlBlock().setId("center_column").add(generateMainMenu())
+                .add(new HtmlBlock().setId("center").add(new HtmlBlock().setId("center_column").add(new Menu())
                         .add(content.add(notifications)))).add(new Footer()));
     }
 
@@ -113,54 +104,6 @@ public abstract class Page extends HtmlElement {
         return "<span class=\"logo_bloatit\"><span class=\"logo_bloatit_bloat\">Bloat</span><span class=\"logo_bloatit_it\">It</span></span>";
     }
 
-    private HtmlElement generateTopBar() {
-        HtmlElement topBar = new HtmlBlock().setId("top_bar");
-
-        Session session = Context.getSession();
-        if (session.isLogged()) {
-            final String full_name = session.getAuthToken().getMember().getFullname();
-            final String karma = HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma());
-            final String memberLink = HtmlTools.generateLink(session, full_name, new MyAccountPage(session))
-                    + "<span class=\"karma\">" + karma + "</span>";
-            final String logoutLink = HtmlTools.generateLink(session, session.tr("Logout"), new LogoutAction(session));
-
-            topBar.add(new HtmlElement("span").setClass("top_bar_component").addText(memberLink));
-            topBar.add(new HtmlElement("span").setClass("top_bar_component").addText(logoutLink));
-
-        } else {
-            topBar.add(new HtmlElement("span").setClass("top_bar_component").addText(HtmlTools.generateLink(session,
-                    session.tr("Login / Signup"),
-                    new LoginPage(session))));
-
-        }
-        return topBar;
-    }
-
-    private HtmlElement generateMainMenu() {
-
-        final Session s = Context.getSession();
-        final HtmlElement mainMenu = new HtmlBlock().setId("main_menu");
-
-        final HtmlList primaryList = new HtmlList();
-
-        primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Demands"), new DemandsPage(s))));
-        primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Projects"), new IndexPage(s))));
-        primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Groups"), new IndexPage(s))));
-        primaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Members"), new MembersListPage(s))));
-
-        final HtmlList secondaryList = new HtmlList();
-
-        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Specials page"), new SpecialsPage(s))));
-        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Contact"), new PageNotFound(s))));
-        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Documentation"), new PageNotFound(s))));
-        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("About BloatIt"), new PageNotFound(s))));
-        secondaryList.addItem(new HtmlListItem(HtmlTools.generateLink(s, s.tr("Press"), new PageNotFound(s))));
-
-        mainMenu.add(primaryList);
-        mainMenu.add(secondaryList);
-
-        return mainMenu;
-    }
 
     private HtmlElement generateTitle() {
         // TODO handle titles level !
