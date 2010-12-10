@@ -27,7 +27,7 @@ import com.bloatit.framework.Comment;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Session;
 import test.html.HtmlText;
-import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.standard.HtmlBlock;
 
 public class DemandCommentChildComponent extends HtmlElement {
 
