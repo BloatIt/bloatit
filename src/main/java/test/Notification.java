@@ -1,6 +1,6 @@
 package test;
 
-import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.standard.HtmlBlock;
 
 public class Notification extends HtmlBlock {
 

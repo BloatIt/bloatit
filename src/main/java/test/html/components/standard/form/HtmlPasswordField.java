@@ -15,23 +15,30 @@
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents;
+package test.html.components.standard.form;
 
-import test.html.HtmlElement;
-import test.html.HtmlText;
-import test.pages.HtmlContainerElement;
+/**
+ * A class used to create input fields of password type
+ * The result will be :
+ * <pre>
+ * <p>
+ *      <label for="...">plop</label>
+ *      <input id="..." type="password" class="cssClass" ...>default value</input>
+ * </p>
+ * </pre>
+ */
+public class HtmlPasswordField extends HtmlFormField<String> {
 
-public class HtmlLink extends HtmlContainerElement {
-
-    public HtmlLink(String link, HtmlElement element) {
-        super("a");
-        addAttribute("href", link);
-        add(element);
+    public HtmlPasswordField(String name) {
+        super(new HtmlSimpleInput("password"), name);
     }
-    
-    public HtmlLink(String link, String element) {
-        super("a");
-        addAttribute("href", link);
-        add(new HtmlText(element));
+
+    public HtmlPasswordField(String name, String label) {
+        super(new HtmlSimpleInput("password"), name, label);
+    }
+
+    @Override
+    protected void doSetDefaultValue(String value) {
+        this.element.addAttribute("value", value);
     }
 }

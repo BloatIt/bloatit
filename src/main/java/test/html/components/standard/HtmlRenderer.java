@@ -17,23 +17,11 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents.formComponents;
+package test.html.components.standard;
 
-import test.html.HtmlElement;
+import test.html.HtmlNode;
 
-/**
- * Meta class used to create various input fields
- */
-public class HtmlSimpleInput extends HtmlElement {
+public abstract interface HtmlRenderer<T> {
 
-    protected HtmlSimpleInput(String type) {
-        super("input");
-        addAttribute("type", type);
-    }
-
-    protected HtmlSimpleInput setName(String name) {
-        addAttribute("name", name).addAttribute("id", name);
-        return this;
-    }
-
+    public abstract HtmlNode generate(T item);
 }

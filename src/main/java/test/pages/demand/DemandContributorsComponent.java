@@ -21,11 +21,11 @@ package test.pages.demand;
 import test.Context;
 import test.html.HtmlElement;
 import test.html.HtmlNode;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.basicComponents.HtmlListItem;
-import test.html.components.advancedComponents.HtmlPagedList;
-import test.html.components.basicComponents.HtmlRenderer;
-import test.html.components.basicComponents.HtmlText;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlListItem;
+import test.html.components.advanced.HtmlPagedList;
+import test.html.components.standard.HtmlRenderer;
+import test.html.components.standard.HtmlText;
 import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.common.PageIterable;

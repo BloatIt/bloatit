@@ -15,9 +15,9 @@
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents.formComponents;
+package test.html.components.standard.form;
 
-import test.html.components.basicComponents.HtmlParagraph;
+import test.html.components.standard.HtmlParagraph;
 
 /**
  * <p>Class used to created html textarea blocks</p>

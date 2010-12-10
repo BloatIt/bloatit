@@ -15,14 +15,32 @@
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.advancedComponents;
+package test.html.components.standard;
 
 import test.html.HtmlElement;
 
-public class HtmlProgressBar extends HtmlElement{
-    
-    public HtmlProgressBar(float progress) {
-        super("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: " + progress
-                + "%;\"></div></div></div>");
+import com.bloatit.common.Image;
+
+/**
+ * Used to display an image
+ */
+public class HtmlImage extends HtmlElement {
+    private final static String IMAGE_DIRECTORY = "/resources/img";
+
+    public HtmlImage(Image image) {
+        super("img");
+        String URI = "";
+        if (image.isLocal()) {
+            URI = HtmlImage.IMAGE_DIRECTORY + "/" + image.getIdentifier();
+        } else {
+            URI = image.getIdentifier();
+        }
+        addAttribute("src", URI);
     }
+
+    public HtmlImage(Image image, String cssClass) {
+        this(image);
+        addAttribute("class", cssClass);
+    }
+
 }

@@ -14,25 +14,24 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.html.components.basicComponents;
 
-import javax.xml.soap.Text;
+package test.html.components.standard;
+
 import test.html.HtmlElement;
+import test.html.HtmlText;
+import test.pages.HtmlContainerElement;
 
-public class HtmlTitle extends HtmlElement {
+public class HtmlLink extends HtmlContainerElement {
 
-    public HtmlTitle(String title, String cssClass) {
-        super("h1");
-        addText(title);
-        addAttribute("class", cssClass);
+    public HtmlLink(String link, HtmlElement element) {
+        super("a");
+        addAttribute("href", link);
+        add(element);
     }
-
-    // @Override
-    // public void generate(HtmlResult htmlResult) {
-    // final String titleNum = htmlResult.pushTitle();
-    // htmlResult.write("<h" + titleNum + " class=\"" + cssClass + "\">" + title + "</h" +
-    // titleNum + ">");
-    // super.generate(htmlResult);
-    // htmlResult.popTitle();
-    // }
+    
+    public HtmlLink(String link, String element) {
+        super("a");
+        addAttribute("href", link);
+        add(new HtmlText(element));
+    }
 }

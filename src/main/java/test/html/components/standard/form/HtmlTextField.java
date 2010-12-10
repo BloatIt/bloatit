@@ -14,26 +14,23 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
-package test.html.components.basicComponents.formComponents;
-
-import com.bloatit.web.utils.BloatitDate;
+package test.html.components.standard.form;
 
 /**
- * Class used to create input fields used to input date
+ * Class used to create a 1 line text input field
  */
-public class HtmlDateField extends HtmlFormField<BloatitDate> {
+public final class HtmlTextField extends HtmlFormField<String> {
 
-    public HtmlDateField(String name) {
+    public HtmlTextField(String name) {
         super(new HtmlSimpleInput("text"), name);
     }
 
-    public HtmlDateField(String name, String label) {
+    public HtmlTextField(String name, String label) {
         super(new HtmlSimpleInput("text"), name, label);
     }
 
     @Override
-    protected void doSetDefaultValue(BloatitDate value) {
-        this.addAttribute("value", value.toString(BloatitDate.FormatStyle.SHORT));
+    protected void doSetDefaultValue(String value) {
+        this.addAttribute("value", value);
     }
 }

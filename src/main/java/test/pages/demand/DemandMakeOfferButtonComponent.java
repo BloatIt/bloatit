@@ -19,9 +19,9 @@ package test.pages.demand;
 import test.Context;
 import test.html.HtmlElement;
 import test.Parameters;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.basicComponents.formComponents.HtmlButton;
-import test.html.components.basicComponents.formComponents.HtmlForm;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.form.HtmlButton;
+import test.html.components.standard.form.HtmlForm;
 import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.web.pages.OfferPage;

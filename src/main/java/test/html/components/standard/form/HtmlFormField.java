@@ -17,12 +17,12 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents.formComponents;
+package test.html.components.standard.form;
 
 import test.html.HtmlElement;
 import test.html.components.HtmlNamedNode;
 import test.html.components.PlaceHolderElement;
-import test.html.components.basicComponents.HtmlParagraph;
+import test.html.components.standard.HtmlParagraph;
 
 /**
  * <p>Basic class to describe elements that can be added to a form</p>

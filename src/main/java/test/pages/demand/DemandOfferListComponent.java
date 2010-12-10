@@ -18,7 +18,7 @@
  */
 package test.pages.demand;
 
-import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.standard.HtmlBlock;
 import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.common.PageIterable;

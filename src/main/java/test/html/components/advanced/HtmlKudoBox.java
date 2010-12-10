@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.html.components.advancedComponents;
+package test.html.components.advanced;
 
-import test.html.components.basicComponents.HtmlText;
-import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.standard.HtmlText;
+import test.html.components.standard.HtmlBlock;
 import com.bloatit.framework.Kudosable;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Session;
-import test.html.components.basicComponents.HtmlLink;
+import test.html.components.standard.HtmlLink;
 
 public class HtmlKudoBox extends HtmlBlock {
 

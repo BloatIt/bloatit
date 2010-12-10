@@ -15,10 +15,10 @@
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.advancedComponents;
+package test.html.components.advanced;
 
-import test.html.components.basicComponents.HtmlLink;
-import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.standard.HtmlLink;
+import test.html.components.standard.HtmlBlock;
 
 
 public class HtmlTabBlock extends HtmlBlock {

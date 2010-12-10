@@ -17,11 +17,16 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents.formComponents;
+package test.html.components.standard.form;
 
-/**
- * Describes elements that can have a default value
- */
-public interface Defaultable {
-    public void setDefaultValue(Object value);
+import test.html.HtmlElement;
+
+public class HtmlLabel extends HtmlElement {
+    protected HtmlLabel(String content){
+        super("label");
+    }
+
+    protected void setFor(String forId){
+        this.addAttribute("for", forId);
+    }
 }

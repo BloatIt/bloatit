@@ -14,34 +14,41 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.html.components.basicComponents;
+package test.html.components.standard;
 
-import test.html.components.basicComponents.HtmlParagraph;
+import test.html.HtmlElement;
+import test.html.HtmlNode;
+import test.html.HtmlText;
 
-/**
- * Used to display block of texts
- */
-public class HtmlText extends HtmlParagraph {
-    /**
-     * Creates an HtmlText with a preset text
-     * 
-     * @param text the text that will be displayed
-     */
-    public HtmlText(String text) {
-        super();
-        add(new test.html.HtmlText(text));
+public class HtmlList extends HtmlElement {
+
+    public HtmlList(String text) {
+        super("ul");
+        add(new HtmlText(text));
     }
 
-    /**
-     * Creates an HtmlText with a preset text and a given css style
-     * 
-     * @param cssClass the name of the css class applied
-     * @param text the texit that will be displayed
-     */
-    public HtmlText(String text, String cssClass) {
-        super();
+    public HtmlList(HtmlNode node) {
+        super("ul");
+        add(node);
+    }
+
+    public HtmlList(String cssClass, HtmlNode node) {
+        super("ul");
         addAttribute("class", cssClass);
-        add(new test.html.HtmlText(text));
+        add(node);
     }
 
+    public HtmlList(String cssClass, String text) {
+        super("ul");
+        addAttribute("class", cssClass);
+        add(new HtmlText(text));
+    }
+
+    public HtmlList() {
+        super("ul");
+    }
+
+    public void addItem(HtmlListItem item) {
+        add(item);
+    }
 }

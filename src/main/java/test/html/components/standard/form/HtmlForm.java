@@ -15,7 +15,7 @@
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents.formComponents;
+package test.html.components.standard.form;
 
 import com.bloatit.web.server.Request;
 import test.pages.HtmlContainerElement;

@@ -17,7 +17,7 @@
 package test.pages.demand;
 
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.standard.HtmlBlock;
 import test.pages.demand.DemandPage.Request;
 
 public class DemandSummaryComponent extends HtmlElement {

@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.html.components.advancedComponents;
+package test.html.components.advanced;
 
-import test.html.components.basicComponents.HtmlText;
-import test.html.components.basicComponents.HtmlRenderer;
-import test.html.components.basicComponents.HtmlListItem;
-import test.html.components.basicComponents.HtmlList;
+import test.html.components.standard.HtmlText;
+import test.html.components.standard.HtmlRenderer;
+import test.html.components.standard.HtmlListItem;
+import test.html.components.standard.HtmlList;
 import test.html.HtmlElement;
 import test.html.HtmlNode;
 import test.Parameters;
@@ -27,8 +27,8 @@ import test.Request;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.web.server.Session;
-import test.html.components.basicComponents.HtmlGenericElement;
-import test.html.components.basicComponents.HtmlLink;
+import test.html.components.standard.HtmlGenericElement;
+import test.html.components.standard.HtmlLink;
 
 public class HtmlPagedList<T> extends HtmlList {
 

@@ -17,9 +17,9 @@
 package test.pages.demand;
 
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.basicComponents.HtmlList;
-import test.html.components.basicComponents.HtmlListItem;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlList;
+import test.html.components.standard.HtmlListItem;
 import test.pages.demand.DemandPage.Request;
 
 public class DemandTimelineComponent extends HtmlElement {

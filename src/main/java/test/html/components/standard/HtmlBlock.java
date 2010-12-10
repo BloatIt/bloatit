@@ -14,23 +14,28 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.html.components.basicComponents.formComponents;
+
+package test.html.components.standard;
+
+import test.pages.HtmlContainerElement;
 
 /**
- * Class used to create a 1 line text input field
+ * A class used to create a new html block (aka div)
  */
-public final class HtmlTextField extends HtmlFormField<String> {
+public class HtmlBlock extends HtmlContainerElement {
 
-    public HtmlTextField(String name) {
-        super(new HtmlSimpleInput("text"), name);
+    public HtmlBlock() {
+        super("div");
     }
 
-    public HtmlTextField(String name, String label) {
-        super(new HtmlSimpleInput("text"), name, label);
+    public HtmlBlock(String cssClass) {
+        super("div");
+        addAttribute("class", cssClass);
     }
 
-    @Override
-    protected void doSetDefaultValue(String value) {
-        this.addAttribute("value", value);
+    public HtmlBlock(String cssClass, String id) {
+        super("div");
+        addAttribute("class", cssClass);
+        addAttribute("id", id);
     }
 }

@@ -18,9 +18,9 @@ package test.pages.demand;
 
 import test.Context;
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.basicComponents.HtmlImage;
-import test.html.components.basicComponents.HtmlText;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlImage;
+import test.html.components.standard.HtmlText;
 import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.framework.Offer;

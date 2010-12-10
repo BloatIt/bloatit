@@ -15,25 +15,14 @@
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents.formComponents;
+package test.html.components.advanced;
 
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlParagraph;
 
-/**
- * <p>Class used to create Html buttons</p>
- */
-public class HtmlButton extends HtmlElement {
-
-    HtmlElement button = new HtmlSimpleInput("button");
-
-    /**
-     * Creates a HtmlButton
-     * @param label the text that will be shown on the button
-     */
-    public HtmlButton(String label) {
-        super();
-        this.add(new HtmlParagraph().add(this.button));
-        this.addAttribute("label", label);
+public class HtmlProgressBar extends HtmlElement{
+    
+    public HtmlProgressBar(float progress) {
+        super("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: " + progress
+                + "%;\"></div></div></div>");
     }
 }

@@ -22,8 +22,8 @@ import java.util.Map;
 import test.Context;
 import test.html.HtmlElement;
 import test.Page;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.basicComponents.HtmlTitle;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlTitle;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;

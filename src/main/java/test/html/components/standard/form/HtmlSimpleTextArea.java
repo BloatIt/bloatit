@@ -17,16 +17,20 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents.formComponents;
+package test.html.components.standard.form;
 
 import test.html.HtmlElement;
 
-public class HtmlLabel extends HtmlElement {
-    protected HtmlLabel(String content){
-        super("label");
+/**
+ * <p>Internal class used to create simple text areas.</p>
+ */
+public class HtmlSimpleTextArea extends HtmlElement{
+    protected HtmlSimpleTextArea(){
+        super("textarea");
     }
 
-    protected void setFor(String forId){
-        this.addAttribute("for", forId);
+    public HtmlSimpleTextArea setDefaultValue(String text){
+        this.addText(text);
+        return this;
     }
 }

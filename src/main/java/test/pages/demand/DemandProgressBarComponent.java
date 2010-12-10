@@ -17,9 +17,9 @@
 package test.pages.demand;
 
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlProgressBar;
-import test.html.components.basicComponents.HtmlText;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.advanced.HtmlProgressBar;
+import test.html.components.standard.HtmlText;
 import test.pages.demand.DemandPage.Request;
 
 public class DemandProgressBarComponent extends HtmlElement {

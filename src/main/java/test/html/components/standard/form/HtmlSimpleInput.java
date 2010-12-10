@@ -17,20 +17,23 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents.formComponents;
+package test.html.components.standard.form;
 
 import test.html.HtmlElement;
 
 /**
- * <p>Internal class used to create simple text areas.</p>
+ * Meta class used to create various input fields
  */
-public class HtmlSimpleTextArea extends HtmlElement{
-    protected HtmlSimpleTextArea(){
-        super("textarea");
+public class HtmlSimpleInput extends HtmlElement {
+
+    protected HtmlSimpleInput(String type) {
+        super("input");
+        addAttribute("type", type);
     }
 
-    public HtmlSimpleTextArea setDefaultValue(String text){
-        this.addText(text);
+    protected HtmlSimpleInput setName(String name) {
+        addAttribute("name", name).addAttribute("id", name);
         return this;
     }
+
 }

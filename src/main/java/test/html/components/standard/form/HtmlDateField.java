@@ -14,41 +14,26 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.html.components.basicComponents;
 
-import test.html.HtmlElement;
-import test.html.HtmlNode;
-import test.html.HtmlText;
+package test.html.components.standard.form;
 
-public class HtmlList extends HtmlElement {
+import com.bloatit.web.utils.BloatitDate;
 
-    public HtmlList(String text) {
-        super("ul");
-        add(new HtmlText(text));
+/**
+ * Class used to create input fields used to input date
+ */
+public class HtmlDateField extends HtmlFormField<BloatitDate> {
+
+    public HtmlDateField(String name) {
+        super(new HtmlSimpleInput("text"), name);
     }
 
-    public HtmlList(HtmlNode node) {
-        super("ul");
-        add(node);
+    public HtmlDateField(String name, String label) {
+        super(new HtmlSimpleInput("text"), name, label);
     }
 
-    public HtmlList(String cssClass, HtmlNode node) {
-        super("ul");
-        addAttribute("class", cssClass);
-        add(node);
-    }
-
-    public HtmlList(String cssClass, String text) {
-        super("ul");
-        addAttribute("class", cssClass);
-        add(new HtmlText(text));
-    }
-
-    public HtmlList() {
-        super("ul");
-    }
-
-    public void addItem(HtmlListItem item) {
-        add(item);
+    @Override
+    protected void doSetDefaultValue(BloatitDate value) {
+        this.addAttribute("value", value.toString(BloatitDate.FormatStyle.SHORT));
     }
 }

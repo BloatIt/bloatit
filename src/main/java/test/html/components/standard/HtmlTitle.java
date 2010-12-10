@@ -14,31 +14,25 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
+package test.html.components.standard;
 
-package test.html.components.basicComponents.formComponents;
+import javax.xml.soap.Text;
+import test.html.HtmlElement;
 
-/**
- * A class used to create input fields of password type
- * The result will be :
- * <pre>
- * <p>
- *      <label for="...">plop</label>
- *      <input id="..." type="password" class="cssClass" ...>default value</input>
- * </p>
- * </pre>
- */
-public class HtmlPasswordField extends HtmlFormField<String> {
+public class HtmlTitle extends HtmlElement {
 
-    public HtmlPasswordField(String name) {
-        super(new HtmlSimpleInput("password"), name);
+    public HtmlTitle(String title, String cssClass) {
+        super("h1");
+        addText(title);
+        addAttribute("class", cssClass);
     }
 
-    public HtmlPasswordField(String name, String label) {
-        super(new HtmlSimpleInput("password"), name, label);
-    }
-
-    @Override
-    protected void doSetDefaultValue(String value) {
-        this.element.addAttribute("value", value);
-    }
+    // @Override
+    // public void generate(HtmlResult htmlResult) {
+    // final String titleNum = htmlResult.pushTitle();
+    // htmlResult.write("<h" + titleNum + " class=\"" + cssClass + "\">" + title + "</h" +
+    // titleNum + ">");
+    // super.generate(htmlResult);
+    // htmlResult.popTitle();
+    // }
 }

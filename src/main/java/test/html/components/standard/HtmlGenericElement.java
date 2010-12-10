@@ -17,11 +17,25 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents;
+package test.html.components.standard;
 
-import test.html.HtmlNode;
+import test.pages.HtmlContainerElement;
 
-public abstract interface HtmlRenderer<T> {
+/**
+ * <p>Can be used to create any Html element by just passing the name of the
+ * markup in the constructor</p>
+ * <p>
+ * The following example will create a blank textarea :
+ * <pre>
+ * HtmlElement element = new HtmlGenericElement("textarea");
+ * </pre>
+ * </p>
+ * <p> Methods such as add or addatribute will be available on such element</p>
+ * <p> Note, this class should be used carefully</p>
+ */
+public class HtmlGenericElement extends HtmlContainerElement{
 
-    public abstract HtmlNode generate(T item);
+    public HtmlGenericElement(String tag){
+        super(tag);
+    }
 }

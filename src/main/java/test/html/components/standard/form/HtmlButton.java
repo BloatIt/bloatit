@@ -15,32 +15,25 @@
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package test.html.components.basicComponents;
+package test.html.components.standard.form;
 
 import test.html.HtmlElement;
-
-import com.bloatit.common.Image;
+import test.html.components.standard.HtmlParagraph;
 
 /**
- * Used to display an image
+ * <p>Class used to create Html buttons</p>
  */
-public class HtmlImage extends HtmlElement {
-    private final static String IMAGE_DIRECTORY = "/resources/img";
+public class HtmlButton extends HtmlElement {
 
-    public HtmlImage(Image image) {
-        super("img");
-        String URI = "";
-        if (image.isLocal()) {
-            URI = HtmlImage.IMAGE_DIRECTORY + "/" + image.getIdentifier();
-        } else {
-            URI = image.getIdentifier();
-        }
-        addAttribute("src", URI);
+    HtmlElement button = new HtmlSimpleInput("button");
+
+    /**
+     * Creates a HtmlButton
+     * @param label the text that will be shown on the button
+     */
+    public HtmlButton(String label) {
+        super();
+        this.add(new HtmlParagraph().add(this.button));
+        this.addAttribute("label", label);
     }
-
-    public HtmlImage(Image image, String cssClass) {
-        this(image);
-        addAttribute("class", cssClass);
-    }
-
 }

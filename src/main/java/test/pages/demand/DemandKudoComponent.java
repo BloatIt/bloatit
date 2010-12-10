@@ -18,8 +18,8 @@ package test.pages.demand;
 
 import test.Context;
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.advanced.HtmlKudoBox;
 import test.pages.demand.DemandPage.Request;
 
 public class DemandKudoComponent extends HtmlElement {

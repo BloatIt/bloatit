@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates and open the template in the editor.
  */
 
-package test.html.components.basicComponents;
+package test.html.components.standard;
 
 import test.html.HtmlElement;
 import test.html.HtmlNode;

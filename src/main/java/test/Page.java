@@ -4,9 +4,9 @@ import test.html.HtmlNode;
 import test.html.HtmlText;
 import test.html.HtmlElement;
 import test.Notification.Level;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.basicComponents.HtmlList;
-import test.html.components.basicComponents.HtmlListItem;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlList;
+import test.html.components.standard.HtmlListItem;
 
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlTools;
@@ -20,7 +20,7 @@ import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Message;
 import com.bloatit.web.utils.RequestParamSetter.Messages;
-import test.html.components.basicComponents.HtmlGenericElement;
+import test.html.components.standard.HtmlGenericElement;
 import test.pages.HtmlContainerElement;
 
 public abstract class Page extends HtmlElement {
