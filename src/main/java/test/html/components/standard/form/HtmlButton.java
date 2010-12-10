@@ -31,10 +31,10 @@ public class HtmlButton extends HtmlElement {
      * Creates a HtmlButton
      * @param label the text that will be shown on the button
      */
-    public HtmlButton(String label) {
+    public HtmlButton(String value) {
         super();
         this.add(new HtmlParagraph().add(this.button));
-        this.button.addAttribute("label", label);
+        this.button.addAttribute("value", value);
 
     }
 }
