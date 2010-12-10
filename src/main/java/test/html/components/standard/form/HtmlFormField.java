@@ -45,6 +45,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlElement implem
         super();
         this.paragraph.add(ph);
         this.element = element;
+        this.paragraph.add(element);
+        this.add(paragraph);
         this.setName(name);
     }
 
@@ -52,8 +54,10 @@ public abstract class HtmlFormField<T extends Object> extends HtmlElement implem
         super();
         this.paragraph.add(ph);
         this.element = element;
+        this.paragraph.add(element);
         this.setLabel(label);
         this.setName(name);
+        this.add(paragraph);
     }
 
     /**

@@ -34,10 +34,9 @@ public class HtmlButton extends HtmlElement {
      * 
      * @param label the text that will be shown on the button
      */
-    public HtmlButton(final String label) {
+    public HtmlButton(final String value) {
         super();
         add(new HtmlParagraph().add(this.button));
-        this.button.addAttribute("label", label);
-
+        this.button.addAttribute("value", label);
     }
 }
