@@ -25,9 +25,9 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 
-import test.Action;
 
 import com.bloatit.framework.AuthToken;
+import com.bloatit.web.actions.Action;
 import com.bloatit.web.utils.Message;
 
 public class Session {

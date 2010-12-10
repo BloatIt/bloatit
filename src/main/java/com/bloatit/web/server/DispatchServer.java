@@ -26,29 +26,28 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import test.Action;
-import test.Context;
-import test.HttpResponse;
-import test.RedirectException;
-import test.Request;
-import test.Url;
-import test.actions.ContributionAction;
-import test.actions.LoginAction;
-import test.actions.LogoutAction;
-import test.actions.OfferAction;
-import test.pages.ContributePage;
-import test.pages.CreateIdeaPage;
-import test.pages.DemandsPage;
-import test.pages.GlobalSearchPage;
-import test.pages.IndexPage;
-import test.pages.LoginPage;
-import test.pages.MemberPage;
-import test.pages.MembersListPage;
-import test.pages.MyAccountPage;
-import test.pages.OfferPage;
-import test.pages.SpecialsPage;
-import test.pages.demand.DemandPage;
-import test.pages.master.Page;
+import com.bloatit.web.actions.Action;
+import com.bloatit.web.actions.ContributionAction;
+import com.bloatit.web.actions.LoginAction;
+import com.bloatit.web.actions.LogoutAction;
+import com.bloatit.web.actions.OfferAction;
+import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.html.pages.ContributePage;
+import com.bloatit.web.html.pages.CreateIdeaPage;
+import com.bloatit.web.html.pages.DemandsPage;
+import com.bloatit.web.html.pages.GlobalSearchPage;
+import com.bloatit.web.html.pages.IndexPage;
+import com.bloatit.web.html.pages.LoginPage;
+import com.bloatit.web.html.pages.MemberPage;
+import com.bloatit.web.html.pages.MembersListPage;
+import com.bloatit.web.html.pages.MyAccountPage;
+import com.bloatit.web.html.pages.OfferPage;
+import com.bloatit.web.html.pages.SpecialsPage;
+import com.bloatit.web.html.pages.demand.DemandPage;
+import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.Url;
+
 
 public class DispatchServer {
 
@@ -122,7 +121,7 @@ public class DispatchServer {
             if (pageMap.containsKey(linkable)) {
                 Page page;
                 page = pageMap.get(linkable).getConstructor(Request.class).newInstance(request);
-                page.process();
+                page.create();
                 response.writePage(page);
 
             } else if (actionMap.containsKey(linkable)) {

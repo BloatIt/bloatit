@@ -32,10 +32,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import test.HttpResponse;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.web.server.DispatchServer;
+import com.bloatit.web.server.HttpResponse;
 
 public class SCGIServer {
 
