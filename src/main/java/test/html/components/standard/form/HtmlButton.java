@@ -21,7 +21,9 @@ import test.html.HtmlElement;
 import test.html.components.standard.HtmlParagraph;
 
 /**
- * <p>Class used to create Html buttons</p>
+ * <p>
+ * Class used to create Html buttons
+ * </p>
  */
 public class HtmlButton extends HtmlElement {
 
@@ -29,11 +31,12 @@ public class HtmlButton extends HtmlElement {
 
     /**
      * Creates a HtmlButton
+     * 
      * @param label the text that will be shown on the button
      */
-    public HtmlButton(String label) {
+    public HtmlButton(final String label) {
         super();
-        this.add(new HtmlParagraph().add(this.button));
+        add(new HtmlParagraph().add(this.button));
         this.button.addAttribute("label", label);
 
     }

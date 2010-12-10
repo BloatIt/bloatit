@@ -22,20 +22,28 @@ package test.html.components.standard;
 import test.pages.HtmlContainerElement;
 
 /**
- * <p>Can be used to create any Html element by just passing the name of the
- * markup in the constructor</p>
+ * <p>
+ * Can be used to create any Html element by just passing the name of the markup
+ * in the constructor
+ * </p>
  * <p>
  * The following example will create a blank textarea :
+ * 
  * <pre>
- * HtmlElement element = new HtmlGenericElement("textarea");
+ * HtmlElement element = new HtmlGenericElement(&quot;textarea&quot;);
  * </pre>
+ * 
  * </p>
- * <p> Methods such as add or addatribute will be available on such element</p>
- * <p> Note, this class should be used carefully</p>
+ * <p>
+ * Methods such as add or addatribute will be available on such element
+ * </p>
+ * <p>
+ * Note, this class should be used carefully
+ * </p>
  */
-public class HtmlGenericElement extends HtmlContainerElement{
+public class HtmlGenericElement extends HtmlContainerElement {
 
-    public HtmlGenericElement(String tag){
+    public HtmlGenericElement(final String tag) {
         super(tag);
     }
 

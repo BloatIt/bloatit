@@ -30,7 +30,8 @@ import com.bloatit.model.data.util.SessionManager;
 public class DaoComment extends DaoKudosable {
 
     /**
-     * This is the text of the comment. There is no specific format handling (html/wikitag
+     * This is the text of the comment. There is no specific format handling
+     * (html/wikitag
      * ??)
      */
     @Basic(optional = false)
@@ -48,7 +49,7 @@ public class DaoComment extends DaoKudosable {
     @IndexedEmbedded(depth = 1)
     private Set<DaoComment> children = new HashSet<DaoComment>(0);
 
-    public static DaoComment createAndPersist(DaoMember member, String text) {
+    public static DaoComment createAndPersist(final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoComment comment = new DaoComment(member, text);
         try {
@@ -63,15 +64,17 @@ public class DaoComment extends DaoKudosable {
     }
 
     /**
-     * Create a comment. This constructor is protected because you should use the
-     * createAndPersist method (to make sure your comment really goes into the db.
+     * Create a comment. This constructor is protected because you should use
+     * the
+     * createAndPersist method (to make sure your comment really goes into the
+     * db.
      * 
      * @param member is the author.
      * @param text is the content.
      * @throws NullPointerException if the text is null
      * @see DaoKudosable#DaoKudosable(DaoMember)
      */
-    protected DaoComment(DaoMember member, String text) {
+    protected DaoComment(final DaoMember member, final String text) {
         super(member);
         if (text == null) {
             throw new NullPointerException();
@@ -84,11 +87,13 @@ public class DaoComment extends DaoKudosable {
     }
 
     /**
-     * Use a HQL query to return the children of this comment. It allows the use of
+     * Use a HQL query to return the children of this comment. It allows the use
+     * of
      * PageIterable.
      * 
-     * @return the list of this comment children. return an empty list if there is no
-     * child.
+     * @return the list of this comment children. return an empty list if there
+     *         is no
+     *         child.
      */
     // TODO use a filtered collection
     public PageIterable<DaoComment> getChildrenFromQuery() {
@@ -102,7 +107,7 @@ public class DaoComment extends DaoKudosable {
     /**
      * @throws NullPointerException if the comment is null.
      */
-    public void addChildComment(DaoComment comment) {
+    public void addChildComment(final DaoComment comment) {
         // if (comment == null) {
         // throw new NullPointerException();
         // }
@@ -131,21 +136,21 @@ public class DaoComment extends DaoKudosable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setText(String text) {
+    protected void setText(final String text) {
         this.text = text;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setChildren(Set<DaoComment> children) {
+    protected void setChildren(final Set<DaoComment> children) {
         this.children = children;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setFather(DaoComment Comment) {
+    protected void setFather(final DaoComment Comment) {
         father = Comment;
     }
 

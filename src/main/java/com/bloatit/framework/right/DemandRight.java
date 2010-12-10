@@ -6,7 +6,7 @@ public class DemandRight extends RightManager {
 
     public static class Contribute extends Accessor {
         @Override
-        protected boolean can(EnumSet<Role> role, Action action) {
+        protected boolean can(final EnumSet<Role> role, final Action action) {
             return canRead(action) || canWrite(action);
         }
     }

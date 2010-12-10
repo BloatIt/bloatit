@@ -16,7 +16,6 @@
  */
 package test.html.components.standard;
 
-import test.html.components.standard.HtmlParagraph;
 
 /**
  * Used to display block of texts
@@ -27,7 +26,7 @@ public class HtmlText extends HtmlParagraph {
      * 
      * @param text the text that will be displayed
      */
-    public HtmlText(String text) {
+    public HtmlText(final String text) {
         super();
         add(new test.html.HtmlText(text));
     }
@@ -38,7 +37,7 @@ public class HtmlText extends HtmlParagraph {
      * @param cssClass the name of the css class applied
      * @param text the texit that will be displayed
      */
-    public HtmlText(String text, String cssClass) {
+    public HtmlText(final String text, final String cssClass) {
         super();
         addAttribute("class", cssClass);
         add(new test.html.HtmlText(text));

@@ -8,12 +8,12 @@ import com.bloatit.model.data.DaoComment;
 
 public class CommentList extends ListBinder<Comment, DaoComment> {
 
-    public CommentList(PageIterable<DaoComment> daoCollection) {
+    public CommentList(final PageIterable<DaoComment> daoCollection) {
         super(daoCollection);
     }
 
     @Override
-    protected Iterator<Comment> createFromDaoIterator(Iterator<DaoComment> dao) {
+    protected Iterator<Comment> createFromDaoIterator(final Iterator<DaoComment> dao) {
         return new CommentIterator(dao);
     }
 

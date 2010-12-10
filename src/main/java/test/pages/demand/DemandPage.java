@@ -19,11 +19,11 @@ package test.pages.demand;
 import java.util.Locale;
 
 import test.Context;
+import test.Request;
 import test.html.HtmlElement;
 import test.html.components.standard.HtmlDiv;
-import test.html.components.standard.HtmlTitle;
-
-import test.Request;
+import test.html.components.standard.HtmlTitleBlock;
+import test.pages.master.Page;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
@@ -31,8 +31,6 @@ import com.bloatit.web.utils.BloatitLoaders;
 import com.bloatit.web.utils.Message.Level;
 import com.bloatit.web.utils.RequestParam;
 import com.bloatit.web.utils.RequestParam.Role;
-import test.html.components.standard.HtmlTitleBlock;
-import test.pages.master.Page;
 
 public class DemandPage extends Page {
 
@@ -76,8 +74,8 @@ public class DemandPage extends Page {
     }
 
     private void generateContent() {
-        Locale defaultLocale = Context.getSession().getLanguage().getLocale();
-        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
+        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
         add(new HtmlTitleBlock(translatedDescription.getTitle()).setCssClass("pageTitle"));
         add(new DemandHeadComponent(request, demand));
@@ -85,7 +83,7 @@ public class DemandPage extends Page {
     }
 
     private HtmlElement generateBody() {
-        HtmlDiv demandBody = new HtmlDiv("demand_body");
+        final HtmlDiv demandBody = new HtmlDiv("demand_body");
         {
             demandBody.add(generateBodyLeft());
             demandBody.add(generateBodyRight());
@@ -107,7 +105,7 @@ public class DemandPage extends Page {
     private HtmlElement generateBodyRight() {
         final HtmlDiv right = new HtmlDiv("rightColumn");
         {
-            HtmlDiv rightBlock = new HtmlDiv("right_block");
+            final HtmlDiv rightBlock = new HtmlDiv("right_block");
             {
                 rightBlock.add(new DemandSummaryComponent(request, demand));
             }

@@ -19,7 +19,6 @@
 
 package test.pages;
 
-
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
@@ -31,7 +30,7 @@ import test.pages.master.Page;
 
 public class SpecialsPage extends Page {
 
-    public SpecialsPage(Request request) throws RedirectException {
+    public SpecialsPage(final Request request) throws RedirectException {
         super(request);
         generateContent();
     }
@@ -41,17 +40,14 @@ public class SpecialsPage extends Page {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Special pages"));
         pageTitle.setCssClass("page_title");
 
-
         final HtmlList pageList = new HtmlList();
 
-        HtmlLink memeHtmlLink = new UrlBuilder(MembersListPage.class).getHtmlLink(session.tr("Members list"));
+        final HtmlLink memeHtmlLink = new UrlBuilder(MembersListPage.class).getHtmlLink(session.tr("Members list"));
 
         pageList.addItem(new HtmlListItem(memeHtmlLink));
 
-        //pageTitle.add(pageList);
-        //TODO : fix title
-
-        
+        // pageTitle.add(pageList);
+        // TODO : fix title
 
     }
 

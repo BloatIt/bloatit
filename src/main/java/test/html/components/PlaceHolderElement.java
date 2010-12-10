@@ -24,9 +24,9 @@ import test.pages.HtmlContainerElement;
 /**
  * Can be used as a placeholder for another element in the HtmlTree
  */
-public class PlaceHolderElement extends HtmlContainerElement{
+public class PlaceHolderElement extends HtmlContainerElement {
 
-    public PlaceHolderElement(){
+    public PlaceHolderElement() {
         super();
     }
 }

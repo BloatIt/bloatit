@@ -13,14 +13,14 @@ public class Comment extends Kudosable {
         return dao.getText();
     }
 
-    public static Comment create(DaoComment dao) {
+    public static Comment create(final DaoComment dao) {
         if (dao == null) {
             return null;
         }
         return new Comment(dao);
     }
 
-    private Comment(DaoComment dao) {
+    private Comment(final DaoComment dao) {
         super();
         this.dao = dao;
     }
@@ -30,7 +30,7 @@ public class Comment extends Kudosable {
     }
 
     // TODO make sure it still works
-    public void addChildComment(Comment comment) {
+    public void addChildComment(final Comment comment) {
         dao.addChildComment(comment.getDao());
     }
 

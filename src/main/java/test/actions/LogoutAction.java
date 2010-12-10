@@ -24,8 +24,8 @@ import test.Request;
 
 public class LogoutAction extends Action {
 
-    public LogoutAction(Request request) {
-            super(request);
+    public LogoutAction(final Request request) {
+        super(request);
     }
 
     @Override

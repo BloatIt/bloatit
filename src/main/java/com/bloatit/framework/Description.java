@@ -9,13 +9,13 @@ import com.bloatit.model.data.DaoDescription;
 public class Description extends Identifiable {
 
     private final DaoDescription dao;
-    
-    public Description(Member member, Locale locale, String title, String description) {
+
+    public Description(final Member member, final Locale locale, final String title, final String description) {
         super();
         this.dao = DaoDescription.createAndPersist(member.getDao(), locale, title, description);
     }
-    
-    public Description(DaoDescription dao) {
+
+    public Description(final DaoDescription dao) {
         super();
         this.dao = dao;
     }
@@ -28,16 +28,16 @@ public class Description extends Identifiable {
         return new TranslationList(dao.getTranslationsFromQuery());
     }
 
-    public void addTranslation(Translation translation) {
+    public void addTranslation(final Translation translation) {
         dao.addTranslation(translation.getDao());
     }
 
-    public Translation getTranslation(Locale locale) {
+    public Translation getTranslation(final Locale locale) {
         return Translation.create(dao.getTranslation(locale));
     }
 
-    public Translation getTranslationOrDefault(Locale locale) {
-        Translation tr = getTranslation(locale);
+    public Translation getTranslationOrDefault(final Locale locale) {
+        final Translation tr = getTranslation(locale);
         if (tr == null) {
             return getTranslation(getDefaultLocale());
         }
@@ -48,7 +48,7 @@ public class Description extends Identifiable {
         return Translation.create(dao.getDefaultTranslation());
     }
 
-    public void setDefaultLocale(Locale defaultLocale) {
+    public void setDefaultLocale(final Locale defaultLocale) {
         dao.setDefaultLocale(defaultLocale);
     }
 

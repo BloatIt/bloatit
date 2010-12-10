@@ -6,7 +6,7 @@ public class IterableFromIterator<T> implements Iterable<T> {
 
     private final Iterator<T> it;
 
-    public IterableFromIterator(Iterator<T> it) {
+    public IterableFromIterator(final Iterator<T> it) {
         super();
         this.it = it;
     }

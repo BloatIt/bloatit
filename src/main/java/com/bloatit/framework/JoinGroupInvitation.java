@@ -6,14 +6,14 @@ import com.bloatit.model.data.DaoJoinGroupInvitation;
 
 public class JoinGroupInvitation extends Identifiable {
 
-    private DaoJoinGroupInvitation dao;
-    
-    private JoinGroupInvitation(DaoJoinGroupInvitation dao) {
+    private final DaoJoinGroupInvitation dao;
+
+    private JoinGroupInvitation(final DaoJoinGroupInvitation dao) {
         this.dao = dao;
     }
 
-    public static JoinGroupInvitation create(DaoJoinGroupInvitation dao){
-        if ( dao != null){
+    public static JoinGroupInvitation create(final DaoJoinGroupInvitation dao) {
+        if (dao != null) {
             return new JoinGroupInvitation(dao);
         }
         return null;

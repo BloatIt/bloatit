@@ -17,7 +17,8 @@ import com.bloatit.model.data.util.SessionManager;
 public class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
-     * The state of an invitation track its time line. (First PENDING, then REFUSED or
+     * The state of an invitation track its time line. (First PENDING, then
+     * REFUSED or
      * ACCEPTED)
      */
     public enum State {
@@ -34,7 +35,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     @Enumerated
     private State state;
 
-    public static DaoJoinGroupInvitation createAndPersist(DaoMember sender, DaoMember reciever, DaoGroup group) {
+    public static DaoJoinGroupInvitation createAndPersist(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoJoinGroupInvitation joinDemand = new DaoJoinGroupInvitation(sender, reciever, group);
         try {
@@ -51,7 +52,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
      * 
      * @throws NullPointerException if any of the parameters are null.
      */
-    private DaoJoinGroupInvitation(DaoMember sender, DaoMember reciever, DaoGroup group) {
+    private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
         super();
         if (sender == null || reciever == null || group == null) {
             throw new NullPointerException();
@@ -63,7 +64,8 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
 
     /**
-     * Set the state to accepted and add the receiver into the list of members of
+     * Set the state to accepted and add the receiver into the list of members
+     * of
      * this.group. If the state is not PENDING then do nothing.
      */
     public void accept() {
@@ -97,8 +99,8 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     public DaoGroup getGroup() {
         return group;
     }
-    
-    public static DaoJoinGroupInvitation getInvitation(DaoGroup group, DaoMember member) {
+
+    public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
         return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
                 .setEntity("group", group).setEntity("member", member).uniqueResult();
     }
@@ -110,33 +112,34 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setSender(DaoMember sender) {
+    protected void setSender(final DaoMember sender) {
         this.sender = sender;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setReceiver(DaoMember reciever) {
+    protected void setReceiver(final DaoMember reciever) {
         this.receiver = reciever;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setGroup(DaoGroup group) {
+    protected void setGroup(final DaoGroup group) {
         this.group = group;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected DaoJoinGroupInvitation() {}
+    protected DaoJoinGroupInvitation() {
+    }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setState(State state) {
+    protected void setState(final State state) {
         this.state = state;
     }
 }

@@ -7,7 +7,7 @@ public class Kudos extends UserContent {
 
     private final DaoKudos dao;
 
-    public Kudos(DaoKudos dao) {
+    public Kudos(final DaoKudos dao) {
         super();
         this.dao = dao;
     }

@@ -19,47 +19,46 @@ package test.pages.demand;
 import java.util.Locale;
 
 import test.Context;
-import test.html.components.standard.HtmlDiv;
-import test.html.components.standard.HtmlText;
-
 import test.Request;
+import test.UrlBuilder;
+import test.html.HtmlTools;
+import test.html.components.standard.HtmlDiv;
+import test.html.components.standard.HtmlLink;
+import test.html.components.standard.HtmlText;
+import test.pages.MemberPage;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.server.Session;
-import test.UrlBuilder;
-import test.html.HtmlTools;
-import test.html.components.standard.HtmlLink;
-import test.pages.MemberPage;
 
 public class DemandDescriptionComponent extends HtmlDiv {
 
-    private HtmlText description;
-    private HtmlText date;
-    private HtmlLink author;
+    private final HtmlText description;
+    private final HtmlText date;
+    private final HtmlLink author;
 
-    public DemandDescriptionComponent(Request request, Demand demand) {
+    public DemandDescriptionComponent(final Request request, final Demand demand) {
         super();
 
-        Session session = Context.getSession();
-        Locale defaultLocale = session.getLanguage().getLocale();
-        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        final Session session = Context.getSession();
+        final Locale defaultLocale = session.getLanguage().getLocale();
+        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         description = new HtmlText(translatedDescription.getText());
 
         date = new HtmlText(HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
 
-        UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
+        final UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
         urlBuilder.addParameter("member", demand.getAuthor());
 
         author = urlBuilder.getHtmlLink(demand.getAuthor().getLogin());
 
-        HtmlDiv descriptionBlock = new HtmlDiv("description_block");
+        final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {
 
-            HtmlDiv descriptionFooter = new HtmlDiv("description_footer");
+            final HtmlDiv descriptionFooter = new HtmlDiv("description_footer");
             {
 
-                HtmlDiv descriptionDetails = new HtmlDiv("description_details");
+                final HtmlDiv descriptionDetails = new HtmlDiv("description_details");
                 {
                     descriptionDetails.add(author);
                     descriptionDetails.add(date);

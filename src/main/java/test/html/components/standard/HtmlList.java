@@ -22,23 +22,23 @@ import test.html.HtmlText;
 
 public class HtmlList extends HtmlElement {
 
-    public HtmlList(String text) {
+    public HtmlList(final String text) {
         super("ul");
         add(new HtmlText(text));
     }
 
-    public HtmlList(HtmlNode node) {
+    public HtmlList(final HtmlNode node) {
         super("ul");
         add(node);
     }
 
-    public HtmlList(String cssClass, HtmlNode node) {
+    public HtmlList(final String cssClass, final HtmlNode node) {
         super("ul");
         addAttribute("class", cssClass);
         add(node);
     }
 
-    public HtmlList(String cssClass, String text) {
+    public HtmlList(final String cssClass, final String text) {
         super("ul");
         addAttribute("class", cssClass);
         add(new HtmlText(text));
@@ -48,7 +48,7 @@ public class HtmlList extends HtmlElement {
         super("ul");
     }
 
-    public void addItem(HtmlListItem item) {
+    public void addItem(final HtmlListItem item) {
         add(item);
     }
 }

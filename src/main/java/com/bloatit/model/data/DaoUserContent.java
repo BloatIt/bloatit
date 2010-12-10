@@ -9,10 +9,12 @@ import javax.persistence.MappedSuperclass;
 import com.bloatit.common.Log;
 
 /**
- * A user content is a content created by a user. There is no table DaoUserContent (the
+ * A user content is a content created by a user. There is no table
+ * DaoUserContent (the
  * attributes are copied in the sub classes)
  * 
- * A user content as an Author, and can be posted in the name of a group. It also has a
+ * A user content as an Author, and can be posted in the name of a group. It
+ * also has a
  * creation date.
  * 
  */
@@ -26,7 +28,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     private DaoMember member;
 
     /**
-     * Most of the time this is null. But when a user create a content in the name of a
+     * Most of the time this is null. But when a user create a content in the
+     * name of a
      * group, asGroup point on it.
      */
     @ManyToOne(optional = true)
@@ -41,7 +44,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * @param member is the author of this UserContent.
      * @throws NullPointerException if the member == null.
      */
-    public DaoUserContent(DaoMember member) {
+    public DaoUserContent(final DaoMember member) {
         super();
         if (member == null) {
             Log.data().fatal("Cannot create a DaoUserContent with a null member.");
@@ -64,9 +67,10 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     }
 
     /**
-     * null is the default value and means that the content has a member as author.
+     * null is the default value and means that the content has a member as
+     * author.
      */
-    public void setAsGroup(DaoGroup asGroup) {
+    public void setAsGroup(final DaoGroup asGroup) {
         this.asGroup = asGroup;
     }
 
@@ -84,14 +88,14 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setAuthor(DaoMember author) {
+    protected void setAuthor(final DaoMember author) {
         member = author;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setCreationDate(Date creationDate) {
+    protected void setCreationDate(final Date creationDate) {
         this.creationDate = creationDate;
     }
 }

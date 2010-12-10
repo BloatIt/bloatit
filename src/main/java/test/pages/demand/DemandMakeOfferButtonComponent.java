@@ -17,34 +17,32 @@
 package test.pages.demand;
 
 import test.Context;
+import test.Request;
+import test.UrlBuilder;
 import test.html.HtmlElement;
-import test.Parameters;
 import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.form.HtmlButton;
 import test.html.components.standard.form.HtmlForm;
-
-import test.Request;
+import test.pages.OfferPage;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.server.Session;
-import test.UrlBuilder;
-import test.pages.OfferPage;
 
 public class DemandMakeOfferButtonComponent extends HtmlElement {
 
-    public DemandMakeOfferButtonComponent(Request request, Demand demand) {
+    public DemandMakeOfferButtonComponent(final Request request, final Demand demand) {
         super();
-        Session session = Context.getSession();
+        final Session session = Context.getSession();
 
         final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
         {
 
-            UrlBuilder urlBuilder = new UrlBuilder(OfferPage.class);
+            final UrlBuilder urlBuilder = new UrlBuilder(OfferPage.class);
             urlBuilder.addParameter("idea", demand);
 
-            HtmlForm makeOfferForm = new HtmlForm(urlBuilder.buildUrl());
+            final HtmlForm makeOfferForm = new HtmlForm(urlBuilder.buildUrl());
             {
-                HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
+                final HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
                 makeOfferForm.add(makeOfferButton);
             }
             makeOfferBlock.add(makeOfferForm);

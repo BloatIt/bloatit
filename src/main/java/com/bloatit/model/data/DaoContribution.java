@@ -14,14 +14,16 @@ import com.bloatit.common.Log;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 /**
- * A contribution is a financial participation on a demand. Each contribution can have a
+ * A contribution is a financial participation on a demand. Each contribution
+ * can have a
  * little comment/description text on it (144 char max like twitter)
  */
 @Entity
 public class DaoContribution extends DaoUserContent {
 
     /**
-     * The state of a contribution should follow the state of the associated demand.
+     * The state of a contribution should follow the state of the associated
+     * demand.
      */
     public enum State {
         PENDING, ACCEPTED, CANCELED
@@ -44,16 +46,20 @@ public class DaoContribution extends DaoUserContent {
     private String comment;
 
     /**
-     * If the demand is validated then the contribution is also validated and then we
-     * create a transaction. So there should be a non null transaction on each validated
-     * contribution and only on those. (Except when a user add on offer on his own offer
+     * If the demand is validated then the contribution is also validated and
+     * then we
+     * create a transaction. So there should be a non null transaction on each
+     * validated
+     * contribution and only on those. (Except when a user add on offer on his
+     * own offer
      * -> no transaction)
      */
     @OneToOne(optional = true)
     private DaoTransaction transaction;
 
     /**
-     * Create a new contribution. Update the internal account of the member (block the
+     * Create a new contribution. Update the internal account of the member
+     * (block the
      * value that is reserved to this contribution)
      * 
      * @param member the person making the contribution
@@ -61,10 +67,12 @@ public class DaoContribution extends DaoUserContent {
      * @param amount the amount of the contribution
      * @param comment the comment
      * @throws NullPointerException if any of the parameter is null
-     * @throws NotEnoughMoneyException if the account of "member" has not enough money in
-     * it.
+     * @throws NotEnoughMoneyException if the account of "member" has not enough
+     *         money in
+     *         it.
      */
-    public DaoContribution(DaoMember member, DaoDemand demand, BigDecimal amount, String comment) throws NotEnoughMoneyException {
+    public DaoContribution(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final String comment)
+                                                                                                                         throws NotEnoughMoneyException {
         super(member);
         if (comment == null || demand == null) {
             throw new NullPointerException();
@@ -81,15 +89,17 @@ public class DaoContribution extends DaoUserContent {
     }
 
     /**
-     * Set the state to ACCEPTED, and create the transaction. If there is not enough money
+     * Set the state to ACCEPTED, and create the transaction. If there is not
+     * enough money
      * then throw and call cancel.
      * 
      * @param offer the offer that is accepted.
-     * @throws NotEnoughMoneyException if there is not enough money to create the
-     * transaction.
+     * @throws NotEnoughMoneyException if there is not enough money to create
+     *         the
+     *         transaction.
      * @see DaoContribution#cancel()
      */
-    public void accept(DaoOffer offer) throws NotEnoughMoneyException {
+    public void accept(final DaoOffer offer) throws NotEnoughMoneyException {
         // TODO verify that the state is PENDING
         try {
             if (getAuthor() != offer.getAuthor()) {
@@ -112,7 +122,7 @@ public class DaoContribution extends DaoUserContent {
         // TODO verify that the state is PENDING
         try {
             getAuthor().getInternalAccount().unBlock(amount);
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
         }
         setState(State.CANCELED);
@@ -141,7 +151,8 @@ public class DaoContribution extends DaoUserContent {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected DaoContribution() {}
+    protected DaoContribution() {
+    }
 
     /**
      * This is only for Hibernate. You should never use it.
@@ -153,35 +164,35 @@ public class DaoContribution extends DaoUserContent {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setDemand(DaoDemand Demand) {
+    protected void setDemand(final DaoDemand Demand) {
         demand = Demand;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setAmount(BigDecimal amount) {
+    protected void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setState(State state) {
+    protected void setState(final State state) {
         this.state = state;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setTransaction(DaoTransaction Transaction) {
+    protected void setTransaction(final DaoTransaction Transaction) {
         transaction = Transaction;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setComment(String comment) {
+    protected void setComment(final String comment) {
         this.comment = comment;
     }
 }

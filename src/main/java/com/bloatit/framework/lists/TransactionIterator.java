@@ -7,16 +7,16 @@ import com.bloatit.model.data.DaoTransaction;
 
 public class TransactionIterator extends com.bloatit.framework.lists.IteratorBinder<Transaction, DaoTransaction> {
 
-    public TransactionIterator(Iterable<DaoTransaction> daoIterator) {
+    public TransactionIterator(final Iterable<DaoTransaction> daoIterator) {
         super(daoIterator);
     }
 
-    public TransactionIterator(Iterator<DaoTransaction> daoIterator) {
+    public TransactionIterator(final Iterator<DaoTransaction> daoIterator) {
         super(daoIterator);
     }
 
     @Override
-    protected Transaction createFromDao(DaoTransaction dao) {
+    protected Transaction createFromDao(final DaoTransaction dao) {
         return new Transaction(dao);
     }
 

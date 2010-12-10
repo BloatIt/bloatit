@@ -18,16 +18,16 @@
  */
 package test.actions;
 
-
-import com.bloatit.framework.AuthToken;
-import com.bloatit.framework.managers.LoginManager;
 import test.Action;
-import com.bloatit.web.utils.Message.Level;
-import com.bloatit.web.utils.RequestParam;
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
 import test.pages.LoginPage;
+
+import com.bloatit.framework.AuthToken;
+import com.bloatit.framework.managers.LoginManager;
+import com.bloatit.web.utils.Message.Level;
+import com.bloatit.web.utils.RequestParam;
 
 public class LoginAction extends Action {
 
@@ -38,7 +38,7 @@ public class LoginAction extends Action {
     @RequestParam(level = Level.ERROR, name = PASSWORD_CODE)
     private String password;
 
-    public LoginAction(Request request) throws RedirectException {
+    public LoginAction(final Request request) throws RedirectException {
         super(request);
         request.setValues(this);
         if (request.getMessages().hasMessage(Level.ERROR)) {

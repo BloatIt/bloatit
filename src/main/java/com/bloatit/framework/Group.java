@@ -10,14 +10,14 @@ public class Group extends Actor {
 
     private final DaoGroup dao;
 
-    public static Group create(DaoGroup dao) {
+    public static Group create(final DaoGroup dao) {
         if (dao == null) {
             return null;
         }
         return new Group(dao);
     }
 
-    private Group(DaoGroup dao) {
+    private Group(final DaoGroup dao) {
         super();
         this.dao = dao;
     }
@@ -45,7 +45,7 @@ public class Group extends Actor {
         return dao.getRight();
     }
 
-    public void setRight(Right right) {
+    public void setRight(final Right right) {
         dao.setRight(right);
     }
 

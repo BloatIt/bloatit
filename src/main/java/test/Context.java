@@ -6,7 +6,7 @@ public class Context {
 
     private static Session session;
 
-    public static void setSession(Session session) {
+    public static void setSession(final Session session) {
         Context.session = session;
     }
 
@@ -14,7 +14,7 @@ public class Context {
         return session;
     }
 
-    public static String tr(String str) {
+    public static String tr(final String str) {
         return session.getLanguage().tr(str);
     }
 

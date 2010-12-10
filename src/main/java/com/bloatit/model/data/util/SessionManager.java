@@ -10,7 +10,8 @@ import org.hibernate.search.Search;
 import com.bloatit.model.data.DaoDemand;
 
 /**
- * These are some simple static utils to manage Hibernate sessions (and hibernate Search)
+ * These are some simple static utils to manage Hibernate sessions (and
+ * hibernate Search)
  */
 public class SessionManager {
     // SHOULD BE FINAL see reCreateSessionFactory
@@ -18,9 +19,9 @@ public class SessionManager {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            SessionFactory buildSessionFactory = new AnnotationConfiguration().configure()
-                    .setProperty("hibernate.hbm2ddl.auto", "update").buildSessionFactory();
-                Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoDemand.class).startAndWait();
+            final SessionFactory buildSessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "update")
+                    .buildSessionFactory();
+            Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoDemand.class).startAndWait();
             return buildSessionFactory;
         } catch (final Throwable ex) {
             // Make sure you log the exception, as it might be swallowed
@@ -29,7 +30,7 @@ public class SessionManager {
         }
     }
 
-    public static Query createQuery(String str) {
+    public static Query createQuery(final String str) {
         return getSessionFactory().getCurrentSession().createQuery(str);
     }
 

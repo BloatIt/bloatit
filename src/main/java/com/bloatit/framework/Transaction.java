@@ -16,7 +16,7 @@ public class Transaction extends Identifiable {
 
     private final DaoTransaction dao;
 
-    public Transaction(DaoTransaction dao) {
+    public Transaction(final DaoTransaction dao) {
         super();
         this.dao = dao;
     }

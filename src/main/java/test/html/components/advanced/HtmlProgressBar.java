@@ -19,9 +19,9 @@ package test.html.components.advanced;
 
 import test.html.HtmlElement;
 
-public class HtmlProgressBar extends HtmlElement{
-    
-    public HtmlProgressBar(float progress) {
+public class HtmlProgressBar extends HtmlElement {
+
+    public HtmlProgressBar(final float progress) {
         super("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: " + progress
                 + "%;\"></div></div></div>");
     }

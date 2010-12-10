@@ -18,14 +18,7 @@
  */
 package test.actions;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-import com.bloatit.framework.Demand;
 import test.Action;
-import com.bloatit.web.utils.RequestParam;
-import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
-import com.bloatit.web.utils.tr;
 import test.Request;
 
 public class OfferAction extends Action {
@@ -35,38 +28,8 @@ public class OfferAction extends Action {
     public final static String EXPIRY_CODE = "offer_expiry";
     public final static String TITLE_CODE = "offer_title";
     public final static String DESCRIPTION_CODE = "offer_description";
-    
-    /**
-     * The idea on which the author wants to create a new offer
-     */
-    @RequestParam(name = IDEA_CODE, loader = DemandLoader.class, message = @tr("Invalid idea"))
-    private Demand targetIdea = null;
 
-    /**
-     * The desired price for the offer
-     */
-    @RequestParam(name = PRICE_CODE)
-    private BigDecimal price;
-
-    /**
-     * The expiration date for the offer
-     */
-    @RequestParam(name = EXPIRY_CODE)
-    private Date expiryDate;
-
-    /**
-     * The title of the offer
-     */
-    @RequestParam(name = TITLE_CODE)
-    private String title;
-
-    /**
-     * The short description of the offer
-     */
-    @RequestParam(name = DESCRIPTION_CODE)
-    private String description;
-
-    public OfferAction(Request request) {
+    public OfferAction(final Request request) {
         super(request);
     }
 
@@ -74,9 +37,8 @@ public class OfferAction extends Action {
     public String process() {
         // Handle errors here
 
-
         // targetIdea.addOffer(price, , expiryDate);
         return null;
-        
+
     }
 }

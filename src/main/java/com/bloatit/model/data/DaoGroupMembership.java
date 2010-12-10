@@ -37,7 +37,7 @@ public class DaoGroupMembership extends DaoIdentifiable {
      * Get a GroupMembership line using its composite key.
      * (HQL request)
      */
-    protected static DaoGroupMembership get(DaoGroup group, DaoMember member) {
+    protected static DaoGroupMembership get(final DaoGroup group, final DaoMember member) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.createQuery("from com.bloatit.model.data.DaoGroupMembership as gm where gm.group = :group and gm.member = :member");
         q.setEntity("group", group);
@@ -45,7 +45,7 @@ public class DaoGroupMembership extends DaoIdentifiable {
         return (DaoGroupMembership) q.uniqueResult();
     }
 
-    protected DaoGroupMembership(DaoMember Member, DaoGroup Group, boolean isAdmin) {
+    protected DaoGroupMembership(final DaoMember Member, final DaoGroup Group, final boolean isAdmin) {
         member = Member;
         group = Group;
         this.isAdmin = isAdmin;
@@ -74,15 +74,15 @@ public class DaoGroupMembership extends DaoIdentifiable {
         super();
     }
 
-    protected void setMember(DaoMember Member) {
+    protected void setMember(final DaoMember Member) {
         member = Member;
     }
 
-    protected void setGroup(DaoGroup Group) {
+    protected void setGroup(final DaoGroup Group) {
         group = Group;
     }
 
-    protected void setAdmin(boolean isAdmin) {
+    protected void setAdmin(final boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 }

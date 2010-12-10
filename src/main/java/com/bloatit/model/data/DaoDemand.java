@@ -25,10 +25,12 @@ import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 /**
- * A DaoDemand is a kudosable content. It has a translatable description, and can have a
+ * A DaoDemand is a kudosable content. It has a translatable description, and
+ * can have a
  * specification and some offers.
  * 
- * The state of the demand is managed by its super class DaoKudosable. On a demand we can
+ * The state of the demand is managed by its super class DaoKudosable. On a
+ * demand we can
  * add some comment and some contriutions.
  */
 @Entity
@@ -36,7 +38,8 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 public class DaoDemand extends DaoKudosable {
 
     /**
-     * This is a calculated value with the sum of the value of all contributions.
+     * This is a calculated value with the sum of the value of all
+     * contributions.
      */
     @Basic(optional = false)
     private BigDecimal contribution;
@@ -79,7 +82,7 @@ public class DaoDemand extends DaoKudosable {
      * @param member the author of the demand
      * @param description
      */
-    public static DaoDemand createAndPersist(DaoMember member, DaoDescription Description) {
+    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription Description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoDemand Demand = new DaoDemand(member, Description);
         try {
@@ -99,7 +102,7 @@ public class DaoDemand extends DaoKudosable {
      * @param description is the description ...
      * @throws NullPointerException if any of the parameter is null.
      */
-    protected DaoDemand(DaoMember member, DaoDescription description) {
+    protected DaoDemand(final DaoMember member, final DaoDescription description) {
         super(member);
         if (description == null) {
             throw new NullPointerException();
@@ -111,7 +114,8 @@ public class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Delete this DaoDemand from the database. "this" will remain, but unmapped. (You
+     * Delete this DaoDemand from the database. "this" will remain, but
+     * unmapped. (You
      * shoudn't use it then)
      */
     public void delete() {
@@ -123,10 +127,11 @@ public class DaoDemand extends DaoKudosable {
      * Create a specification.
      * 
      * @param member author (must be non null).
-     * @param content a string contain the specification (WARNING : UNTESTED)(must be non
-     * null).
+     * @param content a string contain the specification (WARNING :
+     *        UNTESTED)(must be non
+     *        null).
      */
-    public void createSpecification(DaoMember member, String content) {
+    public void createSpecification(final DaoMember member, final String content) {
         specification = new DaoSpecification(member, content, this);
     }
 
@@ -139,7 +144,7 @@ public class DaoDemand extends DaoKudosable {
      * @param dateExpir this is when the offer should be finish ?
      * @return the newly created offer.
      */
-    public DaoOffer addOffer(DaoMember member, BigDecimal amount, DaoDescription description, Date dateExpir) {
+    public DaoOffer addOffer(final DaoMember member, final BigDecimal amount, final DaoDescription description, final Date dateExpir) {
         final DaoOffer Offer = new DaoOffer(member, this, amount, description, dateExpir);
         offers.add(Offer);
         return Offer;
@@ -150,7 +155,7 @@ public class DaoDemand extends DaoKudosable {
      * 
      * @param Offer the offer we want to delete.
      */
-    public void removeOffer(DaoOffer offer) {
+    public void removeOffer(final DaoOffer offer) {
         // TODO test me !
         offers.remove(offer);
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
@@ -164,7 +169,7 @@ public class DaoDemand extends DaoKudosable {
      * @param comment a <= 144 char comment on this contribution
      * @throws NotEnoughMoneyException
      */
-    public void addContribution(DaoMember member, BigDecimal amount, String comment) throws NotEnoughMoneyException {
+    public void addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             Log.data().fatal("Cannot create a contribution with this amount " + amount.toEngineeringString() + " by member " + member.getId());
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
@@ -209,18 +214,19 @@ public class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Use a HQL query to get the first level comments as a PageIterable collection
+     * Use a HQL query to get the first level comments as a PageIterable
+     * collection
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(getComments(), ""),
-                                               SessionManager.getSessionFactory().getCurrentSession().createFilter(getComments(), "select count(*)"));
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(getComments(), ""), SessionManager
+                .getSessionFactory().getCurrentSession().createFilter(getComments(), "select count(*)"));
     }
 
     public Set<DaoComment> getComments() {
         return comments;
     }
 
-    public void addComment(DaoComment comment) {
+    public void addComment(final DaoComment comment) {
         comments.add(comment);
     }
 
@@ -233,8 +239,7 @@ public class DaoDemand extends DaoKudosable {
      */
     public BigDecimal getContributionMin() {
         return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
-                                          .setEntity("this", this)
-                                          .uniqueResult();
+                .setEntity("this", this).uniqueResult();
     }
 
     /**
@@ -242,8 +247,7 @@ public class DaoDemand extends DaoKudosable {
      */
     public BigDecimal getContributionMax() {
         return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")
-                                          .setEntity("this", this)
-                                          .uniqueResult();
+                .setEntity("this", this).uniqueResult();
     }
 
     // ======================================================================
@@ -260,42 +264,42 @@ public class DaoDemand extends DaoKudosable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setSpecification(DaoSpecification Specification) {
+    protected void setSpecification(final DaoSpecification Specification) {
         specification = Specification;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setDescription(DaoDescription Description) {
+    protected void setDescription(final DaoDescription Description) {
         description = Description;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setOffers(Set<DaoOffer> Offers) {
+    protected void setOffers(final Set<DaoOffer> Offers) {
         offers = Offers;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setContributions(Set<DaoContribution> Contributions) {
+    protected void setContributions(final Set<DaoContribution> Contributions) {
         contributions = Contributions;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setComments(Set<DaoComment> comments) {
+    protected void setComments(final Set<DaoComment> comments) {
         this.comments = comments;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setContribution(BigDecimal contribution) {
+    protected void setContribution(final BigDecimal contribution) {
         this.contribution = contribution;
     }
 }

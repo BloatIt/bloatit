@@ -24,23 +24,23 @@ public class Member extends Actor {
 
     private final DaoMember dao;
 
-    public static Member create(DaoMember dao) {
+    public static Member create(final DaoMember dao) {
         if (dao == null) {
             return null;
         }
         return new Member(dao);
     }
 
-    private Member(DaoMember dao) {
+    private Member(final DaoMember dao) {
         super();
         this.dao = dao;
     }
 
-    public boolean canAccessGroups(Action action) {
+    public boolean canAccessGroups(final Action action) {
         return new MemberRight.GroupList().canAccess(calculateRole(this), action);
     }
 
-    public void addToPublicGroup(Group group) {
+    public void addToPublicGroup(final Group group) {
         if (group.getRight() != Right.PUBLIC) {
             throw new UnauthorizedOperationException();
         }
@@ -54,26 +54,26 @@ public class Member extends Actor {
      *        it
      * @return true if you can invite/accept/refuse.
      */
-    public boolean canInvite(Group group, Action action) {
+    public boolean canInvite(final Group group, final Action action) {
         return new MemberRight.InviteInGroup().canAccess(calculateRole(this, group), action);
     }
 
-    public void invite(Member member, Group group) {
+    public void invite(final Member member, final Group group) {
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, group), Action.WRITE);
         DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(), group.getDao());
     }
 
-    public void acceptInvitation(JoinGroupInvitation invitation) {
+    public void acceptInvitation(final JoinGroupInvitation invitation) {
         invitation.authenticate(getToken());
         invitation.accept();
     }
 
-    public void refuseInvitation(JoinGroupInvitation demand) {
+    public void refuseInvitation(final JoinGroupInvitation demand) {
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
         demand.refuse();
     }
 
-    public void removeFromGroup(Group aGroup) {
+    public void removeFromGroup(final Group aGroup) {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.DELETE);
         dao.removeFromGroup(aGroup.getDao());
     }
@@ -102,7 +102,7 @@ public class Member extends Actor {
         return 0;
     }
 
-    public boolean canAccessName(Action action) {
+    public boolean canAccessName(final Action action) {
         return new MemberRight.Name().canAccess(calculateRole(this), action);
     }
 
@@ -111,7 +111,7 @@ public class Member extends Actor {
         return dao.getFullname();
     }
 
-    public void setFullname(String fullname) {
+    public void setFullname(final String fullname) {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.WRITE);
         dao.setFullname(fullname);
     }
@@ -120,7 +120,7 @@ public class Member extends Actor {
         return new MemberRight.Password().canAccess(calculateRole(this), Action.WRITE);
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         new MemberRight.Password().tryAccess(calculateRole(this), Action.WRITE);
         dao.setPassword(password);
     }
@@ -153,7 +153,7 @@ public class Member extends Actor {
         return new TranslationList(dao.getTranslations());
     }
 
-    public boolean isInGroup(Group group) {
+    public boolean isInGroup(final Group group) {
         return isInGroupUnprotected(group);
     }
 
@@ -162,11 +162,11 @@ public class Member extends Actor {
         return dao;
     }
 
-    protected MemberStatus getStatusUnprotected(Group group) {
+    protected MemberStatus getStatusUnprotected(final Group group) {
         return group.getDao().getMemberStatus(dao);
     }
 
-    protected boolean isInGroupUnprotected(Group group) {
+    protected boolean isInGroupUnprotected(final Group group) {
         return dao.isInGroup(group.getDao());
     }
 
@@ -175,7 +175,7 @@ public class Member extends Actor {
         return dao;
     }
 
-    protected void addToKarma(int value) {
+    protected void addToKarma(final int value) {
         dao.addToKarma(value);
     }
 

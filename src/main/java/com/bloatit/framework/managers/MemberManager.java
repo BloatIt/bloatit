@@ -27,7 +27,7 @@ import com.bloatit.model.data.DaoMember;
 
 public class MemberManager {
 
-    public static Member getMemberByLogin(String login) {
+    public static Member getMemberByLogin(final String login) {
         final DaoMember daoMember = DaoMember.getByLogin(login);
         if (daoMember == null) {
             return null;
@@ -36,11 +36,11 @@ public class MemberManager {
         return Member.create(daoMember);
     }
 
-    public static boolean existsMember(String login) {
+    public static boolean existsMember(final String login) {
         return DaoActor.exist(login);
     }
 
-    public static Member getMemberById(Integer id) {
+    public static Member getMemberById(final Integer id) {
         return Member.create(DBRequests.getById(DaoMember.class, id));
     }
 
@@ -48,7 +48,7 @@ public class MemberManager {
         return new MemberList(DBRequests.getAll(DaoMember.class));
     }
 
-    public static Member getByLoginAndPassword(String login, String password) {
+    public static Member getByLoginAndPassword(final String login, final String password) {
         final DaoMember daoMember = DaoMember.getByLoginAndPassword(login, password);
         if (daoMember == null) {
             return null;

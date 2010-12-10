@@ -8,12 +8,12 @@ import com.bloatit.model.data.DaoTranslation;
 
 public class TranslationList extends ListBinder<Translation, DaoTranslation> {
 
-    public TranslationList(PageIterable<DaoTranslation> daoCollection) {
+    public TranslationList(final PageIterable<DaoTranslation> daoCollection) {
         super(daoCollection);
     }
 
     @Override
-    protected Iterator<Translation> createFromDaoIterator(Iterator<DaoTranslation> dao) {
+    protected Iterator<Translation> createFromDaoIterator(final Iterator<DaoTranslation> dao) {
         return new TranslationIterator(dao);
     }
 

@@ -32,18 +32,16 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import test.HttpResponse;
+
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.web.server.DispatchServer;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import test.HttpResponse;
 
 public class SCGIServer {
 
     private static ServerSocket providerSocket;
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         final SCGIServer server = new SCGIServer();
         server.serve();
     }
@@ -108,7 +106,6 @@ public class SCGIServer {
 
                     clientSocket.getOutputStream().write(display.getBytes());
 
-
                     // TODO : Log
                     // TODO Debug Only
                     // TODO : print stack trace
@@ -123,9 +120,8 @@ public class SCGIServer {
                     clientSocket.getOutputStream().write(display.getBytes());
                 }
 
-                 
                 clientSocket.close();
-                
+
                 final long endTime = System.nanoTime();
                 final double duration = ((endTime - startTime)) / 1000000.;
                 System.err.println("Page generated in " + duration + " ms");
@@ -138,7 +134,7 @@ public class SCGIServer {
 
     }
 
-    private Map<String, String> parseQueryString(String url) {
+    private Map<String, String> parseQueryString(final String url) {
         final Map<String, String> params = new HashMap<String, String>();
         for (final String param : url.split("&")) {
             try {
@@ -158,7 +154,7 @@ public class SCGIServer {
         return params;
     }
 
-    private Map<String, String> parseCookiesString(String cookiesString) {
+    private Map<String, String> parseCookiesString(final String cookiesString) {
         final Map<String, String> cookiesMap = new HashMap<String, String>();
 
         if (cookiesString != null) {
@@ -173,7 +169,7 @@ public class SCGIServer {
         return cookiesMap;
     }
 
-    private List<String> parseLanguageString(String languages) {
+    private List<String> parseLanguageString(final String languages) {
         if (languages == null) {
             return new ArrayList<String>();
         } else {

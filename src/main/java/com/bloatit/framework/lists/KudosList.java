@@ -8,12 +8,12 @@ import com.bloatit.model.data.DaoKudos;
 
 public class KudosList extends ListBinder<Kudos, DaoKudos> {
 
-    public KudosList(PageIterable<DaoKudos> daoCollection) {
+    public KudosList(final PageIterable<DaoKudos> daoCollection) {
         super(daoCollection);
     }
 
     @Override
-    protected Iterator<Kudos> createFromDaoIterator(Iterator<DaoKudos> dao) {
+    protected Iterator<Kudos> createFromDaoIterator(final Iterator<DaoKudos> dao) {
         return new KudosIterator(dao);
     }
 

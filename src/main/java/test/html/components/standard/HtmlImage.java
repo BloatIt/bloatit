@@ -27,7 +27,7 @@ import com.bloatit.common.Image;
 public class HtmlImage extends HtmlElement {
     private final static String IMAGE_DIRECTORY = "/resources/img";
 
-    public HtmlImage(Image image) {
+    public HtmlImage(final Image image) {
         super("img");
         String URI = "";
         if (image.isLocal()) {
@@ -38,7 +38,7 @@ public class HtmlImage extends HtmlElement {
         addAttribute("src", URI);
     }
 
-    public HtmlImage(Image image, String cssClass) {
+    public HtmlImage(final Image image, final String cssClass) {
         this(image);
         addAttribute("class", cssClass);
     }

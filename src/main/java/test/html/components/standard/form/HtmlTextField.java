@@ -21,16 +21,16 @@ package test.html.components.standard.form;
  */
 public final class HtmlTextField extends HtmlFormField<String> {
 
-    public HtmlTextField(String name) {
+    public HtmlTextField(final String name) {
         super(new HtmlSimpleInput("text"), name);
     }
 
-    public HtmlTextField(String name, String label) {
+    public HtmlTextField(final String name, final String label) {
         super(new HtmlSimpleInput("text"), name, label);
     }
 
     @Override
-    protected void doSetDefaultValue(String value) {
-        this.addAttribute("value", value);
+    protected void doSetDefaultValue(final String value) {
+        addAttribute("value", value);
     }
 }

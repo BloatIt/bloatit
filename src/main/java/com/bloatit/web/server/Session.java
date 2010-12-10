@@ -19,12 +19,13 @@
 
 package com.bloatit.web.server;
 
-import test.Action;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
+
+import test.Action;
 
 import com.bloatit.framework.AuthToken;
 import com.bloatit.web.utils.Message;
@@ -41,7 +42,7 @@ public class Session {
 
     private final List<Language> preferredLocales;
 
-    Session(String key) {
+    Session(final String key) {
         this.key = key;
         authToken = null;
         logged = false;
@@ -54,11 +55,11 @@ public class Session {
                                                             // TEST
     }
 
-    public String tr(String s) {
+    public String tr(final String s) {
         return language.tr(s);
     }
 
-    public String tr(String s, Object[] objects) {
+    public String tr(final String s, final Object[] objects) {
         return language.tr(s, objects);
     }
 
@@ -66,11 +67,11 @@ public class Session {
         return language;
     }
 
-    public void setLanguage(Language newLang) {
+    public void setLanguage(final Language newLang) {
         language = newLang;
     }
 
-    public void setAuthToken(AuthToken token) {
+    public void setAuthToken(final AuthToken token) {
         authToken = token;
     }
 
@@ -78,7 +79,7 @@ public class Session {
         return authToken;
     }
 
-    public void setLogged(boolean logged) {
+    public void setLogged(final boolean logged) {
         this.logged = logged;
     }
 
@@ -94,7 +95,7 @@ public class Session {
         return actionList;
     }
 
-    public void setLastStablePage(String p) {
+    public void setLastStablePage(final String p) {
         lastStablePage = p;
     }
 
@@ -106,19 +107,19 @@ public class Session {
         return targetPage;
     }
 
-    public void setTargetPage(String targetPage) {
+    public void setTargetPage(final String targetPage) {
         this.targetPage = targetPage;
     }
 
-    public void notifyGood(String message) {
+    public void notifyGood(final String message) {
         notificationList.add(new Notification(message, Notification.Type.GOOD));
     }
 
-    public void notifyBad(String message) {
+    public void notifyBad(final String message) {
         notificationList.add(new Notification(message, Notification.Type.BAD));
     }
 
-    public void notifyError(String message) {
+    public void notifyError(final String message) {
         notificationList.add(new Notification(message, Notification.Type.ERROR));
     }
 
@@ -126,17 +127,17 @@ public class Session {
      * Notifies all elements in a list as warnings
      * TODO : DELETE, for test purposes only
      */
-    public void notifyList(List<Message> errors){
-        for(Message error : errors ){
+    public void notifyList(final List<Message> errors) {
+        for (final Message error : errors) {
             switch (error.getLevel()) {
             case ERROR:
-                this.notifyBad(error.getMessage());
+                notifyBad(error.getMessage());
                 break;
             case WARNING:
-                this.notifyBad(error.getMessage());
+                notifyBad(error.getMessage());
                 break;
             case INFO:
-                this.notifyGood(error.getMessage());
+                notifyGood(error.getMessage());
                 break;
             default:
                 break;

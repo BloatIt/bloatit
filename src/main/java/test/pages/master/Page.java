@@ -1,14 +1,9 @@
 package test.pages.master;
 
 import test.Context;
+import test.Linkable;
 import test.Notification;
 import test.Notification.Level;
-
-import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.Message;
-import com.bloatit.web.utils.PageName;
-import com.bloatit.web.utils.RequestParamSetter.Messages;
-import test.Linkable;
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
@@ -21,15 +16,20 @@ import test.html.components.standard.HtmlLink;
 import test.pages.HtmlContainerElement;
 import test.pages.IndexPage;
 
+import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.Message;
+import com.bloatit.web.utils.PageName;
+import com.bloatit.web.utils.RequestParamSetter.Messages;
+
 public abstract class Page extends HtmlElement implements Linkable {
 
-    private HtmlContainerElement content;
-    private HtmlContainerElement notifications;
-    
+    private final HtmlContainerElement content;
+    private final HtmlContainerElement notifications;
+
     protected final Request request;
     protected final Session session;
 
-    public Page(Request request) {
+    public Page(final Request request) {
         super("html");
         session = Context.getSession();
 
@@ -48,20 +48,16 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     // TODO correct empty div for notifications ?
     private HtmlElement generate_body() {
-        return new HtmlGenericElement("body").add(new HtmlDiv()
-                .setId("page")
-                .add(new TopBar())
-                .add(generateTitle())
-                .add(new HtmlDiv().setId("center").add(new HtmlDiv().setId("center_column").add(new Menu())
-                        .add(content.add(notifications)))).add(new Footer()));
+        return new HtmlGenericElement("body").add(new HtmlDiv().setId("page").add(new TopBar()).add(generateTitle())
+                .add(new HtmlDiv().setId("center").add(new HtmlDiv().setId("center_column").add(new Menu()).add(content.add(notifications))))
+                .add(new Footer()));
     }
 
     protected abstract String getTitle();
 
     public abstract boolean isStable();
-    
 
-    public String getName(){
+    public String getName() {
         if (getClass().getAnnotation(PageName.class) != null) {
             return getClass().getAnnotation(PageName.class).value();
         } else {
@@ -74,19 +70,19 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     @Override
-    public HtmlElement addAttribute(String name, String value) {
+    public HtmlElement addAttribute(final String name, final String value) {
         content.addAttribute(name, value);
         return this;
     }
 
     @Override
-    public HtmlElement add(HtmlNode html) {
+    public HtmlElement add(final HtmlNode html) {
         content.add(html);
         return this;
     }
 
     @Override
-    public HtmlElement addText(String text) {
+    public HtmlElement addText(final String text) {
         content.add(new HtmlText(text));
         return this;
     }
@@ -96,12 +92,12 @@ public abstract class Page extends HtmlElement implements Linkable {
         content.add(new HtmlDiv().setCssClass("not_found").addText("Page Not Found !"));
     }
 
-    protected void addNotification(Notification note) {
+    protected void addNotification(final Notification note) {
         notifications.add(note);
     }
 
-    protected void addNotifications(Messages messages) {
-        for (Message message : messages) {
+    protected void addNotifications(final Messages messages) {
+        for (final Message message : messages) {
             switch (message.getLevel()) {
             case INFO:
                 addNotification(new Notification(Level.INFO, message.getMessage()));
@@ -120,10 +116,8 @@ public abstract class Page extends HtmlElement implements Linkable {
         return "<span class=\"logo_bloatit\"><span class=\"logo_bloatit_bloat\">Bloat</span><span class=\"logo_bloatit_it\">It</span></span>";
     }
 
-
     private HtmlElement generateTitle() {
-        // TODO handle titles level !
-        Session session = Context.getSession();
+        Context.getSession();
 
         return new HtmlGenericElement("h1").add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), generateLogo()));
     }

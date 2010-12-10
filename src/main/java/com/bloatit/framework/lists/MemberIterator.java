@@ -7,16 +7,16 @@ import com.bloatit.model.data.DaoMember;
 
 public class MemberIterator extends IteratorBinder<Member, DaoMember> {
 
-    public MemberIterator(Iterable<DaoMember> daoIterator) {
+    public MemberIterator(final Iterable<DaoMember> daoIterator) {
         super(daoIterator);
     }
 
-    public MemberIterator(Iterator<DaoMember> daoIterator) {
+    public MemberIterator(final Iterator<DaoMember> daoIterator) {
         super(daoIterator);
     }
 
     @Override
-    protected Member createFromDao(DaoMember dao) {
+    protected Member createFromDao(final DaoMember dao) {
         return Member.create(dao);
     }
 

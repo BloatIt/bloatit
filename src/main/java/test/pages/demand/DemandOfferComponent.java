@@ -17,12 +17,11 @@
 package test.pages.demand;
 
 import test.Context;
+import test.Request;
 import test.html.HtmlElement;
 import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlImage;
 import test.html.components.standard.HtmlText;
-
-import test.Request;
 
 import com.bloatit.framework.Offer;
 import com.bloatit.web.server.Session;
@@ -37,21 +36,21 @@ public class DemandOfferComponent extends HtmlElement {
     private HtmlText creationDate;
     private HtmlImage authorAvatar;
     private HtmlText author;
-    private Offer offer;
+    private final Offer offer;
 
-    public DemandOfferComponent(Request request, Offer offer) {
+    public DemandOfferComponent(final Request request, final Offer offer) {
         super();
         this.offer = offer;
         extractData(request);
         add(produce(request));
     }
 
-    protected HtmlElement produce(Request request) {
-        HtmlDiv offerBlock = new HtmlDiv("offer_block");
+    protected HtmlElement produce(final Request request) {
+        final HtmlDiv offerBlock = new HtmlDiv("offer_block");
         {
             offerBlock.add(authorAvatar);
 
-            HtmlDiv offerInfoBlock = new HtmlDiv("offer_info_block");
+            final HtmlDiv offerInfoBlock = new HtmlDiv("offer_info_block");
             {
                 offerInfoBlock.add(author);
                 offerInfoBlock.add(price);
@@ -67,9 +66,9 @@ public class DemandOfferComponent extends HtmlElement {
         return offerBlock;
     }
 
-    protected void extractData(Request request) {
+    protected void extractData(final Request request) {
 
-        Session session = Context.getSession();
+        final Session session = Context.getSession();
         author = new HtmlText(session.tr("Author : ") + offer.getAuthor().getFullname(), "offer_author");
         price = new HtmlText(session.tr("Price : ") + "Unknown yet", "offer_price");
         expirationDate = new HtmlText(session.tr("Expiration date : ") + offer.getDateExpire().toString(), "offer_expiry_date");

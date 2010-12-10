@@ -11,7 +11,7 @@ public class Offer extends Kudosable {
 
     private final DaoOffer dao;
 
-    public Offer(DaoOffer dao) {
+    public Offer(final DaoOffer dao) {
         super();
         this.dao = dao;
     }
@@ -28,7 +28,7 @@ public class Offer extends Kudosable {
         return new OfferRight.DateExpire().canAccess(calculateRole(this), Action.WRITE);
     }
 
-    public void setDateExpire(Date dateExpire) {
+    public void setDateExpire(final Date dateExpire) {
         new OfferRight.DateExpire().tryAccess(calculateRole(this), Action.WRITE);
         dao.setDateExpire(dateExpire);
     }

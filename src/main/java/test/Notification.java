@@ -8,7 +8,7 @@ public class Notification extends HtmlDiv {
         INFO, WARNING, ERROR
     }
 
-    public Notification(Level level, String message) {
+    public Notification(final Level level, final String message) {
         super();
         switch (level) {
         case INFO:

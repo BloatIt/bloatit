@@ -16,18 +16,17 @@
  */
 package test.pages.demand;
 
+import test.Request;
 import test.html.HtmlElement;
 import test.html.components.standard.HtmlDiv;
 
 import com.bloatit.framework.Demand;
 
-import test.Request;
-
 public class DemandSummaryComponent extends HtmlElement {
 
-    public DemandSummaryComponent(Request request, Demand demand) {
+    public DemandSummaryComponent(final Request request, final Demand demand) {
         super();
-        HtmlDiv abstractBlock = new HtmlDiv("abstract_block");
+        final HtmlDiv abstractBlock = new HtmlDiv("abstract_block");
         {
             abstractBlock.add(new DemandTimelineComponent(request, demand));
         }

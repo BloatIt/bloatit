@@ -26,13 +26,12 @@ public abstract class Action implements Linkable {
     protected final Request request;
     protected final Session session;
 
-    public Action(Request resquest) {
+    public Action(final Request resquest) {
         this.request = resquest;
         session = Context.getSession();
     }
 
-
-
+    @Override
     abstract public String process();
 
 }

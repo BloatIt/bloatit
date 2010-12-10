@@ -56,7 +56,7 @@ public class Language {
         template = languageList.get(Locale.ENGLISH);
     }
 
-    public Language(Locale code) {
+    public Language(final Locale code) {
         template = languageList.get(code);
         if (template == null) {
             template = languageList.get(Locale.ENGLISH);
@@ -67,7 +67,7 @@ public class Language {
         return template.locale.getLanguage();
     }
 
-    public void findPrefered(List<String> preferredLangs) {
+    public void findPrefered(final List<String> preferredLangs) {
         Locale locale;
         for (final String preferredLang : preferredLangs) {
             final String lang = preferredLang.split(";")[0];
@@ -86,15 +86,15 @@ public class Language {
         }
     }
 
-    public String tr(String s) {
+    public String tr(final String s) {
         return template.i18n.tr(s);
     }
 
-    public String tr(String s, Object[] objects) {
+    public String tr(final String s, final Object[] objects) {
         return template.i18n.tr(s, objects);
     }
 
-    void setCode(String code) {
+    void setCode(final String code) {
         if (languageList.containsKey(code)) {
             template = languageList.get(code);
         } else {
@@ -111,7 +111,7 @@ public class Language {
         final public String label;
         final public I18n i18n;
 
-        private LanguageTemplate(String key, String label, Locale locale) {
+        private LanguageTemplate(final String key, final String label, final Locale locale) {
             this.label = label;
             this.locale = locale;
             i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);
@@ -119,7 +119,7 @@ public class Language {
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals(final Object obj) {
             if (obj == null) {
                 return false;
             }
@@ -141,7 +141,7 @@ public class Language {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }

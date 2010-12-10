@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import test.html.components.standard.HtmlLink;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.web.server.Session;
@@ -11,7 +12,6 @@ import com.bloatit.web.utils.Loaders;
 import com.bloatit.web.utils.PageComponent;
 import com.bloatit.web.utils.PageName;
 import com.bloatit.web.utils.RequestParam;
-import test.html.components.standard.HtmlLink;
 
 public class UrlBuilder {
 
@@ -19,25 +19,25 @@ public class UrlBuilder {
     private final Class<? extends Linkable> linkableClass;
     private final Session session;
 
-    public UrlBuilder(Linkable linkable) {
+    public UrlBuilder(final Linkable linkable) {
         linkableClass = linkable.getClass();
         this.session = Context.getSession();
         fillParameters(linkable, linkableClass);
     }
 
-    public UrlBuilder(Class<? extends Linkable> linkableClass) {
+    public UrlBuilder(final Class<? extends Linkable> linkableClass) {
         super();
         this.session = Context.getSession();
         this.linkableClass = linkableClass;
     }
 
-    public UrlBuilder addParameter(String name, Object value) {
+    public UrlBuilder addParameter(final String name, final Object value) {
         parameters.put(name, value);
         return this;
     }
 
     public String buildUrl() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
         // find language
         sb.append("/").append(session.getLanguage().getCode()).append("/");
@@ -56,14 +56,14 @@ public class UrlBuilder {
         return sb.toString();
     }
 
-    private void buildUrl(StringBuilder sb, Class<?> pageClass) {
-        for (Field f : pageClass.getDeclaredFields()) {
-            RequestParam param = f.getAnnotation(RequestParam.class);
+    private void buildUrl(final StringBuilder sb, final Class<?> pageClass) {
+        for (final Field f : pageClass.getDeclaredFields()) {
+            final RequestParam param = f.getAnnotation(RequestParam.class);
             if (param != null) {
 
-                String name = param.name().equals("") ? f.getName() : param.name();
+                final String name = param.name().equals("") ? f.getName() : param.name();
                 String strValue = null;
-                Object value = parameters.get(name);
+                final Object value = parameters.get(name);
                 if (value != null) {
                     strValue = Loaders.toStr(value);
                 } else if (param.defaultValue().equals("")) {
@@ -72,8 +72,7 @@ public class UrlBuilder {
                     strValue = param.defaultValue();
                 }
 
-
-                if ( !strValue.equals(param.defaultValue())) {
+                if (!strValue.equals(param.defaultValue())) {
                     sb.append(name).append("-").append(strValue).append("/");
                 }
 
@@ -83,13 +82,13 @@ public class UrlBuilder {
         }
     }
 
-    public HtmlLink getHtmlLink(String text) {
+    public HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(buildUrl(), text);
     }
 
-    private void fillParameters(Object linkable, Class<? extends Object> linkableClass) {
-        for (Field f : linkableClass.getDeclaredFields()) {
-            RequestParam param = f.getAnnotation(RequestParam.class);
+    private void fillParameters(final Object linkable, final Class<? extends Object> linkableClass) {
+        for (final Field f : linkableClass.getDeclaredFields()) {
+            final RequestParam param = f.getAnnotation(RequestParam.class);
             try {
                 if (param != null) {
                     if (!f.isAccessible()) {
@@ -102,12 +101,12 @@ public class UrlBuilder {
                     }
                     fillParameters(f.get(linkable), f.getDeclaringClass());
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 throw new FatalErrorException("Cannot parse the pageComponent", e);
-            } catch (IllegalAccessException e) {
+            } catch (final IllegalAccessException e) {
                 throw new FatalErrorException("Cannot parse the pageComponent", e);
             }
         }
     }
-    
+
 }

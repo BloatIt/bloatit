@@ -25,11 +25,15 @@ import test.html.components.PlaceHolderElement;
 import test.html.components.standard.HtmlParagraph;
 
 /**
- * <p>Basic class to describe elements that can be added to a form</p>
- * <p>All elements inheriting from this class can have an additional label and
- * a default value</p>
+ * <p>
+ * Basic class to describe elements that can be added to a form
+ * </p>
+ * <p>
+ * All elements inheriting from this class can have an additional label and a
+ * default value
+ * </p>
  */
-public abstract class HtmlFormField<T extends Object> extends HtmlElement implements HtmlNamedNode{
+public abstract class HtmlFormField<T extends Object> extends HtmlElement implements HtmlNamedNode {
 
     protected PlaceHolderElement ph = new PlaceHolderElement();
     protected HtmlLabel label;
@@ -37,14 +41,14 @@ public abstract class HtmlFormField<T extends Object> extends HtmlElement implem
     protected HtmlElement element;
     private String name;
 
-    public HtmlFormField(HtmlElement element, String name){
+    public HtmlFormField(final HtmlElement element, final String name) {
         super();
         this.paragraph.add(ph);
         this.element = element;
         this.setName(name);
     }
 
-    public HtmlFormField(HtmlElement element, String name, String label){
+    public HtmlFormField(final HtmlElement element, final String name, final String label) {
         super();
         this.paragraph.add(ph);
         this.element = element;
@@ -53,53 +57,64 @@ public abstract class HtmlFormField<T extends Object> extends HtmlElement implem
     }
 
     /**
-     * <p>Sets the label for the object</p>
-     * <p><b>CONTRACT :</b> Any class overriding this method have to be careful
-     * and not modify any other parameters than predefininglaceholder</p>
+     * <p>
+     * Sets the label for the object
+     * </p>
+     * <p>
+     * <b>CONTRACT :</b> Any class overriding this method have to be careful and
+     * not modify any other parameters than predefininglaceholder
+     * </p>
+     * 
      * @param label the label for the element
      */
-    public void setLabel(String label){
+    public void setLabel(final String label) {
         this.label = new HtmlLabel(label);
         this.ph.add(this.label);
 
-        if(name != null) {
+        if (name != null) {
             this.label.setFor(name);
         }
-        //BIG TODO
+        // BIG TODO
     }
 
     @Override
-    public HtmlFormField addAttribute(String name, String value){
+    public HtmlFormField addAttribute(final String name, final String value) {
         this.element.addAttribute(name, value);
         return this;
     }
 
     @Override
-    public final void setName(String name) {
+    public final void setName(final String name) {
         this.name = name;
         element.addAttribute("name", name);
 
-        if(label != null) {
+        if (label != null) {
             label.setFor(name);
         }
     }
 
     /**
-     * <p>Adds a default value to the object object.</p>
-     * <p>The valued added will be obtained using toString on <i>value</i>.
-     * If <i>value</i> is null, no defaultValue is added.</p>
+     * <p>
+     * Adds a default value to the object object.
+     * </p>
+     * <p>
+     * The valued added will be obtained using toString on <i>value</i>. If
+     * <i>value</i> is null, no defaultValue is added.
+     * </p>
      * 
      * @param value the Object representing the default value
      */
-    public void setDefaultValue(T value){
-        if(value != null ){
+    public void setDefaultValue(final T value) {
+        if (value != null) {
             this.doSetDefaultValue(value);
         }
     }
 
     /**
-     * <p>Method to implement to add a default value to the elements of the
-     * class</p>
+     * <p>
+     * Method to implement to add a default value to the elements of the class
+     * </p>
+     * 
      * @param value the value
      */
     protected abstract void doSetDefaultValue(T value);

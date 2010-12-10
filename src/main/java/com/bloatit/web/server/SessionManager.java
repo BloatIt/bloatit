@@ -36,7 +36,7 @@ public class SessionManager {
         return session;
     }
 
-    public static Session getByKey(String key) {
+    public static Session getByKey(final String key) {
         if (activeSessions.containsKey(key)) {
             return activeSessions.get(key);
         } else {

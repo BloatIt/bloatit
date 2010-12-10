@@ -18,39 +18,41 @@
  */
 package test.html;
 
-import test.Action;
-import com.bloatit.web.server.Session;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-import test.Request;
+
+import com.bloatit.web.server.Session;
 
 public class HtmlTools {
 
     public final static long SECOND = 1000;
-    public final static long MINUTE = 60*SECOND;
-    public final static long HOUR = 60*MINUTE;
-    public final static long DAY = 24*HOUR;
+    public final static long MINUTE = 60 * SECOND;
+    public final static long HOUR = 60 * MINUTE;
+    public final static long DAY = 24 * HOUR;
 
     /*
-    public static String generateLink(Session session, String text, Request linkRequest) {
-        return "<a href=\"" + linkRequest.getUrl() + "\">" + text + "</a>";
-    }
-
-    public static String generateLink(Session session, String text, Request linkRequest, Map<String, String> outputParams) {
-        return "<a href=\"" + linkRequest.getUrl(outputParams) + "\">" + text + "</a>";
-    }*/
+     * public static String generateLink(Session session, String text, Request
+     * linkRequest) {
+     * return "<a href=\"" + linkRequest.getUrl() + "\">" + text + "</a>";
+     * }
+     * 
+     * public static String generateLink(Session session, String text, Request
+     * linkRequest, Map<String, String> outputParams) {
+     * return "<a href=\"" + linkRequest.getUrl(outputParams) + "\">" + text +
+     * "</a>";
+     * }
+     */
 
     public static String generateLogo() {
         return "<span class='logo_bloatit'><span class='logo_bloatit_bloat'>Bloat</span><span class='logo_bloatit_it'>It</span></span>";
     }
 
-    public static String escapeUrlString(String str) {
+    public static String escapeUrlString(final String str) {
         // TODO return (urllib.parse.quote_plus(str)).replace('+','_');
         return str;
     }
 
-    public static String unescapeUrlString(String str) {
+    public static String unescapeUrlString(final String str) {
         // TODO return (urllib.parse.quote_plus(str)).replace('+','_');
         return str;
     }
@@ -72,7 +74,7 @@ public class HtmlTools {
      * @param karma the karma value to compress
      * @return the compressed String to display
      */
-    public static String compressKarma(long karma) {
+    public static String compressKarma(final long karma) {
         final Double abs_karma = new Double(Math.abs(karma));
         String result = "";
         if (abs_karma < 1000) {
@@ -101,7 +103,7 @@ public class HtmlTools {
         }
     }
 
-    public static String cutNumber(String karma) {
+    public static String cutNumber(final String karma) {
         String result = karma;
         if (result.length() > 2) {
             if (result.charAt(1) == '.') {
@@ -120,22 +122,20 @@ public class HtmlTools {
         return result;
     }
 
-    public static String formatDate(Session session, Date date) {
-        Date currentDate = new Date();
+    public static String formatDate(final Session session, final Date date) {
+        final Date currentDate = new Date();
 
-        long diff = currentDate.getTime() - date.getTime();
+        final long diff = currentDate.getTime() - date.getTime();
 
-        if(diff < SECOND) {
+        if (diff < SECOND) {
             return session.tr("now");
         } else if (diff < MINUTE) {
-            return session.tr("%d seconds ago", new Object[]{new Long(diff/SECOND)});
+            return session.tr("%d seconds ago", new Object[] { new Long(diff / SECOND) });
         }
 
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(session.tr("MMM d, ''yy 'at' HH:mm"));
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(session.tr("MMM d, ''yy 'at' HH:mm"));
-        
         return dateFormat.format(date);
     }
-
 
 }

@@ -8,7 +8,7 @@ import com.bloatit.common.PageIterable;
 public class NullCollection<T> implements PageIterable<T> {
 
     private int pageSize;
-    
+
     @Override
     @SuppressWarnings("unchecked")
     public Iterator<T> iterator() {
@@ -16,7 +16,7 @@ public class NullCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPageSize(int pageSize) {
+    public void setPageSize(final int pageSize) {
         this.pageSize = pageSize;
     }
 
@@ -36,7 +36,7 @@ public class NullCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPage(int page) {
+    public void setPage(final int page) {
     }
 
     @Override

@@ -24,7 +24,8 @@ import com.bloatit.model.data.util.SessionManager;
 public class DaoGroup extends DaoActor {
 
     /**
-     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go in. The
+     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go
+     * in. The
      * PROTECTED that everybody can see, but require an invitation to go in.
      */
     public enum Right {
@@ -32,8 +33,10 @@ public class DaoGroup extends DaoActor {
     }
 
     /**
-     * This is the status of a member in a Group. For now there is only ADMIN for a
-     * priviliged role, but we can imagine a lot of other things (for example a role for
+     * This is the status of a member in a Group. For now there is only ADMIN
+     * for a
+     * priviliged role, but we can imagine a lot of other things (for example a
+     * role for
      * people who can "speak as")
      */
     public enum MemberStatus {
@@ -60,7 +63,7 @@ public class DaoGroup extends DaoActor {
      * @return the newly created group.
      * @throws HibernateException
      */
-    static public DaoGroup createAndPersiste(String login, String email, Right right) throws HibernateException {
+    static public DaoGroup createAndPersiste(final String login, final String email, final Right right) throws HibernateException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoGroup Group = new DaoGroup(login, email, right);
         try {
@@ -73,14 +76,14 @@ public class DaoGroup extends DaoActor {
     }
 
     // TODO test me correctly !
-    public static DaoGroup getByName(String name) {
+    public static DaoGroup getByName(final String name) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.createQuery("from com.bloatit.model.data.DaoGroup where login = :login");
         q.setString("login", name);
         return (DaoGroup) q.uniqueResult();
     }
 
-    private DaoGroup(String login, String email, Right right) {
+    private DaoGroup(final String login, final String email, final Right right) {
         super(login, email);
         if (right == null) {
             throw new NullPointerException();
@@ -93,7 +96,7 @@ public class DaoGroup extends DaoActor {
      */
     public PageIterable<DaoMember> getMembers() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        Query filter = session.createFilter(getGroupMembership(), "select this.member order by login");
+        final Query filter = session.createFilter(getGroupMembership(), "select this.member order by login");
         final Query count = session.createFilter(getGroupMembership(), "select count(*)");
         return new QueryCollection<DaoMember>(filter, count);
     }
@@ -102,17 +105,18 @@ public class DaoGroup extends DaoActor {
      * Add a member in this group.
      * 
      * @param Member The member to add
-     * @param isAdmin true if the member need to have the right to administer this group.
-     * (This may change if the number of role change !)
+     * @param isAdmin true if the member need to have the right to administer
+     *        this group.
+     *        (This may change if the number of role change !)
      */
-    public void addMember(DaoMember Member, boolean isAdmin) {
+    public void addMember(final DaoMember Member, final boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(Member, this, isAdmin));
     }
 
     /**
      * Remove a member from the group
      */
-    public void removeMember(DaoMember Member) {
+    public void removeMember(final DaoMember Member) {
         final DaoGroupMembership link = DaoGroupMembership.get(this, Member);
         groupMembership.remove(link);
         Member.getGroupMembership().remove(link);
@@ -123,7 +127,7 @@ public class DaoGroup extends DaoActor {
         return right;
     }
 
-    public void setRight(Right right) {
+    public void setRight(final Right right) {
         this.right = right;
     }
 
@@ -132,13 +136,14 @@ public class DaoGroup extends DaoActor {
      * 
      * @return {@value MemberStatus#UNKNOWN} if the member is not in this group.
      */
-    public MemberStatus getMemberStatus(DaoMember member) {
-        Query q = SessionManager.getSessionFactory()
-                                .getCurrentSession()
-                                .createQuery("select gm from com.bloatit.model.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
+    public MemberStatus getMemberStatus(final DaoMember member) {
+        final Query q = SessionManager
+                .getSessionFactory()
+                .getCurrentSession()
+                .createQuery("select gm from com.bloatit.model.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
         q.setEntity("member", member);
         q.setEntity("group", this);
-        DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
+        final DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
         if (gm == null) {
             return MemberStatus.UNKNOWN;
         }
@@ -162,7 +167,7 @@ public class DaoGroup extends DaoActor {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setGroupMembership(Set<DaoGroupMembership> GroupMembership) {
+    protected void setGroupMembership(final Set<DaoGroupMembership> GroupMembership) {
         groupMembership = GroupMembership;
     }
 

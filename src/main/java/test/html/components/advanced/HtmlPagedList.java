@@ -16,34 +16,34 @@
  */
 package test.html.components.advanced;
 
-import test.html.components.standard.HtmlText;
-import test.html.components.standard.HtmlRenderer;
-import test.html.components.standard.HtmlListItem;
-import test.html.components.standard.HtmlList;
-import test.html.HtmlElement;
-import test.html.HtmlNode;
 import test.Parameters;
 import test.Request;
+import test.html.HtmlElement;
+import test.html.HtmlNode;
+import test.html.components.standard.HtmlGenericElement;
+import test.html.components.standard.HtmlLink;
+import test.html.components.standard.HtmlList;
+import test.html.components.standard.HtmlListItem;
+import test.html.components.standard.HtmlRenderer;
+import test.html.components.standard.HtmlText;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.RequestParam;
-import test.html.components.standard.HtmlGenericElement;
-import test.html.components.standard.HtmlLink;
 
 public class HtmlPagedList<T> extends HtmlList {
 
     private Session session;
     private Request currentRequest;
 
-    @RequestParam(defaultValue="1", name="current_page")
+    @RequestParam(defaultValue = "1", name = "current_page")
     private Integer currentPage;
-    @RequestParam(defaultValue="1", name="page_count")
+    @RequestParam(defaultValue = "1", name = "page_count")
     private Integer pageCount;
-    @RequestParam(defaultValue="42", name="page_count")
+    @RequestParam(defaultValue = "42", name = "page_count")
     private Integer pageSize;
 
-    public HtmlPagedList(HtmlRenderer<T> itemRenderer, PageIterable<T> itemList, Request currentRequest, Session session) {
+    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final Request currentRequest, final Session session) {
         super();
         this.session = session;
         this.currentRequest = currentRequest;
@@ -55,7 +55,7 @@ public class HtmlPagedList<T> extends HtmlList {
             add(generateLinksBar());
         }
 
-        for (T item : itemList) {
+        for (final T item : itemList) {
             addItem(new HtmlListItem(itemRenderer.generate(item)));
         }
 
@@ -64,14 +64,18 @@ public class HtmlPagedList<T> extends HtmlList {
         }
     }
 
-    public HtmlPagedList(String cssClass, HtmlRenderer<T> itemRenderer, PageIterable<T> itemList, Request currentRequest, Session session) {
+    public HtmlPagedList(final String cssClass,
+                         final HtmlRenderer<T> itemRenderer,
+                         final PageIterable<T> itemList,
+                         final Request currentRequest,
+                         final Session session) {
         this(itemRenderer, itemList, currentRequest, session);
         addAttribute("class", cssClass);
     }
 
     private HtmlElement generateLinksBar() {
 
-        HtmlGenericElement span = new HtmlGenericElement("span");
+        final HtmlGenericElement span = new HtmlGenericElement("span");
 
         if (currentPage > 1) {
             span.add(generateLink(currentPage - 1, session.tr("Previous")));
@@ -104,15 +108,15 @@ public class HtmlPagedList<T> extends HtmlList {
         return span;
     }
 
-    private HtmlNode generateLink(int i) {
-        String iString = new Integer(i).toString();
+    private HtmlNode generateLink(final int i) {
+        final String iString = new Integer(i).toString();
         return generateLink(i, iString);
     }
 
-    private HtmlNode generateLink(int i, String text) {
-        String iString = new Integer(i).toString();
+    private HtmlNode generateLink(final int i, final String text) {
+        final String iString = new Integer(i).toString();
         if (i != currentPage) {
-            Parameters outputParams = new Parameters();
+            final Parameters outputParams = new Parameters();
             outputParams.add("list_page", iString);
             outputParams.add("list_page_size", new Long(pageSize).toString());
 

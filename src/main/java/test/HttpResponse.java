@@ -2,18 +2,18 @@ package test;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+
 import test.pages.master.Page;
 
 public class HttpResponse {
 
     private final OutputStream output;
 
-    public HttpResponse(OutputStream output) {
+    public HttpResponse(final OutputStream output) {
         this.output = output;
     }
 
-    public void writeRedirect(String url) throws IOException {
+    public void writeRedirect(final String url) throws IOException {
         writeCookies();
 
         output.write("Location: ".getBytes());
@@ -23,7 +23,7 @@ public class HttpResponse {
         closeHeaders();
     }
 
-    public void writePage(Page page) throws IOException {
+    public void writePage(final Page page) throws IOException {
         writeCookies();
         output.write("Content-Type: text/html\r\n".getBytes());
 
@@ -32,18 +32,16 @@ public class HttpResponse {
         page.write(new IndentedHtmlText() {
 
             @Override
-            protected void append(String text) {
+            protected void append(final String text) {
                 try {
                     output.write(text.getBytes());
-                } catch (IOException ex) {
-                    //TODO: log
+                } catch (final IOException ex) {
+                    // TODO: log
                 }
             }
         });
 
-        
     }
-
 
     private void closeHeaders() throws IOException {
         output.write("\r\n".getBytes());

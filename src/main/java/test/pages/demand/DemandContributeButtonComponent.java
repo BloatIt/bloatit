@@ -16,46 +16,42 @@
  */
 package test.pages.demand;
 
-import java.util.HashMap;
-
 import test.Context;
+import test.Request;
+import test.UrlBuilder;
 import test.html.HtmlElement;
 import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.form.HtmlButton;
 import test.html.components.standard.form.HtmlForm;
-
-import test.Request;
+import test.pages.ContributePage;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.server.Session;
-import test.UrlBuilder;
-import test.pages.ContributePage;
 
 public class DemandContributeButtonComponent extends HtmlElement {
 
-    private HashMap<String, String> params;
     private final Demand demand;
 
-    public DemandContributeButtonComponent(Request request, Demand demand) {
+    public DemandContributeButtonComponent(final Request request, final Demand demand) {
         super();
         this.demand = demand;
         add(produce(request));
     }
 
-    protected HtmlElement produce(Request request) {
+    protected HtmlElement produce(final Request request) {
 
         final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
         {
 
-            Session session = Context.getSession();
+            final Session session = Context.getSession();
 
-            UrlBuilder urlBuilder = new UrlBuilder(ContributePage.class);
+            final UrlBuilder urlBuilder = new UrlBuilder(ContributePage.class);
             urlBuilder.addParameter("targetIdea", demand);
 
-            HtmlForm contributeForm = new HtmlForm(urlBuilder.buildUrl());
+            final HtmlForm contributeForm = new HtmlForm(urlBuilder.buildUrl());
             {
                 // Add button
-                HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));
+                final HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));
                 contributeForm.add(contributeButton);
 
             }

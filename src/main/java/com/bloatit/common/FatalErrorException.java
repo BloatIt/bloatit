@@ -26,7 +26,7 @@ public class FatalErrorException extends RuntimeException {
      */
     private static final long serialVersionUID = -8861022396347552403L;
 
-    public FatalErrorException(String string, Throwable cause) {
+    public FatalErrorException(final String string, final Throwable cause) {
         super(string, cause);
     }
 

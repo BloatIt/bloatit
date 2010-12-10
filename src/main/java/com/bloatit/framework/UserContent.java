@@ -16,7 +16,7 @@ public abstract class UserContent extends Identifiable {
         return getDaoUserContent().getCreationDate();
     }
 
-    public void setAsGroup(Group asGroup) {
+    public void setAsGroup(final Group asGroup) {
         getDaoUserContent().setAsGroup(asGroup.getDao());
     }
 

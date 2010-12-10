@@ -20,38 +20,40 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 public class Demand extends Kudosable {
     private final DaoDemand dao;
 
-    public static Demand create(DaoDemand dao) {
+    public static Demand create(final DaoDemand dao) {
         if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
             return null;
         }
         return new Demand(dao);
     }
 
-    public Demand(Locale locale, String title, String description) {
+    public Demand(final Locale locale, final String title, final String description) {
         dao = DaoDemand.createAndPersist(getToken().getMember().getDao(),
                 DaoDescription.createAndPersist(getToken().getMember().getDao(), locale, title, description));
     }
 
-    private Demand(DaoDemand dao) {
+    private Demand(final DaoDemand dao) {
         super();
         this.dao = dao;
     }
 
-    public void addComment(String text) {
+    public void addComment(final String text) {
         dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
     }
 
-    public void addContribution(BigDecimal amount, String comment) throws NotEnoughMoneyException {
+    public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         // TODO : Vérifier que l'utilisateur a le droit de contribuer
         dao.addContribution(getToken().getMember().getDao(), amount, comment);
     }
 
-    public Offer addOffer(BigDecimal amount, Locale locale, String title, String text, Date dateExpir) {
-        return new Offer(dao.addOffer(getToken().getMember().getDao(), amount, new Description(getToken().getMember(), locale,
-                title, text).getDao(), dateExpir));
+    public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir) {
+        return new Offer(dao.addOffer(getToken().getMember().getDao(),
+                amount,
+                new Description(getToken().getMember(), locale, title, text).getDao(),
+                dateExpir));
     }
 
-    public void createSpecification(String content) {
+    public void createSpecification(final String content) {
         dao.createSpecification(getToken().getMember().getDao(), content);
     }
 
@@ -106,7 +108,7 @@ public class Demand extends Kudosable {
     }
 
     // TODO right management
-    public void removeOffer(Offer offer) {
+    public void removeOffer(final Offer offer) {
         dao.removeOffer(offer.getDao());
     }
 

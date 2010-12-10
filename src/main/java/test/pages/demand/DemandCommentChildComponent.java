@@ -19,23 +19,22 @@
 package test.pages.demand;
 
 import test.Context;
-import test.html.HtmlElement;
-
 import test.Request;
-
-import com.bloatit.framework.Comment;
-import com.bloatit.web.server.Session;
+import test.html.HtmlElement;
 import test.html.HtmlText;
 import test.html.HtmlTools;
 import test.html.components.standard.HtmlDiv;
 
+import com.bloatit.framework.Comment;
+import com.bloatit.web.server.Session;
+
 public class DemandCommentChildComponent extends HtmlElement {
 
-    //private Offer offer;
-    private Comment comment;
+    // private Offer offer;
+    private final Comment comment;
     private HtmlText commentText;
 
-    public DemandCommentChildComponent(Request request, Comment comment) {
+    public DemandCommentChildComponent(final Request request, final Comment comment) {
         super();
         this.comment = comment;
         extractData(request);
@@ -43,13 +42,13 @@ public class DemandCommentChildComponent extends HtmlElement {
 
     }
 
-    protected HtmlElement produce(Request request) {
-        HtmlDiv commentBlock = new HtmlDiv("child_comment_block");
+    protected HtmlElement produce(final Request request) {
+        final HtmlDiv commentBlock = new HtmlDiv("child_comment_block");
         {
 
             commentBlock.add(commentText);
 
-            for (Comment childComment : comment.getChildren()) {
+            for (final Comment childComment : comment.getChildren()) {
                 commentBlock.add(new DemandCommentChildComponent(request, childComment));
             }
 
@@ -57,12 +56,14 @@ public class DemandCommentChildComponent extends HtmlElement {
         return commentBlock;
     }
 
-    protected void extractData(Request request) {
+    protected void extractData(final Request request) {
 
-        Session session = Context.getSession();
-        String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, comment.getCreationDate()) + "</span>";
-//      String author = "<span class=\"comment_author\">" + HtmlTools.generateLink(session, comment.getAuthor().getLogin(), new MemberPage(session, comment.getAuthor())) + "</span>";
-        String author = "<span class=\"comment_author\">" + comment.getAuthor().getLogin() + "</span>";
+        final Session session = Context.getSession();
+        final String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, comment.getCreationDate()) + "</span>";
+        // String author = "<span class=\"comment_author\">" +
+        // HtmlTools.generateLink(session, comment.getAuthor().getLogin(), new
+        // MemberPage(session, comment.getAuthor())) + "</span>";
+        final String author = "<span class=\"comment_author\">" + comment.getAuthor().getLogin() + "</span>";
 
         commentText = new HtmlText(comment.getText() + " – " + author + " " + date);
 

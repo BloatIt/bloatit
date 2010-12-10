@@ -28,12 +28,12 @@ public class HtmlDiv extends HtmlContainerElement {
         super("div");
     }
 
-    public HtmlDiv(String cssClass) {
+    public HtmlDiv(final String cssClass) {
         super("div");
         addAttribute("class", cssClass);
     }
 
-    public HtmlDiv(String cssClass, String id) {
+    public HtmlDiv(final String cssClass, final String id) {
         super("div");
         addAttribute("class", cssClass);
         addAttribute("id", id);

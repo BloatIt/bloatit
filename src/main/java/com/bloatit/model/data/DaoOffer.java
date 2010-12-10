@@ -38,7 +38,8 @@ public class DaoOffer extends DaoKudosable {
     private DaoDescription description;
 
     /**
-     * Because the 'lot' is not already implemented I added a dateExpire field. It is
+     * Because the 'lot' is not already implemented I added a dateExpire field.
+     * It is
      * really not very useful...
      */
     @Basic(optional = false)
@@ -47,13 +48,14 @@ public class DaoOffer extends DaoKudosable {
     private Date dateExpire;
 
     /**
-     * The amount represents the money the member want to have to make his offer. (this
+     * The amount represents the money the member want to have to make his
+     * offer. (this
      * will also probably will be modified by the 'lot' implementation)
      */
     @Basic(optional = false)
     private BigDecimal amount;
 
-    public DaoOffer(DaoMember member, DaoDemand demand, BigDecimal amount, DaoDescription text, Date dateExpire) {
+    public DaoOffer(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final DaoDescription text, final Date dateExpire) {
         super(member);
         if (demand == null || text == null || dateExpire == null) {
             throw new NullPointerException();
@@ -61,14 +63,14 @@ public class DaoOffer extends DaoKudosable {
         this.demand = demand;
         this.description = text;
         this.dateExpire = dateExpire;
-        this.setAmount(amount);
+        setAmount(amount);
     }
 
     public Date getDateExpire() {
         return dateExpire;
     }
 
-    public void setDateExpire(Date dateExpire) {
+    public void setDateExpire(final Date dateExpire) {
         this.dateExpire = dateExpire;
     }
 
@@ -98,21 +100,21 @@ public class DaoOffer extends DaoKudosable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setDemand(DaoDemand Demand) {
+    protected void setDemand(final DaoDemand Demand) {
         demand = Demand;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setDescription(DaoDescription text) {
+    protected void setDescription(final DaoDescription text) {
         description = text;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setAmount(BigDecimal amount) {
+    protected void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 }

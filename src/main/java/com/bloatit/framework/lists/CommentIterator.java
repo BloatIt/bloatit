@@ -7,16 +7,16 @@ import com.bloatit.model.data.DaoComment;
 
 public class CommentIterator extends com.bloatit.framework.lists.IteratorBinder<Comment, DaoComment> {
 
-    public CommentIterator(Iterable<DaoComment> daoIterator) {
+    public CommentIterator(final Iterable<DaoComment> daoIterator) {
         super(daoIterator);
     }
 
-    public CommentIterator(Iterator<DaoComment> daoIterator) {
+    public CommentIterator(final Iterator<DaoComment> daoIterator) {
         super(daoIterator);
     }
 
     @Override
-    protected Comment createFromDao(DaoComment dao) {
+    protected Comment createFromDao(final DaoComment dao) {
         return Comment.create(dao);
     }
 

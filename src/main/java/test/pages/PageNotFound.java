@@ -18,7 +18,6 @@
  */
 package test.pages;
 
-
 import test.RedirectException;
 import test.Request;
 import test.html.components.standard.HtmlTitle;
@@ -26,12 +25,10 @@ import test.pages.master.Page;
 
 public class PageNotFound extends Page {
 
-
-    public PageNotFound(Request request) throws RedirectException {
+    public PageNotFound(final Request request) throws RedirectException {
         super(request);
         generateContent();
     }
-
 
     private void generateContent() {
         final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"));
@@ -39,7 +36,6 @@ public class PageNotFound extends Page {
         add(errorTitle);
 
     }
-
 
     @Override
     protected String getTitle() {

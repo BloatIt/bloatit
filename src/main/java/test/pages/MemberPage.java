@@ -18,9 +18,6 @@
  */
 package test.pages;
 
-import com.bloatit.framework.Member;
-import com.bloatit.web.utils.Message.Level;
-import com.bloatit.web.utils.RequestParam;
 import test.PageNotFoundException;
 import test.RedirectException;
 import test.Request;
@@ -28,12 +25,16 @@ import test.html.HtmlText;
 import test.html.components.standard.HtmlTitleBlock;
 import test.pages.master.Page;
 
+import com.bloatit.framework.Member;
+import com.bloatit.web.utils.Message.Level;
+import com.bloatit.web.utils.RequestParam;
+
 public class MemberPage extends Page {
 
     @RequestParam(level = Level.ERROR)
     private Member member;
 
-    public MemberPage(Request request) throws RedirectException {
+    public MemberPage(final Request request) throws RedirectException {
         super(request);
         generateContent();
         this.request.setValues(this);

@@ -15,7 +15,8 @@ import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 /**
- * A transaction is a transaction between an internal account and an other account.
+ * A transaction is a transaction between an internal account and an other
+ * account.
  */
 @Entity
 public class DaoTransaction extends DaoIdentifiable {
@@ -29,7 +30,8 @@ public class DaoTransaction extends DaoIdentifiable {
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 
-    public static DaoTransaction createAndPersist(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
+    public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount)
+            throws NotEnoughMoneyException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoTransaction Transaction = new DaoTransaction(from, to, amount);
         try {
@@ -50,11 +52,11 @@ public class DaoTransaction extends DaoIdentifiable {
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
      * @throws NotEnoughMoneyException if there is not enough money to make the
-     * transaction
+     *         transaction
      * @throws FatalErrorException if to == from
      * @throws NullPointerException if any of the parameters = null
      */
-    private DaoTransaction(DaoInternalAccount from, DaoAccount to, BigDecimal amount) throws NotEnoughMoneyException {
+    private DaoTransaction(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
         super();
         // TODO TEST ME MORE
         if (from == to) {
@@ -101,28 +103,28 @@ public class DaoTransaction extends DaoIdentifiable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setCreationDate(Date creationDate) {
+    protected void setCreationDate(final Date creationDate) {
         this.creationDate = creationDate;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setAmount(BigDecimal amount) {
+    protected void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setTo(DaoAccount to) {
+    protected void setTo(final DaoAccount to) {
         this.to = to;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setFrom(DaoInternalAccount from) {
+    protected void setFrom(final DaoInternalAccount from) {
         this.from = from;
     }
 

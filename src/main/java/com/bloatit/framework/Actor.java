@@ -24,7 +24,7 @@ public abstract class Actor extends Identifiable {
         return getDaoActor().getEmail();
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         new ActorRight.Email().tryAccess(calculateRole(getUnprotectedLogin()), Action.WRITE);
         getDaoActor().setEmail(email);
     }
@@ -63,7 +63,7 @@ public abstract class Actor extends Identifiable {
         return new ActorRight.ExternalAccount().canAccess(calculateRole(getUnprotectedLogin()), Action.WRITE);
     }
 
-    public void setExternalAccount(ExternalAccount externalAccount) {
+    public void setExternalAccount(final ExternalAccount externalAccount) {
         new ActorRight.ExternalAccount().tryAccess(calculateRole(getUnprotectedLogin()), Action.WRITE);
         getDaoActor().setExternalAccount(externalAccount.getDao());
     }

@@ -24,16 +24,16 @@ import com.bloatit.web.utils.BloatitDate;
  */
 public class HtmlDateField extends HtmlFormField<BloatitDate> {
 
-    public HtmlDateField(String name) {
+    public HtmlDateField(final String name) {
         super(new HtmlSimpleInput("text"), name);
     }
 
-    public HtmlDateField(String name, String label) {
+    public HtmlDateField(final String name, final String label) {
         super(new HtmlSimpleInput("text"), name, label);
     }
 
     @Override
-    protected void doSetDefaultValue(BloatitDate value) {
-        this.addAttribute("value", value.toString(BloatitDate.FormatStyle.SHORT));
+    protected void doSetDefaultValue(final BloatitDate value) {
+        addAttribute("value", value.toString(BloatitDate.FormatStyle.SHORT));
     }
 }

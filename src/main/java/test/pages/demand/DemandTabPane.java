@@ -17,12 +17,11 @@
 package test.pages.demand;
 
 import test.Context;
-import test.html.HtmlElement;
 import test.Parameters;
+import test.Request;
+import test.html.HtmlElement;
 import test.html.components.advanced.HtmlTabBlock;
 import test.html.components.advanced.HtmlTabBlock.HtmlTabHeader;
-
-import test.Request;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.server.Session;
@@ -33,23 +32,25 @@ public class DemandTabPane extends HtmlElement {
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
     private String activeTabKey;
 
-    public DemandTabPane(Request request, Demand demand) {
+    public DemandTabPane(final Request request, final Demand demand) {
         super();
         request.setValues(this);
-        Session session = Context.getSession();
+        final Session session = Context.getSession();
 
         // Create description tab
-        HtmlTabHeader descriptionTab = new HtmlTabHeader(session.tr("Description"), request.createUrl(new Parameters("demand_tab_key", "description_tab")));
+        final HtmlTabHeader descriptionTab = new HtmlTabHeader(session.tr("Description"), request.createUrl(new Parameters("demand_tab_key",
+                "description_tab")));
 
         // Create participations tab
-        HtmlTabHeader participationsTab = new HtmlTabHeader(session.tr("Participations"), request.createUrl(new Parameters("demand_tab_key",
-                                                                                                                           "participations_tab")));
+        final HtmlTabHeader participationsTab = new HtmlTabHeader(session.tr("Participations"), request.createUrl(new Parameters("demand_tab_key",
+                "participations_tab")));
 
         // Create Comments tab
-        HtmlTabHeader offerTab = new HtmlTabHeader(session.tr("Offers"), request.createUrl(new Parameters("demand_tab_key", "offer_tab")));
+        final HtmlTabHeader offerTab = new HtmlTabHeader(session.tr("Offers"), request.createUrl(new Parameters("demand_tab_key", "offer_tab")));
 
         // Create tab pane
-        HtmlTabBlock tabPane = new HtmlTabBlock(); // id = participations_tab
+        final HtmlTabBlock tabPane = new HtmlTabBlock(); // id =
+                                                         // participations_tab
 
         // Add all tabs from left to right
         if (activeTabKey == "description_tab") {
@@ -67,7 +68,7 @@ public class DemandTabPane extends HtmlElement {
         } else {
             tabPane.addTabHeader(offerTab);
         }
-        
+
         add(tabPane);
 
     }

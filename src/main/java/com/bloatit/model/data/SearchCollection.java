@@ -7,7 +7,8 @@ import org.hibernate.search.FullTextQuery;
 import com.bloatit.common.PageIterable;
 
 /**
- * This is the {@link PageIterable} implementation using the Hibernate Search querying
+ * This is the {@link PageIterable} implementation using the Hibernate Search
+ * querying
  * interface.
  */
 public class SearchCollection<T> implements PageIterable<T> {
@@ -16,7 +17,7 @@ public class SearchCollection<T> implements PageIterable<T> {
     private int pageSize;
     private int currentPage;
 
-    protected SearchCollection(FullTextQuery query) {
+    protected SearchCollection(final FullTextQuery query) {
         super();
         this.query = query;
         this.pageSize = 0;
@@ -30,7 +31,7 @@ public class SearchCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPageSize(int pageSize) {
+    public void setPageSize(final int pageSize) {
         query.setFetchSize(pageSize);
         query.setMaxResults(pageSize);
         this.pageSize = pageSize;
@@ -58,7 +59,7 @@ public class SearchCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPage(int page) {
+    public void setPage(final int page) {
         currentPage = page;
         query.setFirstResult(page * pageSize);
     }

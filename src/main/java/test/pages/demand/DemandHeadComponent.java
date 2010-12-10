@@ -18,28 +18,27 @@
  */
 package test.pages.demand;
 
+import test.Request;
 import test.html.HtmlElement;
 import test.html.components.standard.HtmlDiv;
 
 import com.bloatit.framework.Demand;
 
-import test.Request;
-
 public class DemandHeadComponent extends HtmlElement {
 
-    public DemandHeadComponent(Request request, Demand demand) {
+    public DemandHeadComponent(final Request request, final Demand demand) {
         super();
-        HtmlDiv demandHead = new HtmlDiv("demand_head");
+        final HtmlDiv demandHead = new HtmlDiv("demand_head");
         {
             // Add progress bar
-            HtmlDiv demandHeadProgress = new HtmlDiv("demand_head_progress");
+            final HtmlDiv demandHeadProgress = new HtmlDiv("demand_head_progress");
             {
                 demandHeadProgress.add(new DemandProgressBarComponent(request, demand));
             }
             demandHead.add(demandHeadProgress);
 
             // Add kudo box
-            HtmlDiv demandHeadKudo = new HtmlDiv("demand_head_kudo");
+            final HtmlDiv demandHeadKudo = new HtmlDiv("demand_head_kudo");
             {
                 demandHeadKudo.add(new DemandKudoComponent(request, demand));
             }

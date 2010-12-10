@@ -8,12 +8,12 @@ import com.bloatit.model.data.DaoOffer;
 
 public class OfferList extends ListBinder<Offer, DaoOffer> {
 
-    public OfferList(PageIterable<DaoOffer> daoCollection) {
+    public OfferList(final PageIterable<DaoOffer> daoCollection) {
         super(daoCollection);
     }
 
     @Override
-    protected Iterator<Offer> createFromDaoIterator(Iterator<DaoOffer> dao) {
+    protected Iterator<Offer> createFromDaoIterator(final Iterator<DaoOffer> dao) {
         return new OfferIterator(dao);
     }
 

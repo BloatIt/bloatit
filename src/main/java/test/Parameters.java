@@ -9,12 +9,12 @@ public class Parameters extends HashMap<String, String> {
         super();
     }
 
-    public Parameters(String name, String value) {
+    public Parameters(final String name, final String value) {
         super();
         super.put(name, value);
     }
 
-    public Parameters add(String name, String value) {
+    public Parameters add(final String name, final String value) {
         super.put(name, value);
         return this;
     }

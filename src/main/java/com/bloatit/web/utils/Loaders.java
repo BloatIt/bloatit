@@ -7,11 +7,13 @@ import java.util.Date;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Identifiable;
+import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.managers.MemberManager;
 
 public class Loaders {
 
-    public static <T> String toStr(T obj) {
+    public static <T> String toStr(final T obj) {
         if (obj.getClass().equals(Integer.class)) {
             return new ToInteger().toString((Integer) obj);
         } else if (obj.getClass().equals(Byte.class)) {
@@ -41,7 +43,7 @@ public class Loaders {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Loader<?>, U> Class<T> getLoaderClass(Class<U> theClass) {
+    public static <T extends Loader<?>, U> Class<T> getLoaderClass(final Class<U> theClass) {
         if (theClass.equals(Integer.class)) {
             return Class.class.cast(ToInteger.class);
         } else if (theClass.equals(Byte.class)) {
@@ -66,93 +68,95 @@ public class Loaders {
             return Class.class.cast(ToDate.class);
         } else if (theClass.equals(Demand.class)) {
             return Class.class.cast(ToDemand.class);
+        } else if (theClass.equals(Member.class)) {
+            return Class.class.cast(ToMember.class);
         }
         return null;
     }
 
     public static class DefaultConvertor extends Loader<String> {
         @Override
-        public String fromString(String data) {
+        public String fromString(final String data) {
             return data;
         }
     }
 
     public static class ToInteger extends Loader<Integer> {
         @Override
-        public Integer fromString(String data) {
+        public Integer fromString(final String data) {
             return Integer.decode(data);
         }
     }
 
     public static class ToFloat extends Loader<Float> {
         @Override
-        public Float fromString(String data) {
+        public Float fromString(final String data) {
             return Float.valueOf(data);
         }
     }
 
     public static class ToBigdecimal extends Loader<BigDecimal> {
         @Override
-        public BigDecimal fromString(String data) {
+        public BigDecimal fromString(final String data) {
             return new BigDecimal(data);
         }
     }
 
     public static class ToByte extends Loader<Byte> {
         @Override
-        public Byte fromString(String data) {
+        public Byte fromString(final String data) {
             return Byte.valueOf(data);
         }
     }
 
     public static class ToShort extends Loader<Short> {
         @Override
-        public Short fromString(String data) {
+        public Short fromString(final String data) {
             return Short.valueOf(data);
         }
     }
 
     public static class ToLong extends Loader<Long> {
         @Override
-        public Long fromString(String data) {
+        public Long fromString(final String data) {
             return Long.valueOf(data);
         }
     }
 
     public static class ToDouble extends Loader<Double> {
         @Override
-        public Double fromString(String data) {
+        public Double fromString(final String data) {
             return Double.valueOf(data);
         }
     }
 
     public static class ToCharacter extends Loader<Character> {
         @Override
-        public Character fromString(String data) {
+        public Character fromString(final String data) {
             return data.charAt(0);
         }
     }
 
     public static class ToBoolean extends Loader<Boolean> {
         @Override
-        public Boolean fromString(String data) {
+        public Boolean fromString(final String data) {
             return Boolean.valueOf(data);
         }
     }
 
     public static class ToString extends Loader<String> {
         @Override
-        public String fromString(String data) {
+        public String fromString(final String data) {
             return data;
         }
     }
 
     public static class ToDate extends Loader<Date> {
         @Override
-        public Date fromString(String data) {
+        public Date fromString(final String data) {
             try {
                 return DateFormat.getInstance().parse(data);
-            } catch (ParseException e) {
+            } catch (final ParseException e) {
                 throw new NumberFormatException();
             }
         }
@@ -160,16 +164,22 @@ public class Loaders {
 
     public static abstract class ToIdentifiable extends Loader<Identifiable> {
         @Override
-        public String toString(Identifiable id) {
+        public String toString(final Identifiable id) {
             return new Integer(id.getId()).toString();
         }
     }
 
     public static class ToDemand extends ToIdentifiable {
         @Override
-        public Identifiable fromString(String data) {
+        public Identifiable fromString(final String data) {
             return DemandManager.getDemandById(Integer.valueOf(data));
         }
+    }
 
+    public static class ToMember extends ToIdentifiable {
+        @Override
+        public Identifiable fromString(final String data) {
+            return MemberManager.getMemberById(Integer.valueOf(data));
+        }
     }
 }

@@ -9,14 +9,14 @@ public class Translation extends Kudosable {
 
     private final DaoTranslation dao;
 
-    public static Translation create(DaoTranslation dao) {
+    public static Translation create(final DaoTranslation dao) {
         if (dao == null) {
             return null;
         }
         return new Translation(dao);
     }
 
-    private Translation(DaoTranslation dao) {
+    private Translation(final DaoTranslation dao) {
         super();
         this.dao = dao;
     }

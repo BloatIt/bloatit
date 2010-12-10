@@ -22,15 +22,17 @@ package test.html.components.standard.form;
 import test.html.HtmlElement;
 
 /**
- * <p>Internal class used to create simple text areas.</p>
+ * <p>
+ * Internal class used to create simple text areas.
+ * </p>
  */
-public class HtmlSimpleTextArea extends HtmlElement{
-    protected HtmlSimpleTextArea(){
+public class HtmlSimpleTextArea extends HtmlElement {
+    protected HtmlSimpleTextArea() {
         super("textarea");
     }
 
-    public HtmlSimpleTextArea setDefaultValue(String text){
-        this.addText(text);
+    public HtmlSimpleTextArea setDefaultValue(final String text) {
+        addText(text);
         return this;
     }
 }

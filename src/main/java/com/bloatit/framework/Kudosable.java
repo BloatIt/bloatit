@@ -30,7 +30,7 @@ public abstract class Kudosable extends UserContent {
         return getDaoKudosable().getState();
     }
 
-    protected void setState(State newState) {
+    protected void setState(final State newState) {
         getDaoKudosable().setState(newState);
     }
 
@@ -39,7 +39,7 @@ public abstract class Kudosable extends UserContent {
         return getDaoKudosable();
     }
 
-    private void addKudos(int signe) {
+    private void addKudos(final int signe) {
         final Member member = getToken().getMember();
         if (getDaoKudosable().hasKudosed(member.getDao())) {
             throw new UnauthorizedOperationException();
@@ -51,7 +51,7 @@ public abstract class Kudosable extends UserContent {
         }
     }
 
-    private void calculateNewState(int newPop) {
+    private void calculateNewState(final int newPop) {
         switch (getState()) {
         case PENDING:
             if (newPop >= TURN_VALIDE) {

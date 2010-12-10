@@ -7,15 +7,15 @@ import com.bloatit.model.data.DaoGroup;
 import com.bloatit.model.data.DaoJoinGroupInvitation;
 
 public class GroupManager {
-    public static Group getByName(String name) {
+    public static Group getByName(final String name) {
         return Group.create(DaoGroup.getByName(name));
     }
 
-    public static boolean exist(String name) {
+    public static boolean exist(final String name) {
         return DaoGroup.getByName(name) != null;
     }
 
-    public static JoinGroupInvitation getInvitation(Group group, Member member) {
+    public static JoinGroupInvitation getInvitation(final Group group, final Member member) {
         return JoinGroupInvitation.create(DaoJoinGroupInvitation.getInvitation(group.getDao(), member.getDao()));
     }
 }

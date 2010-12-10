@@ -16,12 +16,11 @@
  */
 package test.pages.demand;
 
-import test.html.HtmlElement;
-import test.html.components.standard.HtmlDiv;
-import test.html.components.advanced.HtmlProgressBar;
-import test.html.components.standard.HtmlText;
-
 import test.Request;
+import test.html.HtmlElement;
+import test.html.components.advanced.HtmlProgressBar;
+import test.html.components.standard.HtmlDiv;
+import test.html.components.standard.HtmlText;
 
 import com.bloatit.framework.Demand;
 
@@ -31,14 +30,14 @@ public class DemandProgressBarComponent extends HtmlElement {
     private HtmlText totalText;
     private final Demand demand;
 
-    public DemandProgressBarComponent(Request request, Demand demand) {
+    public DemandProgressBarComponent(final Request request, final Demand demand) {
         super();
         this.demand = demand;
         extractData(request);
         add(produce(request));
     }
 
-    protected HtmlElement produce(Request request) {
+    protected HtmlElement produce(final Request request) {
 
         final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
@@ -59,7 +58,7 @@ public class DemandProgressBarComponent extends HtmlElement {
         return progressBlock;
     }
 
-    protected void extractData(Request request) {
+    protected void extractData(final Request request) {
         progressValue = 0;
         progressValue = 42 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
 

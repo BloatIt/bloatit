@@ -11,7 +11,7 @@ public class InternalAccount extends Account {
 
     private final DaoInternalAccount dao;
 
-    protected InternalAccount(DaoInternalAccount dao) {
+    protected InternalAccount(final DaoInternalAccount dao) {
         super();
         this.dao = dao;
     }

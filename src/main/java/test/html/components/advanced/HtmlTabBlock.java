@@ -17,14 +17,13 @@
 
 package test.html.components.advanced;
 
-import test.html.components.standard.HtmlLink;
 import test.html.components.standard.HtmlDiv;
-
+import test.html.components.standard.HtmlLink;
 
 public class HtmlTabBlock extends HtmlDiv {
 
-    private HtmlDiv tabBody;
-    private HtmlDiv tabHeader;
+    private final HtmlDiv tabBody;
+    private final HtmlDiv tabHeader;
 
     public HtmlTabBlock() {
         super("tab_panel");
@@ -36,27 +35,27 @@ public class HtmlTabBlock extends HtmlDiv {
         add(tabBody);
     }
 
-    public void addTabHeader(HtmlTabHeader tab) {
+    public void addTabHeader(final HtmlTabHeader tab) {
 
-        HtmlDiv tabTile = new HtmlDiv("inactive_tab_title");
+        final HtmlDiv tabTile = new HtmlDiv("inactive_tab_title");
         tabHeader.add(tabTile);
 
-        HtmlLink link = new HtmlLink(tab.getLink(), new HtmlDiv("inactive_tab_title_content"));
+        final HtmlLink link = new HtmlLink(tab.getLink(), new HtmlDiv("inactive_tab_title_content"));
         link.addText(tab.getTitle());
 
         tabTile.add(link);
     }
 
-    public void addActiveTab(HtmlTab tab) {
+    public void addActiveTab(final HtmlTab tab) {
         addTabHeader(tab);
         tabBody.add(tab.getBody());
     }
 
     public static class HtmlTabHeader {
-        private String title;
-        private String link;
+        private final String title;
+        private final String link;
 
-        public HtmlTabHeader(String title, String link) {
+        public HtmlTabHeader(final String title, final String link) {
             this.title = title;
             this.link = link;
         }
@@ -71,9 +70,9 @@ public class HtmlTabBlock extends HtmlDiv {
     }
 
     public static class HtmlTab extends HtmlTabHeader {
-        private HtmlDiv body;
+        private final HtmlDiv body;
 
-        public HtmlTab(HtmlTabHeader header, HtmlDiv body) {
+        public HtmlTab(final HtmlTabHeader header, final HtmlDiv body) {
             super(header.title, header.link);
             this.body = body;
             body.addAttribute("class", "tab_body");

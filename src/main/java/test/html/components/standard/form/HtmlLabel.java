@@ -22,11 +22,11 @@ package test.html.components.standard.form;
 import test.html.HtmlElement;
 
 public class HtmlLabel extends HtmlElement {
-    protected HtmlLabel(String content){
+    protected HtmlLabel(final String content) {
         super("label");
     }
 
-    protected void setFor(String forId){
-        this.addAttribute("for", forId);
+    protected void setFor(final String forId) {
+        addAttribute("for", forId);
     }
 }

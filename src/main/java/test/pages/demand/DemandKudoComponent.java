@@ -16,23 +16,22 @@
  */
 package test.pages.demand;
 
-import com.bloatit.framework.Demand;
-
 import test.Context;
-import test.html.HtmlElement;
-import test.html.components.standard.HtmlDiv;
-import test.html.components.advanced.HtmlKudoBox;
-
 import test.Request;
+import test.html.HtmlElement;
+import test.html.components.advanced.HtmlKudoBox;
+import test.html.components.standard.HtmlDiv;
+
+import com.bloatit.framework.Demand;
 
 public class DemandKudoComponent extends HtmlElement {
 
-    public DemandKudoComponent(Request request, Demand demand) {
+    public DemandKudoComponent(final Request request, final Demand demand) {
         super();
 
-        HtmlDiv descriptionKudoBlock = new HtmlDiv("description_kudo_block");
+        final HtmlDiv descriptionKudoBlock = new HtmlDiv("description_kudo_block");
         {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(demand, Context.getSession());
+            final HtmlKudoBox kudoBox = new HtmlKudoBox(demand, Context.getSession());
             descriptionKudoBlock.add(kudoBox);
         }
         add(descriptionKudoBlock);

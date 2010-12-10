@@ -7,16 +7,16 @@ import com.bloatit.model.data.DaoTranslation;
 
 public class TranslationIterator extends com.bloatit.framework.lists.IteratorBinder<Translation, DaoTranslation> {
 
-    public TranslationIterator(Iterable<DaoTranslation> daoIterator) {
+    public TranslationIterator(final Iterable<DaoTranslation> daoIterator) {
         super(daoIterator);
     }
 
-    public TranslationIterator(Iterator<DaoTranslation> daoIterator) {
+    public TranslationIterator(final Iterator<DaoTranslation> daoIterator) {
         super(daoIterator);
     }
 
     @Override
-    protected Translation createFromDao(DaoTranslation dao) {
+    protected Translation createFromDao(final DaoTranslation dao) {
         return Translation.create(dao);
     }
 

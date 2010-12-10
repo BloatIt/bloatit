@@ -3,6 +3,7 @@ package test.html;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import test.Text;
 
 /**
@@ -10,10 +11,10 @@ import test.Text;
  */
 public abstract class HtmlElement extends HtmlNode {
 
-    private List<HtmlNode> children = new ArrayList<HtmlNode>();
-    private Tag tag;
+    private final List<HtmlNode> children = new ArrayList<HtmlNode>();
+    private final Tag tag;
 
-    public HtmlElement(String tag) {
+    public HtmlElement(final String tag) {
         super();
         this.tag = new Tag(tag);
     }
@@ -23,51 +24,65 @@ public abstract class HtmlElement extends HtmlNode {
         this.tag = null;
     }
 
-    public HtmlElement addAttribute(String name, String value) {
+    public HtmlElement addAttribute(final String name, final String value) {
         tag.addAttribute(name, value);
         return this;
     }
 
-    protected HtmlElement add(HtmlNode html) {
+    protected HtmlElement add(final HtmlNode html) {
         children.add(html);
         return this;
     }
 
-    protected HtmlElement addText(String text) {
+    protected HtmlElement addText(final String text) {
         children.add(new HtmlText(text));
         return this;
     }
 
     /**
-     * <p>Sets the id of the html element :
-     * <pre><element id="..." /></pre></p>
-     * <p>Shortcut to element.addAttribute("id",value)</p>
+     * <p>
+     * Sets the id of the html element :
+     * 
+     * <pre>
+     * <element id="..." />
+     * </pre>
+     * 
+     * </p>
+     * <p>
+     * Shortcut to element.addAttribute("id",value)
+     * </p>
+     * 
      * @param id the value of the id
      * @return the element
      */
-    public HtmlElement setId(String id) {
+    public HtmlElement setId(final String id) {
         addAttribute("id", id);
         return this;
     }
 
     /**
      * Finds the id of the element
+     * 
      * <pre>
      * <element id="value" />
      * </pre>
+     * 
      * @return The value contained in the attribute id of the element
      */
-    public String getId(){
+    public String getId() {
         return this.tag.getId();
     }
 
     /**
      * Sets the css class of the element
-     * <p>Shortcut for element.addattribute("class",cssClass)</p>
+     * <p>
+     * Shortcut for element.addattribute("class",cssClass)
+     * </p>
+     * 
      * @param cssClass
      * @return
      */
-    public HtmlElement setCssClass(String cssClass) {
+    public HtmlElement setCssClass(final String cssClass) {
         addAttribute("class", cssClass);
         return this;
     }
@@ -78,11 +93,11 @@ public abstract class HtmlElement extends HtmlNode {
     }
 
     @Override
-    public final void write(Text txt) {
+    public final void write(final Text txt) {
         if (tag != null) {
-            if (this.iterator().hasNext()) {
+            if (iterator().hasNext()) {
                 txt.writeLine(tag.getOpenTag());
-                for (HtmlNode html : this) {
+                for (final HtmlNode html : this) {
                     txt.indent();
                     html.write(txt);
                     txt.unindent();
@@ -92,7 +107,7 @@ public abstract class HtmlElement extends HtmlNode {
                 txt.writeLine(tag.getClosedTag());
             }
         } else {
-            for (HtmlNode html : this) {
+            for (final HtmlNode html : this) {
                 txt.indent();
                 html.write(txt);
                 txt.unindent();

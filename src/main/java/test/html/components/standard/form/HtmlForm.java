@@ -24,13 +24,13 @@ public class HtmlForm extends HtmlContainerElement {
         GET, POST
     }
 
-    public HtmlForm(String action, Method method) {
+    public HtmlForm(final String action, final Method method) {
         super("form");
         addAttribute("action", action);
         addAttribute("method", method == Method.GET ? "GET" : "POST");
     }
 
-    public HtmlForm(String action) {
+    public HtmlForm(final String action) {
         this(action, Method.POST);
     }
 }

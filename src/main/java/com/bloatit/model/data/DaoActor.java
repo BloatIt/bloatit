@@ -21,7 +21,8 @@ import com.bloatit.common.FatalErrorException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * DaoActor is the base class of any user that can make money transaction. Each actor has
+ * DaoActor is the base class of any user that can make money transaction. Each
+ * actor has
  * a unique name, an email, and an internalAccount.
  */
 @Entity
@@ -29,7 +30,8 @@ import com.bloatit.model.data.util.SessionManager;
 public abstract class DaoActor {
 
     /**
-     * Because of the different inheritance strategy we cannot inherit from identifiable.
+     * Because of the different inheritance strategy we cannot inherit from
+     * identifiable.
      * So we have to have an id.
      */
     @Id
@@ -37,7 +39,8 @@ public abstract class DaoActor {
     private Integer id;
 
     /**
-     * The login represent the user login and the group name. It must be unique (means
+     * The login represent the user login and the group name. It must be unique
+     * (means
      * that a group cannot have the same name as a user)
      */
     @Basic(optional = false)
@@ -60,11 +63,12 @@ public abstract class DaoActor {
      * Initialize the creation date to now.
      * 
      * @param login is the login or name of this actor
-     * @param email is the email of this actor. (No check is performed on the correctness
-     * of this email address)
+     * @param email is the email of this actor. (No check is performed on the
+     *        correctness
+     *        of this email address)
      * @throws NullPointerException if login or mail is null.
      */
-    protected DaoActor(String login, String email) {
+    protected DaoActor(final String login, final String email) {
         super();
         if (login == null || email == null) {
             throw new NullPointerException();
@@ -76,11 +80,13 @@ public abstract class DaoActor {
     }
 
     /**
-     * This method use a HQL request. If you intend to use "getByLogin" or "getByName",
-     * "exist" is useless. (In that case you'd better test if getByLogin != null, to
+     * This method use a HQL request. If you intend to use "getByLogin" or
+     * "getByName",
+     * "exist" is useless. (In that case you'd better test if getByLogin !=
+     * null, to
      * minimize the number of HQL request).
      */
-    public static boolean exist(String login) {
+    public static boolean exist(final String login) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.createQuery("select count(*) from com.bloatit.model.data.DaoActor as m where login = :login");
         q.setString("login", login);
@@ -92,12 +98,13 @@ public abstract class DaoActor {
     }
 
     /**
-     * This method is used by hibernate. You can use it if you want to change the email.
+     * This method is used by hibernate. You can use it if you want to change
+     * the email.
      * (No check is performed on the correctness of the new email)
      * 
      * @param email the new email.
      */
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -123,7 +130,7 @@ public abstract class DaoActor {
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
-    public void setExternalAccount(DaoExternalAccount externalAccount) {
+    public void setExternalAccount(final DaoExternalAccount externalAccount) {
         if (externalAccount.getActor() != this) {
             throw new FatalErrorException("Add an external account to the wrong user.", null);
         }
@@ -148,28 +155,28 @@ public abstract class DaoActor {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setInternalAccount(DaoInternalAccount InternalAccount) {
+    protected void setInternalAccount(final DaoInternalAccount InternalAccount) {
         internalAccount = InternalAccount;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setLogin(String login) {
+    protected void setLogin(final String login) {
         this.login = login;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setDateCreation(Date dateJoin) {
+    protected void setDateCreation(final Date dateJoin) {
         dateCreation = dateJoin;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setId(Integer id) {
+    protected void setId(final Integer id) {
         this.id = id;
     }
 }

@@ -17,7 +17,6 @@
 
 package test.html.components.standard;
 
-import test.html.HtmlNode;
 import test.pages.HtmlContainerElement;
 
 /**
@@ -25,10 +24,9 @@ import test.pages.HtmlContainerElement;
  */
 public class HtmlTitleBlock extends HtmlContainerElement {
 
-    private HtmlTitle title;
+    private final HtmlTitle title;
 
-
-    public HtmlTitleBlock(String title) {
+    public HtmlTitleBlock(final String title) {
         super();
 
         this.title = new HtmlTitle(title);
@@ -37,11 +35,9 @@ public class HtmlTitleBlock extends HtmlContainerElement {
     }
 
     @Override
-    public HtmlContainerElement addAttribute(String name, String value) {
+    public HtmlContainerElement addAttribute(final String name, final String value) {
         title.addAttribute(name, value);
         return this;
     }
 
-
-    
 }

@@ -33,7 +33,7 @@ public class SCGI {
 
         private static final long serialVersionUID = 1L;
 
-        public SCGIException(String message) {
+        public SCGIException(final String message) {
             super(message);
         }
     }
@@ -60,7 +60,7 @@ public class SCGI {
      * @param input an efficient (buffered) input stream.
      * @return strings passed via the SCGI request.
      */
-    public static HashMap<String, String> parse(InputStream input) throws IOException {
+    public static HashMap<String, String> parse(final InputStream input) throws IOException {
         final StringBuilder lengthString = new StringBuilder(12);
         String headers = "";
         for (;;) {

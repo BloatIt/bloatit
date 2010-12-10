@@ -18,8 +18,10 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * A description is a localized text with a title. In fact a the data are stored in
- * daoTranslation. The description is a way of accessing different translation. You can
+ * A description is a localized text with a title. In fact a the data are stored
+ * in
+ * daoTranslation. The description is a way of accessing different translation.
+ * You can
  * see a DaoTranslation as a version of a description is a specific locale.
  */
 @Entity
@@ -40,7 +42,7 @@ public class DaoDescription extends DaoIdentifiable {
         super();
     }
 
-    static public DaoDescription createAndPersist(DaoMember member, Locale locale, String title, String description) {
+    static public DaoDescription createAndPersist(final DaoMember member, final Locale locale, final String title, final String description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoDescription descr = new DaoDescription(member, locale, title, description);
         try {
@@ -59,16 +61,18 @@ public class DaoDescription extends DaoIdentifiable {
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
-     * @param description is the main text of the description (the actual description)
+     * @param description is the main text of the description (the actual
+     *        description)
      */
-    private DaoDescription(DaoMember member, Locale locale, String title, String description) {
+    private DaoDescription(final DaoMember member, final Locale locale, final String title, final String description) {
         super();
         setDefaultLocale(locale);
         translations.add(new DaoTranslation(member, this, locale, title, description));
     }
 
     /**
-     * Use a HQL query to get the Translations of this description in a PageIterable This
+     * Use a HQL query to get the Translations of this description in a
+     * PageIterable This
      * will return every translation EVEN this description.
      */
     public PageIterable<DaoTranslation> getTranslationsFromQuery() {
@@ -78,7 +82,7 @@ public class DaoDescription extends DaoIdentifiable {
     /**
      * Add a new translation to this description.
      */
-    public void addTranslation(DaoTranslation translation) {
+    public void addTranslation(final DaoTranslation translation) {
         translations.add(translation);
     }
 
@@ -88,15 +92,17 @@ public class DaoDescription extends DaoIdentifiable {
      * @param locale the locale in which we want the description
      * @return null if no translation exists for this locale.
      */
-    public DaoTranslation getTranslation(Locale locale) {
-        final Query q = SessionManager.createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
+    public DaoTranslation getTranslation(final Locale locale) {
+        final Query q = SessionManager
+                .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
         q.setLocale("locale", locale);
         q.setEntity("this", this);
         return (DaoTranslation) q.uniqueResult();
     }
 
     /**
-     * @return the default translation for this description (using default locale)
+     * @return the default translation for this description (using default
+     *         locale)
      */
     public DaoTranslation getDefaultTranslation() {
         return getTranslation(getDefaultLocale());
@@ -105,7 +111,7 @@ public class DaoDescription extends DaoIdentifiable {
     /**
      * Change the default locale.
      */
-    public void setDefaultLocale(Locale defaultLocale) {
+    public void setDefaultLocale(final Locale defaultLocale) {
         this.defaultLocale = defaultLocale;
     }
 
@@ -127,7 +133,7 @@ public class DaoDescription extends DaoIdentifiable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setTranslations(Set<DaoTranslation> Translations) {
+    protected void setTranslations(final Set<DaoTranslation> Translations) {
         translations = Translations;
     }
 }

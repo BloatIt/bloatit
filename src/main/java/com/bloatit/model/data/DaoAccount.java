@@ -16,9 +16,12 @@ import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 
 /**
- * A DaoAccount generalize the idea of bank account for our system. This class is mapped
- * as a joined table. So there is a table for DaoAccount, and a table for each of its
- * children. Each time you want to access a DaoAccount, there is a SQL join done, between
+ * A DaoAccount generalize the idea of bank account for our system. This class
+ * is mapped
+ * as a joined table. So there is a table for DaoAccount, and a table for each
+ * of its
+ * children. Each time you want to access a DaoAccount, there is a SQL join
+ * done, between
  * the daoAccount and its child.
  */
 @Entity
@@ -26,7 +29,8 @@ import com.bloatit.common.PageIterable;
 public abstract class DaoAccount {
 
     /**
-     * Because of the different inheritance strategy we cannot inherit from identifiable.
+     * Because of the different inheritance strategy we cannot inherit from
+     * identifiable.
      * So we have to have an id.
      */
     @Id
@@ -46,20 +50,22 @@ public abstract class DaoAccount {
     private Date lastModificationDate;
 
     /**
-     * The amount is the quantity of money you has in your account. WARNING: For now there
+     * The amount is the quantity of money you has in your account. WARNING: For
+     * now there
      * is no ?devise? ($,€, ...)
      */
     @Basic(optional = false)
     private BigDecimal amount;
 
     /**
-     * This constructor initialize the creation and modification dates. The amount is set
+     * This constructor initialize the creation and modification dates. The
+     * amount is set
      * to 0
      * 
      * @param actor is the owner of this account
      * @throws NullPointerException if the actor == null
      */
-    public DaoAccount(DaoActor actor) {
+    public DaoAccount(final DaoActor actor) {
         if (actor == null) {
             Log.data().fatal("Cannot create account with a null actor.");
             throw new NullPointerException();
@@ -71,7 +77,8 @@ public abstract class DaoAccount {
     }
 
     /**
-     * WARNING: the order is not specified yet. Maybe it will be ordered by date (if
+     * WARNING: the order is not specified yet. Maybe it will be ordered by date
+     * (if
      * needed)
      * 
      * @return all the transactions that are from/to this account.
@@ -101,33 +108,38 @@ public abstract class DaoAccount {
     }
 
     /**
-     * To modify the value of the amount, you have to create a transaction. This method is
+     * To modify the value of the amount, you have to create a transaction. This
+     * method is
      * protected to be used by transaction only !
      * 
-     * @param value the quantity of money to add to the amount of this account. (May be a
-     * negative value)
+     * @param value the quantity of money to add to the amount of this account.
+     *        (May be a
+     *        negative value)
      */
-    protected void addToAmountValue(BigDecimal value) {
+    protected void addToAmountValue(final BigDecimal value) {
         resetModificationDate();
         lastModificationDate = new Date();
         amount = amount.add(value);
     }
 
     /**
-     * To modify the value of the amount, you have to create a transaction. This method is
+     * To modify the value of the amount, you have to create a transaction. This
+     * method is
      * protected to be used by transaction only !
      * 
-     * @param value the quantity of money to subtract to the amount of this account. (May
-     * be a negative value)
+     * @param value the quantity of money to subtract to the amount of this
+     *        account. (May
+     *        be a negative value)
      */
-    protected void substractToAmountValue(BigDecimal value) {
+    protected void substractToAmountValue(final BigDecimal value) {
         resetModificationDate();
         lastModificationDate = new Date();
         amount = amount.subtract(value);
     }
 
     /**
-     * Used internally or by subclasses to every time the Amount is changed. It reset the
+     * Used internally or by subclasses to every time the Amount is changed. It
+     * reset the
      * modification date to now.
      */
     protected void resetModificationDate() {
@@ -146,41 +158,42 @@ public abstract class DaoAccount {
     }
 
     /**
-     * This is for hibernate only. The amount must be modified by some higher level
+     * This is for hibernate only. The amount must be modified by some higher
+     * level
      * methods.
      * 
      * @see DaoTransaction
      * @param amount the new amount to set.
      */
-    protected void setAmount(BigDecimal amount) {
+    protected void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setLastModificationDate(Date lastModificationDate) {
+    protected void setLastModificationDate(final Date lastModificationDate) {
         this.lastModificationDate = lastModificationDate;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setId(Integer id) {
+    protected void setId(final Integer id) {
         this.id = id;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setActor(DaoActor Actor) {
+    protected void setActor(final DaoActor Actor) {
         actor = Actor;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setCreationDate(Date creationDate) {
+    protected void setCreationDate(final Date creationDate) {
         this.creationDate = creationDate;
     }
 }

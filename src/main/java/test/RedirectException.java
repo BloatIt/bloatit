@@ -20,15 +20,18 @@ package test;
 
 public class RedirectException extends Exception {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8000625161101556546L;
     private final String url;
 
-    public RedirectException(String url) {
+    public RedirectException(final String url) {
         this.url = url;
     }
 
     public String getUrl() {
         return url;
     }
-
 
 }

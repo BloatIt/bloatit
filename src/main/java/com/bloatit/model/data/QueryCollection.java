@@ -8,7 +8,8 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * This is the implementation of the {@link PageIterable} interface using a Hibernate HQL
+ * This is the implementation of the {@link PageIterable} interface using a
+ * Hibernate HQL
  * query.
  */
 public class QueryCollection<T> implements PageIterable<T> {
@@ -22,25 +23,25 @@ public class QueryCollection<T> implements PageIterable<T> {
     /**
      * Use this constructor with string that start with "from ..."
      */
-    protected QueryCollection(String queryStr) {
+    protected QueryCollection(final String queryStr) {
         this(SessionManager.createQuery(queryStr));
     }
 
     /**
      * Use this constructor with query that start with "from ..."
      */
-    protected QueryCollection(Query query) {
+    protected QueryCollection(final Query query) {
         this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
     }
 
-    protected QueryCollection(Query query, Query sizeQuery) {
+    protected QueryCollection(final Query query, final Query sizeQuery) {
         pageSize = 0;
         size = -1;
         this.query = query;
         this.sizeQuery = sizeQuery;
     }
 
-    public QueryCollection<T> setEntity(String name, Object entity) {
+    public QueryCollection<T> setEntity(final String name, final Object entity) {
         query.setEntity(name, entity);
         sizeQuery.setEntity(name, entity);
         return this;
@@ -53,13 +54,13 @@ public class QueryCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPage(int page) {
+    public void setPage(final int page) {
         currentPage = page;
         query.setFirstResult(page * pageSize);
     }
 
     @Override
-    public void setPageSize(int pageSize) {
+    public void setPageSize(final int pageSize) {
         query.setMaxResults(pageSize);
         query.setFetchSize(pageSize);
         this.pageSize = pageSize;

@@ -8,7 +8,7 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     private final PageIterable<DAO> daoCollection;
 
-    public ListBinder(PageIterable<DAO> daoCollection) {
+    public ListBinder(final PageIterable<DAO> daoCollection) {
         super();
         this.daoCollection = daoCollection;
     }
@@ -19,12 +19,12 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
     }
 
     @Override
-    public void setPage(int page) {
+    public void setPage(final int page) {
         daoCollection.setPage(page);
     }
 
     @Override
-    public void setPageSize(int pageSize) {
+    public void setPageSize(final int pageSize) {
         daoCollection.setPageSize(pageSize);
     }
 

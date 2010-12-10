@@ -19,20 +19,20 @@
 package test.pages.demand;
 
 import test.Context;
+import test.Request;
 import test.html.HtmlElement;
 import test.html.components.standard.HtmlDiv;
-import test.html.components.standard.HtmlTitle;
-import test.Request;
+import test.html.components.standard.HtmlTitleBlock;
+
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
-import test.html.components.standard.HtmlTitleBlock;
 
 public class DemandCommentListComponent extends HtmlElement {
 
-    private PageIterable<Comment> comments;
+    private final PageIterable<Comment> comments;
 
-    public DemandCommentListComponent(Request request, Demand demand) {
+    public DemandCommentListComponent(final Request request, final Demand demand) {
         super();
         comments = demand.getComments();
         add(produce(request));
@@ -41,13 +41,13 @@ public class DemandCommentListComponent extends HtmlElement {
     /**
      * Creates the block that will be displayed in the offer tab.
      */
-    protected HtmlElement produce(Request request) {
+    protected HtmlElement produce(final Request request) {
 
-        HtmlDiv commentsBlock = new HtmlDiv("comments_block");
+        final HtmlDiv commentsBlock = new HtmlDiv("comments_block");
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments")).setCssClass("comments_title"));
 
-            for (Comment comment : comments) {
+            for (final Comment comment : comments) {
                 commentsBlock.add(new DemandCommentComponent(request, comment));
             }
         }

@@ -7,8 +7,8 @@ public interface Text {
     public abstract void indent();
 
     public abstract void unindent();
-    
-//    public abstract String pushTitle();
-//
-//    public abstract void popTitle();
+
+    // public abstract String pushTitle();
+    //
+    // public abstract void popTitle();
 }

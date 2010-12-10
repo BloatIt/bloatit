@@ -18,9 +18,6 @@
  */
 package test.pages;
 
-import com.bloatit.framework.Demand;
-import com.bloatit.web.utils.Message.Level;
-import com.bloatit.web.utils.RequestParam;
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
@@ -34,42 +31,45 @@ import test.html.components.standard.form.HtmlForm;
 import test.html.components.standard.form.HtmlTextArea;
 import test.html.components.standard.form.HtmlTextField;
 
+import com.bloatit.framework.Demand;
+import com.bloatit.web.utils.Message.Level;
+import com.bloatit.web.utils.RequestParam;
+
 public class ContributePage extends LoggedPage {
 
-    @RequestParam(level=Level.ERROR)
+    @RequestParam(level = Level.ERROR)
     private Demand targetIdea;
 
-    @RequestParam(defaultValue="vide")
+    @RequestParam(defaultValue = "vide")
     private String contributionAmountParam;
 
-    @RequestParam(defaultValue="vide")
+    @RequestParam(defaultValue = "vide")
     private String contributionCommentParam;
 
-    public ContributePage(Request request) throws RedirectException {
+    public ContributePage(final Request request) throws RedirectException {
         super(request);
     }
 
     @Override
     public HtmlElement generateRestrictedContent() {
-        
+
         final HtmlForm contribForm = new HtmlForm(new UrlBuilder(ContributionAction.class).buildUrl());
 
         // Input field : chose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
         contribField.setLabel(session.tr("Choose amount : "));
         contribField.setDefaultValue(contributionAmountParam);
-        
-        
+
         // Input field : comment
         final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE);
         commentField.setLabel(session.tr("Comment (optionnal) : "));
         commentField.setDefaultValue(contributionCommentParam);
-       
+
         final HtmlButton submitButton = new HtmlButton(session.tr("Contribute"));
 
         // Summary of the idea
-        HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle());
-        HtmlText textSummary = new HtmlText(targetIdea.getDescription().toString());
+        final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle());
+        final HtmlText textSummary = new HtmlText(targetIdea.getDescription().toString());
         summary.add(textSummary);
 
         // Create the form

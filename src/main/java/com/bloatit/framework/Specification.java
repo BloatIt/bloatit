@@ -9,7 +9,7 @@ public class Specification extends UserContent {
 
     private final DaoSpecification dao;
 
-    public Specification(DaoSpecification dao) {
+    public Specification(final DaoSpecification dao) {
         super();
         this.dao = dao;
     }
@@ -26,7 +26,7 @@ public class Specification extends UserContent {
         return new DemandRight.Specification().canAccess(calculateRole(this), Action.WRITE);
     }
 
-    public void setContent(String content) {
+    public void setContent(final String content) {
         new DemandRight.Specification().tryAccess(calculateRole(this), Action.WRITE);
         dao.setContent(content);
     }

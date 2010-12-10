@@ -16,17 +16,19 @@
  */
 package test.actions;
 
-import com.bloatit.framework.Demand;
-import com.bloatit.model.exceptions.NotEnoughMoneyException;
-import com.bloatit.web.utils.Message.Level;
-import com.bloatit.web.utils.RequestParam;
-import test.Action;
 import java.math.BigDecimal;
+
+import test.Action;
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
 import test.pages.ContributePage;
 import test.pages.demand.DemandPage;
+
+import com.bloatit.framework.Demand;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
+import com.bloatit.web.utils.Message.Level;
+import com.bloatit.web.utils.RequestParam;
 
 public class ContributionAction extends Action {
 
@@ -35,23 +37,23 @@ public class ContributionAction extends Action {
     public static final String TARGET_DEMAND_CODE = "bloatit_target_demand";
     public static final String IDEA_CODE = "idea";
 
-    @RequestParam(name=TARGET_DEMAND_CODE)
+    @RequestParam(name = TARGET_DEMAND_CODE)
     private Demand targetDemand;
 
-    @RequestParam(name=IDEA_CODE)
-    private Demand idea ;
+    @RequestParam(name = IDEA_CODE)
+    private Demand idea;
 
-    @RequestParam(name=COMMENT_CODE, defaultValue="no comment")
+    @RequestParam(name = COMMENT_CODE, defaultValue = "no comment")
     private String comment;
 
-    @RequestParam(name=AMOUNT_CODE)
+    @RequestParam(name = AMOUNT_CODE)
     private BigDecimal amount;
 
-    public ContributionAction(Request request) throws RedirectException {
+    public ContributionAction(final Request request) throws RedirectException {
         super(request);
         request.setValues(this);
         session.notifyList(request.getMessages());
-        if (request.getMessages().hasMessage(Level.ERROR)){
+        if (request.getMessages().hasMessage(Level.ERROR)) {
             // TODO specific si idea not found
             throw new RedirectException(new UrlBuilder(ContributePage.class).buildUrl());
         }
@@ -72,11 +74,11 @@ public class ContributionAction extends Action {
                 session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));
                 return new UrlBuilder(ContributePage.class).buildUrl();
             }
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             session.notifyBad(session.tr("You have not enought money left."));
             // TODO add this parameters into ContributePage url.
             return new UrlBuilder(ContributePage.class).buildUrl();
-            
+
         }
     }
 }

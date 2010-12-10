@@ -8,10 +8,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 
 /**
- * Base class to use with Hibernate. (A persistent class do not need to inherit from
+ * Base class to use with Hibernate. (A persistent class do not need to inherit
+ * from
  * DaoIdentifiable)
  * 
- * When using DaoIdentifiable as a superClass, you ensure to have a id column in your
+ * When using DaoIdentifiable as a superClass, you ensure to have a id column in
+ * your
  * table. There is no DaoIdentifiable Table.
  */
 @MappedSuperclass
@@ -32,7 +34,7 @@ public abstract class DaoIdentifiable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setId(Integer id) {
+    protected void setId(final Integer id) {
         this.id = id;
     }
 }

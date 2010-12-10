@@ -1,8 +1,6 @@
 package test.pages.master;
 
 import test.Context;
-
-import com.bloatit.web.server.Session;
 import test.UrlBuilder;
 import test.actions.LogoutAction;
 import test.html.HtmlTools;
@@ -12,6 +10,8 @@ import test.html.components.standard.HtmlLink;
 import test.pages.LoginPage;
 import test.pages.MyAccountPage;
 
+import com.bloatit.web.server.Session;
+
 public class TopBar extends HtmlDiv {
 
     protected TopBar() {
@@ -19,7 +19,7 @@ public class TopBar extends HtmlDiv {
 
         setId("top_bar");
 
-        Session session = Context.getSession();
+        final Session session = Context.getSession();
         if (session.isLogged()) {
             final String full_name = session.getAuthToken().getMember().getFullname();
             final String karma = "<span class=\"karma\">" + HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()) + "</span>";

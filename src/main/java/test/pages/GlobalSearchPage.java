@@ -18,12 +18,6 @@
  */
 package test.pages;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Demand;
-import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.utils.PageComponent;
-import com.bloatit.web.utils.RequestParam;
-import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
 import test.html.HtmlNode;
@@ -38,6 +32,12 @@ import test.html.components.standard.form.HtmlTextField;
 import test.pages.demand.DemandPage;
 import test.pages.master.Page;
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Demand;
+import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.utils.PageComponent;
+import com.bloatit.web.utils.RequestParam;
+
 public class GlobalSearchPage extends Page {
 
     public final static String SEARCH_CODE = "global_search";
@@ -47,7 +47,7 @@ public class GlobalSearchPage extends Page {
     @PageComponent
     private HtmlPagedList<Demand> pagedMemberList;
 
-    public GlobalSearchPage(Request request) {
+    public GlobalSearchPage(final Request request) {
         super(request);
         request.setValues(this);
         addNotifications(request.getMessages());
@@ -62,20 +62,20 @@ public class GlobalSearchPage extends Page {
 
         final PageIterable<Demand> demandList = DemandManager.search(searchString);
 
-        HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
+        final HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
             UrlBuilder demandeUrlBuilder = new UrlBuilder(DemandPage.class);
 
             @Override
-            public HtmlNode generate(Demand demand) {
+            public HtmlNode generate(final Demand demand) {
                 demandeUrlBuilder.addParameter("idea", demand);
 
-                return new HtmlListItem( demandeUrlBuilder.getHtmlLink(demand.getTitle()));
+                return new HtmlListItem(demandeUrlBuilder.getHtmlLink(demand.getTitle()));
             }
         };
 
         pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, request, session);
-        
+
         pageTitle.add(pagedMemberList);
         add(pageTitle);
     }
@@ -94,14 +94,14 @@ public class GlobalSearchPage extends Page {
         return "search";
     }
 
-    private HtmlDiv generateSearchBlock( ) {
-        HtmlDiv searchBlock = new HtmlDiv("global_search_block");
+    private HtmlDiv generateSearchBlock() {
+        final HtmlDiv searchBlock = new HtmlDiv("global_search_block");
 
-        HtmlForm searchForm = new HtmlForm(new UrlBuilder(GlobalSearchPage.class).buildUrl() , HtmlForm.Method.GET);
+        final HtmlForm searchForm = new HtmlForm(new UrlBuilder(GlobalSearchPage.class).buildUrl(), HtmlForm.Method.GET);
 
-        HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
+        final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
-        HtmlButton searchButton = new HtmlButton(session.tr("Search"));
+        final HtmlButton searchButton = new HtmlButton(session.tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);

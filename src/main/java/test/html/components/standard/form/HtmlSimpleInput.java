@@ -26,12 +26,12 @@ import test.html.HtmlElement;
  */
 public class HtmlSimpleInput extends HtmlElement {
 
-    protected HtmlSimpleInput(String type) {
+    protected HtmlSimpleInput(final String type) {
         super("input");
         addAttribute("type", type);
     }
 
-    protected HtmlSimpleInput setName(String name) {
+    protected HtmlSimpleInput setName(final String name) {
         addAttribute("name", name).addAttribute("id", name);
         return this;
     }

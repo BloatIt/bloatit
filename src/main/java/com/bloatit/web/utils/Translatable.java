@@ -39,7 +39,7 @@ public class Translatable {
      * @param entry
      * @param defaultLocale
      */
-    public Translatable(Translation entry) {
+    public Translatable(final Translation entry) {
         translations = new HashMap<Language, Translation>();
         translations.put(new Language(entry.getLocale()), entry);
     }
@@ -49,7 +49,7 @@ public class Translatable {
      * 
      * @param translationList
      */
-    public Translatable(List<Translation> translationList) {
+    public Translatable(final List<Translation> translationList) {
         translations = new HashMap<Language, Translation>();
         for (final Translation t : translationList) {
             translations.put(new Language(t.getLocale()), t);
@@ -61,7 +61,7 @@ public class Translatable {
      * 
      * @param translation
      */
-    public void addTranslation(Translation translation) {
+    public void addTranslation(final Translation translation) {
         translations.put(new Language(translation.getLocale()), translation);
     }
 
@@ -71,7 +71,7 @@ public class Translatable {
      * @param lang the language for which the translation is desired
      * @return the translation matching lang.
      */
-    public Translation getTranslationForLang(Language lang) {
+    public Translation getTranslationForLang(final Language lang) {
         if (!containsLang(lang)) {
             return null;
         }
@@ -85,7 +85,7 @@ public class Translatable {
      * @return <i>true</i> if it has been translated to lang <i>false</i>
      *         otherwise
      */
-    public boolean containsLang(Language lang) {
+    public boolean containsLang(final Language lang) {
         return translations.containsKey(lang);
     }
 

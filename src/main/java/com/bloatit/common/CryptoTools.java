@@ -27,7 +27,7 @@ public class CryptoTools {
 
     static private final String defaultAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_-@#&'(!?)$%?:;/.?,";
 
-    public static String getRandomString(int length) {
+    public static String getRandomString(final int length) {
 
         final StringBuilder result = new StringBuilder();
 
@@ -39,7 +39,7 @@ public class CryptoTools {
         return result.toString();
     }
 
-    public static String sha256(String digest) {
+    public static String sha256(final String digest) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-256");
@@ -50,7 +50,7 @@ public class CryptoTools {
         final byte byteData[] = md.digest();
 
         final StringBuilder sb = new StringBuilder();
-        for (byte element : byteData) {
+        for (final byte element : byteData) {
             sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();

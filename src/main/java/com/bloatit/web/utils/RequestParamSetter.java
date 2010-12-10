@@ -13,40 +13,43 @@ import com.bloatit.web.utils.Message.What;
  * String/String name value.
  */
 public class RequestParamSetter {
-    private Map<String, String> parameters;
+    private final Map<String, String> parameters;
 
     /**
-     * Read a request and construct a RequestParamResult. (The actual work is done in
+     * Read a request and construct a RequestParamResult. (The actual work is
+     * done in
      * setValues.)
      * 
      * @param parameters is a map of name->value. It represent a request.
      */
-    public RequestParamSetter(Map<String, String> parameters) {
+    public RequestParamSetter(final Map<String, String> parameters) {
         super();
         this.parameters = parameters;
     }
 
     /**
-     * Set the value of the parameters annotated with RequestParam, using the parameters
+     * Set the value of the parameters annotated with RequestParam, using the
+     * parameters
      * name->value map and the annotations informations.
      * 
      * @param instance is the object that has attributes to fill.
-     * @return Some messages on the filling process. The messages is basically a list of
-     * strings with some level.
+     * @return Some messages on the filling process. The messages is basically a
+     *         list of
+     *         strings with some level.
      * @see Messages
      */
-    public Messages setValues(Object instance) {
-        Class<?> aClass = instance.getClass();
-        Messages messages = new Messages();
-        for (Field f : aClass.getDeclaredFields()) {
-            RequestParam param = f.getAnnotation(RequestParam.class);
+    public Messages setValues(final Object instance) {
+        final Class<?> aClass = instance.getClass();
+        final Messages messages = new Messages();
+        for (final Field f : aClass.getDeclaredFields()) {
+            final RequestParam param = f.getAnnotation(RequestParam.class);
             if (param != null) {
                 try {
-                    FieldParser fieldParser = new FieldParser(f, param, parameters);
+                    final FieldParser fieldParser = new FieldParser(f, param, parameters);
                     fieldParser.performChangeInInstance(instance);
-                } catch (ParamNotFoundException e) {
+                } catch (final ParamNotFoundException e) {
                     messages.addError(param, What.NOT_FOUND, e.getMessage());
-                } catch (ConversionErrorException e) {
+                } catch (final ConversionErrorException e) {
                     messages.addError(param, What.CONVERSION_ERROR, e.getMessage());
                 }
             }
@@ -55,7 +58,8 @@ public class RequestParamSetter {
     }
 
     /**
-     * Store some error messages that could append during the reflexive procedure
+     * Store some error messages that could append during the reflexive
+     * procedure
      * "setValues".
      */
     public static class Messages extends ArrayList<Message> {
@@ -65,8 +69,8 @@ public class RequestParamSetter {
             super();
         }
 
-        public boolean hasMessage(Message.Level level) {
-            for (Message error : this) {
+        public boolean hasMessage(final Message.Level level) {
+            for (final Message error : this) {
                 if (error.getLevel() == level) {
                     return true;
                 }
@@ -74,7 +78,7 @@ public class RequestParamSetter {
             return false;
         }
 
-        private void addError(RequestParam param, Message.What what, String error) {
+        private void addError(final RequestParam param, final Message.What what, final String error) {
             this.add(new Message(param.level(), what, error));
         }
 
@@ -86,35 +90,37 @@ public class RequestParamSetter {
     public static class ParamNotFoundException extends Exception {
         private static final long serialVersionUID = 1L;
 
-        protected ParamNotFoundException(String message) {
+        protected ParamNotFoundException(final String message) {
             super(message);
         }
     }
 
     /**
-     * This exception is thrown when a parameter is found, but cannot be converted to the
+     * This exception is thrown when a parameter is found, but cannot be
+     * converted to the
      * right type.
      */
     public static class ConversionErrorException extends Exception {
         private static final long serialVersionUID = 1L;
 
-        protected ConversionErrorException(String message) {
+        protected ConversionErrorException(final String message) {
             super(message);
         }
     }
 
     /**
-     * The fieldParser class perform the reflexive work for a field. It is an internal
+     * The fieldParser class perform the reflexive work for a field. It is an
+     * internal
      * class and should never be used outside of the RequestParamResult class.
      */
     public static class FieldParser {
-        private Field f;
-        private RequestParam param;
-        private String value;
+        private final Field f;
+        private final RequestParam param;
+        private final String value;
         private String name;
         private String error;
 
-        public FieldParser(Field f, RequestParam param, Map<String, String> parameters) throws ParamNotFoundException {
+        public FieldParser(final Field f, final RequestParam param, final Map<String, String> parameters) throws ParamNotFoundException {
             super();
             this.f = f;
             this.param = param;
@@ -123,23 +129,25 @@ public class RequestParamSetter {
         }
 
         /**
-         * Convert the value string to the right type and set the attribute of instance
+         * Convert the value string to the right type and set the attribute of
+         * instance
          * with this value.
          * 
-         * @throws ConversionErrorException if the value is not convertible in the right
-         * type.
+         * @throws ConversionErrorException if the value is not convertible in
+         *         the right
+         *         type.
          */
-        private void performChangeInInstance(Object instance) throws ConversionErrorException {
+        private void performChangeInInstance(final Object instance) throws ConversionErrorException {
             try {
                 if (!f.isAccessible()) {
                     f.setAccessible(true);
                 }
-                Constructor<? extends Loader<?>> constructor = findLoaderType().getConstructor();
-                Loader<?> newInstance = constructor.newInstance();
-                Object convert = newInstance.fromString(value);
+                final Constructor<? extends Loader<?>> constructor = findLoaderType().getConstructor();
+                final Loader<?> newInstance = constructor.newInstance();
+                final Object convert = newInstance.fromString(value);
 
                 f.set(instance, convert);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new ConversionErrorException(error);
             }
         }
@@ -168,13 +176,15 @@ public class RequestParamSetter {
         }
 
         /**
-         * Find the name (and set it) of a parameter using annotation, and then find the
+         * Find the name (and set it) of a parameter using annotation, and then
+         * find the
          * value string the parameters map.
          * 
          * @return the value of the current field
-         * @throws ParamNotFoundException if the value is not found in the parameters map.
+         * @throws ParamNotFoundException if the value is not found in the
+         *         parameters map.
          */
-        private String findValueAndSetName(Map<String, String> parameters) throws ParamNotFoundException {
+        private String findValueAndSetName(final Map<String, String> parameters) throws ParamNotFoundException {
             String value;
             if (param.name().isEmpty()) {
                 name = f.getName();

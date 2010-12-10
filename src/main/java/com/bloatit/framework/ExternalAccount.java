@@ -10,11 +10,11 @@ public class ExternalAccount extends Account {
 
     private final DaoExternalAccount dao;
 
-    public ExternalAccount(Actor actor, AccountType type, String bankCode) {
+    public ExternalAccount(final Actor actor, final AccountType type, final String bankCode) {
         dao = DaoExternalAccount.createAndPersist(actor.getDao(), type, bankCode);
     }
 
-    protected ExternalAccount(DaoExternalAccount dao) {
+    protected ExternalAccount(final DaoExternalAccount dao) {
         super();
         this.dao = dao;
     }

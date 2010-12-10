@@ -39,7 +39,7 @@ public class DaoExternalAccount extends DaoAccount {
      * 
      * @see DaoExternalAccount#DaoExternalAccount(DaoActor, AccountType, String)
      */
-    public static DaoExternalAccount createAndPersist(DaoActor Actor, AccountType type, String bankCode) {
+    public static DaoExternalAccount createAndPersist(final DaoActor Actor, final AccountType type, final String bankCode) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoExternalAccount account = new DaoExternalAccount(Actor, type, bankCode);
         try {
@@ -56,13 +56,15 @@ public class DaoExternalAccount extends DaoAccount {
      * 
      * @param Actor is the owner of the account
      * @param type is the account type
-     * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE !!
+     * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE
+     *        !!
      * @throws NullPointerException if any of the parameter is null
-     * @throws anExceptionToDefine when we will check the validity of the IBAN we will
-     * have to throw an exception if its not valid.
+     * @throws anExceptionToDefine when we will check the validity of the IBAN
+     *         we will
+     *         have to throw an exception if its not valid.
      */
     // TODO verify the bank code validity
-    private DaoExternalAccount(DaoActor Actor, AccountType type, String bankCode) {
+    private DaoExternalAccount(final DaoActor Actor, final AccountType type, final String bankCode) {
         super(Actor);
         if (type == null || bankCode == null) {
             throw new NullPointerException();
@@ -93,14 +95,14 @@ public class DaoExternalAccount extends DaoAccount {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setBankCode(String bankCode) {
+    protected void setBankCode(final String bankCode) {
         this.bankCode = bankCode;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setType(AccountType type) {
+    protected void setType(final AccountType type) {
         this.type = type;
     }
 }

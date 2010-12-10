@@ -29,43 +29,46 @@ public class Image {
      * LOCAL : if BloatIt server store the image
      * DISTANT : if the image is stored on a distant webserver
      */
-    public enum ImageType{
+    public enum ImageType {
         LOCAL, DISTANT
     }
 
-    private ImageType imageType;
+    private final ImageType imageType;
 
     /**
      * the identifier of the image.
      * If image is local, the unique name of the image
      * If image is distant, the complete URI to the image
      */
-    private String identifier;
+    private final String identifier;
 
-    public Image( String identifier, ImageType imageType) {
+    public Image(final String identifier, final ImageType imageType) {
         this.imageType = imageType;
         this.identifier = identifier;
     }
 
     /**
      * @return
-     *      <i>true</i> if the image is locally stored on the BloatIt servers
-     *      <i>false</i> otherwise.
+     *         <i>true</i> if the image is locally stored on the BloatIt servers
+     *         <i>false</i> otherwise.
      */
-    public boolean isLocal(){
+    public boolean isLocal() {
         return this.imageType == ImageType.LOCAL;
     }
 
     /**
      * Gives the identifier of the image.
-     * - If the image is local, its identifier is its unique name on the bloatit server.
+     * - If the image is local, its identifier is its unique name on the bloatit
+     * server.
      * - If the image is distant, its identifier is its complet URI.
-     * <p> Should <i>always</i> be used <i>after</i> a call to isLocal.</p>
-     *
+     * <p>
+     * Should <i>always</i> be used <i>after</i> a call to isLocal.
+     * </p>
+     * 
      * @return the identifier of the image
      * @see Image#isLocal()
      */
-    public String getIdentifier(){
+    public String getIdentifier() {
         return this.identifier;
     }
 }

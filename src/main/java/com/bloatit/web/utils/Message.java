@@ -1,6 +1,5 @@
 package com.bloatit.web.utils;
 
-
 public class Message {
     public enum Level {
         ERROR, WARNING, INFO
@@ -10,11 +9,11 @@ public class Message {
         NOT_FOUND, CONVERSION_ERROR
     }
 
-    private Level level;
-    private String Message;
-    private What what;
+    private final Level level;
+    private final String Message;
+    private final What what;
 
-    public Message(Level level, What what, String message) {
+    public Message(final Level level, final What what, final String message) {
         super();
         this.level = level;
         Message = message;

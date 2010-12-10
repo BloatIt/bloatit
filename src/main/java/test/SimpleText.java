@@ -1,6 +1,5 @@
 package test;
 
-
 public abstract class SimpleText implements Text {
 
     @Override

@@ -43,9 +43,9 @@ public class DaoTranslation extends DaoKudosable {
      * @param text
      * @throws NullPointerException if any of the field is null
      */
-    public DaoTranslation(DaoMember member, DaoDescription description, Locale locale, String title, String text) {
+    public DaoTranslation(final DaoMember member, final DaoDescription description, final Locale locale, final String title, final String text) {
         super(member);
-        if(description == null || locale == null || title == null || text == null){
+        if (description == null || locale == null || title == null || text == null) {
             throw new NullPointerException();
         }
         this.locale = locale;
@@ -80,21 +80,21 @@ public class DaoTranslation extends DaoKudosable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setTitle(String title) {
+    protected void setTitle(final String title) {
         this.title = title;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setLocale(Locale locale) {
+    protected void setLocale(final Locale locale) {
         this.locale = locale;
     }
 
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setText(String text) {
+    protected void setText(final String text) {
         this.text = text;
     }
 
@@ -108,7 +108,7 @@ public class DaoTranslation extends DaoKudosable {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setDescription(DaoDescription description) {
+    protected void setDescription(final DaoDescription description) {
         this.description = description;
     }
 }

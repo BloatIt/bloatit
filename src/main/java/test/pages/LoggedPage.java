@@ -19,38 +19,36 @@
 
 package test.pages;
 
-
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
 import test.html.HtmlElement;
 import test.pages.master.Page;
 
-
 public abstract class LoggedPage extends Page {
 
-    protected LoggedPage(Request request) throws RedirectException {
+    protected LoggedPage(final Request request) throws RedirectException {
         super(request);
 
     }
 
     @Override
     public String process() throws RedirectException {
-        String retValue = super.process();
+        final String retValue = super.process();
 
-
-        if(session.isLogged()) {
+        if (session.isLogged()) {
             add(generateRestrictedContent());
         } else {
-            
+
             session.notifyBad(getRefusalReason());
             session.setTargetPage(new UrlBuilder(this).buildUrl());
-            throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());   
+            throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
         }
         return retValue;
     }
 
     public abstract HtmlElement generateRestrictedContent();
+
     public abstract String getRefusalReason();
 
 }

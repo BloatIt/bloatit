@@ -20,11 +20,11 @@
 package test;
 
 /**
- *
+ * 
  * @author fred
  */
 public interface Linkable {
 
     public String process() throws RedirectException;
-    
+
 }

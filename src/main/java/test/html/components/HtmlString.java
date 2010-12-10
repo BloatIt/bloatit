@@ -19,10 +19,11 @@
 
 package test.html.components;
 
+import test.html.HtmlTools;
+
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Translatable;
 import com.bloatit.web.utils.TranslationManipulator;
-import test.html.HtmlTools;
 
 public class HtmlString {
 
@@ -32,26 +33,26 @@ public class HtmlString {
     public HtmlString() {
     }
 
-    public HtmlString(Session session) {
+    public HtmlString(final Session session) {
         this.session = session;
     }
 
-    public HtmlString add(String string) {
+    public HtmlString add(final String string) {
         stringBuilder.append(string);
         return this;
     }
 
-    public HtmlString secure(String string) {
+    public HtmlString secure(final String string) {
         stringBuilder.append(HtmlTools.escapeUrlString(string));
         return this;
     }
 
-    public HtmlString add(Translatable translatable) {
+    public HtmlString add(final Translatable translatable) {
         final TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
         return add(tm.tr(translatable).getText()); // TODO correct me !
     }
 
-    public HtmlString secure(Translatable translatable) {
+    public HtmlString secure(final Translatable translatable) {
         final TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
         return secure(tm.tr(translatable).getText()); // TODO correct me !
     }
@@ -61,7 +62,7 @@ public class HtmlString {
         return stringBuilder.toString();
     }
 
-    public static String Translate(Session session, Translatable text) {
+    public static String Translate(final Session session, final Translatable text) {
         final HtmlString string = new HtmlString(session);
         string.add(text);
         return string.toString();

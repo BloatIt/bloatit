@@ -19,11 +19,6 @@
 
 package test.pages;
 
-
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Demand;
-import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.utils.PageComponent;
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
@@ -35,27 +30,33 @@ import test.html.components.standard.HtmlTitleBlock;
 import test.pages.demand.DemandPage;
 import test.pages.master.Page;
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Demand;
+import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.utils.PageComponent;
+
 public class DemandsPage extends Page {
 
     @PageComponent
     HtmlPagedList<Demand> pagedMemberList;
 
-    public DemandsPage(Request request) throws RedirectException {
+    public DemandsPage(final Request request) throws RedirectException {
         super(request);
         generateContent();
     }
+
     private void generateContent() {
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Demands list"));
 
         final PageIterable<Demand> demandList = DemandManager.getDemands();
 
-        HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
+        final HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
             UrlBuilder demandPageUrlBuilder = new UrlBuilder(DemandPage.class);
 
             @Override
-            public HtmlNode generate(Demand demand) {
+            public HtmlNode generate(final Demand demand) {
                 demandPageUrlBuilder.addParameter("idea", demand);
                 return new HtmlListItem(demandPageUrlBuilder.getHtmlLink(demand.getTitle()));
             }

@@ -8,12 +8,12 @@ import com.bloatit.model.data.DaoMember;
 
 public class MemberList extends ListBinder<Member, DaoMember> {
 
-    public MemberList(PageIterable<DaoMember> daoCollection) {
+    public MemberList(final PageIterable<DaoMember> daoCollection) {
         super(daoCollection);
     }
 
     @Override
-    protected Iterator<Member> createFromDaoIterator(Iterator<DaoMember> dao) {
+    protected Iterator<Member> createFromDaoIterator(final Iterator<DaoMember> dao) {
         return new MemberIterator(dao);
     }
 

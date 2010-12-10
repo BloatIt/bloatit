@@ -19,15 +19,14 @@
 package test.pages.demand;
 
 import test.Context;
+import test.Request;
 import test.html.HtmlElement;
 import test.html.HtmlNode;
+import test.html.components.advanced.HtmlPagedList;
 import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlListItem;
-import test.html.components.advanced.HtmlPagedList;
 import test.html.components.standard.HtmlRenderer;
 import test.html.components.standard.HtmlText;
-
-import test.Request;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Contribution;
@@ -41,9 +40,9 @@ public class DemandContributorsComponent extends HtmlDiv {
     private HtmlText contributionMax;
     private HtmlText contributionMean;
     private PageIterable<Contribution> contributions;
-    private Demand demand;
+    private final Demand demand;
 
-    public DemandContributorsComponent(Request request, Demand demand) {
+    public DemandContributorsComponent(final Request request, final Demand demand) {
         super();
         this.demand = demand;
         extractData(request);
@@ -51,42 +50,41 @@ public class DemandContributorsComponent extends HtmlDiv {
 
     }
 
-    protected HtmlElement produce(Request request) {
-        Session session = Context.getSession();
-        HtmlDiv contributorsBlock = new HtmlDiv("contributors_block");
+    protected HtmlElement produce(final Request request) {
+        final Session session = Context.getSession();
+        final HtmlDiv contributorsBlock = new HtmlDiv("contributors_block");
         {
 
-            //Display contribution count
-            contributorsBlock.add(new HtmlText("" + contributionCount + session .tr("&nbsp;contributions")));
+            // Display contribution count
+            contributorsBlock.add(new HtmlText("" + contributionCount + session.tr("&nbsp;contributions")));
 
-
-            //Display contribution stats
+            // Display contribution stats
             if (contributionCount > 0) {
                 contributorsBlock.add(contributionMin);
                 contributorsBlock.add(contributionMax);
                 contributorsBlock.add(contributionMean);
             }
 
-            //Create contribution renderer
-            HtmlRenderer<Contribution> contributionRenderer = generateContributionRenderer();
+            // Create contribution renderer
+            final HtmlRenderer<Contribution> contributionRenderer = generateContributionRenderer();
 
-
-            //Create paged list
-            HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer, contributions, request, session);
+            // Create paged list
+            final HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer,
+                    contributions, request, session);
             contributorsBlock.add(participationsList);
 
         }
         return contributorsBlock;
     }
 
-    protected void extractData(Request request) {
+    protected void extractData(final Request request) {
 
-        Session session = Context.getSession();
+        final Session session = Context.getSession();
         contributionCount = demand.getContributions().size();
 
-        float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
-        String contributionMinValue = demand.getContributionMin().toPlainString();
-        String contributionMaxValue = demand.getContributionMax().toPlainString();
+        final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
+        final String contributionMinValue = demand.getContributionMin().toPlainString();
+        final String contributionMaxValue = demand.getContributionMax().toPlainString();
 
         contributionMin = new HtmlText(session.tr("Min:&nbsp;") + contributionMinValue);
         contributionMax = new HtmlText(session.tr("Max:&nbsp;") + contributionMaxValue);
@@ -99,8 +97,9 @@ public class DemandContributorsComponent extends HtmlDiv {
         return new HtmlRenderer<Contribution>() {
 
             @Override
-            public HtmlNode generate(Contribution item) {
-                String itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " " + item.getCreationDate().toString();
+            public HtmlNode generate(final Contribution item) {
+                final String itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " "
+                        + item.getCreationDate().toString();
                 return new HtmlListItem(itemString);
             }
         };

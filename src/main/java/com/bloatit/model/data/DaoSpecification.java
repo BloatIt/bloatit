@@ -8,10 +8,12 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
 /**
- * A specification is some resources added to a demand to add some precisions to the
+ * A specification is some resources added to a demand to add some precisions to
+ * the
  * description. The specification are not translatable.
  * 
- * The specification will probably change a lot ... We will have to implement some version
+ * The specification will probably change a lot ... We will have to implement
+ * some version
  * controling.
  */
 @Entity
@@ -29,10 +31,11 @@ public class DaoSpecification extends DaoUserContent {
      * 
      * @param member is the author of the specification.
      * @param content is the content of the specification ...
-     * @param demand yep, this is the demand on which the specification apply. Whhoohooo !
+     * @param demand yep, this is the demand on which the specification apply.
+     *        Whhoohooo !
      * @throws NullPointerException if member or demand are null.
      */
-    public DaoSpecification(DaoMember member, String content, DaoDemand demand) {
+    public DaoSpecification(final DaoMember member, final String content, final DaoDemand demand) {
         // TODO test me more.
         super(member);
         if (demand == null) {
@@ -46,7 +49,7 @@ public class DaoSpecification extends DaoUserContent {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(final String content) {
         this.content = content;
     }
 
@@ -71,7 +74,7 @@ public class DaoSpecification extends DaoUserContent {
     /**
      * This is only for Hibernate. You should never use it.
      */
-    protected void setDemand(DaoDemand Demand) {
+    protected void setDemand(final DaoDemand Demand) {
         demand = Demand;
     }
 

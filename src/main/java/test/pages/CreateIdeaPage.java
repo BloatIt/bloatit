@@ -18,19 +18,19 @@
  */
 package test.pages;
 
-
-import com.bloatit.framework.managers.DemandManager;
 import test.RedirectException;
 import test.Request;
 import test.html.HtmlElement;
 import test.html.components.standard.HtmlDiv;
 
+import com.bloatit.framework.managers.DemandManager;
+
 public class CreateIdeaPage extends LoggedPage {
 
-    public CreateIdeaPage(Request request) throws RedirectException {
+    public CreateIdeaPage(final Request request) throws RedirectException {
         super(request);
     }
-    
+
     @Override
     protected String getTitle() {
         return "Create new idea";
@@ -43,16 +43,15 @@ public class CreateIdeaPage extends LoggedPage {
 
     @Override
     public HtmlElement generateRestrictedContent() {
-         if(DemandManager.canCreate(session.getAuthToken())) {
-                return generateDemandCreationForm();
-            } else {
-                return generateBadRightError();
-            }
+        if (DemandManager.canCreate(session.getAuthToken())) {
+            return generateDemandCreationForm();
+        } else {
+            return generateBadRightError();
+        }
     }
 
     private HtmlElement generateDemandCreationForm() {
 
-        
         final HtmlDiv group = new HtmlDiv();
 
         return group;

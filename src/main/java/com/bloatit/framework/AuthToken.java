@@ -31,7 +31,7 @@ public class AuthToken {
     private final Member member;
     private final UUID key;
 
-    public AuthToken(String login, String password) throws NotFoundException {
+    public AuthToken(final String login, final String password) throws NotFoundException {
         final Member tmp = MemberManager.getByLoginAndPassword(login, password);
         if (tmp == null) {
             Log.framework().warn("Authentication error " + login + " " + password);

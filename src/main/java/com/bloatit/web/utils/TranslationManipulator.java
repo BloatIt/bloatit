@@ -30,7 +30,7 @@ import com.bloatit.web.server.Language;
 public class TranslationManipulator {
     private final List<Language> preferredLocales;
 
-    public TranslationManipulator(List<Language> preferredLocales) {
+    public TranslationManipulator(final List<Language> preferredLocales) {
         this.preferredLocales = preferredLocales;
     }
 
@@ -39,7 +39,7 @@ public class TranslationManipulator {
      * 
      * @return the element in the good language or null if there is no match
      */
-    public Translation getPreferedTranslation(Translatable toTranslate) {
+    public Translation getPreferedTranslation(final Translatable toTranslate) {
         for (final Language lang : preferredLocales) {
             if (toTranslate.containsLang(lang)) {
                 return toTranslate.getTranslationForLang(lang);
@@ -53,7 +53,7 @@ public class TranslationManipulator {
      * 
      * @see TranslationManipulator.getPreferedTranslation()
      */
-    public Translation tr(Translatable toTranslate) {
+    public Translation tr(final Translatable toTranslate) {
         return getPreferedTranslation(toTranslate);
     }
 }

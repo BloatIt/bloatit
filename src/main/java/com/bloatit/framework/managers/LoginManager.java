@@ -29,7 +29,7 @@ public class LoginManager {
 
     private static final HashMap<UUID, AuthToken> authTokenList = new HashMap<UUID, AuthToken>();
 
-    public static AuthToken loginByPassword(String login, String password) {
+    public static AuthToken loginByPassword(final String login, final String password) {
         try {
             final AuthToken token = new AuthToken(login, password);
             authTokenList.put(token.getKey(), token);
@@ -39,7 +39,7 @@ public class LoginManager {
         }
     }
 
-    public static AuthToken getByKey(String key) {
+    public static AuthToken getByKey(final String key) {
         if (authTokenList.containsKey(key)) {
             return authTokenList.get(key);
         } else {

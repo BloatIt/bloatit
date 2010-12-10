@@ -16,22 +16,23 @@
  */
 package test.html.components.advanced;
 
-import test.html.components.standard.HtmlText;
-import test.html.components.standard.HtmlDiv;
-import com.bloatit.framework.Kudosable;
-import com.bloatit.web.server.Session;
 import test.UrlBuilder;
 import test.actions.LogoutAction;
 import test.html.HtmlTools;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlLink;
+import test.html.components.standard.HtmlText;
+
+import com.bloatit.framework.Kudosable;
+import com.bloatit.web.server.Session;
 
 public class HtmlKudoBox extends HtmlDiv {
 
-    public HtmlKudoBox(Kudosable kudosable, Session session) {
+    public HtmlKudoBox(final Kudosable kudosable, final Session session) {
         super("kudo_box");
 
-        HtmlLink kudoUpLink = new UrlBuilder(LogoutAction.class).getHtmlLink("kudo up");
-        HtmlLink kudoDownLink = new UrlBuilder(LogoutAction.class).getHtmlLink("kudo down");
+        final HtmlLink kudoUpLink = new UrlBuilder(LogoutAction.class).getHtmlLink("kudo up");
+        final HtmlLink kudoDownLink = new UrlBuilder(LogoutAction.class).getHtmlLink("kudo down");
 
         add(new HtmlDiv("kudo_box_up").add(kudoUpLink));
         add(new HtmlText(HtmlTools.compressKarma(kudosable.getPopularity()), "kudo_box_score"));

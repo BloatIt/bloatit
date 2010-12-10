@@ -20,7 +20,7 @@ import test.html.HtmlElement;
 
 public class HtmlTitle extends HtmlElement {
 
-    public HtmlTitle(String title) {
+    public HtmlTitle(final String title) {
         super("h1");
         addText(title);
     }
@@ -28,7 +28,8 @@ public class HtmlTitle extends HtmlElement {
     // @Override
     // public void generate(HtmlResult htmlResult) {
     // final String titleNum = htmlResult.pushTitle();
-    // htmlResult.write("<h" + titleNum + " class=\"" + cssClass + "\">" + title + "</h" +
+    // htmlResult.write("<h" + titleNum + " class=\"" + cssClass + "\">" + title
+    // + "</h" +
     // titleNum + ">");
     // super.generate(htmlResult);
     // htmlResult.popTitle();

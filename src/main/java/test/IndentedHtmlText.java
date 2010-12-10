@@ -9,7 +9,7 @@ public abstract class IndentedHtmlText implements Text {
         this("  ", "\n");
     }
 
-    private IndentedHtmlText(String indentSeparator, String lineSeparator) {
+    private IndentedHtmlText(final String indentSeparator, final String lineSeparator) {
         this.indentSeparator = indentSeparator;
         this.lineSeparator = lineSeparator;
         indentCount = 0;
@@ -17,11 +17,13 @@ public abstract class IndentedHtmlText implements Text {
 
     protected abstract void append(String text);
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see test.IndentableText#write(java.lang.String)
      */
     @Override
-    public void writeLine(String newText) {
+    public void writeLine(final String newText) {
         for (int i = 0; i < indentCount; i++) {
             append(indentSeparator);
         }
@@ -29,7 +31,9 @@ public abstract class IndentedHtmlText implements Text {
         append(lineSeparator);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see test.IndentableText#indent()
      */
     @Override
@@ -37,7 +41,9 @@ public abstract class IndentedHtmlText implements Text {
         indentCount += 1;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see test.IndentableText#unindent()
      */
     @Override

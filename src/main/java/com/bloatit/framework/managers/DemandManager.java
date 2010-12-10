@@ -31,7 +31,7 @@ public class DemandManager {
         return new DemandList(DBRequests.getAll(DaoDemand.class));
     }
 
-    public static Demand getDemandById(Integer id) {
+    public static Demand getDemandById(final Integer id) {
         return Demand.create(DBRequests.getById(DaoDemand.class, id));
     }
 
@@ -39,12 +39,12 @@ public class DemandManager {
         return DBRequests.count(DaoDemand.class);
     }
 
-    public static PageIterable<Demand> search(String searchString) {
+    public static PageIterable<Demand> search(final String searchString) {
         return new DemandList(DBRequests.searchDemands(searchString));
     }
 
-    public static boolean canCreate(AuthToken authToken) {
-        //TODO: set right right
+    public static boolean canCreate(final AuthToken authToken) {
+        // TODO: set right right
         return true;
     }
 

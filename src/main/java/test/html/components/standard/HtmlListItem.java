@@ -14,17 +14,17 @@ import test.pages.HtmlContainerElement;
  */
 public class HtmlListItem extends HtmlContainerElement {
 
-    public HtmlListItem(HtmlNode node) {
+    public HtmlListItem(final HtmlNode node) {
         super("li");
         add(node);
     }
 
-    public HtmlListItem(String cssClass, HtmlNode node) {
+    public HtmlListItem(final String cssClass, final HtmlNode node) {
         this(node);
         addAttribute("class", cssClass);
     }
 
-    public HtmlListItem(String content) {
+    public HtmlListItem(final String content) {
         this(new HtmlText(content));
     }
 }

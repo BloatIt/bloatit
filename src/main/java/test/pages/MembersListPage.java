@@ -18,12 +18,7 @@
  */
 package test.pages;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Member;
-import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.web.utils.PageComponent;
 import test.RedirectException;
-
 import test.Request;
 import test.UrlBuilder;
 import test.html.HtmlNode;
@@ -36,12 +31,17 @@ import test.html.components.standard.HtmlRenderer;
 import test.html.components.standard.HtmlTitleBlock;
 import test.pages.master.Page;
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Member;
+import com.bloatit.framework.managers.MemberManager;
+import com.bloatit.web.utils.PageComponent;
+
 public class MembersListPage extends Page {
 
     @PageComponent
     private HtmlPagedList<Member> pagedMemberList;
 
-    public MembersListPage(Request request) throws RedirectException {
+    public MembersListPage(final Request request) throws RedirectException {
         super(request);
         generateContent();
     }
@@ -52,12 +52,12 @@ public class MembersListPage extends Page {
 
         final PageIterable<Member> memberList = MemberManager.getMembers();
 
-        HtmlRenderer<Member> memberItemRenderer = new HtmlRenderer<Member>() {
+        final HtmlRenderer<Member> memberItemRenderer = new HtmlRenderer<Member>() {
 
-            private UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
+            private final UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
 
             @Override
-            public HtmlNode generate(Member member) {
+            public HtmlNode generate(final Member member) {
                 urlBuilder.addParameter("member", member);
                 final HtmlLink htmlLink = urlBuilder.getHtmlLink(member.getFullname());
                 final HtmlText htmlKarma = new HtmlText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
@@ -65,7 +65,7 @@ public class MembersListPage extends Page {
             }
         };
 
-        //TODO: avoid conflict
+        // TODO: avoid conflict
         pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, request, session);
 
         pageTitle.add(pagedMemberList);
@@ -73,7 +73,6 @@ public class MembersListPage extends Page {
         add(pageTitle);
 
     }
-
 
     @Override
     protected String getTitle() {

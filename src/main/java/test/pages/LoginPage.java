@@ -18,7 +18,6 @@
  */
 package test.pages;
 
-
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
@@ -34,13 +33,13 @@ import test.pages.master.Page;
 
 public class LoginPage extends Page {
 
-    public LoginPage(Request request) throws RedirectException {
+    public LoginPage(final Request request) throws RedirectException {
         super(request);
         generateContent();
     }
 
     private void generateContent() {
-        
+
         final HtmlForm loginForm = new HtmlForm(new UrlBuilder(LoginAction.class).buildUrl());
         final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE);
         final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.LOGIN_CODE);
@@ -63,7 +62,6 @@ public class LoginPage extends Page {
 
         add(group);
     }
-
 
     @Override
     protected String getTitle() {

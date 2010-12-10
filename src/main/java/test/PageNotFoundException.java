@@ -19,15 +19,17 @@
 
 package test;
 
-import test.RedirectException;
 import test.pages.PageNotFound;
 
-
 public class PageNotFoundException extends RedirectException {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 7896870310340339228L;
 
     public PageNotFoundException() {
         super(new UrlBuilder(PageNotFound.class).buildUrl());
     }
-
 
 }

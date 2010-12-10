@@ -12,12 +12,12 @@ public class Contribution extends UserContent {
 
     private final DaoContribution dao;
 
-    public Contribution(DaoContribution dao) {
+    public Contribution(final DaoContribution dao) {
         super();
         this.dao = dao;
     }
 
-    public void accept(Offer Offer) {
+    public void accept(final Offer Offer) {
     }
 
     public void cancel() {

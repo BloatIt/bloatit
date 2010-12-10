@@ -21,4 +21,6 @@ package com.bloatit.web.utils;
 
 public class DateParsingException extends Exception {
 
+    private static final long serialVersionUID = -5521307570732803960L;
+
 }

@@ -19,8 +19,6 @@
 
 package test.pages;
 
-
-import com.bloatit.framework.Member;
 import test.RedirectException;
 import test.Request;
 import test.html.HtmlText;
@@ -28,9 +26,11 @@ import test.html.components.standard.HtmlTitle;
 import test.html.components.standard.HtmlTitleBlock;
 import test.pages.master.Page;
 
+import com.bloatit.framework.Member;
+
 public class MyAccountPage extends Page {
 
-    public MyAccountPage(Request request) throws RedirectException {
+    public MyAccountPage(final Request request) throws RedirectException {
         super(request);
         generateContent();
     }

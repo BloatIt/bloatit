@@ -19,10 +19,6 @@
 
 package test.pages;
 
-
-import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.web.utils.PageName;
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
@@ -34,6 +30,10 @@ import test.html.components.standard.form.HtmlForm;
 import test.html.components.standard.form.HtmlTextField;
 import test.pages.master.Page;
 
+import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.managers.MemberManager;
+import com.bloatit.web.utils.PageName;
+
 @PageName("index")
 public class IndexPage extends Page {
 
@@ -44,10 +44,10 @@ public class IndexPage extends Page {
 
     private void generateContent() {
 
-        HtmlDiv statsBlock = new HtmlDiv("index_stats_block");
+        final HtmlDiv statsBlock = new HtmlDiv("index_stats_block");
         generateStatsBlock(statsBlock);
 
-        HtmlDiv dualColumnBlock = new HtmlDiv("dual_column_block");
+        final HtmlDiv dualColumnBlock = new HtmlDiv("dual_column_block");
         generateDualColumnBlock(dualColumnBlock);
 
         add(generateSearchBlock());
@@ -68,46 +68,45 @@ public class IndexPage extends Page {
 
     private HtmlDiv generateSearchBlock() {
 
-        HtmlDiv searchBlock = new HtmlDiv("index_search_block");
+        final HtmlDiv searchBlock = new HtmlDiv("index_search_block");
 
-        HtmlForm searchForm = new HtmlForm(new UrlBuilder(GlobalSearchPage.class).buildUrl() , HtmlForm.Method.GET);
+        final HtmlForm searchForm = new HtmlForm(new UrlBuilder(GlobalSearchPage.class).buildUrl(), HtmlForm.Method.GET);
 
-        HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
+        final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
-        HtmlButton searchButton = new HtmlButton(session.tr("Search"));
+        final HtmlButton searchButton = new HtmlButton(session.tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);
         return searchBlock;
     }
 
-    private void generateStatsBlock(HtmlDiv statsBlock) {
-        statsBlock.add(new HtmlText("" + DemandManager.getDemandsCount() + " demands, " + MemberManager.getMembersCount()
-                + " members..."));
+    private void generateStatsBlock(final HtmlDiv statsBlock) {
+        statsBlock.add(new HtmlText("" + DemandManager.getDemandsCount() + " demands, " + MemberManager.getMembersCount() + " members..."));
     }
 
-    private void generateDualColumnBlock(HtmlDiv dualColumnBlock) {
-        
-        HtmlDiv hightlightDemandsBlock = new HtmlDiv("index_hightlight_demands_block");
+    private void generateDualColumnBlock(final HtmlDiv dualColumnBlock) {
+
+        final HtmlDiv hightlightDemandsBlock = new HtmlDiv("index_hightlight_demands_block");
         generateHightlightDemandsBlock(hightlightDemandsBlock);
 
         dualColumnBlock.add(generateDescriptionBlock());
         dualColumnBlock.add(hightlightDemandsBlock);
     }
 
-    private void generateHightlightDemandsBlock(HtmlDiv hightlightDemandsBlock) {
+    private void generateHightlightDemandsBlock(final HtmlDiv hightlightDemandsBlock) {
 
     }
 
     private HtmlDiv generateDescriptionBlock() {
 
-        HtmlDiv descriptionBlock = new HtmlDiv("index_description_block");
+        final HtmlDiv descriptionBlock = new HtmlDiv("index_description_block");
 
-        String description = session
+        final String description = session
                 .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlText(description));
-        
-        HtmlLink createIdeaPageLink = new HtmlLink(new UrlBuilder(CreateIdeaPage.class).buildUrl(), session.tr("Create a new idea"));
+
+        final HtmlLink createIdeaPageLink = new HtmlLink(new UrlBuilder(CreateIdeaPage.class).buildUrl(), session.tr("Create a new idea"));
         descriptionBlock.add(createIdeaPageLink);
 
         return descriptionBlock;

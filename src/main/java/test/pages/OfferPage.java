@@ -22,10 +22,6 @@ package test.pages;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.bloatit.framework.Demand;
-import com.bloatit.web.utils.BloatitDate;
-import com.bloatit.web.utils.RequestParam;
-import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
@@ -39,10 +35,15 @@ import test.html.components.standard.form.HtmlForm;
 import test.html.components.standard.form.HtmlTextArea;
 import test.html.components.standard.form.HtmlTextField;
 
+import com.bloatit.framework.Demand;
+import com.bloatit.web.utils.BloatitDate;
+import com.bloatit.web.utils.BloatitLoaders.DemandLoader;
+import com.bloatit.web.utils.RequestParam;
+
 public class OfferPage extends LoggedPage {
 
     @RequestParam(name = "idea", loader = DemandLoader.class)
-    private Demand targetIdea = null;
+    private final Demand targetIdea = null;
 
     @RequestParam(name = "price")
     private BigDecimal price;
@@ -56,12 +57,11 @@ public class OfferPage extends LoggedPage {
     @RequestParam(name = "description")
     private String description;
 
-    public OfferPage(Request request) throws RedirectException {
+    public OfferPage(final Request request) throws RedirectException {
         super(request);
         this.request.setValues(this);
-        addNotifications(request.getMessages());      
+        addNotifications(request.getMessages());
     }
-
 
     @Override
     protected String getTitle() {
@@ -81,7 +81,6 @@ public class OfferPage extends LoggedPage {
     @Override
     public HtmlElement generateRestrictedContent() {
 
-       
         // TODO : remove and replace with parameter loading machanism
         /*
          * int ideaId = -1;
@@ -109,45 +108,43 @@ public class OfferPage extends LoggedPage {
          */
         // !TODO
 
-        HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"));
+        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"));
 
         // Create offer form
-        UrlBuilder offerActionUrlBuilder = new UrlBuilder(OfferAction.class);
+        final UrlBuilder offerActionUrlBuilder = new UrlBuilder(OfferAction.class);
         offerActionUrlBuilder.addParameter("idea", targetIdea);
-        HtmlForm offerForm = new HtmlForm(offerActionUrlBuilder.buildUrl());
-        
+        final HtmlForm offerForm = new HtmlForm(offerActionUrlBuilder.buildUrl());
 
         // Idea title
-        HtmlText t = new HtmlText(this.targetIdea.getTitle());
+        final HtmlText t = new HtmlText(this.targetIdea.getTitle());
         offerPageContainer.add(t);
 
-
         // Title field
-        HtmlTextField titleField = new HtmlTextField(this.title); // TODO
+        final HtmlTextField titleField = new HtmlTextField(this.title); // TODO
         titleField.setLabel(this.session.tr("Add a title to the offer : "));
         titleField.setName(OfferAction.TITLE_CODE);
         offerForm.add(titleField);
 
         // Price field
-        HtmlTextField priceField = new HtmlTextField(price == null ? "" : price.toPlainString()); // TODO
+        final HtmlTextField priceField = new HtmlTextField(price == null ? "" : price.toPlainString()); // TODO
         priceField.setLabel(this.session.tr("Offer price : "));
         priceField.setName(OfferAction.PRICE_CODE);
         offerForm.add(priceField);
 
-        //Date field
-        BloatitDate bd = new BloatitDate(this.expiryDate, session.getLanguage().getLocale());
-        //TODO : create a constructor with the language
-        HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE);
+        // Date field
+        final BloatitDate bd = new BloatitDate(this.expiryDate, session.getLanguage().getLocale());
+        // TODO : create a constructor with the language
+        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE);
         dateField.setDefaultValue(bd);
         dateField.setLabel(this.session.tr("Expiration date : "));
         offerForm.add(dateField);
 
-        HtmlTextArea descriptionField = new HtmlTextArea(this.description); // TODO
+        final HtmlTextArea descriptionField = new HtmlTextArea(this.description); // TODO
         descriptionField.setLabel(this.session.tr("Enter the description of the offer : "));
         descriptionField.setName(OfferAction.DESCRIPTION_CODE);
         offerForm.add(descriptionField);
 
-        HtmlButton offerButton = new HtmlButton(session.tr("Make an offer"));
+        final HtmlButton offerButton = new HtmlButton(session.tr("Make an offer"));
         offerForm.add(offerButton);
 
         offerPageContainer.add(offerForm);

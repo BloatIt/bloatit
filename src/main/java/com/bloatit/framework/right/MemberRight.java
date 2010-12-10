@@ -6,7 +6,7 @@ public class MemberRight extends RightManager {
 
     public static class GroupList extends Accessor {
         @Override
-        protected boolean can(EnumSet<Role> role, Action action) {
+        protected boolean can(final EnumSet<Role> role, final Action action) {
             return canRead(action) || ownerCanWrite(role, action) || ownerCanDelete(role, action) || modoCanWrite(role, action)
                     || modoCanDelete(role, action);
         }
@@ -16,7 +16,7 @@ public class MemberRight extends RightManager {
     // write to create a new
     public static class InviteInGroup extends Accessor {
         @Override
-        protected boolean can(EnumSet<Role> role, Action action) {
+        protected boolean can(final EnumSet<Role> role, final Action action) {
             return role.contains(Role.IN_GROUP) && action == Action.WRITE || ownerCanRead(role, action);
         }
     }

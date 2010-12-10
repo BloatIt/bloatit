@@ -20,6 +20,7 @@ package test.html.components.standard.form;
 /**
  * A class used to create input fields of password type
  * The result will be :
+ * 
  * <pre>
  * <p>
  *      <label for="...">plop</label>
@@ -29,16 +30,16 @@ package test.html.components.standard.form;
  */
 public class HtmlPasswordField extends HtmlFormField<String> {
 
-    public HtmlPasswordField(String name) {
+    public HtmlPasswordField(final String name) {
         super(new HtmlSimpleInput("password"), name);
     }
 
-    public HtmlPasswordField(String name, String label) {
+    public HtmlPasswordField(final String name, final String label) {
         super(new HtmlSimpleInput("password"), name, label);
     }
 
     @Override
-    protected void doSetDefaultValue(String value) {
+    protected void doSetDefaultValue(final String value) {
         this.element.addAttribute("value", value);
     }
 }

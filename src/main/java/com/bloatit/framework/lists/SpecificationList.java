@@ -8,12 +8,12 @@ import com.bloatit.model.data.DaoSpecification;
 
 public class SpecificationList extends ListBinder<Specification, DaoSpecification> {
 
-    public SpecificationList(PageIterable<DaoSpecification> daoCollection) {
+    public SpecificationList(final PageIterable<DaoSpecification> daoCollection) {
         super(daoCollection);
     }
 
     @Override
-    protected Iterator<Specification> createFromDaoIterator(Iterator<DaoSpecification> dao) {
+    protected Iterator<Specification> createFromDaoIterator(final Iterator<DaoSpecification> dao) {
         return new SpecificationIterator(dao);
     }
 

@@ -23,13 +23,13 @@ import test.pages.HtmlContainerElement;
 
 public class HtmlLink extends HtmlContainerElement {
 
-    public HtmlLink(String link, HtmlElement element) {
+    public HtmlLink(final String link, final HtmlElement element) {
         super("a");
         addAttribute("href", link);
         add(element);
     }
-    
-    public HtmlLink(String link, String element) {
+
+    public HtmlLink(final String link, final String element) {
         super("a");
         addAttribute("href", link);
         add(new HtmlText(element));

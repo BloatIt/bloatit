@@ -28,7 +28,7 @@ public class Notification {
         GOOD, BAD, ERROR
     }
 
-    public Notification(String message, Type type) {
+    public Notification(final String message, final Type type) {
         this.message = message;
         this.type = type;
     }

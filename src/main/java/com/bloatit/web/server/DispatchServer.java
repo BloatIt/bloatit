@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import test.Action;
 import test.Context;
 import test.HttpResponse;
@@ -75,7 +76,6 @@ public class DispatchServer {
             }
         };
 
-
         actionMap = new HashMap<String, Class<? extends Action>>() {
 
             private static final long serialVersionUID = -1990148150288171599L;
@@ -95,13 +95,11 @@ public class DispatchServer {
     private final Map<String, String> query;
     private final Map<String, String> post;
 
-    public DispatchServer(
-            Map<String, String> query,
-            Map<String, String> post,
-            Map<String, String> cookies,
-            List<String> preferred_langs) {
+    public DispatchServer(final Map<String, String> query,
+                          final Map<String, String> post,
+                          final Map<String, String> cookies,
+                          final List<String> preferred_langs) {
         this.cookies = cookies;
-
 
         this.preferred_langs = preferred_langs;
         session = findSession(query);
@@ -111,14 +109,14 @@ public class DispatchServer {
         this.post = post;
     }
 
-    public void process(HttpResponse response) throws IOException {
+    public void process(final HttpResponse response) throws IOException {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
         final String linkable = query.get("page");
         final QueryString queryString = parseQueryString(linkable);
         final Map<String, String> parameters = mergePostGet(queryString.parameters, post, query);
 
-        Request request = new Request(linkable, parameters);
+        final Request request = new Request(linkable, parameters);
 
         try {
             if (pageMap.containsKey(linkable)) {
@@ -128,24 +126,24 @@ public class DispatchServer {
                 response.writePage(page);
 
             } else if (actionMap.containsKey(linkable)) {
-                Action action = actionMap.get(linkable).getConstructor(Request.class).newInstance(request);
+                final Action action = actionMap.get(linkable).getConstructor(Request.class).newInstance(request);
                 response.writeRedirect(action.process());
 
             } else {
             }
-        } catch (RedirectException ex) {
+        } catch (final RedirectException ex) {
             response.writeRedirect(ex.getUrl());
-        } catch (InstantiationException ex) {
+        } catch (final InstantiationException ex) {
             Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (final IllegalAccessException ex) {
             Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
+        } catch (final IllegalArgumentException ex) {
             Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
+        } catch (final InvocationTargetException ex) {
             Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchMethodException ex) {
+        } catch (final NoSuchMethodException ex) {
             Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
+        } catch (final SecurityException ex) {
             Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -160,58 +158,38 @@ public class DispatchServer {
      * @param query the complet query string
      * @return the session matching the user
      */
-    private Session findSession(Map<String, String> query) {
+    private Session findSession(final Map<String, String> query) {
         Session sess = null;
         final Language l = userLocale(query);
 
-
-
         if (cookies.containsKey("session_key")) {
             sess = SessionManager.getByKey(cookies.get("session_key"));
-
 
         }
         if (sess == null) {
             sess = SessionManager.createSession();
 
-
         }
         sess.setLanguage(l);
 
-
         return sess;
-
 
     }
 
-    private Language userLocale(Map<String, String> query) {
+    private Language userLocale(final Map<String, String> query) {
         final Language language = new Language();
-
 
         if (query.containsKey("lang")) {
             if (query.get("lang").equals("default")) {
                 language.findPrefered(preferred_langs);
 
-
             } else {
                 language.setCode(query.get("lang"));
-
 
             }
         }
 
         return language;
-
-
-    }
-
-    private Request initCurrentRequest(Map<String, String> query, Map<String, String> post) {
-        // Parse query string
-
-
-
-
-        return null;
 
     }
 
@@ -226,39 +204,31 @@ public class DispatchServer {
      * @param post the Map containing the post parameters
      * @return the new map
      */
-    private Map<String, String> mergePostGet(Map<String, String> query, Map<String, String> post, Map<String, String> get) {
+    private Map<String, String> mergePostGet(final Map<String, String> query, final Map<String, String> post, final Map<String, String> get) {
         final HashMap<String, String> mergedList = new HashMap<String, String>();
         mergedList.putAll(get);
         mergedList.putAll(query);
         mergedList.putAll(post);
 
-
-
         return mergedList;
-
 
     }
 
-    private QueryString parseQueryString(String queryString) {
+    private QueryString parseQueryString(final String queryString) {
         final String[] splitted = strip(queryString, '/').split("/");
         String page = "";
         final Map<String, String> parameters = new HashMap<String, String>();
 
-
-
         int i = 0;
         // Parsing, finding
-
 
         while (i < splitted.length && !splitted[i].contains("-")) {
             if (!page.isEmpty() && !splitted[i].isEmpty()) {
                 page = page + "/";
 
-
             }
             page = page + splitted[i];
             i = i + 1;
-
 
         }
 
@@ -268,68 +238,46 @@ public class DispatchServer {
                 final String[] p = splitted[i].split("-", 2);
                 parameters.put(p[0], p[1]);
 
-
             }
             i = i + 1;
 
-
         }
         return new QueryString(page, parameters);
-
-
-
-
-
-
-
-
-
 
     }
 
     private static class QueryString {
 
-        public String page;
         public Map<String, String> parameters;
 
-        private QueryString(String page, Map<String, String> parameters) {
-            this.page = page;
+        private QueryString(final String page, final Map<String, String> parameters) {
             this.parameters = parameters;
         }
     }
 
-    private static String strip(String string, char stripped) {
+    private static String strip(final String string, final char stripped) {
         String result1 = "";
 
-
         int i = 0;
-
 
         while (string.charAt(i) == stripped) {
             i++;
 
-
         }
-        for (; i
-                < string.length(); i++) {
+        for (; i < string.length(); i++) {
             result1 += string.charAt(i);
-
 
         }
         i = result1.length() - 1;
 
         String result2 = "";
 
-
         while (result1.charAt(i) == stripped) {
             i--;
 
-
         }
-        for (; i
-                >= 0; i--) {
+        for (; i >= 0; i--) {
             result2 = result1.charAt(i) + result2;
-
 
         }
         return result2;
