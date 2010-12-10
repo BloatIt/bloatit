@@ -17,11 +17,11 @@
 package test.pages.demand;
 
 import test.Context;
-import test.HtmlElement;
+import test.html.HtmlElement;
 import test.Parameters;
-import test.pages.components.HtmlBlock;
-import test.pages.components.HtmlButton;
-import test.pages.components.HtmlForm;
+import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.basicComponents.formComponents.HtmlButton;
+import test.html.components.basicComponents.formComponents.HtmlForm;
 import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.web.pages.OfferPage;

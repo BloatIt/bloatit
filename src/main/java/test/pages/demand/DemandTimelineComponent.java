@@ -16,10 +16,10 @@
  */
 package test.pages.demand;
 
-import test.HtmlElement;
-import test.pages.components.HtmlBlock;
-import test.pages.components.HtmlList;
-import test.pages.components.HtmlListItem;
+import test.html.HtmlElement;
+import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.basicComponents.HtmlList;
+import test.html.components.basicComponents.HtmlListItem;
 import test.pages.demand.DemandPage.Request;
 
 public class DemandTimelineComponent extends HtmlElement {

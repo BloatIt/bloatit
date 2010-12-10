@@ -14,24 +14,33 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.Context;
+package test.html.components.basicComponents;
+
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
 
-public class DemandKudoComponent extends HtmlElement {
+import com.bloatit.common.Image;
 
-    public DemandKudoComponent(Request request) {
-        super();
+/**
+ * Used to display an image
+ */
+public class HtmlImage extends HtmlElement {
+    private final static String IMAGE_DIRECTORY = "/resources/img";
 
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
+    public HtmlImage(Image image) {
+        super("img");
+        String URI = "";
+        if (image.isLocal()) {
+            URI = HtmlImage.IMAGE_DIRECTORY + "/" + image.getIdentifier();
+        } else {
+            URI = image.getIdentifier();
         }
-        add(descriptionKudoBlock);
+        addAttribute("src", URI);
     }
+
+    public HtmlImage(Image image, String cssClass) {
+        this(image);
+        addAttribute("class", cssClass);
+    }
+
 }

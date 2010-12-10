@@ -14,24 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.Context;
+package test.html.components.advancedComponents;
+
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
 
-public class DemandKudoComponent extends HtmlElement {
-
-    public DemandKudoComponent(Request request) {
-        super();
-
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+public class HtmlProgressBar extends HtmlElement{
+    
+    public HtmlProgressBar(float progress) {
+        super("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: " + progress
+                + "%;\"></div></div></div>");
     }
 }

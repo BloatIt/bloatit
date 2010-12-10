@@ -19,8 +19,8 @@ package test.pages.demand;
 import java.util.Locale;
 
 import test.Context;
-import test.pages.components.HtmlBlock;
-import test.pages.components.HtmlText;
+import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.basicComponents.HtmlText;
 import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.framework.Translation;

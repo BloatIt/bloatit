@@ -14,24 +14,24 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.Context;
+package test.html.components.basicComponents;
+
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
+import test.html.HtmlText;
+import test.pages.HtmlContainerElement;
 
-public class DemandKudoComponent extends HtmlElement {
+public class HtmlLink extends HtmlContainerElement {
 
-    public DemandKudoComponent(Request request) {
-        super();
-
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+    public HtmlLink(String link, HtmlElement element) {
+        super("a");
+        addAttribute("href", link);
+        add(element);
+    }
+    
+    public HtmlLink(String link, String element) {
+        super("a");
+        addAttribute("href", link);
+        add(new HtmlText(element));
     }
 }

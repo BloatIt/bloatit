@@ -20,10 +20,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import test.Context;
-import test.HtmlElement;
+import test.html.HtmlElement;
 import test.Page;
-import test.pages.components.HtmlBlock;
-import test.pages.components.HtmlTitle;
+import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.basicComponents.HtmlTitle;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;

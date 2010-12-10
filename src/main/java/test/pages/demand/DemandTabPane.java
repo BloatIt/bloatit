@@ -17,10 +17,10 @@
 package test.pages.demand;
 
 import test.Context;
-import test.HtmlElement;
+import test.html.HtmlElement;
 import test.Parameters;
-import test.pages.components.HtmlTabBlock;
-import test.pages.components.HtmlTabBlock.HtmlTabHeader;
+import test.html.components.advancedComponents.HtmlTabBlock;
+import test.html.components.advancedComponents.HtmlTabBlock.HtmlTabHeader;
 import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.web.server.Session;

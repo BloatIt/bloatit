@@ -14,24 +14,25 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
+package test.html.components.basicComponents;
 
-import test.Context;
+import javax.xml.soap.Text;
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
 
-public class DemandKudoComponent extends HtmlElement {
+public class HtmlTitle extends HtmlElement {
 
-    public DemandKudoComponent(Request request) {
-        super();
-
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+    public HtmlTitle(String title, String cssClass) {
+        super("h1");
+        addText(title);
+        addAttribute("class", cssClass);
     }
+
+    // @Override
+    // public void generate(HtmlResult htmlResult) {
+    // final String titleNum = htmlResult.pushTitle();
+    // htmlResult.write("<h" + titleNum + " class=\"" + cssClass + "\">" + title + "</h" +
+    // titleNum + ">");
+    // super.generate(htmlResult);
+    // htmlResult.popTitle();
+    // }
 }

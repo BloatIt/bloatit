@@ -14,20 +14,34 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
+package test.html.components.basicComponents;
 
-import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.pages.demand.DemandPage.Request;
+import test.html.components.basicComponents.HtmlParagraph;
 
-public class DemandSummaryComponent extends HtmlElement {
-
-    public DemandSummaryComponent(Request request) {
+/**
+ * Used to display block of texts
+ */
+public class HtmlText extends HtmlParagraph {
+    /**
+     * Creates an HtmlText with a preset text
+     * 
+     * @param text the text that will be displayed
+     */
+    public HtmlText(String text) {
         super();
-        HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
-        {
-            abstractBlock.add(new DemandTimelineComponent(request));
-        }
-        add(abstractBlock);
+        add(new test.html.HtmlText(text));
     }
+
+    /**
+     * Creates an HtmlText with a preset text and a given css style
+     * 
+     * @param cssClass the name of the css class applied
+     * @param text the texit that will be displayed
+     */
+    public HtmlText(String text, String cssClass) {
+        super();
+        addAttribute("class", cssClass);
+        add(new test.html.HtmlText(text));
+    }
+
 }

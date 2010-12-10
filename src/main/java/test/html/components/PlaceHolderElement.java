@@ -16,30 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.html.components.basicComponents.HtmlBlock;
-import test.pages.demand.DemandPage.Request;
+package test.html.components;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Offer;
+import test.pages.HtmlContainerElement;
 
-public class DemandOfferListComponent extends HtmlBlock {
+/**
+ * Can be used as a placeholder for another element in the HtmlTree
+ */
+public class PlaceHolderElement extends HtmlContainerElement{
 
-    private PageIterable<Offer> offers;
-
-    public DemandOfferListComponent(Request request) {
+    public PlaceHolderElement(){
         super();
-        offers = request.demand.getOffers();
-        
-        HtmlBlock offersBlock = new HtmlBlock("offers_block");
-
-        for (Offer offer : offers) {
-            
-            offersBlock.add(new DemandOfferComponent(request, offer));
-        }
-
-        add(offersBlock);
     }
-
 }

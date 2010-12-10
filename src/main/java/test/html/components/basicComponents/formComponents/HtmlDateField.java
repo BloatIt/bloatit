@@ -14,24 +14,26 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.Context;
-import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
+package test.html.components.basicComponents.formComponents;
 
-public class DemandKudoComponent extends HtmlElement {
+import com.bloatit.web.utils.BloatitDate;
 
-    public DemandKudoComponent(Request request) {
-        super();
+/**
+ * Class used to create input fields used to input date
+ */
+public class HtmlDateField extends HtmlFormField<BloatitDate> {
 
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+    public HtmlDateField(String name) {
+        super(new HtmlSimpleInput("text"), name);
+    }
+
+    public HtmlDateField(String name, String label) {
+        super(new HtmlSimpleInput("text"), name, label);
+    }
+
+    @Override
+    protected void doSetDefaultValue(BloatitDate value) {
+        this.addAttribute("value", value.toString(BloatitDate.FormatStyle.SHORT));
     }
 }

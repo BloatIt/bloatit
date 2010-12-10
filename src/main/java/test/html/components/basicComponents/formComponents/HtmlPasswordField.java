@@ -14,24 +14,31 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.Context;
-import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
+package test.html.components.basicComponents.formComponents;
 
-public class DemandKudoComponent extends HtmlElement {
+/**
+ * A class used to create input fields of password type
+ * The result will be :
+ * <pre>
+ * <p>
+ *      <label for="...">plop</label>
+ *      <input id="..." type="password" class="cssClass" ...>default value</input>
+ * </p>
+ * </pre>
+ */
+public class HtmlPasswordField extends HtmlFormField<String> {
 
-    public DemandKudoComponent(Request request) {
-        super();
+    public HtmlPasswordField(String name) {
+        super(new HtmlSimpleInput("password"), name);
+    }
 
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+    public HtmlPasswordField(String name, String label) {
+        super(new HtmlSimpleInput("password"), name, label);
+    }
+
+    @Override
+    protected void doSetDefaultValue(String value) {
+        this.element.addAttribute("value", value);
     }
 }

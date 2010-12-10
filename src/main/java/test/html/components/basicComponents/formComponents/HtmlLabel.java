@@ -16,30 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.html.components.basicComponents.HtmlBlock;
-import test.pages.demand.DemandPage.Request;
+package test.html.components.basicComponents.formComponents;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Offer;
+import test.html.HtmlElement;
 
-public class DemandOfferListComponent extends HtmlBlock {
-
-    private PageIterable<Offer> offers;
-
-    public DemandOfferListComponent(Request request) {
-        super();
-        offers = request.demand.getOffers();
-        
-        HtmlBlock offersBlock = new HtmlBlock("offers_block");
-
-        for (Offer offer : offers) {
-            
-            offersBlock.add(new DemandOfferComponent(request, offer));
-        }
-
-        add(offersBlock);
+public class HtmlLabel extends HtmlElement {
+    protected HtmlLabel(String content){
+        super("label");
     }
 
+    protected void setFor(String forId){
+        this.addAttribute("for", forId);
+    }
 }

@@ -14,24 +14,41 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
+package test.html.components.basicComponents;
 
-import test.Context;
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
+import test.html.HtmlNode;
+import test.html.HtmlText;
 
-public class DemandKudoComponent extends HtmlElement {
+public class HtmlList extends HtmlElement {
 
-    public DemandKudoComponent(Request request) {
-        super();
+    public HtmlList(String text) {
+        super("ul");
+        add(new HtmlText(text));
+    }
 
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+    public HtmlList(HtmlNode node) {
+        super("ul");
+        add(node);
+    }
+
+    public HtmlList(String cssClass, HtmlNode node) {
+        super("ul");
+        addAttribute("class", cssClass);
+        add(node);
+    }
+
+    public HtmlList(String cssClass, String text) {
+        super("ul");
+        addAttribute("class", cssClass);
+        add(new HtmlText(text));
+    }
+
+    public HtmlList() {
+        super("ul");
+    }
+
+    public void addItem(HtmlListItem item) {
+        add(item);
     }
 }

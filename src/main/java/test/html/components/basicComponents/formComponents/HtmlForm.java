@@ -14,24 +14,24 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.Context;
-import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
+package test.html.components.basicComponents.formComponents;
 
-public class DemandKudoComponent extends HtmlElement {
+import com.bloatit.web.server.Request;
+import test.pages.HtmlContainerElement;
 
-    public DemandKudoComponent(Request request) {
-        super();
+public class HtmlForm extends HtmlContainerElement {
+    public enum Method {
+        GET, POST
+    }
 
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+    public HtmlForm(Request action, Method method) {
+        super("form");
+        addAttribute("action", action.getUrl());
+        addAttribute("method", method == Method.GET ? "GET" : "POST");
+    }
+
+    public HtmlForm(Request action) {
+        this(action, Method.POST);
     }
 }

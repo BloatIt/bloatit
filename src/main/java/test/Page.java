@@ -1,9 +1,12 @@
 package test;
 
+import test.html.HtmlNode;
+import test.html.HtmlText;
+import test.html.HtmlElement;
 import test.Notification.Level;
-import test.pages.components.HtmlBlock;
-import test.pages.components.HtmlList;
-import test.pages.components.HtmlListItem;
+import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.basicComponents.HtmlList;
+import test.html.components.basicComponents.HtmlListItem;
 
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.htmlrenderer.HtmlTools;
@@ -17,12 +20,14 @@ import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Message;
 import com.bloatit.web.utils.RequestParamSetter.Messages;
+import test.html.components.basicComponents.HtmlGenericElement;
+import test.pages.HtmlContainerElement;
 
 public abstract class Page extends HtmlElement {
 
     private static final String DESIGN = "/resources/css/core.css";
-    private HtmlElement content;
-    private HtmlElement notifications;
+    private HtmlContainerElement content;
+    private HtmlContainerElement notifications;
 
     public Page() {
         super("html");
@@ -32,10 +37,12 @@ public abstract class Page extends HtmlElement {
     }
 
     public Page create() {
-        HtmlElement head = new HtmlElement("head");
-        HtmlElement meta = new HtmlElement("meta").addAttribute("http-equiv", "content-type").addAttribute("content", "text/html;charset=utf-8");
+        HtmlContainerElement head = new HtmlGenericElement("head");
+        HtmlContainerElement meta = new HtmlGenericElement("meta")
+                .addAttribute("http-equiv", "content-type")
+                .addAttribute("content", "text/html;charset=utf-8");
 
-        HtmlElement link = new HtmlElement("link").addAttribute("rel", "stylesheet")
+        HtmlContainerElement link = new HtmlGenericElement("link").addAttribute("rel", "stylesheet")
                                                   .addAttribute("href", DESIGN)
                                                   .addAttribute("type", "text/css")
                                                   .addAttribute("media", "handheld, all");
@@ -44,14 +51,14 @@ public abstract class Page extends HtmlElement {
 
         String customCss;
         if ((customCss = getCustomCss()) != null) {
-            HtmlElement customlink = new HtmlElement("link").addAttribute("rel", "stylesheet")
+            HtmlContainerElement customlink = new HtmlGenericElement("link").addAttribute("rel", "stylesheet")
                                                             .addAttribute("href", "/resources/css/" + customCss)
                                                             .addAttribute("type", "text/css")
                                                             .addAttribute("media", "handheld, all");
             head.add(customlink);
         }
 
-        head.add(new HtmlElement("title").addText("Bloatit - " + getTitle()));
+        head.add(new HtmlGenericElement("title").addText("Bloatit - " + getTitle()));
 
         super.add(head);
 
@@ -61,7 +68,7 @@ public abstract class Page extends HtmlElement {
 
     // TODO correct empty div for notifications ?
     private HtmlElement generate_body() {
-        return new HtmlElement("body").add(new HtmlBlock().setId("page")
+        return new HtmlGenericElement("body").add(new HtmlBlock().setId("page")
                                                           .add(generateTopBar())
                                                           .add(generateTitle())
                                                           .add(new HtmlBlock().setId("center").add(new HtmlBlock().setId("center_column")
@@ -123,7 +130,7 @@ public abstract class Page extends HtmlElement {
     }
 
     private HtmlElement generateTopBar() {
-        HtmlElement topBar = new HtmlBlock().setId("top_bar");
+        HtmlContainerElement topBar = new HtmlBlock().setId("top_bar");
 
         Session session = Context.getSession();
         if (session.isLogged()) {
@@ -132,11 +139,11 @@ public abstract class Page extends HtmlElement {
             final String memberLink = HtmlTools.generateLink(session, full_name, new MyAccountPage(session)) + "<span class=\"karma\">" + karma + "</span>";
             final String logoutLink = HtmlTools.generateLink(session, session.tr("Logout"), new LogoutAction(session));
 
-            topBar.add(new HtmlElement("span").setClass("top_bar_component").addText(memberLink));
-            topBar.add(new HtmlElement("span").setClass("top_bar_component").addText(logoutLink));
+            topBar.add(new HtmlGenericElement("span").setClass("top_bar_component").addText(memberLink));
+            topBar.add(new HtmlGenericElement("span").setClass("top_bar_component").addText(logoutLink));
 
         } else {
-            topBar.add(new HtmlElement("span").setClass("top_bar_component").addText(HtmlTools.generateLink(session,
+            topBar.add(new HtmlGenericElement("span").setClass("top_bar_component").addText(HtmlTools.generateLink(session,
                                                                                                             session.tr("Login / Signup"),
                                                                                                             new LoginPage(session))));
 
@@ -147,7 +154,7 @@ public abstract class Page extends HtmlElement {
     private HtmlElement generateMainMenu() {
 
         final Session s = Context.getSession();
-        final HtmlElement mainMenu = new HtmlBlock().setId("main_menu");
+        final HtmlContainerElement mainMenu = new HtmlBlock().setId("main_menu");
 
         final HtmlList primaryList = new HtmlList();
 
@@ -173,7 +180,7 @@ public abstract class Page extends HtmlElement {
     private HtmlElement generateTitle() {
         // TODO handle titles level !
         Session session = Context.getSession();
-        return new HtmlElement("h1").addText(HtmlTools.generateLink(session, generateLogo(), new IndexPage(session)));
+        return new HtmlGenericElement("h1").addText(HtmlTools.generateLink(session, generateLogo(), new IndexPage(session)));
     }
 
     private HtmlElement generateFooter() {

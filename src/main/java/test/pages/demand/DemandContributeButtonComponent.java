@@ -19,10 +19,10 @@ package test.pages.demand;
 import java.util.HashMap;
 
 import test.Context;
-import test.HtmlElement;
-import test.pages.components.HtmlBlock;
-import test.pages.components.HtmlButton;
-import test.pages.components.HtmlForm;
+import test.html.HtmlElement;
+import test.html.components.basicComponents.HtmlBlock;
+import test.html.components.basicComponents.formComponents.HtmlButton;
+import test.html.components.basicComponents.formComponents.HtmlForm;
 import test.pages.demand.DemandPage.Request;
 
 import com.bloatit.web.pages.ContributePage;

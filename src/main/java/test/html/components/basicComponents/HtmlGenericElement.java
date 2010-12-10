@@ -16,30 +16,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.html.components.basicComponents.HtmlBlock;
-import test.pages.demand.DemandPage.Request;
+package test.html.components.basicComponents;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Offer;
+import test.pages.HtmlContainerElement;
 
-public class DemandOfferListComponent extends HtmlBlock {
+/**
+ * <p>Can be used to create any Html element by just passing the name of the
+ * markup in the constructor</p>
+ * <p>
+ * The following example will create a blank textarea :
+ * <pre>
+ * HtmlElement element = new HtmlGenericElement("textarea");
+ * </pre>
+ * </p>
+ * <p> Methods such as add or addatribute will be available on such element</p>
+ * <p> Note, this class should be used carefully</p>
+ */
+public class HtmlGenericElement extends HtmlContainerElement{
 
-    private PageIterable<Offer> offers;
-
-    public DemandOfferListComponent(Request request) {
-        super();
-        offers = request.demand.getOffers();
-        
-        HtmlBlock offersBlock = new HtmlBlock("offers_block");
-
-        for (Offer offer : offers) {
-            
-            offersBlock.add(new DemandOfferComponent(request, offer));
-        }
-
-        add(offersBlock);
+    public HtmlGenericElement(String tag){
+        super(tag);
     }
-
 }

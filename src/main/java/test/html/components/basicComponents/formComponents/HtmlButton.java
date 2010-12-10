@@ -14,24 +14,26 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
 
-import test.Context;
+package test.html.components.basicComponents.formComponents;
+
 import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
+import test.html.components.basicComponents.HtmlParagraph;
 
-public class DemandKudoComponent extends HtmlElement {
+/**
+ * <p>Class used to create Html buttons</p>
+ */
+public class HtmlButton extends HtmlElement {
 
-    public DemandKudoComponent(Request request) {
+    HtmlElement button = new HtmlSimpleInput("button");
+
+    /**
+     * Creates a HtmlButton
+     * @param label the text that will be shown on the button
+     */
+    public HtmlButton(String label) {
         super();
-
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+        this.add(new HtmlParagraph().add(this.button));
+        this.addAttribute("label", label);
     }
 }

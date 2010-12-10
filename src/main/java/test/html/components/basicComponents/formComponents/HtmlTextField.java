@@ -14,24 +14,23 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package test.pages.demand;
+package test.html.components.basicComponents.formComponents;
 
-import test.Context;
-import test.html.HtmlElement;
-import test.html.components.basicComponents.HtmlBlock;
-import test.html.components.advancedComponents.HtmlKudoBox;
-import test.pages.demand.DemandPage.Request;
+/**
+ * Class used to create a 1 line text input field
+ */
+public final class HtmlTextField extends HtmlFormField<String> {
 
-public class DemandKudoComponent extends HtmlElement {
+    public HtmlTextField(String name) {
+        super(new HtmlSimpleInput("text"), name);
+    }
 
-    public DemandKudoComponent(Request request) {
-        super();
+    public HtmlTextField(String name, String label) {
+        super(new HtmlSimpleInput("text"), name, label);
+    }
 
-        HtmlBlock descriptionKudoBlock = new HtmlBlock("description_kudo_block");
-        {
-            HtmlKudoBox kudoBox = new HtmlKudoBox(request.demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
-        }
-        add(descriptionKudoBlock);
+    @Override
+    protected void doSetDefaultValue(String value) {
+        this.addAttribute("value", value);
     }
 }
