@@ -3,6 +3,7 @@ package test.html;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import test.RedirectException;
 
 import test.pages.demand.DemandPage;
 
@@ -76,28 +77,4 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
 
     protected abstract void write(Text txt);
 
-    public static void main(String[] args) {
-        Text txt = new IndentedHtmlText() {
-
-            @Override
-            protected void append(String text) {
-                System.out.print(text);
-            }
-        };
-//        new HtmlBlock().write(plop);
-//        
-//        new HtmlBlock("cssClass").add(new HtmlButton("button"))
-//                                 .add(new HtmlDateField(new Date(), "date !"))
-//                                 .add(new HtmlImage(new Image("plop", ImageType.LOCAL)))
-//                                 .add(new HtmlInput("text"))
-//                                 .add(new HtmlLinkComponent("link", "other"))
-//                                 .write(txt);
-        com.bloatit.model.data.util.SessionManager.beginWorkUnit();
-        Context.setSession(SessionManager.createSession());
-        Context.getSession().setLanguage(new Language());
-        DemandPage page = new DemandPage(new Request("demand", new Parameters("id", "321").add("title", "Hello")));
-        page.create();
-        page.write(txt);
-        com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
-    }
 }

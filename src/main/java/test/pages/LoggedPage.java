@@ -19,42 +19,38 @@
 
 package test.pages;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
+import test.html.HtmlElement;
+import test.pages.master.Page;
 
 
 public abstract class LoggedPage extends Page {
 
-    protected LoggedPage(Session session) {
-        this(session, new HashMap<String, String>());
-    }
+    protected LoggedPage(Request request) throws RedirectException {
+        super(request);
 
-    protected LoggedPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-    }
-
-    public LoggedPage(Session session, Parameters parameters) {
-        super(session, parameters);
     }
 
     @Override
-    final protected HtmlComponent generateContent() {
+    public String process() throws RedirectException {
+        String retValue = super.process();
+
+
         if(session.isLogged()) {
-            return generateRestrictedContent();
+            add(generateRestrictedContent());
         } else {
+            
             session.notifyBad(getRefusalReason());
-            session.setTargetPage(this);
-            htmlResult.setRedirect(new LoginPage(session));
-            return null;
+            session.setTargetPage(new UrlBuilder(this).buildUrl());
+            throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());   
         }
+        return retValue;
     }
 
-    
-    public abstract HtmlComponent generateRestrictedContent();
+    public abstract HtmlElement generateRestrictedContent();
     public abstract String getRefusalReason();
 
 }

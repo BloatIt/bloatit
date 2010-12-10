@@ -20,12 +20,13 @@ package test.pages.demand;
 
 import test.Context;
 import test.html.HtmlElement;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlTitle;
 import test.Request;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
+import test.html.components.standard.HtmlTitleBlock;
 
 public class DemandCommentListComponent extends HtmlElement {
 
@@ -42,9 +43,9 @@ public class DemandCommentListComponent extends HtmlElement {
      */
     protected HtmlElement produce(Request request) {
 
-        HtmlBlock commentsBlock = new HtmlBlock("comments_block");
+        HtmlDiv commentsBlock = new HtmlDiv("comments_block");
         {
-            commentsBlock.add(new HtmlTitle(Context.tr("Comments"), "comments_title"));
+            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments")).setCssClass("comments_title"));
 
             for (Comment comment : comments) {
                 commentsBlock.add(new DemandCommentComponent(request, comment));

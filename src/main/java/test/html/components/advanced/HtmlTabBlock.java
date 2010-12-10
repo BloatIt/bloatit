@@ -18,19 +18,19 @@
 package test.html.components.advanced;
 
 import test.html.components.standard.HtmlLink;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 
 
-public class HtmlTabBlock extends HtmlBlock {
+public class HtmlTabBlock extends HtmlDiv {
 
-    private HtmlBlock tabBody;
-    private HtmlBlock tabHeader;
+    private HtmlDiv tabBody;
+    private HtmlDiv tabHeader;
 
     public HtmlTabBlock() {
         super("tab_panel");
 
-        tabHeader = new HtmlBlock("tab_header");
-        tabBody = new HtmlBlock("tab_body");
+        tabHeader = new HtmlDiv("tab_header");
+        tabBody = new HtmlDiv("tab_body");
 
         add(tabHeader);
         add(tabBody);
@@ -38,10 +38,10 @@ public class HtmlTabBlock extends HtmlBlock {
 
     public void addTabHeader(HtmlTabHeader tab) {
 
-        HtmlBlock tabTile = new HtmlBlock("inactive_tab_title");
+        HtmlDiv tabTile = new HtmlDiv("inactive_tab_title");
         tabHeader.add(tabTile);
 
-        HtmlLink link = new HtmlLink(tab.getLink(), new HtmlBlock("inactive_tab_title_content"));
+        HtmlLink link = new HtmlLink(tab.getLink(), new HtmlDiv("inactive_tab_title_content"));
         link.addText(tab.getTitle());
 
         tabTile.add(link);
@@ -71,15 +71,15 @@ public class HtmlTabBlock extends HtmlBlock {
     }
 
     public static class HtmlTab extends HtmlTabHeader {
-        private HtmlBlock body;
+        private HtmlDiv body;
 
-        public HtmlTab(HtmlTabHeader header, HtmlBlock body) {
+        public HtmlTab(HtmlTabHeader header, HtmlDiv body) {
             super(header.title, header.link);
             this.body = body;
             body.addAttribute("class", "tab_body");
         }
 
-        public HtmlBlock getBody() {
+        public HtmlDiv getBody() {
             return body;
         }
 

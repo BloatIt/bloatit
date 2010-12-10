@@ -21,22 +21,23 @@ package test.pages;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.actions.OfferAction;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlDateField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextArea;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.BloatitDate;
 import com.bloatit.web.utils.RequestParam;
 import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
+import test.actions.OfferAction;
+import test.html.HtmlElement;
+import test.html.HtmlText;
+import test.html.components.standard.HtmlTitleBlock;
+import test.html.components.standard.form.HtmlButton;
+import test.html.components.standard.form.HtmlDateField;
+import test.html.components.standard.form.HtmlForm;
+import test.html.components.standard.form.HtmlTextArea;
+import test.html.components.standard.form.HtmlTextField;
 
 public class OfferPage extends LoggedPage {
 
@@ -55,18 +56,12 @@ public class OfferPage extends LoggedPage {
     @RequestParam(name = "description")
     private String description;
 
-    public OfferPage(Session session) {
-        this(session, new HashMap<String, String>());
+    public OfferPage(Request request) throws RedirectException {
+        super(request);
+        this.request.setValues(this);
+        addNotifications(request.getMessages());      
     }
 
-    public OfferPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-    }
-
-    @Override
-    public String getCode() {
-        return "offer";
-    }
 
     @Override
     protected String getTitle() {
@@ -84,13 +79,9 @@ public class OfferPage extends LoggedPage {
     }
 
     @Override
-    public HtmlComponent generateRestrictedContent() {
+    public HtmlElement generateRestrictedContent() {
 
-        if (getParameters().getMessages().size() > 0) {
-            session.notifyList(getParameters().getMessages());
-            // return null;
-        }
-
+       
         // TODO : remove and replace with parameter loading machanism
         /*
          * int ideaId = -1;
@@ -118,31 +109,42 @@ public class OfferPage extends LoggedPage {
          */
         // !TODO
 
-        HtmlTitle offerPageContainer = new HtmlTitle(this.session.tr("Make an offer"), "");
-        final OfferAction offerAction = new OfferAction(this.session, this.getParameters());
-        HtmlForm offerForm = new HtmlForm(offerAction);
+        HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"));
 
+        // Create offer form
+        UrlBuilder offerActionUrlBuilder = new UrlBuilder(OfferAction.class);
+        offerActionUrlBuilder.addParameter("idea", targetIdea);
+        HtmlForm offerForm = new HtmlForm(offerActionUrlBuilder.buildUrl());
+        
+
+        // Idea title
         HtmlText t = new HtmlText(this.targetIdea.getTitle());
         offerPageContainer.add(t);
 
-        HtmlTextField priceField = new HtmlTextField(price == null ? "" : price.toPlainString()); // TODO
-        priceField.setLabel(this.session.tr("Offer price : "));
-        priceField.setName(offerAction.getPriceCode());
-        offerForm.add(priceField);
 
-        HtmlDateField dateField = new HtmlDateField(this.expiryDate);
-        dateField.setLabel(this.session.tr("Expiration date : "));
-        dateField.setName(offerAction.getExpiryDateCode());
-        offerForm.add(dateField);
-
+        // Title field
         HtmlTextField titleField = new HtmlTextField(this.title); // TODO
         titleField.setLabel(this.session.tr("Add a title to the offer : "));
-        titleField.setName(offerAction.getTitleCode());
+        titleField.setName(OfferAction.TITLE_CODE);
         offerForm.add(titleField);
+
+        // Price field
+        HtmlTextField priceField = new HtmlTextField(price == null ? "" : price.toPlainString()); // TODO
+        priceField.setLabel(this.session.tr("Offer price : "));
+        priceField.setName(OfferAction.PRICE_CODE);
+        offerForm.add(priceField);
+
+        //Date field
+        BloatitDate bd = new BloatitDate(this.expiryDate, session.getLanguage().getLocale());
+        //TODO : create a constructor with the language
+        HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE);
+        dateField.setDefaultValue(bd);
+        dateField.setLabel(this.session.tr("Expiration date : "));
+        offerForm.add(dateField);
 
         HtmlTextArea descriptionField = new HtmlTextArea(this.description); // TODO
         descriptionField.setLabel(this.session.tr("Enter the description of the offer : "));
-        descriptionField.setName(offerAction.getDescriptionCode());
+        descriptionField.setName(OfferAction.DESCRIPTION_CODE);
         offerForm.add(descriptionField);
 
         HtmlButton offerButton = new HtmlButton(session.tr("Make an offer"));

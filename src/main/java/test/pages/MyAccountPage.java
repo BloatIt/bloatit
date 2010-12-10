@@ -19,46 +19,37 @@
 
 package test.pages;
 
-import java.util.Map;
 
 import com.bloatit.framework.Member;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import test.RedirectException;
+import test.Request;
+import test.html.HtmlText;
+import test.html.components.standard.HtmlTitle;
+import test.html.components.standard.HtmlTitleBlock;
+import test.pages.master.Page;
 
 public class MyAccountPage extends Page {
 
-    public MyAccountPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
+    public MyAccountPage(Request request) throws RedirectException {
+        super(request);
+        generateContent();
     }
 
-    public MyAccountPage(Session session) {
-        super(session);
-    }
-
-    @Override
-    protected HtmlComponent generateContent() {
+    private void generateContent() {
         if (session.getAuthToken() != null) {
             final Member member = session.getAuthToken().getMember();
             member.authenticate(session.getAuthToken());
-            final HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
+            final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname());
 
             memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
             memberTitle.add(new HtmlText("Email: " + member.getEmail()));
             memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
 
-            return memberTitle;
+            add(memberTitle);
         } else {
-            return new HtmlTitle("No account", "");
+            add(new HtmlTitle("No account"));
         }
-    }
-
-    @Override
-    public String getCode() {
-        return "my_account";
     }
 
     @Override

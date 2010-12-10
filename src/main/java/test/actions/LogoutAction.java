@@ -17,23 +17,22 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.htmlrenderer.htmlcomponent;
+package test.actions;
 
-import com.bloatit.web.htmlrenderer.HtmlResult;
+import test.Action;
+import test.Request;
 
-public class HtmlProgressBar extends HtmlComponent {
+public class LogoutAction extends Action {
 
-    final float progress;
-
-    public HtmlProgressBar(float progress) {
-        this.progress = progress;
-        // this.progress = 10f;
+    public LogoutAction(Request request) {
+            super(request);
     }
 
     @Override
-    public void generate(HtmlResult htmlResult) {
-        htmlResult
-                .write("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: "
-                        + progress + "%;\"></div></div></div>");
+    public String process() {
+        session.setLogged(false);
+        session.setAuthToken(null);
+        session.notifyGood(session.tr("Logout sucess."));
+        return session.getTargetPage();
     }
 }

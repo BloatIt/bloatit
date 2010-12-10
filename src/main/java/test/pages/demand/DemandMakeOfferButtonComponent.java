@@ -19,15 +19,16 @@ package test.pages.demand;
 import test.Context;
 import test.html.HtmlElement;
 import test.Parameters;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.form.HtmlButton;
 import test.html.components.standard.form.HtmlForm;
 
 import test.Request;
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.pages.OfferPage;
 import com.bloatit.web.server.Session;
+import test.UrlBuilder;
+import test.pages.OfferPage;
 
 public class DemandMakeOfferButtonComponent extends HtmlElement {
 
@@ -35,10 +36,13 @@ public class DemandMakeOfferButtonComponent extends HtmlElement {
         super();
         Session session = Context.getSession();
 
-        final HtmlBlock makeOfferBlock = new HtmlBlock("make_offer_block");
+        final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
         {
 
-            HtmlForm makeOfferForm = new HtmlForm(new OfferPage(session, new Parameters("idea", String.valueOf(demand.getId()))));
+            UrlBuilder urlBuilder = new UrlBuilder(OfferPage.class);
+            urlBuilder.addParameter("idea", demand);
+
+            HtmlForm makeOfferForm = new HtmlForm(urlBuilder.buildUrl());
             {
                 HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
                 makeOfferForm.add(makeOfferButton);

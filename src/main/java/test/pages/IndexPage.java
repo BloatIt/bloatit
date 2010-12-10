@@ -19,57 +19,39 @@
 
 package test.pages;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
+import test.html.components.standard.HtmlDiv;
+import test.html.components.standard.HtmlLink;
+import test.html.components.standard.HtmlText;
+import test.html.components.standard.form.HtmlButton;
+import test.html.components.standard.form.HtmlForm;
+import test.html.components.standard.form.HtmlTextField;
+import test.pages.master.Page;
 
 public class IndexPage extends Page {
 
-    public IndexPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
+    public IndexPage(final Request request) throws RedirectException {
+        super(request);
+        generateContent();
     }
 
-    public IndexPage(Session session) {
-        this(session, new HashMap<String, String>());
-    }
+    private void generateContent() {
 
-    @Override
-    protected HtmlComponent generateContent() {
+        HtmlDiv statsBlock = new HtmlDiv("index_stats_block");
+        generateStatsBlock(statsBlock);
 
-        HtmlContainer allPage = new HtmlContainer();
+        HtmlDiv dualColumnBlock = new HtmlDiv("dual_column_block");
+        generateDualColumnBlock(dualColumnBlock);
 
-        HtmlBlock searchBlock = new HtmlBlock("index_search_block");
-        generateSearchBlock(searchBlock);
+        add(generateSearchBlock());
+        add(statsBlock);
+        add(dualColumnBlock);
 
-        HtmlBlock statsBlock = new HtmlBlock("index_stats_block");
-        generateStatsBlock(searchBlock);
-
-        HtmlBlock dualColumnBlock = new HtmlBlock("dual_column_block");
-        generateDualColumnBlock(searchBlock);
-
-        allPage.add(searchBlock);
-        allPage.add(statsBlock);
-        allPage.add(dualColumnBlock);
-
-        return allPage;
-
-    }
-
-    @Override
-    public String getCode() {
-        return "index";
     }
 
     @Override
@@ -82,45 +64,49 @@ public class IndexPage extends Page {
         return true;
     }
 
-    private void generateSearchBlock(HtmlBlock searchBlock) {
-        GlobalSearchPage globalSearchPage = new GlobalSearchPage(session);
-        HtmlForm searchForm = new HtmlForm(globalSearchPage);
-        searchForm.setMethod(HtmlForm.Method.GET);
-        HtmlTextField searchField = new HtmlTextField();
-        searchField.setName(globalSearchPage.getSearchCode());
+    private HtmlDiv generateSearchBlock() {
+
+        HtmlDiv searchBlock = new HtmlDiv("index_search_block");
+
+        HtmlForm searchForm = new HtmlForm(new UrlBuilder(GlobalSearchPage.class).buildUrl() , HtmlForm.Method.GET);
+
+        HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
         HtmlButton searchButton = new HtmlButton(session.tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);
+        return searchBlock;
     }
 
-    private void generateStatsBlock(HtmlBlock statsBlock) {
+    private void generateStatsBlock(HtmlDiv statsBlock) {
         statsBlock.add(new HtmlText("" + DemandManager.getDemandsCount() + " demands, " + MemberManager.getMembersCount()
                 + " members..."));
     }
 
-    private void generateDualColumnBlock(HtmlBlock dualColumnBlock) {
+    private void generateDualColumnBlock(HtmlDiv dualColumnBlock) {
         
-        HtmlBlock hightlightDemandsBlock = new HtmlBlock("index_hightlight_demands_block");
+        HtmlDiv hightlightDemandsBlock = new HtmlDiv("index_hightlight_demands_block");
         generateHightlightDemandsBlock(hightlightDemandsBlock);
 
         dualColumnBlock.add(generateDescriptionBlock());
         dualColumnBlock.add(hightlightDemandsBlock);
     }
 
-    private void generateHightlightDemandsBlock(HtmlBlock hightlightDemandsBlock) {
+    private void generateHightlightDemandsBlock(HtmlDiv hightlightDemandsBlock) {
 
     }
 
-    private HtmlBlock generateDescriptionBlock() {
-        HtmlBlock descriptionBlock = new HtmlBlock("index_description_block");
+    private HtmlDiv generateDescriptionBlock() {
+
+        HtmlDiv descriptionBlock = new HtmlDiv("index_description_block");
 
         String description = session
                 .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlText(description));
-
-        descriptionBlock.add(new HtmlText(HtmlTools.generateLink(session, "Create a new idea", new CreateIdeaPage(session))));
+        
+        HtmlLink createIdeaPageLink = new HtmlLink(new UrlBuilder(CreateIdeaPage.class).buildUrl(), session.tr("Create a new idea"));
+        descriptionBlock.add(createIdeaPageLink);
 
         return descriptionBlock;
     }

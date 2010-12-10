@@ -18,102 +18,71 @@
  */
 package test.pages;
 
-import com.bloatit.web.pages.demand.DemandPage;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.htmlrenderer.HtmlResult;
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlBlock;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.PageComponent;
+import com.bloatit.web.utils.RequestParam;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
+import test.html.HtmlNode;
+import test.html.components.advanced.HtmlPagedList;
+import test.html.components.standard.HtmlDiv;
+import test.html.components.standard.HtmlListItem;
+import test.html.components.standard.HtmlRenderer;
+import test.html.components.standard.HtmlTitleBlock;
+import test.html.components.standard.form.HtmlButton;
+import test.html.components.standard.form.HtmlForm;
+import test.html.components.standard.form.HtmlTextField;
+import test.pages.demand.DemandPage;
+import test.pages.master.Page;
 
 public class GlobalSearchPage extends Page {
 
-    public GlobalSearchPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
+    public final static String SEARCH_CODE = "global_search";
+    @RequestParam(defaultValue = "vide", name = SEARCH_CODE)
+    private String searchString;
+
+    @PageComponent
+    private HtmlPagedList<Demand> pagedMemberList;
+
+    public GlobalSearchPage(Request request) {
+        super(request);
+        request.setValues(this);
+        addNotifications(request.getMessages());
+        generateContent();
     }
 
-    public GlobalSearchPage(Session session) {
-        this(session, new HashMap<String, String>());
-    }
+    private void generateContent() {
 
-    @Override
-    protected HtmlComponent generateContent() {
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"));
 
-        final HtmlTitle pageTitle = new HtmlTitle(session.tr("Search result"), "");
+        pageTitle.add(generateSearchBlock());
 
-        HtmlBlock searchBlock = new HtmlBlock("global_search_block");
-        generateSearchBlock(searchBlock);
+        final PageIterable<Demand> demandList = DemandManager.search(searchString);
 
-        pageTitle.add(searchBlock);
+        HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
-        if (getParameters().contains(getSearchCode())) {
-            
-            String searchString = getParameters().getValue(getSearchCode());
+            UrlBuilder demandeUrlBuilder = new UrlBuilder(DemandPage.class);
 
-            final PageIterable<Demand> demandList = DemandManager.search(searchString);
-            System.err.println("demandList " + demandList.size());
-            System.err.println("params " + getParameters());
-            HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
+            @Override
+            public HtmlNode generate(Demand demand) {
+                demandeUrlBuilder.addParameter("idea", demand);
 
-                @Override
-                public void generate(HtmlResult htmlResult, Demand demand) {
-                    final DemandPage demandPage = new DemandPage(session, demand);
-                    final HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(session, demand.getTitle(), demandPage));
-                    item.generate(htmlResult);
-                }
-            };
-
-            HtmlPagedList<Demand> pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, this, session);
-
-            int pageSize = 10;
-            int currentPage = 0;
-
-            if (getParameters().contains("list_page_size")) {
-                try {
-                    pageSize = Integer.parseInt(getParameters().getValue("list_page_size"));
-                } catch (NumberFormatException e) {
-                }
+                return new HtmlListItem( demandeUrlBuilder.getHtmlLink(demand.getTitle()));
             }
+        };
 
-            if (getParameters().contains("list_list_page")) {
-                try {
-                    currentPage = Integer.parseInt(getParameters().getValue("list_page")) - 1;
-                } catch (NumberFormatException e) {
-                }
-            }
-
-            pagedMemberList.setPageSize(pageSize);
-            pagedMemberList.setCurrentPage(currentPage);
-
-            pageTitle.add(pagedMemberList);
-
-        }
-
-        return pageTitle;
-
+        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, request, session);
+        
+        pageTitle.add(pagedMemberList);
+        add(pageTitle);
     }
 
     @Override
     public String getTitle() {
         return "View all demands - search demands";
-    }
-
-    @Override
-    public String getCode() {
-        return "global_search";
     }
 
     @Override
@@ -125,20 +94,18 @@ public class GlobalSearchPage extends Page {
         return "search";
     }
 
-    private void generateSearchBlock(HtmlBlock searchBlock) {
-        GlobalSearchPage globalSearchPage = new GlobalSearchPage(session);
-        HtmlForm searchForm = new HtmlForm(globalSearchPage);
-        searchForm.setMethod(HtmlForm.Method.GET);
-        HtmlTextField searchField = new HtmlTextField();
-        searchField.setName(globalSearchPage.getSearchCode());
+    private HtmlDiv generateSearchBlock( ) {
+        HtmlDiv searchBlock = new HtmlDiv("global_search_block");
 
-        if (getParameters().contains(getSearchCode())) {
-            searchField.setDefaultValue(getParameters().getValue(getSearchCode()));
-        }
+        HtmlForm searchForm = new HtmlForm(new UrlBuilder(GlobalSearchPage.class).buildUrl() , HtmlForm.Method.GET);
+
+        HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
         HtmlButton searchButton = new HtmlButton(session.tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);
+
+        return searchBlock;
     }
 }

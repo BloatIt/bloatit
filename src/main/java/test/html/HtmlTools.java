@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.htmlrenderer;
+package test.html;
 
-import com.bloatit.web.server.Action;
-import com.bloatit.web.server.Request;
+import test.Action;
 import com.bloatit.web.server.Session;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import test.Request;
 
 public class HtmlTools {
 
@@ -32,13 +32,14 @@ public class HtmlTools {
     public final static long HOUR = 60*MINUTE;
     public final static long DAY = 24*HOUR;
 
+    /*
     public static String generateLink(Session session, String text, Request linkRequest) {
         return "<a href=\"" + linkRequest.getUrl() + "\">" + text + "</a>";
     }
 
     public static String generateLink(Session session, String text, Request linkRequest, Map<String, String> outputParams) {
         return "<a href=\"" + linkRequest.getUrl(outputParams) + "\">" + text + "</a>";
-    }
+    }*/
 
     public static String generateLogo() {
         return "<span class='logo_bloatit'><span class='logo_bloatit_bloat'>Bloat</span><span class='logo_bloatit_it'>It</span></span>";
@@ -118,11 +119,6 @@ public class HtmlTools {
         }
         return result;
     }
-
-    public static String getActionLink(Session session, Action linkAction) {
-        return "/" + session.getLanguage().getCode() + "/action/" + linkAction.getCode();
-    }
-
 
     public static String formatDate(Session session, Date date) {
         Date currentDate = new Date();

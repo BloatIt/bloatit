@@ -38,4 +38,8 @@ public class HtmlGenericElement extends HtmlContainerElement{
     public HtmlGenericElement(String tag){
         super(tag);
     }
+
+    public HtmlGenericElement() {
+        super();
+    }
 }

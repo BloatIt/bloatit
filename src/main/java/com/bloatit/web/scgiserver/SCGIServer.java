@@ -34,6 +34,10 @@ import java.util.logging.Logger;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.web.server.DispatchServer;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import test.HttpResponse;
 
 public class SCGIServer {
 
@@ -93,33 +97,36 @@ public class SCGIServer {
 
                 final DispatchServer dispatchServer = new DispatchServer(query, post, cookies, preferredLangs);
 
-                String display;
                 try {
-                    display = dispatchServer.process();
+                    dispatchServer.process(new HttpResponse(clientSocket.getOutputStream()));
+                    
                 } catch (final FatalErrorException e) {
+                    String display;
                     display = "Content-type: text/html\r\n\r\n" + e.toString() + " :\n";
                     for (final StackTraceElement s : e.getStackTrace()) {
                         display += "<p>\t" + s + "</p>\n";
                     }
+
+                    clientSocket.getOutputStream().write(display.getBytes());
+
+
                     // TODO : Log
                     // TODO Debug Only
                     // TODO : print stack trace
                 } catch (final Exception e) {
                     // Protects the server
+                    String display;
                     display = "Content-type: text/html\r\n\r\n" + e.toString() + " :\n";
                     for (final StackTraceElement s : e.getStackTrace()) {
                         display += "<p>\t" + s + "</p>\n";
                     }
+
+                    clientSocket.getOutputStream().write(display.getBytes());
                 }
 
-                try {
-                    clientSocket.getOutputStream().write(display.getBytes());
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                    // TODO Log
-                } finally {
-                    clientSocket.close();
-                }
+                 
+                clientSocket.close();
+                
                 final long endTime = System.nanoTime();
                 final double duration = ((endTime - startTime)) / 1000000.;
                 System.err.println("Page generated in " + duration + " ms");

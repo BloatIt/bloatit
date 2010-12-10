@@ -22,18 +22,18 @@ import test.pages.HtmlContainerElement;
 /**
  * A class used to create a new html block (aka div)
  */
-public class HtmlBlock extends HtmlContainerElement {
+public class HtmlDiv extends HtmlContainerElement {
 
-    public HtmlBlock() {
+    public HtmlDiv() {
         super("div");
     }
 
-    public HtmlBlock(String cssClass) {
+    public HtmlDiv(String cssClass) {
         super("div");
         addAttribute("class", cssClass);
     }
 
-    public HtmlBlock(String cssClass, String id) {
+    public HtmlDiv(String cssClass, String id) {
         super("div");
         addAttribute("class", cssClass);
         addAttribute("id", id);

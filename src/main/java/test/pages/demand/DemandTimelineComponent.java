@@ -17,7 +17,7 @@
 package test.pages.demand;
 
 import test.html.HtmlElement;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlList;
 import test.html.components.standard.HtmlListItem;
 
@@ -30,7 +30,7 @@ public class DemandTimelineComponent extends HtmlElement {
     public DemandTimelineComponent(Request request, Demand demand) {
         super();
 
-        HtmlBlock timelineBlock = new HtmlBlock("timeline_block");
+        HtmlDiv timelineBlock = new HtmlDiv("timeline_block");
         {
             HtmlList timelineList = new HtmlList();
 

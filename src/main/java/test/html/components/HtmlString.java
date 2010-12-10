@@ -19,10 +19,10 @@
 
 package test.html.components;
 
-import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Translatable;
 import com.bloatit.web.utils.TranslationManipulator;
+import test.html.HtmlTools;
 
 public class HtmlString {
 

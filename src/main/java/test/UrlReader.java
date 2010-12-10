@@ -13,7 +13,7 @@ import com.bloatit.web.utils.Message.What;
 import com.bloatit.web.utils.PageComponent;
 import com.bloatit.web.utils.RequestParam;
 
-public class UrlReader extends UrlManipulator {
+public class UrlReader {
 
     private final Url url;
 

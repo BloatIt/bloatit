@@ -67,7 +67,7 @@ public abstract class HtmlElement extends HtmlNode {
      * @param cssClass
      * @return
      */
-    public HtmlElement setClass(String cssClass) {
+    public HtmlElement setCssClass(String cssClass) {
         addAttribute("class", cssClass);
         return this;
     }

@@ -18,64 +18,73 @@
  */
 package com.bloatit.web.server;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.bloatit.web.actions.LoginAction;
-import com.bloatit.web.actions.LogoutAction;
-import com.bloatit.web.actions.ContributionAction;
-import com.bloatit.web.actions.OfferAction;
-import com.bloatit.web.htmlrenderer.HtmlResult;
-import com.bloatit.web.pages.ContributePage;
-import com.bloatit.web.pages.CreateIdeaPage;
-import com.bloatit.web.pages.demand.DemandPage;
-import com.bloatit.web.pages.DemandsPage;
-import com.bloatit.web.pages.GlobalSearchPage;
-import com.bloatit.web.pages.IndexPage;
-import com.bloatit.web.pages.LoginPage;
-import com.bloatit.web.pages.MemberPage;
-import com.bloatit.web.pages.MembersListPage;
-import com.bloatit.web.pages.MyAccountPage;
-import com.bloatit.web.pages.OfferPage;
-import com.bloatit.web.pages.PageNotFound;
-import com.bloatit.web.pages.SpecialsPage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import test.Action;
+import test.Context;
+import test.HttpResponse;
+import test.RedirectException;
+import test.Request;
+import test.Url;
+import test.actions.ContributionAction;
+import test.actions.LoginAction;
+import test.actions.LogoutAction;
+import test.actions.OfferAction;
+import test.pages.ContributePage;
+import test.pages.CreateIdeaPage;
+import test.pages.DemandsPage;
+import test.pages.GlobalSearchPage;
+import test.pages.IndexPage;
+import test.pages.LoginPage;
+import test.pages.MemberPage;
+import test.pages.MembersListPage;
+import test.pages.MyAccountPage;
+import test.pages.OfferPage;
+import test.pages.SpecialsPage;
+import test.pages.demand.DemandPage;
+import test.pages.master.Page;
 
 public class DispatchServer {
 
-    static final Map<String, Class<? extends Request>> pageMap;
-    static final Map<String, Class<? extends Request>> actionMap;
+    static final Map<String, Class<? extends Page>> pageMap;
+    static final Map<String, Class<? extends Action>> actionMap;
 
     static {
-        pageMap = new HashMap<String, Class<? extends Request>>() {
+        pageMap = new HashMap<String, Class<? extends Page>>() {
 
             private static final long serialVersionUID = -1990148160288171599L;
 
             {
-                put("index", IndexPage.class);
-                put("login", LoginPage.class);
-                put("demands", DemandsPage.class);
-                put("idea/create", CreateIdeaPage.class);
-                put("demand", DemandPage.class);
-                put("my_account", MyAccountPage.class);
-                put("specials", SpecialsPage.class);
-                put("members_list", MembersListPage.class);
-                put("member", MemberPage.class);
-                put("global_search", GlobalSearchPage.class);
-                put("contribute", ContributePage.class);
-                put("offer", OfferPage.class);
+                put(Url.getPageName(IndexPage.class), IndexPage.class);
+                put(Url.getPageName(LoginPage.class), LoginPage.class);
+                put(Url.getPageName(DemandsPage.class), DemandsPage.class);
+                put(Url.getPageName(CreateIdeaPage.class), CreateIdeaPage.class);
+                put(Url.getPageName(DemandPage.class), DemandPage.class);
+                put(Url.getPageName(MyAccountPage.class), MyAccountPage.class);
+                put(Url.getPageName(SpecialsPage.class), SpecialsPage.class);
+                put(Url.getPageName(MembersListPage.class), MembersListPage.class);
+                put(Url.getPageName(MemberPage.class), MemberPage.class);
+                put(Url.getPageName(GlobalSearchPage.class), GlobalSearchPage.class);
+                put(Url.getPageName(ContributePage.class), ContributePage.class);
+                put(Url.getPageName(OfferPage.class), OfferPage.class);
             }
         };
 
-        actionMap = new HashMap<String, Class<? extends Request>>() {
 
-            private static final long serialVersionUID = -3732663492018224362L;
+        actionMap = new HashMap<String, Class<? extends Action>>() {
+
+            private static final long serialVersionUID = -1990148150288171599L;
 
             {
-                put("login", LoginAction.class);
-                put("logout", LogoutAction.class);
-                put("contribute", ContributionAction.class);
-                put("offer", OfferAction.class);
+                put(Url.getPageName(LoginAction.class), LoginAction.class);
+                put(Url.getPageName(LogoutAction.class), LogoutAction.class);
+                put(Url.getPageName(ContributionAction.class), ContributionAction.class);
+                put(Url.getPageName(OfferAction.class), OfferAction.class);
 
             }
         };
@@ -86,32 +95,62 @@ public class DispatchServer {
     private final Map<String, String> query;
     private final Map<String, String> post;
 
-    public DispatchServer(Map<String, String> query,
-                          Map<String, String> post,
-                          Map<String, String> cookies,
-                          List<String> preferred_langs) {
+    public DispatchServer(
+            Map<String, String> query,
+            Map<String, String> post,
+            Map<String, String> cookies,
+            List<String> preferred_langs) {
         this.cookies = cookies;
+
+
         this.preferred_langs = preferred_langs;
         session = findSession(query);
+        Context.setSession(session);
 
         this.query = query;
         this.post = post;
-
     }
 
-    public String process() {
+    public void process(HttpResponse response) throws IOException {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
-        final Request request = initCurrentRequest(query, post);
+        final String linkable = query.get("page");
+        final QueryString queryString = parseQueryString(linkable);
+        final Map<String, String> parameters = mergePostGet(queryString.parameters, post, query);
 
-        final HtmlResult htmlResult = new HtmlResult(session, request);
-        request.doProcess(htmlResult);
+        Request request = new Request(linkable, parameters);
 
-        final String result = htmlResult.generate();
+        try {
+            if (pageMap.containsKey(linkable)) {
+                Page page;
+                page = pageMap.get(linkable).getConstructor(Request.class).newInstance(request);
+                page.process();
+                response.writePage(page);
+
+            } else if (actionMap.containsKey(linkable)) {
+                Action action = actionMap.get(linkable).getConstructor(Request.class).newInstance(request);
+                response.writeRedirect(action.process());
+
+            } else {
+            }
+        } catch (RedirectException ex) {
+            response.writeRedirect(ex.getUrl());
+        } catch (InstantiationException ex) {
+            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
 
-        return result;
     }
 
     /**
@@ -125,51 +164,55 @@ public class DispatchServer {
         Session sess = null;
         final Language l = userLocale(query);
 
+
+
         if (cookies.containsKey("session_key")) {
             sess = SessionManager.getByKey(cookies.get("session_key"));
+
+
         }
         if (sess == null) {
             sess = SessionManager.createSession();
+
+
         }
         sess.setLanguage(l);
+
+
         return sess;
+
+
     }
 
     private Language userLocale(Map<String, String> query) {
         final Language language = new Language();
+
+
         if (query.containsKey("lang")) {
             if (query.get("lang").equals("default")) {
                 language.findPrefered(preferred_langs);
+
+
             } else {
                 language.setCode(query.get("lang"));
+
+
             }
         }
 
         return language;
+
+
     }
 
     private Request initCurrentRequest(Map<String, String> query, Map<String, String> post) {
         // Parse query string
-        if (query.containsKey("page")) {
-            final QueryString queryString = parseQueryString(query.get("page"));
-            // Merge Post & Get
-            final Map<String, String> parameters = mergePostGet(queryString.parameters, post, query);
-            final Request currentRequest = findRequest(queryString.page, parameters);
-            return currentRequest;
-        }
-        return new PageNotFound(session);
-    }
 
-    private Request findRequest(String page, Map<String, String> parameters) {
-        if (page.startsWith("action/") && actionMap.containsKey(page.substring(7))) {
-            // Find Action
-            return RequestFactory.build(actionMap.get(page.substring(7)), session, parameters);
-        }
-        if (pageMap.containsKey(page)) {
-            // Find page
-            return RequestFactory.build(pageMap.get(page), session, parameters);
-        }
-        return new PageNotFound(session, parameters);
+
+
+
+        return null;
+
     }
 
     /**
@@ -189,7 +232,11 @@ public class DispatchServer {
         mergedList.putAll(query);
         mergedList.putAll(post);
 
+
+
         return mergedList;
+
+
     }
 
     private QueryString parseQueryString(String queryString) {
@@ -197,25 +244,47 @@ public class DispatchServer {
         String page = "";
         final Map<String, String> parameters = new HashMap<String, String>();
 
+
+
         int i = 0;
         // Parsing, finding
+
+
         while (i < splitted.length && !splitted[i].contains("-")) {
             if (!page.isEmpty() && !splitted[i].isEmpty()) {
                 page = page + "/";
+
+
             }
             page = page + splitted[i];
             i = i + 1;
+
+
         }
 
         // Parsing, finding page parameters
         while (i < splitted.length) {
             if (splitted[i].contains("-")) {
-                final String[] p = splitted[i].split("-",2);
+                final String[] p = splitted[i].split("-", 2);
                 parameters.put(p[0], p[1]);
+
+
             }
             i = i + 1;
+
+
         }
         return new QueryString(page, parameters);
+
+
+
+
+
+
+
+
+
+
     }
 
     private static class QueryString {
@@ -231,22 +300,39 @@ public class DispatchServer {
 
     private static String strip(String string, char stripped) {
         String result1 = "";
+
+
         int i = 0;
+
+
         while (string.charAt(i) == stripped) {
             i++;
+
+
         }
-        for (; i < string.length(); i++) {
+        for (; i
+                < string.length(); i++) {
             result1 += string.charAt(i);
+
+
         }
         i = result1.length() - 1;
 
         String result2 = "";
+
+
         while (result1.charAt(i) == stripped) {
             i--;
+
+
         }
-        for (; i >= 0; i--) {
+        for (; i
+                >= 0; i--) {
             result2 = result1.charAt(i) + result2;
+
+
         }
         return result2;
+
     }
 }

@@ -16,15 +16,13 @@
  */
 package test.html.components.standard;
 
-import javax.xml.soap.Text;
 import test.html.HtmlElement;
 
 public class HtmlTitle extends HtmlElement {
 
-    public HtmlTitle(String title, String cssClass) {
+    public HtmlTitle(String title) {
         super("h1");
         addText(title);
-        addAttribute("class", cssClass);
     }
 
     // @Override

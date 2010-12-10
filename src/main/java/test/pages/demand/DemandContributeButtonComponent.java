@@ -20,34 +20,39 @@ import java.util.HashMap;
 
 import test.Context;
 import test.html.HtmlElement;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.form.HtmlButton;
 import test.html.components.standard.form.HtmlForm;
 
 import test.Request;
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.server.Session;
+import test.UrlBuilder;
+import test.pages.ContributePage;
 
 public class DemandContributeButtonComponent extends HtmlElement {
 
     private HashMap<String, String> params;
+    private final Demand demand;
 
     public DemandContributeButtonComponent(Request request, Demand demand) {
         super();
-        params = new HashMap<String, String>();
-        params.put("idea", String.valueOf(demand.getId()));
+        this.demand = demand;
         add(produce(request));
     }
 
     protected HtmlElement produce(Request request) {
 
-        final HtmlBlock contributeBlock = new HtmlBlock("contribute_block");
+        final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
         {
 
             Session session = Context.getSession();
-            HtmlForm contributeForm = new HtmlForm(new ContributePage(session, params), HtmlForm.Method.GET);
+
+            UrlBuilder urlBuilder = new UrlBuilder(ContributePage.class);
+            urlBuilder.addParameter("targetIdea", demand);
+
+            HtmlForm contributeForm = new HtmlForm(urlBuilder.buildUrl());
             {
                 // Add button
                 HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));

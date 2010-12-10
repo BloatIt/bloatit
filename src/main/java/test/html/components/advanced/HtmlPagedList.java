@@ -27,6 +27,7 @@ import test.Request;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.RequestParam;
 import test.html.components.standard.HtmlGenericElement;
 import test.html.components.standard.HtmlLink;
 
@@ -34,9 +35,13 @@ public class HtmlPagedList<T> extends HtmlList {
 
     private Session session;
     private Request currentRequest;
-    private int currentPage;
-    private int pageCount;
-    private int pageSize;
+
+    @RequestParam(defaultValue="1", name="current_page")
+    private Integer currentPage;
+    @RequestParam(defaultValue="1", name="page_count")
+    private Integer pageCount;
+    @RequestParam(defaultValue="42", name="page_count")
+    private Integer pageSize;
 
     public HtmlPagedList(HtmlRenderer<T> itemRenderer, PageIterable<T> itemList, Request currentRequest, Session session) {
         super();

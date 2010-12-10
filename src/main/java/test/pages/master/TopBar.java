@@ -2,15 +2,17 @@ package test.pages.master;
 
 import test.Context;
 
-import com.bloatit.web.actions.LogoutAction;
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.pages.LoginPage;
-import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.server.Session;
-import test.html.components.standard.HtmlBlock;
+import test.UrlBuilder;
+import test.actions.LogoutAction;
+import test.html.HtmlTools;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlGenericElement;
+import test.html.components.standard.HtmlLink;
+import test.pages.LoginPage;
+import test.pages.MyAccountPage;
 
-public class TopBar extends HtmlBlock {
+public class TopBar extends HtmlDiv {
 
     protected TopBar() {
         super();
@@ -20,18 +22,17 @@ public class TopBar extends HtmlBlock {
         Session session = Context.getSession();
         if (session.isLogged()) {
             final String full_name = session.getAuthToken().getMember().getFullname();
-            final String karma = HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma());
-            final String memberLink = HtmlTools.generateLink(session, full_name, new MyAccountPage(session))
-                    + "<span class=\"karma\">" + karma + "</span>";
-            final String logoutLink = HtmlTools.generateLink(session, session.tr("Logout"), new LogoutAction(session));
+            final String karma = "<span class=\"karma\">" + HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()) + "</span>";
+            final HtmlLink memberLink = new UrlBuilder(MyAccountPage.class).getHtmlLink(full_name);
+            final HtmlLink logoutLink = new UrlBuilder(LogoutAction.class).getHtmlLink(session.tr("Logout"));
 
-            add(new HtmlGenericElement("span").setClass("top_bar_component").addText(memberLink));
-            add(new HtmlGenericElement("span").setClass("top_bar_component").addText(logoutLink));
+            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(memberLink).addText(karma));
+            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(logoutLink));
 
         } else {
-            add(new HtmlGenericElement("span").setClass("top_bar_component").addText(HtmlTools.generateLink(session,
-                    session.tr("Login / Signup"),
-                    new LoginPage(session))));
+            final HtmlLink loginLink = new UrlBuilder(LoginPage.class).getHtmlLink(session.tr("Login / Signup"));
+
+            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(loginLink));
         }
     }
 

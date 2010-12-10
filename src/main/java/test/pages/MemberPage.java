@@ -16,84 +16,46 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package test.pages;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.bloatit.framework.Member;
-import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlString;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.Message.Level;
+import com.bloatit.web.utils.RequestParam;
+import test.PageNotFoundException;
+import test.RedirectException;
+import test.Request;
+import test.html.HtmlText;
+import test.html.components.standard.HtmlTitleBlock;
+import test.pages.master.Page;
 
 public class MemberPage extends Page {
 
-    private final Member member;
+    @RequestParam(level = Level.ERROR)
+    private Member member;
 
-    public MemberPage(Session session, Map<String, String> parameters) {
-        this(session, parameters, null);
-    }
+    public MemberPage(Request request) throws RedirectException {
+        super(request);
+        generateContent();
+        this.request.setValues(this);
+        addNotifications(request.getMessages());
 
-    public MemberPage(Session session, Member member) {
-        this(session, new HashMap<String, String>(), member);
-    }
-
-    public MemberPage(Session session, Map<String, String> parameters, Member member) {
-        super(session, parameters);
-        Member d = null;
-
-        if (member == null) {
-            if (parameters.containsKey("id")) {
-                Integer id = null;
-                try {
-                    id = new Integer(parameters.get("id"));
-                } catch (final NumberFormatException e) {
-
-                }
-                if (id != null) {
-                    d = MemberManager.getMemberById(id);
-                }
-            }
-        } else {
-            d = member;
-        }
-
-        this.member = d;
-    }
-
-    @Override
-    protected HtmlComponent generateContent() {
-        if (member != null) {
-            member.authenticate(session.getAuthToken());
-
-            final HtmlTitle memberTitle = new HtmlTitle(member.getFullname(), "");
-
-            memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
-            memberTitle.add(new HtmlText("Login: " + member.getLogin()));
-            if (member.canGetEmail()) {
-                memberTitle.add(new HtmlText("Email: " + member.getEmail()));
-            }
-            memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
-
-            return memberTitle;
-        } else {
-            return new HtmlTitle("No member", "");
+        if (request.getMessages().hasMessage(Level.ERROR)) {
+            throw new PageNotFoundException();
         }
     }
 
-    @Override
-    public String getCode() {
-        if (member != null) {
-            return new HtmlString(session).add("member/id-" + member.getId() + "/title-").secure(member.getLogin()).toString();
-        } else {
-            return "member"; // TODO Faire un système pour afficher une page
-                             // d'erreur
+    private void generateContent() {
+        member.authenticate(session.getAuthToken());
+
+        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname());
+
+        memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
+        memberTitle.add(new HtmlText("Login: " + member.getLogin()));
+        if (member.canGetEmail()) {
+            memberTitle.add(new HtmlText("Email: " + member.getEmail()));
         }
+        memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
+        add(memberTitle);
     }
 
     @Override

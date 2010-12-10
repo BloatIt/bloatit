@@ -1,9 +1,9 @@
 package test.pages.master;
 
 import test.Context;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 
-public class Footer extends HtmlBlock {
+public class Footer extends HtmlDiv {
 
     protected Footer() {
         super();

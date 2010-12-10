@@ -18,35 +18,28 @@
  */
 package test.pages;
 
-import java.util.Map;
 
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import test.RedirectException;
+import test.Request;
+import test.html.components.standard.HtmlTitle;
+import test.pages.master.Page;
 
 public class PageNotFound extends Page {
 
-    public PageNotFound(Session session, Map<String, String> parameters) {
-        super(session, parameters);
+
+    public PageNotFound(Request request) throws RedirectException {
+        super(request);
+        generateContent();
     }
 
-    public PageNotFound(Session session) {
-        super(session);
-    }
 
-    @Override
-    protected HtmlComponent generateContent() {
-        final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"), "");
+    private void generateContent() {
+        final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"));
 
-        return errorTitle;
+        add(errorTitle);
 
     }
 
-    @Override
-    public String getCode() {
-        return "pagenotfound";
-    }
 
     @Override
     protected String getTitle() {

@@ -24,10 +24,10 @@ import test.html.HtmlElement;
 import test.Request;
 
 import com.bloatit.framework.Comment;
-import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Session;
 import test.html.HtmlText;
-import test.html.components.standard.HtmlBlock;
+import test.html.HtmlTools;
+import test.html.components.standard.HtmlDiv;
 
 public class DemandCommentChildComponent extends HtmlElement {
 
@@ -44,7 +44,7 @@ public class DemandCommentChildComponent extends HtmlElement {
     }
 
     protected HtmlElement produce(Request request) {
-        HtmlBlock commentBlock = new HtmlBlock("child_comment_block");
+        HtmlDiv commentBlock = new HtmlDiv("child_comment_block");
         {
 
             commentBlock.add(commentText);

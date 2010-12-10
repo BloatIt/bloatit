@@ -18,35 +18,19 @@
  */
 package test.pages;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.actions.LoginAction;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPasswordField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Session;
+import test.RedirectException;
+import test.Request;
+import test.html.HtmlElement;
+import test.html.components.standard.HtmlDiv;
 
 public class CreateIdeaPage extends LoggedPage {
 
-    public CreateIdeaPage(Session session) {
-        this(session, new HashMap<String, String>());
+    public CreateIdeaPage(Request request) throws RedirectException {
+        super(request);
     }
-
-    public CreateIdeaPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-    }
-
-    @Override
-    public String getCode() {
-        return "idea/create";
-    }
-
+    
     @Override
     protected String getTitle() {
         return "Create new idea";
@@ -58,7 +42,7 @@ public class CreateIdeaPage extends LoggedPage {
     }
 
     @Override
-    public HtmlComponent generateRestrictedContent() {
+    public HtmlElement generateRestrictedContent() {
          if(DemandManager.canCreate(session.getAuthToken())) {
                 return generateDemandCreationForm();
             } else {
@@ -66,36 +50,18 @@ public class CreateIdeaPage extends LoggedPage {
             }
     }
 
-    private HtmlComponent generateDemandCreationForm() {
-
-
-        final LoginAction logAction = new LoginAction(session);
-
-        final HtmlForm loginForm = new HtmlForm(logAction);
-        final HtmlTextField loginField = new HtmlTextField();
-        final HtmlPasswordField passwordField = new HtmlPasswordField();
-        final HtmlButton submitButton = new HtmlButton(session.tr("Create idea"));
-
-        loginForm.add(loginField);
-        loginForm.add(passwordField);
-        loginForm.add(submitButton);
-
-        loginField.setName(logAction.getLoginCode());
-        passwordField.setName(logAction.getPasswordCode());
-
-        final HtmlTitle loginTitle = new HtmlTitle(session.tr("Create a new idea"), "");
-        loginTitle.add(loginForm);
+    private HtmlElement generateDemandCreationForm() {
 
         
-        final HtmlContainer group = new HtmlContainer();
-
-        group.add(loginTitle);
+        final HtmlDiv group = new HtmlDiv();
 
         return group;
     }
 
-    private HtmlComponent generateBadRightError() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private HtmlElement generateBadRightError() {
+        final HtmlDiv group = new HtmlDiv();
+
+        return group;
     }
 
     @Override

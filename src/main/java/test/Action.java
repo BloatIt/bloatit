@@ -17,19 +17,22 @@
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.htmlrenderer.htmlcomponent;
+package test;
 
-import com.bloatit.web.htmlrenderer.HtmlResult;
+import com.bloatit.web.server.Session;
 
-public class HtmlButton extends HtmlComponent {
-    private final String label;
+public abstract class Action implements Linkable {
 
-    public HtmlButton(String label) {
-        this.label = label;
+    protected final Request request;
+    protected final Session session;
+
+    public Action(Request resquest) {
+        this.request = resquest;
+        session = Context.getSession();
     }
 
-    @Override
-    public void generate(HtmlResult htmlResult) {
-        htmlResult.write("<p><input class=\"button\" type=\"submit\" value=\"" + label + "\" /><p>");
-    }
+
+
+    abstract public String process();
+
 }

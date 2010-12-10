@@ -18,65 +18,52 @@
  */
 package test.pages;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import com.bloatit.web.actions.LoginAction;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPasswordField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
+import test.actions.LoginAction;
+import test.html.HtmlText;
+import test.html.components.standard.HtmlGenericElement;
+import test.html.components.standard.HtmlTitleBlock;
+import test.html.components.standard.form.HtmlButton;
+import test.html.components.standard.form.HtmlForm;
+import test.html.components.standard.form.HtmlPasswordField;
+import test.html.components.standard.form.HtmlTextField;
+import test.pages.master.Page;
 
 public class LoginPage extends Page {
 
-    public LoginPage(Session session) {
-        this(session, new HashMap<String, String>());
+    public LoginPage(Request request) throws RedirectException {
+        super(request);
+        generateContent();
     }
 
-    public LoginPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-    }
-
-    @Override
-    protected HtmlComponent generateContent() {
-        final LoginAction logAction = new LoginAction(session);
-
-        final HtmlForm loginForm = new HtmlForm(logAction);
-        final HtmlTextField loginField = new HtmlTextField();
-        final HtmlPasswordField passwordField = new HtmlPasswordField();
+    private void generateContent() {
+        
+        final HtmlForm loginForm = new HtmlForm(new UrlBuilder(LoginAction.class).buildUrl());
+        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE);
+        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.LOGIN_CODE);
         final HtmlButton submitButton = new HtmlButton(session.tr("Login"));
 
         loginForm.add(loginField);
         loginForm.add(passwordField);
         loginForm.add(submitButton);
 
-        loginField.setName(logAction.getLoginCode());
-        passwordField.setName(logAction.getPasswordCode());
-
-        final HtmlTitle loginTitle = new HtmlTitle(session.tr("Login"), "");
+        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(session.tr("Login"));
         loginTitle.add(loginForm);
 
-        final HtmlTitle sigupTitle = new HtmlTitle(session.tr("Sigup"), "");
+        final HtmlTitleBlock sigupTitle = new HtmlTitleBlock(session.tr("Sigup"));
         sigupTitle.add(new HtmlText("Not yet implemented."));
 
-        final HtmlContainer group = new HtmlContainer();
+        final HtmlGenericElement group = new HtmlGenericElement();
 
         group.add(loginTitle);
         group.add(sigupTitle);
 
-        return group;
+        add(group);
     }
 
-    @Override
-    public String getCode() {
-        return "login";
-    }
 
     @Override
     protected String getTitle() {

@@ -19,76 +19,53 @@
 
 package test.pages;
 
-import com.bloatit.web.pages.demand.DemandPage;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.htmlrenderer.HtmlResult;
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.PageComponent;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
+import test.html.HtmlNode;
+import test.html.components.advanced.HtmlPagedList;
+import test.html.components.standard.HtmlListItem;
+import test.html.components.standard.HtmlRenderer;
+import test.html.components.standard.HtmlTitleBlock;
+import test.pages.demand.DemandPage;
+import test.pages.master.Page;
 
 public class DemandsPage extends Page {
 
-    public DemandsPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
+    @PageComponent
+    HtmlPagedList<Demand> pagedMemberList;
+
+    public DemandsPage(Request request) throws RedirectException {
+        super(request);
+        generateContent();
     }
+    private void generateContent() {
 
-    public DemandsPage(Session session) {
-        this(session, new HashMap<String, String>());
-    }
-
-    @Override
-    protected HtmlComponent generateContent() {
-
-        final HtmlTitle pageTitle = new HtmlTitle(session.tr("Demands list"), "");
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Demands list"));
 
         final PageIterable<Demand> demandList = DemandManager.getDemands();
 
         HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
+            UrlBuilder demandPageUrlBuilder = new UrlBuilder(DemandPage.class);
+
             @Override
-            public void generate(HtmlResult htmlResult, Demand demand) {
-                final DemandPage demandPage = new DemandPage(session, demand);
-                final HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(session, demand.getTitle(), demandPage));
-                item.generate(htmlResult);
+            public HtmlNode generate(Demand demand) {
+                demandPageUrlBuilder.addParameter("idea", demand);
+                return new HtmlListItem(demandPageUrlBuilder.getHtmlLink(demand.getTitle()));
             }
         };
 
-        HtmlPagedList<Demand> pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, this, session);
-
-        int pageSize = 10;
-        int currentPage = 0;
-
-        if (getParameters().contains("list_page_size")) {
-            try {
-                pageSize = Integer.parseInt(getParameters().getValue("list_page_size"));
-            } catch (NumberFormatException e) {
-            }
-        }
-
-        if (getParameters().contains("list_page")) {
-            try {
-                currentPage = Integer.parseInt(getParameters().getValue("list_page")) - 1;
-            } catch (NumberFormatException e) {
-            }
-        }
-
-        pagedMemberList.setPageSize(pageSize);
-        pagedMemberList.setCurrentPage(currentPage);
+        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, request, session);
 
         pageTitle.add(pagedMemberList);
 
-        return pageTitle;
-
+        add(pageTitle);
     }
 
     @Override
@@ -97,12 +74,11 @@ public class DemandsPage extends Page {
     }
 
     @Override
-    public String getCode() {
-        return "demands";
-    }
-
-    @Override
     public boolean isStable() {
         return true;
+    }
+
+    public String isBancale() {
+        return "peut-être";
     }
 }

@@ -4,44 +4,55 @@ import test.Context;
 import test.Notification;
 import test.Notification.Level;
 
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Message;
 import com.bloatit.web.utils.PageName;
 import com.bloatit.web.utils.RequestParamSetter.Messages;
+import test.Linkable;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
 import test.html.HtmlElement;
 import test.html.HtmlNode;
 import test.html.HtmlText;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlGenericElement;
+import test.html.components.standard.HtmlLink;
 import test.pages.HtmlContainerElement;
+import test.pages.IndexPage;
 
-public abstract class Page extends HtmlElement {
+public abstract class Page extends HtmlElement implements Linkable {
 
     private HtmlContainerElement content;
     private HtmlContainerElement notifications;
+    
+    protected final Request request;
+    protected final Session session;
 
-    public Page() {
+    public Page(Request request) {
         super("html");
+        session = Context.getSession();
+
+        this.request = request;
         super.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-        content = new HtmlBlock().setId("body_content");
-        notifications = new HtmlBlock().setId("notifications");
+        content = new HtmlDiv().setId("body_content");
+        notifications = new HtmlDiv().setId("notifications");
     }
 
-    public Page create() {
+    @Override
+    public String process() throws RedirectException {
         super.add(new Header(getTitle(), getCustomCss()));
         super.add(generate_body());
-        return this;
+        return null;
     }
 
     // TODO correct empty div for notifications ?
     private HtmlElement generate_body() {
-        return new HtmlGenericElement("body").add(new HtmlBlock()
+        return new HtmlGenericElement("body").add(new HtmlDiv()
                 .setId("page")
                 .add(new TopBar())
                 .add(generateTitle())
-                .add(new HtmlBlock().setId("center").add(new HtmlBlock().setId("center_column").add(new Menu())
+                .add(new HtmlDiv().setId("center").add(new HtmlDiv().setId("center_column").add(new Menu())
                         .add(content.add(notifications)))).add(new Footer()));
     }
 
@@ -82,7 +93,7 @@ public abstract class Page extends HtmlElement {
 
     protected void setPageNotFound() {
         // TODO translate
-        content.add(new HtmlBlock().setClass("not_found").addText("Page Not Found !"));
+        content.add(new HtmlDiv().setCssClass("not_found").addText("Page Not Found !"));
     }
 
     protected void addNotification(Notification note) {
@@ -113,7 +124,8 @@ public abstract class Page extends HtmlElement {
     private HtmlElement generateTitle() {
         // TODO handle titles level !
         Session session = Context.getSession();
-        return new HtmlGenericElement("h1").addText(HtmlTools.generateLink(session, generateLogo(), new IndexPage(session)));
+
+        return new HtmlGenericElement("h1").add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), generateLogo()));
     }
 
 }

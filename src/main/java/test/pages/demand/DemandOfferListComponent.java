@@ -18,7 +18,7 @@
  */
 package test.pages.demand;
 
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 
 import test.Request;
 
@@ -26,7 +26,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Offer;
 
-public class DemandOfferListComponent extends HtmlBlock {
+public class DemandOfferListComponent extends HtmlDiv {
 
     private PageIterable<Offer> offers;
 
@@ -34,7 +34,7 @@ public class DemandOfferListComponent extends HtmlBlock {
         super();
         offers = demand.getOffers();
         
-        HtmlBlock offersBlock = new HtmlBlock("offers_block");
+        HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
         for (Offer offer : offers) {
             

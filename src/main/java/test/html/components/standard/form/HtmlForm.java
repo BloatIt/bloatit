@@ -17,7 +17,6 @@
 
 package test.html.components.standard.form;
 
-import com.bloatit.web.server.Request;
 import test.pages.HtmlContainerElement;
 
 public class HtmlForm extends HtmlContainerElement {
@@ -25,13 +24,13 @@ public class HtmlForm extends HtmlContainerElement {
         GET, POST
     }
 
-    public HtmlForm(Request action, Method method) {
+    public HtmlForm(String action, Method method) {
         super("form");
-        addAttribute("action", action.getUrl());
+        addAttribute("action", action);
         addAttribute("method", method == Method.GET ? "GET" : "POST");
     }
 
-    public HtmlForm(Request action) {
+    public HtmlForm(String action) {
         this(action, Method.POST);
     }
 }

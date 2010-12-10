@@ -4,71 +4,73 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import test.UrlReader.ParamNotFoundException;
 
 import com.bloatit.common.FatalErrorException;
-import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Loaders;
 import com.bloatit.web.utils.PageComponent;
 import com.bloatit.web.utils.PageName;
 import com.bloatit.web.utils.RequestParam;
+import test.html.components.standard.HtmlLink;
 
-public class UrlBuilder extends UrlManipulator {
+public class UrlBuilder {
 
     private final Map<String, Object> parameters = new HashMap<String, Object>();
-    private final Class<? extends Page> pageClass;
+    private final Class<? extends Linkable> linkableClass;
     private final Session session;
 
-    public UrlBuilder(Page page, Session session) {
-        pageClass = page.getClass();
-        this.session = session;
-        fillParameters(page, pageClass);
+    public UrlBuilder(Linkable linkable) {
+        linkableClass = linkable.getClass();
+        this.session = Context.getSession();
+        fillParameters(linkable, linkableClass);
     }
 
-    public UrlBuilder(Class<? extends Page> pageClass, Session session) {
+    public UrlBuilder(Class<? extends Linkable> linkableClass) {
         super();
-        this.pageClass = pageClass;
-        this.session = session;
+        this.session = Context.getSession();
+        this.linkableClass = linkableClass;
     }
 
-    public void addParameter(String name, Object value) {
+    public UrlBuilder addParameter(String name, Object value) {
         parameters.put(name, value);
+        return this;
     }
 
-    public void buildUrl() throws ParamNotFoundException {
+    public String buildUrl() {
         StringBuilder sb = new StringBuilder();
 
         // find language
         sb.append("/").append(session.getLanguage().getCode()).append("/");
 
         // find name
-        if (pageClass.getAnnotation(PageName.class) != null) {
-            sb.append(pageClass.getAnnotation(PageName.class).value());
+        if (linkableClass.getAnnotation(PageName.class) != null) {
+            sb.append(linkableClass.getAnnotation(PageName.class).value());
         } else {
-            sb.append(pageClass.getName().toLowerCase());
+            sb.append(linkableClass.getName().toLowerCase());
         }
 
         sb.append("/");
 
-        buildUrl(sb, pageClass);
+        buildUrl(sb, linkableClass);
+
+        return sb.toString();
     }
 
-    private void buildUrl(StringBuilder sb, Class<?> pageClass) throws ParamNotFoundException {
+    private void buildUrl(StringBuilder sb, Class<?> pageClass) {
         for (Field f : pageClass.getDeclaredFields()) {
             RequestParam param = f.getAnnotation(RequestParam.class);
             if (param != null) {
 
-                String name = param.name() == "" ? f.getName() : param.name();
+                String name = param.name().equals("") ? f.getName() : param.name();
                 String strValue = null;
                 Object value = parameters.get(name);
                 if (value != null) {
                     strValue = Loaders.toStr(value);
-                } else if (param.defaultValue() == "") {
-                    throw new UrlReader.ParamNotFoundException("Parameter " + name + " needs a value.");
+                } else if (param.defaultValue().equals("")) {
+                    throw new FatalErrorException("Parameter " + name + " needs a value.", null);
                 }
 
-                if (strValue != param.defaultValue()) {
+                if (!strValue.equals(param.defaultValue())) {
                     sb.append(name).append("-").append(strValue).append("/");
                 }
 
@@ -78,20 +80,24 @@ public class UrlBuilder extends UrlManipulator {
         }
     }
 
-    private void fillParameters(Object page, Class<? extends Object> pageClass) {
-        for (Field f : pageClass.getDeclaredFields()) {
+    public HtmlLink getHtmlLink(String text) {
+        return new HtmlLink(buildUrl(), text);
+    }
+
+    private void fillParameters(Object linkable, Class<? extends Object> linkableClass) {
+        for (Field f : linkableClass.getDeclaredFields()) {
             RequestParam param = f.getAnnotation(RequestParam.class);
             try {
                 if (param != null) {
                     if (!f.isAccessible()) {
                         f.setAccessible(true);
                     }
-                    addParameter(param.name() == "" ? f.getName() : param.name(), f.get(page));
+                    addParameter(param.name().equals("") ? f.getName() : param.name(), f.get(linkable));
                 } else if (f.getAnnotation(PageComponent.class) != null) {
                     if (!f.isAccessible()) {
                         f.setAccessible(true);
                     }
-                    fillParameters(f.get(page), f.getDeclaringClass());
+                    fillParameters(f.get(linkable), f.getDeclaringClass());
                 }
             } catch (IllegalArgumentException e) {
                 throw new FatalErrorException("Cannot parse the pageComponent", e);

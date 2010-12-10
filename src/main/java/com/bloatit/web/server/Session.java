@@ -19,6 +19,7 @@
 
 package com.bloatit.web.server;
 
+import test.Action;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -34,8 +35,8 @@ public class Session {
     private final Deque<Action> actionList;
     private final Deque<Notification> notificationList;
     private Language language;
-    private Request lastStablePage = null;
-    private Request targetPage = null;
+    private String lastStablePage = null;
+    private String targetPage = null;
     private AuthToken authToken;
 
     private final List<Language> preferredLocales;
@@ -93,19 +94,19 @@ public class Session {
         return actionList;
     }
 
-    public void setLastStablePage(Request p) {
+    public void setLastStablePage(String p) {
         lastStablePage = p;
     }
 
-    public Request getLastStablePage() {
+    public String getLastStablePage() {
         return lastStablePage;
     }
 
-    public Request getTargetPage() {
+    public String getTargetPage() {
         return targetPage;
     }
 
-    public void setTargetPage(Request targetPage) {
+    public void setTargetPage(String targetPage) {
         this.targetPage = targetPage;
     }
 

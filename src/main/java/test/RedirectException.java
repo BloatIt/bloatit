@@ -16,32 +16,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
+package test;
 
-package com.bloatit.web.pages.components;
+public class RedirectException extends Exception {
 
-import com.bloatit.web.htmlrenderer.HtmlResult;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.server.Session;
+    private final String url;
 
-
-public abstract  class PageComponent extends HtmlComponent{
-
-    public Session session;
-
-    public PageComponent(Session session) {
-        this.session = session;
+    public RedirectException(String url) {
+        this.url = url;
     }
 
-    @Override
-    public void generate(HtmlResult htmlResult) {
-        extractData();
-        produce().generate(htmlResult);
+    public String getUrl() {
+        return url;
     }
 
 
-   
-    protected abstract HtmlComponent produce();
-    protected abstract void extractData();
-    
-    
 }

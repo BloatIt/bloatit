@@ -19,50 +19,45 @@
 
 package test.pages;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlList;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
+import test.html.components.standard.HtmlLink;
+import test.html.components.standard.HtmlList;
+import test.html.components.standard.HtmlListItem;
+import test.html.components.standard.HtmlTitleBlock;
+import test.pages.master.Page;
 
 public class SpecialsPage extends Page {
 
-    public SpecialsPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
+    public SpecialsPage(Request request) throws RedirectException {
+        super(request);
+        generateContent();
     }
 
-    public SpecialsPage(Session session) {
-        this(session, new HashMap<String, String>());
-    }
+    private void generateContent() {
 
-    @Override
-    protected HtmlComponent generateContent() {
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Special pages"));
+        pageTitle.setCssClass("page_title");
 
-        final HtmlTitle pageTitle = new HtmlTitle(session.tr("Special pages"), "page_title");
 
         final HtmlList pageList = new HtmlList();
 
-        pageList.addItem(new HtmlListItem(HtmlTools.generateLink(session, "Members list", new MembersListPage(session))));
+        HtmlLink memeHtmlLink = new UrlBuilder(MembersListPage.class).getHtmlLink(session.tr("Members list"));
 
-        pageTitle.add(pageList);
+        pageList.addItem(new HtmlListItem(memeHtmlLink));
 
-        return pageTitle;
+        //pageTitle.add(pageList);
+        //TODO : fix title
+
+        
 
     }
 
     @Override
     public String getTitle() {
         return "Special pages list";
-    }
-
-    @Override
-    public String getCode() {
-        return "specials";
     }
 
     @Override

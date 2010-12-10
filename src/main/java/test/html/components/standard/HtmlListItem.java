@@ -4,15 +4,15 @@
 
 package test.html.components.standard;
 
-import test.html.HtmlElement;
 import test.html.HtmlNode;
 import test.html.HtmlText;
+import test.pages.HtmlContainerElement;
 
 /**
  * 
  * @author fred
  */
-public class HtmlListItem extends HtmlElement {
+public class HtmlListItem extends HtmlContainerElement {
 
     public HtmlListItem(HtmlNode node) {
         super("li");

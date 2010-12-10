@@ -19,22 +19,24 @@ package test.pages.demand;
 import java.util.Locale;
 
 import test.Context;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlText;
 
 import test.Request;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.pages.MemberPage;
 import com.bloatit.web.server.Session;
+import test.UrlBuilder;
+import test.html.HtmlTools;
+import test.html.components.standard.HtmlLink;
+import test.pages.MemberPage;
 
-public class DemandDescriptionComponent extends HtmlBlock {
+public class DemandDescriptionComponent extends HtmlDiv {
 
     private HtmlText description;
     private HtmlText date;
-    private HtmlText author;
+    private HtmlLink author;
 
     public DemandDescriptionComponent(Request request, Demand demand) {
         super();
@@ -45,17 +47,19 @@ public class DemandDescriptionComponent extends HtmlBlock {
         description = new HtmlText(translatedDescription.getText());
 
         date = new HtmlText(HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
-        author = new HtmlText(HtmlTools.generateLink(session,
-                demand.getAuthor().getLogin(),
-                new MemberPage(session, demand.getAuthor())), "description_author");
 
-        HtmlBlock descriptionBlock = new HtmlBlock("description_block");
+        UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
+        urlBuilder.addParameter("member", demand.getAuthor());
+
+        author = urlBuilder.getHtmlLink(demand.getAuthor().getLogin());
+
+        HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {
 
-            HtmlBlock descriptionFooter = new HtmlBlock("description_footer");
+            HtmlDiv descriptionFooter = new HtmlDiv("description_footer");
             {
 
-                HtmlBlock descriptionDetails = new HtmlBlock("description_details");
+                HtmlDiv descriptionDetails = new HtmlDiv("description_details");
                 {
                     descriptionDetails.add(author);
                     descriptionDetails.add(date);

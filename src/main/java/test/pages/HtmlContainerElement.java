@@ -54,8 +54,8 @@ public abstract class HtmlContainerElement extends HtmlElement {
     }
 
     @Override
-    public HtmlContainerElement setClass(String cssClass) {
-        super.setClass(cssClass);
+    public HtmlContainerElement setCssClass(String cssClass) {
+        super.setCssClass(cssClass);
         return this;
     }
 

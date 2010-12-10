@@ -16,19 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.actions;
+package test.actions;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.server.Action;
-import com.bloatit.web.server.Session;
+import test.Action;
 import com.bloatit.web.utils.RequestParam;
 import com.bloatit.web.utils.TestQueryAnnotation.DemandLoader;
 import com.bloatit.web.utils.tr;
+import test.Request;
 
 public class OfferAction extends Action {
 
@@ -68,57 +66,17 @@ public class OfferAction extends Action {
     @RequestParam(name = DESCRIPTION_CODE)
     private String description;
 
-    public OfferAction(Session session) {
-        super(session, new HashMap<String, String>());
-    }
-
-    public OfferAction(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-    }
-
-    public OfferAction(Session session, Parameters parameters) {
-        super(session, parameters);
-    }
-
-    /**
-     * @return the code used to generate the form input field for the price
-     */
-    public String getPriceCode() {
-        return "offer_price";
-    }
-
-    /**
-     * @return the code used to generate the form input field for the expiration date
-     */
-    public String getExpiryDateCode() {
-        return "offer_expiry_date";
-    }
-
-    /**
-     * @return the code used to generate the form input field for the offer title
-     */
-    public String getTitleCode() {
-        return "offer_title";
-    }
-
-    /**
-     * @return the code used to generate the form input field for description of the offer
-     */
-    public String getDescriptionCode() {
-        return "offer_description";
+    public OfferAction(Request request) {
+        super(request);
     }
 
     @Override
-    public String getCode() {
-        return "offer";
-    }
-
-    @Override
-    protected void process() {
+    public String process() {
         // Handle errors here
 
 
         // targetIdea.addOffer(price, , expiryDate);
+        return null;
         
     }
 }

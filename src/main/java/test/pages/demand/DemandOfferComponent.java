@@ -18,7 +18,7 @@ package test.pages.demand;
 
 import test.Context;
 import test.html.HtmlElement;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlImage;
 import test.html.components.standard.HtmlText;
 
@@ -47,11 +47,11 @@ public class DemandOfferComponent extends HtmlElement {
     }
 
     protected HtmlElement produce(Request request) {
-        HtmlBlock offerBlock = new HtmlBlock("offer_block");
+        HtmlDiv offerBlock = new HtmlDiv("offer_block");
         {
             offerBlock.add(authorAvatar);
 
-            HtmlBlock offerInfoBlock = new HtmlBlock("offer_info_block");
+            HtmlDiv offerInfoBlock = new HtmlDiv("offer_info_block");
             {
                 offerInfoBlock.add(author);
                 offerInfoBlock.add(price);

@@ -17,7 +17,7 @@
 package test.pages.demand;
 
 import test.html.HtmlElement;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 
 import com.bloatit.framework.Demand;
 
@@ -27,7 +27,7 @@ public class DemandSummaryComponent extends HtmlElement {
 
     public DemandSummaryComponent(Request request, Demand demand) {
         super();
-        HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
+        HtmlDiv abstractBlock = new HtmlDiv("abstract_block");
         {
             abstractBlock.add(new DemandTimelineComponent(request, demand));
         }

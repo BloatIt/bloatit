@@ -21,7 +21,7 @@ package test.pages.demand;
 import test.Context;
 import test.html.HtmlElement;
 import test.html.HtmlNode;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.standard.HtmlListItem;
 import test.html.components.advanced.HtmlPagedList;
 import test.html.components.standard.HtmlRenderer;
@@ -34,7 +34,7 @@ import com.bloatit.framework.Contribution;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.server.Session;
 
-public class DemandContributorsComponent extends HtmlBlock {
+public class DemandContributorsComponent extends HtmlDiv {
 
     private int contributionCount;
     private HtmlText contributionMin;
@@ -53,7 +53,7 @@ public class DemandContributorsComponent extends HtmlBlock {
 
     protected HtmlElement produce(Request request) {
         Session session = Context.getSession();
-        HtmlBlock contributorsBlock = new HtmlBlock("contributors_block");
+        HtmlDiv contributorsBlock = new HtmlDiv("contributors_block");
         {
 
             //Display contribution count

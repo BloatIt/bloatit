@@ -17,7 +17,7 @@
 package test.pages.demand;
 
 import test.html.HtmlElement;
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 import test.html.components.advanced.HtmlProgressBar;
 import test.html.components.standard.HtmlText;
 
@@ -40,12 +40,12 @@ public class DemandProgressBarComponent extends HtmlElement {
 
     protected HtmlElement produce(Request request) {
 
-        final HtmlBlock progressBlock = new HtmlBlock("progress_block");
+        final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
 
             progressBlock.add(new DemandContributeButtonComponent(request, demand));
 
-            final HtmlBlock progressBarBlock = new HtmlBlock("column");
+            final HtmlDiv progressBarBlock = new HtmlDiv("column");
             {
                 progressBarBlock.add(new HtmlProgressBar(progressValue));
             }

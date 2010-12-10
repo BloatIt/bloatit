@@ -1,8 +1,8 @@
 package test;
 
-import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlDiv;
 
-public class Notification extends HtmlBlock {
+public class Notification extends HtmlDiv {
 
     public enum Level {
         INFO, WARNING, ERROR
@@ -12,13 +12,13 @@ public class Notification extends HtmlBlock {
         super();
         switch (level) {
         case INFO:
-            setClass("notification_good");
+            setCssClass("notification_good");
             break;
         case WARNING:
-            setClass("notification_bad");
+            setCssClass("notification_bad");
             break;
         case ERROR:
-            setClass("notification_error");
+            setCssClass("notification_error");
             break;
         }
         addText(message);

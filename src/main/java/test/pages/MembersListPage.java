@@ -18,82 +18,62 @@
  */
 package test.pages;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.web.htmlrenderer.HtmlResult;
-import com.bloatit.web.htmlrenderer.HtmlTools;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlListItem;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPagedList;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlRenderer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
-import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.PageComponent;
+import test.RedirectException;
+
+import test.Request;
+import test.UrlBuilder;
+import test.html.HtmlNode;
+import test.html.HtmlText;
+import test.html.HtmlTools;
+import test.html.components.advanced.HtmlPagedList;
+import test.html.components.standard.HtmlLink;
+import test.html.components.standard.HtmlListItem;
+import test.html.components.standard.HtmlRenderer;
+import test.html.components.standard.HtmlTitleBlock;
+import test.pages.master.Page;
 
 public class MembersListPage extends Page {
 
-    public MembersListPage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
+    @PageComponent
+    private HtmlPagedList<Member> pagedMemberList;
+
+    public MembersListPage(Request request) throws RedirectException {
+        super(request);
+        generateContent();
     }
 
-    public MembersListPage(Session session) {
-        this(session, new HashMap<String, String>());
-    }
+    private void generateContent() {
 
-    @Override
-    protected HtmlComponent generateContent() {
-
-        final HtmlTitle pageTitle = new HtmlTitle("Members list", "");
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list");
 
         final PageIterable<Member> memberList = MemberManager.getMembers();
 
         HtmlRenderer<Member> memberItemRenderer = new HtmlRenderer<Member>() {
 
+            private UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
+
             @Override
-            public void generate(HtmlResult htmlResult, Member member) {
-                final MemberPage memberPage = new MemberPage(session, member);
-                final HtmlListItem item = new HtmlListItem(HtmlTools.generateLink(session, member.getFullname(), memberPage)
-                        + "<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
-                item.generate(htmlResult);
+            public HtmlNode generate(Member member) {
+                urlBuilder.addParameter("member", member);
+                final HtmlLink htmlLink = urlBuilder.getHtmlLink(member.getFullname());
+                final HtmlText htmlKarma = new HtmlText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
+                return new HtmlListItem(htmlLink).add(htmlKarma);
             }
         };
 
-        HtmlPagedList<Member> pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, this, session);
-
-        int pageSize = 42;
-        int currentPage = 0;
-
-        if (getParameters().contains("list_page_size")) {
-            try {
-                pageSize = Integer.parseInt(getParameters().getValue("list_page_size"));
-            } catch (NumberFormatException e) {
-            }
-        }
-
-        if (getParameters().contains("list_page")) {
-            try {
-                currentPage = Integer.parseInt(getParameters().getValue("list_page")) - 1;
-            } catch (NumberFormatException e) {
-            }
-        }
-
-        pagedMemberList.setPageSize(pageSize);
-        pagedMemberList.setCurrentPage(currentPage);
+        //TODO: avoid conflict
+        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, request, session);
 
         pageTitle.add(pagedMemberList);
 
-        return pageTitle;
+        add(pageTitle);
 
     }
 
-    @Override
-    public String getCode() {
-        return "members_list";
-    }
 
     @Override
     protected String getTitle() {

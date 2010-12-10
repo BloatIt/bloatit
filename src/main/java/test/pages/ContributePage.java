@@ -19,87 +19,56 @@
 package test.pages;
 
 import com.bloatit.framework.Demand;
-import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.actions.ContributionAction;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextArea;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.Message.Level;
+import com.bloatit.web.utils.RequestParam;
+import test.RedirectException;
+import test.Request;
+import test.UrlBuilder;
+import test.actions.ContributionAction;
+import test.html.HtmlElement;
+import test.html.HtmlText;
+import test.html.components.standard.HtmlDiv;
+import test.html.components.standard.HtmlTitleBlock;
+import test.html.components.standard.form.HtmlButton;
+import test.html.components.standard.form.HtmlForm;
+import test.html.components.standard.form.HtmlTextArea;
+import test.html.components.standard.form.HtmlTextField;
 
 public class ContributePage extends LoggedPage {
 
-    public ContributePage(Session session) {
-        this(session, new HashMap<String, String>());
-    }
+    @RequestParam(level=Level.ERROR)
+    private Demand targetIdea;
 
-    public ContributePage(Session session, Map<String, String> parameters) {
-        super(session, parameters);
-    }
+    @RequestParam(defaultValue="vide")
+    private String contributionAmountParam;
 
-    public ContributePage(Session session, Parameters parameters) {
-        super(session, parameters);
+    @RequestParam(defaultValue="vide")
+    private String contributionCommentParam;
+
+    public ContributePage(Request request) throws RedirectException {
+        super(request);
     }
 
     @Override
-    public HtmlComponent generateRestrictedContent() {
-        // Checking parameters
-        // TODO : do something when id is invalid / there is no id
-        int ideaId = -1;
-        Demand targetIdea = null;
-        if(this.getParameters().contains("idea")){
-            try{
-                ideaId = Integer.parseInt(this.getParameters().getValue("idea"));
-                targetIdea = DemandManager.getDemandById(ideaId);
-            } catch (NumberFormatException nfe){
-            }
-        }
-
-        if (ideaId == -1 ){
-            session.notifyBad(session.tr("You need to choose an idea on which you'll contribute"));
-            htmlResult.setRedirect(new PageNotFound(session));
-            return null;
-        }
-
-        if (targetIdea == null){
-            session.notifyBad(session.tr("The idea you chose does not exists (id :"+ideaId+")"));
-            htmlResult.setRedirect(new PageNotFound(session));
-            return null;
-        }
-
-        // Case: OK
-        final ContributionAction contribAction = new ContributionAction(session, this.getParameters());
+    public HtmlElement generateRestrictedContent() {
         
-        final HtmlForm contribForm = new HtmlForm(contribAction);
-        contribForm.setMethod(HtmlForm.Method.POST);
+        final HtmlForm contribForm = new HtmlForm(new UrlBuilder(ContributionAction.class).buildUrl());
 
         // Input field : chose amount
-        final HtmlTextField contribField = new HtmlTextField();
+        final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
         contribField.setLabel(session.tr("Choose amount : "));
+        contribField.setDefaultValue(contributionAmountParam);
         
-        if(this.getParameters().contains(contribAction.getContributionCode())){
-            contribField.setDefaultValue(this.getParameters().getValue(contribAction.getContributionCode()));
-        }
-        contribField.setName(contribAction.getContributionCode());
         
         // Input field : comment
-        final HtmlTextArea commentField = new HtmlTextArea(session.tr("Comment (optionnal) : "));
-        if(this.getParameters().contains(contribAction.getCommentCode())){
-            commentField.setDefaultValue(this.getParameters().getValue(contribAction.getCommentCode()));
-        }
-        commentField.setName(contribAction.getCommentCode());
-
+        final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE);
+        commentField.setLabel(session.tr("Comment (optionnal) : "));
+        commentField.setDefaultValue(contributionCommentParam);
+       
         final HtmlButton submitButton = new HtmlButton(session.tr("Contribute"));
 
         // Summary of the idea
-        HtmlTitle summary = new HtmlTitle(targetIdea.getTitle(),"");
+        HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle());
         HtmlText textSummary = new HtmlText(targetIdea.getDescription().toString());
         summary.add(textSummary);
 
@@ -108,19 +77,14 @@ public class ContributePage extends LoggedPage {
         contribForm.add(commentField);
         contribForm.add(submitButton);
 
-        final HtmlTitle contribTitle = new HtmlTitle(session.tr("Contribute"), "");
+        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(session.tr("Contribute"));
         contribTitle.add(summary);
         contribTitle.add(contribForm);
 
-        final HtmlContainer group = new HtmlContainer();
+        final HtmlDiv group = new HtmlDiv();
         group.add(contribTitle);
 
         return group;
-    }
-
-    @Override
-    public String getCode() {
-        return "contribute";
     }
 
     @Override
