@@ -14,7 +14,7 @@ public class Message {
     private String Message;
     private What what;
 
-    protected Message(Level level, What what, String message) {
+    public Message(Level level, What what, String message) {
         super();
         this.level = level;
         Message = message;

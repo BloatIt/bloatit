@@ -20,13 +20,14 @@ package test.pages.demand;
 
 import test.Context;
 import test.html.HtmlElement;
-import test.html.components.standard.HtmlBlock;
-import test.html.components.standard.HtmlText;
-import test.pages.demand.DemandPage.Request;
+
+import test.Request;
 
 import com.bloatit.framework.Comment;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Session;
+import test.html.components.standard.HtmlBlock;
+import test.html.components.standard.HtmlText;
 
 public class DemandCommentComponent extends HtmlElement {
 
@@ -43,14 +44,11 @@ public class DemandCommentComponent extends HtmlElement {
     protected HtmlElement produce(Request request) {
         HtmlBlock commentBlock = new HtmlBlock("main_comment_block");
         {
-
             commentBlock.add(commentText);
 
             for (Comment childComment : comment.getChildren()) {
                 commentBlock.add(new DemandCommentChildComponent(request, childComment));
             }
-
-
         }
         return commentBlock;
     }

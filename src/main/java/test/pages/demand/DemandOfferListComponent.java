@@ -19,18 +19,20 @@
 package test.pages.demand;
 
 import test.html.components.standard.HtmlBlock;
-import test.pages.demand.DemandPage.Request;
+
+import test.Request;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Demand;
 import com.bloatit.framework.Offer;
 
 public class DemandOfferListComponent extends HtmlBlock {
 
     private PageIterable<Offer> offers;
 
-    public DemandOfferListComponent(Request request) {
+    public DemandOfferListComponent(Request request, Demand demand) {
         super();
-        offers = request.demand.getOffers();
+        offers = demand.getOffers();
         
         HtmlBlock offersBlock = new HtmlBlock("offers_block");
 

@@ -21,7 +21,8 @@ import test.html.HtmlElement;
 import test.html.components.standard.HtmlBlock;
 import test.html.components.standard.HtmlImage;
 import test.html.components.standard.HtmlText;
-import test.pages.demand.DemandPage.Request;
+
+import test.Request;
 
 import com.bloatit.framework.Offer;
 import com.bloatit.web.server.Session;

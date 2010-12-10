@@ -11,6 +11,7 @@ import com.bloatit.web.server.SessionManager;
 import test.Context;
 import test.IndentedHtmlText;
 import test.Parameters;
+import test.Request;
 import test.Text;
 
 /**
@@ -94,7 +95,7 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
         Context.setSession(SessionManager.createSession());
         Context.getSession().setLanguage(new Language());
-        DemandPage page = new DemandPage(new Parameters("id", "321").add("title", "Hello"));
+        DemandPage page = new DemandPage(new Request("demand", new Parameters("id", "321").add("title", "Hello")));
         page.create();
         page.write(txt);
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();

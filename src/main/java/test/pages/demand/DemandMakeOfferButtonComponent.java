@@ -22,21 +22,23 @@ import test.Parameters;
 import test.html.components.standard.HtmlBlock;
 import test.html.components.standard.form.HtmlButton;
 import test.html.components.standard.form.HtmlForm;
-import test.pages.demand.DemandPage.Request;
 
+import test.Request;
+
+import com.bloatit.framework.Demand;
 import com.bloatit.web.pages.OfferPage;
 import com.bloatit.web.server.Session;
 
 public class DemandMakeOfferButtonComponent extends HtmlElement {
 
-    public DemandMakeOfferButtonComponent(Request request) {
+    public DemandMakeOfferButtonComponent(Request request, Demand demand) {
         super();
         Session session = Context.getSession();
 
         final HtmlBlock makeOfferBlock = new HtmlBlock("make_offer_block");
         {
 
-            HtmlForm makeOfferForm = new HtmlForm(new OfferPage(session, new Parameters("idea", String.valueOf(request.demand.getId()))));
+            HtmlForm makeOfferForm = new HtmlForm(new OfferPage(session, new Parameters("idea", String.valueOf(demand.getId()))));
             {
                 HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
                 makeOfferForm.add(makeOfferButton);

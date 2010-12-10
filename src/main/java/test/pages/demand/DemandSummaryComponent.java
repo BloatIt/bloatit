@@ -18,15 +18,18 @@ package test.pages.demand;
 
 import test.html.HtmlElement;
 import test.html.components.standard.HtmlBlock;
-import test.pages.demand.DemandPage.Request;
+
+import com.bloatit.framework.Demand;
+
+import test.Request;
 
 public class DemandSummaryComponent extends HtmlElement {
 
-    public DemandSummaryComponent(Request request) {
+    public DemandSummaryComponent(Request request, Demand demand) {
         super();
         HtmlBlock abstractBlock = new HtmlBlock("abstract_block");
         {
-            abstractBlock.add(new DemandTimelineComponent(request));
+            abstractBlock.add(new DemandTimelineComponent(request, demand));
         }
         add(abstractBlock);
     }

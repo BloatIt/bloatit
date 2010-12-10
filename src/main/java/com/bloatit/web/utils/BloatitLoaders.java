@@ -7,7 +7,7 @@ public class BloatitLoaders {
     
     static public class DemandLoader extends Loader<Demand> {
         @Override
-        public Demand convert(String data) {
+        public Demand fromString(String data) {
             return DemandManager.getDemandById(Integer.valueOf(data));
         }
     }

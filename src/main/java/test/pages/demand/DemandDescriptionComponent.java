@@ -21,8 +21,10 @@ import java.util.Locale;
 import test.Context;
 import test.html.components.standard.HtmlBlock;
 import test.html.components.standard.HtmlText;
-import test.pages.demand.DemandPage.Request;
 
+import test.Request;
+
+import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.pages.MemberPage;
@@ -34,17 +36,18 @@ public class DemandDescriptionComponent extends HtmlBlock {
     private HtmlText date;
     private HtmlText author;
 
-    public DemandDescriptionComponent(Request request) {
+    public DemandDescriptionComponent(Request request, Demand demand) {
         super();
 
         Session session = Context.getSession();
         Locale defaultLocale = session.getLanguage().getLocale();
-        Translation translatedDescription = request.demand.getDescription().getTranslationOrDefault(defaultLocale);
+        Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         description = new HtmlText(translatedDescription.getText());
 
-        date = new HtmlText(HtmlTools.formatDate(session, request.demand.getCreationDate()), "description_date");
-        author = new HtmlText(HtmlTools.generateLink(session, request.demand.getAuthor().getLogin(), new MemberPage(session, request.demand.getAuthor())),
-                              "description_author");
+        date = new HtmlText(HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
+        author = new HtmlText(HtmlTools.generateLink(session,
+                demand.getAuthor().getLogin(),
+                new MemberPage(session, demand.getAuthor())), "description_author");
 
         HtmlBlock descriptionBlock = new HtmlBlock("description_block");
         {

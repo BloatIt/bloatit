@@ -20,13 +20,14 @@ package test.pages.demand;
 
 import test.Context;
 import test.html.HtmlElement;
-import test.html.components.standard.HtmlBlock;
-import test.html.components.standard.HtmlText;
-import test.pages.demand.DemandPage.Request;
+
+import test.Request;
 
 import com.bloatit.framework.Comment;
 import com.bloatit.web.htmlrenderer.HtmlTools;
 import com.bloatit.web.server.Session;
+import test.html.HtmlText;
+import test.html.components.basicComponents.HtmlBlock;
 
 public class DemandCommentChildComponent extends HtmlElement {
 
@@ -49,9 +50,9 @@ public class DemandCommentChildComponent extends HtmlElement {
             commentBlock.add(commentText);
 
             for (Comment childComment : comment.getChildren()) {
-                commentBlock.add( new DemandCommentChildComponent(request, childComment));
+                commentBlock.add(new DemandCommentChildComponent(request, childComment));
             }
-            
+
         }
         return commentBlock;
     }
@@ -59,14 +60,11 @@ public class DemandCommentChildComponent extends HtmlElement {
     protected void extractData(Request request) {
 
         Session session = Context.getSession();
-        String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session , comment.getCreationDate()) + "</span>";
+        String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, comment.getCreationDate()) + "</span>";
 //      String author = "<span class=\"comment_author\">" + HtmlTools.generateLink(session, comment.getAuthor().getLogin(), new MemberPage(session, comment.getAuthor())) + "</span>";
         String author = "<span class=\"comment_author\">" + comment.getAuthor().getLogin() + "</span>";
 
         commentText = new HtmlText(comment.getText() + " – " + author + " " + date);
 
     }
-
-     
-
 }

@@ -18,20 +18,18 @@
  */
 package test.pages;
 
-import com.bloatit.framework.managers.DemandManager;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlButton;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlComponent;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlContainer;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlForm;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlPasswordField;
-import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlText;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTextField;
 import com.bloatit.web.htmlrenderer.htmlcomponent.HtmlTitle;
-import com.bloatit.web.server.Page;
 import com.bloatit.web.server.Session;
 
 public class CreateIdeaPage extends LoggedPage {

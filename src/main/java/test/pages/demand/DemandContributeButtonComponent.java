@@ -23,8 +23,10 @@ import test.html.HtmlElement;
 import test.html.components.standard.HtmlBlock;
 import test.html.components.standard.form.HtmlButton;
 import test.html.components.standard.form.HtmlForm;
-import test.pages.demand.DemandPage.Request;
 
+import test.Request;
+
+import com.bloatit.framework.Demand;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.server.Session;
 
@@ -32,9 +34,10 @@ public class DemandContributeButtonComponent extends HtmlElement {
 
     private HashMap<String, String> params;
 
-    public DemandContributeButtonComponent(Request request) {
+    public DemandContributeButtonComponent(Request request, Demand demand) {
         super();
-        extractData(request);
+        params = new HashMap<String, String>();
+        params.put("idea", String.valueOf(demand.getId()));
         add(produce(request));
     }
 
@@ -57,8 +60,4 @@ public class DemandContributeButtonComponent extends HtmlElement {
         return contributeBlock;
     }
 
-    protected void extractData(Request request) {
-        params = new HashMap<String, String>();
-        params.put("idea", String.valueOf(request.demand.getId()));
-    }
 }

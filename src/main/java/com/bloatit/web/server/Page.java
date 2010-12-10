@@ -190,7 +190,7 @@ public abstract class Page extends Request {
 
     @Override
     public abstract String getCode();
-
+    
     protected abstract String getTitle();
 
     protected String generateLogo() {
