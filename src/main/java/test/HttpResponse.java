@@ -1,12 +1,8 @@
 package test;
 
-import com.sun.org.apache.xalan.internal.xsltc.trax.OutputSettings;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.lucene.search.FieldComparator.StringOrdValComparator;
 import test.pages.master.Page;
 
 public class HttpResponse {
