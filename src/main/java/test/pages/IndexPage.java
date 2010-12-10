@@ -22,6 +22,7 @@ package test.pages;
 
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
+import com.bloatit.web.utils.PageName;
 import test.RedirectException;
 import test.Request;
 import test.UrlBuilder;
@@ -33,6 +34,7 @@ import test.html.components.standard.form.HtmlForm;
 import test.html.components.standard.form.HtmlTextField;
 import test.pages.master.Page;
 
+@PageName("index")
 public class IndexPage extends Page {
 
     public IndexPage(final Request request) throws RedirectException {

@@ -99,7 +99,6 @@ public class SCGIServer {
 
                 try {
                     dispatchServer.process(new HttpResponse(clientSocket.getOutputStream()));
-                    
                 } catch (final FatalErrorException e) {
                     String display;
                     display = "Content-type: text/html\r\n\r\n" + e.toString() + " :\n";

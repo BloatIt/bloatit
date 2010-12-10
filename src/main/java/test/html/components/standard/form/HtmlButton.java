@@ -34,6 +34,7 @@ public class HtmlButton extends HtmlElement {
     public HtmlButton(String label) {
         super();
         this.add(new HtmlParagraph().add(this.button));
-        this.addAttribute("label", label);
+        this.button.addAttribute("label", label);
+
     }
 }

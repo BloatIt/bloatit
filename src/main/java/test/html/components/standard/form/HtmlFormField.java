@@ -35,6 +35,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlElement implem
     protected HtmlLabel label;
     protected HtmlParagraph paragraph = new HtmlParagraph();
     protected HtmlElement element;
+    private String name;
 
     public HtmlFormField(HtmlElement element, String name){
         super();
@@ -60,6 +61,11 @@ public abstract class HtmlFormField<T extends Object> extends HtmlElement implem
     public void setLabel(String label){
         this.label = new HtmlLabel(label);
         this.ph.add(this.label);
+
+        if(name != null) {
+            this.label.setFor(name);
+        }
+        //BIG TODO
     }
 
     @Override
@@ -70,8 +76,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlElement implem
 
     @Override
     public final void setName(String name) {
-        this.element.addAttribute("name", name);
-        this.label.setFor(name);
+        this.name = name;
+        element.addAttribute("name", name);
+
+        if(label != null) {
+            label.setFor(name);
+        }
     }
 
     /**

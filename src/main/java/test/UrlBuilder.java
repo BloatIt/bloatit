@@ -68,9 +68,12 @@ public class UrlBuilder {
                     strValue = Loaders.toStr(value);
                 } else if (param.defaultValue().equals("")) {
                     throw new FatalErrorException("Parameter " + name + " needs a value.", null);
+                } else {
+                    strValue = param.defaultValue();
                 }
 
-                if (!strValue.equals(param.defaultValue())) {
+
+                if ( !strValue.equals(param.defaultValue())) {
                     sb.append(name).append("-").append(strValue).append("/");
                 }
 

@@ -7,49 +7,51 @@ import test.pages.master.Page;
 
 public class HttpResponse {
 
-    OutputStreamWriter outputWriter;
+    private final OutputStream output;
 
     public HttpResponse(OutputStream output) {
-        outputWriter = new OutputStreamWriter(output);
+        this.output = output;
     }
 
     public void writeRedirect(String url) throws IOException {
         writeCookies();
 
-        outputWriter.write("Location: ");
-        outputWriter.write(url);
-        outputWriter.write("\r\n");
+        output.write("Location: ".getBytes());
+        output.write(url.getBytes());
+        output.write("\r\n".getBytes());
 
         closeHeaders();
     }
 
     public void writePage(Page page) throws IOException {
         writeCookies();
-        outputWriter.write("Content-Type: text/html\r\n");
+        output.write("Content-Type: text/html\r\n".getBytes());
+
+        closeHeaders();
 
         page.write(new IndentedHtmlText() {
 
             @Override
             protected void append(String text) {
                 try {
-                    outputWriter.write(text);
+                    output.write(text.getBytes());
                 } catch (IOException ex) {
                     //TODO: log
                 }
             }
         });
 
-        closeHeaders();
+        
     }
 
 
     private void closeHeaders() throws IOException {
-        outputWriter.write("\r\n");
+        output.write("\r\n".getBytes());
     }
 
     private void writeCookies() throws IOException {
-        outputWriter.write("Set-Cookie: session_key=");
-        outputWriter.write(Context.getSession().getKey());
-        outputWriter.write("; path=/; Max-Age=1296000; Version=1 \r\n");
+        output.write("Set-Cookie: session_key=".getBytes());
+        output.write(Context.getSession().getKey().getBytes());
+        output.write("; path=/; Max-Age=1296000; Version=1 \r\n".getBytes());
     }
 }
