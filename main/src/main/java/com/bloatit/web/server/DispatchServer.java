@@ -111,7 +111,8 @@ public class DispatchServer {
     public void process(final HttpResponse response) throws IOException {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
-        final String linkable = query.get("page");
+        final String linkable = getLinkable();
+
         final QueryString queryString = parseQueryString(linkable);
         final Map<String, String> parameters = mergePostGet(queryString.parameters, post, query);
 
@@ -243,6 +244,14 @@ public class DispatchServer {
         }
         return new QueryString(page, parameters);
 
+    }
+
+    private String getLinkable() {
+        String linkable = query.get("page");
+        if(linkable.endsWith("/")) {
+            linkable = linkable.substring(0, linkable.length() - 1);
+        }
+        return linkable;
     }
 
     private static class QueryString {
