@@ -48,7 +48,6 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.Url;
 
-
 public class DispatchServer {
 
     static final Map<String, Class<? extends Page>> pageMap;
@@ -95,9 +94,9 @@ public class DispatchServer {
     private final Map<String, String> post;
 
     public DispatchServer(final Map<String, String> query,
-                          final Map<String, String> post,
-                          final Map<String, String> cookies,
-                          final List<String> preferred_langs) {
+            final Map<String, String> post,
+            final Map<String, String> cookies,
+            final List<String> preferred_langs) {
         this.cookies = cookies;
 
         this.preferred_langs = preferred_langs;
@@ -248,7 +247,7 @@ public class DispatchServer {
 
     private String getLinkable() {
         String linkable = query.get("page");
-        if(linkable.endsWith("/")) {
+        if (linkable.endsWith("/")) {
             linkable = linkable.substring(0, linkable.length() - 1);
         }
         return linkable;

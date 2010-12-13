@@ -52,14 +52,16 @@ public class ContributionAction extends Action {
         super(request);
         request.setValues(this);
         session.notifyList(request.getMessages());
+        
+    }
+
+    @Override
+    public String process() throws RedirectException  {
         if (request.getMessages().hasMessage(Level.ERROR)) {
             // TODO specific si idea not found
             throw new RedirectException(new UrlBuilder(ContributePage.class).buildUrl());
         }
-    }
 
-    @Override
-    public String process() {
         // Authentication
         targetDemand.authenticate(session.getAuthToken());
 

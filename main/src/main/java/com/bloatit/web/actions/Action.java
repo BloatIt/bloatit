@@ -20,6 +20,7 @@
 package com.bloatit.web.actions;
 
 
+import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
@@ -30,11 +31,15 @@ public abstract class Action implements Linkable {
     protected final Request request;
     protected final Session session;
 
+    /**
+     * The constructor mustn't thows exception
+     * @param resquest
+     */
     public Action(final Request resquest) {
         this.request = resquest;
         session = Context.getSession();
     }
 
-    abstract public String process();
+    abstract public String process() throws RedirectException;
 
 }

@@ -37,17 +37,18 @@ public class LoginAction extends Action {
     @RequestParam(level = Level.ERROR, name = PASSWORD_CODE, role=RequestParam.Role.POST)
     private String password;
 
-    public LoginAction(final Request request) throws RedirectException {
+    public LoginAction(final Request request){
         super(request);
         request.setValues(this);
+        
+    }
+
+    @Override
+    public String process() throws RedirectException {
         if (request.getMessages().hasMessage(Level.ERROR)) {
             // TODO get params.
             throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
         }
-    }
-
-    @Override
-    public String process() {
 
         AuthToken token = null;
         token = LoginManager.loginByPassword(login, password);
