@@ -56,7 +56,7 @@ public class GlobalSearchPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"));
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"),2);
 
         pageTitle.add(generateSearchBlock());
 

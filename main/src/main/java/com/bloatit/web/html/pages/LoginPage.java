@@ -51,10 +51,10 @@ public class LoginPage extends Page {
         loginForm.add(passwordField);
         loginForm.add(submitButton);
 
-        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(session.tr("Login"));
+        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(session.tr("Login"),2);
         loginTitle.add(loginForm);
 
-        final HtmlTitleBlock sigupTitle = new HtmlTitleBlock(session.tr("Sigup"));
+        final HtmlTitleBlock sigupTitle = new HtmlTitleBlock(session.tr("Sigup"),2);
         sigupTitle.add(new HtmlText("Not yet implemented."));
 
         final HtmlGenericElement group = new HtmlGenericElement();

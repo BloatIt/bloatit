@@ -48,7 +48,7 @@ public class MembersListPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list");
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list",2);
 
         final PageIterable<Member> memberList = MemberManager.getMembers();
 

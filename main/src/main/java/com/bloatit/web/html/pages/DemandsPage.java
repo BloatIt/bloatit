@@ -47,7 +47,7 @@ public class DemandsPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Demands list"));
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Demands list"),2);
 
         final PageIterable<Demand> demandList = DemandManager.getDemands();
 

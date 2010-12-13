@@ -26,10 +26,10 @@ public class HtmlTitleBlock extends HtmlBranch {
 
     private final HtmlTitle title;
 
-    public HtmlTitleBlock(final String title) {
+    public HtmlTitleBlock(final String title, int level) {
         super();
 
-        this.title = new HtmlTitle(title);
+        this.title = new HtmlTitle(title, level);
 
         add(this.title);
     }

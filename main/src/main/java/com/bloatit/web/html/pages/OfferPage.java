@@ -107,7 +107,7 @@ public class OfferPage extends LoggedPage {
          */
         // !TODO
 
-        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"));
+        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"),2);
 
         // Create offer form
         final UrlBuilder offerActionUrlBuilder = new UrlBuilder(OfferAction.class);

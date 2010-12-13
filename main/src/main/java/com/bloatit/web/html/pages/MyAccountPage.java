@@ -39,7 +39,7 @@ public class MyAccountPage extends Page {
         if (session.getAuthToken() != null) {
             final Member member = session.getAuthToken().getMember();
             member.authenticate(session.getAuthToken());
-            final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname());
+            final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(),2);
 
             memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
@@ -48,7 +48,7 @@ public class MyAccountPage extends Page {
 
             add(memberTitle);
         } else {
-            add(new HtmlTitle("No account"));
+            add(new HtmlTitle("No account",2));
         }
     }
 

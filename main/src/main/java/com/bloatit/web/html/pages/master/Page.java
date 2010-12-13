@@ -8,6 +8,7 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.html.pages.master.HtmlNotification.Level;
 import com.bloatit.web.server.Context;
@@ -118,7 +119,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     private HtmlElement generateTitle() {
         Context.getSession();
 
-        return new HtmlGenericElement("h1").add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), generateLogo()));
+        return new HtmlTitle(1).add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), generateLogo()));
     }
 
     private void addWaitingNotifications() {
