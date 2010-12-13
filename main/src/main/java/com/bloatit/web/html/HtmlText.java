@@ -37,4 +37,6 @@ public final class HtmlText extends HtmlNode {
     public final void write(final Text txt) {
         txt.writeLine(content);
     }
+
+
 }

@@ -17,12 +17,12 @@
 
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
 /**
  * A class used to create a new html block (aka div)
  */
-public class HtmlTitleBlock extends HtmlContainerElement {
+public class HtmlTitleBlock extends HtmlBranch {
 
     private final HtmlTitle title;
 
@@ -35,7 +35,7 @@ public class HtmlTitleBlock extends HtmlContainerElement {
     }
 
     @Override
-    public HtmlContainerElement addAttribute(final String name, final String value) {
+    public HtmlBranch addAttribute(final String name, final String value) {
         title.addAttribute(name, value);
         return this;
     }

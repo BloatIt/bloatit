@@ -63,5 +63,4 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
     }
 
     protected abstract void write(Text txt);
-
 }

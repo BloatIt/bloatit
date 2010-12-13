@@ -1,8 +1,8 @@
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
-public class HtmlParagraph extends HtmlContainerElement {
+public class HtmlParagraph extends HtmlBranch {
 
     public HtmlParagraph() {
         super("p");

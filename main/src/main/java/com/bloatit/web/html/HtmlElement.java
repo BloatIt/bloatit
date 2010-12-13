@@ -38,7 +38,7 @@ public abstract class HtmlElement extends HtmlNode {
         children.add(new HtmlText(text));
         return this;
     }
-
+    
     /**
      * <p>
      * Sets the id of the html element :

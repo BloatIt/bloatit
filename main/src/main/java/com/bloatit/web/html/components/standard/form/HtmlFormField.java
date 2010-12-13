@@ -20,6 +20,7 @@
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.HtmlNamedNode;
 import com.bloatit.web.html.components.PlaceHolderElement;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
@@ -34,7 +35,7 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
  * default value
  * </p>
  */
-public abstract class HtmlFormField<T extends Object> extends HtmlElement implements HtmlNamedNode {
+public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implements HtmlNamedNode {
 
     protected PlaceHolderElement ph = new PlaceHolderElement();
     protected HtmlLabel label;

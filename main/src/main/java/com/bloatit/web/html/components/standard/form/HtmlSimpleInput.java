@@ -20,11 +20,23 @@
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 
 /**
  * Meta class used to create various input fields
  */
-public class HtmlSimpleInput extends HtmlElement {
+public class HtmlSimpleInput extends HtmlLeaf {
+
+    protected final static String TEXT = "text";
+    protected final static String PASSWORD = "password";
+    protected final static String FILE = "file";
+    protected final static String CHECKBOX = "checkbox";
+    protected final static String RADIO = "radio";
+    protected final static String BUTTON = "button";
+    protected final static String SUBMIT = "submit";
+    protected final static String RESET = "reset";
+    protected final static String HIDDEN = "hidden";
+
 
     protected HtmlSimpleInput(final String type) {
         super("input");
@@ -35,5 +47,4 @@ public class HtmlSimpleInput extends HtmlElement {
         addAttribute("name", name).addAttribute("id", name);
         return this;
     }
-
 }

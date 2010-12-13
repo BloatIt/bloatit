@@ -20,11 +20,11 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandHeadComponent extends HtmlElement {
+public class DemandHeadComponent extends HtmlLeaf {
 
     public DemandHeadComponent(final Request request, final Demand demand) {
         super();

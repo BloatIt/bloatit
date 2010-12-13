@@ -18,6 +18,7 @@
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 
 
@@ -26,9 +27,9 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
  * Class used to create Html buttons
  * </p>
  */
-public class HtmlButton extends HtmlElement {
+public class HtmlButton extends HtmlLeaf {
 
-    HtmlElement button = new HtmlSimpleInput("button");
+    HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.BUTTON);
 
     /**
      * Creates a HtmlButton

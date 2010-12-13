@@ -6,14 +6,14 @@ package com.bloatit.web.html.components.standard;
 
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
 
 /**
  * 
  * @author fred
  */
-public class HtmlListItem extends HtmlContainerElement {
+public class HtmlListItem extends HtmlBranch {
 
     public HtmlListItem(final HtmlNode node) {
         super("li");

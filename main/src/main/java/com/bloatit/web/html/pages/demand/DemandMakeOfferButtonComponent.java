@@ -18,7 +18,7 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
@@ -28,7 +28,7 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandMakeOfferButtonComponent extends HtmlElement {
+public class DemandMakeOfferButtonComponent extends HtmlLeaf {
 
     public DemandMakeOfferButtonComponent(final Request request, final Demand demand) {
         super();

@@ -23,12 +23,13 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandCommentListComponent extends HtmlElement {
+public class DemandCommentListComponent extends HtmlLeaf {
 
     private final PageIterable<Comment> comments;
 

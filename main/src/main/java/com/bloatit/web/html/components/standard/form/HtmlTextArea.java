@@ -30,10 +30,9 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
  *      <p>
  *          <label for="...">labeltext</label>
  *      </p>
- * <p>
+ *      <p>
  *          <textarea name="..." class="cssClass" ...>defaultValue</textarea>
  *      </p>
- * 
  * </p>
  * </pre>
  * </p>

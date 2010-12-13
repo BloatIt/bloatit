@@ -19,7 +19,7 @@
 
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ import com.bloatit.web.html.pages.HtmlContainerElement;
  * Note, this class should be used carefully
  * </p>
  */
-public class HtmlGenericElement extends HtmlContainerElement {
+public class HtmlGenericElement extends HtmlBranch {
 
     public HtmlGenericElement(final String tag) {
         super(tag);

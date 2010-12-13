@@ -19,10 +19,10 @@ package com.bloatit.web.html.components.standard;
 
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
 
-public class HtmlLink extends HtmlContainerElement {
+public class HtmlLink extends HtmlBranch {
 
     public HtmlLink(final String link, final HtmlElement element) {
         super("a");

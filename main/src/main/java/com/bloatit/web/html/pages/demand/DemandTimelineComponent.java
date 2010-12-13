@@ -18,13 +18,13 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandTimelineComponent extends HtmlElement {
+public class DemandTimelineComponent extends HtmlLeaf {
 
     public DemandTimelineComponent(final Request request, final Demand demand) {
         super();

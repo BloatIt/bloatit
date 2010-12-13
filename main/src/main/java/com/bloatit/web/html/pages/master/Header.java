@@ -2,7 +2,7 @@ package com.bloatit.web.html.pages.master;
 
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
 
 public class Header extends HtmlElement {
@@ -10,10 +10,10 @@ public class Header extends HtmlElement {
 
     public Header(final String title, final String customCss) {
         super("head");
-        final HtmlContainerElement meta = new HtmlGenericElement("meta").addAttribute("http-equiv", "content-type").addAttribute("content",
+        final HtmlBranch meta = new HtmlGenericElement("meta").addAttribute("http-equiv", "content-type").addAttribute("content",
                 "text/html;charset=utf-8");
 
-        final HtmlContainerElement link = new HtmlGenericElement("link").addAttribute("rel", "stylesheet").addAttribute("href", DESIGN)
+        final HtmlBranch link = new HtmlGenericElement("link").addAttribute("rel", "stylesheet").addAttribute("href", DESIGN)
                 .addAttribute("type", "text/css").addAttribute("media", "handheld, all");
 
         add(meta);
@@ -27,5 +27,4 @@ public class Header extends HtmlElement {
 
         add(new HtmlGenericElement("title").addText("Bloatit - " + title));
     }
-
 }

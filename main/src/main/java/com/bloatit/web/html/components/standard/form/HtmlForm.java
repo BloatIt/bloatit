@@ -17,9 +17,9 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
-public class HtmlForm extends HtmlContainerElement {
+public class HtmlForm extends HtmlBranch {
     public enum Method {
         GET, POST
     }

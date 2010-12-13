@@ -21,6 +21,7 @@ package com.bloatit.web.html.pages.demand;
 
 import com.bloatit.framework.Comment;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -28,7 +29,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandCommentChildComponent extends HtmlElement {
+public class DemandCommentChildComponent extends HtmlLeaf {
 
     // private Offer offer;
     private final Comment comment;

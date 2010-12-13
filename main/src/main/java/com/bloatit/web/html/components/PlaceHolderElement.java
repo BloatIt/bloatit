@@ -19,12 +19,12 @@
 
 package com.bloatit.web.html.components;
 
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
 /**
  * Can be used as a placeholder for another element in the HtmlTree
  */
-public class PlaceHolderElement extends HtmlContainerElement {
+public class PlaceHolderElement extends HtmlBranch {
 
     public PlaceHolderElement() {
         super();

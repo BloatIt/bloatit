@@ -19,11 +19,12 @@ package com.bloatit.web.html.pages.demand;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandProgressBarComponent extends HtmlElement {
+public class DemandProgressBarComponent extends HtmlLeaf {
 
     private float progressValue;
     private final Demand demand;

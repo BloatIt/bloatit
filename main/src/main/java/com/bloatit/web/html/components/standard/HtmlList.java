@@ -16,11 +16,11 @@
  */
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
 
-public class HtmlList extends HtmlElement {
+public class HtmlList extends HtmlBranch {
 
     public HtmlList(final String text) {
         super("ul");

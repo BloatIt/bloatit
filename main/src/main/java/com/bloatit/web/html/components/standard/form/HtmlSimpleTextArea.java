@@ -19,14 +19,14 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlBranch;
 
 /**
  * <p>
  * Internal class used to create simple text areas.
  * </p>
  */
-public class HtmlSimpleTextArea extends HtmlElement {
+public class HtmlSimpleTextArea extends HtmlBranch {
     protected HtmlSimpleTextArea() {
         super("textarea");
     }

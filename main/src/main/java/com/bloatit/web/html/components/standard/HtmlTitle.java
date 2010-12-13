@@ -16,9 +16,9 @@
  */
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 
-public class HtmlTitle extends HtmlElement {
+public class HtmlTitle extends HtmlLeaf{
 
     public HtmlTitle(final String title) {
         super("h1");

@@ -8,7 +8,7 @@ import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.html.pages.master.Notification.Level;
 import com.bloatit.web.server.Context;
@@ -22,8 +22,8 @@ import com.bloatit.web.utils.url.UrlBuilder;
 
 public abstract class Page extends HtmlElement implements Linkable {
 
-    private final HtmlContainerElement content;
-    private final HtmlContainerElement notifications;
+    private final HtmlBranch content;
+    private final HtmlBranch notifications;
 
     protected final Request request;
     protected final Session session;

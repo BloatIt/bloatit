@@ -20,8 +20,9 @@
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 
-public class HtmlLabel extends HtmlElement {
+public class HtmlLabel extends HtmlLeaf {
     protected HtmlLabel(final String content) {
         super("label");
     }

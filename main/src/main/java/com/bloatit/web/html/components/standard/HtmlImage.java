@@ -20,11 +20,12 @@ package com.bloatit.web.html.components.standard;
 
 import com.bloatit.common.Image;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlLeaf;
 
 /**
  * Used to display an image
  */
-public class HtmlImage extends HtmlElement {
+public class HtmlImage extends HtmlLeaf {
     private final static String IMAGE_DIRECTORY = "/resources/img";
 
     public HtmlImage(final Image image) {
@@ -42,5 +43,4 @@ public class HtmlImage extends HtmlElement {
         this(image);
         addAttribute("class", cssClass);
     }
-
 }

@@ -17,12 +17,12 @@
 
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.pages.HtmlContainerElement;
+import com.bloatit.web.html.HtmlBranch;
 
 /**
  * A class used to create a new html block (aka div)
  */
-public class HtmlDiv extends HtmlContainerElement {
+public class HtmlDiv extends HtmlBranch {
 
     public HtmlDiv() {
         super("div");
