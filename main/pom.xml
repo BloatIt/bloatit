@@ -34,11 +34,11 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<outputDirectory>src/main/generated</outputDirectory>
-							<processors>
-								<!-- list of processors to use -->
-								<processor>BloatitAnnotationProcessor</processor>
-							</processors>
-						</configuration>
+							<!-- <processors> -->
+							<!-- list of processors to use -->
+							<!-- <processor>BloatitAnnotationProcessor</processor> -->
+							<!-- </processors> -->
+						</configuration> 
 					</execution>
 				</executions>
 
@@ -170,11 +170,8 @@
 		</dependency>
 
 		<!-- test apt -->
-		<dependency>
-			<groupId>com.bloatit</groupId>
-			<artifactId>Apt4Bloatit</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		<!-- <dependency> <groupId>com.bloatit</groupId> <artifactId>Apt4Bloatit</artifactId> 
+			<version>0.0.1-SNAPSHOT</version> </dependency> -->
 
 	</dependencies>
 
