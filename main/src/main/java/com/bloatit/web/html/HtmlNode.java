@@ -28,6 +28,13 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
             return this;
         }
 
+        public Tag addId(final String value){
+            if (!value.equals("")) {
+                attributes.put("id", value);
+            }
+            return this;
+        }
+
         /**
          * Finds the id of the tag
          * 

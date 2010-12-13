@@ -25,7 +25,11 @@ public abstract class HtmlElement extends HtmlNode {
     }
 
     public HtmlElement addAttribute(final String name, final String value) {
-        tag.addAttribute(name, value);
+        if (name.equals("id")) {
+            this.setId(value);
+        } else {
+            tag.addAttribute(name, value);
+        }
         return this;
     }
 
@@ -38,7 +42,7 @@ public abstract class HtmlElement extends HtmlNode {
         children.add(new HtmlText(text));
         return this;
     }
-    
+
     /**
      * <p>
      * Sets the id of the html element :
@@ -56,7 +60,7 @@ public abstract class HtmlElement extends HtmlNode {
      * @return the element
      */
     public HtmlElement setId(final String id) {
-        addAttribute("id", id);
+        tag.addId(id);
         return this;
     }
 
@@ -114,5 +118,4 @@ public abstract class HtmlElement extends HtmlNode {
             }
         }
     }
-
 }
