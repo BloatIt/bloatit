@@ -16,21 +16,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.bloatit.web.html.components.standard.form;
 
-public class HtmlCheckbox extends HtmlFormField<Boolean> {
+public class HtmlRadioButton extends HtmlFormField<Boolean>{
 
-    public HtmlCheckbox(final String name, LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.CHECKBOX), name, position);
+    public HtmlRadioButton(final String name, String value, LabelPosition position) {
+        super(new HtmlSimpleInput(HtmlSimpleInput.RADIO), name, position);
+        addAttribute("value", value);
     }
 
-    public HtmlCheckbox(final String name, final String label, LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.CHECKBOX), name, label, position);
+    public HtmlRadioButton(final String name, String value, final String label, LabelPosition position) {
+        super(new HtmlSimpleInput(HtmlSimpleInput.RADIO), name, label, position);
+        addAttribute("value", value);
     }
 
     @Override
     protected void doSetDefaultValue(final Boolean value) {
-        if (value.booleanValue()) {
+        if(value.booleanValue()){
             addAttribute("checked", "checked");
         }
     }

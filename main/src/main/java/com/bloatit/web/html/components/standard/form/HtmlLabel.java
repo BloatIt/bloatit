@@ -19,7 +19,6 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 
 public class HtmlLabel extends HtmlLeaf {

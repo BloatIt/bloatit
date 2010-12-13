@@ -14,35 +14,33 @@
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www    enum LabelPosition{
-        BEFORE, AFTER
-    }.gnu.org/licenses/>.
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.form.HtmlFormField.LabelPosition;
 
-/**
- *
- */
-public class CheckBoxGroup extends HtmlLeaf {
+public class HtmlRadioButtonGroup extends HtmlLeaf{
 
     private final LabelPosition position;
+    private String name;
 
-    public CheckBoxGroup() {
+    public HtmlRadioButtonGroup(String name) {
         super();
+        this.name = name;
         this.position = LabelPosition.AFTER;
     }
 
-    public CheckBoxGroup(LabelPosition position){
+    public HtmlRadioButtonGroup(String name, LabelPosition position) {
         super();
+        this.name = name;
         this.position = position;
     }
 
-    public HtmlCheckbox addCheckBox(String name, String label) {
-        HtmlCheckbox box = new HtmlCheckbox(name, label, position);
-        add(box);
-        return box;
+    public HtmlRadioButton addRadioButton(String value, String label) {
+        HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
+        add(button);
+        return button;
     }
 }
