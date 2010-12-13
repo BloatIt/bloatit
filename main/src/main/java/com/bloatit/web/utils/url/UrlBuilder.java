@@ -52,8 +52,6 @@ public class UrlBuilder {
             sb.append(linkableClass.getSimpleName().toLowerCase());
         }
 
-        sb.append("/");
-
         buildUrl(sb, linkableClass);
 
         return sb.toString();
@@ -76,7 +74,7 @@ public class UrlBuilder {
                 }
 
                 if (!strValue.equals(param.defaultValue())) {
-                    sb.append(name).append("-").append(strValue).append("/");
+                    sb.append("/").append(name).append("-").append(strValue);
                 }
 
             } else if (f.getAnnotation(PageComponent.class) != null) {
