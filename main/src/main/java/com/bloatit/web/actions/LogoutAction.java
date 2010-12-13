@@ -32,7 +32,7 @@ public class LogoutAction extends Action {
     public String process() {
         session.setLogged(false);
         session.setAuthToken(null);
-        session.notifyGood(session.tr("Logout sucess."));
-        return session.getTargetPage();
+        session.notifyGood(session.tr("Logout success."));
+        return session.getPreferredPage();
     }
 }

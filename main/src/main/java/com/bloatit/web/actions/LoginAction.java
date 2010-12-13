@@ -47,6 +47,7 @@ public class LoginAction extends Action {
     public String process() throws RedirectException {
         if (request.getMessages().hasMessage(Level.ERROR)) {
             // TODO get params.
+            session.notifyList(request.getMessages());
             throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
         }
 
@@ -57,7 +58,7 @@ public class LoginAction extends Action {
             session.setLogged(true);
             session.setAuthToken(token);
             session.notifyGood(session.tr("Login success."));
-            return session.getTargetPage();
+            return session.getPreferredPage();
         } else {
             session.setLogged(false);
             session.setAuthToken(null);
