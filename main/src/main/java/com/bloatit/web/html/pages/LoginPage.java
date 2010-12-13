@@ -26,6 +26,7 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
@@ -44,7 +45,7 @@ public class LoginPage extends Page {
         final HtmlForm loginForm = new HtmlForm(new UrlBuilder(LoginAction.class).buildUrl());
         final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE);
         final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.LOGIN_CODE);
-        final HtmlButton submitButton = new HtmlButton(session.tr("Login"));
+        final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Login"));
 
         loginForm.add(loginField);
         loginForm.add(passwordField);
