@@ -23,7 +23,6 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
-import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
@@ -44,7 +43,7 @@ public class LoginPage extends Page {
 
         final HtmlForm loginForm = new HtmlForm(new UrlBuilder(LoginAction.class).buildUrl());
         final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE);
-        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.LOGIN_CODE);
+        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE);
         final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Login"));
 
         loginForm.add(loginField);
