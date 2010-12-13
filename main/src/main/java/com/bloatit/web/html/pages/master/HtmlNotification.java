@@ -2,13 +2,13 @@ package com.bloatit.web.html.pages.master;
 
 import com.bloatit.web.html.components.standard.HtmlDiv;
 
-public class Notification extends HtmlDiv {
+public class HtmlNotification extends HtmlDiv {
 
     public enum Level {
         INFO, WARNING, ERROR
     }
 
-    public Notification(final Level level, final String message) {
+    public HtmlNotification(final Level level, final String message) {
         super();
         switch (level) {
         case INFO:

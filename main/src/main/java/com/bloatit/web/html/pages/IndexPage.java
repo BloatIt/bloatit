@@ -39,11 +39,11 @@ public class IndexPage extends Page {
 
     public IndexPage(final Request request) throws RedirectException {
         super(request);
-        generateContent();
     }
 
-    private void generateContent() {
-
+    @Override
+    public void create() throws RedirectException {
+        super.create();
         final HtmlDiv statsBlock = new HtmlDiv("index_stats_block");
         generateStatsBlock(statsBlock);
 

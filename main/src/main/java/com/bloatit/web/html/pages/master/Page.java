@@ -1,6 +1,5 @@
 package com.bloatit.web.html.pages.master;
 
-
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
@@ -10,9 +9,10 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.pages.IndexPage;
-import com.bloatit.web.html.pages.master.Notification.Level;
+import com.bloatit.web.html.pages.master.HtmlNotification.Level;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
+import com.bloatit.web.server.Notification;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.Message;
 import com.bloatit.web.utils.annotations.PageName;
@@ -24,7 +24,6 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     private final HtmlBranch content;
     private final HtmlBranch notifications;
-
     protected final Request request;
     protected final Session session;
 
@@ -41,6 +40,9 @@ public abstract class Page extends HtmlElement implements Linkable {
     public void create() throws RedirectException {
         super.add(new Header(getTitle(), getCustomCss()));
         super.add(generate_body());
+
+        //Display waiting notifications
+        addWaitingNotifications();
     }
 
     // TODO correct empty div for notifications ?
@@ -89,22 +91,22 @@ public abstract class Page extends HtmlElement implements Linkable {
         content.add(new HtmlDiv().setCssClass("not_found").addText("Page Not Found !"));
     }
 
-    protected void addNotification(final Notification note) {
+    protected void addNotification(final HtmlNotification note) {
         notifications.add(note);
     }
 
     protected void addNotifications(final Messages messages) {
         for (final Message message : messages) {
             switch (message.getLevel()) {
-            case INFO:
-                addNotification(new Notification(Level.INFO, message.getMessage()));
-                break;
-            case WARNING:
-                addNotification(new Notification(Level.WARNING, message.getMessage()));
-                break;
-            case ERROR:
-                addNotification(new Notification(Level.ERROR, message.getMessage()));
-                break;
+                case INFO:
+                    addNotification(new HtmlNotification(Level.INFO, message.getMessage()));
+                    break;
+                case WARNING:
+                    addNotification(new HtmlNotification(Level.WARNING, message.getMessage()));
+                    break;
+                case ERROR:
+                    addNotification(new HtmlNotification(Level.ERROR, message.getMessage()));
+                    break;
             }
         }
     }
@@ -119,4 +121,22 @@ public abstract class Page extends HtmlElement implements Linkable {
         return new HtmlGenericElement("h1").add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), generateLogo()));
     }
 
+    private void addWaitingNotifications() {
+
+        for (Notification notification : session.getNotifications()) {
+            switch (notification.getType()) {
+                case ERROR:
+                    addNotification(new HtmlNotification(Level.ERROR, notification.getMessage()));
+                    break;
+                case BAD:
+                    addNotification(new HtmlNotification(Level.WARNING, notification.getMessage()));
+                    break;
+                case GOOD:
+                    addNotification(new HtmlNotification(Level.INFO, notification.getMessage()));
+                    break;
+            }
+        }
+
+        session.flushNotifications();
+    }
 }

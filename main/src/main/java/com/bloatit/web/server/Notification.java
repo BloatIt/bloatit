@@ -33,7 +33,7 @@ public class Notification {
         this.type = type;
     }
 
-    Type getType() {
+    public Type getType() {
         return type;
     }
 

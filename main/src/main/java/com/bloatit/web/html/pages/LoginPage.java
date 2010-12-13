@@ -36,10 +36,11 @@ public class LoginPage extends Page {
 
     public LoginPage(final Request request) throws RedirectException {
         super(request);
-        generateContent();
     }
 
-    private void generateContent() {
+    @Override
+    public void create() throws RedirectException {
+        super.create();
 
         final HtmlForm loginForm = new HtmlForm(new UrlBuilder(LoginAction.class).buildUrl());
         final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE);

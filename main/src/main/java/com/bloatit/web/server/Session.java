@@ -157,11 +157,11 @@ public class Session {
         }
     }
 
-    void flushNotifications() {
+    public void flushNotifications() {
         notificationList.clear();
     }
 
-    Deque<Notification> getNotifications() {
+    public Deque<Notification> getNotifications() {
         return notificationList;
     }
 
