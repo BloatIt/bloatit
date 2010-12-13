@@ -17,7 +17,7 @@ public class Url {
         if (linkable.getAnnotation(PageName.class) != null) {
             return linkable.getAnnotation(PageName.class).value();
         } else {
-            return linkable.getName().toLowerCase();
+            return linkable.getSimpleName().toLowerCase();
         }
     }
 

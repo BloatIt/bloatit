@@ -49,7 +49,7 @@ public class UrlBuilder {
         if (linkableClass.getAnnotation(PageName.class) != null) {
             sb.append(linkableClass.getAnnotation(PageName.class).value());
         } else {
-            sb.append(linkableClass.getName().toLowerCase());
+            sb.append(linkableClass.getSimpleName().toLowerCase());
         }
 
         sb.append("/");
@@ -62,7 +62,7 @@ public class UrlBuilder {
     private void buildUrl(final StringBuilder sb, final Class<?> pageClass) {
         for (final Field f : pageClass.getDeclaredFields()) {
             final RequestParam param = f.getAnnotation(RequestParam.class);
-            if (param != null) {
+            if (param != null && param.role() != RequestParam.Role.POST) {
 
                 final String name = param.name().equals("") ? f.getName() : param.name();
                 String strValue = null;
