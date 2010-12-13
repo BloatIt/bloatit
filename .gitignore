@@ -14,5 +14,5 @@ target
 nbactions.xml
 .classpath
 bin/
-po/*~
-po/*.mo
+main/po/*~
+main/po/*.mo
