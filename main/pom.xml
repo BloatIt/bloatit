@@ -34,17 +34,16 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<outputDirectory>src/main/generated</outputDirectory>
-							<!-- <processors> -->
-							<!-- list of processors to use -->
-							<!-- <processor>BloatitAnnotationProcessor</processor> -->
-							<!-- </processors> -->
-						</configuration> 
+							<processors>
+								<!-- list of processors to use -->
+								<processor>com.bloatit.web.annotations.RequestParamProcessor</processor>
+							</processors>
+						</configuration>
 					</execution>
 				</executions>
-
 			</plugin>
 			<!-- Run annotation processors on src/test/java sources -->
-			<!--<plugin> <groupId>org.bsc.maven</groupId> <artifactId>maven-processor-plugin</artifactId> 
+			<!-- <plugin> <groupId>org.bsc.maven</groupId> <artifactId>maven-processor-plugin</artifactId> 
 				<executions> <execution> <id>process-test</id> <goals> <goal>process-test</goal> 
 				</goals> <phase>generate-test-sources</phase> </execution> </executions> 
 				</plugin> -->
@@ -170,8 +169,11 @@
 		</dependency>
 
 		<!-- test apt -->
-		<!-- <dependency> <groupId>com.bloatit</groupId> <artifactId>Apt4Bloatit</artifactId> 
-			<version>0.0.1-SNAPSHOT</version> </dependency> -->
+		<dependency>
+			<groupId>com.bloatit</groupId>
+			<artifactId>BloatItApt</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
 
