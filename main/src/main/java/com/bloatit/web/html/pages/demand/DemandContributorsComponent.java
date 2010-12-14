@@ -72,7 +72,7 @@ public class DemandContributorsComponent extends HtmlDiv {
 
             // Create paged list
             final HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer,
-                    contributions, new UrlBuilder(DemandPage.class, request.getParameters()), session);
+                    contributions, new UrlBuilder(DemandPage.class, request.getParameters()), request);
             contributorsBlock.add(participationsList);
 
         }
