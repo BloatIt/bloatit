@@ -102,36 +102,26 @@ public abstract class HtmlElement extends HtmlNode {
 
     @Override
     public final void write(final Text txt) {
-        /*if (tag != null) {
-        if (iterator().hasNext()) {
-        txt.writeLine(tag.getOpenTag());
-        for (final HtmlNode html : this) {
-        txt.indent();
-        html.write(txt);
-        txt.unindent();
-        }
-        txt.writeLine(tag.getCloseTag());
-        } else {
-        txt.writeLine(tag.getClosedTag());
-        }
-        } else {
-        for (final HtmlNode html : this) {
-        txt.indent();
-        html.write(txt);
-        txt.unindent();
-        }
-        }*/
         if (tag != null) {
-            if (this.isSelfClosed()) {
-                txt.writeLine(tag.getClosedTag());
-            } else {
-                 txt.writeLine(tag.getOpenTag());
-                for (HtmlNode html : this) {
-                    txt.indent();
-                    html.write(txt);
-                    txt.unindent();
+            if (!selfClosable() || iterator().hasNext()) {
+                if (children.size() == 1 && children.get(0).getClass().equals(HtmlText.class)) {
+                    // HACK to write html on a single line, when the element only contains a single HtmlText (and nothing else)
+                    String tagString = tag.getOpenTag();
+                    tagString += ((HtmlText)children.get(0))._getContent();
+                    tagString += tag.getCloseTag();
+
+                    txt.writeLine(tagString);
+                } else {
+                    txt.writeLine(tag.getOpenTag());
+                    for (final HtmlNode html : this) {
+                        txt.indent();
+                        html.write(txt);
+                        txt.unindent();
+                    }
+                    txt.writeLine(tag.getCloseTag());
                 }
-                txt.writeLine(tag.getCloseTag());
+            } else {
+                txt.writeLine(tag.getClosedTag());
             }
         } else {
             for (final HtmlNode html : this) {
@@ -145,5 +135,5 @@ public abstract class HtmlElement extends HtmlNode {
     /**
      * Indicates wether the tag is self closed or not
      */
-    public abstract boolean isSelfClosed();
+    public abstract boolean selfClosable();
 }

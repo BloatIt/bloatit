@@ -63,7 +63,7 @@ public abstract class HtmlBranch extends HtmlElement {
     }
 
     @Override
-    public boolean isSelfClosed(){
-        return false;
+    public boolean selfClosable(){
+        return true;
     }
 }

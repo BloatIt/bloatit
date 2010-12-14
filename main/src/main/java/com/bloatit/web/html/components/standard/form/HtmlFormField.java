@@ -22,7 +22,7 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.HtmlNamedNode;
 import com.bloatit.web.html.components.PlaceHolderElement;
-import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.utils.RandomString;
 
 /**
@@ -64,7 +64,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
     protected PlaceHolderElement ph = new PlaceHolderElement();
     protected HtmlLabel label;
-    protected HtmlParagraph paragraph = new HtmlParagraph();
+    protected HtmlDiv container = new HtmlDiv();
     protected HtmlElement element;
     private String name;
     private RandomString rng = new RandomString(10);
@@ -140,10 +140,14 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         this.label = new HtmlLabel(label);
         this.ph.add(this.label);
 
-        if (getId() == null) {
-            String neoId = rng.nextString();
-            //this.setId(neoId);
-            this.label.setFor(neoId);
+        checkIdLabel();
+    }
+
+    protected void checkIdLabel(){
+        if( getId() == null ){
+            setId(rng.nextString());
+        }else {
+            label.setFor(getId());
         }
     }
 
@@ -152,7 +156,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         if (this.label != null) {
             this.label.setFor(id);
         }
-        return super.setId(id);
+        return element.setId(id);
+    }
+
+    @Override
+    public String getId(){
+        return element.getId();
     }
 
     @Override
@@ -190,16 +199,16 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     private void init() {
         switch (position) {
             case AFTER:
-                this.paragraph.add(element);
-                this.paragraph.add(ph);
+                this.container.add(element);
+                this.container.add(ph);
                 break;
             case BEFORE:
             default:
-                this.paragraph.add(ph);
-                this.paragraph.add(element);
+                this.container.add(ph);
+                this.container.add(element);
                 break;
         }
-        this.add(paragraph);
+        this.add(container);
     }
 
     /**
@@ -210,9 +219,4 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * @param value the value
      */
     protected abstract void doSetDefaultValue(T value);
-
-    @Override
-    public boolean isSelfClosed() {
-        return false;
-    }
 }

@@ -13,6 +13,14 @@ public abstract class IndentedHtmlText implements Text {
 
     protected abstract void append(String text);
 
+    @Override
+    public void write(final String newText) {
+        for (int i = 0; i < indentCount; i++) {
+            append(indentSeparator);
+        }
+        append(newText);
+    }
+
     /*
      * (non-Javadoc)
      * 

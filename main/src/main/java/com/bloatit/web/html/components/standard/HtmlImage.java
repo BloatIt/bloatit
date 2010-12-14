@@ -42,9 +42,4 @@ public class HtmlImage extends HtmlLeaf {
         this(image);
         addAttribute("class", cssClass);
     }
-
-    @Override
-    public boolean isSelfClosed() {
-        return true;
-    }
 }

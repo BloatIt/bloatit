@@ -23,9 +23,4 @@ import com.bloatit.web.html.HtmlLeaf;
 
 public abstract class HtmlPageComponent extends HtmlLeaf{
 
-    @Override
-    public boolean isSelfClosed() {
-        return false;
-    }
-
 }
