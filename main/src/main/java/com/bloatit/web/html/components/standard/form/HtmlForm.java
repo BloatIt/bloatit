@@ -27,7 +27,7 @@ public class HtmlForm extends HtmlBranch {
     public HtmlForm(final String action, final Method method) {
         super("form");
         addAttribute("action", action);
-        addAttribute("method", method == Method.GET ? "GET" : "POST");
+        addAttribute("method", method == Method.GET ? "get" : "post");
     }
 
     public HtmlForm(final String action) {
