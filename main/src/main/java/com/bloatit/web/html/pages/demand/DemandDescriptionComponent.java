@@ -47,7 +47,7 @@ public class DemandDescriptionComponent extends HtmlDiv {
         date = new HtmlParagraph(HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
 
         final UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
-        urlBuilder.addParameter("member", demand.getAuthor());
+        urlBuilder.addParameter(MemberPage.MEMBER_FIELD_NAME, demand.getAuthor());
 
         author = urlBuilder.getHtmlLink(demand.getAuthor().getLogin());
 
