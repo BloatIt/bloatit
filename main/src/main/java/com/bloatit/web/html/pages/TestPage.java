@@ -22,6 +22,7 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlTitle;
@@ -87,7 +88,7 @@ public class TestPage extends Page {
 
         HtmlFormBlock block2 = new HtmlFormBlock("second form block");
         block2.add(new HtmlDateField("date", "Field 1"));
-        block2.add(new HtmlPasswordField("password","Field 2"));
+        block2.add(new HtmlPasswordField("password","Field 2").setId("Thomas"));
 
         HtmlFormBlock block3 = new HtmlFormBlock("Quand êtes vous disponibles ?");
         CheckBoxGroup cbg = new CheckBoxGroup(LabelPosition.AFTER);
@@ -119,6 +120,20 @@ public class TestPage extends Page {
         HtmlDiv lists = new HtmlDiv();
         HtmlTitleBlock std = new HtmlTitleBlock("Not numbered list", 3);
         HtmlList list = new HtmlList();
+        std.add(list);
+        list.add("plop");
+        list.add(new HtmlLink("plop", "hello"));
+        list.add("another one");
+
+        HtmlTitleBlock nbm = new HtmlTitleBlock("Numbered list", 3);
+        HtmlList nbList = new HtmlList(HtmlList.listType.NUMBERED);
+        nbm.add(nbList);
+        nbList.add("plop");
+        nbList.add(new HtmlLink("plop", "hello"));
+        nbList.add("another one");
+
+        lists.add(std);
+        lists.add(nbm);
         return lists;
     }
 

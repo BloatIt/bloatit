@@ -107,9 +107,12 @@ public abstract class HtmlElement extends HtmlNode {
                 if (children.size() == 1 && children.get(0).getClass().equals(HtmlText.class)) {
                     // HACK to write html on a single line, when the element only contains a single HtmlText (and nothing else)
                     String tagString = tag.getOpenTag();
-                    tagString += ((HtmlText)children.get(0))._getContent();
+                    tagString += ((HtmlText) children.get(0))._getContent();
                     tagString += tag.getCloseTag();
-
+                    txt.writeLine(tagString);
+                } else if (children.isEmpty()) {
+                    String tagString = tag.getOpenTag();
+                    tagString += tag.getCloseTag();
                     txt.writeLine(tagString);
                 } else {
                     txt.writeLine(tag.getOpenTag());
