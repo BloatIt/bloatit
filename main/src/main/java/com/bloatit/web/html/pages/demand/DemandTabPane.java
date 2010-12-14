@@ -26,6 +26,7 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.url.Parameters;
 import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.UrlBuilder;
 
 public class DemandTabPane extends HtmlPageComponent {
 
@@ -37,16 +38,21 @@ public class DemandTabPane extends HtmlPageComponent {
         request.setValues(this);
         final Session session = Context.getSession();
 
+        UrlBuilder tablinks = new UrlBuilder(DemandPage.class, request.getParameters());
+
+
+
         // Create description tab
-        final HtmlTabHeader descriptionTab = new HtmlTabHeader(session.tr("Description"), request.createUrl(new Parameters("demand_tab_key",
-                "description_tab")));
+        final HtmlTabHeader descriptionTab = new HtmlTabHeader(session.tr("Description"),
+                tablinks.addParameter("demand_tab_key", "description_tab").buildUrl());
 
         // Create participations tab
-        final HtmlTabHeader participationsTab = new HtmlTabHeader(session.tr("Participations"), request.createUrl(new Parameters("demand_tab_key",
-                "participations_tab")));
+        final HtmlTabHeader participationsTab = new HtmlTabHeader(session.tr("Participations"),
+                tablinks.addParameter("demand_tab_key", "participations_tab").buildUrl());
 
         // Create Comments tab
-        final HtmlTabHeader offerTab = new HtmlTabHeader(session.tr("Offers"), request.createUrl(new Parameters("demand_tab_key", "offer_tab")));
+        final HtmlTabHeader offerTab = new HtmlTabHeader(session.tr("Offers"),
+                tablinks.addParameter("demand_tab_key", "offer_tab").buildUrl());
 
         // Create tab pane
         final HtmlTabBlock tabPane = new HtmlTabBlock(); // id =

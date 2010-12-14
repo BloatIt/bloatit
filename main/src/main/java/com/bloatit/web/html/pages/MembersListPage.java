@@ -66,7 +66,7 @@ public class MembersListPage extends Page {
         };
 
         // TODO: avoid conflict
-        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, request, session);
+        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, new UrlBuilder(MembersListPage.class, request.getParameters()), session);
 
         pageTitle.add(pagedMemberList);
 

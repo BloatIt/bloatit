@@ -62,7 +62,9 @@ public class DemandsPage extends Page {
             }
         };
 
-        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, request, session);
+
+
+        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(DemandPage.class, request.getParameters()), session);
 
         pageTitle.add(pagedMemberList);
 

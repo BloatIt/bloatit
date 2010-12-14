@@ -28,6 +28,7 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.Message.Level;
+import com.bloatit.web.utils.annotations.PageComponent;
 import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.annotations.RequestParam.Role;
 import com.bloatit.web.utils.url.Request;
@@ -39,6 +40,9 @@ public class DemandPage extends Page {
 
     @RequestParam(role = Role.PRETTY, defaultValue = "Title")
     protected String title;
+
+    @PageComponent
+    private DemandTabPane demandTabPane;
 
     public DemandPage(final Request request) {
         super(request);
@@ -95,7 +99,8 @@ public class DemandPage extends Page {
     private HtmlElement generateBodyLeft() {
         final HtmlDiv left = new HtmlDiv("leftColumn");
         {
-            left.add(new DemandTabPane(request, demand));
+            demandTabPane = new DemandTabPane(request, demand);
+            left.add(demandTabPane);
             // Comments
             left.add(new DemandCommentListComponent(request, demand));
         }

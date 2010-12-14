@@ -74,7 +74,7 @@ public class GlobalSearchPage extends Page {
             }
         };
 
-        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, request, session);
+        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(GlobalSearchPage.class, request.getParameters()), session);
 
         pageTitle.add(pagedMemberList);
         add(pageTitle);
