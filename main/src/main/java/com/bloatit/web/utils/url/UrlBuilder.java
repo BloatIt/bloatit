@@ -11,6 +11,7 @@ import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.Message;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.PageComponent;
 import com.bloatit.web.utils.annotations.PageName;
@@ -68,7 +69,9 @@ public class UrlBuilder {
                 if (value != null) {
                     strValue = Loaders.toStr(value);
                 } else if (param.defaultValue().equals("")) {
-                    throw new FatalErrorException("Parameter " + name + " needs a value.", null);
+                    if(param.level() == Message.Level.ERROR) {
+                        throw new FatalErrorException("Parameter " + name + " needs a value.", null);
+                    }
                 } else {
                     strValue = param.defaultValue();
                 }

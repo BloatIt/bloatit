@@ -46,7 +46,7 @@ public class DemandCommentListComponent extends HtmlLeaf {
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block");
         {
-            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments")).setCssClass("comments_title"));
+            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments"), 2).setCssClass("comments_title"));
 
             for (final Comment comment : comments) {
                 commentsBlock.add(new DemandCommentComponent(request, comment));
