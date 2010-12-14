@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.components.standard.HtmlParagraph;
@@ -64,5 +63,10 @@ public final class HtmlTextArea extends HtmlFormField<String> {
     @Override
     protected void doSetDefaultValue(final String value) {
         ((HtmlSimpleTextArea) this.element).setDefaultValue(value);
+    }
+
+    @Override
+    public boolean isSelfClosed() {
+        return false;
     }
 }

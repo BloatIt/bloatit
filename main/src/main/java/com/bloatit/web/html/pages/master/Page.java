@@ -48,9 +48,7 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     // TODO correct empty div for notifications ?
     private HtmlElement generate_body() {
-        return new HtmlGenericElement("body").add(new HtmlDiv().setId("page").add(new TopBar()).add(generateTitle())
-                .add(new HtmlDiv().setId("center").add(new HtmlDiv().setId("center_column").add(new Menu()).add(content.add(notifications))))
-                .add(new Footer()));
+        return new HtmlGenericElement("body").add(new HtmlDiv().setId("page").add(new TopBar()).add(generateTitle()).add(new HtmlDiv().setId("center").add(new HtmlDiv().setId("center_column").add(new Menu()).add(content.add(notifications)))).add(new Footer()));
     }
 
     protected abstract String getTitle();
@@ -139,5 +137,10 @@ public abstract class Page extends HtmlElement implements Linkable {
         }
 
         session.flushNotifications();
+    }
+
+    @Override
+    public boolean isSelfClosed() {
+        return false;
     }
 }

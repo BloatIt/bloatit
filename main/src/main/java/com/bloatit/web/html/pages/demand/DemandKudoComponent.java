@@ -18,13 +18,13 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandKudoComponent extends HtmlLeaf {
+public class DemandKudoComponent extends HtmlPageComponent {
 
     public DemandKudoComponent(final Request request, final Demand demand) {
         super();

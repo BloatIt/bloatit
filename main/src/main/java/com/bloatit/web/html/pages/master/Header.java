@@ -27,4 +27,11 @@ public class Header extends HtmlElement {
 
         add(new HtmlGenericElement("title").addText("Bloatit - " + title));
     }
+
+    @Override
+    public boolean isSelfClosed() {
+        return false;
+    }
+
+
 }

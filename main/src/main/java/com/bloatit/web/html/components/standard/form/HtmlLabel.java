@@ -24,9 +24,15 @@ import com.bloatit.web.html.HtmlLeaf;
 public class HtmlLabel extends HtmlLeaf {
     protected HtmlLabel(final String content) {
         super("label");
+        addText(content);
     }
 
     protected void setFor(final String forId) {
         addAttribute("for", forId);
+    }
+
+    @Override
+    public boolean isSelfClosed() {
+        return false;
     }
 }

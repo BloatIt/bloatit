@@ -19,7 +19,6 @@ package com.bloatit.web.html.components.standard;
 
 
 import com.bloatit.common.Image;
-import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 
 /**
@@ -42,5 +41,10 @@ public class HtmlImage extends HtmlLeaf {
     public HtmlImage(final Image image, final String cssClass) {
         this(image);
         addAttribute("class", cssClass);
+    }
+
+    @Override
+    public boolean isSelfClosed() {
+        return true;
     }
 }

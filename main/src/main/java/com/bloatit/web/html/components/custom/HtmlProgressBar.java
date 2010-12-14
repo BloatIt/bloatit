@@ -25,4 +25,9 @@ public class HtmlProgressBar extends HtmlElement {
         super("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: " + progress
                 + "%;\"></div></div></div>");
     }
+
+    @Override
+    public boolean isSelfClosed() {
+        return false;
+    }
 }

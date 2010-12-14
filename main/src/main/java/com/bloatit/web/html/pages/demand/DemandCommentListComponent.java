@@ -23,13 +23,13 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
+import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandCommentListComponent extends HtmlLeaf {
+public class DemandCommentListComponent extends HtmlPageComponent {
 
     private final PageIterable<Comment> comments;
 
@@ -46,7 +46,7 @@ public class DemandCommentListComponent extends HtmlLeaf {
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block");
         {
-            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments")).setCssClass("comments_title"));
+            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments"), 2).setCssClass("comments_title"));
 
             for (final Comment comment : comments) {
                 commentsBlock.add(new DemandCommentComponent(request, comment));
