@@ -16,48 +16,49 @@
  */
 package com.bloatit.web.html.components.custom;
 
-
 import com.bloatit.common.PageIterable;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlList;
-import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Parameters;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 public class HtmlPagedList<T> extends HtmlList {
 
+    private final static String CURRENT_PAGE_FIELD_NAME = "current_page";
+    private final static String PAGE_SIZE_FIELD_NAME = "page_size";
+
     private Session session;
     private UrlBuilder urlBuilder;
-
-    @RequestParam(defaultValue = "1", name = "current_page")
-    private Integer currentPage;
-    @RequestParam(defaultValue = "1", name = "page_count")
     private Integer pageCount;
-    @RequestParam(defaultValue = "42", name = "page_count")
+    @RequestParam(defaultValue = "1", name = CURRENT_PAGE_FIELD_NAME)
+    private Integer currentPage;
+    @RequestParam(defaultValue = "10", name = PAGE_SIZE_FIELD_NAME)
     private Integer pageSize;
 
-    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final UrlBuilder urlBuilder, final Session session) {
+    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final UrlBuilder urlBuilder, final Request request) {
         super();
-        this.session = session;
+        this.session = Context.getSession();
         this.urlBuilder = urlBuilder;
         this.currentPage = itemList.getCurrentPage() + 1;
+        request.setValues(this);
+
+        itemList.setPageSize(pageSize);
+        itemList.setPage(currentPage);
         this.pageCount = itemList.pageNumber();
-        this.pageSize = itemList.getPageSize();
 
         if (pageCount > 1) {
             add(generateLinksBar());
         }
 
         for (final T item : itemList) {
-            addItem(new HtmlListItem(itemRenderer.generate(item)));
+            add(itemRenderer.generate(item));
         }
 
         if (pageCount > 1) {
@@ -69,8 +70,8 @@ public class HtmlPagedList<T> extends HtmlList {
                          final HtmlRenderer<T> itemRenderer,
                          final PageIterable<T> itemList,
                          final UrlBuilder urlBuilder,
-                         final Session session) {
-        this(itemRenderer, itemList, urlBuilder, session);
+                         final Request request) {
+        this(itemRenderer, itemList, urlBuilder, request);
         addAttribute("class", cssClass);
     }
 
@@ -118,8 +119,8 @@ public class HtmlPagedList<T> extends HtmlList {
         final String iString = new Integer(i).toString();
         if (i != currentPage) {
 
-            urlBuilder.addParameter("list_page", iString);
-            urlBuilder.addParameter("list_page_size", new Long(pageSize).toString());
+            urlBuilder.addParameter(CURRENT_PAGE_FIELD_NAME, iString);
+            urlBuilder.addParameter(PAGE_SIZE_FIELD_NAME, new Long(pageSize).toString());
 
             return urlBuilder.getHtmlLink(text);
         }

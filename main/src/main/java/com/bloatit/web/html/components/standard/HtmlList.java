@@ -16,39 +16,38 @@
  */
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
 
-public class HtmlList extends HtmlBranch {
+public class HtmlList extends HtmlLeaf {
 
-    public HtmlList(final String text) {
-        super("ul");
-        add(new HtmlText(text));
+    public enum listType{
+        BULLET, NUMBERED
     }
 
-    public HtmlList(final HtmlNode node) {
-        super("ul");
-        add(node);
-    }
-
-    public HtmlList(final String cssClass, final HtmlNode node) {
-        super("ul");
-        addAttribute("class", cssClass);
-        add(node);
-    }
-
-    public HtmlList(final String cssClass, final String text) {
-        super("ul");
-        addAttribute("class", cssClass);
-        add(new HtmlText(text));
-    }
-
-    public HtmlList() {
+    /**
+     * Creates a list (not numbered)
+     */
+    public HtmlList(){
         super("ul");
     }
 
-    public void addItem(final HtmlListItem item) {
-        add(item);
+    /**
+     * Creates a list with the precised type (numbered or bullet)
+     * @param type the type of the list
+     */
+    public HtmlList(listType type){
+        super((type==listType.BULLET)?"ul":"ol");
+    }
+
+    public HtmlList add(String element){
+        return add(new HtmlText(element));
+    }
+
+    @Override
+    public HtmlList add(HtmlNode element){
+        super.add(new HtmlListItem(element));
+        return this;
     }
 }

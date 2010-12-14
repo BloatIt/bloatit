@@ -38,9 +38,8 @@ public class Loaders {
         } catch (Exception e) {
             throw new ConversionErrorException("Cannot convert " + value + " to " + toClass.toString());
         }
-    
     }
-
+    
     @SuppressWarnings("unchecked")
     static <T> Loader<T> getLoader(final Class<T> theClass) {
         if (theClass.equals(Integer.class)) {

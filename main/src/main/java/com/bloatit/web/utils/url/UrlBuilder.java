@@ -10,6 +10,7 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
@@ -123,6 +124,10 @@ public class UrlBuilder {
                 throw new FatalErrorException("Cannot parse the pageComponent", e);
             }
         }
+    }
+
+    public HtmlLink getHtmlLink(HtmlDiv div) {
+        return new HtmlLink(buildUrl(), div);
     }
 
 }

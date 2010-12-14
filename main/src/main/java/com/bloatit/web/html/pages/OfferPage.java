@@ -138,7 +138,7 @@ public class OfferPage extends LoggedPage {
         dateField.setLabel(this.session.tr("Expiration date : "));
         offerForm.add(dateField);
 
-        final HtmlTextArea descriptionField = new HtmlTextArea(this.description); // TODO
+        final HtmlTextArea descriptionField = new HtmlTextArea(this.description, 10, 20); // TODO
         descriptionField.setLabel(this.session.tr("Enter the description of the offer : "));
         descriptionField.setName(OfferAction.DESCRIPTION_CODE);
         offerForm.add(descriptionField);

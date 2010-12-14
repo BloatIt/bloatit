@@ -96,9 +96,9 @@ public class DispatchServer {
     private final Map<String, String> post;
 
     public DispatchServer(final Map<String, String> query,
-            final Map<String, String> post,
-            final Map<String, String> cookies,
-            final List<String> preferred_langs) {
+                          final Map<String, String> post,
+                          final Map<String, String> cookies,
+                          final List<String> preferred_langs) {
         this.cookies = cookies;
 
         this.preferred_langs = preferred_langs;
@@ -218,11 +218,9 @@ public class DispatchServer {
 
     private QueryString parseQueryString(final String queryString) {
         final Map<String, String> parameters = new HashMap<String, String>();
-            if(queryString != null) {
+        if (queryString != null) {
 
             final String[] splitted = strip(queryString, '/').split("/");
-
-
 
             int i = 0;
 

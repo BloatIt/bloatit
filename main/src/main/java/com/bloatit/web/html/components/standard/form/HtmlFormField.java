@@ -156,7 +156,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         if (this.label != null) {
             this.label.setFor(id);
         }
-        return element.setId(id);
+         element.setId(id);
+         return this;
     }
 
     @Override

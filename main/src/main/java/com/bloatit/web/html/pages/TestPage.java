@@ -20,15 +20,26 @@ package com.bloatit.web.html.pages;
 
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlLink;
+import com.bloatit.web.html.components.standard.HtmlList;
+import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
+import com.bloatit.web.html.components.standard.form.CheckBoxGroup;
+import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlDateField;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlFormBlock;
+import com.bloatit.web.html.components.standard.form.HtmlFormField.LabelPosition;
 import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
+import com.bloatit.web.html.components.standard.form.HtmlRadioButtonGroup;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.utils.RandomString;
 import com.bloatit.web.utils.url.Request;
 
 /**
@@ -45,24 +56,85 @@ public class TestPage extends Page {
         super.create();
 
         HtmlTitleBlock pageTitle = new HtmlTitleBlock("Html testing page", 1);
-        pageTitle.add(generateForm());
+        pageTitle.add(new HtmlTitleBlock("Common markups", 2).add(variousElements()));
+        pageTitle.add(new HtmlTitleBlock("Formulaires", 2).add(generateForm()));
+        pageTitle.add(new HtmlTitleBlock("Listes", 2).add(generateLists()));
         add(pageTitle);
     }
 
+    private HtmlElement variousElements(){
+        HtmlDiv div = new HtmlDiv();
+        HtmlDiv anotherDiv = new HtmlDiv();
+        div.add(anotherDiv);
+        
+        HtmlTitleBlock htb = new HtmlTitleBlock("Another title", 3);
+        RandomString rs = new RandomString(1000);
+        htb.add(new HtmlParagraph(rs.nextString()));
+        anotherDiv.add(htb);
+        htb.add(new HtmlTitle("nested title",5));
+        htb.add(new HtmlText("some text without paragraph"));
+        htb.add(new HtmlParagraph(new HtmlText("and some with a span <span style=\"font-size: 16pt ; color: fuchsia ; background-color: #FFFFFF ;\">plop</span>")));
+
+        return div;
+    }
+
     private HtmlElement generateForm() {
-        HtmlForm form = new HtmlForm("");
+        HtmlForm form = new HtmlForm("plop");
 
         HtmlFormBlock block1 = new HtmlFormBlock("First form block");
-        block1.add(new HtmlTextField("test", "Field 1"));
-        block1.add(new HtmlTextArea("test2","Field 2"));
+        block1.add(new HtmlTextField("text", "Field 1"));
+        block1.add(new HtmlTextArea("textarea","Field 2", 10, 20));
+        block1.add(new HtmlButton("Useless button"));
 
-        HtmlFormBlock block2 = new HtmlFormBlock("First form block");
-        block2.add(new HtmlDateField("test", "Field 1"));
-        block2.add(new HtmlPasswordField("test2","Field 2"));
+        HtmlFormBlock block2 = new HtmlFormBlock("second form block");
+        block2.add(new HtmlDateField("date", "Field 1"));
+        block2.add(new HtmlPasswordField("password","Field 2").setId("Thomas"));
+
+        HtmlFormBlock block3 = new HtmlFormBlock("Quand êtes vous disponibles ?");
+        CheckBoxGroup cbg = new CheckBoxGroup(LabelPosition.AFTER);
+        cbg.addCheckBox("demain", "demain");
+        cbg.addCheckBox("ajd", "aujourd'hui");
+        cbg.addCheckBox("hier", "hier");
+        block3.add(cbg);
+        block3.add(new HtmlParagraph("* test"));
+
+        HtmlFormBlock block4 =  new HtmlFormBlock("Another box");
+        HtmlRadioButtonGroup rbg = new HtmlRadioButtonGroup("test", LabelPosition.BEFORE);
+        rbg.addRadioButton("plop", "muahahah");
+        rbg.addRadioButton("plip", "c'est vraiment chiant de générer des tests");
+        rbg.addRadioButton("plup", "et de 3");
+        block4.add(rbg);
+        block4.add(new HtmlTextField("another", "yet another text field"));
+
 
         form.add(block1);
         form.add(block2);
+        form.add(block3);
+        form.add(block4);
+        form.add(new HtmlSubmit("submit"));
+
         return form;
+    }
+
+    private HtmlElement generateLists(){
+        HtmlDiv lists = new HtmlDiv();
+        HtmlTitleBlock std = new HtmlTitleBlock("Not numbered list", 3);
+        HtmlList list = new HtmlList();
+        std.add(list);
+        list.add("plop");
+        list.add(new HtmlLink("plop", "hello"));
+        list.add("another one");
+
+        HtmlTitleBlock nbm = new HtmlTitleBlock("Numbered list", 3);
+        HtmlList nbList = new HtmlList(HtmlList.listType.NUMBERED);
+        nbm.add(nbList);
+        nbList.add("plop");
+        nbList.add(new HtmlLink("plop", "hello"));
+        nbList.add("another one");
+
+        lists.add(std);
+        lists.add(nbm);
+        return lists;
     }
 
     @Override

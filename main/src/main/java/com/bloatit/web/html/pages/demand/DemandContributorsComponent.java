@@ -18,15 +18,14 @@
  */
 package com.bloatit.web.html.pages.demand;
 
-
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Contribution;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
@@ -47,7 +46,8 @@ public class DemandContributorsComponent extends HtmlDiv {
         super();
         this.demand = demand;
         extractData(request);
-        produce(request);
+        add(produce(request));
+
 
     }
 
@@ -71,7 +71,7 @@ public class DemandContributorsComponent extends HtmlDiv {
 
             // Create paged list
             final HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer,
-                    contributions, new UrlBuilder(DemandPage.class, request.getParameters()), session);
+                    contributions, new UrlBuilder(DemandPage.class, request.getParameters()), request);
             contributorsBlock.add(participationsList);
 
         }
@@ -83,13 +83,16 @@ public class DemandContributorsComponent extends HtmlDiv {
         final Session session = Context.getSession();
         contributionCount = demand.getContributions().size();
 
-        final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
-        final String contributionMinValue = demand.getContributionMin().toPlainString();
-        final String contributionMaxValue = demand.getContributionMax().toPlainString();
+        if (contributionCount > 0) {
 
-        contributionMin = new HtmlParagraph(session.tr("Min:&nbsp;") + contributionMinValue);
-        contributionMax = new HtmlParagraph(session.tr("Max:&nbsp;") + contributionMaxValue);
-        contributionMean = new HtmlParagraph(session.tr("Mean:&nbsp;") + contributionMeanValue);
+            final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
+            final String contributionMinValue = demand.getContributionMin().toPlainString();
+            final String contributionMaxValue = demand.getContributionMax().toPlainString();
+
+            contributionMin = new HtmlParagraph(session.tr("Min:&nbsp;") + contributionMinValue);
+            contributionMax = new HtmlParagraph(session.tr("Max:&nbsp;") + contributionMaxValue);
+            contributionMean = new HtmlParagraph(session.tr("Mean:&nbsp;") + contributionMeanValue);
+        }
 
         contributions = demand.getContributions();
     }
@@ -101,7 +104,7 @@ public class DemandContributorsComponent extends HtmlDiv {
             public HtmlNode generate(final Contribution item) {
                 final String itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " "
                         + item.getCreationDate().toString();
-                return new HtmlListItem(itemString);
+                return new HtmlText(itemString);
             }
         };
     }

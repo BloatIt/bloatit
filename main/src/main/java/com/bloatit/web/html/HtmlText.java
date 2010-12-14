@@ -33,6 +33,16 @@ public class HtmlText extends HtmlNode {
         return Collections.EMPTY_LIST.iterator();
     }
 
+    /**
+     * Do not use
+     * Only present as a quick hack to write a tad cleaner html content
+     */
+    public String _getContent() {
+        return content;
+    }
+
+    
+
     @Override
     public final void write(final Text txt) {
         txt.writeLine(content);

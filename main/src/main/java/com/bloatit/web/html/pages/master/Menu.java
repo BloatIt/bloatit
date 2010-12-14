@@ -24,18 +24,18 @@ public class Menu extends HtmlDiv {
 
         final HtmlList primaryList = new HtmlList();
 
-        primaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(DemandsPage.class).buildUrl(), s.tr("Demands"))));
-        primaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), s.tr("Projects"))));
-        primaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), s.tr("Groups"))));
-        primaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(MembersListPage.class).buildUrl(), s.tr("Members"))));
+        primaryList.add(new HtmlLink(new UrlBuilder(DemandsPage.class).buildUrl(), s.tr("Demands")));
+        primaryList.add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), s.tr("Projects")));
+        primaryList.add((new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), s.tr("Groups"))));
+        primaryList.add(new HtmlLink(new UrlBuilder(MembersListPage.class).buildUrl(), s.tr("Members")));
 
         final HtmlList secondaryList = new HtmlList();
 
-        secondaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(SpecialsPage.class).buildUrl(), s.tr("Specials page"))));
-        secondaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(PageNotFound.class).buildUrl(), s.tr("Contact"))));
-        secondaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(PageNotFound.class).buildUrl(), s.tr("Documentation"))));
-        secondaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(PageNotFound.class).buildUrl(), s.tr("About BloatIt"))));
-        secondaryList.addItem(new HtmlListItem(new HtmlLink(new UrlBuilder(PageNotFound.class).buildUrl(), s.tr("Press"))));
+        secondaryList.add(new HtmlLink(new UrlBuilder(SpecialsPage.class).buildUrl(), s.tr("Specials page")));
+        secondaryList.add(new HtmlLink(new UrlBuilder(PageNotFound.class).buildUrl(), s.tr("Contact")));
+        secondaryList.add(new HtmlLink(new UrlBuilder(PageNotFound.class).buildUrl(), s.tr("Documentation")));
+        secondaryList.add(new HtmlLink(new UrlBuilder(PageNotFound.class).buildUrl(), s.tr("About BloatIt")));
+        secondaryList.add(new HtmlLink(new UrlBuilder(PageNotFound.class).buildUrl(), s.tr("Press")));
 
         add(primaryList);
         add(secondaryList);

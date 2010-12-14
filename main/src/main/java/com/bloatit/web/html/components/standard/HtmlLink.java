@@ -17,22 +17,40 @@
 
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.HtmlNode;
 
-
+/**
+ * Class to create htmllinks (<a href="...">plop</a>)
+ */
 public class HtmlLink extends HtmlBranch {
 
-    public HtmlLink(final String link, final HtmlElement element) {
+    /**
+     * Creates a link with a given URL and a given displayed element.
+     * Element can be any HtmlNode
+     * Will generate :
+     * <pre>
+     * <a href="url">displayed</a>
+     * </pre>
+     */
+    public HtmlLink(final String url, final HtmlNode displayed) {
         super("a");
-        addAttribute("href", link);
-        add(element);
+        addAttribute("href", url);
+        add(displayed);
     }
 
-    public HtmlLink(final String link, final String element) {
+    /**
+     * Creates a link with a given URL and a given displayed element.
+     * Element can be any HtmlNode
+     * Will generate :
+     * <pre>
+     * <a href="url">displayedText</a>
+     * </pre>
+     */
+    public HtmlLink(final String url, final String displayedText) {
         super("a");
-        addAttribute("href", link);
-        add(new HtmlText(element));
+        addAttribute("href", url);
+        add(new HtmlText(displayedText));
     }
 }
