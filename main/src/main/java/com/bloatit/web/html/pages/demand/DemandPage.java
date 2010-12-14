@@ -78,7 +78,7 @@ public class DemandPage extends Page {
         final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
-        add(new HtmlTitleBlock(translatedDescription.getTitle(),2).setCssClass("pageTitle"));
+        add(new HtmlTitleBlock(translatedDescription.getTitle(),1).setCssClass("pageTitle"));
         add(new DemandHeadComponent(request, demand));
         add(generateBody());
     }
