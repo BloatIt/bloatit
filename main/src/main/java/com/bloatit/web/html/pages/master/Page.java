@@ -30,6 +30,10 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     public Page(final Request request) {
         super("html");
+        /*final HtmlText xmlHead = new HtmlText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        final HtmlText doctype = new HtmlText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">");
+        add(xmlHead);
+        add(doctype);*/
         session = Context.getSession();
 
         this.request = request;

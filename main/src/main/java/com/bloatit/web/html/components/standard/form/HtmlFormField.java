@@ -141,7 +141,9 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         this.ph.add(this.label);
 
         if (getId() == null) {
-            this.label.setFor(rng.nextString());
+            String neoId = rng.nextString();
+            //this.setId(neoId);
+            this.label.setFor(neoId);
         }
     }
 

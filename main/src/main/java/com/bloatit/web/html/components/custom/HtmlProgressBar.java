@@ -17,17 +17,12 @@
 
 package com.bloatit.web.html.components.custom;
 
-import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlText;
 
-public class HtmlProgressBar extends HtmlElement {
+public class HtmlProgressBar extends HtmlText {
 
     public HtmlProgressBar(final float progress) {
         super("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: " + progress
                 + "%;\"></div></div></div>");
-    }
-
-    @Override
-    public boolean isSelfClosed() {
-        return false;
     }
 }
