@@ -33,7 +33,6 @@
 						</goals>
 						<phase>generate-sources</phase>
 						<configuration>
-							<outputDirectory>src/main/generated</outputDirectory>
 							<processors>
 								<!-- list of processors to use -->
 								<processor>com.bloatit.web.annotations.ParamContainerProcessor</processor>

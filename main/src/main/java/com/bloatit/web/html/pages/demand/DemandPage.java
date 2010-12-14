@@ -39,7 +39,7 @@ public class DemandPage extends Page {
     @RequestParam(name = "id", level = Level.ERROR)
     protected Demand demand;
 
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title")
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generated="demand")
     protected String title;
 
     @PageComponent

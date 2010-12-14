@@ -1,9 +1,12 @@
 package com.bloatit.web.utils.url;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 
 import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
@@ -70,6 +73,21 @@ public class OldUrl {
 
     public Parameters getParameters() {
         return parameters;
+    }
+    
+    public static void main(String[] args) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("id", "12");
+        params.put("title", "Hello ceci est---un ^¨ \n --& titre.               ---  ");
+        params.put("demand_tab_key", "key");
+
+        DemandUrl demandUrl = new DemandUrl(params);
+
+        System.out.println(demandUrl);
+
+        System.out.println(demandUrl.getDemand());
+
+        System.out.println(demandUrl.getMessages().hasMessage(Level.ERROR));
     }
 
 }

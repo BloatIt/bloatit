@@ -1,5 +1,7 @@
 package com.bloatit.web.annotations;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -15,28 +17,57 @@ import javax.lang.model.element.TypeElement;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class ParamContainerProcessor extends AbstractProcessor {
 
+    public static final String ROOT = "main/src/main/java/com/bloatit/web/utils/url/";
+
     @Override
     public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
-        System.out.println("PLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP");
         for (TypeElement typeElement : typeElements) {
-            for (Element element : env.getElementsAnnotatedWith(typeElement)) {
-                ParamContainer param = element.getAnnotation(ParamContainer.class);
-                String urlName = (param.value().equals("") ? element.getSimpleName().toString() : param.value());
-                UrlClassGenerator urlClassGenerator = new UrlClassGenerator(urlName);
 
-                for (Element enclosed : element.getEnclosedElements()) {
-                    RequestParam requestParam = enclosed.getAnnotation(RequestParam.class);
-                    if (requestParam != null) {
-                        String name = requestParam.name().equals("") ? enclosed.getSimpleName().toString() : requestParam.name();
-                        urlClassGenerator.addAttribute(enclosed.asType().toString(), name);
-                        urlClassGenerator.registerAttribute(name, requestParam.role(), requestParam.level(), requestParam.message().value());
-                    } else if (enclosed.getAnnotation(PageComponent.class) != null) {
-                         urlClassGenerator.addComponent(enclosed.getSimpleName().toString());
-                         urlClassGenerator.registerComponent(enclosed.getSimpleName().toString());
+            for (Element element : env.getElementsAnnotatedWith(typeElement)) {
+                try {
+                    ParamContainer param = element.getAnnotation(ParamContainer.class);
+                    String urlName = (param.value().equals("") ? element.getSimpleName().toString() : param.value());
+
+                    JavaGenerator generator;
+                    if (param.isComponent()) {
+                        generator = new UrlComponentClassGenerator(urlName);
+                    } else {
+                        generator = new UrlClassGenerator(urlName);
                     }
 
+                    for (Element enclosed : element.getEnclosedElements()) {
+                        RequestParam requestParam = enclosed.getAnnotation(RequestParam.class);
+                        if (requestParam != null) {
+                            String name = enclosed.getSimpleName().toString();
+                            String nameString = requestParam.name().equals("") ? enclosed.getSimpleName().toString() : requestParam.name();
+
+                            if (requestParam.generated().isEmpty()) {
+                                generator.addAttribute(enclosed.asType().toString(), name);
+                                generator.addGetterSetter(enclosed.asType().toString(), name);
+                            } else {
+                                generator.addAutoGeneratingGetter(enclosed.asType().toString(), name, requestParam.generated());
+                            }
+
+                            generator.registerAttribute(name,
+                                    nameString,
+                                    enclosed.asType().toString(),
+                                    requestParam.role(),
+                                    requestParam.level(),
+                                    requestParam.message().value());
+                        } else if (enclosed.getAnnotation(PageComponent.class) != null) {
+                            generator.addComponentAndGetterSetter(enclosed.getSimpleName().toString());
+                            generator.registerComponent(enclosed.getSimpleName().toString());
+                        }
+                    }
+
+                    FileWriter fstream = new FileWriter(ROOT + generator.getClassName() + ".java");
+                    BufferedWriter out = new BufferedWriter(fstream);
+                    out.write(generator.generate());
+                    out.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                System.out.println(urlClassGenerator.generate());
             }
         }
         return false;

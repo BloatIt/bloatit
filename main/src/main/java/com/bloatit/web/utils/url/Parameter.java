@@ -15,13 +15,21 @@ public class Parameter {
 
     private String name;
     private Object value;
+    private final Class<?> valueClass;
     private Role role;
 
-    public Parameter(final Messages messages, final String name, final Object value, final Role role, final Level level, final String message) {
+    public Parameter(final Messages messages,
+                     final String name,
+                     final Object value,
+                     final Class<?> valueClass,
+                     final Role role,
+                     final Level level,
+                     final String message) {
         this.messages = messages;
         this.name = name;
         this.role = role;
         this.value = value;
+        this.valueClass = valueClass;
         this.level = level;
         this.message = message;
     }
@@ -32,15 +40,33 @@ public class Parameter {
 
     private void addToMessages(What what) {
         message.replaceAll("%param", name);
-        message.replaceAll("%value", getStringValue());
+        if (value != null) {
+            try {
+                message.replaceAll("%value", Loaders.toStr(value));
+            } catch (ConversionErrorException e) {
+                message.replaceAll("%value", "null");
+            }
+        } else {
+            message.replaceAll("%value", "null");
+        }
         messages.add(new Message(level, what, message));
     }
 
+    private String makeStringPretty(String value){
+        value = value.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨]", "-");
+        value = value.replaceAll("(--)+", "-");
+        value = value.replaceAll("(--)+", "-");
+        value = value.subSequence(0, Math.min(value.length(), 80)).toString();
+        value = value.replaceAll("-+$", "");
+        value = value.toLowerCase();
+        return value;
+    }
+    
     public String getStringValue() {
         if (value == null) {
             addToMessages(What.NOT_FOUND);
         } else if (role == Role.PRETTY) {
-            return String.class.cast(value).replaceAll("[ ,\\.\\'\\\"\\&\\?]", "-").subSequence(0, 80).toString();
+            return makeStringPretty(String.class.cast(value));
         }
         try {
             return Loaders.toStr(value);
@@ -59,12 +85,12 @@ public class Parameter {
     }
 
     public void valueFromString(String string) {
-        if (value.getClass().equals(String.class)) {
+        if (valueClass.equals(String.class)) {
             value = string;
             return;
         }
         try {
-            value = Loaders.fromStr(value.getClass(), string);
+            value = Loaders.fromStr(valueClass, string);
         } catch (ConversionErrorException e) {
             addToMessages(What.CONVERSION_ERROR);
         }

@@ -18,8 +18,8 @@ public abstract class Url extends UrlComponent {
     }
 
     protected abstract void doRegister(Messages messages);
-    
-    protected void register(UrlComponent component){
+
+    protected void register(UrlComponent component) {
         components.add(component);
     }
 
@@ -32,15 +32,15 @@ public abstract class Url extends UrlComponent {
     }
 
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("/").append(Context.getSession().getLanguage().getCode());
+    protected void  constructUrl(StringBuilder sb) {
+        if (Context.getSession() != null) {
+            sb.append("/").append(Context.getSession().getLanguage().getCode());
+        }
         sb.append("/").append(name);
-        sb.append(super.toString());
         for (UrlComponent comp : components) {
             sb.append(comp.toString());
         }
-        return sb.toString();
+        super.constructUrl(sb);
     }
 
 }

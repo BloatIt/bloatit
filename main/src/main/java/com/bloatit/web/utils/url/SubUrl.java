@@ -14,7 +14,7 @@ public class SubUrl extends Url {
     public SubUrl() {
         super("Hello");
     }
-    
+
     public SubUrl(Map<String, String> params) {
         super("Hello");
         parseParameterMap(params);
@@ -38,8 +38,8 @@ public class SubUrl extends Url {
 
     @Override
     protected void doRegister(Messages messages) {
-        register(new Parameter(messages, "plop", plop, Role.GET, Level.ERROR, "plop"));
-        register(new Parameter(messages, "plip", plip, Role.GET, Level.ERROR, "plop"));
+        register(new Parameter(messages, "plop", plop, Double.class, Role.GET, Level.ERROR, "plop"));
+        register(new Parameter(messages, "plip", plip, Integer.class, Role.GET, Level.ERROR, "plop"));
         register(cmp);
     }
 }

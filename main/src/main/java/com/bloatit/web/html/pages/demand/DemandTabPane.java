@@ -18,6 +18,7 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.components.custom.HtmlTabBlock;
 import com.bloatit.web.html.components.custom.HtmlTabBlock.HtmlTabHeader;
@@ -27,6 +28,7 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer(value = "demandTabPane", isComponent = true)
 public class DemandTabPane extends HtmlPageComponent {
 
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")

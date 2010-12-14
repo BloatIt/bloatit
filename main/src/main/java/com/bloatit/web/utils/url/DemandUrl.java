@@ -6,37 +6,45 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
 public class DemandUrl extends Url {
-    public DemandUrl() {
-        super("demand");
-    }
+public DemandUrl() {
+    super("demand"); 
+}
+public DemandUrl(Map<String, String> params) {
+    super("demand"); 
+    parseParameterMap(params);
+}
+private com.bloatit.framework.Demand demand;
+private DemandTabPaneUrl demandTabPaneUrl = new DemandTabPaneUrl();
 
-    public DemandUrl(Map<String, String> params) {
-        super("demand");
-        parseParameterMap(params);
-    }
+public com.bloatit.framework.Demand getDemand(){ 
+    return this.demand;
+}
 
-    private com.bloatit.framework.Demand id;
-    private java.lang.String title;
+public void setDemand(com.bloatit.framework.Demand arg0){ 
+    this.demand = arg0;
+}
 
-    public com.bloatit.framework.Demand getId() {
-        return this.id;
+public java.lang.String getTitle(){ 
+    if (demand != null) {
+        return demand.getTitle();
+    } else {
+        return null;
     }
+}
 
-    public void setId(com.bloatit.framework.Demand arg0) {
-        this.id = arg0;
-    }
+public DemandTabPaneUrl getDemandTabPaneUrl(){ 
+    return this.demandTabPaneUrl;
+}
 
-    public java.lang.String getTitle() {
-        return this.title;
-    }
+public void setDemandTabPaneUrl(DemandTabPaneUrl arg0){ 
+    this.demandTabPaneUrl = arg0;
+}
 
-    public void setTitle(java.lang.String arg0) {
-        this.title = arg0;
-    }
 
-    @Override
-    protected void doRegister(Messages messages) {
-        register(new Parameter(messages, "id", id, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-        register(new Parameter(messages, "title", title, Role.PRETTY, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    }
+@Override 
+protected void doRegister(Messages messages) { 
+    register(new Parameter(messages, "id", getDemand(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter(messages, "title", getTitle(), java.lang.String.class, Role.PRETTY, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(demandTabPaneUrl);
+}
 }
