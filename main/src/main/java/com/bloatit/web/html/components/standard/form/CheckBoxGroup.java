@@ -45,4 +45,9 @@ public class CheckBoxGroup extends HtmlLeaf {
         add(box);
         return box;
     }
+
+    @Override
+    public boolean isSelfClosed() {
+        return false;
+    }
 }

@@ -19,15 +19,15 @@ package com.bloatit.web.html.pages.demand;
 
 import com.bloatit.framework.Offer;
 import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandOfferComponent extends HtmlLeaf {
+public class DemandOfferComponent extends HtmlPageComponent {
 
     // private Offer offer;
     private HtmlParagraph description;

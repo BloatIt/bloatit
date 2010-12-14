@@ -21,15 +21,15 @@ package com.bloatit.web.html.pages.demand;
 
 import com.bloatit.framework.Comment;
 import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandCommentComponent extends HtmlLeaf {
+public class DemandCommentComponent extends HtmlPageComponent {
 
     private final Comment comment;
     private HtmlParagraph commentText;

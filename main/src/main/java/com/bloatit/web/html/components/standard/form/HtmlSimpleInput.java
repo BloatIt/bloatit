@@ -19,7 +19,6 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 
 /**
@@ -46,5 +45,10 @@ public class HtmlSimpleInput extends HtmlLeaf {
     protected HtmlSimpleInput setName(final String name) {
         addAttribute("name", name).addAttribute("id", name);
         return this;
+    }
+
+    @Override
+    public boolean isSelfClosed() {
+        return true;
     }
 }

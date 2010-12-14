@@ -48,7 +48,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     public enum LabelPosition {
 
         /**
-         * <b>BEFORE</b> means the label is positionner before the aformentionned
+         * <b>BEFORE</b> means the label is positionned before the aformentionned
          * element.
          * Example :
          * <p><label> ... </label><element /></p>
@@ -67,7 +67,6 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     protected HtmlParagraph paragraph = new HtmlParagraph();
     protected HtmlElement element;
     private String name;
-
     private RandomString rng = new RandomString(10);
 
     /**
@@ -133,8 +132,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * </p>
      * <p>
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and
-     * not modify any other parameters than redefininglaceholder
-     * </p>     * 
+     * not modify any other parameters than redefining the placeholder
+     * </p> 
      * @param label the label for the element
      */
     public void setLabel(final String label) {
@@ -148,7 +147,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     @Override
     public HtmlElement setId(String id) {
-        if(this.label != null ){
+        if (this.label != null) {
             this.label.setFor(id);
         }
         return super.setId(id);
@@ -209,4 +208,9 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * @param value the value
      */
     protected abstract void doSetDefaultValue(T value);
+
+    @Override
+    public boolean isSelfClosed() {
+        return false;
+    }
 }

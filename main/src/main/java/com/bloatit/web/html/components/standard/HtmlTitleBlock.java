@@ -30,7 +30,6 @@ public class HtmlTitleBlock extends HtmlBranch {
         super();
 
         this.title = new HtmlTitle(title, level);
-
         add(this.title);
     }
 
