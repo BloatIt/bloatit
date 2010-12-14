@@ -38,7 +38,10 @@ public class Loaders {
             return new ToDate().toString((Date) obj);
         } else if (obj.getClass().equals(Demand.class)) {
             return new ToDemand().toString((Demand) obj);
+        } else if (obj.getClass().equals(Member.class)) {
+            return new ToMember().toString((Member) obj);
         }
+
         return null;
     }
 

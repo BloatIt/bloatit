@@ -1,5 +1,7 @@
 package com.bloatit.web.utils.url;
 
+import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.demand.DemandPage;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -121,6 +123,10 @@ public class UrlBuilder {
                 throw new FatalErrorException("Cannot parse the pageComponent", e);
             }
         }
+    }
+
+    public HtmlLink getHtmlLink(HtmlDiv div) {
+        return new HtmlLink(buildUrl(), div);
     }
 
 }
