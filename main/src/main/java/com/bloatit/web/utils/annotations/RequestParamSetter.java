@@ -1,6 +1,5 @@
 package com.bloatit.web.utils.annotations;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
@@ -8,8 +7,8 @@ import java.util.Map;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.web.annotations.Loader;
 import com.bloatit.web.annotations.Message;
-import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.Message.What;
+import com.bloatit.web.annotations.RequestParam;
 
 /**
  * This class uses RequestParam annotation to set the parameters using a map of
@@ -145,12 +144,11 @@ public class RequestParamSetter {
                 if (!f.isAccessible()) {
                     f.setAccessible(true);
                 }
-                final Constructor<? extends Loader<?>> constructor = findLoaderType().getConstructor();
-                final Loader<?> newInstance = constructor.newInstance();
-                final Object convert = newInstance.fromString(value);
+                final Object convert = Loaders.fromStr(f.getType(), value);
 
                 f.set(instance, convert);
             } catch (final Exception e) {
+                e.printStackTrace();
                 throw new ConversionErrorException(error);
             }
         }
