@@ -121,7 +121,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     private HtmlElement generateTitle() {
         Context.getSession();
 
-        return new HtmlTitle(1).add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), generateLogo()));
+        return new HtmlDiv().setId("logo").add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), generateLogo()));
     }
 
     private void addWaitingNotifications() {
