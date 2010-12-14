@@ -77,10 +77,10 @@ public class Language {
                     template = languageList.get(locale);
                     break;
                 } else {
-                    System.err.println("Unknow language code" + locale);
+                    System.err.println("Unknow language code: " + locale);
                 }
             } else {
-                System.err.println("Unknow language" + lang);
+                System.err.println("Unknow language: " + lang);
                 // TODO: Clean log
             }
         }
@@ -95,10 +95,10 @@ public class Language {
     }
 
     void setCode(final String code) {
-        if (languageList.containsKey(code)) {
-            template = languageList.get(code);
+        if (languageCode.containsKey(code)) {
+            template = languageList.get(languageCode.get(code));
         } else {
-            System.err.println("Unknow language code" + code);
+            System.err.println("Unknow language code: " + code);
         }
     }
 
