@@ -16,22 +16,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.components.standard.form;
 
-public class HtmlCheckbox extends HtmlFormField<Boolean> {
+package com.bloatit.web.html.pages.master;
 
-    public HtmlCheckbox(final String name, LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.CHECKBOX), name, position);
-    }
+import com.bloatit.web.html.HtmlLeaf;
 
-    public HtmlCheckbox(final String name, final String label, LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.CHECKBOX), name, label, position);
-    }
+public abstract class HtmlPageComponent extends HtmlLeaf{
 
-    @Override
-    protected void doSetDefaultValue(final Boolean value) {
-        if (value.booleanValue()) {
-            addAttribute("checked", "checked");
-        }
-    }
 }

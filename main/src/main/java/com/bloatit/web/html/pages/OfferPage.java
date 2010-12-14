@@ -44,16 +44,16 @@ public class OfferPage extends LoggedPage {
     @RequestParam(name = "idea")
     private final Demand targetIdea = null;
 
-    @RequestParam(name = "price")
+    @RequestParam(name = "price", defaultValue="vide")
     private BigDecimal price;
 
-    @RequestParam(name = "expiry")
+    @RequestParam(name = "expiry", defaultValue="vide")
     private Date expiryDate;
 
-    @RequestParam(name = "title")
+    @RequestParam(name = "title", defaultValue="vide")
     private String title;
 
-    @RequestParam(name = "description")
+    @RequestParam(name = "description", defaultValue="vide")
     private String description;
 
     public OfferPage(final Request request) throws RedirectException {
@@ -107,7 +107,7 @@ public class OfferPage extends LoggedPage {
          */
         // !TODO
 
-        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"));
+        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"),2);
 
         // Create offer form
         final UrlBuilder offerActionUrlBuilder = new UrlBuilder(OfferAction.class);

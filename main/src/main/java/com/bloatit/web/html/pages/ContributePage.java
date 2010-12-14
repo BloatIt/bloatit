@@ -68,7 +68,7 @@ public class ContributePage extends LoggedPage {
         final HtmlButton submitButton = new HtmlButton(session.tr("Contribute"));
 
         // Summary of the idea
-        final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle());
+        final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle(),2);
         final HtmlText textSummary = new HtmlText(targetIdea.getDescription().toString());
         summary.add(textSummary);
 
@@ -77,7 +77,7 @@ public class ContributePage extends LoggedPage {
         contribForm.add(commentField);
         contribForm.add(submitButton);
 
-        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(session.tr("Contribute"));
+        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(session.tr("Contribute"),2);
         contribTitle.add(summary);
         contribTitle.add(contribForm);
 

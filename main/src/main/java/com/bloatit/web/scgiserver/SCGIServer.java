@@ -99,9 +99,9 @@ public class SCGIServer {
                     dispatchServer.process(new HttpResponse(clientSocket.getOutputStream()));
                 } catch (final FatalErrorException e) {
                     String display;
-                    display = "Content-type: text/html\r\n\r\n" + e.toString() + " :\n";
+                    display = "Content-type: text/plain\r\n\r\n" + e.toString() + " :\n";
                     for (final StackTraceElement s : e.getStackTrace()) {
-                        display += "<p>\t" + s + "</p>\n";
+                        display += "\t" + s + "\n";
                     }
 
                     clientSocket.getOutputStream().write(display.getBytes());
@@ -112,9 +112,9 @@ public class SCGIServer {
                 } catch (final Exception e) {
                     // Protects the server
                     String display;
-                    display = "Content-type: text/html\r\n\r\n" + e.toString() + " :\n";
+                    display = "Content-type: text/plain\r\n\r\n" + e.toString() + " :\n";
                     for (final StackTraceElement s : e.getStackTrace()) {
-                        display += "<p>\t" + s + "</p>\n";
+                        display += "\t" + s + "\n";
                     }
 
                     clientSocket.getOutputStream().write(display.getBytes());

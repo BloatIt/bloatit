@@ -56,7 +56,7 @@ public class GlobalSearchPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"));
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"),2);
 
         pageTitle.add(generateSearchBlock());
 
@@ -74,7 +74,7 @@ public class GlobalSearchPage extends Page {
             }
         };
 
-        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, request, session);
+        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(GlobalSearchPage.class, request.getParameters()), session);
 
         pageTitle.add(pagedMemberList);
         add(pageTitle);

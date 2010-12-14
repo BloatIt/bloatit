@@ -3,10 +3,10 @@ package com.bloatit.web.utils.url;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-
-
+import java.util.Map.Entry;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -33,6 +33,14 @@ public class UrlBuilder {
         super();
         this.session = Context.getSession();
         this.linkableClass = linkableClass;
+    }
+
+    public UrlBuilder(Class<? extends Linkable> linkableClass, Map<String, String> parameters) {
+        this(linkableClass);
+
+        for(Entry<String,String> param: parameters.entrySet()) {
+            addParameter(param.getKey(), param.getValue());
+        }
     }
 
     public UrlBuilder addParameter(final String name, final Object value) {
@@ -73,7 +81,9 @@ public class UrlBuilder {
                         throw new FatalErrorException("Parameter " + name + " needs a value.", null);
                     }
                 } else if (param.defaultValue().equals("")) {
-                    throw new FatalErrorException("Parameter " + name + " needs a value.", null);
+                    if(param.level() == Message.Level.ERROR) {
+                        throw new FatalErrorException("Parameter " + name + " needs a value.", null);
+                    }
                 } else {
                     strValue = param.defaultValue();
                 }
@@ -83,7 +93,7 @@ public class UrlBuilder {
                 }
 
             } else if (f.getAnnotation(PageComponent.class) != null) {
-                buildUrl(sb, f.getClass());
+                buildUrl(sb, f.getType());
             }
         }
     }

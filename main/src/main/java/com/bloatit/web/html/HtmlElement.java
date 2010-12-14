@@ -25,7 +25,11 @@ public abstract class HtmlElement extends HtmlNode {
     }
 
     public HtmlElement addAttribute(final String name, final String value) {
-        tag.addAttribute(name, value);
+        if (name.equals("id")) {
+            this.setId(value);
+        } else {
+            tag.addAttribute(name, value);
+        }
         return this;
     }
 
@@ -38,7 +42,7 @@ public abstract class HtmlElement extends HtmlNode {
         children.add(new HtmlText(text));
         return this;
     }
-    
+
     /**
      * <p>
      * Sets the id of the html element :
@@ -56,7 +60,7 @@ public abstract class HtmlElement extends HtmlNode {
      * @return the element
      */
     public HtmlElement setId(final String id) {
-        addAttribute("id", id);
+        tag.addId(id);
         return this;
     }
 
@@ -70,7 +74,11 @@ public abstract class HtmlElement extends HtmlNode {
      * @return The value contained in the attribute id of the element
      */
     public String getId() {
-        return this.tag.getId();
+        if (tag != null) {
+            return this.tag.getId();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -95,7 +103,7 @@ public abstract class HtmlElement extends HtmlNode {
     @Override
     public final void write(final Text txt) {
         if (tag != null) {
-            if (iterator().hasNext()) {
+            if (!selfClosable() || iterator().hasNext() ) {
                 txt.writeLine(tag.getOpenTag());
                 for (final HtmlNode html : this) {
                     txt.indent();
@@ -115,4 +123,8 @@ public abstract class HtmlElement extends HtmlNode {
         }
     }
 
+    /**
+     * Indicates wether the tag is self closed or not
+     */
+    public abstract boolean selfClosable();
 }

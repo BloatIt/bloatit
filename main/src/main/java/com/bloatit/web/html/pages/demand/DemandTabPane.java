@@ -19,15 +19,15 @@ package com.bloatit.web.html.pages.demand;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.custom.HtmlTabBlock;
 import com.bloatit.web.html.components.custom.HtmlTabBlock.HtmlTabHeader;
+import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Parameters;
 import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandTabPane extends HtmlLeaf {
+public class DemandTabPane extends HtmlPageComponent {
 
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
     private String activeTabKey;
@@ -37,16 +37,21 @@ public class DemandTabPane extends HtmlLeaf {
         request.setValues(this);
         final Session session = Context.getSession();
 
+        UrlBuilder tablinks = new UrlBuilder(DemandPage.class, request.getParameters());
+
+
+
         // Create description tab
-        final HtmlTabHeader descriptionTab = new HtmlTabHeader(session.tr("Description"), request.createUrl(new Parameters("demand_tab_key",
-                "description_tab")));
+        final HtmlTabHeader descriptionTab = new HtmlTabHeader(session.tr("Description"),
+                tablinks.addParameter("demand_tab_key", "description_tab").buildUrl());
 
         // Create participations tab
-        final HtmlTabHeader participationsTab = new HtmlTabHeader(session.tr("Participations"), request.createUrl(new Parameters("demand_tab_key",
-                "participations_tab")));
+        final HtmlTabHeader participationsTab = new HtmlTabHeader(session.tr("Participations"),
+                tablinks.addParameter("demand_tab_key", "participations_tab").buildUrl());
 
         // Create Comments tab
-        final HtmlTabHeader offerTab = new HtmlTabHeader(session.tr("Offers"), request.createUrl(new Parameters("demand_tab_key", "offer_tab")));
+        final HtmlTabHeader offerTab = new HtmlTabHeader(session.tr("Offers"),
+                tablinks.addParameter("demand_tab_key", "offer_tab").buildUrl());
 
         // Create tab pane
         final HtmlTabBlock tabPane = new HtmlTabBlock(); // id =

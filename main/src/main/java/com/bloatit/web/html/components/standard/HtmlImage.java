@@ -19,7 +19,6 @@ package com.bloatit.web.html.components.standard;
 
 
 import com.bloatit.common.Image;
-import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 
 /**

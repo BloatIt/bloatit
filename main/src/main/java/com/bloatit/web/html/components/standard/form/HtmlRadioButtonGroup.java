@@ -16,24 +16,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.html.components.standard.form;
 
-public abstract class HtmlGenericBox extends HtmlFormField<Boolean>{
+import com.bloatit.web.html.HtmlLeaf;
+import com.bloatit.web.html.components.standard.form.HtmlFormField.LabelPosition;
 
-    public HtmlGenericBox(final String type, final String name) {
-        super(new HtmlSimpleInput(type), name);
+public class HtmlRadioButtonGroup extends HtmlLeaf{
+
+    private final LabelPosition position;
+    private String name;
+
+    public HtmlRadioButtonGroup(String name) {
+        super();
+        this.name = name;
+        this.position = LabelPosition.AFTER;
     }
 
-    public HtmlGenericBox(final String type, final String name, final String label) {
-        super(new HtmlSimpleInput(type), name, label);
+    public HtmlRadioButtonGroup(String name, LabelPosition position) {
+        super();
+        this.name = name;
+        this.position = position;
     }
 
-    @Override
-    protected void doSetDefaultValue(final Boolean value) {
-        if(value.booleanValue()){
-            addAttribute("checked", "checked");
-        }
+    public HtmlRadioButton addRadioButton(String value, String label) {
+        HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
+        add(button);
+        return button;
     }
-
 }

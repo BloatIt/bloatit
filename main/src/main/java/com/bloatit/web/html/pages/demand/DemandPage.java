@@ -18,13 +18,14 @@ package com.bloatit.web.html.pages.demand;
 
 import java.util.Locale;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
+import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
@@ -41,17 +42,12 @@ public class DemandPage extends Page {
     @RequestParam(role = Role.PRETTY, defaultValue = "Title")
     protected String title;
 
+    @PageComponent
+    private DemandTabPane demandTabPane;
+
     public DemandPage(final Request request) {
         super(request);
         this.request.setValues(this);
-        addNotifications(request.getMessages());
-
-        if (request.getMessages().hasMessage(Level.ERROR)) {
-            setPageNotFound();
-            return;
-        }
-
-        generateContent();
     }
 
     @Override
@@ -74,11 +70,20 @@ public class DemandPage extends Page {
         return demand;
     }
 
-    private void generateContent() {
+    @Override
+    public void create() throws RedirectException {
+        super.create();
+        addNotifications(request.getMessages());
+
+        if (request.getMessages().hasMessage(Level.ERROR)) {
+            setPageNotFound();
+            return;
+        }
+
         final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
-        add(new HtmlTitleBlock(translatedDescription.getTitle()).setCssClass("pageTitle"));
+        add(new HtmlTitleBlock(translatedDescription.getTitle(),1).setCssClass("pageTitle"));
         add(new DemandHeadComponent(request, demand));
         add(generateBody());
     }
@@ -95,7 +100,8 @@ public class DemandPage extends Page {
     private HtmlElement generateBodyLeft() {
         final HtmlDiv left = new HtmlDiv("leftColumn");
         {
-            left.add(new DemandTabPane(request, demand));
+            demandTabPane = new DemandTabPane(request, demand);
+            left.add(demandTabPane);
             // Comments
             left.add(new DemandCommentListComponent(request, demand));
         }

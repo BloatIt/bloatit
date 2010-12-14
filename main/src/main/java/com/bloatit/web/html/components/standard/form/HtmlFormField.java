@@ -16,15 +16,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.HtmlNamedNode;
 import com.bloatit.web.html.components.PlaceHolderElement;
-import com.bloatit.web.html.components.standard.HtmlParagraph;
-
+import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.utils.RandomString;
 
 /**
  * <p>
@@ -37,29 +36,94 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
  */
 public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implements HtmlNamedNode {
 
+    private LabelPosition position;
+
+    /**
+     * Describes the relative position of the label, compared to the element
+     * it describes.
+     * Generic usage is :
+     * - Checkbox & Radio buttons should used AFTER
+     * - All other fields should use BEFORE
+     */
+    public enum LabelPosition {
+
+        /**
+         * <b>BEFORE</b> means the label is positionned before the aformentionned
+         * element.
+         * Example :
+         * <p><label> ... </label><element /></p>
+         */
+        BEFORE,
+        /**
+         * <b>AFTER</b> means the label is positionned after the aformentionned
+         * element.
+         * Example :
+         * <p><element /><label> ... </label></p>
+         */
+        AFTER
+    }
     protected PlaceHolderElement ph = new PlaceHolderElement();
     protected HtmlLabel label;
-    protected HtmlParagraph paragraph = new HtmlParagraph();
+    protected HtmlDiv container = new HtmlDiv();
     protected HtmlElement element;
     private String name;
+    private RandomString rng = new RandomString(10);
 
-    public HtmlFormField(final HtmlElement element, final String name) {
-        super();
-        this.paragraph.add(ph);
-        this.element = element;
-        this.paragraph.add(element);
-        this.add(paragraph);
-        this.setName(name);
+    /**
+     * Creates a form field for a given element, with a given name.
+     * If a label is added, it will will be positionned BEFORE the element
+     * @param element the element to add
+     * @param name the name of the element
+     */
+    protected HtmlFormField(final HtmlElement element, final String name) {
+        this(element, name, LabelPosition.BEFORE);
     }
 
-    public HtmlFormField(final HtmlElement element, final String name, final String label) {
+    /**
+     * Creates a form field for a given element, with a given name and a given
+     * label
+     * The Label will be positionned BEFORE the element
+     * @param element the element to add
+     * @param name the name of the element
+     * @param label the label of the element
+     */
+    protected HtmlFormField(final HtmlElement element, final String name, final String label) {
+        this(element, name, label, LabelPosition.BEFORE);
+    }
+
+    /**
+     * Creates a form field for a given element, with a given name and a given
+     * label
+     * If a label is added later, it will be added before or after the element,
+     * depending on the value of the parameter <i>position</i>
+     * @param element the element to add
+     * @param name the name of the element
+     * @param position the position of the future label
+     */
+    protected HtmlFormField(final HtmlElement element, final String name, LabelPosition position) {
         super();
-        this.paragraph.add(ph);
         this.element = element;
-        this.paragraph.add(element);
-        this.setLabel(label);
+        this.position = position;
         this.setName(name);
-        this.add(paragraph);
+        init();
+    }
+
+    /**
+     * Creates a form field for a given element, with a given name and a given
+     * label
+     * The label position depends on the value of the parameter <i>position</i>
+     * @param element the element to add
+     * @param name the name of the element
+     * @param label the label of the element
+     * @param position the position of the future label
+     */
+    protected HtmlFormField(final HtmlElement element, final String name, final String label, LabelPosition position) {
+        super();
+        this.element = element;
+        this.position = position;
+        this.setName(name);
+        init();
+        this.setLabel(label);
     }
 
     /**
@@ -68,19 +132,36 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * </p>
      * <p>
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and
-     * not modify any other parameters than predefininglaceholder
-     * </p>
-     * 
+     * not modify any other parameters than redefining the placeholder
+     * </p> 
      * @param label the label for the element
      */
     public void setLabel(final String label) {
         this.label = new HtmlLabel(label);
         this.ph.add(this.label);
 
-        if (name != null) {
-            this.label.setFor(name);
+        checkIdLabel();
+    }
+
+    protected void checkIdLabel(){
+        if( getId() == null ){
+            setId(rng.nextString());
+        }else {
+            label.setFor(getId());
         }
-        // BIG TODO
+    }
+
+    @Override
+    public HtmlElement setId(String id) {
+        if (this.label != null) {
+            this.label.setFor(id);
+        }
+        return element.setId(id);
+    }
+
+    @Override
+    public String getId(){
+        return element.getId();
     }
 
     @Override
@@ -93,10 +174,6 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     public final void setName(final String name) {
         this.name = name;
         element.addAttribute("name", name);
-
-        if (label != null) {
-            label.setFor(name);
-        }
     }
 
     /**
@@ -114,6 +191,24 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         if (value != null) {
             this.doSetDefaultValue(value);
         }
+    }
+
+    /**
+     * Initializes the placeholder for the label
+     */
+    private void init() {
+        switch (position) {
+            case AFTER:
+                this.container.add(element);
+                this.container.add(ph);
+                break;
+            case BEFORE:
+            default:
+                this.container.add(ph);
+                this.container.add(element);
+                break;
+        }
+        this.add(container);
     }
 
     /**

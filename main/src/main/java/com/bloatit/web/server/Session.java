@@ -25,10 +25,11 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 
-
 import com.bloatit.framework.AuthToken;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
+import com.bloatit.web.html.pages.IndexPage;
+import com.bloatit.web.utils.url.UrlBuilder;
 
 public class Session {
     private final String key;
@@ -107,6 +108,16 @@ public class Session {
         return targetPage;
     }
 
+    public String getPreferredPage() {
+        if(targetPage != null) {
+            return targetPage;
+        } else if (lastStablePage != null) {
+            return lastStablePage;
+        } else {
+            return new UrlBuilder(IndexPage.class).buildUrl();
+        }
+    }
+
     public void setTargetPage(final String targetPage) {
         this.targetPage = targetPage;
     }
@@ -131,7 +142,7 @@ public class Session {
         for (final Message error : errors) {
             switch (error.getLevel()) {
             case ERROR:
-                notifyBad(error.getMessage());
+                notifyError(error.getMessage());
                 break;
             case WARNING:
                 notifyBad(error.getMessage());
@@ -145,11 +156,11 @@ public class Session {
         }
     }
 
-    void flushNotifications() {
+    public void flushNotifications() {
         notificationList.clear();
     }
 
-    Deque<Notification> getNotifications() {
+    public Deque<Notification> getNotifications() {
         return notificationList;
     }
 

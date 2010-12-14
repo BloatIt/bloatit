@@ -43,6 +43,7 @@ import com.bloatit.web.html.pages.MembersListPage;
 import com.bloatit.web.html.pages.MyAccountPage;
 import com.bloatit.web.html.pages.OfferPage;
 import com.bloatit.web.html.pages.SpecialsPage;
+import com.bloatit.web.html.pages.TestPage;
 import com.bloatit.web.html.pages.demand.DemandPage;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
@@ -71,6 +72,7 @@ public class DispatchServer {
                 put(OldUrl.getPageName(GlobalSearchPage.class), GlobalSearchPage.class);
                 put(OldUrl.getPageName(ContributePage.class), ContributePage.class);
                 put(OldUrl.getPageName(OfferPage.class), OfferPage.class);
+                put(OldUrl.getPageName(TestPage.class), TestPage.class);
             }
         };
 
@@ -110,9 +112,10 @@ public class DispatchServer {
     public void process(final HttpResponse response) throws IOException {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
-        final String linkable = getLinkable();
+        final String linkable = query.get("page");
+        final String params = query.get("param");
 
-        final QueryString queryString = parseQueryString(linkable);
+        final QueryString queryString = parseQueryString(params);
         final Map<String, String> parameters = mergePostGet(queryString.parameters, post, query);
 
         final Request request = new Request(linkable, parameters);
@@ -214,50 +217,35 @@ public class DispatchServer {
     }
 
     private QueryString parseQueryString(final String queryString) {
-        final String[] splitted = strip(queryString, '/').split("/");
-        String page = "";
         final Map<String, String> parameters = new HashMap<String, String>();
+            if(queryString != null) {
 
-        int i = 0;
-        // Parsing, finding
+            final String[] splitted = strip(queryString, '/').split("/");
 
-        while (i < splitted.length && !splitted[i].contains("-")) {
-            if (!page.isEmpty() && !splitted[i].isEmpty()) {
-                page = page + "/";
 
-            }
-            page = page + splitted[i];
-            i = i + 1;
 
-        }
+            int i = 0;
 
-        // Parsing, finding page parameters
-        while (i < splitted.length) {
-            if (splitted[i].contains("-")) {
-                final String[] p = splitted[i].split("-", 2);
-                parameters.put(p[0], p[1]);
+            // Parsing, finding page parameters
+            while (i < splitted.length) {
+                if (splitted[i].contains("-")) {
+                    final String[] p = splitted[i].split("-", 2);
+                    parameters.put(p[0], p[1]);
+
+                }
+                i = i + 1;
 
             }
-            i = i + 1;
-
         }
-        return new QueryString(page, parameters);
+        return new QueryString(parameters);
 
-    }
-
-    private String getLinkable() {
-        String linkable = query.get("page");
-        if (linkable.endsWith("/")) {
-            linkable = linkable.substring(0, linkable.length() - 1);
-        }
-        return linkable;
     }
 
     private static class QueryString {
 
         public Map<String, String> parameters;
 
-        private QueryString(final String page, final Map<String, String> parameters) {
+        private QueryString(final Map<String, String> parameters) {
             this.parameters = parameters;
         }
     }

@@ -48,7 +48,7 @@ public class MembersListPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list");
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list",2);
 
         final PageIterable<Member> memberList = MemberManager.getMembers();
 
@@ -66,7 +66,7 @@ public class MembersListPage extends Page {
         };
 
         // TODO: avoid conflict
-        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, request, session);
+        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, new UrlBuilder(MembersListPage.class, request.getParameters()), session);
 
         pageTitle.add(pagedMemberList);
 

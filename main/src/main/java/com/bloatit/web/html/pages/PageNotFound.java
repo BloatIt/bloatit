@@ -32,7 +32,7 @@ public class PageNotFound extends Page {
     }
 
     private void generateContent() {
-        final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"));
+        final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"),2);
 
         add(errorTitle);
 

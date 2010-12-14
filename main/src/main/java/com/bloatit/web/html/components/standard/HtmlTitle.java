@@ -16,13 +16,17 @@
  */
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.HtmlLeaf;
+import com.bloatit.web.html.HtmlBranch;
 
-public class HtmlTitle extends HtmlLeaf{
+public class HtmlTitle extends HtmlBranch{
 
-    public HtmlTitle(final String title) {
-        super("h1");
+    public HtmlTitle(final String title, int level) {
+        super("h"+level);
         addText(title);
+    }
+
+    public HtmlTitle(int level) {
+        super("h"+level);
     }
 
     // @Override

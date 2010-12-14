@@ -14,35 +14,32 @@
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www    enum LabelPosition{
-        BEFORE, AFTER
-    }.gnu.org/licenses/>.
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.bloatit.web.html.components.standard.form;
 
-import com.bloatit.web.html.HtmlLeaf;
-import com.bloatit.web.html.components.standard.form.HtmlFormField.LabelPosition;
+import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.components.standard.HtmlGenericElement;
 
 /**
- *
+ * Creates blocks in a form
+ * <pre>
+ * <fieldset>
+ *      <legend>my legend here</legend>
+ *      <form element />
+ *      <another form element />
+ * </fieldset>
+ * </pre>
  */
-public class CheckBoxGroup extends HtmlLeaf {
+public class HtmlFormBlock extends HtmlBranch {
+    private HtmlBranch legend;
 
-    private final LabelPosition position;
-
-    public CheckBoxGroup() {
-        super();
-        this.position = LabelPosition.AFTER;
-    }
-
-    public CheckBoxGroup(LabelPosition position){
-        super();
-        this.position = position;
-    }
-
-    public HtmlCheckbox addCheckBox(String name, String label) {
-        HtmlCheckbox box = new HtmlCheckbox(name, label, position);
-        add(box);
-        return box;
+    public HtmlFormBlock(String legend){
+        super("fieldset");
+        this.legend = new HtmlGenericElement("legend");
+        this.legend.addText(legend);
+        add(this.legend);
     }
 }

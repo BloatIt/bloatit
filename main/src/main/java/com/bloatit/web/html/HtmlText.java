@@ -13,7 +13,7 @@ import com.bloatit.web.server.Text;
  * Usage another_component.add(new HtmlText("<span class="plop">foo</span>));
  * </p>
  */
-public final class HtmlText extends HtmlNode {
+public class HtmlText extends HtmlNode {
 
     private final String content;
 
@@ -37,6 +37,4 @@ public final class HtmlText extends HtmlNode {
     public final void write(final Text txt) {
         txt.writeLine(content);
     }
-
-
 }

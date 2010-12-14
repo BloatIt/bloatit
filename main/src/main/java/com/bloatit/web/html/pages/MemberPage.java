@@ -48,7 +48,7 @@ public class MemberPage extends Page {
     private void generateContent() {
         member.authenticate(session.getAuthToken());
 
-        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname());
+        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(),2);
 
         memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
         memberTitle.add(new HtmlText("Login: " + member.getLogin()));
