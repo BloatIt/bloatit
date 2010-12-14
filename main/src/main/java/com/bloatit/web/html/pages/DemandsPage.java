@@ -57,7 +57,7 @@ public class DemandsPage extends Page {
 
             @Override
             public HtmlNode generate(final Demand demand) {
-                demandPageUrlBuilder.addParameter("idea", demand);
+                demandPageUrlBuilder.addParameter("id", demand);
                 return new HtmlListItem(demandPageUrlBuilder.getHtmlLink(demand.getTitle()));
             }
         };
