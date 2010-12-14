@@ -30,11 +30,12 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.url.Parameters;
 import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.UrlBuilder;
 
 public class HtmlPagedList<T> extends HtmlList {
 
     private Session session;
-    private Request currentRequest;
+    private UrlBuilder urlBuilder;
 
     @RequestParam(defaultValue = "1", name = "current_page")
     private Integer currentPage;
@@ -43,10 +44,10 @@ public class HtmlPagedList<T> extends HtmlList {
     @RequestParam(defaultValue = "42", name = "page_count")
     private Integer pageSize;
 
-    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final Request currentRequest, final Session session) {
+    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final UrlBuilder urlBuilder, final Session session) {
         super();
         this.session = session;
-        this.currentRequest = currentRequest;
+        this.urlBuilder = urlBuilder;
         this.currentPage = itemList.getCurrentPage() + 1;
         this.pageCount = itemList.pageNumber();
         this.pageSize = itemList.getPageSize();
@@ -67,9 +68,9 @@ public class HtmlPagedList<T> extends HtmlList {
     public HtmlPagedList(final String cssClass,
                          final HtmlRenderer<T> itemRenderer,
                          final PageIterable<T> itemList,
-                         final Request currentRequest,
+                         final UrlBuilder urlBuilder,
                          final Session session) {
-        this(itemRenderer, itemList, currentRequest, session);
+        this(itemRenderer, itemList, urlBuilder, session);
         addAttribute("class", cssClass);
     }
 
@@ -116,11 +117,11 @@ public class HtmlPagedList<T> extends HtmlList {
     private HtmlNode generateLink(final int i, final String text) {
         final String iString = new Integer(i).toString();
         if (i != currentPage) {
-            final Parameters outputParams = new Parameters();
-            outputParams.add("list_page", iString);
-            outputParams.add("list_page_size", new Long(pageSize).toString());
 
-            return new HtmlLink(currentRequest.createUrl(outputParams), text);
+            urlBuilder.addParameter("list_page", iString);
+            urlBuilder.addParameter("list_page_size", new Long(pageSize).toString());
+
+            return urlBuilder.getHtmlLink(text);
         }
         return new HtmlText(iString);
     }

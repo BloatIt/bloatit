@@ -32,6 +32,7 @@ import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.UrlBuilder;
 
 public class DemandContributorsComponent extends HtmlDiv {
 
@@ -70,7 +71,7 @@ public class DemandContributorsComponent extends HtmlDiv {
 
             // Create paged list
             final HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer,
-                    contributions, request, session);
+                    contributions, new UrlBuilder(DemandPage.class, request.getParameters()), session);
             contributorsBlock.add(participationsList);
 
         }
