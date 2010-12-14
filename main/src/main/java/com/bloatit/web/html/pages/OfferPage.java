@@ -25,6 +25,7 @@ import java.util.Date;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.OfferAction;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
@@ -35,7 +36,6 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.utils.BloatitDate;
-import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 

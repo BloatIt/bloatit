@@ -1,6 +1,8 @@
 package com.bloatit.web.html.pages.master;
 
 
+import com.bloatit.web.annotations.Message;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
@@ -14,8 +16,6 @@ import com.bloatit.web.html.pages.master.Notification.Level;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.Message;
-import com.bloatit.web.utils.annotations.PageName;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
@@ -55,8 +55,8 @@ public abstract class Page extends HtmlElement implements Linkable {
     public abstract boolean isStable();
 
     public String getName() {
-        if (getClass().getAnnotation(PageName.class) != null) {
-            return getClass().getAnnotation(PageName.class).value();
+        if (getClass().getAnnotation(ParamContainer.class) != null) {
+            return getClass().getAnnotation(ParamContainer.class).value();
         } else {
             return getClass().getName().toLowerCase();
         }

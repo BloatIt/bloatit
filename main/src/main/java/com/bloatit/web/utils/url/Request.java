@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bloatit.web.utils.annotations.RequestParam;
+import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.RequestParamSetter;
-import com.bloatit.web.utils.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ParamNotFoundException;
 

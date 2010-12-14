@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.bloatit.common.FatalErrorException;
-import com.bloatit.web.utils.Message;
-import com.bloatit.web.utils.Message.What;
+import com.bloatit.web.annotations.Loader;
+import com.bloatit.web.annotations.Message;
+import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.Message.What;
 
 /**
  * This class uses RequestParam annotation to set the parameters using a map of
@@ -66,7 +68,7 @@ public class RequestParamSetter {
     public static class Messages extends ArrayList<Message> {
         private static final long serialVersionUID = -7080211414458545384L;
 
-        private Messages() {
+        public Messages() {
             super();
         }
 
@@ -91,7 +93,7 @@ public class RequestParamSetter {
     public static class ParamNotFoundException extends Exception {
         private static final long serialVersionUID = 1L;
 
-        protected ParamNotFoundException(final String message) {
+        public ParamNotFoundException(final String message) {
             super(message);
         }
     }
@@ -158,14 +160,11 @@ public class RequestParamSetter {
          * 
          * @return a Loader class corresponding to the type
          */
-        private Class<? extends Loader<?>> findLoaderType() {
-            Class<? extends Loader<?>> valueClass;
-            if (param.loader().equals(Loaders.DefaultConvertor.class)) {
-                // default one.
-                valueClass = Loaders.getLoaderClass(f.getType());
-            } else {
-                valueClass = param.loader();
-            }
+        @SuppressWarnings("unchecked")
+        private Class<Loader<?>> findLoaderType() {
+            Class<Loader<?>> valueClass;
+                Loader<?> loader = Loaders.getLoader(f.getType());
+                valueClass = (Class<Loader<?>>) loader.getClass();
 
             // if the loader is not found there is a fatal error !
             // It can only arrive if there is a big programming error.

@@ -16,3 +16,4 @@ nbactions.xml
 bin/
 main/po/*~
 main/po/*.mo
+apt/.agitator

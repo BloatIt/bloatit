@@ -1,4 +1,4 @@
-package com.bloatit.web.utils.annotations;
+package com.bloatit.web.annotations;
 
 /**
  * This annotation is to be used with gettext extraction method.

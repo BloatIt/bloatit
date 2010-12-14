@@ -21,6 +21,8 @@ package com.bloatit.web.html.pages;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.ContributionAction;
+import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
@@ -30,8 +32,6 @@ import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
-import com.bloatit.web.utils.Message.Level;
-import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 

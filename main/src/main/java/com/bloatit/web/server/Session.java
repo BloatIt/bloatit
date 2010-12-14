@@ -28,7 +28,7 @@ import java.util.Locale;
 
 import com.bloatit.framework.AuthToken;
 import com.bloatit.web.actions.Action;
-import com.bloatit.web.utils.Message;
+import com.bloatit.web.annotations.Message;
 
 public class Session {
     private final String key;

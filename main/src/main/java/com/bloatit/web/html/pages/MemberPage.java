@@ -20,13 +20,13 @@ package com.bloatit.web.html.pages;
 
 
 import com.bloatit.framework.Member;
+import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.PageNotFoundException;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.Message.Level;
-import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.url.Request;
 
 public class MemberPage extends Page {

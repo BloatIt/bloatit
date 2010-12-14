@@ -36,7 +36,7 @@
 							<outputDirectory>src/main/generated</outputDirectory>
 							<processors>
 								<!-- list of processors to use -->
-								<processor>com.bloatit.web.annotations.RequestParamProcessor</processor>
+								<processor>com.bloatit.web.annotations.ParamContainerProcessor</processor>
 							</processors>
 						</configuration>
 					</execution>

@@ -21,10 +21,10 @@ package com.bloatit.web.actions;
 
 import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.managers.LoginManager;
+import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.LoginPage;
-import com.bloatit.web.utils.Message.Level;
-import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 

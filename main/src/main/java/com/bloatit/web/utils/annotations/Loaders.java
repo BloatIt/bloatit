@@ -10,148 +10,141 @@ import com.bloatit.framework.Identifiable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
+import com.bloatit.web.annotations.Loader;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 public class Loaders {
 
-    public static <T> String toStr(final T obj) {
-        if (obj.getClass().equals(Integer.class)) {
-            return new ToInteger().toString((Integer) obj);
-        } else if (obj.getClass().equals(Byte.class)) {
-            return new ToByte().toString((Byte) obj);
-        } else if (obj.getClass().equals(Short.class)) {
-            return new ToShort().toString((Short) obj);
-        } else if (obj.getClass().equals(Long.class)) {
-            return new ToLong().toString((Long) obj);
-        } else if (obj.getClass().equals(Float.class)) {
-            return new ToFloat().toString((Float) obj);
-        } else if (obj.getClass().equals(Double.class)) {
-            return new ToDouble().toString((Double) obj);
-        } else if (obj.getClass().equals(Character.class)) {
-            return new ToCharacter().toString((Character) obj);
-        } else if (obj.getClass().equals(Boolean.class)) {
-            return new ToBoolean().toString((Boolean) obj);
-        } else if (obj.getClass().equals(BigDecimal.class)) {
-            return new ToBigdecimal().toString((BigDecimal) obj);
-        } else if (obj.getClass().equals(String.class)) {
-            return new ToString().toString((String) obj);
-        } else if (obj.getClass().equals(Date.class)) {
-            return new ToDate().toString((Date) obj);
-        } else if (obj.getClass().equals(Demand.class)) {
-            return new ToDemand().toString((Demand) obj);
+    public static <T> String toStr(final T obj) throws ConversionErrorException {
+        if (obj == null) {
+            return "null";
         }
-        return null;
+        @SuppressWarnings("unchecked")
+        Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
+        try {
+            return loader.toString(obj);
+        } catch (Exception e) {
+            throw new ConversionErrorException("Cannot convert " + obj + " to String.");
+        }
+    }
+    
+    public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException{
+        if (value == "null") {
+            return null;
+        }
+        Loader<T> loader = (Loader<T>) getLoader(toClass);
+        try {
+            return loader.fromString(value);
+        } catch (Exception e) {
+            throw new ConversionErrorException("Cannot convert " + value + " to " + toClass.toString());
+        }
+    
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Loader<?>, U> Class<T> getLoaderClass(final Class<U> theClass) {
+    static <T> Loader<T> getLoader(final Class<T> theClass) {
         if (theClass.equals(Integer.class)) {
-            return Class.class.cast(ToInteger.class);
+            return (Loader<T>) new ToInteger();
         } else if (theClass.equals(Byte.class)) {
-            return Class.class.cast(ToByte.class);
+            return (Loader<T>) new ToByte();
         } else if (theClass.equals(Short.class)) {
-            return Class.class.cast(ToShort.class);
+            return (Loader<T>) new ToShort();
         } else if (theClass.equals(Long.class)) {
-            return Class.class.cast(ToLong.class);
+            return (Loader<T>) new ToLong();
         } else if (theClass.equals(Float.class)) {
-            return Class.class.cast(ToFloat.class);
+            return (Loader<T>) new ToFloat();
         } else if (theClass.equals(Double.class)) {
-            return Class.class.cast(ToDouble.class);
+            return (Loader<T>) new ToDouble();
         } else if (theClass.equals(Character.class)) {
-            return Class.class.cast(ToCharacter.class);
+            return (Loader<T>) new ToCharacter();
         } else if (theClass.equals(Boolean.class)) {
-            return Class.class.cast(ToBoolean.class);
+            return (Loader<T>) new ToBoolean();
         } else if (theClass.equals(BigDecimal.class)) {
-            return Class.class.cast(ToBigdecimal.class);
+            return (Loader<T>) new ToBigdecimal();
         } else if (theClass.equals(String.class)) {
-            return Class.class.cast(ToString.class);
+            return (Loader<T>) new ToString();
         } else if (theClass.equals(Date.class)) {
-            return Class.class.cast(ToDate.class);
+            return (Loader<T>) new ToDate();
         } else if (theClass.equals(Demand.class)) {
-            return Class.class.cast(ToDemand.class);
+            return (Loader<T>) new ToDemand();
         } else if (theClass.equals(Member.class)) {
-            return Class.class.cast(ToMember.class);
+            return (Loader<T>) new ToMember();
         }
         return null;
     }
 
-    public static class DefaultConvertor extends Loader<String> {
-        @Override
-        public String fromString(final String data) {
-            return data;
-        }
-    }
 
-    public static class ToInteger extends Loader<Integer> {
+    private static class ToInteger extends Loader<Integer> {
         @Override
         public Integer fromString(final String data) {
             return Integer.decode(data);
         }
     }
 
-    public static class ToFloat extends Loader<Float> {
+    private static class ToFloat extends Loader<Float> {
         @Override
         public Float fromString(final String data) {
             return Float.valueOf(data);
         }
     }
 
-    public static class ToBigdecimal extends Loader<BigDecimal> {
+    private static class ToBigdecimal extends Loader<BigDecimal> {
         @Override
         public BigDecimal fromString(final String data) {
             return new BigDecimal(data);
         }
     }
 
-    public static class ToByte extends Loader<Byte> {
+    private static class ToByte extends Loader<Byte> {
         @Override
         public Byte fromString(final String data) {
             return Byte.valueOf(data);
         }
     }
 
-    public static class ToShort extends Loader<Short> {
+    private static class ToShort extends Loader<Short> {
         @Override
         public Short fromString(final String data) {
             return Short.valueOf(data);
         }
     }
 
-    public static class ToLong extends Loader<Long> {
+    private static class ToLong extends Loader<Long> {
         @Override
         public Long fromString(final String data) {
             return Long.valueOf(data);
         }
     }
 
-    public static class ToDouble extends Loader<Double> {
+    private static class ToDouble extends Loader<Double> {
         @Override
         public Double fromString(final String data) {
             return Double.valueOf(data);
         }
     }
 
-    public static class ToCharacter extends Loader<Character> {
+    private static class ToCharacter extends Loader<Character> {
         @Override
         public Character fromString(final String data) {
             return data.charAt(0);
         }
     }
 
-    public static class ToBoolean extends Loader<Boolean> {
+    private static class ToBoolean extends Loader<Boolean> {
         @Override
         public Boolean fromString(final String data) {
             return Boolean.valueOf(data);
         }
     }
 
-    public static class ToString extends Loader<String> {
+    private static class ToString extends Loader<String> {
         @Override
         public String fromString(final String data) {
             return data;
         }
     }
 
-    public static class ToDate extends Loader<Date> {
+    private static class ToDate extends Loader<Date> {
         @Override
         public Date fromString(final String data) {
             try {
@@ -162,21 +155,21 @@ public class Loaders {
         }
     }
 
-    public static abstract class ToIdentifiable extends Loader<Identifiable> {
+    private static abstract class ToIdentifiable extends Loader<Identifiable> {
         @Override
         public String toString(final Identifiable id) {
             return new Integer(id.getId()).toString();
         }
     }
 
-    public static class ToDemand extends ToIdentifiable {
+    private static class ToDemand extends ToIdentifiable {
         @Override
         public Identifiable fromString(final String data) {
             return DemandManager.getDemandById(Integer.valueOf(data));
         }
     }
 
-    public static class ToMember extends ToIdentifiable {
+    private static class ToMember extends ToIdentifiable {
         @Override
         public Identifiable fromString(final String data) {
             return MemberManager.getMemberById(Integer.valueOf(data));

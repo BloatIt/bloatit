@@ -18,12 +18,12 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.custom.HtmlTabBlock;
 import com.bloatit.web.html.components.custom.HtmlTabBlock.HtmlTabHeader;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.url.Parameters;
 import com.bloatit.web.utils.url.Request;
 

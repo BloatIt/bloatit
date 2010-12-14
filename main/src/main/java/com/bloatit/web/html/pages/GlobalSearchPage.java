@@ -22,6 +22,8 @@ package com.bloatit.web.html.pages;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.annotations.PageComponent;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -33,8 +35,6 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.demand.DemandPage;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.annotations.PageComponent;
-import com.bloatit.web.utils.annotations.RequestParam;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 

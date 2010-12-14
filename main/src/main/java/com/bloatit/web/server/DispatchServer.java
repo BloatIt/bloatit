@@ -46,7 +46,7 @@ import com.bloatit.web.html.pages.SpecialsPage;
 import com.bloatit.web.html.pages.demand.DemandPage;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.web.utils.url.OldUrl;
 
 public class DispatchServer {
 
@@ -59,18 +59,18 @@ public class DispatchServer {
             private static final long serialVersionUID = -1990148160288171599L;
 
             {
-                put(Url.getPageName(IndexPage.class), IndexPage.class);
-                put(Url.getPageName(LoginPage.class), LoginPage.class);
-                put(Url.getPageName(DemandsPage.class), DemandsPage.class);
-                put(Url.getPageName(CreateIdeaPage.class), CreateIdeaPage.class);
-                put(Url.getPageName(DemandPage.class), DemandPage.class);
-                put(Url.getPageName(MyAccountPage.class), MyAccountPage.class);
-                put(Url.getPageName(SpecialsPage.class), SpecialsPage.class);
-                put(Url.getPageName(MembersListPage.class), MembersListPage.class);
-                put(Url.getPageName(MemberPage.class), MemberPage.class);
-                put(Url.getPageName(GlobalSearchPage.class), GlobalSearchPage.class);
-                put(Url.getPageName(ContributePage.class), ContributePage.class);
-                put(Url.getPageName(OfferPage.class), OfferPage.class);
+                put(OldUrl.getPageName(IndexPage.class), IndexPage.class);
+                put(OldUrl.getPageName(LoginPage.class), LoginPage.class);
+                put(OldUrl.getPageName(DemandsPage.class), DemandsPage.class);
+                put(OldUrl.getPageName(CreateIdeaPage.class), CreateIdeaPage.class);
+                put(OldUrl.getPageName(DemandPage.class), DemandPage.class);
+                put(OldUrl.getPageName(MyAccountPage.class), MyAccountPage.class);
+                put(OldUrl.getPageName(SpecialsPage.class), SpecialsPage.class);
+                put(OldUrl.getPageName(MembersListPage.class), MembersListPage.class);
+                put(OldUrl.getPageName(MemberPage.class), MemberPage.class);
+                put(OldUrl.getPageName(GlobalSearchPage.class), GlobalSearchPage.class);
+                put(OldUrl.getPageName(ContributePage.class), ContributePage.class);
+                put(OldUrl.getPageName(OfferPage.class), OfferPage.class);
             }
         };
 
@@ -79,10 +79,10 @@ public class DispatchServer {
             private static final long serialVersionUID = -1990148150288171599L;
 
             {
-                put(Url.getPageName(LoginAction.class), LoginAction.class);
-                put(Url.getPageName(LogoutAction.class), LogoutAction.class);
-                put(Url.getPageName(ContributionAction.class), ContributionAction.class);
-                put(Url.getPageName(OfferAction.class), OfferAction.class);
+                put(OldUrl.getPageName(LoginAction.class), LoginAction.class);
+                put(OldUrl.getPageName(LogoutAction.class), LogoutAction.class);
+                put(OldUrl.getPageName(ContributionAction.class), ContributionAction.class);
+                put(OldUrl.getPageName(OfferAction.class), OfferAction.class);
 
             }
         };

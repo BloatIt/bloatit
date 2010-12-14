@@ -1,4 +1,4 @@
-package com.bloatit.web.utils;
+package com.bloatit.web.annotations;
 
 public class Message {
     public enum Level {

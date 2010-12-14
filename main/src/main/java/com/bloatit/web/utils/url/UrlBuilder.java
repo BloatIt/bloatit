@@ -7,14 +7,15 @@ import java.util.Map;
 
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.web.annotations.PageComponent;
+import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.annotations.Loaders;
-import com.bloatit.web.utils.annotations.PageComponent;
-import com.bloatit.web.utils.annotations.PageName;
-import com.bloatit.web.utils.annotations.RequestParam;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 public class UrlBuilder {
 
@@ -46,8 +47,8 @@ public class UrlBuilder {
         sb.append("/").append(session.getLanguage().getCode()).append("/");
 
         // find name
-        if (linkableClass.getAnnotation(PageName.class) != null) {
-            sb.append(linkableClass.getAnnotation(PageName.class).value());
+        if (linkableClass.getAnnotation(ParamContainer.class) != null) {
+            sb.append(linkableClass.getAnnotation(ParamContainer.class).value());
         } else {
             sb.append(linkableClass.getSimpleName().toLowerCase());
         }
@@ -66,7 +67,11 @@ public class UrlBuilder {
                 String strValue = null;
                 final Object value = parameters.get(name);
                 if (value != null) {
-                    strValue = Loaders.toStr(value);
+                    try {
+                        strValue = Loaders.toStr(value);
+                    } catch (ConversionErrorException e) {
+                        throw new FatalErrorException("Parameter " + name + " needs a value.", null);
+                    }
                 } else if (param.defaultValue().equals("")) {
                     throw new FatalErrorException("Parameter " + name + " needs a value.", null);
                 } else {

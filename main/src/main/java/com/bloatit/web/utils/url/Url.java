@@ -1,75 +1,46 @@
 package com.bloatit.web.utils.url;
 
-import java.util.Map.Entry;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Linkable;
-import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.annotations.PageName;
+import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
-public class Url {
-    private final Parameters parameters;
-    private final Class<? extends Linkable> linkable;
-    private final Session session;
+public abstract class Url extends UrlComponent {
 
-    public static String getPageName(final Class<? extends Linkable> linkable) {
-        if (linkable.getAnnotation(PageName.class) != null) {
-            return linkable.getAnnotation(PageName.class).value();
-        } else {
-            return linkable.getSimpleName().toLowerCase();
-        }
-    }
+    private final String name;
+    private List<UrlComponent> components = new ArrayList<UrlComponent>();
 
-    public Url(final Class<? extends Linkable> linkable, final Parameters parameters) {
+    protected Url(String name) {
         super();
-        this.parameters = parameters;
-        this.linkable = linkable;
-        this.session = Context.getSession();
+        this.name = name;
     }
 
-    protected Url() {
-        super();
-        this.parameters = new Parameters();
-        this.linkable = null;
-        this.session = null;
+    protected abstract void doRegister(Messages messages);
+    
+    protected void register(UrlComponent component){
+        components.add(component);
     }
 
-    public boolean isValid() {
-        return session != null && linkable != null;
-    }
-
-    public String getPageName() {
-        // find name
-        if (linkable.getAnnotation(PageName.class) != null) {
-            return linkable.getAnnotation(PageName.class).value();
-        } else {
-            return linkable.getName().toLowerCase();
+    protected final Messages parseParameterMap(Map<String, String> params) {
+        super.parseParameterMap(params); // doRegister done in super class.
+        for (UrlComponent comp : components) {
+            comp.parseParameterMap(params);
         }
-
-    }
-
-    public Url addParameter(final String name, final String value) {
-        parameters.put(name, value);
-        return this;
+        return messages;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(session.getLanguage().getCode()).append("/").append(getPageName()).append("/");
-        for (final Entry<String, String> param : parameters.entrySet()) {
-            sb.append(param.getKey());
-            sb.append("-");
-            sb.append(param.getValue());
-            sb.append("/");
+        StringBuilder sb = new StringBuilder();
+        sb.append("/").append(Context.getSession().getLanguage().getCode());
+        sb.append("/").append(name);
+        sb.append(super.toString());
+        for (UrlComponent comp : components) {
+            sb.append(comp.toString());
         }
-        // TODO testme
         return sb.toString();
-    }
-
-    public Parameters getParameters() {
-        return parameters;
     }
 
 }
