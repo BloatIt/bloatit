@@ -41,9 +41,4 @@ public class HtmlButton extends HtmlLeaf {
         add(new HtmlParagraph().add(this.button));
         this.button.addAttribute("value", value);
     }
-
-    @Override
-    public boolean isSelfClosed() {
-        return true;
-    }
 }

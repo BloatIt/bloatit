@@ -33,7 +33,7 @@ public class Header extends HtmlElement {
     }
 
     @Override
-    public boolean isSelfClosed() {
+    public boolean selfClosable() {
         return false;
     }
 

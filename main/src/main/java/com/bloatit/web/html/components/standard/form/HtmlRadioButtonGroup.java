@@ -43,9 +43,4 @@ public class HtmlRadioButtonGroup extends HtmlLeaf{
         add(button);
         return button;
     }
-
-    @Override
-    public boolean isSelfClosed() {
-        return true;
-    }
 }

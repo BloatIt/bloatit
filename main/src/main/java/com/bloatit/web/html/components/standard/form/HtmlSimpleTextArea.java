@@ -35,4 +35,9 @@ public class HtmlSimpleTextArea extends HtmlBranch {
         addText(text);
         return this;
     }
+
+    @Override
+    public boolean selfClosable() {
+        return false;
+    }
 }

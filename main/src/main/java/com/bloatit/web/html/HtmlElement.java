@@ -102,36 +102,17 @@ public abstract class HtmlElement extends HtmlNode {
 
     @Override
     public final void write(final Text txt) {
-        /*if (tag != null) {
-        if (iterator().hasNext()) {
-        txt.writeLine(tag.getOpenTag());
-        for (final HtmlNode html : this) {
-        txt.indent();
-        html.write(txt);
-        txt.unindent();
-        }
-        txt.writeLine(tag.getCloseTag());
-        } else {
-        txt.writeLine(tag.getClosedTag());
-        }
-        } else {
-        for (final HtmlNode html : this) {
-        txt.indent();
-        html.write(txt);
-        txt.unindent();
-        }
-        }*/
         if (tag != null) {
-            if (this.isSelfClosed()) {
-                txt.writeLine(tag.getClosedTag());
-            } else {
-                 txt.writeLine(tag.getOpenTag());
-                for (HtmlNode html : this) {
+            if (!selfClosable() || iterator().hasNext() ) {
+                txt.writeLine(tag.getOpenTag());
+                for (final HtmlNode html : this) {
                     txt.indent();
                     html.write(txt);
                     txt.unindent();
                 }
                 txt.writeLine(tag.getCloseTag());
+            } else {
+                txt.writeLine(tag.getClosedTag());
             }
         } else {
             for (final HtmlNode html : this) {
@@ -145,5 +126,5 @@ public abstract class HtmlElement extends HtmlNode {
     /**
      * Indicates wether the tag is self closed or not
      */
-    public abstract boolean isSelfClosed();
+    public abstract boolean selfClosable();
 }

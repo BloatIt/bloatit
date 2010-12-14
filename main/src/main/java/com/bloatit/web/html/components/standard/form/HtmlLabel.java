@@ -30,9 +30,4 @@ public class HtmlLabel extends HtmlLeaf {
     protected void setFor(final String forId) {
         addAttribute("for", forId);
     }
-
-    @Override
-    public boolean isSelfClosed() {
-        return false;
-    }
 }

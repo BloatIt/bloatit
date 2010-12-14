@@ -46,9 +46,4 @@ public class HtmlSimpleInput extends HtmlLeaf {
         addAttribute("name", name).addAttribute("id", name);
         return this;
     }
-
-    @Override
-    public boolean isSelfClosed() {
-        return true;
-    }
 }

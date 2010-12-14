@@ -16,6 +16,7 @@
  */
 package com.bloatit.web.html.components.standard.form;
 
+import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 
 /**
@@ -25,14 +26,14 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
  * <p>
  * 
  * <pre>
- * <p>
- *      <p>
+ * <div>
+ *      <div>
  *          <label for="...">labeltext</label>
  *      </p>
- *      <p>
+ *      <div>
  *          <textarea name="..." class="cssClass" ...>defaultValue</textarea>
- *      </p>
- * </p>
+ *      </div>
+ * </div>
  * </pre>
  * </p>
  */
@@ -57,16 +58,12 @@ public final class HtmlTextArea extends HtmlFormField<String> {
     @Override
     public void setLabel(final String label) {
         this.label = new HtmlLabel(label);
-        this.ph.add(new HtmlParagraph().add(this.label));
+        this.ph.add(new HtmlDiv().add(this.label));
+        checkIdLabel();
     }
 
     @Override
     protected void doSetDefaultValue(final String value) {
         ((HtmlSimpleTextArea) this.element).setDefaultValue(value);
-    }
-
-    @Override
-    public boolean isSelfClosed() {
-        return false;
     }
 }

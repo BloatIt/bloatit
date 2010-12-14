@@ -8,7 +8,6 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.HtmlBranch;
-import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.html.pages.master.HtmlNotification.Level;
 import com.bloatit.web.server.Context;
@@ -30,19 +29,9 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     public Page(final Request request) {
         super();
-
-        //add(new HtmlText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
-        //add(new HtmlText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
-
-        //htmlCore.
-        //add(htmlCore);
-
         content = new HtmlDiv().setId("body_content");
         notifications = new HtmlDiv().setId("notifications");
-        //add(notifications);
-        //content.add(notifications);
-        //htmlCore.add(content);
-
+        
         session = Context.getSession();
 
         this.request = request;
@@ -69,6 +58,7 @@ public abstract class Page extends HtmlElement implements Linkable {
         HtmlGenericElement body = new HtmlGenericElement("body");
 
         HtmlBranch page = new HtmlDiv("page").setId("page");
+        body.add(page);
         page.add(new TopBar())
             .add(generateTitle());
 
@@ -84,7 +74,7 @@ public abstract class Page extends HtmlElement implements Linkable {
 
         page.add(new Footer());
 
-        return page;
+        return body;
     }
 
     protected abstract String getTitle();
@@ -176,7 +166,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     @Override
-    public boolean isSelfClosed() {
+    public boolean selfClosable() {
         return false;
     }
 }
