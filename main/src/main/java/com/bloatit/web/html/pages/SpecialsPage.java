@@ -45,7 +45,7 @@ public class SpecialsPage extends Page {
 
         final HtmlLink memeHtmlLink = new UrlBuilder(MembersListPage.class).getHtmlLink(session.tr("Members list"));
 
-        pageList.addItem(new HtmlListItem(memeHtmlLink));
+        pageList.add(memeHtmlLink);
 
         // pageTitle.add(pageList);
         // TODO : fix title

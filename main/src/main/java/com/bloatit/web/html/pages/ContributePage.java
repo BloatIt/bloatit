@@ -61,7 +61,7 @@ public class ContributePage extends LoggedPage {
         contribField.setDefaultValue(contributionAmountParam);
 
         // Input field : comment
-        final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE);
+        final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE, 10, 20);
         commentField.setLabel(session.tr("Comment (optionnal) : "));
         commentField.setDefaultValue(contributionCommentParam);
 

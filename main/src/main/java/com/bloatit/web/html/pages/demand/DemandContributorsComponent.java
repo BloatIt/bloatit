@@ -24,6 +24,7 @@ import com.bloatit.framework.Contribution;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlListItem;
@@ -101,7 +102,7 @@ public class DemandContributorsComponent extends HtmlDiv {
             public HtmlNode generate(final Contribution item) {
                 final String itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " "
                         + item.getCreationDate().toString();
-                return new HtmlListItem(itemString);
+                return new HtmlText(itemString);
             }
         };
     }

@@ -18,6 +18,7 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
+import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlListItem;
@@ -33,9 +34,9 @@ public class DemandTimelineComponent extends HtmlPageComponent {
         {
             final HtmlList timelineList = new HtmlList();
 
-            final HtmlListItem creationDate = new HtmlListItem("Creation: " + demand.getCreationDate().toString());
+            final String creationDate = "Creation: " + demand.getCreationDate().toString();
             {
-                timelineList.addItem(creationDate);
+                timelineList.add(creationDate);
             }
             timelineBlock.add(timelineList);
         }

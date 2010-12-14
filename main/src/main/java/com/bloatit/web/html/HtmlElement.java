@@ -125,9 +125,7 @@ public abstract class HtmlElement extends HtmlNode {
             }
         } else {
             for (final HtmlNode html : this) {
-                txt.indent();
                 html.write(txt);
-                txt.unindent();
             }
         }
     }

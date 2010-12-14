@@ -17,7 +17,6 @@
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlParagraph;
 
 /**
  * <p>
@@ -39,12 +38,12 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
  */
 public final class HtmlTextArea extends HtmlFormField<String> {
 
-    public HtmlTextArea(final String name) {
-        super(new HtmlSimpleTextArea(), name);
+    public HtmlTextArea(final String name, int cols, int rows) {
+        super(new HtmlSimpleTextArea( cols, rows), name);
     }
 
-    public HtmlTextArea(final String name, final String label) {
-        super(new HtmlSimpleTextArea(), name, label);
+    public HtmlTextArea(final String name, final String label, int cols, int rows) {
+        super(new HtmlSimpleTextArea(cols, rows), name, label );
     }
 
     /**

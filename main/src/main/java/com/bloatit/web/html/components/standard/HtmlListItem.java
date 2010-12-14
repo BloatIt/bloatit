@@ -19,13 +19,4 @@ public class HtmlListItem extends HtmlBranch {
         super("li");
         add(node);
     }
-
-    public HtmlListItem(final String cssClass, final HtmlNode node) {
-        this(node);
-        addAttribute("class", cssClass);
-    }
-
-    public HtmlListItem(final String content) {
-        this(new HtmlText(content));
-    }
 }

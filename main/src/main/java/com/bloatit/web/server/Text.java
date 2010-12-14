@@ -8,6 +8,4 @@ public interface Text {
 
     public abstract void unindent();
 
-    public void write(String newText);
-
 }

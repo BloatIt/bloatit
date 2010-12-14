@@ -22,14 +22,11 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.annotations.RequestParam;
-import com.bloatit.web.utils.url.Parameters;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 public class HtmlPagedList<T> extends HtmlList {
@@ -57,7 +54,7 @@ public class HtmlPagedList<T> extends HtmlList {
         }
 
         for (final T item : itemList) {
-            addItem(new HtmlListItem(itemRenderer.generate(item)));
+            add(itemRenderer.generate(item));
         }
 
         if (pageCount > 1) {
