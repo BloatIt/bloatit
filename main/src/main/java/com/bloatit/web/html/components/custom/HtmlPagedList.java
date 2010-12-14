@@ -49,6 +49,7 @@ public class HtmlPagedList<T> extends HtmlList {
         request.setValues(this);
 
         itemList.setPageSize(pageSize);
+        itemList.setPage(currentPage);
         this.pageCount = itemList.pageNumber();
 
 
