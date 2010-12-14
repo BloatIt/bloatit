@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
+import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
@@ -42,14 +43,6 @@ public class DemandPage extends Page {
     public DemandPage(final Request request) {
         super(request);
         this.request.setValues(this);
-        addNotifications(request.getMessages());
-
-        if (request.getMessages().hasMessage(Level.ERROR)) {
-            setPageNotFound();
-            return;
-        }
-
-        generateContent();
     }
 
     @Override
@@ -72,7 +65,16 @@ public class DemandPage extends Page {
         return demand;
     }
 
-    private void generateContent() {
+    @Override
+    public void create() throws RedirectException {
+        super.create();
+        addNotifications(request.getMessages());
+
+        if (request.getMessages().hasMessage(Level.ERROR)) {
+            setPageNotFound();
+            return;
+        }
+
         final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
