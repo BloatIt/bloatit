@@ -39,7 +39,7 @@ public class DemandPage extends Page {
     @RequestParam(name = "id", level = Level.ERROR)
     protected Demand demand;
 
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generated="demand")
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
     protected String title;
 
     @PageComponent
@@ -83,7 +83,7 @@ public class DemandPage extends Page {
         final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
-        add(new HtmlTitleBlock(translatedDescription.getTitle(),1).setCssClass("pageTitle"));
+        add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
         add(new DemandHeadComponent(request, demand));
         add(generateBody());
     }

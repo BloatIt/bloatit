@@ -41,11 +41,11 @@ public class ParamContainerProcessor extends AbstractProcessor {
                             String name = enclosed.getSimpleName().toString();
                             String nameString = requestParam.name().equals("") ? enclosed.getSimpleName().toString() : requestParam.name();
 
-                            if (requestParam.generated().isEmpty()) {
+                            if (requestParam.generatedFrom().isEmpty()) {
                                 generator.addAttribute(enclosed.asType().toString(), name);
                                 generator.addGetterSetter(enclosed.asType().toString(), name);
                             } else {
-                                generator.addAutoGeneratingGetter(enclosed.asType().toString(), name, requestParam.generated());
+                                generator.addAutoGeneratingGetter(enclosed.asType().toString(), name, requestParam.generatedFrom());
                             }
 
                             generator.registerAttribute(name,

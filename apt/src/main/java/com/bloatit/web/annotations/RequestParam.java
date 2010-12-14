@@ -23,6 +23,6 @@ public @interface RequestParam {
 
     Role role() default Role.GET;
     
-    String generated() default ""; 
+    String generatedFrom() default ""; 
 
 }
