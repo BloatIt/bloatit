@@ -29,22 +29,35 @@ public abstract class Page extends HtmlElement implements Linkable {
     protected final Session session;
 
     public Page(final Request request) {
-        super("html");
-        /*final HtmlText xmlHead = new HtmlText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        final HtmlText doctype = new HtmlText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">");
-        add(xmlHead);
-        add(doctype);*/
+        super();
+
+        //add(new HtmlText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+        //add(new HtmlText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
+
+        //htmlCore.
+        //add(htmlCore);
+
+        content = new HtmlDiv().setId("body_content");
+        notifications = new HtmlDiv().setId("notifications");
+        //add(notifications);
+        //content.add(notifications);
+        //htmlCore.add(content);
+
         session = Context.getSession();
 
         this.request = request;
-        super.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
-        content = new HtmlDiv().setId("body_content");
-        notifications = new HtmlDiv().setId("notifications");
     }
 
     public void create() throws RedirectException {
-        super.add(new Header(getTitle(), getCustomCss()));
-        super.add(generate_body());
+        super.add(new HtmlText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+        super.add(new HtmlText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
+        HtmlBranch html = new HtmlGenericElement("html");
+
+        super.add(html);
+        html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+
+        html.add(new Header(getTitle(), getCustomCss()));
+        html.add(generate_body());
 
         //Display waiting notifications
         addWaitingNotifications();
@@ -52,7 +65,26 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     // TODO correct empty div for notifications ?
     private HtmlElement generate_body() {
-        return new HtmlGenericElement("body").add(new HtmlDiv().setId("page").add(new TopBar()).add(generateTitle()).add(new HtmlDiv().setId("center").add(new HtmlDiv().setId("center_column").add(new Menu()).add(content.add(notifications)))).add(new Footer()));
+
+        HtmlGenericElement body = new HtmlGenericElement("body");
+
+        HtmlBranch page = new HtmlDiv("page").setId("page");
+        page.add(new TopBar())
+            .add(generateTitle());
+
+        HtmlBranch center = new HtmlDiv().setId("center");
+        page.add(center);
+        
+        HtmlBranch centerColumn = new HtmlDiv().setId("center_column");
+        center.add(centerColumn);
+
+        content.add(notifications);
+        centerColumn.add(new Menu())
+                    .add(content);
+
+        page.add(new Footer());
+
+        return page;
     }
 
     protected abstract String getTitle();
