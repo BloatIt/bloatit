@@ -18,13 +18,13 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
+import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.custom.HtmlTabBlock;
-import com.bloatit.web.html.components.custom.HtmlTabBlock.HtmlTabHeader;
+import com.bloatit.web.html.components.custom.HtmlTabBlock.HtmlTab;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.annotations.RequestParam;
-import com.bloatit.web.utils.url.Parameters;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
@@ -40,40 +40,34 @@ public class DemandTabPane extends HtmlPageComponent {
 
         UrlBuilder tablinks = new UrlBuilder(DemandPage.class, request.getParameters());
 
+        // Create tab pane
+        final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_key", activeTabKey, tablinks);
 
 
         // Create description tab
-        final HtmlTabHeader descriptionTab = new HtmlTabHeader(session.tr("Description"),
-                tablinks.addParameter("demand_tab_key", "description_tab").buildUrl());
+        tabPane.addTab(new HtmlTab(session.tr("Description"), "description_tab" ) {
+            @Override
+            public HtmlNode generateBody() {
+                return new DemandDescriptionComponent(request, demand);
+            }
+        });
 
         // Create participations tab
-        final HtmlTabHeader participationsTab = new HtmlTabHeader(session.tr("Participations"),
-                tablinks.addParameter("demand_tab_key", "participations_tab").buildUrl());
+        tabPane.addTab(new HtmlTab(session.tr("Participations"), "participations_tab" ) {
+            @Override
+            public HtmlNode generateBody() {
+                return new DemandContributorsComponent(request, demand);
+            }
+        });
 
         // Create Comments tab
-        final HtmlTabHeader offerTab = new HtmlTabHeader(session.tr("Offers"),
-                tablinks.addParameter("demand_tab_key", "offer_tab").buildUrl());
+        tabPane.addTab(new HtmlTab(session.tr("Offers"), "offer_tab" ) {
+            @Override
+            public HtmlNode generateBody() {
+                return new DemandOfferListComponent(request, demand);
+            }
+        });
 
-        // Create tab pane
-        final HtmlTabBlock tabPane = new HtmlTabBlock(); // id =
-                                                         // participations_tab
-
-        // Add all tabs from left to right
-        if (activeTabKey == "description_tab") {
-            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(descriptionTab, new DemandDescriptionComponent(request, demand)));
-        } else {
-            tabPane.addTabHeader(descriptionTab);
-        }
-        if (activeTabKey == "participations_tab") {
-            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(participationsTab, new DemandContributorsComponent(request, demand)));
-        } else {
-            tabPane.addTabHeader(participationsTab);
-        }
-        if (activeTabKey == "offer_tab") {
-            tabPane.addActiveTab(new HtmlTabBlock.HtmlTab(offerTab, new DemandOfferListComponent(request, demand)));
-        } else {
-            tabPane.addTabHeader(offerTab);
-        }
 
         add(tabPane);
 

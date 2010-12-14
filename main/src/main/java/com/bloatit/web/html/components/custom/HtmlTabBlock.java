@@ -14,19 +14,26 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.html.components.custom;
 
+import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlLink;
+import com.bloatit.web.utils.url.UrlBuilder;
 
 public class HtmlTabBlock extends HtmlDiv {
 
+    private final String tabBlockKey;
+    private final String activeTabKey;
+    private final UrlBuilder tablinks;
     private final HtmlDiv tabBody;
     private final HtmlDiv tabHeader;
 
-    public HtmlTabBlock() {
+    public HtmlTabBlock(String tabBlockKey, String activeTabKey, UrlBuilder tablinks) {
         super("tab_panel");
+
+        this.tabBlockKey = tabBlockKey;
+        this.activeTabKey = activeTabKey;
+        this.tablinks = tablinks;
 
         tabHeader = new HtmlDiv("tab_header");
         tabBody = new HtmlDiv("tab_body");
@@ -35,53 +42,57 @@ public class HtmlTabBlock extends HtmlDiv {
         add(tabBody);
     }
 
-    public void addTabHeader(final HtmlTabHeader tab) {
-
-        final HtmlDiv tabTile = new HtmlDiv("inactive_tab_title");
-        tabHeader.add(tabTile);
-
-        final HtmlLink link = new HtmlLink(tab.getLink(), new HtmlDiv("inactive_tab_title_content"));
-        link.addText(tab.getTitle());
-
-        tabTile.add(link);
+    public void addTab(HtmlTab tab) {
+        if (tab.getTabKey().equals(activeTabKey)) {
+            addTabHeader(tab, true);
+            tabBody.add(tab.generateBody());
+        } else {
+            addTabHeader(tab, false);
+        }
     }
 
-    public void addActiveTab(final HtmlTab tab) {
-        addTabHeader(tab);
-        tabBody.add(tab.getBody());
-    }
+    private void addTabHeader(final HtmlTab tab, boolean active) {
 
-    public static class HtmlTabHeader {
-        private final String title;
-        private final String link;
+        String tabTitleStyle;
+        String tabTitleContentStyle;
 
-        public HtmlTabHeader(final String title, final String link) {
-            this.title = title;
-            this.link = link;
+        if (active) {
+            tabTitleStyle = "active_tab_title";
+            tabTitleContentStyle = "active_tab_title_content";
+        } else {
+            tabTitleStyle = "inactive_tab_title";
+            tabTitleContentStyle = "inactive_tab_title_content";
         }
 
-        public String getLink() {
-            return link;
+        final HtmlDiv tabTitle = new HtmlDiv(tabTitleStyle);
+        tabHeader.add(tabTitle);
+
+        HtmlDiv div = new HtmlDiv(tabTitleContentStyle);
+        div.addText(tab.getTitle());
+
+        tablinks.addParameter(tabBlockKey, tab.getTabKey());
+        
+        tabTitle.add(tablinks.getHtmlLink(div));
+    }
+    
+    public abstract static class HtmlTab {
+
+        private final String title;
+        private final String tabKey;
+
+        public HtmlTab(String title, String tabKey) {
+            this.title = title;
+            this.tabKey = tabKey;
+        }
+
+        public String getTabKey() {
+            return tabKey;
         }
 
         public String getTitle() {
             return title;
         }
+
+        abstract public HtmlNode generateBody();
     }
-
-    public static class HtmlTab extends HtmlTabHeader {
-        private final HtmlDiv body;
-
-        public HtmlTab(final HtmlTabHeader header, final HtmlDiv body) {
-            super(header.title, header.link);
-            this.body = body;
-            body.addAttribute("class", "tab_body");
-        }
-
-        public HtmlDiv getBody() {
-            return body;
-        }
-
-    }
-
 }
