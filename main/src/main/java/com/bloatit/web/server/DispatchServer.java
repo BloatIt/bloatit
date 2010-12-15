@@ -34,7 +34,7 @@ import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.CreateIdeaPage;
-import com.bloatit.web.html.pages.DemandsList;
+import com.bloatit.web.html.pages.IdeasList;
 import com.bloatit.web.html.pages.GlobalSearchPage;
 import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.html.pages.LoginPage;
@@ -62,7 +62,7 @@ public class DispatchServer {
             {
                 put(OldUrl.getPageName(IndexPage.class), IndexPage.class);
                 put(OldUrl.getPageName(LoginPage.class), LoginPage.class);
-                put(OldUrl.getPageName(DemandsList.class), DemandsList.class);
+                put(OldUrl.getPageName(IdeasList.class), IdeasList.class);
                 put(OldUrl.getPageName(CreateIdeaPage.class), CreateIdeaPage.class);
                 put(OldUrl.getPageName(DemandPage.class), DemandPage.class);
                 put(OldUrl.getPageName(MyAccountPage.class), MyAccountPage.class);

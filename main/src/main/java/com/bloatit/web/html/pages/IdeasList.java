@@ -34,12 +34,12 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandsList extends Page {
+public class IdeasList extends Page {
 
     @PageComponent
     HtmlPagedList<Demand> pagedMemberList;
 
-    public DemandsList(final Request request) throws RedirectException {
+    public IdeasList(final Request request) throws RedirectException {
         super(request);
         generateContent();
     }
@@ -61,7 +61,7 @@ public class DemandsList extends Page {
             }
         };
 
-        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(DemandsList.class, request.getParameters()),
+        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(IdeasList.class, request.getParameters()),
                 request);
 
         pageTitle.add(pagedMemberList);
