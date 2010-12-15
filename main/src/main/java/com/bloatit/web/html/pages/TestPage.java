@@ -68,8 +68,12 @@ public class TestPage extends Page {
         div.add(anotherDiv);
         
         HtmlTitleBlock htb = new HtmlTitleBlock("Another title", 3);
-        RandomString rs = new RandomString(1000);
-        htb.add(new HtmlParagraph(rs.nextString()));
+        RandomString rs = new RandomString(10);
+        String plop = "";
+        for(int i = 0; i < 100; i++){
+            plop += rs.nextString() + " ";
+        }
+        htb.add(new HtmlParagraph(plop));
         anotherDiv.add(htb);
         htb.add(new HtmlTitle("nested title",5));
         htb.add(new HtmlText("some text without paragraph"));
