@@ -10,6 +10,7 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.server.Context;
@@ -99,9 +100,7 @@ public class UrlBuilder {
         }
     }
 
-    public HtmlLink getHtmlLink(final String text) {
-        return new HtmlLink(buildUrl(), text);
-    }
+    
 
     private void fillParameters(final Object linkable, final Class<? extends Object> linkableClass) {
         for (final Field f : linkableClass.getDeclaredFields()) {
@@ -126,8 +125,12 @@ public class UrlBuilder {
         }
     }
 
-    public HtmlLink getHtmlLink(HtmlDiv div) {
-        return new HtmlLink(buildUrl(), div);
+    public HtmlLink getHtmlLink(final String text) {
+        return new HtmlLink(buildUrl(), text);
+    }
+
+    public HtmlLink getHtmlLink(HtmlNode node) {
+        return new HtmlLink(buildUrl(), node);
     }
 
 }

@@ -43,12 +43,14 @@ import com.bloatit.web.html.pages.MemberPage;
 import com.bloatit.web.html.pages.MembersListPage;
 import com.bloatit.web.html.pages.MyAccountPage;
 import com.bloatit.web.html.pages.OfferPage;
+import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.html.pages.SpecialsPage;
 import com.bloatit.web.html.pages.TestPage;
 import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.OldUrl;
+import java.util.Arrays;
 
 public class DispatchServer {
 
@@ -134,6 +136,10 @@ public class DispatchServer {
                 response.writeRedirect(action.process());
 
             } else {
+                session.notifyError(session.tr("Unknow page code: ")+linkable);
+                Page page = new PageNotFound(request);
+                page.create();
+                response.writePage(page);
             }
         } catch (final RedirectException ex) {
             response.writeRedirect(ex.getUrl());
