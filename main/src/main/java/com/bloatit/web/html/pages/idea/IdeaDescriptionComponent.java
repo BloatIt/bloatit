@@ -30,13 +30,13 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandDescriptionComponent extends HtmlDiv {
+public class IdeaDescriptionComponent extends HtmlDiv {
 
     private final HtmlParagraph description;
     private final HtmlParagraph date;
     private final HtmlLink author;
 
-    public DemandDescriptionComponent(final Request request, final Demand demand) {
+    public IdeaDescriptionComponent(final Request request, final Demand demand) {
         super();
 
         final Session session = Context.getSession();

@@ -18,18 +18,22 @@ package com.bloatit.web.html.pages.idea;
 
 
 import com.bloatit.framework.Demand;
+import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandSummaryComponent extends HtmlPageComponent {
+public class IdeaKudoComponent extends HtmlPageComponent {
 
-    public DemandSummaryComponent(final Request request, final Demand demand) {
+    public IdeaKudoComponent(final Request request, final Demand demand) {
         super();
-        final HtmlDiv abstractBlock = new HtmlDiv("abstract_block");
+
+        final HtmlDiv descriptionKudoBlock = new HtmlDiv("description_kudo_block");
         {
-            abstractBlock.add(new DemandTimelineComponent(request, demand));
+            final HtmlKudoBlock kudoBox = new HtmlKudoBlock(demand, Context.getSession());
+            descriptionKudoBlock.add(kudoBox);
         }
-        add(abstractBlock);
+        add(descriptionKudoBlock);
     }
 }

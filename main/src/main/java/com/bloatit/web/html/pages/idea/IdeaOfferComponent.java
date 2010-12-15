@@ -27,7 +27,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandOfferComponent extends HtmlPageComponent {
+public class IdeaOfferComponent extends HtmlPageComponent {
 
     // private Offer offer;
     private HtmlParagraph description;
@@ -39,7 +39,7 @@ public class DemandOfferComponent extends HtmlPageComponent {
     private HtmlParagraph author;
     private final Offer offer;
 
-    public DemandOfferComponent(final Request request, final Offer offer) {
+    public IdeaOfferComponent(final Request request, final Offer offer) {
         super();
         this.offer = offer;
         extractData(request);

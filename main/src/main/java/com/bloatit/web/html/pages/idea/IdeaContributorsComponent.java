@@ -33,7 +33,7 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandContributorsComponent extends HtmlDiv {
+public class IdeaContributorsComponent extends HtmlDiv {
 
     private int contributionCount;
     private HtmlParagraph contributionMin;
@@ -42,7 +42,7 @@ public class DemandContributorsComponent extends HtmlDiv {
     private PageIterable<Contribution> contributions;
     private final Demand demand;
 
-    public DemandContributorsComponent(final Request request, final Demand demand) {
+    public IdeaContributorsComponent(final Request request, final Demand demand) {
         super();
         this.demand = demand;
         extractData(request);
@@ -71,7 +71,7 @@ public class DemandContributorsComponent extends HtmlDiv {
 
             // Create paged list
             final HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer,
-                    contributions, new UrlBuilder(DemandPage.class, request.getParameters()), request);
+                    contributions, new UrlBuilder(IdeaPage.class, request.getParameters()), request);
             contributorsBlock.add(participationsList);
 
         }

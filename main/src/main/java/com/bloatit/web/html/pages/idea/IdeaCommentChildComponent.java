@@ -29,13 +29,13 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandCommentChildComponent extends HtmlPageComponent {
+public class IdeaCommentChildComponent extends HtmlPageComponent {
 
     // private Offer offer;
     private final Comment comment;
     private HtmlText commentText;
 
-    public DemandCommentChildComponent(final Request request, final Comment comment) {
+    public IdeaCommentChildComponent(final Request request, final Comment comment) {
         super();
         this.comment = comment;
         extractData(request);
@@ -50,7 +50,7 @@ public class DemandCommentChildComponent extends HtmlPageComponent {
             commentBlock.add(commentText);
 
             for (final Comment childComment : comment.getChildren()) {
-                commentBlock.add(new DemandCommentChildComponent(request, childComment));
+                commentBlock.add(new IdeaCommentChildComponent(request, childComment));
             }
 
         }

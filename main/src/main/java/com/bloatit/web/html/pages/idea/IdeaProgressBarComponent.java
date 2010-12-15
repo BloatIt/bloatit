@@ -24,12 +24,12 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandProgressBarComponent extends HtmlPageComponent {
+public class IdeaProgressBarComponent extends HtmlPageComponent {
 
     private float progressValue;
     private final Demand demand;
 
-    public DemandProgressBarComponent(final Request request, final Demand demand) {
+    public IdeaProgressBarComponent(final Request request, final Demand demand) {
         super();
         this.demand = demand;
         extractData(request);
@@ -41,7 +41,7 @@ public class DemandProgressBarComponent extends HtmlPageComponent {
         final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
 
-            progressBlock.add(new DemandContributeButtonComponent(request, demand));
+            progressBlock.add(new IdeaContributeButtonComponent(request, demand));
 
             final HtmlDiv progressBarBlock = new HtmlDiv("column");
             {
@@ -50,7 +50,7 @@ public class DemandProgressBarComponent extends HtmlPageComponent {
 
             progressBlock.add(progressBarBlock);
 
-            progressBlock.add(new DemandMakeOfferButtonComponent(request, demand));
+            progressBlock.add(new IdeaMakeOfferButtonComponent(request, demand));
 
         }
 

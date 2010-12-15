@@ -29,7 +29,7 @@ import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
-import com.bloatit.web.html.pages.idea.DemandPage;
+import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
@@ -52,7 +52,7 @@ public class IdeasList extends Page {
 
         final HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
-            UrlBuilder demandPageUrlBuilder = new UrlBuilder(DemandPage.class);
+            UrlBuilder demandPageUrlBuilder = new UrlBuilder(IdeaPage.class);
 
             @Override
             public HtmlNode generate(final Demand demand) {

@@ -25,11 +25,11 @@ import com.bloatit.framework.Offer;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandOfferListComponent extends HtmlDiv {
+public class IdeaOfferListComponent extends HtmlDiv {
 
     private final PageIterable<Offer> offers;
 
-    public DemandOfferListComponent(final Request request, final Demand demand) {
+    public IdeaOfferListComponent(final Request request, final Demand demand) {
         super();
         offers = demand.getOffers();
 
@@ -37,7 +37,7 @@ public class DemandOfferListComponent extends HtmlDiv {
 
         for (final Offer offer : offers) {
 
-            offersBlock.add(new DemandOfferComponent(request, offer));
+            offersBlock.add(new IdeaOfferComponent(request, offer));
         }
 
         add(offersBlock);

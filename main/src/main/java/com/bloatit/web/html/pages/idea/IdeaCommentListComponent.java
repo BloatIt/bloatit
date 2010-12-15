@@ -19,32 +19,40 @@
 package com.bloatit.web.html.pages.idea;
 
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
+import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandHeadComponent extends HtmlPageComponent {
+public class IdeaCommentListComponent extends HtmlPageComponent {
 
-    public DemandHeadComponent(final Request request, final Demand demand) {
+    private final PageIterable<Comment> comments;
+
+    public IdeaCommentListComponent(final Request request, final Demand demand) {
         super();
-        final HtmlDiv demandHead = new HtmlDiv("demand_head");
-        {
-            // Add progress bar
-            final HtmlDiv demandHeadProgress = new HtmlDiv("demand_head_progress");
-            {
-                demandHeadProgress.add(new DemandProgressBarComponent(request, demand));
-            }
-            demandHead.add(demandHeadProgress);
-
-            // Add kudo box
-            final HtmlDiv demandHeadKudo = new HtmlDiv("demand_head_kudo");
-            {
-                demandHeadKudo.add(new DemandKudoComponent(request, demand));
-            }
-            demandHead.add(demandHeadKudo);
-
-        }
-        add(demandHead);
+        comments = demand.getComments();
+        add(produce(request));
     }
+
+    /**
+     * Creates the block that will be displayed in the offer tab.
+     */
+    protected HtmlElement produce(final Request request) {
+
+        final HtmlDiv commentsBlock = new HtmlDiv("comments_block");
+        {
+            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments"), 2).setCssClass("comments_title"));
+
+            for (final Comment comment : comments) {
+                commentsBlock.add(new IdeaCommentComponent(request, comment));
+            }
+        }
+        return commentsBlock;
+    }
+
 }

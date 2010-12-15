@@ -19,34 +19,25 @@ package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.form.HtmlButton;
-import com.bloatit.web.html.components.standard.form.HtmlForm;
-import com.bloatit.web.html.pages.OfferPage;
+import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
-import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandMakeOfferButtonComponent extends HtmlPageComponent {
+public class IdeaTimelineComponent extends HtmlPageComponent {
 
-    public DemandMakeOfferButtonComponent(final Request request, final Demand demand) {
+    public IdeaTimelineComponent(final Request request, final Demand demand) {
         super();
-        final Session session = Context.getSession();
 
-        final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
+        final HtmlDiv timelineBlock = new HtmlDiv("timeline_block");
         {
+            final HtmlList timelineList = new HtmlList();
 
-            final UrlBuilder urlBuilder = new UrlBuilder(OfferPage.class);
-            urlBuilder.addParameter("idea", demand);
-
-            final HtmlForm makeOfferForm = new HtmlForm(urlBuilder.buildUrl());
+            final String creationDate = "Creation: " + demand.getCreationDate().toString();
             {
-                final HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
-                makeOfferForm.add(makeOfferButton);
+                timelineList.add(creationDate);
             }
-            makeOfferBlock.add(makeOfferForm);
+            timelineBlock.add(timelineList);
         }
-        add(makeOfferBlock);
+        add(timelineBlock);
     }
 }

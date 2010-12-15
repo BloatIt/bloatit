@@ -30,17 +30,17 @@ import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 @ParamContainer(value = "demandTabPane", isComponent = true)
-public class DemandTabPane extends HtmlPageComponent {
+public class IdeaTabPane extends HtmlPageComponent {
 
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
     private String activeTabKey;
 
-    public DemandTabPane(final Request request, final Demand demand) {
+    public IdeaTabPane(final Request request, final Demand demand) {
         super();
         request.setValues(this);
         final Session session = Context.getSession();
 
-        UrlBuilder tablinks = new UrlBuilder(DemandPage.class, request.getParameters());
+        UrlBuilder tablinks = new UrlBuilder(IdeaPage.class, request.getParameters());
 
         // Create tab pane
         final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_key", activeTabKey, tablinks);
@@ -50,7 +50,7 @@ public class DemandTabPane extends HtmlPageComponent {
         tabPane.addTab(new HtmlTab(session.tr("Description"), "description_tab" ) {
             @Override
             public HtmlNode generateBody() {
-                return new DemandDescriptionComponent(request, demand);
+                return new IdeaDescriptionComponent(request, demand);
             }
         });
 
@@ -58,7 +58,7 @@ public class DemandTabPane extends HtmlPageComponent {
         tabPane.addTab(new HtmlTab(session.tr("Participations"), "participations_tab" ) {
             @Override
             public HtmlNode generateBody() {
-                return new DemandContributorsComponent(request, demand);
+                return new IdeaContributorsComponent(request, demand);
             }
         });
 
@@ -66,7 +66,7 @@ public class DemandTabPane extends HtmlPageComponent {
         tabPane.addTab(new HtmlTab(session.tr("Offers"), "offer_tab" ) {
             @Override
             public HtmlNode generateBody() {
-                return new DemandOfferListComponent(request, demand);
+                return new IdeaOfferListComponent(request, demand);
             }
         });
 

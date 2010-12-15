@@ -29,11 +29,11 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandContributeButtonComponent extends HtmlPageComponent {
+public class IdeaContributeButtonComponent extends HtmlPageComponent {
 
     private final Demand demand;
 
-    public DemandContributeButtonComponent(final Request request, final Demand demand) {
+    public IdeaContributeButtonComponent(final Request request, final Demand demand) {
         super();
         this.demand = demand;
         add(produce(request));

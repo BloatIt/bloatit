@@ -25,7 +25,7 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.ContributePage;
-import com.bloatit.web.html.pages.idea.DemandPage;
+import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
@@ -69,7 +69,7 @@ public class ContributionAction extends Action {
             if (targetDemand.canContribute()) {
                 targetDemand.addContribution(amount, comment);
                 session.notifyGood(session.tr("Thanks you for crediting " + amount + " on this idea"));
-                return new UrlBuilder(DemandPage.class).addParameter("idea", idea).buildUrl();
+                return new UrlBuilder(IdeaPage.class).addParameter("idea", idea).buildUrl();
             } else {
                 // Should never happen
                 session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));

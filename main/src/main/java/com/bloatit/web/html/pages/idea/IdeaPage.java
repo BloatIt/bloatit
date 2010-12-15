@@ -32,7 +32,7 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandPage extends Page {
+public class IdeaPage extends Page {
 
     @RequestParam(name = "id", level = Level.ERROR)
     protected Demand demand;
@@ -41,9 +41,9 @@ public class DemandPage extends Page {
     protected String title;
 
     @PageComponent
-    private DemandTabPane demandTabPane;
+    private IdeaTabPane demandTabPane;
 
-    public DemandPage(final Request request) {
+    public IdeaPage(final Request request) {
         super(request);
         this.request.setValues(this);
     }
@@ -84,7 +84,7 @@ public class DemandPage extends Page {
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
         add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
-        add(new DemandHeadComponent(request, demand));
+        add(new IdeaHeadComponent(request, demand));
         add(generateBody());
     }
 
@@ -100,10 +100,10 @@ public class DemandPage extends Page {
     private HtmlElement generateBodyLeft() {
         final HtmlDiv left = new HtmlDiv("leftColumn");
         {
-            demandTabPane = new DemandTabPane(request, demand);
+            demandTabPane = new IdeaTabPane(request, demand);
             left.add(demandTabPane);
             // Comments
-            left.add(new DemandCommentListComponent(request, demand));
+            left.add(new IdeaCommentListComponent(request, demand));
         }
         return left;
 
@@ -114,7 +114,7 @@ public class DemandPage extends Page {
         {
             final HtmlDiv rightBlock = new HtmlDiv("right_block");
             {
-                rightBlock.add(new DemandSummaryComponent(request, demand));
+                rightBlock.add(new IdeaSummaryComponent(request, demand));
             }
             right.add(rightBlock);
         }
