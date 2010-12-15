@@ -1,35 +1,35 @@
 package com.bloatit.web.utils.url;
 
+import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.RequestParam.Role;
 
 public class IdeasListUrl extends Url {
-    public IdeasListUrl() {
-        super("IdeasList");
-    }
+public IdeasListUrl() {
+    super("IdeasList"); 
+}
+public IdeasListUrl(Parameters params) {
+    this();
+    parseParameters(params);
+}
+private HtmlPagedListUrl pagedIdeaListUrl = new HtmlPagedListUrl();
 
-    public IdeasListUrl(final Parameters params) {
-        this();
-        parseParameters(params);
-    }
+public HtmlPagedListUrl getPagedIdeaListUrl(){ 
+    return this.pagedIdeaListUrl;
+}
 
-    private HtmlPagedListUrl pagedIdeaListUrl = new HtmlPagedListUrl();
+public void setPagedIdeaListUrl(HtmlPagedListUrl arg0){ 
+    this.pagedIdeaListUrl = arg0;
+}
 
-    public HtmlPagedListUrl getPagedIdeaListUrl() {
-        return this.pagedIdeaListUrl;
-    }
 
-    public void setPagedIdeaListUrl(final HtmlPagedListUrl arg0) {
-        this.pagedIdeaListUrl = arg0;
-    }
+@Override 
+protected void doRegister() { 
+    register(pagedIdeaListUrl);
+}
 
-    @Override
-    protected void doRegister() {
-        register(pagedIdeaListUrl);
-    }
-
-    @Override
-    public IdeasListUrl clone() {
-        final IdeasListUrl other = new IdeasListUrl();
-        other.pagedIdeaListUrl = this.pagedIdeaListUrl.clone();
-        return other;
-    }
+public IdeasListUrl clone() { 
+    IdeasListUrl other = new IdeasListUrl();
+    other.pagedIdeaListUrl = this.pagedIdeaListUrl.clone();
+    return other;
+}
 }

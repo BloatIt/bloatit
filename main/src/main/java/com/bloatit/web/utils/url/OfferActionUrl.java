@@ -3,11 +3,11 @@ package com.bloatit.web.utils.url;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 
-public class IndexPageUrl extends Url {
-public IndexPageUrl() {
-    super("IndexPage"); 
+public class OfferActionUrl extends Url {
+public OfferActionUrl() {
+    super("OfferAction"); 
 }
-public IndexPageUrl(Parameters params) {
+public OfferActionUrl(Parameters params) {
     this();
     parseParameters(params);
 }
@@ -17,8 +17,8 @@ public IndexPageUrl(Parameters params) {
 protected void doRegister() { 
 }
 
-public IndexPageUrl clone() { 
-    IndexPageUrl other = new IndexPageUrl();
+public OfferActionUrl clone() { 
+    OfferActionUrl other = new OfferActionUrl();
     return other;
 }
 }

@@ -4,56 +4,52 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 
 public class IdeaPageUrl extends Url {
-    public IdeaPageUrl() {
-        super("IdeaPage");
-    }
+public IdeaPageUrl() {
+    super("IdeaPage"); 
+}
+public IdeaPageUrl(Parameters params) {
+    this();
+    parseParameters(params);
+}
+private com.bloatit.framework.Demand idea;
+private IdeaTabPaneUrl demandTabPaneUrl = new IdeaTabPaneUrl();
 
-    public IdeaPageUrl(final Parameters params) {
-        this();
-        parseParameters(params);
-    }
+public com.bloatit.framework.Demand getIdea(){ 
+    return this.idea;
+}
 
-    private com.bloatit.framework.Demand idea;
-    private IdeaTabPaneUrl demandTabPaneUrl = new IdeaTabPaneUrl();
+public void setIdea(com.bloatit.framework.Demand arg0){ 
+    this.idea = arg0;
+}
 
-    public com.bloatit.framework.Demand getIdea() {
-        return this.idea;
+public java.lang.String getTitle(){ 
+    if (idea != null) {
+        return idea.getTitle();
+    } else {
+        return null;
     }
+}
 
-    public void setIdea(final com.bloatit.framework.Demand arg0) {
-        this.idea = arg0;
-    }
+public IdeaTabPaneUrl getDemandTabPaneUrl(){ 
+    return this.demandTabPaneUrl;
+}
 
-    public java.lang.String getTitle() {
-        if (idea != null) {
-            return idea.getTitle();
-        } else {
-            return null;
-        }
-    }
+public void setDemandTabPaneUrl(IdeaTabPaneUrl arg0){ 
+    this.demandTabPaneUrl = arg0;
+}
 
-    public IdeaTabPaneUrl getDemandTabPaneUrl() {
-        return this.demandTabPaneUrl;
-    }
 
-    public void setDemandTabPaneUrl(final IdeaTabPaneUrl arg0) {
-        this.demandTabPaneUrl = arg0;
-    }
+@Override 
+protected void doRegister() { 
+    register(new Parameter("id", getIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter("title", getTitle(), java.lang.String.class, Role.PRETTY, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(demandTabPaneUrl);
+}
 
-    @Override
-    protected void doRegister() {
-        register(new Parameter("id", getIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR,
-                "Error: invalid value (%value) for parameter \"%param\""));
-        register(new Parameter("title", getTitle(), java.lang.String.class, Role.PRETTY, Level.ERROR,
-                "Error: invalid value (%value) for parameter \"%param\""));
-        register(demandTabPaneUrl);
-    }
-
-    @Override
-    public IdeaPageUrl clone() {
-        final IdeaPageUrl other = new IdeaPageUrl();
-        other.idea = this.idea;
-        other.demandTabPaneUrl = this.demandTabPaneUrl.clone();
-        return other;
-    }
+public IdeaPageUrl clone() { 
+    IdeaPageUrl other = new IdeaPageUrl();
+    other.idea = this.idea;
+    other.demandTabPaneUrl = this.demandTabPaneUrl.clone();
+    return other;
+}
 }

@@ -4,46 +4,43 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 
 public class GlobalSearchPageUrl extends Url {
-    public GlobalSearchPageUrl() {
-        super("GlobalSearchPage");
-    }
+public GlobalSearchPageUrl() {
+    super("GlobalSearchPage"); 
+}
+public GlobalSearchPageUrl(Parameters params) {
+    this();
+    parseParameters(params);
+}
+private java.lang.String searchString;
+private HtmlPagedListUrl pagedMemberListUrl = new HtmlPagedListUrl();
 
-    public GlobalSearchPageUrl(final Parameters params) {
-        this();
-        parseParameters(params);
-    }
+public java.lang.String getSearchString(){ 
+    return this.searchString;
+}
 
-    private java.lang.String searchString;
-    private HtmlPagedListUrl pagedMemberListUrl = new HtmlPagedListUrl();
+public void setSearchString(java.lang.String arg0){ 
+    this.searchString = arg0;
+}
 
-    public java.lang.String getSearchString() {
-        return this.searchString;
-    }
+public HtmlPagedListUrl getPagedMemberListUrl(){ 
+    return this.pagedMemberListUrl;
+}
 
-    public void setSearchString(final java.lang.String arg0) {
-        this.searchString = arg0;
-    }
+public void setPagedMemberListUrl(HtmlPagedListUrl arg0){ 
+    this.pagedMemberListUrl = arg0;
+}
 
-    public HtmlPagedListUrl getPagedMemberListUrl() {
-        return this.pagedMemberListUrl;
-    }
 
-    public void setPagedMemberListUrl(final HtmlPagedListUrl arg0) {
-        this.pagedMemberListUrl = arg0;
-    }
+@Override 
+protected void doRegister() { 
+    register(new Parameter("global_search", getSearchString(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(pagedMemberListUrl);
+}
 
-    @Override
-    protected void doRegister() {
-        register(new Parameter("global_search", getSearchString(), java.lang.String.class, Role.GET, Level.ERROR,
-                "Error: invalid value (%value) for parameter \"%param\""));
-        register(pagedMemberListUrl);
-    }
-
-    @Override
-    public GlobalSearchPageUrl clone() {
-        final GlobalSearchPageUrl other = new GlobalSearchPageUrl();
-        other.searchString = this.searchString;
-        other.pagedMemberListUrl = this.pagedMemberListUrl.clone();
-        return other;
-    }
+public GlobalSearchPageUrl clone() { 
+    GlobalSearchPageUrl other = new GlobalSearchPageUrl();
+    other.searchString = this.searchString;
+    other.pagedMemberListUrl = this.pagedMemberListUrl.clone();
+    return other;
+}
 }
