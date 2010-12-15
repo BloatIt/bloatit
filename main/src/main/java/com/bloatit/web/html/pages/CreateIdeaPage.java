@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;

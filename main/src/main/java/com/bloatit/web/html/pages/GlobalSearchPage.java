@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
@@ -34,9 +33,9 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
-import com.bloatit.web.html.pages.demand.DemandPage;
+import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.SearchUrl;
+import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 @ParamContainer("search")
@@ -44,23 +43,23 @@ public class GlobalSearchPage extends Page {
 
     public final static String SEARCH_CODE = "global_search";
     @RequestParam(defaultValue = "vide", name = SEARCH_CODE)
-    private String searchString;
+    private final String searchString;
 
     @PageComponent
     private HtmlPagedList<Demand> pagedMemberList;
-    private final SearchUrl url;
+    private final GlobalSearchPageUrl url;
 
-    public GlobalSearchPage(final SearchUrl url) {
+    public GlobalSearchPage(final GlobalSearchPageUrl url) {
         super();
         this.url = url;
         this.searchString = url.getSearchString();
-        
+
         generateContent();
     }
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"),2);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"), 2);
 
         pageTitle.add(generateSearchBlock());
 
@@ -68,7 +67,7 @@ public class GlobalSearchPage extends Page {
 
         final HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
-            UrlBuilder demandeUrlBuilder = new UrlBuilder(DemandPage.class);
+            UrlBuilder demandeUrlBuilder = new UrlBuilder(IdeaPage.class);
 
             @Override
             public HtmlNode generate(final Demand demand) {
@@ -78,7 +77,7 @@ public class GlobalSearchPage extends Page {
             }
         };
 
-        SearchUrl clonedUrl = url.clone();
+        final GlobalSearchPageUrl clonedUrl = url.clone();
         pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
         pageTitle.add(pagedMemberList);

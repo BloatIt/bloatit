@@ -21,7 +21,6 @@ package com.bloatit.web.actions;
 
 import com.bloatit.web.utils.url.Request;
 
-
 public class LogoutAction extends Action {
 
     public LogoutAction(final Request request) {

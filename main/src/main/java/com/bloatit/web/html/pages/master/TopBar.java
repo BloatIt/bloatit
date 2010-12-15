@@ -1,6 +1,5 @@
 package com.bloatit.web.html.pages.master;
 
-
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;

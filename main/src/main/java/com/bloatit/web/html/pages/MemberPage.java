@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -28,19 +27,19 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.MemberUrl;
+import com.bloatit.web.utils.url.MemberPageUrl;
 
 @ParamContainer("member")
 public class MemberPage extends Page {
 
     public final static String MEMBER_FIELD_NAME = "id";
 
-    @RequestParam(name=MEMBER_FIELD_NAME, level = Level.ERROR)
-    private Member member;
+    @RequestParam(name = MEMBER_FIELD_NAME, level = Level.ERROR)
+    private final Member member;
 
-    private final MemberUrl url;
+    private final MemberPageUrl url;
 
-    public MemberPage(final MemberUrl url) throws RedirectException {
+    public MemberPage(final MemberPageUrl url) throws RedirectException {
         super();
         this.url = url;
         this.member = url.getMember();
@@ -53,10 +52,10 @@ public class MemberPage extends Page {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }
-        
+
         member.authenticate(session.getAuthToken());
 
-        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(),1);
+        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
 
         memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
         memberTitle.add(new HtmlText("Login: " + member.getLogin()));

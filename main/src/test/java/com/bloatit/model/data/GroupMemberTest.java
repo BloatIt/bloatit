@@ -16,7 +16,7 @@ import com.bloatit.model.data.util.SessionManager;
  */
 public class GroupMemberTest extends TestCase {
 
-    public GroupMemberTest(String testName) {
+    public GroupMemberTest(final String testName) {
         super(testName);
     }
 
@@ -184,7 +184,7 @@ public class GroupMemberTest extends TestCase {
         final DaoMember yo = DaoMember.getByLogin("Yo");
 
         yo.removeFromGroup(b219);
-        
+
         final Iterator<DaoGroup> it = yo.getGroups().iterator();
         assertEquals(it.next().getLogin(), "b216");
         assertEquals(it.next().getLogin(), "b217");

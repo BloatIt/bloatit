@@ -1,6 +1,5 @@
 package com.bloatit.web.server;
 
-
 public class Context {
 
     private static Session session;

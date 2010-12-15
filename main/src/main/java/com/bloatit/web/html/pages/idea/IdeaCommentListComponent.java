@@ -16,8 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
-
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Comment;
@@ -28,11 +27,11 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 
-public class DemandCommentListComponent extends HtmlPageComponent {
+public class IdeaCommentListComponent extends HtmlPageComponent {
 
     private final PageIterable<Comment> comments;
 
-    public DemandCommentListComponent(final Demand demand) {
+    public IdeaCommentListComponent(final Demand demand) {
         super();
         comments = demand.getComments();
         add(produce());
@@ -48,7 +47,7 @@ public class DemandCommentListComponent extends HtmlPageComponent {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments"), 2).setCssClass("comments_title"));
 
             for (final Comment comment : comments) {
-                commentsBlock.add(new DemandCommentComponent(comment));
+                commentsBlock.add(new IdeaCommentComponent(comment));
             }
         }
         return commentsBlock;

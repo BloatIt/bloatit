@@ -14,25 +14,28 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
-
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.server.Context;
 
-public class DemandKudoComponent extends HtmlPageComponent {
+public class IdeaTimelineComponent extends HtmlPageComponent {
 
-    public DemandKudoComponent(final Demand demand) {
+    public IdeaTimelineComponent(final Demand demand) {
         super();
 
-        final HtmlDiv descriptionKudoBlock = new HtmlDiv("description_kudo_block");
+        final HtmlDiv timelineBlock = new HtmlDiv("timeline_block");
         {
-            final HtmlKudoBlock kudoBox = new HtmlKudoBlock(demand, Context.getSession());
-            descriptionKudoBlock.add(kudoBox);
+            final HtmlList timelineList = new HtmlList();
+
+            final String creationDate = "Creation: " + demand.getCreationDate().toString();
+            {
+                timelineList.add(creationDate);
+            }
+            timelineBlock.add(timelineList);
         }
-        add(descriptionKudoBlock);
+        add(timelineBlock);
     }
 }

@@ -26,7 +26,6 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-
 public class SpecialsPage extends Page {
 
     public SpecialsPage() throws RedirectException {
@@ -36,7 +35,7 @@ public class SpecialsPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Special pages"),2);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Special pages"), 2);
         pageTitle.setCssClass("page_title");
 
         final HtmlList pageList = new HtmlList();

@@ -36,7 +36,8 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.utils.BloatitDate;
-import com.bloatit.web.utils.url.OfferUrl;
+import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 @ParamContainer("offer")
@@ -45,31 +46,33 @@ public class OfferPage extends LoggedPage {
     @RequestParam(name = "idea")
     private Demand targetIdea = null;
 
-    @RequestParam(name = "price", defaultValue="vide")
-    private BigDecimal price;
+    @RequestParam(name = "price", defaultValue = "vide")
+    private final BigDecimal price;
 
-    @RequestParam(name = "expiry", defaultValue="vide")
-    private Date expiryDate;
+    @RequestParam(name = "expiry", defaultValue = "vide")
+    private final Date expiryDate;
 
-    @RequestParam(name = "title", defaultValue="vide")
-    private String title;
+    @RequestParam(name = "title", defaultValue = "vide")
+    private final String title;
 
-    @RequestParam(name = "description", defaultValue="vide")
-    private String description;
+    @RequestParam(name = "description", defaultValue = "vide")
+    private final String description;
 
-
-    public OfferPage(final OfferUrl url) throws RedirectException {
+    public OfferPage(final OfferPageUrl url) throws RedirectException {
         super();
         this.targetIdea = url.getTargetIdea();
         this.price = url.getPrice();
         this.expiryDate = url.getExpiryDate();
         this.title = url.getTitle();
         this.description = url.getDescription();
-        
-        OfferUrl offerUrl = url.clone();
+
+        final OfferPageUrl offerUrl = url.clone();
         offerUrl.setPrice(new BigDecimal("12"));
         offerUrl.toString();
-        
+
+        final IdeaPageUrl demandUrl = new IdeaPageUrl();
+        demandUrl.getDemandTabPaneUrl().getContributionUrl().getParticipationsListUrl();
+
         addNotifications(url.getMessages());
     }
 
@@ -118,7 +121,7 @@ public class OfferPage extends LoggedPage {
          */
         // !TODO
 
-        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"),2);
+        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"), 2);
 
         // Create offer form
         final UrlBuilder offerActionUrlBuilder = new UrlBuilder(OfferAction.class);

@@ -19,7 +19,6 @@
 
 package com.bloatit.web.exceptions;
 
-
 import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.utils.url.UrlBuilder;
 

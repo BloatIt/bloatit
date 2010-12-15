@@ -27,7 +27,7 @@ import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.PagedListUrl;
+import com.bloatit.web.utils.url.HtmlPagedListUrl;
 import com.bloatit.web.utils.url.UrlComponent;
 
 @ParamContainer(value = "pagedList", isComponent = true)
@@ -36,21 +36,21 @@ public class HtmlPagedList<T> extends HtmlList {
     private final static String CURRENT_PAGE_FIELD_NAME = "current_page";
     private final static String PAGE_SIZE_FIELD_NAME = "page_size";
 
-    private Session session;
-    private Integer pageCount;
-    private UrlComponent currentUrl;
-    private PagedListUrl url;
-    
+    private final Session session;
+    private final Integer pageCount;
+    private final UrlComponent currentUrl;
+    private final HtmlPagedListUrl url;
+
     @RequestParam(defaultValue = "1", name = CURRENT_PAGE_FIELD_NAME)
-    private Integer currentPage;
+    private final Integer currentPage;
     @RequestParam(defaultValue = "10", name = PAGE_SIZE_FIELD_NAME)
-    private Integer pageSize;
-    
+    private final Integer pageSize;
+
     // Explain contract for URL and PageListUrl
     /**
-     * Do not forget to clone the Url !!! 
+     * Do not forget to clone the Url !!!
      */
-    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final UrlComponent url2, final PagedListUrl url) {
+    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final UrlComponent url2, final HtmlPagedListUrl url) {
         super();
         this.session = Context.getSession();
         this.currentPage = url.getCurrentPage();

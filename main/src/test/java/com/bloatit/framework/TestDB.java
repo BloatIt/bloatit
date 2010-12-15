@@ -87,24 +87,28 @@ public class TestDB {
             demand.addContribution(yo, new BigDecimal("120"), "I'm so generous too");
             demand.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
 
-            demand.addOffer(fred, new BigDecimal("200"), DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"), new Date());
+            demand.addOffer(fred,
+                    new BigDecimal("200"),
+                    DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
+                    new Date());
 
             demand.getOffers().iterator().next().setState(State.VALIDATED);
 
             for (final DaoContribution contribution : demand.getContributions()) {
                 try {
                     contribution.accept(demand.getOffers().iterator().next());
-                } catch (NotEnoughMoneyException e) {
+                } catch (final NotEnoughMoneyException e) {
                     e.printStackTrace();
                 }
             }
 
-            final DaoDemand demand1 = DaoDemand.createAndPersist(fred, DaoDescription.createAndPersist(fred, new Locale("en"), "I try it in English", "Hello world"));
-            demand1.getDescription()
-                   .addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais", "Salut le monde"));
+            final DaoDemand demand1 = DaoDemand.createAndPersist(fred,
+                    DaoDescription.createAndPersist(fred, new Locale("en"), "I try it in English", "Hello world"));
+            demand1.getDescription().addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais",
+                    "Salut le monde"));
             demand1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");
             demand1.addContribution(fred, new BigDecimal("11"), "I'm so generous too");
-        } catch (NotEnoughMoneyException e1) {
+        } catch (final NotEnoughMoneyException e1) {
             e1.printStackTrace();
         }
 
@@ -140,7 +144,7 @@ public class TestDB {
         return demand;
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         new TestDB();
     }
 

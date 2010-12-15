@@ -14,8 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
-
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
@@ -23,12 +22,12 @@ import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 
-public class DemandProgressBarComponent extends HtmlPageComponent {
+public class IdeaProgressBarComponent extends HtmlPageComponent {
 
     private float progressValue;
     private final Demand demand;
 
-    public DemandProgressBarComponent(final Demand demand) {
+    public IdeaProgressBarComponent(final Demand demand) {
         super();
         this.demand = demand;
         extractData();
@@ -40,7 +39,7 @@ public class DemandProgressBarComponent extends HtmlPageComponent {
         final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
 
-            progressBlock.add(new DemandContributeButtonComponent(demand));
+            progressBlock.add(new IdeaContributeButtonComponent(demand));
 
             final HtmlDiv progressBarBlock = new HtmlDiv("column");
             {
@@ -49,7 +48,7 @@ public class DemandProgressBarComponent extends HtmlPageComponent {
 
             progressBlock.add(progressBarBlock);
 
-            progressBlock.add(new DemandMakeOfferButtonComponent(demand));
+            progressBlock.add(new IdeaMakeOfferButtonComponent(demand));
 
         }
 
@@ -60,7 +59,8 @@ public class DemandProgressBarComponent extends HtmlPageComponent {
         progressValue = 0;
         progressValue = 42 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
 
-//        totalText = new HtmlParagraph(demand.getContribution().toPlainString() + "€");
+        // totalText = new
+        // HtmlParagraph(demand.getContribution().toPlainString() + "€");
 
     }
 }

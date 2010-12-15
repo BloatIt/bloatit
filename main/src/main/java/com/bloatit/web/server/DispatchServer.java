@@ -34,20 +34,21 @@ import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.CreateIdeaPage;
-import com.bloatit.web.html.pages.DemandsPage;
 import com.bloatit.web.html.pages.GlobalSearchPage;
+import com.bloatit.web.html.pages.IdeasList;
 import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.html.pages.LoginPage;
 import com.bloatit.web.html.pages.MemberPage;
 import com.bloatit.web.html.pages.MembersListPage;
 import com.bloatit.web.html.pages.MyAccountPage;
 import com.bloatit.web.html.pages.OfferPage;
+import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.html.pages.SpecialsPage;
 import com.bloatit.web.html.pages.TestPage;
-import com.bloatit.web.html.pages.demand.DemandPage;
+import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.OldUrl;
+import com.bloatit.web.utils.url.Request;
 
 public class DispatchServer {
 
@@ -62,9 +63,9 @@ public class DispatchServer {
             {
                 put(OldUrl.getPageName(IndexPage.class), IndexPage.class);
                 put(OldUrl.getPageName(LoginPage.class), LoginPage.class);
-                put(OldUrl.getPageName(DemandsPage.class), DemandsPage.class);
+                put(OldUrl.getPageName(IdeasList.class), IdeasList.class);
                 put(OldUrl.getPageName(CreateIdeaPage.class), CreateIdeaPage.class);
-                put(OldUrl.getPageName(DemandPage.class), DemandPage.class);
+                put(OldUrl.getPageName(IdeaPage.class), IdeaPage.class);
                 put(OldUrl.getPageName(MyAccountPage.class), MyAccountPage.class);
                 put(OldUrl.getPageName(SpecialsPage.class), SpecialsPage.class);
                 put(OldUrl.getPageName(MembersListPage.class), MembersListPage.class);
@@ -132,6 +133,10 @@ public class DispatchServer {
                 response.writeRedirect(action.process());
 
             } else {
+                session.notifyError(session.tr("Unknow page code: ") + linkable);
+                final Page page = new PageNotFound();
+                page.create();
+                response.writePage(page);
             }
         } catch (final RedirectException ex) {
             response.writeRedirect(ex.getUrl());

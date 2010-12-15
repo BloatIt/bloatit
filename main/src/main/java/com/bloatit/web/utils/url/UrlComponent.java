@@ -12,12 +12,13 @@ import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
 public abstract class UrlComponent {
     protected Messages messages = new Messages();
-    private List<Parameter> parameters = new ArrayList<Parameter>();
-    private List<UrlComponent> components = new ArrayList<UrlComponent>();
+    private final List<Parameter> parameters = new ArrayList<Parameter>();
+    private final List<UrlComponent> components = new ArrayList<UrlComponent>();
     private boolean isRegistered = false;
 
     protected abstract void doRegister();
-    
+
+    @Override
     public abstract UrlComponent clone();
 
     protected UrlComponent() {
@@ -25,11 +26,11 @@ public abstract class UrlComponent {
 
     }
 
-    protected final void register(Parameter param) {
+    protected final void register(final Parameter param) {
         parameters.add(param);
     }
-    
-    protected void register(UrlComponent component) {
+
+    protected void register(final UrlComponent component) {
         components.add(component);
     }
 
@@ -43,16 +44,16 @@ public abstract class UrlComponent {
     @Override
     public final String toString() {
         registerIfNotAlreadyDone();
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         constructUrl(sb);
         return sb.toString();
     }
 
-    protected void constructUrl(StringBuilder sb) {
-        for (UrlComponent comp : components) {
+    protected void constructUrl(final StringBuilder sb) {
+        for (final UrlComponent comp : components) {
             sb.append(comp.toString());
         }
-        for (Parameter param : parameters) {
+        for (final Parameter param : parameters) {
             if (param.getValue() != null && param.getRole() != Role.POST) {
                 sb.append("/").append(param.getName()).append("-").append(param.getStringValue());
             }
@@ -60,47 +61,47 @@ public abstract class UrlComponent {
     }
 
     public Messages getMessages() {
-        Messages messages = new Messages();
-        for (Parameter param : parameters) {
-            Message message = param.getMessage();
+        final Messages messages = new Messages();
+        for (final Parameter param : parameters) {
+            final Message message = param.getMessage();
             if (message != null) {
                 messages.add(message);
             }
         }
-        for (UrlComponent cmp : components) {
+        for (final UrlComponent cmp : components) {
             messages.addAll(cmp.getMessages());
         }
         return messages;
     }
 
-    protected final void parseParameters(Parameters params) {
+    protected final void parseParameters(final Parameters params) {
         registerIfNotAlreadyDone();
-        for (Parameter param : parameters) {
-            String value = params.look(param.getName());
+        for (final Parameter param : parameters) {
+            final String value = params.look(param.getName());
             if (value != null) {
                 param.valueFromString(value);
             }
         }
-        for (UrlComponent comp : components) {
+        for (final UrlComponent comp : components) {
             comp.parseParameters(params);
         }
     }
 
-    public void addParameter(String name, String value) {
+    public void addParameter(final String name, final String value) {
         registerIfNotAlreadyDone();
-        for (Parameter param : parameters) {
+        for (final Parameter param : parameters) {
             if (param.getName().equals(name)) {
                 param.valueFromString(value);
                 break;
             }
         }
     }
-    
-    public HtmlNode getHtmlLink(HtmlNode data) {
-        return new HtmlLink(this.toString(), data);
+
+    public HtmlNode getHtmlLink(final HtmlNode data) {
+        return new HtmlLink(toString(), data);
     }
 
-    public HtmlNode getHtmlLink(String text) {
-        return new HtmlLink(this.toString(), new HtmlText(text));
+    public HtmlNode getHtmlLink(final String text) {
+        return new HtmlLink(toString(), new HtmlText(text));
     }
 }

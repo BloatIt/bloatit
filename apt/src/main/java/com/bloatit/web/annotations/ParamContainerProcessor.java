@@ -41,7 +41,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
     private void parseAParamContainer(Element element) throws IOException {
         ParamContainer paramContainer = element.getAnnotation(ParamContainer.class);
 
-        String urlClassName = (paramContainer.value().equals("") ? element.getSimpleName().toString() : paramContainer.value());
+        String urlClassName = element.getSimpleName().toString();
         JavaGenerator generator;
         if (paramContainer.isComponent()) {
             generator = new UrlComponentClassGenerator(urlClassName);
@@ -70,13 +70,13 @@ public class ParamContainerProcessor extends AbstractProcessor {
             String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
 
             if (parm.generatedFrom().isEmpty()) {
-                generator.addAttribute(attribute.asType().toString(), attributeName);
-                generator.addGetterSetter(attribute.asType().toString(), attributeName);
+                generator.addAttribute(getType(attribute), attributeName);
+                generator.addGetterSetter(getType(attribute), attributeName);
             } else {
-                generator.addAutoGeneratingGetter(attribute.asType().toString(), attributeName, parm.generatedFrom());
+                generator.addAutoGeneratingGetter(getType(attribute), attributeName, parm.generatedFrom());
             }
 
-            generator.registerAttribute(attributeName, attributeUrlString, attribute.asType().toString(), parm.role(), parm.level(), parm.message()
+            generator.registerAttribute(attributeName, attributeUrlString, getType(attribute), parm.role(), parm.level(), parm.message()
                     .value());
 
             // Its not a param but it could be a ParamContainer.
@@ -92,9 +92,18 @@ public class ParamContainerProcessor extends AbstractProcessor {
             ParamContainer component = attribute.asType().accept(vs, 0);
 
             if (component != null) {
-                generator.addComponentAndGetterSetter(component.value(), attribute.getSimpleName().toString());
+                generator.addComponentAndGetterSetter(getSecureType(attribute), attribute.getSimpleName().toString());
+                System.out.println(getType(attribute) + " " + getSecureType(attribute));
                 generator.registerComponent(attribute.getSimpleName().toString());
             }
         }
+    }
+
+    private String getSecureType(Element attribute) {
+        return attribute.asType().toString().replaceAll("\\<.*\\>", "").replaceAll(".*\\.", "").replace(">", "");
+    }
+    
+    private String getType(Element attribute) {
+        return attribute.asType().toString();
     }
 }

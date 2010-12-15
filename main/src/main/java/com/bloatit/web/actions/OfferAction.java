@@ -20,7 +20,6 @@ package com.bloatit.web.actions;
 
 import com.bloatit.web.utils.url.Request;
 
-
 public class OfferAction extends Action {
 
     public final static String IDEA_CODE = "offer_idea";

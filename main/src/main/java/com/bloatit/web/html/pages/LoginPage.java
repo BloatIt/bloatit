@@ -30,7 +30,6 @@ import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-
 public class LoginPage extends Page {
 
     public LoginPage() throws RedirectException {
@@ -50,10 +49,10 @@ public class LoginPage extends Page {
         loginForm.add(passwordField);
         loginForm.add(submitButton);
 
-        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(session.tr("Login"),2);
+        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(session.tr("Login"), 2);
         loginTitle.add(loginForm);
 
-        final HtmlTitleBlock sigupTitle = new HtmlTitleBlock(session.tr("Sigup"),2);
+        final HtmlTitleBlock sigupTitle = new HtmlTitleBlock(session.tr("Sigup"), 2);
         sigupTitle.add(new HtmlText("Not yet implemented."));
 
         final HtmlGenericElement group = new HtmlGenericElement();

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Contribution;
@@ -31,10 +31,10 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.DemandContributorsComponentUrl;
+import com.bloatit.web.utils.url.IdeaContributorsComponentUrl;
 
 @ParamContainer(value = "DemandContributorsComponent", isComponent = true)
-public class DemandContributorsComponent extends HtmlDiv {
+public class IdeaContributorsComponent extends HtmlDiv {
 
     private int contributionCount;
     private HtmlParagraph contributionMin;
@@ -44,14 +44,14 @@ public class DemandContributorsComponent extends HtmlDiv {
     private final Demand demand;
     private HtmlPagedList<Contribution> participationsList;
 
-    public DemandContributorsComponent(final DemandContributorsComponentUrl url, final Demand demand) {
+    public IdeaContributorsComponent(final IdeaContributorsComponentUrl url, final Demand demand) {
         super();
         this.demand = demand;
         extractData();
         add(produce(url));
     }
 
-    protected HtmlElement produce(DemandContributorsComponentUrl url) {
+    protected HtmlElement produce(IdeaContributorsComponentUrl url) {
         final Session session = Context.getSession();
         final HtmlDiv contributorsBlock = new HtmlDiv("contributors_block");
         {

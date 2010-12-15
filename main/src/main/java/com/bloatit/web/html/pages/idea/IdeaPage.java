@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
+package com.bloatit.web.html.pages.idea;
 
 import java.util.Locale;
 
@@ -30,27 +30,29 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.DemandUrl;
+import com.bloatit.web.utils.url.IdeaPageUrl;
 
-@ParamContainer("Demand")
-public class DemandPage extends Page {
+@ParamContainer("idea")
+public class IdeaPage extends Page {
 
-    @RequestParam(name = "id", level = Level.ERROR)
-    protected Demand demand;
+    public static final String IDEA_FIELD_NAME = "id";
 
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
+    @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
+    protected Demand idea;
+
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "idea")
     protected String title;
 
-    private DemandTabPane demandTabPane;
-    private DemandUrl url;
+    private IdeaTabPane demandTabPane;
+    private final IdeaPageUrl url;
 
-    public DemandPage(final DemandUrl url) {
+    public IdeaPage(final IdeaPageUrl url) {
         super();
         this.url = url;
-        demand = url.getDemand();
+        idea = url.getIdea();
         title = url.getTitle();
-        demandTabPane = new DemandTabPane(url.getDemandTabPaneUrl(), demand);
-        
+        demandTabPane = new IdeaTabPane(url.getDemandTabPaneUrl(), idea);
+
     }
 
     @Override
@@ -60,16 +62,19 @@ public class DemandPage extends Page {
 
     @Override
     protected String getTitle() {
-        return title;
+        if (idea != null) {
+            return idea.getTitle();
+        }
+        return "Idea not found !";
     }
 
     @Override
     protected String getCustomCss() {
-        return "demand.css";
+        return "idea.css";
     }
 
     public Demand getDemand() {
-        return demand;
+        return idea;
     }
 
     @Override
@@ -83,10 +88,10 @@ public class DemandPage extends Page {
         }
 
         final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
-        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
 
         add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
-        add(new DemandHeadComponent(demand));
+        add(new IdeaHeadComponent(idea));
         add(generateBody());
     }
 
@@ -102,10 +107,10 @@ public class DemandPage extends Page {
     private HtmlElement generateBodyLeft() {
         final HtmlDiv left = new HtmlDiv("leftColumn");
         {
-            demandTabPane = new DemandTabPane(url.getDemandTabPaneUrl(), demand);
+            demandTabPane = new IdeaTabPane(url.getDemandTabPaneUrl(), idea);
             left.add(demandTabPane);
             // Comments
-            left.add(new DemandCommentListComponent(demand));
+            left.add(new IdeaCommentListComponent(idea));
         }
         return left;
 
@@ -116,7 +121,7 @@ public class DemandPage extends Page {
         {
             final HtmlDiv rightBlock = new HtmlDiv("right_block");
             {
-                rightBlock.add(new DemandSummaryComponent(demand));
+                rightBlock.add(new IdeaSummaryComponent(idea));
             }
             right.add(rightBlock);
         }

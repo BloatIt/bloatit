@@ -16,30 +16,29 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
-
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 
-public class DemandHeadComponent extends HtmlPageComponent {
+public class IdeaHeadComponent extends HtmlPageComponent {
 
-    public DemandHeadComponent(final Demand demand) {
+    public IdeaHeadComponent(final Demand demand) {
         super();
         final HtmlDiv demandHead = new HtmlDiv("demand_head");
         {
             // Add progress bar
             final HtmlDiv demandHeadProgress = new HtmlDiv("demand_head_progress");
             {
-                demandHeadProgress.add(new DemandProgressBarComponent(demand));
+                demandHeadProgress.add(new IdeaProgressBarComponent(demand));
             }
             demandHead.add(demandHeadProgress);
 
             // Add kudo box
             final HtmlDiv demandHeadKudo = new HtmlDiv("demand_head_kudo");
             {
-                demandHeadKudo.add(new DemandKudoComponent(demand));
+                demandHeadKudo.add(new IdeaKudoComponent(demand));
             }
             demandHead.add(demandHeadKudo);
 

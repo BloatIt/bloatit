@@ -14,8 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
-
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Offer;
 import com.bloatit.web.html.HtmlElement;
@@ -26,7 +25,7 @@ import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 
-public class DemandOfferComponent extends HtmlPageComponent {
+public class IdeaOfferComponent extends HtmlPageComponent {
 
     // private Offer offer;
     private HtmlParagraph description;
@@ -38,7 +37,7 @@ public class DemandOfferComponent extends HtmlPageComponent {
     private HtmlParagraph author;
     private final Offer offer;
 
-    public DemandOfferComponent(final Offer offer) {
+    public IdeaOfferComponent(final Offer offer) {
         super();
         this.offer = offer;
         extractData();

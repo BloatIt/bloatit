@@ -14,20 +14,19 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
-
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 
-public class DemandSummaryComponent extends HtmlPageComponent {
+public class IdeaSummaryComponent extends HtmlPageComponent {
 
-    public DemandSummaryComponent(final Demand demand) {
+    public IdeaSummaryComponent(final Demand demand) {
         super();
         final HtmlDiv abstractBlock = new HtmlDiv("abstract_block");
         {
-            abstractBlock.add(new DemandTimelineComponent(demand));
+            abstractBlock.add(new IdeaTimelineComponent(demand));
         }
         add(abstractBlock);
     }

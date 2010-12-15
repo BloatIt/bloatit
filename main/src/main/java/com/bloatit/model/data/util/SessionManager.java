@@ -22,10 +22,10 @@ public class SessionManager {
             final SessionFactory buildSessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "update")
                     .buildSessionFactory();
 
-            if(System.getProperty("lucene") == null ||  System.getProperty("lucene").equals("1")) {
+            if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {
                 Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoDemand.class).startAndWait();
             }
-            
+
             return buildSessionFactory;
         } catch (final Throwable ex) {
             // Make sure you log the exception, as it might be swallowed

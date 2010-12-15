@@ -19,7 +19,6 @@
 
 package com.bloatit.web.actions;
 
-
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
@@ -33,6 +32,7 @@ public abstract class Action implements Linkable {
 
     /**
      * The constructor mustn't thows exception
+     * 
      * @param resquest
      */
     public Action(final Request resquest) {

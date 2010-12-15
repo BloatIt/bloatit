@@ -8,7 +8,7 @@ public class HtmlParagraph extends HtmlBranch {
     public HtmlParagraph() {
         super("p");
     }
-    
+
     /**
      * Creates an HtmlParagraph with a preset text
      * 
@@ -30,7 +30,7 @@ public class HtmlParagraph extends HtmlBranch {
         add(new com.bloatit.web.html.HtmlText(text));
     }
 
-    public HtmlParagraph(HtmlText htmlText) {
+    public HtmlParagraph(final HtmlText htmlText) {
         super("p");
         add(htmlText);
     }

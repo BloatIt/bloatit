@@ -24,7 +24,6 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-
 public abstract class LoggedPage extends Page {
 
     protected LoggedPage() throws RedirectException {

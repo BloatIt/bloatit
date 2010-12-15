@@ -8,13 +8,13 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 public class Parameter {
-    private String message;
-    private Level level;
+    private final String message;
+    private final Level level;
 
-    private String name;
+    private final String name;
     private Object value;
     private final Class<?> valueClass;
-    private Role role;
+    private final Role role;
     private What what;
 
     public Parameter(final String name, final Object value, final Class<?> valueClass, final Role role, final Level level, final String message) {
@@ -38,7 +38,7 @@ public class Parameter {
         if (value != null) {
             try {
                 errorMsg = errorMsg.replaceAll("%value", Loaders.toStr(value));
-            } catch (ConversionErrorException e) {
+            } catch (final ConversionErrorException e) {
                 errorMsg = errorMsg.replaceAll("%value", "null");
             }
         } else {
@@ -65,7 +65,7 @@ public class Parameter {
         }
         try {
             return Loaders.toStr(value);
-        } catch (ConversionErrorException e) {
+        } catch (final ConversionErrorException e) {
             what = What.CONVERSION_ERROR;
             return "null";
         }
@@ -79,14 +79,14 @@ public class Parameter {
         return name;
     }
 
-    public void valueFromString(String string) {
+    public void valueFromString(final String string) {
         if (valueClass.equals(String.class)) {
             value = string;
             return;
         }
         try {
             value = Loaders.fromStr(valueClass, string);
-        } catch (ConversionErrorException e) {
+        } catch (final ConversionErrorException e) {
             what = What.CONVERSION_ERROR;
         }
     }

@@ -16,25 +16,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
-
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Offer;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 
-public class DemandOfferListComponent extends HtmlDiv {
+public class IdeaOfferListComponent extends HtmlDiv {
 
     private final PageIterable<Offer> offers;
 
-    public DemandOfferListComponent(final Demand demand) {
+    public IdeaOfferListComponent(final Demand demand) {
         super();
         offers = demand.getOffers();
         final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
         for (final Offer offer : offers) {
-            offersBlock.add(new DemandOfferComponent(offer));
+            offersBlock.add(new IdeaOfferComponent(offer));
         }
 
         add(offersBlock);

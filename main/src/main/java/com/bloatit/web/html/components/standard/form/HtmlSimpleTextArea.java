@@ -27,10 +27,10 @@ import com.bloatit.web.html.HtmlBranch;
  * </p>
  */
 public class HtmlSimpleTextArea extends HtmlBranch {
-    protected HtmlSimpleTextArea( int rows, int cols) {
+    protected HtmlSimpleTextArea(final int rows, final int cols) {
         super("textarea");
-        addAttribute("cols", ""+cols);
-        addAttribute("rows", ""+rows);
+        addAttribute("cols", "" + cols);
+        addAttribute("rows", "" + rows);
     }
 
     public HtmlSimpleTextArea setDefaultValue(final String text) {

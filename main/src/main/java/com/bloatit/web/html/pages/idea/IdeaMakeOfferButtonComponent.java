@@ -14,8 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
-
+package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -27,9 +26,9 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandMakeOfferButtonComponent extends HtmlPageComponent {
+public class IdeaMakeOfferButtonComponent extends HtmlPageComponent {
 
-    public DemandMakeOfferButtonComponent(final Demand demand) {
+    public IdeaMakeOfferButtonComponent(final Demand demand) {
         super();
         final Session session = Context.getSession();
 

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Parameters {
-    Map<String, String> param = new HashMap<String, String>();     
+    Map<String, String> param = new HashMap<String, String>();
 
     public Parameters() {
         super();
@@ -19,16 +19,16 @@ public class Parameters {
         param.put(value, name);
         return this;
     }
-    
-    public final String pick(final String name){
-        String value = param.get(name);
-        if (value != null){
+
+    public final String pick(final String name) {
+        final String value = param.get(name);
+        if (value != null) {
             param.remove(name);
         }
         return value;
     }
-    
-    public final String look(final String name){
+
+    public final String look(final String name) {
         return param.get(name);
     }
 }

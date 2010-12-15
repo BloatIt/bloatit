@@ -10,7 +10,7 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
@@ -36,10 +36,10 @@ public class UrlBuilder {
         this.linkableClass = linkableClass;
     }
 
-    public UrlBuilder(Class<? extends Linkable> linkableClass, Map<String, String> parameters) {
+    public UrlBuilder(final Class<? extends Linkable> linkableClass, final Map<String, String> parameters) {
         this(linkableClass);
 
-        for(Entry<String,String> param: parameters.entrySet()) {
+        for (final Entry<String, String> param : parameters.entrySet()) {
             addParameter(param.getKey(), param.getValue());
         }
     }
@@ -78,11 +78,11 @@ public class UrlBuilder {
                 if (value != null) {
                     try {
                         strValue = Loaders.toStr(value);
-                    } catch (ConversionErrorException e) {
+                    } catch (final ConversionErrorException e) {
                         throw new FatalErrorException("Parameter " + name + " needs a value.", null);
                     }
                 } else if (param.defaultValue().equals("")) {
-                    if(param.level() == Message.Level.ERROR) {
+                    if (param.level() == Message.Level.ERROR) {
                         throw new FatalErrorException("Parameter " + name + " needs a value.", null);
                     }
                 } else {
@@ -97,10 +97,6 @@ public class UrlBuilder {
                 buildUrl(sb, f.getType());
             }
         }
-    }
-
-    public HtmlLink getHtmlLink(final String text) {
-        return new HtmlLink(buildUrl(), text);
     }
 
     private void fillParameters(final Object linkable, final Class<? extends Object> linkableClass) {
@@ -126,8 +122,12 @@ public class UrlBuilder {
         }
     }
 
-    public HtmlLink getHtmlLink(HtmlDiv div) {
-        return new HtmlLink(buildUrl(), div);
+    public HtmlLink getHtmlLink(final String text) {
+        return new HtmlLink(buildUrl(), text);
+    }
+
+    public HtmlLink getHtmlLink(final HtmlNode node) {
+        return new HtmlLink(buildUrl(), node);
     }
 
 }

@@ -4,8 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.bloatit.common.FatalErrorException;
-import com.bloatit.web.annotations.Loader;
 import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.Message.What;
 import com.bloatit.web.annotations.RequestParam;
@@ -151,26 +149,6 @@ public class RequestParamSetter {
                 e.printStackTrace();
                 throw new ConversionErrorException(error);
             }
-        }
-
-        /**
-         * Find the right class to convert a String into some type.
-         * 
-         * @return a Loader class corresponding to the type
-         */
-        @SuppressWarnings("unchecked")
-        private Class<Loader<?>> findLoaderType() {
-            Class<Loader<?>> valueClass;
-                Loader<?> loader = Loaders.getLoader(f.getType());
-                valueClass = (Class<Loader<?>>) loader.getClass();
-
-            // if the loader is not found there is a fatal error !
-            // It can only arrive if there is a big programming error.
-            if (valueClass == null) {
-                throw new FatalErrorException("StringConvertor class not found.", null);
-            }
-
-            return valueClass;
         }
 
         /**

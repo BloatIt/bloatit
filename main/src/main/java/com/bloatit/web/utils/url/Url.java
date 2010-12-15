@@ -6,13 +6,13 @@ public abstract class Url extends UrlComponent {
 
     private final String name;
 
-    protected Url(String name) {
+    protected Url(final String name) {
         super();
         this.name = name;
     }
 
     @Override
-    protected void constructUrl(StringBuilder sb) {
+    protected void constructUrl(final StringBuilder sb) {
         if (Context.getSession() != null) {
             sb.append("/").append(Context.getSession().getLanguage().getCode());
         }

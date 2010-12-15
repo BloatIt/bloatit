@@ -4,10 +4,8 @@
 
 package com.bloatit.web.html.components.standard;
 
-import com.bloatit.web.html.HtmlNode;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlBranch;
-
+import com.bloatit.web.html.HtmlNode;
 
 /**
  * 

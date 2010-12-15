@@ -19,7 +19,6 @@
 
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.framework.Member;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlText;
@@ -38,7 +37,7 @@ public class MyAccountPage extends Page {
         if (session.getAuthToken() != null) {
             final Member member = session.getAuthToken().getMember();
             member.authenticate(session.getAuthToken());
-            final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(),2);
+            final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(), 2);
 
             memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
@@ -47,7 +46,7 @@ public class MyAccountPage extends Page {
 
             add(memberTitle);
         } else {
-            add(new HtmlTitle("No account",2));
+            add(new HtmlTitle("No account", 2));
         }
     }
 

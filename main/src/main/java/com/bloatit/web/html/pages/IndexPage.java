@@ -19,7 +19,6 @@
 
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.ParamContainer;

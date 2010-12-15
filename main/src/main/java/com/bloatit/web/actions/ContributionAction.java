@@ -18,14 +18,13 @@ package com.bloatit.web.actions;
 
 import java.math.BigDecimal;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
-import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.ContributePage;
-import com.bloatit.web.html.pages.demand.DemandPage;
+import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
@@ -52,11 +51,11 @@ public class ContributionAction extends Action {
         super(request);
         request.setValues(this);
         session.notifyList(request.getMessages());
-        
+
     }
 
     @Override
-    public String process() throws RedirectException  {
+    public String process() throws RedirectException {
         if (request.getMessages().hasMessage(Level.ERROR)) {
             // TODO specific si idea not found
             throw new RedirectException(new UrlBuilder(ContributePage.class).buildUrl());
@@ -69,7 +68,7 @@ public class ContributionAction extends Action {
             if (targetDemand.canContribute()) {
                 targetDemand.addContribution(amount, comment);
                 session.notifyGood(session.tr("Thanks you for crediting " + amount + " on this idea"));
-                return new UrlBuilder(DemandPage.class).addParameter("idea", idea).buildUrl();
+                return new UrlBuilder(IdeaPage.class).addParameter("idea", idea).buildUrl();
             } else {
                 // Should never happen
                 session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));

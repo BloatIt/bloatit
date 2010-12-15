@@ -33,7 +33,7 @@ public abstract class HtmlLeaf extends HtmlElement {
     }
 
     @Override
-    public boolean selfClosable(){
+    public boolean selfClosable() {
         return true;
     }
 }
