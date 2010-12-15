@@ -16,6 +16,9 @@ public IndexUrl(Map<String, String> params) {
 
 
 @Override 
-protected void doRegister(Messages messages) { 
+protected void doRegister() { 
+}
+public IndexUrl clone() { 
+    IndexUrl other = new IndexUrl();
 }
 }

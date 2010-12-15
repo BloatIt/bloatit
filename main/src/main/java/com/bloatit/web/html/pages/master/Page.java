@@ -17,24 +17,24 @@ import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Notification;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 public abstract class Page extends HtmlElement implements Linkable {
 
     private final HtmlBranch content;
     private final HtmlBranch notifications;
-    protected final Request request;
+    protected final Url url;
     protected final Session session;
 
-    public Page(final Request request) {
+    public Page(final Url url) {
         super();
         content = new HtmlDiv().setId("body_content");
         notifications = new HtmlDiv().setId("notifications");
         
         session = Context.getSession();
 
-        this.request = request;
+        this.url = url;
     }
 
     public void create() throws RedirectException {

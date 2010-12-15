@@ -25,7 +25,11 @@ public void setMember(com.bloatit.framework.Member arg0){
 
 
 @Override 
-protected void doRegister(Messages messages) { 
-    register(new Parameter(messages, "id", getMember(), com.bloatit.framework.Member.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+protected void doRegister() { 
+    register(new Parameter("id", getMember(), com.bloatit.framework.Member.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+}
+    other.member = this.member;
+public MemberUrl clone() { 
+    MemberUrl other = new MemberUrl();
 }
 }

@@ -25,7 +25,11 @@ public void setActiveTabKey(java.lang.String arg0){
 
 
 @Override 
-protected void doRegister(Messages messages) { 
-    register(new Parameter(messages, "demand_tab_key", getActiveTabKey(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+protected void doRegister() { 
+    register(new Parameter("demand_tab_key", getActiveTabKey(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+}
+    other.activeTabKey = this.activeTabKey;
+public DemandTabPaneUrl clone() { 
+    DemandTabPaneUrl other = new DemandTabPaneUrl();
 }
 }
