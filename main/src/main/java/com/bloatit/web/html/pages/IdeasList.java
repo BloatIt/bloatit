@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.html.pages;
 
+import com.bloatit.common.Image;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
@@ -29,6 +30,7 @@ import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
@@ -92,16 +94,17 @@ public class IdeasList extends Page {
 
         private HtmlNode generateContent() {
 
-            HtmlDiv ideaBlock = new HtmlDiv();
+            HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
             {
-                HtmlDiv leftBlock = new HtmlDiv();
+                HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
                 {
+                    leftBlock.add(new HtmlImage(new Image("/resources/img/tux_mini.png", Image.ImageType.DISTANT)));
                     leftBlock.add(new HtmlText("VLC"));
                     leftBlock.add(new HtmlText(""+demand.getPopularity()));
                 }
                 ideaBlock.add(leftBlock);
 
-                HtmlDiv rightBlock = new HtmlDiv();
+                HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
                 {
                     HtmlTitleBlock ideaTitle = new HtmlTitleBlock(demand.getTitle(), 3);
                     {
