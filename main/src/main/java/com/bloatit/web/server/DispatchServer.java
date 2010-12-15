@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.server;
 
+import com.bloatit.web.actions.AccountChargingAction;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public class DispatchServer {
                 put(OldUrl.getPageName(LogoutAction.class), LogoutAction.class);
                 put(OldUrl.getPageName(ContributionAction.class), ContributionAction.class);
                 put(OldUrl.getPageName(OfferAction.class), OfferAction.class);
-
+                put(OldUrl.getPageName(AccountChargingAction.class), AccountChargingAction.class);
             }
         };
     }

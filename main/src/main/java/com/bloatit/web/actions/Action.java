@@ -43,7 +43,7 @@ public abstract class Action implements Linkable {
         session = Context.getSession();
     }
 
-    public final String process() throws RedirectException{
+    public final String process() throws RedirectException {
         if (actionUrl.getMessages().hasMessage(Level.ERROR)) {
             session.notifyList(actionUrl.getMessages());
             throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());

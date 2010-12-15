@@ -18,22 +18,52 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.framework.ExternalAccount;
+import com.bloatit.framework.Member;
+import com.bloatit.model.data.DaoExternalAccount.AccountType;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.utils.url.LoginActionUrl;
+import com.bloatit.web.utils.url.UrlBuilder;
+import java.math.BigDecimal;
 
-@ParamContainer("account/charging")
+        @ParamContainer("account/charging")
+
 public class AccountChargingAction extends Action {
 
-    // TODO : get from session
     public final static String CHARGE_AMOUNT_CODE = "chargeAmount";
+    
+    @RequestParam(level = Level.ERROR, name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
+    BigDecimal amount;
+    private final LoginActionUrl url;
 
     public AccountChargingAction(LoginActionUrl url) throws RedirectException {
         super(url);
+        this.url = url;
     }
 
     @Override
     protected String doProcess() throws RedirectException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (url.getMessages().hasMessage(Level.ERROR)) {
+            // TODO
+            throw new RedirectException(new UrlBuilder(IndexPage.class).buildUrl());
+        }
+        Member targetMember = session.getAuthToken().getMember();
+
+        if( !targetMember.canGetInternalAccount() ){
+            session.notifyError(session.tr("Your current rights do not allow you to charge money"));
+            return new UrlBuilder(IndexPage.class).buildUrl();
+        }
+
+        targetMember.authenticate(session.getAuthToken());
+        targetMember.getInternalAccount().authenticate(session.getAuthToken());
+
+        ExternalAccount account = new ExternalAccount(targetMember, AccountType.IBAN, "plop");
+        targetMember.getInternalAccount().chargeAmount(amount, account);
+
+        return session.getPreferredPage();
     }
 }

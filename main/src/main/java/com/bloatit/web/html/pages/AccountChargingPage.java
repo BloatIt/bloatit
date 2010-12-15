@@ -24,6 +24,7 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.Url;
@@ -59,8 +60,10 @@ public class AccountChargingPage extends LoggedPage {
         HtmlForm form = new HtmlForm(chargeActionUrl.buildUrl());
         {
             HtmlTextField amount = new HtmlTextField(AccountChargingAction.CHARGE_AMOUNT_CODE, "Amount");
+            HtmlSubmit submit = new HtmlSubmit(session.tr("Submit"));
 
             form.add(amount);
+            form.add(submit);
         }
         title.add(form);
 

@@ -1,5 +1,6 @@
 package com.bloatit.framework;
 
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.EnumSet;
@@ -11,6 +12,8 @@ import com.bloatit.framework.right.RightManager.Role;
 import com.bloatit.model.data.DaoExternalAccount;
 import com.bloatit.model.data.DaoInternalAccount;
 import com.bloatit.model.data.DaoTransaction;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Transaction extends Identifiable {
 
@@ -19,6 +22,10 @@ public class Transaction extends Identifiable {
     public Transaction(final DaoTransaction dao) {
         super();
         this.dao = dao;
+    }
+
+    Transaction(final InternalAccount from, final Account to, final BigDecimal amount) throws NotEnoughMoneyException {
+        this.dao = DaoTransaction.createAndPersist(from.getDao(), to.getDaoAccount(), amount);
     }
 
     public boolean canAccessSomething() {
