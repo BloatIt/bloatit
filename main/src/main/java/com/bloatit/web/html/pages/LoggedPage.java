@@ -22,15 +22,15 @@ package com.bloatit.web.html.pages;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-
 public abstract class LoggedPage extends Page {
+    private final Url loggedUrl;
 
-    protected LoggedPage(final Request request) throws RedirectException {
-        super(request);
-
+    protected LoggedPage(final Url loggedUrl) throws RedirectException {
+        super();
+        this.loggedUrl = loggedUrl;
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class LoggedPage extends Page {
             add(generateRestrictedContent());
         } else {
             session.notifyBad(getRefusalReason());
-            session.setTargetPage(new UrlBuilder(this.getClass(), request.getParameters()).buildUrl());
+            session.setTargetPage(loggedUrl.toString());
             throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
         }
     }

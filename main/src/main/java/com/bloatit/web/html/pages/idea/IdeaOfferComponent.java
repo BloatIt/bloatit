@@ -16,7 +16,6 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-
 import com.bloatit.framework.Offer;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -25,7 +24,6 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Request;
 
 public class IdeaOfferComponent extends HtmlPageComponent {
 
@@ -39,14 +37,14 @@ public class IdeaOfferComponent extends HtmlPageComponent {
     private HtmlParagraph author;
     private final Offer offer;
 
-    public IdeaOfferComponent(final Request request, final Offer offer) {
+    public IdeaOfferComponent(final Offer offer) {
         super();
         this.offer = offer;
-        extractData(request);
-        add(produce(request));
+        extractData();
+        add(produce());
     }
 
-    protected HtmlElement produce(final Request request) {
+    protected HtmlElement produce() {
         final HtmlDiv offerBlock = new HtmlDiv("offer_block");
         {
             offerBlock.add(authorAvatar);
@@ -67,7 +65,7 @@ public class IdeaOfferComponent extends HtmlPageComponent {
         return offerBlock;
     }
 
-    protected void extractData(final Request request) {
+    protected void extractData() {
 
         final Session session = Context.getSession();
         author = new HtmlParagraph(session.tr("Author : ") + offer.getAuthor().getFullname(), "offer_author");

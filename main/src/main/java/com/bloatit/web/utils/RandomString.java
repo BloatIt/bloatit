@@ -35,7 +35,7 @@ public class RandomString {
     private final Random random = new Random();
     private final char[] buf;
 
-    public RandomString(int length) {
+    public RandomString(final int length) {
         if (length < 1) {
             throw new IllegalArgumentException("length < 1: " + length);
         }

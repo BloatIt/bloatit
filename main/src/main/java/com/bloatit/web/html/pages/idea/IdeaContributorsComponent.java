@@ -21,6 +21,7 @@ package com.bloatit.web.html.pages.idea;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Contribution;
 import com.bloatit.framework.Demand;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
@@ -30,9 +31,9 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Request;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.IdeaContributorsComponentUrl;
 
+@ParamContainer(value = "DemandContributorsComponent", isComponent = true)
 public class IdeaContributorsComponent extends HtmlDiv {
 
     private int contributionCount;
@@ -41,17 +42,16 @@ public class IdeaContributorsComponent extends HtmlDiv {
     private HtmlParagraph contributionMean;
     private PageIterable<Contribution> contributions;
     private final Demand demand;
+    private HtmlPagedList<Contribution> participationsList;
 
-    public IdeaContributorsComponent(final Request request, final Demand demand) {
+    public IdeaContributorsComponent(final IdeaContributorsComponentUrl url, final Demand demand) {
         super();
         this.demand = demand;
-        extractData(request);
-        add(produce(request));
-
-
+        extractData();
+        add(produce(url));
     }
 
-    protected HtmlElement produce(final Request request) {
+    protected HtmlElement produce(IdeaContributorsComponentUrl url) {
         final Session session = Context.getSession();
         final HtmlDiv contributorsBlock = new HtmlDiv("contributors_block");
         {
@@ -70,15 +70,16 @@ public class IdeaContributorsComponent extends HtmlDiv {
             final HtmlRenderer<Contribution> contributionRenderer = generateContributionRenderer();
 
             // Create paged list
-            final HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer,
-                    contributions, new UrlBuilder(IdeaPage.class, request.getParameters()), request);
+            url = url.clone();
+            participationsList = new HtmlPagedList<Contribution>(contributionRenderer, contributions, url, url.getParticipationsListUrl());
+            participationsList.setCssClass("contribution_list");
             contributorsBlock.add(participationsList);
 
         }
         return contributorsBlock;
     }
 
-    protected void extractData(final Request request) {
+    protected void extractData() {
 
         final Session session = Context.getSession();
         contributionCount = demand.getContributions().size();

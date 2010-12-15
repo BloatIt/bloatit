@@ -16,32 +16,30 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.utils.url.Request;
 
 public class IdeaProgressBarComponent extends HtmlPageComponent {
 
     private float progressValue;
     private final Demand demand;
 
-    public IdeaProgressBarComponent(final Request request, final Demand demand) {
+    public IdeaProgressBarComponent(final Demand demand) {
         super();
         this.demand = demand;
-        extractData(request);
-        add(produce(request));
+        extractData();
+        add(produce());
     }
 
-    protected HtmlElement produce(final Request request) {
+    protected HtmlElement produce() {
 
         final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
 
-            progressBlock.add(new IdeaContributeButtonComponent(request, demand));
+            progressBlock.add(new IdeaContributeButtonComponent(demand));
 
             final HtmlDiv progressBarBlock = new HtmlDiv("column");
             {
@@ -50,18 +48,19 @@ public class IdeaProgressBarComponent extends HtmlPageComponent {
 
             progressBlock.add(progressBarBlock);
 
-            progressBlock.add(new IdeaMakeOfferButtonComponent(request, demand));
+            progressBlock.add(new IdeaMakeOfferButtonComponent(demand));
 
         }
 
         return progressBlock;
     }
 
-    protected void extractData(final Request request) {
+    protected void extractData() {
         progressValue = 0;
         progressValue = 42 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
 
-//        totalText = new HtmlParagraph(demand.getContribution().toPlainString() + "€");
+        // totalText = new
+        // HtmlParagraph(demand.getContribution().toPlainString() + "€");
 
     }
 }

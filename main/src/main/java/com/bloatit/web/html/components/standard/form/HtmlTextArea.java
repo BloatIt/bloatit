@@ -27,11 +27,12 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
  * <pre>
  * <div>
  *      <div>
- *          <label for="...">labeltext</label>
- *      </p>
- *      <div>
- *          <textarea name="..." class="cssClass" ...>defaultValue</textarea>
- *      </div>
+ * <label for="...">labeltext</label>
+ * 
+ * </p>
+ * <div>
+ * <textarea name="..." class="cssClass" ...>defaultValue</textarea>
+ * </div>
  * </div>
  * </pre>
  * </p>

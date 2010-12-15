@@ -18,18 +18,18 @@ package com.bloatit.web.actions;
 
 import java.math.BigDecimal;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.AccountChargingPage;
-import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.idea.IdeaPage;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.ContributePageUrl;
+import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer("contribute")
 public class ContributionAction extends Action {
 
     public static final String AMOUNT_CODE = "contributionAmount";
@@ -44,25 +44,21 @@ public class ContributionAction extends Action {
     
     @RequestParam(name = AMOUNT_CODE, role = RequestParam.Role.POST)
     private BigDecimal amount;
+    private final ContributionActionUrl url;
 
-    public ContributionAction(final Request request) throws RedirectException {
-        super(request);
-        request.setValues(this);
-        session.notifyList(request.getMessages());
+
+    public ContributionAction(final ContributionActionUrl url) throws RedirectException {
+        super(url);
+        this.url = url;
+        this.targetIdea = url.getTargetIdea();
+        this.comment = url.getComment();
+        this.amount = url.getAmount();
+        
+        session.notifyList(url.getMessages());
     }
 
     @Override
-    public String process() throws RedirectException {
-        UrlBuilder contributionPageUrl = new UrlBuilder(ContributePage.class);
-        contributionPageUrl.addParameter(TARGET_IDEA, targetIdea);
-        contributionPageUrl.addParameter(COMMENT_CODE, comment);
-        contributionPageUrl.addParameter(AMOUNT_CODE, amount);
-
-        if (request.getMessages().hasMessage(Level.ERROR)) {
-            // TODO specific si idea not found
-            throw new RedirectException(contributionPageUrl.buildUrl());
-        }
-
+    public String doProcess() throws RedirectException {
         // Authentication
         targetIdea.authenticate(session.getAuthToken());
 
@@ -74,14 +70,13 @@ public class ContributionAction extends Action {
             } else {
                 // Should never happen
                 session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-                return contributionPageUrl.buildUrl();
+                return new ContributePageUrl().toString(); // TODO put parameters
             }
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(session.tr("You need to charge your account before you can contribute."));
 
             // Sets the target page to here
-            UrlBuilder contributionActionUrl = new UrlBuilder(ContributionAction.class, this.request.getParameters());
-            session.setTargetPage(contributionActionUrl.buildUrl());
+            session.setTargetPage(this.url.toString());
 
             // Redirects to the account charging page
             UrlBuilder accountCharging = new UrlBuilder(AccountChargingPage.class);

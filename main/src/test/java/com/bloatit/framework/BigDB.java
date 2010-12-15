@@ -29,7 +29,7 @@ public class BigDB {
         SessionManager.beginWorkUnit();
 
         // Create some users
-        List<DaoMember> members = new ArrayList<DaoMember>();
+        final List<DaoMember> members = new ArrayList<DaoMember>();
         for (int i = 0; i < nbUsers; i++) {
             DaoMember member;
             member = DaoMember.createAndPersist("member " + i, new Integer(i).toString(), "mail@nowhere.com");
@@ -61,12 +61,10 @@ public class BigDB {
             }
         }
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
-                                                                                                   new Locale("fr"),
-                                                                                                   fortune(140),
-                                                                                                   fortune(1000) + fortune(1000) + fortune(1000)));
+            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i),
+                    DaoDescription.createAndPersist(members.get(i), new Locale("fr"), fortune(140), fortune(1000) + fortune(1000) + fortune(1000)));
 
-            int commentCount = (int) (Math.random() * 5);
+            final int commentCount = (int) (Math.random() * 5);
 
             for (int j = 0; j < commentCount; j++) {
 
@@ -75,24 +73,27 @@ public class BigDB {
                 demand.addComment(comment);
             }
 
-            int nbContrib = pick(12);
+            final int nbContrib = pick(12);
             for (int j = 0; j < nbContrib; j++) {
-                DaoMember m = members.get(pick(nbUsers));
+                final DaoMember m = members.get(pick(nbUsers));
                 try {
                     demand.addContribution(m, new BigDecimal((pick(10) + 1) * 10), fortune(144));
-                } catch (NotEnoughMoneyException e) {
+                } catch (final NotEnoughMoneyException e) {
                     e.printStackTrace();
                 }
             }
 
-            DaoMember member = members.get(pick(nbUsers));
+            final DaoMember member = members.get(pick(nbUsers));
             if (pick(2) == 0) {
-                demand.addOffer(member, new BigDecimal((pick(50) + 10) * 10), DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)), new Date());
+                demand.addOffer(member,
+                        new BigDecimal((pick(50) + 10) * 10),
+                        DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
+                        new Date());
                 if (pick(2) == 0) {
-                    for (DaoContribution contrib : demand.getContributions()) {
+                    for (final DaoContribution contrib : demand.getContributions()) {
                         try {
                             contrib.accept(demand.getOffers().iterator().next());
-                        } catch (NotEnoughMoneyException e) {
+                        } catch (final NotEnoughMoneyException e) {
                             e.printStackTrace();
                         }
                     }
@@ -111,7 +112,7 @@ public class BigDB {
 
     }
 
-    private void createComment(DaoComment comment) {
+    private void createComment(final DaoComment comment) {
         final int nbComment = (int) (Math.random() * 15);
         for (int i = 0; i < nbComment; i++) {
             final int memberNum = (int) (Math.random() * nbUsers);
@@ -123,7 +124,7 @@ public class BigDB {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         new BigDB();
     }
 
@@ -131,13 +132,13 @@ public class BigDB {
         String text = "";
         try {
             String line;
-            Process p = Runtime.getRuntime().exec("fortune");
-            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            final Process p = Runtime.getRuntime().exec("fortune");
+            final BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
                 text += line;
             }
             input.close();
-        } catch (Exception err) {
+        } catch (final Exception err) {
             err.printStackTrace();
         }
 
@@ -149,7 +150,7 @@ public class BigDB {
         return text;
     }
 
-    private String fortune(int i) {
+    private String fortune(final int i) {
         String text = fortune();
         if (text.length() > i) {
             text = text.substring(0, i);
@@ -157,7 +158,7 @@ public class BigDB {
         return text;
     }
 
-    private int pick(int max) {
+    private int pick(final int max) {
         return (int) (Math.random() * max);
     }
 }

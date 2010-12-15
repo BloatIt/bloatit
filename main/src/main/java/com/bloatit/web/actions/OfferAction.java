@@ -18,9 +18,10 @@
  */
 package com.bloatit.web.actions;
 
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.utils.url.OfferActionUrl;
 
-
+@ParamContainer("offerAction")
 public class OfferAction extends Action {
 
     public final static String IDEA_CODE = "offer_idea";
@@ -29,12 +30,12 @@ public class OfferAction extends Action {
     public final static String TITLE_CODE = "offer_title";
     public final static String DESCRIPTION_CODE = "offer_description";
 
-    public OfferAction(final Request request) {
-        super(request);
+    public OfferAction(final OfferActionUrl url) {
+        super(url);
     }
 
     @Override
-    public String process() {
+    public String doProcess() {
         // Handle errors here
 
         // targetIdea.addOffer(price, , expiryDate);

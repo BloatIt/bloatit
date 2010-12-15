@@ -18,11 +18,11 @@
  */
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.ContributionAction;
-import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
@@ -32,9 +32,11 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
+import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer("contribute")
 public class ContributePage extends LoggedPage {
 
     @RequestParam(level = Level.ERROR)
@@ -46,9 +48,8 @@ public class ContributePage extends LoggedPage {
     @RequestParam(defaultValue = "vide")
     private String contributionCommentParam;
 
-    public ContributePage(final Request request) throws RedirectException {
-        super(request);
-        request.setValues(this);
+    public ContributePage(final ContributePageUrl url) throws RedirectException {
+        super(url);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class ContributePage extends LoggedPage {
         final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Contribute"));
 
         // Summary of the idea
-        final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle(),2);
+        final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle(), 2);
         final HtmlText textSummary = new HtmlText(targetIdea.getDescription().toString());
         summary.add(textSummary);
 
@@ -81,7 +82,7 @@ public class ContributePage extends LoggedPage {
         contribForm.add(commentField);
         contribForm.add(submitButton);
 
-        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(session.tr("Contribute"),2);
+        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(session.tr("Contribute"), 2);
         contribTitle.add(summary);
         contribTitle.add(contribForm);
 

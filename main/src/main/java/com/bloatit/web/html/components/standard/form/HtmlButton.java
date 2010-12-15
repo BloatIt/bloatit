@@ -21,7 +21,6 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 
-
 /**
  * <p>
  * Class used to create Html buttons

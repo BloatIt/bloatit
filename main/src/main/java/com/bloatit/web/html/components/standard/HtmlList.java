@@ -25,31 +25,32 @@ import com.bloatit.web.html.HtmlText;
  */
 public class HtmlList extends HtmlLeaf {
 
-    public enum listType{
+    public enum listType {
         BULLET, NUMBERED
     }
 
     /**
      * Creates a list (not numbered)
      */
-    public HtmlList(){
+    public HtmlList() {
         super("ul");
     }
 
     /**
      * Creates a list with the precised type (numbered or bullet)
+     * 
      * @param type the type of the list
      */
-    public HtmlList(listType type){
-        super((type==listType.BULLET)?"ul":"ol");
+    public HtmlList(final listType type) {
+        super((type == listType.BULLET) ? "ul" : "ol");
     }
 
-    public HtmlList add(String element){
+    public HtmlList add(final String element) {
         return add(new HtmlText(element));
     }
 
     @Override
-    public HtmlList add(HtmlNode element){
+    public HtmlList add(final HtmlNode element) {
         super.add(new HtmlListItem(element));
         return this;
     }

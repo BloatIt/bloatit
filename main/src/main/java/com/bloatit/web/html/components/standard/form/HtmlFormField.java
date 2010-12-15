@@ -48,30 +48,36 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     public enum LabelPosition {
 
         /**
-         * <b>BEFORE</b> means the label is positionned before the aformentionned
+         * <b>BEFORE</b> means the label is positionned before the
+         * aformentionned
          * element.
          * Example :
-         * <p><label> ... </label><element /></p>
+         * <p>
+         * <label> ... </label><element />
+         * </p>
          */
         BEFORE,
         /**
          * <b>AFTER</b> means the label is positionned after the aformentionned
          * element.
          * Example :
-         * <p><element /><label> ... </label></p>
+         * <p>
+         * <element /><label> ... </label>
+         * </p>
          */
         AFTER
     }
+
     protected PlaceHolderElement ph = new PlaceHolderElement();
     protected HtmlLabel label;
     protected HtmlDiv container = new HtmlDiv();
     protected HtmlElement element;
-    private String name;
-    private RandomString rng = new RandomString(10);
+    private final RandomString rng = new RandomString(10);
 
     /**
      * Creates a form field for a given element, with a given name.
      * If a label is added, it will will be positionned BEFORE the element
+     * 
      * @param element the element to add
      * @param name the name of the element
      */
@@ -83,6 +89,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Creates a form field for a given element, with a given name and a given
      * label
      * The Label will be positionned BEFORE the element
+     * 
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -96,11 +103,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * label
      * If a label is added later, it will be added before or after the element,
      * depending on the value of the parameter <i>position</i>
+     * 
      * @param element the element to add
      * @param name the name of the element
      * @param position the position of the future label
      */
-    protected HtmlFormField(final HtmlElement element, final String name, LabelPosition position) {
+    protected HtmlFormField(final HtmlElement element, final String name, final LabelPosition position) {
         super();
         this.element = element;
         this.position = position;
@@ -112,12 +120,13 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Creates a form field for a given element, with a given name and a given
      * label
      * The label position depends on the value of the parameter <i>position</i>
+     * 
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
      * @param position the position of the future label
      */
-    protected HtmlFormField(final HtmlElement element, final String name, final String label, LabelPosition position) {
+    protected HtmlFormField(final HtmlElement element, final String name, final String label, final LabelPosition position) {
         super();
         this.element = element;
         this.position = position;
@@ -133,7 +142,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and
      * not modify any other parameters than redefining the placeholder
-     * </p> 
+     * </p>
+     * 
      * @param label the label for the element
      */
     public void setLabel(final String label) {
@@ -143,25 +153,25 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         checkIdLabel();
     }
 
-    protected void checkIdLabel(){
-        if( getId() == null ){
+    protected void checkIdLabel() {
+        if (getId() == null) {
             setId(rng.nextString());
-        }else {
+        } else {
             label.setFor(getId());
         }
     }
 
     @Override
-    public HtmlElement setId(String id) {
+    public HtmlElement setId(final String id) {
         if (this.label != null) {
             this.label.setFor(id);
         }
-         element.setId(id);
-         return this;
+        element.setId(id);
+        return this;
     }
 
     @Override
-    public String getId(){
+    public String getId() {
         return element.getId();
     }
 
@@ -173,7 +183,6 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     @Override
     public final void setName(final String name) {
-        this.name = name;
         element.addAttribute("name", name);
     }
 
@@ -199,17 +208,17 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      */
     private void init() {
         switch (position) {
-            case AFTER:
-                this.container.add(element);
-                this.container.add(ph);
-                break;
-            case BEFORE:
-            default:
-                this.container.add(ph);
-                this.container.add(element);
-                break;
+        case AFTER:
+            this.container.add(element);
+            this.container.add(ph);
+            break;
+        case BEFORE:
+        default:
+            this.container.add(ph);
+            this.container.add(element);
+            break;
         }
-        this.add(container);
+        add(container);
     }
 
     /**

@@ -21,18 +21,16 @@ package com.bloatit.web.html.pages;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
-
 
 public class PageNotFound extends Page {
 
-    public PageNotFound(final Request request) throws RedirectException {
-        super(request);
+    public PageNotFound() throws RedirectException {
+        super();
         generateContent();
     }
 
     private void generateContent() {
-        final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"),2);
+        final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"), 2);
 
         add(errorTitle);
 

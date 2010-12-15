@@ -20,11 +20,11 @@
 package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.HtmlBranch;
-import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 
 /**
  * Creates blocks in a form
+ * 
  * <pre>
  * <fieldset>
  *      <legend>my legend here</legend>
@@ -34,9 +34,9 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
  * </pre>
  */
 public class HtmlFormBlock extends HtmlBranch {
-    private HtmlBranch legend;
+    private final HtmlBranch legend;
 
-    public HtmlFormBlock(String legend){
+    public HtmlFormBlock(final String legend) {
         super("fieldset");
         this.legend = new HtmlGenericElement("legend");
         this.legend.addText(legend);

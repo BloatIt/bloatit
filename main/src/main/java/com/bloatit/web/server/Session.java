@@ -109,7 +109,7 @@ public class Session {
     }
 
     public String getPreferredPage() {
-        if(targetPage != null) {
+        if (targetPage != null) {
             return targetPage;
         } else if (lastStablePage != null) {
             return lastStablePage;

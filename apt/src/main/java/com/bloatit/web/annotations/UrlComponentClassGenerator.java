@@ -7,10 +7,7 @@ public class UrlComponentClassGenerator extends JavaGenerator {
         _classHeader.append("public class ").append(className).append(" extends UrlComponent {\n");
         _classHeader.append("public ").append(className).append("() {\n");
         _classHeader.append("    super(); \n}\n");
-
-        _classHeader.append("public ").append(className).append("(Map<String, String> params) {\n");
-        _classHeader.append("    super(); \n");
-        _classHeader.append("    parseParameterMap(params);\n}\n");
+        
     }
 
 }

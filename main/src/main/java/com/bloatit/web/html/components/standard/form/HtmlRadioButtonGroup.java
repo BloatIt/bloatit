@@ -21,25 +21,25 @@ package com.bloatit.web.html.components.standard.form;
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.form.HtmlFormField.LabelPosition;
 
-public class HtmlRadioButtonGroup extends HtmlLeaf{
+public class HtmlRadioButtonGroup extends HtmlLeaf {
 
     private final LabelPosition position;
-    private String name;
+    private final String name;
 
-    public HtmlRadioButtonGroup(String name) {
+    public HtmlRadioButtonGroup(final String name) {
         super();
         this.name = name;
         this.position = LabelPosition.AFTER;
     }
 
-    public HtmlRadioButtonGroup(String name, LabelPosition position) {
+    public HtmlRadioButtonGroup(final String name, final LabelPosition position) {
         super();
         this.name = name;
         this.position = position;
     }
 
-    public HtmlRadioButton addRadioButton(String value, String label) {
-        HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
+    public HtmlRadioButton addRadioButton(final String value, final String label) {
+        final HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
         add(button);
         return button;
     }

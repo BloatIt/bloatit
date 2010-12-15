@@ -3,9 +3,7 @@ package com.bloatit.web.server;
 import java.io.IOException;
 import java.io.OutputStream;
 
-
 import com.bloatit.web.html.pages.master.Page;
-
 
 public class HttpResponse {
 

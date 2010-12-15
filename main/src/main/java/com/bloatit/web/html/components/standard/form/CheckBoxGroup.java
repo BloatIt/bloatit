@@ -35,13 +35,13 @@ public class CheckBoxGroup extends HtmlLeaf {
         this.position = LabelPosition.AFTER;
     }
 
-    public CheckBoxGroup(LabelPosition position){
+    public CheckBoxGroup(final LabelPosition position) {
         super();
         this.position = position;
     }
 
-    public HtmlCheckbox addCheckBox(String name, String label) {
-        HtmlCheckbox box = new HtmlCheckbox(name, label, position);
+    public HtmlCheckbox addCheckBox(final String name, final String label) {
+        final HtmlCheckbox box = new HtmlCheckbox(name, label, position);
         add(box);
         return box;
     }

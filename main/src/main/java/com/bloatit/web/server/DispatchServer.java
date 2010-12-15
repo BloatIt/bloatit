@@ -35,8 +35,8 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.AccountChargingPage;
 import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.CreateIdeaPage;
-import com.bloatit.web.html.pages.IdeasList;
 import com.bloatit.web.html.pages.GlobalSearchPage;
+import com.bloatit.web.html.pages.IdeasList;
 import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.html.pages.LoginPage;
 import com.bloatit.web.html.pages.MemberPage;
@@ -48,9 +48,8 @@ import com.bloatit.web.html.pages.SpecialsPage;
 import com.bloatit.web.html.pages.TestPage;
 import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.OldUrl;
-import java.util.Arrays;
+import com.bloatit.web.utils.url.Request;
 
 public class DispatchServer {
 
@@ -136,8 +135,8 @@ public class DispatchServer {
                 response.writeRedirect(action.process());
 
             } else {
-                session.notifyError(session.tr("Unknow page code: ")+linkable);
-                Page page = new PageNotFound(request);
+                session.notifyError(session.tr("Unknow page code: ") + linkable);
+                final Page page = new PageNotFound();
                 page.create();
                 response.writePage(page);
             }

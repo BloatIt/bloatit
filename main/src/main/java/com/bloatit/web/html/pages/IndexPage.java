@@ -19,7 +19,6 @@
 
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.ParamContainer;
@@ -31,14 +30,13 @@ import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 @ParamContainer("index")
 public class IndexPage extends Page {
 
-    public IndexPage(final Request request) throws RedirectException {
-        super(request);
+    public IndexPage() throws RedirectException {
+        super();
     }
 
     @Override

@@ -21,7 +21,6 @@ import java.util.Locale;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.annotations.Message.Level;
-import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
@@ -31,7 +30,7 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.IdeaPageUrl;
 
 @ParamContainer("idea")
 public class IdeaPage extends Page {
@@ -44,12 +43,16 @@ public class IdeaPage extends Page {
     @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "idea")
     protected String title;
 
-    @PageComponent
     private IdeaTabPane demandTabPane;
+    private final IdeaPageUrl url;
 
-    public IdeaPage(final Request request) {
-        super(request);
-        this.request.setValues(this);
+    public IdeaPage(final IdeaPageUrl url) {
+        super();
+        this.url = url;
+        idea = url.getIdea();
+        title = url.getTitle();
+        demandTabPane = new IdeaTabPane(url.getDemandTabPaneUrl(), idea);
+
     }
 
     @Override
@@ -77,9 +80,9 @@ public class IdeaPage extends Page {
     @Override
     public void create() throws RedirectException {
         super.create();
-        addNotifications(request.getMessages());
+        addNotifications(url.getMessages());
 
-        if (request.getMessages().hasMessage(Level.ERROR)) {
+        if (url.getMessages().hasMessage(Level.ERROR)) {
             setPageNotFound();
             return;
         }
@@ -88,7 +91,7 @@ public class IdeaPage extends Page {
         final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
 
         add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
-        add(new IdeaHeadComponent(request, idea));
+        add(new IdeaHeadComponent(idea));
         add(generateBody());
     }
 
@@ -104,10 +107,10 @@ public class IdeaPage extends Page {
     private HtmlElement generateBodyLeft() {
         final HtmlDiv left = new HtmlDiv("leftColumn");
         {
-            demandTabPane = new IdeaTabPane(request, idea);
+            demandTabPane = new IdeaTabPane(url.getDemandTabPaneUrl(), idea);
             left.add(demandTabPane);
             // Comments
-            left.add(new IdeaCommentListComponent(request, idea));
+            left.add(new IdeaCommentListComponent(idea));
         }
         return left;
 
@@ -118,7 +121,7 @@ public class IdeaPage extends Page {
         {
             final HtmlDiv rightBlock = new HtmlDiv("right_block");
             {
-                rightBlock.add(new IdeaSummaryComponent(request, idea));
+                rightBlock.add(new IdeaSummaryComponent(idea));
             }
             right.add(rightBlock);
         }

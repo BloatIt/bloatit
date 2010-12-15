@@ -18,17 +18,17 @@ package com.bloatit.web.html.components.custom;
 
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.Url;
 
 public class HtmlTabBlock extends HtmlDiv {
 
     private final String tabBlockKey;
     private final String activeTabKey;
-    private final UrlBuilder tablinks;
+    private final Url tablinks;
     private final HtmlDiv tabBody;
     private final HtmlDiv tabHeader;
 
-    public HtmlTabBlock(String tabBlockKey, String activeTabKey, UrlBuilder tablinks) {
+    public HtmlTabBlock(final String tabBlockKey, final String activeTabKey, final Url tablinks) {
         super("tab_panel");
 
         this.tabBlockKey = tabBlockKey;
@@ -42,7 +42,7 @@ public class HtmlTabBlock extends HtmlDiv {
         add(tabBody);
     }
 
-    public void addTab(HtmlTab tab) {
+    public void addTab(final HtmlTab tab) {
         if (tab.getTabKey().equals(activeTabKey)) {
             addTabHeader(tab, true);
             tabBody.add(tab.generateBody());
@@ -51,7 +51,7 @@ public class HtmlTabBlock extends HtmlDiv {
         }
     }
 
-    private void addTabHeader(final HtmlTab tab, boolean active) {
+    private void addTabHeader(final HtmlTab tab, final boolean active) {
 
         String tabTitleStyle;
         String tabTitleContentStyle;
@@ -67,20 +67,20 @@ public class HtmlTabBlock extends HtmlDiv {
         final HtmlDiv tabTitle = new HtmlDiv(tabTitleStyle);
         tabHeader.add(tabTitle);
 
-        HtmlDiv div = new HtmlDiv(tabTitleContentStyle);
+        final HtmlDiv div = new HtmlDiv(tabTitleContentStyle);
         div.addText(tab.getTitle());
 
         tablinks.addParameter(tabBlockKey, tab.getTabKey());
-        
+
         tabTitle.add(tablinks.getHtmlLink(div));
     }
-    
+
     public abstract static class HtmlTab {
 
         private final String title;
         private final String tabKey;
 
-        public HtmlTab(String title, String tabKey) {
+        public HtmlTab(final String title, final String tabKey) {
             this.title = title;
             this.tabKey = tabKey;
         }
