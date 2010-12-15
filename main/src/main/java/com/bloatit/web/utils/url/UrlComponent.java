@@ -2,7 +2,6 @@ package com.bloatit.web.utils.url;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
@@ -12,28 +11,33 @@ public abstract class UrlComponent {
     private List<Parameter> parameters = new ArrayList<Parameter>();
     private boolean isRegistered = false;
 
-    protected abstract void doRegister(Messages messages);
+    protected abstract void doRegister();
+
+    protected UrlComponent() {
+        super();
+
+    }
 
     protected final void register(Parameter param) {
         parameters.add(param);
     }
 
-    private final void registerIfNotAlreadyDone(Messages messages) {
+    private final void registerIfNotAlreadyDone() {
         if (!isRegistered) {
-            doRegister(messages);
+            doRegister();
             isRegistered = true;
         }
     }
 
     @Override
     public final String toString() {
-        registerIfNotAlreadyDone(messages);
+        registerIfNotAlreadyDone();
         StringBuilder sb = new StringBuilder();
         constructUrl(sb);
         return sb.toString();
     }
-    
-    protected void constructUrl(StringBuilder sb){
+
+    protected void constructUrl(StringBuilder sb) {
         for (Parameter param : parameters) {
             if (param.getValue() != null && param.getRole() != Role.POST) {
                 sb.append("/").append(param.getName()).append("-").append(param.getStringValue());
@@ -45,13 +49,23 @@ public abstract class UrlComponent {
         return messages;
     }
 
-    protected Messages parseParameterMap(Map<String, String> params) {
-        registerIfNotAlreadyDone(messages);
+    void parseParameters(Parameters params) {
+        registerIfNotAlreadyDone();
         for (Parameter param : parameters) {
-            if (params.containsKey(param.getName())) {
-                param.valueFromString(params.get(param.getName()));
+            String value = params.look(param.getName());
+            if (value != null) {
+                param.valueFromString(value);
             }
         }
-        return messages;
+    }
+
+    public void addParameter(String name, String value) {
+        registerIfNotAlreadyDone();
+        for (Parameter param : parameters) {
+            if (param.getName().equals(name)) {
+                param.valueFromString(value);
+                break;
+            }
+        }
     }
 }

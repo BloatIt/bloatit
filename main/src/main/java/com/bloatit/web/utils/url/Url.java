@@ -2,8 +2,10 @@ package com.bloatit.web.utils.url;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlText;
+import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
@@ -17,22 +19,21 @@ public abstract class Url extends UrlComponent {
         this.name = name;
     }
 
-    protected abstract void doRegister(Messages messages);
 
     protected void register(UrlComponent component) {
         components.add(component);
     }
 
-    protected final Messages parseParameterMap(Map<String, String> params) {
-        super.parseParameterMap(params); // doRegister done in super class.
+    @Override
+    final void parseParameters(Parameters params) {
+        super.parseParameters(params); // doRegister done in super class.
         for (UrlComponent comp : components) {
-            comp.parseParameterMap(params);
+            comp.parseParameters(params);
         }
-        return messages;
     }
 
     @Override
-    protected void  constructUrl(StringBuilder sb) {
+    protected void constructUrl(StringBuilder sb) {
         if (Context.getSession() != null) {
             sb.append("/").append(Context.getSession().getLanguage().getCode());
         }
@@ -41,6 +42,23 @@ public abstract class Url extends UrlComponent {
             sb.append(comp.toString());
         }
         super.constructUrl(sb);
+    }
+
+    @Override
+    public final Messages getMessages(){
+        Messages messages = super.getMessages();
+        for (UrlComponent cmp : components) {
+            messages.addAll(cmp.getMessages());
+        }
+        return messages;
+    }
+    
+    public HtmlNode getHtmlLink(HtmlNode data) {
+        return new HtmlLink(this.toString(), data);
+    }
+
+    public HtmlNode getHtmlLink(String text) {
+        return new HtmlLink(this.toString(), new HtmlText(text));
     }
 
 }

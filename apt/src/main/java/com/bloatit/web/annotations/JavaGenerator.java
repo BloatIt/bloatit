@@ -18,10 +18,9 @@ public class JavaGenerator {
         name = name.substring(0, 1).toLowerCase() + name.substring(1);
         className = name.substring(0, 1).toUpperCase() + name.substring(1) + "Url";
 
-        _import.append("import java.util.Map;\n");
         _import.append("import com.bloatit.web.annotations.Message.Level;\n");
         _import.append("import com.bloatit.web.annotations.RequestParam.Role;\n");
-        _import.append("import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;\n");
+
     }
 
     public final void addAttribute(String type, String name) {
@@ -100,8 +99,8 @@ public class JavaGenerator {
         _doRegister.append("    register(").append(getComponentName(name)).append(");\n");
     }
 
-    public final void addComponentAndGetterSetter(String name) {
-        String type = getComponentType(name);
+    public final void addComponentAndGetterSetter(String type, String name) {
+        type = getComponentType(type);
         name = getComponentName(name);
 
         _attributes.append("private ").append(type).append(" ").append(name).append(" = new ").append(type).append("();\n");
@@ -118,6 +117,12 @@ public class JavaGenerator {
     }
 
     public final String generate() {
+
+        _classHeader.append("public ").append(className).append("(Parameters params) {\n");
+        _classHeader.append("    this();\n");
+        _classHeader.append("    parseParameters(params);\n");
+        _classHeader.append("}\n");
+
         StringBuilder sb = new StringBuilder();
         sb.append("package com.bloatit.web.utils.url;\n");
         sb.append("\n");
@@ -133,13 +138,14 @@ public class JavaGenerator {
         sb.append("@Override \nprotected void doRegister() { \n");
         sb.append(_doRegister);
         sb.append("}\n");
+        sb.append("\n");
 
-        _clone.append("public ").append(className).append(" clone() { \n");
-        _clone.append("    ").append(className).append(" other = new ").append(className).append("();\n");
+        sb.append("public ").append(className).append(" clone() { \n");
+        sb.append("    ").append(className).append(" other = new ").append(className).append("();\n");
         sb.append(_clone);
-        _clone.append("    return other;\n");
+        sb.append("    return other;\n");
         sb.append("}\n");
-        
+
         sb.append("}\n");
 
         return sb.toString();

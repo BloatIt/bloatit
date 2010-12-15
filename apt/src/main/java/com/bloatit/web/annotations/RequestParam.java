@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface RequestParam {
 
     public enum Role {
-        POST, GET, PRETTY
+        POST, GET, PRETTY, SESSION
     }
 
     String name() default "";
@@ -24,5 +24,7 @@ public @interface RequestParam {
     Role role() default Role.GET;
     
     String generatedFrom() default ""; 
+    
+    boolean pickOnRead() default false;
 
 }

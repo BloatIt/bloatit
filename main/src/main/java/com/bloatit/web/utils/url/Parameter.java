@@ -6,10 +6,8 @@ import com.bloatit.web.annotations.Message.What;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
-import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
 public class Parameter {
-    private Messages messages;
     private String message;
     private Level level;
 
@@ -17,15 +15,9 @@ public class Parameter {
     private Object value;
     private final Class<?> valueClass;
     private Role role;
+    private What what;
 
-    public Parameter(final Messages messages,
-                     final String name,
-                     final Object value,
-                     final Class<?> valueClass,
-                     final Role role,
-                     final Level level,
-                     final String message) {
-        this.messages = messages;
+    public Parameter(final String name, final Object value, final Class<?> valueClass, final Role role, final Level level, final String message) {
         this.name = name;
         this.role = role;
         this.value = value;
@@ -38,21 +30,24 @@ public class Parameter {
         return role;
     }
 
-    private void addToMessages(What what) {
-        message.replaceAll("%param", name);
+    public Message getMessage() {
+        if (what == What.NO_ERROR) {
+            return null;
+        }
+        String errorMsg = message.replaceAll("%param", name);
         if (value != null) {
             try {
-                message.replaceAll("%value", Loaders.toStr(value));
+                errorMsg = errorMsg.replaceAll("%value", Loaders.toStr(value));
             } catch (ConversionErrorException e) {
-                message.replaceAll("%value", "null");
+                errorMsg = errorMsg.replaceAll("%value", "null");
             }
         } else {
-            message.replaceAll("%value", "null");
+            errorMsg = errorMsg.replaceAll("%value", "null");
         }
-        messages.add(new Message(level, what, message));
+        return new Message(level, what, errorMsg);
     }
 
-    private String makeStringPretty(String value){
+    private String makeStringPretty(String value) {
         value = value.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨]", "-");
         value = value.replaceAll("(--)+", "-");
         value = value.replaceAll("(--)+", "-");
@@ -61,17 +56,17 @@ public class Parameter {
         value = value.toLowerCase();
         return value;
     }
-    
+
     public String getStringValue() {
         if (value == null) {
-            addToMessages(What.NOT_FOUND);
+            what = What.NOT_FOUND;
         } else if (role == Role.PRETTY) {
             return makeStringPretty(String.class.cast(value));
         }
         try {
             return Loaders.toStr(value);
         } catch (ConversionErrorException e) {
-            addToMessages(What.CONVERSION_ERROR);
+            what = What.CONVERSION_ERROR;
             return "null";
         }
     }
@@ -92,7 +87,7 @@ public class Parameter {
         try {
             value = Loaders.fromStr(valueClass, string);
         } catch (ConversionErrorException e) {
-            addToMessages(What.CONVERSION_ERROR);
+            what = What.CONVERSION_ERROR;
         }
     }
 }
