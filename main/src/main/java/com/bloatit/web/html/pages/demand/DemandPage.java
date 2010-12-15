@@ -30,6 +30,7 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.url.DemandUrl;
 import com.bloatit.web.utils.url.Request;
 
 public class DemandPage extends Page {
@@ -43,9 +44,12 @@ public class DemandPage extends Page {
     @PageComponent
     private DemandTabPane demandTabPane;
 
-    public DemandPage(final Request request) {
-        super(request);
-        this.request.setValues(this);
+    public DemandPage(final DemandUrl url) {
+        super(url);
+        demand = url.getDemand();
+        title = url.getTitle();
+        demandTabPane = new DemandTabPane(url.getDemandTabPaneUrl(), demand);
+        
     }
 
     @Override
@@ -55,10 +59,7 @@ public class DemandPage extends Page {
 
     @Override
     protected String getTitle() {
-        if (demand != null) {
-            return demand.getTitle();
-        }
-        return "Demand not found !";
+        return title;
     }
 
     @Override

@@ -30,8 +30,11 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.url.DemandTabPaneUrl;
+import com.bloatit.web.utils.url.DemandUrl;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.UrlComponent;
 
 public class DemandContributorsComponent extends HtmlDiv {
 
@@ -42,16 +45,15 @@ public class DemandContributorsComponent extends HtmlDiv {
     private PageIterable<Contribution> contributions;
     private final Demand demand;
 
-    public DemandContributorsComponent(final Request request, final Demand demand) {
+    public DemandContributorsComponent(final UrlComponent url, final Demand demand) {
         super();
         this.demand = demand;
-        extractData(request);
-        add(produce(request));
-
+        extractData(url);
+        add(produce(url));
 
     }
 
-    protected HtmlElement produce(final Request request) {
+    protected HtmlElement produce(final UrlComponent url) {
         final Session session = Context.getSession();
         final HtmlDiv contributorsBlock = new HtmlDiv("contributors_block");
         {
@@ -71,14 +73,14 @@ public class DemandContributorsComponent extends HtmlDiv {
 
             // Create paged list
             final HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer,
-                    contributions, new UrlBuilder(DemandPage.class, request.getParameters()), request);
+                    contributions, new DemandUrl(), url);
             contributorsBlock.add(participationsList);
 
         }
         return contributorsBlock;
     }
 
-    protected void extractData(final Request request) {
+    protected void extractData(final UrlComponent url) {
 
         final Session session = Context.getSession();
         contributionCount = demand.getContributions().size();

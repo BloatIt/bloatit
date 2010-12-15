@@ -17,7 +17,6 @@
 package com.bloatit.web.html.components.custom;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
@@ -30,7 +29,6 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-@ParamContainer(value = "pagedList", isComponent = true)
 public class HtmlPagedList<T> extends HtmlList {
 
     private final static String CURRENT_PAGE_FIELD_NAME = "current_page";

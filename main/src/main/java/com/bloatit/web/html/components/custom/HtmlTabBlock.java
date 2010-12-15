@@ -18,17 +18,17 @@ package com.bloatit.web.html.components.custom;
 
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.Url;
 
 public class HtmlTabBlock extends HtmlDiv {
 
     private final String tabBlockKey;
     private final String activeTabKey;
-    private final UrlBuilder tablinks;
+    private final Url tablinks;
     private final HtmlDiv tabBody;
     private final HtmlDiv tabHeader;
 
-    public HtmlTabBlock(String tabBlockKey, String activeTabKey, UrlBuilder tablinks) {
+    public HtmlTabBlock(String tabBlockKey, String activeTabKey, Url tablinks) {
         super("tab_panel");
 
         this.tabBlockKey = tabBlockKey;
