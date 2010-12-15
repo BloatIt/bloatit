@@ -22,6 +22,7 @@ import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.PageComponent;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
@@ -32,14 +33,15 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.Request;
 
+@ParamContainer("idea")
 public class IdeaPage extends Page {
 
     public static final String IDEA_FIELD_NAME = "id";
 
     @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
-    protected Demand demand;
+    protected Demand idea;
 
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "idea")
     protected String title;
 
     @PageComponent
@@ -57,19 +59,19 @@ public class IdeaPage extends Page {
 
     @Override
     protected String getTitle() {
-        if (demand != null) {
-            return demand.getTitle();
+        if (idea != null) {
+            return idea.getTitle();
         }
-        return "Demand not found !";
+        return "Idea not found !";
     }
 
     @Override
     protected String getCustomCss() {
-        return "demand.css";
+        return "idea.css";
     }
 
     public Demand getDemand() {
-        return demand;
+        return idea;
     }
 
     @Override
@@ -83,10 +85,10 @@ public class IdeaPage extends Page {
         }
 
         final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
-        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
 
         add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
-        add(new IdeaHeadComponent(request, demand));
+        add(new IdeaHeadComponent(request, idea));
         add(generateBody());
     }
 
@@ -102,10 +104,10 @@ public class IdeaPage extends Page {
     private HtmlElement generateBodyLeft() {
         final HtmlDiv left = new HtmlDiv("leftColumn");
         {
-            demandTabPane = new IdeaTabPane(request, demand);
+            demandTabPane = new IdeaTabPane(request, idea);
             left.add(demandTabPane);
             // Comments
-            left.add(new IdeaCommentListComponent(request, demand));
+            left.add(new IdeaCommentListComponent(request, idea));
         }
         return left;
 
@@ -116,7 +118,7 @@ public class IdeaPage extends Page {
         {
             final HtmlDiv rightBlock = new HtmlDiv("right_block");
             {
-                rightBlock.add(new IdeaSummaryComponent(request, demand));
+                rightBlock.add(new IdeaSummaryComponent(request, idea));
             }
             right.add(rightBlock);
         }

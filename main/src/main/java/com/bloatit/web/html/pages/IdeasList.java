@@ -73,6 +73,11 @@ public class IdeasList extends Page {
         return true;
     }
 
+    @Override
+    protected String getCustomCss() {
+        return "ideas-list.css";
+    }
+
     static class IdeasListItem implements HtmlRenderer<Demand> {
 
         UrlBuilder demandPageUrlBuilder = new UrlBuilder(IdeaPage.class);
