@@ -27,29 +27,28 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.Request;
 
 public class DemandCommentListComponent extends HtmlPageComponent {
 
     private final PageIterable<Comment> comments;
 
-    public DemandCommentListComponent(final Request request, final Demand demand) {
+    public DemandCommentListComponent(final Demand demand) {
         super();
         comments = demand.getComments();
-        add(produce(request));
+        add(produce());
     }
 
     /**
      * Creates the block that will be displayed in the offer tab.
      */
-    protected HtmlElement produce(final Request request) {
+    protected HtmlElement produce() {
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block");
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments"), 2).setCssClass("comments_title"));
 
             for (final Comment comment : comments) {
-                commentsBlock.add(new DemandCommentComponent(request, comment));
+                commentsBlock.add(new DemandCommentComponent(comment));
             }
         }
         return commentsBlock;

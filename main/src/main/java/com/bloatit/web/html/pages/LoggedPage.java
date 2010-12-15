@@ -22,15 +22,13 @@ package com.bloatit.web.html.pages;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 
 public abstract class LoggedPage extends Page {
 
-    protected LoggedPage(final Request request) throws RedirectException {
-        super(request);
-
+    protected LoggedPage() throws RedirectException {
+        super();
     }
 
     @Override

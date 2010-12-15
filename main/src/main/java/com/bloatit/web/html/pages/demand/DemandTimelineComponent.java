@@ -18,16 +18,13 @@ package com.bloatit.web.html.pages.demand;
 
 
 import com.bloatit.framework.Demand;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlList;
-import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.utils.url.Request;
 
 public class DemandTimelineComponent extends HtmlPageComponent {
 
-    public DemandTimelineComponent(final Request request, final Demand demand) {
+    public DemandTimelineComponent(final Demand demand) {
         super();
 
         final HtmlDiv timelineBlock = new HtmlDiv("timeline_block");

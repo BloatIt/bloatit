@@ -1,17 +1,15 @@
 package com.bloatit.web.utils.url;
 
-import java.util.Map;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
 public class DemandUrl extends Url {
 public DemandUrl() {
-    super("demand"); 
+    super("Demand"); 
 }
-public DemandUrl(Map<String, String> params) {
-    super("demand"); 
-    parseParameterMap(params);
+public DemandUrl(Parameters params) {
+    this();
+    parseParameters(params);
 }
 private com.bloatit.framework.Demand demand;
 private DemandTabPaneUrl demandTabPaneUrl = new DemandTabPaneUrl();
@@ -42,9 +40,16 @@ public void setDemandTabPaneUrl(DemandTabPaneUrl arg0){
 
 
 @Override 
-protected void doRegister(Messages messages) { 
-    register(new Parameter(messages, "id", getDemand(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter(messages, "title", getTitle(), java.lang.String.class, Role.PRETTY, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+protected void doRegister() { 
+    register(new Parameter("id", getDemand(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter("title", getTitle(), java.lang.String.class, Role.PRETTY, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
     register(demandTabPaneUrl);
+}
+
+public DemandUrl clone() { 
+    DemandUrl other = new DemandUrl();
+    other.demand = this.demand;
+    other.demandTabPaneUrl = this.demandTabPaneUrl.clone();
+    return other;
 }
 }

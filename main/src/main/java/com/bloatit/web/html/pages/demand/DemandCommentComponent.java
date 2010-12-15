@@ -27,33 +27,32 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Request;
 
 public class DemandCommentComponent extends HtmlPageComponent {
 
     private final Comment comment;
     private HtmlParagraph commentText;
 
-    public DemandCommentComponent(final Request request, final Comment comment) {
+    public DemandCommentComponent(final Comment comment) {
         super();
         this.comment = comment;
-        extractData(request);
-        add(produce(request));
+        extractData();
+        add(produce());
     }
 
-    protected HtmlElement produce(final Request request) {
+    protected HtmlElement produce() {
         final HtmlDiv commentBlock = new HtmlDiv("main_comment_block");
         {
             commentBlock.add(commentText);
 
             for (final Comment childComment : comment.getChildren()) {
-                commentBlock.add(new DemandCommentChildComponent(request, childComment));
+                commentBlock.add(new DemandCommentChildComponent(childComment));
             }
         }
         return commentBlock;
     }
 
-    protected void extractData(final Request request) {
+    protected void extractData() {
 
         final Session session = Context.getSession();
         final String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, comment.getCreationDate()) + "</span>";

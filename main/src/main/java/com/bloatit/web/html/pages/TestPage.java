@@ -40,15 +40,14 @@ import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.RandomString;
-import com.bloatit.web.utils.url.Request;
 
 /**
  * A page to test various Html elements
  */
 public class TestPage extends Page {
 
-    public TestPage(final Request request) throws RedirectException {
-        super(request);
+    public TestPage() throws RedirectException {
+        super();
     }
 
     @Override

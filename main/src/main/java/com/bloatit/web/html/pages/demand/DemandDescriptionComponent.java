@@ -28,7 +28,6 @@ import com.bloatit.web.html.pages.MemberPage;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.UrlBuilder;
-import com.bloatit.web.utils.url.UrlComponent;
 
 public class DemandDescriptionComponent extends HtmlDiv {
 
@@ -36,7 +35,7 @@ public class DemandDescriptionComponent extends HtmlDiv {
     private final HtmlParagraph date;
     private final HtmlLink author;
 
-    public DemandDescriptionComponent(final UrlComponent url, final Demand demand) {
+    public DemandDescriptionComponent(final Demand demand) {
         super();
 
         final Session session = Context.getSession();

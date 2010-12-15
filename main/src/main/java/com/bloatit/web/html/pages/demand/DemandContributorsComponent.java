@@ -21,6 +21,7 @@ package com.bloatit.web.html.pages.demand;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Contribution;
 import com.bloatit.framework.Demand;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
@@ -30,12 +31,9 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.DemandTabPaneUrl;
-import com.bloatit.web.utils.url.DemandUrl;
-import com.bloatit.web.utils.url.Request;
-import com.bloatit.web.utils.url.UrlBuilder;
-import com.bloatit.web.utils.url.UrlComponent;
+import com.bloatit.web.utils.url.DemandContributorsComponentUrl;
 
+@ParamContainer(value = "DemandContributorsComponent", isComponent = true)
 public class DemandContributorsComponent extends HtmlDiv {
 
     private int contributionCount;
@@ -44,16 +42,16 @@ public class DemandContributorsComponent extends HtmlDiv {
     private HtmlParagraph contributionMean;
     private PageIterable<Contribution> contributions;
     private final Demand demand;
+    private HtmlPagedList<Contribution> participationsList;
 
-    public DemandContributorsComponent(final UrlComponent url, final Demand demand) {
+    public DemandContributorsComponent(final DemandContributorsComponentUrl url, final Demand demand) {
         super();
         this.demand = demand;
-        extractData(url);
+        extractData();
         add(produce(url));
-
     }
 
-    protected HtmlElement produce(final UrlComponent url) {
+    protected HtmlElement produce(DemandContributorsComponentUrl url) {
         final Session session = Context.getSession();
         final HtmlDiv contributorsBlock = new HtmlDiv("contributors_block");
         {
@@ -72,15 +70,16 @@ public class DemandContributorsComponent extends HtmlDiv {
             final HtmlRenderer<Contribution> contributionRenderer = generateContributionRenderer();
 
             // Create paged list
-            final HtmlPagedList<Contribution> participationsList = new HtmlPagedList<Contribution>("contribution_list", contributionRenderer,
-                    contributions, new DemandUrl(), url);
+            url = url.clone();
+            participationsList = new HtmlPagedList<Contribution>(contributionRenderer, contributions, url, url.getParticipationsListUrl());
+            participationsList.setCssClass("contribution_list");
             contributorsBlock.add(participationsList);
 
         }
         return contributorsBlock;
     }
 
-    protected void extractData(final UrlComponent url) {
+    protected void extractData() {
 
         final Session session = Context.getSession();
         contributionCount = demand.getContributions().size();

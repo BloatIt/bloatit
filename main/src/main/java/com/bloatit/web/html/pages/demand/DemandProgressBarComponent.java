@@ -22,26 +22,25 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.utils.url.Request;
 
 public class DemandProgressBarComponent extends HtmlPageComponent {
 
     private float progressValue;
     private final Demand demand;
 
-    public DemandProgressBarComponent(final Request request, final Demand demand) {
+    public DemandProgressBarComponent(final Demand demand) {
         super();
         this.demand = demand;
-        extractData(request);
-        add(produce(request));
+        extractData();
+        add(produce());
     }
 
-    protected HtmlElement produce(final Request request) {
+    protected HtmlElement produce() {
 
         final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
 
-            progressBlock.add(new DemandContributeButtonComponent(request, demand));
+            progressBlock.add(new DemandContributeButtonComponent(demand));
 
             final HtmlDiv progressBarBlock = new HtmlDiv("column");
             {
@@ -50,14 +49,14 @@ public class DemandProgressBarComponent extends HtmlPageComponent {
 
             progressBlock.add(progressBarBlock);
 
-            progressBlock.add(new DemandMakeOfferButtonComponent(request, demand));
+            progressBlock.add(new DemandMakeOfferButtonComponent(demand));
 
         }
 
         return progressBlock;
     }
 
-    protected void extractData(final Request request) {
+    protected void extractData() {
         progressValue = 0;
         progressValue = 42 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
 

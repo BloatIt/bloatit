@@ -26,12 +26,11 @@ import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
 
 public class MyAccountPage extends Page {
 
-    public MyAccountPage(final Request request) throws RedirectException {
-        super(request);
+    public MyAccountPage() throws RedirectException {
+        super();
         generateContent();
     }
 

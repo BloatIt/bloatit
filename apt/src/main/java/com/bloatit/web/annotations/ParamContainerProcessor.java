@@ -49,11 +49,11 @@ public class ParamContainerProcessor extends AbstractProcessor {
             generator = new UrlClassGenerator(urlClassName);
         }
 
+        System.out.println("    generating " + generator.getClassName());
         for (Element enclosed : element.getEnclosedElements()) {
             parseAnAttribute(generator, enclosed);
         }
 
-        System.out.println("    generating " + generator.getClassName());
         FileWriter fstream = new FileWriter(ROOT + generator.getClassName() + ".java");
         BufferedWriter out = new BufferedWriter(fstream);
         out.write(generator.generate());
@@ -81,7 +81,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
             // Its not a param but it could be a ParamContainer.
         } else {
-            
+
             // Find if the type of the attribute has a ParamContainer annotation
             TypeKindVisitor6<ParamContainer, Integer> vs = new TypeKindVisitor6<ParamContainer, Integer>() {
                 @Override
@@ -90,7 +90,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
                 }
             };
             ParamContainer component = attribute.asType().accept(vs, 0);
-            
+
             if (component != null) {
                 generator.addComponentAndGetterSetter(component.value(), attribute.getSimpleName().toString());
                 generator.registerComponent(attribute.getSimpleName().toString());

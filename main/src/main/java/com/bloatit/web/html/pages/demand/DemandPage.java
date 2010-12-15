@@ -21,7 +21,7 @@ import java.util.Locale;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.annotations.Message.Level;
-import com.bloatit.web.annotations.PageComponent;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
@@ -31,8 +31,8 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.DemandUrl;
-import com.bloatit.web.utils.url.Request;
 
+@ParamContainer("Demand")
 public class DemandPage extends Page {
 
     @RequestParam(name = "id", level = Level.ERROR)
@@ -41,11 +41,12 @@ public class DemandPage extends Page {
     @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
     protected String title;
 
-    @PageComponent
     private DemandTabPane demandTabPane;
+    private DemandUrl url;
 
     public DemandPage(final DemandUrl url) {
-        super(url);
+        super();
+        this.url = url;
         demand = url.getDemand();
         title = url.getTitle();
         demandTabPane = new DemandTabPane(url.getDemandTabPaneUrl(), demand);
@@ -74,9 +75,9 @@ public class DemandPage extends Page {
     @Override
     public void create() throws RedirectException {
         super.create();
-        addNotifications(request.getMessages());
+        addNotifications(url.getMessages());
 
-        if (request.getMessages().hasMessage(Level.ERROR)) {
+        if (url.getMessages().hasMessage(Level.ERROR)) {
             setPageNotFound();
             return;
         }
@@ -85,7 +86,7 @@ public class DemandPage extends Page {
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
 
         add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
-        add(new DemandHeadComponent(request, demand));
+        add(new DemandHeadComponent(demand));
         add(generateBody());
     }
 
@@ -101,10 +102,10 @@ public class DemandPage extends Page {
     private HtmlElement generateBodyLeft() {
         final HtmlDiv left = new HtmlDiv("leftColumn");
         {
-            demandTabPane = new DemandTabPane(request, demand);
+            demandTabPane = new DemandTabPane(url.getDemandTabPaneUrl(), demand);
             left.add(demandTabPane);
             // Comments
-            left.add(new DemandCommentListComponent(request, demand));
+            left.add(new DemandCommentListComponent(demand));
         }
         return left;
 
@@ -115,7 +116,7 @@ public class DemandPage extends Page {
         {
             final HtmlDiv rightBlock = new HtmlDiv("right_block");
             {
-                rightBlock.add(new DemandSummaryComponent(request, demand));
+                rightBlock.add(new DemandSummaryComponent(demand));
             }
             right.add(rightBlock);
         }

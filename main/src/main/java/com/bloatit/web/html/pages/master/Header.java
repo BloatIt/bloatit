@@ -1,9 +1,8 @@
 package com.bloatit.web.html.pages.master;
 
+import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import com.bloatit.web.html.HtmlBranch;
-import com.bloatit.web.html.HtmlText;
 
 
 public class Header extends HtmlElement {

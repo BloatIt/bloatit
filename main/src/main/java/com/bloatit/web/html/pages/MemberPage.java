@@ -28,7 +28,7 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.MemberUrl;
 
 @ParamContainer("member")
 public class MemberPage extends Page {
@@ -38,19 +38,19 @@ public class MemberPage extends Page {
     @RequestParam(name=MEMBER_FIELD_NAME, level = Level.ERROR)
     private Member member;
 
-    public MemberPage(final Request request) throws RedirectException {
-        super(request);
-        this.request.setValues(this);
-        
-        addNotifications(request.getMessages());
-        
+    private final MemberUrl url;
+
+    public MemberPage(final MemberUrl url) throws RedirectException {
+        super();
+        this.url = url;
+        this.member = url.getMember();
     }
 
     @Override
     public void create() throws RedirectException {
         super.create();
 
-        if (request.getMessages().hasMessage(Level.ERROR)) {
+        if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }
         

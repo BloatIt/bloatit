@@ -20,15 +20,14 @@ package com.bloatit.web.html.pages.demand;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.utils.url.Request;
 
 public class DemandSummaryComponent extends HtmlPageComponent {
 
-    public DemandSummaryComponent(final Request request, final Demand demand) {
+    public DemandSummaryComponent(final Demand demand) {
         super();
         final HtmlDiv abstractBlock = new HtmlDiv("abstract_block");
         {
-            abstractBlock.add(new DemandTimelineComponent(request, demand));
+            abstractBlock.add(new DemandTimelineComponent(demand));
         }
         add(abstractBlock);
     }

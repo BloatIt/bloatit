@@ -104,7 +104,7 @@ public class JavaGenerator {
         name = getComponentName(name);
 
         _attributes.append("private ").append(type).append(" ").append(name).append(" = new ").append(type).append("();\n");
-        _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(";\n");
+        _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
         addGetterSetter(type, name);
     }
 

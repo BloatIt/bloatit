@@ -28,14 +28,13 @@ import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 
 public class LoginPage extends Page {
 
-    public LoginPage(final Request request) throws RedirectException {
-        super(request);
+    public LoginPage() throws RedirectException {
+        super();
     }
 
     @Override

@@ -25,12 +25,11 @@ import com.bloatit.web.html.pages.OfferPage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 public class DemandMakeOfferButtonComponent extends HtmlPageComponent {
 
-    public DemandMakeOfferButtonComponent(final Request request, final Demand demand) {
+    public DemandMakeOfferButtonComponent(final Demand demand) {
         super();
         final Session session = Context.getSession();
 

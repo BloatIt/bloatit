@@ -23,6 +23,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.annotations.PageComponent;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
@@ -35,9 +36,10 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.demand.DemandPage;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.SearchUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer("search")
 public class GlobalSearchPage extends Page {
 
     public final static String SEARCH_CODE = "global_search";
@@ -46,11 +48,13 @@ public class GlobalSearchPage extends Page {
 
     @PageComponent
     private HtmlPagedList<Demand> pagedMemberList;
+    private final SearchUrl url;
 
-    public GlobalSearchPage(final Request request) {
-        super(request);
-        request.setValues(this);
-        addNotifications(request.getMessages());
+    public GlobalSearchPage(final SearchUrl url) {
+        super();
+        this.url = url;
+        this.searchString = url.getSearchString();
+        
         generateContent();
     }
 
@@ -74,7 +78,8 @@ public class GlobalSearchPage extends Page {
             }
         };
 
-        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(GlobalSearchPage.class, request.getParameters()), request);
+        SearchUrl clonedUrl = url.clone();
+        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
         pageTitle.add(pagedMemberList);
         add(pageTitle);

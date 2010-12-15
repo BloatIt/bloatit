@@ -22,17 +22,15 @@ package com.bloatit.web.html.pages;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlList;
-import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 
 public class SpecialsPage extends Page {
 
-    public SpecialsPage(final Request request) throws RedirectException {
-        super(request);
+    public SpecialsPage() throws RedirectException {
+        super();
         generateContent();
     }
 

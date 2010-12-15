@@ -22,9 +22,9 @@ package com.bloatit.web.html.pages;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.OfferAction;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
@@ -36,13 +36,14 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.utils.BloatitDate;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.OfferUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer("offer")
 public class OfferPage extends LoggedPage {
 
     @RequestParam(name = "idea")
-    private final Demand targetIdea = null;
+    private Demand targetIdea = null;
 
     @RequestParam(name = "price", defaultValue="vide")
     private BigDecimal price;
@@ -56,10 +57,20 @@ public class OfferPage extends LoggedPage {
     @RequestParam(name = "description", defaultValue="vide")
     private String description;
 
-    public OfferPage(final Request request) throws RedirectException {
-        super(request);
-        this.request.setValues(this);
-        addNotifications(request.getMessages());
+
+    public OfferPage(final OfferUrl url) throws RedirectException {
+        super();
+        this.targetIdea = url.getTargetIdea();
+        this.price = url.getPrice();
+        this.expiryDate = url.getExpiryDate();
+        this.title = url.getTitle();
+        this.description = url.getDescription();
+        
+        OfferUrl offerUrl = url.clone();
+        offerUrl.setPrice(new BigDecimal("12"));
+        offerUrl.toString();
+        
+        addNotifications(url.getMessages());
     }
 
     @Override
