@@ -38,11 +38,11 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
  */
 public final class HtmlTextArea extends HtmlFormField<String> {
 
-    public HtmlTextArea(final String name, int cols, int rows) {
+    public HtmlTextArea(final String name, int rows, int cols) {
         super(new HtmlSimpleTextArea( cols, rows), name);
     }
 
-    public HtmlTextArea(final String name, final String label, int cols, int rows) {
+    public HtmlTextArea(final String name, final String label, int rows, int cols) {
         super(new HtmlSimpleTextArea(cols, rows), name, label );
     }
 

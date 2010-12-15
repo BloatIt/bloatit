@@ -24,6 +24,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.html.pages.AccountChargingPage;
 import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.utils.url.Request;
@@ -31,55 +32,62 @@ import com.bloatit.web.utils.url.UrlBuilder;
 
 public class ContributionAction extends Action {
 
-    public static final String AMOUNT_CODE = "bloatit_contribute";
-    public static final String COMMENT_CODE = "bloatit_comment";
-    public static final String TARGET_DEMAND_CODE = "bloatit_target_demand";
-    public static final String IDEA_CODE = "idea";
+    public static final String AMOUNT_CODE = "contributionAmount";
+    public static final String COMMENT_CODE = "comment";
+    public static final String TARGET_IDEA = "targetIdea";
 
-    @RequestParam(name = TARGET_DEMAND_CODE)
-    private Demand targetDemand;
+    @RequestParam(name = TARGET_IDEA)
+    private Demand targetIdea;
 
-    @RequestParam(name = IDEA_CODE)
-    private Demand idea;
-
-    @RequestParam(name = COMMENT_CODE, defaultValue = "no comment")
+    @RequestParam(name = COMMENT_CODE, defaultValue = "no comment", role = RequestParam.Role.POST)
     private String comment;
-
-    @RequestParam(name = AMOUNT_CODE)
+    
+    @RequestParam(name = AMOUNT_CODE, role = RequestParam.Role.POST)
     private BigDecimal amount;
 
     public ContributionAction(final Request request) throws RedirectException {
         super(request);
         request.setValues(this);
         session.notifyList(request.getMessages());
-        
     }
 
     @Override
-    public String process() throws RedirectException  {
+    public String process() throws RedirectException {
+        UrlBuilder contributionPageUrl = new UrlBuilder(ContributePage.class);
+        contributionPageUrl.addParameter(TARGET_IDEA, targetIdea);
+        contributionPageUrl.addParameter(COMMENT_CODE, comment);
+        contributionPageUrl.addParameter(AMOUNT_CODE, amount);
+
         if (request.getMessages().hasMessage(Level.ERROR)) {
             // TODO specific si idea not found
-            throw new RedirectException(new UrlBuilder(ContributePage.class).buildUrl());
+            throw new RedirectException(contributionPageUrl.buildUrl());
         }
 
         // Authentication
-        targetDemand.authenticate(session.getAuthToken());
+        targetIdea.authenticate(session.getAuthToken());
 
         try {
-            if (targetDemand.canContribute()) {
-                targetDemand.addContribution(amount, comment);
+            if (targetIdea.canContribute()) {
+                targetIdea.addContribution(amount, comment);
                 session.notifyGood(session.tr("Thanks you for crediting " + amount + " on this idea"));
-                return new UrlBuilder(IdeaPage.class).addParameter("idea", idea).buildUrl();
+                return new UrlBuilder(IdeaPage.class).addParameter("idea", targetIdea).buildUrl();
             } else {
                 // Should never happen
                 session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-                return new UrlBuilder(ContributePage.class).buildUrl();
+                return contributionPageUrl.buildUrl();
             }
         } catch (final NotEnoughMoneyException e) {
-            session.notifyBad(session.tr("You have not enought money left."));
-            // TODO add this parameters into ContributePage url.
-            return new UrlBuilder(ContributePage.class).buildUrl();
+            session.notifyBad(session.tr("You need to charge your account before you can contribute."));
 
+            // Sets the target page to here
+            UrlBuilder contributionActionUrl = new UrlBuilder(ContributionAction.class, this.request.getParameters());
+            session.setTargetPage(contributionActionUrl.buildUrl());
+
+            // Redirects to the account charging page
+            UrlBuilder accountCharging = new UrlBuilder(AccountChargingPage.class);
+            // ToDO : give through session : contributionPageUrl.addParameter(AccountChargingAction.CHARGE_AMOUNT_CODE, amount);
+
+            return accountCharging.buildUrl();
         }
     }
 }

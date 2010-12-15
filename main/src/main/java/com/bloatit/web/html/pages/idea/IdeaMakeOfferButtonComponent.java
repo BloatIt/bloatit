@@ -19,8 +19,8 @@ package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.pages.OfferPage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
@@ -36,13 +36,12 @@ public class IdeaMakeOfferButtonComponent extends HtmlPageComponent {
 
         final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
         {
-
             final UrlBuilder urlBuilder = new UrlBuilder(OfferPage.class);
             urlBuilder.addParameter("idea", demand);
 
             final HtmlForm makeOfferForm = new HtmlForm(urlBuilder.buildUrl());
             {
-                final HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
+                final HtmlSubmit makeOfferButton = new HtmlSubmit(session.tr("Make an offer"));
                 makeOfferForm.add(makeOfferButton);
             }
             makeOfferBlock.add(makeOfferForm);

@@ -20,8 +20,8 @@ package com.bloatit.web.html.pages.idea;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
@@ -40,10 +40,8 @@ public class IdeaContributeButtonComponent extends HtmlPageComponent {
     }
 
     protected HtmlElement produce(final Request request) {
-
         final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
         {
-
             final Session session = Context.getSession();
 
             final UrlBuilder urlBuilder = new UrlBuilder(ContributePage.class);
@@ -52,13 +50,11 @@ public class IdeaContributeButtonComponent extends HtmlPageComponent {
             final HtmlForm contributeForm = new HtmlForm(urlBuilder.buildUrl());
             {
                 // Add button
-                final HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));
+                final HtmlSubmit contributeButton = new HtmlSubmit(session.tr("Contribute"));
                 contributeForm.add(contributeButton);
-
             }
             contributeBlock.add(contributeForm);
         }
-
         return contributeBlock;
     }
 

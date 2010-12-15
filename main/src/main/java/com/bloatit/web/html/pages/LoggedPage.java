@@ -40,9 +40,8 @@ public abstract class LoggedPage extends Page {
         if (session.isLogged()) {
             add(generateRestrictedContent());
         } else {
-
             session.notifyBad(getRefusalReason());
-            session.setTargetPage(new UrlBuilder(this).buildUrl());
+            session.setTargetPage(new UrlBuilder(this.getClass(), request.getParameters()).buildUrl());
             throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
         }
     }
