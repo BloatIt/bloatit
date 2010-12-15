@@ -2,39 +2,58 @@ package com.bloatit.web.utils.url;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlText;
+import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
 public abstract class UrlComponent {
     protected Messages messages = new Messages();
-    private List<Parameter> parameters = new ArrayList<Parameter>();
+    private final List<Parameter> parameters = new ArrayList<Parameter>();
+    private final List<UrlComponent> components = new ArrayList<UrlComponent>();
     private boolean isRegistered = false;
 
-    protected abstract void doRegister(Messages messages);
+    protected abstract void doRegister();
 
-    protected final void register(Parameter param) {
+    @Override
+    public abstract UrlComponent clone();
+
+    protected UrlComponent() {
+        super();
+
+    }
+
+    protected final void register(final Parameter param) {
         parameters.add(param);
     }
 
-    private final void registerIfNotAlreadyDone(Messages messages) {
+    protected void register(final UrlComponent component) {
+        components.add(component);
+    }
+
+    private final void registerIfNotAlreadyDone() {
         if (!isRegistered) {
-            doRegister(messages);
+            doRegister();
             isRegistered = true;
         }
     }
 
     @Override
     public final String toString() {
-        registerIfNotAlreadyDone(messages);
-        StringBuilder sb = new StringBuilder();
+        registerIfNotAlreadyDone();
+        final StringBuilder sb = new StringBuilder();
         constructUrl(sb);
         return sb.toString();
     }
-    
-    protected void constructUrl(StringBuilder sb){
-        for (Parameter param : parameters) {
+
+    protected void constructUrl(final StringBuilder sb) {
+        for (final UrlComponent comp : components) {
+            sb.append(comp.toString());
+        }
+        for (final Parameter param : parameters) {
             if (param.getValue() != null && param.getRole() != Role.POST) {
                 sb.append("/").append(param.getName()).append("-").append(param.getStringValue());
             }
@@ -42,16 +61,47 @@ public abstract class UrlComponent {
     }
 
     public Messages getMessages() {
+        final Messages messages = new Messages();
+        for (final Parameter param : parameters) {
+            final Message message = param.getMessage();
+            if (message != null) {
+                messages.add(message);
+            }
+        }
+        for (final UrlComponent cmp : components) {
+            messages.addAll(cmp.getMessages());
+        }
         return messages;
     }
 
-    protected Messages parseParameterMap(Map<String, String> params) {
-        registerIfNotAlreadyDone(messages);
-        for (Parameter param : parameters) {
-            if (params.containsKey(param.getName())) {
-                param.valueFromString(params.get(param.getName()));
+    protected final void parseParameters(final Parameters params) {
+        registerIfNotAlreadyDone();
+        for (final Parameter param : parameters) {
+            final String value = params.look(param.getName());
+            if (value != null) {
+                param.valueFromString(value);
             }
         }
-        return messages;
+        for (final UrlComponent comp : components) {
+            comp.parseParameters(params);
+        }
+    }
+
+    public void addParameter(final String name, final String value) {
+        registerIfNotAlreadyDone();
+        for (final Parameter param : parameters) {
+            if (param.getName().equals(name)) {
+                param.valueFromString(value);
+                break;
+            }
+        }
+    }
+
+    public HtmlNode getHtmlLink(final HtmlNode data) {
+        return new HtmlLink(toString(), data);
+    }
+
+    public HtmlNode getHtmlLink(final String text) {
+        return new HtmlLink(toString(), new HtmlText(text));
     }
 }

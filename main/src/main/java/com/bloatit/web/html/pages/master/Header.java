@@ -1,10 +1,8 @@
 package com.bloatit.web.html.pages.master;
 
+import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import com.bloatit.web.html.HtmlBranch;
-import com.bloatit.web.html.HtmlText;
-
 
 public class Header extends HtmlElement {
     private static final String DESIGN = "/resources/css/core.css";
@@ -14,12 +12,9 @@ public class Header extends HtmlElement {
         final HtmlBranch meta = new HtmlGenericElement("meta").addAttribute("http-equiv", "content-type").addAttribute("content",
                 "text/html;charset=utf-8");
 
-        
-
         final HtmlBranch link = new HtmlGenericElement("link").addAttribute("rel", "stylesheet").addAttribute("href", DESIGN)
                 .addAttribute("type", "text/css").addAttribute("media", "handheld, all");
 
-        
         add(meta);
         add(link);
 
@@ -36,6 +31,5 @@ public class Header extends HtmlElement {
     public boolean selfClosable() {
         return false;
     }
-
 
 }

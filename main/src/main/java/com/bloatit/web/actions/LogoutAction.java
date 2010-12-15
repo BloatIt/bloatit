@@ -19,17 +19,18 @@
 
 package com.bloatit.web.actions;
 
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.utils.url.LoginActionUrl;
 
-
+@ParamContainer("logout")
 public class LogoutAction extends Action {
 
-    public LogoutAction(final Request request) {
-        super(request);
+    public LogoutAction(final LoginActionUrl url) {
+        super(url);
     }
 
     @Override
-    public String process() {
+    public String doProcess() {
         session.setLogged(false);
         session.setAuthToken(null);
         session.notifyGood(session.tr("Logout success."));

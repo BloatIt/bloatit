@@ -16,7 +16,6 @@
  */
 package com.bloatit.web.html.components.custom;
 
-
 import com.bloatit.framework.Kudosable;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.html.HtmlTools;

@@ -36,7 +36,6 @@ public class HtmlSimpleInput extends HtmlLeaf {
     protected final static String RESET = "reset";
     protected final static String HIDDEN = "hidden";
 
-
     protected HtmlSimpleInput(final String type) {
         super("input");
         addAttribute("type", type);

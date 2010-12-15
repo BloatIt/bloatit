@@ -16,19 +16,17 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.utils.url.Request;
 
 public class IdeaSummaryComponent extends HtmlPageComponent {
 
-    public IdeaSummaryComponent(final Request request, final Demand demand) {
+    public IdeaSummaryComponent(final Demand demand) {
         super();
         final HtmlDiv abstractBlock = new HtmlDiv("abstract_block");
         {
-            abstractBlock.add(new IdeaTimelineComponent(request, demand));
+            abstractBlock.add(new IdeaTimelineComponent(demand));
         }
         add(abstractBlock);
     }

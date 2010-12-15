@@ -19,21 +19,21 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-public class HtmlRadioButton extends HtmlFormField<Boolean>{
+public class HtmlRadioButton extends HtmlFormField<Boolean> {
 
-    public HtmlRadioButton(final String name, String value, LabelPosition position) {
+    public HtmlRadioButton(final String name, final String value, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.RADIO), name, position);
         addAttribute("value", value);
     }
 
-    public HtmlRadioButton(final String name, String value, final String label, LabelPosition position) {
+    public HtmlRadioButton(final String name, final String value, final String label, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.RADIO), name, label, position);
         addAttribute("value", value);
     }
 
     @Override
     protected void doSetDefaultValue(final Boolean value) {
-        if(value.booleanValue()){
+        if (value.booleanValue()) {
             addAttribute("checked", "checked");
         }
     }

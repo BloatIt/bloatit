@@ -1,10 +1,8 @@
 package com.bloatit.web.html.pages.master;
 
-
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlList;
-import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.pages.IdeasList;
 import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.html.pages.MembersListPage;

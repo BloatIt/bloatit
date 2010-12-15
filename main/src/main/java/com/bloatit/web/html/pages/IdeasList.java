@@ -36,17 +36,20 @@ import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.IdeasListUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-@ParamContainer("ideas-list")
+@ParamContainer("ideas/list")
 public class IdeasList extends Page {
 
     @PageComponent
     HtmlPagedList<Demand> pagedIdeaList;
+    private final IdeasListUrl url;
 
-    public IdeasList(final Request request) throws RedirectException {
-        super(request);
+    public IdeasList(final IdeasListUrl url) throws RedirectException {
+        super();
+        this.url = url;
+
         generateContent();
     }
 
@@ -57,8 +60,9 @@ public class IdeasList extends Page {
         final PageIterable<Demand> demandList = DemandManager.getDemands();
 
         final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
-        pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(IdeasList.class, request.getParameters()),
-                request);
+
+        final IdeasListUrl clonedUrl = url.clone();
+        pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, clonedUrl, clonedUrl.getPagedIdeaListUrl());
 
         pageTitle.add(pagedIdeaList);
 
@@ -94,21 +98,21 @@ public class IdeasList extends Page {
 
         private HtmlNode generateContent() {
 
-            HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
+            final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
             {
-                HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
+                final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
                 {
                     leftBlock.add(new HtmlImage(new Image("/resources/img/tux_mini.png", Image.ImageType.DISTANT)));
                     leftBlock.add(new HtmlText("VLC"));
-                    leftBlock.add(new HtmlText(""+demand.getPopularity()));
+                    leftBlock.add(new HtmlText("" + demand.getPopularity()));
                 }
                 ideaBlock.add(leftBlock);
 
-                HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
+                final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
                 {
-                    HtmlTitleBlock ideaTitle = new HtmlTitleBlock(demand.getTitle(), 3);
+                    final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(demand.getTitle(), 3);
                     {
-                        HtmlProgressBar progressBar = new HtmlProgressBar(0.3f);
+                        final HtmlProgressBar progressBar = new HtmlProgressBar(0.3f);
                         ideaTitle.add(progressBar);
                     }
                     rightBlock.add(ideaTitle);

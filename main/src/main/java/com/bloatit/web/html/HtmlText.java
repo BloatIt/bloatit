@@ -41,8 +41,6 @@ public class HtmlText extends HtmlNode {
         return content;
     }
 
-    
-
     @Override
     public final void write(final Text txt) {
         txt.writeLine(content);

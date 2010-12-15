@@ -16,7 +16,6 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -26,20 +25,19 @@ import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 public class IdeaContributeButtonComponent extends HtmlPageComponent {
 
     private final Demand demand;
 
-    public IdeaContributeButtonComponent(final Request request, final Demand demand) {
+    public IdeaContributeButtonComponent(final Demand demand) {
         super();
         this.demand = demand;
-        add(produce(request));
+        add(produce());
     }
 
-    protected HtmlElement produce(final Request request) {
+    protected HtmlElement produce() {
 
         final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
         {

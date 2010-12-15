@@ -18,17 +18,15 @@
  */
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.utils.url.Request;
 
 public class CreateIdeaPage extends LoggedPage {
 
-    public CreateIdeaPage(final Request request) throws RedirectException {
-        super(request);
+    public CreateIdeaPage() throws RedirectException {
+        super();
     }
 
     @Override

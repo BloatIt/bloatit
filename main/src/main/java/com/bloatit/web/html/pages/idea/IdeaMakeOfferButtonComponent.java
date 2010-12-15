@@ -16,7 +16,6 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
@@ -25,12 +24,11 @@ import com.bloatit.web.html.pages.OfferPage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 public class IdeaMakeOfferButtonComponent extends HtmlPageComponent {
 
-    public IdeaMakeOfferButtonComponent(final Request request, final Demand demand) {
+    public IdeaMakeOfferButtonComponent(final Demand demand) {
         super();
         final Session session = Context.getSession();
 

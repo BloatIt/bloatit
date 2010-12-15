@@ -20,11 +20,11 @@ package com.bloatit.web.html.components.standard.form;
 
 public class HtmlCheckbox extends HtmlFormField<Boolean> {
 
-    public HtmlCheckbox(final String name, LabelPosition position) {
+    public HtmlCheckbox(final String name, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.CHECKBOX), name, position);
     }
 
-    public HtmlCheckbox(final String name, final String label, LabelPosition position) {
+    public HtmlCheckbox(final String name, final String label, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.CHECKBOX), name, label, position);
     }
 

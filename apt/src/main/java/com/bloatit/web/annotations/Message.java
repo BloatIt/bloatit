@@ -6,7 +6,7 @@ public class Message {
     }
 
     public enum What {
-        NOT_FOUND, CONVERSION_ERROR
+        NOT_FOUND, CONVERSION_ERROR, NO_ERROR
     }
 
     private final Level level;

@@ -18,38 +18,36 @@
  */
 package com.bloatit.web.actions;
 
-
 import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.managers.LoginManager;
-import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.LoginPage;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer("login")
 public class LoginAction extends Action {
 
     public final static String LOGIN_CODE = "bloatit_login";
     public final static String PASSWORD_CODE = "bloatit_password";
-    @RequestParam(level = Level.ERROR, name = LOGIN_CODE, role=RequestParam.Role.POST)
+    @RequestParam(level = Level.ERROR, name = LOGIN_CODE, role = RequestParam.Role.POST)
     private String login;
-    @RequestParam(level = Level.ERROR, name = PASSWORD_CODE, role=RequestParam.Role.POST)
+    @RequestParam(level = Level.ERROR, name = PASSWORD_CODE, role = RequestParam.Role.POST)
     private String password;
 
-    public LoginAction(final Request request){
-        super(request);
-        request.setValues(this);
-        
+    public LoginAction(final LoginActionUrl url) {
+        super(url);
+        this.login = url.getLogin();
+        this.password = url.getPassword();
+
     }
 
     @Override
-    public String process() throws RedirectException {
-        if (request.getMessages().hasMessage(Level.ERROR)) {
-            // TODO get params.
-            session.notifyList(request.getMessages());
-            throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
-        }
+    public String doProcess() throws RedirectException {
+
 
         AuthToken token = null;
         token = LoginManager.loginByPassword(login, password);

@@ -42,28 +42,28 @@ public class MemberTest extends FrameworkTestUnit {
         } catch (final Exception e) {
         }
     }
-    
-    public void testInviteIntoProtectedGroup(){
+
+    public void testInviteIntoProtectedGroup() {
         final Member yo = MemberManager.getMemberByLogin("Yo");
         final Member fred = MemberManager.getMemberByLogin("Fred");
-        
+
         yo.authenticate(yoAuthToken);
         yo.invite(fred, GroupManager.getByName("other"));
         assertFalse(fred.isInGroup(GroupManager.getByName("other")));
-        
+
         fred.authenticate(fredAuthToken);
         fred.acceptInvitation(GroupManager.getInvitation(GroupManager.getByName("other"), fred));
         assertTrue(fred.isInGroup(GroupManager.getByName("other")));
     }
-    
-    public void testInviteIntoProtectedAndRefuseGroup(){
+
+    public void testInviteIntoProtectedAndRefuseGroup() {
         final Member yo = MemberManager.getMemberByLogin("Yo");
         final Member fred = MemberManager.getMemberByLogin("Fred");
-        
+
         yo.authenticate(yoAuthToken);
         yo.invite(fred, GroupManager.getByName("other"));
         assertFalse(fred.isInGroup(GroupManager.getByName("other")));
-        
+
         fred.authenticate(fredAuthToken);
         fred.refuseInvitation(GroupManager.getInvitation(GroupManager.getByName("other"), fred));
         assertFalse(fred.isInGroup(GroupManager.getByName("other")));

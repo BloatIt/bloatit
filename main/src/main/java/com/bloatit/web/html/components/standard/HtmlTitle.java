@@ -18,15 +18,15 @@ package com.bloatit.web.html.components.standard;
 
 import com.bloatit.web.html.HtmlBranch;
 
-public class HtmlTitle extends HtmlBranch{
+public class HtmlTitle extends HtmlBranch {
 
-    public HtmlTitle(final String title, int level) {
-        super("h"+level);
+    public HtmlTitle(final String title, final int level) {
+        super("h" + level);
         addText(title);
     }
 
-    public HtmlTitle(int level) {
-        super("h"+level);
+    public HtmlTitle(final int level) {
+        super("h" + level);
     }
 
     // @Override

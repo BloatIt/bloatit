@@ -19,27 +19,38 @@
 
 package com.bloatit.web.actions;
 
-
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.html.pages.LoginPage;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.UrlComponent;
 
 public abstract class Action implements Linkable {
 
-    protected final Request request;
     protected final Session session;
+    private final UrlComponent url;
 
     /**
      * The constructor mustn't thows exception
+     * 
      * @param resquest
      */
-    public Action(final Request resquest) {
-        this.request = resquest;
+    public Action(UrlComponent url) {
+        this.url = url;
         session = Context.getSession();
     }
 
-    abstract public String process() throws RedirectException;
+    public final String process() throws RedirectException{
+        if (url.getMessages().hasMessage(Level.ERROR)) {
+            session.notifyList(url.getMessages());
+            throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
+        }
+        return doProcess();
+    }
+    
+    abstract protected String doProcess() throws RedirectException;
 
 }

@@ -26,7 +26,7 @@ public abstract class HtmlElement extends HtmlNode {
 
     public HtmlElement addAttribute(final String name, final String value) {
         if (name.equals("id")) {
-            this.setId(value);
+            setId(value);
         } else {
             tag.addAttribute(name, value);
         }
@@ -105,7 +105,8 @@ public abstract class HtmlElement extends HtmlNode {
         if (tag != null) {
             if (!selfClosable() || iterator().hasNext()) {
                 if (children.size() == 1 && children.get(0).getClass().equals(HtmlText.class)) {
-                    // HACK to write html on a single line, when the element only contains a single HtmlText (and nothing else)
+                    // HACK to write html on a single line, when the element
+                    // only contains a single HtmlText (and nothing else)
                     String tagString = tag.getOpenTag();
                     tagString += ((HtmlText) children.get(0))._getContent();
                     tagString += tag.getCloseTag();

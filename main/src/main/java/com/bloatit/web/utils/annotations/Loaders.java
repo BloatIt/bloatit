@@ -20,26 +20,26 @@ public class Loaders {
             return "null";
         }
         @SuppressWarnings("unchecked")
-        Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
+        final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
         try {
             return loader.toString(obj);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ConversionErrorException("Cannot convert " + obj + " to String.");
         }
     }
-    
-    public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException{
+
+    public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException {
         if (value == "null") {
             return null;
         }
-        Loader<T> loader = (Loader<T>) getLoader(toClass);
+        final Loader<T> loader = (Loader<T>) getLoader(toClass);
         try {
             return loader.fromString(value);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ConversionErrorException("Cannot convert " + value + " to " + toClass.toString());
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     static <T> Loader<T> getLoader(final Class<T> theClass) {
         if (theClass.equals(Integer.class)) {
@@ -71,7 +71,6 @@ public class Loaders {
         }
         return null;
     }
-
 
     private static class ToInteger extends Loader<Integer> {
         @Override

@@ -18,17 +18,17 @@ package com.bloatit.web.actions;
 
 import java.math.BigDecimal;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.idea.IdeaPage;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer("contribute")
 public class ContributionAction extends Action {
 
     public static final String AMOUNT_CODE = "bloatit_contribute";
@@ -48,20 +48,18 @@ public class ContributionAction extends Action {
     @RequestParam(name = AMOUNT_CODE)
     private BigDecimal amount;
 
-    public ContributionAction(final Request request) throws RedirectException {
-        super(request);
-        request.setValues(this);
-        session.notifyList(request.getMessages());
+    public ContributionAction(final ContributionActionUrl url) throws RedirectException {
+        super(url);
+        this.targetDemand = url.getTargetDemand();
+        this.idea = url.getIdea();
+        this.comment = url.getComment();
+        this.amount = url.getAmount();
         
+        session.notifyList(url.getMessages());
     }
 
     @Override
-    public String process() throws RedirectException  {
-        if (request.getMessages().hasMessage(Level.ERROR)) {
-            // TODO specific si idea not found
-            throw new RedirectException(new UrlBuilder(ContributePage.class).buildUrl());
-        }
-
+    public String doProcess() throws RedirectException {
         // Authentication
         targetDemand.authenticate(session.getAuthToken());
 

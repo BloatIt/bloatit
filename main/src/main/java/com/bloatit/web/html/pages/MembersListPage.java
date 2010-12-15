@@ -18,11 +18,11 @@
  */
 package com.bloatit.web.html.pages;
 
-
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.PageComponent;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
@@ -33,22 +33,25 @@ import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.MembersListPageUrl;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer("memberList")
 public class MembersListPage extends Page {
 
     @PageComponent
     private HtmlPagedList<Member> pagedMemberList;
+    private final MembersListPageUrl url;
 
-    public MembersListPage(final Request request) throws RedirectException {
-        super(request);
+    public MembersListPage(final MembersListPageUrl url) throws RedirectException {
+        super();
+        this.url = url;
         generateContent();
     }
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list",2);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 2);
 
         final PageIterable<Member> memberList = MemberManager.getMembers();
 
@@ -66,7 +69,8 @@ public class MembersListPage extends Page {
         };
 
         // TODO: avoid conflict
-        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, new UrlBuilder(MembersListPage.class, request.getParameters()), request);
+        final MembersListPageUrl clonedUrl = url.clone();
+        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
         pageTitle.add(pagedMemberList);
 

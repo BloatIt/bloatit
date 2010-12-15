@@ -27,23 +27,24 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
  * <pre>
  * <div>
  *      <div>
- *          <label for="...">labeltext</label>
- *      </p>
- *      <div>
- *          <textarea name="..." class="cssClass" ...>defaultValue</textarea>
- *      </div>
+ * <label for="...">labeltext</label>
+ * 
+ * </p>
+ * <div>
+ * <textarea name="..." class="cssClass" ...>defaultValue</textarea>
+ * </div>
  * </div>
  * </pre>
  * </p>
  */
 public final class HtmlTextArea extends HtmlFormField<String> {
 
-    public HtmlTextArea(final String name, int cols, int rows) {
-        super(new HtmlSimpleTextArea( cols, rows), name);
+    public HtmlTextArea(final String name, final int cols, final int rows) {
+        super(new HtmlSimpleTextArea(cols, rows), name);
     }
 
-    public HtmlTextArea(final String name, final String label, int cols, int rows) {
-        super(new HtmlSimpleTextArea(cols, rows), name, label );
+    public HtmlTextArea(final String name, final String label, final int cols, final int rows) {
+        super(new HtmlSimpleTextArea(cols, rows), name, label);
     }
 
     /**

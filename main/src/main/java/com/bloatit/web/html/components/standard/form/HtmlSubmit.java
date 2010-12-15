@@ -23,13 +23,13 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 
-public class HtmlSubmit extends HtmlLeaf{
+public class HtmlSubmit extends HtmlLeaf {
 
     HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.SUBMIT);
 
     /**
      * Creates a HtmlButton
-     *
+     * 
      * @param label the text that will be shown on the button
      */
     public HtmlSubmit(final String value) {

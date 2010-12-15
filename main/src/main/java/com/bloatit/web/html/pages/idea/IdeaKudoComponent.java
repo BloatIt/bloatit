@@ -16,17 +16,15 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.Request;
 
 public class IdeaKudoComponent extends HtmlPageComponent {
 
-    public IdeaKudoComponent(final Request request, final Demand demand) {
+    public IdeaKudoComponent(final Demand demand) {
         super();
 
         final HtmlDiv descriptionKudoBlock = new HtmlDiv("description_kudo_block");

@@ -16,7 +16,6 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-
 import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -26,8 +25,8 @@ import com.bloatit.web.html.components.custom.HtmlTabBlock.HtmlTab;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.Request;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.IdeaTabPaneUrl;
 
 @ParamContainer(value = "demandTabPane", isComponent = true)
 public class IdeaTabPane extends HtmlPageComponent {
@@ -35,41 +34,43 @@ public class IdeaTabPane extends HtmlPageComponent {
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
     private String activeTabKey;
 
-    public IdeaTabPane(final Request request, final Demand demand) {
+    @SuppressWarnings("unused")
+    private IdeaContributorsComponent contribution;
+
+    public IdeaTabPane(final IdeaTabPaneUrl url, final Demand demand) {
         super();
-        request.setValues(this);
+        activeTabKey = url.getActiveTabKey();
         final Session session = Context.getSession();
 
-        UrlBuilder tablinks = new UrlBuilder(IdeaPage.class, request.getParameters());
+        final IdeaPageUrl demandUrl = new IdeaPageUrl();
+        demandUrl.setDemandTabPaneUrl(url);
 
         // Create tab pane
-        final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_key", activeTabKey, tablinks);
-
+        final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_key", activeTabKey, demandUrl);
 
         // Create description tab
-        tabPane.addTab(new HtmlTab(session.tr("Description"), "description_tab" ) {
+        tabPane.addTab(new HtmlTab(session.tr("Description"), "description_tab") {
             @Override
             public HtmlNode generateBody() {
-                return new IdeaDescriptionComponent(request, demand);
+                return new IdeaDescriptionComponent(demand);
             }
         });
 
         // Create participations tab
-        tabPane.addTab(new HtmlTab(session.tr("Participations"), "participations_tab" ) {
+        tabPane.addTab(new HtmlTab(session.tr("Participations"), "participations_tab") {
             @Override
             public HtmlNode generateBody() {
-                return new IdeaContributorsComponent(request, demand);
+                return contribution = new IdeaContributorsComponent(url.getContributionUrl(), demand);
             }
         });
 
         // Create Comments tab
-        tabPane.addTab(new HtmlTab(session.tr("Offers"), "offer_tab" ) {
+        tabPane.addTab(new HtmlTab(session.tr("Offers"), "offer_tab") {
             @Override
             public HtmlNode generateBody() {
-                return new IdeaOfferListComponent(request, demand);
+                return new IdeaOfferListComponent(demand);
             }
         });
-
 
         add(tabPane);
 
