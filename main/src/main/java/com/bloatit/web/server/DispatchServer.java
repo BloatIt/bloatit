@@ -44,7 +44,7 @@ import com.bloatit.web.html.pages.MyAccountPage;
 import com.bloatit.web.html.pages.OfferPage;
 import com.bloatit.web.html.pages.SpecialsPage;
 import com.bloatit.web.html.pages.TestPage;
-import com.bloatit.web.html.pages.demand.DemandPage;
+import com.bloatit.web.html.pages.idea.DemandPage;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.OldUrl;

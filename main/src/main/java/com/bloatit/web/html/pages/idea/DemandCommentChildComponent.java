@@ -16,39 +16,43 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
+package com.bloatit.web.html.pages.idea;
 
 
 import com.bloatit.framework.Comment;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 
-public class DemandCommentComponent extends HtmlPageComponent {
+public class DemandCommentChildComponent extends HtmlPageComponent {
 
+    // private Offer offer;
     private final Comment comment;
-    private HtmlParagraph commentText;
+    private HtmlText commentText;
 
-    public DemandCommentComponent(final Request request, final Comment comment) {
+    public DemandCommentChildComponent(final Request request, final Comment comment) {
         super();
         this.comment = comment;
         extractData(request);
         add(produce(request));
+
     }
 
     protected HtmlElement produce(final Request request) {
-        final HtmlDiv commentBlock = new HtmlDiv("main_comment_block");
+        final HtmlDiv commentBlock = new HtmlDiv("child_comment_block");
         {
+
             commentBlock.add(commentText);
 
             for (final Comment childComment : comment.getChildren()) {
                 commentBlock.add(new DemandCommentChildComponent(request, childComment));
             }
+
         }
         return commentBlock;
     }
@@ -62,7 +66,7 @@ public class DemandCommentComponent extends HtmlPageComponent {
         // MemberPage(session, comment.getAuthor())) + "</span>";
         final String author = "<span class=\"comment_author\">" + comment.getAuthor().getLogin() + "</span>";
 
-        commentText = new HtmlParagraph(comment.getText() + " – " + author + " " + date);
+        commentText = new HtmlText(comment.getText() + " – " + author + " " + date);
 
     }
 }

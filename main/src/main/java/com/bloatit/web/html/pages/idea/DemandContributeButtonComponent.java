@@ -14,39 +14,52 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
+package com.bloatit.web.html.pages.idea;
 
 
 import com.bloatit.framework.Demand;
+import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
-import com.bloatit.web.html.pages.OfferPage;
+import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandMakeOfferButtonComponent extends HtmlPageComponent {
+public class DemandContributeButtonComponent extends HtmlPageComponent {
 
-    public DemandMakeOfferButtonComponent(final Request request, final Demand demand) {
+    private final Demand demand;
+
+    public DemandContributeButtonComponent(final Request request, final Demand demand) {
         super();
-        final Session session = Context.getSession();
+        this.demand = demand;
+        add(produce(request));
+    }
 
-        final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
+    protected HtmlElement produce(final Request request) {
+
+        final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
         {
 
-            final UrlBuilder urlBuilder = new UrlBuilder(OfferPage.class);
-            urlBuilder.addParameter("idea", demand);
+            final Session session = Context.getSession();
 
-            final HtmlForm makeOfferForm = new HtmlForm(urlBuilder.buildUrl());
+            final UrlBuilder urlBuilder = new UrlBuilder(ContributePage.class);
+            urlBuilder.addParameter("targetIdea", demand);
+
+            final HtmlForm contributeForm = new HtmlForm(urlBuilder.buildUrl());
             {
-                final HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
-                makeOfferForm.add(makeOfferButton);
+                // Add button
+                final HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));
+                contributeForm.add(contributeButton);
+
             }
-            makeOfferBlock.add(makeOfferForm);
+            contributeBlock.add(contributeForm);
         }
-        add(makeOfferBlock);
+
+        return contributeBlock;
     }
+
 }

@@ -14,52 +14,54 @@
  * You should have received a copy of the GNU Affero General Public License along with
  * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.pages.demand;
+package com.bloatit.web.html.pages.idea;
 
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.form.HtmlButton;
-import com.bloatit.web.html.components.standard.form.HtmlForm;
-import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Request;
-import com.bloatit.web.utils.url.UrlBuilder;
 
-public class DemandContributeButtonComponent extends HtmlPageComponent {
+public class DemandProgressBarComponent extends HtmlPageComponent {
 
+    private float progressValue;
     private final Demand demand;
 
-    public DemandContributeButtonComponent(final Request request, final Demand demand) {
+    public DemandProgressBarComponent(final Request request, final Demand demand) {
         super();
         this.demand = demand;
+        extractData(request);
         add(produce(request));
     }
 
     protected HtmlElement produce(final Request request) {
 
-        final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
+        final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
 
-            final Session session = Context.getSession();
+            progressBlock.add(new DemandContributeButtonComponent(request, demand));
 
-            final UrlBuilder urlBuilder = new UrlBuilder(ContributePage.class);
-            urlBuilder.addParameter("targetIdea", demand);
-
-            final HtmlForm contributeForm = new HtmlForm(urlBuilder.buildUrl());
+            final HtmlDiv progressBarBlock = new HtmlDiv("column");
             {
-                // Add button
-                final HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));
-                contributeForm.add(contributeButton);
-
+                progressBarBlock.add(new HtmlProgressBar(progressValue));
             }
-            contributeBlock.add(contributeForm);
+
+            progressBlock.add(progressBarBlock);
+
+            progressBlock.add(new DemandMakeOfferButtonComponent(request, demand));
+
         }
 
-        return contributeBlock;
+        return progressBlock;
     }
 
+    protected void extractData(final Request request) {
+        progressValue = 0;
+        progressValue = 42 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
+
+//        totalText = new HtmlParagraph(demand.getContribution().toPlainString() + "€");
+
+    }
 }
