@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.html.pages;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.annotations.PageComponent;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
@@ -34,10 +34,11 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.Request;
 import com.bloatit.web.utils.url.UrlBuilder;
 
+@ParamContainer("ideas-list")
 public class IdeasList extends Page {
 
     @PageComponent
-    HtmlPagedList<Demand> pagedMemberList;
+    HtmlPagedList<Demand> pagedIdeaList;
 
     public IdeasList(final Request request) throws RedirectException {
         super(request);
@@ -46,25 +47,15 @@ public class IdeasList extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Demands list"), 1);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Ideas list"), 1);
 
         final PageIterable<Demand> demandList = DemandManager.getDemands();
 
-        final HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
-
-            UrlBuilder demandPageUrlBuilder = new UrlBuilder(IdeaPage.class);
-
-            @Override
-            public HtmlNode generate(final Demand demand) {
-                demandPageUrlBuilder.addParameter("id", demand);
-                return new HtmlListItem(demandPageUrlBuilder.getHtmlLink(demand.getTitle()));
-            }
-        };
-
-        pagedMemberList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(IdeasList.class, request.getParameters()),
+        final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
+        pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, new UrlBuilder(IdeasList.class, request.getParameters()),
                 request);
 
-        pageTitle.add(pagedMemberList);
+        pageTitle.add(pagedIdeaList);
 
         add(pageTitle);
     }
@@ -79,7 +70,14 @@ public class IdeasList extends Page {
         return true;
     }
 
-    public String isBancale() {
-        return "peut-être";
-    }
+    static class IdeasListItem implements HtmlRenderer<Demand> {
+
+        UrlBuilder demandPageUrlBuilder = new UrlBuilder(IdeaPage.class);
+
+        @Override
+        public HtmlNode generate(final Demand demand) {
+            demandPageUrlBuilder.addParameter("id", demand);
+            return new HtmlListItem(demandPageUrlBuilder.getHtmlLink(demand.getTitle()));
+        }
+    };
 }

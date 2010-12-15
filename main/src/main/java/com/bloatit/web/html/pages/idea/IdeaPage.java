@@ -34,7 +34,9 @@ import com.bloatit.web.utils.url.Request;
 
 public class IdeaPage extends Page {
 
-    @RequestParam(name = "id", level = Level.ERROR)
+    public static final String DEMAND_FIELD_NAME = "id";
+
+    @RequestParam(name = DEMAND_FIELD_NAME, level = Level.ERROR)
     protected Demand demand;
 
     @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
