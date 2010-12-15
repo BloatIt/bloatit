@@ -18,22 +18,22 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.LoginActionUrl;
 
+@ParamContainer("account/charging")
 public class AccountChargingAction extends Action {
 
     // TODO : get from session
     public final static String CHARGE_AMOUNT_CODE = "chargeAmount";
 
-    public AccountChargingAction(final Request request) throws RedirectException {
-        super(request);
-        request.setValues(this);
-        session.notifyList(request.getMessages());
+    public AccountChargingAction(LoginActionUrl url) throws RedirectException {
+        super(url);
     }
 
     @Override
-    public String process() throws RedirectException {
+    protected String doProcess() throws RedirectException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

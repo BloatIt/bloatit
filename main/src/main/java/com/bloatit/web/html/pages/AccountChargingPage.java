@@ -19,23 +19,26 @@
 package com.bloatit.web.html.pages;
 
 import com.bloatit.web.actions.AccountChargingAction;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.AccountChargingPageUrl;
+import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlBuilder;
 
 /**
  * A page used to put money onto the internal bloatit account
  */
+@ParamContainer("charging")
 public class AccountChargingPage extends LoggedPage {
+    private final Url url;
 
-    public AccountChargingPage(final Request request) throws RedirectException {
-        super(request);
-        request.setValues(this);
+    public AccountChargingPage(final AccountChargingPageUrl url) throws RedirectException{
+        super(url);
+        this.url = url;
     }
 
     @Override
