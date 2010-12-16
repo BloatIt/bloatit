@@ -30,7 +30,7 @@ import com.bloatit.web.utils.url.UrlComponent;
 public abstract class Action implements Linkable {
 
     protected final Session session;
-    private final UrlComponent url;
+    private final UrlComponent actionUrl;
 
     /**
      * The constructor mustn't thows exception
@@ -38,13 +38,13 @@ public abstract class Action implements Linkable {
      * @param resquest
      */
     public Action(UrlComponent url) {
-        this.url = url;
+        this.actionUrl = url;
         session = Context.getSession();
     }
 
     public final String process() throws RedirectException{
-        if (url.getMessages().hasMessage(Level.ERROR)) {
-            session.notifyList(url.getMessages());
+        if (actionUrl.getMessages().hasMessage(Level.ERROR)) {
+            session.notifyList(actionUrl.getMessages());
             throw new RedirectException(new LoginPageUrl().toString());
         }
         return doProcess();

@@ -20,6 +20,9 @@ import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
 
+/**
+ * Handles Html list, both numbered and not numbered
+ */
 public class HtmlList extends HtmlLeaf {
 
     public enum listType {

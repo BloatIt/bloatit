@@ -24,6 +24,7 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
@@ -31,27 +32,26 @@ import com.bloatit.web.utils.url.IdeaPageUrl;
 @ParamContainer("contribute")
 public class ContributionAction extends Action {
 
-    public static final String AMOUNT_CODE = "bloatit_contribute";
-    public static final String COMMENT_CODE = "bloatit_comment";
-    public static final String TARGET_DEMAND_CODE = "bloatit_target_demand";
-    public static final String IDEA_CODE = "idea";
+    public static final String AMOUNT_CODE = "contributionAmount";
+    public static final String COMMENT_CODE = "comment";
+    public static final String TARGET_IDEA = "targetIdea";
 
-    @RequestParam(name = TARGET_DEMAND_CODE, role = Role.POST)
-    private Demand targetDemand;
-
-    @RequestParam(name = IDEA_CODE, role = Role.POST)
-    private Demand idea;
+    @RequestParam(name = TARGET_IDEA, role = Role.POST)
+    private Demand targetIdea;
 
     @RequestParam(name = COMMENT_CODE, defaultValue = "")
     private String comment;
 
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)
     private BigDecimal amount;
+    
+    private final ContributionActionUrl url;
+
 
     public ContributionAction(final ContributionActionUrl url) throws RedirectException {
         super(url);
-        this.targetDemand = url.getTargetDemand();
-        this.idea = url.getIdea();
+        this.url = url;
+        this.targetIdea = url.getTargetIdea();
         this.comment = url.getComment();
         this.amount = url.getAmount();
         
@@ -61,23 +61,28 @@ public class ContributionAction extends Action {
     @Override
     public String doProcess() throws RedirectException {
         // Authentication
-        targetDemand.authenticate(session.getAuthToken());
+        targetIdea.authenticate(session.getAuthToken());
 
         try {
-            if (targetDemand.canContribute()) {
-                targetDemand.addContribution(amount, comment);
+            if (targetIdea.canContribute()) {
+                targetIdea.addContribution(amount, comment);
                 session.notifyGood(session.tr("Thanks you for crediting " + amount + " on this idea"));
-                return new IdeaPageUrl(idea).toString();
+
+                return new IdeaPageUrl(targetIdea).toString();
             } else {
                 // Should never happen
                 session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-                return new ContributePageUrl(idea).toString();
+                return new ContributePageUrl(targetIdea).toString(); // TODO put parameters
             }
         } catch (final NotEnoughMoneyException e) {
-            session.notifyBad(session.tr("You have not enought money left."));
-            // TODO add this parameters into ContributePage url.
-            return new ContributePageUrl(idea).toString();
+            session.notifyBad(session.tr("You need to charge your account before you can contribute."));
 
+            // Sets the target page to here
+            session.setTargetPage(this.url.toString());
+
+            // Redirects to the account charging page
+            // ToDO : give through session : contributionPageUrl.addParameter(AccountChargingAction.CHARGE_AMOUNT_CODE, amount);
+            return new AccountChargingPageUrl().toString();
         }
     }
 }

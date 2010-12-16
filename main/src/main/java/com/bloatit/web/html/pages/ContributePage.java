@@ -28,8 +28,8 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
-import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.utils.url.ContributePageUrl;
@@ -66,11 +66,11 @@ public class ContributePage extends LoggedPage {
         contribField.setDefaultValue(contributionAmountParam);
 
         // Input field : comment
-        final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE, 10, 20);
-        commentField.setLabel(session.tr("Comment (optionnal) : "));
+        final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE, 60, 10);
+        commentField.setLabel(session.tr("Comment (optional) : "));
         commentField.setDefaultValue(contributionCommentParam);
 
-        final HtmlButton submitButton = new HtmlButton(session.tr("Contribute"));
+        final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Contribute"));
 
         // Summary of the idea
         final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle(), 2);

@@ -25,6 +25,7 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.LoggedPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer(value = "logged", isComponent = true)
 public abstract class LoggedPage extends Page {
@@ -40,7 +41,6 @@ public abstract class LoggedPage extends Page {
         if (session.isLogged()) {
             add(generateRestrictedContent());
         } else {
-
             session.notifyBad(getRefusalReason());
             session.setTargetPage(new LoggedPageUrl().toString());
             throw new RedirectException(new LoginPageUrl().toString());

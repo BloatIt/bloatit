@@ -24,17 +24,17 @@ public ContributionActionUrl() {
         assert false ;
     }
 }
-private com.bloatit.framework.Demand targetDemand;
+private com.bloatit.framework.Demand targetIdea;
 private com.bloatit.framework.Demand idea;
 private java.lang.String comment;
 private java.math.BigDecimal amount;
 
-public com.bloatit.framework.Demand getTargetDemand(){ 
-    return this.targetDemand;
+public com.bloatit.framework.Demand getTargetIdea(){ 
+    return this.targetIdea;
 }
 
-public void setTargetDemand(com.bloatit.framework.Demand arg0){ 
-    this.targetDemand = arg0;
+public void setTargetIdea(com.bloatit.framework.Demand arg0){ 
+    this.targetIdea = arg0;
 }
 
 public com.bloatit.framework.Demand getIdea(){ 
@@ -64,15 +64,15 @@ public void setAmount(java.math.BigDecimal arg0){
 
 @Override 
 protected void doRegister() { 
-    register(new Parameter("bloatit_target_demand", getTargetDemand(), com.bloatit.framework.Demand.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter("targetIdea", getTargetIdea(), com.bloatit.framework.Demand.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
     register(new Parameter("idea", getIdea(), com.bloatit.framework.Demand.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("bloatit_comment", getComment(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("bloatit_contribute", getAmount(), java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter("comment", getComment(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter("contributionAmount", getAmount(), java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
 }
 
 public ContributionActionUrl clone() { 
     ContributionActionUrl other = new ContributionActionUrl();
-    other.targetDemand = this.targetDemand;
+    other.targetIdea = this.targetIdea;
     other.idea = this.idea;
     other.comment = this.comment;
     other.amount = this.amount;
