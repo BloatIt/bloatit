@@ -23,11 +23,12 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 
 @ParamContainer("idea/create")
 public class CreateIdeaPage extends LoggedPage {
 
-    public CreateIdeaPage() throws RedirectException {
+    public CreateIdeaPage(CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
         super();
     }
 

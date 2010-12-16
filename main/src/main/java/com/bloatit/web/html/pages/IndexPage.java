@@ -32,11 +32,12 @@ import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
+import com.bloatit.web.utils.url.IndexPageUrl;
 
 @ParamContainer("index")
 public class IndexPage extends Page {
 
-    public IndexPage() throws RedirectException {
+    public IndexPage(IndexPageUrl indexPageUrl) throws RedirectException {
         super();
     }
 

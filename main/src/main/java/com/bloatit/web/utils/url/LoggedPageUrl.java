@@ -6,14 +6,13 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 @SuppressWarnings("unused")
-public class LoggedPageUrl extends Url {
-public static String getName() { return "LoggedPage"; }
+public class LoggedPageUrl extends UrlComponent {
 public LoggedPageUrl(Parameters params) {
-    super(getName());
+    super();
     parseParameters(params);
 }
 public LoggedPageUrl() {
-    super(getName());
+    super();
 }
 
 

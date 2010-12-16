@@ -20,12 +20,12 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.utils.url.LoginActionUrl;
+import com.bloatit.web.utils.url.LogoutActionUrl;
 
 @ParamContainer("logout")
 public class LogoutAction extends Action {
 
-    public LogoutAction(final LoginActionUrl url) {
+    public LogoutAction(final LogoutActionUrl url) {
         super(url);
     }
 

@@ -49,7 +49,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         if (paramContainer.isComponent()) {
             generator = new UrlComponentClassGenerator(urlClassName);
         } else {
-            generator = new UrlClassGenerator(urlClassName);
+            generator = new UrlClassGenerator(urlClassName, element.asType().toString());
         }
 
         System.out.println("    generating " + generator.getClassName());

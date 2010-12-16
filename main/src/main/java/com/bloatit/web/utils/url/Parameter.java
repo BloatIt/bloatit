@@ -4,26 +4,28 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.Message.What;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.AsciiUtils;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
-public class Parameter {
+public class Parameter<T> {
     private final String message;
     private final Level level;
 
     private final String name;
-    private Object value;
-    private final Class<?> valueClass;
+    private T value;
+    private final Class<T> valueClass;
     private final Role role;
     private What what;
 
-    public Parameter(final String name, final Object value, final Class<?> valueClass, final Role role, final Level level, final String message) {
+    public Parameter(final String name, final T value, final Class<T> valueClass, final Role role, final Level level, final String message) {
         this.name = name;
         this.role = role;
         this.value = value;
         this.valueClass = valueClass;
         this.level = level;
         this.message = message;
+        this.what = What.NO_ERROR;
     }
 
     public Role getRole() {
@@ -48,12 +50,13 @@ public class Parameter {
     }
 
     private String makeStringPretty(String value) {
-        value = value.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨]", "-");
-        value = value.replaceAll("(--)+", "-");
+        value = value.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨\\+]", "-");
+        value = value.replaceAll("(---)+", "-");
         value = value.replaceAll("(--)+", "-");
         value = value.subSequence(0, Math.min(value.length(), 80)).toString();
         value = value.replaceAll("-+$", "");
         value = value.toLowerCase();
+        value = AsciiUtils.convertNonAscii(value);
         return value;
     }
 
@@ -71,7 +74,7 @@ public class Parameter {
         }
     }
 
-    public Object getValue() {
+    public T getValue() {
         return value;
     }
 
@@ -80,10 +83,6 @@ public class Parameter {
     }
 
     public void valueFromString(final String string) {
-        if (valueClass.equals(String.class)) {
-            value = string;
-            return;
-        }
         try {
             value = Loaders.fromStr(valueClass, string);
         } catch (final ConversionErrorException e) {

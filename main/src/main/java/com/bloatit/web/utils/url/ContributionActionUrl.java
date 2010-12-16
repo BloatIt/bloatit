@@ -4,10 +4,13 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
+import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class ContributionActionUrl extends Url {
 public static String getName() { return "ContributionAction"; }
+public com.bloatit.web.actions.ContributionAction createPage() throws RedirectException{ 
+    return new com.bloatit.web.actions.ContributionAction(this); }
 public ContributionActionUrl(Parameters params) {
     super(getName());
     parseParameters(params);
@@ -15,7 +18,7 @@ public ContributionActionUrl(Parameters params) {
 public ContributionActionUrl() {
     super(getName());
     try {
-        this.comment = Loaders.fromStr(java.lang.String.class, "no comment");
+        this.comment = Loaders.fromStr(java.lang.String.class, "");
     } catch (ConversionErrorException e) {
         e.printStackTrace();
         assert false ;

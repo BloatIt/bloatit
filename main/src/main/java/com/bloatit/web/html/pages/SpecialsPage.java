@@ -26,11 +26,12 @@ import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.MembersListPageUrl;
+import com.bloatit.web.utils.url.SpecialsPageUrl;
 
 @ParamContainer("special")
 public class SpecialsPage extends Page {
 
-    public SpecialsPage() throws RedirectException {
+    public SpecialsPage(SpecialsPageUrl specialsPageUrl) throws RedirectException {
         super();
         generateContent();
     }

@@ -4,10 +4,13 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
+import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class GlobalSearchPageUrl extends Url {
 public static String getName() { return "GlobalSearchPage"; }
+public com.bloatit.web.html.pages.GlobalSearchPage createPage() throws RedirectException{ 
+    return new com.bloatit.web.html.pages.GlobalSearchPage(this); }
 public GlobalSearchPageUrl(Parameters params) {
     super(getName());
     parseParameters(params);
@@ -15,7 +18,7 @@ public GlobalSearchPageUrl(Parameters params) {
 public GlobalSearchPageUrl() {
     super(getName());
     try {
-        this.searchString = Loaders.fromStr(java.lang.String.class, "vide");
+        this.searchString = Loaders.fromStr(java.lang.String.class, "");
     } catch (ConversionErrorException e) {
         e.printStackTrace();
         assert false ;

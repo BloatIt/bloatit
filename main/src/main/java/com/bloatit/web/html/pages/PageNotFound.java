@@ -22,11 +22,12 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.utils.url.PageNotFoundUrl;
 
 @ParamContainer("pageNotFound")
 public class PageNotFound extends Page {
 
-    public PageNotFound() throws RedirectException {
+    public PageNotFound(PageNotFoundUrl pageNotFoundUrl) throws RedirectException {
         super();
         generateContent();
     }

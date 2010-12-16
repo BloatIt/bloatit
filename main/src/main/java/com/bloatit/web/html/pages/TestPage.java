@@ -41,6 +41,7 @@ import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.RandomString;
+import com.bloatit.web.utils.url.TestPageUrl;
 
 /**
  * A page to test various Html elements
@@ -48,7 +49,7 @@ import com.bloatit.web.utils.RandomString;
 @ParamContainer("test")
 public class TestPage extends Page {
 
-    public TestPage() throws RedirectException {
+    public TestPage(TestPageUrl testPageUrl) throws RedirectException {
         super();
     }
 

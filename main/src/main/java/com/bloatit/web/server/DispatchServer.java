@@ -23,69 +23,59 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.bloatit.web.actions.Action;
-import com.bloatit.web.actions.ContributionAction;
-import com.bloatit.web.actions.LoginAction;
-import com.bloatit.web.actions.LogoutAction;
-import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.html.pages.ContributePage;
-import com.bloatit.web.html.pages.CreateIdeaPage;
-import com.bloatit.web.html.pages.GlobalSearchPage;
-import com.bloatit.web.html.pages.IdeasList;
-import com.bloatit.web.html.pages.IndexPage;
-import com.bloatit.web.html.pages.LoginPage;
-import com.bloatit.web.html.pages.MemberPage;
-import com.bloatit.web.html.pages.MembersListPage;
-import com.bloatit.web.html.pages.MyAccountPage;
-import com.bloatit.web.html.pages.OfferPage;
 import com.bloatit.web.html.pages.PageNotFound;
-import com.bloatit.web.html.pages.SpecialsPage;
-import com.bloatit.web.html.pages.TestPage;
-import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.OldUrl;
-import com.bloatit.web.utils.url.Request;
+import com.bloatit.web.utils.url.ContributePageUrl;
+import com.bloatit.web.utils.url.ContributionActionUrl;
+import com.bloatit.web.utils.url.CreateIdeaPageUrl;
+import com.bloatit.web.utils.url.GlobalSearchPageUrl;
+import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.IdeasListUrl;
+import com.bloatit.web.utils.url.IndexPageUrl;
+import com.bloatit.web.utils.url.LoginActionUrl;
+import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.LogoutActionUrl;
+import com.bloatit.web.utils.url.MemberPageUrl;
+import com.bloatit.web.utils.url.MembersListPageUrl;
+import com.bloatit.web.utils.url.MyAccountPageUrl;
+import com.bloatit.web.utils.url.OfferActionUrl;
+import com.bloatit.web.utils.url.OfferPageUrl;
+import com.bloatit.web.utils.url.Parameters;
+import com.bloatit.web.utils.url.SpecialsPageUrl;
+import com.bloatit.web.utils.url.TestPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 public class DispatchServer {
 
-    static final Map<String, Class<? extends Page>> pageMap;
-    static final Map<String, Class<? extends Action>> actionMap;
+    static final Map<String, Class<? extends Url>> urlMap;
 
     static {
-        pageMap = new HashMap<String, Class<? extends Page>>() {
+        urlMap = new HashMap<String, Class<? extends Url>>() {
 
             private static final long serialVersionUID = -1990148160288171599L;
 
             {
-                put(OldUrl.getPageName(IndexPage.class), IndexPage.class);
-                put(OldUrl.getPageName(LoginPage.class), LoginPage.class);
-                put(OldUrl.getPageName(IdeasList.class), IdeasList.class);
-                put(OldUrl.getPageName(CreateIdeaPage.class), CreateIdeaPage.class);
-                put(OldUrl.getPageName(IdeaPage.class), IdeaPage.class);
-                put(OldUrl.getPageName(MyAccountPage.class), MyAccountPage.class);
-                put(OldUrl.getPageName(SpecialsPage.class), SpecialsPage.class);
-                put(OldUrl.getPageName(MembersListPage.class), MembersListPage.class);
-                put(OldUrl.getPageName(MemberPage.class), MemberPage.class);
-                put(OldUrl.getPageName(GlobalSearchPage.class), GlobalSearchPage.class);
-                put(OldUrl.getPageName(ContributePage.class), ContributePage.class);
-                put(OldUrl.getPageName(OfferPage.class), OfferPage.class);
-                put(OldUrl.getPageName(TestPage.class), TestPage.class);
-            }
-        };
+                put(IndexPageUrl.getName(), IndexPageUrl.class);
+                put(LoginPageUrl.getName(), LoginPageUrl.class);
+                put(IdeasListUrl.getName(), IdeasListUrl.class);
+                put(CreateIdeaPageUrl.getName(), CreateIdeaPageUrl.class);
+                put(IdeaPageUrl.getName(), IdeaPageUrl.class);
+                put(MyAccountPageUrl.getName(), MyAccountPageUrl.class);
+                put(SpecialsPageUrl.getName(), SpecialsPageUrl.class);
+                put(MembersListPageUrl.getName(), MembersListPageUrl.class);
+                put(MemberPageUrl.getName(), MemberPageUrl.class);
+                put(GlobalSearchPageUrl.getName(), GlobalSearchPageUrl.class);
+                put(ContributePageUrl.getName(), ContributePageUrl.class);
+                put(OfferPageUrl.getName(), OfferPageUrl.class);
+                put(TestPageUrl.getName(), TestPageUrl.class);
 
-        actionMap = new HashMap<String, Class<? extends Action>>() {
-
-            private static final long serialVersionUID = -1990148150288171599L;
-
-            {
-                put(OldUrl.getPageName(LoginAction.class), LoginAction.class);
-                put(OldUrl.getPageName(LogoutAction.class), LogoutAction.class);
-                put(OldUrl.getPageName(ContributionAction.class), ContributionAction.class);
-                put(OldUrl.getPageName(OfferAction.class), OfferAction.class);
+                put(LoginActionUrl.getName(), LoginActionUrl.class);
+                put(LogoutActionUrl.getName(), LogoutActionUrl.class);
+                put(ContributionActionUrl.getName(), ContributionActionUrl.class);
+                put(OfferActionUrl.getName(), OfferActionUrl.class);
 
             }
         };
@@ -113,45 +103,55 @@ public class DispatchServer {
     public void process(final HttpResponse response) throws IOException {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
-        final String linkable = query.get("page");
+        final String pageCode = query.get("page");
         final String params = query.get("param");
 
         final QueryString queryString = parseQueryString(params);
-        final Map<String, String> parameters = mergePostGet(queryString.parameters, post, query);
 
-        final Request request = new Request(linkable, parameters);
+        // Should be merge post/get/session
+        final Parameters parameters = new Parameters();
+        parameters.putAll(mergePostGet(queryString.parameters, post, query));
 
         try {
-            if (pageMap.containsKey(linkable)) {
-                Page page;
-                page = pageMap.get(linkable).getConstructor(Request.class).newInstance(request);
-                page.create();
-                response.writePage(page);
+            if (urlMap.containsKey(pageCode)) {
+                Url aUrl;
+                aUrl = urlMap.get(pageCode).getConstructor(Parameters.class).newInstance(parameters);
+                Linkable linkable = aUrl.createPage();
 
-            } else if (actionMap.containsKey(linkable)) {
-                final Action action = actionMap.get(linkable).getConstructor(Request.class).newInstance(request);
-                response.writeRedirect(action.process());
-
+                if (linkable instanceof Page) {
+                    Page page = Page.class.cast(linkable);
+                    page.create();
+                    response.writePage(page);
+                } else if (linkable instanceof Action) {
+                    Action action = Action.class.cast(linkable);
+                    response.writeRedirect(action.process());
+                }
             } else {
-                session.notifyError(session.tr("Unknow page code: ") + linkable);
-                final Page page = new PageNotFound();
+                session.notifyError(session.tr("Unknow page code: ") + pageCode);
+                final Page page = new PageNotFound(null);
                 page.create();
                 response.writePage(page);
             }
-        } catch (final RedirectException ex) {
-            response.writeRedirect(ex.getUrl());
-        } catch (final InstantiationException ex) {
-            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (final IllegalAccessException ex) {
-            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (final IllegalArgumentException ex) {
-            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (final InvocationTargetException ex) {
-            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (final NoSuchMethodException ex) {
-            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (final SecurityException ex) {
-            Logger.getLogger(DispatchServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (RedirectException e) {
+            response.writeRedirect(e.getUrl());
         }
 
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();

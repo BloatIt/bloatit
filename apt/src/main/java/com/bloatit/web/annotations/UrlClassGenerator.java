@@ -1,12 +1,16 @@
 package com.bloatit.web.annotations;
 
+
 public class UrlClassGenerator extends JavaGenerator {
 
-    public UrlClassGenerator(String name) {
+    public UrlClassGenerator(String name, String pageType) {
         super(name);
+        _import.append("import com.bloatit.web.exceptions.RedirectException;\n");
+        
         _classHeader.append("@SuppressWarnings(\"unused\")\n");
         _classHeader.append("public class ").append(className).append(" extends Url {\n");
         _classHeader.append("public static String getName() { return \"").append(name).append("\"; }\n");
+        _classHeader.append("public ").append(pageType).append(" createPage() throws RedirectException{ \n    return new ").append(pageType).append("(this); }\n");
 
     }
 

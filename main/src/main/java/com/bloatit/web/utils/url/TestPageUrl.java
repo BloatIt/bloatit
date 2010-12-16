@@ -4,10 +4,13 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
+import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class TestPageUrl extends Url {
 public static String getName() { return "TestPage"; }
+public com.bloatit.web.html.pages.TestPage createPage() throws RedirectException{ 
+    return new com.bloatit.web.html.pages.TestPage(this); }
 public TestPageUrl(Parameters params) {
     super(getName());
     parseParameters(params);

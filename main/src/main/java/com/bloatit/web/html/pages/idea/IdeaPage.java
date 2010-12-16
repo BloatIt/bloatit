@@ -51,8 +51,6 @@ public class IdeaPage extends Page {
         this.url = url;
         idea = url.getIdea();
         title = url.getTitle();
-        demandTabPane = new IdeaTabPane(url.getDemandTabPaneUrl(), idea);
-
     }
 
     @Override
@@ -86,6 +84,8 @@ public class IdeaPage extends Page {
             setPageNotFound();
             return;
         }
+        
+        demandTabPane = new IdeaTabPane(url.getDemandTabPaneUrl(), idea);
 
         final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
         final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);

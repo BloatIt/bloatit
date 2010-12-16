@@ -4,10 +4,13 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
+import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class OfferPageUrl extends Url {
 public static String getName() { return "OfferPage"; }
+public com.bloatit.web.html.pages.OfferPage createPage() throws RedirectException{ 
+    return new com.bloatit.web.html.pages.OfferPage(this); }
 public OfferPageUrl(Parameters params) {
     super(getName());
     parseParameters(params);
@@ -15,10 +18,10 @@ public OfferPageUrl(Parameters params) {
 public OfferPageUrl(com.bloatit.framework.Demand targetIdea) {
     super(getName());
     try {
-        this.price = Loaders.fromStr(java.math.BigDecimal.class, "vide");
-        this.expiryDate = Loaders.fromStr(java.util.Date.class, "vide");
-        this.title = Loaders.fromStr(java.lang.String.class, "vide");
-        this.description = Loaders.fromStr(java.lang.String.class, "vide");
+        this.price = Loaders.fromStr(java.math.BigDecimal.class, "");
+        this.expiryDate = Loaders.fromStr(java.util.Date.class, "");
+        this.title = Loaders.fromStr(java.lang.String.class, "");
+        this.description = Loaders.fromStr(java.lang.String.class, "");
     } catch (ConversionErrorException e) {
         e.printStackTrace();
         assert false ;

@@ -1,10 +1,9 @@
 package com.bloatit.web.utils.url;
 
 import java.util.HashMap;
-import java.util.Map;
 
-public class Parameters {
-    Map<String, String> param = new HashMap<String, String>();
+public class Parameters extends HashMap<String, String> {
+    private static final long serialVersionUID = 2992292463988772864L;
 
     public Parameters() {
         super();
@@ -12,23 +11,23 @@ public class Parameters {
 
     public Parameters(final String name, final String value) {
         super();
-        param.put(value, name);
+        put(value, name);
     }
 
     public final Parameters add(final String name, final String value) {
-        param.put(value, name);
+        put(value, name);
         return this;
     }
 
     public final String pick(final String name) {
-        final String value = param.get(name);
+        final String value = get(name);
         if (value != null) {
-            param.remove(name);
+            remove(name);
         }
         return value;
     }
 
     public final String look(final String name) {
-        return param.get(name);
+        return get(name);
     }
 }
