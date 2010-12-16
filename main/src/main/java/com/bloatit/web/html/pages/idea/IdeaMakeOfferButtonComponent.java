@@ -20,11 +20,10 @@ import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
-import com.bloatit.web.html.pages.OfferPage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.OfferPageUrl;
 
 public class IdeaMakeOfferButtonComponent extends HtmlPageComponent {
 
@@ -35,10 +34,9 @@ public class IdeaMakeOfferButtonComponent extends HtmlPageComponent {
         final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
         {
 
-            final UrlBuilder urlBuilder = new UrlBuilder(OfferPage.class);
-            urlBuilder.addParameter("idea", demand);
+            OfferPageUrl offerPageUrl = new OfferPageUrl(demand);
 
-            final HtmlForm makeOfferForm = new HtmlForm(urlBuilder.buildUrl());
+            final HtmlForm makeOfferForm = new HtmlForm(offerPageUrl.toString());
             {
                 final HtmlButton makeOfferButton = new HtmlButton(session.tr("Make an offer"));
                 makeOfferForm.add(makeOfferButton);

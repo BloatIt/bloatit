@@ -97,11 +97,11 @@ public abstract class UrlComponent {
         }
     }
 
-    public HtmlNode getHtmlLink(final HtmlNode data) {
+    public HtmlLink getHtmlLink(final HtmlNode data) {
         return new HtmlLink(toString(), data);
     }
 
-    public HtmlNode getHtmlLink(final String text) {
+    public HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(toString(), new HtmlText(text));
     }
 }

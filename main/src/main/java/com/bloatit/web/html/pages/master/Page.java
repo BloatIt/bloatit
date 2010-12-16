@@ -10,14 +10,13 @@ import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
-import com.bloatit.web.html.pages.IndexPage;
 import com.bloatit.web.html.pages.master.HtmlNotification.Level;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Notification;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.IndexPageUrl;
 
 public abstract class Page extends HtmlElement implements Linkable {
 
@@ -136,7 +135,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     private HtmlElement generateTitle() {
         Context.getSession();
 
-        return new HtmlDiv().setId("logo").add(new HtmlLink(new UrlBuilder(IndexPage.class).buildUrl(), generateLogo()));
+        return new HtmlDiv().setId("logo").add(new HtmlLink(new IndexPageUrl().toString(), generateLogo()));
     }
 
     private void addWaitingNotifications() {

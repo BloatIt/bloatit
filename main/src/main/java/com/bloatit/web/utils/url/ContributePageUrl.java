@@ -2,14 +2,29 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
+@SuppressWarnings("unused")
 public class ContributePageUrl extends Url {
-public ContributePageUrl() {
-    super("ContributePage"); 
-}
+public static String getName() { return "ContributePage"; }
 public ContributePageUrl(Parameters params) {
-    this();
+    super(getName());
     parseParameters(params);
+}
+public ContributePageUrl(com.bloatit.framework.Demand targetIdea) {
+    super(getName());
+    try {
+        this.contributionAmountParam = Loaders.fromStr(java.lang.String.class, "vide");
+        this.contributionCommentParam = Loaders.fromStr(java.lang.String.class, "vide");
+    } catch (ConversionErrorException e) {
+        e.printStackTrace();
+        assert false ;
+    }
+        this.targetIdea = targetIdea;
+}
+private ContributePageUrl(){
+    super(getName());
 }
 private com.bloatit.framework.Demand targetIdea;
 private java.lang.String contributionAmountParam;

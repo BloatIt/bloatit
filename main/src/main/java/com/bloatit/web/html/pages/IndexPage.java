@@ -30,7 +30,8 @@ import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.CreateIdeaPageUrl;
+import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 
 @ParamContainer("index")
 public class IndexPage extends Page {
@@ -68,7 +69,7 @@ public class IndexPage extends Page {
 
         final HtmlDiv searchBlock = new HtmlDiv("index_search_block");
 
-        final HtmlForm searchForm = new HtmlForm(new UrlBuilder(GlobalSearchPage.class).buildUrl(), HtmlForm.Method.GET);
+        final HtmlForm searchForm = new HtmlForm(new GlobalSearchPageUrl().toString(), HtmlForm.Method.GET);
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
@@ -104,7 +105,7 @@ public class IndexPage extends Page {
                 .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlParagraph(description));
 
-        final HtmlLink createIdeaPageLink = new HtmlLink(new UrlBuilder(CreateIdeaPage.class).buildUrl(), session.tr("Create a new idea"));
+        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().toString(), session.tr("Create a new idea"));
         descriptionBlock.add(createIdeaPageLink);
 
         return descriptionBlock;

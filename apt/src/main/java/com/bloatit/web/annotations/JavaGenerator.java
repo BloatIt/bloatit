@@ -3,7 +3,7 @@ package com.bloatit.web.annotations;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 
-public class JavaGenerator {
+public abstract class JavaGenerator {
 
     protected final StringBuilder _import = new StringBuilder();
     protected final StringBuilder _classHeader = new StringBuilder();
@@ -14,19 +14,46 @@ public class JavaGenerator {
     private StringBuilder _doRegister = new StringBuilder();
     private StringBuilder _clone = new StringBuilder();
 
+    protected StringBuilder _constructorParameters = new StringBuilder();
+    protected StringBuilder _constructorAssign = new StringBuilder();
+    protected StringBuilder _constructorDefaults = new StringBuilder();
+
     protected JavaGenerator(String name) {
         name = name.substring(0, 1).toLowerCase() + name.substring(1);
         className = name.substring(0, 1).toUpperCase() + name.substring(1) + "Url";
 
         _import.append("import com.bloatit.web.annotations.Message.Level;\n");
         _import.append("import com.bloatit.web.annotations.RequestParam.Role;\n");
+        _import.append("import com.bloatit.web.utils.annotations.Loaders;\n");
+        _import.append("import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;\n");
 
     }
+    
+    protected abstract void generateConstructor();
 
+    private String toCamelAttributeName(String name){
+        return name.substring(0, 1).toLowerCase() + name.substring(1);
+    }
+    
     public final void addAttribute(String type, String name) {
-        name = name.substring(0, 1).toLowerCase() + name.substring(1);
+        name = toCamelAttributeName(name);
         _attributes.append("private ").append(type).append(" ").append(name).append(";\n");
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(";\n");
+    }
+
+    public final void addConstructorParameter(String type, String attributeName) {
+        attributeName = toCamelAttributeName(attributeName);
+        if (_constructorParameters.length() > 0) {
+            _constructorParameters.append(", ");
+        }
+        _constructorParameters.append(type).append(" ").append(attributeName);
+        _constructorAssign.append("        this.").append(attributeName).append(" = ").append(attributeName).append(";\n");
+    }
+
+    public final void addDefaultParameter(String attributeName, String className, String defaultValue) {
+        attributeName = toCamelAttributeName(attributeName);
+        _constructorDefaults.append("        this.").append(attributeName).append(" = ").append("Loaders.fromStr(").append(className)
+                .append(".class, \"").append(defaultValue).append("\");\n");
     }
 
     public void addGetterSetter(String type, String name) {
@@ -117,11 +144,8 @@ public class JavaGenerator {
     }
 
     public final String generate() {
-
-        _classHeader.append("public ").append(className).append("(Parameters params) {\n");
-        _classHeader.append("    this();\n");
-        _classHeader.append("    parseParameters(params);\n");
-        _classHeader.append("}\n");
+        
+        generateConstructor();
 
         StringBuilder sb = new StringBuilder();
         sb.append("package com.bloatit.web.utils.url;\n");

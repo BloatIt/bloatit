@@ -2,14 +2,31 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
+@SuppressWarnings("unused")
 public class OfferPageUrl extends Url {
-public OfferPageUrl() {
-    super("OfferPage"); 
-}
+public static String getName() { return "OfferPage"; }
 public OfferPageUrl(Parameters params) {
-    this();
+    super(getName());
     parseParameters(params);
+}
+public OfferPageUrl(com.bloatit.framework.Demand targetIdea) {
+    super(getName());
+    try {
+        this.price = Loaders.fromStr(java.math.BigDecimal.class, "vide");
+        this.expiryDate = Loaders.fromStr(java.util.Date.class, "vide");
+        this.title = Loaders.fromStr(java.lang.String.class, "vide");
+        this.description = Loaders.fromStr(java.lang.String.class, "vide");
+    } catch (ConversionErrorException e) {
+        e.printStackTrace();
+        assert false ;
+    }
+        this.targetIdea = targetIdea;
+}
+private OfferPageUrl(){
+    super(getName());
 }
 private com.bloatit.framework.Demand targetIdea;
 private java.math.BigDecimal price;

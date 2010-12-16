@@ -2,14 +2,22 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
+@SuppressWarnings("unused")
 public class IdeaPageUrl extends Url {
-public IdeaPageUrl() {
-    super("IdeaPage"); 
-}
+public static String getName() { return "IdeaPage"; }
 public IdeaPageUrl(Parameters params) {
-    this();
+    super(getName());
     parseParameters(params);
+}
+public IdeaPageUrl(com.bloatit.framework.Demand idea) {
+    super(getName());
+        this.idea = idea;
+}
+private IdeaPageUrl(){
+    super(getName());
 }
 private com.bloatit.framework.Demand idea;
 private IdeaTabPaneUrl demandTabPaneUrl = new IdeaTabPaneUrl();

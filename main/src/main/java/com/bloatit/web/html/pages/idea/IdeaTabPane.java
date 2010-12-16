@@ -42,7 +42,7 @@ public class IdeaTabPane extends HtmlPageComponent {
         activeTabKey = url.getActiveTabKey();
         final Session session = Context.getSession();
 
-        final IdeaPageUrl demandUrl = new IdeaPageUrl();
+        final IdeaPageUrl demandUrl = new IdeaPageUrl(demand);
         demandUrl.setDemandTabPaneUrl(url);
 
         // Create tab pane

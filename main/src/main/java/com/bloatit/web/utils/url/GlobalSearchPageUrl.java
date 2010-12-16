@@ -2,14 +2,24 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
+@SuppressWarnings("unused")
 public class GlobalSearchPageUrl extends Url {
-public GlobalSearchPageUrl() {
-    super("GlobalSearchPage"); 
-}
+public static String getName() { return "GlobalSearchPage"; }
 public GlobalSearchPageUrl(Parameters params) {
-    this();
+    super(getName());
     parseParameters(params);
+}
+public GlobalSearchPageUrl() {
+    super(getName());
+    try {
+        this.searchString = Loaders.fromStr(java.lang.String.class, "vide");
+    } catch (ConversionErrorException e) {
+        e.printStackTrace();
+        assert false ;
+    }
 }
 private java.lang.String searchString;
 private HtmlPagedListUrl pagedMemberListUrl = new HtmlPagedListUrl();

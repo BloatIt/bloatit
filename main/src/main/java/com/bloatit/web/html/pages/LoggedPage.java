@@ -19,11 +19,14 @@
 
 package com.bloatit.web.html.pages;
 
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.LoggedPageUrl;
+import com.bloatit.web.utils.url.LoginPageUrl;
 
+@ParamContainer("logged")
 public abstract class LoggedPage extends Page {
 
     protected LoggedPage() throws RedirectException {
@@ -39,8 +42,8 @@ public abstract class LoggedPage extends Page {
         } else {
 
             session.notifyBad(getRefusalReason());
-            session.setTargetPage(new UrlBuilder(this).buildUrl());
-            throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
+            session.setTargetPage(new LoggedPageUrl().toString());
+            throw new RedirectException(new LoginPageUrl().toString());
         }
     }
 

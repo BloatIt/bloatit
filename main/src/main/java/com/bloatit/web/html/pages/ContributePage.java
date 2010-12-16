@@ -32,8 +32,8 @@ import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
-import com.bloatit.web.utils.url.Request;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.ContributePageUrl;
+import com.bloatit.web.utils.url.ContributionActionUrl;
 
 @ParamContainer("contribute")
 public class ContributePage extends LoggedPage {
@@ -47,15 +47,18 @@ public class ContributePage extends LoggedPage {
     @RequestParam(defaultValue = "vide")
     private String contributionCommentParam;
 
-    public ContributePage(final Request request) throws RedirectException {
+    public ContributePage(final ContributePageUrl url) throws RedirectException {
         super();
-
+        targetIdea = url.getTargetIdea();
+        contributionAmountParam = url.getContributionAmountParam();
+        contributionCommentParam = url.getContributionCommentParam();
+        // TODO handle error
     }
 
     @Override
     public HtmlElement generateRestrictedContent() {
 
-        final HtmlForm contribForm = new HtmlForm(new UrlBuilder(ContributionAction.class).buildUrl());
+        final HtmlForm contribForm = new HtmlForm(new ContributionActionUrl().toString());
 
         // Input field : chose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);

@@ -15,6 +15,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.util.TypeKindVisitor6;
 
+import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.RequestParam.Role;
+
 @SuppressWarnings("restriction")
 @SupportedAnnotationTypes("com.bloatit.web.annotations.ParamContainer")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
@@ -72,12 +75,16 @@ public class ParamContainerProcessor extends AbstractProcessor {
             if (parm.generatedFrom().isEmpty()) {
                 generator.addAttribute(getType(attribute), attributeName);
                 generator.addGetterSetter(getType(attribute), attributeName);
+                if (!parm.defaultValue().equals(RequestParam.defaultDefaultValue)) {
+                    generator.addDefaultParameter(attributeName, getType(attribute), parm.defaultValue());
+                } else if (parm.level() == Level.ERROR && (parm.role() == Role.GET || parm.role() == Role.PRETTY)) {
+                    generator.addConstructorParameter(getType(attribute), attributeName);
+                }
             } else {
                 generator.addAutoGeneratingGetter(getType(attribute), attributeName, parm.generatedFrom());
             }
 
-            generator.registerAttribute(attributeName, attributeUrlString, getType(attribute), parm.role(), parm.level(), parm.message()
-                    .value());
+            generator.registerAttribute(attributeName, attributeUrlString, getType(attribute), parm.role(), parm.level(), parm.message().value());
 
             // Its not a param but it could be a ParamContainer.
         } else {
@@ -102,7 +109,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
     private String getSecureType(Element attribute) {
         return attribute.asType().toString().replaceAll("\\<.*\\>", "").replaceAll(".*\\.", "").replace(">", "");
     }
-    
+
     private String getType(Element attribute) {
         return attribute.asType().toString();
     }

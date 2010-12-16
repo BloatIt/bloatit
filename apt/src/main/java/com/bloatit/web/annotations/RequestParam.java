@@ -8,6 +8,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface RequestParam {
+    
+    static public final String defaultDefaultValue = "42!$%*/;1990148160288171599ABCD";
 
     public enum Role {
         POST, GET, PRETTY, SESSION
@@ -19,12 +21,9 @@ public @interface RequestParam {
 
     Message.Level level() default Message.Level.ERROR;
 
-    String defaultValue() default "";
+    String defaultValue() default defaultDefaultValue;
 
     Role role() default Role.GET;
     
-    String generatedFrom() default ""; 
-    
-    boolean pickOnRead() default false;
-
+    String generatedFrom() default "";     
 }

@@ -20,12 +20,14 @@
 package com.bloatit.web.html.pages;
 
 import com.bloatit.framework.Member;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 
+@ParamContainer("myaccount")
 public class MyAccountPage extends Page {
 
     public MyAccountPage() throws RedirectException {

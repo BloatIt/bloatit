@@ -24,9 +24,8 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.html.pages.LoginPage;
 import com.bloatit.web.utils.url.LoginActionUrl;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.LoginPageUrl;
 
 @ParamContainer("login")
 public class LoginAction extends Action {
@@ -61,7 +60,7 @@ public class LoginAction extends Action {
             session.setLogged(false);
             session.setAuthToken(null);
             session.notifyBad(session.tr("Login failed. Wrong login or password."));
-            return new UrlBuilder(LoginPage.class).buildUrl();
+            return new LoginPageUrl().toString();
         }
     }
 

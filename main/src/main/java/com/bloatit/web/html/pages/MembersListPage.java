@@ -33,8 +33,8 @@ import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.MembersListPageUrl;
-import com.bloatit.web.utils.url.UrlBuilder;
 
 @ParamContainer("memberList")
 public class MembersListPage extends Page {
@@ -57,12 +57,11 @@ public class MembersListPage extends Page {
 
         final HtmlRenderer<Member> memberItemRenderer = new HtmlRenderer<Member>() {
 
-            private final UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
 
             @Override
             public HtmlNode generate(final Member member) {
-                urlBuilder.addParameter("member", member);
-                final HtmlLink htmlLink = urlBuilder.getHtmlLink(member.getFullname());
+                final MemberPageUrl memberUrl = new MemberPageUrl(member);
+                final HtmlLink htmlLink = memberUrl.getHtmlLink(member.getFullname());
                 final HtmlText htmlKarma = new HtmlText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 return new HtmlListItem(htmlLink).add(htmlKarma);
             }

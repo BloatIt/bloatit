@@ -19,10 +19,12 @@
 package com.bloatit.web.html.pages;
 
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 
+@ParamContainer("idea/create")
 public class CreateIdeaPage extends LoggedPage {
 
     public CreateIdeaPage() throws RedirectException {

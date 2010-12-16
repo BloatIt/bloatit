@@ -2,14 +2,24 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
+@SuppressWarnings("unused")
 public class HtmlPagedListUrl extends UrlComponent {
-public HtmlPagedListUrl() {
-    super(); 
-}
 public HtmlPagedListUrl(Parameters params) {
-    this();
+    super();
     parseParameters(params);
+}
+public HtmlPagedListUrl() {
+    super();
+    try {
+        this.currentPage = Loaders.fromStr(java.lang.Integer.class, "1");
+        this.pageSize = Loaders.fromStr(java.lang.Integer.class, "10");
+    } catch (ConversionErrorException e) {
+        e.printStackTrace();
+        assert false ;
+    }
 }
 private java.lang.Integer currentPage;
 private java.lang.Integer pageSize;

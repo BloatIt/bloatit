@@ -33,16 +33,15 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
-import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.IdeaPageUrl;
 
 @ParamContainer("search")
 public class GlobalSearchPage extends Page {
 
     public final static String SEARCH_CODE = "global_search";
-    @RequestParam(defaultValue = "vide", name = SEARCH_CODE)
+    @RequestParam(defaultValue = "", name = SEARCH_CODE)
     private final String searchString;
 
     @PageComponent
@@ -67,13 +66,9 @@ public class GlobalSearchPage extends Page {
 
         final HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
-            UrlBuilder demandeUrlBuilder = new UrlBuilder(IdeaPage.class);
-
             @Override
             public HtmlNode generate(final Demand demand) {
-                demandeUrlBuilder.addParameter("idea", demand);
-
-                return new HtmlListItem(demandeUrlBuilder.getHtmlLink(demand.getTitle()));
+                return new HtmlListItem(new IdeaPageUrl(demand).getHtmlLink(demand.getTitle()));
             }
         };
 
@@ -101,7 +96,7 @@ public class GlobalSearchPage extends Page {
     private HtmlDiv generateSearchBlock() {
         final HtmlDiv searchBlock = new HtmlDiv("global_search_block");
 
-        final HtmlForm searchForm = new HtmlForm(new UrlBuilder(GlobalSearchPage.class).buildUrl(), HtmlForm.Method.GET);
+        final HtmlForm searchForm = new HtmlForm(new GlobalSearchPageUrl().toString(), HtmlForm.Method.GET);
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 

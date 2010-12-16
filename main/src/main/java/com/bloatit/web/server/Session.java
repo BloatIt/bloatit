@@ -28,8 +28,7 @@ import java.util.Locale;
 import com.bloatit.framework.AuthToken;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
-import com.bloatit.web.html.pages.IndexPage;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.IndexPageUrl;
 
 public class Session {
     private final String key;
@@ -114,7 +113,7 @@ public class Session {
         } else if (lastStablePage != null) {
             return lastStablePage;
         } else {
-            return new UrlBuilder(IndexPage.class).buildUrl();
+            return new IndexPageUrl().toString();
         }
     }
 

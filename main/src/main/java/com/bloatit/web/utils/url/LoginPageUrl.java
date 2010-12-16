@@ -6,13 +6,13 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 @SuppressWarnings("unused")
-public class LogoutActionUrl extends Url {
-public static String getName() { return "LogoutAction"; }
-public LogoutActionUrl(Parameters params) {
+public class LoginPageUrl extends Url {
+public static String getName() { return "LoginPage"; }
+public LoginPageUrl(Parameters params) {
     super(getName());
     parseParameters(params);
 }
-public LogoutActionUrl() {
+public LoginPageUrl() {
     super(getName());
 }
 
@@ -21,8 +21,8 @@ public LogoutActionUrl() {
 protected void doRegister() { 
 }
 
-public LogoutActionUrl clone() { 
-    LogoutActionUrl other = new LogoutActionUrl();
+public LoginPageUrl clone() { 
+    LoginPageUrl other = new LoginPageUrl();
     return other;
 }
 }

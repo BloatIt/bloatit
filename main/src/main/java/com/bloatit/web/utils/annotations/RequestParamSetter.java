@@ -171,7 +171,7 @@ public class RequestParamSetter {
             error = error.replaceAll("\\%param", name);
             value = parameters.get(name);
 
-            if (value == null && (value = param.defaultValue()).isEmpty()) {
+            if (value == null && (value = param.defaultValue()).equals(RequestParam.defaultDefaultValue)) {
                 value = null;
                 error = error.replaceAll("\\%value", "null");
                 throw new ParamNotFoundException(error);

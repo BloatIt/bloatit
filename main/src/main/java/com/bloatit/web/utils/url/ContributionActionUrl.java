@@ -2,14 +2,24 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
+@SuppressWarnings("unused")
 public class ContributionActionUrl extends Url {
-public ContributionActionUrl() {
-    super("ContributionAction"); 
-}
+public static String getName() { return "ContributionAction"; }
 public ContributionActionUrl(Parameters params) {
-    this();
+    super(getName());
     parseParameters(params);
+}
+public ContributionActionUrl() {
+    super(getName());
+    try {
+        this.comment = Loaders.fromStr(java.lang.String.class, "no comment");
+    } catch (ConversionErrorException e) {
+        e.printStackTrace();
+        assert false ;
+    }
 }
 private com.bloatit.framework.Demand targetDemand;
 private com.bloatit.framework.Demand idea;
@@ -51,10 +61,10 @@ public void setAmount(java.math.BigDecimal arg0){
 
 @Override 
 protected void doRegister() { 
-    register(new Parameter("bloatit_target_demand", getTargetDemand(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("idea", getIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter("bloatit_target_demand", getTargetDemand(), com.bloatit.framework.Demand.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter("idea", getIdea(), com.bloatit.framework.Demand.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
     register(new Parameter("bloatit_comment", getComment(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("bloatit_contribute", getAmount(), java.math.BigDecimal.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(new Parameter("bloatit_contribute", getAmount(), java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
 }
 
 public ContributionActionUrl clone() { 

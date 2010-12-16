@@ -34,10 +34,9 @@ import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
-import com.bloatit.web.html.pages.idea.IdeaPage;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
-import com.bloatit.web.utils.url.UrlBuilder;
 
 @ParamContainer("ideas/list")
 public class IdeasList extends Page {
@@ -86,14 +85,12 @@ public class IdeasList extends Page {
 
     static class IdeasListItem implements HtmlRenderer<Demand> {
 
-        UrlBuilder demandPageUrlBuilder = new UrlBuilder(IdeaPage.class);
         private Demand demand;
 
         @Override
         public HtmlNode generate(final Demand idea) {
             this.demand = idea;
-            demandPageUrlBuilder.addParameter(IdeaPage.IDEA_FIELD_NAME, idea);
-            return new HtmlListItem(demandPageUrlBuilder.getHtmlLink(generateContent()));
+            return new HtmlListItem(new IdeaPageUrl(demand).getHtmlLink(generateContent()));
         }
 
         private HtmlNode generateContent() {

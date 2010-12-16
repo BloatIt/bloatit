@@ -37,8 +37,8 @@ import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.utils.BloatitDate;
 import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
-import com.bloatit.web.utils.url.UrlBuilder;
 
 @ParamContainer("offer")
 public class OfferPage extends LoggedPage {
@@ -46,16 +46,16 @@ public class OfferPage extends LoggedPage {
     @RequestParam(name = "idea")
     private Demand targetIdea = null;
 
-    @RequestParam(name = "price", defaultValue = "vide")
+    @RequestParam(name = "price", defaultValue = "")
     private final BigDecimal price;
 
-    @RequestParam(name = "expiry", defaultValue = "vide")
+    @RequestParam(name = "expiry", defaultValue = "")
     private final Date expiryDate;
 
-    @RequestParam(name = "title", defaultValue = "vide")
+    @RequestParam(name = "title", defaultValue = "")
     private final String title;
 
-    @RequestParam(name = "description", defaultValue = "vide")
+    @RequestParam(name = "description", defaultValue = "")
     private final String description;
 
     public OfferPage(final OfferPageUrl url) throws RedirectException {
@@ -70,7 +70,7 @@ public class OfferPage extends LoggedPage {
         offerUrl.setPrice(new BigDecimal("12"));
         offerUrl.toString();
 
-        final IdeaPageUrl demandUrl = new IdeaPageUrl();
+        final IdeaPageUrl demandUrl = new IdeaPageUrl(targetIdea);
         demandUrl.getDemandTabPaneUrl().getContributionUrl().getParticipationsListUrl();
 
         addNotifications(url.getMessages());
@@ -124,9 +124,10 @@ public class OfferPage extends LoggedPage {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"), 2);
 
         // Create offer form
-        final UrlBuilder offerActionUrlBuilder = new UrlBuilder(OfferAction.class);
-        offerActionUrlBuilder.addParameter("idea", targetIdea);
-        final HtmlForm offerForm = new HtmlForm(offerActionUrlBuilder.buildUrl());
+        
+        final OfferActionUrl offerActionUrl = new OfferActionUrl();
+        // offerActionUrl.setIdea(targetIdea);
+        final HtmlForm offerForm = new HtmlForm(offerActionUrl.toString());
 
         // Idea title
         final HtmlText t = new HtmlText(this.targetIdea.getTitle());

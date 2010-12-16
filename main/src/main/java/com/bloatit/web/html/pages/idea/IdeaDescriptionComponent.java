@@ -24,10 +24,9 @@ import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
-import com.bloatit.web.html.pages.MemberPage;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.MemberPageUrl;
 
 public class IdeaDescriptionComponent extends HtmlDiv {
 
@@ -45,10 +44,9 @@ public class IdeaDescriptionComponent extends HtmlDiv {
 
         date = new HtmlParagraph(HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
 
-        final UrlBuilder urlBuilder = new UrlBuilder(MemberPage.class);
-        urlBuilder.addParameter(MemberPage.MEMBER_FIELD_NAME, demand.getAuthor());
-
-        author = urlBuilder.getHtmlLink(demand.getAuthor().getLogin());
+        MemberPageUrl memberUrl = new MemberPageUrl(demand.getAuthor());
+        
+        author = memberUrl.getHtmlLink(demand.getAuthor().getLogin());
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {

@@ -21,11 +21,10 @@ package com.bloatit.web.actions;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.html.pages.LoginPage;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.UrlComponent;
 
 public abstract class Action implements Linkable {
@@ -46,7 +45,7 @@ public abstract class Action implements Linkable {
     public final String process() throws RedirectException{
         if (url.getMessages().hasMessage(Level.ERROR)) {
             session.notifyList(url.getMessages());
-            throw new RedirectException(new UrlBuilder(LoginPage.class).buildUrl());
+            throw new RedirectException(new LoginPageUrl().toString());
         }
         return doProcess();
     }

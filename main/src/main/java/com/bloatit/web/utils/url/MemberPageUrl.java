@@ -2,14 +2,22 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
+@SuppressWarnings("unused")
 public class MemberPageUrl extends Url {
-public MemberPageUrl() {
-    super("MemberPage"); 
-}
+public static String getName() { return "MemberPage"; }
 public MemberPageUrl(Parameters params) {
-    this();
+    super(getName());
     parseParameters(params);
+}
+public MemberPageUrl(com.bloatit.framework.Member member) {
+    super(getName());
+        this.member = member;
+}
+private MemberPageUrl(){
+    super(getName());
 }
 private com.bloatit.framework.Member member;
 

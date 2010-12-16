@@ -21,11 +21,10 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
-import com.bloatit.web.html.pages.ContributePage;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.ContributePageUrl;
 
 public class IdeaContributeButtonComponent extends HtmlPageComponent {
 
@@ -44,10 +43,7 @@ public class IdeaContributeButtonComponent extends HtmlPageComponent {
 
             final Session session = Context.getSession();
 
-            final UrlBuilder urlBuilder = new UrlBuilder(ContributePage.class);
-            urlBuilder.addParameter("targetIdea", demand);
-
-            final HtmlForm contributeForm = new HtmlForm(urlBuilder.buildUrl());
+            final HtmlForm contributeForm = new HtmlForm(new ContributePageUrl(demand).toString());
             {
                 // Add button
                 final HtmlButton contributeButton = new HtmlButton(session.tr("Contribute"));

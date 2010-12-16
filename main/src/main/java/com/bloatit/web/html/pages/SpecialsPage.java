@@ -19,13 +19,15 @@
 
 package com.bloatit.web.html.pages;
 
+import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.UrlBuilder;
+import com.bloatit.web.utils.url.MembersListPageUrl;
 
+@ParamContainer("special")
 public class SpecialsPage extends Page {
 
     public SpecialsPage() throws RedirectException {
@@ -40,7 +42,7 @@ public class SpecialsPage extends Page {
 
         final HtmlList pageList = new HtmlList();
 
-        final HtmlLink memeHtmlLink = new UrlBuilder(MembersListPage.class).getHtmlLink(session.tr("Members list"));
+        final HtmlLink memeHtmlLink = new MembersListPageUrl().getHtmlLink(session.tr("Members list"));
 
         pageList.add(memeHtmlLink);
 
