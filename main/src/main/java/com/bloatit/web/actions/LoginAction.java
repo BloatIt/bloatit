@@ -32,8 +32,10 @@ public class LoginAction extends Action {
 
     public final static String LOGIN_CODE = "bloatit_login";
     public final static String PASSWORD_CODE = "bloatit_password";
+    
     @RequestParam(level = Level.ERROR, name = LOGIN_CODE, role = RequestParam.Role.POST)
     private String login;
+
     @RequestParam(level = Level.ERROR, name = PASSWORD_CODE, role = RequestParam.Role.POST)
     private String password;
 

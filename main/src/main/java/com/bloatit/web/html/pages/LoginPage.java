@@ -55,13 +55,13 @@ public class LoginPage extends Page {
         final HtmlTitleBlock loginTitle = new HtmlTitleBlock(session.tr("Login"), 2);
         loginTitle.add(loginForm);
 
-        final HtmlTitleBlock sigupTitle = new HtmlTitleBlock(session.tr("Sigup"), 2);
-        sigupTitle.add(new HtmlText("Not yet implemented."));
+        final HtmlTitleBlock signupTitle = new HtmlTitleBlock(session.tr("Signup"), 2);
+        signupTitle.add(new HtmlText("Not yet implemented."));
 
         final HtmlGenericElement group = new HtmlGenericElement();
 
         group.add(loginTitle);
-        group.add(sigupTitle);
+        group.add(signupTitle);
 
         add(group);
     }
