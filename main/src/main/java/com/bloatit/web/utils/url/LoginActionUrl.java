@@ -2,6 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.Parameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -18,36 +19,36 @@ public LoginActionUrl(Parameters params) {
 public LoginActionUrl() {
     super(getName());
 }
-private java.lang.String login;
-private java.lang.String password;
+private Parameter<java.lang.String> login =     new Parameter<java.lang.String>("login", getLogin(), java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> password =     new Parameter<java.lang.String>("password", getPassword(), java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public java.lang.String getLogin(){ 
-    return this.login;
+    return this.login.getValue();
 }
 
-public void setLogin(java.lang.String arg0){ 
-    this.login = arg0;
+public void setLogin(java.lang.String arg){ 
+    this.login.setValue(arg);
 }
 
 public java.lang.String getPassword(){ 
-    return this.password;
+    return this.password.getValue();
 }
 
-public void setPassword(java.lang.String arg0){ 
-    this.password = arg0;
+public void setPassword(java.lang.String arg){ 
+    this.password.setValue(arg);
 }
 
 
 @Override 
 protected void doRegister() { 
-    register(new Parameter("bloatit_login", getLogin(), java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("bloatit_password", getPassword(), java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(login);
+    register(password);
 }
 
 public LoginActionUrl clone() { 
     LoginActionUrl other = new LoginActionUrl();
-    other.login = this.login;
-    other.password = this.password;
+    other.login = this.login.clone();
+    other.password = this.password.clone();
     return other;
 }
 }

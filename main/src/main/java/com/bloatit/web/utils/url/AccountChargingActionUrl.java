@@ -2,6 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.Parameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -18,25 +19,25 @@ public AccountChargingActionUrl(Parameters params) {
 public AccountChargingActionUrl() {
     super(getName());
 }
-private java.math.BigDecimal amount;
+private Parameter<java.math.BigDecimal> amount =     new Parameter<java.math.BigDecimal>("amount", getAmount(), java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public java.math.BigDecimal getAmount(){ 
-    return this.amount;
+    return this.amount.getValue();
 }
 
-public void setAmount(java.math.BigDecimal arg0){ 
-    this.amount = arg0;
+public void setAmount(java.math.BigDecimal arg){ 
+    this.amount.setValue(arg);
 }
 
 
 @Override 
 protected void doRegister() { 
-    register(new Parameter("chargeAmount", getAmount(), java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(amount);
 }
 
 public AccountChargingActionUrl clone() { 
     AccountChargingActionUrl other = new AccountChargingActionUrl();
-    other.amount = this.amount;
+    other.amount = this.amount.clone();
     return other;
 }
 }

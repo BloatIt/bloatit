@@ -2,6 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.Parameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -18,41 +19,41 @@ public GlobalSearchPageUrl(Parameters params) {
 public GlobalSearchPageUrl() {
     super(getName());
     try {
-        this.searchString = Loaders.fromStr(java.lang.String.class, "");
+        this.searchString.setValue(Loaders.fromStr(java.lang.String.class, ""));
     } catch (ConversionErrorException e) {
         e.printStackTrace();
         assert false ;
     }
 }
-private java.lang.String searchString;
+private Parameter<java.lang.String> searchString =     new Parameter<java.lang.String>("searchString", getSearchString(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private HtmlPagedListUrl pagedMemberListUrl = new HtmlPagedListUrl();
 
 public java.lang.String getSearchString(){ 
-    return this.searchString;
+    return this.searchString.getValue();
 }
 
-public void setSearchString(java.lang.String arg0){ 
-    this.searchString = arg0;
+public void setSearchString(java.lang.String arg){ 
+    this.searchString.setValue(arg);
 }
 
 public HtmlPagedListUrl getPagedMemberListUrl(){ 
     return this.pagedMemberListUrl;
 }
 
-public void setPagedMemberListUrl(HtmlPagedListUrl arg0){ 
-    this.pagedMemberListUrl = arg0;
+public void setPagedMemberListUrl(HtmlPagedListUrl arg){ 
+    this.pagedMemberListUrl = arg;
 }
 
 
 @Override 
 protected void doRegister() { 
-    register(new Parameter("global_search", getSearchString(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(searchString);
     register(pagedMemberListUrl);
 }
 
 public GlobalSearchPageUrl clone() { 
     GlobalSearchPageUrl other = new GlobalSearchPageUrl();
-    other.searchString = this.searchString;
+    other.searchString = this.searchString.clone();
     other.pagedMemberListUrl = this.pagedMemberListUrl.clone();
     return other;
 }

@@ -24,21 +24,27 @@ public abstract class JavaGenerator {
 
         _import.append("import com.bloatit.web.annotations.Message.Level;\n");
         _import.append("import com.bloatit.web.annotations.RequestParam.Role;\n");
+        _import.append("import com.bloatit.web.utils.url.Parameter;\n");
         _import.append("import com.bloatit.web.utils.annotations.Loaders;\n");
         _import.append("import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;\n");
 
     }
-    
+
     protected abstract void generateConstructor();
 
-    private String toCamelAttributeName(String name){
+    private String toCamelAttributeName(String name) {
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
-    
-    public final void addAttribute(String type, String name) {
+
+    public final void addAttribute(String type, String name, Role role, Level level, String errorMsg) {
         name = toCamelAttributeName(name);
-        _attributes.append("private ").append(type).append(" ").append(name).append(";\n");
-        _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(";\n");
+        _attributes.append("private Parameter<")
+                   .append(type)
+                   .append("> ")
+                   .append(name)
+                   .append(" = ")
+                   .append(createParameter(name, "\"" + name + "\"", type, role, level, errorMsg));
+        _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
     }
 
     public final void addConstructorParameter(String type, String attributeName) {
@@ -47,71 +53,79 @@ public abstract class JavaGenerator {
             _constructorParameters.append(", ");
         }
         _constructorParameters.append(type).append(" ").append(attributeName);
-        _constructorAssign.append("        this.").append(attributeName).append(" = ").append(attributeName).append(";\n");
+        _constructorAssign.append("        this.").append(attributeName).append(".setValue(").append(attributeName).append(");\n");
     }
 
     public final void addDefaultParameter(String attributeName, String className, String defaultValue) {
         attributeName = toCamelAttributeName(attributeName);
-        _constructorDefaults.append("        this.").append(attributeName).append(" = ").append("Loaders.fromStr(").append(className)
-                .append(".class, \"").append(defaultValue).append("\");\n");
+        _constructorDefaults.append("        this.")
+                            .append(attributeName)
+                            .append(".setValue(")
+                            .append("Loaders.fromStr(")
+                            .append(className)
+                            .append(".class, \"")
+                            .append(defaultValue)
+                            .append("\"));\n");
     }
 
     public void addGetterSetter(String type, String name) {
         _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
-        _gettersSetters.append("    return this.").append(name).append(";\n");
+        _gettersSetters.append("    return this.").append(name).append(".getValue();\n");
         _gettersSetters.append("}\n\n");
 
-        _gettersSetters.append("public void ").append(getSetterName(name)).append("(").append(type).append(" arg0){ \n");
-        _gettersSetters.append("    this.").append(name).append(" = arg0;\n");
+        _gettersSetters.append("public void ").append(getSetterName(name)).append("(").append(type).append(" arg){ \n");
+        _gettersSetters.append("    this.").append(name).append(".setValue(arg);\n");
         _gettersSetters.append("}\n\n");
     }
 
     public void addAutoGeneratingGetter(String type, String name, String generateFrom) {
         _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
         _gettersSetters.append("    if (").append(generateFrom).append(" != null) {\n");
-        _gettersSetters.append("        return ").append(generateFrom).append(".").append(getGetterName(name)).append(";\n");
+        _gettersSetters.append("        return ").append(generateFrom).append(".getValue()").append(getGetterName(name)).append(";\n");
         _gettersSetters.append("    } else {\n");
         _gettersSetters.append("        return null;\n");
         _gettersSetters.append("    }\n");
         _gettersSetters.append("}\n\n");
     }
 
-    public final void registerAttribute(String name, String nameString, String type, Role role, Level level, String errorMsg) {
+    public final String createParameter(String name, String nameString, String type, Role role, Level level, String errorMsg) {
         name = getGetterName(name);
         // TODO find how to do this correctly
         errorMsg = errorMsg.replaceAll("[\\\"]", "\\\\\"");
         // errorMsg = errorMsg.replaceAll("([^\\\\])(\\\\)([^\\\\])",
         // "\\1\\\\\\3");
-        _doRegister.append("    register(new Parameter(\"").append(nameString).append("\"").append(", ");
-        _doRegister.append(name).append(", ");
-        _doRegister.append(type).append(".class, ");
+        StringBuilder sb = new StringBuilder();
+        sb.append("    new Parameter<").append(type).append(">(").append(nameString).append(", ");
+        sb.append(name).append(", ");
+        sb.append(type).append(".class, ");
 
         switch (role) {
         case GET:
-            _doRegister.append("Role.GET, ");
+            sb.append("Role.GET, ");
             break;
         case POST:
-            _doRegister.append("Role.POST, ");
+            sb.append("Role.POST, ");
             break;
         case PRETTY:
-            _doRegister.append("Role.PRETTY, ");
+            sb.append("Role.PRETTY, ");
             break;
         }
 
         switch (level) {
         case ERROR:
-            _doRegister.append("Level.ERROR, ");
+            sb.append("Level.ERROR, ");
             break;
         case INFO:
-            _doRegister.append("Level.INFO, ");
+            sb.append("Level.INFO, ");
             break;
         case WARNING:
-            _doRegister.append("Level.WARNING, ");
+            sb.append("Level.WARNING, ");
             break;
         }
 
-        _doRegister.append("\"").append(errorMsg).append("\"");
-        _doRegister.append("));\n");
+        sb.append("\"").append(errorMsg).append("\"");
+        sb.append(");\n");
+        return sb.toString();
     }
 
     private String getGetterName(String name) {
@@ -132,7 +146,17 @@ public abstract class JavaGenerator {
 
         _attributes.append("private ").append(type).append(" ").append(name).append(" = new ").append(type).append("();\n");
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
-        addGetterSetter(type, name);
+        
+
+
+        _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
+        _gettersSetters.append("    return this.").append(name).append(";\n");
+        _gettersSetters.append("}\n\n");
+
+        _gettersSetters.append("public void ").append(getSetterName(name)).append("(").append(type).append(" arg){ \n");
+        _gettersSetters.append("    this.").append(name).append(" = arg;\n");
+        _gettersSetters.append("}\n\n");
+    
     }
 
     private final String getComponentName(String name) {
@@ -144,7 +168,7 @@ public abstract class JavaGenerator {
     }
 
     public final String generate() {
-        
+
         generateConstructor();
 
         StringBuilder sb = new StringBuilder();
@@ -177,5 +201,9 @@ public abstract class JavaGenerator {
 
     public final String getClassName() {
         return className;
+    }
+
+    public void registerAttribute(String attributeName) {
+        _doRegister.append("    register(").append(attributeName).append(");\n");
     }
 }

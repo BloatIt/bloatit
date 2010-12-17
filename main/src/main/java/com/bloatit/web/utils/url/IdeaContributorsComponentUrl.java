@@ -2,6 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.Parameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
@@ -20,8 +21,8 @@ public HtmlPagedListUrl getParticipationsListUrl(){
     return this.participationsListUrl;
 }
 
-public void setParticipationsListUrl(HtmlPagedListUrl arg0){ 
-    this.participationsListUrl = arg0;
+public void setParticipationsListUrl(HtmlPagedListUrl arg){ 
+    this.participationsListUrl = arg;
 }
 
 

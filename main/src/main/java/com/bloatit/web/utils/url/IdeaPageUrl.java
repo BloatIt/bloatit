@@ -2,6 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.Parameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -17,25 +18,25 @@ public IdeaPageUrl(Parameters params) {
 }
 public IdeaPageUrl(com.bloatit.framework.Demand idea) {
     super(getName());
-        this.idea = idea;
+        this.idea.setValue(idea);
 }
 private IdeaPageUrl(){
     super(getName());
 }
-private com.bloatit.framework.Demand idea;
+private Parameter<com.bloatit.framework.Demand> idea =     new Parameter<com.bloatit.framework.Demand>("idea", getIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private IdeaTabPaneUrl demandTabPaneUrl = new IdeaTabPaneUrl();
 
 public com.bloatit.framework.Demand getIdea(){ 
-    return this.idea;
+    return this.idea.getValue();
 }
 
-public void setIdea(com.bloatit.framework.Demand arg0){ 
-    this.idea = arg0;
+public void setIdea(com.bloatit.framework.Demand arg){ 
+    this.idea.setValue(arg);
 }
 
 public java.lang.String getTitle(){ 
     if (idea != null) {
-        return idea.getTitle();
+        return idea.getValue()getTitle();
     } else {
         return null;
     }
@@ -45,21 +46,21 @@ public IdeaTabPaneUrl getDemandTabPaneUrl(){
     return this.demandTabPaneUrl;
 }
 
-public void setDemandTabPaneUrl(IdeaTabPaneUrl arg0){ 
-    this.demandTabPaneUrl = arg0;
+public void setDemandTabPaneUrl(IdeaTabPaneUrl arg){ 
+    this.demandTabPaneUrl = arg;
 }
 
 
 @Override 
 protected void doRegister() { 
-    register(new Parameter("id", getIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("title", getTitle(), java.lang.String.class, Role.PRETTY, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(idea);
+    register(title);
     register(demandTabPaneUrl);
 }
 
 public IdeaPageUrl clone() { 
     IdeaPageUrl other = new IdeaPageUrl();
-    other.idea = this.idea;
+    other.idea = this.idea.clone();
     other.demandTabPaneUrl = this.demandTabPaneUrl.clone();
     return other;
 }

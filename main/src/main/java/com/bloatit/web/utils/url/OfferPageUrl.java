@@ -2,6 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.Parameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -18,82 +19,82 @@ public OfferPageUrl(Parameters params) {
 public OfferPageUrl(com.bloatit.framework.Demand targetIdea) {
     super(getName());
     try {
-        this.price = Loaders.fromStr(java.math.BigDecimal.class, "");
-        this.expiryDate = Loaders.fromStr(java.util.Date.class, "");
-        this.title = Loaders.fromStr(java.lang.String.class, "");
-        this.description = Loaders.fromStr(java.lang.String.class, "");
+        this.price.setValue(Loaders.fromStr(java.math.BigDecimal.class, ""));
+        this.expiryDate.setValue(Loaders.fromStr(java.util.Date.class, ""));
+        this.title.setValue(Loaders.fromStr(java.lang.String.class, ""));
+        this.description.setValue(Loaders.fromStr(java.lang.String.class, ""));
     } catch (ConversionErrorException e) {
         e.printStackTrace();
         assert false ;
     }
-        this.targetIdea = targetIdea;
+        this.targetIdea.setValue(targetIdea);
 }
 private OfferPageUrl(){
     super(getName());
 }
-private com.bloatit.framework.Demand targetIdea;
-private java.math.BigDecimal price;
-private java.util.Date expiryDate;
-private java.lang.String title;
-private java.lang.String description;
+private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("targetIdea", getTargetIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.math.BigDecimal> price =     new Parameter<java.math.BigDecimal>("price", getPrice(), java.math.BigDecimal.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.util.Date> expiryDate =     new Parameter<java.util.Date>("expiryDate", getExpiryDate(), java.util.Date.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> title =     new Parameter<java.lang.String>("title", getTitle(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> description =     new Parameter<java.lang.String>("description", getDescription(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public com.bloatit.framework.Demand getTargetIdea(){ 
-    return this.targetIdea;
+    return this.targetIdea.getValue();
 }
 
-public void setTargetIdea(com.bloatit.framework.Demand arg0){ 
-    this.targetIdea = arg0;
+public void setTargetIdea(com.bloatit.framework.Demand arg){ 
+    this.targetIdea.setValue(arg);
 }
 
 public java.math.BigDecimal getPrice(){ 
-    return this.price;
+    return this.price.getValue();
 }
 
-public void setPrice(java.math.BigDecimal arg0){ 
-    this.price = arg0;
+public void setPrice(java.math.BigDecimal arg){ 
+    this.price.setValue(arg);
 }
 
 public java.util.Date getExpiryDate(){ 
-    return this.expiryDate;
+    return this.expiryDate.getValue();
 }
 
-public void setExpiryDate(java.util.Date arg0){ 
-    this.expiryDate = arg0;
+public void setExpiryDate(java.util.Date arg){ 
+    this.expiryDate.setValue(arg);
 }
 
 public java.lang.String getTitle(){ 
-    return this.title;
+    return this.title.getValue();
 }
 
-public void setTitle(java.lang.String arg0){ 
-    this.title = arg0;
+public void setTitle(java.lang.String arg){ 
+    this.title.setValue(arg);
 }
 
 public java.lang.String getDescription(){ 
-    return this.description;
+    return this.description.getValue();
 }
 
-public void setDescription(java.lang.String arg0){ 
-    this.description = arg0;
+public void setDescription(java.lang.String arg){ 
+    this.description.setValue(arg);
 }
 
 
 @Override 
 protected void doRegister() { 
-    register(new Parameter("idea", getTargetIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("price", getPrice(), java.math.BigDecimal.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("expiry", getExpiryDate(), java.util.Date.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("title", getTitle(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
-    register(new Parameter("description", getDescription(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(targetIdea);
+    register(price);
+    register(expiryDate);
+    register(title);
+    register(description);
 }
 
 public OfferPageUrl clone() { 
     OfferPageUrl other = new OfferPageUrl();
-    other.targetIdea = this.targetIdea;
-    other.price = this.price;
-    other.expiryDate = this.expiryDate;
-    other.title = this.title;
-    other.description = this.description;
+    other.targetIdea = this.targetIdea.clone();
+    other.price = this.price.clone();
+    other.expiryDate = this.expiryDate.clone();
+    other.title = this.title.clone();
+    other.description = this.description.clone();
     return other;
 }
 }

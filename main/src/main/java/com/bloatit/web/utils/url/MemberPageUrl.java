@@ -2,6 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.Parameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -17,30 +18,30 @@ public MemberPageUrl(Parameters params) {
 }
 public MemberPageUrl(com.bloatit.framework.Member member) {
     super(getName());
-        this.member = member;
+        this.member.setValue(member);
 }
 private MemberPageUrl(){
     super(getName());
 }
-private com.bloatit.framework.Member member;
+private Parameter<com.bloatit.framework.Member> member =     new Parameter<com.bloatit.framework.Member>("member", getMember(), com.bloatit.framework.Member.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public com.bloatit.framework.Member getMember(){ 
-    return this.member;
+    return this.member.getValue();
 }
 
-public void setMember(com.bloatit.framework.Member arg0){ 
-    this.member = arg0;
+public void setMember(com.bloatit.framework.Member arg){ 
+    this.member.setValue(arg);
 }
 
 
 @Override 
 protected void doRegister() { 
-    register(new Parameter("id", getMember(), com.bloatit.framework.Member.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\""));
+    register(member);
 }
 
 public MemberPageUrl clone() { 
     MemberPageUrl other = new MemberPageUrl();
-    other.member = this.member;
+    other.member = this.member.clone();
     return other;
 }
 }

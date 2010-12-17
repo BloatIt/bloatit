@@ -51,8 +51,7 @@ public class Parameter<T> {
 
     private String makeStringPretty(String value) {
         value = value.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨\\+]", "-");
-        value = value.replaceAll("(---)+", "-");
-        value = value.replaceAll("(--)+", "-");
+        value = value.replaceAll("--+", "-");
         value = value.subSequence(0, Math.min(value.length(), 80)).toString();
         value = value.replaceAll("-+$", "");
         value = value.toLowerCase();
@@ -78,6 +77,10 @@ public class Parameter<T> {
         return value;
     }
 
+    public void setValue(T value) {
+        this.value = value;
+    }
+
     public String getName() {
         return name;
     }
@@ -88,5 +91,9 @@ public class Parameter<T> {
         } catch (final ConversionErrorException e) {
             what = What.CONVERSION_ERROR;
         }
+    }
+    
+    public Parameter<T> clone(){
+        return new Parameter<T>(name, value, valueClass, role, level, message);
     }
 }
