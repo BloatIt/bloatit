@@ -31,7 +31,9 @@ import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlImage;
+import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlListItem;
+import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
@@ -90,7 +92,9 @@ public class IdeasList extends Page {
         @Override
         public HtmlNode generate(final Demand idea) {
             this.demand = idea;
-            return new HtmlListItem(new IdeaPageUrl(demand).getHtmlLink(generateContent()));
+            HtmlLink link = new IdeaPageUrl(demand).getHtmlLink(generateContent());
+            link.setCssClass("idea_link");
+            return new HtmlListItem(link);
         }
 
         private HtmlNode generateContent() {
@@ -100,15 +104,15 @@ public class IdeasList extends Page {
                 final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
                 {
                     leftBlock.add(new HtmlImage(new Image("/resources/img/tux_mini.png", Image.ImageType.DISTANT)));
-                    leftBlock.add(new HtmlText("VLC"));
-                    leftBlock.add(new HtmlText("" + demand.getPopularity()));
+                    leftBlock.add(new HtmlParagraph("" + demand.getPopularity()));
                 }
                 ideaBlock.add(leftBlock);
 
                 final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
                 {
-                    final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(demand.getTitle(), 3);
+                    final HtmlTitleBlock ideaTitle = new HtmlTitleBlock("Logiciel - VLC", 3);
                     {
+                        ideaTitle.add(new HtmlParagraph(demand.getTitle()));
                         final HtmlProgressBar progressBar = new HtmlProgressBar(0.3f);
                         ideaTitle.add(progressBar);
                     }
