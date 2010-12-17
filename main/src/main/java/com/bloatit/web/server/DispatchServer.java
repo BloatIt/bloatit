@@ -26,8 +26,11 @@ import java.util.Map;
 
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.html.pages.AccountChargingPage;
 import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.utils.url.AccountChargingActionUrl;
+import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
@@ -71,11 +74,13 @@ public class DispatchServer {
                 put(ContributePageUrl.getName(), ContributePageUrl.class);
                 put(OfferPageUrl.getName(), OfferPageUrl.class);
                 put(TestPageUrl.getName(), TestPageUrl.class);
+                put(AccountChargingPageUrl.getName(), AccountChargingPageUrl.class);
 
                 put(LoginActionUrl.getName(), LoginActionUrl.class);
                 put(LogoutActionUrl.getName(), LogoutActionUrl.class);
                 put(ContributionActionUrl.getName(), ContributionActionUrl.class);
                 put(OfferActionUrl.getName(), OfferActionUrl.class);
+                put(AccountChargingActionUrl.getName(), AccountChargingActionUrl.class);
 
             }
         };
@@ -255,30 +260,23 @@ public class DispatchServer {
 
     private static String strip(final String string, final char stripped) {
         String result1 = "";
-
         int i = 0;
-
+        
         while (string.charAt(i) == stripped) {
             i++;
-
         }
         for (; i < string.length(); i++) {
             result1 += string.charAt(i);
-
         }
         i = result1.length() - 1;
 
         String result2 = "";
-
         while (result1.charAt(i) == stripped) {
             i--;
-
         }
         for (; i >= 0; i--) {
             result2 = result1.charAt(i) + result2;
-
         }
         return result2;
-
     }
 }
