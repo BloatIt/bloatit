@@ -12,9 +12,10 @@ public class IdeaPageUrl extends Url {
 public static String getName() { return "IdeaPage"; }
 public com.bloatit.web.html.pages.idea.IdeaPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.idea.IdeaPage(this); }
-public IdeaPageUrl(Parameters params) {
+public IdeaPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public IdeaPageUrl(com.bloatit.framework.Demand idea) {
     super(getName());

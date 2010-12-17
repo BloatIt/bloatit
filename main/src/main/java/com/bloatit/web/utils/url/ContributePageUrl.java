@@ -12,9 +12,10 @@ public class ContributePageUrl extends Url {
 public static String getName() { return "ContributePage"; }
 public com.bloatit.web.html.pages.ContributePage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.ContributePage(this); }
-public ContributePageUrl(Parameters params) {
+public ContributePageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public ContributePageUrl(com.bloatit.framework.Demand targetIdea) {
     super(getName());

@@ -12,9 +12,10 @@ public class LoginPageUrl extends Url {
 public static String getName() { return "LoginPage"; }
 public com.bloatit.web.html.pages.LoginPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.LoginPage(this); }
-public LoginPageUrl(Parameters params) {
+public LoginPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public LoginPageUrl() {
     super(getName());

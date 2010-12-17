@@ -8,9 +8,10 @@ import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorExcep
 
 @SuppressWarnings("unused")
 public class IdeaTabPaneUrl extends UrlComponent {
-public IdeaTabPaneUrl(Parameters params) {
+public IdeaTabPaneUrl(Parameters params, Parameters session) {
     super();
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public IdeaTabPaneUrl() {
     super();

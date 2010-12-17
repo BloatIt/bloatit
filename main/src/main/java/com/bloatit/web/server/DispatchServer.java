@@ -114,12 +114,12 @@ public class DispatchServer {
 
         // Should be merge post/get/session
         final Parameters parameters = new Parameters();
-        parameters.putAll(mergePostGet(queryString.parameters, post, query, session.getParams()));
+        parameters.putAll(mergePostGet(queryString.parameters, post, query));
 
         try {
             if (urlMap.containsKey(pageCode)) {
                 Url aUrl;
-                aUrl = urlMap.get(pageCode).getConstructor(Parameters.class).newInstance(parameters);
+                aUrl = urlMap.get(pageCode).getConstructor(Parameters.class, Parameters.class).newInstance(parameters, session.getParams());
                 Linkable linkable = aUrl.createPage();
 
                 if (linkable instanceof Page) {
@@ -215,13 +215,11 @@ public class DispatchServer {
      * @param post the Map containing the post parameters
      * @return the new map
      */
-    private Map<String, String> mergePostGet(final Map<String, String> query, final Map<String, String> post, final Map<String, String> get, final Map<String, String> sessionList) {
+    private Map<String, String> mergePostGet(final Map<String, String> query, final Map<String, String> post, final Map<String, String> get) {
         final HashMap<String, String> mergedList = new HashMap<String, String>();
         mergedList.putAll(get);
         mergedList.putAll(query);
         mergedList.putAll(post);
-        mergedList.putAll(sessionList);
-
         return mergedList;
 
     }

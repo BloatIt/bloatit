@@ -12,9 +12,10 @@ public class IndexPageUrl extends Url {
 public static String getName() { return "IndexPage"; }
 public com.bloatit.web.html.pages.IndexPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.IndexPage(this); }
-public IndexPageUrl(Parameters params) {
+public IndexPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public IndexPageUrl() {
     super(getName());

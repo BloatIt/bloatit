@@ -8,9 +8,10 @@ import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorExcep
 
 @SuppressWarnings("unused")
 public class IdeaContributorsComponentUrl extends UrlComponent {
-public IdeaContributorsComponentUrl(Parameters params) {
+public IdeaContributorsComponentUrl(Parameters params, Parameters session) {
     super();
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public IdeaContributorsComponentUrl() {
     super();

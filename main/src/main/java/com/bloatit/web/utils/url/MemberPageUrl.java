@@ -12,9 +12,10 @@ public class MemberPageUrl extends Url {
 public static String getName() { return "MemberPage"; }
 public com.bloatit.web.html.pages.MemberPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.MemberPage(this); }
-public MemberPageUrl(Parameters params) {
+public MemberPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public MemberPageUrl(com.bloatit.framework.Member member) {
     super(getName());

@@ -12,9 +12,10 @@ public class GlobalSearchPageUrl extends Url {
 public static String getName() { return "GlobalSearchPage"; }
 public com.bloatit.web.html.pages.GlobalSearchPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.GlobalSearchPage(this); }
-public GlobalSearchPageUrl(Parameters params) {
+public GlobalSearchPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public GlobalSearchPageUrl() {
     super(getName());

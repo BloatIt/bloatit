@@ -12,9 +12,10 @@ public class OfferPageUrl extends Url {
 public static String getName() { return "OfferPage"; }
 public com.bloatit.web.html.pages.OfferPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.OfferPage(this); }
-public OfferPageUrl(Parameters params) {
+public OfferPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public OfferPageUrl(com.bloatit.framework.Demand targetIdea) {
     super(getName());
@@ -25,7 +26,7 @@ private OfferPageUrl(){
 }
 private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("idea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private Parameter<java.math.BigDecimal> price =     new Parameter<java.math.BigDecimal>("price", null, java.math.BigDecimal.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.util.Date> expiryDate =     new Parameter<java.util.Date>("expiry", null, java.util.Date.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<com.bloatit.web.utils.BloatitDate> expiryDate =     new Parameter<com.bloatit.web.utils.BloatitDate>("expiry", null, com.bloatit.web.utils.BloatitDate.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private Parameter<java.lang.String> title =     new Parameter<java.lang.String>("title", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private Parameter<java.lang.String> description =     new Parameter<java.lang.String>("description", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
@@ -45,11 +46,11 @@ public void setPrice(java.math.BigDecimal arg){
     this.price.setValue(arg);
 }
 
-public java.util.Date getExpiryDate(){ 
+public com.bloatit.web.utils.BloatitDate getExpiryDate(){ 
     return this.expiryDate.getValue();
 }
 
-public void setExpiryDate(java.util.Date arg){ 
+public void setExpiryDate(com.bloatit.web.utils.BloatitDate arg){ 
     this.expiryDate.setValue(arg);
 }
 

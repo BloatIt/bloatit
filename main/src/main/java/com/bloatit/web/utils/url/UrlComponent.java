@@ -30,7 +30,7 @@ public abstract class UrlComponent {
         parameters.add(param);
     }
 
-    protected void register(final UrlComponent component) {
+    protected final void register(final UrlComponent component) {
         components.add(component);
     }
 
@@ -74,16 +74,24 @@ public abstract class UrlComponent {
         return messages;
     }
 
-    protected final void parseParameters(final Parameters params) {
+    protected final void parseParameters(final Parameters params, boolean pickValue) {
+        if (params == null) {
+            return;
+        }
         registerIfNotAlreadyDone();
         for (final Parameter<?> param : parameters) {
-            final String value = params.look(param.getName());
+            final String value;
+            if (pickValue) {
+                value = params.pick(param.getName());
+            } else {
+                value = params.look(param.getName());
+            }
             if (value != null) {
                 param.valueFromString(value);
             }
         }
         for (final UrlComponent comp : components) {
-            comp.parseParameters(params);
+            comp.parseParameters(params, pickValue);
         }
     }
 

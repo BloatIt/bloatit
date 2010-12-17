@@ -8,9 +8,10 @@ import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorExcep
 
 @SuppressWarnings("unused")
 public class HtmlPagedListUrl extends UrlComponent {
-public HtmlPagedListUrl(Parameters params) {
+public HtmlPagedListUrl(Parameters params, Parameters session) {
     super();
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public HtmlPagedListUrl() {
     super();

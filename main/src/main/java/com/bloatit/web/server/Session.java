@@ -29,8 +29,7 @@ import com.bloatit.framework.AuthToken;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
 import com.bloatit.web.utils.url.IndexPageUrl;
-import java.util.HashMap;
-import java.util.Map;
+import com.bloatit.web.utils.url.Parameters;
 
 public class Session {
     private final String key;
@@ -42,7 +41,7 @@ public class Session {
     private String targetPage = null;
     private AuthToken authToken;
 
-    private Map<String, String> sessionParams = new HashMap<String, String>();
+    private Parameters sessionParams = new Parameters();
 
     private final List<Language> preferredLocales;
 
@@ -171,7 +170,7 @@ public class Session {
         return preferredLocales;
     }
 
-    public Map getParams(){
+    public Parameters getParams(){
         return sessionParams;
     }
 
