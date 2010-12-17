@@ -58,7 +58,10 @@ public class ContributePage extends LoggedPage {
     @Override
     public HtmlElement generateRestrictedContent() {
 
-        final HtmlForm contribForm = new HtmlForm(new ContributionActionUrl().toString());
+        ContributionActionUrl formActionUrl = new ContributionActionUrl();
+        formActionUrl.setTargetIdea(targetIdea);
+
+        final HtmlForm contribForm = new HtmlForm(formActionUrl.toString());
 
         // Input field : chose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
