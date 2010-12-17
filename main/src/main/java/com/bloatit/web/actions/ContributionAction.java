@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
@@ -36,10 +37,10 @@ public class ContributionAction extends Action {
     public static final String COMMENT_CODE = "comment";
     public static final String TARGET_IDEA = "targetIdea";
 
-    @RequestParam(name = TARGET_IDEA, role = Role.POST)
+    @RequestParam(name = TARGET_IDEA, level=Level.ERROR)
     private Demand targetIdea;
 
-    @RequestParam(name = COMMENT_CODE, defaultValue = "")
+    @RequestParam(name = COMMENT_CODE, role = Role.POST, defaultValue="vide")
     private String comment;
 
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)
