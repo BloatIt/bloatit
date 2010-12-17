@@ -58,8 +58,7 @@ public class ContributePage extends LoggedPage {
     @Override
     public HtmlElement generateRestrictedContent() {
 
-        ContributionActionUrl formActionUrl = new ContributionActionUrl();
-        formActionUrl.setTargetIdea(targetIdea);
+        ContributionActionUrl formActionUrl = new ContributionActionUrl(targetIdea);
 
         final HtmlForm contribForm = new HtmlForm(formActionUrl.toString());
 
