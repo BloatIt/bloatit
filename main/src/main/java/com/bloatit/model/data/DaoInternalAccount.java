@@ -71,6 +71,12 @@ public class DaoInternalAccount extends DaoAccount {
         this.blocked = this.blocked.subtract(blocked);
         addToAmountValue(blocked);
     }
+    
+    @Override
+    protected boolean hasEnoughMoney(BigDecimal amount) {
+        return this.getAmount().compareTo(amount) >= 0;
+    }
+
 
     // ======================================================================
     // For hibernate mapping

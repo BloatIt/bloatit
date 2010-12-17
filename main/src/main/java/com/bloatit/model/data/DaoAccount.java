@@ -87,6 +87,15 @@ public abstract class DaoAccount {
         return new QueryCollection<DaoTransaction>("from DaoTransaction as t where t.from = :this or t.to = :this").setEntity("this", this);
     }
 
+    /**
+     * If you want to take away from this account some money, you have to know
+     * if there is enough money in it.
+     * 
+     * @param amount The quantity of money you want to get.
+     * @return true if this operation is allawed.
+     */
+    protected abstract boolean hasEnoughMoney(BigDecimal amount);
+
     public Date getLastModificationDate() {
         return lastModificationDate;
     }

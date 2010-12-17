@@ -62,7 +62,7 @@ public class DaoTransaction extends DaoIdentifiable {
         if (from == to) {
             throw new FatalErrorException("Cannot create a transaction on the same account.", null);
         }
-        if (from.getAmount().compareTo(amount) < 0 || to.getAmount().compareTo(amount.negate()) < 0) {
+        if (!from.hasEnoughMoney(amount) || !to.hasEnoughMoney(amount.negate())) {
             throw new NotEnoughMoneyException();
         }
         this.from = from;
