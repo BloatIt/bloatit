@@ -12,7 +12,7 @@ import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
 public abstract class UrlComponent {
     protected Messages messages = new Messages();
-    private final List<Parameter> parameters = new ArrayList<Parameter>();
+    private final List<Parameter<?>> parameters = new ArrayList<Parameter<?>>();
     private final List<UrlComponent> components = new ArrayList<UrlComponent>();
     private boolean isRegistered = false;
 
@@ -26,7 +26,7 @@ public abstract class UrlComponent {
 
     }
 
-    protected final void register(final Parameter param) {
+    protected final void register(final Parameter<?> param) {
         parameters.add(param);
     }
 
@@ -53,7 +53,7 @@ public abstract class UrlComponent {
         for (final UrlComponent comp : components) {
             sb.append(comp.toString());
         }
-        for (final Parameter param : parameters) {
+        for (final Parameter<?> param : parameters) {
             if (param.getValue() != null && param.getRole() != Role.POST) {
                 sb.append("/").append(param.getName()).append("-").append(param.getStringValue());
             }
@@ -62,7 +62,7 @@ public abstract class UrlComponent {
 
     public Messages getMessages() {
         final Messages messages = new Messages();
-        for (final Parameter param : parameters) {
+        for (final Parameter<?> param : parameters) {
             final Message message = param.getMessage();
             if (message != null) {
                 messages.add(message);
@@ -76,7 +76,7 @@ public abstract class UrlComponent {
 
     protected final void parseParameters(final Parameters params) {
         registerIfNotAlreadyDone();
-        for (final Parameter param : parameters) {
+        for (final Parameter<?> param : parameters) {
             final String value = params.look(param.getName());
             if (value != null) {
                 param.valueFromString(value);
@@ -89,11 +89,14 @@ public abstract class UrlComponent {
 
     public void addParameter(final String name, final String value) {
         registerIfNotAlreadyDone();
-        for (final Parameter param : parameters) {
+        for (final Parameter<?> param : parameters) {
             if (param.getName().equals(name)) {
                 param.valueFromString(value);
-                break;
+                return;
             }
+        }
+        for (final UrlComponent comp : components) {
+            comp.addParameter(name, value);
         }
     }
 

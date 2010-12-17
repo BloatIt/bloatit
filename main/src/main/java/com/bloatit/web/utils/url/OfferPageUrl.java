@@ -18,25 +18,16 @@ public OfferPageUrl(Parameters params) {
 }
 public OfferPageUrl(com.bloatit.framework.Demand targetIdea) {
     super(getName());
-    try {
-        this.price.setValue(Loaders.fromStr(java.math.BigDecimal.class, ""));
-        this.expiryDate.setValue(Loaders.fromStr(java.util.Date.class, ""));
-        this.title.setValue(Loaders.fromStr(java.lang.String.class, ""));
-        this.description.setValue(Loaders.fromStr(java.lang.String.class, ""));
-    } catch (ConversionErrorException e) {
-        e.printStackTrace();
-        assert false ;
-    }
         this.targetIdea.setValue(targetIdea);
 }
 private OfferPageUrl(){
     super(getName());
 }
-private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("targetIdea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.math.BigDecimal> price =     new Parameter<java.math.BigDecimal>("price", null, java.math.BigDecimal.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.util.Date> expiryDate =     new Parameter<java.util.Date>("expiryDate", null, java.util.Date.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> title =     new Parameter<java.lang.String>("title", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> description =     new Parameter<java.lang.String>("description", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("idea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.math.BigDecimal> price =     new Parameter<java.math.BigDecimal>("price", null, java.math.BigDecimal.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.util.Date> expiryDate =     new Parameter<java.util.Date>("expiry", null, java.util.Date.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> title =     new Parameter<java.lang.String>("title", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> description =     new Parameter<java.lang.String>("description", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public com.bloatit.framework.Demand getTargetIdea(){ 
     return this.targetIdea.getValue();

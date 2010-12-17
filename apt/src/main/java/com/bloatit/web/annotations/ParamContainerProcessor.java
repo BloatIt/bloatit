@@ -70,10 +70,10 @@ public class ParamContainerProcessor extends AbstractProcessor {
         // Its a simple param
         if (parm != null) {
             String attributeName = attribute.getSimpleName().toString();
-            // String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
+            String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
 
             if (parm.generatedFrom().isEmpty()) {
-                generator.addAttribute(getType(attribute), attributeName, parm.role(), parm.level(), parm.message().value());
+                generator.addAttribute(getType(attribute), attributeUrlString, attributeName, parm.role(), parm.level(), parm.message().value());
                 generator.addGetterSetter(getType(attribute), attributeName);
                 if (!parm.defaultValue().equals(RequestParam.defaultDefaultValue)) {
                     generator.addDefaultParameter(attributeName, getType(attribute), parm.defaultValue());

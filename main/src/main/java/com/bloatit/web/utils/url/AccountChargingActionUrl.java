@@ -19,7 +19,7 @@ public AccountChargingActionUrl(Parameters params) {
 public AccountChargingActionUrl() {
     super(getName());
 }
-private Parameter<java.math.BigDecimal> amount =     new Parameter<java.math.BigDecimal>("amount", null, java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.math.BigDecimal> amount =     new Parameter<java.math.BigDecimal>("chargeAmount", null, java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public java.math.BigDecimal getAmount(){ 
     return this.amount.getValue();

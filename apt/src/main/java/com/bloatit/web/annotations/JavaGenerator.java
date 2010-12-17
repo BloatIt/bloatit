@@ -36,14 +36,10 @@ public abstract class JavaGenerator {
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
-    public final void addAttribute(String type, String name, Role role, Level level, String errorMsg) {
+    public final void addAttribute(String type, String nameString, String name, Role role, Level level, String errorMsg) {
         name = toCamelAttributeName(name);
-        _attributes.append("private Parameter<")
-                   .append(type)
-                   .append("> ")
-                   .append(name)
-                   .append(" = ")
-                   .append(createParameter(name, "\"" + name + "\"", type, role, level, errorMsg));
+        _attributes.append("private Parameter<").append(type).append("> ").append(name).append(" = ")
+                .append(createParameter(name, "\"" + nameString + "\"", type, role, level, errorMsg));
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
     }
 
@@ -58,14 +54,8 @@ public abstract class JavaGenerator {
 
     public final void addDefaultParameter(String attributeName, String className, String defaultValue) {
         attributeName = toCamelAttributeName(attributeName);
-        _constructorDefaults.append("        this.")
-                            .append(attributeName)
-                            .append(".setValue(")
-                            .append("Loaders.fromStr(")
-                            .append(className)
-                            .append(".class, \"")
-                            .append(defaultValue)
-                            .append("\"));\n");
+        _constructorDefaults.append("        this.").append(attributeName).append(".setValue(").append("Loaders.fromStr(").append(className)
+                .append(".class, \"").append(defaultValue).append("\"));\n");
     }
 
     public void addGetterSetter(String type, String name) {
@@ -105,8 +95,14 @@ public abstract class JavaGenerator {
         case POST:
             sb.append("Role.POST, ");
             break;
+        case SESSION:
+            sb.append("Role.SESSION, ");
+            break;
         case PRETTY:
             sb.append("Role.PRETTY, ");
+            break;
+        default:
+            assert false;
             break;
         }
 
@@ -119,6 +115,9 @@ public abstract class JavaGenerator {
             break;
         case WARNING:
             sb.append("Level.WARNING, ");
+            break;
+        default:
+            assert false;
             break;
         }
 
@@ -145,8 +144,6 @@ public abstract class JavaGenerator {
 
         _attributes.append("private ").append(type).append(" ").append(name).append(" = new ").append(type).append("();\n");
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
-        
-
 
         _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
         _gettersSetters.append("    return this.").append(name).append(";\n");
@@ -155,7 +152,7 @@ public abstract class JavaGenerator {
         _gettersSetters.append("public void ").append(getSetterName(name)).append("(").append(type).append(" arg){ \n");
         _gettersSetters.append("    this.").append(name).append(" = arg;\n");
         _gettersSetters.append("}\n\n");
-    
+
     }
 
     private final String getComponentName(String name) {

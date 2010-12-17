@@ -26,6 +26,7 @@ import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
@@ -46,16 +47,16 @@ public class OfferPage extends LoggedPage {
     @RequestParam(name = "idea")
     private Demand targetIdea = null;
 
-    @RequestParam(name = "price", defaultValue = "")
+    @RequestParam(name = "price", role = Role.SESSION)
     private final BigDecimal price;
 
-    @RequestParam(name = "expiry", defaultValue = "")
+    @RequestParam(name = "expiry", role = Role.SESSION)
     private final Date expiryDate;
 
-    @RequestParam(name = "title", defaultValue = "")
+    @RequestParam(name = "title", role = Role.SESSION)
     private final String title;
 
-    @RequestParam(name = "description", defaultValue = "")
+    @RequestParam(name = "description", role = Role.SESSION)
     private final String description;
 
     public OfferPage(final OfferPageUrl url) throws RedirectException {
@@ -124,7 +125,7 @@ public class OfferPage extends LoggedPage {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"), 2);
 
         // Create offer form
-        
+
         final OfferActionUrl offerActionUrl = new OfferActionUrl();
         // offerActionUrl.setIdea(targetIdea);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.toString());

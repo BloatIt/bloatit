@@ -19,8 +19,8 @@ public LoginActionUrl(Parameters params) {
 public LoginActionUrl() {
     super(getName());
 }
-private Parameter<java.lang.String> login =     new Parameter<java.lang.String>("login", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> password =     new Parameter<java.lang.String>("password", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> login =     new Parameter<java.lang.String>("bloatit_login", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> password =     new Parameter<java.lang.String>("bloatit_password", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public java.lang.String getLogin(){ 
     return this.login.getValue();

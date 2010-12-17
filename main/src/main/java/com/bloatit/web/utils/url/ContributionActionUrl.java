@@ -27,7 +27,7 @@ public ContributionActionUrl() {
 }
 private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("targetIdea", null, com.bloatit.framework.Demand.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private Parameter<java.lang.String> comment =     new Parameter<java.lang.String>("comment", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.math.BigDecimal> amount =     new Parameter<java.math.BigDecimal>("amount", null, java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.math.BigDecimal> amount =     new Parameter<java.math.BigDecimal>("contributionAmount", null, java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public com.bloatit.framework.Demand getTargetIdea(){ 
     return this.targetIdea.getValue();
