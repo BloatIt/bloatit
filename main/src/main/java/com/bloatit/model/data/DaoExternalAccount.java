@@ -1,5 +1,7 @@
 package com.bloatit.model.data;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -80,6 +82,14 @@ public class DaoExternalAccount extends DaoAccount {
     public AccountType getType() {
         return type;
     }
+    
+    /**
+     * Return true all the time.
+     */
+    @Override
+    protected boolean hasEnoughMoney(BigDecimal amount) {
+        return true;
+    }
 
     // ======================================================================
     // For hibernate mapping
@@ -105,4 +115,5 @@ public class DaoExternalAccount extends DaoAccount {
     protected void setType(final AccountType type) {
         this.type = type;
     }
+
 }

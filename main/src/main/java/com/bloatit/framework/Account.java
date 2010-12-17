@@ -53,7 +53,7 @@ public abstract class Account extends Identifiable {
         }
         throw new FatalErrorException("Cannot find the right Actor child class.", null);
     }
-
+    
     @Override
     public int getId() {
         return getDaoAccount().getId();
