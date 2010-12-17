@@ -1,5 +1,9 @@
 package com.bloatit.web.html.pages.master;
 
+import com.bloatit.framework.InternalAccount;
+import com.bloatit.framework.Member;
+import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
@@ -21,10 +25,22 @@ public class TopBar extends HtmlDiv {
         if (session.isLogged()) {
             final String full_name = session.getAuthToken().getMember().getFullname();
             final String karma = "<span class=\"karma\">" + HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()) + "</span>";
+
+            final HtmlBranch money = new HtmlGenericElement("div");
+            
+            Member member = session.getAuthToken().getMember();
+
+            member.authenticate(session.getAuthToken());
+            final InternalAccount internalAccount = member.getInternalAccount();
+            internalAccount.authenticate(session.getAuthToken());
+
+            money.add(new HtmlText(internalAccount.getAmount().toString()));
+
             final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(full_name);
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(session.tr("Logout"));
 
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(memberLink).addText(karma));
+            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(money));
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(logoutLink));
 
         } else {
