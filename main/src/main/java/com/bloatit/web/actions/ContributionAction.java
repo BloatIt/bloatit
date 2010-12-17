@@ -77,7 +77,8 @@ public class ContributionAction extends Action {
             }
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(session.tr("You need to charge your account before you can contribute."));
-
+            session.addParam(AMOUNT_CODE, amount.toString());
+            session.addParam(COMMENT_CODE, comment);
             // Sets the target page to here
             session.setTargetPage(this.url.toString());
 

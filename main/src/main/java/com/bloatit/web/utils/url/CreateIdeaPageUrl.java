@@ -12,9 +12,10 @@ public class CreateIdeaPageUrl extends Url {
 public static String getName() { return "CreateIdeaPage"; }
 public com.bloatit.web.html.pages.CreateIdeaPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.CreateIdeaPage(this); }
-public CreateIdeaPageUrl(Parameters params) {
+public CreateIdeaPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public CreateIdeaPageUrl() {
     super(getName());

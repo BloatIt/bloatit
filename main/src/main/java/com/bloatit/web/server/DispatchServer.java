@@ -119,7 +119,7 @@ public class DispatchServer {
         try {
             if (urlMap.containsKey(pageCode)) {
                 Url aUrl;
-                aUrl = urlMap.get(pageCode).getConstructor(Parameters.class).newInstance(parameters);
+                aUrl = urlMap.get(pageCode).getConstructor(Parameters.class, Parameters.class).newInstance(parameters, session.getParams());
                 Linkable linkable = aUrl.createPage();
 
                 if (linkable instanceof Page) {
@@ -220,7 +220,6 @@ public class DispatchServer {
         mergedList.putAll(get);
         mergedList.putAll(query);
         mergedList.putAll(post);
-
         return mergedList;
 
     }

@@ -11,6 +11,9 @@ import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.Loader;
+import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.BloatitDate;
+import com.bloatit.web.utils.DateParsingException;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 public class Loaders {
@@ -68,6 +71,8 @@ public class Loaders {
             return (Loader<T>) new ToDemand();
         } else if (theClass.equals(Member.class)) {
             return (Loader<T>) new ToMember();
+        }else if (theClass.equals(BloatitDate.class)) {
+            return (Loader<T>) new ToBloatitDate();
         }
         return null;
     }
@@ -148,6 +153,17 @@ public class Loaders {
             try {
                 return DateFormat.getInstance().parse(data);
             } catch (final ParseException e) {
+                throw new NumberFormatException();
+            }
+        }
+    }
+    
+    private static class ToBloatitDate extends Loader<BloatitDate> {
+        @Override
+        public BloatitDate fromString(final String data) {
+            try {
+                return new BloatitDate(data, Context.getSession().getLanguage().getLocale());
+            } catch (DateParsingException e) {
                 throw new NumberFormatException();
             }
         }

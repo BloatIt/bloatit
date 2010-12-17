@@ -12,9 +12,10 @@ public class AccountChargingPageUrl extends Url {
 public static String getName() { return "AccountChargingPage"; }
 public com.bloatit.web.html.pages.AccountChargingPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.AccountChargingPage(this); }
-public AccountChargingPageUrl(Parameters params) {
+public AccountChargingPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public AccountChargingPageUrl() {
     super(getName());

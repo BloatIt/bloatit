@@ -22,7 +22,7 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
         }
 
         public Tag addAttribute(final String name, final String value) {
-            if (!value.equals("") && !name.equals("")) {
+            if (value != null && name != null && !value.isEmpty() && !name.isEmpty()) {
                 attributes.put(name, value);
             }
             return this;

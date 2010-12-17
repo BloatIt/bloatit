@@ -12,9 +12,10 @@ public class LogoutActionUrl extends Url {
 public static String getName() { return "LogoutAction"; }
 public com.bloatit.web.actions.LogoutAction createPage() throws RedirectException{ 
     return new com.bloatit.web.actions.LogoutAction(this); }
-public LogoutActionUrl(Parameters params) {
+public LogoutActionUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public LogoutActionUrl() {
     super(getName());

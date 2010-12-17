@@ -44,8 +44,8 @@ public class LoginPage extends Page {
         super.create();
 
         final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().toString());
-        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE);
-        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE);
+        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE , session.tr("login"));
+        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE , session.tr("password"));
         final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Login"));
 
         loginForm.add(loginField);

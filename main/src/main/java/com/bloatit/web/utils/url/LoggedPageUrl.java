@@ -8,9 +8,10 @@ import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorExcep
 
 @SuppressWarnings("unused")
 public class LoggedPageUrl extends UrlComponent {
-public LoggedPageUrl(Parameters params) {
+public LoggedPageUrl(Parameters params, Parameters session) {
     super();
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public LoggedPageUrl() {
     super();

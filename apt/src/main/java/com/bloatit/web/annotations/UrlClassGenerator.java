@@ -16,10 +16,10 @@ public class UrlClassGenerator extends JavaGenerator {
 
     @Override
     protected void generateConstructor() {
-
-        _classHeader.append("public ").append(className).append("(Parameters params) {\n");
+        _classHeader.append("public ").append(className).append("(Parameters params, Parameters session) {\n");
         _classHeader.append("    super(getName());\n");
-        _classHeader.append("    parseParameters(params);\n");
+        _classHeader.append("    parseParameters(params, false);\n");
+        _classHeader.append("    parseParameters(session, true);\n");
         _classHeader.append("}\n");
 
         _classHeader.append("public ").append(className).append("(").append(_constructorParameters).append(") {\n");

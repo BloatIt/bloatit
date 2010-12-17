@@ -20,7 +20,6 @@
 package com.bloatit.web.html.pages;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.OfferAction;
@@ -51,7 +50,7 @@ public class OfferPage extends LoggedPage {
     private final BigDecimal price;
 
     @RequestParam(name = "expiry", role = Role.SESSION)
-    private final Date expiryDate;
+    private final BloatitDate expiryDate;
 
     @RequestParam(name = "title", role = Role.SESSION)
     private final String title;
@@ -147,10 +146,9 @@ public class OfferPage extends LoggedPage {
         offerForm.add(priceField);
 
         // Date field
-        final BloatitDate bd = new BloatitDate(this.expiryDate, session.getLanguage().getLocale());
         // TODO : create a constructor with the language
         final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE);
-        dateField.setDefaultValue(bd);
+        dateField.setDefaultValue(this.expiryDate);
         dateField.setLabel(this.session.tr("Expiration date : "));
         offerForm.add(dateField);
 

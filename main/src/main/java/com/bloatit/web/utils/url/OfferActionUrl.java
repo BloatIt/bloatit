@@ -12,9 +12,10 @@ public class OfferActionUrl extends Url {
 public static String getName() { return "OfferAction"; }
 public com.bloatit.web.actions.OfferAction createPage() throws RedirectException{ 
     return new com.bloatit.web.actions.OfferAction(this); }
-public OfferActionUrl(Parameters params) {
+public OfferActionUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public OfferActionUrl() {
     super(getName());

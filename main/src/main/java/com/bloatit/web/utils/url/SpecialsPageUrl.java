@@ -12,9 +12,10 @@ public class SpecialsPageUrl extends Url {
 public static String getName() { return "SpecialsPage"; }
 public com.bloatit.web.html.pages.SpecialsPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.SpecialsPage(this); }
-public SpecialsPageUrl(Parameters params) {
+public SpecialsPageUrl(Parameters params, Parameters session) {
     super(getName());
-    parseParameters(params);
+    parseParameters(params, false);
+    parseParameters(session, true);
 }
 public SpecialsPageUrl() {
     super(getName());
