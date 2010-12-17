@@ -22,8 +22,8 @@ public HtmlPagedListUrl() {
         assert false ;
     }
 }
-private Parameter<java.lang.Integer> currentPage =     new Parameter<java.lang.Integer>("currentPage", getCurrentPage(), java.lang.Integer.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.Integer> pageSize =     new Parameter<java.lang.Integer>("pageSize", getPageSize(), java.lang.Integer.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.Integer> currentPage =     new Parameter<java.lang.Integer>("currentPage", null, java.lang.Integer.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.Integer> pageSize =     new Parameter<java.lang.Integer>("pageSize", null, java.lang.Integer.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public java.lang.Integer getCurrentPage(){ 
     return this.currentPage.getValue();

@@ -30,9 +30,9 @@ public ContributePageUrl(com.bloatit.framework.Demand targetIdea) {
 private ContributePageUrl(){
     super(getName());
 }
-private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("targetIdea", getTargetIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> contributionAmountParam =     new Parameter<java.lang.String>("contributionAmountParam", getContributionAmountParam(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> contributionCommentParam =     new Parameter<java.lang.String>("contributionCommentParam", getContributionCommentParam(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("targetIdea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> contributionAmountParam =     new Parameter<java.lang.String>("contributionAmountParam", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> contributionCommentParam =     new Parameter<java.lang.String>("contributionCommentParam", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public com.bloatit.framework.Demand getTargetIdea(){ 
     return this.targetIdea.getValue();

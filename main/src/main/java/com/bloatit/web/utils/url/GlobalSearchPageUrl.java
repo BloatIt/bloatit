@@ -25,7 +25,7 @@ public GlobalSearchPageUrl() {
         assert false ;
     }
 }
-private Parameter<java.lang.String> searchString =     new Parameter<java.lang.String>("searchString", getSearchString(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> searchString =     new Parameter<java.lang.String>("searchString", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private HtmlPagedListUrl pagedMemberListUrl = new HtmlPagedListUrl();
 
 public java.lang.String getSearchString(){ 

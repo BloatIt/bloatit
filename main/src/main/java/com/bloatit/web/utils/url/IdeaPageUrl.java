@@ -23,7 +23,7 @@ public IdeaPageUrl(com.bloatit.framework.Demand idea) {
 private IdeaPageUrl(){
     super(getName());
 }
-private Parameter<com.bloatit.framework.Demand> idea =     new Parameter<com.bloatit.framework.Demand>("idea", getIdea(), com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<com.bloatit.framework.Demand> idea =     new Parameter<com.bloatit.framework.Demand>("idea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private IdeaTabPaneUrl demandTabPaneUrl = new IdeaTabPaneUrl();
 
 public com.bloatit.framework.Demand getIdea(){ 
@@ -36,7 +36,7 @@ public void setIdea(com.bloatit.framework.Demand arg){
 
 public java.lang.String getTitle(){ 
     if (idea != null) {
-        return idea.getValue()getTitle();
+        return idea.getValue().getTitle();
     } else {
         return null;
     }
@@ -54,7 +54,6 @@ public void setDemandTabPaneUrl(IdeaTabPaneUrl arg){
 @Override 
 protected void doRegister() { 
     register(idea);
-    register(title);
     register(demandTabPaneUrl);
 }
 

@@ -21,7 +21,7 @@ public IdeaTabPaneUrl() {
         assert false ;
     }
 }
-private Parameter<java.lang.String> activeTabKey =     new Parameter<java.lang.String>("activeTabKey", getActiveTabKey(), java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> activeTabKey =     new Parameter<java.lang.String>("activeTabKey", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private IdeaContributorsComponentUrl contributionUrl = new IdeaContributorsComponentUrl();
 
 public java.lang.String getActiveTabKey(){ 

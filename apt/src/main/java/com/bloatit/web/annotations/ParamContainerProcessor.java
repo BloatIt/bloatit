@@ -70,7 +70,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         // Its a simple param
         if (parm != null) {
             String attributeName = attribute.getSimpleName().toString();
-            String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
+            // String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
 
             if (parm.generatedFrom().isEmpty()) {
                 generator.addAttribute(getType(attribute), attributeName, parm.role(), parm.level(), parm.message().value());
@@ -80,11 +80,11 @@ public class ParamContainerProcessor extends AbstractProcessor {
                 } else if (parm.level() == Level.ERROR && (parm.role() == Role.GET || parm.role() == Role.PRETTY)) {
                     generator.addConstructorParameter(getType(attribute), attributeName);
                 }
+                generator.registerAttribute(attributeName);
             } else {
                 generator.addAutoGeneratingGetter(getType(attribute), attributeName, parm.generatedFrom());
             }
 
-            generator.registerAttribute(attributeName);
 
             // Its not a param but it could be a ParamContainer.
         } else {

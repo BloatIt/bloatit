@@ -23,7 +23,7 @@ public MemberPageUrl(com.bloatit.framework.Member member) {
 private MemberPageUrl(){
     super(getName());
 }
-private Parameter<com.bloatit.framework.Member> member =     new Parameter<com.bloatit.framework.Member>("member", getMember(), com.bloatit.framework.Member.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<com.bloatit.framework.Member> member =     new Parameter<com.bloatit.framework.Member>("member", null, com.bloatit.framework.Member.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public com.bloatit.framework.Member getMember(){ 
     return this.member.getValue();

@@ -81,7 +81,7 @@ public abstract class JavaGenerator {
     public void addAutoGeneratingGetter(String type, String name, String generateFrom) {
         _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
         _gettersSetters.append("    if (").append(generateFrom).append(" != null) {\n");
-        _gettersSetters.append("        return ").append(generateFrom).append(".getValue()").append(getGetterName(name)).append(";\n");
+        _gettersSetters.append("        return ").append(generateFrom).append(".getValue().").append(getGetterName(name)).append(";\n");
         _gettersSetters.append("    } else {\n");
         _gettersSetters.append("        return null;\n");
         _gettersSetters.append("    }\n");
@@ -95,8 +95,7 @@ public abstract class JavaGenerator {
         // errorMsg = errorMsg.replaceAll("([^\\\\])(\\\\)([^\\\\])",
         // "\\1\\\\\\3");
         StringBuilder sb = new StringBuilder();
-        sb.append("    new Parameter<").append(type).append(">(").append(nameString).append(", ");
-        sb.append(name).append(", ");
+        sb.append("    new Parameter<").append(type).append(">(").append(nameString).append(", null, ");
         sb.append(type).append(".class, ");
 
         switch (role) {
