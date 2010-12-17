@@ -85,8 +85,6 @@ public class IdeaPage extends Page {
             return;
         }
         
-        demandTabPane = new IdeaTabPane(url.getDemandTabPaneUrl(), idea);
-
         final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
         final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
 

@@ -19,12 +19,13 @@ package com.bloatit.web.html.components.custom;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.utils.url.Url;
+import com.bloatit.web.utils.url.UrlComponent;
 
 public class HtmlTabBlock extends HtmlDiv {
 
     private final String tabBlockKey;
     private final String activeTabKey;
-    private final Url tablinks;
+    private final UrlComponent tablinks;
     private final HtmlDiv tabBody;
     private final HtmlDiv tabHeader;
 
@@ -33,7 +34,7 @@ public class HtmlTabBlock extends HtmlDiv {
 
         this.tabBlockKey = tabBlockKey;
         this.activeTabKey = activeTabKey;
-        this.tablinks = tablinks;
+        this.tablinks = tablinks.clone();
 
         tabHeader = new HtmlDiv("tab_header");
         tabBody = new HtmlDiv("tab_body");
