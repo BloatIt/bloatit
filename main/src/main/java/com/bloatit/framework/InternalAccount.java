@@ -21,7 +21,6 @@ public class InternalAccount extends Account {
     }
 
     public DaoInternalAccount getDao() {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return dao;
     }
 
@@ -37,6 +36,7 @@ public class InternalAccount extends Account {
             Transaction transac = new Transaction(this, externalAccount, amount.negate());
         } catch (NotEnoughMoneyException ex) {
             // Should never happen
+            ex.printStackTrace();
             throw new FatalErrorException("Ooops ... Looks like you fell in a warphole ... you should never see this", ex);
         }
     }

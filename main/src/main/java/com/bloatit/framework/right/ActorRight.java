@@ -8,7 +8,7 @@ public class ActorRight extends RightManager {
     public static class ExternalAccount extends Private {
     }
 
-    public static class InternalAccount extends PrivateReadOnly {
+    public static class InternalAccount extends Private {
     }
 
 }

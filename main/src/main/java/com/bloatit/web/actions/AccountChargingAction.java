@@ -31,19 +31,20 @@ import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Url;
 
-        @ParamContainer("account/charging")
-
+@ParamContainer("account/charging")
 public class AccountChargingAction extends Action {
 
     public final static String CHARGE_AMOUNT_CODE = "chargeAmount";
-    
+
     @RequestParam(level = Level.ERROR, name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
     BigDecimal amount;
+    
     private final Url url;
 
-    public AccountChargingAction(AccountChargingActionUrl accountChargingActionUrl) throws RedirectException {
-        super(accountChargingActionUrl);
-        this.url = accountChargingActionUrl;
+    public AccountChargingAction(AccountChargingActionUrl url) throws RedirectException {
+        super(url);
+        this.url = url;
+        this.amount = url.getAmount();
     }
 
     @Override
@@ -54,16 +55,17 @@ public class AccountChargingAction extends Action {
         }
         Member targetMember = session.getAuthToken().getMember();
 
-        if( !targetMember.canGetInternalAccount() ){
-            session.notifyError(session.tr("Your current rights do not allow you to charge money"));
-            return new IndexPageUrl().toString();
-        }
-
         targetMember.authenticate(session.getAuthToken());
         targetMember.getInternalAccount().authenticate(session.getAuthToken());
 
         ExternalAccount account = new ExternalAccount(targetMember, AccountType.IBAN, "plop");
+        account.authenticate(session.getAuthToken());
         targetMember.getInternalAccount().chargeAmount(amount, account);
+
+        if (!targetMember.canGetInternalAccount()) {
+            session.notifyError(session.tr("Your current rights do not allow you to charge money"));
+            return new IndexPageUrl().toString();
+        }
 
         return session.getPreferredPage();
     }
