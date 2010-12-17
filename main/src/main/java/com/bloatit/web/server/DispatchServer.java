@@ -114,7 +114,7 @@ public class DispatchServer {
 
         // Should be merge post/get/session
         final Parameters parameters = new Parameters();
-        parameters.putAll(mergePostGet(queryString.parameters, post, query));
+        parameters.putAll(mergePostGet(queryString.parameters, post, query, session.getParams()));
 
         try {
             if (urlMap.containsKey(pageCode)) {
@@ -215,11 +215,12 @@ public class DispatchServer {
      * @param post the Map containing the post parameters
      * @return the new map
      */
-    private Map<String, String> mergePostGet(final Map<String, String> query, final Map<String, String> post, final Map<String, String> get) {
+    private Map<String, String> mergePostGet(final Map<String, String> query, final Map<String, String> post, final Map<String, String> get, final Map<String, String> sessionList) {
         final HashMap<String, String> mergedList = new HashMap<String, String>();
         mergedList.putAll(get);
         mergedList.putAll(query);
         mergedList.putAll(post);
+        mergedList.putAll(sessionList);
 
         return mergedList;
 
