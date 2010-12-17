@@ -35,7 +35,7 @@ public class ExternalAccount extends Account {
 
     @Override
     protected DaoAccount getDaoAccount() {
-        return null;
+        return dao;
     }
 
 }

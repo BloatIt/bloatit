@@ -92,7 +92,7 @@ public abstract class DaoAccount {
      * if there is enough money in it.
      * 
      * @param amount The quantity of money you want to get.
-     * @return true if this operation is allawed.
+     * @return true if this operation is allowed.
      */
     protected abstract boolean hasEnoughMoney(BigDecimal amount);
 

@@ -102,12 +102,13 @@ public class SCGIServer {
                     for (final StackTraceElement s : e.getStackTrace()) {
                         display += "\t" + s + "\n";
                     }
+                    
 
                     clientSocket.getOutputStream().write(display.getBytes());
 
                     // TODO : Log
                     // TODO Debug Only
-                    // TODO : print stack trace
+                    e.printStackTrace();
                 } catch (final Exception e) {
                     // Protects the server
                     String display;
@@ -117,6 +118,7 @@ public class SCGIServer {
                     }
 
                     clientSocket.getOutputStream().write(display.getBytes());
+                    e.printStackTrace();
                 }
 
                 clientSocket.close();
@@ -124,7 +126,6 @@ public class SCGIServer {
                 final long endTime = System.nanoTime();
                 final double duration = ((endTime - startTime)) / 1000000.;
                 System.err.println("Page generated in " + duration + " ms");
-
             }
 
         } catch (final IOException ex) {
