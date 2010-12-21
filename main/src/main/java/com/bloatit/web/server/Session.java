@@ -111,9 +111,9 @@ public class Session {
     }
 
     public String getPreferredPage() {
-        if (targetPage != null) {
+        if (targetPage != null && !targetPage.isEmpty()) {
             return targetPage;
-        } else if (lastStablePage != null) {
+        } else if (lastStablePage != null && !targetPage.isEmpty()) {
             return lastStablePage;
         } else {
             return new IndexPageUrl().urlString();
@@ -170,15 +170,15 @@ public class Session {
         return preferredLocales;
     }
 
-    public Parameters getParams(){
+    public Parameters getParams() {
         return sessionParams;
     }
 
-    public String getParam(String paramKey){
+    public String getParam(String paramKey) {
         return sessionParams.get(paramKey);
     }
 
-    public void addParam(String paramKey, String paramValue){
+    public void addParam(String paramKey, String paramValue) {
         sessionParams.put(paramKey, paramValue);
     }
 }

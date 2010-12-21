@@ -145,6 +145,9 @@ public class Parameter<T> extends UrlNode {
 
     @Override
     protected void constructUrl(StringBuilder sb) {
-        sb.append("/").append(getName()).append("-").append(getStringValue());
+        String stringValue = getStringValue();
+        if (!stringValue.isEmpty()){
+            sb.append("/").append(getName()).append("-").append(stringValue);
+        }
     }
 }
