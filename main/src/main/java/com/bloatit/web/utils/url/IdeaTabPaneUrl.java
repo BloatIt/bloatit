@@ -2,18 +2,18 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.utils.url.Parameter;
+import com.bloatit.web.utils.url.UrlParameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 @SuppressWarnings("unused")
 public class IdeaTabPaneUrl extends UrlComponent {
 public IdeaTabPaneUrl(Parameters params, Parameters session) {
-    super();
+    this();
     parseParameters(params, false);
     parseParameters(session, true);
 }
-public IdeaTabPaneUrl() {
+public IdeaTabPaneUrl(){
     super();
     try {
         this.activeTabKey.setValue(Loaders.fromStr(java.lang.String.class, "description_tab"));
@@ -22,7 +22,7 @@ public IdeaTabPaneUrl() {
         assert false ;
     }
 }
-private Parameter<java.lang.String> activeTabKey =     new Parameter<java.lang.String>("demand_tab_key", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.lang.String> activeTabKey =     new UrlParameter<java.lang.String>("demand_tab_key", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private IdeaContributorsComponentUrl contributionUrl = new IdeaContributorsComponentUrl();
 
 public java.lang.String getActiveTabKey(){ 

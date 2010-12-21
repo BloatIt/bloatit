@@ -40,10 +40,10 @@ public class ContributionAction extends Action {
     @RequestParam(name = TARGET_IDEA, level = Level.ERROR)
     private Demand targetIdea;
 
-    @RequestParam(name = COMMENT_CODE, role = Role.POST, defaultValue = "vide")
+    @RequestParam(name = COMMENT_CODE, role = Role.SESSION, level = Level.INFO)
     private String comment;
 
-    @RequestParam(name = AMOUNT_CODE, role = Role.POST)
+    @RequestParam(name = AMOUNT_CODE, role = Role.SESSION)
     private BigDecimal amount;
 
     private final ContributionActionUrl url;

@@ -24,7 +24,7 @@ public abstract class JavaGenerator {
 
         _import.append("import com.bloatit.web.annotations.Message.Level;\n");
         _import.append("import com.bloatit.web.annotations.RequestParam.Role;\n");
-        _import.append("import com.bloatit.web.utils.url.Parameter;\n");
+        _import.append("import com.bloatit.web.utils.url.UrlParameter;\n");
         _import.append("import com.bloatit.web.utils.annotations.Loaders;\n");
         _import.append("import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;\n");
 
@@ -38,7 +38,7 @@ public abstract class JavaGenerator {
 
     public final void addAttribute(String type, String nameString, String name, Role role, Level level, String errorMsg) {
         name = toCamelAttributeName(name);
-        _attributes.append("private Parameter<").append(type).append("> ").append(name).append(" = ")
+        _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ")
                 .append(createParameter(name, "\"" + nameString + "\"", type, role, level, errorMsg));
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
     }
@@ -85,7 +85,7 @@ public abstract class JavaGenerator {
         // errorMsg = errorMsg.replaceAll("([^\\\\])(\\\\)([^\\\\])",
         // "\\1\\\\\\3");
         StringBuilder sb = new StringBuilder();
-        sb.append("    new Parameter<").append(type).append(">(").append(nameString).append(", null, ");
+        sb.append("    new UrlParameter<").append(type).append(">(").append(nameString).append(", null, ");
         sb.append(type).append(".class, ");
 
         switch (role) {

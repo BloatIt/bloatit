@@ -2,7 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.utils.url.Parameter;
+import com.bloatit.web.utils.url.UrlParameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -13,11 +13,11 @@ public static String getName() { return "search"; }
 public com.bloatit.web.html.pages.GlobalSearchPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.GlobalSearchPage(this); }
 public GlobalSearchPageUrl(Parameters params, Parameters session) {
-    super(getName());
+    this();
     parseParameters(params, false);
     parseParameters(session, true);
 }
-public GlobalSearchPageUrl() {
+public GlobalSearchPageUrl(){
     super(getName());
     try {
         this.searchString.setValue(Loaders.fromStr(java.lang.String.class, ""));
@@ -26,7 +26,7 @@ public GlobalSearchPageUrl() {
         assert false ;
     }
 }
-private Parameter<java.lang.String> searchString =     new Parameter<java.lang.String>("global_search", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.lang.String> searchString =     new UrlParameter<java.lang.String>("global_search", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private HtmlPagedListUrl pagedMemberListUrl = new HtmlPagedListUrl();
 
 public java.lang.String getSearchString(){ 

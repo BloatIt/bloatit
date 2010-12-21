@@ -12,7 +12,7 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
-public class Parameter<T> extends UrlNode {
+public class UrlParameter<T> extends UrlNode {
     private final String message;
     private final Level level;
 
@@ -22,14 +22,14 @@ public class Parameter<T> extends UrlNode {
     private final Role role;
     private What what;
 
-    public Parameter(final String name, final T value, final Class<T> valueClass, final Role role, final Level level, final String message) {
+    public UrlParameter(final String name, final T value, final Class<T> valueClass, final Role role, final Level level, final String message) {
         this.name = name;
         this.role = role;
         this.value = value;
         this.valueClass = valueClass;
         this.level = level;
         this.message = message;
-        if (value == null) {
+        if (value == null && level == Level.ERROR) {
             this.what = What.NOT_FOUND;
         } else {
             this.what = What.NO_ERROR;
@@ -103,8 +103,8 @@ public class Parameter<T> extends UrlNode {
     }
 
     @Override
-    public Parameter<T> clone() {
-        return new Parameter<T>(name, value, valueClass, role, level, message);
+    public UrlParameter<T> clone() {
+        return new UrlParameter<T>(name, value, valueClass, role, level, message);
     }
 
     @Override

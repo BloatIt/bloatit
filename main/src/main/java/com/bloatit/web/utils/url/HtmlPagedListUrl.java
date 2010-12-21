@@ -2,18 +2,18 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.utils.url.Parameter;
+import com.bloatit.web.utils.url.UrlParameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 @SuppressWarnings("unused")
 public class HtmlPagedListUrl extends UrlComponent {
 public HtmlPagedListUrl(Parameters params, Parameters session) {
-    super();
+    this();
     parseParameters(params, false);
     parseParameters(session, true);
 }
-public HtmlPagedListUrl() {
+public HtmlPagedListUrl(){
     super();
     try {
         this.currentPage.setValue(Loaders.fromStr(java.lang.Integer.class, "1"));
@@ -23,8 +23,8 @@ public HtmlPagedListUrl() {
         assert false ;
     }
 }
-private Parameter<java.lang.Integer> currentPage =     new Parameter<java.lang.Integer>("current_page", null, java.lang.Integer.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.Integer> pageSize =     new Parameter<java.lang.Integer>("page_size", null, java.lang.Integer.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.lang.Integer> currentPage =     new UrlParameter<java.lang.Integer>("current_page", null, java.lang.Integer.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.lang.Integer> pageSize =     new UrlParameter<java.lang.Integer>("page_size", null, java.lang.Integer.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public java.lang.Integer getCurrentPage(){ 
     return this.currentPage.getValue();

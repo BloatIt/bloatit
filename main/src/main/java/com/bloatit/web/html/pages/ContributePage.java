@@ -43,10 +43,10 @@ public class ContributePage extends LoggedPage {
     @RequestParam(level = Level.ERROR)
     private Demand targetIdea;
 
-    @RequestParam(defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = ContributionAction.AMOUNT_CODE, defaultValue = "", role = Role.SESSION)
     private String contributionAmountParam;
 
-    @RequestParam(defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = ContributionAction.COMMENT_CODE, defaultValue = "", role = Role.SESSION)
     private String contributionCommentParam;
 
     private final ContributePageUrl url;
@@ -63,6 +63,7 @@ public class ContributePage extends LoggedPage {
     public HtmlElement createRestrictedContent() throws RedirectException {
         addNotifications(url.getMessages());
         if (url.getMessages().hasMessage(Level.ERROR)) {
+            session.notifyList(url.getMessages());
             throw new RedirectException(Context.getSession().getLastStablePage());
         }
 

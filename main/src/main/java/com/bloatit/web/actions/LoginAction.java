@@ -32,7 +32,7 @@ public class LoginAction extends Action {
 
     public final static String LOGIN_CODE = "bloatit_login";
     public final static String PASSWORD_CODE = "bloatit_password";
-    
+
     @RequestParam(level = Level.ERROR, name = LOGIN_CODE, role = RequestParam.Role.POST)
     private String login;
 
@@ -48,8 +48,6 @@ public class LoginAction extends Action {
 
     @Override
     public String doProcess() throws RedirectException {
-
-
         AuthToken token = null;
         token = LoginManager.loginByPassword(login, password);
 

@@ -2,7 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.utils.url.Parameter;
+import com.bloatit.web.utils.url.UrlParameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -13,14 +13,14 @@ public static String getName() { return "action/account/charging"; }
 public com.bloatit.web.actions.AccountChargingAction createPage() throws RedirectException{ 
     return new com.bloatit.web.actions.AccountChargingAction(this); }
 public AccountChargingActionUrl(Parameters params, Parameters session) {
-    super(getName());
+    this();
     parseParameters(params, false);
     parseParameters(session, true);
 }
-public AccountChargingActionUrl() {
+public AccountChargingActionUrl(){
     super(getName());
 }
-private Parameter<java.math.BigDecimal> amount =     new Parameter<java.math.BigDecimal>("chargeAmount", null, java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.math.BigDecimal> amount =     new UrlParameter<java.math.BigDecimal>("chargeAmount", null, java.math.BigDecimal.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public java.math.BigDecimal getAmount(){ 
     return this.amount.getValue();

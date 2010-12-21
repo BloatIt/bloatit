@@ -2,7 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.utils.url.Parameter;
+import com.bloatit.web.utils.url.UrlParameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -13,15 +13,15 @@ public static String getName() { return "action/login"; }
 public com.bloatit.web.actions.LoginAction createPage() throws RedirectException{ 
     return new com.bloatit.web.actions.LoginAction(this); }
 public LoginActionUrl(Parameters params, Parameters session) {
-    super(getName());
+    this();
     parseParameters(params, false);
     parseParameters(session, true);
 }
-public LoginActionUrl() {
+public LoginActionUrl(){
     super(getName());
 }
-private Parameter<java.lang.String> login =     new Parameter<java.lang.String>("bloatit_login", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> password =     new Parameter<java.lang.String>("bloatit_password", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.lang.String> login =     new UrlParameter<java.lang.String>("bloatit_login", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.lang.String> password =     new UrlParameter<java.lang.String>("bloatit_password", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public java.lang.String getLogin(){ 
     return this.login.getValue();

@@ -2,7 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.utils.url.Parameter;
+import com.bloatit.web.utils.url.UrlParameter;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 import com.bloatit.web.exceptions.RedirectException;
@@ -13,11 +13,15 @@ public static String getName() { return "contribute"; }
 public com.bloatit.web.html.pages.ContributePage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.ContributePage(this); }
 public ContributePageUrl(Parameters params, Parameters session) {
-    super(getName());
+    this();
     parseParameters(params, false);
     parseParameters(session, true);
 }
 public ContributePageUrl(com.bloatit.framework.Demand targetIdea) {
+    this();
+        this.targetIdea.setValue(targetIdea);
+}
+private ContributePageUrl(){
     super(getName());
     try {
         this.contributionAmountParam.setValue(Loaders.fromStr(java.lang.String.class, ""));
@@ -26,14 +30,10 @@ public ContributePageUrl(com.bloatit.framework.Demand targetIdea) {
         e.printStackTrace();
         assert false ;
     }
-        this.targetIdea.setValue(targetIdea);
 }
-private ContributePageUrl(){
-    super(getName());
-}
-private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("targetIdea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> contributionAmountParam =     new Parameter<java.lang.String>("contributionAmountParam", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> contributionCommentParam =     new Parameter<java.lang.String>("contributionCommentParam", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<com.bloatit.framework.Demand> targetIdea =     new UrlParameter<com.bloatit.framework.Demand>("targetIdea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.lang.String> contributionAmountParam =     new UrlParameter<java.lang.String>("contributionAmount", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<java.lang.String> contributionCommentParam =     new UrlParameter<java.lang.String>("comment", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public com.bloatit.framework.Demand getTargetIdea(){ 
     return this.targetIdea.getValue();
