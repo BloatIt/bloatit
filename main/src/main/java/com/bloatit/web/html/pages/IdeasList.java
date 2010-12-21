@@ -48,7 +48,7 @@ public class IdeasList extends Page {
     private final IdeasListUrl url;
 
     public IdeasList(final IdeasListUrl url) throws RedirectException {
-        super();
+        super(url);
         this.url = url;
 
         generateContent();

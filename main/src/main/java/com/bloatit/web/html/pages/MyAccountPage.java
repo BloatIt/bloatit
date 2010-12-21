@@ -32,7 +32,7 @@ import com.bloatit.web.utils.url.MyAccountPageUrl;
 public class MyAccountPage extends Page {
 
     public MyAccountPage(MyAccountPageUrl myAccountPageUrl) throws RedirectException {
-        super();
+        super(myAccountPageUrl);
         generateContent();
     }
 

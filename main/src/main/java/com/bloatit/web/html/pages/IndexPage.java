@@ -38,7 +38,7 @@ import com.bloatit.web.utils.url.IndexPageUrl;
 public class IndexPage extends Page {
 
     public IndexPage(IndexPageUrl indexPageUrl) throws RedirectException {
-        super();
+        super(indexPageUrl);
     }
 
     @Override

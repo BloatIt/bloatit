@@ -17,15 +17,18 @@ import com.bloatit.web.server.Notification;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 import com.bloatit.web.utils.url.IndexPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 public abstract class Page extends HtmlElement implements Linkable {
 
     private final HtmlBranch content;
     private final HtmlBranch notifications;
     protected final Session session;
+    private final Url thisUrl;
 
-    public Page() {
+    public Page(Url url) {
         super();
+        this.thisUrl = url;
         content = new HtmlDiv().setId("body_content");
         notifications = new HtmlDiv().setId("notifications");
         session = Context.getSession();
@@ -44,6 +47,11 @@ public abstract class Page extends HtmlElement implements Linkable {
 
         // Display waiting notifications
         addWaitingNotifications();
+        
+        // Set the laste stable page into the session
+        if (isStable()){
+            Context.getSession().setLastStablePage(thisUrl.urlString());
+        }
     }
 
     // TODO correct empty div for notifications ?

@@ -40,7 +40,7 @@ public class MemberPage extends Page {
     private final MemberPageUrl url;
 
     public MemberPage(final MemberPageUrl url) throws RedirectException {
-        super();
+        super(url);
         this.url = url;
         this.member = url.getMember();
     }

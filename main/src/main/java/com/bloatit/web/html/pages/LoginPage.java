@@ -36,7 +36,7 @@ import com.bloatit.web.utils.url.LoginPageUrl;
 public class LoginPage extends Page {
 
     public LoginPage(LoginPageUrl loginPageUrl) throws RedirectException {
-        super();
+        super(loginPageUrl);
     }
 
     @Override

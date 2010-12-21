@@ -47,7 +47,7 @@ public class IdeaPage extends Page {
     private final IdeaPageUrl url;
 
     public IdeaPage(final IdeaPageUrl url) {
-        super();
+        super(url);
         this.url = url;
         idea = url.getIdea();
         title = url.getTitle();

@@ -32,7 +32,7 @@ public abstract class LoggedPage extends Page {
     private final Url meUrl;
 
     protected LoggedPage(Url url) throws RedirectException {
-        super();
+        super(url);
         this.meUrl = url;
     }
 

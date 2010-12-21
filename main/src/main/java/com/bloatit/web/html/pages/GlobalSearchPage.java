@@ -49,7 +49,7 @@ public class GlobalSearchPage extends Page {
     private final GlobalSearchPageUrl url;
 
     public GlobalSearchPage(final GlobalSearchPageUrl url) {
-        super();
+        super(url);
         this.url = url;
         this.searchString = url.getSearchString();
 

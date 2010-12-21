@@ -120,7 +120,7 @@ public class Session {
             String tempStr = targetPage;
             targetPage = null;
             return tempStr;
-        } else if (lastStablePage != null && !targetPage.isEmpty()) {
+        } else if (lastStablePage != null && !lastStablePage.isEmpty()) {
             return lastStablePage;
         } else {
             return new IndexPageUrl().urlString();

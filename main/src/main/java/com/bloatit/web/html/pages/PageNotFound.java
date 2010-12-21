@@ -28,7 +28,7 @@ import com.bloatit.web.utils.url.PageNotFoundUrl;
 public class PageNotFound extends Page {
 
     public PageNotFound(PageNotFoundUrl pageNotFoundUrl) throws RedirectException {
-        super();
+        super(pageNotFoundUrl);
         generateContent();
     }
 

@@ -50,7 +50,7 @@ import com.bloatit.web.utils.url.TestPageUrl;
 public class TestPage extends Page {
 
     public TestPage(TestPageUrl testPageUrl) throws RedirectException {
-        super();
+        super(testPageUrl);
     }
 
     @Override

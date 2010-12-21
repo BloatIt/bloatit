@@ -44,7 +44,7 @@ public class MembersListPage extends Page {
     private final MembersListPageUrl url;
 
     public MembersListPage(final MembersListPageUrl url) throws RedirectException {
-        super();
+        super(url);
         this.url = url;
         generateContent();
     }

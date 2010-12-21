@@ -32,7 +32,7 @@ import com.bloatit.web.utils.url.SpecialsPageUrl;
 public class SpecialsPage extends Page {
 
     public SpecialsPage(SpecialsPageUrl specialsPageUrl) throws RedirectException {
-        super();
+        super(specialsPageUrl);
         generateContent();
     }
 
