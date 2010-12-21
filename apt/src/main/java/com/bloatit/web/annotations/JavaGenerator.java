@@ -70,7 +70,7 @@ public abstract class JavaGenerator {
 
     public void addAutoGeneratingGetter(String type, String name, String generateFrom) {
         _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
-        _gettersSetters.append("    if (").append(generateFrom).append(" != null) {\n");
+        _gettersSetters.append("    if (").append(generateFrom).append(".getValue() != null) {\n");
         _gettersSetters.append("        return ").append(generateFrom).append(".getValue().").append(getGetterName(name)).append(";\n");
         _gettersSetters.append("    } else {\n");
         _gettersSetters.append("        return null;\n");

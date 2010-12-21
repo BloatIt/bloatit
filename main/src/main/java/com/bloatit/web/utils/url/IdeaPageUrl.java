@@ -36,7 +36,7 @@ public void setIdea(com.bloatit.framework.Demand arg){
 }
 
 public java.lang.String getTitle(){ 
-    if (idea != null) {
+    if (idea.getValue() != null) {
         return idea.getValue().getTitle();
     } else {
         return null;
