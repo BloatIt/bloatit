@@ -63,7 +63,7 @@ public class IdeaPage extends Page {
         if (idea != null) {
             return idea.getTitle();
         }
-        return "Idea not found !";
+        return Context.tr("Idea not found !");
     }
 
     @Override
