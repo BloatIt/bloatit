@@ -43,7 +43,7 @@ public class LoginPage extends Page {
     public void create() throws RedirectException {
         super.create();
 
-        final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().toString());
+        final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
         final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE , session.tr("login"));
         final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE , session.tr("password"));
         final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Login"));

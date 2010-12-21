@@ -1,20 +1,17 @@
 package com.bloatit.web.utils.url;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import com.bloatit.web.annotations.Message;
-import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
-public abstract class UrlComponent {
-    protected Messages messages = new Messages();
-    private final List<Parameter<?>> parameters = new ArrayList<Parameter<?>>();
-    private final List<UrlComponent> components = new ArrayList<UrlComponent>();
+public abstract class UrlComponent extends UrlNode {
     private boolean isRegistered = false;
+    private List<UrlNode> nodes = new ArrayList<UrlNode>();
 
     protected abstract void doRegister();
 
@@ -23,18 +20,20 @@ public abstract class UrlComponent {
 
     protected UrlComponent() {
         super();
-
     }
 
-    protected final void register(final Parameter<?> param) {
-        parameters.add(param);
+    protected void constructUrl(final StringBuilder sb) {
+        registerIfNotAlreadyDone();
+        for (UrlNode node : this) {
+            node.constructUrl(sb);
+        }
     }
 
-    protected final void register(final UrlComponent component) {
-        components.add(component);
+    protected final void register(final UrlNode node) {
+        nodes.add(node);
     }
 
-    private final void registerIfNotAlreadyDone() {
+    final void registerIfNotAlreadyDone() {
         if (!isRegistered) {
             doRegister();
             isRegistered = true;
@@ -42,77 +41,45 @@ public abstract class UrlComponent {
     }
 
     @Override
-    public final String toString() {
-        registerIfNotAlreadyDone();
-        final StringBuilder sb = new StringBuilder();
-        constructUrl(sb);
-        return sb.toString();
-    }
-
-    protected void constructUrl(final StringBuilder sb) {
-        for (final UrlComponent comp : components) {
-            sb.append(comp.toString());
-        }
-        for (final Parameter<?> param : parameters) {
-            if (param.getValue() != null && param.getRole() != Role.POST) {
-                sb.append("/").append(param.getName()).append("-").append(param.getStringValue());
-            }
-        }
-    }
-
-    public Messages getMessages() {
-        final Messages messages = new Messages();
-        for (final Parameter<?> param : parameters) {
-            final Message message = param.getMessage();
-            if (message != null) {
-                messages.add(message);
-            }
-        }
-        for (final UrlComponent cmp : components) {
-            messages.addAll(cmp.getMessages());
-        }
-        return messages;
-    }
-
     protected final void parseParameters(final Parameters params, boolean pickValue) {
         if (params == null) {
             return;
         }
         registerIfNotAlreadyDone();
-        for (final Parameter<?> param : parameters) {
-            final String value;
-            if (pickValue) {
-                value = params.pick(param.getName());
-            } else {
-                value = params.look(param.getName());
-            }
-            if (value != null) {
-                param.valueFromString(value);
-            }
-        }
-        for (final UrlComponent comp : components) {
-            comp.parseParameters(params, pickValue);
+        for (final UrlNode node : nodes) {
+            node.parseParameters(params, pickValue);
         }
     }
 
+    @Deprecated
     public void addParameter(final String name, final String value) {
         registerIfNotAlreadyDone();
-        for (final Parameter<?> param : parameters) {
-            if (param.getName().equals(name)) {
-                param.valueFromString(value);
-                return;
-            }
-        }
-        for (final UrlComponent comp : components) {
-            comp.addParameter(name, value);
+        for (final UrlNode node : nodes) {
+            node.addParameter(name, value);
         }
     }
 
     public HtmlLink getHtmlLink(final HtmlNode data) {
-        return new HtmlLink(toString(), data);
+        return new HtmlLink(urlString(), data);
     }
 
     public HtmlLink getHtmlLink(final String text) {
-        return new HtmlLink(toString(), new HtmlText(text));
+        return new HtmlLink(urlString(), new HtmlText(text));
+    }
+
+    @Override
+    public Iterator<UrlNode> iterator() {
+        registerIfNotAlreadyDone();
+        return nodes.iterator();
+    }
+
+    @Override
+    public Messages getMessages() {
+        registerIfNotAlreadyDone();
+        Messages messages = new Messages();
+        for (UrlNode node : nodes) {
+            messages.addAll(node.getMessages());
+        }
+        return messages;
     }
 }

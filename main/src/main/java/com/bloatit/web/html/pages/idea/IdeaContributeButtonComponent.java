@@ -41,7 +41,7 @@ public class IdeaContributeButtonComponent extends HtmlPageComponent {
         {
             final Session session = Context.getSession();
 
-            final HtmlForm contributeForm = new HtmlForm(new ContributePageUrl(demand).toString());
+            final HtmlForm contributeForm = new HtmlForm(new ContributePageUrl(demand).urlString());
             {
                 // Add button
                 final HtmlSubmit contributeButton = new HtmlSubmit(session.tr("Contribute"));

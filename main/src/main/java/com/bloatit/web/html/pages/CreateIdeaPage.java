@@ -43,7 +43,7 @@ public class CreateIdeaPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement generateRestrictedContent() {
+    public HtmlElement createRestrictedContent() {
         if (DemandManager.canCreate(session.getAuthToken())) {
             return generateDemandCreationForm();
         } else {

@@ -50,8 +50,7 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
         }
 
         public String getClosedTag() {
-            return createOpenTagButWithoutLastChar().append("/>").toString();
-        }
+            return createOpenTagButWithoutLastChar().append("/>").toString();        }
 
         public String getCloseTag() {
             return "</" + tag + ">";

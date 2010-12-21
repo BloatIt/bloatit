@@ -68,7 +68,7 @@ public class OfferPage extends LoggedPage {
 
         final OfferPageUrl offerUrl = url.clone();
         offerUrl.setPrice(new BigDecimal("12"));
-        offerUrl.toString();
+        offerUrl.urlString();
 
         final IdeaPageUrl demandUrl = new IdeaPageUrl(targetIdea);
         demandUrl.getDemandTabPaneUrl().getContributionUrl().getParticipationsListUrl();
@@ -92,7 +92,7 @@ public class OfferPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement generateRestrictedContent() {
+    public HtmlElement createRestrictedContent() {
 
         // TODO : remove and replace with parameter loading machanism
         /*
@@ -127,7 +127,7 @@ public class OfferPage extends LoggedPage {
 
         final OfferActionUrl offerActionUrl = new OfferActionUrl();
         // offerActionUrl.setIdea(targetIdea);
-        final HtmlForm offerForm = new HtmlForm(offerActionUrl.toString());
+        final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
 
         // Idea title
         final HtmlText t = new HtmlText(this.targetIdea.getTitle());

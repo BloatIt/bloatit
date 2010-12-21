@@ -10,13 +10,16 @@ public class Message {
     }
 
     private final Level level;
-    private final String Message;
+    private final String message;
     private final What what;
 
     public Message(final Level level, final What what, final String message) {
         super();
+        if (level == null || what == null || message == null) {
+            throw new NullPointerException();
+        }
         this.level = level;
-        Message = message;
+        this.message = message;
         this.what = what;
     }
 
@@ -25,7 +28,7 @@ public class Message {
     }
 
     public String getMessage() {
-        return Message;
+        return message;
     }
 
     public What getWhat() {

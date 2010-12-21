@@ -116,7 +116,7 @@ public class Session {
         } else if (lastStablePage != null) {
             return lastStablePage;
         } else {
-            return new IndexPageUrl().toString();
+            return new IndexPageUrl().urlString();
         }
     }
 

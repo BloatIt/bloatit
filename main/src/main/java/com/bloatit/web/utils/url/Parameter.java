@@ -1,5 +1,8 @@
 package com.bloatit.web.utils.url;
 
+import java.util.Collections;
+import java.util.Iterator;
+
 import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.Message.What;
@@ -7,8 +10,9 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.AsciiUtils;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
+import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
 
-public class Parameter<T> {
+public class Parameter<T> extends UrlNode {
     private final String message;
     private final Level level;
 
@@ -25,7 +29,11 @@ public class Parameter<T> {
         this.valueClass = valueClass;
         this.level = level;
         this.message = message;
-        this.what = What.NO_ERROR;
+        if (value == null) {
+            this.what = What.NOT_FOUND;
+        } else {
+            this.what = What.NO_ERROR;
+        }
     }
 
     public Role getRole() {
@@ -78,6 +86,7 @@ public class Parameter<T> {
     }
 
     public void setValue(T value) {
+        what = What.NO_ERROR;
         this.value = value;
     }
 
@@ -87,13 +96,55 @@ public class Parameter<T> {
 
     public void valueFromString(final String string) {
         try {
-            value = Loaders.fromStr(valueClass, string);
+            setValue(Loaders.fromStr(valueClass, string));
         } catch (final ConversionErrorException e) {
             what = What.CONVERSION_ERROR;
         }
     }
-    
-    public Parameter<T> clone(){
+
+    @Override
+    public Parameter<T> clone() {
         return new Parameter<T>(name, value, valueClass, role, level, message);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Iterator<UrlNode> iterator() {
+        return Collections.EMPTY_LIST.iterator();
+    }
+
+    @Override
+    public Messages getMessages() {
+        final Messages messages = new Messages();
+        Message message = getMessage();
+        if (message != null) {
+            messages.add(message);
+        }
+        return messages;
+    }
+
+    @Override
+    protected void parseParameters(Parameters params, boolean pickValue) {
+        final String value;
+        if (pickValue) {
+            value = params.pick(getName());
+        } else {
+            value = params.look(getName());
+        }
+        if (value != null) {
+            valueFromString(value);
+        }
+    }
+
+    @Override
+    public void addParameter(String name, String value) {
+        if (this.name == name) {
+            this.valueFromString(value);
+        }
+    }
+
+    @Override
+    protected void constructUrl(StringBuilder sb) {
+        sb.append("/").append(getName()).append("-").append(getStringValue());
     }
 }

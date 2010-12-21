@@ -21,7 +21,7 @@ package com.bloatit.web.actions;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.utils.url.OfferActionUrl;
 
-@ParamContainer("offerAction")
+@ParamContainer("action/offer")
 public class OfferAction extends Action {
 
     public final static String IDEA_CODE = "offer_idea";

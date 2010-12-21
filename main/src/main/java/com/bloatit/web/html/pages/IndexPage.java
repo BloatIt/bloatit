@@ -70,7 +70,7 @@ public class IndexPage extends Page {
 
         final HtmlDiv searchBlock = new HtmlDiv("index_search_block");
 
-        final HtmlForm searchForm = new HtmlForm(new GlobalSearchPageUrl().toString(), HtmlForm.Method.GET);
+        final HtmlForm searchForm = new HtmlForm(new GlobalSearchPageUrl().urlString(), HtmlForm.Method.GET);
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
@@ -106,7 +106,7 @@ public class IndexPage extends Page {
                 .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlParagraph(description));
 
-        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().toString(), session.tr("Create a new idea"));
+        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), session.tr("Create a new idea"));
         descriptionBlock.add(createIdeaPageLink);
 
         return descriptionBlock;

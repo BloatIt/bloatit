@@ -27,7 +27,7 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 
-@ParamContainer("login")
+@ParamContainer("action/login")
 public class LoginAction extends Action {
 
     public final static String LOGIN_CODE = "bloatit_login";
@@ -62,7 +62,7 @@ public class LoginAction extends Action {
             session.setLogged(false);
             session.setAuthToken(null);
             session.notifyBad(session.tr("Login failed. Wrong login or password."));
-            return new LoginPageUrl().toString();
+            return new LoginPageUrl().urlString();
         }
     }
 

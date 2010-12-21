@@ -31,7 +31,7 @@ import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Url;
 
-@ParamContainer("account/charging")
+@ParamContainer("action/account/charging")
 public class AccountChargingAction extends Action {
 
     public final static String CHARGE_AMOUNT_CODE = "chargeAmount";
@@ -51,7 +51,7 @@ public class AccountChargingAction extends Action {
     protected String doProcess() throws RedirectException {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             // TODO
-            throw new RedirectException(new IndexPageUrl().toString());
+            throw new RedirectException(new IndexPageUrl().urlString());
         }
         Member targetMember = session.getAuthToken().getMember();
 
@@ -64,7 +64,7 @@ public class AccountChargingAction extends Action {
 
         if (!targetMember.canGetInternalAccount()) {
             session.notifyError(session.tr("Your current rights do not allow you to charge money"));
-            return new IndexPageUrl().toString();
+            return new IndexPageUrl().urlString();
         }
 
         return session.getPreferredPage();

@@ -20,8 +20,8 @@ public ContributePageUrl(Parameters params, Parameters session) {
 public ContributePageUrl(com.bloatit.framework.Demand targetIdea) {
     super(getName());
     try {
-        this.contributionAmountParam.setValue(Loaders.fromStr(java.lang.String.class, "vide"));
-        this.contributionCommentParam.setValue(Loaders.fromStr(java.lang.String.class, "vide"));
+        this.contributionAmountParam.setValue(Loaders.fromStr(java.lang.String.class, ""));
+        this.contributionCommentParam.setValue(Loaders.fromStr(java.lang.String.class, ""));
     } catch (ConversionErrorException e) {
         e.printStackTrace();
         assert false ;
@@ -32,8 +32,8 @@ private ContributePageUrl(){
     super(getName());
 }
 private Parameter<com.bloatit.framework.Demand> targetIdea =     new Parameter<com.bloatit.framework.Demand>("targetIdea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> contributionAmountParam =     new Parameter<java.lang.String>("contributionAmountParam", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private Parameter<java.lang.String> contributionCommentParam =     new Parameter<java.lang.String>("contributionCommentParam", null, java.lang.String.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> contributionAmountParam =     new Parameter<java.lang.String>("contributionAmountParam", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private Parameter<java.lang.String> contributionCommentParam =     new Parameter<java.lang.String>("contributionCommentParam", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
 public com.bloatit.framework.Demand getTargetIdea(){ 
     return this.targetIdea.getValue();

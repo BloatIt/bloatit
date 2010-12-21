@@ -96,7 +96,7 @@ public class GlobalSearchPage extends Page {
     private HtmlDiv generateSearchBlock() {
         final HtmlDiv searchBlock = new HtmlDiv("global_search_block");
 
-        final HtmlForm searchForm = new HtmlForm(new GlobalSearchPageUrl().toString(), HtmlForm.Method.GET);
+        final HtmlForm searchForm = new HtmlForm(new GlobalSearchPageUrl().urlString(), HtmlForm.Method.GET);
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 

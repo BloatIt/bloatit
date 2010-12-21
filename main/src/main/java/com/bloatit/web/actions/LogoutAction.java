@@ -22,7 +22,7 @@ package com.bloatit.web.actions;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.utils.url.LogoutActionUrl;
 
-@ParamContainer("logout")
+@ParamContainer("action/logout")
 public class LogoutAction extends Action {
 
     public LogoutAction(final LogoutActionUrl url) {

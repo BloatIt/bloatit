@@ -135,7 +135,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     private HtmlElement generateTitle() {
         Context.getSession();
 
-        return new HtmlDiv().setId("logo").add(new HtmlLink(new IndexPageUrl().toString(), generateLogo()));
+        return new HtmlDiv().setId("logo").add(new HtmlLink(new IndexPageUrl().urlString(), generateLogo()));
     }
 
     private void addWaitingNotifications() {

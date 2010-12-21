@@ -25,19 +25,19 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.UrlComponent;
+import com.bloatit.web.utils.url.UrlNode;
 
 public abstract class Action implements Linkable {
 
     protected final Session session;
-    private final UrlComponent actionUrl;
+    private final UrlNode actionUrl;
 
     /**
      * The constructor mustn't thows exception
      * 
      * @param resquest
      */
-    public Action(UrlComponent url) {
+    public Action(UrlNode url) {
         this.actionUrl = url;
         session = Context.getSession();
     }
@@ -45,7 +45,7 @@ public abstract class Action implements Linkable {
     public final String process() throws RedirectException{
         if (actionUrl.getMessages().hasMessage(Level.ERROR)) {
             session.notifyList(actionUrl.getMessages());
-            throw new RedirectException(new LoginPageUrl().toString());
+            throw new RedirectException(new LoginPageUrl().urlString());
         }
         return doProcess();
     }

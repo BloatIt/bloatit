@@ -23,6 +23,7 @@ import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
@@ -32,6 +33,7 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 
@@ -41,26 +43,32 @@ public class ContributePage extends LoggedPage {
     @RequestParam(level = Level.ERROR)
     private Demand targetIdea;
 
-    @RequestParam(defaultValue = "vide")
+    @RequestParam(defaultValue = "", role = Role.SESSION)
     private String contributionAmountParam;
 
-    @RequestParam(defaultValue = "vide")
+    @RequestParam(defaultValue = "", role = Role.SESSION)
     private String contributionCommentParam;
+
+    private final ContributePageUrl url;
 
     public ContributePage(final ContributePageUrl url) throws RedirectException {
         super();
+        this.url = url;
         targetIdea = url.getTargetIdea();
         contributionAmountParam = url.getContributionAmountParam();
         contributionCommentParam = url.getContributionCommentParam();
-        // TODO handle error
     }
 
     @Override
-    public HtmlElement generateRestrictedContent() {
+    public HtmlElement createRestrictedContent() throws RedirectException {
+        addNotifications(url.getMessages());
+        if (url.getMessages().hasMessage(Level.ERROR)) {
+            throw new RedirectException(Context.getSession().getLastStablePage());
+        }
 
         ContributionActionUrl formActionUrl = new ContributionActionUrl(targetIdea);
 
-        final HtmlForm contribForm = new HtmlForm(formActionUrl.toString());
+        final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
         // Input field : chose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);

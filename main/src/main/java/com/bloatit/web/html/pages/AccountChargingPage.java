@@ -50,11 +50,11 @@ public class AccountChargingPage extends LoggedPage {
     }
 
     @Override
-    public HtmlElement generateRestrictedContent() {
+    public HtmlElement createRestrictedContent() {
         HtmlTitleBlock title = new HtmlTitleBlock(session.tr("Charge your account"),1);
 
         AccountChargingActionUrl chargeActionUrl = new AccountChargingActionUrl();
-        HtmlForm form = new HtmlForm(chargeActionUrl.toString());
+        HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
             HtmlTextField amount = new HtmlTextField(AccountChargingAction.CHARGE_AMOUNT_CODE, "Amount");
             HtmlSubmit submit = new HtmlSubmit(session.tr("Submit"));

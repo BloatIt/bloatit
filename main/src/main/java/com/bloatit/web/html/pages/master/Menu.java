@@ -21,18 +21,18 @@ public class Menu extends HtmlDiv {
 
         final HtmlList primaryList = new HtmlList();
 
-        primaryList.add(new HtmlLink(new IdeasListUrl().toString(), s.tr("Ideas")));
-        primaryList.add(new HtmlLink(new IndexPageUrl().toString(), s.tr("Projects")));
-        primaryList.add((new HtmlLink(new IndexPageUrl().toString(), s.tr("Groups"))));
-        primaryList.add(new HtmlLink(new MembersListPageUrl().toString(), s.tr("Members")));
+        primaryList.add(new HtmlLink(new IdeasListUrl().urlString(), s.tr("Ideas")));
+        primaryList.add(new HtmlLink(new IndexPageUrl().urlString(), s.tr("Projects")));
+        primaryList.add((new HtmlLink(new IndexPageUrl().urlString(), s.tr("Groups"))));
+        primaryList.add(new HtmlLink(new MembersListPageUrl().urlString(), s.tr("Members")));
 
         final HtmlList secondaryList = new HtmlList();
 
-        secondaryList.add(new HtmlLink(new SpecialsPageUrl().toString(), s.tr("Specials page")));
-        secondaryList.add(new HtmlLink(new PageNotFoundUrl().toString(), s.tr("Contact")));
-        secondaryList.add(new HtmlLink(new PageNotFoundUrl().toString(), s.tr("Documentation")));
-        secondaryList.add(new HtmlLink(new PageNotFoundUrl().toString(), s.tr("About BloatIt")));
-        secondaryList.add(new HtmlLink(new PageNotFoundUrl().toString(), s.tr("Press")));
+        secondaryList.add(new HtmlLink(new SpecialsPageUrl().urlString(), s.tr("Specials page")));
+        secondaryList.add(new HtmlLink(new PageNotFoundUrl().urlString(), s.tr("Contact")));
+        secondaryList.add(new HtmlLink(new PageNotFoundUrl().urlString(), s.tr("Documentation")));
+        secondaryList.add(new HtmlLink(new PageNotFoundUrl().urlString(), s.tr("About BloatIt")));
+        secondaryList.add(new HtmlLink(new PageNotFoundUrl().urlString(), s.tr("Press")));
 
         add(primaryList);
         add(secondaryList);

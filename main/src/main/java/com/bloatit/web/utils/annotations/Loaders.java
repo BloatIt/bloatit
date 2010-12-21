@@ -71,7 +71,7 @@ public class Loaders {
             return (Loader<T>) new ToDemand();
         } else if (theClass.equals(Member.class)) {
             return (Loader<T>) new ToMember();
-        }else if (theClass.equals(BloatitDate.class)) {
+        } else if (theClass.equals(BloatitDate.class)) {
             return (Loader<T>) new ToBloatitDate();
         }
         return null;
@@ -157,7 +157,7 @@ public class Loaders {
             }
         }
     }
-    
+
     private static class ToBloatitDate extends Loader<BloatitDate> {
         @Override
         public BloatitDate fromString(final String data) {

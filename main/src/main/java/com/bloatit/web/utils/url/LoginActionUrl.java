@@ -9,7 +9,7 @@ import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class LoginActionUrl extends Url {
-public static String getName() { return "login"; }
+public static String getName() { return "action/login"; }
 public com.bloatit.web.actions.LoginAction createPage() throws RedirectException{ 
     return new com.bloatit.web.actions.LoginAction(this); }
 public LoginActionUrl(Parameters params, Parameters session) {

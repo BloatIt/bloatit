@@ -18,6 +18,8 @@
  */
 package com.bloatit.web.html.pages;
 
+import java.util.Random;
+
 import com.bloatit.common.Image;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
@@ -26,21 +28,17 @@ import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlLink;
-import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
-import java.util.Random;
-import javax.rmi.CORBA.Util;
 
 @ParamContainer("ideas/list")
 public class IdeasList extends Page {
@@ -145,7 +143,6 @@ public class IdeasList extends Page {
                 final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
                 {
 
-                    int imageCount = 7;
                     int imageIndex = new Random().nextInt(7);
                     String image = "";
                     switch (imageIndex) {

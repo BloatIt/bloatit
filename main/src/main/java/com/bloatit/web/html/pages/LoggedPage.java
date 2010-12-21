@@ -25,7 +25,6 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.LoggedPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.Url;
 
 @ParamContainer(value = "logged", isComponent = true)
 public abstract class LoggedPage extends Page {
@@ -35,19 +34,19 @@ public abstract class LoggedPage extends Page {
     }
 
     @Override
-    public void create() throws RedirectException {
+    public final void create() throws RedirectException {
         super.create();
 
         if (session.isLogged()) {
-            add(generateRestrictedContent());
+            add(createRestrictedContent());
         } else {
             session.notifyBad(getRefusalReason());
-            session.setTargetPage(new LoggedPageUrl().toString());
-            throw new RedirectException(new LoginPageUrl().toString());
+            session.setTargetPage(new LoggedPageUrl().urlString());
+            throw new RedirectException(new LoginPageUrl().urlString());
         }
     }
 
-    public abstract HtmlElement generateRestrictedContent();
+    public abstract HtmlElement createRestrictedContent() throws RedirectException;
 
     public abstract String getRefusalReason();
 
