@@ -9,7 +9,7 @@ import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class IndexPageUrl extends Url {
-public static String getName() { return "IndexPage"; }
+public static String getName() { return "index"; }
 public com.bloatit.web.html.pages.IndexPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.IndexPage(this); }
 public IndexPageUrl(Parameters params, Parameters session) {

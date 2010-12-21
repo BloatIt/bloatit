@@ -9,7 +9,7 @@ import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class GlobalSearchPageUrl extends Url {
-public static String getName() { return "GlobalSearchPage"; }
+public static String getName() { return "search"; }
 public com.bloatit.web.html.pages.GlobalSearchPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.GlobalSearchPage(this); }
 public GlobalSearchPageUrl(Parameters params, Parameters session) {

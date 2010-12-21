@@ -9,7 +9,7 @@ import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class SpecialsPageUrl extends Url {
-public static String getName() { return "SpecialsPage"; }
+public static String getName() { return "special"; }
 public com.bloatit.web.html.pages.SpecialsPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.SpecialsPage(this); }
 public SpecialsPageUrl(Parameters params, Parameters session) {

@@ -9,7 +9,7 @@ import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class PageNotFoundUrl extends Url {
-public static String getName() { return "PageNotFound"; }
+public static String getName() { return "pageNotFound"; }
 public com.bloatit.web.html.pages.PageNotFound createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.PageNotFound(this); }
 public PageNotFoundUrl(Parameters params, Parameters session) {

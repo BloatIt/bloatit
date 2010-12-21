@@ -9,7 +9,7 @@ import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class ContributePageUrl extends Url {
-public static String getName() { return "ContributePage"; }
+public static String getName() { return "contribute"; }
 public com.bloatit.web.html.pages.ContributePage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.ContributePage(this); }
 public ContributePageUrl(Parameters params, Parameters session) {

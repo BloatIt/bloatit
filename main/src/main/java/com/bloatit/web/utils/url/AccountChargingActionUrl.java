@@ -9,7 +9,7 @@ import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class AccountChargingActionUrl extends Url {
-public static String getName() { return "AccountChargingAction"; }
+public static String getName() { return "account/charging"; }
 public com.bloatit.web.actions.AccountChargingAction createPage() throws RedirectException{ 
     return new com.bloatit.web.actions.AccountChargingAction(this); }
 public AccountChargingActionUrl(Parameters params, Parameters session) {
