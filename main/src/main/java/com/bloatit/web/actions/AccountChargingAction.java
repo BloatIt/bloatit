@@ -67,6 +67,6 @@ public class AccountChargingAction extends Action {
             return new IndexPageUrl().urlString();
         }
 
-        return session.getPreferredPage();
+        return session.pickPreferredPage();
     }
 }

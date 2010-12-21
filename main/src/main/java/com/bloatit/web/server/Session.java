@@ -106,13 +106,20 @@ public class Session {
         return lastStablePage;
     }
 
+    
+    /**
+     * You should use the pickPreferedPage instead.
+     */
+    @Deprecated
     public String getTargetPage() {
         return targetPage;
     }
 
-    public String getPreferredPage() {
+    public String pickPreferredPage() {
         if (targetPage != null && !targetPage.isEmpty()) {
-            return targetPage;
+            String tempStr = targetPage;
+            targetPage = null;
+            return tempStr;
         } else if (lastStablePage != null && !targetPage.isEmpty()) {
             return lastStablePage;
         } else {

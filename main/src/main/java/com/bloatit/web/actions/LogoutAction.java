@@ -34,6 +34,6 @@ public class LogoutAction extends Action {
         session.setLogged(false);
         session.setAuthToken(null);
         session.notifyGood(session.tr("Logout success."));
-        return session.getPreferredPage();
+        return session.pickPreferredPage();
     }
 }

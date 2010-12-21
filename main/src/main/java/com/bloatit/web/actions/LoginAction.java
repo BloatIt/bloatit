@@ -55,7 +55,7 @@ public class LoginAction extends Action {
             session.setLogged(true);
             session.setAuthToken(token);
             session.notifyGood(session.tr("Login success."));
-            return session.getPreferredPage();
+            return session.pickPreferredPage();
         } else {
             session.setLogged(false);
             session.setAuthToken(null);
