@@ -36,7 +36,7 @@ import com.bloatit.web.utils.url.AccountChargingPageUrl;
 public class AccountChargingPage extends LoggedPage {
 
     public AccountChargingPage(final AccountChargingPageUrl url) throws RedirectException{
-        super();
+        super(url);
     }
 
     @Override

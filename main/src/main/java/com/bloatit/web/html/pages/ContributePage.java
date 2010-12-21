@@ -52,7 +52,7 @@ public class ContributePage extends LoggedPage {
     private final ContributePageUrl url;
 
     public ContributePage(final ContributePageUrl url) throws RedirectException {
-        super();
+        super(url);
         this.url = url;
         targetIdea = url.getTargetIdea();
         contributionAmountParam = url.getContributionAmountParam();

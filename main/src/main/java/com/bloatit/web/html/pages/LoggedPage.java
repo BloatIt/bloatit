@@ -23,14 +23,17 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.LoggedPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer(value = "logged", isComponent = true)
 public abstract class LoggedPage extends Page {
 
-    protected LoggedPage() throws RedirectException {
+    private final Url meUrl;
+
+    protected LoggedPage(Url url) throws RedirectException {
         super();
+        this.meUrl = url;
     }
 
     @Override
@@ -41,7 +44,7 @@ public abstract class LoggedPage extends Page {
             add(createRestrictedContent());
         } else {
             session.notifyBad(getRefusalReason());
-            session.setTargetPage(new LoggedPageUrl().urlString());
+            session.setTargetPage(meUrl.urlString());
             throw new RedirectException(new LoginPageUrl().urlString());
         }
     }

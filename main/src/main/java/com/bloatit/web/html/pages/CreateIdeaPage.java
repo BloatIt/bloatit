@@ -29,7 +29,7 @@ import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 public class CreateIdeaPage extends LoggedPage {
 
     public CreateIdeaPage(CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
-        super();
+        super(createIdeaPageUrl);
     }
 
     @Override

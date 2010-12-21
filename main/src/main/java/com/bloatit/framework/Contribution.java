@@ -18,9 +18,11 @@ public class Contribution extends UserContent {
     }
 
     public void accept(final Offer Offer) {
+        // TODO
     }
 
     public void cancel() {
+        // TODO
     }
 
     public BigDecimal getAmount() {

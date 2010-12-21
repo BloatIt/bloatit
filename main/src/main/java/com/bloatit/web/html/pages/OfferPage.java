@@ -59,7 +59,7 @@ public class OfferPage extends LoggedPage {
     private final String description;
 
     public OfferPage(final OfferPageUrl url) throws RedirectException {
-        super();
+        super(url);
         this.targetIdea = url.getTargetIdea();
         this.price = url.getPrice();
         this.expiryDate = url.getExpiryDate();
