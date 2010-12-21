@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bloatit.common.Log;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.PageNotFound;
@@ -137,24 +138,19 @@ public class DispatchServer {
                 response.writePage(page);
             }
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.web().error("Cannot call url constructor.", e);
         } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.web().error("Cannot call url constructor.", e);
         } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.web().error("Cannot call url constructor.", e);
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.web().error("Cannot call url constructor.", e);
         } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.web().error("Cannot call url constructor.", e);
         } catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.web().error("Cannot call url constructor.", e);
         } catch (RedirectException e) {
+            Log.web().info("Redirect to " + e.getUrl(), e);
             response.writeRedirect(e.getUrl());
         }
 
@@ -259,7 +255,7 @@ public class DispatchServer {
     private static String strip(final String string, final char stripped) {
         String result1 = "";
         int i = 0;
-        
+
         while (string.charAt(i) == stripped) {
             i++;
         }

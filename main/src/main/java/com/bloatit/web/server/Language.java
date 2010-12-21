@@ -26,6 +26,8 @@ import java.util.Map;
 import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
+import com.bloatit.common.Log;
+
 public class Language {
 
     private static Map<String, Locale> languageCode = new HashMap<String, Locale>() {
@@ -80,8 +82,7 @@ public class Language {
                     System.err.println("Unknow language code: " + locale);
                 }
             } else {
-                System.err.println("Unknow language: " + lang);
-                // TODO: Clean log
+                Log.web().warn("Unknow language: " + lang);
             }
         }
     }

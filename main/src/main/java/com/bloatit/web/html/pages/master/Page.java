@@ -15,7 +15,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Notification;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
+import com.bloatit.web.utils.annotations.Messages;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Url;
 

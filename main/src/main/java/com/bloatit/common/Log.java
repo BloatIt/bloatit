@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 public class Log {
     public static final Logger framework = Logger.getLogger("com.bloatit.framework");
     public static final Logger data = Logger.getLogger("com.bloatit.model.data");
+    public static final Logger web = Logger.getLogger("com.bloatit.web");
 
     public static Logger framework() {
         return framework;
@@ -19,5 +20,9 @@ public class Log {
 
     public static Logger data() {
         return data;
+    }
+    
+    public static Logger web() {
+        return web;
     }
 }

@@ -9,8 +9,8 @@ import com.bloatit.web.annotations.Message.What;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.AsciiUtils;
 import com.bloatit.web.utils.annotations.Loaders;
-import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
-import com.bloatit.web.utils.annotations.RequestParamSetter.Messages;
+import com.bloatit.web.utils.annotations.Loaders.ConversionErrorException;
+import com.bloatit.web.utils.annotations.Messages;
 
 public class UrlParameter<T> extends UrlNode {
     private final String message;

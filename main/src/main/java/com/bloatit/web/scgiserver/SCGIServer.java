@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.web.server.DispatchServer;
 import com.bloatit.web.server.HttpResponse;
 
@@ -102,23 +103,22 @@ public class SCGIServer {
                     for (final StackTraceElement s : e.getStackTrace()) {
                         display += "\t" + s + "\n";
                     }
-                    
 
                     clientSocket.getOutputStream().write(display.getBytes());
 
                     // TODO : Log
                     // TODO Debug Only
-                    e.printStackTrace();
+                    Log.web().fatal("Unknown Fatal exception", e);
                 } catch (final Exception e) {
                     // Protects the server
                     String display;
-                    display = "Content-type: text/plain\r\n\r\n" + e.toString() +  " :\n";
+                    display = "Content-type: text/plain\r\n\r\n" + e.toString() + " :\n";
                     for (final StackTraceElement s : e.getStackTrace()) {
                         display += "\t" + s + "\n";
                     }
 
                     clientSocket.getOutputStream().write(display.getBytes());
-                    e.printStackTrace();
+                    Log.web().fatal("Unknown exception", e);
                 }
 
                 clientSocket.close();
@@ -129,7 +129,7 @@ public class SCGIServer {
             }
 
         } catch (final IOException ex) {
-            ex.printStackTrace();
+            Log.web().fatal("Cannot connect with SCGI client.", ex);
         }
 
     }
@@ -147,7 +147,7 @@ public class SCGIServer {
                     params.put(key, value);
                 }
             } catch (final UnsupportedEncodingException ex) {
-                // TODO: log
+                Log.web().error("Cannot parse url", ex);
             }
         }
 

@@ -3,6 +3,7 @@ package com.bloatit.web.server;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import com.bloatit.common.Log;
 import com.bloatit.web.html.pages.master.Page;
 
 public class HttpResponse {
@@ -36,7 +37,7 @@ public class HttpResponse {
                 try {
                     output.write(text.getBytes());
                 } catch (final IOException ex) {
-                    // TODO: log
+                    Log.web().fatal("Cannot write to output", ex);
                 }
             }
         });

@@ -14,7 +14,6 @@ import com.bloatit.web.annotations.Loader;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.BloatitDate;
 import com.bloatit.web.utils.DateParsingException;
-import com.bloatit.web.utils.annotations.RequestParamSetter.ConversionErrorException;
 
 public class Loaders {
 
@@ -75,6 +74,30 @@ public class Loaders {
             return (Loader<T>) new ToBloatitDate();
         }
         return null;
+    }
+    
+    /**
+     * This exception is thrown when a parameter is not found in the map.
+     */
+    public static class ParamNotFoundException extends Exception {
+        private static final long serialVersionUID = 1L;
+
+        public ParamNotFoundException(final String message) {
+            super(message);
+        }
+    }
+
+    /**
+     * This exception is thrown when a parameter is found, but cannot be
+     * converted to the
+     * right type.
+     */
+    public static class ConversionErrorException extends Exception {
+        private static final long serialVersionUID = 1L;
+
+        protected ConversionErrorException(final String message) {
+            super(message);
+        }
     }
 
     private static class ToInteger extends Loader<Integer> {

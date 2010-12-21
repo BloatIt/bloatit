@@ -1,6 +1,7 @@
 package com.bloatit.framework;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 import java.math.BigDecimal;
 
@@ -36,7 +37,7 @@ public class InternalAccount extends Account {
             Transaction transac = new Transaction(this, externalAccount, amount.negate());
         } catch (NotEnoughMoneyException ex) {
             // Should never happen
-            ex.printStackTrace();
+            Log.web().fatal(ex);
             throw new FatalErrorException("Ooops ... Looks like you fell in a warphole ... you should never see this", ex);
         }
     }
