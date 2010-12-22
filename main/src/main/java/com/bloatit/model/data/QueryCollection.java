@@ -82,7 +82,8 @@ public class QueryCollection<T> implements PageIterable<T> {
     @Override
     public int pageNumber() {
         if (pageSize != 0) {
-            return size() / pageSize;
+            
+            return (int) Math.ceil((double) size() / (double) pageSize);
         } else {
             return 1;
         }
