@@ -28,7 +28,7 @@ import com.bloatit.model.data.DaoDemand;
 public class DemandManager {
 
     public static PageIterable<Demand> getDemands() {
-        return new DemandList(DBRequests.getAll(DaoDemand.class));
+        return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
     }
 
     public static Demand getDemandById(final Integer id) {

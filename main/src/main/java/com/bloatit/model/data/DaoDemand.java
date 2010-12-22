@@ -172,10 +172,12 @@ public class DaoDemand extends DaoKudosable {
     public void addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             Log.data().fatal("Cannot create a contribution with this amount " + amount.toEngineeringString() + " by member " + member.getId());
+            // TODO do i have to make this an Exception
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
         if (comment.length() > 144) {
             Log.data().fatal("The comment of a contribution must be <= 144 chars long.");
+            // TODO do i have to make this an Exception
             throw new FatalErrorException("Comments lenght of Contribution must be < 144.", null);
         }
 

@@ -48,6 +48,12 @@ public class DBRequests {
         return new QueryCollection<T>("from " + meta.getEntityName());
     }
 
+    public static <T extends DaoUserContent> PageIterable<T> getAllUserContentOrderByDate(final Class<T> persistent) {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+        return new QueryCollection<T>(SessionManager.createQuery("from " + meta.getEntityName() + " order by creationDate DESC"), 
+                SessionManager.createQuery("select count(*) from "+ meta.getEntityName()));
+    }
+
     public static <T> int count(final Class<T> persistent) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return ((Long) SessionManager.getSessionFactory().getCurrentSession().createQuery("select count(*) from " + meta.getEntityName())
