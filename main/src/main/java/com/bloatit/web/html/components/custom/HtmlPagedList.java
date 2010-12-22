@@ -59,7 +59,7 @@ public class HtmlPagedList<T> extends HtmlList {
         this.url = url;
 
         itemList.setPageSize(pageSize);
-        itemList.setPage(currentPage);
+        itemList.setPage(currentPage - 1);
         this.pageCount = itemList.pageNumber();
 
         if (pageCount > 1) {
