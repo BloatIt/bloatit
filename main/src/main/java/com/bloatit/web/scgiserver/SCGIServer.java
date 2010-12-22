@@ -106,7 +106,6 @@ public class SCGIServer {
 
                     clientSocket.getOutputStream().write(display.getBytes());
 
-                    // TODO : Log
                     // TODO Debug Only
                     Log.web().fatal("Unknown Fatal exception", e);
                 } catch (final Exception e) {
