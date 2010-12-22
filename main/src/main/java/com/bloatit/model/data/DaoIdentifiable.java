@@ -7,6 +7,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Indexed;
+
 /**
  * Base class to use with Hibernate. (A persistent class do not need to inherit
  * from
@@ -18,9 +21,11 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Indexed
 public abstract class DaoIdentifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @DocumentId
     private Integer id;
 
     public Integer getId() {

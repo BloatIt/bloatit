@@ -14,6 +14,7 @@ import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDescription;
 import com.bloatit.model.data.DaoKudosable;
+import com.bloatit.model.data.DaoOffer;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
@@ -63,6 +64,27 @@ public class Demand extends Kudosable {
 
     public PageIterable<Contribution> getContributions() {
         return new ContributionList(dao.getContributionsFromQuery());
+    }
+
+    /**
+     * Return the progression in percent. It compare the amount of contribution
+     * to the amount of the current offer.
+     * 
+     * @return a percentage. It can be > 100 if the amount of contributions is
+     *         greater than the amount for the current offer. If the offer
+     *         amount is 0 then it return Float.POSITIVE_INFINITY.
+     */
+    public float getProgression() {
+        if (dao.getOffers().size() == 0) {
+            return 42 * (1 - 1 / (1 + dao.getContribution().floatValue() / 200));
+        } else {
+            DaoOffer currentOffer = dao.getCurrentOffer();
+            if (currentOffer.getAmount().floatValue() != 0) {
+                return (dao.getContribution().floatValue() * 100) / currentOffer.getAmount().floatValue();
+            } else {
+                return Float.POSITIVE_INFINITY;
+            }
+        }
     }
 
     public DaoDemand getDao() {

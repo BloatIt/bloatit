@@ -3,6 +3,7 @@ package com.bloatit.model.data;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -198,6 +199,27 @@ public class DaoDemand extends DaoKudosable {
      */
     public PageIterable<DaoOffer> getOffersFromQuery() {
         return new QueryCollection<DaoOffer>("from DaoOffer as f where f.demand = :this").setEntity("this", this);
+    }
+
+    /**
+     * The current offer is the offer with the max popularity then the min
+     * amount.
+     * 
+     * @return the current offer for this demand, or null if there is no offer.
+     */
+    public DaoOffer getCurrentOffer() {
+        // TODO test me !
+        // TODO remove canceled offers.
+        // TODO add a date disambiguation.
+        String queryString = "from DaoOffer " + //
+                "where demand = :this " + //
+                "and popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
+                "order by amount ASC ";
+        try {
+            return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this).iterate().next();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     public Set<DaoOffer> getOffers() {

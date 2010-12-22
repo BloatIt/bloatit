@@ -17,12 +17,20 @@
 
 package com.bloatit.web.html.components.custom;
 
-import com.bloatit.web.html.HtmlText;
+import com.bloatit.web.html.components.standard.HtmlDiv;
 
-public class HtmlProgressBar extends HtmlText {
+public class HtmlProgressBar extends HtmlDiv {
 
     public HtmlProgressBar(final float progress) {
-        super("<div class=\"progress_bar_block\"><div class=\"progress_bar\"><div class=\"progress_bar_state\" style=\"width: " + progress
-                + "%;\"></div></div></div>");
+        super("progress_bar_block");
+        HtmlDiv progressBarDiv = new HtmlDiv("progress_bar");
+        {
+            HtmlDiv progressBarState = new HtmlDiv("progress_bar_state");
+            {
+                progressBarState.addAttribute("style", "width: " + progress + "%;");
+            }
+            progressBarDiv.add(progressBarState);
+        }
+        add(progressBarDiv);
     }
 }

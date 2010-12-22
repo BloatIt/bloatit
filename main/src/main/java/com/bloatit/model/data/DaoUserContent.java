@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.search.annotations.Indexed;
+
 import com.bloatit.common.Log;
 
 /**
@@ -19,6 +21,7 @@ import com.bloatit.common.Log;
  * 
  */
 @MappedSuperclass
+@Indexed
 public abstract class DaoUserContent extends DaoIdentifiable {
 
     /**

@@ -24,13 +24,11 @@ import com.bloatit.web.html.pages.master.HtmlPageComponent;
 
 public class IdeaProgressBarComponent extends HtmlPageComponent {
 
-    private float progressValue;
     private final Demand demand;
 
     public IdeaProgressBarComponent(final Demand demand) {
         super();
         this.demand = demand;
-        extractData();
         add(produce());
     }
 
@@ -43,7 +41,16 @@ public class IdeaProgressBarComponent extends HtmlPageComponent {
 
             final HtmlDiv progressBarBlock = new HtmlDiv("column");
             {
-                progressBarBlock.add(new HtmlProgressBar(progressValue));
+                float progressValue = (float) Math.floor(demand.getProgression());
+                if (progressValue  < 100){
+                    progressBarBlock.add(new HtmlProgressBar(progressValue));
+                }else{
+                    progressBarBlock.add(new HtmlProgressBar(100));
+                }
+                if (demand.getOffers().size() > 0){
+                    progressBarBlock.addText(progressValue + "%");
+                }
+                progressBarBlock.addText(demand.getContribution().toString());
             }
 
             progressBlock.add(progressBarBlock);
@@ -53,14 +60,5 @@ public class IdeaProgressBarComponent extends HtmlPageComponent {
         }
 
         return progressBlock;
-    }
-
-    protected void extractData() {
-        progressValue = 0;
-        progressValue = 42 * (1 - 1 / (1 + demand.getContribution().floatValue() / 200));
-
-        // totalText = new
-        // HtmlParagraph(demand.getContribution().toPlainString() + "€");
-
     }
 }

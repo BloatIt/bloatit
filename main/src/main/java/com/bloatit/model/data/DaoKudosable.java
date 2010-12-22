@@ -11,6 +11,7 @@ import org.hibernate.Query;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.model.data.util.SessionManager;
@@ -21,6 +22,7 @@ import com.bloatit.model.data.util.SessionManager;
  * attribute is mapped by children classes.
  */
 @MappedSuperclass
+@Indexed
 public abstract class DaoKudosable extends DaoUserContent {
 
     /**
