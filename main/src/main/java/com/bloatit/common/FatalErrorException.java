@@ -26,11 +26,11 @@ public class FatalErrorException extends RuntimeException {
         super(string, cause);
     }
 
-    protected FatalErrorException(String message) {
+    public FatalErrorException(String message) {
         super(message);
     }
 
-    protected FatalErrorException(Throwable cause) {
+    public FatalErrorException(Throwable cause) {
         super(cause);
     }
     
