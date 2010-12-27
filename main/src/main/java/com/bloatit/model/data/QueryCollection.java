@@ -8,8 +8,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * This is the implementation of the {@link PageIterable} interface using a
- * Hibernate HQL
+ * This is the implementation of the {@link PageIterable} interface using a Hibernate HQL
  * query.
  */
 public class QueryCollection<T> implements PageIterable<T> {
@@ -82,7 +81,7 @@ public class QueryCollection<T> implements PageIterable<T> {
     @Override
     public int pageNumber() {
         if (pageSize != 0) {
-            
+
             return (int) Math.ceil((double) size() / (double) pageSize);
         } else {
             return 1;

@@ -8,7 +8,6 @@ import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlNode;
 
 /**
- * 
  * @author fred
  */
 public class HtmlListItem extends HtmlBranch {

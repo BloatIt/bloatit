@@ -10,13 +10,10 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * These are some static DB requests on generic DAO type. Most of the time, the
- * names are
- * quite easy to understand.
- * 
- * There are some common rules: <li>If a method return a simple object then the
- * return value can be null (If the object is not found.)</li> <li>If a method
- * return a collection then the collection is always != null (but can be empty)</li>
+ * These are some static DB requests on generic DAO type. Most of the time, the names are
+ * quite easy to understand. There are some common rules: <li>If a method return a simple
+ * object then the return value can be null (If the object is not found.)</li> <li>If a
+ * method return a collection then the collection is always != null (but can be empty)</li>
  */
 public class DBRequests {
 
@@ -50,8 +47,8 @@ public class DBRequests {
 
     public static <T extends DaoUserContent> PageIterable<T> getAllUserContentOrderByDate(final Class<T> persistent) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
-        return new QueryCollection<T>(SessionManager.createQuery("from " + meta.getEntityName() + " order by creationDate DESC"), 
-                SessionManager.createQuery("select count(*) from "+ meta.getEntityName()));
+        return new QueryCollection<T>(SessionManager.createQuery("from " + meta.getEntityName() + " order by creationDate DESC"),
+                SessionManager.createQuery("select count(*) from " + meta.getEntityName()));
     }
 
     public static <T> int count(final Class<T> persistent) {
@@ -75,8 +72,7 @@ public class DBRequests {
      * 
      * @param <T> is a persistent class (something like Dao...)
      * @param persistent is the class object associated with T.
-     * @param fields is a list of field on which we are doing the search. These
-     *        field are
+     * @param fields is a list of field on which we are doing the search. These field are
      *        relative to the persistent class.
      * @param searchStr is the string we are looking for.
      * @return a PageIterable with the search results.

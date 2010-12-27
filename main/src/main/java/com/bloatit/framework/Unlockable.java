@@ -1,18 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- * 
- * This file is part of BloatIt.
- * 
- * BloatIt is free software: you can redistribute it and/or modify it under the terms of
- * the GNU Affero General Public License as published by the Free Software Foundation,
- * either version 3 of the License, or (at your option) any later version.
- * 
- * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU Affero General Public License for more details.
- * 
- * You should have received a copy of the GNU Affero General Public License along with
- * BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.bloatit.framework;
@@ -24,14 +18,12 @@ import com.bloatit.framework.right.RightManager.Role;
 import com.bloatit.model.data.DaoGroup.MemberStatus;
 
 /**
- * An Unlockable class is a class that you can unlock with an {@link AuthToken}.
- * You also
- * can use the calculateRole to get the role of user. The role is calculated
- * using the {@link AuthToken}, and the argument of the calculateRole method.
- * 
- * To more understandable: <li>The {@link AuthToken} is represent the user that
- * try to access an attribute.</li> <li>The argument of the calculateRole method
- * represent the author of the attribute.</li>
+ * An Unlockable class is a class that you can unlock with an {@link AuthToken}. You also
+ * can use the calculateRole to get the role of user. The role is calculated using the
+ * {@link AuthToken}, and the argument of the calculateRole method. To more
+ * understandable: <li>The {@link AuthToken} is represent the user that try to access an
+ * attribute.</li> <li>The argument of the calculateRole method represent the author of
+ * the attribute.</li>
  */
 public class Unlockable {
 
@@ -49,14 +41,10 @@ public class Unlockable {
     }
 
     /**
-     * Calculate the role using the login of the author. Sometimes you do not
-     * have a
-     * complete Member object to describe the author of a "content". You can use
-     * this
-     * method (the login is unique).
-     * 
-     * This method cannot set some Group roles, you have to use the
-     * {@link Unlockable#calculateRole(Member, Group)} method.
+     * Calculate the role using the login of the author. Sometimes you do not have a
+     * complete Member object to describe the author of a "content". You can use this
+     * method (the login is unique). This method cannot set some Group roles, you have to
+     * use the {@link Unlockable#calculateRole(Member, Group)} method.
      * 
      * @return An EnumSet with the roles of the member authenticate by the
      *         {@link AuthToken}.
@@ -86,16 +74,14 @@ public class Unlockable {
     }
 
     /**
-     * Helper function. Call the {@link Unlockable#calculateRole(Member)}
-     * method.
+     * Helper function. Call the {@link Unlockable#calculateRole(Member)} method.
      */
     protected EnumSet<Role> calculateRole(final UserContent userContent) {
         return calculateRole(userContent.getAuthor());
     }
 
     /**
-     * Helper function. Call the {@link Unlockable#calculateRole(Member, Group)}
-     * method.
+     * Helper function. Call the {@link Unlockable#calculateRole(Member, Group)} method.
      * (Group is null).
      */
     protected EnumSet<Role> calculateRole(final Member member) {

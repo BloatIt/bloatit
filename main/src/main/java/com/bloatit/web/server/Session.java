@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- * 
- * This file is part of BloatIt.
- * 
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- * 
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.bloatit.web.server;
@@ -41,7 +33,7 @@ public class Session {
     private String targetPage = null;
     private AuthToken authToken;
 
-    private Parameters sessionParams = new Parameters();
+    private final Parameters sessionParams = new Parameters();
 
     private final List<Language> preferredLocales;
 
@@ -106,7 +98,6 @@ public class Session {
         return lastStablePage;
     }
 
-    
     /**
      * You should use the pickPreferedPage instead.
      */
@@ -117,7 +108,7 @@ public class Session {
 
     public String pickPreferredPage() {
         if (targetPage != null && !targetPage.isEmpty()) {
-            String tempStr = targetPage;
+            final String tempStr = targetPage;
             targetPage = null;
             return tempStr;
         } else if (lastStablePage != null && !lastStablePage.isEmpty()) {
@@ -144,8 +135,7 @@ public class Session {
     }
 
     /**
-     * Notifies all elements in a list as warnings
-     * TODO : DELETE, for test purposes only
+     * Notifies all elements in a list as warnings TODO : DELETE, for test purposes only
      */
     public void notifyList(final List<Message> errors) {
         for (final Message error : errors) {
@@ -181,11 +171,11 @@ public class Session {
         return sessionParams;
     }
 
-    public String getParam(String paramKey) {
+    public String getParam(final String paramKey) {
         return sessionParams.get(paramKey);
     }
 
-    public void addParam(String paramKey, String paramValue) {
+    public void addParam(final String paramKey, final String paramValue) {
         sessionParams.put(paramKey, paramValue);
     }
 }

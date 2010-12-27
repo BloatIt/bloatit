@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- * 
- * This file is part of BloatIt.
- * 
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- * 
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.server;
 
@@ -121,14 +113,14 @@ public class DispatchServer {
             if (urlMap.containsKey(pageCode)) {
                 Url aUrl;
                 aUrl = urlMap.get(pageCode).getConstructor(Parameters.class, Parameters.class).newInstance(parameters, session.getParams());
-                Linkable linkable = aUrl.createPage();
+                final Linkable linkable = aUrl.createPage();
 
                 if (linkable instanceof Page) {
-                    Page page = Page.class.cast(linkable);
+                    final Page page = Page.class.cast(linkable);
                     page.create();
                     response.writePage(page);
                 } else if (linkable instanceof Action) {
-                    Action action = Action.class.cast(linkable);
+                    final Action action = Action.class.cast(linkable);
                     response.writeRedirect(action.process());
                 }
             } else {
@@ -137,19 +129,19 @@ public class DispatchServer {
                 page.create();
                 response.writePage(page);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             Log.web().error("Cannot call url constructor.", e);
-        } catch (SecurityException e) {
+        } catch (final SecurityException e) {
             Log.web().error("Cannot call url constructor.", e);
-        } catch (InstantiationException e) {
+        } catch (final InstantiationException e) {
             Log.web().error("Cannot call url constructor.", e);
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             Log.web().error("Cannot call url constructor.", e);
-        } catch (InvocationTargetException e) {
+        } catch (final InvocationTargetException e) {
             Log.web().error("Cannot call url constructor.", e);
-        } catch (NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             Log.web().error("Cannot call url constructor.", e);
-        } catch (RedirectException e) {
+        } catch (final RedirectException e) {
             Log.web().info("Redirect to " + e.getUrl(), e);
             response.writeRedirect(e.getUrl());
         }
@@ -159,8 +151,7 @@ public class DispatchServer {
     }
 
     /**
-     * Return the session for the user. Either an existing session or a new
-     * session.
+     * Return the session for the user. Either an existing session or a new session.
      * 
      * @param query the complet query string
      * @return the session matching the user
@@ -201,11 +192,9 @@ public class DispatchServer {
     }
 
     /**
-     * Merges the list of query attributes and the list of post attributes.
-     * 
-     * If an attribute with the same key is found in Query and Post, the
-     * attribute
-     * from post is kept.
+     * Merges the list of query attributes and the list of post attributes. If an
+     * attribute with the same key is found in Query and Post, the attribute from post is
+     * kept.
      * 
      * @param query the Map containing the query parameters
      * @param post the Map containing the post parameters

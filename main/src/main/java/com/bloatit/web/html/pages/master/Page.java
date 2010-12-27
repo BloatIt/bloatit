@@ -26,7 +26,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     protected final Session session;
     private final Url thisUrl;
 
-    public Page(Url url) {
+    public Page(final Url url) {
         super();
         this.thisUrl = url;
         content = new HtmlDiv().setId("body_content");
@@ -47,9 +47,9 @@ public abstract class Page extends HtmlElement implements Linkable {
 
         // Display waiting notifications
         addWaitingNotifications();
-        
+
         // Set the laste stable page into the session
-        if (isStable()){
+        if (isStable()) {
             Context.getSession().setLastStablePage(thisUrl.urlString());
         }
     }

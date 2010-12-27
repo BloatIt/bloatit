@@ -15,8 +15,7 @@ import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 /**
- * A transaction is a transaction between an internal account and an other
- * account.
+ * A transaction is a transaction between an internal account and an other account.
  */
 @Entity
 public class DaoTransaction extends DaoIdentifiable {

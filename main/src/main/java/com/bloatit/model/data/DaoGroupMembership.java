@@ -34,8 +34,7 @@ public class DaoGroupMembership extends DaoIdentifiable {
     private boolean isAdmin; // Should be Role enum
 
     /**
-     * Get a GroupMembership line using its composite key.
-     * (HQL request)
+     * Get a GroupMembership line using its composite key. (HQL request)
      */
     protected static DaoGroupMembership get(final DaoGroup group, final DaoMember member) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();

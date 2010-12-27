@@ -24,8 +24,7 @@ import com.bloatit.model.data.util.SessionManager;
 public class DaoGroup extends DaoActor {
 
     /**
-     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go
-     * in. The
+     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go in. The
      * PROTECTED that everybody can see, but require an invitation to go in.
      */
     public enum Right {
@@ -33,10 +32,8 @@ public class DaoGroup extends DaoActor {
     }
 
     /**
-     * This is the status of a member in a Group. For now there is only ADMIN
-     * for a
-     * priviliged role, but we can imagine a lot of other things (for example a
-     * role for
+     * This is the status of a member in a Group. For now there is only ADMIN for a
+     * priviliged role, but we can imagine a lot of other things (for example a role for
      * people who can "speak as")
      */
     public enum MemberStatus {
@@ -105,8 +102,7 @@ public class DaoGroup extends DaoActor {
      * Add a member in this group.
      * 
      * @param Member The member to add
-     * @param isAdmin true if the member need to have the right to administer
-     *        this group.
+     * @param isAdmin true if the member need to have the right to administer this group.
      *        (This may change if the number of role change !)
      */
     public void addMember(final DaoMember Member, final boolean isAdmin) {

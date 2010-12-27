@@ -5,34 +5,23 @@ import java.util.EnumSet;
 import com.bloatit.framework.Unlockable;
 
 /**
- * The RightManager class contains some useful methods to create the Accessor
- * classes.
- * 
- * The Role and Action are here to have an extended unix like right system. Role
- * represent
- * the group / other / owner and Action is the like RWX.
- * 
- * You have to create an {@link Accessor} sub class to set the right of an
- * attribute. The
- * Accessor sub classes are really small classes. To store them correctly I use
- * classes has namespace.
- * For example the {@link MemberRight} class is used to store every Accessor for
- * the Member class.
+ * The RightManager class contains some useful methods to create the Accessor classes. The
+ * Role and Action are here to have an extended unix like right system. Role represent the
+ * group / other / owner and Action is the like RWX. You have to create an
+ * {@link Accessor} sub class to set the right of an attribute. The Accessor sub classes
+ * are really small classes. To store them correctly I use classes has namespace. For
+ * example the {@link MemberRight} class is used to store every Accessor for the Member
+ * class.
  * 
  * @see Accessor
- * 
  */
 public abstract class RightManager {
 
     /**
-     * REMEMBER: The order is important: first the group related roles, then the
-     * other
-     * roles, from the less privileged to the more.
-     * 
-     * You can calculate the role of a user using the {@link Unlockable} object
-     * (and calculateRole.)
-     * 
-     * For now some of the roles are not used.
+     * REMEMBER: The order is important: first the group related roles, then the other
+     * roles, from the less privileged to the more. You can calculate the role of a user
+     * using the {@link Unlockable} object (and calculateRole.) For now some of the roles
+     * are not used.
      * 
      * @see Unlockable
      */
@@ -144,8 +133,7 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all
-     * attribute.
+     * Already overloaded Accessor. Use it when you have a readable by all attribute.
      */
     protected static class ReadOnly extends Accessor {
         @Override
@@ -155,8 +143,7 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a r/w by owner
-     * attribute.
+     * Already overloaded Accessor. Use it when you have a r/w by owner attribute.
      */
     protected static class Private extends Accessor {
         @Override
@@ -166,8 +153,7 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all and
-     * writable by
+     * Already overloaded Accessor. Use it when you have a readable by all and writable by
      * owner attribute.
      */
     protected static class Public extends Accessor {
@@ -178,8 +164,7 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all and
-     * writable by
+     * Already overloaded Accessor. Use it when you have a readable by all and writable by
      * owner attribute
      */
     protected static class PublicModerable extends Accessor {

@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 // TRACE
 // DEBUG
-// INFO 
-// WARN  -> not correct behavior but non so serious
+// INFO
+// WARN -> not correct behavior but non so serious
 // ERROR -> should be reported to the admin
 // FATAL -> should be reported to the admin
 
@@ -21,7 +21,7 @@ public class Log {
     public static Logger data() {
         return data;
     }
-    
+
     public static Logger web() {
         return web;
     }

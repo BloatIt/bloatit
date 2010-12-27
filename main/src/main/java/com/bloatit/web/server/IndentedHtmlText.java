@@ -15,7 +15,6 @@ public abstract class IndentedHtmlText implements Text {
 
     /*
      * (non-Javadoc)
-     * 
      * @see test.IndentableText#write(java.lang.String)
      */
     @Override
@@ -29,7 +28,6 @@ public abstract class IndentedHtmlText implements Text {
 
     /*
      * (non-Javadoc)
-     * 
      * @see test.IndentableText#indent()
      */
     @Override
@@ -39,7 +37,6 @@ public abstract class IndentedHtmlText implements Text {
 
     /*
      * (non-Javadoc)
-     * 
      * @see test.IndentableText#unindent()
      */
     @Override

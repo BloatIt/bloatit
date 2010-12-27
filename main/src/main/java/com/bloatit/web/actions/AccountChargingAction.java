@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- *
- * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.actions;
 
@@ -38,10 +30,10 @@ public class AccountChargingAction extends Action {
 
     @RequestParam(level = Level.ERROR, name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
     BigDecimal amount;
-    
+
     private final Url url;
 
-    public AccountChargingAction(AccountChargingActionUrl url) throws RedirectException {
+    public AccountChargingAction(final AccountChargingActionUrl url) throws RedirectException {
         super(url);
         this.url = url;
         this.amount = url.getAmount();
@@ -53,12 +45,12 @@ public class AccountChargingAction extends Action {
             // TODO
             throw new RedirectException(new IndexPageUrl().urlString());
         }
-        Member targetMember = session.getAuthToken().getMember();
+        final Member targetMember = session.getAuthToken().getMember();
 
         targetMember.authenticate(session.getAuthToken());
         targetMember.getInternalAccount().authenticate(session.getAuthToken());
 
-        ExternalAccount account = new ExternalAccount(targetMember, AccountType.IBAN, "plop");
+        final ExternalAccount account = new ExternalAccount(targetMember, AccountType.IBAN, "plop");
         account.authenticate(session.getAuthToken());
         targetMember.getInternalAccount().chargeAmount(amount, account);
 

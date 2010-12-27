@@ -38,8 +38,7 @@ public class DaoOffer extends DaoKudosable {
     private DaoDescription description;
 
     /**
-     * Because the 'lot' is not already implemented I added a dateExpire field.
-     * It is
+     * Because the 'lot' is not already implemented I added a dateExpire field. It is
      * really not very useful...
      */
     @Basic(optional = false)
@@ -48,8 +47,7 @@ public class DaoOffer extends DaoKudosable {
     private Date dateExpire;
 
     /**
-     * The amount represents the money the member want to have to make his
-     * offer. (this
+     * The amount represents the money the member want to have to make his offer. (this
      * will also probably will be modified by the 'lot' implementation)
      */
     @Basic(optional = false)

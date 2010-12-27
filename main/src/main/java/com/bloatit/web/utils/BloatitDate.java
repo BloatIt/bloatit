@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- *
- * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.utils;
 
@@ -32,44 +24,37 @@ import java.util.Locale;
  * Encapsulates all operations concerning date parsing
  * </p>
  * <p>
- * Date format is represented by 2 elements : * The locale that gives the order
- * of the elements (example : fr : dd/mm/yyyy) * The style that determines the
- * length of the date representation
- * </p>
- * 
- * <p>
- * BloatidDate can be used to parse string into dates (usually after a user
- * wrote a date in a form) or to find the representation of a date for a given
- * locale (usually to display a date stored in the database)
- * </p>
- * 
- * <p>
- * When parsing a string, Parser will <b>NOT</b> use heuristics meaning the
- * input has to match the pattern, or an exception will be thrown. This
- * comportment allows much better error detections
+ * Date format is represented by 2 elements : * The locale that gives the order of the
+ * elements (example : fr : dd/mm/yyyy) * The style that determines the length of the date
+ * representation
  * </p>
  * <p>
- * For obvious reasons, parser will not be able to detect errors involving
- * inversion of days and month when day is inferior to 13
+ * BloatidDate can be used to parse string into dates (usually after a user wrote a date
+ * in a form) or to find the representation of a date for a given locale (usually to
+ * display a date stored in the database)
  * </p>
  * <p>
- * Note that, when constructing a BloatitDate from a String, no proactive
- * validity checking needs to be done, the parser will make sure the string
- * matches the pattern. Therefore, the methods getPattern need only be used for
- * display purpose, to indicate the user how he should input the date
+ * When parsing a string, Parser will <b>NOT</b> use heuristics meaning the input has to
+ * match the pattern, or an exception will be thrown. This comportment allows much better
+ * error detections
  * </p>
- * </p>Also note that parser is fairly tolerant to structure of the date.
- * For the US date 1/20/1990, the following input strings will <b>all</b> give
- * correct result :
- * * 1/20/1990
- * * 01/20/1990
- * * 1/20/90
- * * 01/20/90</p>
  * <p>
- * While tolerant with short day/months/years, parser is not tolerant with
- * incorrect use of separator. Therefore, patterns using a '/' must be inputed
- * using a '/' to separate months, days and years. No other symbol (such as '-'
- * or '.') will be valid.
+ * For obvious reasons, parser will not be able to detect errors involving inversion of
+ * days and month when day is inferior to 13
+ * </p>
+ * <p>
+ * Note that, when constructing a BloatitDate from a String, no proactive validity
+ * checking needs to be done, the parser will make sure the string matches the pattern.
+ * Therefore, the methods getPattern need only be used for display purpose, to indicate
+ * the user how he should input the date
+ * </p>
+ * </p>Also note that parser is fairly tolerant to structure of the date. For the US date
+ * 1/20/1990, the following input strings will <b>all</b> give correct result : *
+ * 1/20/1990 * 01/20/1990 * 1/20/90 * 01/20/90</p>
+ * <p>
+ * While tolerant with short day/months/years, parser is not tolerant with incorrect use
+ * of separator. Therefore, patterns using a '/' must be inputed using a '/' to separate
+ * months, days and years. No other symbol (such as '-' or '.') will be valid.
  * </p>
  */
 public final class BloatitDate {
@@ -85,10 +70,9 @@ public final class BloatitDate {
      * Describes the format of the date
      * </p>
      * <p>
-     * * SHORT is completely numeric, such as 12.13.52 or 3:30pm * MEDIUM is
-     * longer, such as Jan 12, 1952 * LONG is longer, such as January 12, 1952
-     * or 3:30:32pm * FULL is pretty completely specified, such as Tuesday,
-     * April 12, 1952 AD or 3:30:42pm PST.
+     * * SHORT is completely numeric, such as 12.13.52 or 3:30pm * MEDIUM is longer, such
+     * as Jan 12, 1952 * LONG is longer, such as January 12, 1952 or 3:30:32pm * FULL is
+     * pretty completely specified, such as Tuesday, April 12, 1952 AD or 3:30:42pm PST.
      * </p>
      */
     public enum FormatStyle {
@@ -105,8 +89,8 @@ public final class BloatitDate {
      * 
      * @param dateString the String description of the date (in Short format)
      * @param locale the user locale to determine date order
-     * @throws DateParsingException When dateString doesn't contain a String
-     *         that matches the current user locale
+     * @throws DateParsingException When dateString doesn't contain a String that matches
+     *         the current user locale
      */
     public BloatitDate(final String dateString, final Locale locale) throws DateParsingException {
         this(dateString, locale, FormatStyle.SHORT);
@@ -120,8 +104,8 @@ public final class BloatitDate {
      * @param dateString the String description of the date (in Short format)
      * @param locale the user locale to determine date order
      * @param style the style of the date (aka SHORT, LONG, MEDIUM or FULL)
-     * @throws DateParsingException When dateString doesn't contain a String
-     *         that matches the current user locale
+     * @throws DateParsingException When dateString doesn't contain a String that matches
+     *         the current user locale
      */
     public BloatitDate(final String dateString, final Locale locale, final FormatStyle style) throws DateParsingException {
         this.dateString = dateString;
@@ -165,13 +149,13 @@ public final class BloatitDate {
      * Modifies the date.
      * </p>
      * <p>
-     * This method is provided for efficiency only. Clean usage should involve
-     * creating a new object for every dates
+     * This method is provided for efficiency only. Clean usage should involve creating a
+     * new object for every dates
      * </p>
      * 
      * @param dateString the String representing the new date value
-     * @throws DateParsingException When dateString doesn't contain a String
-     *         that matches the current user locale
+     * @throws DateParsingException When dateString doesn't contain a String that matches
+     *         the current user locale
      */
     public void setDate(final String dateString) throws DateParsingException {
         try {
@@ -218,8 +202,8 @@ public final class BloatitDate {
     /**
      * Parses the String into a java Date object
      * 
-     * @throws DateParsingException When this.dateString doesn't contain a
-     *         String that matches the current user locale
+     * @throws DateParsingException When this.dateString doesn't contain a String that
+     *         matches the current user locale
      */
     private void parseDate() throws DateParsingException {
         this.formatter.setLenient(false);
@@ -298,9 +282,8 @@ public final class BloatitDate {
      * Make the pattern shiny for user interaction
      * </p>
      * <p>
-     * Make sure the pattern is ready to be displayed to the user : * Days and
-     * months will be shown with 2 digits * Year will be shown with 4 digits *
-     * Remove all caps
+     * Make sure the pattern is ready to be displayed to the user : * Days and months will
+     * be shown with 2 digits * Year will be shown with 4 digits * Remove all caps
      * </p>
      * 
      * @param pattern the ugly pattern

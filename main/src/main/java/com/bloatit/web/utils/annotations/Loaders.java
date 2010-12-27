@@ -75,7 +75,7 @@ public class Loaders {
         }
         return null;
     }
-    
+
     /**
      * This exception is thrown when a parameter is not found in the map.
      */
@@ -88,8 +88,7 @@ public class Loaders {
     }
 
     /**
-     * This exception is thrown when a parameter is found, but cannot be
-     * converted to the
+     * This exception is thrown when a parameter is found, but cannot be converted to the
      * right type.
      */
     public static class ConversionErrorException extends Exception {
@@ -186,7 +185,7 @@ public class Loaders {
         public BloatitDate fromString(final String data) {
             try {
                 return new BloatitDate(data, Context.getSession().getLanguage().getLocale());
-            } catch (DateParsingException e) {
+            } catch (final DateParsingException e) {
                 throw new NumberFormatException();
             }
         }

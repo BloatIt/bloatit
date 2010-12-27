@@ -85,7 +85,7 @@ public class UrlParameter<T> extends UrlNode {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(final T value) {
         what = What.NO_ERROR;
         this.value = value;
     }
@@ -116,7 +116,7 @@ public class UrlParameter<T> extends UrlNode {
     @Override
     public Messages getMessages() {
         final Messages messages = new Messages();
-        Message message = getMessage();
+        final Message message = getMessage();
         if (message != null) {
             messages.add(message);
         }
@@ -124,7 +124,7 @@ public class UrlParameter<T> extends UrlNode {
     }
 
     @Override
-    protected void parseParameters(Parameters params, boolean pickValue) {
+    protected void parseParameters(final Parameters params, final boolean pickValue) {
         final String value;
         if (pickValue) {
             value = params.pick(getName());
@@ -137,16 +137,16 @@ public class UrlParameter<T> extends UrlNode {
     }
 
     @Override
-    public void addParameter(String name, String value) {
+    public void addParameter(final String name, final String value) {
         if (this.name == name) {
             this.valueFromString(value);
         }
     }
 
     @Override
-    protected void constructUrl(StringBuilder sb) {
-        String stringValue = getStringValue();
-        if (!stringValue.isEmpty()){
+    protected void constructUrl(final StringBuilder sb) {
+        final String stringValue = getStringValue();
+        if (!stringValue.isEmpty()) {
             sb.append("/").append(getName()).append("-").append(stringValue);
         }
     }

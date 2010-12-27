@@ -11,7 +11,7 @@ import com.bloatit.web.utils.annotations.Messages;
 
 public abstract class UrlComponent extends UrlNode {
     private boolean isRegistered = false;
-    private List<UrlNode> nodes = new ArrayList<UrlNode>();
+    private final List<UrlNode> nodes = new ArrayList<UrlNode>();
 
     protected abstract void doRegister();
 
@@ -22,9 +22,10 @@ public abstract class UrlComponent extends UrlNode {
         super();
     }
 
+    @Override
     protected void constructUrl(final StringBuilder sb) {
         registerIfNotAlreadyDone();
-        for (UrlNode node : this) {
+        for (final UrlNode node : this) {
             node.constructUrl(sb);
         }
     }
@@ -41,7 +42,7 @@ public abstract class UrlComponent extends UrlNode {
     }
 
     @Override
-    protected final void parseParameters(final Parameters params, boolean pickValue) {
+    protected final void parseParameters(final Parameters params, final boolean pickValue) {
         if (params == null) {
             return;
         }
@@ -51,6 +52,7 @@ public abstract class UrlComponent extends UrlNode {
         }
     }
 
+    @Override
     @Deprecated
     public void addParameter(final String name, final String value) {
         registerIfNotAlreadyDone();
@@ -76,8 +78,8 @@ public abstract class UrlComponent extends UrlNode {
     @Override
     public Messages getMessages() {
         registerIfNotAlreadyDone();
-        Messages messages = new Messages();
-        for (UrlNode node : nodes) {
+        final Messages messages = new Messages();
+        for (final UrlNode node : nodes) {
             messages.addAll(node.getMessages());
         }
         return messages;

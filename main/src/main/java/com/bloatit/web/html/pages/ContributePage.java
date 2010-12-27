@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- *
- * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.html.pages;
 
@@ -41,13 +33,13 @@ import com.bloatit.web.utils.url.ContributionActionUrl;
 public class ContributePage extends LoggedPage {
 
     @RequestParam(level = Level.ERROR)
-    private Demand targetIdea;
+    private final Demand targetIdea;
 
     @RequestParam(name = ContributionAction.AMOUNT_CODE, defaultValue = "", role = Role.SESSION)
-    private String contributionAmountParam;
+    private final String contributionAmountParam;
 
     @RequestParam(name = ContributionAction.COMMENT_CODE, defaultValue = "", role = Role.SESSION)
-    private String contributionCommentParam;
+    private final String contributionCommentParam;
 
     private final ContributePageUrl url;
 
@@ -67,7 +59,7 @@ public class ContributePage extends LoggedPage {
             throw new RedirectException(Context.getSession().getLastStablePage());
         }
 
-        ContributionActionUrl formActionUrl = new ContributionActionUrl(targetIdea);
+        final ContributionActionUrl formActionUrl = new ContributionActionUrl(targetIdea);
 
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 

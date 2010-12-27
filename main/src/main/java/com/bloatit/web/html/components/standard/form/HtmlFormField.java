@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- *
- * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.html.components.standard.form;
 
@@ -30,8 +22,8 @@ import com.bloatit.web.utils.RandomString;
  * Basic class to describe elements that can be added to a form
  * </p>
  * <p>
- * All elements inheriting from this class can have an additional label and a
- * default value
+ * All elements inheriting from this class can have an additional label and a default
+ * value
  * </p>
  */
 public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implements HtmlNamedNode {
@@ -39,18 +31,14 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     private LabelPosition position;
 
     /**
-     * Describes the relative position of the label, compared to the element
-     * it describes.
-     * Generic usage is :
-     * - Checkbox & Radio buttons should used AFTER
-     * - All other fields should use BEFORE
+     * Describes the relative position of the label, compared to the element it describes.
+     * Generic usage is : - Checkbox & Radio buttons should used AFTER - All other fields
+     * should use BEFORE
      */
     public enum LabelPosition {
 
         /**
-         * <b>BEFORE</b> means the label is positionned before the
-         * aformentionned
-         * element.
+         * <b>BEFORE</b> means the label is positionned before the aformentionned element.
          * Example :
          * <p>
          * <label> ... </label><element />
@@ -58,8 +46,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
          */
         BEFORE,
         /**
-         * <b>AFTER</b> means the label is positionned after the aformentionned
-         * element.
+         * <b>AFTER</b> means the label is positionned after the aformentionned element.
          * Example :
          * <p>
          * <element /><label> ... </label>
@@ -75,8 +62,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     private final RandomString rng = new RandomString(10);
 
     /**
-     * Creates a form field for a given element, with a given name.
-     * If a label is added, it will will be positionned BEFORE the element
+     * Creates a form field for a given element, with a given name. If a label is added,
+     * it will will be positionned BEFORE the element
      * 
      * @param element the element to add
      * @param name the name of the element
@@ -86,9 +73,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     /**
-     * Creates a form field for a given element, with a given name and a given
-     * label
-     * The Label will be positionned BEFORE the element
+     * Creates a form field for a given element, with a given name and a given label The
+     * Label will be positionned BEFORE the element
      * 
      * @param element the element to add
      * @param name the name of the element
@@ -99,10 +85,9 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     /**
-     * Creates a form field for a given element, with a given name and a given
-     * label
-     * If a label is added later, it will be added before or after the element,
-     * depending on the value of the parameter <i>position</i>
+     * Creates a form field for a given element, with a given name and a given label If a
+     * label is added later, it will be added before or after the element, depending on
+     * the value of the parameter <i>position</i>
      * 
      * @param element the element to add
      * @param name the name of the element
@@ -117,9 +102,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     /**
-     * Creates a form field for a given element, with a given name and a given
-     * label
-     * The label position depends on the value of the parameter <i>position</i>
+     * Creates a form field for a given element, with a given name and a given label The
+     * label position depends on the value of the parameter <i>position</i>
      * 
      * @param element the element to add
      * @param name the name of the element
@@ -140,8 +124,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Sets the label for the object
      * </p>
      * <p>
-     * <b>CONTRACT :</b> Any class overriding this method have to be careful and
-     * not modify any other parameters than redefining the placeholder
+     * <b>CONTRACT :</b> Any class overriding this method have to be careful and not
+     * modify any other parameters than redefining the placeholder
      * </p>
      * 
      * @param label the label for the element
@@ -191,8 +175,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Adds a default value to the object object.
      * </p>
      * <p>
-     * The valued added will be obtained using toString on <i>value</i>. If
-     * <i>value</i> is null, no defaultValue is added.
+     * The valued added will be obtained using toString on <i>value</i>. If <i>value</i>
+     * is null, no defaultValue is added.
      * </p>
      * 
      * @param value the Object representing the default value

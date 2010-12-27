@@ -58,14 +58,11 @@ public class DaoExternalAccount extends DaoAccount {
      * 
      * @param Actor is the owner of the account
      * @param type is the account type
-     * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE
-     *        !!
+     * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE !!
      * @throws NullPointerException if any of the parameter is null
-     * @throws anExceptionToDefine when we will check the validity of the IBAN
-     *         we will
+     * @throws anExceptionToDefine when we will check the validity of the IBAN we will
      *         have to throw an exception if its not valid.
      */
-    // TODO verify the bank code validity
     private DaoExternalAccount(final DaoActor Actor, final AccountType type, final String bankCode) {
         super(Actor);
         if (type == null || bankCode == null) {
@@ -82,12 +79,12 @@ public class DaoExternalAccount extends DaoAccount {
     public AccountType getType() {
         return type;
     }
-    
+
     /**
      * Return true all the time.
      */
     @Override
-    protected boolean hasEnoughMoney(BigDecimal amount) {
+    protected boolean hasEnoughMoney(final BigDecimal amount) {
         return true;
     }
 

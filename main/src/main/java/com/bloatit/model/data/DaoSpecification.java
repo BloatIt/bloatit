@@ -1,5 +1,6 @@
 package com.bloatit.model.data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -8,19 +9,15 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
 /**
- * A specification is some resources added to a demand to add some precisions to
- * the
- * description. The specification are not translatable.
- * 
- * The specification will probably change a lot ... We will have to implement
- * some version
- * controling.
+ * A specification is some resources added to a demand to add some precisions to the
+ * description. The specification are not translatable. The specification will probably
+ * change a lot ... We will have to implement some version controling.
  */
 @Entity
 public class DaoSpecification extends DaoUserContent {
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
-    // TODO manage the size.
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @OneToOne(optional = false)
@@ -31,8 +28,7 @@ public class DaoSpecification extends DaoUserContent {
      * 
      * @param member is the author of the specification.
      * @param content is the content of the specification ...
-     * @param demand yep, this is the demand on which the specification apply.
-     *        Whhoohooo !
+     * @param demand yep, this is the demand on which the specification apply. Whhoohooo !
      * @throws NullPointerException if member or demand are null.
      */
     public DaoSpecification(final DaoMember member, final String content, final DaoDemand demand) {

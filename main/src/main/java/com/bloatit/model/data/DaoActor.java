@@ -21,8 +21,7 @@ import com.bloatit.common.FatalErrorException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * DaoActor is the base class of any user that can make money transaction. Each
- * actor has
+ * DaoActor is the base class of any user that can make money transaction. Each actor has
  * a unique name, an email, and an internalAccount.
  */
 @Entity
@@ -30,8 +29,7 @@ import com.bloatit.model.data.util.SessionManager;
 public abstract class DaoActor {
 
     /**
-     * Because of the different inheritance strategy we cannot inherit from
-     * identifiable.
+     * Because of the different inheritance strategy we cannot inherit from identifiable.
      * So we have to have an id.
      */
     @Id
@@ -39,8 +37,7 @@ public abstract class DaoActor {
     private Integer id;
 
     /**
-     * The login represent the user login and the group name. It must be unique
-     * (means
+     * The login represent the user login and the group name. It must be unique (means
      * that a group cannot have the same name as a user)
      */
     @Basic(optional = false)
@@ -63,8 +60,7 @@ public abstract class DaoActor {
      * Initialize the creation date to now.
      * 
      * @param login is the login or name of this actor
-     * @param email is the email of this actor. (No check is performed on the
-     *        correctness
+     * @param email is the email of this actor. (No check is performed on the correctness
      *        of this email address)
      * @throws NullPointerException if login or mail is null.
      */
@@ -80,10 +76,8 @@ public abstract class DaoActor {
     }
 
     /**
-     * This method use a HQL request. If you intend to use "getByLogin" or
-     * "getByName",
-     * "exist" is useless. (In that case you'd better test if getByLogin !=
-     * null, to
+     * This method use a HQL request. If you intend to use "getByLogin" or "getByName",
+     * "exist" is useless. (In that case you'd better test if getByLogin != null, to
      * minimize the number of HQL request).
      */
     public static boolean exist(final String login) {
@@ -98,8 +92,7 @@ public abstract class DaoActor {
     }
 
     /**
-     * This method is used by hibernate. You can use it if you want to change
-     * the email.
+     * This method is used by hibernate. You can use it if you want to change the email.
      * (No check is performed on the correctness of the new email)
      * 
      * @param email the new email.

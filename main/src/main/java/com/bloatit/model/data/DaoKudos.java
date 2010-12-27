@@ -9,13 +9,9 @@ import org.hibernate.Session;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * A kudos is a positive or negative appreciation of a Kudosable content. [ Yes
- * there is a
- * 's' at the end of kudos even when there is anly one. ]
- * 
- * The kudos is an internal storing class. You should never have to use it in
- * other
- * package.
+ * A kudos is a positive or negative appreciation of a Kudosable content. [ Yes there is a
+ * 's' at the end of kudos even when there is only one. ] The kudos is an internal storing
+ * class. You should never have to use it in other package.
  * 
  * @see DaoKudosable#addKudos(DaoMember, int)
  */
@@ -23,8 +19,7 @@ import com.bloatit.model.data.util.SessionManager;
 public class DaoKudos extends DaoUserContent {
 
     /**
-     * The value can be positive or negative. The value should never be equals
-     * zero.
+     * The value can be positive or negative. The value should never be equals zero.
      */
     @Basic(optional = false)
     private int value;

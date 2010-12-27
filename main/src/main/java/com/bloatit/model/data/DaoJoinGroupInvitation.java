@@ -17,8 +17,7 @@ import com.bloatit.model.data.util.SessionManager;
 public class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
-     * The state of an invitation track its time line. (First PENDING, then
-     * REFUSED or
+     * The state of an invitation track its time line. (First PENDING, then REFUSED or
      * ACCEPTED)
      */
     public enum State {
@@ -64,8 +63,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
 
     /**
-     * Set the state to accepted and add the receiver into the list of members
-     * of
+     * Set the state to accepted and add the receiver into the list of members of
      * this.group. If the state is not PENDING then do nothing.
      */
     public void accept() {

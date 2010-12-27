@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- *
- * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.html.pages;
 
@@ -92,8 +84,7 @@ public class IdeasList extends Page {
         @Override
         public HtmlNode generate(final Demand idea) {
             this.demand = idea;
-            
-            
+
             return generateContent();
         }
 
@@ -102,10 +93,9 @@ public class IdeasList extends Page {
             final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
             {
 
-
                 final HtmlDiv ideaLinkBlock = new HtmlDiv();
 
-                HtmlLink link = new IdeaPageUrl(demand).getHtmlLink(ideaLinkBlock);
+                final HtmlLink link = new IdeaPageUrl(demand).getHtmlLink(ideaLinkBlock);
                 link.setCssClass("idea_link");
                 ideaBlock.add(link);
 
@@ -113,18 +103,16 @@ public class IdeasList extends Page {
                 {
 
                     final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-                    //karmaBlock.add(new HtmlParagraph("" + demand.getPopularity()));
+                    // karmaBlock.add(new HtmlParagraph("" + demand.getPopularity()));
                     karmaBlock.add(new HtmlParagraph("" + Math.round(Math.random() * 150)));
 
                     leftBlock.add(karmaBlock);
-
 
                 }
                 ideaLinkBlock.add(leftBlock);
 
                 final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
                 {
-
 
                     final HtmlTitleBlock ideaTitle = new HtmlTitleBlock("Correction de bug - VLC", 3);
                     {
@@ -134,52 +122,45 @@ public class IdeasList extends Page {
                     }
                     centerBlock.add(ideaTitle);
 
-
-
-
                 }
                 ideaLinkBlock.add(centerBlock);
 
                 final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
                 {
 
-                    int imageIndex = new Random().nextInt(7);
+                    final int imageIndex = new Random().nextInt(7);
                     String image = "";
                     switch (imageIndex) {
 
-                        case 0:
-                            image = "idea";
-                            break;
-                        case 1:
-                            image = "kde";
-                            break;
-                        case 2:
-                            image = "gnome";
-                            break;
-                        case 3:
-                            image = "enlightenment";
-                            break;
-                        case 4:
-                            image = "lxde";
-                            break;
-                        case 5:
+                    case 0:
+                        image = "idea";
+                        break;
+                    case 1:
+                        image = "kde";
+                        break;
+                    case 2:
+                        image = "gnome";
+                        break;
+                    case 3:
+                        image = "enlightenment";
+                        break;
+                    case 4:
+                        image = "lxde";
+                        break;
+                    case 5:
+                        image = "ratpoison";
+                        break;
+                    case 6:
+                        if (Math.random() < 0.5) {
+                            image = "tux_mini";
+                        } else {
                             image = "ratpoison";
-                            break;
-                        case 6:
-                            if(Math.random() < 0.5) {
-                                image = "tux_mini";
-                            } else {
-                                image = "ratpoison";
-                            }
-                            break;
+                        }
+                        break;
 
                     }
 
-
-
                     rightBlock.add(new HtmlImage(new Image("/resources/img/" + image + ".png", Image.ImageType.DISTANT)));
-
-
 
                 }
                 ideaLinkBlock.add(rightBlock);

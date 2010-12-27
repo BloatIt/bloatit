@@ -50,8 +50,7 @@ public class Member extends Actor {
 
     /**
      * @param group the group in which you want to invite somebody
-     * @param action write for create a new invitation and read to accept/refuse
-     *        it
+     * @param action write for create a new invitation and read to accept/refuse it
      * @return true if you can invite/accept/refuse.
      */
     public boolean canInvite(final Group group, final Action action) {

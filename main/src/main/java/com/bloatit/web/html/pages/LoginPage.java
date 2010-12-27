@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- * 
- * This file is part of BloatIt.
- * 
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- * 
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.html.pages;
 
@@ -35,7 +27,7 @@ import com.bloatit.web.utils.url.LoginPageUrl;
 @ParamContainer("login")
 public class LoginPage extends Page {
 
-    public LoginPage(LoginPageUrl loginPageUrl) throws RedirectException {
+    public LoginPage(final LoginPageUrl loginPageUrl) throws RedirectException {
         super(loginPageUrl);
     }
 
@@ -44,8 +36,8 @@ public class LoginPage extends Page {
         super.create();
 
         final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
-        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE , session.tr("login"));
-        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE , session.tr("password"));
+        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, session.tr("login"));
+        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, session.tr("password"));
         final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Login"));
 
         loginForm.add(loginField);

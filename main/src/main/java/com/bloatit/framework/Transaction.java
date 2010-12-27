@@ -1,6 +1,5 @@
 package com.bloatit.framework;
 
-import com.bloatit.model.exceptions.NotEnoughMoneyException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.EnumSet;
@@ -12,8 +11,7 @@ import com.bloatit.framework.right.RightManager.Role;
 import com.bloatit.model.data.DaoExternalAccount;
 import com.bloatit.model.data.DaoInternalAccount;
 import com.bloatit.model.data.DaoTransaction;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 public class Transaction extends Identifiable {
 

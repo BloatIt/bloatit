@@ -38,8 +38,7 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
         /**
          * Finds the id of the tag
          * 
-         * @return the value entetered for the field "id" or null if no field
-         *         id exists
+         * @return the value entetered for the field "id" or null if no field id exists
          */
         public String getId() {
             return this.attributes.get("id");
@@ -50,7 +49,8 @@ public abstract class HtmlNode implements Iterable<HtmlNode> {
         }
 
         public String getClosedTag() {
-            return createOpenTagButWithoutLastChar().append("/>").toString();        }
+            return createOpenTagButWithoutLastChar().append("/>").toString();
+        }
 
         public String getCloseTag() {
             return "</" + tag + ">";

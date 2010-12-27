@@ -20,14 +20,12 @@ public class DaoTranslation extends DaoKudosable {
     @Basic(optional = false)
     private Locale locale;
     @Basic(optional = false)
-    @Column(length = 300)
-    // TODO manage string lenght
+    @Column(columnDefinition = "TEXT")
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String title;
-    @Column(length = 5000)
+    @Column(columnDefinition = "TEXT")
     @Basic(optional = false)
     @Field(index = Index.TOKENIZED, store = Store.NO)
-    // TODO manage string lenght
     private String text;
 
     @ManyToOne(optional = false)

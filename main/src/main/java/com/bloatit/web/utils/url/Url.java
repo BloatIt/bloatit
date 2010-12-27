@@ -23,5 +23,5 @@ public abstract class Url extends UrlComponent {
     }
 
     public abstract Linkable createPage() throws RedirectException;
-    
+
 }

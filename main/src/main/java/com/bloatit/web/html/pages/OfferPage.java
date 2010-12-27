@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- *
- * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.bloatit.web.html.pages;
@@ -96,28 +88,15 @@ public class OfferPage extends LoggedPage {
 
         // TODO : remove and replace with parameter loading machanism
         /*
-         * int ideaId = -1;
-         * if(this.parameters.containsKey("idea")){
-         * try{
-         * ideaId = Integer.parseInt(this.parameters.get("idea"));
-         * targetIdea = DemandManager.getDemandById(ideaId);
-         * } catch (NumberFormatException nfe){
-         * }
-         * }
-         * 
-         * if (ideaId == -1 ){
-         * session.notifyBad(session.tr(
+         * int ideaId = -1; if(this.parameters.containsKey("idea")){ try{ ideaId =
+         * Integer.parseInt(this.parameters.get("idea")); targetIdea =
+         * DemandManager.getDemandById(ideaId); } catch (NumberFormatException nfe){ } }
+         * if (ideaId == -1 ){ session.notifyBad(session.tr(
          * "You need to choose an idea on which you'll contribute"));
-         * htmlResult.setRedirect(new DemandsPage(session));
-         * return null;
-         * }
-         * 
-         * if (targetIdea == null){
+         * htmlResult.setRedirect(new DemandsPage(session)); return null; } if (targetIdea
+         * == null){
          * session.notifyBad(session.tr("The idea you chose does not exists (id :"
-         * +ideaId+")"));
-         * htmlResult.setRedirect(new DemandsPage(session));
-         * return null;
-         * }
+         * +ideaId+")")); htmlResult.setRedirect(new DemandsPage(session)); return null; }
          */
         // !TODO
 

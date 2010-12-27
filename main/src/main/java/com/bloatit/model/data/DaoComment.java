@@ -3,7 +3,6 @@ package com.bloatit.model.data;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -29,14 +28,8 @@ import com.bloatit.model.data.util.SessionManager;
 @Entity
 public class DaoComment extends DaoKudosable {
 
-    /**
-     * This is the text of the comment. There is no specific format handling
-     * (html/wikitag
-     * ??)
-     */
-    @Basic(optional = false)
-    @Column(length = 5000)
-    // TODO Change the length ! it is really awful...
+    // WARNING "TEXT" is not a standard SQL type.
+    @Column(columnDefinition = "TEXT", nullable = false)
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String text;
 
@@ -64,10 +57,8 @@ public class DaoComment extends DaoKudosable {
     }
 
     /**
-     * Create a comment. This constructor is protected because you should use
-     * the
-     * createAndPersist method (to make sure your comment really goes into the
-     * db.
+     * Create a comment. This constructor is protected because you should use the
+     * createAndPersist method (to make sure your comment really goes into the db.
      * 
      * @param member is the author.
      * @param text is the content.
@@ -87,15 +78,12 @@ public class DaoComment extends DaoKudosable {
     }
 
     /**
-     * Use a HQL query to return the children of this comment. It allows the use
-     * of
+     * Use a HQL query to return the children of this comment. It allows the use of
      * PageIterable.
      * 
-     * @return the list of this comment children. return an empty list if there
-     *         is no
+     * @return the list of this comment children. return an empty list if there is no
      *         child.
      */
-    // TODO use a filtered collection
     public PageIterable<DaoComment> getChildrenFromQuery() {
         return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this").setEntity("this", this);
     }

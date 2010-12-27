@@ -8,11 +8,12 @@ public abstract class UrlNode implements Iterable<UrlNode> {
         super();
     }
 
+    @Override
     public abstract UrlNode clone();
 
     public final String urlString() {
-        StringBuilder sb = new StringBuilder();
-        this.constructUrl(sb);
+        final StringBuilder sb = new StringBuilder();
+        constructUrl(sb);
         return sb.toString();
     }
 

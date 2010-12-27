@@ -27,8 +27,8 @@ public class TopBar extends HtmlDiv {
             final String karma = "<span class=\"karma\">" + HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()) + "</span>";
 
             final HtmlBranch money = new HtmlGenericElement("div");
-            
-            Member member = session.getAuthToken().getMember();
+
+            final Member member = session.getAuthToken().getMember();
 
             member.authenticate(session.getAuthToken());
             final InternalAccount internalAccount = member.getInternalAccount();

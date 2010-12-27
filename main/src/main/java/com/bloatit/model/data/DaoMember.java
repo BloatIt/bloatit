@@ -19,8 +19,7 @@ import com.bloatit.model.data.DaoJoinGroupInvitation.State;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * Ok if you need a comment to understand what is a member, then I cannot do
- * anything for
+ * Ok if you need a comment to understand what is a member, then I cannot do anything for
  * you ...
  */
 @Entity
@@ -45,18 +44,14 @@ public class DaoMember extends DaoActor {
     private Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
     /**
-     * Create a member. The member login must be unique, and you cannot change
-     * it.
+     * Create a member. The member login must be unique, and you cannot change it.
      * 
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @return The newly created DaoMember
-     * @throws HibernateException If there is any problem connecting to the db.
-     *         Or if the
+     * @throws HibernateException If there is any problem connecting to the db. Or if the
      *         member as a non unique login. If an exception is thrown then the
-     *         transaction is
-     *         rolled back and reopened.
-     * 
+     *         transaction is rolled back and reopened.
      */
     public static DaoMember createAndPersist(final String login, final String password, final String email) throws HibernateException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -122,8 +117,7 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
-     * PROTECTED
+     * [ Maybe it could be cool to have a parameter to list all the PUBLIC or PROTECTED
      * groups. ]
      * 
      * @return All the groups this member is in. (Use a HQL query)
@@ -201,8 +195,7 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * @return All the received invitation to join a group which are in a
-     *         specified state
+     * @return All the received invitation to join a group which are in a specified state
      */
     // TODO test
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
@@ -212,8 +205,7 @@ public class DaoMember extends DaoActor {
     }
 
     /**
-     * @return All the sent invitation to join a group which are in a specified
-     *         state
+     * @return All the sent invitation to join a group which are in a specified state
      */
     // TODO test
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
