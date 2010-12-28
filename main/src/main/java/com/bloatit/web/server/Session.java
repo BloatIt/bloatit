@@ -23,7 +23,7 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.utils.DateLocale;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
-import java.util.Currency;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 public class Session {
     private final String key;
@@ -38,6 +38,7 @@ public class Session {
     private final Parameters sessionParams = new Parameters();
 
     private final List<Language> preferredLocales;
+    private Locale country = Locale.US;
 
     Session(final String key) {
         this.key = key;
@@ -190,5 +191,42 @@ public class Session {
      */
     public String getDatePattern(){
         return DateLocale.getPattern(language.getLocale());
+    }
+
+    public Locale getCountry() {
+        return country;
+    }
+
+    /**
+     * <p>Sets the country based on the list of preferred languages of the user
+     * </p>
+     * <p> Use only when the session cannot be loaded with the loader (that is
+     * to say, when the user is not identified)</p>
+     * @param preferred_langs the list of preferred languages as sent by the
+     * browser.
+     */
+    void setCountry(List<String> preferred_langs) {
+        for(String lang : preferred_langs){
+            String elem = lang.split(";")[0];
+
+            String pays = null;
+            if(elem.contains("-")){
+                pays = elem.split("-")[1];
+            }else if( elem.contains("_")){
+                pays = elem.split("_")[1];
+            }
+            if(pays != null){
+                Locale[] countries = Locale.getAvailableLocales();
+                for(Locale l : countries){
+                    if(l.getCountry().equals(pays)){
+                        country = l;
+                    }
+                }
+            }
+        }
+        
+        if(this.country == null){
+            this.country = Locale.US;
+        }
     }
 }

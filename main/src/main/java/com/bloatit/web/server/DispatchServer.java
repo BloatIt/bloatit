@@ -159,19 +159,16 @@ public class DispatchServer {
     private Session findSession(final Map<String, String> query) {
         Session sess = null;
         final Language l = userLocale(query);
-
+        
         if (cookies.containsKey("session_key")) {
             sess = SessionManager.getByKey(cookies.get("session_key"));
-
         }
         if (sess == null) {
             sess = SessionManager.createSession();
-
+            sess.setCountry(preferred_langs);
         }
         sess.setLanguage(l);
-
         return sess;
-
     }
 
     private Language userLocale(final Map<String, String> query) {
@@ -180,15 +177,11 @@ public class DispatchServer {
         if (query.containsKey("lang")) {
             if (query.get("lang").equals("default")) {
                 language.findPrefered(preferred_langs);
-
             } else {
                 language.setCode(query.get("lang"));
-
             }
         }
-
         return language;
-
     }
 
     /**

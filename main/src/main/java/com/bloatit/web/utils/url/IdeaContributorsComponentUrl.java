@@ -1,37 +1,40 @@
 package com.bloatit.web.utils.url;
 
+import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.UrlParameter;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.Loaders.*;
 
 @SuppressWarnings("unused")
 public class IdeaContributorsComponentUrl extends UrlComponent {
-    public IdeaContributorsComponentUrl(final Parameters params, final Parameters session) {
-        this();
-        parseParameters(params, false);
-        parseParameters(session, true);
-    }
+public IdeaContributorsComponentUrl(Parameters params, Parameters session) {
+    this();
+    parseParameters(params, false);
+    parseParameters(session, true);
+}
+public IdeaContributorsComponentUrl(){
+    super();
+}
+private HtmlPagedListUrl participationsListUrl = new HtmlPagedListUrl();
 
-    public IdeaContributorsComponentUrl() {
-        super();
-    }
+public HtmlPagedListUrl getParticipationsListUrl(){ 
+    return this.participationsListUrl;
+}
 
-    private HtmlPagedListUrl participationsListUrl = new HtmlPagedListUrl();
+public void setParticipationsListUrl(HtmlPagedListUrl arg){ 
+    this.participationsListUrl = arg;
+}
 
-    public HtmlPagedListUrl getParticipationsListUrl() {
-        return this.participationsListUrl;
-    }
 
-    public void setParticipationsListUrl(final HtmlPagedListUrl arg) {
-        this.participationsListUrl = arg;
-    }
+@Override 
+protected void doRegister() { 
+    register(participationsListUrl);
+}
 
-    @Override
-    protected void doRegister() {
-        register(participationsListUrl);
-    }
-
-    @Override
-    public IdeaContributorsComponentUrl clone() {
-        final IdeaContributorsComponentUrl other = new IdeaContributorsComponentUrl();
-        other.participationsListUrl = this.participationsListUrl.clone();
-        return other;
-    }
+public IdeaContributorsComponentUrl clone() { 
+    IdeaContributorsComponentUrl other = new IdeaContributorsComponentUrl();
+    other.participationsListUrl = this.participationsListUrl.clone();
+    return other;
+}
 }

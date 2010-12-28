@@ -47,4 +47,13 @@ public class HtmlLink extends HtmlBranch {
         addAttribute("href", url);
         add(new HtmlText(displayedText));
     }
+
+    /**
+     * Creates a blank link. Use add to further add elements
+     * @param url
+     */
+    public HtmlLink(final String url) {
+        super("a");
+        addAttribute("href", url);
+    }
 }

@@ -122,13 +122,12 @@ li {
     text-decoration: none;
     margin: 0;
     padding: 0;
-    margin-left: 6em;
-    margin-right: 6em;
+    margin-left: 2em;
+    margin-right: 2em;
 }
 
 #top_bar a:hover {
     color: rgb(43,192,255);
-
 }
 
 
@@ -155,6 +154,13 @@ li {
 #top_bar_search_button input:hover {
     cursor: pointer;
     color: rgb(200,0,0);
+}
+
+#top_bar .money .locale_money {
+    color: rgb(32,188,141);
+    font-size: 0.7em;
+    vertical-align: super;
+    margin-left: 0.2em;
 }
 
 

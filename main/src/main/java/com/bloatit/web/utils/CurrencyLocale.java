@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.Locale;
@@ -33,25 +34,29 @@ import java.util.Map;
  * Class to handle localization of money amounts.
  */
 public class CurrencyLocale {
-
     private final static String DEFAULT_CURRENCY = "EURO";
     private final static String DEFAULT_CURRENCY_SYMBOL = "€";
+    private final static int INTERNAL_PRECISION = 6;
+    private final static RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
+    private final static int DISPLAY_PRECISION = 2;
+
     private final Locale targetLocale;
     private final BigDecimal euroAmount;
-
     private final Map<Currency, BigDecimal> currencies = new HashMap<Currency, BigDecimal>();
+    private final Currency currency;
 
     public CurrencyLocale(BigDecimal euroAmount, Locale targetLocale) {
         this.euroAmount = euroAmount;
         this.targetLocale = targetLocale;
+        this.currency = Currency.getInstance(targetLocale);
         this.parseRate();
     }
 
     /**
-     * 
+     * Converts the amount
      */
     public BigDecimal getConvertedAmount() {
-        return euroAmount.multiply(BigDecimal.ONE);
+        return euroAmount.divide(currencies.get(currency), INTERNAL_PRECISION, ROUNDING_MODE);
     }
 
     /**
@@ -59,7 +64,7 @@ public class CurrencyLocale {
      * @return
      */
     public String getLocaleSymbol() {
-        return Currency.getInstance(targetLocale).getCurrencyCode();
+        return currency.getSymbol();
     }
 
     /**
@@ -67,7 +72,7 @@ public class CurrencyLocale {
      * @return
      */
     public String getLocaleString() {
-        return "~ " + getConvertedAmount() + getLocaleSymbol();
+        return getConvertedAmount().setScale(DISPLAY_PRECISION, ROUNDING_MODE) + getLocaleSymbol();
     }
 
     /**
@@ -82,7 +87,7 @@ public class CurrencyLocale {
         BufferedReader br = null;
         try {
             File file = new File("../locales/rates");
-            
+
             br = new BufferedReader(new FileReader(file));
             while (br.ready()) {
                 String line = br.readLine();

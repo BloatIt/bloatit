@@ -1,35 +1,33 @@
 package com.bloatit.web.utils.url;
 
+import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.url.UrlParameter;
+import com.bloatit.web.utils.annotations.Loaders;
+import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
 public class CreateIdeaPageUrl extends Url {
-    public static String getName() {
-        return "idea/create";
-    }
+public static String getName() { return "idea/create"; }
+public com.bloatit.web.html.pages.CreateIdeaPage createPage() throws RedirectException{ 
+    return new com.bloatit.web.html.pages.CreateIdeaPage(this); }
+public CreateIdeaPageUrl(Parameters params, Parameters session) {
+    this();
+    parseParameters(params, false);
+    parseParameters(session, true);
+}
+public CreateIdeaPageUrl(){
+    super(getName());
+}
 
-    @Override
-    public com.bloatit.web.html.pages.CreateIdeaPage createPage() throws RedirectException {
-        return new com.bloatit.web.html.pages.CreateIdeaPage(this);
-    }
 
-    public CreateIdeaPageUrl(final Parameters params, final Parameters session) {
-        this();
-        parseParameters(params, false);
-        parseParameters(session, true);
-    }
+@Override 
+protected void doRegister() { 
+}
 
-    public CreateIdeaPageUrl() {
-        super(getName());
-    }
-
-    @Override
-    protected void doRegister() {
-    }
-
-    @Override
-    public CreateIdeaPageUrl clone() {
-        final CreateIdeaPageUrl other = new CreateIdeaPageUrl();
-        return other;
-    }
+public CreateIdeaPageUrl clone() { 
+    CreateIdeaPageUrl other = new CreateIdeaPageUrl();
+    return other;
+}
 }

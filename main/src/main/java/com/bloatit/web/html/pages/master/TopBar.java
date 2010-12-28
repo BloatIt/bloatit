@@ -3,7 +3,6 @@ package com.bloatit.web.html.pages.master;
 import com.bloatit.framework.InternalAccount;
 import com.bloatit.framework.Member;
 import com.bloatit.web.html.HtmlBranch;
-import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -11,6 +10,8 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.CurrencyLocale;
+import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.LogoutActionUrl;
 import com.bloatit.web.utils.url.MyAccountPageUrl;
@@ -33,13 +34,33 @@ public class TopBar extends HtmlDiv {
             karma.setCssClass("karma");
             karma.addText(HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()));
 
-            // Display user money
-            final HtmlBranch money = new HtmlGenericElement("span");
+
+            
+            
+
+            // Display user money in euro
+            final HtmlBranch euroMoney = new HtmlGenericElement("span");
+            euroMoney.setCssClass("euro_money");
+
             final Member member = session.getAuthToken().getMember();
             member.authenticate(session.getAuthToken());
             final InternalAccount internalAccount = member.getInternalAccount();
             internalAccount.authenticate(session.getAuthToken());
-            money.add(new HtmlText(internalAccount.getAmount().toString()));
+            CurrencyLocale cl = new CurrencyLocale(internalAccount.getAmount(), session.getCountry());
+            euroMoney.add(new HtmlText(cl.getDefaultString()));
+
+            final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);
+            money.setCssClass("money");
+
+            // Display user money in locale money (when needed)
+            if (!cl.getDefaultString().equals(cl.getLocaleString())) {
+                final HtmlBranch localeMoney = new HtmlGenericElement("span");
+                localeMoney.setCssClass("locale_money");
+
+                localeMoney.addText(cl.getLocaleString());
+                money.add(localeMoney);
+            }
+
 
             // Display logout link
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(session.tr("Logout"));
