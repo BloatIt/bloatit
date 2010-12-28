@@ -3,6 +3,7 @@ package com.bloatit.web.html.pages.master;
 import com.bloatit.framework.InternalAccount;
 import com.bloatit.framework.Member;
 import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -23,31 +24,33 @@ public class TopBar extends HtmlDiv {
 
         final Session session = Context.getSession();
         if (session.isLogged()) {
+            // Display user name
             final String full_name = session.getAuthToken().getMember().getFullname();
-            final String karma = "<span class=\"karma\">" + HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()) + "</span>";
+            final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(full_name);
 
-            final HtmlBranch money = new HtmlGenericElement("div");
+            // Display user karma
+            final HtmlBranch karma = new HtmlGenericElement("span");
+            karma.setCssClass("karma");
+            karma.addText(HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()));
 
+            // Display user money
+            final HtmlBranch money = new HtmlGenericElement("span");
             final Member member = session.getAuthToken().getMember();
-
             member.authenticate(session.getAuthToken());
             final InternalAccount internalAccount = member.getInternalAccount();
             internalAccount.authenticate(session.getAuthToken());
-
             money.add(new HtmlText(internalAccount.getAmount().toString()));
 
-            final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(full_name);
+            // Display logout link
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(session.tr("Logout"));
 
-            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(memberLink).addText(karma));
+            // Add all previously created components
+            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(memberLink).add(karma));
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(money));
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(logoutLink));
-
         } else {
             final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(session.tr("Login / Signup"));
-
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(loginLink));
         }
     }
-
 }

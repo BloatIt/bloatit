@@ -43,7 +43,7 @@ import java.util.Locale;
  * days and month when day is inferior to 13
  * </p>
  * <p>
- * Note that, when constructing a BloatitDate from a String, no proactive validity
+ * Note that, when constructing a DateLocale from a String, no proactive validity
  * checking needs to be done, the parser will make sure the string matches the pattern.
  * Therefore, the methods getPattern need only be used for display purpose, to indicate
  * the user how he should input the date
@@ -57,7 +57,7 @@ import java.util.Locale;
  * months, days and years. No other symbol (such as '-' or '.') will be valid.
  * </p>
  */
-public final class BloatitDate {
+public final class DateLocale {
 
     private Date javaDate;
     private String dateString;
@@ -92,7 +92,7 @@ public final class BloatitDate {
      * @throws DateParsingException When dateString doesn't contain a String that matches
      *         the current user locale
      */
-    public BloatitDate(final String dateString, final Locale locale) throws DateParsingException {
+    public DateLocale(final String dateString, final Locale locale) throws DateParsingException {
         this(dateString, locale, FormatStyle.SHORT);
     }
 
@@ -107,7 +107,7 @@ public final class BloatitDate {
      * @throws DateParsingException When dateString doesn't contain a String that matches
      *         the current user locale
      */
-    public BloatitDate(final String dateString, final Locale locale, final FormatStyle style) throws DateParsingException {
+    public DateLocale(final String dateString, final Locale locale, final FormatStyle style) throws DateParsingException {
         this.dateString = dateString;
         this.locale = locale;
         this.style = style;
@@ -123,7 +123,7 @@ public final class BloatitDate {
      * @param javaDate the Date to convert
      * @param locale the locale for the date
      */
-    public BloatitDate(final Date javaDate, final Locale locale) {
+    public DateLocale(final Date javaDate, final Locale locale) {
         this(javaDate, locale, FormatStyle.SHORT);
     }
 
@@ -136,7 +136,7 @@ public final class BloatitDate {
      * @param locale the locale for the date
      * @param style the style of the date
      */
-    public BloatitDate(final Date javaDate, final Locale locale, final FormatStyle style) {
+    public DateLocale(final Date javaDate, final Locale locale, final FormatStyle style) {
         this.locale = locale;
         this.javaDate = javaDate;
         this.style = style;
@@ -253,7 +253,7 @@ public final class BloatitDate {
      * @return
      */
     public String getPattern() {
-        return BloatitDate.getPattern(this.locale, this.style);
+        return DateLocale.getPattern(this.locale, this.style);
     }
 
     /**
@@ -263,7 +263,7 @@ public final class BloatitDate {
      * @return
      */
     static public String getPattern(final Locale locale) {
-        return BloatitDate.getPattern(locale, FormatStyle.SHORT);
+        return DateLocale.getPattern(locale, FormatStyle.SHORT);
     }
 
     /**

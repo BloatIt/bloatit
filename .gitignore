@@ -17,3 +17,5 @@ bin/
 main/po/*~
 main/po/*.mo
 apt/.agitator
+main/css
+main/src/main/java/com/bloatit/web/utils/url/*

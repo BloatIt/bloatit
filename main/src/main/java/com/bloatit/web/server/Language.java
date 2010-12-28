@@ -23,9 +23,7 @@ import com.bloatit.common.Log;
 public class Language {
 
     private static Map<String, Locale> languageCode = new HashMap<String, Locale>() {
-
         private static final long serialVersionUID = 9019121360450239715L;
-
         {
             put("en", Locale.ENGLISH);
             put("en-us", Locale.ENGLISH);
@@ -33,10 +31,9 @@ public class Language {
             put("fr-fr", Locale.FRENCH);
         }
     };
+    
     private static Map<Locale, LanguageTemplate> languageList = new HashMap<Locale, LanguageTemplate>() {
-
         private static final long serialVersionUID = -2144420475764085797L;
-
         {
             put(Locale.ENGLISH, new LanguageTemplate("en", "English", Locale.ENGLISH));
             put(Locale.FRENCH, new LanguageTemplate("fr", "Français", Locale.FRENCH));
@@ -79,6 +76,10 @@ public class Language {
         }
     }
 
+    public Locale getLocale() {
+        return template.locale;
+    }
+
     public String tr(final String s) {
         return template.i18n.tr(s);
     }
@@ -93,44 +94,6 @@ public class Language {
         } else {
             System.err.println("Unknow language code: " + code);
         }
-    }
-
-    /**
-     * Nested class to handle different languages
-     */
-    private static class LanguageTemplate {
-
-        final public Locale locale;
-        final public String label;
-        final public I18n i18n;
-
-        private LanguageTemplate(final String key, final String label, final Locale locale) {
-            this.label = label;
-            this.locale = locale;
-            i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);
-
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 3;
-            hash = 59 * hash + (locale != null ? locale.hashCode() : 0);
-            hash = 59 * hash + (label != null ? label.hashCode() : 0);
-            hash = 59 * hash + (i18n != null ? i18n.hashCode() : 0);
-            return hash;
-        }
-
     }
 
     @Override
@@ -155,7 +118,39 @@ public class Language {
         return hash;
     }
 
-    public Locale getLocale() {
-        return template.locale;
+    /**
+     * Nested class to handle different languages
+     */
+    private static class LanguageTemplate {
+
+        final public Locale locale;
+        final public String label;
+        final public I18n i18n;
+
+        private LanguageTemplate(final String key, final String label, final Locale locale) {
+            this.label = label;
+            this.locale = locale;
+            i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 59 * hash + (locale != null ? locale.hashCode() : 0);
+            hash = 59 * hash + (label != null ? label.hashCode() : 0);
+            hash = 59 * hash + (i18n != null ? i18n.hashCode() : 0);
+            return hash;
+        }
     }
 }

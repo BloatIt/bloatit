@@ -11,12 +11,12 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-import com.bloatit.web.utils.BloatitDate;
+import com.bloatit.web.utils.DateLocale;
 
 /**
  * Class used to create input fields used to input date
  */
-public class HtmlDateField extends HtmlFormField<BloatitDate> {
+public class HtmlDateField extends HtmlFormField<DateLocale> {
 
     public HtmlDateField(final String name) {
         super(new HtmlSimpleInput("text"), name);
@@ -27,7 +27,7 @@ public class HtmlDateField extends HtmlFormField<BloatitDate> {
     }
 
     @Override
-    protected void doSetDefaultValue(final BloatitDate value) {
-        addAttribute("value", value.toString(BloatitDate.FormatStyle.SHORT));
+    protected void doSetDefaultValue(final DateLocale value) {
+        addAttribute("value", value.toString(DateLocale.FormatStyle.SHORT));
     }
 }

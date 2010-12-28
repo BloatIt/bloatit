@@ -12,7 +12,7 @@ import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.Loader;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.BloatitDate;
+import com.bloatit.web.utils.DateLocale;
 import com.bloatit.web.utils.DateParsingException;
 
 public class Loaders {
@@ -70,7 +70,7 @@ public class Loaders {
             return (Loader<T>) new ToDemand();
         } else if (theClass.equals(Member.class)) {
             return (Loader<T>) new ToMember();
-        } else if (theClass.equals(BloatitDate.class)) {
+        } else if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
         }
         return null;
@@ -180,11 +180,11 @@ public class Loaders {
         }
     }
 
-    private static class ToBloatitDate extends Loader<BloatitDate> {
+    private static class ToBloatitDate extends Loader<DateLocale> {
         @Override
-        public BloatitDate fromString(final String data) {
+        public DateLocale fromString(final String data) {
             try {
-                return new BloatitDate(data, Context.getSession().getLanguage().getLocale());
+                return new DateLocale(data, Context.getSession().getLanguage().getLocale());
             } catch (final DateParsingException e) {
                 throw new NumberFormatException();
             }

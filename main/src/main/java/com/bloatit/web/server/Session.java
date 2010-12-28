@@ -20,8 +20,10 @@ import java.util.Locale;
 import com.bloatit.framework.AuthToken;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
+import com.bloatit.web.utils.DateLocale;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
+import java.util.Currency;
 
 public class Session {
     private final String key;
@@ -177,5 +179,16 @@ public class Session {
 
     public void addParam(final String paramKey, final String paramValue) {
         sessionParams.put(paramKey, paramValue);
+    }
+
+
+    /**
+     * Gets the date pattern that matches the current user language in <i>SHORT</i>
+     * format, i.e. : dd/mm/yyyy if locale is french, or mm/dd/yyyy if locale is
+     * english.
+     * @return a String representing the date pattern
+     */
+    public String getDatePattern(){
+        return DateLocale.getPattern(language.getLocale());
     }
 }

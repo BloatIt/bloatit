@@ -27,7 +27,7 @@ import com.bloatit.web.html.components.standard.form.HtmlDateField;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
-import com.bloatit.web.utils.BloatitDate;
+import com.bloatit.web.utils.DateLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
@@ -42,7 +42,7 @@ public class OfferPage extends LoggedPage {
     private final BigDecimal price;
 
     @RequestParam(name = "expiry", role = Role.SESSION)
-    private final BloatitDate expiryDate;
+    private final DateLocale expiryDate;
 
     @RequestParam(name = "title", role = Role.SESSION)
     private final String title;
