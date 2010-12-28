@@ -56,7 +56,7 @@ public class CurrencyLocale {
      * Converts the amount
      */
     public BigDecimal getConvertedAmount() {
-        return euroAmount.divide(currencies.get(currency), INTERNAL_PRECISION, ROUNDING_MODE);
+        return euroAmount.multiply(currencies.get(currency));
     }
 
     /**
