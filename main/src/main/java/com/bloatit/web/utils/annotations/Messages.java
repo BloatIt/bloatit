@@ -8,7 +8,7 @@ import com.bloatit.web.annotations.RequestParam;
 /**
  * Store some error messages that could append during the reflexive procedure "setValues".
  */
-public class Messages extends ArrayList<Message> {
+public final class Messages extends ArrayList<Message> {
     private static final long serialVersionUID = -7080211414458545384L;
 
     public Messages() {

@@ -1,7 +1,7 @@
 package com.bloatit.web.utils;
 
 // TODO from http://www.rgagnon.com/javadetails/java-0456.html
-public class AsciiUtils {
+public final class AsciiUtils {
     private static final String PLAIN_ASCII = "AaEeIiOoUu" // grave
             + "AaEeIiOoUuYy" // acute
             + "AaEeIiOoUuYy" // circumflex

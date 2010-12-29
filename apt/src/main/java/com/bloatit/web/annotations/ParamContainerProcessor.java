@@ -27,9 +27,8 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
-        System.out.println("Launch the Custom APT !");
+        // System.out.println("Launch the Custom APT !");
         for (TypeElement typeElement : typeElements) {
-
             for (Element element : env.getElementsAnnotatedWith(typeElement)) {
                 try {
                     parseAParamContainer(element);
@@ -52,15 +51,22 @@ public class ParamContainerProcessor extends AbstractProcessor {
             generator = new UrlClassGenerator(urlClassName, paramContainer.value(), element.asType().toString());
         }
 
-        System.out.println("    generating " + generator.getClassName());
+        // System.out.println("    generating " + generator.getClassName());
         for (Element enclosed : element.getEnclosedElements()) {
             parseAnAttribute(generator, enclosed);
         }
 
         FileWriter fstream = new FileWriter(ROOT + generator.getClassName() + ".java");
-        BufferedWriter out = new BufferedWriter(fstream);
-        out.write(generator.generate());
-        out.close();
+        BufferedWriter out = null;
+        try {
+            out = new BufferedWriter(fstream);
+            out.write(generator.generate());
+        } catch (Exception e) {
+        } finally {
+            if (out != null) {
+                out.close();
+            }
+        }
     }
 
     private void parseAnAttribute(JavaGenerator generator, Element attribute) {
@@ -85,7 +91,6 @@ public class ParamContainerProcessor extends AbstractProcessor {
                 generator.addAutoGeneratingGetter(getType(attribute), attributeName, parm.generatedFrom());
             }
 
-
             // Its not a param but it could be a ParamContainer.
         } else {
 
@@ -100,7 +105,8 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
             if (component != null) {
                 generator.addComponentAndGetterSetter(getSecureType(attribute), attribute.getSimpleName().toString());
-                System.out.println(getType(attribute) + " " + getSecureType(attribute));
+                // System.out.println(getType(attribute) + " " +
+                // getSecureType(attribute));
                 generator.registerComponent(attribute.getSimpleName().toString());
             }
         }

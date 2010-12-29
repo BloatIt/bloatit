@@ -39,7 +39,7 @@ public abstract class JavaGenerator {
     public final void addAttribute(String type, String nameString, String name, Role role, Level level, String errorMsg) {
         name = toCamelAttributeName(name);
         _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ")
-                .append(createParameter(name, "\"" + nameString + "\"", type, role, level, errorMsg));
+                .append(createParameter("\"" + nameString + "\"", type, role, level, errorMsg));
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
     }
 
@@ -78,8 +78,7 @@ public abstract class JavaGenerator {
         _gettersSetters.append("}\n\n");
     }
 
-    public final String createParameter(String name, String nameString, String type, Role role, Level level, String errorMsg) {
-        name = getGetterName(name);
+    public final String createParameter(String nameString, String type, Role role, Level level, String errorMsg) {
         // TODO find how to do this correctly
         errorMsg = errorMsg.replaceAll("[\\\"]", "\\\\\"");
         // errorMsg = errorMsg.replaceAll("([^\\\\])(\\\\)([^\\\\])",

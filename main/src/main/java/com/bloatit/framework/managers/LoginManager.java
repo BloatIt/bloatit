@@ -17,9 +17,13 @@ import javassist.NotFoundException;
 
 import com.bloatit.framework.AuthToken;
 
-public class LoginManager {
+public final class LoginManager {
 
     private static final HashMap<UUID, AuthToken> authTokenList = new HashMap<UUID, AuthToken>();
+
+    // Desactivate default ctor
+    private LoginManager() {
+    }
 
     public static AuthToken loginByPassword(final String login, final String password) {
         try {
@@ -32,11 +36,6 @@ public class LoginManager {
     }
 
     public static AuthToken getByKey(final String key) {
-        if (authTokenList.containsKey(key)) {
-            return authTokenList.get(key);
-        } else {
-            return null;
-        }
-
+        return authTokenList.get(UUID.fromString(key));
     }
 }

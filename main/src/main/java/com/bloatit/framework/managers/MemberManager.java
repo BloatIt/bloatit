@@ -17,7 +17,11 @@ import com.bloatit.model.data.DBRequests;
 import com.bloatit.model.data.DaoActor;
 import com.bloatit.model.data.DaoMember;
 
-public class MemberManager {
+public final class MemberManager {
+    
+    // Desactivate default ctor
+    private MemberManager() {
+    }
 
     public static Member getMemberByLogin(final String login) {
         final DaoMember daoMember = DaoMember.getByLogin(login);

@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Identifiable;
 import com.bloatit.framework.Member;
@@ -15,7 +16,13 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.DateLocale;
 import com.bloatit.web.utils.DateParsingException;
 
-public class Loaders {
+public final class Loaders {
+
+    /**
+     * desactivate ctor
+     */
+    private Loaders() {
+    }
 
     public static <T> String toStr(final T obj) throws ConversionErrorException {
         if (obj == null) {
@@ -26,19 +33,19 @@ public class Loaders {
         try {
             return loader.toString(obj);
         } catch (final Exception e) {
-            throw new ConversionErrorException("Cannot convert " + obj + " to String.");
+            throw new ConversionErrorException("Cannot convert " + obj + " to String.", e);
         }
     }
 
     public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException {
-        if (value == "null") {
+        if (value.equals("null")) {
             return null;
         }
         final Loader<T> loader = (Loader<T>) getLoader(toClass);
         try {
             return loader.fromString(value);
         } catch (final Exception e) {
-            throw new ConversionErrorException("Cannot convert " + value + " to " + toClass.toString());
+            throw new ConversionErrorException("Cannot convert " + value + " to " + toClass.toString(), e);
         }
     }
 
@@ -96,6 +103,14 @@ public class Loaders {
 
         protected ConversionErrorException(final String message) {
             super(message);
+        }
+
+        public ConversionErrorException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public ConversionErrorException(Throwable cause) {
+            super(cause);
         }
     }
 
@@ -175,7 +190,7 @@ public class Loaders {
             try {
                 return DateFormat.getInstance().parse(data);
             } catch (final ParseException e) {
-                throw new NumberFormatException();
+                throw new FatalErrorException(e);
             }
         }
     }
@@ -186,15 +201,15 @@ public class Loaders {
             try {
                 return new DateLocale(data, Context.getSession().getLanguage().getLocale());
             } catch (final DateParsingException e) {
-                throw new NumberFormatException();
+                throw new FatalErrorException(e);
             }
         }
     }
 
-    private static abstract class ToIdentifiable extends Loader<Identifiable> {
+    private abstract static class ToIdentifiable extends Loader<Identifiable> {
         @Override
         public String toString(final Identifiable id) {
-            return new Integer(id.getId()).toString();
+            return String.valueOf(id.getId());
         }
     }
 

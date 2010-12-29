@@ -17,7 +17,11 @@ import com.bloatit.framework.lists.DemandList;
 import com.bloatit.model.data.DBRequests;
 import com.bloatit.model.data.DaoDemand;
 
-public class DemandManager {
+public final class DemandManager {
+
+    // Desactivate default ctor
+    private DemandManager(){
+    }
 
     public static PageIterable<Demand> getDemands() {
         return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));

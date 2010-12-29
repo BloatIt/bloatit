@@ -6,7 +6,12 @@ import com.bloatit.framework.Member;
 import com.bloatit.model.data.DaoGroup;
 import com.bloatit.model.data.DaoJoinGroupInvitation;
 
-public class GroupManager {
+public final class GroupManager {
+
+    // Desactivate default ctor
+    private GroupManager() {
+    }
+
     public static Group getByName(final String name) {
         return Group.create(DaoGroup.getByName(name));
     }
