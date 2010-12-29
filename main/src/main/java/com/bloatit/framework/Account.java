@@ -38,7 +38,7 @@ public abstract class Account extends Identifiable {
      * 
      * @return true if the authenticated user can access something.
      */
-    public boolean canAccessSomething() {
+    public final boolean canAccessSomething() {
         return new MoneyRight.Everything().canAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
     }
 
@@ -46,17 +46,17 @@ public abstract class Account extends Identifiable {
      * Every time a new transaction is done the modification date is update. This can be
      * used for security purpose.
      */
-    public Date getLastModificationDate() {
+    public final Date getLastModificationDate() {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getLastModificationDate();
     }
 
-    public BigDecimal getAmount() {
+    public final BigDecimal getAmount() {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getAmount();
     }
 
-    public PageIterable<Transaction> getTransactions() {
+    public final PageIterable<Transaction> getTransactions() {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return new TransactionList(getDaoAccount().getTransactions());
     }
@@ -64,12 +64,12 @@ public abstract class Account extends Identifiable {
     /**
      * The actor is the person that possess this account.
      */
-    public Actor getActor() {
+    public final Actor getActor() {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getActorUnprotected();
     }
 
-    public Date getCreationDate() {
+    public final Date getCreationDate() {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getCreationDate();
     }
@@ -80,7 +80,7 @@ public abstract class Account extends Identifiable {
      * 
      * @see getActor;
      */
-    protected Actor getActorUnprotected() {
+    protected final Actor getActorUnprotected() {
         if (getDaoAccount().getActor().getClass() == DaoMember.class) {
             return Member.create((DaoMember) getDaoAccount().getActor());
         } else if (getDaoAccount().getActor().getClass() == DaoGroup.class) {
@@ -90,7 +90,7 @@ public abstract class Account extends Identifiable {
     }
 
     @Override
-    public int getId() {
+    public final int getId() {
         return getDaoAccount().getId();
     }
 

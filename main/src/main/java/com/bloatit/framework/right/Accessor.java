@@ -33,22 +33,22 @@ public abstract class Accessor {
 
     protected abstract boolean can(EnumSet<Role> role, Action action);
 
-    public boolean canAccess(final EnumSet<Role> role, final Action action) {
+    public final boolean canAccess(final EnumSet<Role> role, final Action action) {
         if (role.contains(Role.ADMIN)) {
             return true;
         }
         return can(role, action);
     }
 
-    public boolean canAccess(final Action action) {
+    public final boolean canAccess(final Action action) {
         return canAccess(EnumSet.of(Role.ADMIN), action);
     }
 
-    public void tryAccess(final Action action) {
+    public final void tryAccess(final Action action) {
         tryAccess(EnumSet.of(Role.ADMIN), action);
     }
 
-    public void tryAccess(final EnumSet<Role> role, final Action action) {
+    public final void tryAccess(final EnumSet<Role> role, final Action action) {
         if (!canAccess(role, action)) {
             Log.framework().error("UnauthorizedOperationException - " + role + " - " + action + " - " + getClass().getName());
             throw new UnauthorizedOperationException();

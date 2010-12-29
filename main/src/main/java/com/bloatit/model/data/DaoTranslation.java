@@ -30,7 +30,6 @@ public final class DaoTranslation extends DaoKudosable {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String text;
 
-    @SuppressWarnings("unused")
     @ManyToOne(optional = false)
     private DaoDescription description;
 
@@ -73,6 +72,10 @@ public final class DaoTranslation extends DaoKudosable {
 
     protected DaoTranslation() {
         super();
+    }
+
+    protected final DaoDescription getDescription() {
+        return description;
     }
 
 }

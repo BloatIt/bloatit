@@ -5,7 +5,7 @@ import java.util.Locale;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoTranslation;
 
-public class Translation extends Kudosable {
+public final class Translation extends Kudosable {
 
     private final DaoTranslation dao;
 

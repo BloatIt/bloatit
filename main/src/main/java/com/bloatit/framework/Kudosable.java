@@ -14,23 +14,23 @@ public abstract class Kudosable extends UserContent {
 
     protected abstract DaoKudosable getDaoKudosable();
 
-    public boolean canKudos() {
+    public final boolean canKudos() {
         return !getDaoKudosable().hasKudosed(getToken().getMember().getDao());
     }
 
-    public void unkudos() {
+    public final void unkudos() {
         addKudos(-1);
     }
 
-    public void kudos() {
+    public final void kudos() {
         addKudos(1);
     }
 
-    public State getState() {
+    public final State getState() {
         return getDaoKudosable().getState();
     }
 
-    protected void setState(final State newState) {
+    protected final void setState(final State newState) {
         getDaoKudosable().setState(newState);
     }
 
@@ -79,10 +79,13 @@ public abstract class Kudosable extends UserContent {
                 setState(State.REJECTED);
             }
             break;
+        default:
+            assert false;
+            break;
         }
     }
 
-    public int getPopularity() {
+    public final int getPopularity() {
         return getDaoKudosable().getPopularity();
     }
 }

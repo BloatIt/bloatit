@@ -4,7 +4,7 @@ import com.bloatit.framework.right.MemberRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoJoinGroupInvitation;
 
-public class JoinGroupInvitation extends Identifiable {
+public final class JoinGroupInvitation extends Identifiable {
 
     private final DaoJoinGroupInvitation dao;
 

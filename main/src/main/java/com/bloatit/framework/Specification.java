@@ -5,7 +5,7 @@ import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoSpecification;
 import com.bloatit.model.data.DaoUserContent;
 
-public class Specification extends UserContent {
+public final class Specification extends UserContent {
 
     private final DaoSpecification dao;
 

@@ -3,7 +3,7 @@ package com.bloatit.framework;
 import com.bloatit.model.data.DaoKudos;
 import com.bloatit.model.data.DaoUserContent;
 
-public class Kudos extends UserContent {
+public final class Kudos extends UserContent {
 
     private final DaoKudos dao;
 

@@ -18,7 +18,7 @@ import com.bloatit.model.data.DaoOffer;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
-public class Demand extends Kudosable {
+public final class Demand extends Kudosable {
     private final DaoDemand dao;
 
     public static Demand create(final DaoDemand dao) {
@@ -113,11 +113,6 @@ public class Demand extends Kudosable {
 
     public PageIterable<Offer> getOffers() {
         return new OfferList(dao.getOffersFromQuery());
-    }
-
-    @Override
-    public int getPopularity() {
-        return dao.getPopularity();
     }
 
     public Specification getSpecification() {

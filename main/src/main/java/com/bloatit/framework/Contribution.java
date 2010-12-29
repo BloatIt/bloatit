@@ -8,7 +8,7 @@ import com.bloatit.model.data.DaoContribution;
 import com.bloatit.model.data.DaoContribution.State;
 import com.bloatit.model.data.DaoUserContent;
 
-public class Contribution extends UserContent {
+public final class Contribution extends UserContent {
 
     private final DaoContribution dao;
 

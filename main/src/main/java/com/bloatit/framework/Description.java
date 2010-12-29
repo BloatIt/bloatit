@@ -6,7 +6,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.lists.TranslationList;
 import com.bloatit.model.data.DaoDescription;
 
-public class Description extends Identifiable {
+public final class Description extends Identifiable {
 
     private final DaoDescription dao;
 

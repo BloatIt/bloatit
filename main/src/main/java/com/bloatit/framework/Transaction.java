@@ -13,7 +13,7 @@ import com.bloatit.model.data.DaoInternalAccount;
 import com.bloatit.model.data.DaoTransaction;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
-public class Transaction extends Identifiable {
+public final class Transaction extends Identifiable {
 
     private final DaoTransaction dao;
 

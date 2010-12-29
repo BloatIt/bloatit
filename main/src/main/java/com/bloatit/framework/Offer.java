@@ -7,7 +7,7 @@ import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
 
-public class Offer extends Kudosable {
+public final class Offer extends Kudosable {
 
     private final DaoOffer dao;
 

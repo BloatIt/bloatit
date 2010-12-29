@@ -6,7 +6,7 @@ import com.bloatit.model.data.DaoActor;
 import com.bloatit.model.data.DaoGroup;
 import com.bloatit.model.data.DaoGroup.Right;
 
-public class Group extends Actor {
+public final class Group extends Actor {
 
     private final DaoGroup dao;
 

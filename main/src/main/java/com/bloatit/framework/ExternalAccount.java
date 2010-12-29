@@ -6,7 +6,7 @@ import com.bloatit.model.data.DaoAccount;
 import com.bloatit.model.data.DaoExternalAccount;
 import com.bloatit.model.data.DaoExternalAccount.AccountType;
 
-public class ExternalAccount extends Account {
+public final class ExternalAccount extends Account {
 
     private final DaoExternalAccount dao;
 

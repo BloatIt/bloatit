@@ -8,19 +8,19 @@ public abstract class UserContent extends Identifiable {
 
     protected abstract DaoUserContent getDaoUserContent();
 
-    public Member getAuthor() {
+    public final Member getAuthor() {
         return Member.create(getDaoUserContent().getAuthor());
     }
 
-    public Date getCreationDate() {
+    public final Date getCreationDate() {
         return getDaoUserContent().getCreationDate();
     }
 
-    public void setAsGroup(final Group asGroup) {
+    public final void setAsGroup(final Group asGroup) {
         getDaoUserContent().setAsGroup(asGroup.getDao());
     }
 
-    public Group getAsGroup() {
+    public final Group getAsGroup() {
         return Group.create(getDaoUserContent().getAsGroup());
     }
 

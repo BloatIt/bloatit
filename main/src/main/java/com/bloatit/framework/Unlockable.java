@@ -29,11 +29,11 @@ public class Unlockable {
 
     private AuthToken token = null;
 
-    public void authenticate(final AuthToken token) {
+    public final void authenticate(final AuthToken token) {
         this.token = token;
     }
 
-    protected AuthToken getToken() {
+    protected final AuthToken getToken() {
         if (token == null) {
             throw new UnauthorizedOperationException();
         }

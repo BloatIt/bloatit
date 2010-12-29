@@ -19,7 +19,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  * 
  * @author tguyard
  */
-public class InternalAccount extends Account {
+public final class InternalAccount extends Account {
 
     private final DaoInternalAccount dao;
 

@@ -19,7 +19,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.model.data.util.SessionManager;
 
-public class AuthToken {
+public final class AuthToken {
     private final Member member;
     private final UUID key;
 

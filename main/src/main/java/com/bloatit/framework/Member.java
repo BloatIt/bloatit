@@ -20,7 +20,7 @@ import com.bloatit.model.data.DaoJoinGroupInvitation;
 import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoMember.Role;
 
-public class Member extends Actor {
+public final class Member extends Actor {
 
     private final DaoMember dao;
 
@@ -91,10 +91,11 @@ public class Member extends Actor {
         return dao.getKarma();
     }
 
+    private static final int INFLUENCE_MULTIPLICATOR = 10;
     protected int calculateInfluence() {
         final int karma = getKarma();
         if (karma > 0) {
-            return (int) (Math.log10(karma) * 10 + 1);
+            return (int) (Math.log10(karma) * INFLUENCE_MULTIPLICATOR + 1);
         } else if (karma == 0) {
             return 1;
         }

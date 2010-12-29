@@ -17,6 +17,9 @@ import com.bloatit.framework.Unlockable;
  */
 public abstract class RightManager {
 
+    protected RightManager() {
+    }
+
     /**
      * REMEMBER: The order is important: first the group related roles, then the other
      * roles, from the less privileged to the more. You can calculate the role of a user
@@ -137,7 +140,7 @@ public abstract class RightManager {
      */
     protected static class ReadOnly extends Accessor {
         @Override
-        protected boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final EnumSet<Role> role, final Action action) {
             return Action.READ == action;
         }
     }
@@ -147,7 +150,7 @@ public abstract class RightManager {
      */
     protected static class Private extends Accessor {
         @Override
-        protected boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final EnumSet<Role> role, final Action action) {
             return ownerCanRead(role, action) || ownerCanWrite(role, action);
         }
     }
@@ -158,7 +161,7 @@ public abstract class RightManager {
      */
     protected static class Public extends Accessor {
         @Override
-        protected boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final EnumSet<Role> role, final Action action) {
             return canRead(action) || ownerCanWrite(role, action);
         }
     }
@@ -169,7 +172,7 @@ public abstract class RightManager {
      */
     protected static class PublicModerable extends Accessor {
         @Override
-        protected boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final EnumSet<Role> role, final Action action) {
             return canRead(action) || ownerCanWrite(role, action) || modoCanDelete(role, action) || modoCanWrite(role, action);
         }
     }
@@ -179,7 +182,7 @@ public abstract class RightManager {
      */
     protected static class PrivateReadOnly extends Accessor {
         @Override
-        protected boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final EnumSet<Role> role, final Action action) {
             return ownerCanRead(role, action);
         }
     }

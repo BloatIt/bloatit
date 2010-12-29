@@ -61,7 +61,7 @@ public final class DaoGroup extends DaoActor {
      * @return the newly created group.
      * @throws HibernateException
      */
-    public static DaoGroup createAndPersiste(final String login, final String email, final Right right) throws HibernateException {
+    public static DaoGroup createAndPersiste(final String login, final String email, final Right right) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoGroup group = new DaoGroup(login, email, right);
         try {
