@@ -41,7 +41,7 @@ public class DaoContribution extends DaoUserContent {
     @Enumerated
     private State state;
 
-    @Column(length = 144, nullable = false, updatable = false)
+    @Column(length = 144, updatable = false)
     private String comment;
 
     /**
@@ -57,18 +57,18 @@ public class DaoContribution extends DaoUserContent {
      * Create a new contribution. Update the internal account of the member (block the
      * value that is reserved to this contribution)
      * 
-     * @param member the person making the contribution
-     * @param demand the demand on which we add a contribution
-     * @param amount the amount of the contribution
-     * @param comment the comment
-     * @throws NullPointerException if any of the parameter is null
+     * @param member the person making the contribution.
+     * @param demand the demand on which we add a contribution.
+     * @param amount the amount of the contribution.
+     * @param comment the comment can be null.
+     * @throws NullPointerException if any of the parameter is null except comment.
      * @throws NotEnoughMoneyException if the account of "member" has not enough money in
      *         it.
      */
     public DaoContribution(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final String comment)
                                                                                                                          throws NotEnoughMoneyException {
         super(member);
-        if (comment == null || demand == null) {
+        if (demand == null) {
             throw new NullPointerException();
         }
         if (amount.compareTo(new BigDecimal("0")) <= 0) {
