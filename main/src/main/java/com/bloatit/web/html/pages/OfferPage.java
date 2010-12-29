@@ -8,13 +8,13 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.web.html.pages;
 
 import java.math.BigDecimal;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.web.actions.OfferAction;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
@@ -25,6 +25,7 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlDateField;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.utils.DateLocale;
@@ -35,19 +36,19 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 @ParamContainer("offer")
 public class OfferPage extends LoggedPage {
 
-    @RequestParam(name = "idea")
+    @RequestParam(level=Level.ERROR)
     private Demand targetIdea = null;
 
-    @RequestParam(name = "price", role = Role.SESSION)
+    @RequestParam(name = OfferAction.PRICE_CODE, defaultValue="", role = Role.SESSION)
     private final BigDecimal price;
 
-    @RequestParam(name = "expiry", role = Role.SESSION)
+    @RequestParam(name = OfferAction.EXPIRY_CODE, defaultValue="", role = Role.SESSION)
     private final DateLocale expiryDate;
 
-    @RequestParam(name = "title", role = Role.SESSION)
+    @RequestParam(name = OfferAction.TITLE_CODE, defaultValue="", role = Role.SESSION)
     private final String title;
-
-    @RequestParam(name = "description", role = Role.SESSION)
+    
+    @RequestParam(name = OfferAction.DESCRIPTION_CODE, defaultValue="", role = Role.SESSION)
     private final String description;
 
     public OfferPage(final OfferPageUrl url) throws RedirectException {
@@ -57,15 +58,6 @@ public class OfferPage extends LoggedPage {
         this.expiryDate = url.getExpiryDate();
         this.title = url.getTitle();
         this.description = url.getDescription();
-
-        final OfferPageUrl offerUrl = url.clone();
-        offerUrl.setPrice(new BigDecimal("12"));
-        offerUrl.urlString();
-
-        final IdeaPageUrl demandUrl = new IdeaPageUrl(targetIdea);
-        demandUrl.getDemandTabPaneUrl().getContributionUrl().getParticipationsListUrl();
-
-        addNotifications(url.getMessages());
     }
 
     @Override
@@ -85,27 +77,10 @@ public class OfferPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-
-        // TODO : remove and replace with parameter loading machanism
-        /*
-         * int ideaId = -1; if(this.parameters.containsKey("idea")){ try{ ideaId =
-         * Integer.parseInt(this.parameters.get("idea")); targetIdea =
-         * DemandManager.getDemandById(ideaId); } catch (NumberFormatException nfe){ } }
-         * if (ideaId == -1 ){ session.notifyBad(session.tr(
-         * "You need to choose an idea on which you'll contribute"));
-         * htmlResult.setRedirect(new DemandsPage(session)); return null; } if (targetIdea
-         * == null){
-         * session.notifyBad(session.tr("The idea you chose does not exists (id :"
-         * +ideaId+")")); htmlResult.setRedirect(new DemandsPage(session)); return null; }
-         */
-        // !TODO
-
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"), 2);
 
         // Create offer form
-
-        final OfferActionUrl offerActionUrl = new OfferActionUrl();
-        // offerActionUrl.setIdea(targetIdea);
+        final OfferActionUrl offerActionUrl = new OfferActionUrl(targetIdea);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
 
         // Idea title
@@ -113,34 +88,28 @@ public class OfferPage extends LoggedPage {
         offerPageContainer.add(t);
 
         // Title field
-        final HtmlTextField titleField = new HtmlTextField(this.title); // TODO
-        titleField.setLabel(this.session.tr("Add a title to the offer : "));
-        titleField.setName(OfferAction.TITLE_CODE);
+        final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, this.session.tr("Add a title to the offer : "));
+        titleField.setDefaultValue(title);
         offerForm.add(titleField);
 
         // Price field
-        final HtmlTextField priceField = new HtmlTextField(price == null ? "" : price.toPlainString()); // TODO
-        priceField.setLabel(this.session.tr("Offer price : "));
-        priceField.setName(OfferAction.PRICE_CODE);
+        final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, this.session.tr("Offer price : "));
+        if(price!=null) priceField.setDefaultValue(price.toPlainString());
         offerForm.add(priceField);
 
         // Date field
-        // TODO : create a constructor with the language
-        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE);
-        dateField.setDefaultValue(this.expiryDate);
-        dateField.setLabel(this.session.tr("Expiration date : "));
+        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, this.session.tr("Expiration date : "));
+        dateField.setDefaultValue(expiryDate);
         offerForm.add(dateField);
 
-        final HtmlTextArea descriptionField = new HtmlTextArea(this.description, 10, 20); // TODO
-        descriptionField.setLabel(this.session.tr("Enter the description of the offer : "));
-        descriptionField.setName(OfferAction.DESCRIPTION_CODE);
+        final HtmlTextArea descriptionField = new HtmlTextArea(OfferAction.DESCRIPTION_CODE, this.session.tr("Enter the description of the offer : "), 10, 20);
+        descriptionField.setDefaultValue(description);
         offerForm.add(descriptionField);
 
-        final HtmlButton offerButton = new HtmlButton(session.tr("Make an offer"));
+        final HtmlSubmit offerButton = new HtmlSubmit(session.tr("Make an offer"));
         offerForm.add(offerButton);
 
         offerPageContainer.add(offerForm);
         return offerPageContainer;
     }
-
 }

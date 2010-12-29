@@ -98,7 +98,7 @@ public class IndexPage extends Page {
                 .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlParagraph(description));
 
-        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), session.tr("Create a new idea"));
+        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), session.tr("Submit a new idea"));
         descriptionBlock.add(createIdeaPageLink);
 
         return descriptionBlock;

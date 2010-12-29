@@ -10,28 +10,57 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.framework.Demand;
+import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.utils.DateLocale;
+import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
+import java.math.BigDecimal;
+import java.util.Locale;
 
 @ParamContainer("action/offer")
 public class OfferAction extends Action {
-
-    public final static String IDEA_CODE = "offer_idea";
     public final static String PRICE_CODE = "offer_price";
     public final static String EXPIRY_CODE = "offer_expiry";
     public final static String TITLE_CODE = "offer_title";
     public final static String DESCRIPTION_CODE = "offer_description";
 
+    @RequestParam(level=Level.ERROR, role=Role.GET)
+    private Demand targetIdea = null;
+
+    @RequestParam(name = PRICE_CODE, role = Role.POST)
+    private BigDecimal price;
+
+    @RequestParam(name = EXPIRY_CODE, role = Role.POST)
+    private DateLocale expiryDate;
+
+    @RequestParam(name = TITLE_CODE, role = Role.POST)
+    private String title;
+    
+    @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
+    private String description;
+    private final OfferActionUrl url;
+
     public OfferAction(final OfferActionUrl url) {
         super(url);
+
+        this.url = url;
+        this.description = url.getDescription();
+        this.title = url.getTitle();
+        this.expiryDate = url.getExpiryDate();
+        this.price = url.getPrice();
+        this.targetIdea = url.getTargetIdea();
     }
 
     @Override
     public String doProcess() {
-        // Handle errors here
-
-        // targetIdea.addOffer(price, , expiryDate);
-        return null;
-
+        targetIdea.authenticate(session.getAuthToken());
+        targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
+        return new IdeaPageUrl(targetIdea).urlString();
     }
 }
