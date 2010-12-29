@@ -19,6 +19,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
@@ -44,11 +45,11 @@ public abstract class DaoActor {
     @Basic(optional = false)
     @Column(unique = true, updatable = false)
     private String login;
-    
+
     @Basic(optional = false)
-//    @Column(unique = true)
+    // @Column(unique = true)
     private String email;
-    
+
     @Basic(optional = false)
     private Date dateCreation;
 
@@ -66,22 +67,22 @@ public abstract class DaoActor {
      * @param login is the login or name of this actor
      * @param email is the email of this actor. (No check is performed on the correctness
      *        of this email address)
-     * @throws NullPointerException if login or mail is null.
+     * @throws NonOptionalParameterException if login or mail is null.
      */
     protected DaoActor(final String login, final String email) {
         super();
         if (login == null || email == null) {
             Log.data().fatal("Login or email null!");
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
         if (login.isEmpty() || email.isEmpty()) {
             Log.data().fatal("Login or email empty!");
-            throw new FatalErrorException("login and email cannot be empty");
+            throw new NonOptionalParameterException("login and email cannot be empty");
         }
-        dateCreation = new Date();
-        this.login = login;
-        this.email = email;
-        internalAccount = new DaoInternalAccount(this);
+        setDateCreation(new Date());
+        setLogin(login);
+        setEmail(email);
+        setInternalAccount(new DaoInternalAccount(this));
     }
 
     /**
@@ -96,7 +97,7 @@ public abstract class DaoActor {
         return ((Long) q.uniqueResult()) > 0;
     }
 
-    public String getEmail() {
+    public final String getEmail() {
         return email;
     }
 
@@ -106,23 +107,23 @@ public abstract class DaoActor {
      * 
      * @param email the new email.
      */
-    public void setEmail(final String email) {
+    public final void setEmail(final String email) {
         this.email = email;
     }
 
-    public String getLogin() {
+    public final String getLogin() {
         return login;
     }
 
-    public Date getDateCreation() {
+    public final Date getDateCreation() {
         return dateCreation;
     }
 
-    public DaoInternalAccount getInternalAccount() {
+    public final DaoInternalAccount getInternalAccount() {
         return internalAccount;
     }
 
-    public DaoExternalAccount getExternalAccount() {
+    public final DaoExternalAccount getExternalAccount() {
         return externalAccount;
     }
 
@@ -132,14 +133,14 @@ public abstract class DaoActor {
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
-    public void setExternalAccount(final DaoExternalAccount externalAccount) {
+    public final void setExternalAccount(final DaoExternalAccount externalAccount) {
         if (externalAccount.getActor() != this) {
             throw new FatalErrorException("Add an external account to the wrong user.", null);
         }
         this.externalAccount = externalAccount;
     }
 
-    public Integer getId() {
+    public final Integer getId() {
         return id;
     }
 
@@ -147,38 +148,25 @@ public abstract class DaoActor {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
+    private void setInternalAccount(final DaoInternalAccount InternalAccount) {
+        internalAccount = InternalAccount;
+    }
+
+    private void setLogin(final String login) {
+        this.login = login;
+    }
+
+    private void setDateCreation(final Date dateJoin) {
+        dateCreation = dateJoin;
+    }
+
     protected DaoActor() {
         super();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setInternalAccount(final DaoInternalAccount InternalAccount) {
-        internalAccount = InternalAccount;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setLogin(final String login) {
-        this.login = login;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setDateCreation(final Date dateJoin) {
-        dateCreation = dateJoin;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setId(final Integer id) {
+    @SuppressWarnings("unused")
+    private void setId(final Integer id) {
         this.id = id;
     }
+
 }

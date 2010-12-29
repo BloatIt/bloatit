@@ -20,13 +20,14 @@ import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
  * A comment is a Kudosable content. It cannot be translated.
  */
 @Entity
-public class DaoComment extends DaoKudosable {
+public final class DaoComment extends DaoKudosable {
 
     // WARNING "TEXT" is not a standard SQL type.
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -62,18 +63,18 @@ public class DaoComment extends DaoKudosable {
      * 
      * @param member is the author.
      * @param text is the content.
-     * @throws NullPointerException if the text is null
+     * @throws NonOptionalParameterException if the text is null
      * @see DaoKudosable#DaoKudosable(DaoMember)
      */
     protected DaoComment(final DaoMember member, final String text) {
         super(member);
         if (text == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        this.text = text;
+        setText(text);
     }
 
-    public String getText() {
+    public final String getText() {
         return text;
     }
 
@@ -84,18 +85,18 @@ public class DaoComment extends DaoKudosable {
      * @return the list of this comment children. return an empty list if there is no
      *         child.
      */
-    public PageIterable<DaoComment> getChildrenFromQuery() {
+    public final PageIterable<DaoComment> getChildrenFromQuery() {
         return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this").setEntity("this", this);
     }
 
-    protected Set<DaoComment> getChildren() {
+    protected final Set<DaoComment> getChildren() {
         return children;
     }
 
     /**
      * @throws NullPointerException if the comment is null.
      */
-    public void addChildComment(final DaoComment comment) {
+    public final void addChildComment(final DaoComment comment) {
         // if (comment == null) {
         // throw new NullPointerException();
         // }
@@ -108,44 +109,31 @@ public class DaoComment extends DaoKudosable {
     // For hibernate mapping
     // ======================================================================
 
+    private void setText(final String text) {
+        this.text = text;
+    }
+
+    private void setFather(final DaoComment Comment) {
+        father = Comment;
+    }
+
     /**
      * You should never use this attribute. It is for hibernate only.
      */
     @ManyToOne(optional = true)
     private DaoComment father;
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
     protected DaoComment() {
         super();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setText(final String text) {
-        this.text = text;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setChildren(final Set<DaoComment> children) {
+    @SuppressWarnings("unused")
+    private void setChildren(final Set<DaoComment> children) {
         this.children = children;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setFather(final DaoComment Comment) {
-        father = Comment;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoComment getFather() {
+    @SuppressWarnings("unused")
+    private DaoComment getFather() {
         return father;
     }
 }

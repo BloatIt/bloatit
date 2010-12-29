@@ -20,6 +20,9 @@
 		<!-- Drop and re-create the database schema on startup -->
 		<!-- <property name="hbm2ddl.auto">update</property> -->
 		<property name="hibernate.jdbc.batch_size">25</property>
+		
+		
+		<property name="hibernate.id.new_generator_mappings">true</property>
 
 		 
 		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>

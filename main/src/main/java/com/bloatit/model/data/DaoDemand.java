@@ -23,6 +23,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
@@ -33,7 +34,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  */
 @Entity
 @Indexed
-public class DaoDemand extends DaoKudosable {
+public final class DaoDemand extends DaoKudosable {
 
     /**
      * This is a calculated value with the sum of the value of all contributions.
@@ -77,17 +78,17 @@ public class DaoDemand extends DaoKudosable {
      * @param member the author of the demand
      * @param description
      */
-    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription Description) {
+    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoDemand Demand = new DaoDemand(member, Description);
+        final DaoDemand demand = new DaoDemand(member, description);
         try {
-            session.save(Demand);
+            session.save(demand);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
         }
-        return Demand;
+        return demand;
     }
 
     /**
@@ -95,24 +96,24 @@ public class DaoDemand extends DaoKudosable {
      * 
      * @param member is the author of the demand
      * @param description is the description ...
-     * @throws NullPointerException if any of the parameter is null.
+     * @throws NonOptionalParameterException if any of the parameter is null.
      */
     protected DaoDemand(final DaoMember member, final DaoDescription description) {
         super(member);
         if (description == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
         setState(State.VALIDATED);
-        this.description = description;
-        this.specification = null;
-        this.contribution = BigDecimal.ZERO;
+        setDescription(description);
+        setSpecification(null);
+        setContribution(BigDecimal.ZERO);
     }
 
     /**
      * Delete this DaoDemand from the database. "this" will remain, but unmapped. (You
      * shoudn't use it then)
      */
-    public void delete() {
+    public final void delete() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         session.delete(this);
     }
@@ -124,7 +125,7 @@ public class DaoDemand extends DaoKudosable {
      * @param content a string contain the specification (WARNING : UNTESTED)(must be non
      *        null).
      */
-    public void createSpecification(final DaoMember member, final String content) {
+    public final void createSpecification(final DaoMember member, final String content) {
         specification = new DaoSpecification(member, content, this);
     }
 
@@ -137,10 +138,10 @@ public class DaoDemand extends DaoKudosable {
      * @param dateExpir this is when the offer should be finish ?
      * @return the newly created offer.
      */
-    public DaoOffer addOffer(final DaoMember member, final BigDecimal amount, final DaoDescription description, final Date dateExpir) {
-        final DaoOffer Offer = new DaoOffer(member, this, amount, description, dateExpir);
-        offers.add(Offer);
-        return Offer;
+    public final DaoOffer addOffer(final DaoMember member, final BigDecimal amount, final DaoDescription description, final Date dateExpir) {
+        final DaoOffer offer = new DaoOffer(member, this, amount, description, dateExpir);
+        offers.add(offer);
+        return offer;
     }
 
     /**
@@ -148,7 +149,7 @@ public class DaoDemand extends DaoKudosable {
      * 
      * @param Offer the offer we want to delete.
      */
-    public void removeOffer(final DaoOffer offer) {
+    public final void removeOffer(final DaoOffer offer) {
         // TODO test me !
         offers.remove(offer);
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
@@ -162,7 +163,7 @@ public class DaoDemand extends DaoKudosable {
      * @param comment a <= 144 char comment on this contribution
      * @throws NotEnoughMoneyException
      */
-    public void addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public final void addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             Log.data().fatal("Cannot create a contribution with this amount " + amount.toEngineeringString() + " by member " + member.getId());
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
@@ -176,18 +177,18 @@ public class DaoDemand extends DaoKudosable {
         contribution = contribution.add(amount);
     }
 
-    public DaoSpecification getSpecification() {
+    public final DaoSpecification getSpecification() {
         return specification;
     }
 
-    public DaoDescription getDescription() {
+    public final DaoDescription getDescription() {
         return description;
     }
 
     /**
      * Use a HQL query to get the offers as a PageIterable collection
      */
-    public PageIterable<DaoOffer> getOffersFromQuery() {
+    public final PageIterable<DaoOffer> getOffersFromQuery() {
         return new QueryCollection<DaoOffer>("from DaoOffer as f where f.demand = :this").setEntity("this", this);
     }
 
@@ -196,7 +197,7 @@ public class DaoDemand extends DaoKudosable {
      * 
      * @return the current offer for this demand, or null if there is no offer.
      */
-    public DaoOffer getCurrentOffer() {
+    public final DaoOffer getCurrentOffer() {
         // TODO test me !
 
         // First try to find a validated offer.
@@ -204,7 +205,7 @@ public class DaoDemand extends DaoKudosable {
                 "WHERE demand = :this AND state = :state " + //
                 "ORDER BY amount ASC, creationDate DESC ";
 
-        Query validateQuery = SessionManager.createQuery(validatedQueriStr).setEntity("this", this)
+        final Query validateQuery = SessionManager.createQuery(validatedQueriStr).setEntity("this", this)
                 .setParameter("state", DaoKudosable.State.VALIDATED);
         if (validateQuery.iterate().hasNext()) {
             return (DaoOffer) validateQuery.iterate().next();
@@ -224,45 +225,45 @@ public class DaoDemand extends DaoKudosable {
         }
     }
 
-    public Set<DaoOffer> getOffers() {
+    public final Set<DaoOffer> getOffers() {
         return offers;
     }
 
     /**
      * Use a HQL query to get the contributions as a PageIterable collection
      */
-    public PageIterable<DaoContribution> getContributionsFromQuery() {
+    public final PageIterable<DaoContribution> getContributionsFromQuery() {
         return new QueryCollection<DaoContribution>("from DaoContribution as f where f.demand = :this").setEntity("this", this);
     }
 
-    public Set<DaoContribution> getContributions() {
+    public final Set<DaoContribution> getContributions() {
         return contributions;
     }
 
     /**
      * Use a HQL query to get the first level comments as a PageIterable collection
      */
-    public PageIterable<DaoComment> getCommentsFromQuery() {
+    public final PageIterable<DaoComment> getCommentsFromQuery() {
         return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(getComments(), ""), SessionManager
                 .getSessionFactory().getCurrentSession().createFilter(getComments(), "select count(*)"));
     }
 
-    public Set<DaoComment> getComments() {
+    public final Set<DaoComment> getComments() {
         return comments;
     }
 
-    public void addComment(final DaoComment comment) {
+    public final void addComment(final DaoComment comment) {
         comments.add(comment);
     }
 
-    public BigDecimal getContribution() {
+    public final BigDecimal getContribution() {
         return contribution;
     }
 
     /**
      * @return the minimum value of the contribution on this demand.
      */
-    public BigDecimal getContributionMin() {
+    public final BigDecimal getContributionMin() {
         return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
                 .setEntity("this", this).uniqueResult();
     }
@@ -270,7 +271,7 @@ public class DaoDemand extends DaoKudosable {
     /**
      * @return the maximum value of the contribution on this demand.
      */
-    public BigDecimal getContributionMax() {
+    public final BigDecimal getContributionMax() {
         return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")
                 .setEntity("this", this).uniqueResult();
     }
@@ -279,52 +280,34 @@ public class DaoDemand extends DaoKudosable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
+    private void setSpecification(final DaoSpecification Specification) {
+        specification = Specification;
+    }
+
+    private void setDescription(final DaoDescription Description) {
+        description = Description;
+    }
+
+    private void setContribution(final BigDecimal contribution) {
+        this.contribution = contribution;
+    }
+
     protected DaoDemand() {
         super();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setSpecification(final DaoSpecification Specification) {
-        specification = Specification;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setDescription(final DaoDescription Description) {
-        description = Description;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setOffers(final Set<DaoOffer> Offers) {
+    @SuppressWarnings("unused")
+    private void setOffers(final Set<DaoOffer> Offers) {
         offers = Offers;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setContributions(final Set<DaoContribution> Contributions) {
+    @SuppressWarnings("unused")
+    private void setContributions(final Set<DaoContribution> Contributions) {
         contributions = Contributions;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setComments(final Set<DaoComment> comments) {
+    @SuppressWarnings("unused")
+    private void setComments(final Set<DaoComment> comments) {
         this.comments = comments;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setContribution(final BigDecimal contribution) {
-        this.contribution = contribution;
     }
 }

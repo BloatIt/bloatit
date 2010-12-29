@@ -15,7 +15,13 @@ import com.bloatit.model.data.util.SessionManager;
  * object then the return value can be null (If the object is not found.)</li> <li>If a
  * method return a collection then the collection is always != null (but can be empty)</li>
  */
-public class DBRequests {
+public final class DBRequests {
+
+    /**
+     * Disactivating the default ctor.
+     */
+    private DBRequests() {
+    }
 
     /**
      * Make sure you test if the return is != null:
@@ -87,15 +93,15 @@ public class DBRequests {
         }
     }
 
-    public static PageIterable<DaoDemand> DemandsOrderByPopularity() {
+    public static PageIterable<DaoDemand> demandsOrderByPopularity() {
         return demandsOrderBy("popularity");
     }
 
-    public static PageIterable<DaoDemand> DemandsOrderByContribution() {
+    public static PageIterable<DaoDemand> demandsOrderByContribution() {
         return demandsOrderBy("contribution");
     }
 
-    public static PageIterable<DaoDemand> DemandsOrderByDate() {
+    public static PageIterable<DaoDemand> demandsOrderByDate() {
         return demandsOrderBy("creationDate");
     }
 

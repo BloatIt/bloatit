@@ -40,7 +40,7 @@ public class QueryCollection<T> implements PageIterable<T> {
         this.sizeQuery = sizeQuery;
     }
 
-    public QueryCollection<T> setEntity(final String name, final Object entity) {
+    public final QueryCollection<T> setEntity(final String name, final Object entity) {
         query.setEntity(name, entity);
         sizeQuery.setEntity(name, entity);
         return this;
@@ -48,30 +48,30 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Iterator<T> iterator() {
+    public final Iterator<T> iterator() {
         return query.list().iterator();
     }
 
     @Override
-    public void setPage(final int page) {
+    public final void setPage(final int page) {
         currentPage = page;
         query.setFirstResult(page * pageSize);
     }
 
     @Override
-    public void setPageSize(final int pageSize) {
+    public final void setPageSize(final int pageSize) {
         query.setMaxResults(pageSize);
         query.setFetchSize(pageSize);
         this.pageSize = pageSize;
     }
 
     @Override
-    public int getPageSize() {
+    public final int getPageSize() {
         return pageSize;
     }
 
     @Override
-    public int size() {
+    public final int size() {
         if (size == -1) {
             return size = ((Long) sizeQuery.uniqueResult()).intValue();
         }
@@ -79,9 +79,8 @@ public class QueryCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public int pageNumber() {
+    public final int pageNumber() {
         if (pageSize != 0) {
-
             return (int) Math.ceil((double) size() / (double) pageSize);
         } else {
             return 1;
@@ -89,7 +88,7 @@ public class QueryCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public int getCurrentPage() {
+    public final int getCurrentPage() {
         return currentPage;
     }
 }

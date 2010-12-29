@@ -9,6 +9,7 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.search.annotations.Indexed;
 
 import com.bloatit.common.Log;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 
 /**
  * A user content is a content created by a user. There is no table DaoUserContent (the
@@ -39,34 +40,34 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * Initialize the creation date to now.
      * 
      * @param member is the author of this UserContent.
-     * @throws NullPointerException if the member == null.
+     * @throws NonOptionalParameterException if the member == null.
      */
     public DaoUserContent(final DaoMember member) {
         super();
         if (member == null) {
             Log.data().fatal("Cannot create a DaoUserContent with a null member.");
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        this.member = member;
-        creationDate = new Date();
+        setMember(member);
+        setCreationDate(new Date());
     }
 
-    public DaoMember getAuthor() {
+    public final DaoMember getAuthor() {
         return member;
     }
 
-    public Date getCreationDate() {
+    public final Date getCreationDate() {
         return creationDate;
     }
 
-    public DaoGroup getAsGroup() {
+    public final DaoGroup getAsGroup() {
         return asGroup;
     }
 
     /**
      * null is the default value and means that the content has a member as author.
      */
-    public void setAsGroup(final DaoGroup asGroup) {
+    public final void setAsGroup(final DaoGroup asGroup) {
         this.asGroup = asGroup;
     }
 
@@ -74,24 +75,15 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
     protected DaoUserContent() {
         creationDate = new Date();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setAuthor(final DaoMember author) {
+    private void setMember(final DaoMember author) {
         member = author;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setCreationDate(final Date creationDate) {
+    private void setCreationDate(final Date creationDate) {
         this.creationDate = creationDate;
     }
 }

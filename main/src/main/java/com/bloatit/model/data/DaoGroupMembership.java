@@ -13,7 +13,7 @@ import com.bloatit.model.data.util.SessionManager;
  * This class is for Hibernate only.
  */
 @Entity
-public class DaoGroupMembership extends DaoIdentifiable {
+class DaoGroupMembership extends DaoIdentifiable {
 
     /**
      * TODO : declare a composite ID !
@@ -44,21 +44,21 @@ public class DaoGroupMembership extends DaoIdentifiable {
         return (DaoGroupMembership) q.uniqueResult();
     }
 
-    protected DaoGroupMembership(final DaoMember Member, final DaoGroup Group, final boolean isAdmin) {
-        member = Member;
-        group = Group;
-        this.isAdmin = isAdmin;
+    protected DaoGroupMembership(final DaoMember member, final DaoGroup group, final boolean isAdmin) {
+        setMember(member);
+        setGroup(group);
+        setAdmin(isAdmin);
     }
 
-    protected DaoMember getMember() {
+    protected final DaoMember getMember() {
         return member;
     }
 
-    protected DaoGroup getGroup() {
+    protected final DaoGroup getGroup() {
         return group;
     }
 
-    protected boolean isAdmin() {
+    protected final boolean isAdmin() {
         return isAdmin;
     }
 
@@ -66,22 +66,19 @@ public class DaoGroupMembership extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoGroupMembership() {
-        super();
+    private void setMember(final DaoMember member) {
+        this.member = member;
     }
 
-    protected void setMember(final DaoMember Member) {
-        member = Member;
-    }
-
-    protected void setGroup(final DaoGroup Group) {
+    private void setGroup(final DaoGroup Group) {
         group = Group;
     }
 
-    protected void setAdmin(final boolean isAdmin) {
+    private void setAdmin(final boolean isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    protected DaoGroupMembership() {
+        super();
     }
 }

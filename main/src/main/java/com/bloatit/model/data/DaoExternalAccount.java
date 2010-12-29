@@ -11,6 +11,7 @@ import javax.persistence.InheritanceType;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
@@ -18,7 +19,7 @@ import com.bloatit.model.data.util.SessionManager;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class DaoExternalAccount extends DaoAccount {
+public final class DaoExternalAccount extends DaoAccount {
 
     /**
      * Ok for now there is only IBAN code but they may have other types.
@@ -41,9 +42,9 @@ public class DaoExternalAccount extends DaoAccount {
      * 
      * @see DaoExternalAccount#DaoExternalAccount(DaoActor, AccountType, String)
      */
-    public static DaoExternalAccount createAndPersist(final DaoActor Actor, final AccountType type, final String bankCode) {
+    public static DaoExternalAccount createAndPersist(final DaoActor actor, final AccountType type, final String bankCode) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoExternalAccount account = new DaoExternalAccount(Actor, type, bankCode);
+        final DaoExternalAccount account = new DaoExternalAccount(actor, type, bankCode);
         try {
             session.save(account);
         } catch (final HibernateException e) {
@@ -56,27 +57,27 @@ public class DaoExternalAccount extends DaoAccount {
     /**
      * Create a new External account.
      * 
-     * @param Actor is the owner of the account
+     * @param actor is the owner of the account
      * @param type is the account type
      * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE !!
-     * @throws NullPointerException if any of the parameter is null
+     * @throws NonOptionalParameterException if any of the parameter is null
      * @throws anExceptionToDefine when we will check the validity of the IBAN we will
      *         have to throw an exception if its not valid.
      */
-    private DaoExternalAccount(final DaoActor Actor, final AccountType type, final String bankCode) {
-        super(Actor);
+    private DaoExternalAccount(final DaoActor actor, final AccountType type, final String bankCode) {
+        super(actor);
         if (type == null || bankCode == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        this.type = type;
-        this.bankCode = bankCode;
+        setType(type);
+        setBankCode(bankCode);
     }
 
-    public String getBankCode() {
+    public final String getBankCode() {
         return bankCode;
     }
 
-    public AccountType getType() {
+    public final AccountType getType() {
         return type;
     }
 
@@ -92,25 +93,16 @@ public class DaoExternalAccount extends DaoAccount {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoExternalAccount() {
-        super();
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setBankCode(final String bankCode) {
+    private void setBankCode(final String bankCode) {
         this.bankCode = bankCode;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setType(final AccountType type) {
+    private void setType(final AccountType type) {
         this.type = type;
+    }
+
+    protected DaoExternalAccount() {
+        super();
     }
 
 }

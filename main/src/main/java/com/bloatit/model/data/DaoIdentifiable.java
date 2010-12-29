@@ -24,7 +24,7 @@ public abstract class DaoIdentifiable {
     @DocumentId
     private Integer id;
 
-    public Integer getId() {
+    public final Integer getId() {
         return id;
     }
 
@@ -32,10 +32,8 @@ public abstract class DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setId(final Integer id) {
+    @SuppressWarnings("unused")
+    private void setId(final Integer id) {
         this.id = id;
     }
 }

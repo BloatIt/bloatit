@@ -18,7 +18,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  * A transaction is a transaction between an internal account and an other account.
  */
 @Entity
-public class DaoTransaction extends DaoIdentifiable {
+public final class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
@@ -32,15 +32,15 @@ public class DaoTransaction extends DaoIdentifiable {
     public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount)
             throws NotEnoughMoneyException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoTransaction Transaction = new DaoTransaction(from, to, amount);
+        final DaoTransaction transaction = new DaoTransaction(from, to, amount);
         try {
-            session.save(Transaction);
+            session.save(transaction);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             session.beginTransaction();
             throw e;
         }
-        return Transaction;
+        return transaction;
 
     }
 
@@ -58,33 +58,33 @@ public class DaoTransaction extends DaoIdentifiable {
     private DaoTransaction(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
         super();
         // TODO TEST ME MORE
-        if (from == to) {
+        if (from.equals(to)) {
             throw new FatalErrorException("Cannot create a transaction on the same account.", null);
         }
         if (!from.hasEnoughMoney(amount) || !to.hasEnoughMoney(amount.negate())) {
             throw new NotEnoughMoneyException();
         }
-        this.from = from;
-        this.to = to;
-        this.amount = amount;
-        creationDate = new Date();
+        setFrom(from);
+        setTo(to);
+        setAmount(amount);
+        setCreationDate(new Date());
         from.substractToAmountValue(amount);
         to.addToAmountValue(amount);
     }
 
-    public DaoInternalAccount getFrom() {
+    public final DaoInternalAccount getFrom() {
         return from;
     }
 
-    public DaoAccount getTo() {
+    public final DaoAccount getTo() {
         return to;
     }
 
-    public BigDecimal getAmount() {
+    public final BigDecimal getAmount() {
         return amount;
     }
 
-    public Date getCreationDate() {
+    public final Date getCreationDate() {
         return creationDate;
     }
 
@@ -92,39 +92,23 @@ public class DaoTransaction extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoTransaction() {
+    private DaoTransaction() {
         super();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setCreationDate(final Date creationDate) {
+    private void setCreationDate(final Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setAmount(final BigDecimal amount) {
+    private void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setTo(final DaoAccount to) {
+    private void setTo(final DaoAccount to) {
         this.to = to;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setFrom(final DaoInternalAccount from) {
+    private void setFrom(final DaoInternalAccount from) {
         this.from = from;
     }
-
 }

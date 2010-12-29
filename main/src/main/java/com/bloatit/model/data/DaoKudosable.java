@@ -46,7 +46,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
-    
+
     @Basic(optional = false)
     @Field(store = Store.NO)
     @Enumerated
@@ -90,18 +90,18 @@ public abstract class DaoKudosable extends DaoUserContent {
         return (Long) q.uniqueResult() > 0;
     }
 
-    public State getState() {
+    public final State getState() {
         return state;
     }
 
-    public int getPopularity() {
+    public final int getPopularity() {
         return popularity;
     }
 
     /**
      * The state must be update from the framework layer.
      */
-    public void setState(final State state) {
+    public final void setState(final State state) {
         this.state = state;
     }
 
@@ -109,32 +109,23 @@ public abstract class DaoKudosable extends DaoUserContent {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
     protected DaoKudosable() {
         super();
         popularity = 0;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setPopularity(final int popularity) {
+    @SuppressWarnings("unused")
+    private void setPopularity(final int popularity) {
         this.popularity = popularity;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected Set<DaoKudos> getKudos() {
+    @SuppressWarnings("unused")
+    private Set<DaoKudos> getKudos() {
         return kudos;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setKudos(final Set<DaoKudos> Kudos) {
+    @SuppressWarnings("unused")
+    private void setKudos(final Set<DaoKudos> Kudos) {
         kudos = Kudos;
     }
 

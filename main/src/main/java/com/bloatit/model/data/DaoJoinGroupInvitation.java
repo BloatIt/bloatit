@@ -8,13 +8,14 @@ import javax.persistence.ManyToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
  * TODO test me more ! This represent an invitation to join a group.
  */
 @Entity
-public class DaoJoinGroupInvitation extends DaoIdentifiable {
+public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * The state of an invitation track its time line. (First PENDING, then REFUSED or
@@ -49,16 +50,16 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     /**
      * Create a new invitation. Set the state to PENDING.
      * 
-     * @throws NullPointerException if any of the parameters are null.
+     * @throws NonOptionalParameterException if any of the parameters are null.
      */
     private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
         super();
         if (sender == null || reciever == null || group == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        this.sender = sender;
-        this.receiver = reciever;
-        this.group = group;
+        setSender(sender);
+        setReceiver(reciever);
+        setGroup(group);
         setState(State.PENDING);
     }
 
@@ -66,7 +67,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
      * Set the state to accepted and add the receiver into the list of members of
      * this.group. If the state is not PENDING then do nothing.
      */
-    public void accept() {
+    public final void accept() {
         if (state == State.PENDING) {
             receiver.addToGroup(group, false);
             setState(State.ACCEPTED);
@@ -76,25 +77,25 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     /**
      * Set the state to refused. If the state is not PENDING then do nothing.
      */
-    public void refuse() {
+    public final void refuse() {
         if (state == State.PENDING) {
             setState(State.REFUSED);
         }
     }
 
-    public DaoMember getSender() {
+    public final DaoMember getSender() {
         return sender;
     }
 
-    public DaoMember getReceiver() {
+    public final DaoMember getReceiver() {
         return receiver;
     }
 
-    public State getState() {
+    public final State getState() {
         return state;
     }
 
-    public DaoGroup getGroup() {
+    public final DaoGroup getGroup() {
         return group;
     }
 
@@ -107,37 +108,22 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setSender(final DaoMember sender) {
+    private void setSender(final DaoMember sender) {
         this.sender = sender;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setReceiver(final DaoMember reciever) {
+    private void setReceiver(final DaoMember reciever) {
         this.receiver = reciever;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setGroup(final DaoGroup group) {
+    private void setGroup(final DaoGroup group) {
         this.group = group;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoJoinGroupInvitation() {
+    private DaoJoinGroupInvitation() {
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setState(final State state) {
+    private void setState(final State state) {
         this.state = state;
     }
 }

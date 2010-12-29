@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.DaoMember.Role;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
@@ -95,37 +96,37 @@ public class GroupMemberTest extends TestCase {
         try {
             DaoMember.createAndPersist(null, "pass", "mail@nowhere.com");
             assertTrue(false);
-        } catch (NullPointerException e) {
+        } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", null, "mail@nowhere.com");
             assertTrue(false);
-        } catch (NullPointerException e) {
+        } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", "pass", null);
             assertTrue(false);
-        } catch (NullPointerException e) {
+        } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("", "pass", "mail@nowhere.com");
             assertTrue(false);
-        } catch (FatalErrorException e) {
+        } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", "", "mail@nowhere.com");
             assertTrue(false);
-        } catch (FatalErrorException e) {
+        } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", "pass", "");
             assertTrue(false);
-        } catch (FatalErrorException e) {
+        } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
     }
@@ -142,16 +143,17 @@ public class GroupMemberTest extends TestCase {
             assertTrue(true);
         }
         
-        try {
-            SessionManager.beginWorkUnit();
-            DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
-            SessionManager.flush();
-            DaoMember.createAndPersist("Tom", "plip", "yo@gmail.com"); // duplicate mail
-            SessionManager.endWorkUnitAndFlush();
-            assertTrue(false);
-        } catch (final HibernateException e) {
-            assertTrue(true);
-        }
+//        TODO the mail can be duplicate between group/member
+//        try {
+//            SessionManager.beginWorkUnit();
+//            DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
+//            SessionManager.flush();
+//            DaoMember.createAndPersist("Tom", "plip", "yo@gmail.com"); // duplicate mail
+//            SessionManager.endWorkUnitAndFlush();
+//            assertTrue(false);
+//        } catch (final HibernateException e) {
+//            assertTrue(true);
+//        }
     }
 
     public void testGetMemberByLogin() {

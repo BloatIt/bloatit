@@ -8,13 +8,15 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.model.data.util.NonOptionalParameterException;
+
 /**
  * A specification is some resources added to a demand to add some precisions to the
  * description. The specification are not translatable. The specification will probably
  * change a lot ... We will have to implement some version controling.
  */
 @Entity
-public class DaoSpecification extends DaoUserContent {
+public final class DaoSpecification extends DaoUserContent {
 
     @Field(index = Index.TOKENIZED, store = Store.NO)
     @Column(columnDefinition = "TEXT")
@@ -29,23 +31,23 @@ public class DaoSpecification extends DaoUserContent {
      * @param member is the author of the specification.
      * @param content is the content of the specification ...
      * @param demand yep, this is the demand on which the specification apply. Whhoohooo !
-     * @throws NullPointerException if member or demand are null.
+     * @throws NonOptionalParameterException if member or demand are null.
      */
     public DaoSpecification(final DaoMember member, final String content, final DaoDemand demand) {
         // TODO test me more.
         super(member);
         if (demand == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        this.content = content;
-        this.demand = demand;
+        setContent(content);
+        setDemand(demand);
     }
 
-    public String getContent() {
+    public final String getContent() {
         return content;
     }
 
-    public void setContent(final String content) {
+    public final void setContent(final String content) {
         this.content = content;
     }
 
@@ -53,24 +55,16 @@ public class DaoSpecification extends DaoUserContent {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
     protected DaoSpecification() {
         super();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoDemand getDemand() {
+    @SuppressWarnings("unused")
+    private DaoDemand getDemand() {
         return demand;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setDemand(final DaoDemand Demand) {
+    private void setDemand(final DaoDemand Demand) {
         demand = Demand;
     }
 

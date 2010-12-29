@@ -16,7 +16,7 @@ import com.bloatit.model.data.util.SessionManager;
  * @see DaoKudosable#addKudos(DaoMember, int)
  */
 @Entity
-public class DaoKudos extends DaoUserContent {
+public final class DaoKudos extends DaoUserContent {
 
     /**
      * The value can be positive or negative. The value should never be equals zero.
@@ -48,7 +48,7 @@ public class DaoKudos extends DaoUserContent {
         this.value = value;
     }
 
-    public int getValue() {
+    public final int getValue() {
         return value;
     }
 
@@ -56,17 +56,12 @@ public class DaoKudos extends DaoUserContent {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
     protected DaoKudos() {
         super();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setValue(final int value) {
+    @SuppressWarnings("unused")
+    private void setValue(final int value) {
         this.value = value;
     }
 }

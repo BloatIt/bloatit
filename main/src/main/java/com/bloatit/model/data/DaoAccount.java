@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 
 /**
  * A DaoAccount generalize the idea of bank account for our system. This class is mapped
@@ -57,17 +58,17 @@ public abstract class DaoAccount {
      * to 0
      * 
      * @param actor is the owner of this account
-     * @throws NullPointerException if the actor == null
+     * @throws NonOptionalParameterException if the actor == null
      */
     public DaoAccount(final DaoActor actor) {
         if (actor == null) {
             Log.data().fatal("Cannot create account with a null actor.");
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        this.actor = actor;
-        this.creationDate = new Date();
-        this.lastModificationDate = new Date();
-        this.amount = new BigDecimal("0");
+        setActor(actor);
+        setCreationDate(new Date());
+        setLastModificationDate(getCreationDate());
+        setAmount(BigDecimal.ZERO);
     }
 
     /**
@@ -76,7 +77,7 @@ public abstract class DaoAccount {
      * 
      * @return all the transactions that are from/to this account.
      */
-    public PageIterable<DaoTransaction> getTransactions() {
+    public final PageIterable<DaoTransaction> getTransactions() {
         return new QueryCollection<DaoTransaction>("from DaoTransaction as t where t.from = :this or t.to = :this").setEntity("this", this);
     }
 
@@ -89,23 +90,23 @@ public abstract class DaoAccount {
      */
     protected abstract boolean hasEnoughMoney(BigDecimal amount);
 
-    public Date getLastModificationDate() {
+    public final Date getLastModificationDate() {
         return lastModificationDate;
     }
 
-    public BigDecimal getAmount() {
+    public final BigDecimal getAmount() {
         return amount;
     }
 
-    public Integer getId() {
+    public final Integer getId() {
         return id;
     }
 
-    public DaoActor getActor() {
+    public final DaoActor getActor() {
         return actor;
     }
 
-    public Date getCreationDate() {
+    public final Date getCreationDate() {
         return creationDate;
     }
 
@@ -140,16 +141,13 @@ public abstract class DaoAccount {
      * modification date to now.
      */
     protected void resetModificationDate() {
-        lastModificationDate = new Date();
+        setLastModificationDate(new Date());
     }
 
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
     protected DaoAccount() {
         super();
     }
@@ -158,38 +156,29 @@ public abstract class DaoAccount {
      * This is for hibernate only. The amount must be modified by some higher level
      * methods.
      * 
+     * For test purpose it is protected, but it will be private.
+     * 
      * @see DaoTransaction
      * @param amount the new amount to set.
      */
-    protected void setAmount(final BigDecimal amount) {
+    protected final void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setLastModificationDate(final Date lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setId(final Integer id) {
+    @SuppressWarnings("unused")
+    private void setId(final Integer id) {
         this.id = id;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setActor(final DaoActor Actor) {
+    private void setLastModificationDate(final Date lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
+    }
+
+    private void setActor(final DaoActor Actor) {
         actor = Actor;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setCreationDate(final Date creationDate) {
+    private void setCreationDate(final Date creationDate) {
         this.creationDate = creationDate;
     }
 }

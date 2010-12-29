@@ -17,11 +17,13 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.model.data.util.NonOptionalParameterException;
+
 /**
  * An offer is a developer offer to a demand.
  */
 @Entity
-public class DaoOffer extends DaoKudosable {
+public final class DaoOffer extends DaoKudosable {
 
     /**
      * This is demand on which this offer is done.
@@ -53,34 +55,35 @@ public class DaoOffer extends DaoKudosable {
     @Basic(optional = false)
     private BigDecimal amount;
 
+    // TODO comment
     public DaoOffer(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final DaoDescription text, final Date dateExpire) {
         super(member);
         if (demand == null || text == null || dateExpire == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        this.demand = demand;
-        this.description = text;
-        this.dateExpire = dateExpire;
+        setDemand(demand);
+        setDescription(text);
+        setDateExpire(dateExpire);
         setAmount(amount);
     }
 
-    public Date getDateExpire() {
+    public final Date getDateExpire() {
         return dateExpire;
     }
 
-    public void setDateExpire(final Date dateExpire) {
+    public final void setDateExpire(final Date dateExpire) {
         this.dateExpire = dateExpire;
     }
 
-    public DaoDemand getDemand() {
+    public final DaoDemand getDemand() {
         return demand;
     }
 
-    public DaoDescription getDescription() {
+    public final DaoDescription getDescription() {
         return description;
     }
 
-    public BigDecimal getAmount() {
+    public final BigDecimal getAmount() {
         return amount;
     }
 
@@ -88,31 +91,19 @@ public class DaoOffer extends DaoKudosable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
     protected DaoOffer() {
         super();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setDemand(final DaoDemand Demand) {
+    private void setDemand(final DaoDemand Demand) {
         demand = Demand;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setDescription(final DaoDescription text) {
+    private void setDescription(final DaoDescription text) {
         description = text;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setAmount(final BigDecimal amount) {
+    private void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 }

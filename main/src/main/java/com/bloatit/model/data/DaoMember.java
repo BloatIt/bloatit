@@ -13,10 +13,12 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.DaoJoinGroupInvitation.State;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
@@ -24,7 +26,7 @@ import com.bloatit.model.data.util.SessionManager;
  * you ...
  */
 @Entity
-public class DaoMember extends DaoActor {
+public final class DaoMember extends DaoActor {
 
     public enum Role {
         NORMAL, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
@@ -54,7 +56,7 @@ public class DaoMember extends DaoActor {
      *         member as a non unique login. If an exception is thrown then the
      *         transaction is rolled back and reopened.
      */
-    public static DaoMember createAndPersist(final String login, final String password, final String email) throws HibernateException {
+    public static DaoMember createAndPersist(final String login, final String password, final String email) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoMember theMember = new DaoMember(login, password, email);
         try {
@@ -100,29 +102,29 @@ public class DaoMember extends DaoActor {
     private DaoMember(final String login, final String password, final String email) {
         super(login, email);
         if (password == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
         if (password.isEmpty()) {
-            throw new FatalErrorException("Password cannot be null!");
+            throw new NonOptionalParameterException("Password cannot be null!");
         }
         setRole(Role.NORMAL);
-        this.password = password;
-        this.karma = 0;
-        this.fullname = "";
+        setPassword(password);
+        setKarma(0);
+        setFullname("");
     }
 
     /**
      * @param aGroup the group in which this member is added.
      * @param isAdmin tell if the member is an admin of the group 'aGroup'
      */
-    public void addToGroup(final DaoGroup aGroup, final boolean isAdmin) {
+    public final void addToGroup(final DaoGroup aGroup, final boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(this, aGroup, isAdmin));
     }
 
     /**
      * @param aGroup the group from which this member is removed.
      */
-    public void removeFromGroup(final DaoGroup aGroup) {
+    public final void removeFromGroup(final DaoGroup aGroup) {
         final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
         groupMembership.remove(link);
         aGroup.getGroupMembership().remove(link);
@@ -135,83 +137,83 @@ public class DaoMember extends DaoActor {
      * 
      * @return All the groups this member is in. (Use a HQL query)
      */
-    public PageIterable<DaoGroup> getGroups() {
+    public final PageIterable<DaoGroup> getGroups() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query filter = session.createFilter(getGroupMembership(), "select this.group order by login");
         final Query count = session.createFilter(getGroupMembership(), "select count(*)");
         return new QueryCollection<DaoGroup>(filter, count);
     }
 
-    public String getFullname() {
+    public final String getFullname() {
         return fullname;
     }
 
-    public void setFullname(final String firstname) {
+    public final void setFullname(final String firstname) {
         fullname = firstname;
     }
 
-    public String getPassword() {
+    public final String getPassword() {
         return password;
     }
 
-    public void setPassword(final String password) {
+    public final void setPassword(final String password) {
         this.password = password;
     }
 
     /**
      * @return All the demands created by this member.
      */
-    public PageIterable<DaoDemand> getDemands() {
-        return getUserContent(DaoDemand.class, "DaoDemand");
+    public final PageIterable<DaoDemand> getDemands() {
+        return getUserContent(DaoDemand.class);
     }
 
     /**
      * @return All the kudos created by this member.
      */
-    public PageIterable<DaoKudos> getKudos() {
-        return getUserContent(DaoKudos.class, "DaoKudos");
+    public final PageIterable<DaoKudos> getKudos() {
+        return getUserContent(DaoKudos.class);
     }
 
     /**
      * @return All the Specifications created by this member.
      */
-    public PageIterable<DaoSpecification> getSpecifications() {
-        return getUserContent(DaoSpecification.class, "DaoSpecification");
+    public final PageIterable<DaoSpecification> getSpecifications() {
+        return getUserContent(DaoSpecification.class);
     }
 
     /**
      * @return All the Transactions created by this member.
      */
-    public PageIterable<DaoContribution> getTransactions() {
-        return getUserContent(DaoContribution.class, "DaoTransaction");
+    public final PageIterable<DaoContribution> getTransactions() {
+        return getUserContent(DaoContribution.class);
     }
 
     /**
      * @return All the Comments created by this member.
      */
-    public PageIterable<DaoComment> getComments() {
-        return getUserContent(DaoComment.class, "DaoComment");
+    public final PageIterable<DaoComment> getComments() {
+        return getUserContent(DaoComment.class);
     }
 
     /**
      * @return All the Offers created by this member.
      */
-    public PageIterable<DaoOffer> getOffers() {
-        return getUserContent(DaoOffer.class, "DaoOffer");
+    public final PageIterable<DaoOffer> getOffers() {
+        return getUserContent(DaoOffer.class);
     }
 
     /**
      * @return All the Translations created by this member.
      */
-    public PageIterable<DaoTranslation> getTranslations() {
-        return getUserContent(DaoTranslation.class, "DaoTranslation");
+    public final PageIterable<DaoTranslation> getTranslations() {
+        return getUserContent(DaoTranslation.class);
     }
 
     /**
      * @return All the received invitation to join a group which are in a specified state
      */
     // TODO test
-    public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
+    public final PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
                 "from com.bloatit.model.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state  ").setEntity("reciever",
                 this).setEntity("state", state);
@@ -221,7 +223,7 @@ public class DaoMember extends DaoActor {
      * @return All the sent invitation to join a group which are in a specified state
      */
     // TODO test
-    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
+    public final PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
                 "from com.bloatit.model.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state").setEntity("sender", this)
                 .setEntity("state", state);
@@ -230,8 +232,9 @@ public class DaoMember extends DaoActor {
     /**
      * Base method to all the get something created by the user.
      */
-    private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass, final String className) {
-        final QueryCollection<T> q = new QueryCollection<T>("from com.bloatit.model.data." + className + " as x where x.member = :author");
+    private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass) {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(theClass);
+        final QueryCollection<T> q = new QueryCollection<T>("from " + meta.getEntityName() + " as x where x.member = :author");
         q.setEntity("author", this);
         return q;
     }
@@ -239,56 +242,52 @@ public class DaoMember extends DaoActor {
     /**
      * @return if the current member is in the "group".
      */
-    public boolean isInGroup(final DaoGroup group) {
-        final Query q = SessionManager
-                .getSessionFactory()
-                .getCurrentSession()
-                .createQuery("select count(*) from com.bloatit.model.data.DaoMember m join m.groupMembership as gm "
-                        + "join gm.group as g where m = :member and g = :group");
+    public final boolean isInGroup(final DaoGroup group) {
+        final Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery( //
+        "SELECT count(*) " + //
+                "FROM com.bloatit.model.data.DaoMember m " + //
+                "JOIN m.groupMembership AS gm " + //
+                "JOIN gm.group AS g " + //
+                "WHERE m = :member AND g = :group");
         q.setEntity("member", this);
         q.setEntity("group", group);
         return ((Long) q.uniqueResult()) >= 1;
     }
 
-    public void addToKarma(final int value) {
+    public final void addToKarma(final int value) {
         karma += value;
     }
 
-    public Integer getKarma() {
+    public final Integer getKarma() {
         return karma;
     }
 
-    public void setRole(final Role role) {
+    public final void setRole(final Role role) {
         this.role = role;
     }
 
-    public Role getRole() {
+    public final Role getRole() {
         return role;
+    }
+
+    /**
+     * used by DaoGroup
+     */
+    protected final Set<DaoGroupMembership> getGroupMembership() {
+        return groupMembership;
     }
 
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
     protected void setKarma(final Integer karama) {
         karma = karama;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setGroupMembership(final Set<DaoGroupMembership> GroupMembership) {
+    @SuppressWarnings("unused")
+    private void setGroupMembership(final Set<DaoGroupMembership> GroupMembership) {
         groupMembership = GroupMembership;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected Set<DaoGroupMembership> getGroupMembership() {
-        return groupMembership;
     }
 
 }

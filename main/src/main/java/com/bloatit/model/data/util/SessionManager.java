@@ -13,7 +13,7 @@ import com.bloatit.model.data.DaoDemand;
 /**
  * These are some simple static utils to manage Hibernate sessions (and hibernate Search)
  */
-public class SessionManager {
+public final class SessionManager {
     
     /**
      * Desactivate the default constructor;

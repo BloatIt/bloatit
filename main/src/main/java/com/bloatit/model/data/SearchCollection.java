@@ -25,29 +25,29 @@ public class SearchCollection<T> implements PageIterable<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Iterator<T> iterator() {
+    public final Iterator<T> iterator() {
         return query.iterate();
     }
 
     @Override
-    public void setPageSize(final int pageSize) {
+    public final void setPageSize(final int pageSize) {
         query.setFetchSize(pageSize);
         query.setMaxResults(pageSize);
         this.pageSize = pageSize;
     }
 
     @Override
-    public int getPageSize() {
+    public final int getPageSize() {
         return this.pageSize;
     }
 
     @Override
-    public int size() {
+    public final int size() {
         return query.getResultSize();
     }
 
     @Override
-    public int pageNumber() {
+    public final int pageNumber() {
         if (pageSize != 0) {
             // make sure every element is in a page :
             // round to superior.
@@ -58,13 +58,13 @@ public class SearchCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPage(final int page) {
+    public final void setPage(final int page) {
         currentPage = page;
         query.setFirstResult(page * pageSize);
     }
 
     @Override
-    public int getCurrentPage() {
+    public final int getCurrentPage() {
         return currentPage;
     }
 

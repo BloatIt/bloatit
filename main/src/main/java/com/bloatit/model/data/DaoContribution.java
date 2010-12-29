@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 /**
@@ -18,7 +19,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  * little comment/description text on it (144 char max like twitter)
  */
 @Entity
-public class DaoContribution extends DaoUserContent {
+public final class DaoContribution extends DaoUserContent {
 
     /**
      * The state of a contribution should follow the state of the associated demand.
@@ -61,7 +62,8 @@ public class DaoContribution extends DaoUserContent {
      * @param demand the demand on which we add a contribution.
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.
-     * @throws NullPointerException if any of the parameter is null except comment.
+     * @throws NonOptionalParameterException if any of the parameter is null except
+     *         comment.
      * @throws NotEnoughMoneyException if the account of "member" has not enough money in
      *         it.
      */
@@ -69,16 +71,16 @@ public class DaoContribution extends DaoUserContent {
                                                                                                                          throws NotEnoughMoneyException {
         super(member);
         if (demand == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        if (amount.compareTo(new BigDecimal("0")) <= 0) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             Log.data().error("The amount of a contribution cannot be <= 0.");
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
-        this.amount = amount;
-        state = State.PENDING;
-        this.demand = demand;
-        this.comment = comment;
+        setAmount(amount);
+        setState(State.PENDING);
+        setDemand(demand);
+        setComment(comment);
         getAuthor().getInternalAccount().block(amount);
     }
 
@@ -90,7 +92,7 @@ public class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if there is not enough money to create the
      *         transaction.
      */
-    public void accept(final DaoOffer offer) throws NotEnoughMoneyException {
+    public final void accept(final DaoOffer offer) throws NotEnoughMoneyException {
         if (state != State.PENDING) {
             throw new FatalErrorException("Cannot accept a contribution if its state isn't PENDING");
         }
@@ -107,13 +109,12 @@ public class DaoContribution extends DaoUserContent {
         try {
             // If we succeeded the unblock then we create a transaction.
             if (getAuthor() != offer.getAuthor()) {
-                transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), amount);
+                setTransaction(DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), amount));
             }
             // if the transaction is ok then we set the state to ACCEPTED.
             setState(State.ACCEPTED);
         } catch (final NotEnoughMoneyException e) {
             setState(State.CANCELED);
-            transaction = null;
             Log.data().error(e);
             throw e;
         }
@@ -122,7 +123,7 @@ public class DaoContribution extends DaoUserContent {
     /**
      * Set the state to CANCELED. (Unblock the blocked amount.)
      */
-    public void cancel() {
+    public final void cancel() {
         if (state != State.PENDING) {
             throw new FatalErrorException("Cannot cancel a contribution if its state isn't PENDING");
         }
@@ -135,19 +136,19 @@ public class DaoContribution extends DaoUserContent {
         setState(State.CANCELED);
     }
 
-    public BigDecimal getAmount() {
+    public final BigDecimal getAmount() {
         return amount;
     }
 
-    public State getState() {
+    public final State getState() {
         return state;
     }
 
-    public DaoTransaction getTransaction() {
+    public final DaoTransaction getTransaction() {
         return transaction;
     }
 
-    public String getComment() {
+    public final String getComment() {
         return comment;
     }
 
@@ -155,51 +156,32 @@ public class DaoContribution extends DaoUserContent {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoContribution() {
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoDemand getDemand() {
-        return demand;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setDemand(final DaoDemand Demand) {
+    private void setDemand(final DaoDemand Demand) {
         demand = Demand;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setAmount(final BigDecimal amount) {
+    private void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setState(final State state) {
+    private void setState(final State state) {
         this.state = state;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setTransaction(final DaoTransaction Transaction) {
+    private void setTransaction(final DaoTransaction Transaction) {
         transaction = Transaction;
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setComment(final String comment) {
+    private void setComment(final String comment) {
         this.comment = comment;
+    }
+
+    protected DaoContribution() {
+        super();
+    }
+
+    @SuppressWarnings("unused")
+    private DaoDemand getDemand() {
+        return demand;
     }
 }

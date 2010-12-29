@@ -11,11 +11,13 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.model.data.util.NonOptionalParameterException;
+
 /**
  * A translation store the data of a description in a for a locale.
  */
 @Entity
-public class DaoTranslation extends DaoKudosable {
+public final class DaoTranslation extends DaoKudosable {
 
     @Basic(optional = false)
     private Locale locale;
@@ -39,28 +41,28 @@ public class DaoTranslation extends DaoKudosable {
      * @param locale
      * @param title
      * @param text
-     * @throws NullPointerException if any of the field is null
+     * @throws NonOptionalParameterException if any of the field is null
      */
     public DaoTranslation(final DaoMember member, final DaoDescription description, final Locale locale, final String title, final String text) {
         super(member);
         if (description == null || locale == null || title == null || text == null) {
-            throw new NullPointerException();
+            throw new NonOptionalParameterException();
         }
-        this.locale = locale;
-        this.title = title;
-        this.text = text;
-        this.description = description;
+        setLocale(locale);
+        setTitle(title);
+        setText(text);
+        setDescription(description);
     }
 
-    public String getTitle() {
+    public final String getTitle() {
         return title;
     }
 
-    public Locale getLocale() {
+    public final Locale getLocale() {
         return locale;
     }
 
-    public String getText() {
+    public final String getText() {
         return text;
     }
 
@@ -68,45 +70,28 @@ public class DaoTranslation extends DaoKudosable {
     // For hibernate mapping
     // ======================================================================
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
+    private void setTitle(final String title) {
+        this.title = title;
+    }
+
+    private void setLocale(final Locale locale) {
+        this.locale = locale;
+    }
+
+    private void setText(final String text) {
+        this.text = text;
+    }
+
+    private void setDescription(final DaoDescription description) {
+        this.description = description;
+    }
+
     protected DaoTranslation() {
         super();
     }
 
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setTitle(final String title) {
-        this.title = title;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setLocale(final Locale locale) {
-        this.locale = locale;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setText(final String text) {
-        this.text = text;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected DaoDescription getDescription() {
+    @SuppressWarnings("unused")
+    private DaoDescription getDescription() {
         return description;
-    }
-
-    /**
-     * This is only for Hibernate. You should never use it.
-     */
-    protected void setDescription(final DaoDescription description) {
-        this.description = description;
     }
 }
