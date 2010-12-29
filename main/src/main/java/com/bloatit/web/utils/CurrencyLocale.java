@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Currency;
 import java.util.Date;
@@ -58,24 +59,29 @@ public class CurrencyLocale {
     }
 
     /**
-     * Converts the amount
-     * @return
+     * <p>Converts the euro amount to the locale amount</p>
+     * <p>Conversion will be done with a 7 digits precision and rounding HALF_ELVEN
+     * (meaning it will round to the closest neighbor unless both are equidistant
+     * in which case it will round to the closest even number) which is the
+     * IEEE 754R default</p>
+     * @return the locale amount
      */
     public BigDecimal getConvertedAmount() {
-        return euroAmount.multiply(currencies.get(currency));
+        return euroAmount.multiply(currencies.get(currency),MathContext.DECIMAL32);
     }
 
     /**
-     * 
-     * @return
+     * Finds the symbol used for this money in the given locale
+     * @return the currency symbol
      */
     public String getLocaleSymbol() {
         return currency.getSymbol();
     }
 
     /**
-     *
-     * @return
+     * Returns the localized version of the amount, i.e. : converted to the locale
+     * money, and with the locale symbol
+     * @return the localized string
      */
     public String getLocaleString() {
         return getConvertedAmount().setScale(DISPLAY_PRECISION, ROUNDING_MODE) + getLocaleSymbol();
@@ -89,6 +95,21 @@ public class CurrencyLocale {
         return this.euroAmount.toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
+    /**
+     * Returns the localized version of the amount, i.e. : converted to the locale
+     * money, and with the locale symbol
+     * @return the localized string
+     */
+    @Override
+    public String toString(){
+        return this.getLocaleString();
+    }
+
+    /**
+     * <p>Parses the rate file and initializes the currency array</p>
+     * <p>This parsing will occur only if file has been modified since last parse
+     * or if no parse ever occured</p>
+     */
     private static void parseRate() {
         BufferedReader br = null;
         try {
