@@ -202,6 +202,22 @@ public class DemandTest extends TestCase {
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("100")));
     }
+    
+    public void testGetCurrentOffer(){
+        fred = DBRequests.getById(DaoMember.class, fred.getId());
+        yo = DBRequests.getById(DaoMember.class, yo.getId());
+        final DaoDemand demand = DaoDemand.createAndPersist(yo,
+                DaoDescription.createAndPersist(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        demand.createSpecification(tom, "This is the spécification");
+        DaoOffer offer = demand.addOffer(fred,
+                new BigDecimal("200"),
+                DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
+                new Date());
+        SessionManager.flush();
+        
+        assertEquals(demand.getCurrentOffer(), offer);
+        
+    }
 
     public void testSearchDemand() {
         final DaoDemand demand = DaoDemand.createAndPersist(yo,

@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -203,20 +204,20 @@ public class DaoDemand extends DaoKudosable {
                 "WHERE demand = :this AND state = :state " + //
                 "ORDER BY amount ASC, creationDate DESC ";
 
-        final DaoOffer validatedOffer = (DaoOffer) SessionManager.createQuery(validatedQueriStr).setEntity("this", this)
-                .setEntity("state", DaoKudosable.State.VALIDATED).iterate().next();
-        if (validatedOffer != null) {
-            return validatedOffer;
+        Query validateQuery = SessionManager.createQuery(validatedQueriStr).setEntity("this", this)
+                .setParameter("state", DaoKudosable.State.VALIDATED);
+        if (validateQuery.iterate().hasNext()) {
+            return (DaoOffer) validateQuery.iterate().next();
         }
 
         // If there is no validated offer then we try to find a pending offer
         final String queryString = "FROM DaoOffer " + //
                 "WHERE demand = :this " + //
-                "AND state == :state " + //
+                "AND state = :state " + //
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
-            return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this).setEntity("state", DaoKudosable.State.PENDING)
+            return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this).setParameter("state", DaoKudosable.State.PENDING)
                     .iterate().next();
         } catch (final NoSuchElementException e) {
             return null;

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
@@ -45,8 +46,10 @@ public abstract class DaoKudosable extends DaoUserContent {
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
+    
     @Basic(optional = false)
     @Field(store = Store.NO)
+    @Enumerated
     private State state;
 
     /**
