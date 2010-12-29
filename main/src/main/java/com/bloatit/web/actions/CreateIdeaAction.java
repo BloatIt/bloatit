@@ -74,7 +74,7 @@ public class CreateIdeaAction extends Action {
             session.notifyError(session.tr("You must be logged in to create an idea."));
             return new LoginPageUrl().urlString();
         }
-        
+        // TODO : Authenticate for demand creation
         Locale langLocale = new Locale(lang);
         Demand d = new Demand(langLocale, description, specification);
        
