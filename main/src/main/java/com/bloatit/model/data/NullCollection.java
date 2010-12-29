@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
 
-public class NullCollection<T> implements PageIterable<T> {
+public final class NullCollection<T> implements PageIterable<T> {
 
     private int pageSize;
 

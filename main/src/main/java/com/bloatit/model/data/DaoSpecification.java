@@ -58,4 +58,8 @@ public final class DaoSpecification extends DaoUserContent {
     protected DaoSpecification() {
         super();
     }
+
+    protected final DaoDemand getDemand() {
+        return demand;
+    }
 }

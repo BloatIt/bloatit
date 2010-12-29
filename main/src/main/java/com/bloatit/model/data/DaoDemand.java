@@ -168,7 +168,7 @@ public final class DaoDemand extends DaoKudosable {
             Log.data().fatal("Cannot create a contribution with this amount " + amount.toEngineeringString() + " by member " + member.getId());
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
-        if (comment != null && comment.length() > 144) {
+        if (comment != null && comment.length() > DaoContribution.COMMENT_MAX_LENGTH) {
             Log.data().fatal("The comment of a contribution must be <= 144 chars long.");
             throw new FatalErrorException("Comments lenght of Contribution must be < 144.", null);
         }
@@ -236,20 +236,12 @@ public final class DaoDemand extends DaoKudosable {
         return new QueryCollection<DaoContribution>("from DaoContribution as f where f.demand = :this").setEntity("this", this);
     }
 
-    public Set<DaoContribution> getContributions() {
-        return contributions;
-    }
-
     /**
      * Use a HQL query to get the first level comments as a PageIterable collection
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(getComments(), ""), SessionManager
-                .getSessionFactory().getCurrentSession().createFilter(getComments(), "select count(*)"));
-    }
-
-    public Set<DaoComment> getComments() {
-        return comments;
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, ""), SessionManager
+                .getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
     }
 
     public void addComment(final DaoComment comment) {

@@ -23,7 +23,7 @@ import com.bloatit.model.data.util.NonOptionalParameterException;
  * An offer is a developer offer to a demand.
  */
 @Entity
-public class DaoOffer extends DaoKudosable {
+public final class DaoOffer extends DaoKudosable {
 
     /**
      * This is demand on which this offer is done.

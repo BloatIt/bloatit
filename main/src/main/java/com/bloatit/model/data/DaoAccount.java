@@ -67,7 +67,7 @@ public abstract class DaoAccount {
         }
         this.actor = actor;
         this.creationDate = new Date();
-        this.lastModificationDate = getCreationDate();
+        this.lastModificationDate = creationDate;
         this.amount = BigDecimal.ZERO;
     }
 
@@ -91,7 +91,7 @@ public abstract class DaoAccount {
     protected abstract boolean hasEnoughMoney(BigDecimal amount);
 
     public final Date getLastModificationDate() {
-        return lastModificationDate;
+        return (Date) lastModificationDate.clone();
     }
 
     public final BigDecimal getAmount() {
@@ -107,7 +107,7 @@ public abstract class DaoAccount {
     }
 
     public final Date getCreationDate() {
-        return creationDate;
+        return (Date) creationDate.clone();
     }
 
     /**

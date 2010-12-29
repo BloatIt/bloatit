@@ -23,7 +23,7 @@ import com.bloatit.model.data.util.SessionManager;
  * see a DaoTranslation as a version of a description is a specific locale.
  */
 @Entity
-public class DaoDescription extends DaoIdentifiable {
+public final class DaoDescription extends DaoIdentifiable {
 
     // @Field(index = Index.UN_TOKENIZED)
     private Locale defaultLocale;

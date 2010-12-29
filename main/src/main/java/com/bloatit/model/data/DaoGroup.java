@@ -22,7 +22,7 @@ import com.bloatit.model.data.util.SessionManager;
  * A group is an entity where people can be group...
  */
 @Entity
-public class DaoGroup extends DaoActor {
+public final class DaoGroup extends DaoActor {
 
     /**
      * There is 2 kinds of groups : The PUBLIC that everybody can see and and go in. The

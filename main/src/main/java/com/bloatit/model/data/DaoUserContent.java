@@ -57,7 +57,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     }
 
     public final Date getCreationDate() {
-        return creationDate;
+        return (Date) creationDate.clone();
     }
 
     public final DaoGroup getAsGroup() {

@@ -18,7 +18,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  * A transaction is a transaction between an internal account and an other account.
  */
 @Entity
-public class DaoTransaction extends DaoIdentifiable {
+public final class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
@@ -85,7 +85,7 @@ public class DaoTransaction extends DaoIdentifiable {
     }
 
     public Date getCreationDate() {
-        return creationDate;
+        return (Date) creationDate.clone();
     }
     
     // ======================================================================

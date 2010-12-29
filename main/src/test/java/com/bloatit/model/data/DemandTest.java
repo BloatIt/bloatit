@@ -108,7 +108,7 @@ public class DemandTest extends TestCase {
 
         demand = DBRequests.getById(DaoDemand.class, demand.getId());
 
-        assertEquals(2, demand.getContributions().size());
+        assertEquals(2, demand.getContributionsFromQuery().size());
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("25")));
         assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("75")));
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("18")));
@@ -144,7 +144,7 @@ public class DemandTest extends TestCase {
         SessionManager.beginWorkUnit();
         demand = DBRequests.getById(DaoDemand.class, demand.getId());
 
-        assertEquals(4, demand.getComments().size());
+        assertEquals(4, demand.getCommentsFromQuery().size());
         // TODO correct order.
         // assertEquals("4", demand.getComments().iterator().next().getText());
     }
@@ -164,7 +164,7 @@ public class DemandTest extends TestCase {
         demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
         demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
-        for (final DaoContribution Contribution : demand.getContributions()) {
+        for (final DaoContribution Contribution : demand.getContributionsFromQuery()) {
             Contribution.accept(Offer);
         }
 
@@ -193,7 +193,7 @@ public class DemandTest extends TestCase {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
 
-        for (final DaoContribution Contribution : demand.getContributions()) {
+        for (final DaoContribution Contribution : demand.getContributionsFromQuery()) {
             Contribution.cancel();
         }
 

@@ -15,7 +15,7 @@ import com.bloatit.model.data.util.SessionManager;
  * TODO test me more ! This represent an invitation to join a group.
  */
 @Entity
-public class DaoJoinGroupInvitation extends DaoIdentifiable {
+public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * The state of an invitation track its time line. (First PENDING, then REFUSED or

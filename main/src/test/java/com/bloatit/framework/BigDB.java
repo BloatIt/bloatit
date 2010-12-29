@@ -90,7 +90,7 @@ public class BigDB {
                         DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
                         new Date());
                 if (pick(2) == 0) {
-                    for (final DaoContribution contrib : demand.getContributions()) {
+                    for (final DaoContribution contrib : demand.getContributionsFromQuery()) {
                         try {
                             contrib.accept(demand.getOffers().iterator().next());
                         } catch (final NotEnoughMoneyException e) {

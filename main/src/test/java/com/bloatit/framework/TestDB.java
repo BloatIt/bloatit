@@ -94,7 +94,7 @@ public class TestDB {
 
             demand.getOffers().iterator().next().setState(State.VALIDATED);
 
-            for (final DaoContribution contribution : demand.getContributions()) {
+            for (final DaoContribution contribution : demand.getContributionsFromQuery()) {
                 try {
                     contribution.accept(demand.getOffers().iterator().next());
                 } catch (final NotEnoughMoneyException e) {

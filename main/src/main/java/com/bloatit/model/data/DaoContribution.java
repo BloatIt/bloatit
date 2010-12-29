@@ -20,7 +20,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  */
 @Entity
 public final class DaoContribution extends DaoUserContent {
-    private static final int COMMENT_MAX_LENGTH = 144;
+    protected static final int COMMENT_MAX_LENGTH = 144;
 
     /**
      * The state of a contribution should follow the state of the associated demand.
@@ -36,6 +36,7 @@ public final class DaoContribution extends DaoUserContent {
     @Column(updatable = false)
     private BigDecimal amount;
 
+    @SuppressWarnings("unused")
     @ManyToOne(optional = false)
     private DaoDemand demand;
 

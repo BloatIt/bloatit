@@ -25,7 +25,7 @@ import com.bloatit.model.data.util.SessionManager;
  * you ...
  */
 @Entity
-public class DaoMember extends DaoActor {
+public final class DaoMember extends DaoActor {
 
     public enum Role {
         NORMAL, PRIVILEGED, REVIEWER, MODERATOR, ADMIN

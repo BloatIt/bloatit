@@ -116,7 +116,7 @@ public abstract class DaoActor {
     }
 
     public final Date getDateCreation() {
-        return dateCreation;
+        return (Date) dateCreation.clone();
     }
 
     public final DaoInternalAccount getInternalAccount() {
