@@ -11,14 +11,25 @@
 package com.bloatit.web.html.pages;
 
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.actions.CreateIdeaAction;
 import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.annotations.RequestParam;
+import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 
 @ParamContainer("idea/create")
 public class CreateIdeaPage extends LoggedPage {
+
+    @RequestParam(name = CreateIdeaAction.DESCRIPTION_CODE, defaultValue = "", role = Role.SESSION)
+    private String description;
+    
+    @RequestParam(name = CreateIdeaAction.SPECIFICATION_CODE, defaultValue = "", role = Role.SESSION)
+    private String specification;
+    
 
     public CreateIdeaPage(final CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
         super(createIdeaPageUrl);
@@ -37,16 +48,17 @@ public class CreateIdeaPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() {
         if (DemandManager.canCreate(session.getAuthToken())) {
-            return generateDemandCreationForm();
+            return generateIdeaCreationForm();
         } else {
             return generateBadRightError();
         }
     }
 
-    private HtmlElement generateDemandCreationForm() {
+    private HtmlElement generateIdeaCreationForm() {
+        HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(session.tr("Create a new idea"), 1);
 
         final HtmlDiv group = new HtmlDiv();
-
+        group.add(createIdeaTitle);
         return group;
     }
 

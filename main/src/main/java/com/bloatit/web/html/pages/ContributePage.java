@@ -63,7 +63,7 @@ public class ContributePage extends LoggedPage {
 
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
 
-        // Input field : chose amount
+        // Input field : choose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
         contribField.setLabel(session.tr("Choose amount : "));
         contribField.setDefaultValue(contributionAmountParam);
