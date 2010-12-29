@@ -114,7 +114,7 @@ public class CurrencyLocale {
         BufferedReader br = null;
         try {
             File file = new File(RATES_PATH);
-            if (lastParse != null && lastParse.before(new Date(file.lastModified()))) {
+            if (lastParse == null || lastParse.before(new Date(file.lastModified()))) {
                 // Only parse if the file has been updated in the meantime
                 lastParse = new Date();
 
@@ -135,7 +135,7 @@ public class CurrencyLocale {
         } finally {
             try {
                 br.close();
-            } catch (IOException ex) {
+            } catch (Exception ex) {
             }
         }
     }

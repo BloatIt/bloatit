@@ -15,6 +15,7 @@ import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlText;
+import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
@@ -34,10 +35,13 @@ public class MyAccountPage extends Page {
             member.authenticate(session.getAuthToken());
             final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(), 2);
 
-            memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
-            memberTitle.add(new HtmlText("Login: " + member.getLogin()));
-            memberTitle.add(new HtmlText("Email: " + member.getEmail()));
-            memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
+            HtmlList userInfo = new HtmlList();
+            memberTitle.add(userInfo);
+
+            userInfo.add(session.tr("Full name: " + member.getFullname()));
+            userInfo.add(session.tr("Login: " + member.getLogin()));
+            userInfo.add(session.tr("Email: " + member.getEmail()));
+            userInfo.add(session.tr("Karma: " + member.getKarma()));
 
             add(memberTitle);
         } else {
