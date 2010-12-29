@@ -6,7 +6,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Kudos;
 import com.bloatit.model.data.DaoKudos;
 
-public class KudosList extends ListBinder<Kudos, DaoKudos> {
+public final class KudosList extends ListBinder<Kudos, DaoKudos> {
 
     public KudosList(final PageIterable<DaoKudos> daoCollection) {
         super(daoCollection);

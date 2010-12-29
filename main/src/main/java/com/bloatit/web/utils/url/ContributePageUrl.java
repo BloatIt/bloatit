@@ -8,7 +8,7 @@ import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
-public class ContributePageUrl extends Url {
+public final class ContributePageUrl extends Url {
 public static String getName() { return "contribute"; }
 public com.bloatit.web.html.pages.ContributePage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.ContributePage(this); }
@@ -67,6 +67,7 @@ protected void doRegister() {
     register(contributionCommentParam);
 }
 
+@Override 
 public ContributePageUrl clone() { 
     ContributePageUrl other = new ContributePageUrl();
     other.targetIdea = this.targetIdea.clone();

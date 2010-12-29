@@ -8,7 +8,7 @@ import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
-public class ContributionActionUrl extends Url {
+public final class ContributionActionUrl extends Url {
 public static String getName() { return "action/contribute"; }
 public com.bloatit.web.actions.ContributionAction createPage() throws RedirectException{ 
     return new com.bloatit.web.actions.ContributionAction(this); }
@@ -60,6 +60,7 @@ protected void doRegister() {
     register(amount);
 }
 
+@Override 
 public ContributionActionUrl clone() { 
     ContributionActionUrl other = new ContributionActionUrl();
     other.targetIdea = this.targetIdea.clone();

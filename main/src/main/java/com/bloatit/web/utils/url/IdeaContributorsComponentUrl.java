@@ -7,7 +7,7 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.Loaders.*;
 
 @SuppressWarnings("unused")
-public class IdeaContributorsComponentUrl extends UrlComponent {
+public final class IdeaContributorsComponentUrl extends UrlComponent {
 public IdeaContributorsComponentUrl(Parameters params, Parameters session) {
     this();
     parseParameters(params, false);
@@ -32,6 +32,7 @@ protected void doRegister() {
     register(participationsListUrl);
 }
 
+@Override 
 public IdeaContributorsComponentUrl clone() { 
     IdeaContributorsComponentUrl other = new IdeaContributorsComponentUrl();
     other.participationsListUrl = this.participationsListUrl.clone();

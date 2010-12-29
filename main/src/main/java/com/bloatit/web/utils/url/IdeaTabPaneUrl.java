@@ -7,7 +7,7 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.Loaders.*;
 
 @SuppressWarnings("unused")
-public class IdeaTabPaneUrl extends UrlComponent {
+public final class IdeaTabPaneUrl extends UrlComponent {
 public IdeaTabPaneUrl(Parameters params, Parameters session) {
     this();
     parseParameters(params, false);
@@ -48,6 +48,7 @@ protected void doRegister() {
     register(contributionUrl);
 }
 
+@Override 
 public IdeaTabPaneUrl clone() { 
     IdeaTabPaneUrl other = new IdeaTabPaneUrl();
     other.activeTabKey = this.activeTabKey.clone();

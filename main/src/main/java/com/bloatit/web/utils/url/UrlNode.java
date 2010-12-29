@@ -2,14 +2,14 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.utils.annotations.Messages;
 
-public abstract class UrlNode implements Iterable<UrlNode> {
+public abstract class UrlNode implements Iterable<UrlNode> , Cloneable{
 
     public UrlNode() {
         super();
     }
 
     @Override
-    public abstract UrlNode clone();
+    public abstract UrlNode clone() throws CloneNotSupportedException;
 
     public final String urlString() {
         final StringBuilder sb = new StringBuilder();

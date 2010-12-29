@@ -183,7 +183,7 @@ public abstract class JavaGenerator {
         sb.append("}\n");
         sb.append("\n");
 
-        sb.append("public ").append(className).append(" clone() { \n");
+        sb.append("@Override \npublic ").append(className).append(" clone() { \n");
         sb.append("    ").append(className).append(" other = new ").append(className).append("();\n");
         sb.append(_clone);
         sb.append("    return other;\n");

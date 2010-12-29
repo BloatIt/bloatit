@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.framework.Group;
 import com.bloatit.model.data.DaoGroup;
 
-public class GroupIterator extends com.bloatit.framework.lists.IteratorBinder<Group, DaoGroup> {
+public final class GroupIterator extends com.bloatit.framework.lists.IteratorBinder<Group, DaoGroup> {
 
     public GroupIterator(final Iterable<DaoGroup> daoIterator) {
         super(daoIterator);

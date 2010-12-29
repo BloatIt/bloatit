@@ -8,7 +8,7 @@ import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
-public class OfferPageUrl extends Url {
+public final class OfferPageUrl extends Url {
 public static String getName() { return "offer"; }
 public com.bloatit.web.html.pages.OfferPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.OfferPage(this); }
@@ -89,6 +89,7 @@ protected void doRegister() {
     register(description);
 }
 
+@Override 
 public OfferPageUrl clone() { 
     OfferPageUrl other = new OfferPageUrl();
     other.targetIdea = this.targetIdea.clone();

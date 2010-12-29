@@ -8,7 +8,7 @@ import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
-public class IdeasListUrl extends Url {
+public final class IdeasListUrl extends Url {
 public static String getName() { return "ideas/list"; }
 public com.bloatit.web.html.pages.IdeasList createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.IdeasList(this); }
@@ -36,6 +36,7 @@ protected void doRegister() {
     register(pagedIdeaListUrl);
 }
 
+@Override 
 public IdeasListUrl clone() { 
     IdeasListUrl other = new IdeasListUrl();
     other.pagedIdeaListUrl = this.pagedIdeaListUrl.clone();

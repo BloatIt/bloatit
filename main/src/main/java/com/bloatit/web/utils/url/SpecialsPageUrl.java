@@ -8,7 +8,7 @@ import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
-public class SpecialsPageUrl extends Url {
+public final class SpecialsPageUrl extends Url {
 public static String getName() { return "special"; }
 public com.bloatit.web.html.pages.SpecialsPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.SpecialsPage(this); }
@@ -26,6 +26,7 @@ public SpecialsPageUrl(){
 protected void doRegister() { 
 }
 
+@Override 
 public SpecialsPageUrl clone() { 
     SpecialsPageUrl other = new SpecialsPageUrl();
     return other;

@@ -7,7 +7,7 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.Loaders.*;
 
 @SuppressWarnings("unused")
-public class HtmlPagedListUrl extends UrlComponent {
+public final class HtmlPagedListUrl extends UrlComponent {
 public HtmlPagedListUrl(Parameters params, Parameters session) {
     this();
     parseParameters(params, false);
@@ -49,6 +49,7 @@ protected void doRegister() {
     register(pageSize);
 }
 
+@Override 
 public HtmlPagedListUrl clone() { 
     HtmlPagedListUrl other = new HtmlPagedListUrl();
     other.currentPage = this.currentPage.clone();

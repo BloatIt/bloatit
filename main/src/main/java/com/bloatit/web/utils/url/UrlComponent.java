@@ -34,7 +34,7 @@ public abstract class UrlComponent extends UrlNode {
         nodes.add(node);
     }
 
-    final void registerIfNotAlreadyDone() {
+    private final void registerIfNotAlreadyDone() {
         if (!isRegistered) {
             doRegister();
             isRegistered = true;
@@ -61,22 +61,22 @@ public abstract class UrlComponent extends UrlNode {
         }
     }
 
-    public HtmlLink getHtmlLink(final HtmlNode data) {
+    public final HtmlLink getHtmlLink(final HtmlNode data) {
         return new HtmlLink(urlString(), data);
     }
 
-    public HtmlLink getHtmlLink(final String text) {
+    public final HtmlLink getHtmlLink(final String text) {
         return new HtmlLink(urlString(), new HtmlText(text));
     }
 
     @Override
-    public Iterator<UrlNode> iterator() {
+    public final Iterator<UrlNode> iterator() {
         registerIfNotAlreadyDone();
         return nodes.iterator();
     }
 
     @Override
-    public Messages getMessages() {
+    public final Messages getMessages() {
         registerIfNotAlreadyDone();
         final Messages messages = new Messages();
         for (final UrlNode node : nodes) {

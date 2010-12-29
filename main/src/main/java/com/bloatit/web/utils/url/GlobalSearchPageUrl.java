@@ -8,7 +8,7 @@ import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
-public class GlobalSearchPageUrl extends Url {
+public final class GlobalSearchPageUrl extends Url {
 public static String getName() { return "search"; }
 public com.bloatit.web.html.pages.GlobalSearchPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.GlobalSearchPage(this); }
@@ -52,6 +52,7 @@ protected void doRegister() {
     register(pagedMemberListUrl);
 }
 
+@Override 
 public GlobalSearchPageUrl clone() { 
     GlobalSearchPageUrl other = new GlobalSearchPageUrl();
     other.searchString = this.searchString.clone();

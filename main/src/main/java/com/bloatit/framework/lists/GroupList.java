@@ -6,7 +6,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Group;
 import com.bloatit.model.data.DaoGroup;
 
-public class GroupList extends ListBinder<Group, DaoGroup> {
+public final class GroupList extends ListBinder<Group, DaoGroup> {
 
     public GroupList(final PageIterable<DaoGroup> daoCollection) {
         super(daoCollection);

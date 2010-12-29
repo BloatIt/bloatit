@@ -8,7 +8,7 @@ import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
-public class CreateIdeaActionUrl extends Url {
+public final class CreateIdeaActionUrl extends Url {
 public static String getName() { return "idea/docreate"; }
 public com.bloatit.web.actions.CreateIdeaAction createPage() throws RedirectException{ 
     return new com.bloatit.web.actions.CreateIdeaAction(this); }
@@ -83,6 +83,7 @@ protected void doRegister() {
     register(lang);
 }
 
+@Override 
 public CreateIdeaActionUrl clone() { 
     CreateIdeaActionUrl other = new CreateIdeaActionUrl();
     other.description = this.description.clone();

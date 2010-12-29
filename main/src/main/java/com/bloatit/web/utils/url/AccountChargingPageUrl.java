@@ -8,7 +8,7 @@ import com.bloatit.web.utils.annotations.Loaders.*;
 import com.bloatit.web.exceptions.RedirectException;
 
 @SuppressWarnings("unused")
-public class AccountChargingPageUrl extends Url {
+public final class AccountChargingPageUrl extends Url {
 public static String getName() { return "charging"; }
 public com.bloatit.web.html.pages.AccountChargingPage createPage() throws RedirectException{ 
     return new com.bloatit.web.html.pages.AccountChargingPage(this); }
@@ -26,6 +26,7 @@ public AccountChargingPageUrl(){
 protected void doRegister() { 
 }
 
+@Override 
 public AccountChargingPageUrl clone() { 
     AccountChargingPageUrl other = new AccountChargingPageUrl();
     return other;

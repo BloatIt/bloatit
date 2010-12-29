@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.framework.Demand;
 import com.bloatit.model.data.DaoDemand;
 
-public class DemandIterator extends com.bloatit.framework.lists.IteratorBinder<Demand, DaoDemand> {
+public final class DemandIterator extends com.bloatit.framework.lists.IteratorBinder<Demand, DaoDemand> {
 
     public DemandIterator(final Iterable<DaoDemand> daoIterator) {
         super(daoIterator);

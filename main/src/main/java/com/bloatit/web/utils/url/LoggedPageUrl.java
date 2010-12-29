@@ -7,7 +7,7 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.Loaders.*;
 
 @SuppressWarnings("unused")
-public class LoggedPageUrl extends UrlComponent {
+public final class LoggedPageUrl extends UrlComponent {
 public LoggedPageUrl(Parameters params, Parameters session) {
     this();
     parseParameters(params, false);
@@ -22,6 +22,7 @@ public LoggedPageUrl(){
 protected void doRegister() { 
 }
 
+@Override 
 public LoggedPageUrl clone() { 
     LoggedPageUrl other = new LoggedPageUrl();
     return other;

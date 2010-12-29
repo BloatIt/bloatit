@@ -5,7 +5,7 @@ public class UrlComponentClassGenerator extends JavaGenerator {
     public UrlComponentClassGenerator(String name) {
         super(name);
         _classHeader.append("@SuppressWarnings(\"unused\")\n");
-        _classHeader.append("public class ").append(className).append(" extends UrlComponent {\n");
+        _classHeader.append("public final class ").append(className).append(" extends UrlComponent {\n");
 
     }
 

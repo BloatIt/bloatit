@@ -12,7 +12,7 @@ import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.Loaders.ConversionErrorException;
 import com.bloatit.web.utils.annotations.Messages;
 
-public class UrlParameter<T> extends UrlNode {
+public final class UrlParameter<T> extends UrlNode {
     private final String message;
     private final Level level;
 
@@ -57,14 +57,14 @@ public class UrlParameter<T> extends UrlNode {
         return new Message(level, what, errorMsg);
     }
 
-    private String makeStringPretty(String value) {
-        value = value.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨\\+]", "-");
-        value = value.replaceAll("--+", "-");
-        value = value.subSequence(0, Math.min(value.length(), 80)).toString();
-        value = value.replaceAll("-+$", "");
-        value = value.toLowerCase();
-        value = AsciiUtils.convertNonAscii(value);
-        return value;
+    private String makeStringPretty(final String theValue) {
+        String tmp = theValue.replaceAll("[ ,\\.\\'\\\"\\&\\?\r\n%\\*\\!:\\^¨\\+]", "-");
+        tmp = tmp.replaceAll("--+", "-");
+        tmp = tmp.subSequence(0, Math.min(tmp.length(), 80)).toString();
+        tmp = tmp.replaceAll("-+$", "");
+        tmp = tmp.toLowerCase();
+        tmp = AsciiUtils.convertNonAscii(tmp);
+        return tmp;
     }
 
     public String getStringValue() {
@@ -116,9 +116,9 @@ public class UrlParameter<T> extends UrlNode {
     @Override
     public Messages getMessages() {
         final Messages messages = new Messages();
-        final Message message = getMessage();
-        if (message != null) {
-            messages.add(message);
+        final Message errorMessage = getMessage();
+        if (errorMessage != null) {
+            messages.add(errorMessage);
         }
         return messages;
     }
