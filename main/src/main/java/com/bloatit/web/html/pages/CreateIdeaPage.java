@@ -19,6 +19,7 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
+import com.bloatit.web.html.components.standard.form.HtmlDropDown;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlFormBlock;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
@@ -41,8 +42,10 @@ public class CreateIdeaPage extends LoggedPage {
 
     @RequestParam(name = CreateIdeaAction.CATEGORY_CODE, defaultValue = "", role = Role.SESSION)
     private String category;
-    
 
+    @RequestParam(name = CreateIdeaAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
+    private String lang;
+    
     public CreateIdeaPage(final CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
         super(createIdeaPageUrl);
     }
@@ -87,8 +90,12 @@ public class CreateIdeaPage extends LoggedPage {
         specifBlock.add(specificationInput);
 
         // Create the fields that will be used to describe the parameters of the idea (project ...)
+        HtmlDropDown languageInput = new HtmlDropDown(CreateIdeaAction.LANGUAGE_CODE, session.tr("Language"));
+        languageInput.add(session.getLanguage().getLocale().getDisplayLanguage(), session.getLanguage().getCode());
+        
         HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, session.tr("Category"));
         HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, session.tr("Project"));
+        paramBlock.add(languageInput);
         paramBlock.add(categoryInput);
         paramBlock.add(projectInput);
         
