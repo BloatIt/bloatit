@@ -76,7 +76,7 @@ public class CreateIdeaAction extends Action {
         }
         // TODO : Authenticate for demand creation
         Locale langLocale = new Locale(lang);
-        Demand d = new Demand(langLocale, description, specification);
+        Demand d = new Demand(session.getAuthToken().getMember(), langLocale, description, specification);
        
         d.authenticate(session.getAuthToken());
 
