@@ -10,7 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
-import java.util.Random;
+//import java.util.Random;
 
 import com.bloatit.common.Image;
 import com.bloatit.common.PageIterable;
@@ -103,8 +103,7 @@ public class IdeasList extends Page {
                 {
 
                     final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-                    // karmaBlock.add(new HtmlParagraph("" + demand.getPopularity()));
-                    karmaBlock.add(new HtmlParagraph("" + Math.round(Math.random() * 150)));
+                    karmaBlock.add(new HtmlParagraph("" + demand.getPopularity()));
 
                     leftBlock.add(karmaBlock);
 
@@ -117,7 +116,10 @@ public class IdeasList extends Page {
                     final HtmlTitleBlock ideaTitle = new HtmlTitleBlock("Correction de bug - VLC", 3);
                     {
                         ideaTitle.add(new HtmlParagraph(demand.getTitle()));
-                        final HtmlProgressBar progressBar = new HtmlProgressBar((float) (Math.random() * 100f));
+
+                        final float progressValue = (float) Math.floor(demand.getProgression());
+
+                        final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
                         ideaTitle.add(progressBar);
                     }
                     centerBlock.add(ideaTitle);
@@ -127,41 +129,7 @@ public class IdeasList extends Page {
 
                 final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
                 {
-
-                    final int imageIndex = new Random().nextInt(7);
-                    String image = "";
-                    switch (imageIndex) {
-
-                    case 0:
-                        image = "idea";
-                        break;
-                    case 1:
-                        image = "kde";
-                        break;
-                    case 2:
-                        image = "gnome";
-                        break;
-                    case 3:
-                        image = "enlightenment";
-                        break;
-                    case 4:
-                        image = "lxde";
-                        break;
-                    case 5:
-                        image = "ratpoison";
-                        break;
-                    case 6:
-                        if (Math.random() < 0.5) {
-                            image = "tux_mini";
-                        } else {
-                            image = "ratpoison";
-                        }
-                        break;
-
-                    }
-
-                    rightBlock.add(new HtmlImage(new Image("/resources/img/" + image + ".png", Image.ImageType.DISTANT)));
-
+                    rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
                 }
                 ideaLinkBlock.add(rightBlock);
             }
