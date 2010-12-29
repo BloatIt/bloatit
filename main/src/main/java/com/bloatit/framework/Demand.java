@@ -74,7 +74,7 @@ public class Demand extends Kudosable {
      *         return Float.POSITIVE_INFINITY.
      */
     public float getProgression() {
-        if (dao.getOffers().size() == 0) {
+        if (dao.getOffers().isEmpty()) {
             return 42 * (1 - 1 / (1 + dao.getContribution().floatValue() / 200));
         } else {
             final DaoOffer currentOffer = dao.getCurrentOffer();
