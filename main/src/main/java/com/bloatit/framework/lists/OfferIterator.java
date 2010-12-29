@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.framework.Offer;
 import com.bloatit.model.data.DaoOffer;
 
-public class OfferIterator extends com.bloatit.framework.lists.IteratorBinder<Offer, DaoOffer> {
+public final class OfferIterator extends com.bloatit.framework.lists.IteratorBinder<Offer, DaoOffer> {
 
     public OfferIterator(final Iterable<DaoOffer> daoIterator) {
         super(daoIterator);

@@ -6,7 +6,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Specification;
 import com.bloatit.model.data.DaoSpecification;
 
-public class SpecificationList extends ListBinder<Specification, DaoSpecification> {
+public final class SpecificationList extends ListBinder<Specification, DaoSpecification> {
 
     public SpecificationList(final PageIterable<DaoSpecification> daoCollection) {
         super(daoCollection);

@@ -6,7 +6,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Offer;
 import com.bloatit.model.data.DaoOffer;
 
-public class OfferList extends ListBinder<Offer, DaoOffer> {
+public final class OfferList extends ListBinder<Offer, DaoOffer> {
 
     public OfferList(final PageIterable<DaoOffer> daoCollection) {
         super(daoCollection);

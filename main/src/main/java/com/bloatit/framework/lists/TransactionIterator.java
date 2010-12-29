@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.framework.Transaction;
 import com.bloatit.model.data.DaoTransaction;
 
-public class TransactionIterator extends com.bloatit.framework.lists.IteratorBinder<Transaction, DaoTransaction> {
+public final class TransactionIterator extends com.bloatit.framework.lists.IteratorBinder<Transaction, DaoTransaction> {
 
     public TransactionIterator(final Iterable<DaoTransaction> daoIterator) {
         super(daoIterator);

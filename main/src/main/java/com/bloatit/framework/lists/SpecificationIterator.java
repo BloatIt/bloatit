@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.framework.Specification;
 import com.bloatit.model.data.DaoSpecification;
 
-public class SpecificationIterator extends com.bloatit.framework.lists.IteratorBinder<Specification, DaoSpecification> {
+public final class SpecificationIterator extends com.bloatit.framework.lists.IteratorBinder<Specification, DaoSpecification> {
 
     public SpecificationIterator(final Iterable<DaoSpecification> daoIterator) {
         super(daoIterator);

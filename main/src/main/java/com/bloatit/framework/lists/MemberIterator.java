@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.framework.Member;
 import com.bloatit.model.data.DaoMember;
 
-public class MemberIterator extends IteratorBinder<Member, DaoMember> {
+public final class MemberIterator extends IteratorBinder<Member, DaoMember> {
 
     public MemberIterator(final Iterable<DaoMember> daoIterator) {
         super(daoIterator);

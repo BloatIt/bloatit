@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.framework.Comment;
 import com.bloatit.model.data.DaoComment;
 
-public class CommentIterator extends com.bloatit.framework.lists.IteratorBinder<Comment, DaoComment> {
+public final class CommentIterator extends com.bloatit.framework.lists.IteratorBinder<Comment, DaoComment> {
 
     public CommentIterator(final Iterable<DaoComment> daoIterator) {
         super(daoIterator);

@@ -15,17 +15,17 @@ public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
     }
 
     @Override
-    public boolean hasNext() {
+    public final boolean hasNext() {
         return daoIterator.hasNext();
     }
 
     @Override
-    public E next() {
+    public final E next() {
         return createFromDao(daoIterator.next());
     }
 
     @Override
-    public void remove() {
+    public final void remove() {
         daoIterator.remove();
     }
 
