@@ -166,7 +166,7 @@ public class DaoDemand extends DaoKudosable {
             Log.data().fatal("Cannot create a contribution with this amount " + amount.toEngineeringString() + " by member " + member.getId());
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
-        if (comment.length() > 144) {
+        if (comment != null && comment.length() > 144) {
             Log.data().fatal("The comment of a contribution must be <= 144 chars long.");
             throw new FatalErrorException("Comments lenght of Contribution must be < 144.", null);
         }

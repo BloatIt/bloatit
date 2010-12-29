@@ -8,11 +8,13 @@ import junit.framework.TestSuite;
 
 import org.hibernate.HibernateException;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
+import com.bloatit.model.data.DaoMember.Role;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * Unit test for simple App.
+ * Unit test for Member and groups
  */
 public class GroupMemberTest extends TestCase {
 
@@ -41,8 +43,32 @@ public class GroupMemberTest extends TestCase {
     public static Test suite() {
         return new TestSuite(GroupMemberTest.class);
     }
+    
+    public void testCreateMember() throws InterruptedException{
+        SessionManager.beginWorkUnit();
+        final DaoMember theMember = DaoMember.createAndPersist(
+                "Thomas", "password", "tom@gmail.com");
+        
+        assertEquals(theMember.getEmail(), "tom@gmail.com");
+        assertEquals(theMember.getFullname(), "");
+        assertEquals(theMember.getLogin(), "Thomas");
+        assertEquals(theMember.getPassword(), "password");
+        assertEquals(theMember.getKarma().intValue(), 0);
+        assertEquals(theMember.getRole(), Role.NORMAL);
+        
+        theMember.setFullname("Thomas Guyard");
+        assertEquals(theMember.getFullname(), "Thomas Guyard");
+        theMember.setEmail("Test@nowhere.com");
+        assertEquals(theMember.getEmail(), "Test@nowhere.com");
+        theMember.setPassword("Hello");
+        assertEquals(theMember.getPassword(), "Hello");
+        theMember.setRole(Role.ADMIN);
+        assertEquals(theMember.getRole(), Role.ADMIN);
+        
+        SessionManager.endWorkUnitAndFlush();
+    }
 
-    public void testCreateMember() {
+    public void testCreateTreeMembers() {
         SessionManager.beginWorkUnit();
         {
             final DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
@@ -62,7 +88,46 @@ public class GroupMemberTest extends TestCase {
         assertEquals(3, DBRequests.getAll(DaoMember.class).size());
 
         SessionManager.endWorkUnitAndFlush();
+    }
 
+    public void testCreateMemberLimit() {
+        SessionManager.beginWorkUnit();
+        try {
+            DaoMember.createAndPersist(null, "pass", "mail@nowhere.com");
+            assertTrue(false);
+        } catch (NullPointerException e) {
+            assertTrue(true);
+        }
+        try {
+            DaoMember.createAndPersist("login", null, "mail@nowhere.com");
+            assertTrue(false);
+        } catch (NullPointerException e) {
+            assertTrue(true);
+        }
+        try {
+            DaoMember.createAndPersist("login", "pass", null);
+            assertTrue(false);
+        } catch (NullPointerException e) {
+            assertTrue(true);
+        }
+        try {
+            DaoMember.createAndPersist("", "pass", "mail@nowhere.com");
+            assertTrue(false);
+        } catch (FatalErrorException e) {
+            assertTrue(true);
+        }
+        try {
+            DaoMember.createAndPersist("login", "", "mail@nowhere.com");
+            assertTrue(false);
+        } catch (FatalErrorException e) {
+            assertTrue(true);
+        }
+        try {
+            DaoMember.createAndPersist("login", "pass", "");
+            assertTrue(false);
+        } catch (FatalErrorException e) {
+            assertTrue(true);
+        }
     }
 
     public void testMemberDuplicateCreation() {
@@ -70,8 +135,18 @@ public class GroupMemberTest extends TestCase {
             SessionManager.beginWorkUnit();
             DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
             SessionManager.flush();
-            DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com"); // duplicate
-                                                                        // login
+            DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com"); // duplicate login
+            SessionManager.endWorkUnitAndFlush();
+            assertTrue(false);
+        } catch (final HibernateException e) {
+            assertTrue(true);
+        }
+        
+        try {
+            SessionManager.beginWorkUnit();
+            DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
+            SessionManager.flush();
+            DaoMember.createAndPersist("Tom", "plip", "yo@gmail.com"); // duplicate mail
             SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
         } catch (final HibernateException e) {
@@ -80,7 +155,7 @@ public class GroupMemberTest extends TestCase {
     }
 
     public void testGetMemberByLogin() {
-        testCreateMember();
+        testCreateTreeMembers();
         SessionManager.beginWorkUnit();
         assertNotNull(DaoMember.getByLogin("Fred"));
         assertNull(DaoMember.getByLogin("Inexistant"));
@@ -88,7 +163,7 @@ public class GroupMemberTest extends TestCase {
     }
 
     public void testExistMemberByLogin() {
-        testCreateMember();
+        testCreateTreeMembers();
         SessionManager.beginWorkUnit();
         assertTrue(DaoActor.exist("Fred"));
         assertFalse(DaoActor.exist("Inexistant"));
@@ -97,14 +172,14 @@ public class GroupMemberTest extends TestCase {
     }
 
     public void testCreateGroup() {
-        testCreateMember();
+        testCreateTreeMembers();
         SessionManager.beginWorkUnit();
         DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC);
-        DaoGroup.createAndPersiste("myGroup", "plop@plop.com", DaoGroup.Right.PUBLIC);
-        DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PUBLIC);
-        DaoGroup.createAndPersiste("b218", "plop@plop.com", DaoGroup.Right.PUBLIC);
-        DaoGroup.createAndPersiste("b217", "plop@plop.com", DaoGroup.Right.PUBLIC);
-        DaoGroup.createAndPersiste("b216", "plop@plop.com", DaoGroup.Right.PUBLIC);
+        DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", DaoGroup.Right.PUBLIC);
+        DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PUBLIC);
+        DaoGroup.createAndPersiste("b218", "plop3@plop.com", DaoGroup.Right.PUBLIC);
+        DaoGroup.createAndPersiste("b217", "plop4@plop.com", DaoGroup.Right.PUBLIC);
+        DaoGroup.createAndPersiste("b216", "plop5@plop.com", DaoGroup.Right.PUBLIC);
         SessionManager.endWorkUnitAndFlush();
 
     }
@@ -126,8 +201,7 @@ public class GroupMemberTest extends TestCase {
         testCreateGroup();
 
         SessionManager.beginWorkUnit();
-        // TODO correct me
-        assertEquals("plop@plop.com", DaoGroup.getByName("b219").getEmail());
+        assertEquals("plop2@plop.com", DaoGroup.getByName("b219").getEmail());
         assertNull(DaoGroup.getByName("Inexistant"));
         SessionManager.endWorkUnitAndFlush();
     }

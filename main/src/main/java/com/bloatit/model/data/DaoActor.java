@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
@@ -43,8 +44,11 @@ public abstract class DaoActor {
     @Basic(optional = false)
     @Column(unique = true, updatable = false)
     private String login;
+    
     @Basic(optional = false)
+//    @Column(unique = true)
     private String email;
+    
     @Basic(optional = false)
     private Date dateCreation;
 
@@ -67,7 +71,12 @@ public abstract class DaoActor {
     protected DaoActor(final String login, final String email) {
         super();
         if (login == null || email == null) {
+            Log.data().fatal("Login or email null!");
             throw new NullPointerException();
+        }
+        if (login.isEmpty() || email.isEmpty()) {
+            Log.data().fatal("Login or email empty!");
+            throw new FatalErrorException("login and email cannot be empty");
         }
         dateCreation = new Date();
         this.login = login;

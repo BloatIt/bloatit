@@ -14,6 +14,7 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.DaoJoinGroupInvitation.State;
 import com.bloatit.model.data.util.SessionManager;
@@ -91,11 +92,23 @@ public class DaoMember extends DaoActor {
         super();
     }
 
-    protected DaoMember(final String login, final String password, final String email) {
+    /**
+     * You have to use CreateAndPersist instead of this constructor
+     * 
+     * @see DaoMember#createAndPersist(String, String, String)
+     */
+    private DaoMember(final String login, final String password, final String email) {
         super(login, email);
+        if (password == null) {
+            throw new NullPointerException();
+        }
+        if (password.isEmpty()) {
+            throw new FatalErrorException("Password cannot be null!");
+        }
         setRole(Role.NORMAL);
         this.password = password;
-        karma = 0;
+        this.karma = 0;
+        this.fullname = "";
     }
 
     /**
