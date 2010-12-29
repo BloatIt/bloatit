@@ -19,6 +19,13 @@ public CreateIdeaActionUrl(Parameters params, Parameters session) {
 }
 public CreateIdeaActionUrl(){
     super(getName());
+    try {
+        this.project.setValue(Loaders.fromStr(java.lang.String.class, "VLC"));
+        this.category.setValue(Loaders.fromStr(java.lang.String.class, "Bug"));
+    } catch (ConversionErrorException e) {
+        e.printStackTrace();
+        assert false ;
+    }
 }
 private UrlParameter<java.lang.String> description =     new UrlParameter<java.lang.String>("bloatit_idea_description", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private UrlParameter<java.lang.String> specification =     new UrlParameter<java.lang.String>("bloatit_idea_specification", null, java.lang.String.class, Role.POST, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
