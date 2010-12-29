@@ -25,6 +25,7 @@ import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
+import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
@@ -73,6 +74,7 @@ public class DispatchServer {
                 put(ContributionActionUrl.getName(), ContributionActionUrl.class);
                 put(OfferActionUrl.getName(), OfferActionUrl.class);
                 put(AccountChargingActionUrl.getName(), AccountChargingActionUrl.class);
+                put(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
 
             }
         };

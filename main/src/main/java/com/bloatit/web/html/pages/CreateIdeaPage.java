@@ -19,6 +19,12 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
+import com.bloatit.web.html.components.standard.form.HtmlForm;
+import com.bloatit.web.html.components.standard.form.HtmlFormBlock;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
+import com.bloatit.web.html.components.standard.form.HtmlTextArea;
+import com.bloatit.web.html.components.standard.form.HtmlTextField;
+import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 
 @ParamContainer("idea/create")
@@ -29,6 +35,12 @@ public class CreateIdeaPage extends LoggedPage {
     
     @RequestParam(name = CreateIdeaAction.SPECIFICATION_CODE, defaultValue = "", role = Role.SESSION)
     private String specification;
+
+    @RequestParam(name = CreateIdeaAction.PROJECT_CODE, defaultValue = "", role = Role.SESSION)
+    private String project;
+
+    @RequestParam(name = CreateIdeaAction.CATEGORY_CODE, defaultValue = "", role = Role.SESSION)
+    private String category;
     
 
     public CreateIdeaPage(final CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
@@ -56,7 +68,30 @@ public class CreateIdeaPage extends LoggedPage {
 
     private HtmlElement generateIdeaCreationForm() {
         HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(session.tr("Create a new idea"), 1);
+        final CreateIdeaActionUrl doCreateUrl = new CreateIdeaActionUrl();
 
+        // Create the form stub
+        HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
+        HtmlFormBlock specifBlock = new HtmlFormBlock(session.tr("Specify the new idea"));
+        HtmlFormBlock paramBlock = new HtmlFormBlock(session.tr("Parameters of the new idea"));
+
+        createIdeaTitle.add(createIdeaForm);
+        createIdeaForm.add(specifBlock);
+        createIdeaForm.add(paramBlock);
+        createIdeaForm.add(new HtmlSubmit(session.tr("submit")));
+
+        // Create the fields that will describe the specification of the idea (description & specification)
+        HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, session.tr("Title"));
+        HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, session.tr("Describe the idea"), 10, 80);
+        specifBlock.add(descriptionInput);
+        specifBlock.add(specificationInput);
+
+        // Create the fields that will be used to describe the parameters of the idea (project ...)
+        HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, session.tr("Category"));
+        HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, session.tr("Project"));
+        paramBlock.add(categoryInput);
+        paramBlock.add(projectInput);
+        
         final HtmlDiv group = new HtmlDiv();
         group.add(createIdeaTitle);
         return group;

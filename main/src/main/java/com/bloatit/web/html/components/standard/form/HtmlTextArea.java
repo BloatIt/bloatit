@@ -30,11 +30,11 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 public final class HtmlTextArea extends HtmlFormField<String> {
 
     public HtmlTextArea(final String name, final int rows, final int cols) {
-        super(new HtmlSimpleTextArea(cols, rows), name);
+        super(new HtmlSimpleTextArea(rows, cols), name);
     }
 
     public HtmlTextArea(final String name, final String label, final int rows, final int cols) {
-        super(new HtmlSimpleTextArea(cols, rows), name, label);
+        super(new HtmlSimpleTextArea(rows, cols), name, label);
     }
 
     /**

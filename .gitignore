@@ -17,3 +17,4 @@ bin/
 main/po/*~
 main/po/*.mo
 apt/.agitator
+main/css
