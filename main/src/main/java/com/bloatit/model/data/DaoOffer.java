@@ -23,7 +23,7 @@ import com.bloatit.model.data.util.NonOptionalParameterException;
  * An offer is a developer offer to a demand.
  */
 @Entity
-public final class DaoOffer extends DaoKudosable {
+public class DaoOffer extends DaoKudosable {
 
     /**
      * This is demand on which this offer is done.
@@ -61,49 +61,37 @@ public final class DaoOffer extends DaoKudosable {
         if (demand == null || text == null || dateExpire == null) {
             throw new NonOptionalParameterException();
         }
-        setDemand(demand);
-        setDescription(text);
-        setDateExpire(dateExpire);
-        setAmount(amount);
+        this.demand = demand;
+        this.description = text;
+        this.dateExpire = dateExpire;
+        this.amount = amount;
     }
 
-    public final Date getDateExpire() {
+    public Date getDateExpire() {
         return dateExpire;
     }
 
-    public final void setDateExpire(final Date dateExpire) {
+    public void setDateExpire(final Date dateExpire) {
         this.dateExpire = dateExpire;
     }
 
-    public final DaoDemand getDemand() {
+    public DaoDemand getDemand() {
         return demand;
     }
 
-    public final DaoDescription getDescription() {
+    public DaoDescription getDescription() {
         return description;
     }
 
-    public final BigDecimal getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
     protected DaoOffer() {
         super();
-    }
-
-    private void setDemand(final DaoDemand Demand) {
-        demand = Demand;
-    }
-
-    private void setDescription(final DaoDescription text) {
-        description = text;
-    }
-
-    private void setAmount(final BigDecimal amount) {
-        this.amount = amount;
     }
 }

@@ -79,10 +79,10 @@ public abstract class DaoActor {
             Log.data().fatal("Login or email empty!");
             throw new NonOptionalParameterException("login and email cannot be empty");
         }
-        setDateCreation(new Date());
-        setLogin(login);
-        setEmail(email);
-        setInternalAccount(new DaoInternalAccount(this));
+        this.dateCreation = new Date();
+        this.login = login;
+        this.email = email;
+        this.internalAccount = new DaoInternalAccount(this);
     }
 
     /**
@@ -148,25 +148,8 @@ public abstract class DaoActor {
     // For hibernate mapping
     // ======================================================================
 
-    private void setInternalAccount(final DaoInternalAccount InternalAccount) {
-        internalAccount = InternalAccount;
-    }
-
-    private void setLogin(final String login) {
-        this.login = login;
-    }
-
-    private void setDateCreation(final Date dateJoin) {
-        dateCreation = dateJoin;
-    }
-
     protected DaoActor() {
         super();
-    }
-
-    @SuppressWarnings("unused")
-    private void setId(final Integer id) {
-        this.id = id;
     }
 
 }

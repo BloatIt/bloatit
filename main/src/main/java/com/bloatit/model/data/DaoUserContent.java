@@ -48,8 +48,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
             Log.data().fatal("Cannot create a DaoUserContent with a null member.");
             throw new NonOptionalParameterException();
         }
-        setMember(member);
-        setCreationDate(new Date());
+        this.member = member;
+        this.creationDate = new Date();
     }
 
     public final DaoMember getAuthor() {
@@ -70,20 +70,12 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     public final void setAsGroup(final DaoGroup asGroup) {
         this.asGroup = asGroup;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
     protected DaoUserContent() {
-        creationDate = new Date();
-    }
-
-    private void setMember(final DaoMember author) {
-        member = author;
-    }
-
-    private void setCreationDate(final Date creationDate) {
-        this.creationDate = creationDate;
+        super();
     }
 }

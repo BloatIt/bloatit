@@ -65,10 +65,10 @@ public abstract class DaoAccount {
             Log.data().fatal("Cannot create account with a null actor.");
             throw new NonOptionalParameterException();
         }
-        setActor(actor);
-        setCreationDate(new Date());
-        setLastModificationDate(getCreationDate());
-        setAmount(BigDecimal.ZERO);
+        this.actor = actor;
+        this.creationDate = new Date();
+        this.lastModificationDate = getCreationDate();
+        this.amount = BigDecimal.ZERO;
     }
 
     /**
@@ -117,7 +117,7 @@ public abstract class DaoAccount {
      * @param value the quantity of money to add to the amount of this account. (May be a
      *        negative value)
      */
-    protected void addToAmountValue(final BigDecimal value) {
+    protected final void addToAmountValue(final BigDecimal value) {
         resetModificationDate();
         lastModificationDate = new Date();
         amount = amount.add(value);
@@ -130,7 +130,7 @@ public abstract class DaoAccount {
      * @param value the quantity of money to subtract to the amount of this account. (May
      *        be a negative value)
      */
-    protected void substractToAmountValue(final BigDecimal value) {
+    protected final void substractToAmountValue(final BigDecimal value) {
         resetModificationDate();
         lastModificationDate = new Date();
         amount = amount.subtract(value);
@@ -140,18 +140,10 @@ public abstract class DaoAccount {
      * Used internally or by subclasses to every time the Amount is changed. It reset the
      * modification date to now.
      */
-    protected void resetModificationDate() {
-        setLastModificationDate(new Date());
+    protected final void resetModificationDate() {
+        lastModificationDate = new Date();
     }
-
-    // ======================================================================
-    // For hibernate mapping
-    // ======================================================================
-
-    protected DaoAccount() {
-        super();
-    }
-
+    
     /**
      * This is for hibernate only. The amount must be modified by some higher level
      * methods.
@@ -164,21 +156,12 @@ public abstract class DaoAccount {
     protected final void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
+    
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
-    @SuppressWarnings("unused")
-    private void setId(final Integer id) {
-        this.id = id;
-    }
-
-    private void setLastModificationDate(final Date lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
-    }
-
-    private void setActor(final DaoActor Actor) {
-        actor = Actor;
-    }
-
-    private void setCreationDate(final Date creationDate) {
-        this.creationDate = creationDate;
+    protected DaoAccount() {
+        super();
     }
 }

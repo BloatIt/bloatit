@@ -40,17 +40,17 @@ public final class DaoSpecification extends DaoUserContent {
             throw new NonOptionalParameterException();
         }
         setContent(content);
-        setDemand(demand);
+        this.demand = demand;
     }
 
-    public final String getContent() {
+    public String getContent() {
         return content;
     }
 
-    public final void setContent(final String content) {
+    public void setContent(final String content) {
         this.content = content;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -58,14 +58,4 @@ public final class DaoSpecification extends DaoUserContent {
     protected DaoSpecification() {
         super();
     }
-
-    @SuppressWarnings("unused")
-    private DaoDemand getDemand() {
-        return demand;
-    }
-
-    private void setDemand(final DaoDemand Demand) {
-        demand = Demand;
-    }
-
 }

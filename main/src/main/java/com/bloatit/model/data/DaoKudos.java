@@ -48,20 +48,15 @@ public final class DaoKudos extends DaoUserContent {
         this.value = value;
     }
 
-    public final int getValue() {
+    public int getValue() {
         return value;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
     protected DaoKudos() {
         super();
-    }
-
-    @SuppressWarnings("unused")
-    private void setValue(final int value) {
-        this.value = value;
     }
 }

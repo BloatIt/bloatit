@@ -30,7 +30,7 @@ public final class DaoInternalAccount extends DaoAccount {
         blocked = BigDecimal.ZERO;
     }
 
-    public final BigDecimal getBlocked() {
+    public BigDecimal getBlocked() {
         return blocked;
     }
 
@@ -41,7 +41,7 @@ public final class DaoInternalAccount extends DaoAccount {
      * @throws NotEnoughMoneyException if there is not enough money to block. (nothing is
      *         done, modification date is unchanged)
      */
-    protected final void block(final BigDecimal blocked) throws NotEnoughMoneyException {
+    protected void block(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(getAmount()) > 0) {
             Log.data().fatal("Cannot block " + blocked.toEngineeringString() + " on account " + getId() + ", Throwing NotEnougthMoneyEcception.");
             throw new NotEnoughMoneyException();
@@ -58,7 +58,7 @@ public final class DaoInternalAccount extends DaoAccount {
      * @throws NotEnoughMoneyException if there is not enough money already bloken.
      *         (nothing is done, modification date is unchanged)
      */
-    protected final void unBlock(final BigDecimal blocked) throws NotEnoughMoneyException {
+    protected void unBlock(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(this.blocked) > 0) {
             Log.data().fatal("Cannot unblock " + blocked.toEngineeringString() + " on account " + getId() + ", Throwing NotEnougthMoneyEcception.");
             throw new NotEnoughMoneyException();
@@ -69,21 +69,16 @@ public final class DaoInternalAccount extends DaoAccount {
     }
 
     @Override
-    protected final boolean hasEnoughMoney(final BigDecimal amount) {
+    protected boolean hasEnoughMoney(final BigDecimal amount) {
         return getAmount().compareTo(amount) >= 0;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
     protected DaoInternalAccount() {
         super();
-    }
-
-    @SuppressWarnings("unused")
-    private void setBlocked(final BigDecimal blocked) {
-        this.blocked = blocked;
     }
 
 }

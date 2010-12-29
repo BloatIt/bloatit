@@ -23,7 +23,7 @@ import com.bloatit.model.data.util.SessionManager;
  * see a DaoTranslation as a version of a description is a specific locale.
  */
 @Entity
-public final class DaoDescription extends DaoIdentifiable {
+public class DaoDescription extends DaoIdentifiable {
 
     // @Field(index = Index.UN_TOKENIZED)
     private Locale defaultLocale;
@@ -67,14 +67,14 @@ public final class DaoDescription extends DaoIdentifiable {
      * Use a HQL query to get the Translations of this description in a PageIterable This
      * will return every translation EVEN this description.
      */
-    public final PageIterable<DaoTranslation> getTranslationsFromQuery() {
+    public PageIterable<DaoTranslation> getTranslationsFromQuery() {
         return new QueryCollection<DaoTranslation>("from DaoTransaltion as t where t.description = :this").setEntity("this", this);
     }
 
     /**
      * Add a new translation to this description.
      */
-    public final void addTranslation(final DaoTranslation translation) {
+    public void addTranslation(final DaoTranslation translation) {
         translations.add(translation);
     }
 
@@ -84,7 +84,7 @@ public final class DaoDescription extends DaoIdentifiable {
      * @param locale the locale in which we want the description
      * @return null if no translation exists for this locale.
      */
-    public final DaoTranslation getTranslation(final Locale locale) {
+    public DaoTranslation getTranslation(final Locale locale) {
         final Query q = SessionManager
                 .createQuery("from com.bloatit.model.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
         q.setLocale("locale", locale);
@@ -95,38 +95,33 @@ public final class DaoDescription extends DaoIdentifiable {
     /**
      * @return the default translation for this description (using default locale)
      */
-    public final DaoTranslation getDefaultTranslation() {
+    public DaoTranslation getDefaultTranslation() {
         return getTranslation(getDefaultLocale());
     }
 
     /**
      * Change the default locale.
      */
-    public final void setDefaultLocale(final Locale defaultLocale) {
+    public void setDefaultLocale(final Locale defaultLocale) {
         this.defaultLocale = defaultLocale;
     }
 
-    public final Locale getDefaultLocale() {
+    public Locale getDefaultLocale() {
         return defaultLocale;
     }
 
     /**
      * You should probably use the getTranslationsFromQuery
      */
-    public final Set<DaoTranslation> getTranslations() {
+    public Set<DaoTranslation> getTranslations() {
         return translations;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
     protected DaoDescription() {
         super();
-    }
-
-    @SuppressWarnings("unused")
-    private void setTranslations(final Set<DaoTranslation> Translations) {
-        translations = Translations;
     }
 }

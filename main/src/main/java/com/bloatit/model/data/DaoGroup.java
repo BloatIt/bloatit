@@ -22,7 +22,7 @@ import com.bloatit.model.data.util.SessionManager;
  * A group is an entity where people can be group...
  */
 @Entity
-public final class DaoGroup extends DaoActor {
+public class DaoGroup extends DaoActor {
 
     /**
      * There is 2 kinds of groups : The PUBLIC that everybody can see and and go in. The
@@ -93,7 +93,7 @@ public final class DaoGroup extends DaoActor {
     /**
      * @return all the member in this group. (Use a HQL query).
      */
-    public final PageIterable<DaoMember> getMembers() {
+    public PageIterable<DaoMember> getMembers() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query filter = session.createFilter(getGroupMembership(), "select this.member order by login");
         final Query count = session.createFilter(getGroupMembership(), "select count(*)");
@@ -107,25 +107,25 @@ public final class DaoGroup extends DaoActor {
      * @param isAdmin true if the member need to have the right to administer this group.
      *        (This may change if the number of role change !)
      */
-    public final void addMember(final DaoMember Member, final boolean isAdmin) {
+    public void addMember(final DaoMember Member, final boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(Member, this, isAdmin));
     }
 
     /**
      * Remove a member from the group
      */
-    public final void removeMember(final DaoMember Member) {
+    public void removeMember(final DaoMember Member) {
         final DaoGroupMembership link = DaoGroupMembership.get(this, Member);
         groupMembership.remove(link);
         Member.getGroupMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
     }
 
-    public final Right getRight() {
+    public Right getRight() {
         return right;
     }
 
-    public final void setRight(final Right right) {
+    public void setRight(final Right right) {
         this.right = right;
     }
 
@@ -134,7 +134,7 @@ public final class DaoGroup extends DaoActor {
      * 
      * @return {@value MemberStatus#UNKNOWN} if the member is not in this group.
      */
-    public final MemberStatus getMemberStatus(final DaoMember member) {
+    public MemberStatus getMemberStatus(final DaoMember member) {
         final Query q = SessionManager
                 .getSessionFactory()
                 .getCurrentSession()
@@ -162,13 +162,8 @@ public final class DaoGroup extends DaoActor {
     // For hibernate mapping
     // ======================================================================
 
-    private DaoGroup() {
+    protected DaoGroup() {
         super();
-    }
-
-    @SuppressWarnings("unused")
-    private void setGroupMembership(final Set<DaoGroupMembership> GroupMembership) {
-        groupMembership = GroupMembership;
     }
 
 }

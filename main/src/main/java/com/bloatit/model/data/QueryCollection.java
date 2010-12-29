@@ -73,7 +73,8 @@ public class QueryCollection<T> implements PageIterable<T> {
     @Override
     public final int size() {
         if (size == -1) {
-            return size = ((Long) sizeQuery.uniqueResult()).intValue();
+            size = ((Long) sizeQuery.uniqueResult()).intValue();
+            return size;
         }
         return size;
     }

@@ -18,7 +18,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  * A transaction is a transaction between an internal account and an other account.
  */
 @Entity
-public final class DaoTransaction extends DaoIdentifiable {
+public class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
@@ -64,51 +64,36 @@ public final class DaoTransaction extends DaoIdentifiable {
         if (!from.hasEnoughMoney(amount) || !to.hasEnoughMoney(amount.negate())) {
             throw new NotEnoughMoneyException();
         }
-        setFrom(from);
-        setTo(to);
-        setAmount(amount);
-        setCreationDate(new Date());
+        this.from = from;
+        this.to = to;
+        this.amount = amount;
+        this.creationDate = new Date();
         from.substractToAmountValue(amount);
         to.addToAmountValue(amount);
     }
 
-    public final DaoInternalAccount getFrom() {
+    public DaoInternalAccount getFrom() {
         return from;
     }
 
-    public final DaoAccount getTo() {
+    public DaoAccount getTo() {
         return to;
     }
 
-    public final BigDecimal getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public final Date getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    private DaoTransaction() {
+    protected DaoTransaction() {
         super();
     }
 
-    private void setCreationDate(final Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    private void setAmount(final BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    private void setTo(final DaoAccount to) {
-        this.to = to;
-    }
-
-    private void setFrom(final DaoInternalAccount from) {
-        this.from = from;
-    }
 }

@@ -27,13 +27,12 @@ public abstract class DaoIdentifiable {
     public final Integer getId() {
         return id;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    @SuppressWarnings("unused")
-    private void setId(final Integer id) {
-        this.id = id;
+    protected DaoIdentifiable() {
+        super();
     }
 }

@@ -15,7 +15,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.metadata.ClassMetadata;
 
-import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.DaoJoinGroupInvitation.State;
 import com.bloatit.model.data.util.NonOptionalParameterException;
@@ -26,7 +25,7 @@ import com.bloatit.model.data.util.SessionManager;
  * you ...
  */
 @Entity
-public final class DaoMember extends DaoActor {
+public class DaoMember extends DaoActor {
 
     public enum Role {
         NORMAL, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
@@ -90,10 +89,6 @@ public final class DaoMember extends DaoActor {
         return (DaoMember) q.uniqueResult();
     }
 
-    protected DaoMember() {
-        super();
-    }
-
     /**
      * You have to use CreateAndPersist instead of this constructor
      * 
@@ -107,24 +102,24 @@ public final class DaoMember extends DaoActor {
         if (password.isEmpty()) {
             throw new NonOptionalParameterException("Password cannot be null!");
         }
-        setRole(Role.NORMAL);
-        setPassword(password);
-        setKarma(0);
-        setFullname("");
+        this.role = Role.NORMAL;
+        this.password = password;
+        this.karma = 0;
+        this.fullname = "";
     }
 
     /**
      * @param aGroup the group in which this member is added.
      * @param isAdmin tell if the member is an admin of the group 'aGroup'
      */
-    public final void addToGroup(final DaoGroup aGroup, final boolean isAdmin) {
+    public void addToGroup(final DaoGroup aGroup, final boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(this, aGroup, isAdmin));
     }
 
     /**
      * @param aGroup the group from which this member is removed.
      */
-    public final void removeFromGroup(final DaoGroup aGroup) {
+    public void removeFromGroup(final DaoGroup aGroup) {
         final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
         groupMembership.remove(link);
         aGroup.getGroupMembership().remove(link);
@@ -137,75 +132,75 @@ public final class DaoMember extends DaoActor {
      * 
      * @return All the groups this member is in. (Use a HQL query)
      */
-    public final PageIterable<DaoGroup> getGroups() {
+    public PageIterable<DaoGroup> getGroups() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query filter = session.createFilter(getGroupMembership(), "select this.group order by login");
         final Query count = session.createFilter(getGroupMembership(), "select count(*)");
         return new QueryCollection<DaoGroup>(filter, count);
     }
 
-    public final String getFullname() {
+    public String getFullname() {
         return fullname;
     }
 
-    public final void setFullname(final String firstname) {
+    public void setFullname(final String firstname) {
         fullname = firstname;
     }
 
-    public final String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public final void setPassword(final String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
     /**
      * @return All the demands created by this member.
      */
-    public final PageIterable<DaoDemand> getDemands() {
+    public PageIterable<DaoDemand> getDemands() {
         return getUserContent(DaoDemand.class);
     }
 
     /**
      * @return All the kudos created by this member.
      */
-    public final PageIterable<DaoKudos> getKudos() {
+    public PageIterable<DaoKudos> getKudos() {
         return getUserContent(DaoKudos.class);
     }
 
     /**
      * @return All the Specifications created by this member.
      */
-    public final PageIterable<DaoSpecification> getSpecifications() {
+    public PageIterable<DaoSpecification> getSpecifications() {
         return getUserContent(DaoSpecification.class);
     }
 
     /**
      * @return All the Transactions created by this member.
      */
-    public final PageIterable<DaoContribution> getTransactions() {
+    public PageIterable<DaoContribution> getTransactions() {
         return getUserContent(DaoContribution.class);
     }
 
     /**
      * @return All the Comments created by this member.
      */
-    public final PageIterable<DaoComment> getComments() {
+    public PageIterable<DaoComment> getComments() {
         return getUserContent(DaoComment.class);
     }
 
     /**
      * @return All the Offers created by this member.
      */
-    public final PageIterable<DaoOffer> getOffers() {
+    public PageIterable<DaoOffer> getOffers() {
         return getUserContent(DaoOffer.class);
     }
 
     /**
      * @return All the Translations created by this member.
      */
-    public final PageIterable<DaoTranslation> getTranslations() {
+    public PageIterable<DaoTranslation> getTranslations() {
         return getUserContent(DaoTranslation.class);
     }
 
@@ -213,7 +208,7 @@ public final class DaoMember extends DaoActor {
      * @return All the received invitation to join a group which are in a specified state
      */
     // TODO test
-    public final PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
+    public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
                 "from com.bloatit.model.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state  ").setEntity("reciever",
                 this).setEntity("state", state);
@@ -223,7 +218,7 @@ public final class DaoMember extends DaoActor {
      * @return All the sent invitation to join a group which are in a specified state
      */
     // TODO test
-    public final PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
+    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
                 "from com.bloatit.model.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state").setEntity("sender", this)
                 .setEntity("state", state);
@@ -242,7 +237,7 @@ public final class DaoMember extends DaoActor {
     /**
      * @return if the current member is in the "group".
      */
-    public final boolean isInGroup(final DaoGroup group) {
+    public boolean isInGroup(final DaoGroup group) {
         final Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery( //
         "SELECT count(*) " + //
                 "FROM com.bloatit.model.data.DaoMember m " + //
@@ -254,40 +249,34 @@ public final class DaoMember extends DaoActor {
         return ((Long) q.uniqueResult()) >= 1;
     }
 
-    public final void addToKarma(final int value) {
+    public void addToKarma(final int value) {
         karma += value;
     }
 
-    public final Integer getKarma() {
+    public Integer getKarma() {
         return karma;
     }
 
-    public final void setRole(final Role role) {
+    public void setRole(final Role role) {
         this.role = role;
     }
 
-    public final Role getRole() {
+    public Role getRole() {
         return role;
     }
 
     /**
      * used by DaoGroup
      */
-    protected final Set<DaoGroupMembership> getGroupMembership() {
+    protected Set<DaoGroupMembership> getGroupMembership() {
         return groupMembership;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    protected void setKarma(final Integer karama) {
-        karma = karama;
+    protected DaoMember() {
+        super();
     }
-
-    @SuppressWarnings("unused")
-    private void setGroupMembership(final Set<DaoGroupMembership> GroupMembership) {
-        groupMembership = GroupMembership;
-    }
-
 }

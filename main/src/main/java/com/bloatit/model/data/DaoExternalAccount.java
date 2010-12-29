@@ -69,15 +69,15 @@ public final class DaoExternalAccount extends DaoAccount {
         if (type == null || bankCode == null) {
             throw new NonOptionalParameterException();
         }
-        setType(type);
-        setBankCode(bankCode);
+        this.type = type;
+        this.bankCode = bankCode;
     }
 
-    public final String getBankCode() {
+    public String getBankCode() {
         return bankCode;
     }
 
-    public final AccountType getType() {
+    public AccountType getType() {
         return type;
     }
 
@@ -88,18 +88,10 @@ public final class DaoExternalAccount extends DaoAccount {
     protected boolean hasEnoughMoney(final BigDecimal amount) {
         return true;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
-
-    private void setBankCode(final String bankCode) {
-        this.bankCode = bankCode;
-    }
-
-    private void setType(final AccountType type) {
-        this.type = type;
-    }
 
     protected DaoExternalAccount() {
         super();

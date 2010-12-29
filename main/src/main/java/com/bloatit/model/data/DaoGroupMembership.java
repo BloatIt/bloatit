@@ -45,9 +45,9 @@ class DaoGroupMembership extends DaoIdentifiable {
     }
 
     protected DaoGroupMembership(final DaoMember member, final DaoGroup group, final boolean isAdmin) {
-        setMember(member);
-        setGroup(group);
-        setAdmin(isAdmin);
+        this.member = member;
+        this.group = group;
+        this.isAdmin = isAdmin;
     }
 
     protected final DaoMember getMember() {
@@ -61,22 +61,10 @@ class DaoGroupMembership extends DaoIdentifiable {
     protected final boolean isAdmin() {
         return isAdmin;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
-
-    private void setMember(final DaoMember member) {
-        this.member = member;
-    }
-
-    private void setGroup(final DaoGroup Group) {
-        group = Group;
-    }
-
-    private void setAdmin(final boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
 
     protected DaoGroupMembership() {
         super();

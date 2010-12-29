@@ -48,50 +48,30 @@ public final class DaoTranslation extends DaoKudosable {
         if (description == null || locale == null || title == null || text == null) {
             throw new NonOptionalParameterException();
         }
-        setLocale(locale);
-        setTitle(title);
-        setText(text);
-        setDescription(description);
+        this.locale = locale;
+        this.title = title;
+        this.text = text;
+        this.description = description;
     }
 
-    public final String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public final Locale getLocale() {
+    public Locale getLocale() {
         return locale;
     }
 
-    public final String getText() {
+    public String getText() {
         return text;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
-
-    private void setTitle(final String title) {
-        this.title = title;
-    }
-
-    private void setLocale(final Locale locale) {
-        this.locale = locale;
-    }
-
-    private void setText(final String text) {
-        this.text = text;
-    }
-
-    private void setDescription(final DaoDescription description) {
-        this.description = description;
-    }
 
     protected DaoTranslation() {
         super();
     }
 
-    @SuppressWarnings("unused")
-    private DaoDescription getDescription() {
-        return description;
-    }
 }

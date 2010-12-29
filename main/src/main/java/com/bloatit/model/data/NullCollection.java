@@ -5,42 +5,42 @@ import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
 
-public final class NullCollection<T> implements PageIterable<T> {
+public class NullCollection<T> implements PageIterable<T> {
 
     private int pageSize;
 
     @Override
     @SuppressWarnings("unchecked")
-    public final Iterator<T> iterator() {
+    public Iterator<T> iterator() {
         return (Iterator<T>) Collections.emptyList().iterator();
     }
 
     @Override
-    public final void setPageSize(final int pageSize) {
+    public void setPageSize(final int pageSize) {
         this.pageSize = pageSize;
     }
 
     @Override
-    public final int getPageSize() {
+    public int getPageSize() {
         return pageSize;
     }
 
     @Override
-    public final int size() {
+    public int size() {
         return 0;
     }
 
     @Override
-    public final int pageNumber() {
+    public int pageNumber() {
         return 0;
     }
 
     @Override
-    public final void setPage(final int page) {
+    public void setPage(final int page) {
     }
 
     @Override
-    public final int getCurrentPage() {
+    public int getCurrentPage() {
         return 0;
     }
 }

@@ -20,6 +20,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  */
 @Entity
 public final class DaoContribution extends DaoUserContent {
+    private static final int COMMENT_MAX_LENGTH = 144;
 
     /**
      * The state of a contribution should follow the state of the associated demand.
@@ -42,7 +43,7 @@ public final class DaoContribution extends DaoUserContent {
     @Enumerated
     private State state;
 
-    @Column(length = 144, updatable = false)
+    @Column(length = COMMENT_MAX_LENGTH, updatable = false)
     private String comment;
 
     /**
@@ -77,10 +78,10 @@ public final class DaoContribution extends DaoUserContent {
             Log.data().error("The amount of a contribution cannot be <= 0.");
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
         }
-        setAmount(amount);
-        setState(State.PENDING);
-        setDemand(demand);
-        setComment(comment);
+        this.amount = amount;
+        this.state = State.PENDING;
+        this.demand = demand;
+        this.comment = comment;
         getAuthor().getInternalAccount().block(amount);
     }
 
@@ -92,7 +93,7 @@ public final class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if there is not enough money to create the
      *         transaction.
      */
-    public final void accept(final DaoOffer offer) throws NotEnoughMoneyException {
+    public void accept(final DaoOffer offer) throws NotEnoughMoneyException {
         if (state != State.PENDING) {
             throw new FatalErrorException("Cannot accept a contribution if its state isn't PENDING");
         }
@@ -102,19 +103,19 @@ public final class DaoContribution extends DaoUserContent {
         } catch (final NotEnoughMoneyException e) {
             // If it fails then there is a bug in our code. Set the state to
             // canceled and throw a fatalError.
-            setState(State.CANCELED);
+            this.state = State.CANCELED;
             Log.data().fatal(e);
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
         }
         try {
             // If we succeeded the unblock then we create a transaction.
             if (getAuthor() != offer.getAuthor()) {
-                setTransaction(DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), amount));
+                this.transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), amount);
             }
             // if the transaction is ok then we set the state to ACCEPTED.
-            setState(State.ACCEPTED);
+            this.state = State.ACCEPTED;
         } catch (final NotEnoughMoneyException e) {
-            setState(State.CANCELED);
+            this.state = State.CANCELED;
             Log.data().error(e);
             throw e;
         }
@@ -123,7 +124,7 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Set the state to CANCELED. (Unblock the blocked amount.)
      */
-    public final void cancel() {
+    public void cancel() {
         if (state != State.PENDING) {
             throw new FatalErrorException("Cannot cancel a contribution if its state isn't PENDING");
         }
@@ -133,55 +134,30 @@ public final class DaoContribution extends DaoUserContent {
             Log.data().fatal(e);
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
         }
-        setState(State.CANCELED);
+        this.state = State.CANCELED;
     }
 
-    public final BigDecimal getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public final State getState() {
+    public State getState() {
         return state;
     }
 
-    public final DaoTransaction getTransaction() {
+    public DaoTransaction getTransaction() {
         return transaction;
     }
 
-    public final String getComment() {
+    public String getComment() {
         return comment;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    private void setDemand(final DaoDemand Demand) {
-        demand = Demand;
-    }
-
-    private void setAmount(final BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    private void setState(final State state) {
-        this.state = state;
-    }
-
-    private void setTransaction(final DaoTransaction Transaction) {
-        transaction = Transaction;
-    }
-
-    private void setComment(final String comment) {
-        this.comment = comment;
-    }
-
     protected DaoContribution() {
         super();
-    }
-
-    @SuppressWarnings("unused")
-    private DaoDemand getDemand() {
-        return demand;
     }
 }

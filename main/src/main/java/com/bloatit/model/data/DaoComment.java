@@ -71,10 +71,10 @@ public final class DaoComment extends DaoKudosable {
         if (text == null) {
             throw new NonOptionalParameterException();
         }
-        setText(text);
+        this.text = text;
     }
 
-    public final String getText() {
+    public String getText() {
         return text;
     }
 
@@ -85,23 +85,22 @@ public final class DaoComment extends DaoKudosable {
      * @return the list of this comment children. return an empty list if there is no
      *         child.
      */
-    public final PageIterable<DaoComment> getChildrenFromQuery() {
+    public PageIterable<DaoComment> getChildrenFromQuery() {
         return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this").setEntity("this", this);
     }
 
-    protected final Set<DaoComment> getChildren() {
+    protected Set<DaoComment> getChildren() {
         return children;
     }
 
     /**
-     * @throws NullPointerException if the comment is null.
+     * @throws NonOptionalParameterException if the comment is null.
      */
-    public final void addChildComment(final DaoComment comment) {
-        // if (comment == null) {
-        // throw new NullPointerException();
-        // }
-        // next line throw the NullPointerException...
-        comment.setFather(this);
+    public void addChildComment(final DaoComment comment) {
+        if (comment == null) {
+            throw new NonOptionalParameterException();
+        }
+        comment.father = this;
         children.add(comment);
     }
 
@@ -109,31 +108,13 @@ public final class DaoComment extends DaoKudosable {
     // For hibernate mapping
     // ======================================================================
 
-    private void setText(final String text) {
-        this.text = text;
-    }
-
-    private void setFather(final DaoComment Comment) {
-        father = Comment;
-    }
-
     /**
      * You should never use this attribute. It is for hibernate only.
      */
     @ManyToOne(optional = true)
     private DaoComment father;
-
+    
     protected DaoComment() {
         super();
-    }
-
-    @SuppressWarnings("unused")
-    private void setChildren(final Set<DaoComment> children) {
-        this.children = children;
-    }
-
-    @SuppressWarnings("unused")
-    private DaoComment getFather() {
-        return father;
     }
 }

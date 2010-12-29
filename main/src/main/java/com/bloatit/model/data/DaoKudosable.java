@@ -69,7 +69,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * 
      * @return the new popularity
      */
-    public int addKudos(final DaoMember member, final int value) {
+    public final int addKudos(final DaoMember member, final int value) {
         final DaoKudos ku = DaoKudos.createAndPersist(member, value);
         kudos.add(ku);
         return popularity += value;
@@ -82,7 +82,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      *        of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
-    public boolean hasKudosed(final DaoMember member) {
+    public final boolean hasKudosed(final DaoMember member) {
         final Query q = SessionManager.getSessionFactory().getCurrentSession()
                 .createQuery("select count(k) from " + this.getClass().getName() + " as a join a.kudos as k where k.member = :member and a = :this");
         q.setEntity("member", member);
@@ -104,29 +104,12 @@ public abstract class DaoKudosable extends DaoUserContent {
     public final void setState(final State state) {
         this.state = state;
     }
-
+    
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
     protected DaoKudosable() {
         super();
-        popularity = 0;
     }
-
-    @SuppressWarnings("unused")
-    private void setPopularity(final int popularity) {
-        this.popularity = popularity;
-    }
-
-    @SuppressWarnings("unused")
-    private Set<DaoKudos> getKudos() {
-        return kudos;
-    }
-
-    @SuppressWarnings("unused")
-    private void setKudos(final Set<DaoKudos> Kudos) {
-        kudos = Kudos;
-    }
-
 }
