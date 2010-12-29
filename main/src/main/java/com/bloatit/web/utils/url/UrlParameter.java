@@ -146,8 +146,10 @@ public class UrlParameter<T> extends UrlNode {
     @Override
     protected void constructUrl(final StringBuilder sb) {
         final String stringValue = getStringValue();
-        if (!stringValue.isEmpty()) {
-            sb.append("/").append(getName()).append("-").append(stringValue);
+        if (role == Role.GET || role == Role.PRETTY) {
+            if (!stringValue.isEmpty()) {
+                sb.append("/").append(getName()).append("-").append(stringValue);
+            }
         }
     }
 }
