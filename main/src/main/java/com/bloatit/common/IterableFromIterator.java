@@ -12,7 +12,7 @@ public class IterableFromIterator<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public final Iterator<T> iterator() {
         return it;
     }
 

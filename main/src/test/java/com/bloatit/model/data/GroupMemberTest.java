@@ -8,7 +8,6 @@ import junit.framework.TestSuite;
 
 import org.hibernate.HibernateException;
 
-import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.DaoMember.Role;
 import com.bloatit.model.data.util.NonOptionalParameterException;

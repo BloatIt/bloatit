@@ -8,15 +8,15 @@ package com.bloatit.common;
  */
 public interface PageIterable<T> extends Iterable<T> {
 
-    public void setPageSize(int pageSize);
+    void setPageSize(int pageSize);
 
-    public int getPageSize();
+    int getPageSize();
 
-    public int size();
+    int size();
 
-    public int pageNumber();
+    int pageNumber();
 
-    public void setPage(int page);
+    void setPage(int page);
 
-    public int getCurrentPage();
+    int getCurrentPage();
 }
