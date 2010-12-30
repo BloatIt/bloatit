@@ -49,7 +49,7 @@ public class Unlockable {
      * @return An EnumSet with the roles of the member authenticate by the
      *         {@link AuthToken}.
      */
-    protected EnumSet<Role> calculateRole(final String login) {
+    protected final EnumSet<Role> calculateRole(final String login) {
         if (token == null) {
             return EnumSet.of(Role.OTHER);
         }
@@ -76,7 +76,7 @@ public class Unlockable {
     /**
      * Helper function. Call the {@link Unlockable#calculateRole(Member)} method.
      */
-    protected EnumSet<Role> calculateRole(final UserContent userContent) {
+    protected final EnumSet<Role> calculateRole(final UserContent userContent) {
         return calculateRole(userContent.getAuthor());
     }
 
@@ -84,7 +84,7 @@ public class Unlockable {
      * Helper function. Call the {@link Unlockable#calculateRole(Member, Group)} method.
      * (Group is null).
      */
-    protected EnumSet<Role> calculateRole(final Member member) {
+    protected final EnumSet<Role> calculateRole(final Member member) {
         return calculateRole(member, null);
     }
 
@@ -96,7 +96,7 @@ public class Unlockable {
      * @param group the creator uses "group" to create the content.
      * @return all the role that correspond to the {@link AuthToken}.
      */
-    protected EnumSet<Role> calculateRole(final Member member, final Group group) {
+    protected final EnumSet<Role> calculateRole(final Member member, final Group group) {
         if (token == null) {
             return EnumSet.of(Role.OTHER);
         }

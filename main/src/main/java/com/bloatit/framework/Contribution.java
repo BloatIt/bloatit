@@ -17,7 +17,7 @@ public final class Contribution extends UserContent {
         this.dao = dao;
     }
 
-    public void accept(final Offer Offer) {
+    public void accept(final Offer offer) {
         // TODO
     }
 

@@ -65,6 +65,11 @@ public final class Demand extends Kudosable {
         return new ContributionList(dao.getContributionsFromQuery());
     }
 
+    // TODO comment
+    private static final int PROGRESSION_COEF = 42;
+    private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
+    private static final int PROGRESSION_PERCENT_MULTIPLICATOR = 100;
+
     /**
      * Return the progression in percent. It compare the amount of contribution to the
      * amount of the current offer.
@@ -75,11 +80,11 @@ public final class Demand extends Kudosable {
      */
     public float getProgression() {
         if (dao.getOffers().isEmpty()) {
-            return 42 * (1 - 1 / (1 + dao.getContribution().floatValue() / 200));
+            return PROGRESSION_COEF * (1 - 1 / (1 + dao.getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
         } else {
             final DaoOffer currentOffer = dao.getCurrentOffer();
             if (currentOffer.getAmount().floatValue() != 0) {
-                return (dao.getContribution().floatValue() * 100) / currentOffer.getAmount().floatValue();
+                return (dao.getContribution().floatValue() * PROGRESSION_PERCENT_MULTIPLICATOR) / currentOffer.getAmount().floatValue();
             } else {
                 return Float.POSITIVE_INFINITY;
             }

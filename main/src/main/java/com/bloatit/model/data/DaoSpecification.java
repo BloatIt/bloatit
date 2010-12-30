@@ -59,7 +59,7 @@ public final class DaoSpecification extends DaoUserContent {
         super();
     }
 
-    protected final DaoDemand getDemand() {
+    protected DaoDemand getDemand() {
         return demand;
     }
 }

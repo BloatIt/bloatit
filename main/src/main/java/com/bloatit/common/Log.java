@@ -9,7 +9,12 @@ import org.apache.log4j.Logger;
 // ERROR -> should be reported to the admin
 // FATAL -> should be reported to the admin
 
-public class Log {
+public final class Log {
+
+    // disactivate default ctor
+    private Log() {
+    }
+
     private static final Logger FRAMEWORK = Logger.getLogger("com.bloatit.framework");
     private static final Logger DATA = Logger.getLogger("com.bloatit.model.data");
     private static final Logger WEB = Logger.getLogger("com.bloatit.web");

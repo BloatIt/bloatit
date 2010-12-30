@@ -2,8 +2,6 @@ package com.bloatit.framework.right;
 
 import java.util.EnumSet;
 
-import com.bloatit.framework.Unlockable;
-
 /**
  * The RightManager class contains some useful methods to create the Accessor classes. The
  * Role and Action are here to have an extended unix like right system. Role represent the

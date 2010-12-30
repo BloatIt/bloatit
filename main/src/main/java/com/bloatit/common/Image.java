@@ -41,7 +41,7 @@ public class Image {
      * @return <i>true</i> if the image is locally stored on the BloatIt servers
      *         <i>false</i> otherwise.
      */
-    public boolean isLocal() {
+    public final boolean isLocal() {
         return this.imageType == ImageType.LOCAL;
     }
 
@@ -56,7 +56,7 @@ public class Image {
      * @return the identifier of the image
      * @see Image#isLocal()
      */
-    public String getIdentifier() {
+    public final String getIdentifier() {
         return this.identifier;
     }
 }

@@ -103,21 +103,21 @@ public final class DaoGroup extends DaoActor {
     /**
      * Add a member in this group.
      * 
-     * @param Member The member to add
+     * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer this group.
      *        (This may change if the number of role change !)
      */
-    public void addMember(final DaoMember Member, final boolean isAdmin) {
-        groupMembership.add(new DaoGroupMembership(Member, this, isAdmin));
+    public void addMember(final DaoMember member, final boolean isAdmin) {
+        groupMembership.add(new DaoGroupMembership(member, this, isAdmin));
     }
 
     /**
      * Remove a member from the group
      */
-    public void removeMember(final DaoMember Member) {
-        final DaoGroupMembership link = DaoGroupMembership.get(this, Member);
+    public void removeMember(final DaoMember member) {
+        final DaoGroupMembership link = DaoGroupMembership.get(this, member);
         groupMembership.remove(link);
-        Member.getGroupMembership().remove(link);
+        member.getGroupMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
     }
 

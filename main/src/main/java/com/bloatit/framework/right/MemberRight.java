@@ -7,8 +7,13 @@ public class MemberRight extends RightManager {
     public static class GroupList extends Accessor {
         @Override
         protected final boolean can(final EnumSet<Role> role, final Action action) {
-            return canRead(action) || ownerCanWrite(role, action) || ownerCanDelete(role, action) || modoCanWrite(role, action)
-                    || modoCanDelete(role, action);
+            boolean can = false;
+            can = can || canRead(action);
+            can = can || ownerCanWrite(role, action);
+            can = can || ownerCanDelete(role, action);
+            can = can || modoCanWrite(role, action);
+            can = can || modoCanDelete(role, action);
+            return  can;
         }
     }
 

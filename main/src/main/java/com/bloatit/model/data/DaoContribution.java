@@ -161,4 +161,8 @@ public final class DaoContribution extends DaoUserContent {
     protected DaoContribution() {
         super();
     }
+    
+    protected DaoDemand getDemand(){
+        return demand;
+    }
 }

@@ -55,7 +55,7 @@ public final class DaoOffer extends DaoKudosable {
     @Basic(optional = false)
     private BigDecimal amount;
 
-    // TODO comment
+    // TODO comment (don't forget the clone)
     public DaoOffer(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final DaoDescription text, final Date dateExpire) {
         super(member);
         if (demand == null || text == null || dateExpire == null) {
@@ -63,16 +63,16 @@ public final class DaoOffer extends DaoKudosable {
         }
         this.demand = demand;
         this.description = text;
-        this.dateExpire = dateExpire;
+        this.dateExpire = (Date) dateExpire.clone();
         this.amount = amount;
     }
 
     public Date getDateExpire() {
-        return dateExpire;
+        return (Date) dateExpire.clone();
     }
 
     public void setDateExpire(final Date dateExpire) {
-        this.dateExpire = dateExpire;
+        this.dateExpire = (Date) dateExpire.clone();
     }
 
     public DaoDemand getDemand() {

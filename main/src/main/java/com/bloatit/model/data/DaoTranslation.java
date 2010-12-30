@@ -74,7 +74,7 @@ public final class DaoTranslation extends DaoKudosable {
         super();
     }
 
-    protected final DaoDescription getDescription() {
+    protected DaoDescription getDescription() {
         return description;
     }
 

@@ -118,7 +118,7 @@ public final class DaoComment extends DaoKudosable {
         super();
     }
     
-    protected final DaoComment getFather(){
+    protected DaoComment getFather(){
         return father;
     }
 }
