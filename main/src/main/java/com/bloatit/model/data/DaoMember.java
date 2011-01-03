@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
@@ -40,6 +41,10 @@ public final class DaoMember extends DaoActor {
     @Basic(optional = false)
     @Enumerated
     private Role role;
+
+    @Basic(optional = false)
+    @Column(unique = true)
+    private String email;
 
     @Basic(optional = false)
     private Locale locale;
@@ -101,17 +106,24 @@ public final class DaoMember extends DaoActor {
      * @see DaoMember#createAndPersist(String, String, String, Locale)
      */
     private DaoMember(final String login, final String password, final String email, Locale locale) {
-        super(login, email);
-        if (password == null) {
-            throw new NonOptionalParameterException();
-        }
+        super(login);
         if (locale == null) {
+            throw new NonOptionalParameterException("locale cannot be null!");
+        }
+        if (email == null) {
+            throw new NonOptionalParameterException("email cannot be null!");
+        }
+        if (email.isEmpty()) {
+            throw new NonOptionalParameterException("email cannot be empty!");
+        }
+        if (password == null) {
             throw new NonOptionalParameterException("Password cannot be null!");
         }
         if (password.isEmpty()) {
-            throw new NonOptionalParameterException("Password cannot be null!");
+            throw new NonOptionalParameterException("Password cannot be empty!");
         }
         this.setLocale(locale);
+        this.email = email;
         this.role = Role.NORMAL;
         this.password = password;
         this.karma = 0;
@@ -290,6 +302,16 @@ public final class DaoMember extends DaoActor {
         return locale;
     }
 
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -297,5 +319,6 @@ public final class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
+
 
 }

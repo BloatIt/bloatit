@@ -32,8 +32,8 @@ public class DescriptionTranslatableTest extends TestCase {
             SessionManager.flush();
 
             DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("myGroup", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("b219", "plop@plop.com", DaoGroup.Right.PROTECTED).addMember(yo, true);
+            DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
+            DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED).addMember(yo, true);
         }
 
         SessionManager.endWorkUnitAndFlush();

@@ -41,7 +41,7 @@ public class DemandTest extends TestCase {
             SessionManager.flush();
 
             DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("myGroup", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
+            DaoGroup.createAndPersiste("myGroup", "plop2@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
         }
 
         SessionManager.endWorkUnitAndFlush();
