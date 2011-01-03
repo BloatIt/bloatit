@@ -12,6 +12,7 @@
 package com.bloatit.web.html.components.standard;
 
 import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.HtmlElement;
 
 /**
  * A class used to create a new html block (aka div)
@@ -25,6 +26,12 @@ public class HtmlTitleBlock extends HtmlBranch {
 
         this.title = new HtmlTitle(title, level);
         add(this.title);
+    }
+
+    public HtmlTitleBlock(final HtmlElement titleText, int level) {
+        super();
+        this.title = new HtmlTitle(titleText, level);
+        add(title);
     }
 
     @Override
