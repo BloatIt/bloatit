@@ -1,0 +1,7 @@
+
+#Install the gems ubuntu package
+sudo apt-get install rubygems1.8
+
+#Install less with gems
+sudo gem1.8 install less
+

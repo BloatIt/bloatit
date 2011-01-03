@@ -18,3 +18,4 @@ main/po/*~
 main/po/*.mo
 apt/.agitator
 main/css
+www/resources/css/
