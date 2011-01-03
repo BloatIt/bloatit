@@ -23,7 +23,6 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.utils.DateLocale;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 public class Session {
     private final String key;

@@ -1,10 +1,8 @@
 package com.bloatit.web.server;
 
-import com.bloatit.common.FatalErrorException;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.bloatit.common.Log;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.scgiserver.SCGIRequestAbordedException;
 

@@ -13,8 +13,8 @@ package com.bloatit.web.html.pages;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
+import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
@@ -23,6 +23,7 @@ import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.RegisterPageUrl;
 
 @ParamContainer("login")
 public class LoginPage extends Page {
@@ -48,7 +49,7 @@ public class LoginPage extends Page {
         loginTitle.add(loginForm);
 
         final HtmlTitleBlock signupTitle = new HtmlTitleBlock(session.tr("Signup"), 2);
-        signupTitle.add(new HtmlText("Not yet implemented."));
+        signupTitle.add(new HtmlLink(new RegisterPageUrl().urlString(), session.tr("Click here.")));
 
         final HtmlGenericElement group = new HtmlGenericElement();
 
