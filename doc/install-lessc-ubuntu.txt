@@ -1,0 +1,9 @@
+
+#Install the gems ubuntu package
+sudo apt-get install rubygems1.8
+
+#Install less with gems
+sudo gem1.8 install less
+
+#Add gems bin dir in path. Edit ~/.bashrc and add :
+PATH=$PATH:/var/lib/gems/1.8/bin
