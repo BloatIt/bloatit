@@ -11,12 +11,18 @@
 package com.bloatit.web.html.components.standard;
 
 import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.HtmlElement;
 
 public class HtmlTitle extends HtmlBranch {
 
     public HtmlTitle(final String title, final int level) {
         super("h" + level);
         addText(title);
+    }
+
+    public HtmlTitle(final HtmlElement title, final int level) {
+        super("h" + level);
+        add(title);
     }
 
     public HtmlTitle(final int level) {

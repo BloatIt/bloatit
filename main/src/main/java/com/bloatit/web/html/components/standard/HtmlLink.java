@@ -56,4 +56,8 @@ public class HtmlLink extends HtmlBranch {
         super("a");
         addAttribute("href", url);
     }
+
+    public void setTitle(String string) {
+        addAttribute("title", string);
+    }
 }

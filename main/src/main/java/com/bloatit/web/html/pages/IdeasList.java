@@ -11,7 +11,6 @@
 package com.bloatit.web.html.pages;
 
 //import java.util.Random;
-
 import com.bloatit.common.Image;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
@@ -93,11 +92,10 @@ public class IdeasList extends Page {
             final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
             {
 
-                final HtmlDiv ideaLinkBlock = new HtmlDiv();
 
-                final HtmlLink link = new IdeaPageUrl(demand).getHtmlLink(ideaLinkBlock);
-                link.setCssClass("idea_link");
-                ideaBlock.add(link);
+
+
+
 
                 final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
                 {
@@ -108,16 +106,30 @@ public class IdeasList extends Page {
                     leftBlock.add(karmaBlock);
 
                 }
-                ideaLinkBlock.add(leftBlock);
+                //ideaLinkBlock.add(leftBlock);
+                ideaBlock.add(leftBlock);
 
                 final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
                 {
 
-                    final HtmlTitleBlock ideaTitle = new HtmlTitleBlock("Correction de bug - VLC", 3);
-                    {
-                        ideaTitle.add(new HtmlParagraph(demand.getTitle()));
+                    final HtmlLink linkTitle = new IdeaPageUrl(demand).getHtmlLink("Correction de bug - VLC");
+                    linkTitle.setCssClass("idea_link");
 
-                        final float progressValue = (float) Math.floor(demand.getProgression());
+
+
+                    final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(linkTitle, 3);
+                    {
+
+                        final HtmlLink linkText = new IdeaPageUrl(demand).getHtmlLink(new HtmlParagraph(demand.getTitle()));
+                        linkText.setCssClass("idea_link_text");
+
+                        ideaTitle.add(linkText);
+
+                        float progressValue = (float) Math.floor(demand.getProgression());
+
+                        if (progressValue > 100) {
+                            progressValue = 100;
+                        }
 
                         final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
                         ideaTitle.add(progressBar);
@@ -125,13 +137,15 @@ public class IdeasList extends Page {
                     centerBlock.add(ideaTitle);
 
                 }
-                ideaLinkBlock.add(centerBlock);
+                //ideaLinkBlock.add(centerBlock);
+                ideaBlock.add(centerBlock);
 
                 final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
                 {
                     rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
                 }
-                ideaLinkBlock.add(rightBlock);
+                //ideaLinkBlock.add(rightBlock);
+                ideaBlock.add(rightBlock);
             }
             return ideaBlock;
         }

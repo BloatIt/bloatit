@@ -1,13 +1,14 @@
 
 .idea_link {
+    color: rgb(23,101,134);
+
+}
+
+.idea_link_text {
     color: rgb(50,50,50);
     font-weight: normal;
 }
 
-.idea_link:hover {
-    color: rgb(50,50,50);
-
-}
 
 .idea_summary {
     width: 100%;
@@ -23,12 +24,6 @@
     border: 1px solid rgb(230,230,230);
     background:rgb(240,240,240);
     
-}
-
-
-
-.idea_summary:hover {
-    background:rgb(230,230,255);
 }
 
 .idea_summary_left {
@@ -145,6 +140,4 @@
     border-radius:3px;
     height:16px
 }
-
-
 
