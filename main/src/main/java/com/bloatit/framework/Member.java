@@ -1,5 +1,7 @@
 package com.bloatit.framework;
 
+import java.util.Locale;
+
 import com.bloatit.common.Image;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
@@ -92,6 +94,7 @@ public final class Member extends Actor {
     }
 
     private static final int INFLUENCE_MULTIPLICATOR = 10;
+
     protected int calculateInfluence() {
         final int karma = getKarma();
         if (karma > 0) {
@@ -123,6 +126,20 @@ public final class Member extends Actor {
     public void setPassword(final String password) {
         new MemberRight.Password().tryAccess(calculateRole(this), Action.WRITE);
         dao.setPassword(password);
+    }
+
+    public boolean canAccessLocale(final Action action) {
+        return new MemberRight.Locale().canAccess(calculateRole(this), action);
+    }
+
+    public Locale getLocal() {
+        new MemberRight.Locale().tryAccess(calculateRole(this), Action.READ);
+        return dao.getLocale();
+    }
+
+    public void setLocal(final Locale loacle) {
+        new MemberRight.Locale().tryAccess(calculateRole(this), Action.WRITE);
+        dao.setLocale(loacle);
     }
 
     public PageIterable<Demand> getDemands() {
