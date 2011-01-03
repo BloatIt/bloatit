@@ -117,7 +117,11 @@ public class IdeasList extends Page {
                     {
                         ideaTitle.add(new HtmlParagraph(demand.getTitle()));
 
-                        final float progressValue = (float) Math.floor(demand.getProgression());
+                        float progressValue = (float) Math.floor(demand.getProgression());
+
+                        if(progressValue > 100) {
+                            progressValue = 100;
+                        }
 
                         final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
                         ideaTitle.add(progressBar);
