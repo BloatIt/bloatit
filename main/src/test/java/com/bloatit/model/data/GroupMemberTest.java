@@ -25,7 +25,7 @@ public class GroupMemberTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        SessionManager.reCreateSessionFactory();
+        SessionManager.generateTestSessionFactory();
     }
 
     @Override

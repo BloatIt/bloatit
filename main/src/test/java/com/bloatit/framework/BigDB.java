@@ -124,10 +124,6 @@ public class BigDB {
         }
     }
 
-    public static void main(final String[] args) {
-        new BigDB();
-    }
-
     public static String fortune() {
         String text = "";
         try {
@@ -160,5 +156,9 @@ public class BigDB {
 
     private int pick(final int max) {
         return (int) (Math.random() * max);
+    }
+
+    public static void main(final String[] args) {
+        new BigDB();
     }
 }
