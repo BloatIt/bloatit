@@ -40,6 +40,8 @@ import com.bloatit.web.utils.url.MyAccountPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Parameters;
+import com.bloatit.web.utils.url.RegisterActionUrl;
+import com.bloatit.web.utils.url.RegisterPageUrl;
 import com.bloatit.web.utils.url.SpecialsPageUrl;
 import com.bloatit.web.utils.url.TestPageUrl;
 import com.bloatit.web.utils.url.Url;
@@ -68,6 +70,7 @@ public class DispatchServer {
                 put(OfferPageUrl.getName(), OfferPageUrl.class);
                 put(TestPageUrl.getName(), TestPageUrl.class);
                 put(AccountChargingPageUrl.getName(), AccountChargingPageUrl.class);
+                put(RegisterPageUrl.getName(), RegisterPageUrl.class);
 
                 put(LoginActionUrl.getName(), LoginActionUrl.class);
                 put(LogoutActionUrl.getName(), LogoutActionUrl.class);
@@ -75,6 +78,7 @@ public class DispatchServer {
                 put(OfferActionUrl.getName(), OfferActionUrl.class);
                 put(AccountChargingActionUrl.getName(), AccountChargingActionUrl.class);
                 put(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
+                put(RegisterActionUrl.getName(), RegisterActionUrl.class);
 
             }
         };
