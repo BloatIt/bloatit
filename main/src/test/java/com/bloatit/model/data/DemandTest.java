@@ -23,19 +23,19 @@ public class DemandTest extends TestCase {
         SessionManager.generateTestSessionFactory();
         SessionManager.beginWorkUnit();
         {
-            tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
+            tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
             tom.setFullname("Thomas Guyard");
             tom.getInternalAccount().setAmount(new BigDecimal(100));
             SessionManager.flush();
         }
         {
-            fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
+            fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
             fred.setFullname("Frédéric Bertolus");
             fred.getInternalAccount().setAmount(new BigDecimal(100));
             SessionManager.flush();
         }
         {
-            yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
+            yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
             yo.setFullname("Yoann Plénet");
             yo.getInternalAccount().setAmount(new BigDecimal(100));
             SessionManager.flush();
@@ -202,7 +202,7 @@ public class DemandTest extends TestCase {
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("100")));
     }
-    
+
     public void testGetCurrentOffer(){
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
@@ -214,9 +214,9 @@ public class DemandTest extends TestCase {
                 DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
                 new Date());
         SessionManager.flush();
-        
+
         assertEquals(demand.getCurrentOffer(), offer);
-        
+
     }
 
     public void testSearchDemand() {

@@ -1,6 +1,7 @@
 package com.bloatit.model.data;
 
 import java.util.Iterator;
+import java.util.Locale;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -43,19 +44,19 @@ public class GroupMemberTest extends TestCase {
     public static Test suite() {
         return new TestSuite(GroupMemberTest.class);
     }
-    
+
     public void testCreateMember() throws InterruptedException{
         SessionManager.beginWorkUnit();
         final DaoMember theMember = DaoMember.createAndPersist(
-                "Thomas", "password", "tom@gmail.com");
-        
+                "Thomas", "password", "tom@gmail.com", Locale.FRANCE);
+
         assertEquals(theMember.getEmail(), "tom@gmail.com");
         assertEquals(theMember.getFullname(), "");
         assertEquals(theMember.getLogin(), "Thomas");
         assertEquals(theMember.getPassword(), "password");
         assertEquals(theMember.getKarma().intValue(), 0);
         assertEquals(theMember.getRole(), Role.NORMAL);
-        
+
         theMember.setFullname("Thomas Guyard");
         assertEquals(theMember.getFullname(), "Thomas Guyard");
         theMember.setEmail("Test@nowhere.com");
@@ -64,24 +65,24 @@ public class GroupMemberTest extends TestCase {
         assertEquals(theMember.getPassword(), "Hello");
         theMember.setRole(Role.ADMIN);
         assertEquals(theMember.getRole(), Role.ADMIN);
-        
+
         SessionManager.endWorkUnitAndFlush();
     }
 
     public void testCreateTreeMembers() {
         SessionManager.beginWorkUnit();
         {
-            final DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
+            final DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
             theMember.setFullname("Thomas Guyard");
             SessionManager.flush();
         }
         {
-            final DaoMember theMember = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
+            final DaoMember theMember = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
             theMember.setFullname("Frédéric Bertolus");
             SessionManager.flush();
         }
         {
-            final DaoMember theMember = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
+            final DaoMember theMember = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
             theMember.setFullname("Yoann Plénet");
         }
 
@@ -93,37 +94,43 @@ public class GroupMemberTest extends TestCase {
     public void testCreateMemberLimit() {
         SessionManager.beginWorkUnit();
         try {
-            DaoMember.createAndPersist(null, "pass", "mail@nowhere.com");
+            DaoMember.createAndPersist(null, "pass", "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
         } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoMember.createAndPersist("login", null, "mail@nowhere.com");
+            DaoMember.createAndPersist("login", null, "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
         } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoMember.createAndPersist("login", "pass", null);
+            DaoMember.createAndPersist("login", "pass", null, Locale.FRANCE);
             assertTrue(false);
         } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoMember.createAndPersist("", "pass", "mail@nowhere.com");
+            DaoMember.createAndPersist("login", "pass", "ZDQSDV", null);
             assertTrue(false);
         } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoMember.createAndPersist("login", "", "mail@nowhere.com");
+            DaoMember.createAndPersist("", "pass", "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
         } catch (NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
-            DaoMember.createAndPersist("login", "pass", "");
+            DaoMember.createAndPersist("login", "", "mail@nowhere.com", Locale.FRANCE);
+            assertTrue(false);
+        } catch (NonOptionalParameterException e) {
+            assertTrue(true);
+        }
+        try {
+            DaoMember.createAndPersist("login", "pass", "", Locale.FRANCE);
             assertTrue(false);
         } catch (NonOptionalParameterException e) {
             assertTrue(true);
@@ -133,15 +140,15 @@ public class GroupMemberTest extends TestCase {
     public void testMemberDuplicateCreation() {
         try {
             SessionManager.beginWorkUnit();
-            DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
+            DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
             SessionManager.flush();
-            DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com"); // duplicate login
+            DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com", Locale.FRANCE); // duplicate login
             SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
         } catch (final HibernateException e) {
             assertTrue(true);
         }
-        
+
 //        TODO the mail can be duplicate between group/member
 //        try {
 //            SessionManager.beginWorkUnit();
