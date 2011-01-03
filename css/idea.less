@@ -1,3 +1,5 @@
+@import "include/colors";
+@import "include/tools";
 
 .demand_head{
     margin-bottom: 1em;
@@ -28,12 +30,7 @@
     display:block;
     font-size: 0.7em;
 
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    -o-border-radius:3px;
-    -ms-border-radius:3px;
-    -khtml-border-radius:3px;
-    border-radius:3px;
+    .rounded_corners(3px);
     padding: 0.5em;
     padding-left: 0.5em;
     padding-right: 0.5em;
@@ -50,12 +47,7 @@
 
     width: 100%;
 
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    -o-border-radius:3px;
-    -ms-border-radius:3px;
-    -khtml-border-radius:3px;
-    border-radius:3px;
+    .rounded_corners(3px);
     padding: 0.5em;
 
     background:rgb(240,240,240);
@@ -94,12 +86,7 @@
 
 .progress_bar{
     display:block;
-    -moz-border-radius:6px;
-    -webkit-border-radius:6px;
-    -o-border-radius:6px;
-    -ms-border-radius:6px;
-    -khtml-border-radius:6px;
-    border-radius:6px;
+    .rounded_corners(6px);
 
     height:16px;
     border: 1px solid rgb(150,150,150);
