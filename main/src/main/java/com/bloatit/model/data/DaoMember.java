@@ -82,7 +82,7 @@ public final class DaoMember extends DaoActor {
      * Find a DaoMember using its login.
      *
      * @param login the member login.
-     * @return null if not found.
+     * @return null if not found. (or if login == null)
      */
     public static DaoMember getByLogin(final String login) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -91,6 +91,16 @@ public final class DaoMember extends DaoActor {
         return (DaoMember) q.uniqueResult();
     }
 
+    /**
+     * Find a DaoMember using its login, and password. This method can be use to
+     * authenticate a use.
+     *
+     * @param login the member login.
+     * @param password the password of the member "login". It is a string corresponding to
+     *        the string in the database. This method does not perform any sha1 or md5
+     *        transformation.
+     * @return null if not found. (or if login == null or password == null)
+     */
     public static DaoMember getByLoginAndPassword(final String login, final String password) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login and password = :password");
@@ -101,8 +111,8 @@ public final class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     * @param locale TODO
      *
+     * @param locale TODO
      * @see DaoMember#createAndPersist(String, String, String, Locale)
      */
     private DaoMember(final String login, final String password, final String email, Locale locale) {
@@ -319,6 +329,5 @@ public final class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
-
 
 }
