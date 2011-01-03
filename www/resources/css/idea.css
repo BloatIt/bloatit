@@ -1,23 +1,18 @@
-.demand_head {
-
-}
 
 .demand_head{
     margin-bottom: 1em;
-    /*border: 1px solid rgb(240,0,0);*/
+    padding:0;
 }
 
 
 .demand_head_progress {
     display:table-cell;
-    /*border: 1px solid rgb(0,240,0);*/
     width: 100%;
     vertical-align: middle;
 }
 
 .demand_head_kudo {
     display:table-cell;
-    /*border: 1px solid rgb(0,240,0);*/
     width: 100%;
     vertical-align: middle;
 }
@@ -25,7 +20,6 @@
 .demand_head_abstract {
     display:table-cell;
     vertical-align: middle;
-    /*border: 1px solid rgb(0,0,240);*/
 }
 
 
@@ -48,12 +42,13 @@
     
     margin: 0;
 
-    /*background:rgb(240,240,240);*/
 }
 
 .progress_block {
     display:block;
     font-size: 0.8em;
+
+    width: 100%;
 
     -moz-border-radius:3px;
     -webkit-border-radius:3px;
@@ -193,15 +188,6 @@
 
 
 .description_block {
-    /*-moz-border-radius:5px;
-    -webkit-border-radius:5px;
-    -o-border-radius:5px;
-    -ms-border-radius:5px;
-    -khtml-border-radius:5px;
-    border-radius:5px;
-    border: 1px solid rgb(230,230,230);
-    background:rgb(240,240,240);
-    */
     padding: 0.5em;
     margin-top: 0em;
     margin-bottom: 1em;
@@ -223,8 +209,6 @@
     vertical-align:top;
     min-width: 350px;
 
-    /*max-width: 500px;
-    */
 }
 
 .right_block {
@@ -252,7 +236,7 @@
 
 
 .kudo_box {
-
+color:black;
     font-size: 0.7em;
 }
 
@@ -311,7 +295,6 @@
     float:right;
     text-align: center;
     border-left: 1px dashed rgb(200,200,200);
-    /*border-bottom: 1px dashed rgb(200,200,200);*/
     margin:0px;
     padding:2px;
     padding-left:6px;
