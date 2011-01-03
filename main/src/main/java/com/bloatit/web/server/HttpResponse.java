@@ -1,10 +1,12 @@
 package com.bloatit.web.server;
 
+import com.bloatit.common.FatalErrorException;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import com.bloatit.common.Log;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.scgiserver.SCGIRequestAbordedException;
 
 public class HttpResponse {
 
@@ -37,7 +39,7 @@ public class HttpResponse {
                 try {
                     output.write(text.getBytes());
                 } catch (final IOException ex) {
-                    Log.web().fatal("Cannot write to output", ex);
+                    throw new SCGIRequestAbordedException(ex);
                 }
             }
         });

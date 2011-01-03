@@ -99,6 +99,8 @@ public class SCGIServer {
 
                     // TODO Debug Only
                     Log.web().fatal("Unknown Fatal exception", e);
+                } catch (final SCGIRequestAbordedException e) {
+                    Log.web().info("SCGI request aborded", e);
                 } catch (final Exception e) {
                     // Protects the server
                     String display;
@@ -120,6 +122,7 @@ public class SCGIServer {
 
         } catch (final IOException ex) {
             Log.web().fatal("Cannot connect with SCGI client.", ex);
+            // TODO procedure de reprise
         }
 
     }
