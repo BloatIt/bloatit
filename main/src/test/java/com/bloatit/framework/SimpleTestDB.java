@@ -18,7 +18,7 @@ import com.bloatit.model.data.DaoTranslation;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
-public class TestDB {
+public class SimpleTestDB {
 
     private final DaoMember tom;
     private final DaoMember fred;
@@ -28,15 +28,15 @@ public class TestDB {
     private final DaoGroup ubuntuUsers;
     private final DaoDemand demand;
 
-    public TestDB() {
+    public SimpleTestDB() {
 
         SessionManager.beginWorkUnit();
 
-        tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com");
+        tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
         tom.setFullname("Thomas Guyard");
-        fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com");
+        fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
         fred.setFullname("Frédéric Bertolus");
-        yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
+        yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
 
         other = DaoGroup.createAndPersiste("other", "plop@plop.com", DaoGroup.Right.PROTECTED);
@@ -145,7 +145,7 @@ public class TestDB {
     }
 
     public static void main(final String[] args) {
-        new TestDB();
+        new SimpleTestDB();
     }
 
 }

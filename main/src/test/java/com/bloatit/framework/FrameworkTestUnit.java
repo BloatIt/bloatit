@@ -8,13 +8,13 @@ public class FrameworkTestUnit extends TestCase {
     protected AuthToken yoAuthToken;
     protected AuthToken tomAuthToken;
     protected AuthToken fredAuthToken;
-    protected TestDB db;
+    protected SimpleTestDB db;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        SessionManager.reCreateSessionFactory();
-        db = new TestDB();
+        SessionManager.generateTestSessionFactory();
+        db = new SimpleTestDB();
         SessionManager.beginWorkUnit();
         yoAuthToken = new AuthToken("Yo", "plop");
         tomAuthToken = new AuthToken("Thomas", "password");

@@ -32,7 +32,7 @@ public class BigDB {
         final List<DaoMember> members = new ArrayList<DaoMember>();
         for (int i = 0; i < nbUsers; i++) {
             DaoMember member;
-            member = DaoMember.createAndPersist("member " + i, new Integer(i).toString(), "mail@nowhere.com");
+            member = DaoMember.createAndPersist("member " + i, new Integer(i).toString(), "mail@nowhere.com", Locale.FRANCE);
             member.setFullname("User " + i + " Fullname");
             member.setExternalAccount(DaoExternalAccount.createAndPersist(member, AccountType.IBAN, "code"));
             members.add(member);
@@ -124,10 +124,6 @@ public class BigDB {
         }
     }
 
-    public static void main(final String[] args) {
-        new BigDB();
-    }
-
     public static String fortune() {
         String text = "";
         try {
@@ -160,5 +156,9 @@ public class BigDB {
 
     private int pick(final int max) {
         return (int) (Math.random() * max);
+    }
+
+    public static void main(final String[] args) {
+        new BigDB();
     }
 }

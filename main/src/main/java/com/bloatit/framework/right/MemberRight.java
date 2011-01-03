@@ -32,6 +32,9 @@ public class MemberRight extends RightManager {
     public static class Password extends Private {
     }
 
+    public static class Locale extends Private {
+    }
+
     public static class Name extends Public {
     }
 

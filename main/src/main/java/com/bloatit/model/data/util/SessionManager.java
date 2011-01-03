@@ -14,7 +14,7 @@ import com.bloatit.model.data.DaoDemand;
  * These are some simple static utils to manage Hibernate sessions (and hibernate Search)
  */
 public final class SessionManager {
-    
+
     /**
      * Desactivate the default constructor;
      */
@@ -47,7 +47,7 @@ public final class SessionManager {
 
     /**
      * singleton pattern implementation.
-     * 
+     *
      * @return the current session.
      */
     public static SessionFactory getSessionFactory() {
@@ -86,10 +86,12 @@ public final class SessionManager {
     /**
      * DO NOT USE ! THIS IS FOR TESTS ONLY !!
      */
-    public static void reCreateSessionFactory() {
+    public static void generateTestSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            sessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "create-drop").buildSessionFactory();
+            sessionFactory = new AnnotationConfiguration().configure()
+            .setProperty("hibernate.hbm2ddl.auto", "create-drop")
+            .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost/bloatit_test").buildSessionFactory();
         } catch (final Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             Log.data().fatal("Initial SessionFactory creation failed.", ex);

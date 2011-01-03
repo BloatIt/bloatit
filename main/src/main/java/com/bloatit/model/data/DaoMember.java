@@ -1,6 +1,7 @@
 package com.bloatit.model.data;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -40,24 +41,28 @@ public final class DaoMember extends DaoActor {
     @Enumerated
     private Role role;
 
+    @Basic(optional = false)
+    private Locale locale;
+
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member")
     @Cascade(value = { CascadeType.ALL })
-    private Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
+    private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
     /**
      * Create a member. The member login must be unique, and you cannot change it.
-     * 
+     *
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
+     * @param locale the locale of the user.
      * @return The newly created DaoMember
      * @throws HibernateException If there is any problem connecting to the db. Or if the
      *         member as a non unique login. If an exception is thrown then the
      *         transaction is rolled back and reopened.
      */
-    public static DaoMember createAndPersist(final String login, final String password, final String email) {
+    public static DaoMember createAndPersist(final String login, final String password, final String email, Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoMember theMember = new DaoMember(login, password, email);
+        final DaoMember theMember = new DaoMember(login, password, email, locale);
         try {
             session.save(theMember);
         } catch (final HibernateException e) {
@@ -70,7 +75,7 @@ public final class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     * 
+     *
      * @param login the member login.
      * @return null if not found.
      */
@@ -91,17 +96,22 @@ public final class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     * 
-     * @see DaoMember#createAndPersist(String, String, String)
+     * @param locale TODO
+     *
+     * @see DaoMember#createAndPersist(String, String, String, Locale)
      */
-    private DaoMember(final String login, final String password, final String email) {
+    private DaoMember(final String login, final String password, final String email, Locale locale) {
         super(login, email);
         if (password == null) {
             throw new NonOptionalParameterException();
         }
+        if (locale == null) {
+            throw new NonOptionalParameterException("Password cannot be null!");
+        }
         if (password.isEmpty()) {
             throw new NonOptionalParameterException("Password cannot be null!");
         }
+        this.setLocale(locale);
         this.role = Role.NORMAL;
         this.password = password;
         this.karma = 0;
@@ -129,7 +139,7 @@ public final class DaoMember extends DaoActor {
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or PROTECTED
      * groups. ]
-     * 
+     *
      * @return All the groups this member is in. (Use a HQL query)
      */
     public PageIterable<DaoGroup> getGroups() {
@@ -271,7 +281,15 @@ public final class DaoMember extends DaoActor {
     protected Set<DaoGroupMembership> getGroupMembership() {
         return groupMembership;
     }
-    
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -279,4 +297,5 @@ public final class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
+
 }

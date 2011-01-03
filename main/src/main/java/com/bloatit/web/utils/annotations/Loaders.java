@@ -41,7 +41,7 @@ public final class Loaders {
         if (value.equals("null")) {
             return null;
         }
-        final Loader<T> loader = (Loader<T>) getLoader(toClass);
+        final Loader<T> loader = getLoader(toClass);
         try {
             return loader.fromString(value);
         } catch (final Exception e) {
