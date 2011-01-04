@@ -196,7 +196,7 @@ public final class Member extends Actor {
 
     public String getDisplayName() {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
-        if (dao.getFullname() != null && ! dao.getFullname().isEmpty()){
+        if (dao.getFullname() != null && dao.getFullname().isEmpty()){
             return getLogin();
         }
         return getFullname();

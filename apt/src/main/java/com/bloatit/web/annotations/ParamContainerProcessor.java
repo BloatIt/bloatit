@@ -27,7 +27,13 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
-        // System.out.println("Launch the Custom APT !");
+
+
+
+        System.out.println("Launch the Custom APT !");
+        // this.processingEnv.getMessager().printMessage(arg0, arg1)
+        // this.processingEnv.getFiler().createClassFile(arg0, arg1);
+        // System.getProperty();
         for (TypeElement typeElement : typeElements) {
             for (Element element : env.getElementsAnnotatedWith(typeElement)) {
                 try {
@@ -51,7 +57,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
             generator = new UrlClassGenerator(urlClassName, paramContainer.value(), element.asType().toString());
         }
 
-        // System.out.println("    generating " + generator.getClassName());
+        System.out.println("    generating " + generator.getClassName());
         for (Element enclosed : element.getEnclosedElements()) {
             parseAnAttribute(generator, enclosed);
         }
@@ -105,8 +111,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
             if (component != null) {
                 generator.addComponentAndGetterSetter(getSecureType(attribute), attribute.getSimpleName().toString());
-                // System.out.println(getType(attribute) + " " +
-                // getSecureType(attribute));
+                System.out.println(getType(attribute) + " " + getSecureType(attribute));
                 generator.registerComponent(attribute.getSimpleName().toString());
             }
         }

@@ -37,6 +37,7 @@
 								<!-- list of processors to use -->
 								<processor>com.bloatit.web.annotations.ParamContainerProcessor</processor>
 							</processors>
+							<outputDirectory>${basedir}/main/src/main/</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
