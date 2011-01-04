@@ -1,3 +1,5 @@
+@import "colors";
+
 ul {
     margin: 1em;
     padding: 0;
@@ -12,8 +14,8 @@ li {
 }
 
 a {
-    color: rgb(32,141,188);
-    font-weight: bold;
+    color: @default_link_color;
+    font-weight: normal;
     text-decoration: none;
     margin: 0;
     padding: 0;
@@ -21,7 +23,7 @@ a {
 
 
 a:hover {
-    color: rgb(43,192,255);
+    color: @default_link_color * 1.5;
 }
 
 h1 {
@@ -32,3 +34,10 @@ h1 {
 
 }
 
+
+.karma {
+    color: @default_karma_color;
+    font-size: 0.7em;
+    vertical-align: super;
+    margin-left: 0.2em;
+}

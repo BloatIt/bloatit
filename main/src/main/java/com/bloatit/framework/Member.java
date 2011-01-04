@@ -40,6 +40,11 @@ public final class Member extends Actor {
         return new Member(dao);
     }
 
+    public Member(String login, String password, String email, Locale locale) {
+        super();
+        dao = DaoMember.createAndPersist(login, password, email, locale);
+    }
+
     private Member(final DaoMember dao) {
         super();
         this.dao = dao;

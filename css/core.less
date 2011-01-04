@@ -9,19 +9,15 @@
 @import "core/tabs";
 
 body {
-
-    color: @standart_text_color;
+    color: @default_text_color;
     font-family: @default_fonts;
-    background-color: @standart_background_color;
-    margin: 0;
-    padding: 0;
-
+    background-color: @default_background_color;
+    font-size:0.9em;
+    .no_insets;
 }
 
 #page {
-    margin: 0;
-    padding: 0;
-
+    .no_insets;
 }
 
 #footer {
@@ -37,20 +33,14 @@ body {
     
 }
 
-.karma {
-    color: rgb(32,188,141);
-    font-size: 0.7em;
-    vertical-align: super;
-    margin-left: 0.2em;
-}
-
 
 
 #center {
     background-color: rgb(253,253,254);
     border: 1px solid rgb(200,200,200);
-    -moz-box-shadow:-16px 0 15px rgb(100,100,100);
-    -webkit-box-shadow:0 0 15px rgb(100,100,100);
+    -moz-box-shadow: (@default_shadow_thickness - 1) 0 @default_shadow_thickness rgb(100,100,100);
+    -webkit-box-shadow:0 0 @default_shadow_thickness rgb(100,100,100);
+    
     padding: 0px;
     margin: 0px;
     margin-bottom: 2em;
@@ -72,12 +62,13 @@ body {
     display: table-cell;
     vertical-align: top;
     padding: 0px;
-    margin: 1em;
-    padding-top: 3em;
+    margin: 0.5em;
+    padding-top: 5em;
     border-right: 1px dashed rgb(200,200,200);
 }
 
 #main_menu ul {
+    padding-left: 0.5em;
     border-bottom: 1px dashed rgb(200,200,200);
 }
 
