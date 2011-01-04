@@ -18,7 +18,7 @@ public final class SessionManager {
     /**
      * Desactivate the default constructor;
      */
-    private SessionManager() {
+    private SessionManager() { // Desactivate
     }
 
     // SHOULD BE FINAL see reCreateSessionFactory

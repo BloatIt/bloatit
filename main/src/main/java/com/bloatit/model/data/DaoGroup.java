@@ -88,7 +88,7 @@ public final class DaoGroup extends DaoActor {
     // TODO comment
     private DaoGroup(final String login, final String email, final Right right) {
         super(login);
-        if (right == null) {
+        if (right == null || email == null || email.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.right = right;

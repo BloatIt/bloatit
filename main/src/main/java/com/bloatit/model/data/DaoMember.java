@@ -297,12 +297,6 @@ public final class DaoMember extends DaoActor {
         return role;
     }
 
-    /**
-     * used by DaoGroup
-     */
-    protected Set<DaoGroupMembership> getGroupMembership() {
-        return groupMembership;
-    }
 
     public void setLocale(Locale locale) {
         this.locale = locale;
@@ -322,6 +316,13 @@ public final class DaoMember extends DaoActor {
         this.email = email;
     }
 
+    /**
+     * used by DaoGroup
+     */
+    protected Set<DaoGroupMembership> getGroupMembership() {
+        return groupMembership;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -329,5 +330,4 @@ public final class DaoMember extends DaoActor {
     protected DaoMember() {
         super();
     }
-
 }
