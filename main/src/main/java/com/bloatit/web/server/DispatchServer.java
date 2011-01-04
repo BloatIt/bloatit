@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.common.Log;
@@ -180,11 +181,19 @@ public class DispatchServer {
             sess = SessionManager.getByKey(cookies.get("session_key"));
         }
         if (sess == null) {
-            sess = SessionManager.createSession();
-            sess.setCountry(preferredLangs);
+            sess = SessionManager.createSession(determineLocale());
         }
         sess.setLanguage(l);
         return sess;
+    }
+    
+    private Locale determineLocale(){
+    	for(String lang : preferredLangs){
+            String elem = lang.split(";")[0];
+            System.out.println(lang);
+        }
+    	
+    	return Locale.US;
     }
 
     private Language userLocale(final Map<String, String> query) {

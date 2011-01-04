@@ -33,12 +33,12 @@ public class HtmlString {
         return this;
     }
 
-    public HtmlString secure(final String string) {
+    public HtmlString secure(final String string) { 
         stringBuilder.append(HtmlTools.escapeUrlString(string));
         return this;
     }
 
-    public HtmlString add(final Translatable translatable) {
+    /*public HtmlString add(final Translatable translatable) {
         final TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
         return add(tm.tr(translatable).getText()); // TODO correct me !
     }
@@ -46,17 +46,17 @@ public class HtmlString {
     public HtmlString secure(final Translatable translatable) {
         final TranslationManipulator tm = new TranslationManipulator(session.getPreferredLangs());
         return secure(tm.tr(translatable).getText()); // TODO correct me !
-    }
+    }*/
 
     @Override
     public String toString() {
         return stringBuilder.toString();
     }
 
-    public static String Translate(final Session session, final Translatable text) {
+    /*public static String Translate(final Session session, final Translatable text) {
         final HtmlString string = new HtmlString(session);
-        string.add(text);
+        //string.add(text);
         return string.toString();
-    }
+    }*/
 
 }

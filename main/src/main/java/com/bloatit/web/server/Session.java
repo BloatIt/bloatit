@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.framework.AuthToken;
+import com.bloatit.framework.Member;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
 import com.bloatit.web.utils.DateLocale;
@@ -33,23 +34,18 @@ public class Session {
     private String lastStablePage = null;
     private String targetPage = null;
     private AuthToken authToken;
+    private final Locale browserLocale;
 
     private final Parameters sessionParams = new Parameters();
 
-    private final List<Language> preferredLocales;
-    private Locale country = Locale.US;
-
-    Session(final String key) {
+    Session(final String key, Locale browserLocale) {
         this.key = key;
+        this.browserLocale = browserLocale;
+        
         authToken = null;
         logged = false;
         actionList = new ArrayDeque<Action>();
         notificationList = new ArrayDeque<Notification>();
-
-        // TODO : Following lines are for testing purposes only
-        preferredLocales = new ArrayList<Language>();
-        preferredLocales.add(new Language(Locale.ENGLISH)); // TODO : ONLY FOR
-                                                            // TEST
     }
 
     public String tr(final String s) {
@@ -165,10 +161,6 @@ public class Session {
         return notificationList;
     }
 
-    public List<Language> getPreferredLangs() {
-        return preferredLocales;
-    }
-
     public Parameters getParams() {
         return sessionParams;
     }
@@ -192,40 +184,21 @@ public class Session {
         return DateLocale.getPattern(language.getLocale());
     }
 
-    public Locale getCountry() {
-        return country;
-    }
-
     /**
-     * <p>Sets the country based on the list of preferred languages of the user
-     * </p>
-     * <p> Use only when the session cannot be loaded with the loader (that is
-     * to say, when the user is not identified)</p>
-     * @param preferred_langs the list of preferred languages as sent by the
-     * browser.
+     * <p>Finds the user locale</p>
+     * <li>If the user is authenticated (he logged in) this method will return the
+     * language/country locale he chose when he signed in.</li>
+     * <li>If the user is not logged in, it will determine the best Locale based on 
+     * the user browser informations</li>
+     * @return
      */
-    void setCountry(List<String> preferred_langs) {
-        for(String lang : preferred_langs){
-            String elem = lang.split(";")[0];
-
-            String pays = null;
-            if(elem.contains("-")){
-                pays = elem.split("-")[1];
-            }else if( elem.contains("_")){
-                pays = elem.split("_")[1];
-            }
-            if(pays != null){
-                Locale[] countries = Locale.getAvailableLocales();
-                for(Locale l : countries){
-                    if(l.getCountry().equals(pays)){
-                        country = l;
-                    }
-                }
-            }
-        }
-        
-        if(this.country == null){
-            this.country = Locale.US;
+    public Locale getLocale() {
+        if(authToken != null){
+        	Member member = authToken.getMember();
+			member.authenticate(authToken);
+        	return member.getLocale();
+        }else{
+        	return browserLocale;
         }
     }
 }
