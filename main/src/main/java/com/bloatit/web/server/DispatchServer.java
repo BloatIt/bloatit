@@ -192,8 +192,15 @@ public class DispatchServer {
     
     /**
      * <p>Finds the dominant Locale for the user based on the browser transmitted parameters</p>
-     * <p>This will use preferences based on the browser system, but will always try to fetch 
-     * a locale with a country. If no locale has a country, the favorite language as of browser
+     * 
+     * <p>This method use preferences based on data transmitted by browser, but will always try 
+     * to fetch a locale with a language and a country.</p>
+     * <p> Cases are :
+     * <li>The favorite locale has language and country : it is the selected locale</li>
+     * <li>The favorite locale has a language but no country : will try to select another
+     * locale with the <b>same language</b></li>
+     * <li>
+     * If no locale has a country, the favorite language as of browser
      * preference will be used, and country will be set as US. If no language is set, the locale
      * will be set using DEFAULT_LOCALE (currently en_US).</p>
      * @return the favorite user locale
@@ -215,8 +222,6 @@ public class DispatchServer {
             }
             
             Locale l = new Locale(favLangs[0]);
-            
-            if
         }
     	
     	return DEFAULT_LOCALE;
