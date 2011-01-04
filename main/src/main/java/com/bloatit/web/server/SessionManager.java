@@ -11,6 +11,7 @@
 package com.bloatit.web.server;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import com.bloatit.common.CryptoTools;
 import com.bloatit.common.FatalErrorException;
@@ -20,10 +21,10 @@ public class SessionManager {
 
     private static HashMap<String, Session> activeSessions = new HashMap<String, Session>();
 
-    public static Session createSession() throws FatalErrorException {
+    public static Session createSession(Locale locale) throws FatalErrorException {
 
         final String key = CryptoTools.generateKey();
-        final Session session = new Session(key);
+        final Session session = new Session(key, locale);
         activeSessions.put(key, session);
         return session;
     }

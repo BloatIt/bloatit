@@ -105,6 +105,32 @@ public class CurrencyLocale {
     public String toString(){
         return this.getLocaleString();
     }
+    
+    /**
+     * Checks wether the target currency is handled
+     * @return <i>true</i> if currency is handled, <i>false</i> otherwise
+     */ 
+    public boolean availableTargetCurrency(){
+    	return currencies.containsKey(currency);
+    }
+    
+    /**
+     * Checks if a currency is handled
+     * @param currency the currency to check
+     * @return <i>true</i> if currency is handled, <i>false</i> otherwise
+     */
+    public static boolean availableCurrency(Locale locale){
+    	return availableCurrency(Currency.getInstance(locale));
+    }
+    
+    /**
+     * Checks if a currency is handled
+     * @param currency the currency to check
+     * @return <i>true</i> if currency is handled, <i>false</i> otherwise
+     */
+    public static boolean availableCurrency(Currency currency){
+    	return currencies.containsKey(currency);
+    }
 
     /**
      * <p>Parses the rate file and initializes the currency array</p>

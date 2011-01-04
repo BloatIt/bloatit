@@ -12,8 +12,10 @@ package com.bloatit.web.server;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.common.Log;
@@ -48,6 +50,8 @@ import com.bloatit.web.utils.url.Url;
 
 public class DispatchServer {
 
+	private static final Locale DEFAULT_LOCALE = new Locale("en_US");
+	
     static final Map<String, Class<? extends Url>> URL_MAP;
 
     static {
@@ -180,11 +184,89 @@ public class DispatchServer {
             sess = SessionManager.getByKey(cookies.get("session_key"));
         }
         if (sess == null) {
-            sess = SessionManager.createSession();
-            sess.setCountry(preferredLangs);
+            sess = SessionManager.createSession(determineLocale());
         }
         sess.setLanguage(l);
         return sess;
+    }
+    
+    /**
+     * <p>Finds the dominant Locale for the user based on the browser transmitted parameters</p>
+     * 
+     * <p>This method use preferences based on data transmitted by browser, but will always try 
+     * to fetch a locale with a language and a country.</p>
+     * <p> Cases are :
+     * <li>The favorite locale has language and country : it is the selected locale</li>
+     * <li>The favorite locale has a language but no country : will try to select another
+     * locale with the <b>same language</b></li>
+     * <li>
+     * If no locale has a country, the favorite language as of browser
+     * preference will be used, and country will be set as US. If no language is set, the locale
+     * will be set using DEFAULT_LOCALE (currently en_US).</p>
+     * @return the favorite user locale
+     */
+    private Locale determineLocale(){
+    	Locale currentLocale = null;
+    	float currentWeigth = 0;
+    	Locale favLanguage = null;
+    	float favLanguageWeigth = 0;
+    	Locale favCountry = null;
+    	float favCountryWeigth = 0;
+    	
+    	for(String lang : preferredLangs){
+            String[] favLangs = lang.split(";");
+            
+            float weigth;
+            if(favLangs.length > 1){
+            	weigth = new Float(favLangs[1].substring("q=".length()));
+            } else {
+            	weigth = 1;
+            }
+            
+            Locale l = new Locale(favLangs[0]);
+            
+            if(!l.getLanguage().isEmpty() && l.getCountry().isEmpty()){
+            	// New FavoriteLanguage
+            	if(favLanguageWeigth < weigth){
+            		favLanguageWeigth = weigth;
+            		favLanguage = l;
+            	}
+            }
+
+            if(!l.getLanguage().isEmpty() && !l.getCountry().isEmpty()){
+            	// New currentLocale
+            	if(currentWeigth < weigth ){
+            		currentWeigth = weigth;
+            		currentLocale = l;
+            	}
+            }
+            
+            if(l.getLanguage().isEmpty() && !l.getCountry().isEmpty()){
+            	// New currentCountry
+            	if(favCountryWeigth < weigth ){
+            		favCountryWeigth = weigth;
+            		favCountry = l;
+            	}
+            }
+        }
+    	
+    	if(currentLocale == null && favLanguage == null){
+    		return DEFAULT_LOCALE;
+    	}
+    	
+    	if(currentLocale != null && favLanguage == null){
+    		return currentLocale;
+    	}
+    	
+    	if(currentLocale == null && favLanguage != null){
+    		if(favCountry == null){
+    			favCountry = Locale.US;
+    		}
+    		return new Locale(favLanguage.getLanguage(), favCountry.getCountry());
+    	}
+    	
+    	// Case where both CurrentLocale != null && FavLanguage != null
+    	return currentLocale;
     }
 
     private Language userLocale(final Map<String, String> query) {
