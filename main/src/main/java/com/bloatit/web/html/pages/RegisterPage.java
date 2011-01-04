@@ -10,17 +10,24 @@
  */
 package com.bloatit.web.html.pages;
 
+import java.util.Map.Entry;
+
 import com.bloatit.web.actions.RegisterAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
+import com.bloatit.web.html.components.standard.form.HtmlDropDown;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Language;
+import com.bloatit.web.server.Language.LanguageDescriptor;
+import com.bloatit.web.utils.Countries;
+import com.bloatit.web.utils.Countries.Country;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;
 
@@ -71,12 +78,16 @@ public class RegisterPage extends Page {
         emailInput.setDefaultValue(email);
         form.add(emailInput);
         
-        HtmlTextField countryInput = new HtmlTextField(RegisterAction.COUNTRY_CODE, session.tr("country : "));
-        countryInput.setDefaultValue(country);
+        HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, session.tr("country : "));
+        for(Country entry : Countries.getAvailableCountries()){
+        	countryInput.add(entry.name, entry.code);
+        }
         form.add(countryInput);
         
-        HtmlTextField langInput = new HtmlTextField(RegisterAction.LANGUAGE_CODE, session.tr("language : "));
-        langInput.setDefaultValue(lang);
+        HtmlDropDown langInput = new HtmlDropDown(RegisterAction.LANGUAGE_CODE, session.tr("language : "));
+        for(Entry<String, LanguageDescriptor> entry : Language.getAvailableLanguages().entrySet()){
+        	langInput.add(entry.getValue().name, entry.getValue().code);
+        }
         form.add(langInput);
         
         HtmlSubmit button = new HtmlSubmit(session.tr("submit"));

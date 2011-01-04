@@ -18,7 +18,6 @@
  */
 package com.bloatit.web.utils;
 
-import com.bloatit.common.FatalErrorException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -31,6 +30,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import com.bloatit.common.FatalErrorException;
 
 /**
  * Class to handle localization of money amounts.

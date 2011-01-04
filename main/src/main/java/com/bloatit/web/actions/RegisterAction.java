@@ -3,10 +3,14 @@
  */
 package com.bloatit.web.actions;
 
+import java.util.Locale;
+
+import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 
 @ParamContainer("member/docreate")
@@ -33,14 +37,8 @@ public class RegisterAction extends Action {
     @RequestParam(name = RegisterAction.LANGUAGE_CODE, role = Role.POST)
     private final String lang;
     
-	private final RegisterActionUrl url;
-
-	/**
-	 * @param url
-	 */
 	public RegisterAction(RegisterActionUrl url) {
 		super(url);
-		this.url = url;
 		this.login = url.getLogin();
 		this.password = url.getPassword();
 		this.email = url.getEmail();
@@ -50,8 +48,9 @@ public class RegisterAction extends Action {
 
 	@Override
 	protected String doProcess() throws RedirectException {
-		// TODO Auto-generated method stub
-		return null;
+		Locale locale = new Locale(lang, country);
+		
+		Member m = new Member(login, password, email, locale);
+		return new MemberPageUrl(m).urlString();
 	}
-
 }

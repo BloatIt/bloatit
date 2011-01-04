@@ -24,188 +24,204 @@ import com.bloatit.model.data.DaoMember.Role;
 
 public final class Member extends Actor {
 
-    private final DaoMember dao;
+	private final DaoMember dao;
 
-    public static Member create(final DaoMember dao) {
-        if (dao == null) {
-            return null;
-        }
-        return new Member(dao);
-    }
+	public Member(String login, String password, String email, Locale locale) {
+		super();
+		dao = DaoMember.createAndPersist(login, password, email, locale);
+	}
 
-    private Member(final DaoMember dao) {
-        super();
-        this.dao = dao;
-    }
+	public static Member create(final DaoMember dao) {
+		if (dao == null) {
+			return null;
+		}
+		return new Member(dao);
+	}
 
-    public boolean canAccessGroups(final Action action) {
-        return new MemberRight.GroupList().canAccess(calculateRole(this), action);
-    }
+	private Member(final DaoMember dao) {
+		super();
+		this.dao = dao;
+	}
 
-    public void addToPublicGroup(final Group group) {
-        if (group.getRight() != Right.PUBLIC) {
-            throw new UnauthorizedOperationException();
-        }
-        new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
-        dao.addToGroup(group.getDao(), false);
-    }
+	public boolean canAccessGroups(final Action action) {
+		return new MemberRight.GroupList().canAccess(calculateRole(this),
+				action);
+	}
 
-    /**
-     * @param group the group in which you want to invite somebody
-     * @param action write for create a new invitation and read to accept/refuse it
-     * @return true if you can invite/accept/refuse.
-     */
-    public boolean canInvite(final Group group, final Action action) {
-        return new MemberRight.InviteInGroup().canAccess(calculateRole(this, group), action);
-    }
+	public void addToPublicGroup(final Group group) {
+		if (group.getRight() != Right.PUBLIC) {
+			throw new UnauthorizedOperationException();
+		}
+		new MemberRight.GroupList()
+				.tryAccess(calculateRole(this), Action.WRITE);
+		dao.addToGroup(group.getDao(), false);
+	}
 
-    public void invite(final Member member, final Group group) {
-        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, group), Action.WRITE);
-        DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(), group.getDao());
-    }
+	/**
+	 * @param group
+	 *            the group in which you want to invite somebody
+	 * @param action
+	 *            write for create a new invitation and read to accept/refuse it
+	 * @return true if you can invite/accept/refuse.
+	 */
+	public boolean canInvite(final Group group, final Action action) {
+		return new MemberRight.InviteInGroup().canAccess(
+				calculateRole(this, group), action);
+	}
 
-    public void acceptInvitation(final JoinGroupInvitation invitation) {
-        invitation.authenticate(getToken());
-        invitation.accept();
-    }
+	public void invite(final Member member, final Group group) {
+		new MemberRight.InviteInGroup().tryAccess(calculateRole(this, group),
+				Action.WRITE);
+		DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(),
+				group.getDao());
+	}
 
-    public void refuseInvitation(final JoinGroupInvitation demand) {
-        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
-        demand.refuse();
-    }
+	public void acceptInvitation(final JoinGroupInvitation invitation) {
+		invitation.authenticate(getToken());
+		invitation.accept();
+	}
 
-    public void removeFromGroup(final Group aGroup) {
-        new MemberRight.GroupList().tryAccess(calculateRole(this), Action.DELETE);
-        dao.removeFromGroup(aGroup.getDao());
-    }
+	public void refuseInvitation(final JoinGroupInvitation demand) {
+		new MemberRight.InviteInGroup().tryAccess(
+				calculateRole(this, demand.getGroup()), Action.READ);
+		demand.refuse();
+	}
 
-    public PageIterable<Group> getGroups() {
-        new MemberRight.GroupList().tryAccess(calculateRole(this), Action.READ);
-        return new GroupList(dao.getGroups());
-    }
+	public void removeFromGroup(final Group aGroup) {
+		new MemberRight.GroupList().tryAccess(calculateRole(this),
+				Action.DELETE);
+		dao.removeFromGroup(aGroup.getDao());
+	}
 
-    public boolean canGetKarma() {
-        return new MemberRight.Karma().canAccess(calculateRole(this), Action.READ);
-    }
+	public PageIterable<Group> getGroups() {
+		new MemberRight.GroupList().tryAccess(calculateRole(this), Action.READ);
+		return new GroupList(dao.getGroups());
+	}
 
-    public int getKarma() {
-        new MemberRight.Karma().tryAccess(calculateRole(this), Action.READ);
-        return dao.getKarma();
-    }
+	public boolean canGetKarma() {
+		return new MemberRight.Karma().canAccess(calculateRole(this),
+				Action.READ);
+	}
 
-    private static final int INFLUENCE_MULTIPLICATOR = 10;
+	public int getKarma() {
+		new MemberRight.Karma().tryAccess(calculateRole(this), Action.READ);
+		return dao.getKarma();
+	}
 
-    protected int calculateInfluence() {
-        final int karma = getKarma();
-        if (karma > 0) {
-            return (int) (Math.log10(karma) * INFLUENCE_MULTIPLICATOR + 1);
-        } else if (karma == 0) {
-            return 1;
-        }
-        return 0;
-    }
+	private static final int INFLUENCE_MULTIPLICATOR = 10;
 
-    public boolean canAccessName(final Action action) {
-        return new MemberRight.Name().canAccess(calculateRole(this), action);
-    }
+	protected int calculateInfluence() {
+		final int karma = getKarma();
+		if (karma > 0) {
+			return (int) (Math.log10(karma) * INFLUENCE_MULTIPLICATOR + 1);
+		} else if (karma == 0) {
+			return 1;
+		}
+		return 0;
+	}
 
-    public String getFullname() {
-        new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
-        return dao.getFullname();
-    }
+	public boolean canAccessName(final Action action) {
+		return new MemberRight.Name().canAccess(calculateRole(this), action);
+	}
 
-    public void setFullname(final String fullname) {
-        new MemberRight.Name().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setFullname(fullname);
-    }
+	public String getFullname() {
+		new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
+		return dao.getFullname();
+	}
 
-    public boolean canSetPassword() {
-        return new MemberRight.Password().canAccess(calculateRole(this), Action.WRITE);
-    }
+	public void setFullname(final String fullname) {
+		new MemberRight.Name().tryAccess(calculateRole(this), Action.WRITE);
+		dao.setFullname(fullname);
+	}
 
-    public void setPassword(final String password) {
-        new MemberRight.Password().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setPassword(password);
-    }
+	public boolean canSetPassword() {
+		return new MemberRight.Password().canAccess(calculateRole(this),
+				Action.WRITE);
+	}
 
-    public boolean canAccessLocale(final Action action) {
-        return new MemberRight.Locale().canAccess(calculateRole(this), action);
-    }
+	public void setPassword(final String password) {
+		new MemberRight.Password().tryAccess(calculateRole(this), Action.WRITE);
+		dao.setPassword(password);
+	}
 
-    public Locale getLocal() {
-        new MemberRight.Locale().tryAccess(calculateRole(this), Action.READ);
-        return dao.getLocale();
-    }
+	public boolean canAccessLocale(final Action action) {
+		return new MemberRight.Locale().canAccess(calculateRole(this), action);
+	}
 
-    public void setLocal(final Locale loacle) {
-        new MemberRight.Locale().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setLocale(loacle);
-    }
+	public Locale getLocal() {
+		new MemberRight.Locale().tryAccess(calculateRole(this), Action.READ);
+		return dao.getLocale();
+	}
 
-    public PageIterable<Demand> getDemands() {
-        return new DemandList(dao.getDemands());
-    }
+	public void setLocal(final Locale loacle) {
+		new MemberRight.Locale().tryAccess(calculateRole(this), Action.WRITE);
+		dao.setLocale(loacle);
+	}
 
-    public PageIterable<Kudos> getKudos() {
-        return new KudosList(dao.getKudos());
-    }
+	public PageIterable<Demand> getDemands() {
+		return new DemandList(dao.getDemands());
+	}
 
-    public PageIterable<Specification> getSpecifications() {
-        return new SpecificationList(dao.getSpecifications());
-    }
+	public PageIterable<Kudos> getKudos() {
+		return new KudosList(dao.getKudos());
+	}
 
-    public PageIterable<Contribution> getContributions() {
-        return new ContributionList(dao.getTransactions());
-    }
+	public PageIterable<Specification> getSpecifications() {
+		return new SpecificationList(dao.getSpecifications());
+	}
 
-    public PageIterable<Comment> getComments() {
-        return new CommentList(dao.getComments());
-    }
+	public PageIterable<Contribution> getContributions() {
+		return new ContributionList(dao.getTransactions());
+	}
 
-    public PageIterable<Offer> getOffers() {
-        return new OfferList(dao.getOffers());
-    }
+	public PageIterable<Comment> getComments() {
+		return new CommentList(dao.getComments());
+	}
 
-    public PageIterable<Translation> getTranslations() {
-        return new TranslationList(dao.getTranslations());
-    }
+	public PageIterable<Offer> getOffers() {
+		return new OfferList(dao.getOffers());
+	}
 
-    public boolean isInGroup(final Group group) {
-        return isInGroupUnprotected(group);
-    }
+	public PageIterable<Translation> getTranslations() {
+		return new TranslationList(dao.getTranslations());
+	}
 
-    @Override
-    protected DaoActor getDaoActor() {
-        return dao;
-    }
+	public boolean isInGroup(final Group group) {
+		return isInGroupUnprotected(group);
+	}
 
-    protected MemberStatus getStatusUnprotected(final Group group) {
-        return group.getDao().getMemberStatus(dao);
-    }
+	@Override
+	protected DaoActor getDaoActor() {
+		return dao;
+	}
 
-    protected boolean isInGroupUnprotected(final Group group) {
-        return dao.isInGroup(group.getDao());
-    }
+	protected MemberStatus getStatusUnprotected(final Group group) {
+		return group.getDao().getMemberStatus(dao);
+	}
 
-    @Override
-    public DaoMember getDao() {
-        return dao;
-    }
+	protected boolean isInGroupUnprotected(final Group group) {
+		return dao.isInGroup(group.getDao());
+	}
 
-    protected void addToKarma(final int value) {
-        dao.addToKarma(value);
-    }
+	@Override
+	public DaoMember getDao() {
+		return dao;
+	}
 
-    protected String getPassword() {
-        return dao.getPassword();
-    }
+	protected void addToKarma(final int value) {
+		dao.addToKarma(value);
+	}
 
-    public Role getRole() {
-        return dao.getRole();
-    }
+	protected String getPassword() {
+		return dao.getPassword();
+	}
 
-    public Image getAvatar() {
-        // TODO : Do it properly
-        return new Image("none.png", Image.ImageType.LOCAL);
-    }
+	public Role getRole() {
+		return dao.getRole();
+	}
+
+	public Image getAvatar() {
+		// TODO : Do it properly
+		return new Image("none.png", Image.ImageType.LOCAL);
+	}
 }
