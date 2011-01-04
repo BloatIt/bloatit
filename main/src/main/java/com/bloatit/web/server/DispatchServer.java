@@ -206,10 +206,12 @@ public class DispatchServer {
      * @return the favorite user locale
      */
     private Locale determineLocale(){
-    	Locale currentLocale;
+    	Locale currentLocale = null;
     	float currentWeigth = 0;
-    	
-    	Locale favLanguage;
+    	Locale favLanguage = null;
+    	float favLanguageWeigth = 0;
+    	Locale favCountry = null;
+    	float favCountryWeigth = 0;
     	
     	for(String lang : preferredLangs){
             String[] favLangs = lang.split(";");
@@ -222,9 +224,49 @@ public class DispatchServer {
             }
             
             Locale l = new Locale(favLangs[0]);
+            
+            if(!l.getLanguage().isEmpty() && l.getCountry().isEmpty()){
+            	// New FavoriteLanguage
+            	if(favLanguageWeigth < weigth){
+            		favLanguageWeigth = weigth;
+            		favLanguage = l;
+            	}
+            }
+
+            if(!l.getLanguage().isEmpty() && !l.getCountry().isEmpty()){
+            	// New currentLocale
+            	if(currentWeigth < weigth ){
+            		currentWeigth = weigth;
+            		currentLocale = l;
+            	}
+            }
+            
+            if(l.getLanguage().isEmpty() && !l.getCountry().isEmpty()){
+            	// New currentCountry
+            	if(favCountryWeigth < weigth ){
+            		favCountryWeigth = weigth;
+            		favCountry = l;
+            	}
+            }
         }
     	
-    	return DEFAULT_LOCALE;
+    	if(currentLocale == null && favLanguage == null){
+    		return DEFAULT_LOCALE;
+    	}
+    	
+    	if(currentLocale != null && favLanguage == null){
+    		return currentLocale;
+    	}
+    	
+    	if(currentLocale == null && favLanguage != null){
+    		if(favCountry == null){
+    			favCountry = Locale.US;
+    		}
+    		return new Locale(favLanguage.getLanguage(), favCountry.getCountry());
+    	}
+    	
+    	// Case where both CurrentLocale != null && FavLanguage != null
+    	return currentLocale;
     }
 
     private Language userLocale(final Map<String, String> query) {
