@@ -133,8 +133,11 @@
 
 .progress_bar_state{
     display:block;
-    background: rgb(32,141,188);
-    .rounded_corners(3px);
+    //background: rgb(32,141,188);
+    @gradient_color: rgb(32,141,188);
+    .horizontal-gradient(@gradient_color * 0.8, (@gradient_color * 1.0));
+    
+    .rounded_corners(6px);
     height:8px
 }
 
