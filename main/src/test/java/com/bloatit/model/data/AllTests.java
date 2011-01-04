@@ -12,7 +12,8 @@ public class AllTests {
         suite.addTestSuite(GroupCreationTest.class);
         suite.addTestSuite(GroupMemberTest.class);
         suite.addTestSuite(DemandTest.class);
-        suite.addTestSuite(DescriptionTranslatableTest.class);
+        suite.addTestSuite(DescriptionTest.class);
+        suite.addTestSuite(TranslationTest.class);
         suite.addTestSuite(CommentTest.class);
         suite.addTestSuite(AccountTest.class);
         suite.addTestSuite(TransactionTest.class);

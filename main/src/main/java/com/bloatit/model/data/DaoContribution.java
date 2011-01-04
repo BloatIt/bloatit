@@ -36,7 +36,6 @@ public final class DaoContribution extends DaoUserContent {
     @Column(updatable = false)
     private BigDecimal amount;
 
-    @SuppressWarnings("unused")
     @ManyToOne(optional = false)
     private DaoDemand demand;
 
@@ -59,7 +58,7 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Create a new contribution. Update the internal account of the member (block the
      * value that is reserved to this contribution)
-     * 
+     *
      * @param member the person making the contribution.
      * @param demand the demand on which we add a contribution.
      * @param amount the amount of the contribution.
@@ -89,7 +88,7 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Set the state to ACCEPTED, and create the transaction. If there is not enough money
      * then throw and set the state to canceled.
-     * 
+     *
      * @param offer the offer that is accepted.
      * @throws NotEnoughMoneyException if there is not enough money to create the
      *         transaction.
@@ -153,7 +152,7 @@ public final class DaoContribution extends DaoUserContent {
     public String getComment() {
         return comment;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -161,7 +160,7 @@ public final class DaoContribution extends DaoUserContent {
     protected DaoContribution() {
         super();
     }
-    
+
     protected DaoDemand getDemand(){
         return demand;
     }

@@ -52,7 +52,7 @@ public final class DaoGroup extends DaoActor {
     @Column(unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "bloatitGroup")
     @Cascade(value = { CascadeType.ALL })
     private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 

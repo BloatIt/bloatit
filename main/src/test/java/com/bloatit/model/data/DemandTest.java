@@ -4,58 +4,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-
 import com.bloatit.model.data.util.SessionManager;
 
 /**
  * I assume the GroupMemberTest is run without error.
  */
-public class DemandTest extends TestCase {
-
-    private DaoMember yo;
-    private DaoMember tom;
-    private DaoMember fred;
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        SessionManager.generateTestSessionFactory();
-        SessionManager.beginWorkUnit();
-        {
-            tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
-            tom.setFullname("Thomas Guyard");
-            tom.getInternalAccount().setAmount(new BigDecimal(100));
-            SessionManager.flush();
-        }
-        {
-            fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
-            fred.setFullname("Frédéric Bertolus");
-            fred.getInternalAccount().setAmount(new BigDecimal(100));
-            SessionManager.flush();
-        }
-        {
-            yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
-            yo.setFullname("Yoann Plénet");
-            yo.getInternalAccount().setAmount(new BigDecimal(100));
-            SessionManager.flush();
-
-            DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("myGroup", "plop2@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-        }
-
-        SessionManager.endWorkUnitAndFlush();
-        SessionManager.beginWorkUnit();
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            SessionManager.endWorkUnitAndFlush();
-        }
-        SessionManager.getSessionFactory().close();
-    }
+public class DemandTest extends ModelTestUnit {
 
     public void testCreateDemand() {
         final DaoDemand demand = DaoDemand.createAndPersist(yo,
@@ -100,6 +54,9 @@ public class DemandTest extends TestCase {
         DaoDemand demand = DaoDemand.createAndPersist(yo,
                 DaoDescription.createAndPersist(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
         demand.createSpecification(tom, "This is the spécification");
+        fred.getInternalAccount().setAmount(new BigDecimal("100"));
+        yo.getInternalAccount().setAmount(new BigDecimal("100"));
+
         demand.addContribution(fred, new BigDecimal("25.00"), "Contribution");
         demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous");
 
@@ -184,6 +141,8 @@ public class DemandTest extends TestCase {
                 new BigDecimal("200"),
                 DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
                 new Date());
+        fred.getInternalAccount().setAmount(new BigDecimal("100"));
+        yo.getInternalAccount().setAmount(new BigDecimal("100"));
         demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
         demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
@@ -203,7 +162,7 @@ public class DemandTest extends TestCase {
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("100")));
     }
 
-    public void testGetCurrentOffer(){
+    public void testGetCurrentOffer() {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
         final DaoDemand demand = DaoDemand.createAndPersist(yo,

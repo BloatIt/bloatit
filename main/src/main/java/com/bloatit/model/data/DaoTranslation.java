@@ -6,6 +6,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -17,6 +19,7 @@ import com.bloatit.model.data.util.NonOptionalParameterException;
  * A translation store the data of a description in a for a locale.
  */
 @Entity
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "locale", "description_id" }) })
 public final class DaoTranslation extends DaoKudosable {
 
     @Basic(optional = false)
@@ -35,7 +38,7 @@ public final class DaoTranslation extends DaoKudosable {
 
     /**
      * Create a new translation.
-     * 
+     *
      * @param member
      * @param description
      * @param locale
@@ -45,7 +48,7 @@ public final class DaoTranslation extends DaoKudosable {
      */
     public DaoTranslation(final DaoMember member, final DaoDescription description, final Locale locale, final String title, final String text) {
         super(member);
-        if (description == null || locale == null || title == null || text == null) {
+        if (description == null || locale == null || title == null || text == null || title.isEmpty() || text.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.locale = locale;
@@ -65,7 +68,7 @@ public final class DaoTranslation extends DaoKudosable {
     public String getText() {
         return text;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

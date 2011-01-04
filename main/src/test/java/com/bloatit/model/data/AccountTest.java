@@ -39,7 +39,7 @@ public class AccountTest extends ModelTestUnit {
         }
 
         try {
-            localTom.setExternalAccount(DaoExternalAccount.createAndPersist(localTom, AccountType.IBAN, ""));
+            localTom.setExternalAccount(DaoExternalAccount.createAndPersist(localB219, AccountType.IBAN, "code"));
             fail();
         } catch (FatalErrorException e) {
             assertTrue(true);

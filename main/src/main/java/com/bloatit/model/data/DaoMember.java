@@ -166,7 +166,7 @@ public final class DaoMember extends DaoActor {
      */
     public PageIterable<DaoGroup> getGroups() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query filter = session.createFilter(getGroupMembership(), "select this.group order by login");
+        final Query filter = session.createFilter(getGroupMembership(), "select this.bloatitGroup order by login");
         final Query count = session.createFilter(getGroupMembership(), "select count(*)");
         return new QueryCollection<DaoGroup>(filter, count);
     }
@@ -274,7 +274,7 @@ public final class DaoMember extends DaoActor {
         "SELECT count(*) " + //
                 "FROM com.bloatit.model.data.DaoMember m " + //
                 "JOIN m.groupMembership AS gm " + //
-                "JOIN gm.group AS g " + //
+                "JOIN gm.bloatitGroup AS g " + //
                 "WHERE m = :member AND g = :group");
         q.setEntity("member", this);
         q.setEntity("group", group);

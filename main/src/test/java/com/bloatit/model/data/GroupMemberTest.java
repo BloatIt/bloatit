@@ -128,4 +128,20 @@ public class GroupMemberTest extends TestCase {
         SessionManager.endWorkUnitAndFlush();
     }
 
+    public void testDuplicateAdd(){
+        SessionManager.beginWorkUnit();
+
+        DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
+        DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
+
+        try {
+            SessionManager.flush();
+            fail();
+        } catch (Exception e) {
+            assertTrue(true);
+        }
+
+        SessionManager.endWorkUnitAndFlush();
+    }
+
 }

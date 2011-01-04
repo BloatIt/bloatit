@@ -3,6 +3,8 @@ package com.bloatit.model.data;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -13,6 +15,7 @@ import com.bloatit.model.data.util.SessionManager;
  * This class is for Hibernate only.
  */
 @Entity
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "member_id", "bloatitGroup_id" }) })
 class DaoGroupMembership extends DaoIdentifiable {
 
     /**
@@ -25,7 +28,7 @@ class DaoGroupMembership extends DaoIdentifiable {
      * TODO : declare a composite ID !
      */
     @ManyToOne(optional = false)
-    private DaoGroup group;
+    private DaoGroup bloatitGroup;
 
     /**
      * This will change to the DaoGroup#MemberStatus
@@ -38,15 +41,15 @@ class DaoGroupMembership extends DaoIdentifiable {
      */
     protected static DaoGroupMembership get(final DaoGroup group, final DaoMember member) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("from com.bloatit.model.data.DaoGroupMembership as gm where gm.group = :group and gm.member = :member");
-        q.setEntity("group", group);
+        final Query q = session.createQuery("from com.bloatit.model.data.DaoGroupMembership as gm where gm.bloatitGroup = :bloatitGroup and gm.member = :member");
+        q.setEntity("bloatitGroup", group);
         q.setEntity("member", member);
         return (DaoGroupMembership) q.uniqueResult();
     }
 
     protected DaoGroupMembership(final DaoMember member, final DaoGroup group, final boolean isAdmin) {
         this.member = member;
-        this.group = group;
+        this.bloatitGroup = group;
         this.isAdmin = isAdmin;
     }
 
@@ -55,13 +58,13 @@ class DaoGroupMembership extends DaoIdentifiable {
     }
 
     protected final DaoGroup getGroup() {
-        return group;
+        return bloatitGroup;
     }
 
     protected final boolean isAdmin() {
         return isAdmin;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
