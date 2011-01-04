@@ -17,6 +17,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.metadata.ClassMetadata;
 
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.DaoJoinGroupInvitation.State;
 import com.bloatit.model.data.util.NonOptionalParameterException;
@@ -153,9 +154,13 @@ public final class DaoMember extends DaoActor {
      */
     public void removeFromGroup(final DaoGroup aGroup) {
         final DaoGroupMembership link = DaoGroupMembership.get(aGroup, this);
-        groupMembership.remove(link);
-        aGroup.getGroupMembership().remove(link);
-        SessionManager.getSessionFactory().getCurrentSession().delete(link);
+        if (link != null) {
+            groupMembership.remove(link);
+            aGroup.getGroupMembership().remove(link);
+            SessionManager.getSessionFactory().getCurrentSession().delete(link);
+        } else {
+            Log.data().error("Try to remove a non existing DaoGroupMembership: group = " + aGroup.getId() + " member = " + this.getId());
+        }
     }
 
     /**
@@ -296,7 +301,6 @@ public final class DaoMember extends DaoActor {
     public Role getRole() {
         return role;
     }
-
 
     public void setLocale(Locale locale) {
         this.locale = locale;

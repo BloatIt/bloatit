@@ -98,10 +98,18 @@ public final class Member extends Actor {
         DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(), group.getDao());
     }
 
+    /**
+     * @param state can be PENDING, VALIDATED or REFUSED
+     * @return all the received invitation with the specified state.
+     */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
         return dao.getReceivedInvitation(state);
     }
 
+    /**
+     * @param state can be PENDING, VALIDATED or REFUSED
+     * @return all the sent invitation with the specified state.
+     */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
         return dao.getSentInvitation(state);
     }
@@ -134,11 +142,23 @@ public final class Member extends Actor {
         invitation.refuse();
     }
 
-    public void removeFromGroup(final Group aGroup) {
+    /**
+     * To remove this member from a group you have to have the DELETE right on the "group"
+     * property. If the member is not in the "group", nothing is done. (Although it should
+     * be considered as an error and will be logged)
+     *
+     * @param group is the group from which the user will be removed.
+     */
+    public void removeFromGroup(final Group group) {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.DELETE);
-        dao.removeFromGroup(aGroup.getDao());
+        dao.removeFromGroup(group.getDao());
     }
 
+    /**
+     * To get the groups you have the have the READ right on the "group" property.
+     *
+     * @return all the group in which this member is.
+     */
     public PageIterable<Group> getGroups() {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.READ);
         return new GroupList(dao.getGroups());
