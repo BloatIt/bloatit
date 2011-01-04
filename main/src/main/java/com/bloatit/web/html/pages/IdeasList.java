@@ -19,6 +19,7 @@ import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -112,6 +113,9 @@ public class IdeasList extends Page {
                 final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
                 {
 
+                	
+                	
+                	
                     final HtmlLink linkTitle = new IdeaPageUrl(demand).getHtmlLink("Correction de bug - VLC");
                     linkTitle.setCssClass("idea_link");
 
@@ -132,7 +136,10 @@ public class IdeasList extends Page {
                         }
 
                         final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
+                        final HtmlParagraph progressText = new HtmlParagraph("<span class=important>5684 €</span> soit <span class=important>45%</span> de <span class=important>10000 €</span> demandés", "idea_progress_text");
+                        
                         ideaTitle.add(progressBar);
+                        ideaTitle.add(progressText);
                     }
                     centerBlock.add(ideaTitle);
 
