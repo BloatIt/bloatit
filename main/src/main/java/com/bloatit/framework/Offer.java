@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.bloatit.framework.right.OfferRight;
 import com.bloatit.framework.right.RightManager.Action;
+import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
 
@@ -11,6 +12,13 @@ public final class Offer extends Kudosable {
 
     private final DaoOffer dao;
 
+    public static Offer create(final DaoOffer dao) {
+        if (dao == null) {
+            return null;
+        }
+        return new Offer(dao);
+    }
+    
     public Offer(final DaoOffer dao) {
         super();
         this.dao = dao;
