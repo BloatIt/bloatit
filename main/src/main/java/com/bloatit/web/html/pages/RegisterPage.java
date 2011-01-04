@@ -24,10 +24,10 @@ import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.server.Language;
-import com.bloatit.web.server.Language.LanguageDescriptor;
 import com.bloatit.web.utils.Countries;
 import com.bloatit.web.utils.Countries.Country;
+import com.bloatit.web.utils.i18n.Language;
+import com.bloatit.web.utils.i18n.Language.LanguageDescriptor;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;
 

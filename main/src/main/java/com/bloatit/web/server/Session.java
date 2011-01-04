@@ -20,7 +20,8 @@ import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.Member;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
-import com.bloatit.web.utils.DateLocale;
+import com.bloatit.web.utils.i18n.DateLocale;
+import com.bloatit.web.utils.i18n.Language;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
 
@@ -70,6 +71,9 @@ public class Session {
      * @see Language#tr(String)
      */
     public String tr(final String s) {
+    	if(language == null){
+    		language = new Language(getLocale());
+    	}
         return language.tr(s);
     }
 
@@ -78,15 +82,6 @@ public class Session {
      */
     public String tr(final String s, final Object[] objects) {
         return language.tr(s, objects);
-    }
-
-    
-    /*public Language getLanguage() {
-        return language;
-    }*/
-
-    public void setLanguage(final Language newLang) {
-        language = newLang;
     }
 
     public void setAuthToken(final AuthToken token) {

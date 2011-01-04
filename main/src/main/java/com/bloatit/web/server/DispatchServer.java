@@ -12,7 +12,6 @@ package com.bloatit.web.server;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +22,7 @@ import com.bloatit.web.actions.Action;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.utils.i18n.Language;
 import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
@@ -114,7 +114,7 @@ public class DispatchServer {
         final Parameters parameters = parseQueryString(params);
         // Merge with the query params
         parameters.putAll(query);
-        // Merge with the post params
+        // Merge with the post paramsLocale
         parameters.putAll(post);
 
         try {
@@ -178,15 +178,13 @@ public class DispatchServer {
      */
     private Session findSession(final Map<String, String> query) {
         Session sess = null;
-        final Language l = userLocale(query);
 
         if (cookies.containsKey("session_key")) {
             sess = SessionManager.getByKey(cookies.get("session_key"));
         }
         if (sess == null) {
-            sess = SessionManager.createSession(determineLocale());
+            sess = SessionManager.createSession(browserLocaleHeuristic());
         }
-        sess.setLanguage(l);
         return sess;
     }
     
@@ -205,7 +203,7 @@ public class DispatchServer {
      * will be set using DEFAULT_LOCALE (currently en_US).</p>
      * @return the favorite user locale
      */
-    private Locale determineLocale(){
+    private Locale browserLocaleHeuristic(){
     	Locale currentLocale = null;
     	float currentWeigth = 0;
     	Locale favLanguage = null;

@@ -25,7 +25,7 @@ private OfferPageUrl(){
     super(getName());
     try {
         this.price.setValue(Loaders.fromStr(java.math.BigDecimal.class, ""));
-        this.expiryDate.setValue(Loaders.fromStr(com.bloatit.web.utils.DateLocale.class, ""));
+        this.expiryDate.setValue(Loaders.fromStr(com.bloatit.web.utils.i18n.DateLocale.class, ""));
         this.title.setValue(Loaders.fromStr(java.lang.String.class, ""));
         this.description.setValue(Loaders.fromStr(java.lang.String.class, ""));
     } catch (ConversionErrorException e) {
@@ -35,7 +35,7 @@ private OfferPageUrl(){
 }
 private UrlParameter<com.bloatit.framework.Demand> targetIdea =     new UrlParameter<com.bloatit.framework.Demand>("targetIdea", null, com.bloatit.framework.Demand.class, Role.GET, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private UrlParameter<java.math.BigDecimal> price =     new UrlParameter<java.math.BigDecimal>("offer_price", null, java.math.BigDecimal.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
-private UrlParameter<com.bloatit.web.utils.DateLocale> expiryDate =     new UrlParameter<com.bloatit.web.utils.DateLocale>("offer_expiry", null, com.bloatit.web.utils.DateLocale.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
+private UrlParameter<com.bloatit.web.utils.i18n.DateLocale> expiryDate =     new UrlParameter<com.bloatit.web.utils.i18n.DateLocale>("offer_expiry", null, com.bloatit.web.utils.i18n.DateLocale.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private UrlParameter<java.lang.String> title =     new UrlParameter<java.lang.String>("offer_title", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 private UrlParameter<java.lang.String> description =     new UrlParameter<java.lang.String>("offer_description", null, java.lang.String.class, Role.SESSION, Level.ERROR, "Error: invalid value (%value) for parameter \"%param\"");
 
@@ -55,11 +55,11 @@ public void setPrice(java.math.BigDecimal arg){
     this.price.setValue(arg);
 }
 
-public com.bloatit.web.utils.DateLocale getExpiryDate(){ 
+public com.bloatit.web.utils.i18n.DateLocale getExpiryDate(){ 
     return this.expiryDate.getValue();
 }
 
-public void setExpiryDate(com.bloatit.web.utils.DateLocale arg){ 
+public void setExpiryDate(com.bloatit.web.utils.i18n.DateLocale arg){ 
     this.expiryDate.setValue(arg);
 }
 

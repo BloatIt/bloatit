@@ -15,7 +15,7 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.utils.DateLocale;
+import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import java.math.BigDecimal;
