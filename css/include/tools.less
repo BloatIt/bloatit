@@ -1,3 +1,6 @@
+@import "colors";
+@import "constants";
+
 .rounded_corners (@radius: 5px) {
   -moz-border-radius: @radius;
   -webkit-border-radius: @radius;
@@ -5,6 +8,39 @@
   -ms-border-radius: @radius;
   -khtml-border-radius: @radius;
   border-radius: @radius;
+}
+
+
+.rounded_corners_bottom_right (@radius: 5px) {
+  -moz-border-radius-bottomright: @radius;
+  -webkit-border-radius-bottomright: @radius;
+  -o-border-radius-bottomright: @radius;
+  -ms-border-radius-bottomright: @radius;
+  -khtml-border-radius-bottomright: @radius;
+  border-radius-bottomright: @radius;
+}
+
+.rounded_corners_top_right (@radius: 5px) {
+  -moz-border-radius-topright: @radius;
+  -webkit-border-radius-topright: @radius;
+  -o-border-radius-topright: @radius;
+  -ms-border-radius-topright: @radius;
+  -khtml-border-radius-topright: @radius;
+  border-radius-topright: @radius;
+}
+
+.rounded_corners_top_left (@radius: 5px) {
+  -moz-border-radius-topleft: @radius;
+  -webkit-border-radius-topleft: @radius;
+  -o-border-radius-topleft: @radius;
+  -ms-border-radius-topleft: @radius;
+  -khtml-border-radius-topleft: @radius;
+  border-radius-topleft: @radius;
+}
+
+.shadow(@radius: @default_shadow_thickness, @color: rgb(100,100,100)) {
+    -moz-box-shadow:0px 0 @radius @color;
+    -webkit-box-shadow:0 0 @radius @color;
 }
 
 .no_insets {
