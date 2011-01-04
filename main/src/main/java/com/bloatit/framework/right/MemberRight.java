@@ -13,16 +13,17 @@ public class MemberRight extends RightManager {
             can = can || ownerCanDelete(role, action);
             can = can || modoCanWrite(role, action);
             can = can || modoCanDelete(role, action);
-            return  can;
+            return can;
         }
     }
 
-    // Read for accept/refuse
+    // Delete for accept/refuse
     // write to create a new
     public static class InviteInGroup extends Accessor {
         @Override
         protected final boolean can(final EnumSet<Role> role, final Action action) {
-            return role.contains(Role.IN_GROUP) && action == Action.WRITE || ownerCanRead(role, action);
+            return role.contains(Role.IN_GROUP) && (action == Action.WRITE || action == Action.READ) || ownerCanRead(role, action)
+                    || ownerCanDelete(role, action);
         }
     }
 

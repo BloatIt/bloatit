@@ -19,6 +19,7 @@ import com.bloatit.model.data.DaoActor;
 import com.bloatit.model.data.DaoGroup.MemberStatus;
 import com.bloatit.model.data.DaoGroup.Right;
 import com.bloatit.model.data.DaoJoinGroupInvitation;
+import com.bloatit.model.data.DaoJoinGroupInvitation.State;
 import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoMember.Role;
 
@@ -26,6 +27,12 @@ public final class Member extends Actor {
 
     private final DaoMember dao;
 
+    /**
+     * Create a new member using its Dao version.
+     *
+     * @param dao a DaoMember
+     * @return the new member or null if dao is null.
+     */
     public static Member create(final DaoMember dao) {
         if (dao == null) {
             return null;
@@ -38,10 +45,27 @@ public final class Member extends Actor {
         this.dao = dao;
     }
 
+    /**
+     * Tells if a user can access the group property. You have to unlock this Member using
+     * the {@link Member#authenticate(AuthToken)} method.
+     *
+     * @param action can be read/write/delete. for example use READ to know if you can use
+     *        {@link Member#getGroups()}.
+     * @return true if you can use the method.
+     */
     public boolean canAccessGroups(final Action action) {
         return new MemberRight.GroupList().canAccess(calculateRole(this), action);
     }
 
+    /**
+     * To add a user into a public group, you have to make sure you can access the groups
+     * with the {@link Action#WRITE} action.
+     *
+     * @param group must be a public group.
+     * @throws UnauthorizedOperationException if the authenticated member do not have the
+     *         right to use this methods.
+     * @see Member#canAccessGroups(Action)
+     */
     public void addToPublicGroup(final Group group) {
         if (group.getRight() != Right.PUBLIC) {
             throw new UnauthorizedOperationException();
@@ -51,27 +75,63 @@ public final class Member extends Actor {
     }
 
     /**
+     * Tells if a user can access the property "invite".
+     *
      * @param group the group in which you want to invite somebody
-     * @param action write for create a new invitation and read to accept/refuse it
+     * @param action WRITE for create a new invitation, DELETE to accept/refuse it, READ
+     *        to list the invitations you have recieved.
      * @return true if you can invite/accept/refuse.
      */
     public boolean canInvite(final Group group, final Action action) {
         return new MemberRight.InviteInGroup().canAccess(calculateRole(this, group), action);
     }
 
+    /**
+     * To invite a member into a group you have to have the WRITE right on the "invite"
+     * property.
+     *
+     * @param member The member you want to invite
+     * @param group The group in which you invite a member.
+     */
     public void invite(final Member member, final Group group) {
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, group), Action.WRITE);
         DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(), group.getDao());
     }
 
+    public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
+        return dao.getReceivedInvitation(state);
+    }
+
+    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
+        return dao.getSentInvitation(state);
+    }
+
+    /**
+     * To accept an invitation you must have the DELETE right on the "invite" property. If
+     * the invitation is not in PENDING state then nothing is done.
+     *
+     * @param invitation the authenticate member must be receiver of the invitation.
+     */
     public void acceptInvitation(final JoinGroupInvitation invitation) {
-        invitation.authenticate(getToken());
+        if (invitation.getReciever().getId() != getToken().getMember().getId()) {
+            throw new UnauthorizedOperationException();
+        }
+        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, invitation.getGroup()), Action.DELETE);
         invitation.accept();
     }
 
-    public void refuseInvitation(final JoinGroupInvitation demand) {
-        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, demand.getGroup()), Action.READ);
-        demand.refuse();
+    /**
+     * To refuse an invitation you must have the DELETE right on the "invite" property. If
+     * the invitation is not in PENDING state then nothing is done.
+     *
+     * @param invitation the authenticate member must be receiver of the invitation.
+     */
+    public void refuseInvitation(final JoinGroupInvitation invitation) {
+        if (invitation.getReciever().getId() != getToken().getMember().getId()) {
+            throw new UnauthorizedOperationException();
+        }
+        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, invitation.getGroup()), Action.DELETE);
+        invitation.refuse();
     }
 
     public void removeFromGroup(final Group aGroup) {
