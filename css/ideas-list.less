@@ -1,34 +1,60 @@
+@import "include/tools";
+@import "include/colors";
+
 
 .idea_link {
    
-
 }
 
 .idea_link_text {
-    color: rgb(50,50,50);
-    font-weight: normal;
+    color: @default_text_color;
+     font-size: 0.9em;
+     margin: 0px;
+     padding: 0px;  
+     max-width: 400px;
 }
 
+.idea_progress_text {
+    color: @default_text_color;
+     font-size: 0.8em;
+     margin: 0px;
+     padding: 0px;
+     margin-top : 1px;
+     margin-bottom : 7px;
+     color: rgb(150,150,150);
+     text-align: center;
+     .important {
+        font-size: 1.2em;
+        margin-left: 15px;
+        margin-right: 15px;
+        color:rgb(20,20,20);
+     }
+     max-width: 400px;
+}
 
 .idea_summary {
     width: 100%;
-    max-width: 800px;
-    padding: 5px;
+    max-width: 600px;
+    padding: 0px;
+    margin-bottom: 2em;
     
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    -o-border-radius:3px;
-    -ms-border-radius:3px;
-    -khtml-border-radius:3px;
-    border-radius:3px;
-    border: 1px solid rgb(230,230,230);
-    background:rgb(240,240,240);
+    .shadow(3px);
+
+    .horizontal-gradient(rgb(235,235,235), rgb(250,250,250));
+    
+     
+    h3 {
+     font-size: 1.1em;
+     margin: 0px;
+     margin-top: 10px;
+     padding: 0px;
+    }
     
 }
 
 .idea_summary_left {
     display:table-cell;
-    vertical-align: middle;    
+    vertical-align: top;    
     margin: 0px;
     padding: 0px;
 }
@@ -42,21 +68,20 @@
     border: none;
     float: right;
     margin-left:10px;
+    margin-top:3px;
 }
 
 .idea_summary_right {
     display:table-cell;
     
-    margin: 0px;
-    padding: 0px;
+    .no_insets;
     vertical-align: middle;
 }
 
 .idea_summary_center {
     display:table-cell;
     
-    margin: 0px;
-    padding: 0px;
+    .no_insets;
     vertical-align: middle;
     width: 100%;
 }
@@ -75,32 +100,30 @@
 }
 
 .progress_bar_block {
-    margin-left: 1em;
-    margin-left: 1em;
+    margin-left: 0em;
     max-width: 400px;
 }
 
 .idea_karma {
     
-    margin: 3px;
+    margin: 0px;
     margin-right: 15px;
+    margin-left: 0px;
     padding: 10px;
+    
     padding-left: 15px;
     padding-right: 15px;
-    vertical-align: middle;
+    vertical-align: bottom;
     
-    -moz-border-radius:6px;
-    -webkit-border-radius:6px;
-    -o-border-radius:6px;
-    -ms-border-radius:6px;
-    -khtml-border-radius:6px;
-    border-radius:6px;
-    border: 1px solid rgb(150,200,150);
-    background-color : rgb(200,250,200);
+    
+    .radial-gradient(rgb(240,240, 255), rgb(220,220, 240));
+    
+    border-right: 1px solid rgb(190,190, 200);
+    border-bottom: 1px solid rgb(190,190, 200);
     
     color: rgb(20,25,20);
-    font-size : 1.5em;
-    width: 2em;
+    font-size : 1.0em;
+    width: 1.5em;
     text-align  :center; /*Moins prioritaire*/
 }
 
@@ -113,31 +136,25 @@
 
 .progress_bar{
     display:block;
-    -moz-border-radius:6px;
-    -webkit-border-radius:6px;
-    -o-border-radius:6px;
-    -ms-border-radius:6px;
-    -khtml-border-radius:6px;
-    border-radius:6px;
+    .rounded_corners(6px);
 
-    height:16px;
+    height:8px;
     border: 1px solid rgb(150,150,150);
     background: rgba(255,255,255,0);
     padding:0;
-    margin-top:5px;
-    margin-bottom:6px
+    margin-top:0px;
+    margin-bottom:0px
+    
 }
 
 
 .progress_bar_state{
     display:block;
-    background: rgb(32,141,188);
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    -o-border-radius:3px;
-    -ms-border-radius:3px;
-    -khtml-border-radius:3px;
-    border-radius:3px;
-    height:16px
+    //background: rgb(32,141,188);
+    @gradient_color: rgb(32,141,188);
+    .horizontal-gradient(@gradient_color * 0.8, (@gradient_color * 1.0));
+    
+    .rounded_corners(6px);
+    height:8px
 }
 

@@ -19,6 +19,7 @@ import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -49,12 +50,12 @@ public class IdeasList extends Page {
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Ideas list"), 1);
 
-        final PageIterable<Demand> demandList = DemandManager.getDemands();
+        final PageIterable<Demand> ideaList = DemandManager.getDemands();
 
         final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
         final IdeasListUrl clonedUrl = url.clone();
-        pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, demandList, clonedUrl, clonedUrl.getPagedIdeaListUrl());
+        pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, ideaList, clonedUrl, clonedUrl.getPagedIdeaListUrl());
 
         pageTitle.add(pagedIdeaList);
 
@@ -78,11 +79,11 @@ public class IdeasList extends Page {
 
     static class IdeasListItem implements HtmlRenderer<Demand> {
 
-        private Demand demand;
+        private Demand idea;
 
         @Override
         public HtmlNode generate(final Demand idea) {
-            this.demand = idea;
+            this.idea = idea;
 
             return generateContent();
         }
@@ -101,7 +102,7 @@ public class IdeasList extends Page {
                 {
 
                     final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-                    karmaBlock.add(new HtmlParagraph("" + demand.getPopularity()));
+                    karmaBlock.add(new HtmlParagraph("" + idea.getPopularity()));
 
                     leftBlock.add(karmaBlock);
 
@@ -112,7 +113,10 @@ public class IdeasList extends Page {
                 final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
                 {
 
-                    final HtmlLink linkTitle = new IdeaPageUrl(demand).getHtmlLink("Correction de bug - VLC");
+                	
+                	
+                	
+                    final HtmlLink linkTitle = new IdeaPageUrl(idea).getHtmlLink("Correction de bug - VLC");
                     linkTitle.setCssClass("idea_link");
 
 
@@ -120,19 +124,22 @@ public class IdeasList extends Page {
                     final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(linkTitle, 3);
                     {
 
-                        final HtmlLink linkText = new IdeaPageUrl(demand).getHtmlLink(new HtmlParagraph(demand.getTitle()));
+                        final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(idea.getTitle()));
                         linkText.setCssClass("idea_link_text");
 
                         ideaTitle.add(linkText);
 
-                        float progressValue = (float) Math.floor(demand.getProgression());
+                        float progressValue = (float) Math.floor(idea.getProgression());
 
                         if (progressValue > 100) {
                             progressValue = 100;
                         }
 
                         final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
+                        final HtmlParagraph progressText = new HtmlParagraph("<span class=important>5684 €</span> soit <span class=important>45%</span> de <span class=important>10000 €</span> demandés", "idea_progress_text");
+                        
                         ideaTitle.add(progressBar);
+                        ideaTitle.add(progressText);
                     }
                     centerBlock.add(ideaTitle);
 

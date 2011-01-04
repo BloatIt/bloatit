@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir -p www/resources/css/
 for less in css/*.less ; do
-    	echo Générate CSS for \'$less\'
+    	echo Generate CSS for \'$less\'
 	/var/lib/gems/1.8/bin/lessc $less www/resources/css/$(basename $less .less).css
 done
