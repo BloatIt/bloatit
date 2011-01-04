@@ -1,5 +1,6 @@
 package com.bloatit.framework;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.bloatit.framework.right.OfferRight;
@@ -49,6 +50,10 @@ public final class Offer extends Kudosable {
         return new Description(dao.getDescription());
     }
 
+    public BigDecimal getAmount() {
+        return dao.getAmount();
+    }
+    
     @Override
     protected DaoKudosable getDaoKudosable() {
         return dao;
