@@ -32,7 +32,7 @@ public class IdeaDescriptionComponent extends HtmlDiv {
         super();
 
         final Session session = Context.getSession();
-        final Locale defaultLocale = session.getLanguage().getLocale();
+        final Locale defaultLocale = session.getLocale();
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         description = new HtmlParagraph(translatedDescription.getText());
 

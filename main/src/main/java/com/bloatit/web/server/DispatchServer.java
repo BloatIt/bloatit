@@ -12,6 +12,7 @@ package com.bloatit.web.server;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +50,8 @@ import com.bloatit.web.utils.url.Url;
 
 public class DispatchServer {
 
+	private static final Locale DEFAULT_LOCALE = new Locale("en_US");
+	
     static final Map<String, Class<? extends Url>> URL_MAP;
 
     static {
@@ -187,13 +190,36 @@ public class DispatchServer {
         return sess;
     }
     
+    /**
+     * <p>Finds the dominant Locale for the user based on the browser transmitted parameters</p>
+     * <p>This will use preferences based on the browser system, but will always try to fetch 
+     * a locale with a country. If no locale has a country, the favorite language as of browser
+     * preference will be used, and country will be set as US. If no language is set, the locale
+     * will be set using DEFAULT_LOCALE (currently en_US).</p>
+     * @return the favorite user locale
+     */
     private Locale determineLocale(){
+    	Locale currentLocale;
+    	float currentWeigth = 0;
+    	
+    	Locale favLanguage;
+    	
     	for(String lang : preferredLangs){
-            String elem = lang.split(";")[0];
-            System.out.println(lang);
+            String[] favLangs = lang.split(";");
+            
+            float weigth;
+            if(favLangs.length > 1){
+            	weigth = new Float(favLangs[1].substring("q=".length()));
+            } else {
+            	weigth = 1;
+            }
+            
+            Locale l = new Locale(favLangs[0]);
+            
+            if
         }
     	
-    	return Locale.US;
+    	return DEFAULT_LOCALE;
     }
 
     private Language userLocale(final Map<String, String> query) {

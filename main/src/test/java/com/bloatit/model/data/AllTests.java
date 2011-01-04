@@ -8,9 +8,12 @@ public class AllTests {
     public static Test suite() {
         final TestSuite suite = new TestSuite(AllTests.class.getName());
         // $JUnit-BEGIN$
-        suite.addTest(GroupMemberTest.suite());
+        suite.addTestSuite(MemberCreationTest.class);
+        suite.addTestSuite(GroupCreationTest.class);
+        suite.addTestSuite(GroupMemberTest.class);
         suite.addTestSuite(DemandTest.class);
-        suite.addTestSuite(DescriptionTranslatableTest.class);
+        suite.addTestSuite(DescriptionTest.class);
+        suite.addTestSuite(TranslationTest.class);
         suite.addTestSuite(CommentTest.class);
         suite.addTestSuite(AccountTest.class);
         suite.addTestSuite(TransactionTest.class);

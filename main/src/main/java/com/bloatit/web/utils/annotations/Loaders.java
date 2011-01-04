@@ -199,7 +199,7 @@ public final class Loaders {
         @Override
         public DateLocale fromString(final String data) {
             try {
-                return new DateLocale(data, Context.getSession().getLanguage().getLocale());
+                return new DateLocale(data, Context.getSession().getLocale());
             } catch (final DateParsingException e) {
                 throw new FatalErrorException(e);
             }

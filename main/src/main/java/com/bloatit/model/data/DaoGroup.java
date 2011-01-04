@@ -52,7 +52,7 @@ public final class DaoGroup extends DaoActor {
     @Column(unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "bloatitGroup")
     @Cascade(value = { CascadeType.ALL })
     private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
@@ -88,7 +88,7 @@ public final class DaoGroup extends DaoActor {
     // TODO comment
     private DaoGroup(final String login, final String email, final Right right) {
         super(login);
-        if (right == null) {
+        if (right == null || email == null || email.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.right = right;

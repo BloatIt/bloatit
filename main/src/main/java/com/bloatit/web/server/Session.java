@@ -12,7 +12,6 @@
 package com.bloatit.web.server;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +24,18 @@ import com.bloatit.web.utils.DateLocale;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
 
+/**
+ * <p>A class to handle the user session on the web server</p>
+ * <p>A session starts when the user arrives on the server (first GET request). 
+ * When the user login, his sessions continues (he'll therefore keep all his 
+ * session informations), but he simply gets a new authtoken that says he's 
+ * logged</p>
+ * <p>Session is used for various purposes :
+ * <li>Store some parameters {@link Session#addParam(String, String)}</li>
+ * <li>Perform localization</li>
+ * <li>Store pages that the user wishes to consult, be he couldn't because he
+ * didn't meet the requirements</li></p>
+ */
 public class Session {
     private final String key;
     private boolean logged;
@@ -34,8 +45,15 @@ public class Session {
     private String lastStablePage = null;
     private String targetPage = null;
     private AuthToken authToken;
+    
+    /**
+     * The locale as given by the browser of the user
+     */
     private final Locale browserLocale;
 
+    /**
+     * The place to store session data
+     */
     private final Parameters sessionParams = new Parameters();
 
     Session(final String key, Locale browserLocale) {
@@ -48,17 +66,24 @@ public class Session {
         notificationList = new ArrayDeque<Notification>();
     }
 
+    /**
+     * @see Language#tr(String)
+     */
     public String tr(final String s) {
         return language.tr(s);
     }
 
+    /**
+     * @see Language#tr(String, Object[])
+     */
     public String tr(final String s, final Object[] objects) {
         return language.tr(s, objects);
     }
 
-    public Language getLanguage() {
+    
+    /*public Language getLanguage() {
         return language;
-    }
+    }*/
 
     public void setLanguage(final Language newLang) {
         language = newLang;
@@ -161,14 +186,33 @@ public class Session {
         return notificationList;
     }
 
+    /**
+     * Finds all the session parameters
+     * @return the parameter of the session
+     * @deprecated use a RequestParam
+     */
+    @Deprecated
     public Parameters getParams() {
         return sessionParams;
     }
 
+    /**
+     * Finds a given parameter in the session
+     * @param paramKey the key of the parameter
+     * @return the value of the parameter
+     * @deprecated use a RequestParam
+     */
+    @Deprecated
     public String getParam(final String paramKey) {
         return sessionParams.get(paramKey);
     }
 
+    /**
+     * <p>Saves a new parameter in the session</p>
+     * <p>Session parameters are available until they are checked, or session ends</p>
+     * @param paramKey
+     * @param paramValue
+     */
     public void addParam(final String paramKey, final String paramValue) {
         sessionParams.put(paramKey, paramValue);
     }

@@ -1,7 +1,5 @@
 package com.bloatit.framework;
 
-import com.bloatit.framework.right.MemberRight;
-import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoJoinGroupInvitation;
 
 public final class JoinGroupInvitation extends Identifiable {
@@ -31,11 +29,16 @@ public final class JoinGroupInvitation extends Identifiable {
         return Group.create(dao.getGroup());
     }
 
+    /**
+     * @see DaoJoinGroupInvitation#accept()
+     */
     public void accept() {
-        new MemberRight.InviteInGroup().tryAccess(calculateRole(getReciever(), getGroup()), Action.READ);
         dao.accept();
     }
 
+    /**
+     * @see DaoJoinGroupInvitation#refuse()
+     */
     public void refuse() {
         dao.refuse();
     }
