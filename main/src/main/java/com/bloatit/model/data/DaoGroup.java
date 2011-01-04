@@ -48,13 +48,17 @@ public final class DaoGroup extends DaoActor {
     @Column(name = "group_right")
     private Right right;
 
+    @Basic(optional = false)
+    @Column(unique = true)
+    private String email;
+
     @OneToMany(mappedBy = "group")
     @Cascade(value = { CascadeType.ALL })
-    private Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
+    private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
     /**
      * Create a group and add it into the db.
-     * 
+     *
      * @param name it the unique and non updatable name of the group.
      * @param owner is the DaoMember creating this group.
      * @param right is the type of group we are creating.
@@ -83,11 +87,12 @@ public final class DaoGroup extends DaoActor {
 
     // TODO comment
     private DaoGroup(final String login, final String email, final Right right) {
-        super(login, email);
+        super(login);
         if (right == null) {
             throw new NonOptionalParameterException();
         }
         this.right = right;
+        this.email = email;
     }
 
     /**
@@ -102,7 +107,7 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Add a member in this group.
-     * 
+     *
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer this group.
      *        (This may change if the number of role change !)
@@ -131,7 +136,7 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Finds if a member is in this group, and which is its status.
-     * 
+     *
      * @return {@value MemberStatus#UNKNOWN} if the member is not in this group.
      */
     public MemberStatus getMemberStatus(final DaoMember member) {
@@ -156,6 +161,16 @@ public final class DaoGroup extends DaoActor {
      */
     protected Set<DaoGroupMembership> getGroupMembership() {
         return groupMembership;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     // ======================================================================

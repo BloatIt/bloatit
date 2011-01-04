@@ -12,6 +12,7 @@ public class KudosableTest extends FrameworkTestUnit {
             demand.canKudos();
             fail();
         } catch (final UnauthorizedOperationException e) {
+            assertTrue(true);
         }
 
         demand.authenticate(yoAuthToken);

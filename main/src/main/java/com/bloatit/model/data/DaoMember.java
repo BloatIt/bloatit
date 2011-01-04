@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
@@ -42,6 +43,10 @@ public final class DaoMember extends DaoActor {
     private Role role;
 
     @Basic(optional = false)
+    @Column(unique = true)
+    private String email;
+
+    @Basic(optional = false)
     private Locale locale;
 
     // this property is for hibernate mapping.
@@ -77,7 +82,7 @@ public final class DaoMember extends DaoActor {
      * Find a DaoMember using its login.
      *
      * @param login the member login.
-     * @return null if not found.
+     * @return null if not found. (or if login == null)
      */
     public static DaoMember getByLogin(final String login) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -86,6 +91,16 @@ public final class DaoMember extends DaoActor {
         return (DaoMember) q.uniqueResult();
     }
 
+    /**
+     * Find a DaoMember using its login, and password. This method can be use to
+     * authenticate a use.
+     *
+     * @param login the member login.
+     * @param password the password of the member "login". It is a string corresponding to
+     *        the string in the database. This method does not perform any sha1 or md5
+     *        transformation.
+     * @return null if not found. (or if login == null or password == null)
+     */
     public static DaoMember getByLoginAndPassword(final String login, final String password) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.createQuery("from com.bloatit.model.data.DaoMember where login = :login and password = :password");
@@ -96,22 +111,29 @@ public final class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     * @param locale TODO
      *
+     * @param locale TODO
      * @see DaoMember#createAndPersist(String, String, String, Locale)
      */
     private DaoMember(final String login, final String password, final String email, Locale locale) {
-        super(login, email);
-        if (password == null) {
-            throw new NonOptionalParameterException();
-        }
+        super(login);
         if (locale == null) {
+            throw new NonOptionalParameterException("locale cannot be null!");
+        }
+        if (email == null) {
+            throw new NonOptionalParameterException("email cannot be null!");
+        }
+        if (email.isEmpty()) {
+            throw new NonOptionalParameterException("email cannot be empty!");
+        }
+        if (password == null) {
             throw new NonOptionalParameterException("Password cannot be null!");
         }
         if (password.isEmpty()) {
-            throw new NonOptionalParameterException("Password cannot be null!");
+            throw new NonOptionalParameterException("Password cannot be empty!");
         }
         this.setLocale(locale);
+        this.email = email;
         this.role = Role.NORMAL;
         this.password = password;
         this.karma = 0;
@@ -288,6 +310,16 @@ public final class DaoMember extends DaoActor {
 
     public Locale getLocale() {
         return locale;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     // ======================================================================

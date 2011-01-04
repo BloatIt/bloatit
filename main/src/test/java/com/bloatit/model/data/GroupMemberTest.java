@@ -45,10 +45,9 @@ public class GroupMemberTest extends TestCase {
         return new TestSuite(GroupMemberTest.class);
     }
 
-    public void testCreateMember() throws InterruptedException{
+    public void testCreateMember() {
         SessionManager.beginWorkUnit();
-        final DaoMember theMember = DaoMember.createAndPersist(
-                "Thomas", "password", "tom@gmail.com", Locale.FRANCE);
+        final DaoMember theMember = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
 
         assertEquals(theMember.getEmail(), "tom@gmail.com");
         assertEquals(theMember.getFullname(), "");
@@ -142,24 +141,13 @@ public class GroupMemberTest extends TestCase {
             SessionManager.beginWorkUnit();
             DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
             SessionManager.flush();
-            DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com", Locale.FRANCE); // duplicate login
+            // duplicate login
+            DaoMember.createAndPersist("Yo", "plip", "yoyo@gmail.com", Locale.FRANCE);
             SessionManager.endWorkUnitAndFlush();
             assertTrue(false);
         } catch (final HibernateException e) {
             assertTrue(true);
         }
-
-//        TODO the mail can be duplicate between group/member
-//        try {
-//            SessionManager.beginWorkUnit();
-//            DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com");
-//            SessionManager.flush();
-//            DaoMember.createAndPersist("Tom", "plip", "yo@gmail.com"); // duplicate mail
-//            SessionManager.endWorkUnitAndFlush();
-//            assertTrue(false);
-//        } catch (final HibernateException e) {
-//            assertTrue(true);
-//        }
     }
 
     public void testGetMemberByLogin() {
@@ -167,6 +155,32 @@ public class GroupMemberTest extends TestCase {
         SessionManager.beginWorkUnit();
         assertNotNull(DaoMember.getByLogin("Fred"));
         assertNull(DaoMember.getByLogin("Inexistant"));
+        assertNull(DaoMember.getByLogin(null));
+        SessionManager.endWorkUnitAndFlush();
+    }
+
+    public void testGetMemberByLoginAndPassword() {
+        testCreateTreeMembers();
+        SessionManager.beginWorkUnit();
+        assertNotNull(DaoMember.getByLoginAndPassword("Fred", "other"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "notTheGoodPassword"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "other "));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", " other"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "other\n"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "othe"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "o"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", ""));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "\\*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "\\\\*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "\\\\\\*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "\\\\\\\\*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", ".*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "\\.*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "\\.\\*"));
+        assertNull(DaoMember.getByLoginAndPassword("Fred", "' OR 1=1; --"));
+        assertNull(DaoMember.getByLoginAndPassword(null, "' OR 1=1; --"));
+        assertNull(DaoMember.getByLoginAndPassword("Inexistant", "' OR 1=1; --"));
         SessionManager.endWorkUnitAndFlush();
     }
 

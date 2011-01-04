@@ -47,10 +47,6 @@ public abstract class DaoActor {
     private String login;
 
     @Basic(optional = false)
-    // @Column(unique = true)
-    private String email;
-
-    @Basic(optional = false)
     private Date dateCreation;
 
     @OneToOne(optional = false)
@@ -63,25 +59,24 @@ public abstract class DaoActor {
 
     /**
      * Initialize the creation date to now.
-     * 
+     *
      * @param login is the login or name of this actor
      * @param email is the email of this actor. (No check is performed on the correctness
      *        of this email address)
      * @throws NonOptionalParameterException if login or mail is null.
      */
-    protected DaoActor(final String login, final String email) {
+    protected DaoActor(final String login) {
         super();
-        if (login == null || email == null) {
-            Log.data().fatal("Login or email null!");
+        if (login == null) {
+            Log.data().fatal("Login null!");
             throw new NonOptionalParameterException();
         }
-        if (login.isEmpty() || email.isEmpty()) {
-            Log.data().fatal("Login or email empty!");
-            throw new NonOptionalParameterException("login and email cannot be empty");
+        if (login.isEmpty()) {
+            Log.data().fatal("Login empty!");
+            throw new NonOptionalParameterException("login cannot be empty");
         }
         this.dateCreation = new Date();
         this.login = login;
-        this.email = email;
         this.internalAccount = new DaoInternalAccount(this);
     }
 
@@ -97,19 +92,15 @@ public abstract class DaoActor {
         return ((Long) q.uniqueResult()) > 0;
     }
 
-    public final String getEmail() {
-        return email;
-    }
+    public abstract String getEmail();
 
     /**
      * This method is used by hibernate. You can use it if you want to change the email.
      * (No check is performed on the correctness of the new email)
-     * 
+     *
      * @param email the new email.
      */
-    public final void setEmail(final String email) {
-        this.email = email;
-    }
+    public abstract void setEmail(final String email);
 
     public final String getLogin() {
         return login;
@@ -129,7 +120,7 @@ public abstract class DaoActor {
 
     /**
      * Set the external account for this actor.
-     * 
+     *
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */

@@ -22,6 +22,7 @@ public class MemberTest extends FrameworkTestUnit {
             yo.addToPublicGroup(GroupManager.getByName("ubuntuUsers"));
             fail();
         } catch (final Exception e) {
+            assertTrue(true);
         }
 
     }
@@ -40,6 +41,7 @@ public class MemberTest extends FrameworkTestUnit {
             yo.removeFromGroup(GroupManager.getByName("b219"));
             fail();
         } catch (final Exception e) {
+            assertTrue(true);
         }
     }
 
@@ -113,6 +115,7 @@ public class MemberTest extends FrameworkTestUnit {
             yo.setFullname("plop");
             fail();
         } catch (final Exception e) {
+            assertTrue(true);
         }
 
         assertEquals("Plénet Yoann", yo.getFullname());
