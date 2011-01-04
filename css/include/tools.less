@@ -47,3 +47,21 @@
     padding:0;
     margin:0;
 }
+
+
+.radial-gradient(@color1: black, @color2: white) {
+    background: -moz-radial-gradient( @color1, @color2);    
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(@color1), to(@color2), color-stop(.5,@color1));
+}
+
+.horizontal-gradient(@color1: black, @color2: white) {
+    background: -moz-linear-gradient(90deg, @color1, @color2);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(@color2), to(@color1));
+}
+
+.vertical-gradient(@color1: black, @color2: white) {
+    background: -moz-linear-gradient(00deg, @color1, @color2);
+    background: -webkit-gradient(linear, 0% 0%, 100% 0%, from(@color1), to(@color2));
+}
+    
+    
