@@ -23,138 +23,185 @@ import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.i18n.CurrencyLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
+import com.bloatit.web.utils.url.OfferPageUrl;
 
 @ParamContainer("ideas/list")
 public class IdeasList extends Page {
 
-    @PageComponent
-    HtmlPagedList<Demand> pagedIdeaList;
-    private final IdeasListUrl url;
+	@PageComponent
+	HtmlPagedList<Demand> pagedIdeaList;
+	private final IdeasListUrl url;
 
-    public IdeasList(final IdeasListUrl url) throws RedirectException {
-        super(url);
-        this.url = url;
+	public IdeasList(final IdeasListUrl url) throws RedirectException {
+		super(url);
+		this.url = url;
 
-        generateContent();
-    }
+		generateContent();
+	}
 
-    private void generateContent() {
+	private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Ideas list"), 1);
+		final HtmlTitleBlock pageTitle = new HtmlTitleBlock(
+				session.tr("Ideas list"), 1);
 
-        final PageIterable<Demand> ideaList = DemandManager.getDemands();
+		final PageIterable<Demand> ideaList = DemandManager.getDemands();
 
-        final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
+		final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
-        final IdeasListUrl clonedUrl = url.clone();
-        pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, ideaList, clonedUrl, clonedUrl.getPagedIdeaListUrl());
+		final IdeasListUrl clonedUrl = url.clone();
+		pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, ideaList,
+				clonedUrl, clonedUrl.getPagedIdeaListUrl());
 
-        pageTitle.add(pagedIdeaList);
+		pageTitle.add(pagedIdeaList);
 
-        add(pageTitle);
-    }
+		add(pageTitle);
+	}
 
-    @Override
-    public String getTitle() {
-        return "View all ideas - search ideas";
-    }
+	@Override
+	public String getTitle() {
+		return "View all ideas - search ideas";
+	}
 
-    @Override
-    public boolean isStable() {
-        return true;
-    }
+	@Override
+	public boolean isStable() {
+		return true;
+	}
 
-    @Override
-    protected String getCustomCss() {
-        return "ideas-list.css";
-    }
+	@Override
+	protected String getCustomCss() {
+		return "ideas-list.css";
+	}
 
-    static class IdeasListItem implements HtmlRenderer<Demand> {
+	static class IdeasListItem implements HtmlRenderer<Demand> {
 
-        private Demand idea;
+		private Demand idea;
 
-        @Override
-        public HtmlNode generate(final Demand idea) {
-            this.idea = idea;
+		@Override
+		public HtmlNode generate(final Demand idea) {
+			this.idea = idea;
 
-            return generateContent();
-        }
+			return generateContent();
+		}
 
-        private HtmlNode generateContent() {
+		private HtmlNode generateContent() {
 
-            final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
-            {
+			final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
+			{
 
+				final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
+				{
 
+					final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
+					karmaBlock
+							.add(new HtmlParagraph("" + idea.getPopularity()));
 
+					leftBlock.add(karmaBlock);
 
+				}
+				// ideaLinkBlock.add(leftBlock);
+				ideaBlock.add(leftBlock);
 
+				final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
+				{
 
-                final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
-                {
+					final HtmlLink linkTitle = new IdeaPageUrl(idea)
+							.getHtmlLink("Correction de bug - VLC");
+					linkTitle.setCssClass("idea_link");
 
-                    final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-                    karmaBlock.add(new HtmlParagraph("" + idea.getPopularity()));
+					final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(
+							linkTitle, 3);
+					{
 
-                    leftBlock.add(karmaBlock);
+						final HtmlLink linkText = new IdeaPageUrl(idea)
+								.getHtmlLink(new HtmlParagraph(idea.getTitle()));
+						linkText.setCssClass("idea_link_text");
 
-                }
-                //ideaLinkBlock.add(leftBlock);
-                ideaBlock.add(leftBlock);
+						ideaTitle.add(linkText);
 
-                final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
-                {
+						float progressValue = (float) Math.floor(idea
+								.getProgression());
 
-                	
-                	
-                	
-                    final HtmlLink linkTitle = new IdeaPageUrl(idea).getHtmlLink("Correction de bug - VLC");
-                    linkTitle.setCssClass("idea_link");
+						if (progressValue > 100) {
+							progressValue = 100;
+						}
 
+						final HtmlProgressBar progressBar = new HtmlProgressBar(
+								progressValue);
+						ideaTitle.add(progressBar);
 
+						if (idea.getCurrentOffer() == null) {
+							final HtmlParagraph progressText = new HtmlParagraph();
+							progressText.setCssClass("idea_progress_text");
 
-                    final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(linkTitle, 3);
-                    {
+							HtmlGenericElement amount = new HtmlGenericElement(
+									"span");
+							amount.setCssClass("important");
 
-                        final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(idea.getTitle()));
-                        linkText.setCssClass("idea_link_text");
+							CurrencyLocale currency = new CurrencyLocale(
+									idea.getContribution(), Context
+											.getSession().getLocale());
+							
 
-                        ideaTitle.add(linkText);
+							amount.addText(currency.getDefaultString());
+							
 
-                        float progressValue = (float) Math.floor(idea.getProgression());
+							progressText.add(amount);
+							//progressText.add(new HtmlText(" no offer ("));
+							progressText.addText(Context.tr(" no offer ("));
+							progressText.add(new OfferPageUrl(idea).getHtmlLink(Context.tr("make an offer")));
+							progressText.addText(Context.tr(")"));
+							
+							ideaTitle.add(progressText);
+						} else {
 
-                        if (progressValue > 100) {
-                            progressValue = 100;
-                        }
+							CurrencyLocale amountCurrency = new CurrencyLocale(
+									idea.getContribution(), Context
+											.getSession().getLocale());
+							
+							CurrencyLocale targetCurrency = new CurrencyLocale(
+									idea.getCurrentOffer().getAmount() , Context
+											.getSession().getLocale());
+							
 
-                        final HtmlProgressBar progressBar = new HtmlProgressBar(progressValue);
-                        final HtmlParagraph progressText = new HtmlParagraph("<span class=important>5684 €</span> soit <span class=important>45%</span> de <span class=important>10000 €</span> demandés", "idea_progress_text");
-                        
-                        ideaTitle.add(progressBar);
-                        ideaTitle.add(progressText);
-                    }
-                    centerBlock.add(ideaTitle);
+							HtmlGenericElement amount = new HtmlGenericElement(
+									"span");
 
-                }
-                //ideaLinkBlock.add(centerBlock);
-                ideaBlock.add(centerBlock);
+							final HtmlParagraph progressText = new HtmlParagraph(
+									"<span class=important>5684 €</span> soit <span class=important>45%</span> de <span class=important>10000 €</span> demandés",
+									"idea_progress_text");
 
-                final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
-                {
-                    rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
-                }
-                //ideaLinkBlock.add(rightBlock);
-                ideaBlock.add(rightBlock);
-            }
-            return ideaBlock;
-        }
-    };
+							ideaTitle.add(progressText);
+						}
+
+					}
+					centerBlock.add(ideaTitle);
+
+				}
+				// ideaLinkBlock.add(centerBlock);
+				ideaBlock.add(centerBlock);
+
+				final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
+				{
+					rightBlock
+							.add(new HtmlImage(new Image(
+									"/resources/img/idea.png",
+									Image.ImageType.DISTANT)));
+				}
+				// ideaLinkBlock.add(rightBlock);
+				ideaBlock.add(rightBlock);
+			}
+			return ideaBlock;
+		}
+	};
 }
