@@ -1,111 +1,78 @@
 package com.bloatit.model.data;
 
 import java.util.Iterator;
-import java.util.Locale;
 
-import junit.framework.TestCase;
+import com.bloatit.common.FatalErrorException;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 
-import com.bloatit.model.data.util.SessionManager;
+public class CommentTest extends ModelTestUnit {
 
-public class CommentTest extends TestCase {
-    private DaoMember yo;
-    private DaoMember tom;
-    private DaoMember fred;
-
-    private DaoDemand demand;
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        SessionManager.generateTestSessionFactory();
-        SessionManager.beginWorkUnit();
-        {
-            tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
-            tom.setFullname("Thomas Guyard");
-            SessionManager.flush();
+    public void testCreateAndPersist() {
+        DaoComment comment = DaoComment.createAndPersist(DaoMember.getByLogin(yo.getLogin()), "A text");
+        assertEquals("A text", comment.getText());
+        try {
+            DaoComment.createAndPersist(null, "A text");
+            fail();
+        } catch (NonOptionalParameterException e) {
+            assertTrue(true);
         }
-        {
-            fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
-            fred.setFullname("Frédéric Bertolus");
-            SessionManager.flush();
+        try {
+            DaoComment.createAndPersist(DaoMember.getByLogin(yo.getLogin()), "");
+            fail();
+        } catch (NonOptionalParameterException e) {
+            assertTrue(true);
         }
-        {
-            yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
-            yo.setFullname("Yoann Plénet");
-            SessionManager.flush();
-
-            DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            (DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED)).addMember(yo, true);
+        try {
+            DaoComment.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null);
+            fail();
+        } catch (NonOptionalParameterException e) {
+            assertTrue(true);
         }
-
-        demand = DaoDemand.createAndPersist(yo,
-                DaoDescription.createAndPersist(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
-
-        SessionManager.endWorkUnitAndFlush();
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
-            SessionManager.endWorkUnitAndFlush();
-        }
-        SessionManager.getSessionFactory().close();
-    }
-
-    public void testDaoCommentDaoActorString() {
-        SessionManager.beginWorkUnit();
-
-        final DaoComment comment = DaoComment.createAndPersist(yo, "Prems !");
-        demand.addComment(comment);
-
-        assertEquals("Prems !", comment.getText());
-
-        SessionManager.endWorkUnitAndFlush();
-
-        SessionManager.beginWorkUnit();
-        assertEquals("Prems !", DBRequests.getAll(DaoComment.class).iterator().next().getText());
-        SessionManager.endWorkUnitAndFlush();
     }
 
     public void testAddChildComment() {
-        SessionManager.beginWorkUnit();
+        DaoComment comment = DaoComment.createAndPersist(DaoMember.getByLogin(yo.getLogin()), "A text");
+        DaoComment commentChild = DaoComment.createAndPersist(DaoMember.getByLogin(fred.getLogin()), "A comment");
+        DaoComment commentChildChild = DaoComment.createAndPersist(DaoMember.getByLogin(tom.getLogin()), "An other text");
+        DaoComment commentChild1 = DaoComment.createAndPersist(DaoMember.getByLogin(yo.getLogin()), "hello");
 
-        final DaoComment comment = DaoComment.createAndPersist(yo, "Prems !");
-        demand.addComment(comment);
-        comment.addChildComment(DaoComment.createAndPersist(tom, "Pff espèce de Kevin !"));
+        comment.addChildComment(commentChild);
+        comment.addChildComment(commentChild1);
+        commentChild.addChildComment(commentChildChild);
 
-        SessionManager.endWorkUnitAndFlush();
 
-        SessionManager.beginWorkUnit();
-        final Iterator<DaoComment> it = DBRequests.getAll(DaoComment.class).iterator();
+        try {
+            comment.addChildComment(comment);
+            fail();
+        } catch (FatalErrorException e) {
+            assertTrue(true);
+        }
 
-        final DaoComment first = it.next();
-        final DaoComment next = it.next();
-
-        // TODO find why it does not work directly
-        assertEquals(yo.getLogin(), first.getAuthor().getLogin());
-        assertEquals(tom.getLogin(), next.getAuthor().getLogin());
-        assertFalse(it.hasNext());
-
-        SessionManager.endWorkUnitAndFlush();
+        try {
+            comment.addChildComment(null);
+            fail();
+        } catch (NonOptionalParameterException e) {
+            assertTrue(true);
+        }
     }
 
-    public void testGetChildren() {
-        SessionManager.beginWorkUnit();
+    public void testGetChildrenFromQuery() {
+        DaoComment comment = DaoComment.createAndPersist(DaoMember.getByLogin(yo.getLogin()), "A text");
+        DaoComment commentChild = DaoComment.createAndPersist(DaoMember.getByLogin(fred.getLogin()), "A comment");
+        DaoComment commentChild1 = DaoComment.createAndPersist(DaoMember.getByLogin(yo.getLogin()), "hello");
+        DaoComment commentChild2 = DaoComment.createAndPersist(DaoMember.getByLogin(tom.getLogin()), "An other text");
+        DaoComment commentChildChild = DaoComment.createAndPersist(DaoMember.getByLogin(tom.getLogin()), "An other text");
 
-        final DaoComment comment = DaoComment.createAndPersist(yo, "Prems !");
-        demand.addComment(comment);
-        final DaoComment child = DaoComment.createAndPersist(tom, "Pff espèce de Kevin !");
-        comment.addChildComment(child);
+        comment.addChildComment(commentChild);
+        comment.addChildComment(commentChild1);
+        comment.addChildComment(commentChild2);
+        commentChild1.addChildComment(commentChildChild);
 
-        SessionManager.endWorkUnitAndFlush();
-        SessionManager.beginWorkUnit();
-
-        assertEquals(1, comment.getChildren().size());
-        assertTrue(comment.getChildren().contains(child));
-
-        SessionManager.endWorkUnitAndFlush();
+        Iterator<DaoComment> it = comment.getChildrenFromQuery().iterator();
+        assertEquals(it.next().getId(), commentChild.getId());
+        assertEquals(it.next().getId(), commentChild1.getId());
+        assertEquals(it.next().getId(), commentChild2.getId());
+        assertEquals(it.hasNext(), false);
     }
+
 }

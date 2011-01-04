@@ -39,7 +39,7 @@ public final class DaoExternalAccount extends DaoAccount {
 
     /**
      * Create and persiste a DaoExternalAccount
-     * 
+     *
      * @see DaoExternalAccount#DaoExternalAccount(DaoActor, AccountType, String)
      */
     public static DaoExternalAccount createAndPersist(final DaoActor actor, final AccountType type, final String bankCode) {
@@ -56,7 +56,7 @@ public final class DaoExternalAccount extends DaoAccount {
 
     /**
      * Create a new External account.
-     * 
+     *
      * @param actor is the owner of the account
      * @param type is the account type
      * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE !!
@@ -66,7 +66,7 @@ public final class DaoExternalAccount extends DaoAccount {
      */
     private DaoExternalAccount(final DaoActor actor, final AccountType type, final String bankCode) {
         super(actor);
-        if (type == null || bankCode == null) {
+        if (type == null || bankCode == null || bankCode.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.type = type;
@@ -88,7 +88,7 @@ public final class DaoExternalAccount extends DaoAccount {
     protected boolean hasEnoughMoney(final BigDecimal amount) {
         return true;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
