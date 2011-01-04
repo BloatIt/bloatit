@@ -14,7 +14,7 @@ package com.bloatit.web.utils;
 import java.util.List;
 
 import com.bloatit.framework.Translation;
-import com.bloatit.web.server.Language;
+import com.bloatit.web.utils.i18n.Language;
 
 /**
  * Helps manipulating translations

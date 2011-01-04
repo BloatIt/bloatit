@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.bloatit.framework.Translation;
-import com.bloatit.web.server.Language;
+import com.bloatit.web.utils.i18n.Language;
 
 /**
  * Abstract class that describes components that can have various translations

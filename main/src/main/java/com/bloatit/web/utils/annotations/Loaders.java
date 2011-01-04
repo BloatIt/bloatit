@@ -13,8 +13,8 @@ import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.Loader;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.DateLocale;
-import com.bloatit.web.utils.DateParsingException;
+import com.bloatit.web.utils.i18n.DateLocale;
+import com.bloatit.web.utils.i18n.DateParsingException;
 
 public final class Loaders {
 

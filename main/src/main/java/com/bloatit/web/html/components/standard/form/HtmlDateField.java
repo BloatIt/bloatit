@@ -11,7 +11,7 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-import com.bloatit.web.utils.DateLocale;
+import com.bloatit.web.utils.i18n.DateLocale;
 
 /**
  * Class used to create input fields used to input date
