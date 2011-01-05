@@ -10,7 +10,7 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.CurrencyLocale;
+import com.bloatit.web.utils.i18n.CurrencyLocale;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.LogoutActionUrl;
@@ -46,14 +46,18 @@ public class TopBar extends HtmlDiv {
             member.authenticate(session.getAuthToken());
             final InternalAccount internalAccount = member.getInternalAccount();
             internalAccount.authenticate(session.getAuthToken());
-            CurrencyLocale cl = new CurrencyLocale(internalAccount.getAmount(), session.getCountry());
+            
+            if(!CurrencyLocale.availableCurrency(session.getLocale())){
+            	
+            }
+            CurrencyLocale cl = new CurrencyLocale(internalAccount.getAmount(), session.getLocale());
             euroMoney.add(new HtmlText(cl.getDefaultString()));
 
             final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);
             money.setCssClass("money");
 
             // Display user money in locale money (when needed)
-            if (!cl.getDefaultString().equals(cl.getLocaleString())) {
+            if (cl.availableTargetCurrency() && !cl.getDefaultString().equals(cl.getLocaleString())) {
                 final HtmlBranch localeMoney = new HtmlGenericElement("span");
                 localeMoney.setCssClass("locale_money");
 

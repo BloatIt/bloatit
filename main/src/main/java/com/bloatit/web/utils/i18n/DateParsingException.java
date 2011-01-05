@@ -9,7 +9,7 @@
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.web.utils;
+package com.bloatit.web.utils.i18n;
 
 public class DateParsingException extends Exception {
 

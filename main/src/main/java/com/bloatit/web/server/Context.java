@@ -13,7 +13,7 @@ public class Context {
     }
 
     public static String tr(final String str) {
-        return session.getLanguage().tr(str);
+        return session.tr(str);
     }
 
 }

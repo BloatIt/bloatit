@@ -12,18 +12,31 @@
 package com.bloatit.web.server;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
 
 import com.bloatit.framework.AuthToken;
+import com.bloatit.framework.Member;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
-import com.bloatit.web.utils.DateLocale;
+import com.bloatit.web.utils.i18n.DateLocale;
+import com.bloatit.web.utils.i18n.Language;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
 
+/**
+ * <p>A class to handle the user session on the web server</p>
+ * <p>A session starts when the user arrives on the server (first GET request). 
+ * When the user login, his sessions continues (he'll therefore keep all his 
+ * session informations), but he simply gets a new authtoken that says he's 
+ * logged</p>
+ * <p>Session is used for various purposes :
+ * <li>Store some parameters {@link Session#addParam(String, String)}</li>
+ * <li>Perform localization</li>
+ * <li>Store pages that the user wishes to consult, be he couldn't because he
+ * didn't meet the requirements</li></p>
+ */
 public class Session {
     private final String key;
     private boolean logged;
@@ -33,39 +46,42 @@ public class Session {
     private String lastStablePage = null;
     private String targetPage = null;
     private AuthToken authToken;
+    
+    /**
+     * The locale as given by the browser of the user
+     */
+    private final Locale browserLocale;
 
+    /**
+     * The place to store session data
+     */
     private final Parameters sessionParams = new Parameters();
 
-    private final List<Language> preferredLocales;
-    private Locale country = Locale.US;
-
-    Session(final String key) {
+    Session(final String key, Locale browserLocale) {
         this.key = key;
+        this.browserLocale = browserLocale;
+        
         authToken = null;
         logged = false;
         actionList = new ArrayDeque<Action>();
         notificationList = new ArrayDeque<Notification>();
-
-        // TODO : Following lines are for testing purposes only
-        preferredLocales = new ArrayList<Language>();
-        preferredLocales.add(new Language(Locale.ENGLISH)); // TODO : ONLY FOR
-                                                            // TEST
     }
 
+    /**
+     * @see Language#tr(String)
+     */
     public String tr(final String s) {
+    	if(language == null){
+    		language = new Language(getLocale());
+    	}
         return language.tr(s);
     }
 
+    /**
+     * @see Language#tr(String, Object[])
+     */
     public String tr(final String s, final Object[] objects) {
         return language.tr(s, objects);
-    }
-
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(final Language newLang) {
-        language = newLang;
     }
 
     public void setAuthToken(final AuthToken token) {
@@ -165,18 +181,33 @@ public class Session {
         return notificationList;
     }
 
-    public List<Language> getPreferredLangs() {
-        return preferredLocales;
-    }
-
+    /**
+     * Finds all the session parameters
+     * @return the parameter of the session
+     * @deprecated use a RequestParam
+     */
+    @Deprecated
     public Parameters getParams() {
         return sessionParams;
     }
 
+    /**
+     * Finds a given parameter in the session
+     * @param paramKey the key of the parameter
+     * @return the value of the parameter
+     * @deprecated use a RequestParam
+     */
+    @Deprecated
     public String getParam(final String paramKey) {
         return sessionParams.get(paramKey);
     }
 
+    /**
+     * <p>Saves a new parameter in the session</p>
+     * <p>Session parameters are available until they are checked, or session ends</p>
+     * @param paramKey
+     * @param paramValue
+     */
     public void addParam(final String paramKey, final String paramValue) {
         sessionParams.put(paramKey, paramValue);
     }
@@ -192,40 +223,21 @@ public class Session {
         return DateLocale.getPattern(language.getLocale());
     }
 
-    public Locale getCountry() {
-        return country;
-    }
-
     /**
-     * <p>Sets the country based on the list of preferred languages of the user
-     * </p>
-     * <p> Use only when the session cannot be loaded with the loader (that is
-     * to say, when the user is not identified)</p>
-     * @param preferred_langs the list of preferred languages as sent by the
-     * browser.
+     * <p>Finds the user locale</p>
+     * <li>If the user is authenticated (he logged in) this method will return the
+     * language/country locale he chose when he signed in.</li>
+     * <li>If the user is not logged in, it will determine the best Locale based on 
+     * the user browser informations</li>
+     * @return
      */
-    void setCountry(List<String> preferred_langs) {
-        for(String lang : preferred_langs){
-            String elem = lang.split(";")[0];
-
-            String pays = null;
-            if(elem.contains("-")){
-                pays = elem.split("-")[1];
-            }else if( elem.contains("_")){
-                pays = elem.split("_")[1];
-            }
-            if(pays != null){
-                Locale[] countries = Locale.getAvailableLocales();
-                for(Locale l : countries){
-                    if(l.getCountry().equals(pays)){
-                        country = l;
-                    }
-                }
-            }
-        }
-        
-        if(this.country == null){
-            this.country = Locale.US;
+    public Locale getLocale() {
+        if(authToken != null){
+        	Member member = authToken.getMember();
+			member.authenticate(authToken);
+        	return member.getLocale();
+        }else{
+        	return browserLocale;
         }
     }
 }

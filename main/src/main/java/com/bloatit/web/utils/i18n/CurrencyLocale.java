@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.utils;
+package com.bloatit.web.utils.i18n;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,7 +42,7 @@ public class CurrencyLocale {
     private final static int INTERNAL_PRECISION = 6;
     private final static String RATES_PATH = "../locales/rates";
     private final static RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
-    private final static int DISPLAY_PRECISION = 2;
+    private final static int DISPLAY_PRECISION = 0;
     
     private final Locale targetLocale;
     private final BigDecimal euroAmount;
@@ -93,7 +93,7 @@ public class CurrencyLocale {
      * @return
      */
     public String getDefaultString() {
-        return this.euroAmount.toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
+        return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
@@ -104,6 +104,32 @@ public class CurrencyLocale {
     @Override
     public String toString(){
         return this.getLocaleString();
+    }
+    
+    /**
+     * Checks wether the target currency is handled
+     * @return <i>true</i> if currency is handled, <i>false</i> otherwise
+     */ 
+    public boolean availableTargetCurrency(){
+    	return currencies.containsKey(currency);
+    }
+    
+    /**
+     * Checks if a currency is handled
+     * @param currency the currency to check
+     * @return <i>true</i> if currency is handled, <i>false</i> otherwise
+     */
+    public static boolean availableCurrency(Locale locale){
+    	return availableCurrency(Currency.getInstance(locale));
+    }
+    
+    /**
+     * Checks if a currency is handled
+     * @param currency the currency to check
+     * @return <i>true</i> if currency is handled, <i>false</i> otherwise
+     */
+    public static boolean availableCurrency(Currency currency){
+    	return currencies.containsKey(currency);
     }
 
     /**

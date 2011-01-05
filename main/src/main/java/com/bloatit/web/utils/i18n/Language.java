@@ -8,10 +8,9 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.server;
+package com.bloatit.web.utils.i18n;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -104,7 +103,7 @@ public class Language {
 		return template.i18n.tr(s, objects);
 	}
 
-	void setCode(final String code) {
+	public void setCode(final String code) {
 		if (languageCode.containsKey(code)) {
 			template = languageList.get(languageCode.get(code));
 		} else {

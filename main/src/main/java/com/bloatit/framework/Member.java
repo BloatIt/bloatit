@@ -24,7 +24,6 @@ import com.bloatit.model.data.DaoMember;
 import com.bloatit.model.data.DaoMember.Role;
 
 public final class Member extends Actor {
-
     private final DaoMember dao;
 
     /**
@@ -225,7 +224,7 @@ public final class Member extends Actor {
         return new MemberRight.Locale().canAccess(calculateRole(this), action);
     }
 
-    public Locale getLocal() {
+    public Locale getLocale() {
         new MemberRight.Locale().tryAccess(calculateRole(this), Action.READ);
         return dao.getLocale();
     }

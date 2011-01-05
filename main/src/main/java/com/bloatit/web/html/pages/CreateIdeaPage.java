@@ -91,7 +91,7 @@ public class CreateIdeaPage extends LoggedPage {
 
         // Create the fields that will be used to describe the parameters of the idea (project ...)
         HtmlDropDown languageInput = new HtmlDropDown(CreateIdeaAction.LANGUAGE_CODE, session.tr("Language"));
-        languageInput.add(session.getLanguage().getLocale().getDisplayLanguage(), session.getLanguage().getCode());
+        languageInput.add(session.getLocale().getDisplayLanguage(), session.getLocale().getLanguage());
         
         HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, session.tr("Category"));
         HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, session.tr("Project"));

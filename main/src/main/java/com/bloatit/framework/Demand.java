@@ -120,6 +120,15 @@ public final class Demand extends Kudosable {
         return new OfferList(dao.getOffersFromQuery());
     }
 
+    /**
+     * The current offer is the offer with the max popularity then the min amount.
+     * 
+     * @return the current offer for this demand, or null if there is no offer.
+     */
+    public Offer getCurrentOffer() {
+    	return Offer.create(dao.getCurrentOffer());
+    }
+    
     public Specification getSpecification() {
         return new Specification(dao.getSpecification());
     }

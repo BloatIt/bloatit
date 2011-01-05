@@ -79,10 +79,11 @@ public class IdeaPage extends Page {
             return;
         }
 
-        final Locale defaultLocale = Context.getSession().getLanguage().getLocale();
+        final Locale defaultLocale = Context.getSession().getLocale();
         final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
 
-        add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
+        //add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
+        add(new HtmlTitleBlock("Correction de bug - VLC", 1).setCssClass("pageTitle"));
         add(new IdeaHeadComponent(idea));
         add(generateBody());
     }
