@@ -14,6 +14,7 @@ package com.bloatit.web.actions;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.LogoutActionUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/logout")
 public class LogoutAction extends Action {
@@ -23,7 +24,7 @@ public class LogoutAction extends Action {
     }
 
     @Override
-    public String doProcess() {
+    public Url doProcess() {
         session.setLogged(false);
         session.setAuthToken(null);
         session.notifyGood(Context.tr("Logout success."));

@@ -22,6 +22,7 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
+import com.bloatit.web.utils.url.Url;
 
 /**
  * <p>
@@ -45,9 +46,11 @@ public class Session {
 	private boolean logged;
 	private final Deque<Action> actionList;
 	private final Deque<Notification> notificationList;
-	private String lastStablePage = null;
-	private String targetPage = null;
 	private AuthToken authToken;
+	
+	private Url lastStablePage = null;
+	private Url targetPage = null;
+	
 
 	/**
 	 * The place to store session data
@@ -87,11 +90,11 @@ public class Session {
 		return actionList;
 	}
 
-	public void setLastStablePage(final String p) {
+	public void setLastStablePage(final Url p) {
 		lastStablePage = p;
 	}
 
-	public String getLastStablePage() {
+	public Url getLastStablePage() {
 		return lastStablePage;
 	}
 
@@ -99,23 +102,23 @@ public class Session {
 	 * You should use the pickPreferedPage instead.
 	 */
 	@Deprecated
-	public String getTargetPage() {
+	public Url getTargetPage() {
 		return targetPage;
 	}
 
-	public String pickPreferredPage() {
-		if (targetPage != null && !targetPage.isEmpty()) {
-			final String tempStr = targetPage;
+	public Url pickPreferredPage() {
+		if (targetPage != null) {
+			final Url tempStr = targetPage;
 			targetPage = null;
 			return tempStr;
-		} else if (lastStablePage != null && !lastStablePage.isEmpty()) {
+		} else if (lastStablePage != null) {
 			return lastStablePage;
 		} else {
-			return new IndexPageUrl().urlString();
+			return new IndexPageUrl();
 		}
 	}
 
-	public void setTargetPage(final String targetPage) {
+	public void setTargetPage(final Url targetPage) {
 		this.targetPage = targetPage;
 	}
 
@@ -195,12 +198,5 @@ public class Session {
 		sessionParams.put(paramKey, paramValue);
 	}
 
-	/**
-	 * Gets the date pattern that matches the current user language in <i>SHORT</i>
-	 * format, i.e. : dd/mm/yyyy if locale is french, or mm/dd/yyyy if locale is english.
-	 * @return a String representing the date pattern
-	 */
-	public String getDatePattern() {
-		return DateLocale.getPattern(Context.getLocalizator().getLocale());
-	}
+
 }

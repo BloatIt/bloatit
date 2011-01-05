@@ -17,7 +17,7 @@ public class PageNotFoundException extends RedirectException {
     private static final long serialVersionUID = 7896870310340339228L;
 
     public PageNotFoundException() {
-        super(new PageNotFoundUrl().urlString());
+        super(new PageNotFoundUrl());
     }
 
 }

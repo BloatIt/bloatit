@@ -11,21 +11,22 @@
 package com.bloatit.web.exceptions;
 
 import com.bloatit.web.utils.url.IndexPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 public class RedirectException extends Exception {
 
     private static final long serialVersionUID = -8000625161101556546L;
-    private final String url;
+    private final Url url;
 
-    public RedirectException(final String url) {
-        if (url == null || url.isEmpty()) {
-            this.url = new IndexPageUrl().urlString();
+    public RedirectException(final Url url) {
+        if (url == null) {
+            this.url = new IndexPageUrl();
         } else {
             this.url = url;
         }
     }
 
-    public String getUrl() {
+    public Url getUrl() {
         return url;
     }
 

@@ -30,6 +30,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("idea/docreate")
 public class CreateIdeaAction extends Action {
@@ -71,10 +72,10 @@ public class CreateIdeaAction extends Action {
     }
 
     @Override
-    protected String doProcess() throws RedirectException {
+    protected Url doProcess() throws RedirectException {
         if (!DemandManager.canCreate(session.getAuthToken())) {
             session.notifyError(Context.tr("You must be logged in to create an idea."));
-            return new LoginPageUrl().urlString();
+            return new LoginPageUrl();
         }
         // TODO : Authenticate for demand creation
         Locale langLocale = new Locale(lang);
@@ -84,6 +85,6 @@ public class CreateIdeaAction extends Action {
 
         IdeaPageUrl to = new IdeaPageUrl(d);
 
-        return to.urlString();
+        return to;
     }
 }

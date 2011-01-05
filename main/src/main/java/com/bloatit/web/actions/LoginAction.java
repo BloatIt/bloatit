@@ -19,6 +19,7 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/login")
 public class LoginAction extends Action {
@@ -40,7 +41,7 @@ public class LoginAction extends Action {
     }
 
     @Override
-    public String doProcess() throws RedirectException {
+    public Url doProcess() throws RedirectException {
         AuthToken token = null;
         token = LoginManager.loginByPassword(login, password);
 
@@ -48,12 +49,13 @@ public class LoginAction extends Action {
             session.setLogged(true);
             session.setAuthToken(token);
             session.notifyGood(Context.tr("Login success."));
+            Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
         } else {
             session.setLogged(false);
             session.setAuthToken(null);
             session.notifyBad(Context.tr("Login failed. Wrong login or password."));
-            return new LoginPageUrl().urlString();
+            return new LoginPageUrl();
         }
     }
 

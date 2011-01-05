@@ -1,6 +1,8 @@
 package com.bloatit.web.utils.i18n;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -36,8 +38,6 @@ public class Localizator {
 	private static final String LANGUAGES_PATH = "i18n/languages";
 	/** For parsing of available languages file */
 	private static final String LANGUAGE_CODE = "code";
-	/** For parsing of available languages file */
-	private static final String LANGUAGE_NAME = "name";
 	/** Default user locale */
 	private static final Locale DEFAULT_LOCALE = new Locale("en_US");
 
@@ -239,12 +239,8 @@ public class Localizator {
 		}
 	}
 
-	/**
-	 * Describes a Language using a two letters code and a name
-	 */
-	public static class LanguageDescriptor {
-		public String code;
-		public String name;
+	public void setUserFavorite(){
+		
 	}
 
 	/**
@@ -355,4 +351,54 @@ public class Localizator {
 		// Case where both CurrentLocale != null && FavLanguage != null
 		return currentLocale;
 	}
+	
+	/**
+	 * Describes a Language using a two letters code and a name
+	 */
+	public static class LanguageDescriptor {
+		public String code;
+		public String name;
+	}
+	
+	/**
+	 * Gets the date pattern that matches the current user language in <i>SHORT</i>
+	 * format, i.e. : dd/mm/yyyy if locale is french, or mm/dd/yyyy if locale is english.
+	 * @return a String representing the date pattern
+	 */
+	public String getDatePattern() {
+		return DateLocale.getPattern(Context.getLocalizator().getLocale());
+	}
+	
+	/**
+	 * Returns a DateLocale representing the string version of the date
+	 */
+	public DateLocale getDate(String dateString) throws DateParsingException{
+		return new DateLocale(dateString, locale);
+	}
+	
+	/**
+	 * Returns a DateLocale encapsulating the java date
+	 * Use to display any date
+	 */
+	public DateLocale getDate(Date date){
+		return new DateLocale(date, locale);
+	}
+	
+	/**
+	 * Returns a CurrencyLocale to work on <code>euroAmount</code>
+	 */
+	public CurrencyLocale getCurrency(BigDecimal euroAmount){
+		return new CurrencyLocale(euroAmount, locale);
+	}
+
+	/**
+	 * <p>Forces the current locale to the member user choice.</p>
+	 * <p>Use whenever the user explicitely asks to change the locale setting back to his 
+	 * favorite, or when he logs in</p>
+	 */
+	public void forceMemberChoice() {
+	    Member member = Context.getSession().getAuthToken().getMember();
+	    member.authenticate(Context.getSession().getAuthToken());
+		locale = member.getLocale();
+    }
 }

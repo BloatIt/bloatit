@@ -24,6 +24,7 @@ import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/contribute")
 public class ContributionAction extends Action {
@@ -54,7 +55,7 @@ public class ContributionAction extends Action {
     }
 
     @Override
-    public String doProcess() throws RedirectException {
+    public Url doProcess() throws RedirectException {
         // Authentication
         targetIdea.authenticate(session.getAuthToken());
 
@@ -63,11 +64,11 @@ public class ContributionAction extends Action {
                 targetIdea.addContribution(amount, comment);
                 session.notifyGood(Context.tr("Thanks you for crediting " + amount + " on this idea"));
 
-                return new IdeaPageUrl(targetIdea).urlString();
+                return new IdeaPageUrl(targetIdea);
             } else {
                 // Should never happen
                 session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-                return new ContributePageUrl(targetIdea).urlString();// TODO put
+                return new ContributePageUrl(targetIdea);// TODO put
                                                                      // parameters
             }
         } catch (final NotEnoughMoneyException e) {
@@ -75,13 +76,11 @@ public class ContributionAction extends Action {
             session.addParam(AMOUNT_CODE, amount.toString());
             session.addParam(COMMENT_CODE, comment);
             // Sets the target page to here
-            session.setTargetPage(this.url.urlString()); // Redirects to the
-                                                         // account charging
-                                                         // page
+            session.setTargetPage(this.url); // Redirects to the account charging page
             // ToDO : give through session :
             // contributionPageUrl.addParameter(AccountChargingAction.CHARGE_AMOUNT_CODE,
             // amount);
-            return new AccountChargingPageUrl().urlString();
+            return new AccountChargingPageUrl();
         }
     }
 }
