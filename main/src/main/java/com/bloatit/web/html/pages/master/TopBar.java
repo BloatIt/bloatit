@@ -50,7 +50,7 @@ public class TopBar extends HtmlDiv {
             if(!CurrencyLocale.availableCurrency(Context.getLocalizator().getLocale())){
             	
             }
-            CurrencyLocale cl = new CurrencyLocale(internalAccount.getAmount(), Context.getLocalizator().getLocale());
+            CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
             euroMoney.add(new HtmlText(cl.getDefaultString()));
 
             final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);
