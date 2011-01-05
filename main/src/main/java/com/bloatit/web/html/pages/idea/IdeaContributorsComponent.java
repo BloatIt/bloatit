@@ -49,7 +49,7 @@ public class IdeaContributorsComponent extends HtmlDiv {
         {
 
             // Display contribution count
-            contributorsBlock.add(new HtmlParagraph("" + contributionCount + session.tr("&nbsp;contributions")));
+            contributorsBlock.add(new HtmlParagraph("" + contributionCount + Context.tr("&nbsp;contributions")));
 
             // Display contribution stats
             if (contributionCount > 0) {
@@ -82,9 +82,9 @@ public class IdeaContributorsComponent extends HtmlDiv {
             final String contributionMinValue = demand.getContributionMin().toPlainString();
             final String contributionMaxValue = demand.getContributionMax().toPlainString();
 
-            contributionMin = new HtmlParagraph(session.tr("Min:&nbsp;") + contributionMinValue);
-            contributionMax = new HtmlParagraph(session.tr("Max:&nbsp;") + contributionMaxValue);
-            contributionMean = new HtmlParagraph(session.tr("Mean:&nbsp;") + contributionMeanValue);
+            contributionMin = new HtmlParagraph(Context.tr("Min:&nbsp;") + contributionMinValue);
+            contributionMax = new HtmlParagraph(Context.tr("Max:&nbsp;") + contributionMaxValue);
+            contributionMean = new HtmlParagraph(Context.tr("Mean:&nbsp;") + contributionMeanValue);
         }
 
         contributions = demand.getContributions();

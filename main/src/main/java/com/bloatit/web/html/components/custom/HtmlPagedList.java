@@ -74,7 +74,7 @@ public class HtmlPagedList<T> extends HtmlList {
         final HtmlGenericElement span = new HtmlGenericElement("span");
 
         if (currentPage > 1) {
-            span.add(generateLink(currentPage - 1, session.tr("Previous")));
+            span.add(generateLink(currentPage - 1, Context.tr("Previous")));
         }
 
         // first page
@@ -99,7 +99,7 @@ public class HtmlPagedList<T> extends HtmlList {
         span.add(generateLink(pageCount));
 
         if (currentPage < pageCount) {
-            span.add(generateLink(currentPage + 1, session.tr("Next")));
+            span.add(generateLink(currentPage + 1, Context.tr("Next")));
         }
         return span;
     }

@@ -87,7 +87,7 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 						HtmlGenericElement amount = new HtmlGenericElement("span");
 						amount.setCssClass("important");
 
-						CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getSession().getLocale());
+						CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
 
 						amount.addText(currency.getDefaultString());
 
@@ -103,13 +103,13 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 					} else {
 
 						// Amount
-						CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getSession().getLocale());
+						CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
 						HtmlGenericElement amount = new HtmlGenericElement("span");
 						amount.setCssClass("important");
 						amount.addText(amountCurrency.getDefaultString());
 
 						// Target
-						CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount(), Context.getSession().getLocale());
+						CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount(), Context.getLocalizator().getLocale());
 						HtmlGenericElement target = new HtmlGenericElement("span");
 						target.setCssClass("important");
 						target.addText(targetCurrency.getDefaultString());

@@ -14,11 +14,11 @@ package com.bloatit.web.html.pages;
 import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.MyAccountPageUrl;
 
 @ParamContainer("myaccount")
@@ -38,10 +38,10 @@ public class MyAccountPage extends Page {
             HtmlList userInfo = new HtmlList();
             memberTitle.add(userInfo);
 
-            userInfo.add(session.tr("Full name: " + member.getFullname()));
-            userInfo.add(session.tr("Login: " + member.getLogin()));
-            userInfo.add(session.tr("Email: " + member.getEmail()));
-            userInfo.add(session.tr("Karma: " + member.getKarma()));
+            userInfo.add(Context.tr("Full name: " + member.getFullname()));
+            userInfo.add(Context.tr("Login: " + member.getLogin()));
+            userInfo.add(Context.tr("Email: " + member.getEmail()));
+            userInfo.add(Context.tr("Karma: " + member.getKarma()));
 
             add(memberTitle);
         } else {

@@ -18,6 +18,7 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 
@@ -33,7 +34,7 @@ public class AccountChargingPage extends LoggedPage {
 
     @Override
     protected String getTitle() {
-        return session.tr("Charge your bloatit account");
+        return Context.tr("Charge your bloatit account");
     }
 
     @Override
@@ -43,13 +44,13 @@ public class AccountChargingPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-        final HtmlTitleBlock title = new HtmlTitleBlock(session.tr("Charge your account"), 1);
+        final HtmlTitleBlock title = new HtmlTitleBlock(Context.tr("Charge your account"), 1);
 
         final AccountChargingActionUrl chargeActionUrl = new AccountChargingActionUrl();
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
             final HtmlTextField amount = new HtmlTextField(AccountChargingAction.CHARGE_AMOUNT_CODE, "Amount");
-            final HtmlSubmit submit = new HtmlSubmit(session.tr("Submit"));
+            final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
 
             form.add(amount);
             form.add(submit);

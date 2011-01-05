@@ -16,7 +16,7 @@ public abstract class Url extends UrlComponent {
     @Override
     protected void constructUrl(final StringBuilder sb) {
         if (Context.getSession() != null) {
-            sb.append("/").append(Context.getSession().getLocale().getLanguage());
+            sb.append("/").append(Context.getLocalizator().getCode());
         }
         sb.append("/").append(name);
         super.constructUrl(sb);

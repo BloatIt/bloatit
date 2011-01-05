@@ -57,7 +57,8 @@ public class IdeasList extends Page {
 
 	private void generateContent() {
 
-		final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Ideas list"), 1);
+
+		final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Ideas list"), 1);
 
 		final PageIterable<Demand> ideaList = DemandManager.getDemands();
 
@@ -162,7 +163,8 @@ public class IdeasList extends Page {
 							HtmlGenericElement amount = new HtmlGenericElement("span");
 							amount.setCssClass("important");
 
-							CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getSession().getLocale());
+							CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
+							
 
 							amount.addText(currency.getDefaultString());
 
@@ -176,15 +178,14 @@ public class IdeasList extends Page {
 
 							ideaTitle.add(progressText);
 						} else {
-
 							// Amount
-							CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getSession().getLocale());
+							CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
 							HtmlGenericElement amount = new HtmlGenericElement("span");
 							amount.setCssClass("important");
 							amount.addText(amountCurrency.getDefaultString());
 
 							// Target
-							CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount(), Context.getSession().getLocale());
+							CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount() , Context.getLocalizator().getLocale());
 							HtmlGenericElement target = new HtmlGenericElement("span");
 							target.setCssClass("important");
 							target.addText(targetCurrency.getDefaultString());

@@ -47,10 +47,10 @@ public class TopBar extends HtmlDiv {
             final InternalAccount internalAccount = member.getInternalAccount();
             internalAccount.authenticate(session.getAuthToken());
             
-            if(!CurrencyLocale.availableCurrency(session.getLocale())){
+            if(!CurrencyLocale.availableCurrency(Context.getLocalizator().getLocale())){
             	
             }
-            CurrencyLocale cl = new CurrencyLocale(internalAccount.getAmount(), session.getLocale());
+            CurrencyLocale cl = new CurrencyLocale(internalAccount.getAmount(), Context.getLocalizator().getLocale());
             euroMoney.add(new HtmlText(cl.getDefaultString()));
 
             final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);
@@ -67,14 +67,14 @@ public class TopBar extends HtmlDiv {
 
 
             // Display logout link
-            final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(session.tr("Logout"));
+            final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(Context.tr("Logout"));
 
             // Add all previously created components
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(memberLink).add(karma));
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(money));
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(logoutLink));
         } else {
-            final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(session.tr("Login / Signup"));
+            final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.tr("Login / Signup"));
             add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(loginLink));
         }
     }

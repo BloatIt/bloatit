@@ -30,7 +30,7 @@ public class IdeaMakeOfferButtonComponent extends HtmlPageComponent {
             final OfferPageUrl offerPageUrl = new OfferPageUrl(demand);
             final HtmlForm makeOfferForm = new HtmlForm(offerPageUrl.urlString());
             {
-                final HtmlSubmit makeOfferButton = new HtmlSubmit(session.tr("Make an offer"));
+                final HtmlSubmit makeOfferButton = new HtmlSubmit(Context.tr("Make an offer"));
                 makeOfferForm.add(makeOfferButton);
             }
             makeOfferBlock.add(makeOfferForm);

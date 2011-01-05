@@ -19,6 +19,7 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Url;
@@ -55,7 +56,7 @@ public class AccountChargingAction extends Action {
         targetMember.getInternalAccount().chargeAmount(amount, account);
 
         if (!targetMember.canGetInternalAccount()) {
-            session.notifyError(session.tr("Your current rights do not allow you to charge money"));
+            session.notifyError(Context.tr("Your current rights do not allow you to charge money"));
             return new IndexPageUrl().urlString();
         }
 

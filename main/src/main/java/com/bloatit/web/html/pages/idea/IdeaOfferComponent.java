@@ -62,11 +62,11 @@ public class IdeaOfferComponent extends HtmlPageComponent {
     protected void extractData() {
 
         final Session session = Context.getSession();
-        author = new HtmlParagraph(session.tr("Author : ") + offer.getAuthor().getFullname(), "offer_author");
-        price = new HtmlParagraph(session.tr("Price : ") + "Unknown yet", "offer_price");
-        expirationDate = new HtmlParagraph(session.tr("Expiration date : ") + offer.getDateExpire().toString(), "offer_expiry_date");
+        author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getFullname(), "offer_author");
+        price = new HtmlParagraph(Context.tr("Price : ") + "Unknown yet", "offer_price");
+        expirationDate = new HtmlParagraph(Context.tr("Expiration date : ") + offer.getDateExpire().toString(), "offer_expiry_date");
         authorAvatar = new HtmlImage(offer.getAuthor().getAvatar(), "offer_avatar");
-        creationDate = new HtmlParagraph(session.tr("Creation Date : ") + offer.getCreationDate().toString(), "offer_creation_date");
+        creationDate = new HtmlParagraph(Context.tr("Creation Date : ") + offer.getCreationDate().toString(), "offer_creation_date");
 
         title = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
         description = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
