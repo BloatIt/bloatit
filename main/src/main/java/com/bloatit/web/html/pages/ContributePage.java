@@ -10,7 +10,10 @@
  */
 package com.bloatit.web.html.pages;
 
+import java.util.Locale;
+
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Translation;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -77,7 +80,17 @@ public class ContributePage extends LoggedPage {
 
         // Summary of the idea
         final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle(), 2);
-        final HtmlText textSummary = new HtmlText(targetIdea.getDescription().toString());
+        
+        final Locale defaultLocale = Context.getLocalizator().getLocale();
+		final Translation translatedDescription = targetIdea.getDescription().getTranslationOrDefault(defaultLocale);
+		String shortDescription = translatedDescription.getText();
+
+		if (shortDescription.length() > 144) {
+			// TODO create a tools to truncate less dirty
+			shortDescription = shortDescription.substring(0, 143) + " ...";
+		}
+        
+        final HtmlText textSummary = new HtmlText(shortDescription);
         summary.add(textSummary);
 
         // Create the form

@@ -21,6 +21,7 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
@@ -82,8 +83,7 @@ public class IdeaPage extends Page {
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
 
-        //add(new HtmlTitleBlock(translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
-        add(new HtmlTitleBlock("VLC", 1).setCssClass("pageTitle"));
+        add(new HtmlTitleBlock("VLC"+" - "+translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
         add(new IdeaHeadComponent(idea));
         add(generateBody());
     }

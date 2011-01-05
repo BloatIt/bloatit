@@ -11,9 +11,11 @@
 package com.bloatit.web.html.pages.idea;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import com.bloatit.common.Image;
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Translation;
 import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -30,27 +32,23 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 
 public class IdeaHeadComponent extends HtmlPageComponent {
 
-    public IdeaHeadComponent(final Demand idea) {
-        super();
-        /*final HtmlDiv demandHead = new HtmlDiv("demand_head");
-        {
-            // Add progress bar
-            final HtmlDiv demandHeadProgress = new HtmlDiv("demand_head_progress");
-            {
-                demandHeadProgress.add(new IdeaProgressBarComponent(demand));
-            }
-            demandHead.add(demandHeadProgress);
+	public IdeaHeadComponent(final Demand idea) {
+		super();
+		/*
+		 * final HtmlDiv demandHead = new HtmlDiv("demand_head"); { // Add
+		 * progress bar final HtmlDiv demandHeadProgress = new
+		 * HtmlDiv("demand_head_progress"); { demandHeadProgress.add(new
+		 * IdeaProgressBarComponent(demand)); }
+		 * demandHead.add(demandHeadProgress);
+		 * 
+		 * // Add kudo box final HtmlDiv demandHeadKudo = new
+		 * HtmlDiv("demand_head_kudo"); { demandHeadKudo.add(new
+		 * IdeaKudoComponent(demand)); } demandHead.add(demandHeadKudo);
+		 * 
+		 * }
+		 */
 
-            // Add kudo box
-            final HtmlDiv demandHeadKudo = new HtmlDiv("demand_head_kudo");
-            {
-                demandHeadKudo.add(new IdeaKudoComponent(demand));
-            }
-            demandHead.add(demandHeadKudo);
-
-        }*/
-        
-        final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
+		final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
 		{
 
 			final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
@@ -67,75 +65,79 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 			final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
 			{
 
-				
-					final HtmlParagraph text = new HtmlParagraph(idea.getTitle());
-					text.setCssClass("idea_link_text");
+				final Locale defaultLocale = Context.getLocalizator().getLocale();
+				final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+				String shortDescription = translatedDescription.getText();
 
-					centerBlock.add(text);
+				if (shortDescription.length() > 144) {
+					// TODO create a tools to truncate less dirty
+					shortDescription = shortDescription.substring(0, 143) + " ...";
+				}
 
-					float progressValue = (float) Math.floor(idea.getProgression());
-					float cappedProgressValue = progressValue;
-					if (cappedProgressValue > 100) {
-						cappedProgressValue = 100;
-					}
+				final HtmlParagraph text = new HtmlParagraph(shortDescription);
+				text.setCssClass("idea_link_text");
+				centerBlock.add(text);
 
-					final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
-					centerBlock.add(progressBar);
+				float progressValue = (float) Math.floor(idea.getProgression());
+				float cappedProgressValue = progressValue;
+				if (cappedProgressValue > 100) {
+					cappedProgressValue = 100;
+				}
 
-					if (idea.getCurrentOffer() == null) {
+				final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+				centerBlock.add(progressBar);
 
-						HtmlGenericElement amount = new HtmlGenericElement("span");
-						amount.setCssClass("important");
+				if (idea.getCurrentOffer() == null) {
 
-						CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
+					HtmlGenericElement amount = new HtmlGenericElement("span");
+					amount.setCssClass("important");
 
-						amount.addText(currency.getDefaultString());
+					CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
 
-						final HtmlParagraph progressText = new HtmlParagraph();
-						progressText.setCssClass("idea_progress_text");
+					amount.addText(currency.getDefaultString());
 
-						progressText.add(amount);
-						progressText.addText(Context.tr(" no offer ("));
-						progressText.add(new OfferPageUrl(idea).getHtmlLink(Context.tr("make an offer")));
-						progressText.addText(Context.tr(")"));
+					final HtmlParagraph progressText = new HtmlParagraph();
+					progressText.setCssClass("idea_progress_text");
 
-						centerBlock.add(progressText);
-					} else {
+					progressText.add(amount);
+					progressText.addText(Context.tr(" no offer ("));
+					progressText.add(new OfferPageUrl(idea).getHtmlLink(Context.tr("make an offer")));
+					progressText.addText(Context.tr(")"));
 
-						// Amount
-						CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
-						HtmlGenericElement amount = new HtmlGenericElement("span");
-						amount.setCssClass("important");
-						amount.addText(amountCurrency.getDefaultString());
+					centerBlock.add(progressText);
+				} else {
 
-						// Target
-						CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount(), Context.getLocalizator().getLocale());
-						HtmlGenericElement target = new HtmlGenericElement("span");
-						target.setCssClass("important");
-						target.addText(targetCurrency.getDefaultString());
+					// Amount
+					CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
+					HtmlGenericElement amount = new HtmlGenericElement("span");
+					amount.setCssClass("important");
+					amount.addText(amountCurrency.getDefaultString());
 
-						// Progress
-						HtmlGenericElement progress = new HtmlGenericElement("span");
-						progress.setCssClass("important");
-						NumberFormat format = NumberFormat.getNumberInstance();
-						format.setMinimumFractionDigits(0);
-						progress.addText("" + format.format(progressValue) + " %");
+					// Target
+					CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount(), Context.getLocalizator().getLocale());
+					HtmlGenericElement target = new HtmlGenericElement("span");
+					target.setCssClass("important");
+					target.addText(targetCurrency.getDefaultString());
 
-						final HtmlParagraph progressText = new HtmlParagraph();
-						progressText.setCssClass("idea_progress_text");
+					// Progress
+					HtmlGenericElement progress = new HtmlGenericElement("span");
+					progress.setCssClass("important");
+					NumberFormat format = NumberFormat.getNumberInstance();
+					format.setMinimumFractionDigits(0);
+					progress.addText("" + format.format(progressValue) + " %");
 
-						progressText.add(amount);
-						progressText.addText(Context.tr(" i.e. "));
-						progressText.add(progress);
-						progressText.addText(Context.tr(" of "));
-						progressText.add(target);
-						progressText.addText(Context.tr(" requested "));
+					final HtmlParagraph progressText = new HtmlParagraph();
+					progressText.setCssClass("idea_progress_text");
 
-						centerBlock.add(progressText);
-					}
+					progressText.add(amount);
+					progressText.addText(Context.tr(" i.e. "));
+					progressText.add(progress);
+					progressText.addText(Context.tr(" of "));
+					progressText.add(target);
+					progressText.addText(Context.tr(" requested "));
 
-				
-				
+					centerBlock.add(progressText);
+				}
 
 			}
 			ideaBlock.add(centerBlock);
@@ -143,21 +145,19 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 			final HtmlDiv actionBlock = new HtmlDiv("idea_summary_action");
 			{
 
-				
 				actionBlock.add(new IdeaContributeButtonComponent(idea));
 				actionBlock.add(new IdeaMakeOfferButtonComponent(idea));
 
 			}
 			ideaBlock.add(actionBlock);
-			
-			
+
 			final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
 			{
 				rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
 			}
 			ideaBlock.add(rightBlock);
 		}
-		
-        add(ideaBlock);
-    }
+
+		add(ideaBlock);
+	}
 }
