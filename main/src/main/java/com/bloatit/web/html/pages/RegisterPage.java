@@ -27,10 +27,11 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.Countries;
 import com.bloatit.web.utils.Countries.Country;
-import com.bloatit.web.utils.i18n.Language;
-import com.bloatit.web.utils.i18n.Language.LanguageDescriptor;
+import com.bloatit.web.utils.i18n.Localizator;
+import com.bloatit.web.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;
+import com.sun.tools.internal.xjc.Language;
 
 @ParamContainer("member/create")
 public class RegisterPage extends Page {
@@ -86,7 +87,7 @@ public class RegisterPage extends Page {
         form.add(countryInput);
         
         HtmlDropDown langInput = new HtmlDropDown(RegisterAction.LANGUAGE_CODE, Context.tr("language : "));
-        for(Entry<String, LanguageDescriptor> entry : Language.getAvailableLanguages().entrySet()){
+        for(Entry<String, LanguageDescriptor> entry : Localizator.getAvailableLanguages().entrySet()){
         	langInput.add(entry.getValue().name, entry.getValue().code);
         }
         form.add(langInput);
