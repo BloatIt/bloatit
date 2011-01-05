@@ -16,6 +16,7 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 
@@ -46,12 +47,12 @@ public class LoginAction extends Action {
         if (token != null) {
             session.setLogged(true);
             session.setAuthToken(token);
-            session.notifyGood(session.tr("Login success."));
+            session.notifyGood(Context.tr("Login success."));
             return session.pickPreferredPage();
         } else {
             session.setLogged(false);
             session.setAuthToken(null);
-            session.notifyBad(session.tr("Login failed. Wrong login or password."));
+            session.notifyBad(Context.tr("Login failed. Wrong login or password."));
             return new LoginPageUrl().urlString();
         }
     }

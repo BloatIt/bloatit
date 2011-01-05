@@ -10,7 +10,10 @@
  */
 package com.bloatit.web.html.pages;
 
+import java.util.Locale;
+
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Translation;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -65,19 +68,29 @@ public class ContributePage extends LoggedPage {
 
         // Input field : choose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
-        contribField.setLabel(session.tr("Choose amount : "));
+        contribField.setLabel(Context.tr("Choose amount : "));
         contribField.setDefaultValue(contributionAmountParam);
 
         // Input field : comment
         final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE, 10, 60);
-        commentField.setLabel(session.tr("Comment (optional) : "));
+        commentField.setLabel(Context.tr("Comment (optional) : "));
         commentField.setDefaultValue(contributionCommentParam);
 
-        final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Contribute"));
+        final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Contribute"));
 
         // Summary of the idea
         final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle(), 2);
-        final HtmlText textSummary = new HtmlText(targetIdea.getDescription().toString());
+        
+        final Locale defaultLocale = Context.getLocalizator().getLocale();
+		final Translation translatedDescription = targetIdea.getDescription().getTranslationOrDefault(defaultLocale);
+		String shortDescription = translatedDescription.getText();
+
+		if (shortDescription.length() > 144) {
+			// TODO create a tools to truncate less dirty
+			shortDescription = shortDescription.substring(0, 143) + " ...";
+		}
+        
+        final HtmlText textSummary = new HtmlText(shortDescription);
         summary.add(textSummary);
 
         // Create the form
@@ -85,7 +98,7 @@ public class ContributePage extends LoggedPage {
         contribForm.add(commentField);
         contribForm.add(submitButton);
 
-        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(session.tr("Contribute"), 2);
+        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(Context.tr("Contribute"), 2);
         contribTitle.add(summary);
         contribTitle.add(contribForm);
 
@@ -97,7 +110,7 @@ public class ContributePage extends LoggedPage {
 
     @Override
     protected String getTitle() {
-        return session.tr("Contribute to a project");
+        return Context.tr("Contribute to a project");
     }
 
     @Override
@@ -107,6 +120,6 @@ public class ContributePage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return session.tr("You must be logged to contribute");
+        return Context.tr("You must be logged to contribute");
     }
 }

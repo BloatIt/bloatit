@@ -21,6 +21,7 @@ import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;
@@ -37,19 +38,19 @@ public class LoginPage extends Page {
         super.create();
 
         final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
-        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, session.tr("login"));
-        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, session.tr("password"));
-        final HtmlSubmit submitButton = new HtmlSubmit(session.tr("Login"));
+        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.tr("login"));
+        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("password"));
+        final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Login"));
 
         loginForm.add(loginField);
         loginForm.add(passwordField);
         loginForm.add(submitButton);
 
-        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(session.tr("Login"), 2);
+        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.tr("Login"), 2);
         loginTitle.add(loginForm);
 
-        final HtmlTitleBlock signupTitle = new HtmlTitleBlock(session.tr("Signup"), 2);
-        signupTitle.add(new HtmlLink(new RegisterPageUrl().urlString(), session.tr("Click here.")));
+        final HtmlTitleBlock signupTitle = new HtmlTitleBlock(Context.tr("Signup"), 2);
+        signupTitle.add(new HtmlLink(new RegisterPageUrl().urlString(), Context.tr("Click here.")));
 
         final HtmlGenericElement group = new HtmlGenericElement();
 

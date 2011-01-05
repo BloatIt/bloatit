@@ -24,6 +24,7 @@ import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.Countries;
 import com.bloatit.web.utils.Countries.Country;
 import com.bloatit.web.utils.i18n.Language;
@@ -62,35 +63,35 @@ public class RegisterPage extends Page {
     public final void create() throws RedirectException {
         super.create();
         
-        HtmlTitleBlock container = new HtmlTitleBlock(session.tr("Register"), 1);
+        HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Register"), 1);
         HtmlForm form = new HtmlForm(new RegisterActionUrl().urlString());
         container.add(form);
         
-        HtmlTextField loginInput = new HtmlTextField(RegisterAction.LOGIN_CODE, session.tr("login : "));
+        HtmlTextField loginInput = new HtmlTextField(RegisterAction.LOGIN_CODE, Context.tr("login : "));
         loginInput.setDefaultValue(login);
         form.add(loginInput);
         
-        HtmlPasswordField passwordInput = new HtmlPasswordField(RegisterAction.PASSWORD_CODE, session.tr("password : "));
+        HtmlPasswordField passwordInput = new HtmlPasswordField(RegisterAction.PASSWORD_CODE, Context.tr("password : "));
         passwordInput.setDefaultValue(password);
         form.add(passwordInput);
         
-        HtmlTextField emailInput = new HtmlTextField(RegisterAction.EMAIL_CODE, session.tr("email : "));
+        HtmlTextField emailInput = new HtmlTextField(RegisterAction.EMAIL_CODE, Context.tr("email : "));
         emailInput.setDefaultValue(email);
         form.add(emailInput);
         
-        HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, session.tr("country : "));
+        HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, Context.tr("country : "));
         for(Country entry : Countries.getAvailableCountries()){
         	countryInput.add(entry.name, entry.code);
         }
         form.add(countryInput);
         
-        HtmlDropDown langInput = new HtmlDropDown(RegisterAction.LANGUAGE_CODE, session.tr("language : "));
+        HtmlDropDown langInput = new HtmlDropDown(RegisterAction.LANGUAGE_CODE, Context.tr("language : "));
         for(Entry<String, LanguageDescriptor> entry : Language.getAvailableLanguages().entrySet()){
         	langInput.add(entry.getValue().name, entry.getValue().code);
         }
         form.add(langInput);
         
-        HtmlSubmit button = new HtmlSubmit(session.tr("submit"));
+        HtmlSubmit button = new HtmlSubmit(Context.tr("submit"));
         form.add(button);
         
         add(container);
@@ -98,7 +99,7 @@ public class RegisterPage extends Page {
 
     @Override
     protected String getTitle() {
-        return session.tr("Make an offer");
+        return Context.tr("Make an offer");
     }
 
     @Override

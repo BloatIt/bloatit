@@ -1,4 +1,5 @@
 @import "colors";
+@import "tools";
 
 ul {
     margin: 1em;
@@ -41,4 +42,50 @@ h1 {
     font-size: 0.7em;
     vertical-align: super;
     margin-left: 0.2em;
+}
+
+
+
+.kudo_box {
+
+    .no_insets;
+    @size: 10px;
+    
+    color:black;
+    font-size: @size;
+
+    
+
+    .kudo_box_up {
+        font-size: 0px; line-height: 0%; width: 0px;
+        border-bottom: @size solid rgb(32,141,188);
+        border-left: @size solid rgba(0,0,0,0);
+        border-right: @size solid rgba(0,0,0,0);
+    }
+
+    .kudo_box_down:hover {
+        border-top: @size solid rgb(188,32,32);
+
+    }
+
+    .kudo_box_up:hover {
+        border-bottom: @size solid rgb(22, 160 ,22);
+    }
+
+    .kudo_box_down {
+        font-size: 0px; line-height: 0%; width: 0px;
+        border-top: @size solid rgb(32,141,188);
+        border-left: @size solid rgba(0,0,0,0);
+        border-right: @size solid rgba(0,0,0,0);
+    }
+
+    .kudo_box_score {
+        width: @size * 2;
+        font-weight: bold;
+        text-align: center;
+        color: rgb(32,41,88);
+        margin-top: 3px;
+        margin-bottom: 2px;
+    }
+
 }

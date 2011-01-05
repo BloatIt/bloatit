@@ -26,6 +26,7 @@ import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 
@@ -50,7 +51,7 @@ public class GlobalSearchPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"), 2);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Search result"), 2);
 
         pageTitle.add(generateSearchBlock());
 
@@ -92,7 +93,7 @@ public class GlobalSearchPage extends Page {
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
-        final HtmlButton searchButton = new HtmlButton(session.tr("Search"));
+        final HtmlButton searchButton = new HtmlButton(Context.tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);

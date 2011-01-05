@@ -11,12 +11,13 @@
 package com.bloatit.web.html.pages;
 
 //import java.util.Random;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 import com.bloatit.common.Image;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
@@ -33,6 +34,7 @@ import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
@@ -54,7 +56,8 @@ public class IdeasList extends Page {
 
 	private void generateContent() {
 
-		final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Ideas list"), 1);
+
+		final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Ideas list"), 1);
 
 		final PageIterable<Demand> ideaList = DemandManager.getDemands();
 
@@ -114,17 +117,36 @@ public class IdeasList extends Page {
 				final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
 				{
 
-					final HtmlLink linkTitle = new IdeaPageUrl(idea).getHtmlLink("Correction de bug - VLC");
+					HtmlGenericElement project = new HtmlGenericElement("span");
+					project.setCssClass("project");
+					project.addText("VLC");
+					
+					
+					final HtmlLink linkTitle = new IdeaPageUrl(idea).getHtmlLink("");
 					linkTitle.setCssClass("idea_link");
 
+					linkTitle.add(project);
+					linkTitle.addText(" - ");
+					linkTitle.addText(idea.getTitle());
+					
+					
 					final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(linkTitle, 3);
 					{
 
-						final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(idea.getTitle()));
+						final Locale defaultLocale = Context.getLocalizator().getLocale();
+						final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+						String shortDescription = translatedDescription.getText();
+
+						if(shortDescription.length() > 144) {
+							//TODO create a tools to truncate less dirty
+							shortDescription = shortDescription.substring(0, 143) + " ...";
+						}
+						
+						final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(shortDescription));
 						linkText.setCssClass("idea_link_text");
 
 						ideaTitle.add(linkText);
-
+						
 						float progressValue = (float) Math.floor(idea.getProgression());
 						float cappedProgressValue = progressValue;
 						if (cappedProgressValue > 100) {
@@ -139,7 +161,8 @@ public class IdeasList extends Page {
 							HtmlGenericElement amount = new HtmlGenericElement("span");
 							amount.setCssClass("important");
 
-							CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getSession().getLocale());
+							CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
+							
 
 							amount.addText(currency.getDefaultString());
 
@@ -153,15 +176,14 @@ public class IdeasList extends Page {
 
 							ideaTitle.add(progressText);
 						} else {
-
 							// Amount
-							CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getSession().getLocale());
+							CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
 							HtmlGenericElement amount = new HtmlGenericElement("span");
 							amount.setCssClass("important");
 							amount.addText(amountCurrency.getDefaultString());
 
 							// Target
-							CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount(), Context.getSession().getLocale());
+							CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount() , Context.getLocalizator().getLocale());
 							HtmlGenericElement target = new HtmlGenericElement("span");
 							target.setCssClass("important");
 							target.addText(targetCurrency.getDefaultString());

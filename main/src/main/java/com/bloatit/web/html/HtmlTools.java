@@ -13,6 +13,7 @@ package com.bloatit.web.html;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 
 public class HtmlTools {
@@ -103,12 +104,12 @@ public class HtmlTools {
         final long diff = currentDate.getTime() - date.getTime();
 
         if (diff < SECOND) {
-            return session.tr("now");
+            return Context.tr("now");
         } else if (diff < MINUTE) {
-            return session.tr("%d seconds ago", new Object[] { new Long(diff / SECOND) });
+            return Context.tr("%d seconds ago", new Object[] { new Long(diff / SECOND) });
         }
 
-        final SimpleDateFormat dateFormat = new SimpleDateFormat(session.tr("MMM d, ''yy 'at' HH:mm"));
+        final SimpleDateFormat dateFormat = new SimpleDateFormat(Context.tr("MMM d, ''yy 'at' HH:mm"));
 
         return dateFormat.format(date);
     }

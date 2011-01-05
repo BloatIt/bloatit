@@ -19,6 +19,7 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
@@ -60,17 +61,17 @@ public class ContributionAction extends Action {
         try {
             if (targetIdea.canContribute()) {
                 targetIdea.addContribution(amount, comment);
-                session.notifyGood(session.tr("Thanks you for crediting " + amount + " on this idea"));
+                session.notifyGood(Context.tr("Thanks you for crediting " + amount + " on this idea"));
 
                 return new IdeaPageUrl(targetIdea).urlString();
             } else {
                 // Should never happen
-                session.notifyBad(session.tr("For obscure reasons, you are not allowed to contribute on this idea."));
+                session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
                 return new ContributePageUrl(targetIdea).urlString();// TODO put
                                                                      // parameters
             }
         } catch (final NotEnoughMoneyException e) {
-            session.notifyBad(session.tr("You need to charge your account before you can contribute."));
+            session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
             session.addParam(AMOUNT_CODE, amount.toString());
             session.addParam(COMMENT_CODE, comment);
             // Sets the target page to here
