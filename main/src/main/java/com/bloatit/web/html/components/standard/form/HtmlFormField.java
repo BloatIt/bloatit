@@ -191,6 +191,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Initializes the placeholder for the label
      */
     private void init() {
+    	
+    	
         switch (position) {
         case AFTER:
             this.container.add(element);
@@ -203,6 +205,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
             break;
         }
         add(container);
+        container.setCssClass("field");
+    	
     }
 
     /**

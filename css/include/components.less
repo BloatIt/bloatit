@@ -30,10 +30,21 @@ a:hover {
 h1 {
     margin: 0;
     margin-left: 0em;
-    padding: 0.5em;
-    font-size: 1.2em;
-    
+    //padding: 0.5em;
 
+    
+    font-family : Arial, Helvetica, sans-serif;
+        font-size: 1.2em;
+        font-weight: normal;
+        
+    border-bottom:1px solid #ccc;
+    
+       
+       //font-weight:bold;
+       letter-spacing:1px;
+       margin-bottom:20px;
+      // text-transform:uppercase;
+//font-variant: small-caps ; 
 }
 
 
@@ -88,4 +99,122 @@ h1 {
         margin-bottom: 2px;
     }
 
+}
+
+fieldset{
+       //.box;
+
+       margin:30px auto 0;
+       padding:20px;
+       border: none;
+       border: 1px solid rgb(200,200,200);
+}
+
+legend {
+    //border: 1px solid rgb(200,200,200);
+}
+
+label{
+       cursor:pointer;
+       display:block;
+       float:left;
+       //font-size:13px;
+       font-weight:bold;
+       //   line-height:28px;
+       
+       margin-right: 5px;
+       width:120px;
+       padding:2px;
+       text-align:right;
+       vertical-align: middle;
+}
+
+input[type=text],
+input[type=password]{
+       background: rgba(255, 255, 255, 0.9);
+       background:-moz-linear-gradient(90deg, #fff, #eee); /* Firefox */
+       background:-webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff), color-stop(0.2, #fff)); /* Webkit */
+       border:1px solid #aaa;
+       -moz-border-radius:3px;
+       -webkit-border-radius:3px;
+       -moz-box-shadow:0 0 3px #bbb;
+       -webkit-box-shadow:0 0 3px #bbb;
+       padding:2px;
+       vertical-align: middle;
+}
+input[type=text]:focus,
+input[type=password]:focus{
+       border-color:#093c75;
+       -moz-box-shadow:0 0 3px #0459b7;
+       -webkit-box-shadow:0 0 3px #0459b7;
+       outline:none; /* Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome */
+}
+
+
+.field {
+    margin:8px;
+}
+
+
+select{
+       cursor:pointer;
+       padding:3px;
+       -moz-box-shadow:0 0 3px #aaa;
+       -webkit-box-shadow:0 0 3px #aaa;
+}
+select:active,
+select:focus{
+       border:1px solid #093c75;
+       -moz-box-shadow:0 0 3px #0459b7;
+       -webkit-box-shadow:0 0 3px #0459b7;
+       outline:none;
+}
+input[type=submit],
+a.submit{
+       background:#ddd;
+       
+       //#0459b7, #08adff
+       .horizontal-gradient(#0459b7, #08adff);
+       .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
+       //.horizontal-gradient(#DDD, #EEE);
+       //#0459b7, #08adff
+       
+       border:1px solid @default_link_color;
+       //border:1px solid #CCC;
+       -moz-border-radius:3px;
+       -webkit-border-radius:3px;
+       -moz-box-shadow:0 1px 0 #fff;
+       -webkit-box-shadow:0 1px 0 #fff;
+       color:#fff;
+       cursor:pointer;
+       //font-family:Arial,sans-serif;
+       //font-size:12px;
+       font-size:0.9em;
+       font-weight:bold;
+       margin-left:128px;
+       padding: 3px;
+       padding-right: 8px;
+       padding-left: 8px;
+       text-decoration:none;
+       text-shadow:0 1px 1px #333;
+       //text-transform:uppercase;
+       vertical-align: middle;
+}
+input[type=submit]:hover,
+a.submit:hover{
+       background:#eee;
+       background:-moz-linear-gradient(90deg, #067cd3, #0bcdff);
+       background:-webkit-gradient(linear, left top, left bottom, from(#0bcdff), to(#067cd3));
+       border-color:#093c75;
+       text-decoration:none;
+}
+input[type=submit]:active,
+input[type=submit]:focus,
+a.submit:active,
+a.submit:focus{
+       background:#ccc;
+       background:-moz-linear-gradient(90deg, #0bcdff, #067cd3);
+       background:-webkit-gradient(linear, left top, left bottom, from(#067cd3), to(#0bcdff));
+       border-color:#093c75;
+       outline:none;
 }
