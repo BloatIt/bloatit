@@ -21,6 +21,7 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/offer")
 public class OfferAction extends Action {
@@ -57,9 +58,9 @@ public class OfferAction extends Action {
     }
 
     @Override
-    public String doProcess() {
+    public Url doProcess() {
         targetIdea.authenticate(session.getAuthToken());
         targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
-        return new IdeaPageUrl(targetIdea).urlString();
+        return new IdeaPageUrl(targetIdea);
     }
 }

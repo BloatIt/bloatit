@@ -50,7 +50,7 @@ public abstract class Page extends HtmlElement implements Linkable {
 
         // Set the laste stable page into the session
         if (isStable()) {
-            Context.getSession().setLastStablePage(thisUrl.urlString());
+            Context.getSession().setLastStablePage(thisUrl);
         }
     }
 
