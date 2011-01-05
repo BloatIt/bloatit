@@ -61,8 +61,14 @@ public abstract class Page extends HtmlElement implements Linkable {
 
         final HtmlBranch page = new HtmlDiv("page").setId("page");
         body.add(page);
-        page.add(new TopBar()).add(generateTitle());
+        
+        final HtmlBranch header = new HtmlDiv("header").setId("header");
+        
+        header.add(new TopBar());
+        header.add(generateTitle());
 
+        page.add(header);
+        
         final HtmlBranch center = new HtmlDiv().setId("center");
         page.add(center);
 
