@@ -31,7 +31,6 @@ public class HttpResponse {
         closeHeaders();
 
         page.write(new IndentedHtmlText() {
-
             @Override
             protected void append(final String text) {
                 try {

@@ -1,16 +1,12 @@
-package com.bloatit.web.annotations;
+package com.bloatit.web.annotations.generator;
 
-public class UrlClassGenerator extends JavaGenerator {
 
-    public UrlClassGenerator(String name, String pageName, String pageType) {
+public class UrlComponentClassGenerator extends JavaGenerator {
+
+    public UrlComponentClassGenerator(String name) {
         super(name);
-        _import.append("import com.bloatit.web.exceptions.RedirectException;\n");
-
         _classHeader.append("@SuppressWarnings(\"unused\")\n");
-        _classHeader.append("public final class ").append(className).append(" extends Url {\n");
-        _classHeader.append("public static String getName() { return \"").append(pageName).append("\"; }\n");
-        _classHeader.append("public ").append(pageType).append(" createPage() throws RedirectException{ \n    return new ").append(pageType)
-                .append("(this); }\n");
+        _classHeader.append("public final class ").append(className).append(" extends UrlComponent {\n");
 
     }
 
@@ -38,7 +34,7 @@ public class UrlClassGenerator extends JavaGenerator {
         } else {
             _classHeader.append("public ").append(className).append("(){\n");
         }
-        _classHeader.append("    super(getName());\n");
+        _classHeader.append("    super();\n");
         if (_constructorDefaults.length() > 0) {
             _classHeader.append("    try {\n");
         }
@@ -51,4 +47,5 @@ public class UrlClassGenerator extends JavaGenerator {
         }
         _classHeader.append("}\n");
     }
+
 }
