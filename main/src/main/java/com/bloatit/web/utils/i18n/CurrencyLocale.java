@@ -37,10 +37,10 @@ import com.bloatit.common.FatalErrorException;
  * Class to handle localization of money amounts.
  */
 public class CurrencyLocale {
-    private final static String DEFAULT_CURRENCY_SYMBOL = "€";
-    private final static String RATES_PATH = "../locales/rates";
-    private final static RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
-    private final static int DISPLAY_PRECISION = 0;
+    private static final String DEFAULT_CURRENCY_SYMBOL = "€";
+    private static final String RATES_PATH = "../locales/rates";
+    private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
+    private static final int DISPLAY_PRECISION = 0;
     
     private final Locale targetLocale;
     private final BigDecimal euroAmount;

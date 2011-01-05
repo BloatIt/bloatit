@@ -61,12 +61,12 @@ public class CreateIdeaPage extends LoggedPage {
     }
 
     @Override
-    protected String getTitle() {
+    protected final String getTitle() {
         return "Create new idea";
     }
 
     @Override
-    public boolean isStable() {
+    public final boolean isStable() {
         return false;
     }
 

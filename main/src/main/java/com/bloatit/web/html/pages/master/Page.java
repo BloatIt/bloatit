@@ -87,7 +87,7 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     public abstract boolean isStable();
 
-    public String getName() {
+    public final String getName() {
         if (getClass().getAnnotation(ParamContainer.class) != null) {
             return getClass().getAnnotation(ParamContainer.class).value();
         } else {
@@ -100,32 +100,32 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     @Override
-    public HtmlElement addAttribute(final String name, final String value) {
+    public final HtmlElement addAttribute(final String name, final String value) {
         content.addAttribute(name, value);
         return this;
     }
 
     @Override
-    public HtmlElement add(final HtmlNode html) {
+    public final HtmlElement add(final HtmlNode html) {
         content.add(html);
         return this;
     }
 
     @Override
-    public HtmlElement addText(final String text) {
+    public final HtmlElement addText(final String text) {
         content.add(new HtmlText(text));
         return this;
     }
 
-    protected void setPageNotFound() {
+    protected final void setPageNotFound() {
         content.add(new HtmlDiv().setCssClass("not_found").addText(Context.tr("Page Not Found !")));
     }
 
-    protected void addNotification(final HtmlNotification note) {
+    protected final void addNotification(final HtmlNotification note) {
         notifications.add(note);
     }
 
-    protected void addNotifications(final Messages messages) {
+    protected final void addNotifications(final Messages messages) {
         for (final Message message : messages) {
             switch (message.getLevel()) {
             case INFO:
@@ -141,7 +141,7 @@ public abstract class Page extends HtmlElement implements Linkable {
         }
     }
 
-    protected String generateLogo() {
+    protected final String generateLogo() {
         return "<span class=\"logo_bloatit\"><span class=\"logo_bloatit_bloat\">Bloat</span><span class=\"logo_bloatit_it\">It</span></span>";
     }
 

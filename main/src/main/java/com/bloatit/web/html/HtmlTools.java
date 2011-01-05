@@ -18,10 +18,14 @@ import com.bloatit.web.server.Session;
 
 public class HtmlTools {
 
-    public final static long SECOND = 1000;
-    public final static long MINUTE = 60 * SECOND;
-    public final static long HOUR = 60 * MINUTE;
-    public final static long DAY = 24 * HOUR;
+    private static final double TRILLION = 1000000000000d;
+	private static final double BILLION = 1000000000d;
+	private static final double MILLION = 1000000d;
+	private static final int THOUSAND = 1000;
+	public static final long SECOND = 1000;
+    public static final long MINUTE = 60 * SECOND;
+    public static final long HOUR = 60 * MINUTE;
+    public static final long DAY = 24 * HOUR;
 
     /*
      * public static String generateLink(Session session, String text, Request
@@ -46,9 +50,17 @@ public class HtmlTools {
     }
 
     /**
-     * Compress karma and make it easier to display Example of results : 1 = 1 100 = 100 1
-     * 000 = 1k 100 000 = 100k 1 000 000 = 1M 100 000 000 = 100M 1 000 000 000 = 1T 100
-     * 000 000 000 = 100T 1 000 000 000 000 = ∞
+     * Compress karma and make it easier to display <br>
+     * Example of results : 
+     * 1 = 1 <br>
+     * 100 = 100 <br>
+     * 1000 = 1k <br>
+     * 100 000 = 100k <br>
+     * 1 000 000 = 1M <br>
+     * 100 000 000 = 100M <br>
+     * 1 000 000 000 = 1T <br>
+     * 100 000 000 000 = 100T <br>
+     * 1 000 000 000 000 = ∞<br>
      * 
      * @param karma the karma value to compress
      * @return the compressed String to display
@@ -56,25 +68,22 @@ public class HtmlTools {
     public static String compressKarma(final long karma) {
         final Double abs_karma = new Double(Math.abs(karma));
         String result = "";
-        if (abs_karma < 1000) {
+        if (abs_karma < THOUSAND) {
             result = cutNumber(abs_karma.toString());
-        } else if (abs_karma < 1000000d) {
-            result = cutNumber(new Double(abs_karma / 1000d).toString()) + "K";
-        } else if (abs_karma < 1000000000d) {
-            result = cutNumber(new Double(abs_karma / 1000000d).toString()) + "M";
+        } else if (abs_karma < MILLION) {
+            result = cutNumber(new Double(abs_karma / THOUSAND).toString()) + "K";
+        } else if (abs_karma < BILLION) {
+            result = cutNumber(new Double(abs_karma / MILLION).toString()) + "M";
 
-        } else if (abs_karma < 1000000000000d) {
-            result = cutNumber(new Double(abs_karma / 1000000000d).toString()) + "T";
+        } else if (abs_karma < TRILLION) {
+            result = cutNumber(new Double(abs_karma / BILLION).toString()) + "T";
         } else {
-
             result = "∞";
         }
         if (karma >= 0) {
             return result;
-
         } else {
             return "-" + result;
-
         }
     }
 
