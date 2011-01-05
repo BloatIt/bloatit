@@ -14,6 +14,7 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.PageNotFoundUrl;
 
 @ParamContainer("pageNotFound")
@@ -25,7 +26,7 @@ public class PageNotFound extends Page {
     }
 
     private void generateContent() {
-        final HtmlTitle errorTitle = new HtmlTitle(session.tr("Page not found"), 2);
+        final HtmlTitle errorTitle = new HtmlTitle(Context.tr("Page not found"), 2);
 
         add(errorTitle);
 

@@ -12,7 +12,6 @@ package com.bloatit.web.utils.i18n;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,11 +21,10 @@ import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.FatalErrorException;
-import com.bloatit.common.Log;
 import com.bloatit.web.utils.PropertyLoader;
 
 public class Language {
-	
+
 	private static final String LANGUAGES_PATH = "i18n/languages";
 	private static final String LANGUAGE_CODE = "code";
 	private static final String LANGUAGE_NAME = "name";
@@ -44,12 +42,9 @@ public class Language {
 	private static Map<Locale, LanguageTemplate> languageList = new HashMap<Locale, LanguageTemplate>() {
 		private static final long serialVersionUID = -2144420475764085797L;
 		{
-			put(Locale.ENGLISH, new LanguageTemplate("en", "English",
-					Locale.ENGLISH));
-			put(Locale.FRENCH, new LanguageTemplate("fr", "Français",
-					Locale.FRENCH));
-			put(Locale.GERMAN, new LanguageTemplate("de", "German",
-					Locale.GERMAN));
+			put(Locale.ENGLISH, new LanguageTemplate("en", "English", Locale.ENGLISH));
+			put(Locale.FRENCH, new LanguageTemplate("fr", "Français", Locale.FRENCH));
+			put(Locale.GERMAN, new LanguageTemplate("de", "German", Locale.GERMAN));
 
 		}
 	};
@@ -71,24 +66,6 @@ public class Language {
 
 	public String getCode() {
 		return template.locale.getLanguage();
-	}
-
-	public void findPrefered(final List<String> preferredLangs) {
-		Locale locale;
-		for (final String preferredLang : preferredLangs) {
-			final String lang = preferredLang.split(";")[0];
-			if (Language.languageCode.containsKey(lang)) {
-				locale = Language.languageCode.get(lang);
-				if (languageList.containsKey(locale)) {
-					template = languageList.get(locale);
-					break;
-				} else {
-					System.err.println("Unknow language code: " + locale);
-				}
-			} else {
-				Log.web().warn("Unknow language: " + lang);
-			}
-		}
 	}
 
 	public Locale getLocale() {
@@ -120,8 +97,7 @@ public class Language {
 			return false;
 		}
 		final Language other = (Language) obj;
-		if (template != other.template
-				&& (template == null || !template.equals(other.template))) {
+		if (template != other.template && (template == null || !template.equals(other.template))) {
 			return false;
 		}
 		return true;
@@ -136,7 +112,6 @@ public class Language {
 
 	/**
 	 * Finds all available languages
-	 * 
 	 * @return a list with all the language descriptors
 	 */
 	public static Map<String, Language.LanguageDescriptor> getAvailableLanguages() {
@@ -153,29 +128,29 @@ public class Language {
 	private static void initLanguageList() {
 		try {
 			Properties properties = PropertyLoader.loadProperties(LANGUAGES_PATH);
-			for(Entry<?, ?> property : properties.entrySet()){
-				String key = (String)property.getKey();
-				String value = (String)property.getValue();
-				
+			for (Entry<?, ?> property : properties.entrySet()) {
+				String key = (String) property.getKey();
+				String value = (String) property.getValue();
+
 				// Remove the .code or .name
 				String lang = key.substring(0, key.lastIndexOf("."));
-				
+
 				LanguageDescriptor ld;
-				if(!availableLanguages.containsKey(lang)){
+				if (!availableLanguages.containsKey(lang)) {
 					ld = new LanguageDescriptor();
 					availableLanguages.put(lang, ld);
-				}else{
+				} else {
 					ld = availableLanguages.get(lang);
 				}
-				
-				if(key.endsWith("."+ LANGUAGE_CODE)){
+
+				if (key.endsWith("." + LANGUAGE_CODE)) {
 					ld.code = value;
-				}else{
+				} else {
 					ld.name = value;
 				}
 			}
 		} catch (IOException e) {
-			throw new FatalErrorException("File describing available languages is not available at "+LANGUAGES_PATH, e);
+			throw new FatalErrorException("File describing available languages is not available at " + LANGUAGES_PATH, e);
 		}
 	}
 
@@ -196,8 +171,7 @@ public class Language {
 		final public String label;
 		final public I18n i18n;
 
-		private LanguageTemplate(final String key, final String label,
-				final Locale locale) {
+		private LanguageTemplate(final String key, final String label, final Locale locale) {
 			this.label = label;
 			this.locale = locale;
 			i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);

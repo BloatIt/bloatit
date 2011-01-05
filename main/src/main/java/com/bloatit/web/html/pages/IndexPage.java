@@ -11,7 +11,8 @@
 
 package com.bloatit.web.html.pages;
 
-import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.managers.DemandManager;import com.bloatit.web.server.Context;
+
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
@@ -66,7 +67,7 @@ public class IndexPage extends Page {
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
-        final HtmlButton searchButton = new HtmlButton(session.tr("Search"));
+        final HtmlButton searchButton = new HtmlButton(Context.tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);
@@ -94,11 +95,10 @@ public class IndexPage extends Page {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("index_description_block");
 
-        final String description = session
-                .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
+        final String description = Context.tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlParagraph(description));
 
-        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), session.tr("Submit a new idea"));
+        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), Context.tr("Submit a new idea"));
         descriptionBlock.add(createIdeaPageLink);
 
         return descriptionBlock;

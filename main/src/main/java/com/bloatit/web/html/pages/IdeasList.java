@@ -53,7 +53,7 @@ public class IdeasList extends Page {
 	private void generateContent() {
 
 		final HtmlTitleBlock pageTitle = new HtmlTitleBlock(
-				session.tr("Ideas list"), 1);
+				Context.tr("Ideas list"), 1);
 
 		final PageIterable<Demand> ideaList = DemandManager.getDemands();
 

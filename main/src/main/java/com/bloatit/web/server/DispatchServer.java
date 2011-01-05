@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.common.Log;
@@ -22,7 +21,7 @@ import com.bloatit.web.actions.Action;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.i18n.Language;
+import com.bloatit.web.utils.i18n.Localizator;
 import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
@@ -49,266 +48,176 @@ import com.bloatit.web.utils.url.TestPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 public class DispatchServer {
+	static final Map<String, Class<? extends Url>> URL_MAP;
 
-	private static final Locale DEFAULT_LOCALE = new Locale("en_US");
-	
-    static final Map<String, Class<? extends Url>> URL_MAP;
+	static {
+		URL_MAP = new HashMap<String, Class<? extends Url>>() {
+			private static final long serialVersionUID = -1990148160288171599L;
+			{
+				put(IndexPageUrl.getName(), IndexPageUrl.class);
+				put(LoginPageUrl.getName(), LoginPageUrl.class);
+				put(IdeasListUrl.getName(), IdeasListUrl.class);
+				put(CreateIdeaPageUrl.getName(), CreateIdeaPageUrl.class);
+				put(IdeaPageUrl.getName(), IdeaPageUrl.class);
+				put(MyAccountPageUrl.getName(), MyAccountPageUrl.class);
+				put(SpecialsPageUrl.getName(), SpecialsPageUrl.class);
+				put(MembersListPageUrl.getName(), MembersListPageUrl.class);
+				put(MemberPageUrl.getName(), MemberPageUrl.class);
+				put(GlobalSearchPageUrl.getName(), GlobalSearchPageUrl.class);
+				put(ContributePageUrl.getName(), ContributePageUrl.class);
+				put(OfferPageUrl.getName(), OfferPageUrl.class);
+				put(TestPageUrl.getName(), TestPageUrl.class);
+				put(AccountChargingPageUrl.getName(), AccountChargingPageUrl.class);
+				put(RegisterPageUrl.getName(), RegisterPageUrl.class);
 
-    static {
-        URL_MAP = new HashMap<String, Class<? extends Url>>() {
-            private static final long serialVersionUID = -1990148160288171599L;
-            {
-                put(IndexPageUrl.getName(), IndexPageUrl.class);
-                put(LoginPageUrl.getName(), LoginPageUrl.class);
-                put(IdeasListUrl.getName(), IdeasListUrl.class);
-                put(CreateIdeaPageUrl.getName(), CreateIdeaPageUrl.class);
-                put(IdeaPageUrl.getName(), IdeaPageUrl.class);
-                put(MyAccountPageUrl.getName(), MyAccountPageUrl.class);
-                put(SpecialsPageUrl.getName(), SpecialsPageUrl.class);
-                put(MembersListPageUrl.getName(), MembersListPageUrl.class);
-                put(MemberPageUrl.getName(), MemberPageUrl.class);
-                put(GlobalSearchPageUrl.getName(), GlobalSearchPageUrl.class);
-                put(ContributePageUrl.getName(), ContributePageUrl.class);
-                put(OfferPageUrl.getName(), OfferPageUrl.class);
-                put(TestPageUrl.getName(), TestPageUrl.class);
-                put(AccountChargingPageUrl.getName(), AccountChargingPageUrl.class);
-                put(RegisterPageUrl.getName(), RegisterPageUrl.class);
+				put(LoginActionUrl.getName(), LoginActionUrl.class);
+				put(LogoutActionUrl.getName(), LogoutActionUrl.class);
+				put(ContributionActionUrl.getName(), ContributionActionUrl.class);
+				put(OfferActionUrl.getName(), OfferActionUrl.class);
+				put(AccountChargingActionUrl.getName(), AccountChargingActionUrl.class);
+				put(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
+				put(RegisterActionUrl.getName(), RegisterActionUrl.class);
+			}
+		};
+	}
+	private final Map<String, String> cookies;
+	private final List<String> preferredLangs;
+	private final Session session;
+	private final Map<String, String> query;
+	private final Map<String, String> post;
 
-                put(LoginActionUrl.getName(), LoginActionUrl.class);
-                put(LogoutActionUrl.getName(), LogoutActionUrl.class);
-                put(ContributionActionUrl.getName(), ContributionActionUrl.class);
-                put(OfferActionUrl.getName(), OfferActionUrl.class);
-                put(AccountChargingActionUrl.getName(), AccountChargingActionUrl.class);
-                put(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
-                put(RegisterActionUrl.getName(), RegisterActionUrl.class);
-            }
-        };
-    }
-    private final Map<String, String> cookies;
-    private final List<String> preferredLangs;
-    private final Session session;
-    private final Map<String, String> query;
-    private final Map<String, String> post;
 
-    public DispatchServer(final Map<String, String> query,
-                          final Map<String, String> post,
-                          final Map<String, String> cookies,
-                          final List<String> preferredLangs) {
-        this.cookies = cookies;
+	public DispatchServer(final Map<String, String> query, final Map<String, String> post, final Map<String, String> cookies,
+	        final List<String> preferredLangs) {
+		this.cookies = cookies;
+		this.preferredLangs = preferredLangs;
+		
+		this.session = findSession(query);
+		
+		this.query = query;
+		this.post = post;
+	}
 
-        this.preferredLangs = preferredLangs;
-        this.session = findSession(query);
-        Context.setSession(session);
-
-        this.query = query;
-        this.post = post;
-    }
-
-    public void process(final HttpResponse response) throws IOException {
-        com.bloatit.model.data.util.SessionManager.beginWorkUnit();
-
-        final String pageCode = query.get("page");
-        final String params = query.get("param");
-
-        // Add the get params
-        final Parameters parameters = parseQueryString(params);
-        // Merge with the query params
-        parameters.putAll(query);
-        // Merge with the post paramsLocale
-        parameters.putAll(post);
-
-        try {
-            Url url = constructUrl(pageCode, parameters);
-            if (url != null) {
-                final Linkable linkable = url.createPage();
-
-                // If its a page then create a page
-                if (linkable instanceof Page) {
-                    final Page page = Page.class.cast(linkable);
-                    page.create();
-                    response.writePage(page);
-                    
-                    // If its an action then create an action
-                } else if (linkable instanceof Action) {
-                    final Action action = Action.class.cast(linkable);
-                    response.writeRedirect(action.process());
-                }
-            } else {
-                session.notifyError(session.tr("Unknow page: ") + pageCode);
-                final Page page = new PageNotFound(null);
-                page.create();
-                response.writePage(page);
-            }
-
-        } catch (final RedirectException e) {
-            Log.web().info("Redirect to " + e.getUrl(), e);
-            response.writeRedirect(e.getUrl());
-        }
-
-        com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
+	/**
+	 * Creates a localizator
+	 */
+	private Localizator generateLocalizator() {
+		return new Localizator(query.get("lang"), preferredLangs);
     }
 
+	public void process(final HttpResponse response) throws IOException {
+		com.bloatit.model.data.util.SessionManager.beginWorkUnit();
+		
+		Context.setSession(session);
+		Context.setLocalizator(generateLocalizator());
+
+		final String pageCode = query.get("page");
+		final String params = query.get("param");
+
+		// Add the get params
+		final Parameters parameters = parseQueryString(params);
+		// Merge with the query params
+		parameters.putAll(query);
+		// Merge with the post paramsLocale
+		parameters.putAll(post);
+
+		try {
+			Url url = constructUrl(pageCode, parameters);
+			if (url != null) {
+				final Linkable linkable = url.createPage();
+
+				// If its a page then create a page
+				if (linkable instanceof Page) {
+					final Page page = Page.class.cast(linkable);
+					page.create();
+					response.writePage(page);
+					// If its an action then create an action
+				} else if (linkable instanceof Action) {
+					final Action action = Action.class.cast(linkable);
+					response.writeRedirect(action.process());
+				}
+			} else {
+				session.notifyError(Context.tr("Unknow page: ") + pageCode);
+				final Page page = new PageNotFound(null);
+				page.create();
+				response.writePage(page);
+			}
+		} catch (final RedirectException e) {
+			Log.web().info("Redirect to " + e.getUrl(), e);
+			response.writeRedirect(e.getUrl());
+		}
+		com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
+	}
+
+	@SuppressWarnings("deprecation") // It's OK
     private Url constructUrl(String pageCode, Parameters params) {
-        try {
-            Class<? extends Url> urlClass = URL_MAP.get(pageCode);
-            if (urlClass != null) {
-                return urlClass.getConstructor(Parameters.class, Parameters.class).newInstance(params, session.getParams());
-            }
-        } catch (final IllegalArgumentException e) {
-            Log.web().error("IllegalArgument calling url constructor.", e);
-        } catch (final SecurityException e) {
-            Log.web().error("SecurityException calling url constructor.", e);
-        } catch (final InstantiationException e) {
-            Log.web().error("InstantiationException calling url constructor.", e);
-        } catch (final IllegalAccessException e) {
-            Log.web().error("IllegalAccessException calling url constructor.", e);
-        } catch (final InvocationTargetException e) {
-            Log.web().error("InvocationTargetException calling url constructor.", e);
-        } catch (final NoSuchMethodException e) {
-            Log.web().error("NoSuchMethodException calling url constructor.", e);
-        }
-        return null;
-    }
+		try {
+			Class<? extends Url> urlClass = URL_MAP.get(pageCode);
+			if (urlClass != null) {
+				return urlClass.getConstructor(Parameters.class, Parameters.class).newInstance(params, session.getParams());
+			}
+		} catch (final IllegalArgumentException e) {
+			Log.web().error("IllegalArgument calling url constructor.", e);
+		} catch (final SecurityException e) {
+			Log.web().error("SecurityException calling url constructor.", e);
+		} catch (final InstantiationException e) {
+			Log.web().error("InstantiationException calling url constructor.", e);
+		} catch (final IllegalAccessException e) {
+			Log.web().error("IllegalAccessException calling url constructor.", e);
+		} catch (final InvocationTargetException e) {
+			Log.web().error("InvocationTargetException calling url constructor.", e);
+		} catch (final NoSuchMethodException e) {
+			Log.web().error("NoSuchMethodException calling url constructor.", e);
+		}
+		return null;
+	}
 
-    /**
-     * Return the session for the user. Either an existing session or a new session.
-     * 
-     * @param query the complet query string
-     * @return the session matching the user
-     */
-    private Session findSession(final Map<String, String> query) {
-        Session sess = null;
+	/**
+	 * Return the session for the user. Either an existing session or a new session.
+	 * @param query the complete query string
+	 * @return the session matching the user
+	 */
+	private Session findSession(final Map<String, String> query) {
+		Session sess = null;
 
-        if (cookies.containsKey("session_key")) {
-            sess = SessionManager.getByKey(cookies.get("session_key"));
-        }
-        if (sess == null) {
-            sess = SessionManager.createSession(browserLocaleHeuristic());
-        }
-        return sess;
-    }
-    
-    /**
-     * <p>Finds the dominant Locale for the user based on the browser transmitted parameters</p>
-     * 
-     * <p>This method use preferences based on data transmitted by browser, but will always try 
-     * to fetch a locale with a language and a country.</p>
-     * <p> Cases are :
-     * <li>The favorite locale has language and country : it is the selected locale</li>
-     * <li>The favorite locale has a language but no country : will try to select another
-     * locale with the <b>same language</b></li>
-     * <li>
-     * If no locale has a country, the favorite language as of browser
-     * preference will be used, and country will be set as US. If no language is set, the locale
-     * will be set using DEFAULT_LOCALE (currently en_US).</p>
-     * @return the favorite user locale
-     */
-    private Locale browserLocaleHeuristic(){
-    	Locale currentLocale = null;
-    	float currentWeigth = 0;
-    	Locale favLanguage = null;
-    	float favLanguageWeigth = 0;
-    	Locale favCountry = null;
-    	float favCountryWeigth = 0;
-    	
-    	for(String lang : preferredLangs){
-            String[] favLangs = lang.split(";");
-            
-            float weigth;
-            if(favLangs.length > 1){
-            	weigth = new Float(favLangs[1].substring("q=".length()));
-            } else {
-            	weigth = 1;
-            }
-            
-            Locale l = new Locale(favLangs[0]);
-            
-            if(!l.getLanguage().isEmpty() && l.getCountry().isEmpty()){
-            	// New FavoriteLanguage
-            	if(favLanguageWeigth < weigth){
-            		favLanguageWeigth = weigth;
-            		favLanguage = l;
-            	}
-            }
+		if (cookies.containsKey("session_key")) {
+			sess = SessionManager.getByKey(cookies.get("session_key"));
+		}
+		if (sess == null) {
+			sess = SessionManager.createSession();
+		}
+		return sess;
+	}
 
-            if(!l.getLanguage().isEmpty() && !l.getCountry().isEmpty()){
-            	// New currentLocale
-            	if(currentWeigth < weigth ){
-            		currentWeigth = weigth;
-            		currentLocale = l;
-            	}
-            }
-            
-            if(l.getLanguage().isEmpty() && !l.getCountry().isEmpty()){
-            	// New currentCountry
-            	if(favCountryWeigth < weigth ){
-            		favCountryWeigth = weigth;
-            		favCountry = l;
-            	}
-            }
-        }
-    	
-    	if(currentLocale == null && favLanguage == null){
-    		return DEFAULT_LOCALE;
-    	}
-    	
-    	if(currentLocale != null && favLanguage == null){
-    		return currentLocale;
-    	}
-    	
-    	if(currentLocale == null && favLanguage != null){
-    		if(favCountry == null){
-    			favCountry = Locale.US;
-    		}
-    		return new Locale(favLanguage.getLanguage(), favCountry.getCountry());
-    	}
-    	
-    	// Case where both CurrentLocale != null && FavLanguage != null
-    	return currentLocale;
-    }
+	private Parameters parseQueryString(final String queryString) {
+		final Parameters parameters = new Parameters();
 
-    private Language userLocale(final Map<String, String> query) {
-        final Language language = new Language();
+		if (queryString != null) {
+			final String[] splitted = strip(queryString, '/').split("/");
 
-        if (query.containsKey("lang")) {
-            if (query.get("lang").equals("default")) {
-                language.findPrefered(preferredLangs);
-            } else {
-                language.setCode(query.get("lang"));
-            }
-        }
-        return language;
-    }
+			int i = 0;
 
-    private Parameters parseQueryString(final String queryString) {
-        final Parameters parameters = new Parameters();
+			// Parsing, finding page parameters
+			while (i < splitted.length) {
+				if (splitted[i].contains("-")) {
+					final String[] p = splitted[i].split("-", 2);
+					parameters.put(p[0], p[1]);
+				}
+				i = i + 1;
+			}
+		}
+		return parameters;
+	}
 
-        if (queryString != null) {
-            final String[] splitted = strip(queryString, '/').split("/");
-
-            int i = 0;
-
-            // Parsing, finding page parameters
-            while (i < splitted.length) {
-                if (splitted[i].contains("-")) {
-                    final String[] p = splitted[i].split("-", 2);
-                    parameters.put(p[0], p[1]);
-                }
-                i = i + 1;
-            }
-        }
-        return parameters;
-    }
-
-    private static String strip(final String string, final char stripped) {
-        int begin = 0;
-        while (string.charAt(begin) == stripped) {
-            begin++;
-        }
-        int end = string.length() - 1;
-        while (string.charAt(end) == stripped) {
-            end--;
-        }
-        return string.substring(begin, end + 1);
-    }
+	private static String strip(final String string, final char stripped) {
+		int begin = 0;
+		while (string.charAt(begin) == stripped) {
+			begin++;
+		}
+		int end = string.length() - 1;
+		while (string.charAt(end) == stripped) {
+			end--;
+		}
+		return string.substring(begin, end + 1);
+	}
 }

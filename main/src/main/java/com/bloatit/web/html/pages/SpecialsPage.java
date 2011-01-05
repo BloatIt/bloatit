@@ -17,6 +17,7 @@ import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.MembersListPageUrl;
 import com.bloatit.web.utils.url.SpecialsPageUrl;
 
@@ -30,12 +31,12 @@ public class SpecialsPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Special pages"), 2);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Special pages"), 2);
         pageTitle.setCssClass("page_title");
 
         final HtmlList pageList = new HtmlList();
 
-        final HtmlLink memeHtmlLink = new MembersListPageUrl().getHtmlLink(session.tr("Members list"));
+        final HtmlLink memeHtmlLink = new MembersListPageUrl().getHtmlLink(Context.tr("Members list"));
 
         pageList.add(memeHtmlLink);
 

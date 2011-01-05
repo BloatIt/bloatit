@@ -21,10 +21,10 @@ public class SessionManager {
 
     private static HashMap<String, Session> activeSessions = new HashMap<String, Session>();
 
-    public static Session createSession(Locale locale) throws FatalErrorException {
+    public static Session createSession() throws FatalErrorException {
 
         final String key = CryptoTools.generateKey();
-        final Session session = new Session(key, locale);
+        final Session session = new Session(key);
         activeSessions.put(key, session);
         return session;
     }

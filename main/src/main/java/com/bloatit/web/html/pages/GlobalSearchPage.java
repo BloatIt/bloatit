@@ -10,7 +10,8 @@
  */
 package com.bloatit.web.html.pages;
 
-import com.bloatit.common.PageIterable;
+import com.bloatit.common.PageIterable;import com.bloatit.web.server.Context;
+
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.annotations.PageComponent;
@@ -50,7 +51,7 @@ public class GlobalSearchPage extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(session.tr("Search result"), 2);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Search result"), 2);
 
         pageTitle.add(generateSearchBlock());
 
@@ -92,7 +93,7 @@ public class GlobalSearchPage extends Page {
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
-        final HtmlButton searchButton = new HtmlButton(session.tr("Search"));
+        final HtmlButton searchButton = new HtmlButton(Context.tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);

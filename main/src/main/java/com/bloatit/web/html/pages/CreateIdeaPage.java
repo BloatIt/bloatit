@@ -10,7 +10,8 @@
  */
 package com.bloatit.web.html.pages;
 
-import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.managers.DemandManager;import com.bloatit.web.server.Context;
+
 import com.bloatit.web.actions.CreateIdeaAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -70,31 +71,31 @@ public class CreateIdeaPage extends LoggedPage {
     }
 
     private HtmlElement generateIdeaCreationForm() {
-        HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(session.tr("Create a new idea"), 1);
+        HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(Context.tr("Create a new idea"), 1);
         final CreateIdeaActionUrl doCreateUrl = new CreateIdeaActionUrl();
 
         // Create the form stub
         HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
-        HtmlFormBlock specifBlock = new HtmlFormBlock(session.tr("Specify the new idea"));
-        HtmlFormBlock paramBlock = new HtmlFormBlock(session.tr("Parameters of the new idea"));
+        HtmlFormBlock specifBlock = new HtmlFormBlock(Context.tr("Specify the new idea"));
+        HtmlFormBlock paramBlock = new HtmlFormBlock(Context.tr("Parameters of the new idea"));
 
         createIdeaTitle.add(createIdeaForm);
         createIdeaForm.add(specifBlock);
         createIdeaForm.add(paramBlock);
-        createIdeaForm.add(new HtmlSubmit(session.tr("submit")));
+        createIdeaForm.add(new HtmlSubmit(Context.tr("submit")));
 
         // Create the fields that will describe the specification of the idea (description & specification)
-        HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, session.tr("Title"));
-        HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, session.tr("Describe the idea"), 10, 80);
+        HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, Context.tr("Title"));
+        HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, Context.tr("Describe the idea"), 10, 80);
         specifBlock.add(descriptionInput);
         specifBlock.add(specificationInput);
 
         // Create the fields that will be used to describe the parameters of the idea (project ...)
-        HtmlDropDown languageInput = new HtmlDropDown(CreateIdeaAction.LANGUAGE_CODE, session.tr("Language"));
+        HtmlDropDown languageInput = new HtmlDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
         languageInput.add(session.getLocale().getDisplayLanguage(), session.getLocale().getLanguage());
         
-        HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, session.tr("Category"));
-        HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, session.tr("Project"));
+        HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, Context.tr("Category"));
+        HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, Context.tr("Project"));
         paramBlock.add(languageInput);
         paramBlock.add(categoryInput);
         paramBlock.add(projectInput);
@@ -112,6 +113,6 @@ public class CreateIdeaPage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return session.tr("You must be logged to create a new idea.");
+        return Context.tr("You must be logged to create a new idea.");
     }
 }

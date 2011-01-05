@@ -27,6 +27,7 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
@@ -60,7 +61,7 @@ public class OfferPage extends LoggedPage {
 
     @Override
     protected String getTitle() {
-        return session.tr("Make an offer");
+        return Context.tr("Make an offer");
     }
 
     @Override
@@ -70,12 +71,12 @@ public class OfferPage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return session.tr("You must be logged to make an offer");
+        return Context.tr("You must be logged to make an offer");
     }
 
     @Override
     public HtmlElement createRestrictedContent() {
-        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(this.session.tr("Make an offer"), 2);
+        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 2);
 
         // Create offer form
         final OfferActionUrl offerActionUrl = new OfferActionUrl(targetIdea);
@@ -86,25 +87,25 @@ public class OfferPage extends LoggedPage {
         offerPageContainer.add(t);
 
         // Title field
-        final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, this.session.tr("Add a title to the offer : "));
+        final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, Context.tr("Add a title to the offer : "));
         titleField.setDefaultValue(title);
         offerForm.add(titleField);
 
         // Price field
-        final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, this.session.tr("Offer price : "));
+        final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, Context.tr("Offer price : "));
         if(price!=null) priceField.setDefaultValue(price.toPlainString());
         offerForm.add(priceField);
 
         // Date field
-        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, this.session.tr("Expiration date : "));
+        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, Context.tr("Expiration date : "));
         dateField.setDefaultValue(expiryDate);
         offerForm.add(dateField);
 
-        final HtmlTextArea descriptionField = new HtmlTextArea(OfferAction.DESCRIPTION_CODE, this.session.tr("Enter the description of the offer : "), 10, 20);
+        final HtmlTextArea descriptionField = new HtmlTextArea(OfferAction.DESCRIPTION_CODE, Context.tr("Enter the description of the offer : "), 10, 20);
         descriptionField.setDefaultValue(description);
         offerForm.add(descriptionField);
 
-        final HtmlSubmit offerButton = new HtmlSubmit(session.tr("Make an offer"));
+        final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Make an offer"));
         offerForm.add(offerButton);
 
         offerPageContainer.add(offerForm);

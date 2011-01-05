@@ -43,7 +43,7 @@ public class IdeaTabPane extends HtmlPageComponent {
         final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_key", activeTabKey, demandUrl);
 
         // Create description tab
-        tabPane.addTab(new HtmlTab(session.tr("Description"), "description_tab") {
+        tabPane.addTab(new HtmlTab(Context.tr("Description"), "description_tab") {
             @Override
             public HtmlNode generateBody() {
                 return new IdeaDescriptionComponent(demand);
@@ -51,7 +51,7 @@ public class IdeaTabPane extends HtmlPageComponent {
         });
 
         // Create participations tab
-        tabPane.addTab(new HtmlTab(session.tr("Participations"), "participations_tab") {
+        tabPane.addTab(new HtmlTab(Context.tr("Participations"), "participations_tab") {
             @Override
             public HtmlNode generateBody() {
                 return contribution = new IdeaContributorsComponent(url.getContributionUrl(), demand);
@@ -59,7 +59,7 @@ public class IdeaTabPane extends HtmlPageComponent {
         });
 
         // Create Comments tab
-        tabPane.addTab(new HtmlTab(session.tr("Offers"), "offer_tab") {
+        tabPane.addTab(new HtmlTab(Context.tr("Offers"), "offer_tab") {
             @Override
             public HtmlNode generateBody() {
                 return new IdeaOfferListComponent(demand);
