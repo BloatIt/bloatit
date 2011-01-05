@@ -114,34 +114,6 @@ public final class DateLocale {
         this.dateString = formatter.format(javaDate);
     }
 
-
-    /**
-     * <p>
-     * Modifies the date.
-     * </p>
-     * <p>
-     * This method is provided for efficiency only. Clean usage should involve creating a
-     * new object for every dates
-     * </p>
-     * 
-     * @param dateString the String representing the new date value
-     * @throws DateParsingException When dateString doesn't contain a String that matches
-     *         the current user locale
-     */
-    public void setDate(final String dateString) throws DateParsingException {
-        try {
-            this.dateString = dateString;
-            parseDate();
-        } catch (final DateParsingException e) {
-            // Leave the object in its previous state
-            throw new DateParsingException();
-        }
-    }
-
-    public void setDate(final Date javaDate) {
-        this.javaDate = javaDate;
-    }
-
     /**
      * @return the date as a Java Date object
      */

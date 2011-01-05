@@ -59,8 +59,7 @@ public class HtmlTools {
         if (abs_karma < 1000) {
             result = cutNumber(abs_karma.toString());
         } else if (abs_karma < 1000000d) {
-            result = cutNumber(new Double(abs_karma / 1000d).toString()) + "k";
-            // TODO why not 'K' ?
+            result = cutNumber(new Double(abs_karma / 1000d).toString()) + "K";
         } else if (abs_karma < 1000000000d) {
             result = cutNumber(new Double(abs_karma / 1000000d).toString()) + "M";
 

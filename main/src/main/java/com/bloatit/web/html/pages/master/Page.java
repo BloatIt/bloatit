@@ -118,8 +118,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     protected void setPageNotFound() {
-        // TODO translate
-        content.add(new HtmlDiv().setCssClass("not_found").addText("Page Not Found !"));
+        content.add(new HtmlDiv().setCssClass("not_found").addText(Context.tr("Page Not Found !")));
     }
 
     protected void addNotification(final HtmlNotification note) {

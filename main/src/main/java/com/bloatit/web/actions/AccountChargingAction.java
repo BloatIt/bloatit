@@ -43,7 +43,7 @@ public class AccountChargingAction extends Action {
     @Override
     protected Url doProcess() throws RedirectException {
         if (url.getMessages().hasMessage(Level.ERROR)) {
-            // TODO
+            session.notifyList(url.getMessages());
             throw new RedirectException(new IndexPageUrl());
         }
         final Member targetMember = session.getAuthToken().getMember();

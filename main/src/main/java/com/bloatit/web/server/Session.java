@@ -133,7 +133,7 @@ public class Session {
 	}
 
 	/**
-	 * Notifies all elements in a list as warnings TODO : DELETE, for test purposes only
+	 * Notifies all elements in a list as warnings
 	 */
 	public void notifyList(final List<Message> errors) {
 		for (final Message error : errors) {
