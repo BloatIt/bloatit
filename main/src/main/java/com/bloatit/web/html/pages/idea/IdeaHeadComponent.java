@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 
 import com.bloatit.common.Image;
 import com.bloatit.framework.Demand;
+import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
@@ -56,12 +57,11 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 			{
 
 				final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-				karmaBlock.add(new HtmlParagraph("" + idea.getPopularity()));
+				karmaBlock.add(new HtmlKudoBlock(idea, Context.getSession()));
 
 				leftBlock.add(karmaBlock);
 
 			}
-			// ideaLinkBlock.add(leftBlock);
 			ideaBlock.add(leftBlock);
 
 			final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
@@ -138,14 +138,23 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 				
 
 			}
-			// ideaLinkBlock.add(centerBlock);
 			ideaBlock.add(centerBlock);
 
+			final HtmlDiv actionBlock = new HtmlDiv("idea_summary_action");
+			{
+
+				
+				actionBlock.add(new IdeaContributeButtonComponent(idea));
+				actionBlock.add(new IdeaMakeOfferButtonComponent(idea));
+
+			}
+			ideaBlock.add(actionBlock);
+			
+			
 			final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
 			{
 				rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
 			}
-			// ideaLinkBlock.add(rightBlock);
 			ideaBlock.add(rightBlock);
 		}
 		
