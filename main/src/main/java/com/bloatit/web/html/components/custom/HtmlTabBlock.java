@@ -67,7 +67,12 @@ public class HtmlTabBlock extends HtmlDiv {
 
         tablinks.addParameter(tabBlockKey, tab.getTabKey());
 
-        tabTitle.add(tablinks.getHtmlLink(div));
+        if(active) {
+        	tabTitle.add(div);
+        } else {
+        	tabTitle.add(tablinks.getHtmlLink(div));
+        }
+        
     }
 
     public abstract static class HtmlTab {
