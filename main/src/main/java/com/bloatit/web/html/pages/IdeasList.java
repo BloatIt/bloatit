@@ -11,7 +11,6 @@
 package com.bloatit.web.html.pages;
 
 //import java.util.Random;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -134,8 +133,7 @@ public class IdeasList extends Page {
 					final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(linkTitle, 3);
 					{
 
-						final Session session = Context.getSession();
-				        final Locale defaultLocale = Context.getLocalizator().getLocale();
+						final Locale defaultLocale = Context.getLocalizator().getLocale();
 						final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
 						String shortDescription = translatedDescription.getText();
 
@@ -144,7 +142,7 @@ public class IdeasList extends Page {
 							shortDescription = shortDescription.substring(0, 143) + " ...";
 						}
 						
-						final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(shortDescription);
+						final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(shortDescription));
 						linkText.setCssClass("idea_link_text");
 
 						ideaTitle.add(linkText);
