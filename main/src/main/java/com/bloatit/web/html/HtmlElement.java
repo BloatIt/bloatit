@@ -46,16 +46,16 @@ public abstract class HtmlElement extends HtmlNode {
     /**
      * <p>
      * Sets the id of the html element :
-     * 
+     *
      * <pre>
      * <element id="..." />
      * </pre>
-     * 
+     *
      * </p>
      * <p>
      * Shortcut to element.addAttribute("id",value)
      * </p>
-     * 
+     *
      * @param id the value of the id
      * @return the element
      */
@@ -66,19 +66,22 @@ public abstract class HtmlElement extends HtmlNode {
 
     /**
      * Finds the id of the element
-     * 
+     *
      * <pre>
      * <element id="value" />
      * </pre>
-     * 
+     *
      * @return The value contained in the attribute id of the element
      */
     public String getId() {
         if (tag != null) {
             return this.tag.getId();
-        } else {
-            return null;
         }
+        return null;
+    }
+
+    public boolean hasChild() {
+        return iterator().hasNext();
     }
 
     /**
@@ -86,7 +89,7 @@ public abstract class HtmlElement extends HtmlNode {
      * <p>
      * Shortcut for element.addattribute("class",cssClass)
      * </p>
-     * 
+     *
      * @param cssClass
      * @return
      */
@@ -103,30 +106,7 @@ public abstract class HtmlElement extends HtmlNode {
     @Override
     public final void write(final Text txt) {
         if (tag != null) {
-            if (!selfClosable() || iterator().hasNext()) {
-                if (children.size() == 1 && children.get(0).getClass().equals(HtmlText.class)) {
-                    // HACK to write html on a single line, when the element
-                    // only contains a single HtmlText (and nothing else)
-                    String tagString = tag.getOpenTag();
-                    tagString += ((HtmlText) children.get(0))._getContent();
-                    tagString += tag.getCloseTag();
-                    txt.writeLine(tagString);
-                } else if (children.isEmpty()) {
-                    String tagString = tag.getOpenTag();
-                    tagString += tag.getCloseTag();
-                    txt.writeLine(tagString);
-                } else {
-                    txt.writeLine(tag.getOpenTag());
-                    for (final HtmlNode html : this) {
-                        txt.indent();
-                        html.write(txt);
-                        txt.unindent();
-                    }
-                    txt.writeLine(tag.getCloseTag());
-                }
-            } else {
-                txt.writeLine(tag.getClosedTag());
-            }
+            writeTagAndOffspring(txt);
         } else {
             for (final HtmlNode html : this) {
                 html.write(txt);
@@ -134,8 +114,29 @@ public abstract class HtmlElement extends HtmlNode {
         }
     }
 
+    private void writeTagAndOffspring(final Text txt) {
+        if (selfClosable() && !hasChild()) {
+            txt.writeNewLineChar();
+            txt.writeIndentation();
+            txt.writeRawText(tag.getClosedTag());
+            txt.writeNewLineChar();
+            txt.writeIndentation();
+        } else {
+            txt.indent();
+            txt.writeNewLineChar();
+            txt.writeIndentation();
+            txt.writeRawText(tag.getOpenTag());
+            for (final HtmlNode html : this) {
+                html.write(txt);
+            }
+            txt.unindent();
+            txt.writeLine(tag.getCloseTag());
+            txt.writeIndentation();
+        }
+    }
+
     /**
-     * Indicates wether the tag is self closed or not
+     * Indicates whether the tag is self closed or not
      */
     public abstract boolean selfClosable();
 }

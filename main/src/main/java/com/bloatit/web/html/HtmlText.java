@@ -19,7 +19,7 @@ public class HtmlText extends HtmlNode {
 
     /**
      * Creates a component to add raw Html to a page
-     * 
+     *
      * @param content the Html string to add
      */
     public HtmlText(final String content) {
@@ -42,6 +42,6 @@ public class HtmlText extends HtmlNode {
 
     @Override
     public final void write(final Text txt) {
-        txt.writeLine(content);
+        txt.writeRawText(content);
     }
 }
