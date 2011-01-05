@@ -18,6 +18,7 @@ import com.bloatit.common.FatalErrorException;
 import com.bloatit.framework.Member;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.PropertyLoader;
+import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
 
 /**
  * <p>
@@ -256,8 +257,17 @@ public class Localizator {
 	 * format, i.e. : dd/mm/yyyy if locale is french, or mm/dd/yyyy if locale is english.
 	 * @return a String representing the date pattern
 	 */
-	public String getDatePattern() {
-		return DateLocale.getPattern(Context.getLocalizator().getLocale());
+	public String getShortDatePattern() {
+		return DateLocale.getPattern(locale);
+	}
+	
+	/**
+	 * Gets the date pattern that matches the current user language in any format
+	 * @param format the format
+	 * @return the date pattern
+	 */
+	public String getDatePattern(FormatStyle format){
+		return DateLocale.getPattern(locale, format);
 	}
 	
 	/**

@@ -63,7 +63,6 @@ public final class DateLocale {
     private Date javaDate;
     private String dateString;
     private final Locale locale;
-    private FormatStyle style = FormatStyle.SHORT;
     private final DateFormat formatter;
 
     /**
@@ -94,25 +93,9 @@ public final class DateLocale {
      *         the current user locale
      */
     public DateLocale(final String dateString, final Locale locale) throws DateParsingException {
-        this(dateString, locale, FormatStyle.SHORT);
-    }
-
-    /**
-     * <p>
-     * Creates a BloatItDate based on a string and a locale
-     * </p>
-     * 
-     * @param dateString the String description of the date (in Short format)
-     * @param locale the user locale to determine date order
-     * @param style the style of the date (aka SHORT, LONG, MEDIUM or FULL)
-     * @throws DateParsingException When dateString doesn't contain a String that matches
-     *         the current user locale
-     */
-    public DateLocale(final String dateString, final Locale locale, final FormatStyle style) throws DateParsingException {
-        this.dateString = dateString;
+    	this.dateString = dateString;
         this.locale = locale;
-        this.style = style;
-        this.formatter = DateFormat.getDateInstance(this.getJavaStyle(), locale);
+        this.formatter = DateFormat.getDateInstance(getJavaStyle(FormatStyle.SHORT), locale);
         parseDate();
     }
 
@@ -125,25 +108,12 @@ public final class DateLocale {
      * @param locale the locale for the date
      */
     public DateLocale(final Date javaDate, final Locale locale) {
-        this(javaDate, locale, FormatStyle.SHORT);
-    }
-
-    /**
-     * <p>
-     * Creates a BloatItDate based on a java Date
-     * </p>
-     * 
-     * @param javaDate the Date to convert
-     * @param locale the locale for the date
-     * @param style the style of the date
-     */
-    public DateLocale(final Date javaDate, final Locale locale, final FormatStyle style) {
         this.locale = locale;
         this.javaDate = javaDate;
-        this.style = style;
-        this.formatter = DateFormat.getTimeInstance(this.getJavaStyle(), locale);
+        this.formatter = DateFormat.getTimeInstance(getJavaStyle(FormatStyle.SHORT), locale);
         this.dateString = formatter.format(javaDate);
     }
+
 
     /**
      * <p>
@@ -215,16 +185,6 @@ public final class DateLocale {
         }
     }
 
-    /**
-     * <p>
-     * Converts this.style into a style usable by the Java DateFormat Object
-     * </p>
-     * 
-     * @return the converted style
-     */
-    private int getJavaStyle() {
-        return getJavaStyle(this.style);
-    }
 
     /**
      * <p>
@@ -253,8 +213,8 @@ public final class DateLocale {
      * 
      * @return
      */
-    public String getPattern() {
-        return DateLocale.getPattern(this.locale, this.style);
+    public String getPattern(FormatStyle style) {
+        return DateLocale.getPattern(this.locale, style);
     }
 
     /**
