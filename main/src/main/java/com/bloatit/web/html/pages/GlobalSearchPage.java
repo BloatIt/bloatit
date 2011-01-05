@@ -10,8 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
-import com.bloatit.common.PageIterable;import com.bloatit.web.server.Context;
-
+import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.annotations.PageComponent;
@@ -27,6 +26,7 @@ import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 

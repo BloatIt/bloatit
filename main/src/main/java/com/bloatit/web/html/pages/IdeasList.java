@@ -19,7 +19,6 @@ import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;

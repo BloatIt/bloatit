@@ -10,8 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
-import com.bloatit.framework.managers.DemandManager;import com.bloatit.web.server.Context;
-
+import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.CreateIdeaAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -26,6 +25,7 @@ import com.bloatit.web.html.components.standard.form.HtmlFormBlock;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 

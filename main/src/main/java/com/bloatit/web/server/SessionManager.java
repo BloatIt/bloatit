@@ -11,7 +11,6 @@
 package com.bloatit.web.server;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 import com.bloatit.common.CryptoTools;
 import com.bloatit.common.FatalErrorException;

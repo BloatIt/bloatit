@@ -10,10 +10,10 @@
  */
 package com.bloatit.web.html;
 
-import java.text.SimpleDateFormat;import com.bloatit.web.server.Context;
-
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 
 public class HtmlTools {

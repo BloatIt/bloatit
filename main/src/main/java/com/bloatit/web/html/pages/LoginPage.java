@@ -10,8 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
-import com.bloatit.web.actions.LoginAction;import com.bloatit.web.server.Context;
-
+import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
@@ -22,6 +21,7 @@ import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;

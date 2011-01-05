@@ -13,8 +13,6 @@ package com.bloatit.web.html.components;
 
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.Translatable;
-import com.bloatit.web.utils.TranslationManipulator;
 
 public class HtmlString {
 

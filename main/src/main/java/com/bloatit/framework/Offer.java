@@ -5,7 +5,6 @@ import java.util.Date;
 
 import com.bloatit.framework.right.OfferRight;
 import com.bloatit.framework.right.RightManager.Action;
-import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
 

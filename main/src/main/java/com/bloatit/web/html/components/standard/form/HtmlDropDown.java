@@ -19,11 +19,12 @@
 
 package com.bloatit.web.html.components.standard.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>Class to handle Html drop down boxes (aka Html select).</p>

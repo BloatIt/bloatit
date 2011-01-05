@@ -10,6 +10,9 @@
  */
 package com.bloatit.web.actions;
 
+import java.math.BigDecimal;
+import java.util.Locale;
+
 import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -18,8 +21,6 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
-import java.math.BigDecimal;
-import java.util.Locale;
 
 @ParamContainer("action/offer")
 public class OfferAction extends Action {
