@@ -1,5 +1,7 @@
-package com.bloatit.web.annotations;
+package com.bloatit.web.annotations.generator;
 
+import com.bloatit.web.annotations.Message;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 
