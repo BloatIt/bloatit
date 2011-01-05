@@ -139,6 +139,7 @@ public class IdeasList extends Page {
 						String shortDescription = translatedDescription.getText();
 
 						if(shortDescription.length() > 144) {
+							//TODO create a tools to truncate less dirty
 							shortDescription = shortDescription.substring(0, 143) + " ...";
 						}
 						
