@@ -147,9 +147,7 @@ public class IdeasList extends Page {
 									"span");
 							amount.setCssClass("important");
 
-							CurrencyLocale currency = new CurrencyLocale(
-									idea.getContribution(), Context
-											.getSession().getLocale());
+							CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
 							
 
 							amount.addText(currency.getDefaultString());
@@ -166,11 +164,11 @@ public class IdeasList extends Page {
 
 							CurrencyLocale amountCurrency = new CurrencyLocale(
 									idea.getContribution(), Context
-											.getSession().getLocale());
+											.getLocalizator().getLocale());
 							
 							CurrencyLocale targetCurrency = new CurrencyLocale(
 									idea.getCurrentOffer().getAmount() , Context
-											.getSession().getLocale());
+											.getLocalizator().getLocale());
 							
 
 							HtmlGenericElement amount = new HtmlGenericElement(

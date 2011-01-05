@@ -203,11 +203,4 @@ public class Session {
 	public String getDatePattern() {
 		return DateLocale.getPattern(Context.getLocalizator().getLocale());
 	}
-
-	/**
-	 * @return
-	 */
-	public Locale getLocale() {
-		return Context.getLocalizator().getLocale();
-	}
 }

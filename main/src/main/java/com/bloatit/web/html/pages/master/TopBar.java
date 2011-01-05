@@ -47,10 +47,10 @@ public class TopBar extends HtmlDiv {
             final InternalAccount internalAccount = member.getInternalAccount();
             internalAccount.authenticate(session.getAuthToken());
             
-            if(!CurrencyLocale.availableCurrency(session.getLocale())){
+            if(!CurrencyLocale.availableCurrency(Context.getLocalizator().getLocale())){
             	
             }
-            CurrencyLocale cl = new CurrencyLocale(internalAccount.getAmount(), session.getLocale());
+            CurrencyLocale cl = new CurrencyLocale(internalAccount.getAmount(), Context.getLocalizator().getLocale());
             euroMoney.add(new HtmlText(cl.getDefaultString()));
 
             final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);

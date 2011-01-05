@@ -253,7 +253,7 @@ public class Localizator {
 	private Locale inferLocale() {
 		Locale locale = null;
 
-		if (urlLang != null || urlLang.equals("default")) {
+		if (urlLang != null && !urlLang.equals("default")) {
 			// Default language
 			String country;
 			if (Context.getSession().getAuthToken() != null) {
