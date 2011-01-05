@@ -14,6 +14,7 @@ body {
     //background-color: @default_background_color;
     .vertical-gradient(rgb(230,230,230), rgb(250,250,250));
     
+    overflow-y:scroll;
     
     font-size:0.9em;
     .no_insets;
@@ -46,7 +47,7 @@ body {
     background-color: rgb(252,252,252);
     //background-color: rgb(253,253,254);
     border: 1px solid rgb(200,200,200);
-    -moz-box-shadow: (@default_shadow_thickness - 1) 0 @default_shadow_thickness rgb(100,100,100);
+    -moz-box-shadow: (@default_shadow_thickness * -1 - 1) 0 @default_shadow_thickness rgb(100,100,100);
     -webkit-box-shadow:0 0 @default_shadow_thickness rgb(100,100,100);
     
     padding: 0px;
