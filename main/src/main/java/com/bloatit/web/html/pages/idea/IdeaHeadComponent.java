@@ -21,13 +21,10 @@ import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;
-import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
-import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
-import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 
 public class IdeaHeadComponent extends HtmlPageComponent {

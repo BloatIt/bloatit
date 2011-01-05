@@ -18,7 +18,6 @@ import com.bloatit.web.html.components.custom.HtmlTabBlock;
 import com.bloatit.web.html.components.custom.HtmlTabBlock.HtmlTab;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeaTabPaneUrl;
 
@@ -34,7 +33,6 @@ public class IdeaTabPane extends HtmlPageComponent {
     public IdeaTabPane(final IdeaTabPaneUrl url, final Demand demand) {
         super();
         activeTabKey = url.getActiveTabKey();
-        final Session session = Context.getSession();
 
         final IdeaPageUrl demandUrl = new IdeaPageUrl(demand);
         demandUrl.setDemandTabPaneUrl(url);

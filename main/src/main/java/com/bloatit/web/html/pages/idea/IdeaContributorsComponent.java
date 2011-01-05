@@ -22,7 +22,6 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.IdeaContributorsComponentUrl;
 
 @ParamContainer(value = "DemandContributorsComponent", isComponent = true)
@@ -44,7 +43,6 @@ public class IdeaContributorsComponent extends HtmlDiv {
     }
 
     protected HtmlElement produce(IdeaContributorsComponentUrl url) {
-        final Session session = Context.getSession();
         final HtmlDiv contributorsBlock = new HtmlDiv("contributors_block");
         {
 
@@ -73,7 +71,6 @@ public class IdeaContributorsComponent extends HtmlDiv {
 
     protected void extractData() {
 
-        final Session session = Context.getSession();
         contributionCount = demand.getContributions().size();
 
         if (contributionCount > 0) {

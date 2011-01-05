@@ -31,7 +31,6 @@ import com.bloatit.web.utils.i18n.Localizator;
 import com.bloatit.web.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;
-import com.sun.tools.internal.xjc.Language;
 
 @ParamContainer("member/create")
 public class RegisterPage extends Page {
@@ -45,9 +44,11 @@ public class RegisterPage extends Page {
     @RequestParam(name = RegisterAction.EMAIL_CODE, defaultValue="", role = Role.SESSION)
     private final String email;
     
+    @SuppressWarnings("unused")
     @RequestParam(name = RegisterAction.COUNTRY_CODE, defaultValue="", role = Role.SESSION)
     private final String country;
     
+    @SuppressWarnings("unused")
     @RequestParam(name = RegisterAction.LANGUAGE_CODE, defaultValue="", role = Role.SESSION)
     private final String lang;
 

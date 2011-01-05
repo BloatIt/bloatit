@@ -17,7 +17,6 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.ContributePageUrl;
 
 public class IdeaContributeButtonComponent extends HtmlPageComponent {
@@ -33,8 +32,6 @@ public class IdeaContributeButtonComponent extends HtmlPageComponent {
     protected HtmlElement produce() {
         final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
         {
-            final Session session = Context.getSession();
-
             final HtmlForm contributeForm = new HtmlForm(new ContributePageUrl(demand).urlString());
             {
                 // Add button

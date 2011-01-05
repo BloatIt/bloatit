@@ -34,7 +34,6 @@ import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
