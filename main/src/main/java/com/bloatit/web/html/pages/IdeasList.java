@@ -135,7 +135,7 @@ public class IdeasList extends Page {
 					{
 
 						final Session session = Context.getSession();
-				        final Locale defaultLocale = session.getLocale();
+				        final Locale defaultLocale = Context.getLocalizator().getLocale();
 						final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
 						String shortDescription = translatedDescription.getText();
 
