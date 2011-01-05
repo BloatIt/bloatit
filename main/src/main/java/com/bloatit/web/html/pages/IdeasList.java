@@ -34,7 +34,6 @@ import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
@@ -161,7 +160,7 @@ public class IdeasList extends Page {
 							HtmlGenericElement amount = new HtmlGenericElement("span");
 							amount.setCssClass("important");
 
-							CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
+							CurrencyLocale currency = Context.getLocalizator().getCurrency(idea.getContribution());
 							
 
 							amount.addText(currency.getDefaultString());
@@ -177,13 +176,13 @@ public class IdeasList extends Page {
 							ideaTitle.add(progressText);
 						} else {
 							// Amount
-							CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
+							CurrencyLocale amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
 							HtmlGenericElement amount = new HtmlGenericElement("span");
 							amount.setCssClass("important");
 							amount.addText(amountCurrency.getDefaultString());
 
 							// Target
-							CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount() , Context.getLocalizator().getLocale());
+							CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
 							HtmlGenericElement target = new HtmlGenericElement("span");
 							target.setCssClass("important");
 							target.addText(targetCurrency.getDefaultString());

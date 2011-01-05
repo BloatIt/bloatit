@@ -68,8 +68,7 @@ public class ContributionAction extends Action {
             } else {
                 // Should never happen
                 session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-                return new ContributePageUrl(targetIdea);// TODO put
-                                                                     // parameters
+                return new ContributePageUrl(targetIdea);
             }
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));

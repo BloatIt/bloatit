@@ -10,6 +10,8 @@
  */
 package com.bloatit.web.html.pages;
 
+import java.util.Map.Entry;
+
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.CreateIdeaAction;
 import com.bloatit.web.annotations.ParamContainer;
@@ -26,6 +28,8 @@ import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.i18n.Localizator;
+import com.bloatit.web.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 
@@ -49,15 +53,20 @@ public class CreateIdeaPage extends LoggedPage {
     
     public CreateIdeaPage(final CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
         super(createIdeaPageUrl);
+        this.description = createIdeaPageUrl.getDescription();
+        this.specification = createIdeaPageUrl.getSpecification();
+        this.project = createIdeaPageUrl.getProject();
+        this.category = createIdeaPageUrl.getCategory();
+        this.lang = createIdeaPageUrl.getLang();
     }
 
     @Override
-    protected String getTitle() {
+    protected final String getTitle() {
         return "Create new idea";
     }
 
     @Override
-    public boolean isStable() {
+    public final boolean isStable() {
         return false;
     }
 
@@ -86,16 +95,22 @@ public class CreateIdeaPage extends LoggedPage {
 
         // Create the fields that will describe the specification of the idea (description & specification)
         HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, Context.tr("Title"));
+        descriptionInput.setDefaultValue(description);
         HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, Context.tr("Describe the idea"), 10, 80);
+        specificationInput.setDefaultValue(specification);
         specifBlock.add(descriptionInput);
         specifBlock.add(specificationInput);
 
         // Create the fields that will be used to describe the parameters of the idea (project ...)
         HtmlDropDown languageInput = new HtmlDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
-        languageInput.add(Context.getLocalizator().getLocale().getDisplayLanguage(), Context.getLocalizator().getLocale().getLanguage());
+        for(Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet() ){
+        	languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
+        }
         
         HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, Context.tr("Category"));
+        categoryInput.setDefaultValue(category);
         HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, Context.tr("Project"));
+        projectInput.setDefaultValue(project);
         paramBlock.add(languageInput);
         paramBlock.add(categoryInput);
         paramBlock.add(projectInput);

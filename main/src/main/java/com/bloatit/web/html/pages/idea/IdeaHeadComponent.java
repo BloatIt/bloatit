@@ -21,13 +21,10 @@ import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;
-import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
-import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
-import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 
 public class IdeaHeadComponent extends HtmlPageComponent {
@@ -92,7 +89,7 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 					HtmlGenericElement amount = new HtmlGenericElement("span");
 					amount.setCssClass("important");
 
-					CurrencyLocale currency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
+					CurrencyLocale currency = Context.getLocalizator().getCurrency(idea.getContribution());
 
 					amount.addText(currency.getDefaultString());
 
@@ -108,13 +105,13 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 				} else {
 
 					// Amount
-					CurrencyLocale amountCurrency = new CurrencyLocale(idea.getContribution(), Context.getLocalizator().getLocale());
+					CurrencyLocale amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
 					HtmlGenericElement amount = new HtmlGenericElement("span");
 					amount.setCssClass("important");
 					amount.addText(amountCurrency.getDefaultString());
 
 					// Target
-					CurrencyLocale targetCurrency = new CurrencyLocale(idea.getCurrentOffer().getAmount(), Context.getLocalizator().getLocale());
+					CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
 					HtmlGenericElement target = new HtmlGenericElement("span");
 					target.setCssClass("important");
 					target.addText(targetCurrency.getDefaultString());

@@ -20,7 +20,6 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.HtmlPagedListUrl;
 import com.bloatit.web.utils.url.UrlComponent;
 
@@ -30,7 +29,6 @@ public class HtmlPagedList<T> extends HtmlList {
     private final static String CURRENT_PAGE_FIELD_NAME = "current_page";
     private final static String PAGE_SIZE_FIELD_NAME = "page_size";
 
-    private final Session session;
     private final Integer pageCount;
     private final UrlComponent currentUrl;
     private final HtmlPagedListUrl url;
@@ -46,7 +44,6 @@ public class HtmlPagedList<T> extends HtmlList {
      */
     public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final UrlComponent url2, final HtmlPagedListUrl url) {
         super();
-        this.session = Context.getSession();
         this.currentPage = url.getCurrentPage();
         this.pageSize = url.getPageSize();
         this.currentUrl = url2;
