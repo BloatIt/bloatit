@@ -15,6 +15,7 @@ import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.framework.Member;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.PropertyLoader;
@@ -370,6 +371,7 @@ public class Localizator {
 		Locale locale = null;
 
 		if (urlLang != null && !urlLang.equals("default")) {
+			
 			// Default language
 			String country;
 			if (Context.getSession().getAuthToken() != null) {
@@ -380,6 +382,19 @@ public class Localizator {
 				country = browserLocaleHeuristic().getCountry();
 			}
 			locale = new Locale(urlLang, country);
+			
+			boolean found = false;
+			for(Locale availablelocale : Locale.getAvailableLocales()) {
+				if(urlLang.equals(availablelocale.getLanguage())) {
+					found = true;
+					break;
+				}
+			}
+			
+			if(!found) {
+				Log.web().error("Strange language code "+urlLang);
+			}
+			
 		} else {
 			// Other cases
 			if (Context.getSession().getAuthToken() != null) {
