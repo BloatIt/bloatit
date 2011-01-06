@@ -37,19 +37,12 @@ public final class HtmlTextArea extends HtmlFormField<String> {
         super(new HtmlSimpleTextArea(rows, cols), name, label);
     }
 
-    /**
-     * <p>
-     * Sets the label for the object
-     * </p>
-     * <p>
-     * 
-     * @param label the label for the element
-     */
+
     @Override
-    public void setLabel(final String label) {
-        this.label = new HtmlLabel(label);
-        this.ph.add(new HtmlDiv().add(this.label));
-        checkIdLabel();
+    public void setComment(final String comment) {
+    	HtmlDiv commentBlock = new HtmlDiv("comment_after");
+    	commentBlock.addText(comment);
+    	this.commentPh.add(commentBlock);
     }
 
     @Override

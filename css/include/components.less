@@ -108,25 +108,75 @@ fieldset{
        padding:20px;
        border: none;
        border: 1px solid rgb(200,200,200);
+       
+       
 }
+
+
 
 legend {
     //border: 1px solid rgb(200,200,200);
 }
 
+
+.comment_format {
+    color: @light_text_color;
+    font-size: 0.8em;
+    
+    margin-bottom: 0.5em;
+    text-align: justify;
+    
+}
+
+.field {
+    margin:8px;
+    
+    vertical-align: middle;
+    overflow: hidden;
+    
+    .label {
+        display:table-cell;
+        width:220px;
+        min-width:220px;
+        text-align:right;
+        vertical-align: top;
+        padding-top: 2px;
+        
+    }
+    
+    .input {
+        display:table-cell;
+        
+        //width:100%;
+        
+        .comment {
+
+            float: left;
+            max-width:80%;
+            .comment_format;
+            margin-top: 3px;
+            margin-left: 0em;
+        }
+        
+        input {
+            float:left;
+            margin-right: 1em;
+        }
+        
+        .comment_after {
+            .comment_format;
+            width: 80%;    
+        }
+    }
+ 
+}
+
+
 label{
-       cursor:pointer;
-       display:block;
-       float:left;
-       font-size: 0.9em;
-       font-weight:bold;
-       //   line-height:28px;
-       
-       margin-right: 15px;
-       width:220px;
-       padding:2px;
-       text-align:right;
-       vertical-align: middle;
+    cursor:pointer;
+    font-size: 0.9em;
+    font-weight:bold;
+    margin-right: 15px;
 }
 
 input[type=text],
@@ -151,13 +201,6 @@ input[type=password]:focus{
 }
 
 
-.field {
-    margin:8px;
-    
-    vertical-align: middle;
-    overflow: hidden;
- 
-}
 
 
 select{
@@ -166,26 +209,43 @@ select{
        -webkit-box-shadow:0 0 3px #aaa;
 }
 
+
+textarea {
+    width: 80%;
+
+    background: rgba(255, 255, 255, 0.9);
+       background:-moz-linear-gradient(90deg, #fff, #fafafa); /* Firefox */
+       background:-webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#fff) ); /* Webkit */
+       border:1px solid #aaa;
+       -moz-border-radius:3px;
+       -webkit-border-radius:3px;
+       -moz-box-shadow:0 0 3px #bbb;
+       -webkit-box-shadow:0 0 3px #bbb;
+       padding:2px;
+       vertical-align: middle;
+}
+
+textarea:focus {
+       border-color:#093c75;
+       -moz-box-shadow:0 0 3px #0459b7;
+       -webkit-box-shadow:0 0 3px #0459b7;
+       outline:none; /* Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome */
+
+}
+
 input[type=submit],
 a.submit{
        background:#ddd;
        
-       //#0459b7, #08adff
-       .horizontal-gradient(#0459b7, #08adff);
        .horizontal-gradient(@default_link_color * 1.1,  @default_link_color * 1.4);
-       //.horizontal-gradient(#DDD, #EEE);
-       //#0459b7, #08adff
        
        border:1px solid @default_link_color;
-       //border:1px solid #CCC;
        -moz-border-radius:3px;
        -webkit-border-radius:3px;
        -moz-box-shadow:0 1px 0 #fff;
        -webkit-box-shadow:0 1px 0 #fff;
        color:#fff;
        cursor:pointer;
-       //font-family:Arial,sans-serif;
-       //font-size:12px;
        font-size:0.9em;
        font-weight:bold;
        margin-left:238px;
