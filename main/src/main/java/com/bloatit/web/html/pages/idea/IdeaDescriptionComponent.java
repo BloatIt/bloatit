@@ -15,6 +15,7 @@ import java.util.Locale;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.html.HtmlTools;
+import com.bloatit.web.html.components.custom.renderer.HtmlRawTextRenderer;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
@@ -24,21 +25,17 @@ import com.bloatit.web.utils.url.MemberPageUrl;
 
 public class IdeaDescriptionComponent extends HtmlDiv {
 
-    private final HtmlParagraph description;
-    private final HtmlParagraph date;
-    private final HtmlLink author;
-
     public IdeaDescriptionComponent(final Demand demand) {
         super();
 
         final Session session = Context.getSession();
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
-        description = new HtmlParagraph(translatedDescription.getText());
+        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
 
-        date = new HtmlParagraph(HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
+        final HtmlParagraph date = new HtmlParagraph(HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
         final MemberPageUrl memberUrl = new MemberPageUrl(demand.getAuthor());
-        author = memberUrl.getHtmlLink(demand.getAuthor().getLogin());
+        final HtmlLink author = memberUrl.getHtmlLink(demand.getAuthor().getLogin());
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {

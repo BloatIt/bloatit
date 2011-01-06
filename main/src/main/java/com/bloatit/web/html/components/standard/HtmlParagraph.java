@@ -1,6 +1,7 @@
 package com.bloatit.web.html.components.standard;
 
 import com.bloatit.web.html.HtmlBranch;
+import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.HtmlText;
 
 public class HtmlParagraph extends HtmlBranch {
@@ -30,7 +31,7 @@ public class HtmlParagraph extends HtmlBranch {
         add(new com.bloatit.web.html.HtmlText(text));
     }
 
-    public HtmlParagraph(final HtmlText htmlText) {
+    public HtmlParagraph(final HtmlTagText htmlText) {
         super("p");
         add(htmlText);
     }
