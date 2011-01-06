@@ -98,6 +98,7 @@ public class HtmlTools {
         return result;
     }
 
+    @Deprecated
     public static String formatDate(final Session session, final Date date) {
         final Date currentDate = new Date();
 

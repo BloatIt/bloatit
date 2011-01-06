@@ -10,6 +10,7 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 import com.bloatit.web.utils.url.Url;
@@ -48,10 +49,16 @@ public class RegisterAction extends Action {
 	}
 
 	@Override
-	protected Url doProcess() throws RedirectException {
+	protected final Url doProcess() throws RedirectException {
 		Locale locale = new Locale(lang, country);
 		
 		Member m = new Member(login, password, email, locale);
 		return new MemberPageUrl(m);
+	}
+	
+    @Override
+	protected final Url doProcessErrors() throws RedirectException {
+    	//TODO
+		return new LoginPageUrl();
 	}
 }

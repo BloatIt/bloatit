@@ -37,12 +37,12 @@ public abstract class Action implements Linkable {
 
     public final Url process() throws RedirectException {
         if (actionUrl.getMessages().hasMessage(Level.ERROR)) {
-            session.notifyList(actionUrl.getMessages());
-            throw new RedirectException(new LoginPageUrl());
+            return doProcessErrors();
         }
         return doProcess();
     }
 
     abstract protected Url doProcess() throws RedirectException;
-
+    
+    abstract protected Url doProcessErrors() throws RedirectException;
 }

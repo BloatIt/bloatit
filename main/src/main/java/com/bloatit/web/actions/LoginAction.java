@@ -58,5 +58,11 @@ public class LoginAction extends Action {
             return new LoginPageUrl();
         }
     }
+    
+    @Override
+	protected Url doProcessErrors() throws RedirectException {
+    	//TODO
+		return new LoginPageUrl();
+	}
 
 }

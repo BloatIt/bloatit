@@ -37,29 +37,22 @@ public class IdeaDescriptionComponent extends HtmlDiv {
         description = new HtmlParagraph(translatedDescription.getText());
 
         date = new HtmlParagraph(HtmlTools.formatDate(session, demand.getCreationDate()), "description_date");
-
         final MemberPageUrl memberUrl = new MemberPageUrl(demand.getAuthor());
-
         author = memberUrl.getHtmlLink(demand.getAuthor().getLogin());
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {
-
             final HtmlDiv descriptionFooter = new HtmlDiv("description_footer");
             {
-
                 final HtmlDiv descriptionDetails = new HtmlDiv("description_details");
                 {
                     descriptionDetails.add(author);
                     descriptionDetails.add(date);
                 }
-
                 descriptionBlock.add(descriptionDetails);
-
                 descriptionBlock.add(description);
             }
             descriptionBlock.add(descriptionFooter);
-
         }
         add(descriptionBlock);
     }

@@ -18,8 +18,10 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.Url;
 
@@ -60,9 +62,15 @@ public class OfferAction extends Action {
     }
 
     @Override
-    public Url doProcess() {
+    public final Url doProcess() {
         targetIdea.authenticate(session.getAuthToken());
         targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
         return new IdeaPageUrl(targetIdea);
     }
+    
+    @Override
+	protected final Url doProcessErrors() throws RedirectException {
+    	//TODO
+		return new LoginPageUrl();
+	}
 }
