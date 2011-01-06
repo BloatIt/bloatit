@@ -41,6 +41,7 @@ import com.bloatit.web.utils.url.MyAccountPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Parameters;
+import com.bloatit.web.utils.url.PaylinePageUrl;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;
 import com.bloatit.web.utils.url.SpecialsPageUrl;
@@ -69,6 +70,7 @@ public class DispatchServer {
 				put(TestPageUrl.getName(), TestPageUrl.class);
 				put(AccountChargingPageUrl.getName(), AccountChargingPageUrl.class);
 				put(RegisterPageUrl.getName(), RegisterPageUrl.class);
+				put(PaylinePageUrl.getName(), PaylinePageUrl.class);
 
 				put(LoginActionUrl.getName(), LoginActionUrl.class);
 				put(LogoutActionUrl.getName(), LogoutActionUrl.class);
@@ -91,9 +93,9 @@ public class DispatchServer {
 	        final List<String> preferredLangs) {
 		this.cookies = cookies;
 		this.preferredLangs = preferredLangs;
-		
+
 		this.session = findSession(query);
-		
+
 		this.query = query;
 		this.post = post;
 	}
@@ -107,7 +109,7 @@ public class DispatchServer {
 
 	public void process(final HttpResponse response) throws IOException {
 		com.bloatit.model.data.util.SessionManager.beginWorkUnit();
-		
+
 		Context.setSession(session);
 		Context.setLocalizator(generateLocalizator());
 
