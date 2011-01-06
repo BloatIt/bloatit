@@ -69,7 +69,7 @@ public class RegisterPage extends Page {
         HtmlForm form = new HtmlForm(new RegisterActionUrl().urlString());
         container.add(form);
         
-        HtmlTextField loginInput = new HtmlTextField(RegisterAction.LOGIN_CODE, Context.tr("Login"));
+        HtmlTextField loginInput = new HtmlTextField(RegisterAction.LOGIN_CODE, Context.trc("Login (noun)","Login"));
         loginInput.setDefaultValue(login);
         form.add(loginInput);
         

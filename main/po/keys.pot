@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-06 14:41+0100\n"
+"POT-Creation-Date: 2011-01-06 19:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,31 +78,43 @@ msgid "Parameters of the new idea"
 msgstr ""
 
 #: com/bloatit/web/html/pages/CreateIdeaPage.java:94
-#: com/bloatit/web/html/pages/RegisterPage.java:96
 msgid "submit"
 msgstr ""
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:97
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:98
 msgid "Title"
 msgstr ""
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:99
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:100
+msgid ""
+"The title of the new idea must be permit to identify clearly the idea's "
+"specificity."
+msgstr ""
+
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:101
 msgid "Describe the idea"
 msgstr ""
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:105
-msgid "Language"
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:103
+msgid ""
+"Enter a long description of the idea : list all features, describe them "
+"all ... Try to leave as little room for ambiguity as possible."
 msgstr ""
 
 #: com/bloatit/web/html/pages/CreateIdeaPage.java:110
+#: com/bloatit/web/html/pages/RegisterPage.java:90
+msgid "Language"
+msgstr ""
+
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:115
 msgid "Category"
 msgstr ""
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:112
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:117
 msgid "Project"
 msgstr ""
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:131
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:136
 msgid "You must be logged to create a new idea."
 msgstr ""
 
@@ -127,23 +139,27 @@ msgid "Register"
 msgstr ""
 
 #: com/bloatit/web/html/pages/RegisterPage.java:72
-msgid "login : "
+#: com/bloatit/web/html/pages/LoginPage.java:41
+msgctxt "Login (noun)"
+msgid "Login"
 msgstr ""
 
 #: com/bloatit/web/html/pages/RegisterPage.java:76
-msgid "password : "
+#: com/bloatit/web/html/pages/LoginPage.java:42
+msgid "Password"
 msgstr ""
 
 #: com/bloatit/web/html/pages/RegisterPage.java:80
-msgid "email : "
+msgid "Email"
 msgstr ""
 
 #: com/bloatit/web/html/pages/RegisterPage.java:84
-msgid "country : "
+msgid "Country"
 msgstr ""
 
-#: com/bloatit/web/html/pages/RegisterPage.java:90
-msgid "language : "
+#: com/bloatit/web/html/pages/RegisterPage.java:96
+#: com/bloatit/web/html/pages/AccountChargingPage.java:53
+msgid "Submit"
 msgstr ""
 
 #: com/bloatit/web/html/pages/RegisterPage.java:104
@@ -188,16 +204,9 @@ msgstr ""
 msgid " requested "
 msgstr ""
 
-#: com/bloatit/web/html/pages/LoginPage.java:41
-msgid "Login:"
-msgstr ""
-
-#: com/bloatit/web/html/pages/LoginPage.java:42
-msgid "Password:"
-msgstr ""
-
 #: com/bloatit/web/html/pages/LoginPage.java:43
 #: com/bloatit/web/html/pages/LoginPage.java:49
+msgctxt "Login (verb)"
 msgid "Login"
 msgstr ""
 
@@ -264,10 +273,6 @@ msgstr ""
 
 #: com/bloatit/web/html/pages/AccountChargingPage.java:47
 msgid "Charge your account"
-msgstr ""
-
-#: com/bloatit/web/html/pages/AccountChargingPage.java:53
-msgid "Submit"
 msgstr ""
 
 #: com/bloatit/web/html/pages/master/Footer.java:11

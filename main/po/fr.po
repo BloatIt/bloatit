@@ -3,20 +3,21 @@
 # Copyright (C) 2010 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Fred <fred@bloatit.com>, 2010.
+# Frédéric Bertolus <fred@elveos.fr>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-06 14:20+0100\n"
-"PO-Revision-Date: 2011-01-06 15:00+0100\n"
-"Last-Translator: Frédéric Bertolus <fred.bertolus@gmail.com>\n"
-"Language-Team: French\n"
+"POT-Creation-Date: 2011-01-06 18:34+0100\n"
+"PO-Revision-Date: 2011-01-06 19:00+0100\n"
+"Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
+"Language-Team: Français <dev@elveos.fr>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: s\n"
 
 #: com/bloatit/web/actions/LogoutAction.java:30
 msgid "Logout success."
@@ -44,7 +45,9 @@ msgstr "Merci d'avoir crédité"
 
 #: com/bloatit/web/actions/ContributionAction.java:70
 msgid "For obscure reasons, you are not allowed to contribute on this idea."
-msgstr "Pour des raisons obscures, vous n'êtes pas autorisé à contribuer à cette idée."
+msgstr ""
+"Pour des raisons obscures, vous n'êtes pas autorisé à contribuer à cette "
+"idée."
 
 #: com/bloatit/web/actions/ContributionAction.java:74
 msgid "You need to charge your account before you can contribute."
@@ -79,31 +82,47 @@ msgid "Parameters of the new idea"
 msgstr "Paramètres de la nouvelle idée"
 
 #: com/bloatit/web/html/pages/CreateIdeaPage.java:94
-#: com/bloatit/web/html/pages/RegisterPage.java:96
 msgid "submit"
 msgstr "valider"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:97
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:98
 msgid "Title"
 msgstr "Titre"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:99
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:100
+msgid ""
+"The title of the new idea must be permit to identify clearly the idea's "
+"specificity."
+msgstr ""
+"Le titre de la nouvelle idée doit permettre d'identifier clairement la "
+"spécificité de l'idée."
+
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:101
 msgid "Describe the idea"
 msgstr "Décrivez l'idée"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:105
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:103
+msgid ""
+"Enter a long description of the idea : list all features, describe them "
+"all ... Try to leave as little room for ambiguity as possible."
+msgstr ""
+"Tapez une longue description de l'idée : liste des fonctionnalités, décrivez "
+"les toutes... Essayez de laisser le moins d'ambiguité possible."
+
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:110
+#: com/bloatit/web/html/pages/RegisterPage.java:90
 msgid "Language"
 msgstr "Langue"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:110
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:115
 msgid "Category"
 msgstr "Catégorie"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:112
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:117
 msgid "Project"
 msgstr "Projet"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:131
+#: com/bloatit/web/html/pages/CreateIdeaPage.java:136
 msgid "You must be logged to create a new idea."
 msgstr "Vous devez être connecté pour créer une nouvelle idée."
 
@@ -113,7 +132,7 @@ msgstr "Nom complet&nbsp;:"
 
 #: com/bloatit/web/html/pages/MyAccountPage.java:42
 msgid "Login: "
-msgstr "Se connecter :"
+msgstr "Se connecter&nbsp;:"
 
 #: com/bloatit/web/html/pages/MyAccountPage.java:43
 msgid "Email: "
@@ -128,24 +147,28 @@ msgid "Register"
 msgstr "S'inscrire"
 
 #: com/bloatit/web/html/pages/RegisterPage.java:72
-msgid "login : "
-msgstr "se connecter :"
+#: com/bloatit/web/html/pages/LoginPage.java:41
+msgctxt "Login (noun)"
+msgid "Login"
+msgstr "Identifiant"
 
 #: com/bloatit/web/html/pages/RegisterPage.java:76
-msgid "password : "
-msgstr "mot de passe&nbsp;:"
+#: com/bloatit/web/html/pages/LoginPage.java:42
+msgid "Password"
+msgstr "Mot de passe"
 
 #: com/bloatit/web/html/pages/RegisterPage.java:80
-msgid "email : "
-msgstr "email :"
+msgid "Email"
+msgstr "Email"
 
 #: com/bloatit/web/html/pages/RegisterPage.java:84
-msgid "country : "
-msgstr "pays :"
+msgid "Country"
+msgstr "Pays"
 
-#: com/bloatit/web/html/pages/RegisterPage.java:90
-msgid "language : "
-msgstr "langue :"
+#: com/bloatit/web/html/pages/RegisterPage.java:96
+#: com/bloatit/web/html/pages/AccountChargingPage.java:53
+msgid "Submit"
+msgstr "Valider"
 
 #: com/bloatit/web/html/pages/RegisterPage.java:104
 #: com/bloatit/web/html/pages/idea/IdeaMakeOfferButtonComponent.java:31
@@ -189,16 +212,9 @@ msgstr " de "
 msgid " requested "
 msgstr " demandés"
 
-#: com/bloatit/web/html/pages/LoginPage.java:41
-msgid "Login:"
-msgstr "Identifiant :"
-
-#: com/bloatit/web/html/pages/LoginPage.java:42
-msgid "Password:"
-msgstr "Mot de passe :"
-
 #: com/bloatit/web/html/pages/LoginPage.java:43
 #: com/bloatit/web/html/pages/LoginPage.java:49
+msgctxt "Login (verb)"
 msgid "Login"
 msgstr "Se connecter"
 
@@ -246,8 +262,12 @@ msgid "Search"
 msgstr "Recherche"
 
 #: com/bloatit/web/html/pages/IndexPage.java:98
-msgid "XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX."
-msgstr "XXX est une plateforme de financement de logiciels libre. Ci-dessous,nous devons ajouter une description simple et complète du fonctionnement de XXX."
+msgid ""
+"XXX is a platform to finance free software. Following, we must put a simple "
+"and complete description of the fonctionnement of XXXX."
+msgstr ""
+"XXX est une plateforme de financement de logiciels libre. Ci-dessous,nous "
+"devons ajouter une description simple et complète du fonctionnement de XXX."
 
 #: com/bloatit/web/html/pages/IndexPage.java:101
 msgid "Submit a new idea"
@@ -264,10 +284,6 @@ msgstr "Crediter votre compte BloatIt"
 #: com/bloatit/web/html/pages/AccountChargingPage.java:47
 msgid "Charge your account"
 msgstr "Crediter votre compte"
-
-#: com/bloatit/web/html/pages/AccountChargingPage.java:53
-msgid "Submit"
-msgstr "Valider"
 
 #: com/bloatit/web/html/pages/master/Footer.java:11
 msgid "This website is under GNU Affero Public Licence."
@@ -402,12 +418,32 @@ msgstr "Précédent"
 msgid "Next"
 msgstr "Suivant"
 
+#~ msgid "Login:"
+#~ msgstr "Identifiant :"
+
+#~ msgid "Password:"
+#~ msgstr "Mot de passe :"
+
+#~ msgid "login : "
+#~ msgstr "se connecter :"
+
+#~ msgid "password : "
+#~ msgstr "mot de passe&nbsp;:"
+
+#~ msgid "email : "
+#~ msgstr "email :"
+
+#~ msgid "language : "
+#~ msgstr "langue :"
+
 #~ msgid "Demands"
 #~ msgstr "Demandes"
+
 #~ msgid "Sigup"
 #~ msgstr "S'inscrire"
+
 #~ msgid "This text will be translated"
 #~ msgstr "Ce test sera traduit"
+
 #~ msgid "This one also"
 #~ msgstr "Celui là aussi"
-

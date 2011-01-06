@@ -22,6 +22,13 @@ public class Context {
 	public static String tr(final String str) {
 		return localizator.tr(str);
 	}
+	
+	/**
+	 * @see Localizator#trc(String, String)
+	 */
+	public static String trc(final String context, final String str) {
+		return localizator.trc(context, str);
+	}
 
 	/**
 	 * @see Localizator#tr(String, Object...)
