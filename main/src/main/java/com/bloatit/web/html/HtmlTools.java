@@ -29,14 +29,6 @@ public class HtmlTools {
     public static final long HOUR = 60 * MINUTE;
     public static final long DAY = 24 * HOUR;
 
-    /*
-     * public static String generateLink(Session session, String text, Request
-     * linkRequest) { return "<a href=\"" + linkRequest.getUrl() + "\">" + text + "</a>";
-     * } public static String generateLink(Session session, String text, Request
-     * linkRequest, Map<String, String> outputParams) { return "<a href=\"" +
-     * linkRequest.getUrl(outputParams) + "\">" + text + "</a>"; }
-     */
-
     public static HtmlTagText generateLogo() {
         return new HtmlTagText("<span class='logo_bloatit'><span class='logo_bloatit_bloat'>Bloat</span><span class='logo_bloatit_it'>It</span></span>");
     }
@@ -115,10 +107,16 @@ public class HtmlTools {
         return dateFormat.format(date);
     }
     
+    /**
+     * Escapes <code>str</code>
+     */
     public static String escape(String str){
     	return StringEscapeUtils.escapeHtml(str);
     }
-    
+ 
+    /**
+     * Unescape <code>str</code>
+     */
     public static String unescape(String str){
     	return StringEscapeUtils.unescapeHtml(str);
     }

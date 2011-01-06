@@ -345,7 +345,16 @@ public class Localizator {
 	 * Returns a CurrencyLocale to work on <code>euroAmount</code>
 	 */
 	public CurrencyLocale getCurrency(BigDecimal euroAmount) {
-		return new CurrencyLocale(euroAmount, locale);
+		try {
+	        return new CurrencyLocale(euroAmount, locale);
+        } catch (CurrencyNotAvailableException e) {
+        	try {
+        		Locale l = new Locale("en", "US");
+	            return new CurrencyLocale(euroAmount, l);
+            } catch (CurrencyNotAvailableException e1) {
+            	throw new FatalErrorException("Locale US not available on current system ...");
+            }
+        }
 	}
 
 	/**
