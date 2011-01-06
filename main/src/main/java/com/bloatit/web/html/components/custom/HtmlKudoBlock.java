@@ -16,16 +16,16 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.LogoutActionUrl;
+import com.bloatit.web.utils.url.KudoActionUrl;
 
 public class HtmlKudoBlock extends HtmlDiv {
 
     public HtmlKudoBlock(final Kudosable kudosable, final Session session) {
         super("kudo_box");
 
-        final HtmlLink kudoUpLink = new LogoutActionUrl().getHtmlLink(new HtmlDiv("kudo_box_up"));
+        final HtmlLink kudoUpLink = new KudoActionUrl(kudosable).getHtmlLink(new HtmlDiv("kudo_box_up"));
         kudoUpLink.setTitle("kudo up");
-        final HtmlLink kudoDownLink = new LogoutActionUrl().getHtmlLink(new HtmlDiv("kudo_box_down"));
+        final HtmlLink kudoDownLink = new KudoActionUrl(kudosable).getHtmlLink(new HtmlDiv("kudo_box_down"));
         kudoUpLink.setTitle("kudo down");
 
         add(kudoUpLink);

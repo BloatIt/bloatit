@@ -15,6 +15,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.framework.Kudosable;
 import com.bloatit.model.data.util.SessionManager;
 
 /**

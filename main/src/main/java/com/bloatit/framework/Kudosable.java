@@ -1,6 +1,8 @@
 package com.bloatit.framework;
 
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.framework.right.KudosableRight;
+import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoKudosable.State;
 import com.bloatit.model.data.DaoUserContent;
@@ -15,14 +17,23 @@ public abstract class Kudosable extends UserContent {
     protected abstract DaoKudosable getDaoKudosable();
 
     public final boolean canKudos() {
+    	if ( ! new KudosableRight.Kudos().canAccess(calculateRole(this), Action.WRITE)){
+    		return false;
+    	}
         return !getDaoKudosable().hasKudosed(getToken().getMember().getDao());
     }
 
     public final void unkudos() {
+    	if (!canKudos()){
+    		throw new UnauthorizedOperationException();
+    	}
         addKudos(-1);
     }
 
     public final void kudos() {
+    	if (!canKudos()){
+    		throw new UnauthorizedOperationException();
+    	}
         addKudos(1);
     }
 
@@ -88,4 +99,5 @@ public abstract class Kudosable extends UserContent {
     public final int getPopularity() {
         return getDaoKudosable().getPopularity();
     }
+
 }

@@ -29,7 +29,7 @@ public abstract class RightManager {
      * @see Unlockable
      */
     public enum Role {
-        GROUP_ADMIN, IN_GROUP, OTHER, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
+        GROUP_ADMIN, IN_GROUP, NOBODY, OTHER, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
     }
 
     /**
@@ -61,6 +61,30 @@ public abstract class RightManager {
      */
     protected static boolean ownerCanDelete(final EnumSet<Role> role, final Action action) {
         return role.contains(Role.OWNER) && Action.DELETE == action;
+    }
+    
+    /**
+     * Helper function, use it in the overloading of the
+     * {@link Accessor#can(EnumSet, Action)} method
+     */
+    protected static boolean authentifiedCanRead(final EnumSet<Role> role, final Action action) {
+        return !role.contains(Role.NOBODY) && Action.READ == action;
+    }
+
+    /**
+     * Helper function, use it in the overloading of the
+     * {@link Accessor#can(EnumSet, Action)} method
+     */
+    protected static boolean authentifiedCanWrite(final EnumSet<Role> role, final Action action) {
+        return !role.contains(Role.NOBODY) && Action.WRITE == action;
+    }
+
+    /**
+     * Helper function, use it in the overloading of the
+     * {@link Accessor#can(EnumSet, Action)} method
+     */
+    protected static boolean authentifiedCanDelete(final EnumSet<Role> role, final Action action) {
+        return !role.contains(Role.NOBODY) && Action.DELETE == action;
     }
 
     /**

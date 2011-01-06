@@ -8,8 +8,10 @@ import java.util.Date;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Identifiable;
+import com.bloatit.framework.Kudosable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.managers.KudosableManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.Loader;
 import com.bloatit.web.server.Context;
@@ -79,6 +81,8 @@ public final class Loaders {
             return (Loader<T>) new ToMember();
         } else if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
+        } else if(theClass.equals(Kudosable.class)) {
+        	return (Loader<T>) new ToKudosable();
         }
         return null;
     }
@@ -224,6 +228,13 @@ public final class Loaders {
         @Override
         public Identifiable fromString(final String data) {
             return MemberManager.getMemberById(Integer.valueOf(data));
+        }
+    }
+    
+    private static class ToKudosable extends ToIdentifiable {
+        @Override
+        public Identifiable fromString(final String data) {
+            return KudosableManager.getById(Integer.valueOf(data));
         }
     }
 }

@@ -49,7 +49,7 @@ public abstract class Page extends HtmlElement implements Linkable {
         // Display waiting notifications
         addWaitingNotifications();
 
-        // Set the laste stable page into the session
+        // Set the last stable page into the session
         if (isStable()) {
         	session.setTargetPage(null);
         	session.setLastStablePage(thisUrl);

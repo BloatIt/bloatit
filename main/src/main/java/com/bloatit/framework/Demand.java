@@ -19,131 +19,154 @@ import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 public final class Demand extends Kudosable {
-    private final DaoDemand dao;
+	private final DaoDemand dao;
 
-    public static Demand create(final DaoDemand dao) {
-        if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
-            return null;
-        }
-        return new Demand(dao);
-    }
+	public static Demand create(final DaoDemand dao) {
+		if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
+			return null;
+		}
+		return new Demand(dao);
+	}
 
-    public Demand(final Member author, final Locale locale, final String title, final String description) {
-        dao = DaoDemand.createAndPersist(author.getDao(), DaoDescription.createAndPersist(author.getDao(), locale, title, description));
-    }
+	public Demand(final Member author, final Locale locale, final String title, final String description) {
+		dao = DaoDemand.createAndPersist(author.getDao(), DaoDescription.createAndPersist(author.getDao(), locale, title, description));
+	}
 
-    private Demand(final DaoDemand dao) {
-        super();
-        this.dao = dao;
-    }
+	private Demand(final DaoDemand dao) {
+		super();
+		this.dao = dao;
+	}
 
-    public void addComment(final String text) {
-        dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
-    }
+	public boolean canAccessComment(Action action) {
+		return new DemandRight.Comment().canAccess(calculateRole(this), action);
+	}
 
-    public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
-        // TODO : Vérifier que l'utilisateur a le droit de contribuer
-        dao.addContribution(getToken().getMember().getDao(), amount, comment);
-    }
+	public boolean canAccessContribution(Action action) {
+		return new DemandRight.Contribute().canAccess(calculateRole(this), action);
+	}
 
-    public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir) {
-        return new Offer(dao.addOffer(getToken().getMember().getDao(),
-                amount,
-                new Description(getToken().getMember(), locale, title, text).getDao(),
-                dateExpir));
-    }
+	public boolean canAccessOffer(Action action) {
+		return new DemandRight.Offer().canAccess(calculateRole(this), action);
+	}
 
-    public void createSpecification(final String content) {
-        dao.createSpecification(getToken().getMember().getDao(), content);
-    }
+	public void addComment(final String text) {
+		new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
+		dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
+	}
 
-    public PageIterable<Comment> getComments() {
-        return new CommentList(dao.getCommentsFromQuery());
-    }
+	public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+		new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
+		dao.addContribution(getToken().getMember().getDao(), amount, comment);
+	}
 
-    public PageIterable<Contribution> getContributions() {
-        return new ContributionList(dao.getContributionsFromQuery());
-    }
+	public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir) {
+		new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
+		return new Offer(dao.addOffer(getToken().getMember().getDao(), amount, new Description(getToken().getMember(), locale, title, text).getDao(),
+				dateExpir));
+	}
 
-    // TODO comment
-    private static final int PROGRESSION_COEF = 42;
-    private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
-    private static final int PROGRESSION_PERCENT_MULTIPLICATOR = 100;
+	public void createSpecification(final String content) {
+		new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
+		dao.createSpecification(getToken().getMember().getDao(), content);
+	}
 
-    /**
-     * Return the progression in percent. It compare the amount of contribution to the
-     * amount of the current offer.
-     * 
-     * @return a percentage. It can be > 100 if the amount of contributions is greater
-     *         than the amount for the current offer. If the offer amount is 0 then it
-     *         return Float.POSITIVE_INFINITY.
-     */
-    public float getProgression() {
-        if (dao.getOffers().isEmpty()) {
-            return PROGRESSION_COEF * (1 - 1 / (1 + dao.getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
-        } else {
-            final DaoOffer currentOffer = dao.getCurrentOffer();
-            if (currentOffer.getAmount().floatValue() != 0) {
-                return (dao.getContribution().floatValue() * PROGRESSION_PERCENT_MULTIPLICATOR) / currentOffer.getAmount().floatValue();
-            } else {
-                return Float.POSITIVE_INFINITY;
-            }
-        }
-    }
+	public PageIterable<Comment> getComments() {
+		new DemandRight.Comment().tryAccess(calculateRole(this), Action.READ);
+		return new CommentList(dao.getCommentsFromQuery());
+	}
 
-    public DaoDemand getDao() {
-        return dao;
-    }
+	public PageIterable<Contribution> getContributions() {
+		new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+		return new ContributionList(dao.getContributionsFromQuery());
+	}
 
-    public BigDecimal getContribution() {
-        return dao.getContribution();
-    }
+	// TODO comment
+	private static final int PROGRESSION_COEF = 42;
+	private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
+	private static final int PROGRESSION_PERCENT_MULTIPLICATOR = 100;
 
-    public BigDecimal getContributionMax() {
-        return dao.getContributionMax();
-    }
+	/**
+	 * Return the progression in percent. It compare the amount of contribution
+	 * to the amount of the current offer.
+	 * 
+	 * @return a percentage. It can be > 100 if the amount of contributions is
+	 *         greater than the amount for the current offer. If the offer
+	 *         amount is 0 then it return Float.POSITIVE_INFINITY.
+	 */
+	public float getProgression() {
+		new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+		if (dao.getOffers().isEmpty()) {
+			return PROGRESSION_COEF * (1 - 1 / (1 + dao.getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
+		} else {
+			final DaoOffer currentOffer = dao.getCurrentOffer();
+			if (currentOffer.getAmount().floatValue() != 0) {
+				return (dao.getContribution().floatValue() * PROGRESSION_PERCENT_MULTIPLICATOR) / currentOffer.getAmount().floatValue();
+			} else {
+				return Float.POSITIVE_INFINITY;
+			}
+		}
+	}
 
-    public BigDecimal getContributionMin() {
-        return dao.getContributionMin();
-    }
+	public DaoDemand getDao() {
+		return dao;
+	}
 
-    @Override
-    protected DaoKudosable getDaoKudosable() {
-        return dao;
-    }
+	public BigDecimal getContribution() {
+		new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+		return dao.getContribution();
+	}
 
-    public Description getDescription() {
-        return new Description(dao.getDescription());
-    }
+	public BigDecimal getContributionMax() {
+		new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+		return dao.getContributionMax();
+	}
 
-    public PageIterable<Offer> getOffers() {
-        return new OfferList(dao.getOffersFromQuery());
-    }
+	public BigDecimal getContributionMin() {
+		new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+		return dao.getContributionMin();
+	}
 
-    /**
-     * The current offer is the offer with the max popularity then the min amount.
-     * 
-     * @return the current offer for this demand, or null if there is no offer.
-     */
-    public Offer getCurrentOffer() {
-    	return Offer.create(dao.getCurrentOffer());
-    }
-    
-    public Specification getSpecification() {
-        return new Specification(dao.getSpecification());
-    }
+	@Override
+	protected DaoKudosable getDaoKudosable() {
+		return dao;
+	}
 
-    public String getTitle() {
-        return getDescription().getDefaultTranslation().getTitle();
-    }
+	public Description getDescription() {
+		return new Description(dao.getDescription());
+	}
 
-    // TODO right management
-    public void removeOffer(final Offer offer) {
-        dao.removeOffer(offer.getDao());
-    }
+	public PageIterable<Offer> getOffers() {
+		new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
+		return new OfferList(dao.getOffersFromQuery());
+	}
 
-    public boolean canContribute() {
-        return new DemandRight.Contribute().canAccess(calculateRole(this), Action.WRITE);
-    }
+	/**
+	 * The current offer is the offer with the max popularity then the min
+	 * amount.
+	 *
+	 * @return the current offer for this demand, or null if there is no offer.
+	 */
+	public Offer getCurrentOffer() {
+		return Offer.create(dao.getCurrentOffer());
+	}
+
+	public Specification getSpecification() {
+		return new Specification(dao.getSpecification());
+	}
+
+	public String getTitle() {
+		return getDescription().getDefaultTranslation().getTitle();
+	}
+
+	// TODO right management
+	public void removeOffer(final Offer offer) {
+		new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
+		dao.removeOffer(offer.getDao());
+	}
+
+	@Deprecated
+	public boolean canContribute() {
+		return new DemandRight.Contribute().canAccess(calculateRole(this), Action.WRITE);
+	}
 
 }
