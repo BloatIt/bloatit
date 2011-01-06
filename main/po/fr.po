@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-06 18:34+0100\n"
-"PO-Revision-Date: 2011-01-06 19:00+0100\n"
+"POT-Creation-Date: 2011-01-06 19:15+0100\n"
+"PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
 "Language: \n"
@@ -207,10 +207,12 @@ msgstr "soit "
 msgid " of "
 msgstr " de "
 
-#: com/bloatit/web/html/pages/IdeasList.java:205
+#: com/bloatit/web/html/pages/IdeasList.java:206
 #: com/bloatit/web/html/pages/idea/IdeaHeadComponent.java:134
 msgid " requested "
-msgstr " demandés"
+msgid_plural " requested "
+msgstr[0] " demandé "
+msgstr[1] " demandés"
 
 #: com/bloatit/web/html/pages/LoginPage.java:43
 #: com/bloatit/web/html/pages/LoginPage.java:49

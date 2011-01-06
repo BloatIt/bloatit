@@ -202,7 +202,8 @@ public class IdeasList extends Page {
 							progressText.add(progress);
 							progressText.addText(Context.tr(" of "));
 							progressText.add(target);
-							progressText.addText(Context.tr(" requested "));
+							long amountLong = idea.getCurrentOffer().getAmount().longValue();
+							progressText.addText(Context.trn(" requested ", " requested ", amountLong));
 
 							ideaTitle.add(progressText);
 						}
