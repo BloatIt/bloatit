@@ -1,6 +1,8 @@
 package com.bloatit.web.utils.i18n;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +18,7 @@ import com.bloatit.common.FatalErrorException;
 import com.bloatit.framework.Member;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.PropertyLoader;
+import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
 
 /**
  * <p>
@@ -24,8 +27,8 @@ import com.bloatit.web.utils.PropertyLoader;
  * <p>
  * Tools provided are :
  * <li>All static translation tools (for the UI) implemented with gettext</li>
- * <li>All Dynamic translation tools (for the content), mostly for dates and currencies
- * TODO and time</li>
+ * <li>All Dynamic translation tools (for the content), mostly for dates and
+ * currencies TODO and time</li>
  * <p>
  * Class is immutable, if you need to change locale, create a new object
  * </p>
@@ -36,8 +39,6 @@ public class Localizator {
 	private static final String LANGUAGES_PATH = "i18n/languages";
 	/** For parsing of available languages file */
 	private static final String LANGUAGE_CODE = "code";
-	/** For parsing of available languages file */
-	private static final String LANGUAGE_NAME = "name";
 	/** Default user locale */
 	private static final Locale DEFAULT_LOCALE = new Locale("en_US");
 
@@ -52,12 +53,12 @@ public class Localizator {
 		this.urlLang = urlLang;
 		this.browserLangs = browserLangs;
 		this.locale = inferLocale();
-		this.i18n = I18nFactory.getI18n(Language.class, "i18n.Messages", locale);
+		this.i18n = I18nFactory.getI18n(Localizator.class, "i18n.Messages", locale);
 	}
-
 
 	/**
 	 * Returns the Locale for the localizator
+	 * 
 	 * @return the locale
 	 */
 	public Locale getLocale() {
@@ -66,6 +67,7 @@ public class Localizator {
 
 	/**
 	 * Shortcut for getLangyageCode()
+	 * 
 	 * @see #getLanguageCode()
 	 */
 	public String getCode() {
@@ -91,10 +93,13 @@ public class Localizator {
 	 * Translates a constant String
 	 * </p>
 	 * <p>
-	 * Returns <code>toTranslate</code> translated into the currently selected language.
-	 * Every user-visible string in the program must be wrapped into this function
+	 * Returns <code>toTranslate</code> translated into the currently selected
+	 * language. Every user-visible string in the program must be wrapped into
+	 * this function
 	 * </p>
-	 * @param toTranslate the string to translate
+	 * 
+	 * @param toTranslate
+	 *            the string to translate
 	 * @return the translated string
 	 */
 	public String tr(String toTranslate) {
@@ -110,7 +115,8 @@ public class Localizator {
 	 * {@link #trn(String, String, long, Object...)}
 	 * </p>
 	 * <p>
-	 * Returns <code>toTranslate</code> and replaces the string with the parameters
+	 * Returns <code>toTranslate</code> and replaces the string with the
+	 * parameters
 	 * </p>
 	 * <p>
 	 * One example :
@@ -120,8 +126,11 @@ public class Localizator {
 	 * </p>
 	 * For more examples see : {@link http
 	 * ://code.google.com/p/gettext-commons/wiki/Tutorial} </p>
-	 * @param toTranslate the String to translate
-	 * @param parameters the list of parameters that will be inserted into the string
+	 * 
+	 * @param toTranslate
+	 *            the String to translate
+	 * @param parameters
+	 *            the list of parameters that will be inserted into the string
 	 * @return the translated String
 	 * @see #tr(String)
 	 * @see #trn(String, String, long, Object...)
@@ -146,12 +155,16 @@ public class Localizator {
 	 * print "Copied files."</code>
 	 * </p>
 	 * </p>
-	 * @param singular The singular version of the displayed string
-	 * @param plural the plural version of the displayed string
-	 * @param amount the <i>amount</i> of elements, 0 or 1 will be singular, >1 will be
-	 *        plural
-	 * @return the translated <i>singular</i> or <i>plural</i> string depending on value
-	 *         of <code>amount</code>
+	 * 
+	 * @param singular
+	 *            The singular version of the displayed string
+	 * @param plural
+	 *            the plural version of the displayed string
+	 * @param amount
+	 *            the <i>amount</i> of elements, 0 or 1 will be singular, >1
+	 *            will be plural
+	 * @return the translated <i>singular</i> or <i>plural</i> string depending
+	 *         on value of <code>amount</code>
 	 * @see #tr(String)
 	 */
 	public String trn(String singular, String plural, long amount) {
@@ -175,13 +188,19 @@ public class Localizator {
 	 * For more examples see : {@link http
 	 * ://code.google.com/p/gettext-commons/wiki/Tutorial}
 	 * </p>
-	 * @param singular The singular string
-	 * @param plural the plural string
-	 * @param amount the <i>amount</i> of elements, 0 or 1 will be singular, >1 will be
-	 *        plural
-	 * @param parameters the list of parameters that will be replaced into the String
-	 * @return the translated <i>singular</i> or <i>plural</i> string depending on value
-	 *         of <code>amount</code>, with the <code>parameters</code> inserted.
+	 * 
+	 * @param singular
+	 *            The singular string
+	 * @param plural
+	 *            the plural string
+	 * @param amount
+	 *            the <i>amount</i> of elements, 0 or 1 will be singular, >1
+	 *            will be plural
+	 * @param parameters
+	 *            the list of parameters that will be replaced into the String
+	 * @return the translated <i>singular</i> or <i>plural</i> string depending
+	 *         on value of <code>amount</code>, with the <code>parameters</code>
+	 *         inserted.
 	 * @see #trn(String, String, long)
 	 * @see MessageFormatter
 	 */
@@ -190,13 +209,47 @@ public class Localizator {
 	}
 
 	/**
+	 * Disambiguates translation keys.
+	 * <p>
+	 * Sometimes it is necessary to provide different translations of the same
+	 * word as some words may have multiple meanings in the native language the
+	 * program is written but not in other languages.
+	 * </p>
+	 * <p>Example <br>
+	 * <code>
+	 * System.out.println(i18n.trc("chat (verb)", "chat"));<br>
+	 * System.out.println(i18n.trc("chat (noun)", "chat"));</code>
+	 * </p>
+	 * <p>
+	 * For more examples see : {@link http
+	 * ://code.google.com/p/gettext-commons/wiki/Tutorial}
+	 * </p>
+	 * 
+	 * 
+	 * @param context
+	 *            the context of the text to be translated
+	 * @param text
+	 *            the ambiguous key message in the source locale
+	 * @return <code>text</code> if the locale of the underlying resource bundle
+	 *         equals the source code locale, the disambiguated translation of
+	 *         <code>text</code> otherwise
+	 * 
+	 * @see #setSourceCodeLocale(Locale)
+	 */
+	public String trc(String context, String text) {
+		return i18n.trc(context, text);
+	}
+
+	/**
 	 * <p>
 	 * Finds all available languages for the system
 	 * <p>
 	 * <p>
-	 * Returns a map with [<language english name>:[<language local name><language ISO
-	 * code>]] Example : [French:[Français,fr]] or [English:[English,en]]
+	 * Returns a map with [<language english name>:[<language local
+	 * name><language ISO code>]] Example : [French:[Français,fr]] or
+	 * [English:[English,en]]
 	 * </p>
+	 * 
 	 * @return a list with all the language descriptors
 	 */
 	public static Map<String, LanguageDescriptor> getAvailableLanguages() {
@@ -239,12 +292,75 @@ public class Localizator {
 		}
 	}
 
+	public void setUserFavorite() {
+
+	}
+
 	/**
 	 * Describes a Language using a two letters code and a name
 	 */
 	public static class LanguageDescriptor {
 		public String code;
 		public String name;
+	}
+
+	/**
+	 * Gets the date pattern that matches the current user language in
+	 * <i>SHORT</i> format, i.e. : dd/mm/yyyy if locale is french, or mm/dd/yyyy
+	 * if locale is english.
+	 * 
+	 * @return a String representing the date pattern
+	 */
+	public String getShortDatePattern() {
+		return DateLocale.getPattern(locale);
+	}
+
+	/**
+	 * Gets the date pattern that matches the current user language in any
+	 * format
+	 * 
+	 * @param format
+	 *            the format
+	 * @return the date pattern
+	 */
+	public String getDatePattern(FormatStyle format) {
+		return DateLocale.getPattern(locale, format);
+	}
+
+	/**
+	 * Returns a DateLocale representing the string version of the date
+	 */
+	public DateLocale getDate(String dateString) throws DateParsingException {
+		return new DateLocale(dateString, locale);
+	}
+
+	/**
+	 * Returns a DateLocale encapsulating the java date Use to display any date
+	 */
+	public DateLocale getDate(Date date) {
+		return new DateLocale(date, locale);
+	}
+
+	/**
+	 * Returns a CurrencyLocale to work on <code>euroAmount</code>
+	 */
+	public CurrencyLocale getCurrency(BigDecimal euroAmount) {
+		return new CurrencyLocale(euroAmount, locale);
+	}
+
+	/**
+	 * <p>
+	 * Forces the current locale to the member user choice.
+	 * </p>
+	 * <p>
+	 * Use whenever the user explicitely asks to change the locale setting back
+	 * to his favorite, or when he logs in
+	 * </p>
+	 */
+	public void forceMemberChoice() {
+		Member member = Context.getSession().getAuthToken().getMember();
+		member.authenticate(Context.getSession().getAuthToken());
+		locale = member.getLocale();
 	}
 
 	/**
@@ -276,24 +392,27 @@ public class Localizator {
 		}
 		return locale;
 	}
-	
+
 	/**
 	 * <p>
-	 * Finds the dominant Locale for the user based on the browser transmitted parameters
+	 * Finds the dominant Locale for the user based on the browser transmitted
+	 * parameters
 	 * </p>
 	 * <p>
-	 * This method use preferences based on data transmitted by browser, but will always
-	 * try to fetch a locale with a language and a country.
+	 * This method use preferences based on data transmitted by browser, but
+	 * will always try to fetch a locale with a language and a country.
 	 * </p>
 	 * <p>
 	 * Cases are :
-	 * <li>The favorite locale has language and country : it is the selected locale</li>
-	 * <li>The favorite locale has a language but no country : will try to select another
-	 * locale with the <b>same language</b></li>
-	 * <li>If no locale has a country, the favorite language as of browser preference will
-	 * be used, and country will be set as US. If no language is set, the locale will be
-	 * set using DEFAULT_LOCALE (currently en_US).
+	 * <li>The favorite locale has language and country : it is the selected
+	 * locale</li>
+	 * <li>The favorite locale has a language but no country : will try to
+	 * select another locale with the <b>same language</b></li>
+	 * <li>If no locale has a country, the favorite language as of browser
+	 * preference will be used, and country will be set as US. If no language is
+	 * set, the locale will be set using DEFAULT_LOCALE (currently en_US).
 	 * </p>
+	 * 
 	 * @return the favorite user locale
 	 */
 	private Locale browserLocaleHeuristic() {

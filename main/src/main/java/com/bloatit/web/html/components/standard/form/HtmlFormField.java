@@ -56,11 +56,13 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     protected PlaceHolderElement ph = new PlaceHolderElement();
+    protected PlaceHolderElement commentPh = new PlaceHolderElement();
     protected HtmlLabel label;
     protected HtmlDiv container = new HtmlDiv();
+    protected HtmlDiv input = new HtmlDiv();
     protected HtmlElement element;
     private final RandomString rng = new RandomString(10);
-
+	
     /**
      * Creates a form field for a given element, with a given name. If a label is added,
      * it will will be positionned BEFORE the element
@@ -131,10 +133,21 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * @param label the label for the element
      */
     public void setLabel(final String label) {
+    	HtmlDiv labelBlock = new HtmlDiv("label");
         this.label = new HtmlLabel(label);
-        this.ph.add(this.label);
+        
+        labelBlock.add(this.label);
+        
+        this.ph.add(labelBlock);
 
         checkIdLabel();
+    }
+    
+    public void setComment(final String comment) {
+    	
+    	HtmlDiv commentBlock = new HtmlDiv("comment");
+    	commentBlock.addText(comment);
+    	this.commentPh.add(commentBlock);
     }
 
     protected void checkIdLabel() {
@@ -191,18 +204,31 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Initializes the placeholder for the label
      */
     private void init() {
+    	
+    	
+    	
         switch (position) {
         case AFTER:
-            this.container.add(element);
+            this.container.add(input);
             this.container.add(ph);
             break;
         case BEFORE:
         default:
             this.container.add(ph);
-            this.container.add(element);
+            this.container.add(input);
             break;
         }
+        
+        this.input.setCssClass("input");
+        this.input.add(element);
+        this.input.add(commentPh);
+        
+        
         add(container);
+        container.setCssClass("field");
+    	
+        
+        
     }
 
     /**

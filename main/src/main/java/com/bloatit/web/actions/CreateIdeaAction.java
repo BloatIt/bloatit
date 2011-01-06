@@ -30,60 +30,58 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("idea/docreate")
 public class CreateIdeaAction extends Action {
 
-    public final static String DESCRIPTION_CODE = "bloatit_idea_description";
-    public final static String SPECIFICATION_CODE = "bloatit_idea_specification";
-    public final static String PROJECT_CODE = "bloatit_idea_project";
-    public final static String CATEGORY_CODE = "bloatit_idea_category";
-    public final static String LANGUAGE_CODE = "bloatit_idea_lang";
+	public static final String DESCRIPTION_CODE = "bloatit_idea_description";
+	public static final String SPECIFICATION_CODE = "bloatit_idea_specification";
+	public static final String PROJECT_CODE = "bloatit_idea_project";
+	public static final String CATEGORY_CODE = "bloatit_idea_category";
+	public static final String LANGUAGE_CODE = "bloatit_idea_lang";
 
-    @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-    private String description;
+	@RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
+	private String description;
 
-    @RequestParam(name = SPECIFICATION_CODE, role = Role.POST)
-    private String specification;
+	@RequestParam(name = SPECIFICATION_CODE, role = Role.POST)
+	private String specification;
 
-    @RequestParam(name = PROJECT_CODE,defaultValue="VLC", role = Role.POST)
-    private String project;
+	@RequestParam(name = PROJECT_CODE, defaultValue = "VLC", role = Role.POST)
+	private String project;
 
-    @RequestParam(name = CATEGORY_CODE,defaultValue="Bug" , role = Role.POST)
-    private String category;
+	@RequestParam(name = CATEGORY_CODE, defaultValue = "Bug", role = Role.POST)
+	private String category;
 
-    @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
-    private String lang;
-    
-    private CreateIdeaActionUrl url;
+	@RequestParam(name = LANGUAGE_CODE, role = Role.POST)
+	private String lang;
 
-    public CreateIdeaAction(final CreateIdeaActionUrl url) throws RedirectException {
-        super(url);
-        this.url = url;
+	public CreateIdeaAction(final CreateIdeaActionUrl url) throws RedirectException {
+		super(url);
 
-        this.description = url.getDescription();
-        this.specification = url.getSpecification();
-        this.project = url.getProject();
-        this.category = url.getCategory();
-        this.lang = url.getLang();
+		this.description = url.getDescription();
+		this.specification = url.getSpecification();
+		this.project = url.getProject();
+		this.category = url.getCategory();
+		this.lang = url.getLang();
 
-        session.notifyList(url.getMessages());
-    }
+		session.notifyList(url.getMessages());
+	}
 
-    @Override
-    protected String doProcess() throws RedirectException {
-        if (!DemandManager.canCreate(session.getAuthToken())) {
-            session.notifyError(Context.tr("You must be logged in to create an idea."));
-            return new LoginPageUrl().urlString();
-        }
-        // TODO : Authenticate for demand creation
-        Locale langLocale = new Locale(lang);
-        Demand d = new Demand(session.getAuthToken().getMember(), langLocale, description, specification);
-       
-        d.authenticate(session.getAuthToken());
+	@Override
+	protected final Url doProcess() throws RedirectException {
+		if (!DemandManager.canCreate(session.getAuthToken())) {
+			session.notifyError(Context.tr("You must be logged in to create an idea."));
+			return new LoginPageUrl();
+		}
+		// TODO : Authenticate for demand creation
+		Locale langLocale = new Locale(lang);
+		Demand d = new Demand(session.getAuthToken().getMember(), langLocale, description, specification);
 
-        IdeaPageUrl to = new IdeaPageUrl(d);
+		d.authenticate(session.getAuthToken());
 
-        return to.urlString();
-    }
+		IdeaPageUrl to = new IdeaPageUrl(d);
+
+		return to;
+	}
 }

@@ -13,7 +13,7 @@ package com.bloatit.web.html.components.standard.form;
 
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
-import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.HtmlDiv;
 
 public class HtmlSubmit extends HtmlLeaf {
 
@@ -26,7 +26,7 @@ public class HtmlSubmit extends HtmlLeaf {
      */
     public HtmlSubmit(final String value) {
         super();
-        add(new HtmlParagraph().add(this.button));
+        add(new HtmlDiv().add(this.button).setCssClass("field"));
         this.button.addAttribute("value", value);
     }
 }

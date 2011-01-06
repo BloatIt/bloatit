@@ -17,6 +17,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlNode;
 
 public abstract class Action implements Linkable {
@@ -34,14 +35,14 @@ public abstract class Action implements Linkable {
         session = Context.getSession();
     }
 
-    public final String process() throws RedirectException {
+    public final Url process() throws RedirectException {
         if (actionUrl.getMessages().hasMessage(Level.ERROR)) {
             session.notifyList(actionUrl.getMessages());
-            throw new RedirectException(new LoginPageUrl().urlString());
+            throw new RedirectException(new LoginPageUrl());
         }
         return doProcess();
     }
 
-    abstract protected String doProcess() throws RedirectException;
+    abstract protected Url doProcess() throws RedirectException;
 
 }

@@ -38,18 +38,18 @@ public class LoginPage extends Page {
         super.create();
 
         final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
-        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.tr("login"));
-        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("password"));
-        final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Login"));
+        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.trc("Login (noun)","Login"));
+        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
+        final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)","Login"));
 
         loginForm.add(loginField);
         loginForm.add(passwordField);
         loginForm.add(submitButton);
 
-        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.tr("Login"), 2);
+        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)","Login"), 1);
         loginTitle.add(loginForm);
 
-        final HtmlTitleBlock signupTitle = new HtmlTitleBlock(Context.tr("Signup"), 2);
+        final HtmlTitleBlock signupTitle = new HtmlTitleBlock(Context.tr("Signup"), 1);
         signupTitle.add(new HtmlLink(new RegisterPageUrl().urlString(), Context.tr("Click here.")));
 
         final HtmlGenericElement group = new HtmlGenericElement();

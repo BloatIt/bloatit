@@ -37,12 +37,10 @@ import com.bloatit.common.FatalErrorException;
  * Class to handle localization of money amounts.
  */
 public class CurrencyLocale {
-    private final static String DEFAULT_CURRENCY = "EURO";
-    private final static String DEFAULT_CURRENCY_SYMBOL = "€";
-    private final static int INTERNAL_PRECISION = 6;
-    private final static String RATES_PATH = "../locales/rates";
-    private final static RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
-    private final static int DISPLAY_PRECISION = 0;
+    private static final String DEFAULT_CURRENCY_SYMBOL = "€";
+    private static final String RATES_PATH = "../locales/rates";
+    private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
+    private static final int DISPLAY_PRECISION = 0;
     
     private final Locale targetLocale;
     private final BigDecimal euroAmount;
@@ -131,8 +129,15 @@ public class CurrencyLocale {
     public static boolean availableCurrency(Currency currency){
     	return currencies.containsKey(currency);
     }
-
+    
     /**
+     * Returns the current targetLocale
+     */
+    public Locale getTargetLocale() {
+    	return targetLocale;
+    }
+
+	/**
      * <p>Parses the rate file and initializes the currency array</p>
      * <p>This parsing will occur only if file has been modified since last parse
      * or if no parse ever occured</p>

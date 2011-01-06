@@ -10,6 +10,8 @@
  */
 package com.bloatit.web.html.pages;
 
+import java.util.Map.Entry;
+
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.actions.CreateIdeaAction;
 import com.bloatit.web.annotations.ParamContainer;
@@ -26,93 +28,111 @@ import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.i18n.Localizator;
+import com.bloatit.web.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 
 @ParamContainer("idea/create")
 public class CreateIdeaPage extends LoggedPage {
 
-    @RequestParam(name = CreateIdeaAction.DESCRIPTION_CODE, defaultValue = "", role = Role.SESSION)
-    private String description;
-    
-    @RequestParam(name = CreateIdeaAction.SPECIFICATION_CODE, defaultValue = "", role = Role.SESSION)
-    private String specification;
+	@RequestParam(name = CreateIdeaAction.DESCRIPTION_CODE, defaultValue = "", role = Role.SESSION)
+	private String description;
 
-    @RequestParam(name = CreateIdeaAction.PROJECT_CODE, defaultValue = "", role = Role.SESSION)
-    private String project;
+	@RequestParam(name = CreateIdeaAction.SPECIFICATION_CODE, defaultValue = "", role = Role.SESSION)
+	private String specification;
 
-    @RequestParam(name = CreateIdeaAction.CATEGORY_CODE, defaultValue = "", role = Role.SESSION)
-    private String category;
+	@RequestParam(name = CreateIdeaAction.PROJECT_CODE, defaultValue = "", role = Role.SESSION)
+	private String project;
 
-    @RequestParam(name = CreateIdeaAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
-    private String lang;
-    
-    public CreateIdeaPage(final CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
-        super(createIdeaPageUrl);
-    }
+	@RequestParam(name = CreateIdeaAction.CATEGORY_CODE, defaultValue = "", role = Role.SESSION)
+	private String category;
 
-    @Override
-    protected String getTitle() {
-        return "Create new idea";
-    }
+	@RequestParam(name = CreateIdeaAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
+	private String lang;
 
-    @Override
-    public boolean isStable() {
-        return false;
-    }
+	public CreateIdeaPage(final CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
+		super(createIdeaPageUrl);
+		this.description = createIdeaPageUrl.getDescription();
+		this.specification = createIdeaPageUrl.getSpecification();
+		this.project = createIdeaPageUrl.getProject();
+		this.category = createIdeaPageUrl.getCategory();
+		this.lang = createIdeaPageUrl.getLang();
+	}
 
-    @Override
-    public HtmlElement createRestrictedContent() {
-        if (DemandManager.canCreate(session.getAuthToken())) {
-            return generateIdeaCreationForm();
-        } else {
-            return generateBadRightError();
-        }
-    }
+	@Override
+	protected final String getTitle() {
+		return "Create new idea";
+	}
 
-    private HtmlElement generateIdeaCreationForm() {
-        HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(Context.tr("Create a new idea"), 1);
-        final CreateIdeaActionUrl doCreateUrl = new CreateIdeaActionUrl();
+	@Override
+	public final boolean isStable() {
+		return false;
+	}
 
-        // Create the form stub
-        HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
-        HtmlFormBlock specifBlock = new HtmlFormBlock(Context.tr("Specify the new idea"));
-        HtmlFormBlock paramBlock = new HtmlFormBlock(Context.tr("Parameters of the new idea"));
+	@Override
+	public HtmlElement createRestrictedContent() {
+		if (DemandManager.canCreate(session.getAuthToken())) {
+			return generateIdeaCreationForm();
+		} else {
+			return generateBadRightError();
+		}
+	}
 
-        createIdeaTitle.add(createIdeaForm);
-        createIdeaForm.add(specifBlock);
-        createIdeaForm.add(paramBlock);
-        createIdeaForm.add(new HtmlSubmit(Context.tr("submit")));
+	private HtmlElement generateIdeaCreationForm() {
+		HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(Context.tr("Create a new idea"), 1);
+		final CreateIdeaActionUrl doCreateUrl = new CreateIdeaActionUrl();
 
-        // Create the fields that will describe the specification of the idea (description & specification)
-        HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, Context.tr("Title"));
-        HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, Context.tr("Describe the idea"), 10, 80);
-        specifBlock.add(descriptionInput);
-        specifBlock.add(specificationInput);
+		// Create the form stub
+		HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
+		HtmlFormBlock specifBlock = new HtmlFormBlock(Context.tr("Specify the new idea"));
+		HtmlFormBlock paramBlock = new HtmlFormBlock(Context.tr("Parameters of the new idea"));
 
-        // Create the fields that will be used to describe the parameters of the idea (project ...)
-        HtmlDropDown languageInput = new HtmlDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
-        languageInput.add(Context.getLocalizator().getLocale().getDisplayLanguage(), Context.getLocalizator().getLocale().getLanguage());
-        
-        HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, Context.tr("Category"));
-        HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, Context.tr("Project"));
-        paramBlock.add(languageInput);
-        paramBlock.add(categoryInput);
-        paramBlock.add(projectInput);
-        
-        final HtmlDiv group = new HtmlDiv();
-        group.add(createIdeaTitle);
-        return group;
-    }
+		createIdeaTitle.add(createIdeaForm);
+		createIdeaForm.add(specifBlock);
+		createIdeaForm.add(paramBlock);
+		createIdeaForm.add(new HtmlSubmit(Context.tr("submit")));
 
-    private HtmlElement generateBadRightError() {
-        final HtmlDiv group = new HtmlDiv();
+		// Create the fields that will describe the specification of the idea
+		// (description & specification)
+		HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, Context.tr("Title"));
+		descriptionInput.setDefaultValue(description);
+		descriptionInput.setComment(Context.tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
+		HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, Context.tr("Describe the idea"), 10, 80);
+		specificationInput.setDefaultValue(specification);
+		specificationInput.setComment(Context.tr("Enter a long description of the idea : list all features, describe them all "
+				+ "... Try to leave as little room for ambiguity as possible."));
+		specifBlock.add(descriptionInput);
+		specifBlock.add(specificationInput);
 
-        return group;
-    }
+		// Create the fields that will be used to describe the parameters of the
+		// idea (project ...)
+		HtmlDropDown languageInput = new HtmlDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
+		for (Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
+			languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
+		}
 
-    @Override
-    public String getRefusalReason() {
-        return Context.tr("You must be logged to create a new idea.");
-    }
+		HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, Context.tr("Category"));
+		categoryInput.setDefaultValue(category);
+		HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, Context.tr("Project"));
+		projectInput.setDefaultValue(project);
+		paramBlock.add(languageInput);
+		paramBlock.add(categoryInput);
+		paramBlock.add(projectInput);
+
+		final HtmlDiv group = new HtmlDiv();
+		group.add(createIdeaTitle);
+		return group;
+	}
+
+	private HtmlElement generateBadRightError() {
+		final HtmlDiv group = new HtmlDiv();
+
+		return group;
+	}
+
+	@Override
+	public String getRefusalReason() {
+		return Context.tr("You must be logged to create a new idea.");
+	}
 }

@@ -136,7 +136,7 @@ public class DispatchServer {
 					// If its an action then create an action
 				} else if (linkable instanceof Action) {
 					final Action action = Action.class.cast(linkable);
-					response.writeRedirect(action.process());
+					response.writeRedirect(action.process().urlString());
 				}
 			} else {
 				session.notifyError(Context.tr("Unknow page: ") + pageCode);
@@ -146,7 +146,7 @@ public class DispatchServer {
 			}
 		} catch (final RedirectException e) {
 			Log.web().info("Redirect to " + e.getUrl(), e);
-			response.writeRedirect(e.getUrl());
+			response.writeRedirect(e.getUrl().urlString());
 		}
 		com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
 	}

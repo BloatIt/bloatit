@@ -17,7 +17,6 @@ import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 
 public class IdeaOfferComponent extends HtmlPageComponent {
 
@@ -61,7 +60,6 @@ public class IdeaOfferComponent extends HtmlPageComponent {
 
     protected void extractData() {
 
-        final Session session = Context.getSession();
         author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getFullname(), "offer_author");
         price = new HtmlParagraph(Context.tr("Price : ") + "Unknown yet", "offer_price");
         expirationDate = new HtmlParagraph(Context.tr("Expiration date : ") + offer.getDateExpire().toString(), "offer_expiry_date");

@@ -12,6 +12,7 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.RegisterActionUrl;
+import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("member/docreate")
 public class RegisterAction extends Action {
@@ -47,10 +48,10 @@ public class RegisterAction extends Action {
 	}
 
 	@Override
-	protected String doProcess() throws RedirectException {
+	protected Url doProcess() throws RedirectException {
 		Locale locale = new Locale(lang, country);
 		
 		Member m = new Member(login, password, email, locale);
-		return new MemberPageUrl(m).urlString();
+		return new MemberPageUrl(m);
 	}
 }

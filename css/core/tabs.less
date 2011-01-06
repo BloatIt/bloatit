@@ -1,3 +1,7 @@
+@import "../include/tools";
+
+@border_color: rgb(200,200,200);
+@active_tab_color: rgb(240,240,240);
 
 .tab_pane {
     /*border: 1px solid red;*/
@@ -18,12 +22,13 @@
     -webkit-border-top-left-radius:8px;
 
     display:table-cell;
-    border: 1px solid rgb(200,200,200);
+    border: 1px solid @border_color;
     border-bottom: none;
     padding-left: 1em;
     padding-right: 1em;
-    font-weight: bold;
-    background:rgb(240,240,240);
+    //font-weight: bold;
+    .horizontal-gradient( @active_tab_color, rgb(250,250,250));
+//    background: @active_tab_color;
 }
 
 .inactive_tab_title {
@@ -44,6 +49,7 @@
     display:table-cell;
     border: 1px solid rgb(200,200,200);
     
+    .horizontal-gradient(rgb(255,255,255),  @active_tab_color);
 }
 
 .inactive_tab_title_content {
@@ -81,6 +87,9 @@
     padding: 1px;
     margin: 0px;
     background:rgb(240,240,240);
+
+    .horizontal-gradient(rgb(245,245,245), @active_tab_color);
+
 
 
 }

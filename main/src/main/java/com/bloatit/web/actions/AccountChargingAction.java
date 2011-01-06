@@ -41,10 +41,10 @@ public class AccountChargingAction extends Action {
     }
 
     @Override
-    protected String doProcess() throws RedirectException {
+    protected Url doProcess() throws RedirectException {
         if (url.getMessages().hasMessage(Level.ERROR)) {
-            // TODO
-            throw new RedirectException(new IndexPageUrl().urlString());
+            session.notifyList(url.getMessages());
+            throw new RedirectException(new IndexPageUrl());
         }
         final Member targetMember = session.getAuthToken().getMember();
 
@@ -57,7 +57,7 @@ public class AccountChargingAction extends Action {
 
         if (!targetMember.canGetInternalAccount()) {
             session.notifyError(Context.tr("Your current rights do not allow you to charge money"));
-            return new IndexPageUrl().urlString();
+            return new IndexPageUrl();
         }
 
         return session.pickPreferredPage();

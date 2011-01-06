@@ -12,18 +12,12 @@
 package com.bloatit.web.html.components;
 
 import com.bloatit.web.html.HtmlTools;
-import com.bloatit.web.server.Session;
 
 public class HtmlString {
 
     private final StringBuilder stringBuilder = new StringBuilder();
-    private Session session = null;
 
     public HtmlString() {
-    }
-
-    public HtmlString(final Session session) {
-        this.session = session;
     }
 
     public HtmlString add(final String string) {

@@ -14,14 +14,13 @@ package com.bloatit.web.server;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.Locale;
 
 import com.bloatit.framework.AuthToken;
 import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
-import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
+import com.bloatit.web.utils.url.Url;
 
 /**
  * <p>
@@ -45,9 +44,11 @@ public class Session {
 	private boolean logged;
 	private final Deque<Action> actionList;
 	private final Deque<Notification> notificationList;
-	private String lastStablePage = null;
-	private String targetPage = null;
 	private AuthToken authToken;
+	
+	private Url lastStablePage = null;
+	private Url targetPage = null;
+	
 
 	/**
 	 * The place to store session data
@@ -63,35 +64,35 @@ public class Session {
 		notificationList = new ArrayDeque<Notification>();
 	}
 
-	public void setAuthToken(final AuthToken token) {
+	public final void setAuthToken(final AuthToken token) {
 		authToken = token;
 	}
 
-	public AuthToken getAuthToken() {
+	public final AuthToken getAuthToken() {
 		return authToken;
 	}
 
-	public void setLogged(final boolean logged) {
+	public final void setLogged(final boolean logged) {
 		this.logged = logged;
 	}
 
-	public boolean isLogged() {
+	public final boolean isLogged() {
 		return logged;
 	}
 
-	public String getKey() {
+	public final String getKey() {
 		return key;
 	}
 
-	public Deque<Action> getActionList() {
+	public final Deque<Action> getActionList() {
 		return actionList;
 	}
 
-	public void setLastStablePage(final String p) {
+	public void setLastStablePage(final Url p) {
 		lastStablePage = p;
 	}
 
-	public String getLastStablePage() {
+	public Url getLastStablePage() {
 		return lastStablePage;
 	}
 
@@ -99,42 +100,42 @@ public class Session {
 	 * You should use the pickPreferedPage instead.
 	 */
 	@Deprecated
-	public String getTargetPage() {
+	public final Url getTargetPage() {
 		return targetPage;
 	}
 
-	public String pickPreferredPage() {
-		if (targetPage != null && !targetPage.isEmpty()) {
-			final String tempStr = targetPage;
+	public Url pickPreferredPage() {
+		if (targetPage != null) {
+			final Url tempStr = targetPage;
 			targetPage = null;
 			return tempStr;
-		} else if (lastStablePage != null && !lastStablePage.isEmpty()) {
+		} else if (lastStablePage != null) {
 			return lastStablePage;
 		} else {
-			return new IndexPageUrl().urlString();
+			return new IndexPageUrl();
 		}
 	}
 
-	public void setTargetPage(final String targetPage) {
+	public final void setTargetPage(final Url targetPage) {
 		this.targetPage = targetPage;
 	}
 
-	public void notifyGood(final String message) {
+	public final void notifyGood(final String message) {
 		notificationList.add(new Notification(message, Notification.Type.GOOD));
 	}
 
-	public void notifyBad(final String message) {
+	public final void notifyBad(final String message) {
 		notificationList.add(new Notification(message, Notification.Type.BAD));
 	}
 
-	public void notifyError(final String message) {
+	public final void notifyError(final String message) {
 		notificationList.add(new Notification(message, Notification.Type.ERROR));
 	}
 
 	/**
-	 * Notifies all elements in a list as warnings TODO : DELETE, for test purposes only
+	 * Notifies all elements in a list as warnings
 	 */
-	public void notifyList(final List<Message> errors) {
+	public final void notifyList(final List<Message> errors) {
 		for (final Message error : errors) {
 			switch (error.getLevel()) {
 			case ERROR:
@@ -152,11 +153,11 @@ public class Session {
 		}
 	}
 
-	public void flushNotifications() {
+	public final void flushNotifications() {
 		notificationList.clear();
 	}
 
-	public Deque<Notification> getNotifications() {
+	public final Deque<Notification> getNotifications() {
 		return notificationList;
 	}
 
@@ -166,7 +167,7 @@ public class Session {
 	 * @deprecated use a RequestParam
 	 */
 	@Deprecated
-	public Parameters getParams() {
+	public final Parameters getParams() {
 		return sessionParams;
 	}
 
@@ -177,7 +178,7 @@ public class Session {
 	 * @deprecated use a RequestParam
 	 */
 	@Deprecated
-	public String getParam(final String paramKey) {
+	public final String getParam(final String paramKey) {
 		return sessionParams.get(paramKey);
 	}
 
@@ -191,16 +192,9 @@ public class Session {
 	 * @param paramKey
 	 * @param paramValue
 	 */
-	public void addParam(final String paramKey, final String paramValue) {
+	public final void addParam(final String paramKey, final String paramValue) {
 		sessionParams.put(paramKey, paramValue);
 	}
 
-	/**
-	 * Gets the date pattern that matches the current user language in <i>SHORT</i>
-	 * format, i.e. : dd/mm/yyyy if locale is french, or mm/dd/yyyy if locale is english.
-	 * @return a String representing the date pattern
-	 */
-	public String getDatePattern() {
-		return DateLocale.getPattern(Context.getLocalizator().getLocale());
-	}
+
 }

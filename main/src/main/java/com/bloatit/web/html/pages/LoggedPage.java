@@ -36,8 +36,8 @@ public abstract class LoggedPage extends Page {
             add(createRestrictedContent());
         } else {
             session.notifyBad(getRefusalReason());
-            session.setTargetPage(meUrl.urlString());
-            throw new RedirectException(new LoginPageUrl().urlString());
+            session.setTargetPage(meUrl);
+            throw new RedirectException(new LoginPageUrl());
         }
     }
 
