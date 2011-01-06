@@ -13,6 +13,8 @@ package com.bloatit.web.html;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 
@@ -35,18 +37,8 @@ public class HtmlTools {
      * linkRequest.getUrl(outputParams) + "\">" + text + "</a>"; }
      */
 
-    public static String generateLogo() {
-        return "<span class='logo_bloatit'><span class='logo_bloatit_bloat'>Bloat</span><span class='logo_bloatit_it'>It</span></span>";
-    }
-
-    public static String escapeUrlString(final String str) {
-        // TODO return (urllib.parse.quote_plus(str)).replace('+','_');
-        return str;
-    }
-
-    public static String unescapeUrlString(final String str) {
-        // TODO return (urllib.parse.quote_plus(str)).replace('+','_');
-        return str;
+    public static HtmlTagText generateLogo() {
+        return new HtmlTagText("<span class='logo_bloatit'><span class='logo_bloatit_bloat'>Bloat</span><span class='logo_bloatit_it'>It</span></span>");
     }
 
     /**
@@ -120,6 +112,14 @@ public class HtmlTools {
         final SimpleDateFormat dateFormat = new SimpleDateFormat(Context.tr("MMM d, ''yy 'at' HH:mm"));
 
         return dateFormat.format(date);
+    }
+    
+    public static String escape(String str){
+    	return StringEscapeUtils.escapeHtml(str);
+    }
+    
+    public static String unescape(String str){
+    	return StringEscapeUtils.unescapeHtml(str);
     }
 
 }
