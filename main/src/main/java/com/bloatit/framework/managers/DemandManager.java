@@ -19,8 +19,8 @@ import com.bloatit.model.data.DaoDemand;
 
 public final class DemandManager {
 
-    // Desactivate default ctor
     private DemandManager(){
+        // Desactivate default ctor
     }
 
     public static PageIterable<Demand> getDemands() {

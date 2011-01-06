@@ -8,8 +8,8 @@ import com.bloatit.model.data.DaoJoinGroupInvitation;
 
 public final class GroupManager {
 
-    // Desactivate default ctor
     private GroupManager() {
+        // Desactivate default ctor
     }
 
     public static Group getByName(final String name) {

@@ -11,8 +11,8 @@ import org.apache.log4j.Logger;
 
 public final class Log {
 
-    // disactivate default ctor
     private Log() {
+        // disactivate default ctor
     }
 
     private static final Logger FRAMEWORK = Logger.getLogger("com.bloatit.framework");

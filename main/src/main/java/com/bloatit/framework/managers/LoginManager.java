@@ -22,8 +22,8 @@ public final class LoginManager {
 
     private static final Map<UUID, AuthToken> AUTH_TOKEN_LIST = new HashMap<UUID, AuthToken>();
 
-    // Desactivate default ctor
     private LoginManager() {
+        // Desactivate default ctor
     }
 
     public static AuthToken loginByPassword(final String login, final String password) {
