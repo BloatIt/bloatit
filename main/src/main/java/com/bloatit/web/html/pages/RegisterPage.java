@@ -69,31 +69,31 @@ public class RegisterPage extends Page {
         HtmlForm form = new HtmlForm(new RegisterActionUrl().urlString());
         container.add(form);
         
-        HtmlTextField loginInput = new HtmlTextField(RegisterAction.LOGIN_CODE, Context.tr("login : "));
+        HtmlTextField loginInput = new HtmlTextField(RegisterAction.LOGIN_CODE, Context.tr("Login"));
         loginInput.setDefaultValue(login);
         form.add(loginInput);
         
-        HtmlPasswordField passwordInput = new HtmlPasswordField(RegisterAction.PASSWORD_CODE, Context.tr("password : "));
+        HtmlPasswordField passwordInput = new HtmlPasswordField(RegisterAction.PASSWORD_CODE, Context.tr("Password"));
         passwordInput.setDefaultValue(password);
         form.add(passwordInput);
         
-        HtmlTextField emailInput = new HtmlTextField(RegisterAction.EMAIL_CODE, Context.tr("email : "));
+        HtmlTextField emailInput = new HtmlTextField(RegisterAction.EMAIL_CODE, Context.tr("Email"));
         emailInput.setDefaultValue(email);
         form.add(emailInput);
         
-        HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, Context.tr("country : "));
+        HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, Context.tr("Country"));
         for(Country entry : Countries.getAvailableCountries()){
         	countryInput.add(entry.name, entry.code);
         }
         form.add(countryInput);
         
-        HtmlDropDown langInput = new HtmlDropDown(RegisterAction.LANGUAGE_CODE, Context.tr("language : "));
+        HtmlDropDown langInput = new HtmlDropDown(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
         for(Entry<String, LanguageDescriptor> entry : Localizator.getAvailableLanguages().entrySet()){
         	langInput.add(entry.getValue().name, entry.getValue().code);
         }
         form.add(langInput);
         
-        HtmlSubmit button = new HtmlSubmit(Context.tr("submit"));
+        HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));
         form.add(button);
         
         add(container);
