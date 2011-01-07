@@ -22,6 +22,7 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
+import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
@@ -65,7 +66,8 @@ public class ContributePage extends LoggedPage {
         final ContributionActionUrl formActionUrl = new ContributionActionUrl(targetIdea);
 
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
-
+        contribForm.setCssClass("padding_box");
+        
         // Input field : choose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
         contribField.setLabel(Context.tr("Choose amount : "));
@@ -78,28 +80,15 @@ public class ContributePage extends LoggedPage {
 
         final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Contribute"));
 
-        // Summary of the idea
-        final HtmlTitleBlock summary = new HtmlTitleBlock(targetIdea.getTitle(), 2);
         
-        final Locale defaultLocale = Context.getLocalizator().getLocale();
-		final Translation translatedDescription = targetIdea.getDescription().getTranslationOrDefault(defaultLocale);
-		String shortDescription = translatedDescription.getText();
-
-		if (shortDescription.length() > 144) {
-			// TODO create a tools to truncate less dirty
-			shortDescription = shortDescription.substring(0, 143) + " ...";
-		}
         
-        final HtmlText textSummary = new HtmlText(shortDescription);
-        summary.add(textSummary);
-
         // Create the form
         contribForm.add(contribField);
         contribForm.add(commentField);
         contribForm.add(submitButton);
 
-        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(Context.tr("Contribute"), 2);
-        contribTitle.add(summary);
+        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(Context.tr("Contribute"), 1);
+        contribTitle.add(new HtmlIdeaSumary(targetIdea));
         contribTitle.add(contribForm);
 
         final HtmlDiv group = new HtmlDiv();
