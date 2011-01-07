@@ -12,21 +12,17 @@ package com.bloatit.web.scgiserver;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.server.DispatchServer;
+import com.bloatit.web.server.HttpHeader;
 import com.bloatit.web.server.HttpResponse;
 
 public class SCGIServer {
@@ -74,16 +70,15 @@ public class SCGIServer {
                 final byte[] postBytes = new byte[Integer.parseInt(env.get("CONTENT_LENGTH"))];
                 bis.read(postBytes);
 
-                // for (String key : env.keySet()) {
-                // System.err.println("" + key + " -> " + env.get(key));
-                // }
+                 for (String key : env.keySet()) {
+                 System.err.println("" + key + " -> " + env.get(key));
+                 }
 
-                final Map<String, String> query = parseQueryString(env.get("QUERY_STRING"));
-                final Map<String, String> post = parseQueryString(new String(postBytes));
-                final Map<String, String> cookies = parseCookiesString(env.get("HTTP_COOKIE"));
-                final List<String> preferredLangs = parseLanguageString(env.get("HTTP_ACCEPT_LANGUAGE"));
+                HttpHeader header = new HttpHeader(env);
+                HttpPost post = new HttpPost(postBytes);
+                Context.setHeader(header);
 
-                final DispatchServer dispatchServer = new DispatchServer(query, post, cookies, preferredLangs);
+                final DispatchServer dispatchServer = new DispatchServer(header, post);
 
                 try {
                     dispatchServer.process(new HttpResponse(clientSocket.getOutputStream()));
@@ -124,47 +119,5 @@ public class SCGIServer {
             // TODO procedure de reprise
         }
 
-    }
-
-    private Map<String, String> parseQueryString(final String url) {
-        final Map<String, String> params = new HashMap<String, String>();
-        for (final String param : url.split("&")) {
-            try {
-                final String[] pair = param.split("=");
-                String key;
-                if (pair.length >= 2) {
-                    key = URLDecoder.decode(pair[0], "UTF-8");
-                    final String value = URLDecoder.decode(pair[1], "UTF-8");
-
-                    params.put(key, value);
-                }
-            } catch (final UnsupportedEncodingException ex) {
-                Log.web().error("Cannot parse url", ex);
-            }
-        }
-
-        return params;
-    }
-
-    private Map<String, String> parseCookiesString(final String cookiesString) {
-        final Map<String, String> cookiesMap = new HashMap<String, String>();
-
-        if (cookiesString != null) {
-            final String[] cookies = cookiesString.split(";");
-            for (final String cookie : cookies) {
-                final String[] cookieParts = cookie.split("=");
-                if (cookieParts.length == 2) {
-                    cookiesMap.put(cookieParts[0].trim(), cookieParts[1].trim());
-                }
-            }
-        }
-        return cookiesMap;
-    }
-
-    private List<String> parseLanguageString(final String languages) {
-        if (languages == null) {
-            return new ArrayList<String>();
-        }
-        return Arrays.asList(languages.split(","));
     }
 }

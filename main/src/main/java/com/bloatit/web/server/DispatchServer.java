@@ -13,7 +13,6 @@ package com.bloatit.web.server;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.bloatit.common.Log;
@@ -21,6 +20,7 @@ import com.bloatit.web.actions.Action;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.scgiserver.HttpPost;
 import com.bloatit.web.utils.i18n.Localizator;
 import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
@@ -86,29 +86,23 @@ public class DispatchServer {
 			}
 		};
 	}
-	private final Map<String, String> cookies;
-	private final List<String> preferredLangs;
+
 	private final Session session;
-	private final Map<String, String> query;
-	private final Map<String, String> post;
+	private final HttpHeader header;
+	private final HttpPost post;
 
 
-	public DispatchServer(final Map<String, String> query, final Map<String, String> post, final Map<String, String> cookies,
-	        final List<String> preferredLangs) {
-		this.cookies = cookies;
-		this.preferredLangs = preferredLangs;
-
-		this.session = findSession(query);
-
-		this.query = query;
-		this.post = post;
+	public DispatchServer(HttpHeader header, HttpPost post) {
+		this.header = header;
+        this.post = post;
+		this.session = findSession();
 	}
 
 	/**
 	 * Creates a localizator
 	 */
 	private Localizator generateLocalizator() {
-		return new Localizator(query.get("lang"), preferredLangs);
+		return new Localizator(header.getQueryString().getLanguage(), header.getHttpAcceptLanguage());
     }
 
 	public void process(final HttpResponse response) throws IOException {
@@ -117,15 +111,13 @@ public class DispatchServer {
 		Context.setSession(session);
 		Context.setLocalizator(generateLocalizator());
 
-		final String pageCode = query.get("page");
-		final String params = query.get("param");
+		final String pageCode = header.getQueryString().getPageName();
 
-		// Add the get params
-		final Parameters parameters = parseQueryString(params);
-		// Merge with the query params
-		parameters.putAll(query);
-		// Merge with the post paramsLocale
-		parameters.putAll(post);
+
+		// Merge post and get parameters.
+		final Parameters parameters = new Parameters();
+		parameters.putAll(header.getQueryString().getParameters());
+		parameters.putAll(post.getParameters());
 
 		try {
 			Url url = constructUrl(pageCode, parameters);
@@ -180,50 +172,26 @@ public class DispatchServer {
 
 	/**
 	 * Return the session for the user. Either an existing session or a new session.
-	 * @param query the complete query string
 	 * @return the session matching the user
 	 */
-	private Session findSession(final Map<String, String> query) {
-		Session sess = null;
-
-		if (cookies.containsKey("session_key")) {
-			sess = SessionManager.getByKey(cookies.get("session_key"));
+	private Session findSession() {
+		String key = header.getHttpCookie().get("session_key");
+		Session sessionByKey = null;
+        if (key != null && (sessionByKey = SessionManager.getByKey(key)) != null) {
+		    return sessionByKey;
 		}
-		if (sess == null) {
-			sess = SessionManager.createSession();
-		}
-		return sess;
+        return  SessionManager.createSession();
 	}
 
-	private Parameters parseQueryString(final String queryString) {
-		final Parameters parameters = new Parameters();
-
-		if (queryString != null) {
-			final String[] splitted = strip(queryString, '/').split("/");
-
-			int i = 0;
-
-			// Parsing, finding page parameters
-			while (i < splitted.length) {
-				if (splitted[i].contains("-")) {
-					final String[] p = splitted[i].split("-", 2);
-					parameters.put(p[0], p[1]);
-				}
-				i = i + 1;
-			}
-		}
-		return parameters;
-	}
-
-	private static String strip(final String string, final char stripped) {
-		int begin = 0;
-		while (string.charAt(begin) == stripped) {
-			begin++;
-		}
-		int end = string.length() - 1;
-		while (string.charAt(end) == stripped) {
-			end--;
-		}
-		return string.substring(begin, end + 1);
-	}
+//	private static String strip(final String string, final char stripped) {
+//		int begin = 0;
+//		while (string.charAt(begin) == stripped) {
+//			begin++;
+//		}
+//		int end = string.length() - 1;
+//		while (string.charAt(end) == stripped) {
+//			end--;
+//		}
+//		return string.substring(begin, end + 1);
+//	}
 }

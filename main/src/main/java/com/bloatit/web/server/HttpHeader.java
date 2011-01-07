@@ -1,19 +1,19 @@
 package com.bloatit.web.server;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.bloatit.common.FatalErrorException;
-import com.bloatit.common.Log;
+import com.bloatit.web.server.LazyLoaders.LazyInt;
+import com.bloatit.web.server.LazyLoaders.LazyMap;
+import com.bloatit.web.server.LazyLoaders.LazyString;
+import com.bloatit.web.server.LazyLoaders.LazyStringList;
 
 public class HttpHeader {
 
     /**
      * example : fr,fr-fr;q=0.8,en-us;q=0.5,en;q=0.3
      */
-    private final LazyString httpAcceptLanguage = new LazyString("HTTP_ACCEPT_LANGUAGE");
+    private final LazyStringList httpAcceptLanguage = new LazyStringList("HTTP_ACCEPT_LANGUAGE", ",");
 
     /**
      * example : Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.14pre) Gecko/20110107
@@ -124,7 +124,7 @@ public class HttpHeader {
      * example :
      * lang=fr&page=payline&param=result-cancel/token-EuuqQRn7AiPNrfqT7D0w1294355479323
      */
-    private final LazyString queryString = new LazyString("QUERY_STRING");
+    private Query queryString = null;
     /**
      * example : CGI/1.1
      */
@@ -147,102 +147,14 @@ public class HttpHeader {
     public HttpHeader(Map<String, String> env) {
         super();
         this.env = env;
-    }
-
-    public static abstract class LazyComponent<T> {
-        private T value = null;
-        private final String name;
-
-        public LazyComponent(String name) {
-            this.name = name;
-        }
-
-        public T getValue(Map<String, String> env) {
-            if (value != null) {
-                return value;
-            }
-            String stringValue = env.get(name);
-            if (stringValue != null) {
-                value = convert(stringValue);
-                return value;
-            }
-            throw new FatalErrorException("cannot found " + name);
-        }
-
-        public abstract T convert(String stringValue);
-
-    }
-
-    public static class LazyMap extends LazyComponent<Map<String, String>> {
-        public LazyMap(String name) {
-            super(name);
-        }
-
-        @Override
-        public Map<String, String> convert(String stringValue) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            String[] namedValues = stringValue.split(";");
-            for (String namedValue : namedValues) {
-                String[] aValue = namedValue.split("=");
-                if (aValue.length == 2) {
-                    map.put(aValue[0].trim(), aValue[1].trim());
-                } else {
-                    Log.web().error("Malformed cookie value: " + namedValue);
-                }
-            }
-            return map;
-        }
-    }
-
-    public static class LazyInt extends LazyComponent<Integer> {
-
-        public LazyInt(String name) {
-            super(name);
-        }
-
-        @Override
-        public Integer convert(String stringValue) {
-            try {
-                return Integer.valueOf(stringValue);
-            } catch (Exception e) {
-                Log.web().error("Malformed integer: " + stringValue);
-            }
-            return null;
-        }
-
-    }
-
-    public static class LazyStringList extends LazyComponent<List<String>> {
-
-        private final String separator;
-
-        public LazyStringList(String name, String separator) {
-            super(name);
-            this.separator = separator;
-        }
-
-        @Override
-        public List<String> convert(String stringValue) {
-            return Arrays.asList(stringValue.split(separator));
-        }
-    }
-
-    public static class LazyString extends LazyComponent<String> {
-        public LazyString(String name) {
-            super(name);
-        }
-
-        @Override
-        public String convert(String stringValue) {
-            return stringValue;
-        }
+        queryString = new Query(env.get("QUERY_STRING"));
     }
 
     public final String getPathInfo() {
         return pathInfo.getValue(env);
     }
 
-    public final String getHttpAcceptLanguage() {
+    public final List<String> getHttpAcceptLanguage() {
         return httpAcceptLanguage.getValue(env);
     }
 
@@ -334,8 +246,8 @@ public class HttpHeader {
         return scgi.getValue(env);
     }
 
-    public final String getQueryString() {
-        return queryString.getValue(env);
+    public final Query getQueryString() {
+        return queryString;
     }
 
     public final String getGatewayInterface() {
@@ -352,6 +264,14 @@ public class HttpHeader {
 
     public final int getHttpXDoNotTrack() {
         return httpXDoNotTrack.getValue(env);
+    }
+
+    public final List<String> getHttpAcceptEncoding() {
+        return httpAcceptEncoding.getValue(env);
+    }
+
+    public final Map<String, String> getHttpCookie() {
+        return httpCookie.getValue(env);
     }
 
 }
