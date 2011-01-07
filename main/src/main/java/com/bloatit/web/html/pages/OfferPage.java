@@ -38,16 +38,16 @@ public class OfferPage extends LoggedPage {
     @RequestParam(level=Level.ERROR)
     private Demand targetIdea = null;
 
-    @RequestParam(name = OfferAction.PRICE_CODE, defaultValue="", role = Role.SESSION)
+    @RequestParam(name = OfferAction.PRICE_CODE, level = Level.INFO, role = Role.SESSION)
     private final BigDecimal price;
 
-    @RequestParam(name = OfferAction.EXPIRY_CODE, defaultValue="", role = Role.SESSION)
+    @RequestParam(name = OfferAction.EXPIRY_CODE, level = Level.INFO, role = Role.SESSION)
     private final DateLocale expiryDate;
 
-    @RequestParam(name = OfferAction.TITLE_CODE, defaultValue="", role = Role.SESSION)
+    @RequestParam(name = OfferAction.TITLE_CODE, level = Level.INFO, role = Role.SESSION)
     private final String title;
     
-    @RequestParam(name = OfferAction.DESCRIPTION_CODE, defaultValue="", role = Role.SESSION)
+    @RequestParam(name = OfferAction.DESCRIPTION_CODE, level = Level.INFO, role = Role.SESSION)
     private final String description;
 
     public OfferPage(final OfferPageUrl url) throws RedirectException {
