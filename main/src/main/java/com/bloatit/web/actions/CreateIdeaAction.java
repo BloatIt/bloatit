@@ -84,4 +84,10 @@ public class CreateIdeaAction extends Action {
 
 		return to;
 	}
+	
+    @Override
+	protected Url doProcessErrors() throws RedirectException {
+    	//TODO
+		return new LoginPageUrl();
+	}
 }

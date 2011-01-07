@@ -13,6 +13,8 @@ package com.bloatit.web.html;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 
@@ -27,26 +29,8 @@ public class HtmlTools {
     public static final long HOUR = 60 * MINUTE;
     public static final long DAY = 24 * HOUR;
 
-    /*
-     * public static String generateLink(Session session, String text, Request
-     * linkRequest) { return "<a href=\"" + linkRequest.getUrl() + "\">" + text + "</a>";
-     * } public static String generateLink(Session session, String text, Request
-     * linkRequest, Map<String, String> outputParams) { return "<a href=\"" +
-     * linkRequest.getUrl(outputParams) + "\">" + text + "</a>"; }
-     */
-
-    public static String generateLogo() {
-        return "<span class='logo_bloatit'><span class='logo_bloatit_bloat'>Bloat</span><span class='logo_bloatit_it'>It</span></span>";
-    }
-
-    public static String escapeUrlString(final String str) {
-        // TODO return (urllib.parse.quote_plus(str)).replace('+','_');
-        return str;
-    }
-
-    public static String unescapeUrlString(final String str) {
-        // TODO return (urllib.parse.quote_plus(str)).replace('+','_');
-        return str;
+    public static HtmlTagText generateLogo() {
+        return new HtmlTagText("<span class='logo_bloatit'><span class='logo_bloatit_bloat'>Bloat</span><span class='logo_bloatit_it'>It</span></span>");
     }
 
     /**
@@ -106,6 +90,7 @@ public class HtmlTools {
         return result;
     }
 
+    @Deprecated
     public static String formatDate(final Session session, final Date date) {
         final Date currentDate = new Date();
 
@@ -120,6 +105,20 @@ public class HtmlTools {
         final SimpleDateFormat dateFormat = new SimpleDateFormat(Context.tr("MMM d, ''yy 'at' HH:mm"));
 
         return dateFormat.format(date);
+    }
+    
+    /**
+     * Escapes <code>str</code>
+     */
+    public static String escape(String str){
+    	return StringEscapeUtils.escapeHtml(str);
+    }
+ 
+    /**
+     * Unescape <code>str</code>
+     */
+    public static String unescape(String str){
+    	return StringEscapeUtils.unescapeHtml(str);
     }
 
 }

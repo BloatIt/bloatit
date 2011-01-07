@@ -21,7 +21,9 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.AccountChargingActionUrl;
+import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
+import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/account/charging")
@@ -41,7 +43,7 @@ public class AccountChargingAction extends Action {
     }
 
     @Override
-    protected Url doProcess() throws RedirectException {
+    protected final Url doProcess() throws RedirectException {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             session.notifyList(url.getMessages());
             throw new RedirectException(new IndexPageUrl());
@@ -62,4 +64,10 @@ public class AccountChargingAction extends Action {
 
         return session.pickPreferredPage();
     }
+    
+    @Override
+	protected final Url doProcessErrors() throws RedirectException {
+    	// TODO 
+		return new LoginPageUrl();
+	}
 }

@@ -12,7 +12,9 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.LogoutActionUrl;
 import com.bloatit.web.utils.url.Url;
 
@@ -24,10 +26,16 @@ public class LogoutAction extends Action {
     }
 
     @Override
-    public Url doProcess() {
+    public final Url doProcess() {
         session.setLogged(false);
         session.setAuthToken(null);
         session.notifyGood(Context.tr("Logout success."));
         return session.pickPreferredPage();
     }
+    
+    @Override
+	protected final Url doProcessErrors() throws RedirectException {
+    	//TODO
+		return new LoginPageUrl();
+	}
 }

@@ -6,6 +6,7 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
@@ -35,8 +36,8 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     public void create() throws RedirectException {
-        super.add(new HtmlText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
-        super.add(new HtmlText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
+        super.add(new HtmlTagText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
+        super.add(new HtmlTagText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
         final HtmlBranch html = new HtmlGenericElement("html");
 
         super.add(html);
@@ -48,9 +49,10 @@ public abstract class Page extends HtmlElement implements Linkable {
         // Display waiting notifications
         addWaitingNotifications();
 
-        // Set the laste stable page into the session
+        // Set the last stable page into the session
         if (isStable()) {
-            Context.getSession().setLastStablePage(thisUrl);
+        	session.setTargetPage(null);
+        	session.setLastStablePage(thisUrl);
         }
     }
 
@@ -148,7 +150,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     private HtmlElement generateTitle() {
         Context.getSession();
 
-        return new HtmlDiv().setId("logo").add(new HtmlLink(new IndexPageUrl().urlString(), generateLogo()));
+        return new HtmlDiv().setId("logo").add(new HtmlLink(new IndexPageUrl().urlString(), new HtmlTagText(generateLogo())));
     }
 
     private void addWaitingNotifications() {

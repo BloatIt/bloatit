@@ -18,6 +18,7 @@ import java.util.Map;
 
 import com.bloatit.common.Log;
 import com.bloatit.web.actions.Action;
+import com.bloatit.web.actions.KudoAction;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.html.pages.master.Page;
@@ -32,6 +33,7 @@ import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
+import com.bloatit.web.utils.url.KudoActionUrl;
 import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.LogoutActionUrl;
@@ -79,6 +81,7 @@ public class DispatchServer {
 				put(AccountChargingActionUrl.getName(), AccountChargingActionUrl.class);
 				put(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
 				put(RegisterActionUrl.getName(), RegisterActionUrl.class);
+				put(KudoActionUrl.getName(), KudoActionUrl.class);
 			}
 		};
 	}

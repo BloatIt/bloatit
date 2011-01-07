@@ -17,6 +17,7 @@ import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
@@ -53,7 +54,7 @@ public class MembersListPage extends Page {
             public HtmlNode generate(final Member member) {
                 final MemberPageUrl memberUrl = new MemberPageUrl(member);
                 final HtmlLink htmlLink = memberUrl.getHtmlLink(member.getFullname());
-                final HtmlText htmlKarma = new HtmlText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
+                final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 return new HtmlListItem(htmlLink).add(htmlKarma);
             }
         };

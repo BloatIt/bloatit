@@ -15,6 +15,7 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlList;
@@ -115,6 +116,6 @@ public class HtmlPagedList<T> extends HtmlList {
 
             return currentUrl.getHtmlLink(text);
         }
-        return new HtmlText(iString);
+        return new HtmlTagText(iString);
     }
 }

@@ -50,11 +50,14 @@ public class CurrencyLocale {
     private static Map<Currency, BigDecimal> currencies = new HashMap<Currency, BigDecimal>();
 
 
-    public CurrencyLocale(BigDecimal euroAmount, Locale targetLocale) {
+    public CurrencyLocale(BigDecimal euroAmount, Locale targetLocale) throws CurrencyNotAvailableException{
         this.euroAmount = euroAmount;
         this.targetLocale = targetLocale;
         this.currency = Currency.getInstance(targetLocale);
         parseRate();
+        if(!currencies.containsKey(currency)){
+        	throw new CurrencyNotAvailableException();
+        }
     }
 
     /**
@@ -146,7 +149,7 @@ public class CurrencyLocale {
         BufferedReader br = null;
         try {
             File file = new File(RATES_PATH);
-            if (lastParse == null || lastParse.before(new Date(file.lastModified()))) {
+            if (lastParse == null || lastParse.before(new Date(file.lastModified()) )) {
                 // Only parse if the file has been updated in the meantime
                 lastParse = new Date();
 

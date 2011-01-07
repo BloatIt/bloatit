@@ -17,7 +17,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: s\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Language: fr_FR\n"
+"X-Source-Language: C\n"
 
 #: com/bloatit/web/actions/LogoutAction.java:30
 msgid "Logout success."
@@ -54,8 +56,9 @@ msgid "You need to charge your account before you can contribute."
 msgstr "Vous devez créditer votre compte avant de contribuer."
 
 #: com/bloatit/web/server/DispatchServer.java:140
+#, fuzzy
 msgid "Unknow page: "
-msgstr "Page inconnu :"
+msgstr "Page inconnu : "
 
 #: com/bloatit/web/html/HtmlTools.java:115
 msgid "now"
@@ -103,8 +106,8 @@ msgstr "Décrivez l'idée"
 
 #: com/bloatit/web/html/pages/CreateIdeaPage.java:103
 msgid ""
-"Enter a long description of the idea : list all features, describe them "
-"all ... Try to leave as little room for ambiguity as possible."
+"Enter a long description of the idea : list all features, describe them all "
+"... Try to leave as little room for ambiguity as possible."
 msgstr ""
 "Tapez une longue description de l'idée : liste des fonctionnalités, décrivez "
 "les toutes... Essayez de laisser le moins d'ambiguité possible."

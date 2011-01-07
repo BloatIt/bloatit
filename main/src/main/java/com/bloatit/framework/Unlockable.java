@@ -34,9 +34,6 @@ public class Unlockable {
     }
 
     protected final AuthToken getToken() {
-        if (token == null) {
-            throw new UnauthorizedOperationException();
-        }
         return token;
     }
 
@@ -51,7 +48,7 @@ public class Unlockable {
      */
     protected final EnumSet<Role> calculateRole(final String login) {
         if (token == null) {
-            return EnumSet.of(Role.OTHER);
+            return EnumSet.of(Role.NOBODY);
         }
         if (token.getMember().getUnprotectedLogin().equals(login)) {
             switch (token.getMember().getRole()) {
@@ -98,7 +95,7 @@ public class Unlockable {
      */
     protected final EnumSet<Role> calculateRole(final Member member, final Group group) {
         if (token == null) {
-            return EnumSet.of(Role.OTHER);
+            return EnumSet.of(Role.NOBODY);
         }
         final EnumSet<Role> roles = calculateRole(member.getUnprotectedLogin());
         if (group != null) {
