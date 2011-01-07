@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-06 19:15+0100\n"
+"POT-Creation-Date: 2011-01-07 12:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: com/bloatit/web/actions/LogoutAction.java:30
+#: com/bloatit/web/actions/OfferAction.java:38
+msgid "The target idea is mandatory to make an offer."
+msgstr ""
+
+#: com/bloatit/web/actions/OfferAction.java:41
+msgid "Invalid or missing value for price field."
+msgstr ""
+
+#: com/bloatit/web/actions/LogoutAction.java:32
 msgid "Logout success."
 msgstr ""
 
-#: com/bloatit/web/actions/CreateIdeaAction.java:74
+#: com/bloatit/web/actions/CreateIdeaAction.java:76
 msgid "You must be logged in to create an idea."
+msgstr ""
+
+#: com/bloatit/web/actions/KudoAction.java:48
+msgid "Kudo applied"
+msgstr ""
+
+#: com/bloatit/web/actions/KudoAction.java:51
+msgid "For obscure reasons, you are not allowed to kudo that."
 msgstr ""
 
 #: com/bloatit/web/actions/LoginAction.java:51
@@ -34,12 +50,13 @@ msgstr ""
 msgid "Login failed. Wrong login or password."
 msgstr ""
 
-#: com/bloatit/web/actions/AccountChargingAction.java:59
+#: com/bloatit/web/actions/AccountChargingAction.java:61
 msgid "Your current rights do not allow you to charge money"
 msgstr ""
 
 #: com/bloatit/web/actions/ContributionAction.java:65
-msgid "Thanks you for crediting "
+#, java-format
+msgid "Thanks you for crediting {0} on this idea"
 msgstr ""
 
 #: com/bloatit/web/actions/ContributionAction.java:70
@@ -50,19 +67,19 @@ msgstr ""
 msgid "You need to charge your account before you can contribute."
 msgstr ""
 
-#: com/bloatit/web/server/DispatchServer.java:140
+#: com/bloatit/web/server/DispatchServer.java:143
 msgid "Unknow page: "
 msgstr ""
 
-#: com/bloatit/web/html/HtmlTools.java:115
+#: com/bloatit/web/html/HtmlTools.java:100
 msgid "now"
 msgstr ""
 
-#: com/bloatit/web/html/HtmlTools.java:117
+#: com/bloatit/web/html/HtmlTools.java:102
 msgid "%d seconds ago"
 msgstr ""
 
-#: com/bloatit/web/html/HtmlTools.java:120
+#: com/bloatit/web/html/HtmlTools.java:105
 msgid "MMM d, ''yy 'at' HH:mm"
 msgstr ""
 
@@ -326,7 +343,7 @@ msgstr ""
 msgid "Press"
 msgstr ""
 
-#: com/bloatit/web/html/pages/master/Page.java:121
+#: com/bloatit/web/html/pages/master/Page.java:123
 msgid "Page Not Found !"
 msgstr ""
 
@@ -403,10 +420,10 @@ msgstr ""
 msgid "Search result"
 msgstr ""
 
-#: com/bloatit/web/html/components/custom/HtmlPagedList.java:74
+#: com/bloatit/web/html/components/custom/HtmlPagedList.java:75
 msgid "Previous"
 msgstr ""
 
-#: com/bloatit/web/html/components/custom/HtmlPagedList.java:99
+#: com/bloatit/web/html/components/custom/HtmlPagedList.java:100
 msgid "Next"
 msgstr ""
