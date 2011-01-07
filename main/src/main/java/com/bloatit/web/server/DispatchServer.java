@@ -39,6 +39,7 @@ import com.bloatit.web.utils.url.LogoutActionUrl;
 import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.MembersListPageUrl;
 import com.bloatit.web.utils.url.MyAccountPageUrl;
+import com.bloatit.web.utils.url.NewCommentActionUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Parameters;
@@ -81,6 +82,7 @@ public class DispatchServer {
 				put(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
 				put(RegisterActionUrl.getName(), RegisterActionUrl.class);
 				put(KudoActionUrl.getName(), KudoActionUrl.class);
+				put(NewCommentActionUrl.getName(), NewCommentActionUrl.class);
 			}
 		};
 	}

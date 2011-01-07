@@ -38,16 +38,16 @@ public class OfferPage extends LoggedPage {
     @RequestParam(level=Level.ERROR)
     private Demand targetIdea = null;
 
-    @RequestParam(name = OfferAction.PRICE_CODE, defaultValue="", role = Role.SESSION)
+    @RequestParam(name = OfferAction.PRICE_CODE, level = Level.INFO, role = Role.SESSION)
     private final BigDecimal price;
 
-    @RequestParam(name = OfferAction.EXPIRY_CODE, defaultValue="", role = Role.SESSION)
+    @RequestParam(name = OfferAction.EXPIRY_CODE, level = Level.INFO, role = Role.SESSION)
     private final DateLocale expiryDate;
 
-    @RequestParam(name = OfferAction.TITLE_CODE, defaultValue="", role = Role.SESSION)
+    @RequestParam(name = OfferAction.TITLE_CODE, level = Level.INFO, role = Role.SESSION)
     private final String title;
     
-    @RequestParam(name = OfferAction.DESCRIPTION_CODE, defaultValue="", role = Role.SESSION)
+    @RequestParam(name = OfferAction.DESCRIPTION_CODE, level = Level.INFO, role = Role.SESSION)
     private final String description;
 
     public OfferPage(final OfferPageUrl url) throws RedirectException {
@@ -87,21 +87,21 @@ public class OfferPage extends LoggedPage {
         offerPageContainer.add(t);
 
         // Title field
-        final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, Context.tr("Add a title to the offer : "));
+        final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, Context.tr("Title to the offer"));
         titleField.setDefaultValue(title);
         offerForm.add(titleField);
 
         // Price field
-        final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, Context.tr("Offer price : "));
+        final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, Context.tr("Offer price"));
         if(price!=null) priceField.setDefaultValue(price.toPlainString());
         offerForm.add(priceField);
 
         // Date field
-        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, Context.tr("Expiration date : "));
+        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, Context.tr("Expiration date"));
         dateField.setDefaultValue(expiryDate);
         offerForm.add(dateField);
 
-        final HtmlTextArea descriptionField = new HtmlTextArea(OfferAction.DESCRIPTION_CODE, Context.tr("Enter the description of the offer : "), 10, 20);
+        final HtmlTextArea descriptionField = new HtmlTextArea(OfferAction.DESCRIPTION_CODE, Context.tr("Description of the offer"), 10, 80);
         descriptionField.setDefaultValue(description);
         offerForm.add(descriptionField);
 

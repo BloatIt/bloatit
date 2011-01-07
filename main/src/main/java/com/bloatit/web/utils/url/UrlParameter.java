@@ -7,6 +7,7 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.Message.What;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.AsciiUtils;
 import com.bloatit.web.utils.annotations.Loaders;
 import com.bloatit.web.utils.annotations.Loaders.ConversionErrorException;
@@ -28,7 +29,7 @@ public final class UrlParameter<T> extends UrlNode {
         this.value = value;
         this.valueClass = valueClass;
         this.level = level;
-        this.message = message;
+        this.message = Context.tr(message);
         if (value == null && level == Level.ERROR) {
             this.what = What.NOT_FOUND;
         } else {
