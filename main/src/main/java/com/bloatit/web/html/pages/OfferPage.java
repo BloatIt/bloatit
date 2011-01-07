@@ -87,21 +87,21 @@ public class OfferPage extends LoggedPage {
         offerPageContainer.add(t);
 
         // Title field
-        final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, Context.tr("Add a title to the offer : "));
+        final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, Context.tr("Title to the offer"));
         titleField.setDefaultValue(title);
         offerForm.add(titleField);
 
         // Price field
-        final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, Context.tr("Offer price : "));
+        final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, Context.tr("Offer price"));
         if(price!=null) priceField.setDefaultValue(price.toPlainString());
         offerForm.add(priceField);
 
         // Date field
-        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, Context.tr("Expiration date : "));
+        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, Context.tr("Expiration date"));
         dateField.setDefaultValue(expiryDate);
         offerForm.add(dateField);
 
-        final HtmlTextArea descriptionField = new HtmlTextArea(OfferAction.DESCRIPTION_CODE, Context.tr("Enter the description of the offer : "), 10, 20);
+        final HtmlTextArea descriptionField = new HtmlTextArea(OfferAction.DESCRIPTION_CODE, Context.tr("Description of the offer"), 10, 80);
         descriptionField.setDefaultValue(description);
         offerForm.add(descriptionField);
 

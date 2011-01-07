@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-07 12:42+0100\n"
+"POT-Creation-Date: 2011-01-07 13:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -368,7 +368,6 @@ msgid "Price : "
 msgstr ""
 
 #: com/bloatit/web/html/pages/idea/IdeaOfferComponent.java:65
-#: com/bloatit/web/html/pages/OfferPage.java:100
 msgid "Expiration date : "
 msgstr ""
 
@@ -405,15 +404,19 @@ msgid "You must be logged to make an offer"
 msgstr ""
 
 #: com/bloatit/web/html/pages/OfferPage.java:90
-msgid "Add a title to the offer : "
+msgid "Title to the offer"
 msgstr ""
 
 #: com/bloatit/web/html/pages/OfferPage.java:95
-msgid "Offer price : "
+msgid "Offer price"
+msgstr ""
+
+#: com/bloatit/web/html/pages/OfferPage.java:100
+msgid "Expiration date"
 msgstr ""
 
 #: com/bloatit/web/html/pages/OfferPage.java:104
-msgid "Enter the description of the offer : "
+msgid "Description of the offer"
 msgstr ""
 
 #: com/bloatit/web/html/pages/GlobalSearchPage.java:54

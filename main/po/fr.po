@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-07 12:42+0100\n"
+"POT-Creation-Date: 2011-01-07 13:41+0100\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -381,7 +381,6 @@ msgid "Price : "
 msgstr "Prix :"
 
 #: com/bloatit/web/html/pages/idea/IdeaOfferComponent.java:65
-#: com/bloatit/web/html/pages/OfferPage.java:100
 msgid "Expiration date : "
 msgstr "Date d'expiration :"
 
@@ -418,17 +417,20 @@ msgid "You must be logged to make an offer"
 msgstr "Vous devez être connecté pour faire une offre"
 
 #: com/bloatit/web/html/pages/OfferPage.java:90
-msgid "Add a title to the offer : "
-msgstr "Ajouter un titre à l'offre :"
+msgid "Title to the offer"
+msgstr "Titre de l'offre"
 
 #: com/bloatit/web/html/pages/OfferPage.java:95
-msgid "Offer price : "
-msgstr "Prix de l'offre :"
+msgid "Offer price"
+msgstr "Prix de l'offre"
+
+#: com/bloatit/web/html/pages/OfferPage.java:100
+msgid "Expiration date"
+msgstr "Date d'expiration"
 
 #: com/bloatit/web/html/pages/OfferPage.java:104
-#, fuzzy
-msgid "Enter the description of the offer : "
-msgstr "Tapez la description de l'offre&nbsp;:"
+msgid "Description of the offer"
+msgstr "Description de l'offre"
 
 #: com/bloatit/web/html/pages/GlobalSearchPage.java:54
 msgid "Search result"
