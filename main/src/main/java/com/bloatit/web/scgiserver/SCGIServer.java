@@ -70,9 +70,9 @@ public class SCGIServer {
                 final byte[] postBytes = new byte[Integer.parseInt(env.get("CONTENT_LENGTH"))];
                 bis.read(postBytes);
 
-                 for (String key : env.keySet()) {
-                 System.err.println("" + key + " -> " + env.get(key));
-                 }
+                // for (String key : env.keySet()) {
+                // System.err.println("" + key + " -> " + env.get(key));
+                // }
 
                 HttpHeader header = new HttpHeader(env);
                 HttpPost post = new HttpPost(postBytes);

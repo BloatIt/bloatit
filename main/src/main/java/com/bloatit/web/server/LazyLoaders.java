@@ -19,7 +19,6 @@ public class LazyLoaders {
         }
 
         public T getValue(Map<String, String> env) {
-            System.out.println(name);
             if (value != null) {
                 return value;
             }
