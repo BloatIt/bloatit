@@ -33,7 +33,7 @@
 
 	<modules>
 		<module>apt</module>
-		<module>paypal</module>
+		<module>paylineWebservice</module>
 		<module>main</module>
 	</modules>
 	
