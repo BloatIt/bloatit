@@ -20,3 +20,4 @@ apt/.agitator
 main/css
 www/resources/css/
 main/src/main/java/com/bloatit/web/utils/url/?*Url.java
+paylineWebservice/src/main/java/*
