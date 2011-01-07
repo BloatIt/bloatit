@@ -55,9 +55,11 @@ public class CreateIdeaAction extends Action {
 
 	@RequestParam(name = LANGUAGE_CODE, role = Role.POST)
 	private String lang;
+	private final CreateIdeaActionUrl url;
 
 	public CreateIdeaAction(final CreateIdeaActionUrl url) throws RedirectException {
 		super(url);
+		this.url = url;		
 
 		this.description = url.getDescription();
 		this.specification = url.getSpecification();
@@ -86,7 +88,7 @@ public class CreateIdeaAction extends Action {
 	
     @Override
 	protected Url doProcessErrors() throws RedirectException {
-    	//TODO
-		return new LoginPageUrl();
+    	session.notifyList(url.getMessages());
+		return session.pickPreferredPage();
 	}
 }
