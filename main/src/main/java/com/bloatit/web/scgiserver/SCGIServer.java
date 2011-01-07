@@ -164,8 +164,7 @@ public class SCGIServer {
     private List<String> parseLanguageString(final String languages) {
         if (languages == null) {
             return new ArrayList<String>();
-        } else {
-            return Arrays.asList(languages.split(","));
         }
+        return Arrays.asList(languages.split(","));
     }
 }

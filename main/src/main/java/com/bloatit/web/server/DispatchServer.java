@@ -18,7 +18,6 @@ import java.util.Map;
 
 import com.bloatit.common.Log;
 import com.bloatit.web.actions.Action;
-import com.bloatit.web.actions.KudoAction;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.PageNotFound;
 import com.bloatit.web.html.pages.master.Page;
