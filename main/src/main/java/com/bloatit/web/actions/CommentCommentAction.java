@@ -18,6 +18,7 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -29,51 +30,45 @@ import com.bloatit.web.utils.url.IdeaCommentActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 
-@ParamContainer("idea/docomment")
-public class IdeaCommentAction extends LoggedAction {
+@ParamContainer("comment/docomment")
+public class CommentCommentAction extends LoggedAction {
 	public static final String COMMENT_CONTENT_CODE = "bloatit_comment_content";
 	public static final String COMMENT_TARGET = "target";
-	
-	@RequestParam(name = COMMENT_TARGET, level=Level.ERROR)
-	private Demand targetIdea;
-	
-	@RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level=Level.ERROR)
+
+	@RequestParam(name = COMMENT_TARGET, level = Level.ERROR)
+	private Comment targetComment;
+
+	@RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level = Level.ERROR)
 	private String comment;
-	
+
 	private IdeaCommentActionUrl url;
 
-	public IdeaCommentAction(final IdeaCommentActionUrl url) throws RedirectException {
+	public CommentCommentAction(final Url url) throws RedirectException {
 		super(url);
-		this.url = url;
-		this.targetIdea = url.getTargetIdea();
-		this.comment = url.getComment();
 	}
-	
+
 	@Override
-    public Url doProcessRestricted() throws RedirectException {
+	public final Url doProcessRestricted() throws RedirectException {
 		session.notifyList(url.getMessages());
 		session.notifyGood(Context.tr("Your comment has been added."));
-		
-		targetIdea.authenticate(session.getAuthToken());
-		targetIdea.addComment(comment);
-		
-		return session.pickPreferredPage();
-    }
 
-    @Override
-	protected Url doProcessErrors() throws RedirectException {
-    	//TODO
-    	session.notifyList(url.getMessages());
+		return session.pickPreferredPage();
+	}
+
+	@Override
+	protected final Url doProcessErrors() throws RedirectException {
+		// TODO
+		session.notifyList(url.getMessages());
 		return new LoginPageUrl();
 	}
-    
-	@Override
-    protected String getRefusalReason() {
-	    return Context.tr("You must be logged in to comment.");
-    }
 
 	@Override
-    protected void transmitParameters() {
-	    session.addParam(COMMENT_CONTENT_CODE, comment);
-    }
+	protected final String getRefusalReason() {
+		return Context.tr("You must be logged in to comment.");
+	}
+
+	@Override
+	protected final void transmitParameters() {
+		session.addParam(COMMENT_CONTENT_CODE, comment);
+	}
 }
