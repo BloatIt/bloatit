@@ -61,4 +61,8 @@ public class Context {
     public static void setHeader(HttpHeader header) {
         Context.header = header;
     }
+
+    public static HttpHeader getHeader() {
+        return Context.header;
+    }
 }

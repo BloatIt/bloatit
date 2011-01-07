@@ -183,15 +183,4 @@ public class DispatchServer {
         return  SessionManager.createSession();
 	}
 
-//	private static String strip(final String string, final char stripped) {
-//		int begin = 0;
-//		while (string.charAt(begin) == stripped) {
-//			begin++;
-//		}
-//		int end = string.length() - 1;
-//		while (string.charAt(end) == stripped) {
-//			end--;
-//		}
-//		return string.substring(begin, end + 1);
-//	}
 }
