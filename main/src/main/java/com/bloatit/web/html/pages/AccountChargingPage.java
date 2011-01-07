@@ -10,7 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
-import com.bloatit.web.actions.AccountChargingAction;
+import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
@@ -19,8 +19,8 @@ import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
+import com.bloatit.web.utils.url.PaylineActionUrl;
 
 /**
  * A page used to put money onto the internal bloatit account
@@ -46,10 +46,10 @@ public class AccountChargingPage extends LoggedPage {
     public HtmlElement createRestrictedContent() {
         final HtmlTitleBlock title = new HtmlTitleBlock(Context.tr("Charge your account"), 1);
 
-        final AccountChargingActionUrl chargeActionUrl = new AccountChargingActionUrl();
+        final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
-            final HtmlTextField amount = new HtmlTextField(AccountChargingAction.CHARGE_AMOUNT_CODE, "Amount");
+            final HtmlTextField amount = new HtmlTextField(PaylineAction.CHARGE_AMOUNT_CODE, "Amount");
             final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
 
             form.add(amount);

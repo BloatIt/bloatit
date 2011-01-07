@@ -43,6 +43,8 @@ import com.bloatit.web.utils.url.NewCommentActionUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Parameters;
+import com.bloatit.web.utils.url.PaylineActionUrl;
+import com.bloatit.web.utils.url.PaylineNotifyActionUrl;
 import com.bloatit.web.utils.url.PaylinePageUrl;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;
@@ -83,6 +85,8 @@ public class DispatchServer {
 				put(RegisterActionUrl.getName(), RegisterActionUrl.class);
 				put(KudoActionUrl.getName(), KudoActionUrl.class);
 				put(NewCommentActionUrl.getName(), NewCommentActionUrl.class);
+				put(PaylineActionUrl.getName(), PaylineActionUrl.class);
+				put(PaylineNotifyActionUrl.getName(), PaylineNotifyActionUrl.class);
 			}
 		};
 	}

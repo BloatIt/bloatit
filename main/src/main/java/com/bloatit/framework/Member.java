@@ -103,7 +103,7 @@ public final class Member extends Actor {
     }
 
     /**
-     * @param state can be PENDING, VALIDATED or REFUSED
+     * @param state can be PENDING, ACCEPTED or REFUSED
      * @return all the received invitation with the specified state.
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
@@ -111,7 +111,7 @@ public final class Member extends Actor {
     }
 
     /**
-     * @param state can be PENDING, VALIDATED or REFUSED
+     * @param state can be PENDING, ACCEPTED or REFUSED
      * @return all the sent invitation with the specified state.
      */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {

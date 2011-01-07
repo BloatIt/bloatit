@@ -41,12 +41,11 @@ public final class DaoTransaction extends DaoIdentifiable {
             throw e;
         }
         return transaction;
-
     }
 
     /**
      * Create a new transaction and update the two accounts.
-     * 
+     *
      * @param from is the account from which we will take money.
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
@@ -87,7 +86,7 @@ public final class DaoTransaction extends DaoIdentifiable {
     public Date getCreationDate() {
         return (Date) creationDate.clone();
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

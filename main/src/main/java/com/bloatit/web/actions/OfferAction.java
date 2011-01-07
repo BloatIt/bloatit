@@ -17,13 +17,11 @@ import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.tr;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.annotations.tr;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
-import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Url;
@@ -35,21 +33,21 @@ public class OfferAction extends Action {
     public final static String TITLE_CODE = "offer_title";
     public final static String DESCRIPTION_CODE = "offer_description";
 
-    @RequestParam(level=Level.ERROR, role=Role.GET, message=@tr("The target idea is mandatory to make an offer."))
+    @RequestParam(level = Level.ERROR, role = Role.GET, message = @tr("The target idea is mandatory to make an offer."))
     private Demand targetIdea = null;
 
-    @RequestParam(name = PRICE_CODE, role = Role.POST, message=@tr("Invalid or missing value for price field."))
-    private BigDecimal price;
+    @RequestParam(name = PRICE_CODE, role = Role.POST, message = @tr("Invalid or missing value for price field."))
+    private final BigDecimal price;
 
     @RequestParam(name = EXPIRY_CODE, role = Role.POST)
-    private DateLocale expiryDate;
+    private final DateLocale expiryDate;
 
     @RequestParam(name = TITLE_CODE, role = Role.POST)
-    private String title;
-    
+    private final String title;
+
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-    private String description;
-    
+    private final String description;
+
     @SuppressWarnings("unused")
     private final OfferActionUrl url;
 
@@ -70,35 +68,34 @@ public class OfferAction extends Action {
         targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
         return new IdeaPageUrl(targetIdea);
     }
-    
+
     @Override
-	protected final Url doProcessErrors() throws RedirectException {
-    	session.notifyList(url.getMessages());
-    	
-    	if(targetIdea != null) {
-    	
-    		OfferPageUrl redirectUrl = new OfferPageUrl(targetIdea);
-    		
-    		if(description != null) {
-    			session.addParam(DESCRIPTION_CODE, description);
-    		}
-    		
-    		if(expiryDate != null) {
-    			session.addParam(EXPIRY_CODE, expiryDate.toString());
-    		}
-    		
-    		if(price != null) {
-    			session.addParam(PRICE_CODE, price.toPlainString());
-    		}
-    		
-    		if(title != null) {
-    			session.addParam(TITLE_CODE, title);
-    		}
-    		
-    		return redirectUrl;
-    	
-    	} else {
-    		return session.pickPreferredPage();
-    	}
-	}
+    protected final Url doProcessErrors() throws RedirectException {
+        session.notifyList(url.getMessages());
+
+        if (targetIdea != null) {
+
+            OfferPageUrl redirectUrl = new OfferPageUrl(targetIdea);
+
+            if (description != null) {
+                session.addParam(DESCRIPTION_CODE, description);
+            }
+
+            if (expiryDate != null) {
+                session.addParam(EXPIRY_CODE, expiryDate.toString());
+            }
+
+            if (price != null) {
+                session.addParam(PRICE_CODE, price.toPlainString());
+            }
+
+            if (title != null) {
+                session.addParam(TITLE_CODE, title);
+            }
+
+            return redirectUrl;
+
+        }
+        return session.pickPreferredPage();
+    }
 }
