@@ -47,10 +47,10 @@ public class CreateIdeaAction extends Action {
 	@RequestParam(name = SPECIFICATION_CODE, role = Role.POST)
 	private String specification;
 
-	@RequestParam(name = PROJECT_CODE, defaultValue = "VLC", role = Role.POST)
+	@RequestParam(name = PROJECT_CODE, defaultValue = "", role = Role.POST)
 	private String project;
 
-	@RequestParam(name = CATEGORY_CODE, defaultValue = "Bug", role = Role.POST)
+	@RequestParam(name = CATEGORY_CODE, defaultValue = "", role = Role.POST)
 	private String category;
 
 	@RequestParam(name = LANGUAGE_CODE, role = Role.POST)
@@ -74,7 +74,6 @@ public class CreateIdeaAction extends Action {
 			session.notifyError(Context.tr("You must be logged in to create an idea."));
 			return new LoginPageUrl();
 		}
-		// TODO : Authenticate for demand creation
 		Locale langLocale = new Locale(lang);
 		Demand d = new Demand(session.getAuthToken().getMember(), langLocale, description, specification);
 
