@@ -1,12 +1,20 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
-	xsi:schemaLocation="http://cxf.apache.org/transports/http/configuration
-           http://cxf.apache.org/schemas/configuration/http-conf.xsd
-           http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-	<http-conf:conduit
-		name="{urn:ebay:apis:eBLBaseComponents}Shopping.http-conduit">
-		<http-conf:client AllowChunking="false" />
-	</http-conf:conduit>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:sec="http://cxf.apache.org/configuration/security"
+	xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	xsi:schemaLocation="
+			http://cxf.apache.org/configuration/security
+			http://cxf.apache.org/schemas/configuration/security.xsd
+			http://cxf.apache.org/transports/http/configuration
+			http://cxf.apache.org/schemas/configuration/http-conf.xsd
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<http:conduit name="{http://impl.ws.payline.experian.com}WebPaymentAPI.http-conduit">
+		<http:authorization>
+			<sec:AuthorizationType>BASIC</sec:AuthorizationType>
+			<sec:Authorization>NTQ2NTIzOTE3NDI1OTE6YXI2TnNIOGdPRmRBeEZYbm01Njg=</sec:Authorization>
+		</http:authorization>
+		<http:tlsClientParameters secureSocketProtocol="SSL">
+		</http:tlsClientParameters>
+	</http:conduit>
 </beans>
