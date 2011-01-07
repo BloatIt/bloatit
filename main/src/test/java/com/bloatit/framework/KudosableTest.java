@@ -1,19 +1,11 @@
 package com.bloatit.framework;
 
-import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.managers.DemandManager;
 
 public class KudosableTest extends FrameworkTestUnit {
 
     public void testCanKudos() {
         final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
-
-        try {
-            demand.canKudos();
-            fail();
-        } catch (final UnauthorizedOperationException e) {
-            assertTrue(true);
-        }
 
         demand.authenticate(yoAuthToken);
         assertTrue(demand.canKudos());

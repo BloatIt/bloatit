@@ -21,6 +21,7 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlText;
+import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlDateField;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
@@ -76,16 +77,15 @@ public class OfferPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 2);
+        final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
+        offerPageContainer.add(new HtmlIdeaSumary(targetIdea));
+        
         // Create offer form
         final OfferActionUrl offerActionUrl = new OfferActionUrl(targetIdea);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
-
-        // Idea title
-        final HtmlText t = new HtmlText(this.targetIdea.getTitle());
-        offerPageContainer.add(t);
-
+        offerForm.setCssClass("padding_box");
+        
         // Title field
         final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, Context.tr("Title to the offer"));
         titleField.setDefaultValue(title);
