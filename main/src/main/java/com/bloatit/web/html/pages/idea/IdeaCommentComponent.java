@@ -14,6 +14,7 @@ import com.bloatit.framework.Comment;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
@@ -44,15 +45,17 @@ public class IdeaCommentComponent extends HtmlPageComponent {
     }
 
     protected void extractData() {
-
         final Session session = Context.getSession();
-        final String date = "<span class=\"comment_date\">" + HtmlTools.formatDate(session, comment.getCreationDate()) + "</span>";
-        // String author = "<span class=\"comment_author\">" +
-        // HtmlTools.generateLink(session, comment.getAuthor().getLogin(), new
-        // MemberPage(session, comment.getAuthor())) + "</span>";
-        final String author = "<span class=\"comment_author\">" + comment.getAuthor().getLogin() + "</span>";
-
-        commentText = new HtmlParagraph(comment.getText() + " – " + author + " " + date);
-
+        final HtmlGenericElement date = new HtmlGenericElement("span");
+        date.addText(HtmlTools.formatDate(session, comment.getCreationDate()));
+        date.setCssClass("comment_date");
+        
+        final HtmlGenericElement author = new HtmlGenericElement("span");
+        author.addText(comment.getAuthor().getLogin());
+        author.setCssClass("comment_author");
+        
+        commentText = new HtmlParagraph(comment.getText());
+        commentText.add(date);
+        commentText.add(author);
     }
 }

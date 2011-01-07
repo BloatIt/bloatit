@@ -22,10 +22,12 @@ import com.bloatit.web.server.Context;
 public class IdeaCommentListComponent extends HtmlPageComponent {
 
     private final PageIterable<Comment> comments;
+	private Demand targetIdea;
 
     public IdeaCommentListComponent(final Demand demand) {
         super();
-        comments = demand.getComments();
+        this.targetIdea = demand;
+        this.comments = demand.getComments();
         add(produce());
     }
 
@@ -41,6 +43,7 @@ public class IdeaCommentListComponent extends HtmlPageComponent {
             for (final Comment comment : comments) {
                 commentsBlock.add(new IdeaCommentComponent(comment));
             }
+            commentsBlock.add(new IdeaNewCommentComponent(targetIdea));
         }
         return commentsBlock;
     }
