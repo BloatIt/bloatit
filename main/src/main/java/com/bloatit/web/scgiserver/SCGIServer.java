@@ -49,7 +49,7 @@ public class SCGIServer {
         }
 
         try {
-            System.err.println("Start BloatIt serveur");
+            Log.web().info("Start BloatIt serveur");
             providerSocket = new ServerSocket(4000);
 
             while (true) {
