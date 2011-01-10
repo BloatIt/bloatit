@@ -1,6 +1,7 @@
 package com.bloatit.web.annotations.generator;
 
 import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 
 public abstract class JavaGenerator {
@@ -36,10 +37,17 @@ public abstract class JavaGenerator {
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
-    public final void addAttribute(String type, String nameString,String defaultValue, String name, Role role, Level level, String errorMsg) {
+    public final void addAttribute(String type, String nameString, String defaultValue, String name, Role role, Level level, String notFoundMsg,
+                                   String malFormedMsg) {
         name = toCamelAttributeName(name);
+
+        if (defaultValue == RequestParam.defaultDefaultValue) {
+            defaultValue = "com.bloatit.web.annotations.RequestParam.defaultDefaultValue";
+        } else {
+            defaultValue = "\"" + defaultValue + "\"";
+        }
         _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ")
-                .append(createParameter("\"" + nameString + "\"", defaultValue, type, role, level, errorMsg));
+                .append(createParameter("\"" + nameString + "\"", defaultValue, type, role, level, notFoundMsg, malFormedMsg));
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
     }
 
@@ -81,52 +89,70 @@ public abstract class JavaGenerator {
         _gettersSetters.append("}\n\n");
     }
 
-    public final String createParameter(String nameString, String defaultValue, String type, Role role, Level level, String errorMsg) {
-        // TODO find how to do this correctly
-        errorMsg = errorMsg.replaceAll("[\\\"]", "\\\\\"");
-        // errorMsg = errorMsg.replaceAll("([^\\\\])(\\\\)([^\\\\])",
-        // "\\1\\\\\\3");
+    // nameString and defaultValue must be already escaped.
+    public final String createParameter(String nameString,
+                                        String defaultValue,
+                                        String type,
+                                        Role role,
+                                        Level level,
+                                        String notFoundMsg,
+                                        String malFormedMsg) {
+
         StringBuilder sb = new StringBuilder();
-        sb.append("    new UrlParameter<").append(type).append(">(").append(nameString).append(", null, ");
-        sb.append("\"").append(defaultValue).append("\", ");
-        sb.append(type).append(".class, ");
+        sb.append(" new UrlParameter<").append(type).append(">(");
+        sb.append("null, ");
 
-        switch (role) {
-        case GET:
-            sb.append("Role.GET, ");
-            break;
-        case POST:
-            sb.append("Role.POST, ");
-            break;
-        case SESSION:
-            sb.append("Role.SESSION, ");
-            break;
-        case PRETTY:
-            sb.append("Role.PRETTY, ");
-            break;
-        default:
-            assert false;
-            break;
-        }
+        sb.append("new UrlParameterDescription<").append(type).append(">(");
+        sb.append(nameString).append(", ").append(type).append(".class, ");
+        addRole(role, sb);
+        sb.append(", ").append(defaultValue);
+        sb.append("), ");
 
-        switch (level) {
-        case ERROR:
-            sb.append("Level.ERROR, ");
-            break;
-        case INFO:
-            sb.append("Level.INFO, ");
-            break;
-        case WARNING:
-            sb.append("Level.WARNING, ");
-            break;
-        default:
-            assert false;
-            break;
-        }
+        sb.append("new UrlMessageFactory(");
+        sb.append("\"").append(notFoundMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+        sb.append("\"").append(malFormedMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+        addLevel(level, sb);
+        sb.append(")");
 
-        sb.append("\"").append(errorMsg).append("\"");
         sb.append(");\n");
         return sb.toString();
+    }
+
+    private void addLevel(Level level, StringBuilder sb) {
+        switch (level) {
+        case ERROR:
+            sb.append("Level.ERROR");
+            break;
+        case INFO:
+            sb.append("Level.INFO");
+            break;
+        case WARNING:
+            sb.append("Level.WARNING");
+            break;
+        default:
+            assert false;
+            break;
+        }
+    }
+
+    private void addRole(Role role, StringBuilder sb) {
+        switch (role) {
+        case GET:
+            sb.append("Role.GET");
+            break;
+        case POST:
+            sb.append("Role.POST");
+            break;
+        case SESSION:
+            sb.append("Role.SESSION");
+            break;
+        case PRETTY:
+            sb.append("Role.PRETTY");
+            break;
+        default:
+            assert false;
+            break;
+        }
     }
 
     private String getGetterName(String name) {

@@ -17,7 +17,9 @@ public @interface RequestParam {
 
     String name() default "";
 
-    tr message() default @tr("Error: invalid value (%value) for parameter \"%param\"");
+    tr notFoundMsg() default @tr("Error: invalid value (%value) for parameter \"%param\"");
+
+    tr malformedMsg() default @tr("Error: invalid value (%value) for parameter \"%param\"");
 
     Message.Level level() default Message.Level.ERROR;
 
