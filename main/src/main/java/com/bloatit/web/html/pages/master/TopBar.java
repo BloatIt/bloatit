@@ -47,9 +47,6 @@ public class TopBar extends HtmlDiv {
             final InternalAccount internalAccount = member.getInternalAccount();
             internalAccount.authenticate(session.getAuthToken());
             
-            if(!CurrencyLocale.availableCurrency(Context.getLocalizator().getLocale())){
-            	
-            }
             CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
             euroMoney.add(new HtmlText(cl.getDefaultString()));
 
