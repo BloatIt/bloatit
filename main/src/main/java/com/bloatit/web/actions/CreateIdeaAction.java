@@ -22,9 +22,11 @@ import java.util.Locale;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.web.annotations.ParamConstraint;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.annotations.tr;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
@@ -42,24 +44,26 @@ public class CreateIdeaAction extends Action {
 	public static final String LANGUAGE_CODE = "bloatit_idea_lang";
 
 	@RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-	private String description;
+	@ParamConstraint(max="12", maxErrorMsg=@tr("The title must be 12 chars length max."),
+	                 min="10", minErrorMsg=@tr("The title must have at least 10 chars."))
+	private final String description;
 
 	@RequestParam(name = SPECIFICATION_CODE, role = Role.POST)
-	private String specification;
+	private final String specification;
 
 	@RequestParam(name = PROJECT_CODE, defaultValue = "", role = Role.POST)
-	private String project;
+	private final String project;
 
 	@RequestParam(name = CATEGORY_CODE, defaultValue = "", role = Role.POST)
-	private String category;
+	private final String category;
 
 	@RequestParam(name = LANGUAGE_CODE, role = Role.POST)
-	private String lang;
+	private final String lang;
 	private final CreateIdeaActionUrl url;
 
 	public CreateIdeaAction(final CreateIdeaActionUrl url) throws RedirectException {
 		super(url);
-		this.url = url;		
+		this.url = url;
 
 		this.description = url.getDescription();
 		this.specification = url.getSpecification();
@@ -67,11 +71,11 @@ public class CreateIdeaAction extends Action {
 		this.category = url.getCategory();
 		this.lang = url.getLang();
 
-		session.notifyList(url.getMessages());
 	}
 
 	@Override
 	protected final Url doProcess() throws RedirectException {
+	    session.notifyList(url.getMessages());
 		if (!DemandManager.canCreate(session.getAuthToken())) {
 			session.notifyError(Context.tr("You must be logged in to create an idea."));
 			return new LoginPageUrl();
@@ -85,7 +89,7 @@ public class CreateIdeaAction extends Action {
 
 		return to;
 	}
-	
+
     @Override
 	protected Url doProcessErrors() throws RedirectException {
     	session.notifyList(url.getMessages());
