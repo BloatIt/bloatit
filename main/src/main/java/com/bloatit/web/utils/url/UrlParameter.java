@@ -45,7 +45,7 @@ public final class UrlParameter<T> extends UrlNode {
     }
 
     public String getStringValue() {
-        if (!strValue.isEmpty()){
+        if (!strValue.isEmpty()) {
             return strValue;
         }
         if (value != null && getRole() == Role.PRETTY) {
