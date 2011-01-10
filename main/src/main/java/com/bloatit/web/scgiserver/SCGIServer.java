@@ -24,6 +24,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.server.DispatchServer;
 import com.bloatit.web.server.HttpHeader;
 import com.bloatit.web.server.HttpResponse;
+import com.bloatit.web.server.SessionManager;
 
 public class SCGIServer {
 
@@ -31,7 +32,34 @@ public class SCGIServer {
 
     public static void main(final String[] args) {
         final SCGIServer server = new SCGIServer();
+        server.init();
         server.serve();
+    }
+
+    private Socket clientSocket;
+
+    private void init() {
+
+        SessionManager.LoadSessions();
+
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+
+            @Override
+            public void run() {
+
+                SessionManager.SaveSessions();
+
+                // TODO: lock to wait transaction end
+                try {
+                    clientSocket.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
     }
 
     private void serve() {
@@ -57,7 +85,7 @@ public class SCGIServer {
                 System.out.println("Waiting for connection");
 
                 // Load the SCGI headers.
-                final Socket clientSocket = providerSocket.accept();
+                clientSocket = providerSocket.accept();
 
                 final long startTime = System.nanoTime();
 
@@ -87,7 +115,7 @@ public class SCGIServer {
                     display.append("Content-type: text/plain\r\n\r\n");
                     display.append(e.toString());
                     display.append(" :\n");
-                    
+
                     for (final StackTraceElement s : e.getStackTrace()) {
                         display.append("\t");
                         display.append(s);
@@ -117,6 +145,7 @@ public class SCGIServer {
                 final long endTime = System.nanoTime();
                 final double duration = ((endTime - startTime)) / 1000000.;
                 System.err.println("Page generated in " + duration + " ms");
+
             }
 
         } catch (final IOException ex) {

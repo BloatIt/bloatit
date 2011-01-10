@@ -27,11 +27,20 @@ public final class AuthToken {
         final Member tmp = MemberManager.getByLoginAndPassword(login, password);
         if (tmp == null) {
             Log.framework().warn("Authentication error " + login + " " + password);
-            throw new NotFoundException("Identifiaction or authentication failed");
+            throw new NotFoundException("Identification or authentication failed");
         }
         member = tmp;
         key = UUID.randomUUID();
     }
+
+    public AuthToken(int memberId) throws NotFoundException {
+		final Member tmp = MemberManager.getMemberById(memberId);
+		if (tmp == null) {
+            throw new NotFoundException("Identification failed");
+        }
+        member = tmp;
+        key = UUID.randomUUID();
+	}
 
     public UUID getKey() {
         return key;

@@ -29,7 +29,6 @@ public class LogoutAction extends LoggedAction {
     
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        session.setLogged(false);
         session.setAuthToken(null);
         session.notifyGood(Context.tr("Logout success."));
         return session.pickPreferredPage();

@@ -21,8 +21,8 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
-import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
@@ -91,7 +91,7 @@ public class GlobalSearchPage extends Page {
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
-        final HtmlButton searchButton = new HtmlButton(Context.tr("Search"));
+        final HtmlSubmit searchButton = new HtmlSubmit(Context.tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);

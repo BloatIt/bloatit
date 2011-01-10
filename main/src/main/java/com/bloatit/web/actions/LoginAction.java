@@ -46,13 +46,11 @@ public class LoginAction extends Action {
         token = LoginManager.loginByPassword(login, password);
 
         if (token != null) {
-            session.setLogged(true);
             session.setAuthToken(token);
             session.notifyGood(Context.tr("Login success."));
             Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
         } else {
-            session.setLogged(false);
             session.setAuthToken(null);
             session.notifyBad(Context.tr("Login failed. Wrong login or password."));
             return new LoginPageUrl();
