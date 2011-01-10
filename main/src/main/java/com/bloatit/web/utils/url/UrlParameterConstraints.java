@@ -66,43 +66,20 @@ public class UrlParameterConstraints<U> {
         this.length = new Param<Integer>(ParamConstraint.DEFAULT_LENGTH, "");
     }
 
+    @SuppressWarnings("unchecked")
     public void computeConstraints(U value, Class<U> valueClass, Messages messages, Level level, String name, String strValue) {
+        @SuppressWarnings("rawtypes")
+        ComputeConstraint computeConstraint;
         if (valueClass.equals(Integer.class)) {
-            computeConstraints((Integer) value, messages, level, name, strValue);
+            computeConstraint = new ComputeIntegerConstraint<Integer>((UrlParameterConstraints<Integer>) this);
         } else if (valueClass.equals(BigDecimal.class)) {
-            computeConstraints((BigDecimal) value, messages, level, name, strValue);
+            computeConstraint = new ComputeBigdecimalConstraint((UrlParameterConstraints<BigDecimal>) this);
+        } else if (valueClass.equals(String.class)) {
+            computeConstraint = new ComputeStringConstraint((UrlParameterConstraints<String>) this);
+        } else {
+            computeConstraint = new ComputeEverythingConstraint((UrlParameterConstraints<Object>) this);
         }
-        if (valueClass.equals(String.class)) {
-            computeConstraints((String) value, messages, level, name, strValue);
-        }
-        throw new UnsupportedOperationException("We currently only support Integer, BigDecimal, String");
-    }
-
-    @SuppressWarnings("unchecked")
-    private void computeConstraints(Integer value, Messages messages, Level level, String name, String strValue) {
-        updateMessages(new ComputeIntegerConstraint<Integer>((UrlParameterConstraints<Integer>) this).getConstraintErrors(value),
-                       messages,
-                       level,
-                       name,
-                       strValue);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void computeConstraints(BigDecimal value, Messages messages, Level level, String name, String strValue) {
-        updateMessages(new ComputeBigdecimalConstraint((UrlParameterConstraints<BigDecimal>) this).getConstraintErrors(value),
-                       messages,
-                       level,
-                       name,
-                       strValue);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void computeConstraints(String value, Messages messages, Level level, String name, String strValue) {
-        updateMessages(new ComputeStringConstraint((UrlParameterConstraints<String>) this).getConstraintErrors(value),
-                       messages,
-                       level,
-                       name,
-                       strValue);
+        updateMessages(computeConstraint.getConstraintErrors(value), messages, level, name, strValue);
     }
 
     private void updateMessages(EnumSet<ConstraintError> enumSet, Messages messages, Level level, String name, String strValue) {
@@ -135,6 +112,7 @@ public class UrlParameterConstraints<U> {
             EnumSet<ConstraintError> enumSet = EnumSet.noneOf(ConstraintError.class);
             if (value == null && constraints.isOptional() == false) {
                 enumSet.add(ConstraintError.OPTIONAL_ERROR);
+                return enumSet;
             }
             if (constraints.getMin() != ParamConstraint.DEFAULT_MIN) {
                 if (triggerMinConstraint(value)) {
@@ -241,6 +219,32 @@ public class UrlParameterConstraints<U> {
         @Override
         public boolean triggerMaxConstraint(BigDecimal value) {
             return value.compareTo(BigDecimal.valueOf(constraints.getMax())) > 0;
+        }
+    }
+
+    static class ComputeEverythingConstraint extends ComputeConstraint<Object> {
+        public ComputeEverythingConstraint(UrlParameterConstraints<Object> constraints) {
+            super(constraints);
+        }
+
+        @Override
+        public boolean triggerMinConstraint(Object value) {
+            return value.toString().length() < constraints.getMin();
+        }
+
+        @Override
+        public boolean triggerLengthConstraint(Object value) {
+            return value.toString().length() == constraints.getLength();
+        }
+
+        @Override
+        public boolean triggerPrecisionConstraint(Object value) {
+            return false;
+        }
+
+        @Override
+        public boolean triggerMaxConstraint(Object value) {
+            return value.toString().length() > constraints.getMax();
         }
     }
 
