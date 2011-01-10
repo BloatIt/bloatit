@@ -10,13 +10,14 @@ import java.lang.annotation.Target;
 public @interface ParamConstraint {
 
     public static final String DEFAULT_MIN_STR = "";
+    // WARNING !! Do not use Integer here !!
     public static final int DEFAULT_MIN = Integer.MIN_VALUE;
     public static final String DEFAULT_MAX_STR = "";
     public static final int DEFAULT_MAX = Integer.MAX_VALUE;
     public static final String DEFAULT_ERROR_MSG = "";
     public static final int DEFAULT_PRECISION = Integer.MAX_VALUE;
     public static final boolean DEFAULT_OPTIONAL = false;
-    public static final Integer DEFAULT_LENGTH = Integer.MAX_VALUE;
+    public static final int DEFAULT_LENGTH = Integer.MAX_VALUE;
 
     String min() default DEFAULT_MIN_STR;
     tr minErrorMsg() default @tr(DEFAULT_ERROR_MSG);
