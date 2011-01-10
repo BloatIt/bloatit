@@ -32,18 +32,18 @@ import com.bloatit.web.utils.url.Url;
 public class IdeaCommentAction extends Action {
 	public static final String COMMENT_CONTENT_CODE = "bloatit_comment_content";
 	public static final String COMMENT_TARGET = "target";
-	
-	
+
+
 	@RequestParam(name = COMMENT_TARGET, level=Level.ERROR)
-	private Demand targetIdea;
-	
+	private final Demand targetIdea;
+
 	@RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level=Level.ERROR)
-	private String comment;
+	private final String comment;
 
-	
-	private IdeaCommentActionUrl url;
 
-	public IdeaCommentAction(final IdeaCommentActionUrl url) throws RedirectException {
+	private final IdeaCommentActionUrl url;
+
+	public IdeaCommentAction(final IdeaCommentActionUrl url) {
 		super(url);
 		this.url = url;
 		this.targetIdea = url.getTargetIdea();
@@ -53,13 +53,13 @@ public class IdeaCommentAction extends Action {
 	@Override
 	protected final Url doProcess() throws RedirectException {
 		session.notifyList(url.getMessages());
-		
+
 		targetIdea.authenticate(session.getAuthToken());
 		targetIdea.addComment(comment);
-		
+
 		return session.pickPreferredPage();
 	}
-	
+
     @Override
 	protected Url doProcessErrors() throws RedirectException {
     	//TODO

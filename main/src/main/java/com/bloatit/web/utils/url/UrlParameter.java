@@ -13,22 +13,18 @@ import com.bloatit.web.utils.annotations.Messages;
 
 public final class UrlParameter<T> extends UrlNode {
     // TODO optimize me (Use some static classes ?)
-    private final UrlMessageFactory urlMessageFactory;
     private final UrlParameterDescription<T> description;
+    private final UrlParameterConstraints<T> constraints;
 
     private T value;
     private String strValue;
-    private What what;
+    private boolean conversionError;
 
-    public UrlParameter(final T value, final UrlParameterDescription<T> description, final UrlMessageFactory factory) {
+    public UrlParameter(final T value, final UrlParameterDescription<T> description, UrlParameterConstraints<T> constraints) {
         setValue(value); // Also set the defaultValue;
         this.description = description;
-        this.urlMessageFactory = factory;
-        if (value == null) {
-            this.what = What.NOT_FOUND;
-        } else {
-            this.what = What.NO_ERROR;
-        }
+        this.constraints = constraints;
+        this.conversionError = false;
     }
 
     @Override
@@ -49,15 +45,15 @@ public final class UrlParameter<T> extends UrlNode {
     }
 
     public String getStringValue() {
-        if (value == null) {
-            what = What.NOT_FOUND;
-        } else if (getRole() == Role.PRETTY) {
+        if (!strValue.isEmpty()){
+            return strValue;
+        }
+        if (value != null && getRole() == Role.PRETTY) {
             return makeStringPretty(String.class.cast(value));
         }
         try {
             return Loaders.toStr(value);
         } catch (final ConversionErrorException e) {
-            what = What.CONVERSION_ERROR;
             return "null";
         }
     }
@@ -77,7 +73,6 @@ public final class UrlParameter<T> extends UrlNode {
     }
 
     public final void setValue(final T value) {
-        what = What.NO_ERROR;
         this.value = value;
         try {
             this.strValue = Loaders.toStr(value);
@@ -88,9 +83,10 @@ public final class UrlParameter<T> extends UrlNode {
 
     private void setValueFromString(final String string) {
         try {
+            conversionError = false;
             setValue(Loaders.fromStr(description.getValueClass(), string));
         } catch (final ConversionErrorException e) {
-            what = What.CONVERSION_ERROR;
+            conversionError = true;
         }
     }
 
@@ -100,7 +96,7 @@ public final class UrlParameter<T> extends UrlNode {
 
     @Override
     public UrlParameter<T> clone() {
-        return new UrlParameter<T>(value, description, urlMessageFactory);
+        return new UrlParameter<T>(value, description, constraints);
     }
 
     @Override
@@ -112,15 +108,19 @@ public final class UrlParameter<T> extends UrlNode {
     @Override
     public Messages getMessages() {
         final Messages messages = new Messages();
-        final Message errorMessage = getMessage();
-        if (errorMessage != null) {
-            messages.add(errorMessage);
+        if (conversionError) {
+            Message message = new Message(description.getConversionErrorMsg(), description.getLevel(), What.CONVERSION_ERROR, description.getName(),
+                    getStringValue());
+            messages.add(message);
+        } else if (constraints != null) {
+            constraints.computeConstraints(getValue(),
+                                           description.getValueClass(),
+                                           messages,
+                                           description.getLevel(),
+                                           description.getName(),
+                                           getStringValue());
         }
         return messages;
-    }
-
-    public Message getMessage() {
-        return urlMessageFactory.createMessage(what, getName(), strValue);
     }
 
     @Override

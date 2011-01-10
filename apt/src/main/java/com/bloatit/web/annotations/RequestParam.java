@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface RequestParam {
 
-    static public final String defaultDefaultValue = "42!$%*/;19901481602plqsdjcjuh$*ù^88a71599aABCD";
+    static public final String DEFAULT_DEFAULT_VALUE = "42!$%*/;19901481602plqsdjcjuh$*ù^88a71599aABCD";
+    static public final String DEFAULT_ERROR_MSG = "Error: invalid value (%value) for parameter \"%param\"";
 
     public enum Role {
         POST, GET, PRETTY, SESSION
@@ -17,13 +18,11 @@ public @interface RequestParam {
 
     String name() default "";
 
-    tr notFoundMsg() default @tr("Error: invalid value (%value) for parameter \"%param\"");
-
-    tr malformedMsg() default @tr("Error: invalid value (%value) for parameter \"%param\"");
+    tr conversionErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
     Message.Level level() default Message.Level.ERROR;
 
-    String defaultValue() default defaultDefaultValue;
+    String defaultValue() default DEFAULT_DEFAULT_VALUE;
 
     Role role() default Role.GET;
 

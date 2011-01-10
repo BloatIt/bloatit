@@ -18,6 +18,7 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
 import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.ParamConstraint;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
@@ -84,10 +85,16 @@ public class ParamContainerProcessor extends AbstractProcessor {
             String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
 
             if (parm.generatedFrom().isEmpty()) {
-                generator.addAttribute(getType(attribute), attributeUrlString, parm.defaultValue(), attributeName, parm.role(), parm.level(), parm
-                        .notFoundMsg().value(), parm.malformedMsg().value());
+                generator.addAttribute(getType(attribute), //
+                                       attributeUrlString, //
+                                       parm.defaultValue(), //
+                                       attributeName, //
+                                       parm.role(), //
+                                       parm.level(), //
+                                       parm.conversionErrorMsg().value(), //
+                                       attribute.getAnnotation(ParamConstraint.class));
                 generator.addGetterSetter(getType(attribute), attributeName);
-                if (!parm.defaultValue().equals(RequestParam.defaultDefaultValue)) {
+                if (!parm.defaultValue().equals(RequestParam.DEFAULT_DEFAULT_VALUE)) {
                     generator.addDefaultParameter(attributeName, getType(attribute), parm.defaultValue());
                 } else if (parm.level() == Level.ERROR && (parm.role() == Role.GET || parm.role() == Role.PRETTY)) {
                     generator.addConstructorParameter(getType(attribute), attributeName);

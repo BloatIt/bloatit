@@ -13,12 +13,9 @@ package com.bloatit.web.html.pages;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.MemberManager;
-import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlTagText;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlLink;
@@ -32,11 +29,10 @@ import com.bloatit.web.utils.url.MembersListPageUrl;
 @ParamContainer("memberList")
 public class MembersListPage extends Page {
 
-    @PageComponent
     private HtmlPagedList<Member> pagedMemberList;
     private final MembersListPageUrl url;
 
-    public MembersListPage(final MembersListPageUrl url) throws RedirectException {
+    public MembersListPage(final MembersListPageUrl url) {
         super(url);
         this.url = url;
         generateContent();

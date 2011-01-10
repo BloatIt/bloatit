@@ -3,7 +3,6 @@ package com.bloatit.web.utils.annotations;
 import java.util.ArrayList;
 
 import com.bloatit.web.annotations.Message;
-import com.bloatit.web.annotations.RequestParam;
 
 /**
  * Store some error messages that could append during the reflexive procedure "setValues".
@@ -23,9 +22,4 @@ public final class Messages extends ArrayList<Message> {
         }
         return false;
     }
-
-    public void addError(final RequestParam param, final Message.What what, final String error) {
-        this.add(new Message(param.level(), what, error));
-    }
-
 }

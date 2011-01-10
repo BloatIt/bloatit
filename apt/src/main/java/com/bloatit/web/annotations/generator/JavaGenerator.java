@@ -1,6 +1,7 @@
 package com.bloatit.web.annotations.generator;
 
 import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.ParamConstraint;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 
@@ -37,17 +38,24 @@ public abstract class JavaGenerator {
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
-    public final void addAttribute(String type, String nameString, String defaultValue, String name, Role role, Level level, String notFoundMsg,
-                                   String malFormedMsg) {
+    public final void addAttribute(String type,
+                                   String nameString,
+                                   String defaultValue,
+                                   String name,
+                                   Role role,
+                                   Level level,
+                                   String malFormedMsg,
+                                   ParamConstraint constraints) {
         name = toCamelAttributeName(name);
 
-        if (defaultValue == RequestParam.defaultDefaultValue) {
-            defaultValue = "com.bloatit.web.annotations.RequestParam.defaultDefaultValue";
+        if (defaultValue == RequestParam.DEFAULT_DEFAULT_VALUE) {
+            defaultValue = "com.bloatit.web.annotations.RequestParam.DEFAULT_DEFAULT_VALUE";
         } else {
             defaultValue = "\"" + defaultValue + "\"";
         }
-        _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ")
-                .append(createParameter("\"" + nameString + "\"", defaultValue, type, role, level, notFoundMsg, malFormedMsg));
+
+        String createParameter = createParameter("\"" + nameString + "\"", defaultValue, type, role, level, malFormedMsg, constraints);
+        _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ").append(createParameter);
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
     }
 
@@ -95,8 +103,8 @@ public abstract class JavaGenerator {
                                         String type,
                                         Role role,
                                         Level level,
-                                        String notFoundMsg,
-                                        String malFormedMsg) {
+                                        String malFormedMsg,
+                                        ParamConstraint constraints) {
 
         StringBuilder sb = new StringBuilder();
         sb.append(" new UrlParameter<").append(type).append(">(");
@@ -105,13 +113,24 @@ public abstract class JavaGenerator {
         sb.append("new UrlParameterDescription<").append(type).append(">(");
         sb.append(nameString).append(", ").append(type).append(".class, ");
         addRole(role, sb);
-        sb.append(", ").append(defaultValue);
-        sb.append("), ");
-
-        sb.append("new UrlMessageFactory(");
-        sb.append("\"").append(notFoundMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+        sb.append(", ").append(defaultValue).append(", ");
         sb.append("\"").append(malFormedMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
         addLevel(level, sb);
+        sb.append("), ");
+
+        sb.append("new UrlParameterConstraints<").append(type).append(">(");
+        if (constraints != null) {
+            sb.append(constraints.min()).append(", ");
+            sb.append(constraints.max()).append(", ");
+            sb.append(constraints.optional()).append(", ");
+            sb.append(constraints.precision()).append(", ");
+            sb.append(constraints.length()).append(", ");
+            sb.append("\"").append(constraints.minErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+            sb.append("\"").append(constraints.maxErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+            sb.append("\"").append(constraints.optionalErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+            sb.append("\"").append(constraints.precisionErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+            sb.append("\"").append(constraints.LengthErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\"");
+        }
         sb.append(")");
 
         sb.append(");\n");

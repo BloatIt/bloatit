@@ -33,10 +33,10 @@ public class OfferAction extends Action {
     public final static String TITLE_CODE = "offer_title";
     public final static String DESCRIPTION_CODE = "offer_description";
 
-    @RequestParam(level = Level.ERROR, role = Role.GET, notFoundMsg = @tr("The target idea is mandatory to make an offer."))
+    @RequestParam(level = Level.ERROR, role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
     private Demand targetIdea = null;
 
-    @RequestParam(name = PRICE_CODE, role = Role.POST, notFoundMsg = @tr("Invalid or missing value for price field."))
+    @RequestParam(name = PRICE_CODE, role = Role.POST, conversionErrorMsg = @tr("Invalid or missing value for price field."))
     private final BigDecimal price;
 
     @RequestParam(name = EXPIRY_CODE, role = Role.POST)
