@@ -99,7 +99,7 @@ public class HtmlTools {
         if (diff < SECOND) {
             return Context.tr("now");
         } else if (diff < MINUTE) {
-            return Context.tr("%d seconds ago", new Object[] { new Long(diff / SECOND) });
+            return Context.tr("%d seconds ago", new Object[] { Long.valueOf(diff / SECOND) });
         }
 
         final SimpleDateFormat dateFormat = new SimpleDateFormat(Context.tr("MMM d, ''yy 'at' HH:mm"));
