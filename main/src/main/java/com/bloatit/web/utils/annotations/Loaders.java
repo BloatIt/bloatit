@@ -6,10 +6,12 @@ import java.text.ParseException;
 import java.util.Date;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Identifiable;
 import com.bloatit.framework.Kudosable;
 import com.bloatit.framework.Member;
+import com.bloatit.framework.managers.CommentManager;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.KudosableManager;
 import com.bloatit.framework.managers.MemberManager;
@@ -83,6 +85,8 @@ public final class Loaders {
             return (Loader<T>) new ToBloatitDate();
         } else if(theClass.equals(Kudosable.class)) {
         	return (Loader<T>) new ToKudosable();
+        } else if(theClass.equals(Comment.class)) {
+            return (Loader<T>) new ToComment();
         }
         return null;
     }
@@ -235,6 +239,13 @@ public final class Loaders {
         @Override
         public Identifiable fromString(final String data) {
             return KudosableManager.getById(Integer.valueOf(data));
+        }
+    }
+    
+    private static class ToComment extends ToIdentifiable {
+        @Override
+        public Identifiable fromString(final String data) {
+            return CommentManager.getCommentById(Integer.valueOf(data));
         }
     }
 }

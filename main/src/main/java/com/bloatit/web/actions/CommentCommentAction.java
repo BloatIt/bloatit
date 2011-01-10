@@ -19,14 +19,13 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.framework.Comment;
-import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.IdeaCommentActionUrl;
+import com.bloatit.web.utils.url.CommentCommentActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 
@@ -36,28 +35,33 @@ public class CommentCommentAction extends LoggedAction {
 	public static final String COMMENT_TARGET = "target";
 
 	@RequestParam(name = COMMENT_TARGET, level = Level.ERROR)
-	private Comment targetComment;
+	private final Comment targetComment;
 
 	@RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level = Level.ERROR)
-	private String comment;
+	private final String comment;
 
-	private IdeaCommentActionUrl url;
+	private CommentCommentActionUrl url;
 
-	public CommentCommentAction(final Url url) throws RedirectException {
+	public CommentCommentAction(final CommentCommentActionUrl url) throws RedirectException {
 		super(url);
+		this.url = url;
+		this.targetComment = url.getTargetComment();
+		this.comment = url.getComment();
 	}
 
 	@Override
 	public final Url doProcessRestricted() throws RedirectException {
 		session.notifyList(url.getMessages());
 		session.notifyGood(Context.tr("Your comment has been added."));
+		
+		targetComment.authenticate(session.getAuthToken());
+		targetComment.addChildComment(comment);
 
 		return session.pickPreferredPage();
 	}
 
 	@Override
 	protected final Url doProcessErrors() throws RedirectException {
-		// TODO
 		session.notifyList(url.getMessages());
 		return new LoginPageUrl();
 	}

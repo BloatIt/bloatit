@@ -27,7 +27,7 @@ import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/account/charging")
-public class AccountChargingAction extends Action {
+public class AccountChargingAction extends LoggedAction {
 
     public final static String CHARGE_AMOUNT_CODE = "chargeAmount";
 
@@ -43,7 +43,7 @@ public class AccountChargingAction extends Action {
     }
 
     @Override
-    protected final Url doProcess() throws RedirectException {
+	public final Url doProcessRestricted() throws RedirectException {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             session.notifyList(url.getMessages());
             throw new RedirectException(new IndexPageUrl());
@@ -69,5 +69,15 @@ public class AccountChargingAction extends Action {
 	protected final Url doProcessErrors() throws RedirectException {
     	// TODO 
 		return new LoginPageUrl();
+    }
+
+	@Override
+	protected String getRefusalReason() {
+		return Context.tr("You must be logged to charge your account.");
+	}
+
+	@Override
+	protected void transmitParameters() {
+		session.addParam(CHARGE_AMOUNT_CODE, amount.toPlainString());
 	}
 }
