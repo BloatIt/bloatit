@@ -22,6 +22,7 @@ import com.bloatit.web.annotations.Message;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
 import com.bloatit.web.utils.url.Url;
+import com.bloatit.web.utils.url.UrlParameter;
 
 /**
  * <p>
@@ -34,7 +35,7 @@ import com.bloatit.web.utils.url.Url;
  * </p>
  * <p>
  * Session is used for various purposes :
- * <li>Store some parameters {@link Session#addParam(String, String)}</li>
+ * <li>Store some parameters {@link Session#addParameter(String, String)}</li>
  * <li>Perform localization</li>
  * <li>Store pages that the user wishes to consult, be he couldn't because he didn't meet
  * the requirements</li>
@@ -45,10 +46,10 @@ public class Session {
 	private final Deque<Action> actionList;
 	private final Deque<Notification> notificationList;
 	private AuthToken authToken;
-	
+
 	private Url lastStablePage = null;
 	private Url targetPage = null;
-	
+
 
 	/**
 	 * The place to store session data
@@ -180,7 +181,7 @@ public class Session {
 	/**
 	 * <p>
 	 * Saves a new parameter in the session. The parameter will be saved only if <code>
-	 * paramValue</code> is <i>not null</i>. If you want to save a <code>null</code> 
+	 * paramValue</code> is <i>not null</i>. If you want to save a <code>null</code>
 	 * value, use {@link #addParamForced(String, String)}.
 	 * </p>
 	 * <p>
@@ -189,12 +190,16 @@ public class Session {
 	 * @param paramKey
 	 * @param paramValue
 	 */
-	public final void addParam(final String paramKey, final String paramValue) {
-	    if( paramValue != null ) {
+	public final void addParameter(final String paramKey, final String paramValue) {
+	    if( paramValue != null && paramKey != null) {
 	        sessionParams.put(paramKey, paramValue);
 	    }
 	}
-	
+
+	public final void addParameter(UrlParameter<?> param){
+	    sessionParams.put(param.getName(), param.getStringValue());
+	}
+
 	/**
      * <p>
      * Saves a new parameter in the session. This method will save even <code>
@@ -209,7 +214,7 @@ public class Session {
 	public final void addParamForced(final String paramKey, final String paramValue) {
         sessionParams.put(paramKey, paramValue);
     }
-	
+
 	/**
      * <p>
      * Saves a new <code>BigDecimal</code> in the session.
@@ -226,7 +231,7 @@ public class Session {
      */
     public final void addParam(final String paramKey, final BigDecimal paramValue) {
         if(paramValue != null){
-            sessionParams.put(paramKey, paramValue.toPlainString());    
+            sessionParams.put(paramKey, paramValue.toPlainString());
         }
     }
 }

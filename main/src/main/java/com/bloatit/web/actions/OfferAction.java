@@ -77,12 +77,12 @@ public class OfferAction extends LoggedAction {
         if (targetIdea != null) {
 
             OfferPageUrl redirectUrl = new OfferPageUrl(targetIdea);
-            session.addParam(DESCRIPTION_CODE, description);
+            session.addParameter(DESCRIPTION_CODE, description);
             session.addParam(PRICE_CODE, price);
-            session.addParam(TITLE_CODE, title);
+            session.addParameter(TITLE_CODE, title);
            
             if (expiryDate != null) {
-                session.addParam(EXPIRY_CODE, expiryDate.toString());
+                session.addParameter(EXPIRY_CODE, expiryDate.toString());
             }
             return redirectUrl;
         }
@@ -96,12 +96,12 @@ public class OfferAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParam(DESCRIPTION_CODE, description);
+        session.addParameter(DESCRIPTION_CODE, description);
         session.addParam(PRICE_CODE, price);
-        session.addParam(TITLE_CODE, title);
+        session.addParameter(TITLE_CODE, title);
        
         if (expiryDate != null) {
-            session.addParam(EXPIRY_CODE, expiryDate.toString());
+            session.addParameter(EXPIRY_CODE, expiryDate.toString());
         }
     }
 }

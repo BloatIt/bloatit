@@ -78,6 +78,6 @@ public class AccountChargingAction extends LoggedAction {
 
 	@Override
 	protected void transmitParameters() {
-		session.addParam(CHARGE_AMOUNT_CODE, amount.toPlainString());
+		session.addParameter(CHARGE_AMOUNT_CODE, amount.toPlainString());
 	}
 }

@@ -66,6 +66,6 @@ public class IdeaCommentAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParam(COMMENT_CONTENT_CODE, comment);
+        session.addParameter(COMMENT_CONTENT_CODE, comment);
     }
 }
