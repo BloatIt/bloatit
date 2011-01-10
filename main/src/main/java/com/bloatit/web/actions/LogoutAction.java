@@ -14,27 +14,42 @@ package com.bloatit.web.actions;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.LoginPageUrl;
+import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.LogoutActionUrl;
 import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/logout")
-public class LogoutAction extends Action {
+public class LogoutAction extends LoggedAction {
+    private final LogoutActionUrl url;
 
     public LogoutAction(final LogoutActionUrl url) {
         super(url);
+        this.url = url;
     }
-
+    
     @Override
-    public final Url doProcess() {
+    public Url doProcessRestricted() throws RedirectException {
         session.setAuthToken(null);
         session.notifyGood(Context.tr("Logout success."));
         return session.pickPreferredPage();
     }
-    
+
     @Override
-	protected final Url doProcessErrors() throws RedirectException {
-    	//TODO
-		return new LoginPageUrl();
-	}
+    public final Url doProcessErrors() {
+        session.notifyList(url.getMessages());
+        return new IndexPageUrl();
+    }
+
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You should log in before you log out ..." +
+        		"Note : if you log in using the form below, you'll be immediatly" +
+        		"logged out (yes this is a stupid behavior, but we try to use generic code" +
+        		"... sometimes generic meands stupid ;)");
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // Nothing to save
+    }
 }

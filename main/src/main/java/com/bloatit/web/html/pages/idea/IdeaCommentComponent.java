@@ -13,12 +13,15 @@ package com.bloatit.web.html.pages.idea;
 import com.bloatit.framework.Comment;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlTools;
+import com.bloatit.web.html.components.custom.renderer.HtmlRawTextRenderer;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
+import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.url.CommentReplyPageUrl;
 
 public class IdeaCommentComponent extends HtmlPageComponent {
 
@@ -46,6 +49,7 @@ public class IdeaCommentComponent extends HtmlPageComponent {
 
     protected void extractData() {
         final Session session = Context.getSession();
+        
         final HtmlGenericElement date = new HtmlGenericElement("span");
         date.addText(HtmlTools.formatDate(session, comment.getCreationDate()));
         date.setCssClass("comment_date");
@@ -54,8 +58,15 @@ public class IdeaCommentComponent extends HtmlPageComponent {
         author.addText(comment.getAuthor().getLogin());
         author.setCssClass("comment_author");
         
-        commentText = new HtmlParagraph(comment.getText());
+        final HtmlGenericElement reply = new HtmlGenericElement("span");
+        final HtmlLink replyLink = new HtmlLink(new CommentReplyPageUrl(comment).urlString(), Context.tr("reply"));
+        reply.add(replyLink);
+        reply.setCssClass("comment_reply");
+        
+        commentText = new HtmlParagraph();
+        commentText.add(new HtmlRawTextRenderer(comment.getText()));
         commentText.add(date);
         commentText.add(author);
+        commentText.add(reply);
     }
 }

@@ -11,6 +11,7 @@
 
 package com.bloatit.web.server;
 
+import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
@@ -178,7 +179,9 @@ public class Session {
 
 	/**
 	 * <p>
-	 * Saves a new parameter in the session
+	 * Saves a new parameter in the session. The parameter will be saved only if <code>
+	 * paramValue</code> is <i>not null</i>. If you want to save a <code>null</code> 
+	 * value, use {@link #addParamForced(String, String)}.
 	 * </p>
 	 * <p>
 	 * Session parameters are available until they are checked, or session ends
@@ -187,8 +190,43 @@ public class Session {
 	 * @param paramValue
 	 */
 	public final void addParam(final String paramKey, final String paramValue) {
-		sessionParams.put(paramKey, paramValue);
+	    if( paramValue != null ) {
+	        sessionParams.put(paramKey, paramValue);
+	    }
 	}
-
-
+	
+	/**
+     * <p>
+     * Saves a new parameter in the session. This method will save even <code>
+     * null</code> parameters.
+     * </p>
+     * <p>
+     * Session parameters are available until they are checked, or session ends
+     * </p>
+     * @param paramKey
+     * @param paramValue
+     */
+	public final void addParamForced(final String paramKey, final String paramValue) {
+        sessionParams.put(paramKey, paramValue);
+    }
+	
+	/**
+     * <p>
+     * Saves a new <code>BigDecimal</code> in the session.
+     * </p>
+     * <p>
+     * This method is null-safe : if <code>paramValue</code> is null, the method doesn't fail
+     * but no parameter is added
+     * </p>
+     * <p>
+     * Session parameters are available until they are checked, or session ends
+     * </p>
+     * @param paramKey
+     * @param paramValue
+     */
+    public final void addParam(final String paramKey, final BigDecimal paramValue) {
+        if(paramValue != null){
+            sessionParams.put(paramKey, paramValue.toPlainString());    
+        }
+    }
 }

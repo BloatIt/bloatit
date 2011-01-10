@@ -18,51 +18,61 @@
  */
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.Comment;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.url.CommentCommentActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.NewCommentActionUrl;
 import com.bloatit.web.utils.url.Url;
 
-@ParamContainer("docomment")
-public class NewCommentAction extends Action {
+@ParamContainer("comment/docomment")
+public class CommentCommentAction extends LoggedAction {
 	public static final String COMMENT_CONTENT_CODE = "bloatit_comment_content";
 	public static final String COMMENT_TARGET = "target";
-	
-	
-	@RequestParam(name = COMMENT_TARGET, level=Level.ERROR)
-	private Demand targetIdea;
-	
-	@RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level=Level.ERROR)
-	private String comment;
 
-	
-	private NewCommentActionUrl url;
+	@RequestParam(name = COMMENT_TARGET, level = Level.ERROR)
+	private final Comment targetComment;
 
-	public NewCommentAction(final NewCommentActionUrl url) throws RedirectException {
+	@RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level = Level.ERROR)
+	private final String comment;
+
+	private CommentCommentActionUrl url;
+
+	public CommentCommentAction(final CommentCommentActionUrl url) throws RedirectException {
 		super(url);
 		this.url = url;
-		this.targetIdea = url.getTargetIdea();
+		this.targetComment = url.getTargetComment();
 		this.comment = url.getComment();
 	}
 
 	@Override
-	protected final Url doProcess() throws RedirectException {
+	public final Url doProcessRestricted() throws RedirectException {
 		session.notifyList(url.getMessages());
+		session.notifyGood(Context.tr("Your comment has been added."));
 		
-		targetIdea.authenticate(session.getAuthToken());
-		targetIdea.addComment(comment);
-		
+		targetComment.authenticate(session.getAuthToken());
+		targetComment.addChildComment(comment);
+
 		return session.pickPreferredPage();
 	}
-	
-    @Override
-	protected Url doProcessErrors() throws RedirectException {
-    	//TODO
+
+	@Override
+	protected final Url doProcessErrors() throws RedirectException {
+		session.notifyList(url.getMessages());
 		return new LoginPageUrl();
+	}
+
+	@Override
+	protected final String getRefusalReason() {
+		return Context.tr("You must be logged in to comment.");
+	}
+
+	@Override
+	protected final void transmitParameters() {
+		session.addParam(COMMENT_CONTENT_CODE, comment);
 	}
 }

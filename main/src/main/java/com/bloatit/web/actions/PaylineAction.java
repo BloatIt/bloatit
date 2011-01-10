@@ -15,7 +15,7 @@ import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlStringBinder;
 
 @ParamContainer("payline/dopayment")
-public class PaylineAction extends Action {
+public class PaylineAction extends LoggedAction {
 
     public static final String CHARGE_AMOUNT_CODE = "amount";
 
@@ -28,7 +28,7 @@ public class PaylineAction extends Action {
     }
 
     @Override
-    protected Url doProcess() throws RedirectException {
+    public Url doProcessRestricted() throws RedirectException {
 
         HttpHeader header = Context.getHeader();
 
@@ -59,4 +59,13 @@ public class PaylineAction extends Action {
         return Context.getSession().pickPreferredPage();
     }
 
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You must be logged to charge your account.");
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // Nothing to transmit
+    }
 }

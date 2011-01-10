@@ -24,11 +24,14 @@ import com.bloatit.web.scgiserver.HttpPost;
 import com.bloatit.web.utils.i18n.Localizator;
 import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
+import com.bloatit.web.utils.url.CommentCommentActionUrl;
+import com.bloatit.web.utils.url.CommentReplyPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
+import com.bloatit.web.utils.url.IdeaCommentActionUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
@@ -39,7 +42,6 @@ import com.bloatit.web.utils.url.LogoutActionUrl;
 import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.MembersListPageUrl;
 import com.bloatit.web.utils.url.MyAccountPageUrl;
-import com.bloatit.web.utils.url.NewCommentActionUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Parameters;
@@ -75,6 +77,7 @@ public class DispatchServer {
 				put(AccountChargingPageUrl.getName(), AccountChargingPageUrl.class);
 				put(RegisterPageUrl.getName(), RegisterPageUrl.class);
 				put(PaylinePageUrl.getName(), PaylinePageUrl.class);
+				put(CommentReplyPageUrl.getName(), CommentReplyPageUrl.class);
 
 				put(LoginActionUrl.getName(), LoginActionUrl.class);
 				put(LogoutActionUrl.getName(), LogoutActionUrl.class);
@@ -84,9 +87,11 @@ public class DispatchServer {
 				put(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
 				put(RegisterActionUrl.getName(), RegisterActionUrl.class);
 				put(KudoActionUrl.getName(), KudoActionUrl.class);
-				put(NewCommentActionUrl.getName(), NewCommentActionUrl.class);
+				put(IdeaCommentActionUrl.getName(), IdeaCommentActionUrl.class);
 				put(PaylineActionUrl.getName(), PaylineActionUrl.class);
 				put(PaylineNotifyActionUrl.getName(), PaylineNotifyActionUrl.class);
+				put(IdeaCommentActionUrl.getName(), IdeaCommentActionUrl.class);
+                put(CommentCommentActionUrl.getName(), CommentCommentActionUrl.class);
 			}
 		};
 	}

@@ -13,7 +13,6 @@ package com.bloatit.web.html.pages;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlNode;
@@ -37,7 +36,6 @@ public class GlobalSearchPage extends Page {
     @RequestParam(defaultValue = "", name = SEARCH_CODE)
     private final String searchString;
 
-    @PageComponent
     private HtmlPagedList<Demand> pagedMemberList;
     private final GlobalSearchPageUrl url;
 

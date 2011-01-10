@@ -11,39 +11,23 @@
 package com.bloatit.web.html.pages;
 
 //import java.util.Random;
-import java.text.NumberFormat;
-import java.util.Locale;
-
-import com.bloatit.common.Image;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
-import com.bloatit.framework.Translation;
 import com.bloatit.framework.managers.DemandManager;
-import com.bloatit.web.annotations.PageComponent;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
-import com.bloatit.web.html.components.custom.HtmlProgressBar;
-import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import com.bloatit.web.html.components.standard.HtmlImage;
-import com.bloatit.web.html.components.standard.HtmlLink;
-import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.i18n.CurrencyLocale;
-import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
-import com.bloatit.web.utils.url.OfferPageUrl;
 
 @ParamContainer("ideas/list")
 public class IdeasList extends Page {
 
-	@PageComponent
 	HtmlPagedList<Demand> pagedIdeaList;
 	private final IdeasListUrl url;
 

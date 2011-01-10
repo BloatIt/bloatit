@@ -28,6 +28,10 @@ public final class Comment extends Kudosable {
     public PageIterable<Comment> getChildren() {
         return new CommentList(dao.getChildrenFromQuery());
     }
+    
+    public void addChildComment(final String text) {
+        dao.addChildComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
+    }
 
     // TODO make sure it still works
     public void addChildComment(final Comment comment) {

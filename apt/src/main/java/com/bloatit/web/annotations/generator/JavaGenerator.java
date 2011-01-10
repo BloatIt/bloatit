@@ -1,8 +1,8 @@
 package com.bloatit.web.annotations.generator;
 
-import com.bloatit.web.annotations.Message;
-import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.ParamConstraint;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 
 public abstract class JavaGenerator {
@@ -11,10 +11,10 @@ public abstract class JavaGenerator {
     protected final StringBuilder _classHeader = new StringBuilder();
     protected final String className;
 
-    private StringBuilder _attributes = new StringBuilder();
-    private StringBuilder _gettersSetters = new StringBuilder();
-    private StringBuilder _doRegister = new StringBuilder();
-    private StringBuilder _clone = new StringBuilder();
+    private final StringBuilder _attributes = new StringBuilder();
+    private final StringBuilder _gettersSetters = new StringBuilder();
+    private final StringBuilder _doRegister = new StringBuilder();
+    private final StringBuilder _clone = new StringBuilder();
 
     protected StringBuilder _constructorParameters = new StringBuilder();
     protected StringBuilder _constructorAssign = new StringBuilder();
@@ -38,10 +38,24 @@ public abstract class JavaGenerator {
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
-    public final void addAttribute(String type, String nameString, String name, Role role, Level level, String errorMsg) {
+    public final void addAttribute(String type,
+                                   String nameString,
+                                   String defaultValue,
+                                   String name,
+                                   Role role,
+                                   Level level,
+                                   String malFormedMsg,
+                                   ParamConstraint constraints) {
         name = toCamelAttributeName(name);
-        _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ")
-                .append(createParameter("\"" + nameString + "\"", type, role, level, errorMsg));
+
+        if (defaultValue == RequestParam.DEFAULT_DEFAULT_VALUE) {
+            defaultValue = "com.bloatit.web.annotations.RequestParam.DEFAULT_DEFAULT_VALUE";
+        } else {
+            defaultValue = "\"" + defaultValue + "\"";
+        }
+
+        String createParameter = createParameter("\"" + nameString + "\"", defaultValue, type, role, level, malFormedMsg, constraints);
+        _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ").append(createParameter);
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
     }
 
@@ -61,8 +75,12 @@ public abstract class JavaGenerator {
     }
 
     public void addGetterSetter(String type, String name) {
-        _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
+        _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
         _gettersSetters.append("    return this.").append(name).append(".getValue();\n");
+        _gettersSetters.append("}\n\n");
+
+        _gettersSetters.append("public UrlParameter<").append(type).append("> ").append(getGetterName(name)).append("Parameter(){ \n");
+        _gettersSetters.append("    return this.").append(name).append(";\n");
         _gettersSetters.append("}\n\n");
 
         _gettersSetters.append("public void ").append(getSetterName(name)).append("(").append(type).append(" arg){ \n");
@@ -71,64 +89,93 @@ public abstract class JavaGenerator {
     }
 
     public void addAutoGeneratingGetter(String type, String name, String generateFrom) {
-        _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
+        _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
         _gettersSetters.append("    if (").append(generateFrom).append(".getValue() != null) {\n");
-        _gettersSetters.append("        return ").append(generateFrom).append(".getValue().").append(getGetterName(name)).append(";\n");
-        _gettersSetters.append("    } else {\n");
-        _gettersSetters.append("        return null;\n");
+        _gettersSetters.append("        return ").append(generateFrom).append(".getValue().").append(getGetterName(name)).append("();\n");
         _gettersSetters.append("    }\n");
+        _gettersSetters.append("    return null;\n");
         _gettersSetters.append("}\n\n");
     }
 
-    public final String createParameter(String nameString, String type, Role role, Level level, String errorMsg) {
-        // TODO find how to do this correctly
-        errorMsg = errorMsg.replaceAll("[\\\"]", "\\\\\"");
-        // errorMsg = errorMsg.replaceAll("([^\\\\])(\\\\)([^\\\\])",
-        // "\\1\\\\\\3");
+    // nameString and defaultValue must be already escaped.
+    public final String createParameter(String nameString,
+                                        String defaultValue,
+                                        String type,
+                                        Role role,
+                                        Level level,
+                                        String malFormedMsg,
+                                        ParamConstraint constraints) {
+
         StringBuilder sb = new StringBuilder();
-        sb.append("    new UrlParameter<").append(type).append(">(").append(nameString).append(", null, ");
-        sb.append(type).append(".class, ");
+        sb.append(" new UrlParameter<").append(type).append(">(");
+        sb.append("null, ");
 
-        switch (role) {
-        case GET:
-            sb.append("Role.GET, ");
-            break;
-        case POST:
-            sb.append("Role.POST, ");
-            break;
-        case SESSION:
-            sb.append("Role.SESSION, ");
-            break;
-        case PRETTY:
-            sb.append("Role.PRETTY, ");
-            break;
-        default:
-            assert false;
-            break;
+        sb.append("new UrlParameterDescription<").append(type).append(">(");
+        sb.append(nameString).append(", ").append(type).append(".class, ");
+        addRole(role, sb);
+        sb.append(", ").append(defaultValue).append(", ");
+        sb.append("\"").append(malFormedMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+        addLevel(level, sb);
+        sb.append("), ");
+
+        sb.append("new UrlParameterConstraints<").append(type).append(">(");
+        if (constraints != null) {
+            sb.append(constraints.min()).append(", ");
+            sb.append(constraints.max()).append(", ");
+            sb.append(constraints.optional()).append(", ");
+            sb.append(constraints.precision()).append(", ");
+            sb.append(constraints.length()).append(", ");
+            sb.append("\"").append(constraints.minErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+            sb.append("\"").append(constraints.maxErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+            sb.append("\"").append(constraints.optionalErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+            sb.append("\"").append(constraints.precisionErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+            sb.append("\"").append(constraints.LengthErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\"");
         }
+        sb.append(")");
 
-        switch (level) {
-        case ERROR:
-            sb.append("Level.ERROR, ");
-            break;
-        case INFO:
-            sb.append("Level.INFO, ");
-            break;
-        case WARNING:
-            sb.append("Level.WARNING, ");
-            break;
-        default:
-            assert false;
-            break;
-        }
-
-        sb.append("\"").append(errorMsg).append("\"");
         sb.append(");\n");
         return sb.toString();
     }
 
+    private void addLevel(Level level, StringBuilder sb) {
+        switch (level) {
+        case ERROR:
+            sb.append("Level.ERROR");
+            break;
+        case INFO:
+            sb.append("Level.INFO");
+            break;
+        case WARNING:
+            sb.append("Level.WARNING");
+            break;
+        default:
+            assert false;
+            break;
+        }
+    }
+
+    private void addRole(Role role, StringBuilder sb) {
+        switch (role) {
+        case GET:
+            sb.append("Role.GET");
+            break;
+        case POST:
+            sb.append("Role.POST");
+            break;
+        case SESSION:
+            sb.append("Role.SESSION");
+            break;
+        case PRETTY:
+            sb.append("Role.PRETTY");
+            break;
+        default:
+            assert false;
+            break;
+        }
+    }
+
     private String getGetterName(String name) {
-        return "get" + name.substring(0, 1).toUpperCase() + name.substring(1) + "()";
+        return "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     private String getSetterName(String name) {
@@ -146,7 +193,7 @@ public abstract class JavaGenerator {
         _attributes.append("private ").append(type).append(" ").append(name).append(" = new ").append(type).append("();\n");
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
 
-        _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("{ \n");
+        _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
         _gettersSetters.append("    return this.").append(name).append(";\n");
         _gettersSetters.append("}\n\n");
 
