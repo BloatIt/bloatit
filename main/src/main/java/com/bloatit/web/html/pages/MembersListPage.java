@@ -53,7 +53,7 @@ public class MembersListPage extends Page {
             @Override
             public HtmlNode generate(final Member member) {
                 final MemberPageUrl memberUrl = new MemberPageUrl(member);
-                final HtmlLink htmlLink = memberUrl.getHtmlLink(member.getFullname());
+                final HtmlLink htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
                 final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 return new HtmlListItem(htmlLink).add(htmlKarma);
             }
