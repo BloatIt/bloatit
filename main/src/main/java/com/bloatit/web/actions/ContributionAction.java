@@ -14,13 +14,11 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.Demand;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
-import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
@@ -29,7 +27,7 @@ import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/contribute")
-public final class ContributionAction extends Action {
+public final class ContributionAction extends LoggedAction {
 
 	public static final String AMOUNT_CODE = "contributionAmount";
 	public static final String COMMENT_CODE = "comment";
@@ -55,7 +53,7 @@ public final class ContributionAction extends Action {
 	}
 
 	@Override
-	public final Url doProcess() throws RedirectException {
+	public final Url doProcessRestricted() throws RedirectException {
 		// Authentication
 		targetIdea.authenticate(session.getAuthToken());
 
@@ -72,8 +70,8 @@ public final class ContributionAction extends Action {
 			}
 		} catch (final NotEnoughMoneyException e) {
 			session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
-			session.addParam(AMOUNT_CODE, amount.toString());
-			session.addParam(COMMENT_CODE, HtmlTools.unescape(comment));
+			session.addParam(AMOUNT_CODE, amount);
+			session.addParam(COMMENT_CODE, comment);
 			
 			session.setTargetPage(this.url); 
 			return new AccountChargingPageUrl();
@@ -87,9 +85,20 @@ public final class ContributionAction extends Action {
 			session.addParam(COMMENT_CODE, comment);
 		}
 		if(amount != null){
-			session.addParam(AMOUNT_CODE, amount.toString());
+			session.addParam(AMOUNT_CODE, amount);
 		}
 
 		return new ContributePageUrl(targetIdea);
 	}
+
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You must be logged to contribute.");
+    }
+
+    @Override
+    protected void transmitParameters() {
+        session.addParam(COMMENT_CODE, comment);
+        session.addParam(AMOUNT_CODE, amount);
+    }
 }

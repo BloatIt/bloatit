@@ -103,12 +103,12 @@ public class HtmlPagedList<T> extends HtmlList {
     }
 
     private HtmlNode generateLink(final int i) {
-        final String iString = new Integer(i).toString();
+        final String iString = Integer.valueOf(i).toString();
         return generateLink(i, iString);
     }
 
     private HtmlNode generateLink(final int i, final String text) {
-        final String iString = new Integer(i).toString();
+        final String iString = Integer.valueOf(i).toString();
         if (i != currentPage) {
 
             url.setCurrentPage(i);

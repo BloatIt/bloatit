@@ -49,7 +49,7 @@ public class SCGIServer {
         }
 
         try {
-            System.err.println("Start BloatIt serveur");
+            Log.web().info("Start BloatIt serveur");
             providerSocket = new ServerSocket(4000);
 
             while (true) {
@@ -83,13 +83,18 @@ public class SCGIServer {
                 try {
                     dispatchServer.process(new HttpResponse(clientSocket.getOutputStream()));
                 } catch (final FatalErrorException e) {
-                    String display;
-                    display = "Content-type: text/plain\r\n\r\n" + e.toString() + " :\n";
+                    StringBuilder display = new StringBuilder();
+                    display.append("Content-type: text/plain\r\n\r\n");
+                    display.append(e.toString());
+                    display.append(" :\n");
+                    
                     for (final StackTraceElement s : e.getStackTrace()) {
-                        display += "\t" + s + "\n";
+                        display.append("\t");
+                        display.append(s);
+                        display.append("\n");
                     }
 
-                    clientSocket.getOutputStream().write(display.getBytes());
+                    clientSocket.getOutputStream().write(display.toString().getBytes());
 
                     // TODO Debug Only
                     Log.web().fatal("Unknown Fatal exception", e);

@@ -26,8 +26,8 @@ public class TopBar extends HtmlDiv {
         final Session session = Context.getSession();
         if (session.isLogged()) {
             // Display user name
-            final String full_name = session.getAuthToken().getMember().getFullname();
-            final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(full_name);
+            final String displayName = session.getAuthToken().getMember().getDisplayName();
+            final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(displayName);
 
             // Display user karma
             final HtmlBranch karma = new HtmlGenericElement("span");
@@ -47,9 +47,6 @@ public class TopBar extends HtmlDiv {
             final InternalAccount internalAccount = member.getInternalAccount();
             internalAccount.authenticate(session.getAuthToken());
             
-            if(!CurrencyLocale.availableCurrency(Context.getLocalizator().getLocale())){
-            	
-            }
             CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
             euroMoney.add(new HtmlText(cl.getDefaultString()));
 

@@ -13,9 +13,10 @@ package com.bloatit.web.exceptions;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Url;
 
+// No serialization possible because IndexPageUrl is not serialisable.
+@SuppressWarnings("serial")
 public class RedirectException extends Exception {
 
-    private static final long serialVersionUID = -8000625161101556546L;
     private final Url url;
 
     public RedirectException(final Url url) {

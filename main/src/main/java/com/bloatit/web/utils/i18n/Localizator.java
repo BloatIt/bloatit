@@ -46,7 +46,7 @@ public class Localizator {
 
 	private static final String SEPARATORS_REGEX = "[_-]";
 
-	private static Map<String, LanguageDescriptor> availableLanguages;
+	private static Map<String, LanguageDescriptor> availableLanguages = null;
 
 	private Locale locale;
 	private final I18n i18n;

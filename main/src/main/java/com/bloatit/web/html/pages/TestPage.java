@@ -63,11 +63,12 @@ public class TestPage extends Page {
 
         final HtmlTitleBlock htb = new HtmlTitleBlock("Another title", 3);
         final RandomString rs = new RandomString(10);
-        String plop = "";
+        StringBuilder plop = new StringBuilder();
         for (int i = 0; i < 100; i++) {
-            plop += rs.nextString() + " ";
+            plop.append(rs.nextString());
+            plop.append(" ");
         }
-        htb.add(new HtmlParagraph(plop));
+        htb.add(new HtmlParagraph(plop.toString()));
         anotherDiv.add(htb);
         htb.add(new HtmlTitle("nested title", 5));
         htb.add(new HtmlText("some text without paragraph"));

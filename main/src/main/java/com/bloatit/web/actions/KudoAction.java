@@ -21,7 +21,7 @@ import com.bloatit.web.utils.url.KudoActionUrl;
 import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/kudo")
-public class KudoAction extends Action {
+public class KudoAction extends LoggedAction {
 
     public static final String TARGET_KUDOSABLE = "targetKudosable";
 
@@ -39,7 +39,7 @@ public class KudoAction extends Action {
     }
 
     @Override
-    public Url doProcess() throws RedirectException {
+    public Url doProcessRestricted() throws RedirectException {
         // Authentication
         targetKudosable.authenticate(session.getAuthToken());
 
@@ -52,7 +52,6 @@ public class KudoAction extends Action {
         }
         
         return session.pickPreferredPage();
-        
     }
 
 	@Override
@@ -60,4 +59,14 @@ public class KudoAction extends Action {
 		session.notifyList(url.getMessages());
 		return session.pickPreferredPage();
 	}
+
+    @Override
+    protected String getRefusalReason() {
+        return "You must be logged to kudo";
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // Nothing to save
+    }
 }
