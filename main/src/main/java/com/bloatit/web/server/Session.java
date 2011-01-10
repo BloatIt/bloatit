@@ -41,7 +41,6 @@ import com.bloatit.web.utils.url.Url;
  */
 public class Session {
 	private final String key;
-	private boolean logged;
 	private final Deque<Action> actionList;
 	private final Deque<Notification> notificationList;
 	private AuthToken authToken;
@@ -59,7 +58,6 @@ public class Session {
 		this.key = key;
 
 		authToken = null;
-		logged = false;
 		actionList = new ArrayDeque<Action>();
 		notificationList = new ArrayDeque<Notification>();
 	}
@@ -72,12 +70,8 @@ public class Session {
 		return authToken;
 	}
 
-	public final void setLogged(final boolean logged) {
-		this.logged = logged;
-	}
-
 	public final boolean isLogged() {
-		return logged;
+		return authToken != null;
 	}
 
 	public final String getKey() {

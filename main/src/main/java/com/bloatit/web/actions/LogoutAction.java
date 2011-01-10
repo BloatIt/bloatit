@@ -27,7 +27,6 @@ public class LogoutAction extends Action {
 
     @Override
     public final Url doProcess() {
-        session.setLogged(false);
         session.setAuthToken(null);
         session.notifyGood(Context.tr("Logout success."));
         return session.pickPreferredPage();
