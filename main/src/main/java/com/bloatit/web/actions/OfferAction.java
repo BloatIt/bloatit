@@ -20,6 +20,7 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.annotations.tr;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.DateLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
@@ -27,7 +28,7 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("action/offer")
-public class OfferAction extends Action {
+public class OfferAction extends LoggedAction {
     public final static String PRICE_CODE = "offer_price";
     public final static String EXPIRY_CODE = "offer_expiry";
     public final static String TITLE_CODE = "offer_title";
@@ -63,7 +64,7 @@ public class OfferAction extends Action {
     }
 
     @Override
-    public final Url doProcess() {
+    public final Url doProcessRestricted() {
         targetIdea.authenticate(session.getAuthToken());
         targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
         return new IdeaPageUrl(targetIdea);
@@ -76,26 +77,31 @@ public class OfferAction extends Action {
         if (targetIdea != null) {
 
             OfferPageUrl redirectUrl = new OfferPageUrl(targetIdea);
-
-            if (description != null) {
-                session.addParam(DESCRIPTION_CODE, description);
-            }
-
+            session.addParam(DESCRIPTION_CODE, description);
+            session.addParam(PRICE_CODE, price);
+            session.addParam(TITLE_CODE, title);
+           
             if (expiryDate != null) {
                 session.addParam(EXPIRY_CODE, expiryDate.toString());
             }
-
-            if (price != null) {
-                session.addParam(PRICE_CODE, price.toPlainString());
-            }
-
-            if (title != null) {
-                session.addParam(TITLE_CODE, title);
-            }
-
             return redirectUrl;
-
         }
         return session.pickPreferredPage();
+    }
+
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You must be logged to make an offer.");
+    }
+
+    @Override
+    protected void transmitParameters() {
+        session.addParam(DESCRIPTION_CODE, description);
+        session.addParam(PRICE_CODE, price);
+        session.addParam(TITLE_CODE, title);
+       
+        if (expiryDate != null) {
+            session.addParam(EXPIRY_CODE, expiryDate.toString());
+        }
     }
 }
