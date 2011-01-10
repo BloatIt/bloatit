@@ -78,9 +78,13 @@ public class PropertyLoader {
 		name += SUFFIX;
 
 		File f = new File(ClassLoader.getSystemResource(name).getFile());
-		InputStreamReader isr = new InputStreamReader(new FileInputStream(f), Charset.forName("UTF-8"));
+		FileInputStream fileInputStream = new FileInputStream(f);
+		InputStreamReader isr = new InputStreamReader(fileInputStream, Charset.forName("UTF-8"));
         result = new Properties ();
         result.load (isr); 
+        
+        isr.close();
+        fileInputStream.close();
         
 		return result;
 	}
