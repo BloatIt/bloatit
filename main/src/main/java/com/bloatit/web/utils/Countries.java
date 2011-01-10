@@ -14,7 +14,7 @@ import com.bloatit.common.FatalErrorException;
 public class Countries {
 	
 	private static final String COUNTRIES_PATH = "i18n/countries";
-	private static Set<Country> availableCountries;
+	private static Set<Country> availableCountries = null;
 	
 	/**
 	 * <p>Lists all available countries ordered on their fullname</p>

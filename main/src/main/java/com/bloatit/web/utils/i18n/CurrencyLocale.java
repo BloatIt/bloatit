@@ -46,7 +46,7 @@ public class CurrencyLocale {
     private final BigDecimal euroAmount;
     private final Currency currency;
 
-    private static Date lastParse;
+    private static Date lastParse = null;
     private static Map<Currency, BigDecimal> currencies = new HashMap<Currency, BigDecimal>();
 
 
