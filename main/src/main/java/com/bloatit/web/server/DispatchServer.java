@@ -126,7 +126,9 @@ public class DispatchServer {
 		// Merge post and get parameters.
 		final Parameters parameters = new Parameters();
 		parameters.putAll(header.getQueryString().getParameters());
+		parameters.putAll(header.getQueryString().getGetParameters());
 		parameters.putAll(post.getParameters());
+
 
 		try {
 			Url url = constructUrl(pageCode, parameters);

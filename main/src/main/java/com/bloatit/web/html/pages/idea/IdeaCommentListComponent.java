@@ -41,7 +41,7 @@ public class IdeaCommentListComponent extends HtmlPageComponent {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments"), 2).setCssClass("comments_title"));
 
             for (final Comment comment : comments) {
-                commentsBlock.add(new IdeaCommentComponent(comment));
+                commentsBlock.add(new IdeaCommentComponent(comment, false));
             }
             commentsBlock.add(new IdeaNewCommentComponent(targetIdea));
         }

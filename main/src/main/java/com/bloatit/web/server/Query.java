@@ -16,6 +16,7 @@ public class Query {
     String language = "en";
     String pageName = "404";
     Parameters parameters = new Parameters();
+    Parameters getParameters = new Parameters();
 
     Query(String queryString) {
         try {
@@ -30,6 +31,8 @@ public class Query {
                         pageName = URLDecoder.decode(pair[1], "UTF-8");
                     } else if (key.equals(PARAMETERS)) {
                         parametersString = URLDecoder.decode(pair[1], "UTF-8");
+                    } else {
+                        getParameters.add(pair[0], pair[1]);
                     }
                 }
             }
@@ -60,6 +63,10 @@ public class Query {
 
     public final Parameters getParameters() {
         return parameters;
+    }
+
+    public final Parameters getGetParameters() {
+        return getParameters;
     }
 
 }

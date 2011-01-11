@@ -11,11 +11,11 @@ public class Parameters extends HashMap<String, String> {
 
     public Parameters(final String name, final String value) {
         super();
-        put(value, name);
+        put(name, value);
     }
 
     public final Parameters add(final String name, final String value) {
-        put(value, name);
+        put(name, value );
         return this;
     }
 

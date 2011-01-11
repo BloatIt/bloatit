@@ -16,6 +16,7 @@ import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlNode;
+import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlListItem;
@@ -27,7 +28,6 @@ import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
-import com.bloatit.web.utils.url.IdeaPageUrl;
 
 @ParamContainer("search")
 public class GlobalSearchPage extends Page {
@@ -58,8 +58,8 @@ public class GlobalSearchPage extends Page {
         final HtmlRenderer<Demand> demandItemRenderer = new HtmlRenderer<Demand>() {
 
             @Override
-            public HtmlNode generate(final Demand demand) {
-                return new HtmlListItem(new IdeaPageUrl(demand).getHtmlLink(demand.getTitle()));
+            public HtmlNode generate(final Demand idea) {
+                return new HtmlListItem(new HtmlIdeaSumary(idea));
             }
         };
 
@@ -86,10 +86,13 @@ public class GlobalSearchPage extends Page {
 
     private HtmlDiv generateSearchBlock() {
         final HtmlDiv searchBlock = new HtmlDiv("global_search_block");
+        searchBlock.setCssClass("padding_box");
 
         final HtmlForm searchForm = new HtmlForm(new GlobalSearchPageUrl().urlString(), HtmlForm.Method.GET);
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
+        searchField.setLabel(Context.tr("Search"));
+        searchField.setDefaultValue(searchString);
 
         final HtmlSubmit searchButton = new HtmlSubmit(Context.tr("Search"));
         searchForm.add(searchField);
