@@ -51,23 +51,23 @@ public final class Demand extends Kudosable {
 
 	public void addComment(final String text) {
 		new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
-		dao.addComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
+		dao.addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
 	}
 
 	public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
 		new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
-		dao.addContribution(getToken().getMember().getDao(), amount, comment);
+		dao.addContribution(getAuthToken().getMember().getDao(), amount, comment);
 	}
 
 	public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir) {
 		new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
-		return new Offer(dao.addOffer(getToken().getMember().getDao(), amount, new Description(getToken().getMember(), locale, title, text).getDao(),
+		return new Offer(dao.addOffer(getAuthToken().getMember().getDao(), amount, new Description(getAuthToken().getMember(), locale, title, text).getDao(),
 				dateExpir));
 	}
 
 	public void createSpecification(final String content) {
 		new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
-		dao.createSpecification(getToken().getMember().getDao(), content);
+		dao.createSpecification(getAuthToken().getMember().getDao(), content);
 	}
 
 	public PageIterable<Comment> getComments() {

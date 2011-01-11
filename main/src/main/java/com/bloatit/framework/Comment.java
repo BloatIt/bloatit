@@ -30,7 +30,7 @@ public final class Comment extends Kudosable {
     }
     
     public void addChildComment(final String text) {
-        dao.addChildComment(DaoComment.createAndPersist(getToken().getMember().getDao(), text));
+        dao.addChildComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
     }
 
     // TODO make sure it still works

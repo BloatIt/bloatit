@@ -20,7 +20,7 @@ public abstract class Kudosable extends UserContent {
     	if ( ! new KudosableRight.Kudos().canAccess(calculateRole(this), Action.WRITE)){
     		return false;
     	}
-        return !getDaoKudosable().hasKudosed(getToken().getMember().getDao());
+        return !getDaoKudosable().hasKudosed(getAuthToken().getMember().getDao());
     }
 
     public final void unkudos() {
@@ -51,7 +51,7 @@ public abstract class Kudosable extends UserContent {
     }
 
     private void addKudos(final int signe) {
-        final Member member = getToken().getMember();
+        final Member member = getAuthToken().getMember();
         if (getDaoKudosable().hasKudosed(member.getDao())) {
             throw new UnauthorizedOperationException();
         }

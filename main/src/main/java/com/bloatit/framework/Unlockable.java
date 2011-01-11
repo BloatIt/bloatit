@@ -13,7 +13,6 @@ package com.bloatit.framework;
 
 import java.util.EnumSet;
 
-import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.RightManager.Role;
 import com.bloatit.model.data.DaoGroup.MemberStatus;
 
@@ -29,11 +28,11 @@ public class Unlockable {
 
     private AuthToken token = null;
 
-    public final void authenticate(final AuthToken token) {
-        this.token = token;
+    public final void authenticate(final AuthToken authToken) {
+        this.token = authToken;
     }
 
-    protected final AuthToken getToken() {
+    protected final AuthToken getAuthToken() {
         return token;
     }
 
@@ -42,7 +41,7 @@ public class Unlockable {
      * complete Member object to describe the author of a "content". You can use this
      * method (the login is unique). This method cannot set some Group roles, you have to
      * use the {@link Unlockable#calculateRole(Member, Group)} method.
-     * 
+     *
      * @return An EnumSet with the roles of the member authenticate by the
      *         {@link AuthToken}.
      */
@@ -88,7 +87,7 @@ public class Unlockable {
     /**
      * Calculate the role {@link AuthToken} user, on a content created by
      * "member as group".
-     * 
+     *
      * @param member The creator of the content.
      * @param group the creator uses "group" to create the content.
      * @return all the role that correspond to the {@link AuthToken}.
