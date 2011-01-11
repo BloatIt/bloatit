@@ -25,9 +25,9 @@ import java.util.Locale;
  * Encapsulates all operations concerning date parsing
  * </p>
  * <p>
- * Date format is represented by 2 elements : * The locale that gives the order of the
- * elements (example : fr : dd/mm/yyyy) * The style that determines the length of the date
- * representation
+ * Date format is represented by 2 elements : 
+ * <li>The locale that gives the order of the elements (example : fr : dd/mm/yyyy) </li>
+ * <li> The style that determines the length of the date representation</li>
  * </p>
  * <p>
  * BloatidDate can be used to parse string into dates (usually after a user wrote a date
@@ -50,8 +50,12 @@ import java.util.Locale;
  * the user how he should input the date
  * </p>
  * </p>Also note that parser is fairly tolerant to structure of the date. For the US date
- * 1/20/1990, the following input strings will <b>all</b> give correct result : *
- * 1/20/1990 * 01/20/1990 * 1/20/90 * 01/20/90</p>
+ * 1/20/1990, the following input strings will <b>all</b> give correct result : 
+ * <li> 1/20/1990  </li>
+ * <li> 01/20/1990 </li>
+ * <li> 1/20/90 </li>
+ * <li> 01/20/90</li>
+ * </p>
  * <p>
  * While tolerant with short day/months/years, parser is not tolerant with incorrect use
  * of separator. Therefore, patterns using a '/' must be inputed using a '/' to separate
@@ -70,13 +74,19 @@ public final class DateLocale {
      * Describes the format of the date
      * </p>
      * <p>
-     * * SHORT is completely numeric, such as 12.13.52 or 3:30pm * MEDIUM is longer, such
-     * as Jan 12, 1952 * LONG is longer, such as January 12, 1952 or 3:30:32pm * FULL is
-     * pretty completely specified, such as Tuesday, April 12, 1952 AD or 3:30:42pm PST.
+     * <li> SHORT is completely numeric, such as 12.13.52 or 3:30pm </li> 
+     * <li> MEDIUM is longer, such as Jan 12, 1952 </li>
+     * <li> LONG is longer, such as January 12, 1952 or 3:30:32pm </li>
+     * <li> FULL is complete, such as Tuesday, April 12, 1952 AD or 3:30:42pm PST. </li>
      * </p>
      */
     public enum FormatStyle {
         SHORT, MEDIUM, LONG, FULL
+    }
+    
+    
+    public enum DisplayedTime {
+        DATE, TIME, DATETIME
     }
 
     /**
@@ -142,6 +152,33 @@ public final class DateLocale {
         return df.format(javaDate);
     }
 
+    
+    public String toString(final FormatStyle style, final DisplayedTime toDisplay){
+        final DateFormat df;
+        switch (toDisplay){
+        case DATE:
+            df = DateFormat.getDateInstance(getJavaStyle(style), this.locale);
+            break;
+        case TIME:
+            df = DateFormat.getTimeInstance(getJavaStyle(style), this.locale);
+            break;
+        case DATETIME:
+        default:
+            df = DateFormat.getDateTimeInstance(getJavaStyle(style), getJavaStyle(style), this.locale);
+        }
+        return df.format(javaDate);
+    }
+    
+    public String toTimeString(final FormatStyle style){
+        final DateFormat df = DateFormat.getTimeInstance(getJavaStyle(style), this.locale);
+        return df.format(javaDate);
+    }
+    
+    public String toDateTimeString(final FormatStyle dateFormat, final FormatStyle timeFormat){
+        final DateFormat df = DateFormat.getDateTimeInstance(getJavaStyle(dateFormat), getJavaStyle(timeFormat), this.locale);
+        return df.format(javaDate);
+    }
+    
     /**
      * Parses the String into a java Date object
      * 

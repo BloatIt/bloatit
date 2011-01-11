@@ -17,6 +17,9 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
+import com.bloatit.web.utils.i18n.DateLocale;
+import com.bloatit.web.utils.i18n.DateLocale.DisplayedTime;
+import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
 
 public class HtmlTools {
 
@@ -89,12 +92,11 @@ public class HtmlTools {
         }
         return result;
     }
-
-    @Deprecated
-    public static String formatDate(final Session session, final Date date) {
+    
+    public static String formatDate(final DateLocale date) {
         final Date currentDate = new Date();
 
-        final long diff = currentDate.getTime() - date.getTime();
+        final long diff = currentDate.getTime() - date.getJavaDate().getTime();
 
         if (diff < SECOND) {
             return Context.tr("now");
@@ -102,23 +104,21 @@ public class HtmlTools {
             return Context.tr("%d seconds ago", new Object[] { Long.valueOf(diff / SECOND) });
         }
 
-        final SimpleDateFormat dateFormat = new SimpleDateFormat(Context.tr("MMM d, ''yy 'at' HH:mm"));
-
-        return dateFormat.format(date);
+        return date.toDateTimeString(FormatStyle.FULL, FormatStyle.SHORT);
     }
     
     /**
      * Escapes <code>str</code>
      */
     public static String escape(String str){
-    	return StringEscapeUtils.escapeHtml(str);
+    	return StringEscapeUtils.escapeXml(str);
     }
  
     /**
      * Unescape <code>str</code>
      */
     public static String unescape(String str){
-    	return StringEscapeUtils.unescapeHtml(str);
+    	return StringEscapeUtils.unescapeXml(str);
     }
 
 }

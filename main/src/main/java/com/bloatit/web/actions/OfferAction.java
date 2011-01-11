@@ -49,7 +49,6 @@ public class OfferAction extends LoggedAction {
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
     private final String description;
 
-    @SuppressWarnings("unused")
     private final OfferActionUrl url;
 
     public OfferAction(final OfferActionUrl url) {
