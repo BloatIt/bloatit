@@ -20,7 +20,6 @@ import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.CommentReplyPageUrl;
 
 public class IdeaCommentComponent extends HtmlPageComponent {
@@ -48,10 +47,11 @@ public class IdeaCommentComponent extends HtmlPageComponent {
     }
 
     protected void extractData() {
-        final Session session = Context.getSession();
         
         final HtmlGenericElement date = new HtmlGenericElement("span");
-        date.addText(HtmlTools.formatDate(session, comment.getCreationDate()));
+//        date.addText(HtmlTools.formatDate(session, comment.getCreationDate()));
+        date.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
+
         date.setCssClass("comment_date");
         
         final HtmlGenericElement author = new HtmlGenericElement("span");

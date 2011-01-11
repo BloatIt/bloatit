@@ -12,14 +12,12 @@ package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.framework.Comment;
 import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.custom.renderer.HtmlRawTextRenderer;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 
 public class IdeaCommentChildComponent extends HtmlPageComponent {
 
@@ -36,9 +34,8 @@ public class IdeaCommentChildComponent extends HtmlPageComponent {
     protected HtmlElement produce() {
         final HtmlDiv commentBlock = new HtmlDiv("child_comment_block");
         {
-            final Session session = Context.getSession();
             final HtmlGenericElement date = new HtmlGenericElement("span");
-            date.addText(HtmlTools.formatDate(session, comment.getCreationDate()));
+            date.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
             date.setCssClass("comment_date");
             
             final HtmlGenericElement author = new HtmlGenericElement("span");

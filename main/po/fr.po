@@ -149,7 +149,7 @@ msgstr "Vous devez être connecté pour créer une nouvelle idée."
 
 #: com/bloatit/web/html/pages/MyAccountPage.java:41
 msgid "Full name: "
-msgstr "Nom complet&nbsp;:"
+msgstr "Nom complet :"
 
 #: com/bloatit/web/html/pages/MyAccountPage.java:42
 msgid "Login: "
