@@ -146,7 +146,6 @@ public class SessionManager {
     }
 
     public static void clearExpiredSessions() {
-        System.err.println("check clear expired session at"+Context.getTime());
         if(nextCleanExpiredSession < Context.getTime()) {
 
             performClearExpiredSessions();
@@ -156,14 +155,12 @@ public class SessionManager {
     }
 
     public static void performClearExpiredSessions() {
-        System.err.println("perform expired session at"+Context.getTime());
 
         Iterator<Session> it = activeSessions.values().iterator();
 
         while(it.hasNext()) {
             Session session = it.next();
             if(session.isExpired()) {
-                System.err.println("destroy session "+session.getKey());
                 it.remove();
             }
         }

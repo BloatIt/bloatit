@@ -47,22 +47,24 @@ public class IdeaCommentComponent extends HtmlPageComponent {
     }
 
     protected void extractData() {
-        
+
         final HtmlGenericElement date = new HtmlGenericElement("span");
 //        date.addText(HtmlTools.formatDate(session, comment.getCreationDate()));
         date.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
 
         date.setCssClass("comment_date");
-        
+
         final HtmlGenericElement author = new HtmlGenericElement("span");
         author.addText(comment.getAuthor().getLogin());
         author.setCssClass("comment_author");
-        
+
         final HtmlGenericElement reply = new HtmlGenericElement("span");
         final HtmlLink replyLink = new HtmlLink(new CommentReplyPageUrl(comment).urlString(), Context.tr("reply"));
+        replyLink.setCssClass("button");
         reply.add(replyLink);
         reply.setCssClass("comment_reply");
-        
+
+
         commentText = new HtmlParagraph();
         commentText.add(new HtmlRawTextRenderer(comment.getText()));
         commentText.add(date);

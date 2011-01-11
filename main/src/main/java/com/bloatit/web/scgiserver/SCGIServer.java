@@ -39,7 +39,7 @@ public class SCGIServer {
     private Socket clientSocket;
 
     private void init() {
-
+        Context.updateTime();
         SessionManager.LoadSessions();
 
         Runtime.getRuntime().addShutdownHook(new Thread() {

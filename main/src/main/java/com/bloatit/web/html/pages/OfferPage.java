@@ -20,7 +20,6 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlDateField;
@@ -47,7 +46,7 @@ public class OfferPage extends LoggedPage {
 
     @RequestParam(name = OfferAction.TITLE_CODE, level = Level.INFO, role = Role.SESSION)
     private final String title;
-    
+
     @RequestParam(name = OfferAction.DESCRIPTION_CODE, level = Level.INFO, role = Role.SESSION)
     private final String description;
 
@@ -80,12 +79,12 @@ public class OfferPage extends LoggedPage {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
         offerPageContainer.add(new HtmlIdeaSumary(targetIdea));
-        
+
         // Create offer form
         final OfferActionUrl offerActionUrl = new OfferActionUrl(targetIdea);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
         offerForm.setCssClass("padding_box");
-        
+
         // Title field
         final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, Context.tr("Title to the offer"));
         titleField.setDefaultValue(title);
@@ -93,11 +92,13 @@ public class OfferPage extends LoggedPage {
 
         // Price field
         final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, Context.tr("Offer price"));
+        priceField.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
         if(price!=null) priceField.setDefaultValue(price.toPlainString());
         offerForm.add(priceField);
 
         // Date field
         final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, Context.tr("Expiration date"));
+        dateField.setComment(Context.tr("Date formatted in ISO format. Example: 2012/03/15 for March 15, 2012."));
         dateField.setDefaultValue(expiryDate);
         offerForm.add(dateField);
 
