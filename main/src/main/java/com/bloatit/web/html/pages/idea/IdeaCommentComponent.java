@@ -18,6 +18,7 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CommentReplyPageUrl;
@@ -25,50 +26,51 @@ import com.bloatit.web.utils.url.CommentReplyPageUrl;
 public class IdeaCommentComponent extends HtmlPageComponent {
 
     private final Comment comment;
-    private HtmlParagraph commentText;
+    private boolean child;
 
-    public IdeaCommentComponent(final Comment comment) {
+    public IdeaCommentComponent(final Comment comment, boolean child) {
         super();
         this.comment = comment;
-        extractData();
+        this.child = child;
         add(produce());
     }
 
     protected HtmlElement produce() {
-        final HtmlDiv commentBlock = new HtmlDiv("main_comment_block");
+        final HtmlDiv commentBlock = (child)?new HtmlDiv("child_comment_block"):new HtmlDiv("main_comment_block");
         {
+            CommentKudoComponent commentKudo = new CommentKudoComponent(comment);
+            commentBlock.add(commentKudo);
+            
+            HtmlParagraph commentText = new HtmlParagraph();
+            commentText.add(new HtmlRawTextRenderer(comment.getText()));
             commentBlock.add(commentText);
-
+            
+            HtmlDiv commentInfo = new HtmlDiv("comment_info");
+            commentText.add(commentInfo);
+            
+            final HtmlGenericElement date = new HtmlGenericElement("span");
+            date.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
+            date.setCssClass("comment_date");
+            commentInfo.add(date);
+            
+            final HtmlGenericElement author = new HtmlGenericElement("span");
+            author.addText(comment.getAuthor().getLogin());
+            author.setCssClass("comment_author");
+            commentInfo.add(author);
+            
             for (final Comment childComment : comment.getChildren()) {
-                commentBlock.add(new IdeaCommentChildComponent(childComment));
+                commentBlock.add(new IdeaCommentComponent(childComment, true));
+                
+            }
+            
+            if(!child){
+                final HtmlDiv reply = new HtmlDiv("comment_reply");
+                final HtmlLink replyLink = new HtmlLink(new CommentReplyPageUrl(comment).urlString(), Context.tr("reply"));
+                replyLink.setCssClass("button");
+                reply.add(replyLink);
+                commentBlock.add(reply);                
             }
         }
         return commentBlock;
-    }
-
-    protected void extractData() {
-
-        final HtmlGenericElement date = new HtmlGenericElement("span");
-//        date.addText(HtmlTools.formatDate(session, comment.getCreationDate()));
-        date.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
-
-        date.setCssClass("comment_date");
-
-        final HtmlGenericElement author = new HtmlGenericElement("span");
-        author.addText(comment.getAuthor().getLogin());
-        author.setCssClass("comment_author");
-
-        final HtmlGenericElement reply = new HtmlGenericElement("span");
-        final HtmlLink replyLink = new HtmlLink(new CommentReplyPageUrl(comment).urlString(), Context.tr("reply"));
-        replyLink.setCssClass("button");
-        reply.add(replyLink);
-        reply.setCssClass("comment_reply");
-
-
-        commentText = new HtmlParagraph();
-        commentText.add(new HtmlRawTextRenderer(comment.getText()));
-        commentText.add(date);
-        commentText.add(author);
-        commentText.add(reply);
     }
 }
