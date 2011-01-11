@@ -13,34 +13,53 @@ package com.bloatit.web.html.pages.idea;
 import com.bloatit.framework.Offer;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
 
 public class IdeaOfferComponent extends HtmlPageComponent {
 
-    // private Offer offer;
-    private HtmlParagraph description;
-    private HtmlParagraph title;
-    private HtmlParagraph price;
-    private HtmlParagraph expirationDate;
-    private HtmlParagraph creationDate;
-    private HtmlImage authorAvatar;
-    private HtmlParagraph author;
     private final Offer offer;
+    private boolean currentOffer;
 
-    public IdeaOfferComponent(final Offer offer) {
+    public IdeaOfferComponent(Offer offer, boolean b) {
         super();
         this.offer = offer;
-        extractData();
+        this.currentOffer = b;
+        
         add(produce());
     }
 
     protected HtmlElement produce() {
+
+        HtmlParagraph author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getDisplayName(), "offer_author");
+        HtmlParagraph price = new HtmlParagraph(Context.tr("Price : ") + Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString(),
+                "offer_price");
+        HtmlParagraph expirationDate = new HtmlParagraph(Context.tr("Expiration date : ")
+                + Context.getLocalizator().getDate(offer.getDateExpire()).toDateTimeString(FormatStyle.LONG, FormatStyle.MEDIUM), "offer_expiry_date");
+        HtmlImage authorAvatar = new HtmlImage(offer.getAuthor().getAvatar(), "offer_avatar");
+        HtmlParagraph creationDate = new HtmlParagraph(Context.tr("Creation Date : ")
+                + Context.getLocalizator().getDate(offer.getCreationDate()).toDateTimeString(FormatStyle.LONG, FormatStyle.MEDIUM),
+                "offer_creation_date");
+
+        HtmlParagraph title = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
+        HtmlParagraph description = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
+        
         final HtmlDiv offerBlock = new HtmlDiv("offer_block");
         {
-            offerBlock.add(authorAvatar);
+            
+            if(this.currentOffer){
+                offerBlock.add(new HtmlGenericElement("span").addText(Context.tr("Currently favored offer")).setCssClass("offer_validated_info"));
+                offerBlock.setCssClass("offer_block_validated");
+            }
+            
+            HtmlDiv offerMainBlock = new HtmlDiv("offer_main_block");
+            offerBlock.add(offerMainBlock);
+            
+            offerMainBlock.add(authorAvatar);
 
             final HtmlDiv offerInfoBlock = new HtmlDiv("offer_info_block");
             {
@@ -50,24 +69,11 @@ public class IdeaOfferComponent extends HtmlPageComponent {
                 offerInfoBlock.add(creationDate);
             }
 
-            offerBlock.add(offerInfoBlock);
-            offerBlock.add(title);
-            offerBlock.add(description);
+            offerMainBlock.add(offerInfoBlock);
+            offerMainBlock.add(title);
+            offerMainBlock.add(description);
 
         }
         return offerBlock;
-    }
-
-    protected void extractData() {
-
-        author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getFullname(), "offer_author");
-        price = new HtmlParagraph(Context.tr("Price : ") + "Unknown yet", "offer_price");
-        expirationDate = new HtmlParagraph(Context.tr("Expiration date : ") + offer.getDateExpire().toString(), "offer_expiry_date");
-        authorAvatar = new HtmlImage(offer.getAuthor().getAvatar(), "offer_avatar");
-        creationDate = new HtmlParagraph(Context.tr("Creation Date : ") + offer.getCreationDate().toString(), "offer_creation_date");
-
-        title = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
-        description = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
-
     }
 }

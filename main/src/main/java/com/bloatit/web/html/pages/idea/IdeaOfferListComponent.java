@@ -24,8 +24,13 @@ public class IdeaOfferListComponent extends HtmlDiv {
         offers = demand.getOffers();
         final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
+        Offer currentOffer = demand.getCurrentOffer();
+        offersBlock.add(new IdeaOfferComponent(currentOffer, true));
+
         for (final Offer offer : offers) {
-            offersBlock.add(new IdeaOfferComponent(offer));
+            if (!offer.equals(currentOffer)) {
+                offersBlock.add(new IdeaOfferComponent(offer, false));
+            }
         }
 
         add(offersBlock);
