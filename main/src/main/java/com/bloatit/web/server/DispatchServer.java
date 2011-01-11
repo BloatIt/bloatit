@@ -187,7 +187,13 @@ public class DispatchServer {
 		String key = header.getHttpCookie().get("session_key");
 		Session sessionByKey = null;
         if (key != null && (sessionByKey = SessionManager.getByKey(key)) != null) {
-		    return sessionByKey;
+            if(sessionByKey.isExpired()) {
+                SessionManager.destroySession(sessionByKey);
+                //A new session will be create
+            } else {
+                sessionByKey.resetExpirationTime();
+                return sessionByKey;
+            }
 		}
         return  SessionManager.createSession();
 	}

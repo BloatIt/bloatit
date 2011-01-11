@@ -105,6 +105,8 @@ public class SCGIServer {
                 HttpHeader header = new HttpHeader(env);
                 HttpPost post = new HttpPost(postBytes);
                 Context.setHeader(header);
+                Context.updateTime();
+                SessionManager.clearExpiredSessions();
 
                 final DispatchServer dispatchServer = new DispatchServer(header, post);
 

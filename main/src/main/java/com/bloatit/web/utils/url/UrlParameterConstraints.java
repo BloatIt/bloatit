@@ -218,7 +218,7 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerPrecisionConstraint(BigDecimal value) {
-            return value.precision() <= constraints.getPrecision();
+            return Math.abs(value.stripTrailingZeros().scale()) > constraints.getPrecision();
         }
 
         @Override
