@@ -17,7 +17,10 @@ public final class BankTransaction extends Identifiable {
     private final DaoBankTransaction dao;
 
     public static BankTransaction create(DaoBankTransaction daoBankTransaction) {
-        return new BankTransaction(daoBankTransaction);
+        if (daoBankTransaction != null){
+            return new BankTransaction(daoBankTransaction);
+        }
+        return null;
     }
 
     public static PageIterable<BankTransaction> getAllTransactionsOf(Actor author) {
