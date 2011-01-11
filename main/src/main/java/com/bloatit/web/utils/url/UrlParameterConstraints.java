@@ -112,6 +112,9 @@ public class UrlParameterConstraints<U> {
             EnumSet<ConstraintError> enumSet = EnumSet.noneOf(ConstraintError.class);
             if (value == null && constraints.isOptional() == false) {
                 enumSet.add(ConstraintError.OPTIONAL_ERROR);
+            }
+            // do not perform constraint checking if the values are null.
+            if (value == null) {
                 return enumSet;
             }
             if (constraints.getMin() != ParamConstraint.DEFAULT_MIN) {
@@ -129,8 +132,10 @@ public class UrlParameterConstraints<U> {
                     enumSet.add(ConstraintError.PRECISION_ERROR);
                 }
             }
-            if (triggerLengthConstraint(value)) {
-                enumSet.add(ConstraintError.LENGTH_ERROR);
+            if (constraints.getLength() != ParamConstraint.DEFAULT_LENGTH) {
+                if (triggerLengthConstraint(value)) {
+                    enumSet.add(ConstraintError.LENGTH_ERROR);
+                }
             }
             return enumSet;
         }
@@ -213,7 +218,7 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerPrecisionConstraint(BigDecimal value) {
-            return value.precision() <= constraints.getPrecision();
+            return Math.abs(value.stripTrailingZeros().scale()) > constraints.getPrecision();
         }
 
         @Override
