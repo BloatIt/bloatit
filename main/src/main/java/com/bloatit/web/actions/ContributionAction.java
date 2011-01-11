@@ -15,9 +15,11 @@ import java.math.BigDecimal;
 import com.bloatit.framework.Demand;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 import com.bloatit.web.annotations.Message.Level;
+import com.bloatit.web.annotations.ParamConstraint;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.annotations.tr;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
@@ -29,67 +31,73 @@ import com.bloatit.web.utils.url.Url;
 @ParamContainer("action/contribute")
 public final class ContributionAction extends LoggedAction {
 
-	public static final String AMOUNT_CODE = "contributionAmount";
-	public static final String COMMENT_CODE = "comment";
-	public static final String TARGET_IDEA = "targetIdea";
+    public static final String AMOUNT_CODE = "contributionAmount";
+    public static final String COMMENT_CODE = "comment";
+    public static final String TARGET_IDEA = "targetIdea";
 
-	@RequestParam(name = TARGET_IDEA, level = Level.ERROR)
-	private final Demand targetIdea;
+    @RequestParam(name = TARGET_IDEA, level = Level.ERROR)
+    private final Demand targetIdea;
 
-	@RequestParam(name = COMMENT_CODE, role = Role.POST, level = Level.INFO)
-	private final String comment;
+    @RequestParam(name = COMMENT_CODE, role = Role.POST)
+    @ParamConstraint(optional = true, //
+                     max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
+    private final String comment;
 
-	@RequestParam(name = AMOUNT_CODE, role = Role.POST)
-	private final BigDecimal amount;
+    @RequestParam(name = AMOUNT_CODE, role = Role.POST)
+    @ParamConstraint(min = "0", minErrorMsg = @tr("Amount must be superior than 0."),//
+                     max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
+                     precision = 0, precisionErrorMsg = @tr("Please do not use Cents."))
+    private final BigDecimal amount;
 
-	private final ContributionActionUrl url;
+    private final ContributionActionUrl url;
 
-	public ContributionAction(final ContributionActionUrl url) throws RedirectException {
-		super(url);
-		this.url = url;
-		this.targetIdea = url.getTargetIdea();
-		this.comment = url.getComment();
-		this.amount = url.getAmount();
-	}
+    public ContributionAction(final ContributionActionUrl url) {
+        super(url);
+        this.url = url;
+        this.targetIdea = url.getTargetIdea();
+        this.comment = url.getComment();
+        this.amount = url.getAmount();
+    }
 
-	@Override
-	public final Url doProcessRestricted() throws RedirectException {
-		// Authentication
-		targetIdea.authenticate(session.getAuthToken());
+    @Override
+    public final Url doProcessRestricted() throws RedirectException {
+        // Authentication
+        targetIdea.authenticate(session.getAuthToken());
 
-		try {
-			if (targetIdea.canContribute()) {
-				targetIdea.addContribution(amount, comment);
-				session.notifyGood(Context.tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
+        try {
+            if (targetIdea.canContribute()) {
+                targetIdea.addContribution(amount, comment);
+                session.notifyGood(Context.tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount)
+                        .getLocaleString()));
 
-				return new IdeaPageUrl(targetIdea);
-			} else {
-				// Should never happen
-				session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-				return new ContributePageUrl(targetIdea);
-			}
-		} catch (final NotEnoughMoneyException e) {
-			session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
-			session.addParam(AMOUNT_CODE, amount);
-			session.addParameter(COMMENT_CODE, comment);
-			
-			session.setTargetPage(this.url); 
-			return new AccountChargingPageUrl();
-		}
-	}
+                return new IdeaPageUrl(targetIdea);
+            } else {
+                // Should never happen
+                session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
+                return new ContributePageUrl(targetIdea);
+            }
+        } catch (final NotEnoughMoneyException e) {
+            session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
+            session.addParam(AMOUNT_CODE, amount);
+            session.addParameter(COMMENT_CODE, comment);
 
-	@Override
-	protected Url doProcessErrors() throws RedirectException {
-		session.notifyList(url.getMessages());
-		if(comment != null){
-			session.addParameter(COMMENT_CODE, comment);
-		}
-		if(amount != null){
-			session.addParam(AMOUNT_CODE, amount);
-		}
+            session.setTargetPage(this.url);
+            return new AccountChargingPageUrl();
+        }
+    }
 
-		return new ContributePageUrl(targetIdea);
-	}
+    @Override
+    protected Url doProcessErrors() throws RedirectException {
+        session.notifyList(url.getMessages());
+        if (comment != null) {
+            session.addParameter(COMMENT_CODE, comment);
+        }
+        if (amount != null) {
+            session.addParam(AMOUNT_CODE, amount);
+        }
+
+        return new ContributePageUrl(targetIdea);
+    }
 
     @Override
     protected String getRefusalReason() {

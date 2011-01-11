@@ -26,9 +26,9 @@ public class Message {
     private String extractErrorMessage(String aMessage, String name, String value) {
         String errorMsg = aMessage.replaceAll("%param", name);
         if (!value.isEmpty()) {
-            errorMsg = aMessage.replaceAll("%value", value);
+            errorMsg = errorMsg.replaceAll("%value", value);
         } else {
-            errorMsg = aMessage.replaceAll("%value", "null");
+            errorMsg = errorMsg.replaceAll("%value", "null");
         }
         return errorMsg;
     }

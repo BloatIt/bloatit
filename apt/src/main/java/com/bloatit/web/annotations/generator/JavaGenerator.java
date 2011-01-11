@@ -120,8 +120,8 @@ public abstract class JavaGenerator {
 
         sb.append("new UrlParameterConstraints<").append(type).append(">(");
         if (constraints != null) {
-            sb.append(constraints.min()).append(", ");
-            sb.append(constraints.max()).append(", ");
+            sb.append(constraints.min().equals(ParamConstraint.DEFAULT_MIN_STR)?ParamConstraint.DEFAULT_MIN:constraints.min()).append(", ");
+            sb.append(constraints.max().equals(ParamConstraint.DEFAULT_MAX_STR)?ParamConstraint.DEFAULT_MAX:constraints.max()).append(", ");
             sb.append(constraints.optional()).append(", ");
             sb.append(constraints.precision()).append(", ");
             sb.append(constraints.length()).append(", ");

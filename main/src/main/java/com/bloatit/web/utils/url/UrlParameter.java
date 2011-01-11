@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import com.bloatit.web.annotations.Message;
+import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.Message.What;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.utils.AsciiUtils;
@@ -38,10 +39,6 @@ public final class UrlParameter<T> extends UrlNode {
         if (aValue != null) {
             setValueFromString(aValue);
         }
-    }
-
-    public Role getRole() {
-        return description.getRole();
     }
 
     public String getStringValue() {
@@ -84,14 +81,11 @@ public final class UrlParameter<T> extends UrlNode {
     private void setValueFromString(final String string) {
         try {
             conversionError = false;
-            setValue(Loaders.fromStr(description.getValueClass(), string));
+            strValue = string;
+            setValue(Loaders.fromStr(getValueClass(), string));
         } catch (final ConversionErrorException e) {
             conversionError = true;
         }
-    }
-
-    public String getName() {
-        return description.getName();
     }
 
     @Override
@@ -109,16 +103,10 @@ public final class UrlParameter<T> extends UrlNode {
     public Messages getMessages() {
         final Messages messages = new Messages();
         if (conversionError) {
-            Message message = new Message(description.getConversionErrorMsg(), description.getLevel(), What.CONVERSION_ERROR, description.getName(),
-                    getStringValue());
+            Message message = new Message(getConversionErrorMsg(), getLevel(), What.CONVERSION_ERROR, getName(), getStringValue());
             messages.add(message);
         } else if (constraints != null) {
-            constraints.computeConstraints(getValue(),
-                                           description.getValueClass(),
-                                           messages,
-                                           description.getLevel(),
-                                           description.getName(),
-                                           getStringValue());
+            constraints.computeConstraints(getValue(), getValueClass(), messages, getLevel(), getName(), getStringValue());
         }
         return messages;
     }
@@ -143,5 +131,25 @@ public final class UrlParameter<T> extends UrlNode {
         if (this.getName().equals(aName)) {
             this.setValueFromString(aValue);
         }
+    }
+
+    private Class<T> getValueClass() {
+        return description.getValueClass();
+    }
+
+    private String getConversionErrorMsg() {
+        return description.getConversionErrorMsg();
+    }
+
+    public final Level getLevel() {
+        return description.getLevel();
+    }
+
+    public final String getName() {
+        return description.getName();
+    }
+
+    public final Role getRole() {
+        return description.getRole();
     }
 }

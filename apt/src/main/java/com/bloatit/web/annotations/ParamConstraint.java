@@ -14,14 +14,17 @@ public @interface ParamConstraint {
     public static final int DEFAULT_MIN = Integer.MIN_VALUE;
     public static final String DEFAULT_MAX_STR = "";
     public static final int DEFAULT_MAX = Integer.MAX_VALUE;
-    public static final String DEFAULT_ERROR_MSG = "";
+    public static final String DEFAULT_ERROR_MSG = "Error ! value (%value) invalide for parameter %param.";
     public static final int DEFAULT_PRECISION = Integer.MAX_VALUE;
     public static final boolean DEFAULT_OPTIONAL = false;
     public static final int DEFAULT_LENGTH = Integer.MAX_VALUE;
 
+
+    // TODO use ints !!
     String min() default DEFAULT_MIN_STR;
     tr minErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
+    // TODO use ints !!
     String max() default DEFAULT_MAX_STR;
     tr maxErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
