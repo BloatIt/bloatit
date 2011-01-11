@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 import javassist.NotFoundException;
@@ -30,6 +31,8 @@ import com.bloatit.framework.AuthToken;
 public class SessionManager {
 
     private static HashMap<String, Session> activeSessions = new HashMap<String, Session>();
+    private static final long CLEAN_EXPIRED_SESSION_COOLDOWN = 172800; //2 days
+    private static long nextCleanExpiredSession = 0;
 
     public static Session createSession() throws FatalErrorException {
 
@@ -37,6 +40,13 @@ public class SessionManager {
         final Session session = new Session(key);
         activeSessions.put(key, session);
         return session;
+    }
+
+    public static void destroySession(Session session) {
+        if(activeSessions.containsKey(session.getKey())) {
+            System.err.println("destroy session "+session.getKey());
+            activeSessions.remove(session.getKey());
+        }
     }
 
     public static Session getByKey(final String key) {
@@ -134,4 +144,29 @@ public class SessionManager {
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
 
     }
+
+    public static void clearExpiredSessions() {
+        System.err.println("check clear expired session at"+Context.getTime());
+        if(nextCleanExpiredSession < Context.getTime()) {
+
+            performClearExpiredSessions();
+
+            nextCleanExpiredSession = Context.getTime() + CLEAN_EXPIRED_SESSION_COOLDOWN;
+        }
+    }
+
+    public static void performClearExpiredSessions() {
+        System.err.println("perform expired session at"+Context.getTime());
+
+        Iterator<Session> it = activeSessions.values().iterator();
+
+        while(it.hasNext()) {
+            Session session = it.next();
+            if(session.isExpired()) {
+                System.err.println("destroy session "+session.getKey());
+                it.remove();
+            }
+        }
+    }
+
 }

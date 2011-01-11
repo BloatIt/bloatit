@@ -1,11 +1,14 @@
 package com.bloatit.web.server;
 
+import java.util.Date;
+
 import com.bloatit.web.utils.i18n.Localizator;
 
 public class Context {
     private static Session session = null;
     private static Localizator localizator = null;
     private static HttpHeader header = null;
+    private static long currentTime = 0;
 
     public static void setSession(final Session session) {
         Context.session = session;
@@ -64,5 +67,13 @@ public class Context {
 
     public static HttpHeader getHeader() {
         return Context.header;
+    }
+
+    public static long getTime() {
+        return currentTime;
+    }
+
+    public static void updateTime() {
+        currentTime = new Date().getTime()/1000;
     }
 }

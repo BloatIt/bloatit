@@ -42,6 +42,11 @@ import com.bloatit.web.utils.url.UrlParameter;
  * </p>
  */
 public class Session {
+
+    public static final long LOGGED_SESSION_DURATION = 1296000; // 15 days in seconds
+    public static final long DEFAULT_SESSION_DURATION = 86400; // 1 days in seconds
+
+
 	private final String key;
 	private final Deque<Action> actionList;
 	private final Deque<Notification> notificationList;
@@ -50,6 +55,7 @@ public class Session {
 	private Url lastStablePage = null;
 	private Url targetPage = null;
 
+	private long expirationTime;
 
 	/**
 	 * The place to store session data
@@ -57,15 +63,29 @@ public class Session {
 	private final Parameters sessionParams = new Parameters();
 
 	Session(final String key) {
+	    System.err.println("Create session "+key+" at "+Context.getTime());
 		this.key = key;
 
 		authToken = null;
 		actionList = new ArrayDeque<Action>();
 		notificationList = new ArrayDeque<Notification>();
+		resetExpirationTime();
+	}
+
+	public final void resetExpirationTime() {
+	    System.err.println("Reset expiration time for session "+key+" at "+Context.getTime());
+	    System.err.println("old expiration time is "+expirationTime);
+	    if(isLogged()) {
+	        expirationTime = Context.getTime() + LOGGED_SESSION_DURATION;
+	    } else {
+	        expirationTime = Context.getTime() + DEFAULT_SESSION_DURATION;
+	    }
+	    System.err.println("new expiration time is "+expirationTime);
 	}
 
 	public final void setAuthToken(final AuthToken token) {
 		authToken = token;
+		resetExpirationTime();
 	}
 
 	public final AuthToken getAuthToken() {
@@ -75,6 +95,10 @@ public class Session {
 	public final boolean isLogged() {
 		return authToken != null;
 	}
+
+	public final boolean isExpired() {
+        return Context.getTime() > expirationTime;
+    }
 
 	public final String getKey() {
 		return key;
