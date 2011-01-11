@@ -70,7 +70,7 @@ public class ContributePage extends LoggedPage {
         
         // Input field : choose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
-        contribField.setLabel(Context.tr("Choose amount : "));
+        contribField.setLabel(Context.tr("Choose amount: "));
         contribField.setDefaultValue(contributionAmountParam);
 
         // Input field : comment

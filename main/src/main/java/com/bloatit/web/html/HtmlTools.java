@@ -101,7 +101,7 @@ public class HtmlTools {
         if (diff < SECOND) {
             return Context.tr("now");
         } else if (diff < MINUTE) {
-            return Context.tr("%d seconds ago", new Object[] { Long.valueOf(diff / SECOND) });
+            return Context.tr("{0} seconds ago", Long.valueOf(diff / SECOND));
         }
 
         return date.toDateTimeString(FormatStyle.FULL, FormatStyle.SHORT);

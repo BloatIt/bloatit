@@ -17,6 +17,7 @@ import java.util.Locale;
 import com.bloatit.common.Image;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
+import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;

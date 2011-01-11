@@ -38,10 +38,10 @@ public class MyAccountPage extends Page {
             HtmlList userInfo = new HtmlList();
             memberTitle.add(userInfo);
 
-            userInfo.add(Context.tr("Full name: " + member.getFullname()));
-            userInfo.add(Context.tr("Login: " + member.getLogin()));
-            userInfo.add(Context.tr("Email: " + member.getEmail()));
-            userInfo.add(Context.tr("Karma: " + member.getKarma()));
+            userInfo.add(Context.tr("Full name: ") + member.getFullname());
+            userInfo.add(Context.tr("Login: ") + member.getLogin());
+            userInfo.add(Context.tr("Email: ") + member.getEmail());
+            userInfo.add(Context.tr("Karma: ") + member.getKarma());
 
             add(memberTitle);
         } else {
