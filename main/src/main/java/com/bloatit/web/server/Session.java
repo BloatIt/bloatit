@@ -63,8 +63,7 @@ public class Session {
 	private final Parameters sessionParams = new Parameters();
 
 	Session(final String key) {
-	    System.err.println("Create session "+key+" at "+Context.getTime());
-		this.key = key;
+	    this.key = key;
 
 		authToken = null;
 		actionList = new ArrayDeque<Action>();
@@ -73,14 +72,11 @@ public class Session {
 	}
 
 	public final void resetExpirationTime() {
-	    System.err.println("Reset expiration time for session "+key+" at "+Context.getTime());
-	    System.err.println("old expiration time is "+expirationTime);
 	    if(isLogged()) {
 	        expirationTime = Context.getTime() + LOGGED_SESSION_DURATION;
 	    } else {
 	        expirationTime = Context.getTime() + DEFAULT_SESSION_DURATION;
 	    }
-	    System.err.println("new expiration time is "+expirationTime);
 	}
 
 	public final void setAuthToken(final AuthToken token) {
