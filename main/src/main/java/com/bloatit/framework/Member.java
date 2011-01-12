@@ -28,7 +28,7 @@ public final class Member extends Actor {
 
     /**
      * Create a new member using its Dao version.
-     *
+     * 
      * @param dao a DaoMember
      * @return the new member or null if dao is null.
      */
@@ -39,7 +39,7 @@ public final class Member extends Actor {
         return new Member(dao);
     }
 
-    public Member(String login, String password, String email, Locale locale) {
+    public Member(final String login, final String password, final String email, final Locale locale) {
         super();
         dao = DaoMember.createAndPersist(login, password, email, locale);
     }
@@ -52,7 +52,7 @@ public final class Member extends Actor {
     /**
      * Tells if a user can access the group property. You have to unlock this Member using
      * the {@link Member#authenticate(AuthToken)} method.
-     *
+     * 
      * @param action can be read/write/delete. for example use READ to know if you can use
      *        {@link Member#getGroups()}.
      * @return true if you can use the method.
@@ -64,7 +64,7 @@ public final class Member extends Actor {
     /**
      * To add a user into a public group, you have to make sure you can access the groups
      * with the {@link Action#WRITE} action.
-     *
+     * 
      * @param group must be a public group.
      * @throws UnauthorizedOperationException if the authenticated member do not have the
      *         right to use this methods.
@@ -80,7 +80,7 @@ public final class Member extends Actor {
 
     /**
      * Tells if a user can access the property "invite".
-     *
+     * 
      * @param group the group in which you want to invite somebody
      * @param action WRITE for create a new invitation, DELETE to accept/refuse it, READ
      *        to list the invitations you have recieved.
@@ -93,7 +93,7 @@ public final class Member extends Actor {
     /**
      * To invite a member into a group you have to have the WRITE right on the "invite"
      * property.
-     *
+     * 
      * @param member The member you want to invite
      * @param group The group in which you invite a member.
      */
@@ -121,7 +121,7 @@ public final class Member extends Actor {
     /**
      * To accept an invitation you must have the DELETE right on the "invite" property. If
      * the invitation is not in PENDING state then nothing is done.
-     *
+     * 
      * @param invitation the authenticate member must be receiver of the invitation.
      */
     public void acceptInvitation(final JoinGroupInvitation invitation) {
@@ -135,7 +135,7 @@ public final class Member extends Actor {
     /**
      * To refuse an invitation you must have the DELETE right on the "invite" property. If
      * the invitation is not in PENDING state then nothing is done.
-     *
+     * 
      * @param invitation the authenticate member must be receiver of the invitation.
      */
     public void refuseInvitation(final JoinGroupInvitation invitation) {
@@ -150,7 +150,7 @@ public final class Member extends Actor {
      * To remove this member from a group you have to have the DELETE right on the "group"
      * property. If the member is not in the "group", nothing is done. (Although it should
      * be considered as an error and will be logged)
-     *
+     * 
      * @param group is the group from which the user will be removed.
      */
     public void removeFromGroup(final Group group) {
@@ -160,7 +160,7 @@ public final class Member extends Actor {
 
     /**
      * To get the groups you have the have the READ right on the "group" property.
-     *
+     * 
      * @return all the group in which this member is.
      */
     public PageIterable<Group> getGroups() {
@@ -195,7 +195,7 @@ public final class Member extends Actor {
 
     public String getDisplayName() {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
-        if (dao.getFullname() != null && dao.getFullname().isEmpty()){
+        if (dao.getFullname() != null && dao.getFullname().isEmpty()) {
             return getLogin();
         }
         return getFullname();

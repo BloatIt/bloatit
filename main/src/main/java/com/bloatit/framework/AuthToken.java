@@ -33,14 +33,14 @@ public final class AuthToken {
         key = UUID.randomUUID();
     }
 
-    public AuthToken(int memberId) throws NotFoundException {
-		final Member tmp = MemberManager.getMemberById(memberId);
-		if (tmp == null) {
+    public AuthToken(final int memberId) throws NotFoundException {
+        final Member tmp = MemberManager.getMemberById(memberId);
+        if (tmp == null) {
             throw new NotFoundException("Identification failed");
         }
         member = tmp;
         key = UUID.randomUUID();
-	}
+    }
 
     public UUID getKey() {
         return key;

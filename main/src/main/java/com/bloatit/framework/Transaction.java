@@ -65,9 +65,9 @@ public final class Transaction extends Identifiable {
     }
 
     protected EnumSet<Role> calculateRole() {
-    	if (getAuthToken() == null){
-    		return EnumSet.of(Role.NOBODY);
-    	}
+        if (getAuthToken() == null) {
+            return EnumSet.of(Role.NOBODY);
+        }
         if (getAuthToken().getMember().getUnprotectedLogin().equals(dao.getFrom().getActor().getLogin())) {
             return calculateRole(dao.getFrom().getActor().getLogin());
         } else if (getAuthToken().getMember().getUnprotectedLogin().equals(dao.getTo().getActor().getLogin())) {

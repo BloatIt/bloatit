@@ -16,26 +16,26 @@ public final class BankTransaction extends Identifiable {
 
     private final DaoBankTransaction dao;
 
-    public static BankTransaction create(DaoBankTransaction daoBankTransaction) {
-        if (daoBankTransaction != null){
+    public static BankTransaction create(final DaoBankTransaction daoBankTransaction) {
+        if (daoBankTransaction != null) {
             return new BankTransaction(daoBankTransaction);
         }
         return null;
     }
 
-    public static PageIterable<BankTransaction> getAllTransactionsOf(Actor author) {
+    public static PageIterable<BankTransaction> getAllTransactionsOf(final Actor author) {
         return new BankTransactionList(DaoBankTransaction.getAllTransactionsOf(author.getDao()));
     }
 
-    public static BankTransaction getByToken(String token) {
+    public static BankTransaction getByToken(final String token) {
         return create(DaoBankTransaction.getByToken(token));
     }
 
-    public BankTransaction(String message, String token, DaoActor author, BigDecimal value, String orderReference) {
+    public BankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final String orderReference) {
         this.dao = DaoBankTransaction.createAndPersist(message, token, author, value, orderReference);
     }
 
-    private BankTransaction(DaoBankTransaction dao) {
+    private BankTransaction(final DaoBankTransaction dao) {
         super();
         this.dao = dao;
     }
@@ -85,7 +85,7 @@ public final class BankTransaction extends Identifiable {
         return dao.getToken();
     }
 
-    public void setProcessInformations(String processInformations) {
+    public void setProcessInformations(final String processInformations) {
         dao.setProcessInformations(processInformations);
     }
 

@@ -37,15 +37,15 @@ public final class Demand extends Kudosable {
         this.dao = dao;
     }
 
-    public boolean canAccessComment(Action action) {
+    public boolean canAccessComment(final Action action) {
         return new DemandRight.Comment().canAccess(calculateRole(this), action);
     }
 
-    public boolean canAccessContribution(Action action) {
+    public boolean canAccessContribution(final Action action) {
         return new DemandRight.Contribute().canAccess(calculateRole(this), action);
     }
 
-    public boolean canAccessOffer(Action action) {
+    public boolean canAccessOffer(final Action action) {
         return new DemandRight.Offer().canAccess(calculateRole(this), action);
     }
 
@@ -90,7 +90,7 @@ public final class Demand extends Kudosable {
     /**
      * Return the progression in percent. It compare the amount of contribution to the
      * amount of the current offer.
-     *
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is greater
      *         than the amount for the current offer. If the offer amount is 0 then it
      *         return Float.POSITIVE_INFINITY.
@@ -142,7 +142,7 @@ public final class Demand extends Kudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     *
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      */
     public Offer getCurrentOffer() {

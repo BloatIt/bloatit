@@ -38,14 +38,14 @@ public class Payline extends Unlockable {
         private final String message;
         private final String redirectUrl;
 
-        Reponse(DoWebPaymentResponse reponse) {
+        Reponse(final DoWebPaymentResponse reponse) {
             code = reponse.getResult().getCode();
             token = reponse.getToken();
             message = reponse.getResult().getShortMessage() + "\n" + reponse.getResult().getLongMessage();
             this.redirectUrl = reponse.getRedirectURL();
         }
 
-        Reponse(Result result, String token) {
+        Reponse(final Result result, final String token) {
             code = result.getCode();
             this.token = token;
             message = result.getShortMessage() + "\n" + result.getLongMessage();
@@ -80,7 +80,7 @@ public class Payline extends Unlockable {
             super();
         }
 
-        public TokenNotfoundException(String message) {
+        public TokenNotfoundException(final String message) {
             super(message);
         }
     }
@@ -98,8 +98,8 @@ public class Payline extends Unlockable {
         return getAuthToken() != null;
     }
 
-    public void validatePayment(String token) throws TokenNotfoundException {
-        BankTransaction transaction = BankTransaction.getByToken(token);
+    public void validatePayment(final String token) throws TokenNotfoundException {
+        final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction != null) {
             transaction.authenticate(getAuthToken());
             if (!transaction.setValidated()) {
@@ -109,21 +109,21 @@ public class Payline extends Unlockable {
         throw new TokenNotfoundException("Token is not found in DB: " + token);
     }
 
-    public Reponse getPaymentDetails(String token) throws TokenNotfoundException {
-        BankTransaction transaction = BankTransaction.getByToken(token);
+    public Reponse getPaymentDetails(final String token) throws TokenNotfoundException {
+        final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction == null) {
             throw new TokenNotfoundException("Token is not found in DB: " + token);
         }
 
-        WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
-        GetWebPaymentDetailsRequest parameters = new GetWebPaymentDetailsRequest();
+        final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
+        final GetWebPaymentDetailsRequest parameters = new GetWebPaymentDetailsRequest();
         parameters.setToken(token);
-        Result result = paylineApi.getWebPaymentAPI().getWebPaymentDetails(parameters).getResult();
+        final Result result = paylineApi.getWebPaymentAPI().getWebPaymentDetails(parameters).getResult();
         return new Reponse(result, token);
     }
 
-    public Reponse doPayment(BigDecimal amount, String cancelUrl, String returnUrl, String notificationUrl) {
-        DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
+    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl) {
+        final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
         paymentRequest.setReturnURL(returnUrl);
         paymentRequest.setNotificationURL(notificationUrl);
@@ -135,30 +135,30 @@ public class Payline extends Unlockable {
             throw new FatalErrorException("The amount cannot have more than 2 digit after the '.'.");
         }
 
-        BigDecimal amountX100 = amount.scaleByPowerOfTen(2);
+        final BigDecimal amountX100 = amount.scaleByPowerOfTen(2);
 
         addPaymentDetails(amountX100, paymentRequest);
-        String orderReference = addOrderDetails(amountX100, paymentRequest);
+        final String orderReference = addOrderDetails(amountX100, paymentRequest);
 
         // paymentRequest.setCustomPaymentPageCode("");
         paymentRequest.setLanguageCode(Locale.FRENCH.getISO3Language());
         paymentRequest.setSecurityMode("ssl");
 
-        WebPaymentAPI_Service paylineService = new WebPaymentAPI_Service();
-        DoWebPaymentResponse apiReponse = paylineService.getWebPaymentAPI().doWebPayment(paymentRequest);
+        final WebPaymentAPI_Service paylineService = new WebPaymentAPI_Service();
+        final DoWebPaymentResponse apiReponse = paylineService.getWebPaymentAPI().doWebPayment(paymentRequest);
 
-        Reponse reponse = new Reponse(apiReponse);
+        final Reponse reponse = new Reponse(apiReponse);
         createBankTransaction(amount, orderReference, reponse);
         return reponse;
     }
 
-    private void createBankTransaction(BigDecimal amount, String orderReference, Reponse reponse) {
+    private void createBankTransaction(final BigDecimal amount, final String orderReference, final Reponse reponse) {
         if (reponse.getToken() != null && !reponse.getToken().isEmpty()) {
-            BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
-                                                                    reponse.getToken(),//
-                                                                    getAuthToken().getMember().getDao(),//
-                                                                    amount, //
-                                                                    orderReference);
+            final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
+                    reponse.getToken(),//
+                    getAuthToken().getMember().getDao(),//
+                    amount, //
+                    orderReference);
             bankTransaction.setProcessInformations(reponse.getCode());
             if (reponse.isAccepted()) {
                 bankTransaction.setAccepted();
@@ -168,10 +168,10 @@ public class Payline extends Unlockable {
         }
     }
 
-    private String addOrderDetails(BigDecimal amountX100, DoWebPaymentRequest paymentRequest) {
+    private String addOrderDetails(final BigDecimal amountX100, final DoWebPaymentRequest paymentRequest) {
         // Order details
-        Order order = new Order();
-        String orderReference = createOrderRef(getAuthToken().getMember());
+        final Order order = new Order();
+        final String orderReference = createOrderRef(getAuthToken().getMember());
         order.setRef(orderReference);
         order.setOrigin(ORDER_ORIGINE);
         order.setCountry(Locale.FRANCE.getCountry());
@@ -183,9 +183,9 @@ public class Payline extends Unlockable {
         return orderReference;
     }
 
-    private void addPaymentDetails(BigDecimal amountX100, DoWebPaymentRequest paymentRequest) {
+    private void addPaymentDetails(final BigDecimal amountX100, final DoWebPaymentRequest paymentRequest) {
         // Payment details
-        Payment payement = new Payment();
+        final Payment payement = new Payment();
         payement.setAction(ACTION);
         payement.setMode(MODE);
         payement.setAmount(amountX100.toPlainString());
@@ -196,16 +196,16 @@ public class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     *
+     * 
      * @param member
      * @return
      */
-    private String createOrderRef(Member member) {
-        StringBuilder ref = new StringBuilder();
+    private String createOrderRef(final Member member) {
+        final StringBuilder ref = new StringBuilder();
         ref.append("PAYLINE-");
         ref.append(member.getId());
         ref.append("-");
-        PageIterable<DaoBankTransaction> bankTransaction = DaoBankTransaction.getAllTransactionsOf(member.getDao());
+        final PageIterable<DaoBankTransaction> bankTransaction = DaoBankTransaction.getAllTransactionsOf(member.getDao());
         if (bankTransaction.size() == 0) {
             ref.append("0");
         } else {

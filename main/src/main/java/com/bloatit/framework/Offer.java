@@ -18,7 +18,7 @@ public final class Offer extends Kudosable {
         }
         return new Offer(dao);
     }
-    
+
     public Offer(final DaoOffer dao) {
         super();
         this.dao = dao;
@@ -52,7 +52,7 @@ public final class Offer extends Kudosable {
     public BigDecimal getAmount() {
         return dao.getAmount();
     }
-    
+
     @Override
     protected DaoKudosable getDaoKudosable() {
         return dao;

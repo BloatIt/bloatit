@@ -17,23 +17,23 @@ public abstract class Kudosable extends UserContent {
     protected abstract DaoKudosable getDaoKudosable();
 
     public final boolean canKudos() {
-    	if ( ! new KudosableRight.Kudos().canAccess(calculateRole(this), Action.WRITE)){
-    		return false;
-    	}
+        if (!new KudosableRight.Kudos().canAccess(calculateRole(this), Action.WRITE)) {
+            return false;
+        }
         return !getDaoKudosable().hasKudosed(getAuthToken().getMember().getDao());
     }
 
     public final void unkudos() {
-    	if (!canKudos()){
-    		throw new UnauthorizedOperationException();
-    	}
+        if (!canKudos()) {
+            throw new UnauthorizedOperationException();
+        }
         addKudos(-1);
     }
 
     public final void kudos() {
-    	if (!canKudos()){
-    		throw new UnauthorizedOperationException();
-    	}
+        if (!canKudos()) {
+            throw new UnauthorizedOperationException();
+        }
         addKudos(1);
     }
 
