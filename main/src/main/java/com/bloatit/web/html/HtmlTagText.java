@@ -5,18 +5,28 @@ import java.util.Iterator;
 
 import com.bloatit.web.server.Text;
 
+/**
+ * <p>
+ * HtmlTagText are used to input <b>un</b>escaped text
+ * </p>
+ * <p>
+ * Should be used in the weird situations where other standard tags are not
+ * flexible enough
+ * </p>
+ */
 public class HtmlTagText extends HtmlNode {
 
     protected String content;
 
-    protected HtmlTagText(){
-    	super();
+    protected HtmlTagText() {
+        super();
     }
-    
+
     /**
      * Creates a component to add raw Html to a page
-     *
-     * @param content the Html string to add
+     * 
+     * @param content
+     *            the Html string to add
      */
     public HtmlTagText(final String content) {
         super();
@@ -30,7 +40,8 @@ public class HtmlTagText extends HtmlNode {
     }
 
     /**
-     * Do not use Only present as a quick hack to write a tad cleaner html content
+     * Do not use Only present as a quick hack to write a tad cleaner html
+     * content
      */
     public String _getContent() {
         return content;

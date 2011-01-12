@@ -99,8 +99,7 @@ public class DispatchServer {
 	private final Session session;
 	private final HttpHeader header;
 	private final HttpPost post;
-
-
+	
 	public DispatchServer(HttpHeader header, HttpPost post) {
 		this.header = header;
         this.post = post;

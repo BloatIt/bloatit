@@ -4,6 +4,9 @@ import java.util.Date;
 
 import com.bloatit.web.utils.i18n.Localizator;
 
+/**
+ * <p>A class that stores <b>all</b> the information about the current request</p>
+ */
 public class Context {
     private static Session session = null;
     private static Localizator localizator = null;
@@ -53,10 +56,9 @@ public class Context {
         return localizator.trn(singular, plural, amount, parameters);
     }
 
-    public static void setLocalizator(Localizator localizator) {
-        Context.localizator = localizator;
-    }
-
+    /**
+     * Returns the localizator for the current context
+     */
     public static Localizator getLocalizator() {
         return localizator;
     }
@@ -74,8 +76,10 @@ public class Context {
     }
 
     public static void updateTime() {
-        currentTime = new Date().getTime()/1000;
+        currentTime = new Date().getTime() / 1000;
     }
 
-
+    protected static void setLocalizator(Localizator localizator) {
+        Context.localizator = localizator;
+    }
 }
