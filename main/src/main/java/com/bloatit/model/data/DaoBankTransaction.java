@@ -21,6 +21,8 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 @Entity
 public final class DaoBankTransaction extends DaoIdentifiable {
 
+    private static final int DEFAULT_STRING_LENGTH=64;
+
     public enum State {
         PENDING, ACCEPTED, REFUSED, VALIDATED
     }
@@ -28,11 +30,11 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String message;
     @Basic(optional = false)
-    @Column(unique = true, updatable = false, length = 64)
+    @Column(unique = true, updatable = false, length = DEFAULT_STRING_LENGTH)
     private String token;
 
     @Basic(optional = true)
-    @Column(updatable = true, length = 64)
+    @Column(updatable = true, length = DEFAULT_STRING_LENGTH)
     private String processInformations;
 
     @ManyToOne(optional = false)

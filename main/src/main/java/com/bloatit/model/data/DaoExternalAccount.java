@@ -87,11 +87,11 @@ public final class DaoExternalAccount extends DaoAccount {
         return type;
     }
 
-    public final void setBankCode(String bankCode) {
+    public void setBankCode(String bankCode) {
         this.bankCode = bankCode;
     }
 
-    public final void setType(AccountType type) {
+    public void setType(AccountType type) {
         this.type = type;
     }
 

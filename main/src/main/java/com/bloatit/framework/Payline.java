@@ -18,7 +18,7 @@ import com.experian.payline.ws.obj.Order;
 import com.experian.payline.ws.obj.Payment;
 import com.experian.payline.ws.obj.Result;
 
-public class Payline extends Unlockable {
+public final class Payline extends Unlockable {
 
     private static final String ACCEPTED_CODE = "00000";
     private static final String ORDER_ORIGINE = "payline";
@@ -52,15 +52,15 @@ public class Payline extends Unlockable {
             this.redirectUrl = "";
         }
 
-        public final String getToken() {
+        public String getToken() {
             return token;
         }
 
-        public final String getMessage() {
+        public String getMessage() {
             return message;
         }
 
-        public final String getCode() {
+        public String getCode() {
             return code;
         }
 
@@ -68,7 +68,7 @@ public class Payline extends Unlockable {
             return code.equals(ACCEPTED_CODE);
         }
 
-        public final String getRedirectUrl() {
+        public String getRedirectUrl() {
             return redirectUrl;
         }
     }
@@ -196,7 +196,7 @@ public class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     * 
+     *
      * @param member
      * @return
      */

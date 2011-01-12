@@ -4,7 +4,7 @@ import com.bloatit.framework.Comment;
 import com.bloatit.model.data.DBRequests;
 import com.bloatit.model.data.DaoComment;
 
-public class CommentManager {
+public final class CommentManager {
 
     private CommentManager(){
         // Desactivate default ctor

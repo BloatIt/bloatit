@@ -41,7 +41,7 @@ public final class BankTransaction extends Identifiable {
     }
 
     @Override
-    public final int getId() {
+    public int getId() {
         return dao.getId();
     }
 

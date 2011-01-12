@@ -48,7 +48,10 @@ public final class DaoTranslation extends DaoKudosable {
      */
     public DaoTranslation(final DaoMember member, final DaoDescription description, final Locale locale, final String title, final String text) {
         super(member);
-        if (description == null || locale == null || title == null || text == null || title.isEmpty() || text.isEmpty()) {
+        if (description == null || locale == null || title == null || text == null) {
+            throw new NonOptionalParameterException();
+        }
+        if (title.isEmpty() || text.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.locale = locale;

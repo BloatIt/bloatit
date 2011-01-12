@@ -12,10 +12,10 @@ import com.bloatit.common.FatalErrorException;
  * Class to handle tools related to countries managements.
  */
 public class Countries {
-	
+
 	private static final String COUNTRIES_PATH = "i18n/countries";
 	private static Set<Country> availableCountries = null;
-	
+
 	/**
 	 * <p>Lists all available countries ordered on their fullname</p>
 	 * @return a list of the available countries
@@ -27,9 +27,9 @@ public class Countries {
 		}
 		return availableCountries;
 	}
-	
-	
-	
+
+
+
 	private static void initAvailableCountries(){
 		try {
 			Properties properties = PropertyLoader.loadProperties(COUNTRIES_PATH);
@@ -42,7 +42,7 @@ public class Countries {
 			throw new FatalErrorException("File describing available countries is not available at "+COUNTRIES_PATH, e);
 		}
 	}
-	
+
 	/**
 	 * Nested class to represent a country
 	 */
@@ -62,6 +62,12 @@ public class Countries {
 		}
 
 		@Override
+		public int hashCode() {
+		    assert false : "hashCode not designed";
+		    return 42; // any arbitrary constant will do
+		  }
+
+		@Override
 		public boolean equals(Object obj) {
 			if (this == obj)
 				return true;
@@ -78,7 +84,7 @@ public class Countries {
 			return true;
 		}
 
-		
-		
+
+
 	}
 }
