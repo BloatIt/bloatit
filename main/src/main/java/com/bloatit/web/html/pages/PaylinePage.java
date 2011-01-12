@@ -1,5 +1,8 @@
 package com.bloatit.web.html.pages;
 
+import com.bloatit.common.Log;
+import com.bloatit.framework.Payline;
+import com.bloatit.framework.Payline.TokenNotfoundException;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -23,6 +26,15 @@ public class PaylinePage extends Page {
 
         add(new HtmlParagraph(token));
         add(new HtmlParagraph(ack));
+
+        if (ack.equals("ok")){
+            Payline payline = new Payline();
+            try {
+                payline.validatePayment(token);
+            } catch (TokenNotfoundException e) {
+                Log.web().fatal("Token not found." + e);
+            }
+        }
     }
 
     @Override

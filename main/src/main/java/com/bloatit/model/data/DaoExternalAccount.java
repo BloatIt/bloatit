@@ -25,7 +25,7 @@ public final class DaoExternalAccount extends DaoAccount {
      * Ok for now there is only IBAN code but they may have other types.
      */
     public enum AccountType {
-        IBAN
+        IBAN, VIRTUAL
     }
 
     /**
@@ -73,12 +73,26 @@ public final class DaoExternalAccount extends DaoAccount {
         this.bankCode = bankCode;
     }
 
+    protected DaoExternalAccount(final DaoActor actor) {
+        super(actor);
+        this.type = AccountType.VIRTUAL;
+        this.bankCode = "";
+    }
+
     public String getBankCode() {
         return bankCode;
     }
 
     public AccountType getType() {
         return type;
+    }
+
+    public final void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
+    public final void setType(AccountType type) {
+        this.type = type;
     }
 
     /**
@@ -96,5 +110,6 @@ public final class DaoExternalAccount extends DaoAccount {
     protected DaoExternalAccount() {
         super();
     }
+
 
 }

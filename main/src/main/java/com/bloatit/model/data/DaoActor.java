@@ -53,7 +53,7 @@ public abstract class DaoActor {
     @Cascade(value = { CascadeType.ALL })
     private DaoInternalAccount internalAccount;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL })
     private DaoExternalAccount externalAccount;
 
@@ -78,6 +78,7 @@ public abstract class DaoActor {
         this.dateCreation = new Date();
         this.login = login;
         this.internalAccount = new DaoInternalAccount(this);
+        this.externalAccount = new DaoExternalAccount(this);
     }
 
     /**

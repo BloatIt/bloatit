@@ -1,5 +1,7 @@
 package com.bloatit.web.actions;
 
+import java.math.BigDecimal;
+
 import com.bloatit.framework.Payline;
 import com.bloatit.framework.Payline.Reponse;
 import com.bloatit.web.annotations.Message.Level;
@@ -20,7 +22,7 @@ public class PaylineAction extends LoggedAction {
     public static final String CHARGE_AMOUNT_CODE = "amount";
 
     @RequestParam(level = Level.ERROR, name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
-    Integer amount;
+    BigDecimal amount;
 
     public PaylineAction(PaylineActionUrl url) {
         super(url);
@@ -29,27 +31,22 @@ public class PaylineAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-
+        // Constructing the urls.
         HttpHeader header = Context.getHeader();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("http://");
-        sb.append(header.getHttpHost());
-        sb.append("/payline/result");
-
         String returnUrl = "http://" + header.getHttpHost() + new PaylinePageUrl("ok").urlString();
         String cancelUrl = "http://" + header.getHttpHost() + new PaylinePageUrl("cancel").urlString();
         String notificationUrl = "http://" + header.getHttpHost() + new PaylineNotifyActionUrl().urlString();
 
-        System.err.println(notificationUrl);
-
-        Payline payline = new Payline(cancelUrl, returnUrl, notificationUrl);
-
+        // Make the payment request.
+        Payline payline = new Payline();
         payline.authenticate(Context.getSession().getAuthToken());
-
-        if (payline.canMakePayment()){
-            Reponse beginPayment = payline.beginPayment(amount);
-            return new UrlStringBinder(beginPayment.getRedirect());
+        if (payline.canMakePayment()) {
+            Reponse reponse = payline.doPayment(amount, cancelUrl, returnUrl, notificationUrl);
+            if (reponse.isAccepted()) {
+                return new UrlStringBinder(reponse.getRedirectUrl());
+            }
+            session.notifyBad(reponse.getMessage());
+            return Context.getSession().pickPreferredPage();
         }
         return Context.getSession().pickPreferredPage();
     }

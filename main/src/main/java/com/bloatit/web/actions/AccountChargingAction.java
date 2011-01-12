@@ -35,7 +35,7 @@ public class AccountChargingAction extends LoggedAction {
 
     private final Url url;
 
-    public AccountChargingAction(final AccountChargingActionUrl url) throws RedirectException {
+    public AccountChargingAction(final AccountChargingActionUrl url) {
         super(url);
         this.url = url;
         this.amount = url.getAmount();
@@ -63,10 +63,10 @@ public class AccountChargingAction extends LoggedAction {
 
         return session.pickPreferredPage();
     }
-    
+
     @Override
 	protected final Url doProcessErrors() throws RedirectException {
-    	// TODO 
+    	// TODO
 		return new LoginPageUrl();
     }
 

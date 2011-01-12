@@ -125,7 +125,7 @@ public final class Member extends Actor {
      * @param invitation the authenticate member must be receiver of the invitation.
      */
     public void acceptInvitation(final JoinGroupInvitation invitation) {
-        if (invitation.getReciever().getId() != getToken().getMember().getId()) {
+        if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
             throw new UnauthorizedOperationException();
         }
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, invitation.getGroup()), Action.DELETE);
@@ -139,7 +139,7 @@ public final class Member extends Actor {
      * @param invitation the authenticate member must be receiver of the invitation.
      */
     public void refuseInvitation(final JoinGroupInvitation invitation) {
-        if (invitation.getReciever().getId() != getToken().getMember().getId()) {
+        if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
             throw new UnauthorizedOperationException();
         }
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, invitation.getGroup()), Action.DELETE);

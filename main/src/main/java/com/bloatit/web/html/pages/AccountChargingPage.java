@@ -14,6 +14,7 @@ import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
@@ -45,6 +46,8 @@ public class AccountChargingPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() {
         final HtmlTitleBlock title = new HtmlTitleBlock(Context.tr("Charge your account"), 1);
+
+        title.add(new HtmlParagraph("utiliser la carte de test n° 4970100000325734 avec une date d’expiration valide et le cryptogramme visuel 123."));
 
         final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
