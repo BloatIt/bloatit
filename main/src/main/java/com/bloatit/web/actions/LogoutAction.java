@@ -18,6 +18,9 @@ import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.LogoutActionUrl;
 import com.bloatit.web.utils.url.Url;
 
+/**
+ * A response to a form used to log out of the website
+ */
 @ParamContainer("action/logout")
 public class LogoutAction extends LoggedAction {
     private final LogoutActionUrl url;

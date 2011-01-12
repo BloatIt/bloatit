@@ -28,6 +28,9 @@ import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.Url;
 
+/**
+ * A response to a form used to create a contribution to a demand
+ */
 @ParamContainer("action/contribute")
 public final class ContributionAction extends LoggedAction {
 

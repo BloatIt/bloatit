@@ -21,6 +21,9 @@ import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 
+/**
+ * A response to a form used to log into the website
+ */
 @ParamContainer("action/login")
 public class LoginAction extends Action {
 

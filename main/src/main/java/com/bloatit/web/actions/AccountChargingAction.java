@@ -25,6 +25,9 @@ import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 
+/**
+ * A response to a form used to add money on an internal bloatit account
+ */
 @ParamContainer("action/account/charging")
 public class AccountChargingAction extends LoggedAction {
 

@@ -27,6 +27,9 @@ import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 
+/**
+ * A response to a form used to create a new idea
+ */
 @ParamContainer("idea/docreate")
 public class CreateIdeaAction extends Action {
 

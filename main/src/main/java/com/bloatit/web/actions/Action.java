@@ -19,16 +19,14 @@ import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlNode;
 
+/**
+ * The mother of all actions
+ */
 public abstract class Action implements Linkable {
 
     protected final Session session;
     private final UrlNode actionUrl;
 
-    /**
-     * The constructor mustn't thows exception
-     * 
-     * @param resquest
-     */
     public Action(final UrlNode url) {
         this.actionUrl = url;
         session = Context.getSession();

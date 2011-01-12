@@ -15,6 +15,9 @@ import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.RegisterActionUrl;
 import com.bloatit.web.utils.url.Url;
 
+/**
+ * A response to a form used sign into the website (creation of a new user)
+ */
 @ParamContainer("member/docreate")
 public class RegisterAction extends Action {
 	
