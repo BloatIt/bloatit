@@ -19,6 +19,7 @@ public class DemandRight extends RightManager {
     }
 
     public static class DemandContent extends PublicModerable {
+        // nothing this is just a rename.
     }
 
     public static class Specification extends Accessor {
@@ -34,7 +35,5 @@ public class DemandRight extends RightManager {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
-
-    // public static class Translation extends Public {}
 
 }

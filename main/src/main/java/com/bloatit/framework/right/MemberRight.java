@@ -28,15 +28,19 @@ public class MemberRight extends RightManager {
     }
 
     public static class Karma extends Public {
+        // nothing this is just a rename.
     }
 
     public static class Password extends Private {
+        // nothing this is just a rename.
     }
 
     public static class Locale extends Private {
+        // nothing this is just a rename.
     }
 
     public static class Name extends Public {
+        // nothing this is just a rename.
     }
 
 }

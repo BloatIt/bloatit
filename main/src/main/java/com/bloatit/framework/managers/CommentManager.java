@@ -6,8 +6,8 @@ import com.bloatit.model.data.DaoComment;
 
 public class CommentManager {
 
-    // Desactivate default ctor
     private CommentManager(){
+        // Desactivate default ctor
     }
 
     public static Comment getCommentById(final Integer id) {

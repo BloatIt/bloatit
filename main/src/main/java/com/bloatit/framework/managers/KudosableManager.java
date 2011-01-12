@@ -23,39 +23,39 @@ import com.bloatit.model.data.DaoTranslation;
 
 public final class KudosableManager {
 
-    // Desactivate default ctor
     private KudosableManager(){
+        // Desactivate default ctor
     }
 
     public static Kudosable getById(final Integer id ) {
-    	
+
     	//Try with comment
     	DaoComment comment = DBRequests.getById(DaoComment.class, id);
     	if(comment != null) {
     		return Comment.create(comment);
     	}
-    	
+
     	//Try with demand
     	DaoDemand demand = DBRequests.getById(DaoDemand.class, id);
     	if(demand != null) {
     		return Demand.create(demand);
     	}
-    	
+
     	//Try with offer
     	DaoOffer offer = DBRequests.getById(DaoOffer.class, id);
     	if(offer != null) {
     		return Offer.create(offer);
     	}
-    	
-    	
+
+
     	//Try with translation
     	DaoTranslation translation = DBRequests.getById(DaoTranslation.class, id);
     	if(translation != null) {
     		return Translation.create(translation);
     	}
-    	
+
     	return null;
-        
+
     }
 
 }
