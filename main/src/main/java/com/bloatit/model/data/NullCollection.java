@@ -37,6 +37,7 @@ public final class NullCollection<T> implements PageIterable<T> {
 
     @Override
     public void setPage(final int page) {
+        // nothing to do it is empty.
     }
 
     @Override
