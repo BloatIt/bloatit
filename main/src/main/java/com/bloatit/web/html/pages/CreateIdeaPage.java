@@ -33,6 +33,9 @@ import com.bloatit.web.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 
+/**
+ * Page that hosts the form to create a new Idea
+ */
 @ParamContainer("idea/create")
 public class CreateIdeaPage extends LoggedPage {
 
@@ -48,7 +51,8 @@ public class CreateIdeaPage extends LoggedPage {
 	@RequestParam(name = CreateIdeaAction.CATEGORY_CODE, defaultValue = "", role = Role.SESSION)
 	private String category;
 
-	@RequestParam(name = CreateIdeaAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
+	@SuppressWarnings("unused") // Will be used when language can be changed on Idea creation
+    @RequestParam(name = CreateIdeaAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
 	private String lang;
 
 	public CreateIdeaPage(final CreateIdeaPageUrl createIdeaPageUrl) throws RedirectException {
@@ -93,11 +97,12 @@ public class CreateIdeaPage extends LoggedPage {
 		createIdeaForm.add(paramBlock);
 		createIdeaForm.add(new HtmlSubmit(Context.tr("submit")));
 
-		// Create the fields that will describe the specification of the idea
-		// (description & specification)
+		// Create the fields that will describe the description of the idea
 		HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, Context.tr("Title"));
 		descriptionInput.setDefaultValue(description);
 		descriptionInput.setComment(Context.tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
+		
+		// Create the fields that will describe the specification of the idea
 		HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, Context.tr("Describe the idea"), 10, 80);
 		specificationInput.setDefaultValue(specification);
 		specificationInput.setComment(Context.tr("Enter a long description of the idea : list all features, describe them all "

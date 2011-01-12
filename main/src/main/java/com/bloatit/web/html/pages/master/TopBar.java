@@ -6,8 +6,8 @@ import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
+import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
@@ -30,7 +30,7 @@ public class TopBar extends HtmlDiv {
             final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(displayName);
 
             // Display user karma
-            final HtmlBranch karma = new HtmlGenericElement("span");
+            final HtmlBranch karma = new HtmlSpan();
             karma.setCssClass("karma");
             karma.addText(HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()));
 
@@ -39,7 +39,7 @@ public class TopBar extends HtmlDiv {
             
 
             // Display user money in euro
-            final HtmlBranch euroMoney = new HtmlGenericElement("span");
+            final HtmlBranch euroMoney = new HtmlSpan();
             euroMoney.setCssClass("euro_money");
 
             final Member member = session.getAuthToken().getMember();
@@ -55,7 +55,7 @@ public class TopBar extends HtmlDiv {
 
             // Display user money in locale money (when needed)
             if (cl.availableTargetCurrency() && !cl.getDefaultString().equals(cl.getLocaleString())) {
-                final HtmlBranch localeMoney = new HtmlGenericElement("span");
+                final HtmlBranch localeMoney = new HtmlSpan();
                 localeMoney.setCssClass("locale_money");
 
                 localeMoney.addText(cl.getLocaleString());
@@ -67,12 +67,12 @@ public class TopBar extends HtmlDiv {
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(Context.tr("Logout"));
 
             // Add all previously created components
-            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(memberLink).add(karma));
-            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(money));
-            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(logoutLink));
+            add(new HtmlSpan().setCssClass("top_bar_component").add(memberLink).add(karma));
+            add(new HtmlSpan().setCssClass("top_bar_component").add(money));
+            add(new HtmlSpan().setCssClass("top_bar_component").add(logoutLink));
         } else {
             final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.tr("Login / Signup"));
-            add(new HtmlGenericElement("span").setCssClass("top_bar_component").add(loginLink));
+            add(new HtmlSpan().setCssClass("top_bar_component").add(loginLink));
         }
     }
 }

@@ -16,7 +16,6 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
-import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlNode;
 

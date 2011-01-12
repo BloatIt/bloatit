@@ -26,6 +26,9 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CommentCommentActionUrl;
 import com.bloatit.web.utils.url.CommentReplyPageUrl;
 
+/**
+ * Page that hosts the form used to reply to an existing comment
+ */
 @ParamContainer("comment/reply")
 public class CommentReplyPage extends LoggedPage{
         
@@ -46,6 +49,8 @@ public class CommentReplyPage extends LoggedPage{
 
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
+        session.notifyList(url.getMessages());
+        
         HtmlTitleBlock htb = new HtmlTitleBlock(Context.tr("Reply to a comment"), 1);
         
         HtmlForm form = new HtmlForm(new CommentCommentActionUrl(targetComment).urlString());

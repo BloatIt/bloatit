@@ -17,12 +17,11 @@ import java.util.Locale;
 import com.bloatit.common.Image;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
-import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
@@ -48,7 +47,7 @@ public class HtmlIdeaSumary extends HtmlDiv {
 		final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
 		{
 
-			HtmlGenericElement project = new HtmlGenericElement("span");
+		    HtmlSpan project = new HtmlSpan();
 			project.setCssClass("project");
 			project.addText("VLC");
 
@@ -87,7 +86,7 @@ public class HtmlIdeaSumary extends HtmlDiv {
 
 				if (idea.getCurrentOffer() == null) {
 
-					HtmlGenericElement amount = new HtmlGenericElement("span");
+				    HtmlSpan amount = new HtmlSpan();
 					amount.setCssClass("important");
 
 					CurrencyLocale currency = Context.getLocalizator().getCurrency(idea.getContribution());
@@ -106,18 +105,18 @@ public class HtmlIdeaSumary extends HtmlDiv {
 				} else {
 					// Amount
 					CurrencyLocale amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
-					HtmlGenericElement amount = new HtmlGenericElement("span");
+					HtmlSpan amount = new HtmlSpan();
 					amount.setCssClass("important");
 					amount.addText(amountCurrency.getDefaultString());
 
 					// Target
 					CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
-					HtmlGenericElement target = new HtmlGenericElement("span");
+					HtmlSpan target = new HtmlSpan();
 					target.setCssClass("important");
 					target.addText(targetCurrency.getDefaultString());
 
 					// Progress
-					HtmlGenericElement progress = new HtmlGenericElement("span");
+					HtmlSpan progress = new HtmlSpan();
 					progress.setCssClass("important");
 					NumberFormat format = NumberFormat.getNumberInstance();
 					format.setMinimumFractionDigits(0);

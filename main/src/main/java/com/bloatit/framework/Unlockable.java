@@ -13,7 +13,6 @@ package com.bloatit.framework;
 
 import java.util.EnumSet;
 
-import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.RightManager.Role;
 import com.bloatit.model.data.DaoGroup.MemberStatus;
 

@@ -18,7 +18,6 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
-import com.bloatit.web.html.components.standard.form.HtmlButton;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;

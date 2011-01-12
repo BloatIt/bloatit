@@ -2,7 +2,6 @@ package com.bloatit.web.utils.i18n;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;

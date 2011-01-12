@@ -19,9 +19,9 @@ import com.bloatit.framework.Translation;
 import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
@@ -86,7 +86,7 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 
 				if (idea.getCurrentOffer() == null) {
 
-					HtmlGenericElement amount = new HtmlGenericElement("span");
+				    HtmlSpan amount = new HtmlSpan();
 					amount.setCssClass("important");
 
 					CurrencyLocale currency = Context.getLocalizator().getCurrency(idea.getContribution());
@@ -106,18 +106,18 @@ public class IdeaHeadComponent extends HtmlPageComponent {
 
 					// Amount
 					CurrencyLocale amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
-					HtmlGenericElement amount = new HtmlGenericElement("span");
+					HtmlSpan amount = new HtmlSpan();
 					amount.setCssClass("important");
 					amount.addText(amountCurrency.getDefaultString());
 
 					// Target
 					CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
-					HtmlGenericElement target = new HtmlGenericElement("span");
+					HtmlSpan target = new HtmlSpan();
 					target.setCssClass("important");
 					target.addText(targetCurrency.getDefaultString());
 
 					// Progress
-					HtmlGenericElement progress = new HtmlGenericElement("span");
+					HtmlSpan progress = new HtmlSpan();
 					progress.setCssClass("important");
 					NumberFormat format = NumberFormat.getNumberInstance();
 					format.setMinimumFractionDigits(0);

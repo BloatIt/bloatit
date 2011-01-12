@@ -10,10 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
-import java.util.Locale;
-
 import com.bloatit.framework.Demand;
-import com.bloatit.framework.Translation;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -21,7 +18,6 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;

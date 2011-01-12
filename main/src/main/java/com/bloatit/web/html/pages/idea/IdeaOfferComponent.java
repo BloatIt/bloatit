@@ -13,9 +13,9 @@ package com.bloatit.web.html.pages.idea;
 import com.bloatit.framework.Offer;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
@@ -52,7 +52,7 @@ public class IdeaOfferComponent extends HtmlPageComponent {
         {
             
             if(this.currentOffer){
-                offerBlock.add(new HtmlGenericElement("span").addText(Context.tr("Currently favored offer")).setCssClass("offer_validated_info"));
+                offerBlock.add(new HtmlSpan().addText(Context.tr("Currently favored offer")).setCssClass("offer_validated_info"));
                 offerBlock.setCssClass("offer_block_validated");
             }
             

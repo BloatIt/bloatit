@@ -10,46 +10,75 @@
  */
 package com.bloatit.web.html;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.i18n.DateLocale;
-import com.bloatit.web.utils.i18n.DateLocale.DisplayedTime;
 import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
 
+/**
+ * Provides various tools to generate HtmlPages
+ */
 public class HtmlTools {
 
     private static final double TRILLION = 1000000000000d;
-	private static final double BILLION = 1000000000d;
-	private static final double MILLION = 1000000d;
-	private static final int THOUSAND = 1000;
-	public static final long SECOND = 1000;
-    public static final long MINUTE = 60 * SECOND;
-    public static final long HOUR = 60 * MINUTE;
-    public static final long DAY = 24 * HOUR;
+    private static final double BILLION = 1000000000d;
+    private static final double MILLION = 1000000d;
+    private static final int THOUSAND = 1000;
+    private static final long SECOND = 1000;
+    private static final long MINUTE = 60 * SECOND;
+    private static final long HOUR = 60 * MINUTE;
+    private static final long DAY = 24 * HOUR;
 
-    public static HtmlTagText generateLogo() {
-        return new HtmlTagText("<span class='logo_bloatit'><span class='logo_bloatit_bloat'>Bloat</span><span class='logo_bloatit_it'>It</span></span>");
+    /**
+     * <p>
+     * Creates an HtmlElement that can be directly used to display the website
+     * logo
+     * </p>
+     * <p>
+     * Logo should be placed into a container that will specify its font size
+     * </p>
+     * 
+     * @return the HtmlElement to be placed into a page
+     */
+    public static HtmlElement generateLogo() {
+        HtmlSpan logoBloatit = new HtmlSpan("logo_bloatit");
+
+        // Rendering Bloat
+        HtmlSpan logoBloatitBloat = new HtmlSpan("logo_bloatit_bloat");
+        logoBloatitBloat.addText("Bloat");
+        logoBloatit.add(logoBloatitBloat);
+
+        // Rendering It
+        HtmlSpan logoBloatitIt = new HtmlSpan("logo_bloatit_it");
+        logoBloatitIt.addText("It");
+        logoBloatit.add(logoBloatitIt);
+
+        return logoBloatit;
     }
 
     /**
-     * Compress karma and make it easier to display <br>
-     * Example of results : 
-     * 1 = 1 <br>
-     * 100 = 100 <br>
-     * 1000 = 1k <br>
-     * 100 000 = 100k <br>
-     * 1 000 000 = 1M <br>
-     * 100 000 000 = 100M <br>
-     * 1 000 000 000 = 1T <br>
-     * 100 000 000 000 = 100T <br>
-     * 1 000 000 000 000 = ∞<br>
+     * <p>
+     * Compress karma and make it easier to display
+     * </p>
+     * <p>
+     * Example of results :
+     * <li>1 = 1</li>
+     * <li>100 = 100</li>
+     * <li>1000 = 1k</li>
+     * <li>100 000 = 100k</li>
+     * <li>1 000 000 = 1M</li>
+     * <li>100 000 000 = 100M</li>
+     * <li>1 000 000 000 = 1T</li>
+     * <li>100 000 000 000 = 100T</li>
+     * <li>1 000 000 000 000 = ∞</li>
+     * </p>
      * 
-     * @param karma the karma value to compress
+     * @param karma
+     *            the karma value to compress
      * @return the compressed String to display
      */
     public static String compressKarma(final long karma) {
@@ -74,7 +103,7 @@ public class HtmlTools {
         }
     }
 
-    public static String cutNumber(final String karma) {
+    private static String cutNumber(final String karma) {
         String result = karma;
         if (result.length() > 2) {
             if (result.charAt(1) == '.') {
@@ -92,8 +121,67 @@ public class HtmlTools {
         }
         return result;
     }
-    
+
+    /**
+     * <p>
+     * Clean and formats the date
+     * </p>
+     * <p>
+     * Date is rendered :
+     * <li> <code>now</code> if it's been posted less than one second ago</li>
+     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago
+     * </li>
+     * <li> <code>Jan 12, 1952</code> otherwise</li>
+     * </p>
+     * <p>
+     * Note, this method will completly ignore <i>any</i> time information, and
+     * display only the date. To display time, use
+     * {@link #formatDateTime(DateLocale)}.
+     * </p>
+     * 
+     * @param date
+     *            the localized date to render
+     * @return the rendered date
+     */
     public static String formatDate(final DateLocale date) {
+        final Date currentDate = new Date();
+
+        final long diff = currentDate.getTime() - date.getJavaDate().getTime();
+
+        if (diff < SECOND) {
+            return Context.tr("now");
+        } else if (diff < MINUTE) {
+            return Context.trn("{0} second ago", "{0} seconds ago", Long.valueOf(diff / SECOND), Long.valueOf(diff / SECOND));
+        } else if (diff < HOUR ){
+            return Context.trn("{0} minute ago", "{0} minutes ago", Long.valueOf(diff / MINUTE), Long.valueOf(diff / SECOND));
+        } else if (diff < DAY ){
+            return Context.trn("{0} hour ago", "{0} hours ago", Long.valueOf(diff / HOUR), Long.valueOf(diff / HOUR));
+        }
+
+        return date.toString(FormatStyle.MEDIUM);
+    }
+
+    /**
+     * <p>
+     * Clean and formats date and time
+     * </p>
+     * <p>
+     * DateTime is rendered :
+     * <li> <code>now</code> if it's been posted less than one second ago</li>
+     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago
+     * </li>
+     * <li> <code>Jan 12, 1952  3:30pm</code> otherwise</li>
+     * </p>
+     * <p>
+     * Note, this method will always display date & time. To display only the
+     * date, use {@link #formatDate(DateLocale)}
+     * </p>
+     * 
+     * @param date
+     *            the localized date to render
+     * @return the rendered date
+     */
+    public static String formatDateTime(final DateLocale date) {
         final Date currentDate = new Date();
 
         final long diff = currentDate.getTime() - date.getJavaDate().getTime();
@@ -104,21 +192,48 @@ public class HtmlTools {
             return Context.tr("{0} seconds ago", Long.valueOf(diff / SECOND));
         }
 
-        return date.toDateTimeString(FormatStyle.FULL, FormatStyle.SHORT);
+        return date.toDateTimeString(FormatStyle.MEDIUM, FormatStyle.SHORT);
     }
-    
+
     /**
-     * Escapes <code>str</code>
+     * <p>
+     * Escapes the characters in a String using XML entities.
+     * </p>
+     * <p>
+     * For example: <code>"bread" & "butter"</code> =>
+     * <code>&quot;bread&quot; &amp; &quot;butter&quot;</code> .
+     * </p>
+     * <p>
+     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does
+     * not support DTDs or external entities.
+     * </p>
+     * <p>
+     * Note that unicode characters greater than 0x7f are currently escaped to
+     * their numerical \\u equivalent. This may change with future releases of
+     * the library used
+     * </p>
      */
-    public static String escape(String str){
-    	return StringEscapeUtils.escapeXml(str);
+    public static String escape(String str) {
+        return StringEscapeUtils.escapeXml(str);
     }
- 
+
     /**
-     * Unescape <code>str</code>
+     * <p>
+     * Unescapes a string containing XML entity escapes to a string containing
+     * the actual Unicode characters corresponding to the escapes.
+     * </p>
+     * <p>
+     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does
+     * not support DTDs or external entities.
+     * </p>
+     * <p>
+     * Note that numerical \\u unicode codes are unescaped to their respective
+     * unicode characters. This may change in future releases of the underlying
+     * library
+     * </p>
      */
-    public static String unescape(String str){
-    	return StringEscapeUtils.unescapeXml(str);
+    public static String unescape(String str) {
+        return StringEscapeUtils.unescapeXml(str);
     }
 
 }

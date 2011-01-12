@@ -49,7 +49,7 @@ public class Context {
     /**
      * @see Localizator#trn(String, String, long, Object...)
      */
-    public static String tr(String singular, String plural, long amount, Object... parameters) {
+    public static String trn(String singular, String plural, long amount, Object... parameters) {
         return localizator.trn(singular, plural, amount, parameters);
     }
 
@@ -76,4 +76,6 @@ public class Context {
     public static void updateTime() {
         currentTime = new Date().getTime()/1000;
     }
+
+
 }

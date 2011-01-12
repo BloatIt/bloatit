@@ -27,6 +27,9 @@ import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Url;
 
+/**
+ * Class that will create a new offer based on data received from a form.
+ */
 @ParamContainer("action/offer")
 public class OfferAction extends LoggedAction {
     public final static String PRICE_CODE = "offer_price";

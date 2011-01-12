@@ -15,14 +15,17 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.custom.renderer.HtmlRawTextRenderer;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
-import com.bloatit.web.html.components.standard.form.HtmlSubmit;
+import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CommentReplyPageUrl;
 
+/**
+ * A component designed to be inserted into an idea page and that will
+ * be used to display a comment (either main comment or child comment).
+ */
 public class IdeaCommentComponent extends HtmlPageComponent {
 
     private final Comment comment;
@@ -48,12 +51,12 @@ public class IdeaCommentComponent extends HtmlPageComponent {
             HtmlDiv commentInfo = new HtmlDiv("comment_info");
             commentText.add(commentInfo);
             
-            final HtmlGenericElement date = new HtmlGenericElement("span");
+            final HtmlSpan date = new HtmlSpan();
             date.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
             date.setCssClass("comment_date");
             commentInfo.add(date);
             
-            final HtmlGenericElement author = new HtmlGenericElement("span");
+            final HtmlSpan author = new HtmlSpan();
             author.addText(comment.getAuthor().getLogin());
             author.setCssClass("comment_author");
             commentInfo.add(author);

@@ -16,10 +16,9 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlTagText;
-import com.bloatit.web.html.HtmlText;
-import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
+import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.HtmlPagedListUrl;
 import com.bloatit.web.utils.url.UrlComponent;
@@ -69,7 +68,7 @@ public class HtmlPagedList<T> extends HtmlList {
 
     private HtmlElement generateLinksBar() {
 
-        final HtmlGenericElement span = new HtmlGenericElement("span");
+        final HtmlSpan span = new HtmlSpan();
 
         if (currentPage > 1) {
             span.add(generateLink(currentPage - 1, Context.tr("Previous")));
