@@ -17,6 +17,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 
 /**
@@ -55,11 +56,28 @@ public final class DaoOffer extends DaoKudosable {
     @Basic(optional = false)
     private BigDecimal amount;
 
-    // TODO comment (don't forget the clone)
+    /**
+     * Create a DaoOffer.
+     *
+     * @param member is the author of the offer. Must be non null.
+     * @param demand is the demand on which this offer is made. Must be non null.
+     * @param amount is the amount of the offer. Must be non null, and > 0.
+     * @param text is the description of the demand. Must be non null.
+     * @param dateExpire is the date when this offer should be finish. Must be non null,
+     *        and in the future.
+     * @throws NonOptionalParameterException if a parameter is null.
+     * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
+     */
     public DaoOffer(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final DaoDescription text, final Date dateExpire) {
         super(member);
         if (demand == null || text == null || dateExpire == null) {
             throw new NonOptionalParameterException();
+        }
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new FatalErrorException("Amount must be > 0");
+        }
+        if (dateExpire.before(new Date())) {
+            throw new FatalErrorException("Make sure the date is in the future.");
         }
         this.demand = demand;
         this.description = text;
@@ -86,7 +104,7 @@ public final class DaoOffer extends DaoKudosable {
     public BigDecimal getAmount() {
         return amount;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
