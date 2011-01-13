@@ -52,6 +52,11 @@ public final class Demand extends Kudosable {
         this.dao = dao;
     }
 
+    /**
+     * @return true if you can access the <code>Comment</code> property.
+     * @see #getComments()
+     * @see #addComment(String)
+     */
     public boolean canAccessComment(final Action action) {
         return new DemandRight.Comment().canAccess(calculateRole(this), action);
     }

@@ -31,6 +31,8 @@ import com.bloatit.web.utils.url.MembersListPageUrl;
 @ParamContainer("memberList")
 public final class MembersListPage extends Page {
 
+    // Keep me here ! Y am needed for the Url generation !
+    private HtmlPagedList<Member> pagedMemberList;
     private final MembersListPageUrl url;
 
     public MembersListPage(final MembersListPageUrl url) {
@@ -56,16 +58,16 @@ public final class MembersListPage extends Page {
                 final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 return new HtmlListItem(htmlLink).add(htmlKarma);
                 } catch (UnauthorizedOperationException e) {
-                    // Hide member that are not available
-                    return new PlaceHolderElement();
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
-
+                return new PlaceHolderElement();
             }
         };
 
         // TODO: avoid conflict
         final MembersListPageUrl clonedUrl = url.clone();
-        HtmlPagedList<Member> pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
+        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
         pageTitle.add(pagedMemberList);
 
