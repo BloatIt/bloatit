@@ -47,15 +47,17 @@ public class SCGIServer {
             @Override
             public void run() {
 
-                SessionManager.SaveSessions();
-
                 // TODO: lock to wait transaction end
                 try {
                     clientSocket.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    Log.web().error("Fail to close the socket on shutdown");
+                    Log.web().error(e);
+
                 }
+
+                SessionManager.SaveSessions();
+
 
             }
 

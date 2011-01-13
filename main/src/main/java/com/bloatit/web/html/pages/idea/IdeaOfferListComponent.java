@@ -25,8 +25,7 @@ public class IdeaOfferListComponent extends HtmlDiv {
         try {
             offers = demand.getOffers();
         } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // No right, no offers
         }
         final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 

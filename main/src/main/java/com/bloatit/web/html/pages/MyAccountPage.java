@@ -15,6 +15,7 @@ import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.html.components.standard.HtmlList;
+import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
@@ -47,8 +48,7 @@ public final class MyAccountPage extends Page {
 
                 add(memberTitle);
             } catch (UnauthorizedOperationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                add(new HtmlParagraph(Context.tr("For obscure reasons, you are not allowed to see your own details.")));
             }
         } else {
             add(new HtmlTitle("No account", 2));

@@ -32,14 +32,6 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
 
     public IdeaHeadComponent(final Demand idea) {
         super();
-        /*
-         * final HtmlDiv demandHead = new HtmlDiv("demand_head"); { // Add progress bar
-         * final HtmlDiv demandHeadProgress = new HtmlDiv("demand_head_progress"); {
-         * demandHeadProgress.add(new IdeaProgressBarComponent(demand)); }
-         * demandHead.add(demandHeadProgress); // Add kudo box final HtmlDiv
-         * demandHeadKudo = new HtmlDiv("demand_head_kudo"); { demandHeadKudo.add(new
-         * IdeaKudoComponent(demand)); } demandHead.add(demandHeadKudo); }
-         */
 
         final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
         {
@@ -82,8 +74,7 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                     final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
                     centerBlock.add(progressBar);
                 } catch (UnauthorizedOperationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // No right, no progress bar
                 }
 
                 if (idea.getCurrentOffer() == null) {
@@ -98,8 +89,7 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                         amount.addText(currency.getDefaultString());
 
                     } catch (UnauthorizedOperationException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        // No right, no display
                     }
                     final HtmlParagraph progressText = new HtmlParagraph();
                     progressText.setCssClass("idea_progress_text");
@@ -145,8 +135,7 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
 
                         centerBlock.add(progressText);
                     } catch (UnauthorizedOperationException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        // No right, no display
                     }
                 }
 

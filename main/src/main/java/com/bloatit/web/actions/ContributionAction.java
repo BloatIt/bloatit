@@ -27,7 +27,6 @@ import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
-import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 /**
@@ -70,16 +69,10 @@ public final class ContributionAction extends LoggedAction {
         targetIdea.authenticate(session.getAuthToken());
 
         try {
-            if (targetIdea.canContribute()) {
                 targetIdea.addContribution(amount, comment);
                 session.notifyGood(Context.tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount)
                         .getLocaleString()));
-
                 return new IdeaPageUrl(targetIdea);
-            }
-            // Should never happen
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-            return new ContributePageUrl(targetIdea);
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
             session.addParam(AMOUNT_CODE, amount);
@@ -88,9 +81,8 @@ public final class ContributionAction extends LoggedAction {
             session.setTargetPage(this.url);
             return new AccountChargingPageUrl();
         } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return new IndexPageUrl();
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
+            return new ContributePageUrl(targetIdea);
         }
     }
 

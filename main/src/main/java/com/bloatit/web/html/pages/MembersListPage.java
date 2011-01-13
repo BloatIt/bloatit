@@ -56,10 +56,10 @@ public final class MembersListPage extends Page {
                 final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 return new HtmlListItem(htmlLink).add(htmlKarma);
                 } catch (UnauthorizedOperationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // Hide member that are not available
+                    return new PlaceHolderElement();
                 }
-                return new PlaceHolderElement();
+
             }
         };
 

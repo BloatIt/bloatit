@@ -27,12 +27,11 @@ public class TopBar extends HtmlDiv {
         final Session session = Context.getSession();
         if (session.isLogged()) {
             // Display user name
-            String displayName = "invalide name";
+            String displayName = "John Doe";
             try {
                 displayName = session.getAuthToken().getMember().getDisplayName();
             } catch (UnauthorizedOperationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // no right, leave invalid name
             }
             final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(displayName);
 
@@ -42,8 +41,7 @@ public class TopBar extends HtmlDiv {
             try {
                 karma.addText(HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()));
             } catch (UnauthorizedOperationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // No right, no display the karma
             }
             add(new HtmlSpan().setCssClass("top_bar_component").add(memberLink).add(karma));
 
@@ -73,8 +71,7 @@ public class TopBar extends HtmlDiv {
                 }
                 add(new HtmlSpan().setCssClass("top_bar_component").add(money));
             } catch (UnauthorizedOperationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // no right, no money displayed
             }
 
 

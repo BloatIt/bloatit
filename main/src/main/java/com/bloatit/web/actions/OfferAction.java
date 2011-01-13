@@ -72,8 +72,8 @@ public final class OfferAction extends LoggedAction {
             targetIdea.authenticate(session.getAuthToken());
             targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
         } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
+            return session.pickPreferredPage();
         }
         return new IdeaPageUrl(targetIdea);
     }

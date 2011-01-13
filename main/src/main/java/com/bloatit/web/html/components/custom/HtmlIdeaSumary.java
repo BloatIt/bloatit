@@ -87,8 +87,9 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                     final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
                     ideaTitle.add(progressBar);
                 } catch (UnauthorizedOperationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // The user doesn't have the right to see the progress, a text replace the progress bar.
+                    final HtmlParagraph progressBarText = new HtmlParagraph(Context.tr("You don't have the right to see the progress on the idea."));
+                    ideaTitle.add(progressBarText);
                 }
 
                 if (idea.getCurrentOffer() == null) {
@@ -102,8 +103,7 @@ public final class HtmlIdeaSumary extends HtmlDiv {
 
                         amount.addText(currency.getDefaultString());
                     } catch (UnauthorizedOperationException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        // The user doesn't have the right to see the contribution, nothing is displayed
                     }
 
                     final HtmlParagraph progressText = new HtmlParagraph();
@@ -150,8 +150,9 @@ public final class HtmlIdeaSumary extends HtmlDiv {
 
                         ideaTitle.add(progressText);
                     } catch (UnauthorizedOperationException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        // The user doesn't have the right to see the progress, a text replace the progress bar.
+                        final HtmlParagraph progressBarText = new HtmlParagraph(Context.tr("You don't have the right to see the progress on the idea."));
+                        ideaTitle.add(progressBarText);
                     }
                 }
 

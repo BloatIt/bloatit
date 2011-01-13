@@ -30,12 +30,12 @@ public final class IdeaCommentListComponent extends HtmlPageComponent {
         this.targetIdea = demand;
         try {
             this.comments = demand.getComments();
+            add(produce());
         } catch (UnauthorizedOperationException e) {
             this.comments = null;
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //No right, no comments
         }
-        add(produce());
+
     }
 
     /**

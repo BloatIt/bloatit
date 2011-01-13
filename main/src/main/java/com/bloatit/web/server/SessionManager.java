@@ -25,6 +25,7 @@ import javassist.NotFoundException;
 
 import com.bloatit.common.CryptoTools;
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.framework.AuthToken;
 
 // TODO make me non public !
@@ -137,8 +138,10 @@ public class SessionManager {
             new File(dump).delete();
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // Failed to restore sessions
+            Log.web().error("Failed to restore sessions");
+            Log.web().error(e);
+
         }
 
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();

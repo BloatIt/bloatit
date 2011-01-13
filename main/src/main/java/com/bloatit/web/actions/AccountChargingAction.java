@@ -57,8 +57,8 @@ public final class AccountChargingAction extends LoggedAction {
         try {
             targetMember.getInternalAccount().authenticate(session.getAuthToken());
         } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add charge your account."));
+            return session.pickPreferredPage();
         }
 
         final ExternalAccount account = new ExternalAccount(targetMember, AccountType.IBAN, "plop");
@@ -66,8 +66,8 @@ public final class AccountChargingAction extends LoggedAction {
         try {
             targetMember.getInternalAccount().chargeAmount(amount, account);
         } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add charge your account."));
+            return session.pickPreferredPage();
         }
 
         if (!targetMember.canGetInternalAccount()) {
