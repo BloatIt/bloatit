@@ -33,7 +33,7 @@ public final class KudoAction extends LoggedAction {
 
     private final KudoActionUrl url;
 
-    public KudoAction(final KudoActionUrl url) throws RedirectException {
+    public KudoAction(final KudoActionUrl url) {
         super(url);
         this.url = url;
         this.targetKudosable = url.getTargetKudosable();

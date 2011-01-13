@@ -64,7 +64,7 @@ public final class ContributionAction extends LoggedAction {
     }
 
     @Override
-    public final Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted() throws RedirectException {
         // Authentication
         targetIdea.authenticate(session.getAuthToken());
 

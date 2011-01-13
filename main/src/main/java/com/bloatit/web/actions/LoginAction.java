@@ -53,17 +53,16 @@ public final class LoginAction extends Action {
             session.notifyGood(Context.tr("Login success."));
             Context.getLocalizator().forceMemberChoice();
             return session.pickPreferredPage();
-        } else {
-            session.setAuthToken(null);
-            session.notifyBad(Context.tr("Login failed. Wrong login or password."));
-            return new LoginPageUrl();
         }
+        session.setAuthToken(null);
+        session.notifyBad(Context.tr("Login failed. Wrong login or password."));
+        return new LoginPageUrl();
     }
 
     @Override
-	protected Url doProcessErrors() throws RedirectException {
-    	//TODO
-		return new LoginPageUrl();
-	}
+    protected Url doProcessErrors() throws RedirectException {
+        // TODO
+        return new LoginPageUrl();
+    }
 
 }

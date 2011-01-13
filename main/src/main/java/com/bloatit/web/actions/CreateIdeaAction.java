@@ -31,7 +31,7 @@ import com.bloatit.web.utils.url.Url;
  * A response to a form used to create a new idea
  */
 @ParamContainer("idea/docreate")
-public class CreateIdeaAction extends Action {
+public final class CreateIdeaAction extends Action {
 
     public static final String DESCRIPTION_CODE = "bloatit_idea_description";
     public static final String SPECIFICATION_CODE = "bloatit_idea_specification";
@@ -58,7 +58,7 @@ public class CreateIdeaAction extends Action {
     private final String lang;
     private final CreateIdeaActionUrl url;
 
-    public CreateIdeaAction(final CreateIdeaActionUrl url) throws RedirectException {
+    public CreateIdeaAction(final CreateIdeaActionUrl url) {
         super(url);
         this.url = url;
 
@@ -71,7 +71,7 @@ public class CreateIdeaAction extends Action {
     }
 
     @Override
-    protected final Url doProcess() throws RedirectException {
+    protected Url doProcess() throws RedirectException {
         session.notifyList(url.getMessages());
         if (!DemandManager.canCreate(session.getAuthToken())) {
             session.notifyError(Context.tr("You must be logged in to create an idea."));

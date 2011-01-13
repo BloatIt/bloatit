@@ -32,7 +32,7 @@ public final class Payline extends Unlockable {
     private static final String MODE = "CPT";
     private static final String ACTION = "101";
 
-    public static class Reponse {
+    public static final class Reponse {
         private final String code;
         private final String token;
         private final String message;

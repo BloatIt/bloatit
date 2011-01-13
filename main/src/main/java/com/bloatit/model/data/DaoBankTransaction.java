@@ -198,12 +198,18 @@ public final class DaoBankTransaction extends DaoIdentifiable {
         return state;
     }
 
-    public final Date getCreationDate() {
-        return creationDate;
+    /**
+     * @return a clone of the creationDate
+     */
+    public Date getCreationDate() {
+        return (Date) creationDate.clone();
     }
 
-    public final Date getModificationDate() {
-        return modificationDate;
+    /**
+     * @return a clone of the creationDate
+     */
+    public Date getModificationDate() {
+        return (Date) modificationDate.clone();
     }
 
     public String getReference() {
