@@ -11,6 +11,7 @@
 package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
@@ -21,13 +22,19 @@ import com.bloatit.web.server.Context;
 
 public class IdeaCommentListComponent extends HtmlPageComponent {
 
-    private final PageIterable<Comment> comments;
-	private Demand targetIdea;
+    private PageIterable<Comment> comments;
+	private final Demand targetIdea;
 
     public IdeaCommentListComponent(final Demand demand) {
         super();
         this.targetIdea = demand;
-        this.comments = demand.getComments();
+        try {
+            this.comments = demand.getComments();
+        } catch (UnauthorizedOperationException e) {
+            this.comments = null;
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         add(produce());
     }
 

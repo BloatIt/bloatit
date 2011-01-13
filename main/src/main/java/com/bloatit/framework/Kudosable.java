@@ -23,14 +23,14 @@ public abstract class Kudosable extends UserContent {
         return !getDaoKudosable().hasKudosed(getAuthToken().getMember().getDao());
     }
 
-    public final void unkudos() {
+    public final void unkudos() throws UnauthorizedOperationException {
         if (!canKudos()) {
             throw new UnauthorizedOperationException();
         }
         addKudos(-1);
     }
 
-    public final void kudos() {
+    public final void kudos() throws UnauthorizedOperationException {
         if (!canKudos()) {
             throw new UnauthorizedOperationException();
         }
@@ -50,7 +50,7 @@ public abstract class Kudosable extends UserContent {
         return getDaoKudosable();
     }
 
-    private void addKudos(final int signe) {
+    private void addKudos(final int signe) throws UnauthorizedOperationException {
         final Member member = getAuthToken().getMember();
         if (getDaoKudosable().hasKudosed(member.getDao())) {
             throw new UnauthorizedOperationException();

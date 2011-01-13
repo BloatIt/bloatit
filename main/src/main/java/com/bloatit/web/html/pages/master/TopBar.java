@@ -1,5 +1,6 @@
 package com.bloatit.web.html.pages.master;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.InternalAccount;
 import com.bloatit.framework.Member;
 import com.bloatit.web.html.HtmlBranch;
@@ -26,17 +27,25 @@ public class TopBar extends HtmlDiv {
         final Session session = Context.getSession();
         if (session.isLogged()) {
             // Display user name
-            final String displayName = session.getAuthToken().getMember().getDisplayName();
+            String displayName = "invalide name";
+            try {
+                displayName = session.getAuthToken().getMember().getDisplayName();
+            } catch (UnauthorizedOperationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(displayName);
 
             // Display user karma
             final HtmlBranch karma = new HtmlSpan();
             karma.setCssClass("karma");
-            karma.addText(HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()));
-
-
-            
-            
+            try {
+                karma.addText(HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()));
+            } catch (UnauthorizedOperationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            add(new HtmlSpan().setCssClass("top_bar_component").add(memberLink).add(karma));
 
             // Display user money in euro
             final HtmlBranch euroMoney = new HtmlSpan();
@@ -44,32 +53,35 @@ public class TopBar extends HtmlDiv {
 
             final Member member = session.getAuthToken().getMember();
             member.authenticate(session.getAuthToken());
-            final InternalAccount internalAccount = member.getInternalAccount();
-            internalAccount.authenticate(session.getAuthToken());
-            
-            CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
-            euroMoney.add(new HtmlText(cl.getDefaultString()));
+            InternalAccount internalAccount;
+            try {
+                internalAccount = member.getInternalAccount();
+                internalAccount.authenticate(session.getAuthToken());
+                CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
+                euroMoney.add(new HtmlText(cl.getDefaultString()));
 
-            final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);
-            money.setCssClass("money");
+                final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);
+                money.setCssClass("money");
 
-            // Display user money in locale money (when needed)
-            if (cl.availableTargetCurrency() && !cl.getDefaultString().equals(cl.getLocaleString())) {
-                final HtmlBranch localeMoney = new HtmlSpan();
-                localeMoney.setCssClass("locale_money");
+                // Display user money in locale money (when needed)
+                if (cl.availableTargetCurrency() && !cl.getDefaultString().equals(cl.getLocaleString())) {
+                    final HtmlBranch localeMoney = new HtmlSpan();
+                    localeMoney.setCssClass("locale_money");
 
-                localeMoney.addText(cl.getLocaleString());
-                money.add(localeMoney);
+                    localeMoney.addText(cl.getLocaleString());
+                    money.add(localeMoney);
+                }
+                add(new HtmlSpan().setCssClass("top_bar_component").add(money));
+            } catch (UnauthorizedOperationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
 
             // Display logout link
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(Context.tr("Logout"));
-
-            // Add all previously created components
-            add(new HtmlSpan().setCssClass("top_bar_component").add(memberLink).add(karma));
-            add(new HtmlSpan().setCssClass("top_bar_component").add(money));
             add(new HtmlSpan().setCssClass("top_bar_component").add(logoutLink));
+
         } else {
             final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.tr("Login / Signup"));
             add(new HtmlSpan().setCssClass("top_bar_component").add(loginLink));

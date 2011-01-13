@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.EnumSet;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.MoneyRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.framework.right.RightManager.Role;
@@ -30,12 +31,12 @@ public final class Transaction extends Identifiable {
         return new MoneyRight.Everything().canAccess(calculateRole(), Action.READ);
     }
 
-    public InternalAccount getFrom() {
+    public InternalAccount getFrom() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
         return new InternalAccount(dao.getFrom());
     }
 
-    public Account getTo() {
+    public Account getTo() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
         if (dao.getTo().getClass() == DaoInternalAccount.class) {
             return new InternalAccount((DaoInternalAccount) dao.getTo());
@@ -45,12 +46,12 @@ public final class Transaction extends Identifiable {
         throw new FatalErrorException("Cannot find the right Account child class.", null);
     }
 
-    public BigDecimal getAmount() {
+    public BigDecimal getAmount() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
         return dao.getAmount();
     }
 
-    public Date getCreationDate() {
+    public Date getCreationDate() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
         return dao.getCreationDate();
     }

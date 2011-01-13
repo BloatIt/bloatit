@@ -10,7 +10,7 @@
  */
 package com.bloatit.web.actions;
 
-
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Kudosable;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -31,7 +31,6 @@ public class KudoAction extends LoggedAction {
     @RequestParam(name = TARGET_KUDOSABLE, level = Level.ERROR)
     private final Kudosable targetKudosable;
 
-
     private final KudoActionUrl url;
 
     public KudoAction(final KudoActionUrl url) throws RedirectException {
@@ -46,22 +45,21 @@ public class KudoAction extends LoggedAction {
         // Authentication
         targetKudosable.authenticate(session.getAuthToken());
 
-        if (targetKudosable.canKudos()) {
+        try {
             targetKudosable.kudos();
             session.notifyGood(Context.tr("Kudo applied"));
-        } else {
-            // Should never happen
+        } catch (UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to kudo that."));
         }
-        
+
         return session.pickPreferredPage();
     }
 
-	@Override
-	protected Url doProcessErrors() throws RedirectException {
-		session.notifyList(url.getMessages());
-		return session.pickPreferredPage();
-	}
+    @Override
+    protected Url doProcessErrors() throws RedirectException {
+        session.notifyList(url.getMessages());
+        return session.pickPreferredPage();
+    }
 
     @Override
     protected String getRefusalReason() {

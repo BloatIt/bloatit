@@ -3,6 +3,7 @@ package com.bloatit.framework;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.OfferRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoKudosable;
@@ -36,7 +37,7 @@ public final class Offer extends Kudosable {
         return new OfferRight.DateExpire().canAccess(calculateRole(this), Action.WRITE);
     }
 
-    public void setDateExpire(final Date dateExpire) {
+    public void setDateExpire(final Date dateExpire) throws UnauthorizedOperationException {
         new OfferRight.DateExpire().tryAccess(calculateRole(this), Action.WRITE);
         dao.setDateExpire(dateExpire);
     }

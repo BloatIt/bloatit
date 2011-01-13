@@ -10,6 +10,7 @@
  */
 package com.bloatit.web.html.pages.idea;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
@@ -26,7 +27,7 @@ public class IdeaProgressBarComponent extends HtmlPageComponent {
         add(produce());
     }
 
-    protected HtmlElement produce() {
+    protected final HtmlElement produce() {
 
         final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
@@ -34,7 +35,7 @@ public class IdeaProgressBarComponent extends HtmlPageComponent {
             progressBlock.add(new IdeaContributeButtonComponent(demand));
 
             final HtmlDiv progressBarBlock = new HtmlDiv("column");
-            {
+            try {
                 final float progressValue = (float) Math.floor(demand.getProgression());
                 if (progressValue < 100) {
                     progressBarBlock.add(new HtmlProgressBar(progressValue));
@@ -45,6 +46,9 @@ public class IdeaProgressBarComponent extends HtmlPageComponent {
                     progressBarBlock.addText(progressValue + "%");
                 }
                 progressBarBlock.addText(demand.getContribution().toString());
+            } catch (UnauthorizedOperationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
             progressBlock.add(progressBarBlock);

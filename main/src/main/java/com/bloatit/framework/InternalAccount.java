@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.MoneyRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoAccount;
@@ -16,7 +17,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  * amount under zero. An internal account can have some money blocked. When you contribute
  * on an idea, you do not spend the money directly, but it is blocked and you cannot use
  * it elsewhere.
- * 
+ *
  * @author tguyard
  */
 public final class InternalAccount extends Account {
@@ -34,10 +35,11 @@ public final class InternalAccount extends Account {
 
     /**
      * Return the amount blocked into contribution on non finished idea.
-     * 
+     *
      * @return a positive bigdecimal.
+     * @throws UnauthorizedOperationException
      */
-    public BigDecimal getBlocked() {
+    public BigDecimal getBlocked() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return dao.getBlocked();
     }
@@ -46,7 +48,7 @@ public final class InternalAccount extends Account {
      * This was not meant to be used like this. First : Charge amount is not generic. The
      * operation done here is just a transfer between 2 account. Second : If there is a
      * {@link NotEnoughMoneyException} it is to be used.
-     * 
+     *
      * @param amount
      * @param externalAccount
      */

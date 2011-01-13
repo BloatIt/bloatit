@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.framework.lists.ContributionList;
 import com.bloatit.framework.lists.OfferList;
@@ -49,17 +50,17 @@ public final class Demand extends Kudosable {
         return new DemandRight.Offer().canAccess(calculateRole(this), action);
     }
 
-    public void addComment(final String text) {
+    public void addComment(final String text) throws UnauthorizedOperationException {
         new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
         dao.addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
     }
 
-    public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
         dao.addContribution(getAuthToken().getMember().getDao(), amount, comment);
     }
 
-    public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir) {
+    public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir) throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
         return new Offer(dao.addOffer(getAuthToken().getMember().getDao(),
                                       amount,
@@ -67,17 +68,17 @@ public final class Demand extends Kudosable {
                                       dateExpir));
     }
 
-    public void createSpecification(final String content) {
+    public void createSpecification(final String content) throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
         dao.createSpecification(getAuthToken().getMember().getDao(), content);
     }
 
-    public PageIterable<Comment> getComments() {
+    public PageIterable<Comment> getComments() throws UnauthorizedOperationException {
         new DemandRight.Comment().tryAccess(calculateRole(this), Action.READ);
         return new CommentList(dao.getCommentsFromQuery());
     }
 
-    public PageIterable<Contribution> getContributions() {
+    public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         return new ContributionList(dao.getContributionsFromQuery());
     }
@@ -90,12 +91,13 @@ public final class Demand extends Kudosable {
     /**
      * Return the progression in percent. It compare the amount of contribution to the
      * amount of the current offer.
-     * 
+     *
      * @return a percentage. It can be > 100 if the amount of contributions is greater
      *         than the amount for the current offer. If the offer amount is 0 then it
      *         return Float.POSITIVE_INFINITY.
+     * @throws UnauthorizedOperationException
      */
-    public float getProgression() {
+    public float getProgression() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         if (dao.getOffers().isEmpty()) {
             return PROGRESSION_COEF * (1 - 1 / (1 + dao.getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
@@ -111,17 +113,17 @@ public final class Demand extends Kudosable {
         return dao;
     }
 
-    public BigDecimal getContribution() {
+    public BigDecimal getContribution() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         return dao.getContribution();
     }
 
-    public BigDecimal getContributionMax() {
+    public BigDecimal getContributionMax() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         return dao.getContributionMax();
     }
 
-    public BigDecimal getContributionMin() {
+    public BigDecimal getContributionMin() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         return dao.getContributionMin();
     }
@@ -135,14 +137,14 @@ public final class Demand extends Kudosable {
         return new Description(dao.getDescription());
     }
 
-    public PageIterable<Offer> getOffers() {
+    public PageIterable<Offer> getOffers() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
         return new OfferList(dao.getOffersFromQuery());
     }
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      */
     public Offer getCurrentOffer() {
@@ -158,7 +160,7 @@ public final class Demand extends Kudosable {
     }
 
     // TODO right management
-    public void removeOffer(final Offer offer) {
+    public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
         dao.removeOffer(offer.getDao());
     }

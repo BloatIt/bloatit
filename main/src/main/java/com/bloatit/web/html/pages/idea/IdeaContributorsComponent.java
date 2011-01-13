@@ -11,6 +11,7 @@
 package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Contribution;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.ParamContainer;
@@ -71,20 +72,25 @@ public class IdeaContributorsComponent extends HtmlDiv {
 
     protected void extractData() {
 
-        contributionCount = demand.getContributions().size();
+        try {
+            contributionCount = demand.getContributions().size();
 
-        if (contributionCount > 0) {
+            if (contributionCount > 0) {
 
-            final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
-            final String contributionMinValue = demand.getContributionMin().toPlainString();
-            final String contributionMaxValue = demand.getContributionMax().toPlainString();
+                final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
+                final String contributionMinValue = demand.getContributionMin().toPlainString();
+                final String contributionMaxValue = demand.getContributionMax().toPlainString();
 
-            contributionMin = new HtmlParagraph(Context.tr("Min: ") + contributionMinValue);
-            contributionMax = new HtmlParagraph(Context.tr("Max: ") + contributionMaxValue);
-            contributionMean = new HtmlParagraph(Context.tr("Mean: ") + contributionMeanValue);
+                contributionMin = new HtmlParagraph(Context.tr("Min: ") + contributionMinValue);
+                contributionMax = new HtmlParagraph(Context.tr("Max: ") + contributionMaxValue);
+                contributionMean = new HtmlParagraph(Context.tr("Mean: ") + contributionMeanValue);
+            }
+
+            contributions = demand.getContributions();
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-
-        contributions = demand.getContributions();
     }
 
     private HtmlRenderer<Contribution> generateContributionRenderer() {

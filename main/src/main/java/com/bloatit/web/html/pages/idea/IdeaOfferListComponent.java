@@ -11,17 +11,23 @@
 package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Offer;
+import com.bloatit.model.data.NullCollection;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 
 public class IdeaOfferListComponent extends HtmlDiv {
 
-    private final PageIterable<Offer> offers;
-
     public IdeaOfferListComponent(final Demand demand) {
         super();
-        offers = demand.getOffers();
+        PageIterable<Offer> offers = new NullCollection<Offer>();
+        try {
+            offers = demand.getOffers();
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
         Offer currentOffer = demand.getCurrentOffer();

@@ -35,7 +35,7 @@ import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
  * </p>
  * </p>
  */
-public class Localizator {
+public final class Localizator {
 	/** Path of the files containing available languages */
 	private static final String LANGUAGES_PATH = "i18n/languages";
 	/** For parsing of available languages file */
@@ -49,8 +49,8 @@ public class Localizator {
 
 	private Locale locale;
 	private final I18n i18n;
-	private String urlLang;
-	private List<String> browserLangs;
+	private final String urlLang;
+	private final List<String> browserLangs;
 
 	public Localizator(String urlLang, List<String> browserLangs) {
 		this.urlLang = urlLang;
@@ -342,7 +342,7 @@ public class Localizator {
 	public void forceMemberChoice() {
 		Member member = Context.getSession().getAuthToken().getMember();
 		member.authenticate(Context.getSession().getAuthToken());
-		locale = member.getLocale();
+		locale = member.getLocaleUnprotected();
 	}
 
 	/**
@@ -358,7 +358,7 @@ public class Localizator {
 			if (Context.getSession().getAuthToken() != null) {
 				Member member = Context.getSession().getAuthToken().getMember();
 				member.authenticate(Context.getSession().getAuthToken());
-				country = member.getLocale().getCountry();
+				country = member.getLocaleUnprotected().getCountry();
 			} else {
 				country = browserLocaleHeuristic().getCountry();
 			}
@@ -381,7 +381,7 @@ public class Localizator {
 			if (Context.getSession().getAuthToken() != null) {
 				Member member = Context.getSession().getAuthToken().getMember();
 				member.authenticate(Context.getSession().getAuthToken());
-				locale = member.getLocale();
+				locale = member.getLocaleUnprotected();
 			} else {
 				locale = browserLocaleHeuristic();
 			}
@@ -425,7 +425,7 @@ public class Localizator {
 			} else {
 				weigth = 1;
 			}
-			
+
 			String favLang[] = favLangs[0].split(SEPARATORS_REGEX);
 
 			Locale l;
@@ -434,7 +434,7 @@ public class Localizator {
 			} else {
 				l = new Locale(favLang[0], favLang[1]);
 			}
-			
+
 
 			if (!l.getLanguage().isEmpty() && l.getCountry().isEmpty()) {
 				// New FavoriteLanguage

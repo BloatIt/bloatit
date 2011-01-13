@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.bloatit.common.Image;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.html.components.custom.HtmlKudoBlock;
@@ -29,132 +30,145 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 
 public class IdeaHeadComponent extends HtmlPageComponent {
 
-	public IdeaHeadComponent(final Demand idea) {
-		super();
-		/*
-		 * final HtmlDiv demandHead = new HtmlDiv("demand_head"); { // Add
-		 * progress bar final HtmlDiv demandHeadProgress = new
-		 * HtmlDiv("demand_head_progress"); { demandHeadProgress.add(new
-		 * IdeaProgressBarComponent(demand)); }
-		 * demandHead.add(demandHeadProgress);
-		 * 
-		 * // Add kudo box final HtmlDiv demandHeadKudo = new
-		 * HtmlDiv("demand_head_kudo"); { demandHeadKudo.add(new
-		 * IdeaKudoComponent(demand)); } demandHead.add(demandHeadKudo);
-		 * 
-		 * }
-		 */
+    public IdeaHeadComponent(final Demand idea) {
+        super();
+        /*
+         * final HtmlDiv demandHead = new HtmlDiv("demand_head"); { // Add progress bar
+         * final HtmlDiv demandHeadProgress = new HtmlDiv("demand_head_progress"); {
+         * demandHeadProgress.add(new IdeaProgressBarComponent(demand)); }
+         * demandHead.add(demandHeadProgress); // Add kudo box final HtmlDiv
+         * demandHeadKudo = new HtmlDiv("demand_head_kudo"); { demandHeadKudo.add(new
+         * IdeaKudoComponent(demand)); } demandHead.add(demandHeadKudo); }
+         */
 
-		final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
-		{
+        final HtmlDiv ideaBlock = new HtmlDiv("idea_summary");
+        {
 
-			final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
-			{
+            final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
+            {
 
-				final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-				karmaBlock.add(new HtmlKudoBlock(idea, Context.getSession()));
+                final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
+                karmaBlock.add(new HtmlKudoBlock(idea, Context.getSession()));
 
-				leftBlock.add(karmaBlock);
+                leftBlock.add(karmaBlock);
 
-			}
-			ideaBlock.add(leftBlock);
+            }
+            ideaBlock.add(leftBlock);
 
-			final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
-			{
+            final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
+            {
 
-				final Locale defaultLocale = Context.getLocalizator().getLocale();
-				final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
-				String shortDescription = translatedDescription.getText();
+                final Locale defaultLocale = Context.getLocalizator().getLocale();
+                final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+                String shortDescription = translatedDescription.getText();
 
-				if (shortDescription.length() > 144) {
-					// TODO create a tools to truncate less dirty
-					shortDescription = shortDescription.substring(0, 143) + " ...";
-				}
+                if (shortDescription.length() > 144) {
+                    // TODO create a tools to truncate less dirty
+                    shortDescription = shortDescription.substring(0, 143) + " ...";
+                }
 
-				final HtmlParagraph text = new HtmlParagraph(shortDescription);
-				text.setCssClass("idea_link_text");
-				centerBlock.add(text);
+                final HtmlParagraph text = new HtmlParagraph(shortDescription);
+                text.setCssClass("idea_link_text");
+                centerBlock.add(text);
 
-				float progressValue = (float) Math.floor(idea.getProgression());
-				float cappedProgressValue = progressValue;
-				if (cappedProgressValue > 100) {
-					cappedProgressValue = 100;
-				}
+                float progressValue = 0;
+                try {
+                    progressValue = (float) Math.floor(idea.getProgression());
+                    float cappedProgressValue = progressValue;
+                    if (cappedProgressValue > 100) {
+                        cappedProgressValue = 100;
+                    }
 
-				final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
-				centerBlock.add(progressBar);
+                    final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+                    centerBlock.add(progressBar);
+                } catch (UnauthorizedOperationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
-				if (idea.getCurrentOffer() == null) {
+                if (idea.getCurrentOffer() == null) {
 
-				    HtmlSpan amount = new HtmlSpan();
-					amount.setCssClass("important");
+                    HtmlSpan amount = new HtmlSpan();
+                    amount.setCssClass("important");
 
-					CurrencyLocale currency = Context.getLocalizator().getCurrency(idea.getContribution());
+                    CurrencyLocale currency;
+                    try {
+                        currency = Context.getLocalizator().getCurrency(idea.getContribution());
 
-					amount.addText(currency.getDefaultString());
+                        amount.addText(currency.getDefaultString());
 
-					final HtmlParagraph progressText = new HtmlParagraph();
-					progressText.setCssClass("idea_progress_text");
+                    } catch (UnauthorizedOperationException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    final HtmlParagraph progressText = new HtmlParagraph();
+                    progressText.setCssClass("idea_progress_text");
 
-					progressText.add(amount);
-					progressText.addText(Context.tr(" no offer ("));
-					progressText.add(new OfferPageUrl(idea).getHtmlLink(Context.tr("make an offer")));
-					progressText.addText(Context.tr(")"));
+                    progressText.add(amount);
+                    progressText.addText(Context.tr(" no offer ("));
+                    progressText.add(new OfferPageUrl(idea).getHtmlLink(Context.tr("make an offer")));
+                    progressText.addText(Context.tr(")"));
 
-					centerBlock.add(progressText);
-				} else {
+                    centerBlock.add(progressText);
+                } else {
 
-					// Amount
-					CurrencyLocale amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
-					HtmlSpan amount = new HtmlSpan();
-					amount.setCssClass("important");
-					amount.addText(amountCurrency.getDefaultString());
+                    // Amount
+                    CurrencyLocale amountCurrency;
+                    try {
+                        amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
+                        HtmlSpan amount = new HtmlSpan();
+                        amount.setCssClass("important");
+                        amount.addText(amountCurrency.getDefaultString());
 
-					// Target
-					CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
-					HtmlSpan target = new HtmlSpan();
-					target.setCssClass("important");
-					target.addText(targetCurrency.getDefaultString());
+                        // Target
+                        CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
+                        HtmlSpan target = new HtmlSpan();
+                        target.setCssClass("important");
+                        target.addText(targetCurrency.getDefaultString());
 
-					// Progress
-					HtmlSpan progress = new HtmlSpan();
-					progress.setCssClass("important");
-					NumberFormat format = NumberFormat.getNumberInstance();
-					format.setMinimumFractionDigits(0);
-					progress.addText("" + format.format(progressValue) + " %");
+                        // Progress
+                        HtmlSpan progress = new HtmlSpan();
+                        progress.setCssClass("important");
+                        NumberFormat format = NumberFormat.getNumberInstance();
+                        format.setMinimumFractionDigits(0);
+                        progress.addText("" + format.format(progressValue) + " %");
 
-					final HtmlParagraph progressText = new HtmlParagraph();
-					progressText.setCssClass("idea_progress_text");
+                        final HtmlParagraph progressText = new HtmlParagraph();
+                        progressText.setCssClass("idea_progress_text");
 
-					progressText.add(amount);
-					progressText.addText(Context.tr(" i.e. "));
-					progressText.add(progress);
-					progressText.addText(Context.tr(" of "));
-					progressText.add(target);
-					progressText.addText(Context.tr(" requested "));
+                        progressText.add(amount);
+                        progressText.addText(Context.tr(" i.e. "));
+                        progressText.add(progress);
+                        progressText.addText(Context.tr(" of "));
+                        progressText.add(target);
+                        progressText.addText(Context.tr(" requested "));
 
-					centerBlock.add(progressText);
-				}
+                        centerBlock.add(progressText);
+                    } catch (UnauthorizedOperationException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
 
-			}
-			ideaBlock.add(centerBlock);
+            }
+            ideaBlock.add(centerBlock);
 
-			final HtmlDiv actionBlock = new HtmlDiv("idea_summary_action");
-			{
+            final HtmlDiv actionBlock = new HtmlDiv("idea_summary_action");
+            {
 
-				actionBlock.add(new IdeaContributeButtonComponent(idea));
-				actionBlock.add(new IdeaMakeOfferButtonComponent(idea));
+                actionBlock.add(new IdeaContributeButtonComponent(idea));
+                actionBlock.add(new IdeaMakeOfferButtonComponent(idea));
 
-			}
-			ideaBlock.add(actionBlock);
+            }
+            ideaBlock.add(actionBlock);
 
-			final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
-			{
-				rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
-			}
-			ideaBlock.add(rightBlock);
-		}
+            final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
+            {
+                rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
+            }
+            ideaBlock.add(rightBlock);
+        }
 
-		add(ideaBlock);
-	}
+        add(ideaBlock);
+    }
 }

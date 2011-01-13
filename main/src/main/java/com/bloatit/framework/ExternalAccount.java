@@ -1,5 +1,6 @@
 package com.bloatit.framework;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.MoneyRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoAccount;
@@ -23,12 +24,12 @@ public final class ExternalAccount extends Account {
         return dao;
     }
 
-    public String getBankCode() {
+    public String getBankCode() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return dao.getBankCode();
     }
 
-    public AccountType getType() {
+    public AccountType getType() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return dao.getType();
     }

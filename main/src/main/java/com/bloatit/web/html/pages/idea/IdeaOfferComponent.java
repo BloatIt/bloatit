@@ -10,6 +10,7 @@
  */
 package com.bloatit.web.html.pages.idea;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Offer;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -23,19 +24,25 @@ import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
 public class IdeaOfferComponent extends HtmlPageComponent {
 
     private final Offer offer;
-    private boolean currentOffer;
+    private final boolean currentOffer;
 
     public IdeaOfferComponent(Offer offer, boolean b) {
         super();
         this.offer = offer;
         this.currentOffer = b;
-        
+
         add(produce());
     }
 
     protected HtmlElement produce() {
 
-        HtmlParagraph author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getDisplayName(), "offer_author");
+        HtmlParagraph author = null;
+        try {
+            author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getDisplayName(), "offer_author");
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         HtmlParagraph price = new HtmlParagraph(Context.tr("Price : ") + Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString(),
                 "offer_price");
         HtmlParagraph expirationDate = new HtmlParagraph(Context.tr("Expiration date : ")
@@ -47,18 +54,18 @@ public class IdeaOfferComponent extends HtmlPageComponent {
 
         HtmlParagraph title = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
         HtmlParagraph description = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
-        
+
         final HtmlDiv offerBlock = new HtmlDiv("offer_block");
         {
-            
+
             if(this.currentOffer){
                 offerBlock.add(new HtmlSpan().addText(Context.tr("Currently favored offer")).setCssClass("offer_validated_info"));
                 offerBlock.setCssClass("offer_block_validated");
             }
-            
+
             HtmlDiv offerMainBlock = new HtmlDiv("offer_main_block");
             offerBlock.add(offerMainBlock);
-            
+
             offerMainBlock.add(authorAvatar);
 
             final HtmlDiv offerInfoBlock = new HtmlDiv("offer_info_block");

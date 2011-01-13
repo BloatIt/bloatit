@@ -28,7 +28,7 @@ public final class Member extends Actor {
 
     /**
      * Create a new member using its Dao version.
-     * 
+     *
      * @param dao a DaoMember
      * @return the new member or null if dao is null.
      */
@@ -52,7 +52,7 @@ public final class Member extends Actor {
     /**
      * Tells if a user can access the group property. You have to unlock this Member using
      * the {@link Member#authenticate(AuthToken)} method.
-     * 
+     *
      * @param action can be read/write/delete. for example use READ to know if you can use
      *        {@link Member#getGroups()}.
      * @return true if you can use the method.
@@ -64,13 +64,13 @@ public final class Member extends Actor {
     /**
      * To add a user into a public group, you have to make sure you can access the groups
      * with the {@link Action#WRITE} action.
-     * 
+     *
      * @param group must be a public group.
      * @throws UnauthorizedOperationException if the authenticated member do not have the
      *         right to use this methods.
      * @see Member#canAccessGroups(Action)
      */
-    public void addToPublicGroup(final Group group) {
+    public void addToPublicGroup(final Group group) throws UnauthorizedOperationException {
         if (group.getRight() != Right.PUBLIC) {
             throw new UnauthorizedOperationException();
         }
@@ -80,7 +80,7 @@ public final class Member extends Actor {
 
     /**
      * Tells if a user can access the property "invite".
-     * 
+     *
      * @param group the group in which you want to invite somebody
      * @param action WRITE for create a new invitation, DELETE to accept/refuse it, READ
      *        to list the invitations you have recieved.
@@ -93,11 +93,12 @@ public final class Member extends Actor {
     /**
      * To invite a member into a group you have to have the WRITE right on the "invite"
      * property.
-     * 
+     *
      * @param member The member you want to invite
      * @param group The group in which you invite a member.
+     * @throws UnauthorizedOperationException
      */
-    public void invite(final Member member, final Group group) {
+    public void invite(final Member member, final Group group) throws UnauthorizedOperationException {
         new MemberRight.InviteInGroup().tryAccess(calculateRole(this, group), Action.WRITE);
         DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(), group.getDao());
     }
@@ -121,10 +122,11 @@ public final class Member extends Actor {
     /**
      * To accept an invitation you must have the DELETE right on the "invite" property. If
      * the invitation is not in PENDING state then nothing is done.
-     * 
+     *
      * @param invitation the authenticate member must be receiver of the invitation.
+     * @throws UnauthorizedOperationException
      */
-    public void acceptInvitation(final JoinGroupInvitation invitation) {
+    public void acceptInvitation(final JoinGroupInvitation invitation) throws UnauthorizedOperationException {
         if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
             throw new UnauthorizedOperationException();
         }
@@ -135,10 +137,11 @@ public final class Member extends Actor {
     /**
      * To refuse an invitation you must have the DELETE right on the "invite" property. If
      * the invitation is not in PENDING state then nothing is done.
-     * 
+     *
      * @param invitation the authenticate member must be receiver of the invitation.
+     * @throws UnauthorizedOperationException
      */
-    public void refuseInvitation(final JoinGroupInvitation invitation) {
+    public void refuseInvitation(final JoinGroupInvitation invitation) throws UnauthorizedOperationException {
         if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
             throw new UnauthorizedOperationException();
         }
@@ -150,20 +153,22 @@ public final class Member extends Actor {
      * To remove this member from a group you have to have the DELETE right on the "group"
      * property. If the member is not in the "group", nothing is done. (Although it should
      * be considered as an error and will be logged)
-     * 
+     *
      * @param group is the group from which the user will be removed.
+     * @throws UnauthorizedOperationException
      */
-    public void removeFromGroup(final Group group) {
+    public void removeFromGroup(final Group group) throws UnauthorizedOperationException {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.DELETE);
         dao.removeFromGroup(group.getDao());
     }
 
     /**
      * To get the groups you have the have the READ right on the "group" property.
-     * 
+     *
      * @return all the group in which this member is.
+     * @throws UnauthorizedOperationException
      */
-    public PageIterable<Group> getGroups() {
+    public PageIterable<Group> getGroups() throws UnauthorizedOperationException {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.READ);
         return new GroupList(dao.getGroups());
     }
@@ -172,14 +177,14 @@ public final class Member extends Actor {
         return new MemberRight.Karma().canAccess(calculateRole(this), Action.READ);
     }
 
-    public int getKarma() {
+    public int getKarma() throws UnauthorizedOperationException {
         new MemberRight.Karma().tryAccess(calculateRole(this), Action.READ);
         return dao.getKarma();
     }
 
     private static final int INFLUENCE_MULTIPLICATOR = 10;
 
-    protected int calculateInfluence() {
+    protected int calculateInfluence() throws UnauthorizedOperationException {
         final int karma = getKarma();
         if (karma > 0) {
             return (int) (Math.log10(karma) * INFLUENCE_MULTIPLICATOR + 1);
@@ -193,7 +198,7 @@ public final class Member extends Actor {
         return new MemberRight.Name().canAccess(calculateRole(this), action);
     }
 
-    public String getDisplayName() {
+    public String getDisplayName() throws UnauthorizedOperationException {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
         if (dao.getFullname() != null && dao.getFullname().isEmpty()) {
             return getLogin();
@@ -201,12 +206,12 @@ public final class Member extends Actor {
         return getFullname();
     }
 
-    public String getFullname() {
+    public String getFullname() throws UnauthorizedOperationException {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
         return dao.getFullname();
     }
 
-    public void setFullname(final String fullname) {
+    public void setFullname(final String fullname) throws UnauthorizedOperationException {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.WRITE);
         dao.setFullname(fullname);
     }
@@ -215,7 +220,7 @@ public final class Member extends Actor {
         return new MemberRight.Password().canAccess(calculateRole(this), Action.WRITE);
     }
 
-    public void setPassword(final String password) {
+    public void setPassword(final String password) throws UnauthorizedOperationException {
         new MemberRight.Password().tryAccess(calculateRole(this), Action.WRITE);
         dao.setPassword(password);
     }
@@ -224,12 +229,16 @@ public final class Member extends Actor {
         return new MemberRight.Locale().canAccess(calculateRole(this), action);
     }
 
-    public Locale getLocale() {
+    public Locale getLocaleUnprotected() {
+        return dao.getLocale();
+    }
+
+    public Locale getLocale() throws UnauthorizedOperationException {
         new MemberRight.Locale().tryAccess(calculateRole(this), Action.READ);
         return dao.getLocale();
     }
 
-    public void setLocal(final Locale loacle) {
+    public void setLocal(final Locale loacle) throws UnauthorizedOperationException {
         new MemberRight.Locale().tryAccess(calculateRole(this), Action.WRITE);
         dao.setLocale(loacle);
     }

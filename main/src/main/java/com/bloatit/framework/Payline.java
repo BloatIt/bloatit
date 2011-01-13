@@ -122,7 +122,7 @@ public final class Payline extends Unlockable {
         return new Reponse(result, token);
     }
 
-    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl) {
+    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl) throws UnauthorizedOperationException {
         final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
         paymentRequest.setReturnURL(returnUrl);

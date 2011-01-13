@@ -15,6 +15,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.bloatit.common.Image;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -30,125 +31,143 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 
 public class HtmlIdeaSumary extends HtmlDiv {
 
-	public HtmlIdeaSumary(final Demand idea) {
-		super("idea_conpact_summary");
+    public HtmlIdeaSumary(final Demand idea) {
+        super("idea_conpact_summary");
 
-		final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
-		{
+        final HtmlDiv leftBlock = new HtmlDiv("idea_summary_left");
+        {
 
-			final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-			karmaBlock.add(new HtmlParagraph("" + idea.getPopularity()));
+            final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
+            karmaBlock.add(new HtmlParagraph("" + idea.getPopularity()));
 
-			leftBlock.add(karmaBlock);
+            leftBlock.add(karmaBlock);
 
-		}
-		add(leftBlock);
+        }
+        add(leftBlock);
 
-		final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
-		{
+        final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
+        {
 
-		    HtmlSpan project = new HtmlSpan();
-			project.setCssClass("project");
-			project.addText("VLC");
+            HtmlSpan project = new HtmlSpan();
+            project.setCssClass("project");
+            project.addText("VLC");
 
-			final HtmlLink linkTitle = new IdeaPageUrl(idea).getHtmlLink("");
-			linkTitle.setCssClass("idea_link");
+            final HtmlLink linkTitle = new IdeaPageUrl(idea).getHtmlLink("");
+            linkTitle.setCssClass("idea_link");
 
-			linkTitle.add(project);
-			linkTitle.addText(" - ");
-			linkTitle.addText(idea.getTitle());
+            linkTitle.add(project);
+            linkTitle.addText(" - ");
+            linkTitle.addText(idea.getTitle());
 
-			final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(linkTitle, 3);
-			{
+            final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(linkTitle, 3);
+            {
 
-				final Locale defaultLocale = Context.getLocalizator().getLocale();
-				final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
-				String shortDescription = translatedDescription.getText();
+                final Locale defaultLocale = Context.getLocalizator().getLocale();
+                final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+                String shortDescription = translatedDescription.getText();
 
-				if (shortDescription.length() > 144) {
-					// TODO create a tools to truncate less dirty
-					shortDescription = shortDescription.substring(0, 143) + " ...";
-				}
+                if (shortDescription.length() > 144) {
+                    // TODO create a tools to truncate less dirty
+                    shortDescription = shortDescription.substring(0, 143) + " ...";
+                }
 
-				final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(shortDescription));
-				linkText.setCssClass("idea_link_text");
+                final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(shortDescription));
+                linkText.setCssClass("idea_link_text");
 
-				ideaTitle.add(linkText);
+                ideaTitle.add(linkText);
 
-				float progressValue = (float) Math.floor(idea.getProgression());
-				float cappedProgressValue = progressValue;
-				if (cappedProgressValue > 100) {
-					cappedProgressValue = 100;
-				}
+                float progressValue = 0;
+                try {
+                    progressValue = (float) Math.floor(idea.getProgression());
+                    float cappedProgressValue = progressValue;
+                    if (cappedProgressValue > 100) {
+                        cappedProgressValue = 100;
+                    }
 
-				final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
-				ideaTitle.add(progressBar);
+                    final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+                    ideaTitle.add(progressBar);
+                } catch (UnauthorizedOperationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
-				if (idea.getCurrentOffer() == null) {
+                if (idea.getCurrentOffer() == null) {
 
-				    HtmlSpan amount = new HtmlSpan();
-					amount.setCssClass("important");
+                    HtmlSpan amount = new HtmlSpan();
+                    amount.setCssClass("important");
 
-					CurrencyLocale currency = Context.getLocalizator().getCurrency(idea.getContribution());
+                    CurrencyLocale currency;
+                    try {
+                        currency = Context.getLocalizator().getCurrency(idea.getContribution());
 
-					amount.addText(currency.getDefaultString());
+                        amount.addText(currency.getDefaultString());
+                    } catch (UnauthorizedOperationException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
-					final HtmlParagraph progressText = new HtmlParagraph();
-					progressText.setCssClass("idea_progress_text");
+                    final HtmlParagraph progressText = new HtmlParagraph();
+                    progressText.setCssClass("idea_progress_text");
 
-					progressText.add(amount);
-					progressText.addText(Context.tr(" no offer ("));
-					progressText.add(new OfferPageUrl(idea).getHtmlLink(Context.tr("make an offer")));
-					progressText.addText(Context.tr(")"));
+                    progressText.add(amount);
+                    progressText.addText(Context.tr(" no offer ("));
+                    progressText.add(new OfferPageUrl(idea).getHtmlLink(Context.tr("make an offer")));
+                    progressText.addText(Context.tr(")"));
 
-					ideaTitle.add(progressText);
-				} else {
-					// Amount
-					CurrencyLocale amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
-					HtmlSpan amount = new HtmlSpan();
-					amount.setCssClass("important");
-					amount.addText(amountCurrency.getDefaultString());
+                    ideaTitle.add(progressText);
+                } else {
+                    // Amount
+                    CurrencyLocale amountCurrency;
+                    try {
+                        amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
+                        HtmlSpan amount = new HtmlSpan();
+                        amount.setCssClass("important");
+                        amount.addText(amountCurrency.getDefaultString());
 
-					// Target
-					CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
-					HtmlSpan target = new HtmlSpan();
-					target.setCssClass("important");
-					target.addText(targetCurrency.getDefaultString());
+                        // Target
+                        CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
+                        HtmlSpan target = new HtmlSpan();
+                        target.setCssClass("important");
+                        target.addText(targetCurrency.getDefaultString());
 
-					// Progress
-					HtmlSpan progress = new HtmlSpan();
-					progress.setCssClass("important");
-					NumberFormat format = NumberFormat.getNumberInstance();
-					format.setMinimumFractionDigits(0);
-					progress.addText("" + format.format(progressValue) + " %");
+                        // Progress
+                        HtmlSpan progress = new HtmlSpan();
+                        progress.setCssClass("important");
+                        NumberFormat format = NumberFormat.getNumberInstance();
+                        format.setMinimumFractionDigits(0);
+                        progress.addText("" + format.format(progressValue) + " %");
 
-					final HtmlParagraph progressText = new HtmlParagraph();
-					progressText.setCssClass("idea_progress_text");
+                        final HtmlParagraph progressText = new HtmlParagraph();
+                        progressText.setCssClass("idea_progress_text");
 
-					progressText.add(amount);
-					progressText.addText(Context.tr(" i.e. "));
-					progressText.add(progress);
-					progressText.addText(Context.tr(" of "));
-					progressText.add(target);
-					long amountLong = idea.getCurrentOffer().getAmount().longValue();
-					progressText.addText(Context.trn(" requested ", " requested ", amountLong));
+                        progressText.add(amount);
+                        progressText.addText(Context.tr(" i.e. "));
+                        progressText.add(progress);
+                        progressText.addText(Context.tr(" of "));
+                        progressText.add(target);
+                        long amountLong = idea.getCurrentOffer().getAmount().longValue();
+                        progressText.addText(Context.trn(" requested ", " requested ", amountLong));
 
-					ideaTitle.add(progressText);
-				}
+                        ideaTitle.add(progressText);
+                    } catch (UnauthorizedOperationException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
 
-			}
-			centerBlock.add(ideaTitle);
+            }
+            centerBlock.add(ideaTitle);
 
-		}
-		// ideaLinkBlock.add(centerBlock);
-		add(centerBlock);
+        }
+        // ideaLinkBlock.add(centerBlock);
+        add(centerBlock);
 
-		final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
-		{
-			rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
-		}
-		// ideaLinkBlock.add(rightBlock);
-		add(rightBlock);
-	}
+        final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
+        {
+            rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
+        }
+        // ideaLinkBlock.add(rightBlock);
+        add(rightBlock);
+    }
 
 }

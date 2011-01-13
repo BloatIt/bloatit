@@ -11,13 +11,16 @@
 package com.bloatit.web.html.pages;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.HtmlTools;
+import com.bloatit.web.html.components.PlaceHolderElement;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
+import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
@@ -49,9 +52,16 @@ public class MembersListPage extends Page {
             @Override
             public HtmlNode generate(final Member member) {
                 final MemberPageUrl memberUrl = new MemberPageUrl(member);
-                final HtmlLink htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
+                try {
+                    HtmlLink htmlLink;
+                    htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
                 final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 return new HtmlListItem(htmlLink).add(htmlKarma);
+                } catch (UnauthorizedOperationException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return new PlaceHolderElement();
             }
         };
 

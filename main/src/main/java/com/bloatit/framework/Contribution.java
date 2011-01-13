@@ -2,6 +2,7 @@ package com.bloatit.framework;
 
 import java.math.BigDecimal;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.MoneyRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoContribution;
@@ -37,7 +38,7 @@ public final class Contribution extends UserContent {
         return new MoneyRight.Everything().canAccess(calculateRole(this), Action.READ);
     }
 
-    public Transaction getTransaction() {
+    public Transaction getTransaction() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(this), Action.READ);
         return new Transaction(dao.getTransaction());
     }

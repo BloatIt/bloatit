@@ -1,5 +1,6 @@
 package com.bloatit.framework;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.DemandRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoSpecification;
@@ -26,7 +27,7 @@ public final class Specification extends UserContent {
         return new DemandRight.Specification().canAccess(calculateRole(this), Action.WRITE);
     }
 
-    public void setContent(final String content) {
+    public void setContent(final String content) throws UnauthorizedOperationException {
         new DemandRight.Specification().tryAccess(calculateRole(this), Action.WRITE);
         dao.setContent(content);
     }

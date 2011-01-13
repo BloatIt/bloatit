@@ -2,6 +2,7 @@ package com.bloatit.web.actions;
 
 import java.math.BigDecimal;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Payline;
 import com.bloatit.framework.Payline.Reponse;
 import com.bloatit.web.annotations.Message.Level;
@@ -17,12 +18,12 @@ import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlStringBinder;
 
 @ParamContainer("payline/dopayment")
-public class PaylineAction extends LoggedAction {
+public final class PaylineAction extends LoggedAction {
 
     public static final String CHARGE_AMOUNT_CODE = "amount";
 
     @RequestParam(level = Level.ERROR, name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
-    BigDecimal amount;
+    private final BigDecimal amount;
 
     public PaylineAction(PaylineActionUrl url) {
         super(url);
@@ -41,11 +42,16 @@ public class PaylineAction extends LoggedAction {
         Payline payline = new Payline();
         payline.authenticate(Context.getSession().getAuthToken());
         if (payline.canMakePayment()) {
-            Reponse reponse = payline.doPayment(amount, cancelUrl, returnUrl, notificationUrl);
-            if (reponse.isAccepted()) {
-                return new UrlStringBinder(reponse.getRedirectUrl());
+            Reponse reponse;
+            try {
+                reponse = payline.doPayment(amount, cancelUrl, returnUrl, notificationUrl);
+                if (reponse.isAccepted()) {
+                    return new UrlStringBinder(reponse.getRedirectUrl());
+                }
+                session.notifyBad(reponse.getMessage());
+            } catch (UnauthorizedOperationException e) {
+                session.notifyBad("Unauthorized !");
             }
-            session.notifyBad(reponse.getMessage());
             return Context.getSession().pickPreferredPage();
         }
         return Context.getSession().pickPreferredPage();

@@ -2,6 +2,7 @@ package com.bloatit.framework;
 
 import java.util.Date;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.right.ActorRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoActor;
@@ -19,12 +20,12 @@ public abstract class Actor extends Identifiable {
         return new ActorRight.Email().canAccess(calculateRole(getUnprotectedLogin()), Action.READ);
     }
 
-    public final String getEmail() {
+    public final String getEmail() throws UnauthorizedOperationException {
         new ActorRight.Email().tryAccess(calculateRole(getUnprotectedLogin()), Action.READ);
         return getDaoActor().getEmail();
     }
 
-    public final void setEmail(final String email) {
+    public final void setEmail(final String email) throws UnauthorizedOperationException {
         new ActorRight.Email().tryAccess(calculateRole(getUnprotectedLogin()), Action.WRITE);
         getDaoActor().setEmail(email);
     }
@@ -45,7 +46,7 @@ public abstract class Actor extends Identifiable {
         return new ActorRight.InternalAccount().canAccess(calculateRole(getUnprotectedLogin()), Action.READ);
     }
 
-    public final InternalAccount getInternalAccount() {
+    public final InternalAccount getInternalAccount() throws UnauthorizedOperationException {
         new ActorRight.InternalAccount().tryAccess(calculateRole(getUnprotectedLogin()), Action.READ);
         return new InternalAccount(getDaoActor().getInternalAccount());
     }
@@ -54,7 +55,7 @@ public abstract class Actor extends Identifiable {
         return new ActorRight.ExternalAccount().canAccess(calculateRole(getUnprotectedLogin()), Action.READ);
     }
 
-    public final ExternalAccount getExternalAccount() {
+    public final ExternalAccount getExternalAccount() throws UnauthorizedOperationException {
         new ActorRight.ExternalAccount().tryAccess(calculateRole(getUnprotectedLogin()), Action.READ);
         return new ExternalAccount(getDaoActor().getExternalAccount());
     }
@@ -63,7 +64,7 @@ public abstract class Actor extends Identifiable {
         return new ActorRight.ExternalAccount().canAccess(calculateRole(getUnprotectedLogin()), Action.WRITE);
     }
 
-    public final void setExternalAccount(final ExternalAccount externalAccount) {
+    public final void setExternalAccount(final ExternalAccount externalAccount) throws UnauthorizedOperationException {
         new ActorRight.ExternalAccount().tryAccess(calculateRole(getUnprotectedLogin()), Action.WRITE);
         getDaoActor().setExternalAccount(externalAccount.getDao());
     }

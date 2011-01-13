@@ -11,6 +11,7 @@
 
 package com.bloatit.web.html.pages;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
@@ -33,17 +34,23 @@ public class MyAccountPage extends Page {
         if (session.getAuthToken() != null) {
             final Member member = session.getAuthToken().getMember();
             member.authenticate(session.getAuthToken());
-            final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(), 2);
+            HtmlTitleBlock memberTitle;
+            try {
+                memberTitle = new HtmlTitleBlock(member.getFullname(), 2);
 
-            HtmlList userInfo = new HtmlList();
-            memberTitle.add(userInfo);
+                HtmlList userInfo = new HtmlList();
+                memberTitle.add(userInfo);
 
-            userInfo.add(Context.tr("Full name: ") + member.getFullname());
-            userInfo.add(Context.tr("Login: ") + member.getLogin());
-            userInfo.add(Context.tr("Email: ") + member.getEmail());
-            userInfo.add(Context.tr("Karma: ") + member.getKarma());
+                userInfo.add(Context.tr("Full name: ") + member.getFullname());
+                userInfo.add(Context.tr("Login: ") + member.getLogin());
+                userInfo.add(Context.tr("Email: ") + member.getEmail());
+                userInfo.add(Context.tr("Karma: ") + member.getKarma());
 
-            add(memberTitle);
+                add(memberTitle);
+            } catch (UnauthorizedOperationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             add(new HtmlTitle("No account", 2));
         }

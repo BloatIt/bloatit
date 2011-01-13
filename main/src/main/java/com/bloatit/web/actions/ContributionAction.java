@@ -12,6 +12,7 @@ package com.bloatit.web.actions;
 
 import java.math.BigDecimal;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 import com.bloatit.web.annotations.Message.Level;
@@ -26,6 +27,7 @@ import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 /**
@@ -74,11 +76,10 @@ public final class ContributionAction extends LoggedAction {
                         .getLocaleString()));
 
                 return new IdeaPageUrl(targetIdea);
-            } else {
-                // Should never happen
-                session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
-                return new ContributePageUrl(targetIdea);
             }
+            // Should never happen
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to contribute on this idea."));
+            return new ContributePageUrl(targetIdea);
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
             session.addParam(AMOUNT_CODE, amount);
@@ -86,6 +87,10 @@ public final class ContributionAction extends LoggedAction {
 
             session.setTargetPage(this.url);
             return new AccountChargingPageUrl();
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return new IndexPageUrl();
         }
     }
 

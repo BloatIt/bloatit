@@ -2,12 +2,13 @@ package com.bloatit.framework;
 
 import javassist.NotFoundException;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.managers.GroupManager;
 import com.bloatit.framework.managers.MemberManager;
 
 public class MemberTest extends FrameworkTestUnit {
 
-    public void testAddToPublicGroup() {
+    public void testAddToPublicGroup() throws UnauthorizedOperationException {
         // TODO correct the right management in groups
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
@@ -27,7 +28,7 @@ public class MemberTest extends FrameworkTestUnit {
 
     }
 
-    public void testRemoveFromGroup() {
+    public void testRemoveFromGroup() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
@@ -45,7 +46,7 @@ public class MemberTest extends FrameworkTestUnit {
         }
     }
 
-    public void testInviteIntoProtectedGroup() {
+    public void testInviteIntoProtectedGroup() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
         final Member fred = MemberManager.getMemberByLogin("Fred");
 
@@ -58,7 +59,7 @@ public class MemberTest extends FrameworkTestUnit {
         assertTrue(fred.isInGroup(GroupManager.getByName("other")));
     }
 
-    public void testInviteIntoProtectedAndRefuseGroup() {
+    public void testInviteIntoProtectedAndRefuseGroup() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
         final Member fred = MemberManager.getMemberByLogin("Fred");
 
@@ -71,7 +72,7 @@ public class MemberTest extends FrameworkTestUnit {
         assertFalse(fred.isInGroup(GroupManager.getByName("other")));
     }
 
-    public void testGetKarma() {
+    public void testGetKarma() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
@@ -82,7 +83,7 @@ public class MemberTest extends FrameworkTestUnit {
         assertEquals(0, yo.getKarma());
     }
 
-    public void testSetFullName() {
+    public void testSetFullName() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
@@ -93,7 +94,7 @@ public class MemberTest extends FrameworkTestUnit {
         assertEquals(0, yo.getKarma());
     }
 
-    public void testGetFullname() {
+    public void testGetFullname() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
@@ -104,7 +105,7 @@ public class MemberTest extends FrameworkTestUnit {
         assertEquals("Yoann Plénet", yo.getFullname());
     }
 
-    public void testSetFullname() {
+    public void testSetFullname() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
@@ -121,7 +122,7 @@ public class MemberTest extends FrameworkTestUnit {
         assertEquals("Plénet Yoann", yo.getFullname());
     }
 
-    public void testSetPassword() {
+    public void testSetPassword() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);

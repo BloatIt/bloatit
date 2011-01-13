@@ -13,6 +13,7 @@ package com.bloatit.web.actions;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -67,8 +68,13 @@ public class OfferAction extends LoggedAction {
 
     @Override
     public final Url doProcessRestricted() {
-        targetIdea.authenticate(session.getAuthToken());
-        targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
+        try {
+            targetIdea.authenticate(session.getAuthToken());
+            targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return new IdeaPageUrl(targetIdea);
     }
 
@@ -82,7 +88,7 @@ public class OfferAction extends LoggedAction {
             session.addParameter(DESCRIPTION_CODE, description);
             session.addParam(PRICE_CODE, price);
             session.addParameter(TITLE_CODE, title);
-           
+
             if (expiryDate != null) {
                 session.addParameter(EXPIRY_CODE, expiryDate.toString());
             }
@@ -101,7 +107,7 @@ public class OfferAction extends LoggedAction {
         session.addParameter(DESCRIPTION_CODE, description);
         session.addParam(PRICE_CODE, price);
         session.addParameter(TITLE_CODE, title);
-       
+
         if (expiryDate != null) {
             session.addParameter(EXPIRY_CODE, expiryDate.toString());
         }

@@ -10,6 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -47,15 +48,21 @@ public class MemberPage extends Page {
 
         member.authenticate(session.getAuthToken());
 
-        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
+        try {
+            HtmlTitleBlock memberTitle;
+            memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
 
-        memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
-        memberTitle.add(new HtmlText("Login: " + member.getLogin()));
-        if (member.canGetEmail()) {
-            memberTitle.add(new HtmlText("Email: " + member.getEmail()));
+            memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
+            memberTitle.add(new HtmlText("Login: " + member.getLogin()));
+            if (member.canGetEmail()) {
+                memberTitle.add(new HtmlText("Email: " + member.getEmail()));
+            }
+            memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
+            add(memberTitle);
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
-        add(memberTitle);
     }
 
     @Override

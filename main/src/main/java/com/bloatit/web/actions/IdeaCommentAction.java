@@ -10,6 +10,7 @@
  */
 package com.bloatit.web.actions;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -50,7 +51,12 @@ public class IdeaCommentAction extends LoggedAction {
         session.notifyGood(Context.tr("Your comment has been added."));
 
         targetIdea.authenticate(session.getAuthToken());
-        targetIdea.addComment(comment);
+        try {
+            targetIdea.addComment(comment);
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         return session.pickPreferredPage();
     }

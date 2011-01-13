@@ -12,6 +12,7 @@ package com.bloatit.web.actions;
 
 import java.math.BigDecimal;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.ExternalAccount;
 import com.bloatit.framework.Member;
 import com.bloatit.model.data.DaoExternalAccount.AccountType;
@@ -53,11 +54,21 @@ public class AccountChargingAction extends LoggedAction {
         final Member targetMember = session.getAuthToken().getMember();
 
         targetMember.authenticate(session.getAuthToken());
-        targetMember.getInternalAccount().authenticate(session.getAuthToken());
+        try {
+            targetMember.getInternalAccount().authenticate(session.getAuthToken());
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         final ExternalAccount account = new ExternalAccount(targetMember, AccountType.IBAN, "plop");
         account.authenticate(session.getAuthToken());
-        targetMember.getInternalAccount().chargeAmount(amount, account);
+        try {
+            targetMember.getInternalAccount().chargeAmount(amount, account);
+        } catch (UnauthorizedOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         if (!targetMember.canGetInternalAccount()) {
             session.notifyError(Context.tr("Your current rights do not allow you to charge money"));
