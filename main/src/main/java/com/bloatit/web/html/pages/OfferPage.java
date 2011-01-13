@@ -18,7 +18,6 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
@@ -33,9 +32,9 @@ import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 
 @ParamContainer("offer")
-public class OfferPage extends LoggedPage {
+public final class OfferPage extends LoggedPage {
 
-    @RequestParam(level=Level.ERROR)
+    @RequestParam(level = Level.ERROR)
     private Demand targetIdea = null;
 
     @RequestParam(name = OfferAction.PRICE_CODE, level = Level.INFO, role = Role.SESSION)
@@ -50,7 +49,7 @@ public class OfferPage extends LoggedPage {
     @RequestParam(name = OfferAction.DESCRIPTION_CODE, level = Level.INFO, role = Role.SESSION)
     private final String description;
 
-    public OfferPage(final OfferPageUrl url) throws RedirectException {
+    public OfferPage(final OfferPageUrl url) {
         super(url);
         this.targetIdea = url.getTargetIdea();
         this.price = url.getPrice();
@@ -93,7 +92,9 @@ public class OfferPage extends LoggedPage {
         // Price field
         final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, Context.tr("Offer price"));
         priceField.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
-        if(price!=null) priceField.setDefaultValue(price.toPlainString());
+        if (price != null) {
+            priceField.setDefaultValue(price.toPlainString());
+        }
         offerForm.add(priceField);
 
         // Date field

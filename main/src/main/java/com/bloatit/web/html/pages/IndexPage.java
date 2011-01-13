@@ -28,15 +28,14 @@ import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 
 @ParamContainer("index")
-public class IndexPage extends Page {
+public final class IndexPage extends Page {
 
     public IndexPage(final IndexPageUrl indexPageUrl) throws RedirectException {
         super(indexPageUrl);
     }
 
     @Override
-    public void create() throws RedirectException {
-        super.create();
+    protected void doCreate() throws RedirectException {
         final HtmlDiv statsBlock = new HtmlDiv("index_stats_block");
         generateStatsBlock(statsBlock);
 

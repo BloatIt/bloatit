@@ -30,15 +30,15 @@ import com.bloatit.web.utils.url.CommentReplyPageUrl;
  * Page that hosts the form used to reply to an existing comment
  */
 @ParamContainer("comment/reply")
-public class CommentReplyPage extends LoggedPage{
-        
-    private CommentReplyPageUrl url;
-    
+public final class CommentReplyPage extends LoggedPage{
+
+    private final CommentReplyPageUrl url;
+
      @RequestParam(name = CommentCommentAction.COMMENT_TARGET, level = Level.ERROR)
-     Comment targetComment;
-     
+     private final Comment targetComment;
+
      @RequestParam(name = CommentCommentAction.COMMENT_CONTENT_CODE, role = Role.SESSION, defaultValue = "")
-     private String comment;
+     private final String comment;
 
     public CommentReplyPage(CommentReplyPageUrl url) throws RedirectException {
         super(url);
@@ -50,19 +50,19 @@ public class CommentReplyPage extends LoggedPage{
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
         session.notifyList(url.getMessages());
-        
+
         HtmlTitleBlock htb = new HtmlTitleBlock(Context.tr("Reply to a comment"), 1);
-        
+
         HtmlForm form = new HtmlForm(new CommentCommentActionUrl(targetComment).urlString());
         htb.add(form);
-        
+
         HtmlTextArea commentInput = new HtmlTextArea(CommentCommentAction.COMMENT_CONTENT_CODE, Context.tr("Content"), 10, 80);
         commentInput.setDefaultValue(comment);
         form.add(commentInput);
-        
+
         HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
         form.add(submit);
-        
+
         return htb;
     }
 
@@ -80,5 +80,5 @@ public class CommentReplyPage extends LoggedPage{
     public boolean isStable() {
         return false;
     }
-    
+
 }

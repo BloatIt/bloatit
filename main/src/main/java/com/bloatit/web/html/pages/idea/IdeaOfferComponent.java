@@ -21,7 +21,7 @@ import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
 
-public class IdeaOfferComponent extends HtmlPageComponent {
+public final class IdeaOfferComponent extends HtmlPageComponent {
 
     private final Offer offer;
     private final boolean currentOffer;

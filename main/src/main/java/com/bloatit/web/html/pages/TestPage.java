@@ -39,16 +39,14 @@ import com.bloatit.web.utils.url.TestPageUrl;
  * A page to test various Html elements
  */
 @ParamContainer("test")
-public class TestPage extends Page {
+public final class TestPage extends Page {
 
-    public TestPage(final TestPageUrl testPageUrl) throws RedirectException {
+    public TestPage(final TestPageUrl testPageUrl) {
         super(testPageUrl);
     }
 
     @Override
-    public void create() throws RedirectException {
-        super.create();
-
+    protected void doCreate() throws RedirectException {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Html testing page", 1);
         pageTitle.add(new HtmlTitleBlock("Common markups", 2).add(variousElements()));
         pageTitle.add(new HtmlTitleBlock("Formulaires", 2).add(generateForm()));

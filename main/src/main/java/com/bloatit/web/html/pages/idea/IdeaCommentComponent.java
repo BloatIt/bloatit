@@ -26,10 +26,10 @@ import com.bloatit.web.utils.url.CommentReplyPageUrl;
  * A component designed to be inserted into an idea page and that will
  * be used to display a comment (either main comment or child comment).
  */
-public class IdeaCommentComponent extends HtmlPageComponent {
+public final class IdeaCommentComponent extends HtmlPageComponent {
 
     private final Comment comment;
-    private boolean child;
+    private final boolean child;
 
     public IdeaCommentComponent(final Comment comment, boolean child) {
         super();
@@ -43,35 +43,35 @@ public class IdeaCommentComponent extends HtmlPageComponent {
         {
             CommentKudoComponent commentKudo = new CommentKudoComponent(comment);
             commentBlock.add(commentKudo);
-            
+
             HtmlParagraph commentText = new HtmlParagraph();
             commentText.add(new HtmlRawTextRenderer(comment.getText()));
             commentBlock.add(commentText);
-            
+
             HtmlDiv commentInfo = new HtmlDiv("comment_info");
             commentText.add(commentInfo);
-            
+
             final HtmlSpan date = new HtmlSpan();
             date.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
             date.setCssClass("comment_date");
             commentInfo.add(date);
-            
+
             final HtmlSpan author = new HtmlSpan();
             author.addText(comment.getAuthor().getLogin());
             author.setCssClass("comment_author");
             commentInfo.add(author);
-            
+
             for (final Comment childComment : comment.getChildren()) {
                 commentBlock.add(new IdeaCommentComponent(childComment, true));
-                
+
             }
-            
+
             if(!child){
                 final HtmlDiv reply = new HtmlDiv("comment_reply");
                 final HtmlLink replyLink = new HtmlLink(new CommentReplyPageUrl(comment).urlString(), Context.tr("reply"));
                 replyLink.setCssClass("button");
                 reply.add(replyLink);
-                commentBlock.add(reply);                
+                commentBlock.add(reply);
             }
         }
         return commentBlock;

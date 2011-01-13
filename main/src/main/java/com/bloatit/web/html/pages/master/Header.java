@@ -4,7 +4,7 @@ import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 
-public class Header extends HtmlElement {
+public final class Header extends HtmlElement {
     private static final String DESIGN = "/resources/css/core.css";
 
     public Header(final String title, final String customCss) {

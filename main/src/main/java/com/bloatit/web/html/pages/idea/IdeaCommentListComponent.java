@@ -20,7 +20,7 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 
-public class IdeaCommentListComponent extends HtmlPageComponent {
+public final class IdeaCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
 	private final Demand targetIdea;

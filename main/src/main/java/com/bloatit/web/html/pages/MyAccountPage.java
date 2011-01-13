@@ -14,7 +14,6 @@ package com.bloatit.web.html.pages;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
@@ -23,9 +22,9 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.MyAccountPageUrl;
 
 @ParamContainer("myaccount")
-public class MyAccountPage extends Page {
+public final class MyAccountPage extends Page {
 
-    public MyAccountPage(final MyAccountPageUrl myAccountPageUrl) throws RedirectException {
+    public MyAccountPage(final MyAccountPageUrl myAccountPageUrl) {
         super(myAccountPageUrl);
         generateContent();
     }
@@ -60,9 +59,8 @@ public class MyAccountPage extends Page {
     protected String getTitle() {
         if (session.getAuthToken() != null) {
             return "My account - " + session.getAuthToken().getMember().getLogin();
-        } else {
-            return "My account - No account";
         }
+        return "My account - No account";
     }
 
     @Override

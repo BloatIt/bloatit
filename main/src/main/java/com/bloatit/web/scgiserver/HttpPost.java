@@ -3,6 +3,7 @@ package com.bloatit.web.scgiserver;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import com.bloatit.common.Log;
 import com.bloatit.web.utils.url.Parameters;
 
 public class HttpPost {
@@ -21,7 +22,7 @@ public class HttpPost {
                     parameters.put(key, value);
                 }
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                Log.web().error(e);
             }
         }
     }

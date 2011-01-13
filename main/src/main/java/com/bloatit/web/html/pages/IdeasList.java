@@ -26,9 +26,9 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.IdeasListUrl;
 
 @ParamContainer("ideas/list")
-public class IdeasList extends Page {
+public final class IdeasList extends Page {
 
-	HtmlPagedList<Demand> pagedIdeaList;
+	private HtmlPagedList<Demand> pagedIdeaList;
 	private final IdeasListUrl url;
 
 	public IdeasList(final IdeasListUrl url) throws RedirectException {

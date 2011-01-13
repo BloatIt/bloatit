@@ -18,7 +18,7 @@ import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.ContributePageUrl;
 
-public class IdeaContributeButtonComponent extends HtmlPageComponent {
+public final class IdeaContributeButtonComponent extends HtmlPageComponent {
 
     private final Demand demand;
 

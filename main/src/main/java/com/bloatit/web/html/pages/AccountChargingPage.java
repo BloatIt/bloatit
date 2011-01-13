@@ -27,7 +27,7 @@ import com.bloatit.web.utils.url.PaylineActionUrl;
  * A page used to put money onto the internal bloatit account
  */
 @ParamContainer("charging")
-public class AccountChargingPage extends LoggedPage {
+public final class AccountChargingPage extends LoggedPage {
 
     public AccountChargingPage(final AccountChargingPageUrl url) throws RedirectException {
         super(url);

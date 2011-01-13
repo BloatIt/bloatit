@@ -20,7 +20,6 @@ import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.PlaceHolderElement;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
-import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlListItem;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
@@ -30,9 +29,8 @@ import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.MembersListPageUrl;
 
 @ParamContainer("memberList")
-public class MembersListPage extends Page {
+public final class MembersListPage extends Page {
 
-    private HtmlPagedList<Member> pagedMemberList;
     private final MembersListPageUrl url;
 
     public MembersListPage(final MembersListPageUrl url) {
@@ -67,7 +65,7 @@ public class MembersListPage extends Page {
 
         // TODO: avoid conflict
         final MembersListPageUrl clonedUrl = url.clone();
-        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
+        HtmlPagedList<Member> pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
         pageTitle.add(pagedMemberList);
 

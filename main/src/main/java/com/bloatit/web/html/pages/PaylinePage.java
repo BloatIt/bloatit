@@ -11,7 +11,7 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.PaylinePageUrl;
 
 @ParamContainer("payline/result")
-public class PaylinePage extends Page {
+public final class PaylinePage extends Page {
 
     @RequestParam(name="token", level=Level.INFO)
     private final String token;

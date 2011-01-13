@@ -28,7 +28,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
 import com.bloatit.web.utils.url.OfferPageUrl;
 
-public class IdeaHeadComponent extends HtmlPageComponent {
+public final class IdeaHeadComponent extends HtmlPageComponent {
 
     public IdeaHeadComponent(final Demand idea) {
         super();

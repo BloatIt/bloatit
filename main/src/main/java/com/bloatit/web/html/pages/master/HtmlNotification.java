@@ -2,7 +2,7 @@ package com.bloatit.web.html.pages.master;
 
 import com.bloatit.web.html.components.standard.HtmlDiv;
 
-public class HtmlNotification extends HtmlDiv {
+public final class HtmlNotification extends HtmlDiv {
 
     public enum Level {
         INFO, WARNING, ERROR
@@ -19,6 +19,9 @@ public class HtmlNotification extends HtmlDiv {
             break;
         case ERROR:
             setCssClass("notification_error");
+            break;
+        default:
+            // Do nothing
             break;
         }
         addText(message);

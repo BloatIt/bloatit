@@ -17,7 +17,7 @@ import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 
-public class IdeaProgressBarComponent extends HtmlPageComponent {
+public final class IdeaProgressBarComponent extends HtmlPageComponent {
 
     private final Demand demand;
 

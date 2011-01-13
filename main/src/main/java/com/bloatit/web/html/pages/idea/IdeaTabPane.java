@@ -22,7 +22,7 @@ import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeaTabPaneUrl;
 
 @ParamContainer(value = "demandTabPane", isComponent = true)
-public class IdeaTabPane extends HtmlPageComponent {
+public final class IdeaTabPane extends HtmlPageComponent {
 
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
     private String activeTabKey;

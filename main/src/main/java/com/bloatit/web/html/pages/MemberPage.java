@@ -23,25 +23,23 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.utils.url.MemberPageUrl;
 
 @ParamContainer("member")
-public class MemberPage extends Page {
+public final class MemberPage extends Page {
 
-    public final static String MEMBER_FIELD_NAME = "id";
+    public static final String MEMBER_FIELD_NAME = "id";
 
     @RequestParam(name = MEMBER_FIELD_NAME, level = Level.ERROR)
     private final Member member;
 
     private final MemberPageUrl url;
 
-    public MemberPage(final MemberPageUrl url) throws RedirectException {
+    public MemberPage(final MemberPageUrl url) {
         super(url);
         this.url = url;
         this.member = url.getMember();
     }
 
     @Override
-    public void create() throws RedirectException {
-        super.create();
-
+    protected void doCreate() throws RedirectException {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }
@@ -69,9 +67,8 @@ public class MemberPage extends Page {
     protected String getTitle() {
         if (member != null) {
             return "Member - " + member.getLogin();
-        } else {
-            return "Member - No member";
         }
+        return "Member - No member";
     }
 
     @Override

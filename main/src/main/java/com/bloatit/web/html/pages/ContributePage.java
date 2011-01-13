@@ -30,7 +30,7 @@ import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 
 @ParamContainer("contribute")
-public class ContributePage extends LoggedPage {
+public final class ContributePage extends LoggedPage {
 
     @RequestParam(level = Level.ERROR)
     private final Demand targetIdea;
@@ -63,7 +63,7 @@ public class ContributePage extends LoggedPage {
 
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
         contribForm.setCssClass("padding_box");
-        
+
         // Input field : choose amount
         final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
         contribField.setLabel(Context.tr("Choose amount: "));
@@ -76,8 +76,8 @@ public class ContributePage extends LoggedPage {
 
         final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Contribute"));
 
-        
-        
+
+
         // Create the form
         contribForm.add(contribField);
         contribForm.add(commentField);

@@ -25,13 +25,13 @@ public abstract class HtmlBranch extends HtmlElement {
     }
 
     @Override
-    public HtmlBranch add(final HtmlNode html) {
+    public final HtmlBranch add(final HtmlNode html) {
         super.add(html);
         return this;
     }
 
     @Override
-    public HtmlBranch addText(final String text) {
+    public final HtmlBranch addText(final String text) {
         super.addText(text);
         return this;
     }
@@ -43,13 +43,13 @@ public abstract class HtmlBranch extends HtmlElement {
     }
 
     @Override
-    public HtmlBranch setCssClass(final String cssClass) {
+    public final HtmlBranch setCssClass(final String cssClass) {
         super.setCssClass(cssClass);
         return this;
     }
 
     @Override
-    public HtmlBranch setId(final String id) {
+    public final HtmlBranch setId(final String id) {
         super.setId(id);
         return this;
     }

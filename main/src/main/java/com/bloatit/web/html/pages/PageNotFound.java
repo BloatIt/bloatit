@@ -11,16 +11,15 @@
 package com.bloatit.web.html.pages;
 
 import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.PageNotFoundUrl;
 
 @ParamContainer("pageNotFound")
-public class PageNotFound extends Page {
+public final class PageNotFound extends Page {
 
-    public PageNotFound(final PageNotFoundUrl pageNotFoundUrl) throws RedirectException {
+    public PageNotFound(final PageNotFoundUrl pageNotFoundUrl) {
         super(pageNotFoundUrl);
         generateContent();
     }

@@ -26,7 +26,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.IdeaContributorsComponentUrl;
 
 @ParamContainer(value = "DemandContributorsComponent", isComponent = true)
-public class IdeaContributorsComponent extends HtmlDiv {
+public final class IdeaContributorsComponent extends HtmlDiv {
 
     private int contributionCount;
     private HtmlParagraph contributionMin;

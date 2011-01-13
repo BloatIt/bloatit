@@ -12,7 +12,6 @@
 package com.bloatit.web.html.pages;
 
 import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
@@ -22,9 +21,9 @@ import com.bloatit.web.utils.url.MembersListPageUrl;
 import com.bloatit.web.utils.url.SpecialsPageUrl;
 
 @ParamContainer("special")
-public class SpecialsPage extends Page {
+public final class SpecialsPage extends Page {
 
-    public SpecialsPage(final SpecialsPageUrl specialsPageUrl) throws RedirectException {
+    public SpecialsPage(final SpecialsPageUrl specialsPageUrl) {
         super(specialsPageUrl);
         generateContent();
     }

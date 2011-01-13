@@ -35,7 +35,7 @@ public abstract class Page extends HtmlElement implements Linkable {
         session = Context.getSession();
     }
 
-    public void create() throws RedirectException {
+    public final void create() throws RedirectException {
         super.add(new HtmlTagText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         super.add(new HtmlTagText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
         final HtmlBranch html = new HtmlGenericElement("html");
@@ -44,33 +44,39 @@ public abstract class Page extends HtmlElement implements Linkable {
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
         html.add(new Header(getTitle(), getCustomCss()));
-        html.add(generate_body());
+        html.add(doGenerateBody());
 
         // Display waiting notifications
         addWaitingNotifications();
 
         // Set the last stable page into the session
         if (isStable()) {
-        	session.setTargetPage(null);
-        	session.setLastStablePage(thisUrl);
+            session.setTargetPage(null);
+            session.setLastStablePage(thisUrl);
         }
+        doCreate();
+    }
+
+    @SuppressWarnings("unused")
+    protected void doCreate() throws RedirectException {
+        // Nothing. You can override it or not.
     }
 
     // TODO correct empty div for notifications ?
-    private HtmlElement generate_body() {
+    private HtmlElement doGenerateBody() {
 
         final HtmlGenericElement body = new HtmlGenericElement("body");
 
         final HtmlBranch page = new HtmlDiv("page").setId("page");
         body.add(page);
-        
+
         final HtmlBranch header = new HtmlDiv("header").setId("header");
-        
+
         header.add(new TopBar());
         header.add(generateTitle());
 
         page.add(header);
-        
+
         final HtmlBranch center = new HtmlDiv().setId("center");
         page.add(center);
 
@@ -92,9 +98,8 @@ public abstract class Page extends HtmlElement implements Linkable {
     public final String getName() {
         if (getClass().getAnnotation(ParamContainer.class) != null) {
             return getClass().getAnnotation(ParamContainer.class).value();
-        } else {
-            return getClass().getName().toLowerCase();
         }
+        return getClass().getName().toLowerCase();
     }
 
     protected String getCustomCss() {
@@ -138,6 +143,9 @@ public abstract class Page extends HtmlElement implements Linkable {
                 break;
             case ERROR:
                 addNotification(new HtmlNotification(Level.ERROR, message.getMessage()));
+                break;
+            default:
+                // do nothing
                 break;
             }
         }

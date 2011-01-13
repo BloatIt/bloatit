@@ -23,15 +23,13 @@ public abstract class LoggedPage extends Page {
 
     private final Url meUrl;
 
-    protected LoggedPage(final Url url) throws RedirectException {
+    protected LoggedPage(final Url url) {
         super(url);
         this.meUrl = url;
     }
 
     @Override
-    public final void create() throws RedirectException {
-        super.create();
-
+    protected final void doCreate() throws RedirectException {
         if (session.isLogged()) {
             add(createRestrictedContent());
         } else {

@@ -27,7 +27,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 
 @ParamContainer("idea")
-public class IdeaPage extends Page {
+public final class IdeaPage extends Page {
 
     public static final String IDEA_FIELD_NAME = "id";
 
@@ -70,8 +70,7 @@ public class IdeaPage extends Page {
     }
 
     @Override
-    public void create() throws RedirectException {
-        super.create();
+    protected void doCreate() throws RedirectException {
         addNotifications(url.getMessages());
 
         if (url.getMessages().hasMessage(Level.ERROR)) {

@@ -14,5 +14,5 @@ package com.bloatit.web.html.pages.master;
 import com.bloatit.web.html.HtmlLeaf;
 
 public abstract class HtmlPageComponent extends HtmlLeaf {
-
+    // TODO ?? Why nothing
 }

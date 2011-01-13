@@ -27,16 +27,14 @@ import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.RegisterPageUrl;
 
 @ParamContainer("login")
-public class LoginPage extends Page {
+public final class LoginPage extends Page {
 
-    public LoginPage(final LoginPageUrl loginPageUrl) throws RedirectException {
+    public LoginPage(final LoginPageUrl loginPageUrl) {
         super(loginPageUrl);
     }
 
     @Override
-    public void create() throws RedirectException {
-        super.create();
-
+    protected void doCreate() throws RedirectException {
         final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
         final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.trc("Login (noun)","Login"));
         final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
