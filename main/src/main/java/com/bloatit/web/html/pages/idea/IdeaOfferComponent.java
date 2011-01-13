@@ -31,7 +31,9 @@ public final class IdeaOfferComponent extends HtmlPageComponent {
         this.offer = offer;
         this.currentOffer = b;
 
-        add(produce());
+        if (offer != null){
+            add(produce());
+        }
     }
 
     protected HtmlElement produce() {
