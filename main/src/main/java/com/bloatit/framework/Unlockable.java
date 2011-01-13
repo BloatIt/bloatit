@@ -49,7 +49,7 @@ public class Unlockable {
         if (token == null) {
             return EnumSet.of(Role.NOBODY);
         }
-        if (token.getMember().getUnprotectedLogin().equals(login)) {
+        if (token.getMember().getLoginUnprotected().equals(login)) {
             switch (token.getMember().getRole()) {
             case NORMAL:
                 return EnumSet.of(Role.OWNER);
@@ -96,7 +96,7 @@ public class Unlockable {
         if (token == null) {
             return EnumSet.of(Role.NOBODY);
         }
-        final EnumSet<Role> roles = calculateRole(member.getUnprotectedLogin());
+        final EnumSet<Role> roles = calculateRole(member.getLoginUnprotected());
         if (group != null) {
             final MemberStatus status = token.getMember().getStatusUnprotected(group);
             if (status == MemberStatus.ADMIN) {

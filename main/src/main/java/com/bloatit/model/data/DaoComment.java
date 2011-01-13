@@ -81,17 +81,13 @@ public final class DaoComment extends DaoKudosable {
 
     /**
      * Use a HQL query to return the children of this comment. It allows the use of
-     * PageIterable.
+     * PageIterable. Order by creation date, older first.
      *
      * @return the list of this comment children. return an empty list if there is no
      *         child.
      */
-    public PageIterable<DaoComment> getChildrenFromQuery() {
-        return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this").setEntity("this", this);
-    }
-
-    protected Set<DaoComment> getChildren() {
-        return children;
+    public PageIterable<DaoComment> getChildren() {
+        return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by dateCreation asc").setEntity("this", this);
     }
 
     /**

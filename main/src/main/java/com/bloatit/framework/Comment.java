@@ -5,14 +5,16 @@ import com.bloatit.framework.lists.CommentList;
 import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoKudosable;
 
+/**
+ * @see DaoComment
+ */
 public final class Comment extends Kudosable {
 
-    private DaoComment dao;
+    private final DaoComment dao;
 
-    public String getText() {
-        return dao.getText();
-    }
-
+    /**
+     * Create a new comment and return it. It return null if the <code>dao</code> is null.
+     */
     public static Comment create(final DaoComment dao) {
         if (dao == null) {
             return null;
@@ -25,21 +27,35 @@ public final class Comment extends Kudosable {
         this.dao = dao;
     }
 
+    /**
+     * Return all the children comment of this comment.
+     * @see DaoComment#getChildren()
+     */
     public PageIterable<Comment> getChildren() {
-        return new CommentList(dao.getChildrenFromQuery());
+        return new CommentList(dao.getChildren());
     }
 
+    /**
+     * @param text is the comment text.
+     * @see #addChildComment(Comment)
+     */
     public void addChildComment(final String text) {
         dao.addChildComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
     }
 
-    // TODO make sure it still works
-    public void addChildComment(final Comment comment) {
-        dao.addChildComment(comment.getDao());
+    /**
+     * @return the text of this comment.
+     */
+    public String getText() {
+        return dao.getText();
     }
 
-    protected Comment() {
-        super();
+    /**
+     * Add a comment to the list of children of this comment.
+     * @see #addChildComment(String)
+     */
+    public void addChildComment(final Comment comment) {
+        dao.addChildComment(comment.getDao());
     }
 
     @Override

@@ -40,24 +40,36 @@ public abstract class Account extends Identifiable {
      * @return true if the authenticated user can access something.
      */
     public final boolean canAccessSomething() {
-        return new MoneyRight.Everything().canAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        return new MoneyRight.Everything().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
     }
 
     /**
      * Every time a new transaction is done the modification date is update. This can be
      * used for security purpose.
-     * @throws UnauthorizedOperationException
+     *
+     * @throws UnauthorizedOperationException if you have not the right to access
+     *         something in this class.
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getLastModificationDate();
     }
 
+    /**
+     * @return the quantity of money available on this account.
+     * @throws UnauthorizedOperationException if you have not the right to access
+     *         something in this class.
+     */
     public final BigDecimal getAmount() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getAmount();
     }
 
+    /**
+     * @return All the transactions involving this account.
+     * @throws UnauthorizedOperationException if you have not the right to access
+     *         something in this class.
+     */
     public final PageIterable<Transaction> getTransactions() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return new TransactionList(getDaoAccount().getTransactions());
@@ -65,13 +77,20 @@ public abstract class Account extends Identifiable {
 
     /**
      * The actor is the person that possess this account.
-     * @throws UnauthorizedOperationException
+     *
+     * @throws UnauthorizedOperationException if you have not the right to access
+     *         something in this class.
      */
     public final Actor getActor() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getActorUnprotected();
     }
 
+    /**
+     * @return The date of creation of this account (Amazing !)
+     * @throws UnauthorizedOperationException if you have not the right to access
+     *         something in this class.
+     */
     public final Date getCreationDate() throws UnauthorizedOperationException {
         new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getCreationDate();
@@ -92,6 +111,9 @@ public abstract class Account extends Identifiable {
         throw new FatalErrorException("Cannot find the right Actor child class.", null);
     }
 
+    /**
+     * @see Identifiable#getId();
+     */
     @Override
     public final int getId() {
         return getDaoAccount().getId();

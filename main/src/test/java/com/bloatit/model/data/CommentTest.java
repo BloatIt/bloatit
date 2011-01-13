@@ -68,7 +68,7 @@ public class CommentTest extends ModelTestUnit {
         comment.addChildComment(commentChild2);
         commentChild1.addChildComment(commentChildChild);
 
-        Iterator<DaoComment> it = comment.getChildrenFromQuery().iterator();
+        Iterator<DaoComment> it = comment.getChildren().iterator();
         assertEquals(it.next().getId(), commentChild.getId());
         assertEquals(it.next().getId(), commentChild1.getId());
         assertEquals(it.next().getId(), commentChild2.getId());

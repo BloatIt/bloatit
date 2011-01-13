@@ -12,6 +12,7 @@ package com.bloatit.web.html.pages;
 
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
+import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -52,7 +53,7 @@ public final class MemberPage extends Page {
 
             memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
-            if (member.canGetEmail()) {
+            if (member.canAccessEmail(Action.READ)) {
                 memberTitle.add(new HtmlText("Email: " + member.getEmail()));
             }
             memberTitle.add(new HtmlText("Karma: " + member.getKarma()));

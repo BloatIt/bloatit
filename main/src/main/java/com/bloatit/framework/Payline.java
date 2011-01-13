@@ -102,7 +102,7 @@ public final class Payline extends Unlockable {
         final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction != null) {
             transaction.authenticate(getAuthToken());
-            if (!transaction.setValidated()) {
+            if (!transaction.validated()) {
                 throw new TokenNotfoundException("Cannot validate the BankTransaction.");
             }
         }

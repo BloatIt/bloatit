@@ -19,10 +19,19 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.model.data.util.SessionManager;
 
+/**
+ * An AuthToken is a token representing an authenticated user. You can use it to tell a
+ * {@link Unlockable} class which user is using it.
+ */
 public final class AuthToken {
     private final Member member;
     private final UUID key;
 
+    /**
+     * Create an authoToken using the login and password of a person.
+     *
+     * @throws NotFoundException if the login is not found or if the password is wrong.
+     */
     public AuthToken(final String login, final String password) throws NotFoundException {
         final Member tmp = MemberManager.getByLoginAndPassword(login, password);
         if (tmp == null) {
@@ -33,6 +42,13 @@ public final class AuthToken {
         key = UUID.randomUUID();
     }
 
+    /**
+     * NEVER Use this method. It is used by the SessionManager to persist the login
+     * session of a user even in case of a server restart.
+     *
+     * @param memberId
+     * @throws NotFoundException
+     */
     public AuthToken(final int memberId) throws NotFoundException {
         final Member tmp = MemberManager.getMemberById(memberId);
         if (tmp == null) {
@@ -42,6 +58,9 @@ public final class AuthToken {
         key = UUID.randomUUID();
     }
 
+    /**
+     * @return a unique key, identifying this authToken.
+     */
     public UUID getKey() {
         return key;
     }
