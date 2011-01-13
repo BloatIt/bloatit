@@ -39,8 +39,13 @@ public final class IdeaContributorsComponent extends HtmlDiv {
     public IdeaContributorsComponent(final IdeaContributorsComponentUrl url, final Demand demand) {
         super();
         this.demand = demand;
-        extractData();
-        add(produce(url));
+        try {
+            extractData();
+            add(produce(url));
+        } catch (UnauthorizedOperationException e) {
+            //No right, no display
+        }
+
     }
 
     protected HtmlElement produce(IdeaContributorsComponentUrl url) {
@@ -70,9 +75,8 @@ public final class IdeaContributorsComponent extends HtmlDiv {
         return contributorsBlock;
     }
 
-    protected void extractData() {
+    protected void extractData() throws UnauthorizedOperationException {
 
-        try {
             contributionCount = demand.getContributions().size();
 
             if (contributionCount > 0) {
@@ -87,10 +91,7 @@ public final class IdeaContributorsComponent extends HtmlDiv {
             }
 
             contributions = demand.getContributions();
-        } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
     }
 
     private HtmlRenderer<Contribution> generateContributionRenderer() {

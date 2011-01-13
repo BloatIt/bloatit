@@ -54,8 +54,8 @@ public final class IdeaCommentAction extends LoggedAction {
         try {
             targetIdea.addComment(comment);
         } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add a comment on this idea."));
+            return session.pickPreferredPage();
         }
 
         return session.pickPreferredPage();

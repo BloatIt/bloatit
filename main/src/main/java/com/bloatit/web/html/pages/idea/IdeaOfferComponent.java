@@ -32,19 +32,20 @@ public final class IdeaOfferComponent extends HtmlPageComponent {
         this.currentOffer = b;
 
         if (offer != null){
-            add(produce());
+            try {
+                add(produce());
+            } catch (UnauthorizedOperationException e) {
+                //No right, no display
+            }
         }
     }
 
-    protected HtmlElement produce() {
+    protected HtmlElement produce() throws UnauthorizedOperationException {
 
         HtmlParagraph author = null;
-        try {
-            author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getDisplayName(), "offer_author");
-        } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+        author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getDisplayName(), "offer_author");
+
         HtmlParagraph price = new HtmlParagraph(Context.tr("Price : ") + Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString(),
                 "offer_price");
         HtmlParagraph expirationDate = new HtmlParagraph(Context.tr("Expiration date : ")

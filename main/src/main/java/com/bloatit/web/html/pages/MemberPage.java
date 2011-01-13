@@ -19,8 +19,10 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.PageNotFoundException;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlText;
+import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.MemberPageUrl;
 
 @ParamContainer("member")
@@ -52,6 +54,7 @@ public final class MemberPage extends Page {
             memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
 
             memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
+
             memberTitle.add(new HtmlText("Login: " + member.getLogin()));
             if (member.canAccessEmail(Action.READ)) {
                 memberTitle.add(new HtmlText("Email: " + member.getEmail()));
@@ -59,8 +62,7 @@ public final class MemberPage extends Page {
             memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
             add(memberTitle);
         } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            add(new HtmlParagraph(Context.tr("For obscure reasons, you are not allowed to see the details of this member.")));
         }
     }
 
