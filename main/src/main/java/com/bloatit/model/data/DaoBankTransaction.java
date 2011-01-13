@@ -21,7 +21,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 @Entity
 public final class DaoBankTransaction extends DaoIdentifiable {
 
-    private static final int DEFAULT_STRING_LENGTH=64;
+    private static final int DEFAULT_STRING_LENGTH = 64;
 
     public enum State {
         PENDING, ACCEPTED, REFUSED, VALIDATED
@@ -82,8 +82,10 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     private DaoBankTransaction(String message, String token, DaoActor author, BigDecimal value, String orderReference) {
         super();
-        if (message == null || token == null || author == null || value == null || orderReference == null || message.isEmpty() || token.isEmpty()
-                || orderReference.isEmpty()) {
+        if (message == null || token == null || author == null || value == null || orderReference == null) {
+            throw new NonOptionalParameterException();
+        }
+        if (message.isEmpty() || token.isEmpty() || orderReference.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.message = message;
@@ -108,8 +110,8 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     }
 
     /**
-     * TODO comment
-     * Validate And create the transaction
+     * TODO comment Validate And create the transaction
+     *
      * @return true if performed, false otherwise.
      */
     public boolean setValidated() {
