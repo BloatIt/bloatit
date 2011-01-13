@@ -17,7 +17,7 @@ public final class ContributionIterator extends com.bloatit.framework.lists.Iter
 
     @Override
     protected Contribution createFromDao(final DaoContribution dao) {
-        return new Contribution(dao);
+        return Contribution.create(dao);
     }
 
 }

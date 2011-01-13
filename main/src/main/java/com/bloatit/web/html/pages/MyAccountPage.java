@@ -11,6 +11,8 @@
 
 package com.bloatit.web.html.pages;
 
+import static com.bloatit.web.server.Context.tr;
+
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
 import com.bloatit.web.annotations.ParamContainer;
@@ -19,7 +21,6 @@ import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.MyAccountPageUrl;
 
 @ParamContainer("myaccount")
@@ -41,14 +42,14 @@ public final class MyAccountPage extends Page {
                 HtmlList userInfo = new HtmlList();
                 memberTitle.add(userInfo);
 
-                userInfo.add(Context.tr("Full name: ") + member.getFullname());
-                userInfo.add(Context.tr("Login: ") + member.getLogin());
-                userInfo.add(Context.tr("Email: ") + member.getEmail());
-                userInfo.add(Context.tr("Karma: ") + member.getKarma());
+                userInfo.add(tr("Full name: ") + member.getFullname());
+                userInfo.add(tr("Login: ") + member.getLogin());
+                userInfo.add(tr("Email: ") + member.getEmail());
+                userInfo.add(tr("Karma: ") + member.getKarma());
 
                 add(memberTitle);
             } catch (UnauthorizedOperationException e) {
-                add(new HtmlParagraph(Context.tr("For obscure reasons, you are not allowed to see your own details.")));
+                add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see your own details.")));
             }
         } else {
             add(new HtmlTitle("No account", 2));
@@ -58,9 +59,13 @@ public final class MyAccountPage extends Page {
     @Override
     protected String getTitle() {
         if (session.getAuthToken() != null) {
-            return "My account - " + session.getAuthToken().getMember().getLogin();
+            try {
+                return tr("My account - ") + session.getAuthToken().getMember().getLogin();
+            } catch (UnauthorizedOperationException e) {
+                tr("My account - John Doe");
+            }
         }
-        return "My account - No account";
+        return tr("My account - No account");
     }
 
     @Override

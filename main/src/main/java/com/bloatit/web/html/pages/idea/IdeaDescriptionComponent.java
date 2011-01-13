@@ -12,12 +12,12 @@ package com.bloatit.web.html.pages.idea;
 
 import java.util.Locale;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.custom.renderer.HtmlRawTextRenderer;
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.MemberPageUrl;
@@ -31,9 +31,9 @@ public class IdeaDescriptionComponent extends HtmlDiv {
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
 
-        final HtmlParagraph date = new HtmlParagraph(HtmlTools.formatDate(Context.getLocalizator().getDate(demand.getCreationDate())), "description_date");
+        final HtmlParagraph date = new HtmlParagraph(HtmlTools.formatDate(Context.getLocalizator().getDate(demand.getCreationDate())),
+                "description_date");
         final MemberPageUrl memberUrl = new MemberPageUrl(demand.getAuthor());
-        final HtmlLink author = memberUrl.getHtmlLink(demand.getAuthor().getLogin());
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {
@@ -41,7 +41,11 @@ public class IdeaDescriptionComponent extends HtmlDiv {
             {
                 final HtmlDiv descriptionDetails = new HtmlDiv("description_details");
                 {
-                    descriptionDetails.add(author);
+                    try {
+                        descriptionDetails.add(memberUrl.getHtmlLink(demand.getAuthor().getLogin()));
+                    } catch (UnauthorizedOperationException e) {
+                        // do nothing.
+                    }
                     descriptionDetails.add(date);
                 }
                 descriptionBlock.add(descriptionDetails);

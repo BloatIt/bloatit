@@ -10,6 +10,7 @@
  */
 package com.bloatit.web.html.pages.idea;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Comment;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlTools;
@@ -56,10 +57,14 @@ public final class IdeaCommentComponent extends HtmlPageComponent {
             date.setCssClass("comment_date");
             commentInfo.add(date);
 
-            final HtmlSpan author = new HtmlSpan();
-            author.addText(comment.getAuthor().getLogin());
-            author.setCssClass("comment_author");
-            commentInfo.add(author);
+            try {
+                final HtmlSpan author = new HtmlSpan();
+                author.addText(comment.getAuthor().getLogin());
+                author.setCssClass("comment_author");
+                commentInfo.add(author);
+            } catch (UnauthorizedOperationException e) {
+                // print nothing
+            }
 
             for (final Comment childComment : comment.getChildren()) {
                 commentBlock.add(new IdeaCommentComponent(childComment, true));

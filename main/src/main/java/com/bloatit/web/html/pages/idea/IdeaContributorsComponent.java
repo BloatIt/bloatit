@@ -10,6 +10,8 @@
  */
 package com.bloatit.web.html.pages.idea;
 
+import static com.bloatit.web.server.Context.tr;
+
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Contribution;
@@ -22,7 +24,6 @@ import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
-import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.IdeaContributorsComponentUrl;
 
 @ParamContainer(value = "DemandContributorsComponent", isComponent = true)
@@ -53,7 +54,7 @@ public final class IdeaContributorsComponent extends HtmlDiv {
         {
 
             // Display contribution count
-            contributorsBlock.add(new HtmlParagraph(contributionCount + Context.tr(" contributions")));
+            contributorsBlock.add(new HtmlParagraph(contributionCount + tr(" contributions")));
 
             // Display contribution stats
             if (contributionCount > 0) {
@@ -85,9 +86,9 @@ public final class IdeaContributorsComponent extends HtmlDiv {
                 final String contributionMinValue = demand.getContributionMin().toPlainString();
                 final String contributionMaxValue = demand.getContributionMax().toPlainString();
 
-                contributionMin = new HtmlParagraph(Context.tr("Min: ") + contributionMinValue);
-                contributionMax = new HtmlParagraph(Context.tr("Max: ") + contributionMaxValue);
-                contributionMean = new HtmlParagraph(Context.tr("Mean: ") + contributionMeanValue);
+                contributionMin = new HtmlParagraph(tr("Min: ") + contributionMinValue);
+                contributionMax = new HtmlParagraph(tr("Max: ") + contributionMaxValue);
+                contributionMean = new HtmlParagraph(tr("Mean: ") + contributionMeanValue);
             }
 
             contributions = demand.getContributions();
@@ -99,8 +100,13 @@ public final class IdeaContributorsComponent extends HtmlDiv {
 
             @Override
             public HtmlNode generate(final Contribution item) {
-                final String itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " "
-                        + item.getCreationDate().toString();
+                String itemString = tr("You are not authorized to see this.");
+                try {
+                    itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " "
+                            + item.getCreationDate().toString();
+                } catch (UnauthorizedOperationException e) {
+                    // do nothing
+                }
                 return new HtmlText(itemString);
             }
         };

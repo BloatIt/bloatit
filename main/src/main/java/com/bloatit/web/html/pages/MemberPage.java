@@ -10,6 +10,8 @@
  */
 package com.bloatit.web.html.pages;
 
+import static com.bloatit.web.server.Context.tr;
+
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.right.RightManager.Action;
@@ -69,9 +71,13 @@ public final class MemberPage extends Page {
     @Override
     protected String getTitle() {
         if (member != null) {
-            return "Member - " + member.getLogin();
+            try {
+                return tr("Member - ") + member.getLogin();
+            } catch (UnauthorizedOperationException e) {
+                return tr("Member - Jhon Do");
+            }
         }
-        return "Member - No member";
+        return tr("Member - No member");
     }
 
     @Override
