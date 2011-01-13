@@ -30,12 +30,12 @@ import com.bloatit.web.utils.url.Url;
  * A response to a form used to add money on an internal bloatit account
  */
 @ParamContainer("action/account/charging")
-public class AccountChargingAction extends LoggedAction {
+public final class AccountChargingAction extends LoggedAction {
 
-    public final static String CHARGE_AMOUNT_CODE = "chargeAmount";
+    public static final String CHARGE_AMOUNT_CODE = "chargeAmount";
 
     @RequestParam(level = Level.ERROR, name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
-    BigDecimal amount;
+    private final BigDecimal amount;
 
     private final Url url;
 

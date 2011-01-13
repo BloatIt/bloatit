@@ -24,7 +24,7 @@ import com.bloatit.web.utils.url.Url;
  * A response to a form used to kudo any <code>kudosable</code> on the bloatit website
  */
 @ParamContainer("action/kudo")
-public class KudoAction extends LoggedAction {
+public final class KudoAction extends LoggedAction {
 
     public static final String TARGET_KUDOSABLE = "targetKudosable";
 

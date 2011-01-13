@@ -26,7 +26,7 @@ import com.bloatit.web.utils.url.Url;
  * A response to a form used to create a comment to an idea
  */
 @ParamContainer("idea/docomment")
-public class IdeaCommentAction extends LoggedAction {
+public final class IdeaCommentAction extends LoggedAction {
     public static final String COMMENT_CONTENT_CODE = "bloatit_comment_content";
     public static final String COMMENT_TARGET = "target";
 

@@ -39,7 +39,7 @@ public abstract class Action implements Linkable {
         return doProcess();
     }
 
-    abstract protected Url doProcess() throws RedirectException;
-    
-    abstract protected Url doProcessErrors() throws RedirectException;
+    protected abstract Url doProcess() throws RedirectException;
+
+    protected abstract Url doProcessErrors() throws RedirectException;
 }

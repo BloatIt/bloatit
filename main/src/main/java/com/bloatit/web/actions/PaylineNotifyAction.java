@@ -13,7 +13,7 @@ import com.bloatit.web.utils.url.PaylineNotifyActionUrl;
 import com.bloatit.web.utils.url.Url;
 
 @ParamContainer("payline/donotify")
-public class PaylineNotifyAction extends Action {
+public final class PaylineNotifyAction extends Action {
 
     @RequestParam(name = "token", level = Level.INFO)
     private final String token;

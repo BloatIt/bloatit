@@ -29,7 +29,7 @@ import com.bloatit.web.utils.i18n.CurrencyLocale;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 
-public class HtmlIdeaSumary extends HtmlDiv {
+public final class HtmlIdeaSumary extends HtmlDiv {
 
     public HtmlIdeaSumary(final Demand idea) {
         super("idea_conpact_summary");

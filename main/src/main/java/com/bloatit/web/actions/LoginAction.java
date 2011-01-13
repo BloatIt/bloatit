@@ -25,10 +25,10 @@ import com.bloatit.web.utils.url.Url;
  * A response to a form used to log into the website
  */
 @ParamContainer("action/login")
-public class LoginAction extends Action {
+public final class LoginAction extends Action {
 
-    public final static String LOGIN_CODE = "bloatit_login";
-    public final static String PASSWORD_CODE = "bloatit_password";
+    public static final String LOGIN_CODE = "bloatit_login";
+    public static final String PASSWORD_CODE = "bloatit_password";
 
     @RequestParam(level = Level.ERROR, name = LOGIN_CODE, role = RequestParam.Role.POST)
     private final String login;
@@ -59,7 +59,7 @@ public class LoginAction extends Action {
             return new LoginPageUrl();
         }
     }
-    
+
     @Override
 	protected Url doProcessErrors() throws RedirectException {
     	//TODO

@@ -43,9 +43,9 @@ public class CommentCommentAction extends LoggedAction {
 	@RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level = Level.ERROR)
 	private final String comment;
 
-	private CommentCommentActionUrl url;
+	private final CommentCommentActionUrl url;
 
-	public CommentCommentAction(final CommentCommentActionUrl url) throws RedirectException {
+	public CommentCommentAction(final CommentCommentActionUrl url) {
 		super(url);
 		this.url = url;
 		this.targetComment = url.getTargetComment();
@@ -56,7 +56,7 @@ public class CommentCommentAction extends LoggedAction {
 	public final Url doProcessRestricted() throws RedirectException {
 		session.notifyList(url.getMessages());
 		session.notifyGood(Context.tr("Your comment has been added."));
-		
+
 		targetComment.authenticate(session.getAuthToken());
 		targetComment.addChildComment(comment);
 

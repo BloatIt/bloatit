@@ -32,11 +32,11 @@ import com.bloatit.web.utils.url.Url;
  * Class that will create a new offer based on data received from a form.
  */
 @ParamContainer("action/offer")
-public class OfferAction extends LoggedAction {
-    public final static String PRICE_CODE = "offer_price";
-    public final static String EXPIRY_CODE = "offer_expiry";
-    public final static String TITLE_CODE = "offer_title";
-    public final static String DESCRIPTION_CODE = "offer_description";
+public final class OfferAction extends LoggedAction {
+    public static final String PRICE_CODE = "offer_price";
+    public static final String EXPIRY_CODE = "offer_expiry";
+    public static final String TITLE_CODE = "offer_title";
+    public static final String DESCRIPTION_CODE = "offer_description";
 
     @RequestParam(level = Level.ERROR, role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
     private Demand targetIdea = null;

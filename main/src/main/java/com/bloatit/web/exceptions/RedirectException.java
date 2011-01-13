@@ -27,7 +27,7 @@ public class RedirectException extends Exception {
         }
     }
 
-    public Url getUrl() {
+    public final Url getUrl() {
         return url;
     }
 
