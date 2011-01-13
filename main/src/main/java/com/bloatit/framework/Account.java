@@ -33,14 +33,14 @@ public abstract class Account extends Identifiable {
     protected abstract DaoAccount getDaoAccount();
 
     /**
-     * Everything in an account has the same right. You can read your own account data,
+     * Transaction in an account has the same right. You can read your own account data,
      * but you cannot write anything in it. To modify your account money amount you have
      * to create {@link Transaction}.
      *
      * @return true if the authenticated user can access something.
      */
     public final boolean canAccessSomething() {
-        return new MoneyRight.Everything().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        return new MoneyRight.Transaction().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
     }
 
     /**
@@ -51,7 +51,7 @@ public abstract class Account extends Identifiable {
      *         something in this class.
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getLastModificationDate();
     }
 
@@ -61,7 +61,7 @@ public abstract class Account extends Identifiable {
      *         something in this class.
      */
     public final BigDecimal getAmount() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getAmount();
     }
 
@@ -71,7 +71,7 @@ public abstract class Account extends Identifiable {
      *         something in this class.
      */
     public final PageIterable<Transaction> getTransactions() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return new TransactionList(getDaoAccount().getTransactions());
     }
 
@@ -82,7 +82,7 @@ public abstract class Account extends Identifiable {
      *         something in this class.
      */
     public final Actor getActor() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getActorUnprotected();
     }
 
@@ -92,7 +92,7 @@ public abstract class Account extends Identifiable {
      *         something in this class.
      */
     public final Date getCreationDate() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDaoAccount().getCreationDate();
     }
 

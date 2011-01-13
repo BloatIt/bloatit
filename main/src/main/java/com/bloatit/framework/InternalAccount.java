@@ -40,7 +40,7 @@ public final class InternalAccount extends Account {
      * @throws UnauthorizedOperationException
      */
     public BigDecimal getBlocked() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return dao.getBlocked();
     }
 

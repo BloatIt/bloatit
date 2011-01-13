@@ -28,16 +28,16 @@ public final class Transaction extends Identifiable {
     }
 
     public boolean canAccessSomething() {
-        return new MoneyRight.Everything().canAccess(calculateRole(), Action.READ);
+        return new MoneyRight.Transaction().canAccess(calculateRole(), Action.READ);
     }
 
     public InternalAccount getFrom() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(), Action.READ);
         return new InternalAccount(dao.getFrom());
     }
 
     public Account getTo() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(), Action.READ);
         if (dao.getTo().getClass() == DaoInternalAccount.class) {
             return new InternalAccount((DaoInternalAccount) dao.getTo());
         } else if (dao.getTo().getClass() == DaoExternalAccount.class) {
@@ -47,12 +47,12 @@ public final class Transaction extends Identifiable {
     }
 
     public BigDecimal getAmount() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(), Action.READ);
         return dao.getAmount();
     }
 
     public Date getCreationDate() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(), Action.READ);
         return dao.getCreationDate();
     }
 

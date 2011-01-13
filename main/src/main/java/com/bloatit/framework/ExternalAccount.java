@@ -25,12 +25,12 @@ public final class ExternalAccount extends Account {
     }
 
     public String getBankCode() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return dao.getBankCode();
     }
 
     public AccountType getType() throws UnauthorizedOperationException {
-        new MoneyRight.Everything().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return dao.getType();
     }
 

@@ -19,9 +19,16 @@ import com.bloatit.model.data.DaoOffer;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
+/**
+ * A demand is an idea :)
+ */
 public final class Demand extends Kudosable {
     private final DaoDemand dao;
 
+    /**
+     * Create a new Demand.
+     * @return null if the <code>dao</code> is null.
+     */
     public static Demand create(final DaoDemand dao) {
         if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
             return null;
@@ -29,10 +36,17 @@ public final class Demand extends Kudosable {
         return new Demand(dao);
     }
 
+    /**
+     * Create a new demand.
+     * @see DaoDemand#DaoDemand(Member,Locale,String, String)
+     */
     public Demand(final Member author, final Locale locale, final String title, final String description) {
         dao = DaoDemand.createAndPersist(author.getDao(), DaoDescription.createAndPersist(author.getDao(), locale, title, description));
     }
 
+    /**
+     * Use the {@link #create(DaoDemand)} method.
+     */
     private Demand(final DaoDemand dao) {
         super();
         this.dao = dao;
