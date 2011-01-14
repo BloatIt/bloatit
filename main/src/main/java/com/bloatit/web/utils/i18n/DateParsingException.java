@@ -11,6 +11,9 @@
 
 package com.bloatit.web.utils.i18n;
 
+/**
+ * Exception thrown whenever there is a parsing error
+ */
 public class DateParsingException extends Exception {
 
     private static final long serialVersionUID = -5521307570732803960L;

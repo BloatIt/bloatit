@@ -41,7 +41,7 @@ public class CurrencyLocale {
     private static final String RATES_PATH = "../locales/rates";
     private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
     private static final int DISPLAY_PRECISION = 0;
-    
+
     private final Locale targetLocale;
     private final BigDecimal euroAmount;
     private final Currency currency;
@@ -49,31 +49,54 @@ public class CurrencyLocale {
     private static Date lastParse = null;
     private static Map<Currency, BigDecimal> currencies = new HashMap<Currency, BigDecimal>();
 
-
-    public CurrencyLocale(BigDecimal euroAmount, Locale targetLocale) throws CurrencyNotAvailableException{
+    /**
+     * <p>
+     * Creates a new <code>CurrencyLocale</code>
+     * </p>
+     * <p>
+     * Uses java <code>Locale</code>s to find the appropriate
+     * <code>target</code> currency. Conversion rate is obtained from an
+     * external source.
+     * </p>
+     * 
+     * @param euroAmount
+     *            the amount of money in the default application currency (euro)
+     * @param targetLocale
+     *            the <code>Locale</code> that represents the currency of the
+     * @throws CurrencyNotAvailableException
+     *             whenever <code>targetLocale</code> currency is not in the
+     *             list of available currencies
+     */
+    public CurrencyLocale(BigDecimal euroAmount, Locale targetLocale) throws CurrencyNotAvailableException {
         this.euroAmount = euroAmount;
         this.targetLocale = targetLocale;
         this.currency = Currency.getInstance(targetLocale);
         parseRate();
-        if(!currencies.containsKey(currency)){
-        	throw new CurrencyNotAvailableException();
+        if (!currencies.containsKey(currency)) {
+            throw new CurrencyNotAvailableException();
         }
     }
 
     /**
-     * <p>Converts the euro amount to the locale amount</p>
-     * <p>Conversion will be done with a 7 digits precision and rounding HALF_ELVEN
-     * (meaning it will round to the closest neighbor unless both are equidistant
-     * in which case it will round to the closest even number) which is the
-     * IEEE 754R default</p>
+     * <p>
+     * Converts the euro amount to the locale amount
+     * </p>
+     * <p>
+     * Conversion will be done with a 7 digits precision and rounding HALF_ELVEN
+     * (meaning it will round to the closest neighbor unless both are
+     * equidistant in which case it will round to the closest even number) which
+     * is the IEEE 754R default
+     * </p>
+     * 
      * @return the locale amount
      */
     public BigDecimal getConvertedAmount() {
-        return euroAmount.multiply(currencies.get(currency),MathContext.DECIMAL32);
+        return euroAmount.multiply(currencies.get(currency), MathContext.DECIMAL32);
     }
 
     /**
      * Finds the symbol used for this money in the given locale
+     * 
      * @return the currency symbol
      */
     public String getLocaleSymbol() {
@@ -81,8 +104,9 @@ public class CurrencyLocale {
     }
 
     /**
-     * Returns the localized version of the amount, i.e. : converted to the locale
-     * money, and with the locale symbol
+     * Returns the localized version of the amount, i.e. : converted to the
+     * locale money, and with the locale symbol
+     * 
      * @return the localized string
      */
     public String getLocaleString() {
@@ -90,66 +114,79 @@ public class CurrencyLocale {
     }
 
     /**
-     *
-     * @return
+     * Returns the displayed amount within the default currency of the
+     * application (currently euro)
+     * 
+     * @return a String representing the <code>amount</code> of money in the
+     *         application default currency
      */
     public String getDefaultString() {
         return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
-     * Returns the localized version of the amount, i.e. : converted to the locale
-     * money, and with the locale symbol
+     * Returns the localized version of the amount, i.e. : converted to the
+     * locale money, and with the locale symbol
+     * 
      * @return the localized string
      */
     @Override
-    public String toString(){
+    public String toString() {
         return this.getLocaleString();
     }
-    
+
     /**
      * Checks wether the target currency is handled
-     * @return <i>true</i> if currency is handled, <i>false</i> otherwise
-     */ 
-    public boolean availableTargetCurrency(){
-    	return currencies.containsKey(currency);
-    }
-    
-    /**
-     * Checks if a currency is handled
-     * @param currency the currency to check
+     * 
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
-    public static boolean availableCurrency(Locale locale){
-    	return availableCurrency(Currency.getInstance(locale));
+    public boolean availableTargetCurrency() {
+        return currencies.containsKey(currency);
     }
-    
+
     /**
      * Checks if a currency is handled
-     * @param currency the currency to check
+     * 
+     * @param currency
+     *            the currency to check
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
-    public static boolean availableCurrency(Currency currency){
-    	return currencies.containsKey(currency);
+    public static boolean availableCurrency(Locale locale) {
+        return availableCurrency(Currency.getInstance(locale));
     }
-    
+
+    /**
+     * Checks if a currency is handled
+     * 
+     * @param currency
+     *            the currency to check
+     * @return <i>true</i> if currency is handled, <i>false</i> otherwise
+     */
+    public static boolean availableCurrency(Currency currency) {
+        return currencies.containsKey(currency);
+    }
+
     /**
      * Returns the current targetLocale
      */
     public Locale getTargetLocale() {
-    	return targetLocale;
+        return targetLocale;
     }
 
-	/**
-     * <p>Parses the rate file and initializes the currency array</p>
-     * <p>This parsing will occur only if file has been modified since last parse
-     * or if no parse ever occured</p>
+    /**
+     * <p>
+     * Parses the rate file and initializes the currency array
+     * </p>
+     * <p>
+     * This parsing will occur only if file has been modified since last parse
+     * or if no parse ever occured
+     * </p>
      */
     private static void parseRate() {
         BufferedReader br = null;
         try {
             File file = new File(RATES_PATH);
-            if (lastParse == null || lastParse.before(new Date(file.lastModified()) )) {
+            if (lastParse == null || lastParse.before(new Date(file.lastModified()))) {
                 // Only parse if the file has been updated in the meantime
                 lastParse = new Date();
 

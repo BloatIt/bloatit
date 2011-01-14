@@ -36,8 +36,7 @@ import com.bloatit.web.utils.url.UrlParameter;
  * <p>
  * Session is used for various purposes :
  * <li>Store some parameters {@link Session#addParameter(String, String)}</li>
- * <li>Perform localization</li>
- * <li>Store pages that the user wishes to consult, be he couldn't because he didn't meet
+ * <li>Store pages that the user wishes to consult, but he couldn't because he didn't meet
  * the requirements</li>
  * </p>
  */
