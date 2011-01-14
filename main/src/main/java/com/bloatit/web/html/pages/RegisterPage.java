@@ -25,8 +25,7 @@ import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.Countries;
-import com.bloatit.web.utils.Countries.Country;
+import com.bloatit.web.utils.i18n.Country;
 import com.bloatit.web.utils.i18n.Localizator;
 import com.bloatit.web.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.web.utils.url.RegisterActionUrl;
@@ -80,8 +79,8 @@ public final class RegisterPage extends Page {
         form.add(emailInput);
 
         HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, Context.tr("Country"));
-        for(Country entry : Countries.getAvailableCountries()){
-        	countryInput.add(entry.name, entry.code);
+        for(Country entry : Country.getAvailableCountries()){
+        	countryInput.add(entry.getName(), entry.getCode());
         }
         form.add(countryInput);
 

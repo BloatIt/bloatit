@@ -1,6 +1,23 @@
+/*
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.web.utils;
 
-// TODO from http://www.rgagnon.com/javadetails/java-0456.html
+/**
+ * <p>
+ * A class that provides tools to manipulate ASCII
+ * </p>
+ * <p>
+ * Taken from from http://www.rgagnon.com/javadetails/java-0456.html
+ * </p>
+ */
 public final class AsciiUtils {
     private static final String PLAIN_ASCII = "AaEeIiOoUu" // grave
             + "AaEeIiOoUuYy" // acute
@@ -22,7 +39,16 @@ public final class AsciiUtils {
     private AsciiUtils() {
     }
 
-    // remove accentued from a string and replace with ascii equivalent
+    /**
+     * <p>
+     * Replaces accents from a String and replaces them with the same
+     * non-accentuated character
+     * </p>
+     * <p>
+     * Example : <code>AsciiUtils.convertNonAscii(Gračišće)</code> will return
+     * <code>Gracisce</code>
+     * </p>
+     */
     public static String convertNonAscii(final String s) {
         if (s == null) {
             return null;
