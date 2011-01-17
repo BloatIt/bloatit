@@ -11,10 +11,10 @@
 
 package com.bloatit.web.server;
 
-public class Notification {
+public final class Notification {
 
-    final String message;
-    final Type type;
+    private final String message;
+    private final Type type;
 
     public static enum Type {
         GOOD, BAD, ERROR

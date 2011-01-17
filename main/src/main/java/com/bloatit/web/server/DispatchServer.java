@@ -23,7 +23,7 @@ import com.bloatit.web.scgiserver.HttpPost;
 import com.bloatit.web.utils.url.Parameters;
 import com.bloatit.web.utils.url.Url;
 
-public class DispatchServer {
+public final class DispatchServer {
     private final Map<String, Class<? extends Url>> urls = new HashMap<String, Class<? extends Url>>();
     public DispatchServer() {
         // Nothing here.

@@ -26,6 +26,7 @@ public final class Loaders {
      * desactivate ctor
      */
     private Loaders() {
+        // desactivate ctor
     }
 
     public static <T> String toStr(final T obj) throws ConversionErrorException {
@@ -234,14 +235,14 @@ public final class Loaders {
             return MemberManager.getMemberById(Integer.valueOf(data));
         }
     }
-    
+
     private static class ToKudosable extends ToIdentifiable {
         @Override
         public Identifiable fromString(final String data) {
             return KudosableManager.getById(Integer.valueOf(data));
         }
     }
-    
+
     private static class ToComment extends ToIdentifiable {
         @Override
         public Identifiable fromString(final String data) {

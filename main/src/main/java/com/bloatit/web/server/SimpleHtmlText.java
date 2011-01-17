@@ -1,8 +1,14 @@
 package com.bloatit.web.server;
 
-public abstract class SimpleHtmlText implements Text {
+import java.io.OutputStream;
 
-    protected abstract void append(String text);
+public final class SimpleHtmlText extends Text {
+
+
+    public SimpleHtmlText(OutputStream out) {
+        super(out);
+    }
+
 
     @Override
     public void writeLine(String newText) {

@@ -12,10 +12,10 @@ package com.bloatit.web.utils.i18n;
 
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.web.utils.PropertyLoader;
@@ -32,7 +32,7 @@ import com.bloatit.web.utils.PropertyLoader;
  * <li>Deutschland -> de</li>
  * </p>
  */
-public class Country implements Comparable<Country> {
+public final class Country implements Comparable<Country> {
     private static final String COUNTRIES_PATH = "i18n/countries";
     private static Set<Country> availableCountries = null;
     private final String name;
@@ -40,11 +40,9 @@ public class Country implements Comparable<Country> {
 
     /**
      * Creates a new country
-     * 
-     * @param name
-     *            the long name of the country
-     * @param code
-     *            the ISO code of the country
+     *
+     * @param name the long name of the country
+     * @param code the ISO code of the country
      */
     public Country(String name, String code) {
         super();
@@ -53,8 +51,8 @@ public class Country implements Comparable<Country> {
     }
 
     /**
-     * @return the long name of the country (should be in the main language of
-     *         the country)
+     * @return the long name of the country (should be in the main language of the
+     *         country)
      */
     public String getName() {
         return name;
@@ -66,11 +64,11 @@ public class Country implements Comparable<Country> {
     public String getCode() {
         return code;
     }
-    
+
     /**
      * @return the Locale matching the country
      */
-    public Locale getLocale(){
+    public Locale getLocale() {
         return new Locale(code);
     }
 
@@ -87,18 +85,23 @@ public class Country implements Comparable<Country> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Country other = (Country) obj;
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         return true;
     }
 
@@ -106,7 +109,7 @@ public class Country implements Comparable<Country> {
      * <p>
      * Lists all available countries ordered on their fullname
      * </p>
-     * 
+     *
      * @return a list of the available countries
      */
     public static Set<Country> getAvailableCountries() {

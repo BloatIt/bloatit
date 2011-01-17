@@ -1,17 +1,18 @@
 package com.bloatit.web.server;
 
-public abstract class IndentedHtmlText implements Text {
+import java.io.OutputStream;
+
+public final class IndentedHtmlText extends Text {
     private int indentCount;
     private final String indentSeparator;
     private final String lineSeparator;
 
-    public IndentedHtmlText() {
+    public IndentedHtmlText(final OutputStream out) {
+        super(out);
         this.indentSeparator = "  ";
         this.lineSeparator = "\n";
-        indentCount = 0;
+        this.indentCount = 0;
     }
-
-    protected abstract void append(String text);
 
     @Override
     public final void writeLine(String newText) {

@@ -10,7 +10,7 @@ import com.bloatit.common.Log;
 
 public class LazyLoaders {
 
-    public static abstract class LazyComponent<T> {
+    public abstract static class LazyComponent<T> {
         private T value = null;
         private final String name;
 

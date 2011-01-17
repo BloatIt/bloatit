@@ -35,8 +35,8 @@ public final class AsciiUtils {
             + "\u00C4\u00E4\u00CB\u00EB\u00CF\u00EF\u00D6\u00F6\u00DC\u00FC\u0178\u00FF" + "\u00C5\u00E5" + "\u00C7\u00E7"
             + "\u0150\u0151\u0170\u0171";
 
-    // private constructor, can't be instanciated!
     private AsciiUtils() {
+        // private constructor, can't be instanciated!
     }
 
     /**

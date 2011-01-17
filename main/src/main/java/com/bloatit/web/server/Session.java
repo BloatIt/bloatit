@@ -15,9 +15,9 @@ import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.UUID;
 
 import com.bloatit.framework.AuthToken;
-import com.bloatit.web.actions.Action;
 import com.bloatit.web.annotations.Message;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.Parameters;
@@ -40,186 +40,185 @@ import com.bloatit.web.utils.url.UrlParameter;
  * the requirements</li>
  * </p>
  */
-public class Session {
+public final class Session {
 
     public static final long LOGGED_SESSION_DURATION = 1296000; // 15 days in seconds
     public static final long DEFAULT_SESSION_DURATION = 86400; // 1 days in seconds
 
+    private final UUID key;
+    private final Deque<Notification> notificationList;
+    private AuthToken authToken;
 
-	private final String key;
-	private final Deque<Action> actionList;
-	private final Deque<Notification> notificationList;
-	private AuthToken authToken;
+    private Url lastStablePage = null;
+    private Url targetPage = null;
 
-	private Url lastStablePage = null;
-	private Url targetPage = null;
+    private long expirationTime;
 
-	private long expirationTime;
+    /**
+     * The place to store session data
+     */
+    private final Parameters sessionParams = new Parameters();
 
-	/**
-	 * The place to store session data
-	 */
-	private final Parameters sessionParams = new Parameters();
+    Session() {
+        this(UUID.randomUUID());
+    }
 
-	Session(final String key) {
-	    this.key = key;
+    Session(UUID id) {
+        this.key = id;
+        authToken = null;
+        notificationList = new ArrayDeque<Notification>();
+        resetExpirationTime();
+    }
 
-		authToken = null;
-		actionList = new ArrayDeque<Action>();
-		notificationList = new ArrayDeque<Notification>();
-		resetExpirationTime();
-	}
+    UUID getKey() {
+        return key;
+    }
 
-	public final void resetExpirationTime() {
-	    if(isLogged()) {
-	        expirationTime = Context.getTime() + LOGGED_SESSION_DURATION;
-	    } else {
-	        expirationTime = Context.getTime() + DEFAULT_SESSION_DURATION;
-	    }
-	}
+    public void resetExpirationTime() {
+        if (isLogged()) {
+            expirationTime = Context.getTime() + LOGGED_SESSION_DURATION;
+        } else {
+            expirationTime = Context.getTime() + DEFAULT_SESSION_DURATION;
+        }
+    }
 
-	public final void setAuthToken(final AuthToken token) {
-		authToken = token;
-		resetExpirationTime();
-	}
+    public void setAuthToken(final AuthToken token) {
+        authToken = token;
+        resetExpirationTime();
+    }
 
-	public final AuthToken getAuthToken() {
-		return authToken;
-	}
+    public AuthToken getAuthToken() {
+        return authToken;
+    }
 
-	public final boolean isLogged() {
-		return authToken != null;
-	}
+    public boolean isLogged() {
+        return authToken != null;
+    }
 
-	public final boolean isExpired() {
+    public boolean isExpired() {
         return Context.getTime() > expirationTime;
     }
 
-	public final String getKey() {
-		return key;
-	}
+    public void setLastStablePage(final Url p) {
+        lastStablePage = p;
+    }
 
-	public final Deque<Action> getActionList() {
-		return actionList;
-	}
+    public Url getLastStablePage() {
+        return lastStablePage;
+    }
 
-	public void setLastStablePage(final Url p) {
-		lastStablePage = p;
-	}
+    /**
+     * You should use the pickPreferedPage instead.
+     */
+    @Deprecated
+    public final Url getTargetPage() {
+        return targetPage;
+    }
 
-	public Url getLastStablePage() {
-		return lastStablePage;
-	}
+    public Url pickPreferredPage() {
+        if (targetPage != null) {
+            final Url tempStr = targetPage;
+            targetPage = null;
+            return tempStr;
+        } else if (lastStablePage != null) {
+            return lastStablePage;
+        } else {
+            return new IndexPageUrl();
+        }
+    }
 
-	/**
-	 * You should use the pickPreferedPage instead.
-	 */
-	@Deprecated
-	public final Url getTargetPage() {
-		return targetPage;
-	}
+    public final void setTargetPage(final Url targetPage) {
+        this.targetPage = targetPage;
+    }
 
-	public Url pickPreferredPage() {
-		if (targetPage != null) {
-			final Url tempStr = targetPage;
-			targetPage = null;
-			return tempStr;
-		} else if (lastStablePage != null) {
-			return lastStablePage;
-		} else {
-			return new IndexPageUrl();
-		}
-	}
+    public final void notifyGood(final String message) {
+        notificationList.add(new Notification(message, Notification.Type.GOOD));
+    }
 
-	public final void setTargetPage(final Url targetPage) {
-		this.targetPage = targetPage;
-	}
+    public final void notifyBad(final String message) {
+        notificationList.add(new Notification(message, Notification.Type.BAD));
+    }
 
-	public final void notifyGood(final String message) {
-		notificationList.add(new Notification(message, Notification.Type.GOOD));
-	}
+    public final void notifyError(final String message) {
+        notificationList.add(new Notification(message, Notification.Type.ERROR));
+    }
 
-	public final void notifyBad(final String message) {
-		notificationList.add(new Notification(message, Notification.Type.BAD));
-	}
+    /**
+     * Notifies all elements in a list as warnings
+     */
+    public final void notifyList(final List<Message> errors) {
+        for (final Message error : errors) {
+            switch (error.getLevel()) {
+            case ERROR:
+                notifyError(error.getMessage());
+                break;
+            case WARNING:
+                notifyBad(error.getMessage());
+                break;
+            case INFO:
+                notifyGood(error.getMessage());
+                break;
+            default:
+                break;
+            }
+        }
+    }
 
-	public final void notifyError(final String message) {
-		notificationList.add(new Notification(message, Notification.Type.ERROR));
-	}
+    public void flushNotifications() {
+        notificationList.clear();
+    }
 
-	/**
-	 * Notifies all elements in a list as warnings
-	 */
-	public final void notifyList(final List<Message> errors) {
-		for (final Message error : errors) {
-			switch (error.getLevel()) {
-			case ERROR:
-				notifyError(error.getMessage());
-				break;
-			case WARNING:
-				notifyBad(error.getMessage());
-				break;
-			case INFO:
-				notifyGood(error.getMessage());
-				break;
-			default:
-				break;
-			}
-		}
-	}
+    public Deque<Notification> getNotifications() {
+        return notificationList;
+    }
 
-	public final void flushNotifications() {
-		notificationList.clear();
-	}
+    /**
+     * Finds all the session parameters
+     *
+     * @return the parameter of the session
+     * @deprecated use a RequestParam
+     */
+    @Deprecated
+    public Parameters getParams() {
+        return sessionParams;
+    }
 
-	public final Deque<Notification> getNotifications() {
-		return notificationList;
-	}
+    /**
+     * Finds a given parameter in the session
+     *
+     * @param paramKey the key of the parameter
+     * @return the value of the parameter
+     * @deprecated use a RequestParam
+     */
+    @Deprecated
+    public String getParam(final String paramKey) {
+        return sessionParams.get(paramKey);
+    }
 
-	/**
-	 * Finds all the session parameters
-	 * @return the parameter of the session
-	 * @deprecated use a RequestParam
-	 */
-	@Deprecated
-	public final Parameters getParams() {
-		return sessionParams;
-	}
+    /**
+     * <p>
+     * Saves a new parameter in the session. The parameter will be saved only if <code>
+     * paramValue</code> is <i>not null</i>. If you want to save a <code>null</code>
+     * value, use {@link #addParamForced(String, String)}.
+     * </p>
+     * <p>
+     * Session parameters are available until they are checked, or session ends
+     * </p>
+     *
+     * @param paramKey
+     * @param paramValue
+     */
+    public void addParameter(final String paramKey, final String paramValue) {
+        if (paramValue != null && paramKey != null) {
+            sessionParams.put(paramKey, paramValue);
+        }
+    }
 
-	/**
-	 * Finds a given parameter in the session
-	 * @param paramKey the key of the parameter
-	 * @return the value of the parameter
-	 * @deprecated use a RequestParam
-	 */
-	@Deprecated
-	public final String getParam(final String paramKey) {
-		return sessionParams.get(paramKey);
-	}
+    public void addParameter(UrlParameter<?> param) {
+        sessionParams.put(param.getName(), param.getStringValue());
+    }
 
-	/**
-	 * <p>
-	 * Saves a new parameter in the session. The parameter will be saved only if <code>
-	 * paramValue</code> is <i>not null</i>. If you want to save a <code>null</code>
-	 * value, use {@link #addParamForced(String, String)}.
-	 * </p>
-	 * <p>
-	 * Session parameters are available until they are checked, or session ends
-	 * </p>
-	 * @param paramKey
-	 * @param paramValue
-	 */
-	public final void addParameter(final String paramKey, final String paramValue) {
-	    if( paramValue != null && paramKey != null) {
-	        sessionParams.put(paramKey, paramValue);
-	    }
-	}
-
-	public final void addParameter(UrlParameter<?> param){
-	    sessionParams.put(param.getName(), param.getStringValue());
-	}
-
-	/**
+    /**
      * <p>
      * Saves a new parameter in the session. This method will save even <code>
      * null</code> parameters.
@@ -227,29 +226,31 @@ public class Session {
      * <p>
      * Session parameters are available until they are checked, or session ends
      * </p>
+     *
      * @param paramKey
      * @param paramValue
      */
-	public final void addParamForced(final String paramKey, final String paramValue) {
+    public void addParamForced(final String paramKey, final String paramValue) {
         sessionParams.put(paramKey, paramValue);
     }
 
-	/**
+    /**
      * <p>
      * Saves a new <code>BigDecimal</code> in the session.
      * </p>
      * <p>
-     * This method is null-safe : if <code>paramValue</code> is null, the method doesn't fail
-     * but no parameter is added
+     * This method is null-safe : if <code>paramValue</code> is null, the method doesn't
+     * fail but no parameter is added
      * </p>
      * <p>
      * Session parameters are available until they are checked, or session ends
      * </p>
+     *
      * @param paramKey
      * @param paramValue
      */
-    public final void addParam(final String paramKey, final BigDecimal paramValue) {
-        if(paramValue != null){
+    public void addParam(final String paramKey, final BigDecimal paramValue) {
+        if (paramValue != null) {
             sessionParams.put(paramKey, paramValue.toPlainString());
         }
     }

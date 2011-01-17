@@ -11,10 +11,16 @@ import com.bloatit.web.utils.i18n.Localizator;
  * </p>
  */
 public class Context {
+    private static final int MILLISECOND_DIV = 1000;
+
     private static Session session = null;
     private static Localizator localizator = null;
     private static HttpHeader header = null;
     private static long currentTime = 0;
+
+    private Context(){
+        // desactivate CTOR.
+    }
 
     public static Session getSession() {
         return session;
@@ -78,7 +84,7 @@ public class Context {
     }
 
     private static void updateTime() {
-        Context.currentTime = new Date().getTime() / 1000;
+        Context.currentTime = new Date().getTime() / MILLISECOND_DIV;
     }
 
     private static void setHeader(HttpHeader header) {

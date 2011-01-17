@@ -12,7 +12,7 @@ package com.bloatit.web.utils;
 
 import java.util.Random;
 
-public class RandomString {
+public final class RandomString {
 
     private static final char[] symbols = new char[36];
 

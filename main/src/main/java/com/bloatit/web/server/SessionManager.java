@@ -21,32 +21,33 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import javassist.NotFoundException;
 
-import com.bloatit.common.CryptoTools;
-import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
 import com.bloatit.framework.AuthToken;
 
 // TODO make me non public !
-public class SessionManager {
+public final class SessionManager {
 
-    private static Map<String, Session> activeSessions = new HashMap<String, Session>();
+    private static Map<UUID, Session> activeSessions = new HashMap<UUID, Session>();
     private static final long CLEAN_EXPIRED_SESSION_COOLDOWN = 172800; // 2 days
     private static long nextCleanExpiredSession = 0;
 
-    public static Session createSession() throws FatalErrorException {
+    private SessionManager(){
+        // desactivate CTOR
+    }
 
-        final String key = CryptoTools.generateKey();
-        final Session session = new Session(key);
-        activeSessions.put(key, session);
+    public static Session createSession() {
+        final Session session = new Session();
+        activeSessions.put(session.getKey(), session);
         return session;
     }
 
     public static void destroySession(Session session) {
         if (activeSessions.containsKey(session.getKey())) {
-            System.err.println("destroy session " + session.getKey());
+            Log.server().info("destroy session " + session.getKey());
             activeSessions.remove(session.getKey());
         }
     }
@@ -59,13 +60,14 @@ public class SessionManager {
     }
 
     private static void restoreSession(final String key, final int memberId) {
-        final Session session = new Session(key);
+        UUID uuidKey = UUID.fromString(key);
+        final Session session = new Session(uuidKey);
         try {
             session.setAuthToken(new AuthToken(memberId));
         } catch (NotFoundException e) {
-            e.printStackTrace();
+            Log.server().error(e);
         }
-        activeSessions.put(key, session);
+        activeSessions.put(uuidKey, session);
     }
 
     public static void SaveSessions() {
@@ -76,18 +78,20 @@ public class SessionManager {
         String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
         String dump = dir + "/sessions.dump";
 
-        new File(dir).mkdirs();
+        if (new File(dir).mkdirs()) {
+            Log.server().debug("Creating a new dir: " + dir);
+        }
 
         FileOutputStream fileOutputStream;
         try {
             fileOutputStream = new FileOutputStream(new File(dump));
 
-            for (Entry<String, Session> session : activeSessions.entrySet()) {
+            for (Entry<UUID, Session> session : activeSessions.entrySet()) {
 
                 if (session.getValue().isLogged()) {
                     StringBuilder sessionDump = new StringBuilder();
 
-                    sessionDump.append(session.getValue().getKey());
+                    sessionDump.append(session.getValue().getKey().toString());
                     sessionDump.append(" ");
                     sessionDump.append(session.getValue().getAuthToken().getMember().getDao().getId());
                     sessionDump.append("\n");
@@ -99,7 +103,7 @@ public class SessionManager {
             fileOutputStream.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.server().error("Failed to save sessions.", e);
         }
 
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
@@ -112,7 +116,6 @@ public class SessionManager {
         String dump = dir + "/sessions.dump";
 
         try {
-
             // Open the file that is the first
             // command line parameter
             FileInputStream fstream;
@@ -132,16 +135,20 @@ public class SessionManager {
                 }
 
             }
-            // Close the input stream
-            in.close();
 
-            new File(dump).delete();
+            // Close the streams
+            in.close();
+            br.close();
+
+            if (new File(dump).delete()) {
+                Log.server().info("deleting dump file: " + dump);
+            }else{
+                Log.server().error("Cannot delete dump file: " + dump);
+            }
 
         } catch (IOException e) {
             // Failed to restore sessions
-            Log.web().error("Failed to restore sessions");
-            Log.web().error(e);
-
+            Log.server().error("Failed to restore sessions.", e);
         }
 
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
@@ -150,9 +157,7 @@ public class SessionManager {
 
     public static void clearExpiredSessions() {
         if (nextCleanExpiredSession < Context.getTime()) {
-
             performClearExpiredSessions();
-
             nextCleanExpiredSession = Context.getTime() + CLEAN_EXPIRED_SESSION_COOLDOWN;
         }
     }

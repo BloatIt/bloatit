@@ -18,4 +18,20 @@ public class DateParsingException extends Exception {
 
     private static final long serialVersionUID = -5521307570732803960L;
 
+    public DateParsingException() {
+        super();
+    }
+
+    public DateParsingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public DateParsingException(String message) {
+        super(message);
+    }
+
+    public DateParsingException(Throwable cause) {
+        super(cause);
+    }
+
 }

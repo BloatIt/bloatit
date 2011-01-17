@@ -4,23 +4,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.scgiserver.SCGIRequestAbordedException;
 
 public final class HttpResponse {
 
     private final OutputStream output;
+    private final IndentedHtmlText htmlText;
 
     public HttpResponse(final OutputStream output) {
         this.output = output;
+        this.htmlText = new IndentedHtmlText(output);
     }
 
     public void writeRedirect(final String url) throws IOException {
         writeCookies();
-
         output.write("Location: ".getBytes());
         output.write(url.getBytes());
         output.write("\r\n".getBytes());
-
         closeHeaders();
     }
 
@@ -30,17 +29,7 @@ public final class HttpResponse {
 
         closeHeaders();
 
-        page.write(new IndentedHtmlText() {
-            @Override
-            protected void append(final String text) {
-                try {
-                    output.write(text.getBytes());
-                } catch (final IOException ex) {
-                    throw new SCGIRequestAbordedException(ex);
-                }
-            }
-        });
-
+        page.write(htmlText);
     }
 
     private void closeHeaders() throws IOException {
@@ -49,7 +38,7 @@ public final class HttpResponse {
 
     private void writeCookies() throws IOException {
         output.write("Set-Cookie: session_key=".getBytes());
-        output.write(Context.getSession().getKey().getBytes());
+        output.write(Context.getSession().getKey().toString().getBytes());
         output.write("; path=/; Max-Age=1296000; Version=1 \r\n".getBytes());
     }
 }
