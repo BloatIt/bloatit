@@ -10,8 +10,11 @@
  */
 package com.bloatit.web.html.pages.idea;
 
+import static com.bloatit.web.server.Context.tr;
+
 import java.util.Locale;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.annotations.Message.Level;
@@ -32,10 +35,10 @@ public final class IdeaPage extends Page {
     public static final String IDEA_FIELD_NAME = "id";
 
     @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
-    protected Demand idea;
+    private final Demand idea;
 
     @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "idea")
-    protected String title;
+    private final String title;
 
     private IdeaTabPane demandTabPane;
     private final IdeaPageUrl url;
@@ -55,9 +58,13 @@ public final class IdeaPage extends Page {
     @Override
     protected String getTitle() {
         if (idea != null) {
-            return idea.getTitle();
+            try {
+                return idea.getTitle();
+            } catch (UnauthorizedOperationException e) {
+                // Return the default one.
+            }
         }
-        return Context.tr("Idea not found !");
+        return tr("Idea not found !");
     }
 
     @Override
@@ -79,9 +86,12 @@ public final class IdeaPage extends Page {
         }
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
-        final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
-
-        add(new HtmlTitleBlock("VLC"+" - "+translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
+        try {
+            Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+            add(new HtmlTitleBlock("VLC" + " - " + translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
+        } catch (UnauthorizedOperationException e) {
+            // no right no description and no title.
+        }
         add(new IdeaHeadComponent(idea));
         add(generateBody());
     }

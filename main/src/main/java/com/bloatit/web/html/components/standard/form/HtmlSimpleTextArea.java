@@ -18,7 +18,7 @@ import com.bloatit.web.html.HtmlBranch;
  * Internal class used to create simple text areas.
  * </p>
  */
-public class HtmlSimpleTextArea extends HtmlBranch {
+public final class HtmlSimpleTextArea extends HtmlBranch {
     protected HtmlSimpleTextArea(final int rows, final int cols) {
         super("textarea");
         addAttribute("cols", "" + cols);

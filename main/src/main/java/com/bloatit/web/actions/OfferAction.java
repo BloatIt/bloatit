@@ -67,7 +67,7 @@ public final class OfferAction extends LoggedAction {
     }
 
     @Override
-    public final Url doProcessRestricted() {
+    public Url doProcessRestricted() {
         try {
             targetIdea.authenticate(session.getAuthToken());
             targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
@@ -79,7 +79,7 @@ public final class OfferAction extends LoggedAction {
     }
 
     @Override
-    protected final Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
 
         if (targetIdea != null) {

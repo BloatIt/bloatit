@@ -46,7 +46,7 @@ public final class AccountChargingAction extends LoggedAction {
     }
 
     @Override
-	public final Url doProcessRestricted() throws RedirectException {
+	public Url doProcessRestricted() throws RedirectException {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             session.notifyList(url.getMessages());
             throw new RedirectException(new IndexPageUrl());
@@ -79,7 +79,7 @@ public final class AccountChargingAction extends LoggedAction {
     }
 
     @Override
-	protected final Url doProcessErrors() throws RedirectException {
+	protected Url doProcessErrors() throws RedirectException {
     	// TODO
 		return new LoginPageUrl();
     }

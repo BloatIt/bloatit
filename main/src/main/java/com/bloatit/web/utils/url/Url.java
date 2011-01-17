@@ -1,6 +1,5 @@
 package com.bloatit.web.utils.url;
 
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.Linkable;
 
@@ -22,6 +21,6 @@ public abstract class Url extends UrlComponent {
         super.constructUrl(sb);
     }
 
-    public abstract Linkable createPage() throws RedirectException;
+    public abstract Linkable createPage();
 
 }

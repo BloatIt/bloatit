@@ -13,7 +13,7 @@ package com.bloatit.web.html.components.standard.form;
 
 /**
  * A class used to create input fields of password type The result will be :
- * 
+ *
  * <pre>
  * <p>
  *      <label for="...">plop</label>
@@ -21,7 +21,7 @@ package com.bloatit.web.html.components.standard.form;
  * </p>
  * </pre>
  */
-public class HtmlPasswordField extends HtmlFormField<String> {
+public final class HtmlPasswordField extends HtmlFormField<String> {
 
     public HtmlPasswordField(final String name) {
         super(new HtmlSimpleInput("password"), name);

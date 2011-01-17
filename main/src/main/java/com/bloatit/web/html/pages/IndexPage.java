@@ -30,7 +30,7 @@ import com.bloatit.web.utils.url.IndexPageUrl;
 @ParamContainer("index")
 public final class IndexPage extends Page {
 
-    public IndexPage(final IndexPageUrl indexPageUrl) throws RedirectException {
+    public IndexPage(final IndexPageUrl indexPageUrl) {
         super(indexPageUrl);
     }
 
@@ -80,14 +80,9 @@ public final class IndexPage extends Page {
     private void generateDualColumnBlock(final HtmlDiv dualColumnBlock) {
 
         final HtmlDiv hightlightDemandsBlock = new HtmlDiv("index_hightlight_demands_block");
-        generateHightlightDemandsBlock(hightlightDemandsBlock);
 
         dualColumnBlock.add(generateDescriptionBlock());
         dualColumnBlock.add(hightlightDemandsBlock);
-    }
-
-    private void generateHightlightDemandsBlock(final HtmlDiv hightlightDemandsBlock) {
-
     }
 
     private HtmlDiv generateDescriptionBlock() {

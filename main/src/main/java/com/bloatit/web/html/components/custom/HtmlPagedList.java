@@ -26,8 +26,11 @@ import com.bloatit.web.utils.url.UrlComponent;
 @ParamContainer(value = "pagedList", isComponent = true)
 public class HtmlPagedList<T> extends HtmlList {
 
-    private final static String CURRENT_PAGE_FIELD_NAME = "current_page";
-    private final static String PAGE_SIZE_FIELD_NAME = "page_size";
+    private static final int NB_PAGES_RIGHT = 4;
+    private static final int NB_PAGES_CENTER = 3;
+    private static final int NB_PAGES_LEFT = 4;
+    private static final String CURRENT_PAGE_FIELD_NAME = "current_page";
+    private static final String PAGE_SIZE_FIELD_NAME = "page_size";
 
     private final Integer pageCount;
     private final UrlComponent currentUrl;
@@ -77,18 +80,18 @@ public class HtmlPagedList<T> extends HtmlList {
         // first page
         span.add(generateLink(1));
 
-        if (currentPage - 4 > 1) {
+        if (currentPage - NB_PAGES_RIGHT > 1) {
             span.addText("...");
         }
 
         // center pages
-        for (int i = currentPage - 3; i < currentPage + 3; i++) {
+        for (int i = currentPage - NB_PAGES_CENTER; i < currentPage + NB_PAGES_CENTER; i++) {
             if (i > 1 && i < pageCount) {
                 span.add(generateLink(i));
             }
         }
 
-        if (currentPage + 4 < pageCount) {
+        if (currentPage + NB_PAGES_LEFT < pageCount) {
             span.addText("...");
         }
 

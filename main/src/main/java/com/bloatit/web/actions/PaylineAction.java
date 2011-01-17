@@ -9,15 +9,15 @@ import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.scgiserver.HttpHeader;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.server.HttpHeader;
 import com.bloatit.web.utils.url.PaylineActionUrl;
 import com.bloatit.web.utils.url.PaylineNotifyActionUrl;
 import com.bloatit.web.utils.url.PaylinePageUrl;
 import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlStringBinder;
 
-@ParamContainer("payline/dopayment")
+@ParamContainer("payline-dopayment")
 public final class PaylineAction extends LoggedAction {
 
     public static final String CHARGE_AMOUNT_CODE = "amount";

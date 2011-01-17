@@ -1,5 +1,7 @@
 package com.bloatit.web.html.pages.master;
 
+import java.io.IOException;
+
 import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
@@ -13,6 +15,7 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.pages.master.HtmlNotification.Level;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.server.HttpResponse;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Notification;
 import com.bloatit.web.server.Session;
@@ -24,8 +27,8 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     private final HtmlBranch content;
     private final HtmlBranch notifications;
-    protected final Session session;
     private final Url thisUrl;
+    protected final Session session;
 
     public Page(final Url url) {
         super();
@@ -33,6 +36,12 @@ public abstract class Page extends HtmlElement implements Linkable {
         content = new HtmlDiv().setId("body_content");
         notifications = new HtmlDiv().setId("notifications");
         session = Context.getSession();
+    }
+
+    @Override
+    public final void writeToHttp(HttpResponse response) throws RedirectException, IOException {
+        create();
+        response.writePage(this);
     }
 
     public final void create() throws RedirectException {

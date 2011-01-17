@@ -30,17 +30,20 @@ import com.bloatit.web.utils.url.CommentReplyPageUrl;
  * Page that hosts the form used to reply to an existing comment
  */
 @ParamContainer("comment/reply")
-public final class CommentReplyPage extends LoggedPage{
+public final class CommentReplyPage extends LoggedPage {
+
+    private static final int NB_LINES = 10;
+    private static final int NB_COLUMNS = 80;
 
     private final CommentReplyPageUrl url;
 
-     @RequestParam(name = CommentCommentAction.COMMENT_TARGET, level = Level.ERROR)
-     private final Comment targetComment;
+    @RequestParam(name = CommentCommentAction.COMMENT_TARGET, level = Level.ERROR)
+    private final Comment targetComment;
 
-     @RequestParam(name = CommentCommentAction.COMMENT_CONTENT_CODE, role = Role.SESSION, defaultValue = "")
-     private final String comment;
+    @RequestParam(name = CommentCommentAction.COMMENT_CONTENT_CODE, role = Role.SESSION, defaultValue = "")
+    private final String comment;
 
-    public CommentReplyPage(CommentReplyPageUrl url) throws RedirectException {
+    public CommentReplyPage(CommentReplyPageUrl url) {
         super(url);
         this.url = url;
         this.targetComment = url.getTargetComment();
@@ -56,7 +59,7 @@ public final class CommentReplyPage extends LoggedPage{
         HtmlForm form = new HtmlForm(new CommentCommentActionUrl(targetComment).urlString());
         htb.add(form);
 
-        HtmlTextArea commentInput = new HtmlTextArea(CommentCommentAction.COMMENT_CONTENT_CODE, Context.tr("Content"), 10, 80);
+        HtmlTextArea commentInput = new HtmlTextArea(CommentCommentAction.COMMENT_CONTENT_CODE, Context.tr("Content"), NB_LINES, NB_COLUMNS);
         commentInput.setDefaultValue(comment);
         form.add(commentInput);
 

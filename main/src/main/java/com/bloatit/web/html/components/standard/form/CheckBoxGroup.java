@@ -17,7 +17,7 @@ import com.bloatit.web.html.components.standard.form.HtmlFormField.LabelPosition
 /**
  *
  */
-public class CheckBoxGroup extends HtmlLeaf {
+public final class CheckBoxGroup extends HtmlLeaf {
 
     private final LabelPosition position;
 

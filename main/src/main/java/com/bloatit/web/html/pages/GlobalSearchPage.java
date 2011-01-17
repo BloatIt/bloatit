@@ -32,7 +32,7 @@ import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 @ParamContainer("search")
 public final class GlobalSearchPage extends Page {
 
-    public final static String SEARCH_CODE = "global_search";
+    public static final String SEARCH_CODE = "global_search";
     @RequestParam(defaultValue = "", name = SEARCH_CODE)
     private final String searchString;
 

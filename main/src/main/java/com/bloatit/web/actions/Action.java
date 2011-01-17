@@ -11,9 +11,12 @@
 
 package com.bloatit.web.actions;
 
+import java.io.IOException;
+
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.server.HttpResponse;
 import com.bloatit.web.server.Linkable;
 import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.Url;
@@ -32,6 +35,11 @@ public abstract class Action implements Linkable {
         session = Context.getSession();
     }
 
+    @Override
+    public void writeToHttp(HttpResponse response) throws RedirectException, IOException {
+        response.writeRedirect(process().urlString());
+    }
+
     public final Url process() throws RedirectException {
         if (actionUrl.getMessages().hasMessage(Level.ERROR)) {
             return doProcessErrors();
@@ -42,4 +50,5 @@ public abstract class Action implements Linkable {
     protected abstract Url doProcess() throws RedirectException;
 
     protected abstract Url doProcessErrors() throws RedirectException;
+
 }

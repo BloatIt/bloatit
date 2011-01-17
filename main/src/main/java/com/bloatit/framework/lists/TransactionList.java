@@ -17,4 +17,21 @@ public final class TransactionList extends ListBinder<Transaction, DaoTransactio
         return new TransactionIterator(dao);
     }
 
+    static final class TransactionIterator extends com.bloatit.framework.lists.IteratorBinder<Transaction, DaoTransaction> {
+
+        public TransactionIterator(final Iterable<DaoTransaction> daoIterator) {
+            super(daoIterator);
+        }
+
+        public TransactionIterator(final Iterator<DaoTransaction> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected Transaction createFromDao(final DaoTransaction dao) {
+            return new Transaction(dao);
+        }
+
+    }
+
 }

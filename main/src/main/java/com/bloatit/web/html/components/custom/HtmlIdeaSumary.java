@@ -11,12 +11,16 @@
 
 package com.bloatit.web.html.components.custom;
 
+import static com.bloatit.web.server.Context.tr;
+import static com.bloatit.web.server.Context.trn;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.bloatit.common.Image;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Offer;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlImage;
@@ -30,6 +34,9 @@ import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 
 public final class HtmlIdeaSumary extends HtmlDiv {
+
+    private static final String IMPORTANT_CSS_CLASS = "important";
+    private static final int SHORT_DESCRIPTION_LENGTH = 200;
 
     public HtmlIdeaSumary(final Demand idea) {
         super("idea_conpact_summary");
@@ -57,18 +64,27 @@ public final class HtmlIdeaSumary extends HtmlDiv {
 
             linkTitle.add(project);
             linkTitle.addText(" - ");
-            linkTitle.addText(idea.getTitle());
+            try {
+                linkTitle.addText(idea.getTitle());
+            } catch (UnauthorizedOperationException e1) {
+                linkTitle.addText(tr("Error: you do not have the right to see te title."));
+            }
 
             final HtmlTitleBlock ideaTitle = new HtmlTitleBlock(linkTitle, 3);
             {
 
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
-                final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
-                String shortDescription = translatedDescription.getText();
+                String shortDescription = tr("Error: you do not have the right to see the description.");
+                try {
+                    Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+                    shortDescription = translatedDescription.getText();
+                } catch (UnauthorizedOperationException e1) {
+                    // Do nothing.
+                }
 
-                if (shortDescription.length() > 144) {
+                if (shortDescription.length() > SHORT_DESCRIPTION_LENGTH) {
                     // TODO create a tools to truncate less dirty
-                    shortDescription = shortDescription.substring(0, 143) + " ...";
+                    shortDescription = shortDescription.substring(0, SHORT_DESCRIPTION_LENGTH - 1) + " ...";
                 }
 
                 final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(shortDescription));
@@ -80,22 +96,29 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                 try {
                     progressValue = (float) Math.floor(idea.getProgression());
                     float cappedProgressValue = progressValue;
-                    if (cappedProgressValue > 100) {
-                        cappedProgressValue = 100;
+                    if (cappedProgressValue > Demand.PROGRESSION_PERCENT) {
+                        cappedProgressValue = Demand.PROGRESSION_PERCENT;
                     }
 
                     final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
                     ideaTitle.add(progressBar);
                 } catch (UnauthorizedOperationException e) {
-                    // The user doesn't have the right to see the progress, a text replace the progress bar.
-                    final HtmlParagraph progressBarText = new HtmlParagraph(Context.tr("You don't have the right to see the progress on the idea."));
+                    // The user doesn't have the right to see the progress, a text replace
+                    // the progress bar.
+                    final HtmlParagraph progressBarText = new HtmlParagraph(tr("You don't have the right to see the progress on the idea."));
                     ideaTitle.add(progressBarText);
                 }
 
-                if (idea.getCurrentOffer() == null) {
+                Offer currentOffer = null;
+                try {
+                    currentOffer = idea.getCurrentOffer();
+                } catch (UnauthorizedOperationException e1) {
+                    // Do nothing.
+                }
+                if (currentOffer == null) {
 
                     HtmlSpan amount = new HtmlSpan();
-                    amount.setCssClass("important");
+                    amount.setCssClass(IMPORTANT_CSS_CLASS);
 
                     CurrencyLocale currency;
                     try {
@@ -103,16 +126,17 @@ public final class HtmlIdeaSumary extends HtmlDiv {
 
                         amount.addText(currency.getDefaultString());
                     } catch (UnauthorizedOperationException e) {
-                        // The user doesn't have the right to see the contribution, nothing is displayed
+                        // The user doesn't have the right to see the contribution,
+                        // nothing is displayed
                     }
 
                     final HtmlParagraph progressText = new HtmlParagraph();
                     progressText.setCssClass("idea_progress_text");
 
                     progressText.add(amount);
-                    progressText.addText(Context.tr(" no offer ("));
-                    progressText.add(new OfferPageUrl(idea).getHtmlLink(Context.tr("make an offer")));
-                    progressText.addText(Context.tr(")"));
+                    progressText.addText(tr(" no offer ("));
+                    progressText.add(new OfferPageUrl(idea).getHtmlLink(tr("make an offer")));
+                    progressText.addText(tr(")"));
 
                     ideaTitle.add(progressText);
                 } else {
@@ -121,18 +145,18 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                     try {
                         amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
                         HtmlSpan amount = new HtmlSpan();
-                        amount.setCssClass("important");
+                        amount.setCssClass(IMPORTANT_CSS_CLASS);
                         amount.addText(amountCurrency.getDefaultString());
 
                         // Target
-                        CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
+                        CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
                         HtmlSpan target = new HtmlSpan();
-                        target.setCssClass("important");
+                        target.setCssClass(IMPORTANT_CSS_CLASS);
                         target.addText(targetCurrency.getDefaultString());
 
                         // Progress
                         HtmlSpan progress = new HtmlSpan();
-                        progress.setCssClass("important");
+                        progress.setCssClass(IMPORTANT_CSS_CLASS);
                         NumberFormat format = NumberFormat.getNumberInstance();
                         format.setMinimumFractionDigits(0);
                         progress.addText("" + format.format(progressValue) + " %");
@@ -141,17 +165,18 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                         progressText.setCssClass("idea_progress_text");
 
                         progressText.add(amount);
-                        progressText.addText(Context.tr(" i.e. "));
+                        progressText.addText(tr(" i.e. "));
                         progressText.add(progress);
-                        progressText.addText(Context.tr(" of "));
+                        progressText.addText(tr(" of "));
                         progressText.add(target);
-                        long amountLong = idea.getCurrentOffer().getAmount().longValue();
-                        progressText.addText(Context.trn(" requested ", " requested ", amountLong));
+                        long amountLong = currentOffer.getAmount().longValue();
+                        progressText.addText(trn(" requested ", " requested ", amountLong));
 
                         ideaTitle.add(progressText);
                     } catch (UnauthorizedOperationException e) {
-                        // The user doesn't have the right to see the progress, a text replace the progress bar.
-                        final HtmlParagraph progressBarText = new HtmlParagraph(Context.tr("You don't have the right to see the progress on the idea."));
+                        // The user doesn't have the right to see the progress, a text
+                        // replace the progress bar.
+                        final HtmlParagraph progressBarText = new HtmlParagraph(tr("You don't have the right to see the progress on the idea."));
                         ideaTitle.add(progressBarText);
                     }
                 }

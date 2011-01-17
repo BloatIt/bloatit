@@ -17,7 +17,7 @@ import com.bloatit.web.html.HtmlElement;
 /**
  * A class used to create a new html block (aka div)
  */
-public class HtmlTitleBlock extends HtmlBranch {
+public final class HtmlTitleBlock extends HtmlBranch {
 
     private final HtmlTitle title;
 

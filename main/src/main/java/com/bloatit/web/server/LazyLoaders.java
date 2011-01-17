@@ -18,7 +18,7 @@ public class LazyLoaders {
             this.name = name;
         }
 
-        public T getValue(Map<String, String> env) {
+        public final T getValue(Map<String, String> env) {
             if (value != null) {
                 return value;
             }
@@ -36,7 +36,7 @@ public class LazyLoaders {
 
     }
 
-    public static class LazyMap extends LazyComponent<Map<String, String>> {
+    public static final class LazyMap extends LazyComponent<Map<String, String>> {
         public LazyMap(String name) {
             super(name);
         }
@@ -63,7 +63,7 @@ public class LazyLoaders {
         }
     }
 
-    public static class LazyInt extends LazyComponent<Integer> {
+    public static final class LazyInt extends LazyComponent<Integer> {
 
         public LazyInt(String name) {
             super(name);
@@ -86,7 +86,7 @@ public class LazyLoaders {
 
     }
 
-    public static class LazyStringList extends LazyComponent<List<String>> {
+    public static final class LazyStringList extends LazyComponent<List<String>> {
 
         private final String separator;
 
@@ -107,7 +107,7 @@ public class LazyLoaders {
         }
     }
 
-    public static class LazyString extends LazyComponent<String> {
+    public static final class LazyString extends LazyComponent<String> {
         public LazyString(String name) {
             super(name);
         }

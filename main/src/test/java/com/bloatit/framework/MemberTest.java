@@ -135,7 +135,7 @@ public class MemberTest extends FrameworkTestUnit {
         }
     }
 
-    public void testGetDemands() {
+    public void testGetDemands() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         assertEquals("Mon titre", yo.getDemands().iterator().next().getTitle());

@@ -17,4 +17,21 @@ public final class DemandList extends ListBinder<Demand, DaoDemand> {
         return new DemandIterator(dao);
     }
 
+    static final class DemandIterator extends com.bloatit.framework.lists.IteratorBinder<Demand, DaoDemand> {
+
+        public DemandIterator(final Iterable<DaoDemand> daoIterator) {
+            super(daoIterator);
+        }
+
+        public DemandIterator(final Iterator<DaoDemand> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected Demand createFromDao(final DaoDemand dao) {
+            return Demand.create(dao);
+        }
+
+    }
+
 }

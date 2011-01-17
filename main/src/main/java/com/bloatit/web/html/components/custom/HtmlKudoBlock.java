@@ -15,12 +15,11 @@ import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
-import com.bloatit.web.server.Session;
 import com.bloatit.web.utils.url.KudoActionUrl;
 
 public class HtmlKudoBlock extends HtmlDiv {
 
-    public HtmlKudoBlock(final Kudosable kudosable, final Session session) {
+    public HtmlKudoBlock(final Kudosable kudosable) {
         super("kudo_box");
 
         final HtmlLink kudoUpLink = new KudoActionUrl(kudosable).getHtmlLink(new HtmlDiv("kudo_box_up"));

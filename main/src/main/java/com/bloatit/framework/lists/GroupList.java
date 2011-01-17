@@ -17,4 +17,21 @@ public final class GroupList extends ListBinder<Group, DaoGroup> {
         return new GroupIterator(dao);
     }
 
+    static final class GroupIterator extends com.bloatit.framework.lists.IteratorBinder<Group, DaoGroup> {
+
+        public GroupIterator(final Iterable<DaoGroup> daoIterator) {
+            super(daoIterator);
+        }
+
+        public GroupIterator(final Iterator<DaoGroup> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected Group createFromDao(final DaoGroup dao) {
+            return Group.create(dao);
+        }
+
+    }
+
 }

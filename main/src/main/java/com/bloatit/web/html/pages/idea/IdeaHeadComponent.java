@@ -10,12 +10,15 @@
  */
 package com.bloatit.web.html.pages.idea;
 
+import static com.bloatit.web.server.Context.tr;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.bloatit.common.Image;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Demand;
+import com.bloatit.framework.Offer;
 import com.bloatit.framework.Translation;
 import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
@@ -30,6 +33,9 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 
 public final class IdeaHeadComponent extends HtmlPageComponent {
 
+    private static final String IMPORTANT_CSS_CLASS = "important";
+    private static final int SHORT_DESCRIPTION_LENGTH = 144;
+
     public IdeaHeadComponent(final Demand idea) {
         super();
 
@@ -40,7 +46,7 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
             {
 
                 final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-                karmaBlock.add(new HtmlKudoBlock(idea, Context.getSession()));
+                karmaBlock.add(new HtmlKudoBlock(idea));
 
                 leftBlock.add(karmaBlock);
 
@@ -51,12 +57,16 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
             {
 
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
-                final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
-                String shortDescription = translatedDescription.getText();
-
-                if (shortDescription.length() > 144) {
+                String shortDescription = tr("Error: you do not have the right to see the description.");
+                try {
+                    Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+                    shortDescription = translatedDescription.getText();
+                } catch (UnauthorizedOperationException e1) {
+                    // Do nothing.
+                }
+                if (shortDescription.length() > SHORT_DESCRIPTION_LENGTH) {
                     // TODO create a tools to truncate less dirty
-                    shortDescription = shortDescription.substring(0, 143) + " ...";
+                    shortDescription = shortDescription.substring(0, SHORT_DESCRIPTION_LENGTH - 1) + " ...";
                 }
 
                 final HtmlParagraph text = new HtmlParagraph(shortDescription);
@@ -67,8 +77,8 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                 try {
                     progressValue = (float) Math.floor(idea.getProgression());
                     float cappedProgressValue = progressValue;
-                    if (cappedProgressValue > 100) {
-                        cappedProgressValue = 100;
+                    if (cappedProgressValue > Demand.PROGRESSION_PERCENT) {
+                        cappedProgressValue = Demand.PROGRESSION_PERCENT;
                     }
 
                     final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
@@ -77,10 +87,16 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                     // No right, no progress bar
                 }
 
-                if (idea.getCurrentOffer() == null) {
+                Offer currentOffer = null;
+                try {
+                    currentOffer = idea.getCurrentOffer();
+                } catch (UnauthorizedOperationException e1) {
+                    // Nothing.
+                }
+                if (currentOffer == null) {
 
                     HtmlSpan amount = new HtmlSpan();
-                    amount.setCssClass("important");
+                    amount.setCssClass(IMPORTANT_CSS_CLASS);
 
                     CurrencyLocale currency;
                     try {
@@ -107,18 +123,18 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                     try {
                         amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
                         HtmlSpan amount = new HtmlSpan();
-                        amount.setCssClass("important");
+                        amount.setCssClass(IMPORTANT_CSS_CLASS);
                         amount.addText(amountCurrency.getDefaultString());
 
                         // Target
-                        CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(idea.getCurrentOffer().getAmount());
+                        CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
                         HtmlSpan target = new HtmlSpan();
-                        target.setCssClass("important");
+                        target.setCssClass(IMPORTANT_CSS_CLASS);
                         target.addText(targetCurrency.getDefaultString());
 
                         // Progress
                         HtmlSpan progress = new HtmlSpan();
-                        progress.setCssClass("important");
+                        progress.setCssClass(IMPORTANT_CSS_CLASS);
                         NumberFormat format = NumberFormat.getNumberInstance();
                         format.setMinimumFractionDigits(0);
                         progress.addText("" + format.format(progressValue) + " %");

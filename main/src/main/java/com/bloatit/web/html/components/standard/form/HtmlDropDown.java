@@ -30,8 +30,8 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
  * <p>Class to handle Html drop down boxes (aka Html select).</p>
  * <p>Usage is : create the object, then use addText to add a new line</p>
  */
-public class HtmlDropDown extends HtmlFormField<Integer> {
-    private List<HtmlBranch> components = new ArrayList<HtmlBranch>();
+public final class HtmlDropDown extends HtmlFormField<Integer> {
+    private final List<HtmlBranch> components = new ArrayList<HtmlBranch>();
 
     public HtmlDropDown(final String name) {
         super(new HtmlGenericElement("select"), name);

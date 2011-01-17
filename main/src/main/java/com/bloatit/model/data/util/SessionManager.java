@@ -21,7 +21,7 @@ public final class SessionManager {
     private SessionManager() { // Desactivate
     }
 
-    // SHOULD BE FINAL see reCreateSessionFactory
+    // SHOULD BE FINAL see generateTestSessionFactory
     private static SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {

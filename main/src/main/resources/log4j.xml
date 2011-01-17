@@ -33,6 +33,9 @@
 	<logger name="com.bloatit.web">
 		<level value="trace" />
 	</logger>
+	<logger name="com.bloatit.web.server">
+		<level value="trace" />
+	</logger>
 
 	<root>
 		<priority value="debug" />

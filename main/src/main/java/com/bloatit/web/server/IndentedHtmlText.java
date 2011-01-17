@@ -14,35 +14,35 @@ public abstract class IndentedHtmlText implements Text {
     protected abstract void append(String text);
 
     @Override
-    public void writeLine(String newText) {
+    public final void writeLine(String newText) {
         append(newText);
         writeNewLineChar();
     }
 
     @Override
-    public void writeIndentation() {
+    public final void writeIndentation() {
         for (int i = 0; i < indentCount; ++i) {
             append(indentSeparator);
         }
     }
 
     @Override
-    public void writeNewLineChar() {
+    public final void writeNewLineChar() {
         append(lineSeparator);
     }
 
     @Override
-    public void writeRawText(final String newText) {
+    public final void writeRawText(final String newText) {
         append(newText);
     }
 
     @Override
-    public void indent() {
+    public final void indent() {
         indentCount++;
     }
 
     @Override
-    public void unindent() {
+    public final void unindent() {
         if (indentCount > 0) {
             indentCount--;
         }

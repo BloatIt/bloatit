@@ -11,15 +11,17 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-public class HtmlRadioButton extends HtmlFormField<Boolean> {
+import com.bloatit.web.html.components.standard.form.HtmlSimpleInput.InputType;
+
+public final class HtmlRadioButton extends HtmlFormField<Boolean> {
 
     public HtmlRadioButton(final String name, final String value, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.RADIO), name, position);
+        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT)), name, position);
         addAttribute("value", value);
     }
 
     public HtmlRadioButton(final String name, final String value, final String label, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.RADIO), name, label, position);
+        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT)), name, label, position);
         addAttribute("value", value);
     }
 

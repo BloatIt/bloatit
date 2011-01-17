@@ -19,6 +19,8 @@ import com.bloatit.web.utils.url.MyAccountPageUrl;
 
 public class TopBar extends HtmlDiv {
 
+    private static final String TOP_BAR_COMPONENT_CSS_CLASS = "top_bar_component";
+
     protected TopBar() {
         super();
 
@@ -43,7 +45,7 @@ public class TopBar extends HtmlDiv {
             } catch (UnauthorizedOperationException e) {
                 // No right, no display the karma
             }
-            add(new HtmlSpan().setCssClass("top_bar_component").add(memberLink).add(karma));
+            add(new HtmlSpan().setCssClass(TOP_BAR_COMPONENT_CSS_CLASS).add(memberLink).add(karma));
 
             // Display user money in euro
             final HtmlBranch euroMoney = new HtmlSpan();
@@ -69,7 +71,7 @@ public class TopBar extends HtmlDiv {
                     localeMoney.addText(cl.getLocaleString());
                     money.add(localeMoney);
                 }
-                add(new HtmlSpan().setCssClass("top_bar_component").add(money));
+                add(new HtmlSpan().setCssClass(TOP_BAR_COMPONENT_CSS_CLASS).add(money));
             } catch (UnauthorizedOperationException e) {
                 // no right, no money displayed
             }
@@ -77,11 +79,11 @@ public class TopBar extends HtmlDiv {
 
             // Display logout link
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(Context.tr("Logout"));
-            add(new HtmlSpan().setCssClass("top_bar_component").add(logoutLink));
+            add(new HtmlSpan().setCssClass(TOP_BAR_COMPONENT_CSS_CLASS).add(logoutLink));
 
         } else {
             final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.tr("Login / Signup"));
-            add(new HtmlSpan().setCssClass("top_bar_component").add(loginLink));
+            add(new HtmlSpan().setCssClass(TOP_BAR_COMPONENT_CSS_CLASS).add(loginLink));
         }
     }
 }

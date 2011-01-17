@@ -29,14 +29,18 @@ public class IdeaOfferListComponent extends HtmlDiv {
         }
         final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
-        Offer currentOffer = demand.getCurrentOffer();
-        offersBlock.add(new IdeaOfferComponent(currentOffer, true));
-
-        for (final Offer offer : offers) {
-            if (!offer.equals(currentOffer)) {
-                offersBlock.add(new IdeaOfferComponent(offer, false));
+        try {
+            Offer currentOffer = demand.getCurrentOffer();
+            offersBlock.add(new IdeaOfferComponent(currentOffer, true));
+            for (final Offer offer : offers) {
+                if (!offer.equals(currentOffer)) {
+                    offersBlock.add(new IdeaOfferComponent(offer, false));
+                }
             }
+        } catch (UnauthorizedOperationException e) {
+            // No right no current offer.
         }
+
 
         add(offersBlock);
     }

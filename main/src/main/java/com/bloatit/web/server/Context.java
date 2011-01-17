@@ -2,20 +2,19 @@ package com.bloatit.web.server;
 
 import java.util.Date;
 
+import com.bloatit.web.scgiserver.HttpHeader;
 import com.bloatit.web.utils.i18n.Localizator;
 
 /**
- * <p>A class that stores <b>all</b> the information about the current request</p>
+ * <p>
+ * A class that stores <b>all</b> the information about the current request
+ * </p>
  */
 public class Context {
     private static Session session = null;
     private static Localizator localizator = null;
     private static HttpHeader header = null;
     private static long currentTime = 0;
-
-    public static void setSession(final Session session) {
-        Context.session = session;
-    }
 
     public static Session getSession() {
         return session;
@@ -63,23 +62,34 @@ public class Context {
         return localizator;
     }
 
-    public static void setHeader(HttpHeader header) {
-        Context.header = header;
-    }
-
     public static HttpHeader getHeader() {
         return Context.header;
     }
 
     public static long getTime() {
-        return currentTime;
+        return Context.currentTime;
     }
 
-    public static void updateTime() {
-        currentTime = new Date().getTime() / 1000;
+    static void reInitializeContext(HttpHeader header, Session session) {
+        updateTime();
+        setHeader(header);
+        setSession(session);
+        setLocalizator(new Localizator(header.getQueryString().getLanguage(), header.getHttpAcceptLanguage()));
     }
 
-    protected static void setLocalizator(Localizator localizator) {
+    private static void updateTime() {
+        Context.currentTime = new Date().getTime() / 1000;
+    }
+
+    private static void setHeader(HttpHeader header) {
+        Context.header = header;
+    }
+
+    private static void setLocalizator(Localizator localizator) {
         Context.localizator = localizator;
+    }
+
+    private static void setSession(final Session session) {
+        Context.session = session;
     }
 }

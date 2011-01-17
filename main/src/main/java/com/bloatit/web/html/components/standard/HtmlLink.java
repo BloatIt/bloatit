@@ -18,12 +18,12 @@ import com.bloatit.web.html.HtmlText;
 /**
  * Class to create htmllinks (<a href="...">plop</a>)
  */
-public class HtmlLink extends HtmlBranch {
+public final class HtmlLink extends HtmlBranch {
 
     /**
      * Creates a link with a given URL and a given displayed element. Element can be any
      * HtmlNode Will generate :
-     * 
+     *
      * <pre>
      * <a href="url">displayed</a>
      * </pre>
@@ -37,7 +37,7 @@ public class HtmlLink extends HtmlBranch {
     /**
      * Creates a link with a given URL and a given displayed element. Element can be any
      * HtmlNode Will generate :
-     * 
+     *
      * <pre>
      * <a href="url">displayedText</a>
      * </pre>

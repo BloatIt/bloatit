@@ -16,13 +16,18 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
- * SCGI connector.<br>
+ * SCGIUtils connector.<br>
  * Version: 1.0<br>
- * Home page: http://gist.github.com/38425 See also: http://en.wikipedia.org/wiki/SCGI
+ * Home page: http://gist.github.com/38425 See also: http://en.wikipedia.org/wiki/SCGIUtils
  */
-public class SCGI {
+class SCGIUtils {
+
+    private SCGIUtils() {
+        // Hide the ctor.
+    }
 
     public static class SCGIException extends IOException {
 
@@ -37,23 +42,23 @@ public class SCGI {
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
 
     /**
-     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGI</a> request headers.<br>
+     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGIUtils</a> request headers.<br>
      * After the headers had been loaded, you can read the body of the request manually
      * from the same {@code input} stream:
-     * 
+     *
      * <pre>
-     * // Load the SCGI headers.
+     * // Load the SCGIUtils headers.
      * Socket clientSocket = socket.accept();
      * BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
-     * HashMap&lt;String, String&gt; env = SCGI.parse(bis);
+     * HashMap&lt;String, String&gt; env = SCGIUtils.parse(bis);
      * // Read the body of the request.
      * bis.read(new byte[Integer.parseInt(env.get(&quot;CONTENT_LENGTH&quot;))]);
      * </pre>
-     * 
+     *
      * @param input an efficient (buffered) input stream.
-     * @return strings passed via the SCGI request.
+     * @return strings passed via the SCGIUtils request.
      */
-    public static HashMap<String, String> parse(final InputStream input) throws IOException {
+    public static Map<String, String> parse(final InputStream input) throws IOException {
         final StringBuilder lengthString = new StringBuilder(12);
         String headers = "";
         for (;;) {
@@ -69,15 +74,15 @@ public class SCGI {
                 }
                 headers = ISO_8859_1.decode(ByteBuffer.wrap(headersBuf)).toString();
                 if (input.read() != ',') {
-                    throw new SCGIException("Wrong SCGI header length: " + lengthString);
+                    throw new SCGIException("Wrong SCGIUtils header length: " + lengthString);
                 }
                 break;
             } else {
                 lengthString.append(ch);
-                throw new SCGIException("Wrong SCGI header length: " + lengthString);
+                throw new SCGIException("Wrong SCGIUtils header length: " + lengthString);
             }
         }
-        final HashMap<String, String> env = new HashMap<String, String>();
+        final Map<String, String> env = new HashMap<String, String>();
         while (headers.length() != 0) {
             final int sep1 = headers.indexOf(0);
             final int sep2 = headers.indexOf(0, sep1 + 1);

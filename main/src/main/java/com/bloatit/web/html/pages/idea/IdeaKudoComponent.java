@@ -14,7 +14,6 @@ import com.bloatit.framework.Demand;
 import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
-import com.bloatit.web.server.Context;
 
 public class IdeaKudoComponent extends HtmlPageComponent {
 
@@ -23,7 +22,7 @@ public class IdeaKudoComponent extends HtmlPageComponent {
 
         final HtmlDiv descriptionKudoBlock = new HtmlDiv("description_kudo_block");
         {
-            final HtmlKudoBlock kudoBox = new HtmlKudoBlock(demand, Context.getSession());
+            final HtmlKudoBlock kudoBox = new HtmlKudoBlock(demand);
             descriptionKudoBlock.add(kudoBox);
         }
         add(descriptionKudoBlock);

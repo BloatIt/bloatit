@@ -13,7 +13,7 @@ package com.bloatit.web.html.components.standard.form;
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.form.HtmlFormField.LabelPosition;
 
-public class HtmlRadioButtonGroup extends HtmlLeaf {
+public final class HtmlRadioButtonGroup extends HtmlLeaf {
 
     private final LabelPosition position;
     private final String name;

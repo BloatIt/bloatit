@@ -18,23 +18,53 @@ import com.bloatit.web.html.HtmlLeaf;
  */
 public class HtmlSimpleInput extends HtmlLeaf {
 
-    protected final static String TEXT = "text";
-    protected final static String PASSWORD = "password";
-    protected final static String FILE = "file";
-    protected final static String CHECKBOX = "checkbox";
-    protected final static String RADIO = "radio";
-    protected final static String BUTTON = "button";
-    protected final static String SUBMIT = "submit";
-    protected final static String RESET = "reset";
-    protected final static String HIDDEN = "hidden";
+    protected enum InputType {
+        TEXT_INPUT, PASSWORD_INPUT, FILE_INPUT, CHECKBOX_INPUT, RADIO_INPUT, BUTTON_INPUT, SUBMIT_INPUT, RESET_INPUT, HIDDEN_INPUT
+    }
+
+    private static final String TEXT = "text";
+    private static final String PASSWORD = "password";
+    private static final String FILE = "file";
+    private static final String CHECKBOX = "checkbox";
+    private static final String RADIO = "radio";
+    private static final String BUTTON = "button";
+    private static final String SUBMIT = "submit";
+    private static final String RESET = "reset";
+    private static final String HIDDEN = "hidden";
 
     protected HtmlSimpleInput(final String type) {
         super("input");
         addAttribute("type", type);
     }
 
-    protected HtmlSimpleInput setName(final String name) {
+    protected final HtmlSimpleInput setName(final String name) {
         addAttribute("name", name).addAttribute("id", name);
         return this;
+    }
+
+    protected static String getInput(InputType type) {
+        switch (type) {
+        case TEXT_INPUT:
+            return TEXT;
+        case BUTTON_INPUT:
+            return BUTTON;
+        case CHECKBOX_INPUT:
+            return CHECKBOX;
+        case FILE_INPUT:
+            return FILE;
+        case HIDDEN_INPUT:
+            return HIDDEN;
+        case PASSWORD_INPUT:
+            return PASSWORD;
+        case RADIO_INPUT:
+            return RADIO;
+        case RESET_INPUT:
+            return RESET;
+        case SUBMIT_INPUT:
+            return SUBMIT;
+        default:
+            assert false;
+            return TEXT;
+        }
     }
 }

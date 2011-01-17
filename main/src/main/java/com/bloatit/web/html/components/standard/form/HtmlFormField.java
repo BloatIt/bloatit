@@ -55,18 +55,18 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         AFTER
     }
 
-    protected PlaceHolderElement ph = new PlaceHolderElement();
+    private final PlaceHolderElement ph = new PlaceHolderElement();
+    private HtmlLabel label;
+    private final HtmlDiv container = new HtmlDiv();
+    private final HtmlDiv input = new HtmlDiv();
     protected PlaceHolderElement commentPh = new PlaceHolderElement();
-    protected HtmlLabel label;
-    protected HtmlDiv container = new HtmlDiv();
-    protected HtmlDiv input = new HtmlDiv();
     protected HtmlElement element;
     private final RandomString rng = new RandomString(10);
-	
+
     /**
      * Creates a form field for a given element, with a given name. If a label is added,
      * it will will be positionned BEFORE the element
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      */
@@ -77,7 +77,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     /**
      * Creates a form field for a given element, with a given name and a given label The
      * Label will be positionned BEFORE the element
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -90,7 +90,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Creates a form field for a given element, with a given name and a given label If a
      * label is added later, it will be added before or after the element, depending on
      * the value of the parameter <i>position</i>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param position the position of the future label
@@ -106,7 +106,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     /**
      * Creates a form field for a given element, with a given name and a given label The
      * label position depends on the value of the parameter <i>position</i>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -129,22 +129,22 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and not
      * modify any other parameters than redefining the placeholder
      * </p>
-     * 
+     *
      * @param label the label for the element
      */
-    public void setLabel(final String label) {
+    public final void setLabel(final String label) {
     	HtmlDiv labelBlock = new HtmlDiv("label");
         this.label = new HtmlLabel(label);
-        
+
         labelBlock.add(this.label);
-        
+
         this.ph.add(labelBlock);
 
         checkIdLabel();
     }
-    
+
     public void setComment(final String comment) {
-    	
+
     	HtmlDiv commentBlock = new HtmlDiv("comment");
     	commentBlock.addText(comment);
     	this.commentPh.add(commentBlock);
@@ -159,7 +159,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     @Override
-    public HtmlElement setId(final String id) {
+    public final HtmlElement setId(final String id) {
         if (this.label != null) {
             this.label.setFor(id);
         }
@@ -168,12 +168,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     }
 
     @Override
-    public String getId() {
+    public final String getId() {
         return element.getId();
     }
 
     @Override
-    public HtmlFormField<T> addAttribute(final String name, final String value) {
+    public final HtmlFormField<T> addAttribute(final String name, final String value) {
         this.element.addAttribute(name, value);
         return this;
     }
@@ -191,10 +191,10 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * The valued added will be obtained using toString on <i>value</i>. If <i>value</i>
      * is null, no defaultValue is added.
      * </p>
-     * 
+     *
      * @param value the Object representing the default value
      */
-    public void setDefaultValue(final T value) {
+    public final void setDefaultValue(final T value) {
         if (value != null) {
             this.doSetDefaultValue(value);
         }
@@ -204,9 +204,9 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Initializes the placeholder for the label
      */
     private void init() {
-    	
-    	
-    	
+
+
+
         switch (position) {
         case AFTER:
             this.container.add(input);
@@ -218,24 +218,24 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
             this.container.add(input);
             break;
         }
-        
+
         this.input.setCssClass("input");
         this.input.add(element);
         this.input.add(commentPh);
-        
-        
+
+
         add(container);
         container.setCssClass("field");
-    	
-        
-        
+
+
+
     }
 
     /**
      * <p>
      * Method to implement to add a default value to the elements of the class
      * </p>
-     * 
+     *
      * @param value the value
      */
     protected abstract void doSetDefaultValue(T value);

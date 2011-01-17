@@ -14,19 +14,20 @@ package com.bloatit.web.html.components.standard.form;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlLeaf;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.form.HtmlSimpleInput.InputType;
 
 /**
  * <p>
  * Class used to create Html buttons
  * </p>
  */
-public class HtmlButton extends HtmlLeaf {
+public final class HtmlButton extends HtmlLeaf {
 
-    HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.BUTTON);
+    private final HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.BUTTON_INPUT));
 
     /**
      * Creates a HtmlButton
-     * 
+     *
      * @param label the text that will be shown on the button
      */
     public HtmlButton(final String value) {

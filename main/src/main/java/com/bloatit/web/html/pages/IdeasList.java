@@ -15,7 +15,6 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
@@ -31,7 +30,7 @@ public final class IdeasList extends Page {
 	private HtmlPagedList<Demand> pagedIdeaList;
 	private final IdeasListUrl url;
 
-	public IdeasList(final IdeasListUrl url) throws RedirectException {
+	public IdeasList(final IdeasListUrl url) {
 		super(url);
 		this.url = url;
 

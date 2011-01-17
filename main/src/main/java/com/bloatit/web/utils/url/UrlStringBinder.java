@@ -1,6 +1,5 @@
 package com.bloatit.web.utils.url;
 
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Linkable;
 
 public class UrlStringBinder extends Url {
@@ -13,7 +12,7 @@ public class UrlStringBinder extends Url {
     }
 
     @Override
-    public Linkable createPage() throws RedirectException {
+    public Linkable createPage() {
         throw new UnsupportedOperationException();
     }
 

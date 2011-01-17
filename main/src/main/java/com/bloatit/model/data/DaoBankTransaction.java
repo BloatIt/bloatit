@@ -84,8 +84,10 @@ public final class DaoBankTransaction extends DaoIdentifiable {
      *         order by <code>creationDate</code>, most recent first.
      */
     public static PageIterable<DaoBankTransaction> getAllTransactionsOf(DaoActor author) {
-        return new QueryCollection<DaoBankTransaction>("from DaoBankTransaction where author = :author order by creationDate DESC")
-                .setEntity("author", author);
+        return new QueryCollection<DaoBankTransaction>(
+                SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
+                SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author"))
+                    .setEntity("author", author);
     }
 
     /**

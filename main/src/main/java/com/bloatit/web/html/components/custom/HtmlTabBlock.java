@@ -15,7 +15,7 @@ import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlComponent;
 
-public class HtmlTabBlock extends HtmlDiv {
+public final class HtmlTabBlock extends HtmlDiv {
 
     private final String tabBlockKey;
     private final String activeTabKey;
@@ -72,7 +72,7 @@ public class HtmlTabBlock extends HtmlDiv {
         } else {
         	tabTitle.add(tablinks.getHtmlLink(div));
         }
-        
+
     }
 
     public abstract static class HtmlTab {

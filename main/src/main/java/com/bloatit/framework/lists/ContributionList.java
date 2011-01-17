@@ -17,4 +17,21 @@ public final class ContributionList extends ListBinder<Contribution, DaoContribu
         return new ContributionIterator(dao);
     }
 
+    static final class ContributionIterator extends com.bloatit.framework.lists.IteratorBinder<Contribution, DaoContribution> {
+
+        public ContributionIterator(final Iterable<DaoContribution> daoIterator) {
+            super(daoIterator);
+        }
+
+        public ContributionIterator(final Iterator<DaoContribution> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected Contribution createFromDao(final DaoContribution dao) {
+            return Contribution.create(dao);
+        }
+
+    }
+
 }

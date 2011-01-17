@@ -91,7 +91,11 @@ public abstract class JavaGenerator {
     public void addAutoGeneratingGetter(String type, String name, String generateFrom) {
         _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
         _gettersSetters.append("    if (").append(generateFrom).append(".getValue() != null) {\n");
+        _gettersSetters.append("    try{\n");
         _gettersSetters.append("        return ").append(generateFrom).append(".getValue().").append(getGetterName(name)).append("();\n");
+        _gettersSetters.append("    } catch (Exception e) {\n");
+        _gettersSetters.append("    // do nothing.\n");
+        _gettersSetters.append("    }\n");
         _gettersSetters.append("    }\n");
         _gettersSetters.append("    return null;\n");
         _gettersSetters.append("}\n\n");
@@ -120,8 +124,8 @@ public abstract class JavaGenerator {
 
         sb.append("new UrlParameterConstraints<").append(type).append(">(");
         if (constraints != null) {
-            sb.append(constraints.min().equals(ParamConstraint.DEFAULT_MIN_STR)?ParamConstraint.DEFAULT_MIN:constraints.min()).append(", ");
-            sb.append(constraints.max().equals(ParamConstraint.DEFAULT_MAX_STR)?ParamConstraint.DEFAULT_MAX:constraints.max()).append(", ");
+            sb.append(constraints.min().equals(ParamConstraint.DEFAULT_MIN_STR) ? ParamConstraint.DEFAULT_MIN : constraints.min()).append(", ");
+            sb.append(constraints.max().equals(ParamConstraint.DEFAULT_MAX_STR) ? ParamConstraint.DEFAULT_MAX : constraints.max()).append(", ");
             sb.append(constraints.optional()).append(", ");
             sb.append(constraints.precision()).append(", ");
             sb.append(constraints.length()).append(", ");

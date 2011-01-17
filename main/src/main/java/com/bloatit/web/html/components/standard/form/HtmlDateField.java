@@ -16,7 +16,7 @@ import com.bloatit.web.utils.i18n.DateLocale;
 /**
  * Class used to create input fields used to input date
  */
-public class HtmlDateField extends HtmlFormField<DateLocale> {
+public final class HtmlDateField extends HtmlFormField<DateLocale> {
 
     public HtmlDateField(final String name) {
         super(new HtmlSimpleInput("text"), name);

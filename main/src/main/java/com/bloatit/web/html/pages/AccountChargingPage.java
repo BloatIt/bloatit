@@ -12,7 +12,6 @@ package com.bloatit.web.html.pages;
 
 import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
@@ -29,7 +28,7 @@ import com.bloatit.web.utils.url.PaylineActionUrl;
 @ParamContainer("charging")
 public final class AccountChargingPage extends LoggedPage {
 
-    public AccountChargingPage(final AccountChargingPageUrl url) throws RedirectException {
+    public AccountChargingPage(final AccountChargingPageUrl url) {
         super(url);
     }
 

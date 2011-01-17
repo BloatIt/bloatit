@@ -17,4 +17,21 @@ public final class MemberList extends ListBinder<Member, DaoMember> {
         return new MemberIterator(dao);
     }
 
+    static final class MemberIterator extends IteratorBinder<Member, DaoMember> {
+
+        public MemberIterator(final Iterable<DaoMember> daoIterator) {
+            super(daoIterator);
+        }
+
+        public MemberIterator(final Iterator<DaoMember> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected Member createFromDao(final DaoMember dao) {
+            return Member.create(dao);
+        }
+
+    }
+
 }

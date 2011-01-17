@@ -27,7 +27,7 @@ public final class IdeaProgressBarComponent extends HtmlPageComponent {
         add(produce());
     }
 
-    protected final HtmlElement produce() {
+    protected HtmlElement produce() {
 
         final HtmlDiv progressBlock = new HtmlDiv("progress_block");
         {
@@ -37,10 +37,10 @@ public final class IdeaProgressBarComponent extends HtmlPageComponent {
             final HtmlDiv progressBarBlock = new HtmlDiv("column");
             try {
                 final float progressValue = (float) Math.floor(demand.getProgression());
-                if (progressValue < 100) {
+                if (progressValue < Demand.PROGRESSION_PERCENT) {
                     progressBarBlock.add(new HtmlProgressBar(progressValue));
                 } else {
-                    progressBarBlock.add(new HtmlProgressBar(100));
+                    progressBarBlock.add(new HtmlProgressBar(Demand.PROGRESSION_PERCENT));
                 }
                 if (demand.getOffers().size() > 0) {
                     progressBarBlock.addText(progressValue + "%");

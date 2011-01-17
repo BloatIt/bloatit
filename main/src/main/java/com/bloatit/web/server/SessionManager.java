@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javassist.NotFoundException;
@@ -31,8 +32,8 @@ import com.bloatit.framework.AuthToken;
 // TODO make me non public !
 public class SessionManager {
 
-    private static HashMap<String, Session> activeSessions = new HashMap<String, Session>();
-    private static final long CLEAN_EXPIRED_SESSION_COOLDOWN = 172800; //2 days
+    private static Map<String, Session> activeSessions = new HashMap<String, Session>();
+    private static final long CLEAN_EXPIRED_SESSION_COOLDOWN = 172800; // 2 days
     private static long nextCleanExpiredSession = 0;
 
     public static Session createSession() throws FatalErrorException {
@@ -44,8 +45,8 @@ public class SessionManager {
     }
 
     public static void destroySession(Session session) {
-        if(activeSessions.containsKey(session.getKey())) {
-            System.err.println("destroy session "+session.getKey());
+        if (activeSessions.containsKey(session.getKey())) {
+            System.err.println("destroy session " + session.getKey());
             activeSessions.remove(session.getKey());
         }
     }
@@ -53,9 +54,8 @@ public class SessionManager {
     public static Session getByKey(final String key) {
         if (activeSessions.containsKey(key)) {
             return activeSessions.get(key);
-        } else {
-            return null;
         }
+        return null;
     }
 
     private static void restoreSession(final String key, final int memberId) {
@@ -105,7 +105,7 @@ public class SessionManager {
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
     }
 
-    public static void LoadSessions() {
+    public static void loadSessions() {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
         String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
@@ -149,7 +149,7 @@ public class SessionManager {
     }
 
     public static void clearExpiredSessions() {
-        if(nextCleanExpiredSession < Context.getTime()) {
+        if (nextCleanExpiredSession < Context.getTime()) {
 
             performClearExpiredSessions();
 
@@ -161,9 +161,9 @@ public class SessionManager {
 
         Iterator<Session> it = activeSessions.values().iterator();
 
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Session session = it.next();
-            if(session.isExpired()) {
+            if (session.isExpired()) {
                 it.remove();
             }
         }

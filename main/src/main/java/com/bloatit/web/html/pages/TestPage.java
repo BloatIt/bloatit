@@ -123,7 +123,7 @@ public final class TestPage extends Page {
         list.add("another one");
 
         final HtmlTitleBlock nbm = new HtmlTitleBlock("Numbered list", 3);
-        final HtmlList nbList = new HtmlList(HtmlList.listType.NUMBERED);
+        final HtmlList nbList = new HtmlList(HtmlList.ListType.NUMBERED);
         nbm.add(nbList);
         nbList.add("plop");
         nbList.add(new HtmlLink("plop", "hello"));

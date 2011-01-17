@@ -17,4 +17,21 @@ public final class KudosList extends ListBinder<Kudos, DaoKudos> {
         return new KudosIterator(dao);
     }
 
+    static final class KudosIterator extends com.bloatit.framework.lists.IteratorBinder<Kudos, DaoKudos> {
+
+        public KudosIterator(final Iterable<DaoKudos> daoIterator) {
+            super(daoIterator);
+        }
+
+        public KudosIterator(final Iterator<DaoKudos> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected Kudos createFromDao(final DaoKudos dao) {
+            return new Kudos(dao);
+        }
+
+    }
+
 }

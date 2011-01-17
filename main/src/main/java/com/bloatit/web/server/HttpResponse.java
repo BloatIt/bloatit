@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.scgiserver.SCGIRequestAbordedException;
 
-public class HttpResponse {
+public final class HttpResponse {
 
     private final OutputStream output;
 

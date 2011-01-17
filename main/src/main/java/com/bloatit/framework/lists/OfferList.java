@@ -17,4 +17,21 @@ public final class OfferList extends ListBinder<Offer, DaoOffer> {
         return new OfferIterator(dao);
     }
 
+    public final class OfferIterator extends com.bloatit.framework.lists.IteratorBinder<Offer, DaoOffer> {
+
+        public OfferIterator(final Iterable<DaoOffer> daoIterator) {
+            super(daoIterator);
+        }
+
+        public OfferIterator(final Iterator<DaoOffer> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected Offer createFromDao(final DaoOffer dao) {
+            return new Offer(dao);
+        }
+
+    }
+
 }

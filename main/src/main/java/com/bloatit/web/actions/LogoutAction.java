@@ -38,7 +38,7 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    public final Url doProcessErrors() {
+    public Url doProcessErrors() {
         session.notifyList(url.getMessages());
         return new IndexPageUrl();
     }

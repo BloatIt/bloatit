@@ -10,14 +10,16 @@
  */
 package com.bloatit.web.html.components.standard.form;
 
-public class HtmlCheckbox extends HtmlFormField<Boolean> {
+import com.bloatit.web.html.components.standard.form.HtmlSimpleInput.InputType;
+
+public final class HtmlCheckbox extends HtmlFormField<Boolean> {
 
     public HtmlCheckbox(final String name, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.CHECKBOX), name, position);
+        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), name, position);
     }
 
     public HtmlCheckbox(final String name, final String label, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.CHECKBOX), name, label, position);
+        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), name, label, position);
     }
 
     @Override

@@ -28,8 +28,13 @@ public class IdeaDescriptionComponent extends HtmlDiv {
         super();
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
-        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
-        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
+        HtmlParagraph description = null;
+        try {
+            final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+            description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
+        } catch (UnauthorizedOperationException e1) {
+            // Nothing.
+        }
 
         final HtmlParagraph date = new HtmlParagraph(HtmlTools.formatDate(Context.getLocalizator().getDate(demand.getCreationDate())),
                 "description_date");

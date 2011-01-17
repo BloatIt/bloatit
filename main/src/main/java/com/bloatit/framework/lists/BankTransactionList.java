@@ -17,4 +17,21 @@ public final class BankTransactionList extends ListBinder<BankTransaction, DaoBa
         return new BankTransactionIterator(dao);
     }
 
+    static final class BankTransactionIterator extends IteratorBinder<BankTransaction, DaoBankTransaction> {
+
+        public BankTransactionIterator(final Iterable<DaoBankTransaction> daoIterator) {
+            super(daoIterator);
+        }
+
+        public BankTransactionIterator(final Iterator<DaoBankTransaction> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected BankTransaction createFromDao(final DaoBankTransaction dao) {
+            return BankTransaction.create(dao);
+        }
+
+    }
+
 }

@@ -13,7 +13,7 @@ package com.bloatit.web.html.components.standard;
 
 import com.bloatit.web.html.HtmlNode;
 
-public abstract interface HtmlRenderer<T> {
+public interface HtmlRenderer<T> {
 
-    public abstract HtmlNode generate(T item);
+    HtmlNode generate(T item);
 }

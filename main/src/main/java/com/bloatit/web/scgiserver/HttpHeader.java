@@ -1,4 +1,4 @@
-package com.bloatit.web.server;
+package com.bloatit.web.scgiserver;
 
 import java.util.List;
 import java.util.Map;
@@ -119,7 +119,7 @@ public class HttpHeader {
     /**
      * example : 1
      */
-    private final LazyString scgi = new LazyString("SCGI");
+    private final LazyString scgi = new LazyString("SCGIUtils");
     /**
      * example :
      * lang=fr&page=payline&param=result-cancel/token-EuuqQRn7AiPNrfqT7D0w1294355479323
@@ -147,6 +147,7 @@ public class HttpHeader {
     public HttpHeader(Map<String, String> env) {
         super();
         this.env = env;
+        System.out.println(env);
         queryString = new Query(env.get("QUERY_STRING"));
     }
 

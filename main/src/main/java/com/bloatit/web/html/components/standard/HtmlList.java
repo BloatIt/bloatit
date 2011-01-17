@@ -19,7 +19,7 @@ import com.bloatit.web.html.HtmlText;
  */
 public class HtmlList extends HtmlLeaf {
 
-    public enum listType {
+    public enum ListType {
         BULLET, NUMBERED
     }
 
@@ -32,19 +32,19 @@ public class HtmlList extends HtmlLeaf {
 
     /**
      * Creates a list with the precised type (numbered or bullet)
-     * 
+     *
      * @param type the type of the list
      */
-    public HtmlList(final listType type) {
-        super((type == listType.BULLET) ? "ul" : "ol");
+    public HtmlList(final ListType type) {
+        super((type == ListType.BULLET) ? "ul" : "ol");
     }
 
-    public HtmlList add(final String element) {
+    public final HtmlList add(final String element) {
         return add(new HtmlText(element));
     }
 
     @Override
-    public HtmlList add(final HtmlNode element) {
+    public final HtmlList add(final HtmlNode element) {
         super.add(new HtmlListItem(element));
         return this;
     }

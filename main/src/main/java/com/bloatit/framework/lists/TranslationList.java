@@ -17,4 +17,21 @@ public final class TranslationList extends ListBinder<Translation, DaoTranslatio
         return new TranslationIterator(dao);
     }
 
+    static final class TranslationIterator extends com.bloatit.framework.lists.IteratorBinder<Translation, DaoTranslation> {
+
+        public TranslationIterator(final Iterable<DaoTranslation> daoIterator) {
+            super(daoIterator);
+        }
+
+        public TranslationIterator(final Iterator<DaoTranslation> daoIterator) {
+            super(daoIterator);
+        }
+
+        @Override
+        protected Translation createFromDao(final DaoTranslation dao) {
+            return Translation.create(dao);
+        }
+
+    }
+
 }

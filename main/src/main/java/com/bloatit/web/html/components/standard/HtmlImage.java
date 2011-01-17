@@ -18,17 +18,17 @@ import com.bloatit.web.html.HtmlLeaf;
  * Used to display an image
  */
 public class HtmlImage extends HtmlLeaf {
-    private final static String IMAGE_DIRECTORY = "/resources/img";
+    private static final String IMAGE_DIRECTORY = "/resources/img";
 
     public HtmlImage(final Image image) {
         super("img");
-        String URI = "";
+        String uri = "";
         if (image.isLocal()) {
-            URI = HtmlImage.IMAGE_DIRECTORY + "/" + image.getIdentifier();
+            uri = HtmlImage.IMAGE_DIRECTORY + "/" + image.getIdentifier();
         } else {
-            URI = image.getIdentifier();
+            uri = image.getIdentifier();
         }
-        addAttribute("src", URI);
+        addAttribute("src", uri);
     }
 
     public HtmlImage(final Image image, final String cssClass) {

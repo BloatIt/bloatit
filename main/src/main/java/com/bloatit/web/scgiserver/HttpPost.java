@@ -1,5 +1,7 @@
 package com.bloatit.web.scgiserver;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
@@ -10,7 +12,18 @@ public class HttpPost {
 
     private final Parameters parameters = new Parameters();
 
-    public HttpPost(byte[] postBytes) {
+    public HttpPost(InputStream is, int length) throws IOException {
+        final byte[] postBytes = new byte[length];
+        int read = is.read(postBytes);
+        if (read == length) {
+            Log.server().debug("Post value read correctly.");
+        } else {
+            Log.server().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
+        }
+        readBytes(postBytes);
+    }
+
+    private void readBytes(byte[] postBytes) {
         String string = new String(postBytes);
         for (final String param : string.split("&")) {
             try {
@@ -30,7 +43,5 @@ public class HttpPost {
     public final Parameters getParameters() {
         return parameters;
     }
-
-
 
 }

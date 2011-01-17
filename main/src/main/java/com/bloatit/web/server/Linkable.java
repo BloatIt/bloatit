@@ -11,6 +11,10 @@
 
 package com.bloatit.web.server;
 
-public interface Linkable {
+import java.io.IOException;
 
+import com.bloatit.web.exceptions.RedirectException;
+
+public interface Linkable {
+    void writeToHttp(final HttpResponse response) throws RedirectException, IOException;
 }

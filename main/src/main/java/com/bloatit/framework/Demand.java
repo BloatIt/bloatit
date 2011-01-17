@@ -102,6 +102,14 @@ public final class Demand extends Kudosable {
     }
 
     /**
+     * @return true if you can access the <code>Description</code> property.
+     * @see #getDescription()
+     */
+    public boolean canAccessDescription() {
+        return new DemandRight.Specification().canAccess(calculateRole(this), Action.READ);
+    }
+
+    /**
      * Add a comment at the end of the comment list.
      *
      * @param text is the text of the comment.
@@ -193,7 +201,7 @@ public final class Demand extends Kudosable {
 
     private static final int PROGRESSION_COEF = 42;
     private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
-    private static final int PROGRESSION_PERCENT_MULTIPLICATOR = 100;
+    public static final int PROGRESSION_PERCENT = 100;
 
     /**
      * Return the progression in percent. It compare the amount of contribution to the
@@ -213,7 +221,7 @@ public final class Demand extends Kudosable {
         }
         final DaoOffer currentOffer = dao.getCurrentOffer();
         if (currentOffer.getAmount().floatValue() != 0) {
-            return (dao.getContribution().floatValue() * PROGRESSION_PERCENT_MULTIPLICATOR) / currentOffer.getAmount().floatValue();
+            return (dao.getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();
         }
         return Float.POSITIVE_INFINITY;
     }
@@ -251,10 +259,23 @@ public final class Demand extends Kudosable {
         return dao.getContributionMin();
     }
 
-    public Description getDescription() {
+    /**
+     * @return the current Description of this offer.
+     * @throws UnauthorizedOperationException if the user does not has the right on the
+     *         <code>Description</code> property.
+     * @see #authenticate(AuthToken)
+     */
+    public Description getDescription() throws UnauthorizedOperationException {
+        new DemandRight.Description().tryAccess(calculateRole(this), Action.READ);
         return new Description(dao.getDescription());
     }
 
+    /**
+     * @return all the offers on this demand.
+     * @throws UnauthorizedOperationException if the user does not has the
+     *         <code>READ</code> right on the <code>Offer</code> property.
+     * @see #authenticate(AuthToken)
+     */
     public PageIterable<Offer> getOffers() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
         return new OfferList(dao.getOffersFromQuery());
@@ -264,26 +285,53 @@ public final class Demand extends Kudosable {
      * The current offer is the offer with the max popularity then the min amount.
      *
      * @return the current offer for this demand, or null if there is no offer.
+     * @throws UnauthorizedOperationException if the user does not has the
+     *         <code>READ</code> right on the <code>Offer</code> property.
+     * @see #authenticate(AuthToken)
      */
-    public Offer getCurrentOffer() {
+    public Offer getCurrentOffer() throws UnauthorizedOperationException {
+        new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
         return Offer.create(dao.getCurrentOffer());
     }
 
-    public Specification getSpecification() {
+    /**
+     * @return the specification.
+     * @throws UnauthorizedOperationException if the user does not has the
+     *         <code>READ</code> right on the <code>Specification</code> property.
+     * @see #authenticate(AuthToken)
+     */
+    public Specification getSpecification() throws UnauthorizedOperationException {
+        new DemandRight.Specification().tryAccess(calculateRole(this), Action.READ);
         return new Specification(dao.getSpecification());
     }
 
-    public String getTitle() {
+    /**
+     * @throws UnauthorizedOperationException if the user does not has the
+     *         <code>READ</code> right on the <code>Description</code> property.
+     * @see #authenticate(AuthToken)
+     * @see #getDescription()
+     */
+    public String getTitle() throws UnauthorizedOperationException {
         return getDescription().getDefaultTranslation().getTitle();
     }
 
-    // TODO right management
+    /**
+     * For now only the admin can delete an offer.
+     *
+     * @param offer is the offer to delete.
+     * @throws UnauthorizedOperationException if the user does not has the
+     *         <code>DELETE</code> right on the <code>Offer</code> property.
+     * @see #authenticate(AuthToken)
+     */
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
         dao.removeOffer(offer.getDao());
     }
 
-    public DaoDemand getDao() {
+    /**
+     * @return the dao object of this Demand.
+     */
+    protected DaoDemand getDao() {
         return dao;
     }
 

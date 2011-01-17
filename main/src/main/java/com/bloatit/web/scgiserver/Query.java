@@ -1,4 +1,4 @@
-package com.bloatit.web.server;
+package com.bloatit.web.scgiserver;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -8,15 +8,16 @@ import com.bloatit.web.utils.url.Parameters;
 
 public class Query {
 
+    private static final String UTF_8 = "UTF-8";
     private static final String PARAMETERS = "param";
     private static final String PAGE_NAME = "page";
     private static final String LANGUAGE = "lang";
 
 
-    String language = "en";
-    String pageName = "404";
-    Parameters parameters = new Parameters();
-    Parameters getParameters = new Parameters();
+    private String language = "en";
+    private String pageName = "404";
+    private final Parameters parameters = new Parameters();
+    private final Parameters getParameters = new Parameters();
 
     Query(String queryString) {
         try {
@@ -24,13 +25,13 @@ public class Query {
             for (final String param : queryString.split("&")) {
                 final String[] pair = param.split("=");
                 if (pair.length >= 2) {
-                    final String key = URLDecoder.decode(pair[0], "UTF-8");
+                    final String key = URLDecoder.decode(pair[0], UTF_8);
                     if (key.equals(LANGUAGE)) {
-                        language = URLDecoder.decode(pair[1], "UTF-8");
+                        language = URLDecoder.decode(pair[1], UTF_8);
                     } else if (key.equals(PAGE_NAME)) {
-                        pageName = URLDecoder.decode(pair[1], "UTF-8");
+                        pageName = URLDecoder.decode(pair[1], UTF_8);
                     } else if (key.equals(PARAMETERS)) {
-                        parametersString = URLDecoder.decode(pair[1], "UTF-8");
+                        parametersString = URLDecoder.decode(pair[1], UTF_8);
                     } else {
                         getParameters.add(pair[0], pair[1]);
                     }
