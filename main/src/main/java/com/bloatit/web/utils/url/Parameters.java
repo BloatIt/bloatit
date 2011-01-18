@@ -15,7 +15,7 @@ public class Parameters extends HashMap<String, String> {
     }
 
     public final Parameters add(final String name, final String value) {
-        put(name, value );
+        put(name, value);
         return this;
     }
 

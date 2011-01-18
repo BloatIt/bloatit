@@ -7,19 +7,18 @@ import com.bloatit.web.scgiserver.SCGIRequestAbordedException;
 
 /**
  * Each class implementing the text interface has its own way to manage indentation and
- * line return.
- * This class add some text to an outputStream.
+ * line return. This class add some text to an outputStream.
  */
 public abstract class Text {
 
     private final OutputStream out;
 
-    public Text(OutputStream out) {
+    public Text(final OutputStream out) {
         super();
         this.out = out;
     }
 
-    protected final void append(String text) {
+    protected final void append(final String text) {
         try {
             out.write(text.getBytes());
         } catch (final IOException ex) {
@@ -29,14 +28,14 @@ public abstract class Text {
 
     /**
      * Write a line of text. Some implementations may not add a newLineChar.
-     *
+     * 
      * @param newText should not finish with a new line char.
      */
     public abstract void writeLine(String newText);
 
     /**
      * Write raw text. Just write the text to the output.
-     *
+     * 
      * @param newText is the text to write.
      */
     public abstract void writeRawText(String newText);

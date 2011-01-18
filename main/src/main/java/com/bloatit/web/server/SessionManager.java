@@ -44,7 +44,7 @@ public final class SessionManager {
         return session;
     }
 
-    public static void destroySession(Session session) {
+    public static void destroySession(final Session session) {
         if (activeSessions.containsKey(session.getKey())) {
             Log.server().info("destroy session " + session.getKey());
             activeSessions.remove(session.getKey());
@@ -56,11 +56,11 @@ public final class SessionManager {
     }
 
     private static void restoreSession(final String key, final int memberId) {
-        UUID uuidKey = UUID.fromString(key);
+        final UUID uuidKey = UUID.fromString(key);
         final Session session = new Session(uuidKey);
         try {
             session.setAuthToken(new AuthToken(memberId));
-        } catch (NotFoundException e) {
+        } catch (final NotFoundException e) {
             Log.server().error(e);
         }
         activeSessions.put(uuidKey, session);
@@ -71,8 +71,8 @@ public final class SessionManager {
 
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
-        String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
-        String dump = dir + "/sessions.dump";
+        final String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
+        final String dump = dir + "/sessions.dump";
 
         if (new File(dir).mkdirs()) {
             Log.server().debug("Creating a new dir: " + dir);
@@ -82,10 +82,10 @@ public final class SessionManager {
         try {
             fileOutputStream = new FileOutputStream(new File(dump));
 
-            for (Entry<UUID, Session> session : activeSessions.entrySet()) {
+            for (final Entry<UUID, Session> session : activeSessions.entrySet()) {
 
                 if (session.getValue().isLogged()) {
-                    StringBuilder sessionDump = new StringBuilder();
+                    final StringBuilder sessionDump = new StringBuilder();
 
                     sessionDump.append(session.getValue().getKey().toString());
                     sessionDump.append(" ");
@@ -98,8 +98,7 @@ public final class SessionManager {
 
             fileOutputStream.close();
 
-        } catch (IOException e) {
-
+        } catch (final IOException e) {
             Log.server().error("Failed to save sessions.", e);
         } finally {
             if(fileOutputStream != null) {
@@ -120,8 +119,8 @@ public final class SessionManager {
     public static void loadSessions() {
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
-        String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
-        String dump = dir + "/sessions.dump";
+        final String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
+        final String dump = dir + "/sessions.dump";
 
         BufferedReader br = null;
 
@@ -132,13 +131,13 @@ public final class SessionManager {
             fstream = new FileInputStream(dump);
 
             // Get the object of DataInputStream
-            DataInputStream in = new DataInputStream(fstream);
+            final DataInputStream in = new DataInputStream(fstream);
             br = new BufferedReader(new InputStreamReader(in));
             String strLine;
             // Read File Line By Line
             while ((strLine = br.readLine()) != null) {
                 // Print the content on the console
-                String[] split = strLine.split(" ");
+                final String[] split = strLine.split(" ");
 
                 if (split.length == 2) {
                     restoreSession(split[0], Integer.valueOf(split[1]));
@@ -156,7 +155,7 @@ public final class SessionManager {
                 Log.server().error("Cannot delete dump file: " + dump);
             }
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             if(br != null) {
                 try {
                     br.close();
@@ -182,10 +181,10 @@ public final class SessionManager {
 
     public static void performClearExpiredSessions() {
 
-        Iterator<Session> it = activeSessions.values().iterator();
+        final Iterator<Session> it = activeSessions.values().iterator();
 
         while (it.hasNext()) {
-            Session session = it.next();
+            final Session session = it.next();
             if (session.isExpired()) {
                 it.remove();
             }

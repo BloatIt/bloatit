@@ -23,7 +23,7 @@ import com.bloatit.web.server.Context;
 public final class IdeaCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
-	private final Demand targetIdea;
+    private final Demand targetIdea;
 
     public IdeaCommentListComponent(final Demand demand) {
         super();
@@ -31,9 +31,9 @@ public final class IdeaCommentListComponent extends HtmlPageComponent {
         try {
             this.comments = demand.getComments();
             add(produce());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             this.comments = null;
-            //No right, no comments
+            // No right, no comments
         }
 
     }

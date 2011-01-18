@@ -24,7 +24,6 @@ import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.MemberPageUrl;
 
 @ParamContainer("member")
@@ -55,16 +54,16 @@ public final class MemberPage extends Page {
             HtmlTitleBlock memberTitle;
             memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
 
-            memberTitle.add(new HtmlText("Full name: " + member.getFullname()));
+            memberTitle.add(new HtmlText(tr("Full name: ") + member.getFullname()));
 
-            memberTitle.add(new HtmlText("Login: " + member.getLogin()));
+            memberTitle.add(new HtmlText(tr("Login: ") + member.getLogin()));
             if (member.canAccessEmail(Action.READ)) {
-                memberTitle.add(new HtmlText("Email: " + member.getEmail()));
+                memberTitle.add(new HtmlText(tr("Email: ") + member.getEmail()));
             }
-            memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
+            memberTitle.add(new HtmlText(tr("Karma: ") + member.getKarma()));
             add(memberTitle);
-        } catch (UnauthorizedOperationException e) {
-            add(new HtmlParagraph(Context.tr("For obscure reasons, you are not allowed to see the details of this member.")));
+        } catch (final UnauthorizedOperationException e) {
+            add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this member.")));
         }
     }
 
@@ -73,7 +72,7 @@ public final class MemberPage extends Page {
         if (member != null) {
             try {
                 return tr("Member - ") + member.getLogin();
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 return tr("Member - Jhon Do");
             }
         }

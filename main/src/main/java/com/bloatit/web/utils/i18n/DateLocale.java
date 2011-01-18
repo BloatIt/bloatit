@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-
 /**
  * <p>
  * A class to handle dates for the front web
@@ -26,8 +25,8 @@ import java.util.Locale;
  * </p>
  * <p>
  * Date format is represented by 2 elements :
- * <li>The locale that gives the order of the elements (example : fr : dd/mm/yyyy) </li>
- * <li> The style that determines the length of the date representation</li>
+ * <li>The locale that gives the order of the elements (example : fr : dd/mm/yyyy)</li>
+ * <li>The style that determines the length of the date representation</li>
  * </p>
  * <p>
  * BloatidDate can be used to parse string into dates (usually after a user wrote a date
@@ -44,18 +43,14 @@ import java.util.Locale;
  * days and month when day is inferior to 13
  * </p>
  * <p>
- * Note that, when constructing a DateLocale from a String, no proactive validity
- * checking needs to be done, the parser will make sure the string matches the pattern.
- * Therefore, the methods getPattern need only be used for display purpose, to indicate
- * the user how he should input the date
+ * Note that, when constructing a DateLocale from a String, no proactive validity checking
+ * needs to be done, the parser will make sure the string matches the pattern. Therefore,
+ * the methods getPattern need only be used for display purpose, to indicate the user how
+ * he should input the date
  * </p>
  * </p>Also note that parser is fairly tolerant to structure of the date. For the US date
- * 1/20/1990, the following input strings will <b>all</b> give correct result :
- * <li> 1/20/1990  </li>
- * <li> 01/20/1990 </li>
- * <li> 1/20/90 </li>
- * <li> 01/20/90</li>
- * </p>
+ * 1/20/1990, the following input strings will <b>all</b> give correct result : <li>
+ * 1/20/1990</li> <li>01/20/1990</li> <li>1/20/90</li> <li>01/20/90</li> </p>
  * <p>
  * While tolerant with short day/months/years, parser is not tolerant with incorrect use
  * of separator. Therefore, patterns using a '/' must be inputed using a '/' to separate
@@ -74,16 +69,15 @@ public final class DateLocale {
      * Describes the format of the date
      * </p>
      * <p>
-     * <li> SHORT is completely numeric, such as 12.13.52 or 3:30pm </li>
-     * <li> MEDIUM is longer, such as Jan 12, 1952 </li>
-     * <li> LONG is longer, such as January 12, 1952 or 3:30:32pm </li>
-     * <li> FULL is complete, such as Tuesday, April 12, 1952 AD or 3:30:42pm PST. </li>
+     * <li>SHORT is completely numeric, such as 12.13.52 or 3:30pm</li>
+     * <li>MEDIUM is longer, such as Jan 12, 1952</li>
+     * <li>LONG is longer, such as January 12, 1952 or 3:30:32pm</li>
+     * <li>FULL is complete, such as Tuesday, April 12, 1952 AD or 3:30:42pm PST.</li>
      * </p>
      */
     public enum FormatStyle {
         SHORT, MEDIUM, LONG, FULL
     }
-
 
     public enum DisplayedTime {
         DATE, TIME, DATETIME
@@ -96,14 +90,14 @@ public final class DateLocale {
      * <p>
      * The date must be short format, aka 31/12/2010
      * </p>
-     *
+     * 
      * @param dateString the String description of the date (in Short format)
      * @param locale the user locale to determine date order
      * @throws DateParsingException When dateString doesn't contain a String that matches
      *         the current user locale
      */
     public DateLocale(final String dateString, final Locale locale) throws DateParsingException {
-    	this.dateString = dateString;
+        this.dateString = dateString;
         this.locale = locale;
         this.formatter = DateFormat.getDateInstance(getJavaStyle(FormatStyle.SHORT), locale);
         parseDate();
@@ -113,7 +107,7 @@ public final class DateLocale {
      * <p>
      * Creates a BloatItDate based on a java Date with a defaut SHORT style
      * </p>
-     *
+     * 
      * @param javaDate the Date to convert. (Param is cloned.)
      * @param locale the locale for the date
      */
@@ -133,7 +127,7 @@ public final class DateLocale {
 
     /**
      * Returns the string representation of the Date, short style
-     *
+     * 
      * @return the string representation of the date, using Short style
      */
     @Override
@@ -143,7 +137,7 @@ public final class DateLocale {
 
     /**
      * Converts the date into aString using a given style
-     *
+     * 
      * @param style the style of the output (SHORT, MEDIUM, LONG, FULL)
      * @return
      */
@@ -152,10 +146,9 @@ public final class DateLocale {
         return df.format(javaDate);
     }
 
-
-    public String toString(final FormatStyle style, final DisplayedTime toDisplay){
+    public String toString(final FormatStyle style, final DisplayedTime toDisplay) {
         final DateFormat df;
-        switch (toDisplay){
+        switch (toDisplay) {
         case DATE:
             df = DateFormat.getDateInstance(getJavaStyle(style), this.locale);
             break;
@@ -169,19 +162,19 @@ public final class DateLocale {
         return df.format(javaDate);
     }
 
-    public String toTimeString(final FormatStyle style){
+    public String toTimeString(final FormatStyle style) {
         final DateFormat df = DateFormat.getTimeInstance(getJavaStyle(style), this.locale);
         return df.format(javaDate);
     }
 
-    public String toDateTimeString(final FormatStyle dateFormat, final FormatStyle timeFormat){
+    public String toDateTimeString(final FormatStyle dateFormat, final FormatStyle timeFormat) {
         final DateFormat df = DateFormat.getDateTimeInstance(getJavaStyle(dateFormat), getJavaStyle(timeFormat), this.locale);
         return df.format(javaDate);
     }
 
     /**
      * Parses the String into a java Date object
-     *
+     * 
      * @throws DateParsingException When this.dateString doesn't contain a String that
      *         matches the current user locale
      */
@@ -194,12 +187,11 @@ public final class DateLocale {
         }
     }
 
-
     /**
      * <p>
      * Converts a given style into a style usable by the Java DateFormat Object
      * </p>
-     *
+     * 
      * @param style the style to convert
      * @return the converted style
      */
@@ -219,16 +211,16 @@ public final class DateLocale {
 
     /**
      * Returns the current pattern used to display the date
-     *
+     * 
      * @return
      */
-    public String getPattern(FormatStyle style) {
+    public String getPattern(final FormatStyle style) {
         return DateLocale.getPattern(this.locale, style);
     }
 
     /**
      * Returns a String representing the short
-     *
+     * 
      * @param locale
      * @return
      */
@@ -238,7 +230,7 @@ public final class DateLocale {
 
     /**
      * Returns a String representing the pattern for the SHORT variant
-     *
+     * 
      * @param locale
      * @return
      */
@@ -255,7 +247,7 @@ public final class DateLocale {
      * Make sure the pattern is ready to be displayed to the user : * Days and months will
      * be shown with 2 digits * Year will be shown with 4 digits * Remove all caps
      * </p>
-     *
+     * 
      * @param pattern the ugly pattern
      * @return the nice pattern
      */

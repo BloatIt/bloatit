@@ -19,7 +19,7 @@ import com.bloatit.model.data.DaoDemand;
 
 public final class DemandManager {
 
-    private DemandManager(){
+    private DemandManager() {
         // Desactivate default ctor
     }
 

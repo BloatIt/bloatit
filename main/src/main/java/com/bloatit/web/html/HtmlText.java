@@ -9,12 +9,13 @@ package com.bloatit.web.html;
  * </p>
  */
 public class HtmlText extends HtmlTagText {
-	
-	/**
-	 * Creates a component to add text to a page
-	 * @param text the Html text to add to add
-	 */
-	public HtmlText(final String text) {
-		super(HtmlTools.escape(text));
-	}
+
+    /**
+     * Creates a component to add text to a page
+     * 
+     * @param text the Html text to add to add
+     */
+    public HtmlText(final String text) {
+        super(HtmlTools.escape(text));
+    }
 }

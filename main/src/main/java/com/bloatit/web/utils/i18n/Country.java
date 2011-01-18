@@ -41,11 +41,11 @@ public final class Country implements Comparable<Country>, DropDownElement {
 
     /**
      * Creates a new country
-     *
+     * 
      * @param name the long name of the country
      * @param code the ISO code of the country
      */
-    public Country(String name, String code) {
+    public Country(final String name, final String code) {
         super();
         this.name = name;
         this.code = code;
@@ -74,7 +74,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
     }
 
     @Override
-    public int compareTo(Country o) {
+    public int compareTo(final Country o) {
         return this.name.compareTo(o.name);
     }
 
@@ -85,7 +85,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -95,7 +95,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Country other = (Country) obj;
+        final Country other = (Country) obj;
         if (name == null) {
             if (other.name != null) {
                 return false;
@@ -110,7 +110,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
      * <p>
      * Lists all available countries ordered on their fullname
      * </p>
-     *
+     * 
      * @return a list of the available countries
      */
     public static Set<Country> getAvailableCountries() {
@@ -119,19 +119,19 @@ public final class Country implements Comparable<Country>, DropDownElement {
 
     /**
      * Used to initialize the {@link Country#availableCountries} static field.
-     *
+     * 
      * @return the list of country loaded from a country ressources file.
      */
     private static Set<Country> createAvailableCountries() {
-        TreeSet<Country> countries = new TreeSet<Country>();
+        final TreeSet<Country> countries = new TreeSet<Country>();
         try {
-            Properties properties = PropertyLoader.loadProperties(COUNTRIES_PATH);
-            for (Entry<?, ?> property : properties.entrySet()) {
-                String key = (String) property.getKey();
-                String value = (String) property.getValue();
+            final Properties properties = PropertyLoader.loadProperties(COUNTRIES_PATH);
+            for (final Entry<?, ?> property : properties.entrySet()) {
+                final String key = (String) property.getKey();
+                final String value = (String) property.getValue();
                 countries.add(new Country(value, key));
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new FatalErrorException("File describing available countries is not available at " + COUNTRIES_PATH, e);
         }
         return countries;

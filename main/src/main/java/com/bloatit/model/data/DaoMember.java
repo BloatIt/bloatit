@@ -57,7 +57,7 @@ public final class DaoMember extends DaoActor {
 
     /**
      * Create a member. The member login must be unique, and you cannot change it.
-     *
+     * 
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @param locale the locale of the user.
@@ -66,7 +66,7 @@ public final class DaoMember extends DaoActor {
      *         member as a non unique login. If an exception is thrown then the
      *         transaction is rolled back and reopened.
      */
-    public static DaoMember createAndPersist(final String login, final String password, final String email, Locale locale) {
+    public static DaoMember createAndPersist(final String login, final String password, final String email, final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoMember theMember = new DaoMember(login, password, email, locale);
         try {
@@ -81,7 +81,7 @@ public final class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     *
+     * 
      * @param login the member login.
      * @return null if not found. (or if login == null)
      */
@@ -95,7 +95,7 @@ public final class DaoMember extends DaoActor {
     /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     *
+     * 
      * @param login the member login.
      * @param password the password of the member "login". It is a string corresponding to
      *        the string in the database. This method does not perform any sha1 or md5
@@ -112,11 +112,11 @@ public final class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     *
+     * 
      * @param locale is the locale in which this user is. (The country and language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
      */
-    private DaoMember(final String login, final String password, final String email, Locale locale) {
+    private DaoMember(final String login, final String password, final String email, final Locale locale) {
         super(login);
         if (locale == null) {
             throw new NonOptionalParameterException("locale cannot be null!");
@@ -133,7 +133,7 @@ public final class DaoMember extends DaoActor {
         if (password.isEmpty()) {
             throw new NonOptionalParameterException("Password cannot be empty!");
         }
-        this.setLocale(locale);
+        setLocale(locale);
         this.email = email;
         this.role = Role.NORMAL;
         this.password = password;
@@ -159,14 +159,14 @@ public final class DaoMember extends DaoActor {
             aGroup.getGroupMembership().remove(link);
             SessionManager.getSessionFactory().getCurrentSession().delete(link);
         } else {
-            Log.data().error("Try to remove a non existing DaoGroupMembership: group = " + aGroup.getId() + " member = " + this.getId());
+            Log.data().error("Try to remove a non existing DaoGroupMembership: group = " + aGroup.getId() + " member = " + getId());
         }
     }
 
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or PROTECTED
      * groups. ]
-     *
+     * 
      * @return All the groups this member is in. (Use a HQL query)
      */
     public PageIterable<DaoGroup> getGroups() {
@@ -247,7 +247,8 @@ public final class DaoMember extends DaoActor {
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
                 "from com.bloatit.model.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state  ").setEntity("reciever",
-                this).setEntity("state", state);
+                                                                                                                                      this)
+                .setEntity("state", state);
     }
 
     /**
@@ -300,7 +301,7 @@ public final class DaoMember extends DaoActor {
         return role;
     }
 
-    public void setLocale(Locale locale) {
+    public void setLocale(final Locale locale) {
         this.locale = locale;
     }
 
@@ -314,7 +315,7 @@ public final class DaoMember extends DaoActor {
     }
 
     @Override
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 

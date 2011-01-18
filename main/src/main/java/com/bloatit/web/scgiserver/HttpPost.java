@@ -12,9 +12,9 @@ public class HttpPost {
 
     private final Parameters parameters = new Parameters();
 
-    public HttpPost(InputStream is, int length) throws IOException {
+    public HttpPost(final InputStream is, final int length) throws IOException {
         final byte[] postBytes = new byte[length];
-        int read = is.read(postBytes);
+        final int read = is.read(postBytes);
         if (read == length) {
             Log.server().debug("Post value read correctly.");
         } else {
@@ -23,8 +23,8 @@ public class HttpPost {
         readBytes(postBytes);
     }
 
-    private void readBytes(byte[] postBytes) {
-        String string = new String(postBytes);
+    private void readBytes(final byte[] postBytes) {
+        final String string = new String(postBytes);
         for (final String param : string.split("&")) {
             try {
                 final String[] pair = param.split("=");
@@ -34,7 +34,7 @@ public class HttpPost {
                     value = URLDecoder.decode(pair[1], "UTF-8");
                     parameters.put(key, value);
                 }
-            } catch (UnsupportedEncodingException e) {
+            } catch (final UnsupportedEncodingException e) {
                 Log.web().error(e);
             }
         }

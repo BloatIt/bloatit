@@ -20,12 +20,12 @@ public final class HtmlSubmit extends HtmlLeaf {
 
     /**
      * Creates a HtmlButton
-     *
+     * 
      * @param label the text that will be shown on the button
      */
     public HtmlSubmit(final String value) {
         super();
-        HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.SUBMIT_INPUT));
+        final HtmlElement button = new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.SUBMIT_INPUT));
         add(new HtmlDiv().add(button).setCssClass("field"));
         button.addAttribute("value", value);
     }

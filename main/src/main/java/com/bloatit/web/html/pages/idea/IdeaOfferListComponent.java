@@ -24,23 +24,22 @@ public class IdeaOfferListComponent extends HtmlDiv {
         PageIterable<Offer> offers = new NullCollection<Offer>();
         try {
             offers = demand.getOffers();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             // No right, no offers
         }
         final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
         try {
-            Offer currentOffer = demand.getCurrentOffer();
+            final Offer currentOffer = demand.getCurrentOffer();
             offersBlock.add(new IdeaOfferComponent(currentOffer, true));
             for (final Offer offer : offers) {
                 if (!offer.equals(currentOffer)) {
                     offersBlock.add(new IdeaOfferComponent(offer, false));
                 }
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             // No right no current offer.
         }
-
 
         add(offersBlock);
     }

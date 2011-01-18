@@ -63,7 +63,7 @@ public final class Session {
         this(UUID.randomUUID());
     }
 
-    Session(UUID id) {
+    Session(final UUID id) {
         this.key = id;
         authToken = null;
         notificationList = new ArrayDeque<Notification>();
@@ -166,7 +166,7 @@ public final class Session {
 
     /**
      * Finds all the session parameters
-     *
+     * 
      * @return the parameter of the session
      * @deprecated use a RequestParam
      */
@@ -177,7 +177,7 @@ public final class Session {
 
     /**
      * Finds a given parameter in the session
-     *
+     * 
      * @param paramKey the key of the parameter
      * @return the value of the parameter
      * @deprecated use a RequestParam
@@ -196,7 +196,7 @@ public final class Session {
      * <p>
      * Session parameters are available until they are checked, or session ends
      * </p>
-     *
+     * 
      * @param paramKey
      * @param paramValue
      */
@@ -206,7 +206,7 @@ public final class Session {
         }
     }
 
-    public void addParameter(UrlParameter<?> param) {
+    public void addParameter(final UrlParameter<?> param) {
         sessionParams.put(param.getName(), param.getStringValue());
     }
 
@@ -218,7 +218,7 @@ public final class Session {
      * <p>
      * Session parameters are available until they are checked, or session ends
      * </p>
-     *
+     * 
      * @param paramKey
      * @param paramValue
      */
@@ -237,7 +237,7 @@ public final class Session {
      * <p>
      * Session parameters are available until they are checked, or session ends
      * </p>
-     *
+     * 
      * @param paramKey
      * @param paramValue
      */

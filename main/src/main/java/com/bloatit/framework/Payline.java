@@ -197,7 +197,7 @@ public final class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     *
+     * 
      * @param member
      * @return
      */
@@ -214,7 +214,7 @@ public final class Payline extends Unlockable {
             } else {
                 ref.append(bankTransaction.iterator().next().getId() + 1);
             }
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             Log.framework().fatal("Unauthorized exception should never append ! ", e);
             assert false;
             ref.append("ERROR");

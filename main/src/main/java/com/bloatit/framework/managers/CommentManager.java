@@ -6,7 +6,7 @@ import com.bloatit.model.data.DaoComment;
 
 public final class CommentManager {
 
-    private CommentManager(){
+    private CommentManager() {
         // Desactivate default ctor
     }
 

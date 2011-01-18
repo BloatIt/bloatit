@@ -71,7 +71,7 @@ public final class OfferAction extends LoggedAction {
         try {
             targetIdea.authenticate(session.getAuthToken());
             targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
             return session.pickPreferredPage();
         }
@@ -84,7 +84,7 @@ public final class OfferAction extends LoggedAction {
 
         if (targetIdea != null) {
 
-            OfferPageUrl redirectUrl = new OfferPageUrl(targetIdea);
+            final OfferPageUrl redirectUrl = new OfferPageUrl(targetIdea);
             session.addParameter(DESCRIPTION_CODE, description);
             session.addParam(PRICE_CODE, price);
             session.addParameter(TITLE_CODE, title);

@@ -15,7 +15,7 @@ public final class IndentedHtmlText extends Text {
     }
 
     @Override
-    public final void writeLine(String newText) {
+    public final void writeLine(final String newText) {
         append(newText);
         writeNewLineChar();
     }

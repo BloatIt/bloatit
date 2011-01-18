@@ -12,37 +12,37 @@ public class DescriptionTest extends ModelTestUnit {
         try {
             DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), Locale.FRANCE, "", "a text");
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), Locale.FRANCE, "A title", "");
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), Locale.FRANCE, "A title", null);
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), Locale.FRANCE, null, "a text");
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), null, "A title", "a text");
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoDescription.createAndPersist(null, Locale.FRANCE, "A title", "a text");
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
     }

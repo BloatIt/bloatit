@@ -82,12 +82,16 @@ public final class DaoBankTransaction extends DaoIdentifiable {
      * @return the <code>DaoBankTransaction</code> with this <code>token</code>. Return
      *         null if not found.
      */
-    public static DaoBankTransaction getByToken(String token) {
+    public static DaoBankTransaction getByToken(final String token) {
         return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token").setString("token", token)
                 .uniqueResult();
     }
 
-    public static DaoBankTransaction createAndPersist(String message, String token, DaoActor author, BigDecimal value, String orderReference) {
+    public static DaoBankTransaction createAndPersist(final String message,
+                                                      final String token,
+                                                      final DaoActor author,
+                                                      final BigDecimal value,
+                                                      final String orderReference) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, value, orderReference);
         try {
@@ -104,7 +108,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
      * throw a {@link NonOptionalParameterException} if any of the parameters is null (or
      * string isEmpty).
      */
-    private DaoBankTransaction(String message, String token, DaoActor author, BigDecimal value, String orderReference) {
+    private DaoBankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final String orderReference) {
         super();
         if (message == null || token == null || author == null || value == null || orderReference == null) {
             throw new NonOptionalParameterException();
@@ -140,7 +144,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the external to
      * the internal account.
-     *
+     * 
      * @return true if performed, false otherwise.
      */
     public boolean validated() {
@@ -152,7 +156,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
             DaoTransaction.createAndPersist(author.getInternalAccount(), author.getExternalAccount(), getValue().negate());
             state = State.VALIDATED;
             return true;
-        } catch (NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             Log.data().fatal("Error when trying to validate a bankTransaction.", e);
             return false;
         }
@@ -206,7 +210,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
         return reference;
     }
 
-    public void setProcessInformations(String processInformations) {
+    public void setProcessInformations(final String processInformations) {
         modificationDate = new Date();
         this.processInformations = processInformations;
     }

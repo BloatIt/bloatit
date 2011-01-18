@@ -60,9 +60,9 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
                 String shortDescription = tr("Error: you do not have the right to see the description.");
                 try {
-                    Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+                    final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
                     shortDescription = translatedDescription.getShortText(SHORT_DESCRIPTION_LENGTH, SHORT_TEXT_VARIANCE);
-                } catch (UnauthorizedOperationException e1) {
+                } catch (final UnauthorizedOperationException e1) {
                     // Do nothing.
                 }
 
@@ -80,19 +80,19 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
 
                     final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
                     centerBlock.add(progressBar);
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     // No right, no progress bar
                 }
 
                 Offer currentOffer = null;
                 try {
                     currentOffer = idea.getCurrentOffer();
-                } catch (UnauthorizedOperationException e1) {
+                } catch (final UnauthorizedOperationException e1) {
                     // Nothing.
                 }
                 if (currentOffer == null) {
 
-                    HtmlSpan amount = new HtmlSpan();
+                    final HtmlSpan amount = new HtmlSpan();
                     amount.setCssClass(IMPORTANT_CSS_CLASS);
 
                     CurrencyLocale currency;
@@ -101,7 +101,7 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
 
                         amount.addText(currency.getDefaultString());
 
-                    } catch (UnauthorizedOperationException e) {
+                    } catch (final UnauthorizedOperationException e) {
                         // No right, no display
                     }
                     final HtmlParagraph progressText = new HtmlParagraph();
@@ -119,20 +119,20 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                     CurrencyLocale amountCurrency;
                     try {
                         amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
-                        HtmlSpan amount = new HtmlSpan();
+                        final HtmlSpan amount = new HtmlSpan();
                         amount.setCssClass(IMPORTANT_CSS_CLASS);
                         amount.addText(amountCurrency.getDefaultString());
 
                         // Target
-                        CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
-                        HtmlSpan target = new HtmlSpan();
+                        final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
+                        final HtmlSpan target = new HtmlSpan();
                         target.setCssClass(IMPORTANT_CSS_CLASS);
                         target.addText(targetCurrency.getDefaultString());
 
                         // Progress
-                        HtmlSpan progress = new HtmlSpan();
+                        final HtmlSpan progress = new HtmlSpan();
                         progress.setCssClass(IMPORTANT_CSS_CLASS);
-                        NumberFormat format = NumberFormat.getNumberInstance();
+                        final NumberFormat format = NumberFormat.getNumberInstance();
                         format.setMinimumFractionDigits(0);
                         progress.addText("" + format.format(progressValue) + " %");
 
@@ -147,7 +147,7 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                         progressText.addText(Context.tr(" requested "));
 
                         centerBlock.add(progressText);
-                    } catch (UnauthorizedOperationException e) {
+                    } catch (final UnauthorizedOperationException e) {
                         // No right, no display
                     }
                 }

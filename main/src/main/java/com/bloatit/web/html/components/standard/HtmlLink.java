@@ -23,7 +23,7 @@ public final class HtmlLink extends HtmlBranch {
     /**
      * Creates a link with a given URL and a given displayed element. Element can be any
      * HtmlNode Will generate :
-     *
+     * 
      * <pre>
      * <a href="url">displayed</a>
      * </pre>
@@ -37,7 +37,7 @@ public final class HtmlLink extends HtmlBranch {
     /**
      * Creates a link with a given URL and a given displayed element. Element can be any
      * HtmlNode Will generate :
-     *
+     * 
      * <pre>
      * <a href="url">displayedText</a>
      * </pre>
@@ -50,6 +50,7 @@ public final class HtmlLink extends HtmlBranch {
 
     /**
      * Creates a blank link. Use add to further add elements
+     * 
      * @param url
      */
     public HtmlLink(final String url) {
@@ -57,7 +58,7 @@ public final class HtmlLink extends HtmlBranch {
         addAttribute("href", url);
     }
 
-    public void setTitle(String string) {
+    public void setTitle(final String string) {
         addAttribute("title", string);
     }
 }

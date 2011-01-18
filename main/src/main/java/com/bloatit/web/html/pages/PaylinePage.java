@@ -13,13 +13,13 @@ import com.bloatit.web.utils.url.PaylinePageUrl;
 @ParamContainer("payline/result")
 public final class PaylinePage extends Page {
 
-    @RequestParam(name="token", level=Level.INFO)
+    @RequestParam(name = "token", level = Level.INFO)
     private final String token;
 
-    @RequestParam(name="ack")
+    @RequestParam(name = "ack")
     private final String ack;
 
-    public PaylinePage(PaylinePageUrl url){
+    public PaylinePage(final PaylinePageUrl url) {
         super(url);
         token = url.getToken();
         ack = url.getAck();
@@ -27,11 +27,11 @@ public final class PaylinePage extends Page {
         add(new HtmlParagraph(token));
         add(new HtmlParagraph(ack));
 
-        if (ack.equals("ok")){
-            Payline payline = new Payline();
+        if (ack.equals("ok")) {
+            final Payline payline = new Payline();
             try {
                 payline.validatePayment(token);
-            } catch (TokenNotfoundException e) {
+            } catch (final TokenNotfoundException e) {
                 Log.web().fatal("Token not found." + e);
             }
         }

@@ -70,7 +70,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     public final void setAsGroup(final DaoGroup asGroup) {
         this.asGroup = asGroup;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

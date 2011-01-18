@@ -46,7 +46,7 @@ public final class AccountChargingAction extends LoggedAction {
     }
 
     @Override
-	public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted() throws RedirectException {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             session.notifyList(url.getMessages());
             throw new RedirectException(new IndexPageUrl());
@@ -56,7 +56,7 @@ public final class AccountChargingAction extends LoggedAction {
         targetMember.authenticate(session.getAuthToken());
         try {
             targetMember.getInternalAccount().authenticate(session.getAuthToken());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add charge your account."));
             return session.pickPreferredPage();
         }
@@ -65,7 +65,7 @@ public final class AccountChargingAction extends LoggedAction {
         account.authenticate(session.getAuthToken());
         try {
             targetMember.getInternalAccount().chargeAmount(amount, account);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add charge your account."));
             return session.pickPreferredPage();
         }
@@ -79,18 +79,18 @@ public final class AccountChargingAction extends LoggedAction {
     }
 
     @Override
-	protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
-		return new LoginPageUrl();
+        return new LoginPageUrl();
     }
 
-	@Override
-	protected String getRefusalReason() {
-		return Context.tr("You must be logged to charge your account.");
-	}
+    @Override
+    protected String getRefusalReason() {
+        return Context.tr("You must be logged to charge your account.");
+    }
 
-	@Override
-	protected void transmitParameters() {
-		session.addParameter(CHARGE_AMOUNT_CODE, amount.toPlainString());
-	}
+    @Override
+    protected void transmitParameters() {
+        session.addParameter(CHARGE_AMOUNT_CODE, amount.toPlainString());
+    }
 }

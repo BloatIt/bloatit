@@ -32,7 +32,7 @@ public class BigDB {
         final List<DaoMember> members = new ArrayList<DaoMember>();
         for (int i = 0; i < nbUsers; i++) {
             DaoMember member;
-            member = DaoMember.createAndPersist("member " + i, new Integer(i).toString(), "mail"+i+"@nowhere.com", Locale.FRANCE);
+            member = DaoMember.createAndPersist("member " + i, new Integer(i).toString(), "mail" + i + "@nowhere.com", Locale.FRANCE);
             member.setFullname("User " + i + " Fullname");
             member.setExternalAccount(DaoExternalAccount.createAndPersist(member, AccountType.IBAN, "code"));
             members.add(member);
@@ -50,7 +50,7 @@ public class BigDB {
 
         // Create Some Groups
         for (int i = 0; i < nbUsers / 4; i += 4) {
-            final DaoGroup group = DaoGroup.createAndPersiste("group " + (i / 4), "plop"+i+"@plop.com", DaoGroup.Right.PUBLIC);
+            final DaoGroup group = DaoGroup.createAndPersiste("group " + (i / 4), "plop" + i + "@plop.com", DaoGroup.Right.PUBLIC);
             group.addMember(members.get(i), true);
             group.addMember(members.get(i + 1), false);
             group.addMember(members.get(i + 2), false);
@@ -61,8 +61,11 @@ public class BigDB {
             }
         }
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i),
-                    DaoDescription.createAndPersist(members.get(i), new Locale("fr"), fortune(140), fortune(1000) + fortune(1000) + fortune(1000)));
+            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
+                                                                                                                new Locale("fr"),
+                                                                                                                fortune(140),
+                                                                                                                fortune(1000) + fortune(1000)
+                                                                                                                        + fortune(1000)));
 
             final int commentCount = (int) (Math.random() * 5);
 
@@ -86,9 +89,9 @@ public class BigDB {
             final DaoMember member = members.get(pick(nbUsers));
             if (pick(2) == 0) {
                 demand.addOffer(member,
-                        new BigDecimal((pick(50) + 10) * 10),
-                        DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
-                        new Date());
+                                new BigDecimal((pick(50) + 10) * 10),
+                                DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
+                                new Date());
                 if (pick(2) == 0) {
                     for (final DaoContribution contrib : demand.getContributionsFromQuery()) {
                         try {

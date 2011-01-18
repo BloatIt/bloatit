@@ -27,7 +27,7 @@ public final class DaoSpecification extends DaoUserContent {
 
     /**
      * Create a Specification.
-     *
+     * 
      * @param member is the author of the specification.
      * @param content is the content of the specification ...
      * @param demand yep, this is the demand on which the specification apply. Whhoohooo !

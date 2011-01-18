@@ -56,7 +56,7 @@ public final class HtmlIdeaSumary extends HtmlDiv {
         final HtmlDiv centerBlock = new HtmlDiv("idea_summary_center");
         {
 
-            HtmlSpan project = new HtmlSpan();
+            final HtmlSpan project = new HtmlSpan();
             project.setCssClass("project");
             project.addText("VLC");
 
@@ -67,7 +67,7 @@ public final class HtmlIdeaSumary extends HtmlDiv {
             linkTitle.addText(" - ");
             try {
                 linkTitle.addText(idea.getTitle());
-            } catch (UnauthorizedOperationException e1) {
+            } catch (final UnauthorizedOperationException e1) {
                 linkTitle.addText(tr("Error: you do not have the right to see te title."));
             }
 
@@ -77,9 +77,9 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                 final Locale defaultLocale = Context.getLocalizator().getLocale();
                 String shortDescription = tr("Error: you do not have the right to see the description.");
                 try {
-                    Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+                    final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
                     shortDescription = translatedDescription.getShortText(SHORT_DESCRIPTION_LENGTH, SHORT_TEXT_CONSTANT);
-                } catch (UnauthorizedOperationException e1) {
+                } catch (final UnauthorizedOperationException e1) {
                     // Do nothing.
                 }
 
@@ -98,7 +98,7 @@ public final class HtmlIdeaSumary extends HtmlDiv {
 
                     final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
                     ideaTitle.add(progressBar);
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     // The user doesn't have the right to see the progress, a text replace
                     // the progress bar.
                     final HtmlParagraph progressBarText = new HtmlParagraph(tr("You don't have the right to see the progress on the idea."));
@@ -108,12 +108,12 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                 Offer currentOffer = null;
                 try {
                     currentOffer = idea.getCurrentOffer();
-                } catch (UnauthorizedOperationException e1) {
+                } catch (final UnauthorizedOperationException e1) {
                     // Do nothing.
                 }
                 if (currentOffer == null) {
 
-                    HtmlSpan amount = new HtmlSpan();
+                    final HtmlSpan amount = new HtmlSpan();
                     amount.setCssClass(IMPORTANT_CSS_CLASS);
 
                     CurrencyLocale currency;
@@ -121,7 +121,7 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                         currency = Context.getLocalizator().getCurrency(idea.getContribution());
 
                         amount.addText(currency.getDefaultString());
-                    } catch (UnauthorizedOperationException e) {
+                    } catch (final UnauthorizedOperationException e) {
                         // The user doesn't have the right to see the contribution,
                         // nothing is displayed
                     }
@@ -140,20 +140,20 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                     CurrencyLocale amountCurrency;
                     try {
                         amountCurrency = Context.getLocalizator().getCurrency(idea.getContribution());
-                        HtmlSpan amount = new HtmlSpan();
+                        final HtmlSpan amount = new HtmlSpan();
                         amount.setCssClass(IMPORTANT_CSS_CLASS);
                         amount.addText(amountCurrency.getDefaultString());
 
                         // Target
-                        CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
-                        HtmlSpan target = new HtmlSpan();
+                        final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
+                        final HtmlSpan target = new HtmlSpan();
                         target.setCssClass(IMPORTANT_CSS_CLASS);
                         target.addText(targetCurrency.getDefaultString());
 
                         // Progress
-                        HtmlSpan progress = new HtmlSpan();
+                        final HtmlSpan progress = new HtmlSpan();
                         progress.setCssClass(IMPORTANT_CSS_CLASS);
-                        NumberFormat format = NumberFormat.getNumberInstance();
+                        final NumberFormat format = NumberFormat.getNumberInstance();
                         format.setMinimumFractionDigits(0);
                         progress.addText("" + format.format(progressValue) + " %");
 
@@ -165,11 +165,11 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                         progressText.add(progress);
                         progressText.addText(tr(" of "));
                         progressText.add(target);
-                        long amountLong = currentOffer.getAmount().longValue();
+                        final long amountLong = currentOffer.getAmount().longValue();
                         progressText.addText(trn(" requested ", " requested ", amountLong));
 
                         ideaTitle.add(progressText);
-                    } catch (UnauthorizedOperationException e) {
+                    } catch (final UnauthorizedOperationException e) {
                         // The user doesn't have the right to see the progress, a text
                         // replace the progress bar.
                         final HtmlParagraph progressBarText = new HtmlParagraph(tr("You don't have the right to see the progress on the idea."));

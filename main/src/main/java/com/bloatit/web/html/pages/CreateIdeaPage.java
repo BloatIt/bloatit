@@ -86,13 +86,13 @@ public final class CreateIdeaPage extends LoggedPage {
     }
 
     private HtmlElement generateIdeaCreationForm() {
-        HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(Context.tr("Create a new idea"), 1);
+        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(Context.tr("Create a new idea"), 1);
         final CreateIdeaActionUrl doCreateUrl = new CreateIdeaActionUrl();
 
         // Create the form stub
-        HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
-        HtmlFormBlock specifBlock = new HtmlFormBlock(Context.tr("Specify the new idea"));
-        HtmlFormBlock paramBlock = new HtmlFormBlock(Context.tr("Parameters of the new idea"));
+        final HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
+        final HtmlFormBlock specifBlock = new HtmlFormBlock(Context.tr("Specify the new idea"));
+        final HtmlFormBlock paramBlock = new HtmlFormBlock(Context.tr("Parameters of the new idea"));
 
         createIdeaTitle.add(createIdeaForm);
         createIdeaForm.add(specifBlock);
@@ -100,12 +100,13 @@ public final class CreateIdeaPage extends LoggedPage {
         createIdeaForm.add(new HtmlSubmit(Context.tr("submit")));
 
         // Create the fields that will describe the description of the idea
-        HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, Context.tr("Title"));
+        final HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, Context.tr("Title"));
         descriptionInput.setDefaultValue(description);
         descriptionInput.setComment(Context.tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
 
         // Create the fields that will describe the specification of the idea
-        HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, Context.tr("Describe the idea"), SPECIF_INPUT_NB_LINES, SPECIF_INPUT_NB_COLUMNS);
+        final HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, Context.tr("Describe the idea"),
+                SPECIF_INPUT_NB_LINES, SPECIF_INPUT_NB_COLUMNS);
         specificationInput.setDefaultValue(specification);
         specificationInput.setComment(Context.tr("Enter a long description of the idea : list all features, describe them all "
                 + "... Try to leave as little room for ambiguity as possible."));
@@ -119,9 +120,9 @@ public final class CreateIdeaPage extends LoggedPage {
             languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
         }
 
-        HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, Context.tr("Category"));
+        final HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, Context.tr("Category"));
         categoryInput.setDefaultValue(category);
-        HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, Context.tr("Project"));
+        final HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, Context.tr("Project"));
         projectInput.setDefaultValue(project);
         paramBlock.add(languageInput);
         paramBlock.add(categoryInput);

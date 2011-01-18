@@ -34,7 +34,7 @@ public final class DaoDescription extends DaoIdentifiable {
     @OneToMany(mappedBy = "description")
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
-    private Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
+    private final Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
 
     public static DaoDescription createAndPersist(final DaoMember member, final Locale locale, final String title, final String description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -116,7 +116,7 @@ public final class DaoDescription extends DaoIdentifiable {
     public Set<DaoTranslation> getTranslations() {
         return translations;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

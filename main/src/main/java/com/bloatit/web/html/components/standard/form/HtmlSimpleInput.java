@@ -42,7 +42,7 @@ public class HtmlSimpleInput extends HtmlLeaf {
         return this;
     }
 
-    protected static String getInput(InputType type) {
+    protected static String getInput(final InputType type) {
         switch (type) {
         case TEXT_INPUT:
             return TEXT;

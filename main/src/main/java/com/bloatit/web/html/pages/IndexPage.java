@@ -11,6 +11,8 @@
 
 package com.bloatit.web.html.pages;
 
+import static com.bloatit.web.server.Context.tr;
+
 import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.ParamContainer;
@@ -66,7 +68,7 @@ public final class IndexPage extends Page {
 
         final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
 
-        final HtmlSubmit searchButton = new HtmlSubmit(Context.tr("Search"));
+        final HtmlSubmit searchButton = new HtmlSubmit(tr("Search"));
         searchForm.add(searchField);
         searchForm.add(searchButton);
         searchBlock.add(searchForm);
@@ -74,7 +76,7 @@ public final class IndexPage extends Page {
     }
 
     private void generateStatsBlock(final HtmlDiv statsBlock) {
-        statsBlock.add(new HtmlParagraph("" + DemandManager.getDemandsCount() + " demands, " + MemberManager.getMembersCount() + " members..."));
+        statsBlock.add(new HtmlParagraph(DemandManager.getDemandsCount() + tr(" demands, ") + MemberManager.getMembersCount() + tr(" members…")));
     }
 
     private void generateDualColumnBlock(final HtmlDiv dualColumnBlock) {
@@ -89,10 +91,11 @@ public final class IndexPage extends Page {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("index_description_block");
 
-        final String description = Context.tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
+        final String description = Context
+                .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlParagraph(description));
 
-        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), Context.tr("Submit a new idea"));
+        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), tr("Submit a new idea"));
         descriptionBlock.add(createIdeaPageLink);
 
         return descriptionBlock;

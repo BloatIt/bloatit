@@ -45,7 +45,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
-    private Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
+    private final Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
 
     @Basic(optional = false)
     @Field(store = Store.NO)
@@ -105,7 +105,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     public final void setState(final State state) {
         this.state = state;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

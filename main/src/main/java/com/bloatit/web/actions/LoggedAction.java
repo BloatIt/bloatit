@@ -53,7 +53,7 @@ public abstract class LoggedAction extends Action {
 
     /**
      * <b>Do not forget to localize</p>
-     *
+     * 
      * @return the error message to dislay to the user, informing him while he couldn't
      *         access the page
      */

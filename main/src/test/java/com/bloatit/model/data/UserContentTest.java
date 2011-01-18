@@ -55,8 +55,10 @@ public class UserContentTest extends TestCase {
             (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED)).addMember(yo, true);
         }
 
-        demand = DaoDemand.createAndPersist(yo,
-                DaoDescription.createAndPersist(yo, new Locale("fr"), "Ma super demande !", "Ceci est la descption de ma demande :) "));
+        demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
+                                                                                new Locale("fr"),
+                                                                                "Ma super demande !",
+                                                                                "Ceci est la descption de ma demande :) "));
 
         SessionManager.endWorkUnitAndFlush();
     }

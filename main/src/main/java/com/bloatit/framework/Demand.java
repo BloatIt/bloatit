@@ -27,7 +27,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Create a new Demand. This method is not protected by any right management.
-     *
+     * 
      * @return null if the <code>dao</code> is null.
      */
     public static Demand create(final DaoDemand dao) {
@@ -39,7 +39,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Create a new demand.
-     *
+     * 
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
     public Demand(final Member author, final Locale locale, final String title, final String description) {
@@ -111,7 +111,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Add a comment at the end of the comment list.
-     *
+     * 
      * @param text is the text of the comment.
      * @throws UnauthorizedOperationException if you do not have the {@link Action#WRITE}
      *         right on the <code>Comment</code> property.
@@ -124,7 +124,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Add a contribution on this demand.
-     *
+     * 
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char long.
      * @throws NotEnoughMoneyException if the person logged does not have enough money to
@@ -143,7 +143,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Add a new Offer on this Demand.
-     *
+     * 
      * @param amount must be positive (can be ZERO) non null.
      * @param locale must be non null. Is the locale in which the title and the text are
      *        written.
@@ -167,7 +167,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Create a new Specification on this demand.
-     *
+     * 
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#WRITE} right on the <code>Specification</code> property.
      * @see #authenticate(AuthToken)
@@ -206,7 +206,7 @@ public final class Demand extends Kudosable {
     /**
      * Return the progression in percent. It compare the amount of contribution to the
      * amount of the current offer.
-     *
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is greater
      *         than the amount for the current offer. If the offer amount is 0 then it
      *         return Float.POSITIVE_INFINITY.
@@ -283,7 +283,7 @@ public final class Demand extends Kudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     *
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *         <code>READ</code> right on the <code>Offer</code> property.
@@ -317,7 +317,7 @@ public final class Demand extends Kudosable {
 
     /**
      * For now only the admin can delete an offer.
-     *
+     * 
      * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
      *         <code>DELETE</code> right on the <code>Offer</code> property.

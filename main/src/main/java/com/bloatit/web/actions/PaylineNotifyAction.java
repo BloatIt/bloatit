@@ -18,7 +18,7 @@ public final class PaylineNotifyAction extends Action {
     @RequestParam(name = "token", level = Level.INFO)
     private final String token;
 
-    public PaylineNotifyAction(PaylineNotifyActionUrl url) {
+    public PaylineNotifyAction(final PaylineNotifyActionUrl url) {
         super(url);
         token = url.getToken();
     }
@@ -26,16 +26,15 @@ public final class PaylineNotifyAction extends Action {
     @Override
     public Url doProcess() throws RedirectException {
         Log.web().info("Get a payline notification: " + token);
-        System.out.println("GET A NOTIFY ! " + token);
-        Payline payline = new Payline();
+        final Payline payline = new Payline();
         try {
-            Reponse paymentDetails = payline.getPaymentDetails(token);
+            final Reponse paymentDetails = payline.getPaymentDetails(token);
             if (paymentDetails.isAccepted()) {
                 payline.validatePayment(token);
             } else {
                 Log.web().error("Payment is not accepted: " + token);
             }
-        } catch (TokenNotfoundException e) {
+        } catch (final TokenNotfoundException e) {
             Log.web().error("Token not found ! ", e);
         }
         return new IndexPageUrl();

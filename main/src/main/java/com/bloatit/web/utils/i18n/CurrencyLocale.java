@@ -1,20 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt.
- *
- * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.utils.i18n;
 
@@ -50,26 +42,21 @@ public final class CurrencyLocale {
     private final BigDecimal euroAmount;
     private final Currency currency;
 
-
     /**
      * <p>
      * Creates a new <code>CurrencyLocale</code>
      * </p>
      * <p>
-     * Uses java <code>Locale</code>s to find the appropriate
-     * <code>target</code> currency. Conversion rate is obtained from an
-     * external source.
+     * Uses java <code>Locale</code>s to find the appropriate <code>target</code>
+     * currency. Conversion rate is obtained from an external source.
      * </p>
-     *
-     * @param euroAmount
-     *            the amount of money in the default application currency (euro)
-     * @param targetLocale
-     *            the <code>Locale</code> that represents the currency of the
-     * @throws CurrencyNotAvailableException
-     *             whenever <code>targetLocale</code> currency is not in the
-     *             list of available currencies
+     * 
+     * @param euroAmount the amount of money in the default application currency (euro)
+     * @param targetLocale the <code>Locale</code> that represents the currency of the
+     * @throws CurrencyNotAvailableException whenever <code>targetLocale</code> currency
+     *         is not in the list of available currencies
      */
-    public CurrencyLocale(BigDecimal euroAmount, Locale targetLocale) throws CurrencyNotAvailableException {
+    public CurrencyLocale(final BigDecimal euroAmount, final Locale targetLocale) throws CurrencyNotAvailableException {
         this.euroAmount = euroAmount;
         this.targetLocale = targetLocale;
         this.currency = Currency.getInstance(targetLocale);
@@ -84,12 +71,11 @@ public final class CurrencyLocale {
      * Converts the euro amount to the locale amount
      * </p>
      * <p>
-     * Conversion will be done with a 7 digits precision and rounding HALF_ELVEN
-     * (meaning it will round to the closest neighbor unless both are
-     * equidistant in which case it will round to the closest even number) which
-     * is the IEEE 754R default
+     * Conversion will be done with a 7 digits precision and rounding HALF_ELVEN (meaning
+     * it will round to the closest neighbor unless both are equidistant in which case it
+     * will round to the closest even number) which is the IEEE 754R default
      * </p>
-     *
+     * 
      * @return the locale amount
      */
     public BigDecimal getConvertedAmount() {
@@ -98,7 +84,7 @@ public final class CurrencyLocale {
 
     /**
      * Finds the symbol used for this money in the given locale
-     *
+     * 
      * @return the currency symbol
      */
     public String getLocaleSymbol() {
@@ -106,9 +92,9 @@ public final class CurrencyLocale {
     }
 
     /**
-     * Returns the localized version of the amount, i.e. : converted to the
-     * locale money, and with the locale symbol
-     *
+     * Returns the localized version of the amount, i.e. : converted to the locale money,
+     * and with the locale symbol
+     * 
      * @return the localized string
      */
     public String getLocaleString() {
@@ -116,30 +102,30 @@ public final class CurrencyLocale {
     }
 
     /**
-     * Returns the displayed amount within the default currency of the
-     * application (currently euro)
-     *
-     * @return a String representing the <code>amount</code> of money in the
-     *         application default currency
+     * Returns the displayed amount within the default currency of the application
+     * (currently euro)
+     * 
+     * @return a String representing the <code>amount</code> of money in the application
+     *         default currency
      */
     public String getDefaultString() {
         return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
-     * Returns the localized version of the amount, i.e. : converted to the
-     * locale money, and with the locale symbol
-     *
+     * Returns the localized version of the amount, i.e. : converted to the locale money,
+     * and with the locale symbol
+     * 
      * @return the localized string
      */
     @Override
     public String toString() {
-        return this.getLocaleString();
+        return getLocaleString();
     }
 
     /**
      * Checks wether the target currency is handled
-     *
+     * 
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
     public boolean availableTargetCurrency() {
@@ -148,23 +134,21 @@ public final class CurrencyLocale {
 
     /**
      * Checks if a currency is handled
-     *
-     * @param currency
-     *            the currency to check
+     * 
+     * @param currency the currency to check
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
-    public static boolean availableCurrency(Locale locale) {
+    public static boolean availableCurrency(final Locale locale) {
         return availableCurrency(Currency.getInstance(locale));
     }
 
     /**
      * Checks if a currency is handled
-     *
-     * @param currency
-     *            the currency to check
+     * 
+     * @param currency the currency to check
      * @return <i>true</i> if currency is handled, <i>false</i> otherwise
      */
-    public static boolean availableCurrency(Currency currency) {
+    public static boolean availableCurrency(final Currency currency) {
         return currencies.containsKey(currency);
     }
 
@@ -180,38 +164,38 @@ public final class CurrencyLocale {
      * Parses the rate file and initializes the currency array
      * </p>
      * <p>
-     * This parsing will occur only if file has been modified since last parse
-     * or if no parse ever occured
+     * This parsing will occur only if file has been modified since last parse or if no
+     * parse ever occured
      * </p>
      */
     private static void parseRate() {
         BufferedReader br = null;
         try {
-            File file = new File(RATES_PATH);
+            final File file = new File(RATES_PATH);
             if (lastParse == null || lastParse.before(new Date(file.lastModified()))) {
                 // Only parse if the file has been updated in the meantime
                 lastParse = new Date();
 
                 br = new BufferedReader(new FileReader(file));
                 while (br.ready()) {
-                    String line = br.readLine();
+                    final String line = br.readLine();
                     if (line.charAt(0) != '#') {
-                        String data = line.split("#", 1)[0];
-                        String code = data.split("\t")[0];
-                        BigDecimal value = new BigDecimal(data.split("\t")[1]);
+                        final String data = line.split("#", 1)[0];
+                        final String code = data.split("\t")[0];
+                        final BigDecimal value = new BigDecimal(data.split("\t")[1]);
 
                         currencies.put(Currency.getInstance(code), value);
                     }
                 }
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new FatalErrorException(ex);
         } finally {
             try {
-                if (br != null){
+                if (br != null) {
                     br.close();
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 Log.web().warn("Error clothing file: " + RATES_PATH);
             }
         }

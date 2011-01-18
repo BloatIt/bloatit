@@ -15,7 +15,7 @@ public class UrlParameterConstraints<U> {
         private final T value;
         private final String error;
 
-        public Param(T value, String error) {
+        public Param(final T value, final String error) {
             super();
             this.value = value;
             this.error = error;
@@ -40,16 +40,16 @@ public class UrlParameterConstraints<U> {
         MIN_ERROR, MAX_ERROR, OPTIONAL_ERROR, PRECISION_ERROR, LENGTH_ERROR
     }
 
-    public UrlParameterConstraints(Integer min,
-                                   Integer max,
-                                   boolean optional,
-                                   int precision,
-                                   int length,
-                                   String minErrorMsg,
-                                   String maxErrorMsg,
-                                   String optErrorMsg,
-                                   String precisionErrorMsg,
-                                   String lenghtErrorMsg) {
+    public UrlParameterConstraints(final Integer min,
+                                   final Integer max,
+                                   final boolean optional,
+                                   final int precision,
+                                   final int length,
+                                   final String minErrorMsg,
+                                   final String maxErrorMsg,
+                                   final String optErrorMsg,
+                                   final String precisionErrorMsg,
+                                   final String lenghtErrorMsg) {
         super();
         this.min = new Param<Integer>(min, minErrorMsg);
         this.max = new Param<Integer>(max, maxErrorMsg);
@@ -67,7 +67,12 @@ public class UrlParameterConstraints<U> {
     }
 
     @SuppressWarnings("unchecked")
-    public void computeConstraints(U value, Class<U> valueClass, Messages messages, Level level, String name, String strValue) {
+    public void computeConstraints(final U value,
+                                   final Class<U> valueClass,
+                                   final Messages messages,
+                                   final Level level,
+                                   final String name,
+                                   final String strValue) {
         @SuppressWarnings("rawtypes")
         ComputeConstraint computeConstraint;
         if (valueClass.equals(Integer.class)) {
@@ -82,7 +87,11 @@ public class UrlParameterConstraints<U> {
         updateMessages(computeConstraint.getConstraintErrors(value), messages, level, name, strValue);
     }
 
-    private void updateMessages(EnumSet<ConstraintError> enumSet, Messages messages, Level level, String name, String strValue) {
+    private void updateMessages(final EnumSet<ConstraintError> enumSet,
+                                final Messages messages,
+                                final Level level,
+                                final String name,
+                                final String strValue) {
         if (enumSet.contains(ConstraintError.MIN_ERROR)) {
             messages.add(new Message(min.getError(), level, What.MIN_ERROR, name, strValue));
         }
@@ -103,13 +112,13 @@ public class UrlParameterConstraints<U> {
     static abstract class ComputeConstraint<T> {
         protected final UrlParameterConstraints<T> constraints;
 
-        public ComputeConstraint(UrlParameterConstraints<T> constraints) {
+        public ComputeConstraint(final UrlParameterConstraints<T> constraints) {
             super();
             this.constraints = constraints;
         }
 
         public EnumSet<ConstraintError> getConstraintErrors(final T value) {
-            EnumSet<ConstraintError> enumSet = EnumSet.noneOf(ConstraintError.class);
+            final EnumSet<ConstraintError> enumSet = EnumSet.noneOf(ConstraintError.class);
             if (value == null && constraints.isOptional() == false) {
                 enumSet.add(ConstraintError.OPTIONAL_ERROR);
             }
@@ -150,105 +159,105 @@ public class UrlParameterConstraints<U> {
     }
 
     static class ComputeStringConstraint extends ComputeConstraint<String> {
-        public ComputeStringConstraint(UrlParameterConstraints<String> constraints) {
+        public ComputeStringConstraint(final UrlParameterConstraints<String> constraints) {
             super(constraints);
         }
 
         @Override
-        public boolean triggerMinConstraint(String value) {
+        public boolean triggerMinConstraint(final String value) {
             return value.length() < constraints.getMin();
         }
 
         @Override
-        public boolean triggerPrecisionConstraint(String value) {
+        public boolean triggerPrecisionConstraint(final String value) {
             throw new UnsupportedOperationException("Cannot compute a precision constraint on a String value.");
         }
 
         @Override
-        public boolean triggerMaxConstraint(String value) {
+        public boolean triggerMaxConstraint(final String value) {
             return value.length() > constraints.getMax();
         }
 
         @Override
-        public boolean triggerLengthConstraint(String value) {
+        public boolean triggerLengthConstraint(final String value) {
             return value.length() == constraints.getLength();
         }
     }
 
     static class ComputeIntegerConstraint<T extends Comparable<Integer>> extends ComputeConstraint<T> {
-        public ComputeIntegerConstraint(UrlParameterConstraints<T> constraints) {
+        public ComputeIntegerConstraint(final UrlParameterConstraints<T> constraints) {
             super(constraints);
         }
 
         @Override
-        public boolean triggerMinConstraint(T value) {
+        public boolean triggerMinConstraint(final T value) {
             return value.compareTo(constraints.getMin()) < 0;
         }
 
         @Override
-        public boolean triggerMaxConstraint(T value) {
+        public boolean triggerMaxConstraint(final T value) {
             return value.compareTo(constraints.getMax()) > 0;
         }
 
         @Override
-        public boolean triggerLengthConstraint(T value) {
+        public boolean triggerLengthConstraint(final T value) {
             return value.toString().length() == constraints.getLength();
         }
 
         @Override
-        public boolean triggerPrecisionConstraint(T value) {
+        public boolean triggerPrecisionConstraint(final T value) {
             throw new UnsupportedOperationException("Cannot compute a precision constraint on this parameter.");
         }
     }
 
     static class ComputeBigdecimalConstraint extends ComputeConstraint<BigDecimal> {
-        public ComputeBigdecimalConstraint(UrlParameterConstraints<BigDecimal> constraints) {
+        public ComputeBigdecimalConstraint(final UrlParameterConstraints<BigDecimal> constraints) {
             super(constraints);
         }
 
         @Override
-        public boolean triggerMinConstraint(BigDecimal value) {
+        public boolean triggerMinConstraint(final BigDecimal value) {
             return value.compareTo(BigDecimal.valueOf(constraints.getMin())) < 0;
         }
 
         @Override
-        public boolean triggerLengthConstraint(BigDecimal value) {
+        public boolean triggerLengthConstraint(final BigDecimal value) {
             return value.toString().length() == constraints.getLength();
         }
 
         @Override
-        public boolean triggerPrecisionConstraint(BigDecimal value) {
+        public boolean triggerPrecisionConstraint(final BigDecimal value) {
             return value.stripTrailingZeros().scale() > constraints.getPrecision();
         }
 
         @Override
-        public boolean triggerMaxConstraint(BigDecimal value) {
+        public boolean triggerMaxConstraint(final BigDecimal value) {
             return value.compareTo(BigDecimal.valueOf(constraints.getMax())) > 0;
         }
     }
 
     static class ComputeEverythingConstraint extends ComputeConstraint<Object> {
-        public ComputeEverythingConstraint(UrlParameterConstraints<Object> constraints) {
+        public ComputeEverythingConstraint(final UrlParameterConstraints<Object> constraints) {
             super(constraints);
         }
 
         @Override
-        public boolean triggerMinConstraint(Object value) {
+        public boolean triggerMinConstraint(final Object value) {
             return value.toString().length() < constraints.getMin();
         }
 
         @Override
-        public boolean triggerLengthConstraint(Object value) {
+        public boolean triggerLengthConstraint(final Object value) {
             return value.toString().length() == constraints.getLength();
         }
 
         @Override
-        public boolean triggerPrecisionConstraint(Object value) {
+        public boolean triggerPrecisionConstraint(final Object value) {
             return false;
         }
 
         @Override
-        public boolean triggerMaxConstraint(Object value) {
+        public boolean triggerMaxConstraint(final Object value) {
             return value.toString().length() > constraints.getMax();
         }
     }

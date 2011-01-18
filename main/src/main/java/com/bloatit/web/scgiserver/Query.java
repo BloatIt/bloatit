@@ -13,13 +13,12 @@ public class Query {
     private static final String PAGE_NAME = "page";
     private static final String LANGUAGE = "lang";
 
-
     private String language = "en";
     private String pageName = "404";
     private final Parameters parameters = new Parameters();
     private final Parameters getParameters = new Parameters();
 
-    Query(String queryString) {
+    Query(final String queryString) {
         try {
             String parametersString = null;
             for (final String param : queryString.split("&")) {
@@ -38,13 +37,13 @@ public class Query {
                 }
             }
 
-            if (parametersString != null){
-                String[] namedValues = parametersString.split("/");
-                for (String namedValue : namedValues) {
-                    String[] pair = namedValue.split("-");
-                    if (pair.length == 2){
+            if (parametersString != null) {
+                final String[] namedValues = parametersString.split("/");
+                for (final String namedValue : namedValues) {
+                    final String[] pair = namedValue.split("-");
+                    if (pair.length == 2) {
                         parameters.put(pair[0], pair[1]);
-                    }else{
+                    } else {
                         Log.web().error("Malformed parameter " + namedValue);
                     }
                 }

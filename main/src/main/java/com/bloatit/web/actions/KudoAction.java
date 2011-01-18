@@ -48,7 +48,7 @@ public final class KudoAction extends LoggedAction {
         try {
             targetKudosable.kudos();
             session.notifyGood(Context.tr("Kudo applied"));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to kudo that."));
         }
 

@@ -53,15 +53,17 @@ import com.bloatit.web.utils.url.TestPageUrl;
 
 public final class SCGIServer {
 
+    private static final String SCGI_HOST = "127.0.0.1";
+    private static final int SCGI_PORT = 4000;
+
     public static void main(final String[] args) {
         try {
             new SCGIServer().run();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Log.server().fatal(e);
         }
     }
 
-    private static final int SOKET_PORT = 4000;
 
     private ServerSocket providerSocket;
     private Socket clientSocket;
@@ -111,7 +113,7 @@ public final class SCGIServer {
 
         // Find a better way to clean the socket
         try {
-            final Socket cleanSocket = new Socket("127.0.0.1", SOKET_PORT);
+            final Socket cleanSocket = new Socket(SCGI_HOST, SCGI_PORT);
             cleanSocket.close();
         } catch (final IOException ex) {
             Log.server().warn("Init: Cleaning socket catch exception.", ex);
@@ -124,7 +126,7 @@ public final class SCGIServer {
         }
 
         Log.server().info("Init: Start BloatIt serveur");
-        providerSocket = new ServerSocket(SOKET_PORT);
+        providerSocket = new ServerSocket(SCGI_PORT);
     }
 
     private void run() throws IOException {
@@ -138,11 +140,11 @@ public final class SCGIServer {
 
             final long startTime = System.nanoTime();
 
-            BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
+            final BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
             final Map<String, String> env = SCGIUtils.parse(bis);
 
-            HttpHeader header = new HttpHeader(env);
-            HttpPost post = new HttpPost(bis, header.getContentLength());
+            final HttpHeader header = new HttpHeader(env);
+            final HttpPost post = new HttpPost(bis, header.getContentLength());
 
             SessionManager.clearExpiredSessions();
 
@@ -169,7 +171,7 @@ public final class SCGIServer {
     }
 
     private void webPrintException(final Exception e) {
-        StringBuilder display = new StringBuilder();
+        final StringBuilder display = new StringBuilder();
         display.append("Content-type: text/plain\r\n\r\n");
         display.append(e.toString());
         display.append(" :\n");
@@ -182,7 +184,7 @@ public final class SCGIServer {
 
         try {
             clientSocket.getOutputStream().write(display.toString().getBytes());
-        } catch (IOException e1) {
+        } catch (final IOException e1) {
             Log.web().fatal("Cannot send exception through the SCGI soket.", e1);
         }
     }
@@ -190,7 +192,7 @@ public final class SCGIServer {
     private static final class ShutdownHook extends Thread {
         private final Socket clientSocket;
 
-        public ShutdownHook(Socket clientSocket) {
+        public ShutdownHook(final Socket clientSocket) {
             super();
             this.clientSocket = clientSocket;
         }
@@ -202,7 +204,7 @@ public final class SCGIServer {
                 if (clientSocket != null) {
                     clientSocket.close();
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Log.server().error("Fail to close the socket on shutdown.", e);
             }
             SessionManager.saveSessions();
