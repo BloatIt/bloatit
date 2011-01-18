@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Locale;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.framework.right.RightManager.Action;
+import com.bloatit.framework.right.RightManager.Role;
 import com.experian.payline.ws.impl.DoWebPaymentRequest;
 import com.experian.payline.ws.impl.DoWebPaymentResponse;
 import com.experian.payline.ws.impl.GetWebPaymentDetailsRequest;
@@ -130,7 +133,7 @@ public final class Payline extends Unlockable {
         paymentRequest.setNotificationURL(notificationUrl);
 
         if (getAuthToken() == null) {
-            throw new UnauthorizedOperationException();
+            throw new UnauthorizedOperationException(EnumSet.of(Role.NOBODY), Action.READ);
         }
         if (amount.scale() > 2) {
             throw new FatalErrorException("The amount cannot have more than 2 digit after the '.'.");
@@ -197,7 +200,7 @@ public final class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     * 
+     *
      * @param member
      * @return
      */

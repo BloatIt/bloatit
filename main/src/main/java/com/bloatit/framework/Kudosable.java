@@ -1,6 +1,7 @@
 package com.bloatit.framework;
 
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.common.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.right.KudosableRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoKudosable;
@@ -23,17 +24,19 @@ public abstract class Kudosable extends UserContent {
         return !getDaoKudosable().hasKudosed(getAuthToken().getMember().getDao());
     }
 
-    public final void unkudos() throws UnauthorizedOperationException {
+    private void tryKudos() throws UnauthorizedOperationException {
         if (!canKudos()) {
-            throw new UnauthorizedOperationException();
+            throw new UnauthorizedOperationException(calculateRole(this), Action.WRITE, SpecialCode.ALREADY_KUDOSED);
         }
+    }
+
+    public final void unkudos() throws UnauthorizedOperationException {
+        tryKudos();
         addKudos(-1);
     }
 
     public final void kudos() throws UnauthorizedOperationException {
-        if (!canKudos()) {
-            throw new UnauthorizedOperationException();
-        }
+        tryKudos();
         addKudos(1);
     }
 
@@ -52,9 +55,6 @@ public abstract class Kudosable extends UserContent {
 
     private void addKudos(final int signe) throws UnauthorizedOperationException {
         final Member member = getAuthToken().getMember();
-        if (getDaoKudosable().hasKudosed(member.getDao())) {
-            throw new UnauthorizedOperationException();
-        }
         final int influence = member.calculateInfluence();
         if (influence > 0) {
             getAuthor().addToKarma(influence);

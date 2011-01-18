@@ -138,9 +138,6 @@ public final class Demand extends Kudosable {
      * @see #authenticate(AuthToken)
      */
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
-        if (getAuthor() == null) {
-            throw new UnauthorizedOperationException();
-        }
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
         dao.addContribution(getAuthToken().getMember().getDao(), amount, comment);
     }

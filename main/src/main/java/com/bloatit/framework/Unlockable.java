@@ -15,6 +15,7 @@ import java.util.EnumSet;
 
 import com.bloatit.framework.right.RightManager.Role;
 import com.bloatit.model.data.DaoGroup.MemberStatus;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 
 /**
  * An Unlockable class is a class that you can unlock with an {@link AuthToken}. You also
@@ -80,6 +81,10 @@ public class Unlockable {
      * Helper function. Call the {@link Unlockable#calculateRole(Member)} method.
      */
     protected final EnumSet<Role> calculateRole(final UserContent userContent) {
+        if (userContent == null || userContent.getAuthor() == null) {
+            // This should never append.
+            throw new NonOptionalParameterException();
+        }
         return calculateRole(userContent.getAuthor());
     }
 
