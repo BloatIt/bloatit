@@ -107,14 +107,6 @@ public final class Session {
         return lastStablePage;
     }
 
-    /**
-     * You should use the pickPreferedPage instead.
-     */
-    @Deprecated
-    public final Url getTargetPage() {
-        return targetPage;
-    }
-
     public Url pickPreferredPage() {
         if (targetPage != null) {
             final Url tempStr = targetPage;
