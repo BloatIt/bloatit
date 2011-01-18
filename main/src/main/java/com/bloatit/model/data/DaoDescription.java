@@ -51,7 +51,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Create a daoDescription. Set the default locale to "locale"
-     * 
+     *
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
@@ -67,7 +67,7 @@ public final class DaoDescription extends DaoIdentifiable {
      * Use a HQL query to get the Translations of this description in a PageIterable This
      * will return every translation EVEN this description.
      */
-    public PageIterable<DaoTranslation> getTranslationsFromQuery() {
+    public PageIterable<DaoTranslation> getTranslations() {
         return new QueryCollection<DaoTranslation>("from DaoTransaltion as t where t.description = :this").setEntity("this", this);
     }
 
@@ -80,7 +80,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Get a translation for a given locale.
-     * 
+     *
      * @param locale the locale in which we want the description
      * @return null if no translation exists for this locale.
      */
@@ -108,13 +108,6 @@ public final class DaoDescription extends DaoIdentifiable {
 
     public Locale getDefaultLocale() {
         return defaultLocale;
-    }
-
-    /**
-     * You should probably use the getTranslationsFromQuery
-     */
-    public Set<DaoTranslation> getTranslations() {
-        return translations;
     }
 
     // ======================================================================

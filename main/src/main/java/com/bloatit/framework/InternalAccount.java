@@ -2,14 +2,11 @@ package com.bloatit.framework;
 
 import java.math.BigDecimal;
 
-import com.bloatit.common.FatalErrorException;
-import com.bloatit.common.Log;
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.right.MoneyRight;
+import com.bloatit.framework.right.InternalAccountRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoAccount;
 import com.bloatit.model.data.DaoInternalAccount;
-import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 /**
  * An internal account is an account containing the money we store for a user. There is
@@ -17,7 +14,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  * amount under zero. An internal account can have some money blocked. When you contribute
  * on an idea, you do not spend the money directly, but it is blocked and you cannot use
  * it elsewhere.
- * 
+ *
  * @author tguyard
  */
 public final class InternalAccount extends Account {
@@ -34,33 +31,23 @@ public final class InternalAccount extends Account {
     }
 
     /**
-     * Return the amount blocked into contribution on non finished idea.
-     * 
-     * @return a positive bigdecimal.
-     * @throws UnauthorizedOperationException
+     * @return true if you can access the <code>Blocked</code> property.
+     * @see #authenticate(AuthToken)
      */
-    public BigDecimal getBlocked() throws UnauthorizedOperationException {
-        new MoneyRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return dao.getBlocked();
+    public boolean canAccessBlocked() {
+        return new InternalAccountRight.Blocked().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
     }
 
     /**
-     * This was not meant to be used like this. First : Charge amount is not generic. The
-     * operation done here is just a transfer between 2 account. Second : If there is a
-     * {@link NotEnoughMoneyException} it is to be used.
-     * 
-     * @param amount
-     * @param externalAccount
+     * Return the amount blocked into contribution on non finished idea.
+     *
+     * @return a positive {@link BigDecimal}.
+     * @throws UnauthorizedOperationException if you do not have the right to access the
+     *         <code>Bloked</code> property.
      */
-    @Deprecated
-    public void chargeAmount(final BigDecimal amount, final Account externalAccount) {
-        try {
-            new Transaction(this, externalAccount, amount.negate());
-        } catch (final NotEnoughMoneyException ex) {
-            // Should never happen
-            Log.web().fatal(ex);
-            throw new FatalErrorException("Ooops ... Looks like you fell in a warphole ... you should never see this", ex);
-        }
+    public BigDecimal getBlocked() throws UnauthorizedOperationException {
+        new InternalAccountRight.Blocked().tryAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        return dao.getBlocked();
     }
 
     @Override

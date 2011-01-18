@@ -6,7 +6,7 @@ import java.util.EnumSet;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.right.MoneyRight;
+import com.bloatit.framework.right.AccountRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.framework.right.RightManager.Role;
 import com.bloatit.model.data.DaoExternalAccount;
@@ -28,16 +28,16 @@ public final class Transaction extends Identifiable {
     }
 
     public boolean canAccessSomething() {
-        return new MoneyRight.Transaction().canAccess(calculateRole(), Action.READ);
+        return new AccountRight.Transaction().canAccess(calculateRole(), Action.READ);
     }
 
     public InternalAccount getFrom() throws UnauthorizedOperationException {
-        new MoneyRight.Transaction().tryAccess(calculateRole(), Action.READ);
+        new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
         return new InternalAccount(dao.getFrom());
     }
 
     public Account getTo() throws UnauthorizedOperationException {
-        new MoneyRight.Transaction().tryAccess(calculateRole(), Action.READ);
+        new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
         if (dao.getTo().getClass() == DaoInternalAccount.class) {
             return new InternalAccount((DaoInternalAccount) dao.getTo());
         } else if (dao.getTo().getClass() == DaoExternalAccount.class) {
@@ -47,12 +47,12 @@ public final class Transaction extends Identifiable {
     }
 
     public BigDecimal getAmount() throws UnauthorizedOperationException {
-        new MoneyRight.Transaction().tryAccess(calculateRole(), Action.READ);
+        new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
         return dao.getAmount();
     }
 
     public Date getCreationDate() throws UnauthorizedOperationException {
-        new MoneyRight.Transaction().tryAccess(calculateRole(), Action.READ);
+        new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
         return dao.getCreationDate();
     }
 

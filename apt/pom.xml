@@ -31,7 +31,6 @@
 			<systemPath>${java.home}/../lib/tools.jar</systemPath>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.sun.codemodel</groupId>
 			<artifactId>codemodel</artifactId>
@@ -40,8 +39,5 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-
-
-
 
 </project>

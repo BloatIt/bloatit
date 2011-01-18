@@ -3,7 +3,7 @@ package com.bloatit.framework;
 import java.math.BigDecimal;
 
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.right.MoneyRight;
+import com.bloatit.framework.right.ContributionRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoContribution;
 import com.bloatit.model.data.DaoUserContent;
@@ -11,7 +11,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 /**
  * This is a financial contribution.
- * 
+ *
  * @see DaoContribution
  */
 public final class Contribution extends UserContent {
@@ -36,7 +36,7 @@ public final class Contribution extends UserContent {
     /**
      * You have to call {@link #accept(Offer)} when an offer is accepted. This will create
      * the {@link Transaction} needed so that the developer of the offer become rich.
-     * 
+     *
      * @param offer the validated offer.
      * @throws NotEnoughMoneyException if there is a bug and then a person does not have
      *         enough money.
@@ -55,12 +55,12 @@ public final class Contribution extends UserContent {
 
     /**
      * return true if you can access the <code>Transaction</code> property.
-     * 
+     *
      * @see #getTransaction()
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessTransaction() {
-        return new MoneyRight.Transaction().canAccess(calculateRole(this), Action.READ);
+        return new ContributionRight.Transaction().canAccess(calculateRole(this), Action.READ);
     }
 
     /**
@@ -70,18 +70,18 @@ public final class Contribution extends UserContent {
      *         <code>Transaction</code> property.
      */
     public Transaction getTransaction() throws UnauthorizedOperationException {
-        new MoneyRight.Transaction().tryAccess(calculateRole(this), Action.READ);
+        new ContributionRight.Transaction().tryAccess(calculateRole(this), Action.READ);
         return new Transaction(dao.getTransaction());
     }
 
     /**
      * return true if you can access the <code>Amount</code> property.
-     * 
+     *
      * @see #getAmount()()
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessAmount() {
-        return new MoneyRight.Transaction().canAccess(calculateRole(this), Action.READ);
+        return new ContributionRight.Amount().canAccess(calculateRole(this), Action.READ);
     }
 
     /**
@@ -91,18 +91,18 @@ public final class Contribution extends UserContent {
      * @see Contribution#authenticate(AuthToken)
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
-        new MoneyRight.Amount().tryAccess(calculateRole(this), Action.READ);
+        new ContributionRight.Amount().tryAccess(calculateRole(this), Action.READ);
         return dao.getAmount();
     }
 
     /**
      * return true if you can access the <code>Comment</code> property.
-     * 
+     *
      * @see #getComment()()
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessComment() {
-        return new MoneyRight.Transaction().canAccess(calculateRole(this), Action.READ);
+        return new ContributionRight.Comment().canAccess(calculateRole(this), Action.READ);
     }
 
     /**
@@ -111,7 +111,7 @@ public final class Contribution extends UserContent {
      *         <code>Comment</code> property.
      */
     public String getComment() throws UnauthorizedOperationException {
-        new MoneyRight.Comment().tryAccess(calculateRole(this), Action.READ);
+        new ContributionRight.Comment().tryAccess(calculateRole(this), Action.READ);
         return dao.getComment();
     }
 

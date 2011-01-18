@@ -21,7 +21,6 @@ import com.bloatit.common.Log;
 import com.bloatit.web.server.DispatchServer;
 import com.bloatit.web.server.HttpResponse;
 import com.bloatit.web.server.SessionManager;
-import com.bloatit.web.utils.url.AccountChargingActionUrl;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.CommentCommentActionUrl;
 import com.bloatit.web.utils.url.CommentReplyPageUrl;
@@ -96,7 +95,6 @@ public final class SCGIServer {
         dispatchServer.addLinkable(LogoutActionUrl.getName(), LogoutActionUrl.class);
         dispatchServer.addLinkable(ContributionActionUrl.getName(), ContributionActionUrl.class);
         dispatchServer.addLinkable(OfferActionUrl.getName(), OfferActionUrl.class);
-        dispatchServer.addLinkable(AccountChargingActionUrl.getName(), AccountChargingActionUrl.class);
         dispatchServer.addLinkable(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
         dispatchServer.addLinkable(RegisterActionUrl.getName(), RegisterActionUrl.class);
         dispatchServer.addLinkable(KudoActionUrl.getName(), KudoActionUrl.class);
