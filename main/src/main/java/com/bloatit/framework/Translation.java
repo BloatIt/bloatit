@@ -40,7 +40,7 @@ public final class Translation extends Kudosable {
 
     /**
      * Smart cut the text, add a "…" char, and return it.
-     * 
+     *
      * @param sizeMax is the maximum size the returned text can be.
      * @param variance is how far we are looking for the punctuation mark to cut the text.
      * @return a cut version of the text, find a point or a punctuation mark to cut it at
@@ -55,6 +55,7 @@ public final class Translation extends Kudosable {
             return wholeText;
         }
 
+        // Try the common punctuation marks.
         for (int i = sizeMax; i > sizeMax - variance; --i) {
             switch (wholeText.charAt(i - 1)) {
             case ',':
@@ -62,13 +63,35 @@ public final class Translation extends Kudosable {
             case '!':
             case '?':
             case ':':
-                return wholeText.substring(0, i - 1) + "…";
+                return performTheCutAndAddPoints(sizeMax, wholeText, i);
             default:
                 // Do nothing.
                 break;
             }
         }
+
+        // Try with a space or line return.
+        for (int i = sizeMax; i > sizeMax - variance; --i) {
+            switch (wholeText.charAt(i - 1)) {
+            case ' ':
+            case '\n':
+            case '\r':
+                return performTheCutAndAddPoints(sizeMax, wholeText, i);
+            default:
+                // Do nothing.
+                break;
+            }
+        }
+
+        // Found no good chars...
         return wholeText.substring(0, sizeMax) + "…";
+    }
+
+    private String performTheCutAndAddPoints(final int sizeMax, final String wholeText, int i) {
+        if (i < (sizeMax - 1)) {
+            return wholeText.substring(0, i) + " …";
+        }
+        return wholeText.substring(0, i - 1) + "…";
     }
 
     @Override

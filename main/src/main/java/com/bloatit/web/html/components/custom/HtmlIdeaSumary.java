@@ -35,9 +35,9 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 
 public final class HtmlIdeaSumary extends HtmlDiv {
 
-    private static final int SHORT_TEXT_CONSTANT = 5;
+    private static final int SHORT_TEXT_CONSTANT = 50;
+    private static final int SHORT_DESCRIPTION_LENGTH = 220;
     private static final String IMPORTANT_CSS_CLASS = "important";
-    private static final int SHORT_DESCRIPTION_LENGTH = 200;
 
     public HtmlIdeaSumary(final Demand idea) {
         super("idea_conpact_summary");

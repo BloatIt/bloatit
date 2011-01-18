@@ -33,9 +33,9 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 
 public final class IdeaHeadComponent extends HtmlPageComponent {
 
-    private static final int SHORT_TEXT_VARIANCE = 5;
+    private static final int SHORT_TEXT_VARIANCE = 50;
+    private static final int SHORT_DESCRIPTION_LENGTH = 200;
     private static final String IMPORTANT_CSS_CLASS = "important";
-    private static final int SHORT_DESCRIPTION_LENGTH = 144;
 
     public IdeaHeadComponent(final Demand idea) {
         super();
