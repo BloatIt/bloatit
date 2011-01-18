@@ -19,8 +19,8 @@
 
 package com.bloatit.web.html.components.standard.form;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.bloatit.web.html.HtmlBranch;
 import com.bloatit.web.html.HtmlElement;
@@ -30,8 +30,9 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
  * <p>Class to handle Html drop down boxes (aka Html select).</p>
  * <p>Usage is : create the object, then use addText to add a new line</p>
  */
-public final class HtmlDropDown extends HtmlFormField<Integer> {
-    private final List<HtmlBranch> components = new ArrayList<HtmlBranch>();
+
+public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
+    private Map<T, HtmlBranch> components = new HashMap<T, HtmlBranch>();
 
     public HtmlDropDown(final String name) {
         super(new HtmlGenericElement("select"), name);
@@ -48,19 +49,17 @@ public final class HtmlDropDown extends HtmlFormField<Integer> {
      * inserted with addText
      */
     @Override
-    protected void doSetDefaultValue(final Integer value) {
+    protected void doSetDefaultValue(final T value) {
         components.get(value).addAttribute("selected", "selected");
     }
 
-    public HtmlElement add(String text) {
-        return this.add(text, text);
-    }
-
-    public HtmlElement add(String text, String value) {
+    public HtmlElement add(T elem) {
         final HtmlGenericElement opt = new HtmlGenericElement("option");
-        opt.addText(text);
-        opt.addAttribute("value", value);
+        opt.addText(elem.getName());
+        opt.addAttribute("value", elem.getCode());
         ((HtmlBranch)element).add(opt);
+        
+        components.put(elem, ((HtmlBranch)element));
         return this;
     }
 }
