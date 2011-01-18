@@ -25,16 +25,17 @@ import com.bloatit.web.utils.url.Url;
 
 public final class DispatchServer {
     private final Map<String, Class<? extends Url>> urls = new HashMap<String, Class<? extends Url>>();
+
     public DispatchServer() {
         // Nothing here.
     }
 
-    public void addLinkable(String name, Class<? extends Url> urlClass){
+    public void addLinkable(final String name, final Class<? extends Url> urlClass) {
         urls.put(name, urlClass);
     }
 
-    public void process(HttpHeader header, HttpPost post, final HttpResponse response) throws IOException {
-        Session session = findSession(header);
+    public void process(final HttpHeader header, final HttpPost post, final HttpResponse response) throws IOException {
+        final Session session = findSession(header);
 
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
 
@@ -60,9 +61,9 @@ public final class DispatchServer {
 
     @SuppressWarnings("deprecation")
     // It's OK
-    private Linkable constructLinkable(String pageCode, Parameters params, Session session) {
+    private Linkable constructLinkable(final String pageCode, final Parameters params, final Session session) {
         try {
-            Class<? extends Url> urlClass = urls.get(pageCode);
+            final Class<? extends Url> urlClass = urls.get(pageCode);
             if (urlClass != null) {
                 return urlClass.getConstructor(Parameters.class, Parameters.class).newInstance(params, session.getParams()).createPage();
             }
@@ -86,12 +87,12 @@ public final class DispatchServer {
 
     /**
      * Return the session for the user. Either an existing session or a new session.
+     * 
      * @param header
-     *
      * @return the session matching the user
      */
-    private Session findSession(HttpHeader header) {
-        String key = header.getHttpCookie().get("session_key");
+    private Session findSession(final HttpHeader header) {
+        final String key = header.getHttpCookie().get("session_key");
         Session sessionByKey = null;
         if (key != null && (sessionByKey = SessionManager.getByKey(key)) != null) {
             if (sessionByKey.isExpired()) {

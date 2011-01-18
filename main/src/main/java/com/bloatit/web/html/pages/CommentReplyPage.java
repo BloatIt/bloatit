@@ -43,7 +43,7 @@ public final class CommentReplyPage extends LoggedPage {
     @RequestParam(name = CommentCommentAction.COMMENT_CONTENT_CODE, role = Role.SESSION, defaultValue = "")
     private final String comment;
 
-    public CommentReplyPage(CommentReplyPageUrl url) {
+    public CommentReplyPage(final CommentReplyPageUrl url) {
         super(url);
         this.url = url;
         this.targetComment = url.getTargetComment();
@@ -54,16 +54,16 @@ public final class CommentReplyPage extends LoggedPage {
     public HtmlElement createRestrictedContent() throws RedirectException {
         session.notifyList(url.getMessages());
 
-        HtmlTitleBlock htb = new HtmlTitleBlock(Context.tr("Reply to a comment"), 1);
+        final HtmlTitleBlock htb = new HtmlTitleBlock(Context.tr("Reply to a comment"), 1);
 
-        HtmlForm form = new HtmlForm(new CommentCommentActionUrl(targetComment).urlString());
+        final HtmlForm form = new HtmlForm(new CommentCommentActionUrl(targetComment).urlString());
         htb.add(form);
 
-        HtmlTextArea commentInput = new HtmlTextArea(CommentCommentAction.COMMENT_CONTENT_CODE, Context.tr("Content"), NB_LINES, NB_COLUMNS);
+        final HtmlTextArea commentInput = new HtmlTextArea(CommentCommentAction.COMMENT_CONTENT_CODE, Context.tr("Content"), NB_LINES, NB_COLUMNS);
         commentInput.setDefaultValue(comment);
         form.add(commentInput);
 
-        HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
+        final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
         form.add(submit);
 
         return htb;

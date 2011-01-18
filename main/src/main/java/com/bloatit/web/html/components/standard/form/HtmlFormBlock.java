@@ -16,7 +16,7 @@ import com.bloatit.web.html.components.standard.HtmlGenericElement;
 
 /**
  * Creates blocks in a form
- *
+ * 
  * <pre>
  * <fieldset>
  *      <legend>my legend here</legend>
@@ -29,7 +29,7 @@ public final class HtmlFormBlock extends HtmlBranch {
 
     public HtmlFormBlock(final String legend) {
         super("fieldset");
-        HtmlBranch legendBranch = new HtmlGenericElement("legend");
+        final HtmlBranch legendBranch = new HtmlGenericElement("legend");
         legendBranch.addText(legend);
         add(legendBranch);
     }

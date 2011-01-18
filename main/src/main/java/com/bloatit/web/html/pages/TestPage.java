@@ -61,7 +61,7 @@ public final class TestPage extends Page {
 
         final HtmlTitleBlock htb = new HtmlTitleBlock("Another title", 3);
         final RandomString rs = new RandomString(10);
-        StringBuilder plop = new StringBuilder();
+        final StringBuilder plop = new StringBuilder();
         for (int i = 0; i < 100; i++) {
             plop.append(rs.nextString());
             plop.append(" ");

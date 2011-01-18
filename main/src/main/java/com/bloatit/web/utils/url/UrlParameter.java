@@ -20,7 +20,7 @@ public final class UrlParameter<T> extends UrlNode {
     private String strValue;
     private boolean conversionError;
 
-    public UrlParameter(final T value, final UrlParameterDescription<T> description, UrlParameterConstraints<T> constraints) {
+    public UrlParameter(final T value, final UrlParameterDescription<T> description, final UrlParameterConstraints<T> constraints) {
         setValue(value); // Also set the defaultValue;
         this.description = description;
         this.constraints = constraints;
@@ -72,7 +72,7 @@ public final class UrlParameter<T> extends UrlNode {
         this.value = value;
         try {
             this.strValue = Loaders.toStr(value);
-        } catch (ConversionErrorException e) {
+        } catch (final ConversionErrorException e) {
             this.strValue = "";
         }
     }
@@ -102,7 +102,7 @@ public final class UrlParameter<T> extends UrlNode {
     public Messages getMessages() {
         final Messages messages = new Messages();
         if (conversionError) {
-            Message message = new Message(getConversionErrorMsg(), getLevel(), What.CONVERSION_ERROR, getName(), getStringValue());
+            final Message message = new Message(getConversionErrorMsg(), getLevel(), What.CONVERSION_ERROR, getName(), getStringValue());
             messages.add(message);
         } else if (constraints != null) {
             constraints.computeConstraints(getValue(), getValueClass(), messages, getLevel(), getName(), getStringValue());

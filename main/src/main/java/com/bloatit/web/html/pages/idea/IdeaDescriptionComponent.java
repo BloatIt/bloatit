@@ -32,7 +32,7 @@ public class IdeaDescriptionComponent extends HtmlDiv {
         try {
             final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
             description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
-        } catch (UnauthorizedOperationException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             // Nothing.
         }
 
@@ -48,7 +48,7 @@ public class IdeaDescriptionComponent extends HtmlDiv {
                 {
                     try {
                         descriptionDetails.add(memberUrl.getHtmlLink(demand.getAuthor().getLogin()));
-                    } catch (UnauthorizedOperationException e) {
+                    } catch (final UnauthorizedOperationException e) {
                         // do nothing.
                     }
                     descriptionDetails.add(date);

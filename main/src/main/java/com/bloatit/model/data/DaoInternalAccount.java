@@ -72,7 +72,7 @@ public final class DaoInternalAccount extends DaoAccount {
     protected boolean hasEnoughMoney(final BigDecimal amount) {
         return getAmount().compareTo(amount) >= 0;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

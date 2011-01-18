@@ -2,7 +2,7 @@ package com.bloatit.web.utils.url;
 
 import com.bloatit.web.utils.annotations.Messages;
 
-public abstract class UrlNode implements Iterable<UrlNode> , Cloneable{
+public abstract class UrlNode implements Iterable<UrlNode>, Cloneable {
 
     public UrlNode() {
         super();

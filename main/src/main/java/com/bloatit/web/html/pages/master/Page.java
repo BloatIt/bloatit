@@ -43,7 +43,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     @Override
-    public final void writeToHttp(HttpResponse response) throws RedirectException, IOException {
+    public final void writeToHttp(final HttpResponse response) throws RedirectException, IOException {
         create();
         response.writePage(this);
     }

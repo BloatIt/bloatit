@@ -88,9 +88,9 @@ public class SimpleTestDB {
             demand.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
 
             demand.addOffer(fred,
-                    new BigDecimal("200"),
-                    DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
-                    new Date());
+                            new BigDecimal("200"),
+                            DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
+                            new Date());
 
             demand.getOffers().iterator().next().setState(State.VALIDATED);
 
@@ -102,8 +102,10 @@ public class SimpleTestDB {
                 }
             }
 
-            final DaoDemand demand1 = DaoDemand.createAndPersist(fred,
-                    DaoDescription.createAndPersist(fred, new Locale("en"), "I try it in English", "Hello world"));
+            final DaoDemand demand1 = DaoDemand.createAndPersist(fred, DaoDescription.createAndPersist(fred,
+                                                                                                       new Locale("en"),
+                                                                                                       "I try it in English",
+                                                                                                       "Hello world"));
             demand1.getDescription().addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais",
                     "Salut le monde"));
             demand1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");

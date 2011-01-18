@@ -56,9 +56,9 @@ public final class MembersListPage extends Page {
                 try {
                     HtmlLink htmlLink;
                     htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-                final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
-                return new HtmlListItem(htmlLink).add(htmlKarma);
-                } catch (UnauthorizedOperationException e) {
+                    final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
+                    return new HtmlListItem(htmlLink).add(htmlKarma);
+                } catch (final UnauthorizedOperationException e) {
                     Log.web().warn(e);
                 }
                 return new PlaceHolderElement();

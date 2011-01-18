@@ -10,7 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
-//import java.util.Random;
+// import java.util.Random;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.Demand;
 import com.bloatit.framework.managers.DemandManager;
@@ -27,61 +27,60 @@ import com.bloatit.web.utils.url.IdeasListUrl;
 @ParamContainer("ideas/list")
 public final class IdeasList extends Page {
 
-	private HtmlPagedList<Demand> pagedIdeaList;
-	private final IdeasListUrl url;
+    private HtmlPagedList<Demand> pagedIdeaList;
+    private final IdeasListUrl url;
 
-	public IdeasList(final IdeasListUrl url) {
-		super(url);
-		this.url = url;
+    public IdeasList(final IdeasListUrl url) {
+        super(url);
+        this.url = url;
 
-		generateContent();
-	}
+        generateContent();
+    }
 
-	private void generateContent() {
+    private void generateContent() {
 
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Ideas list"), 1);
 
-		final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Ideas list"), 1);
+        final PageIterable<Demand> ideaList = DemandManager.getDemands();
 
-		final PageIterable<Demand> ideaList = DemandManager.getDemands();
+        final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
-		final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
+        final IdeasListUrl clonedUrl = url.clone();
+        pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, ideaList, clonedUrl, clonedUrl.getPagedIdeaListUrl());
 
-		final IdeasListUrl clonedUrl = url.clone();
-		pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, ideaList, clonedUrl, clonedUrl.getPagedIdeaListUrl());
+        pageTitle.add(pagedIdeaList);
 
-		pageTitle.add(pagedIdeaList);
+        add(pageTitle);
+    }
 
-		add(pageTitle);
-	}
+    @Override
+    public String getTitle() {
+        return "View all ideas - search ideas";
+    }
 
-	@Override
-	public String getTitle() {
-		return "View all ideas - search ideas";
-	}
+    @Override
+    public boolean isStable() {
+        return true;
+    }
 
-	@Override
-	public boolean isStable() {
-		return true;
-	}
+    @Override
+    protected String getCustomCss() {
+        return "ideas-list.css";
+    }
 
-	@Override
-	protected String getCustomCss() {
-		return "ideas-list.css";
-	}
+    static class IdeasListItem implements HtmlRenderer<Demand> {
 
-	static class IdeasListItem implements HtmlRenderer<Demand> {
+        private Demand idea;
 
-		private Demand idea;
+        @Override
+        public HtmlNode generate(final Demand idea) {
+            this.idea = idea;
 
-		@Override
-		public HtmlNode generate(final Demand idea) {
-			this.idea = idea;
+            return generateContent();
+        }
 
-			return generateContent();
-		}
-
-		private HtmlNode generateContent() {
-			return new HtmlIdeaSumary(idea);
-		}
-	};
+        private HtmlNode generateContent() {
+            return new HtmlIdeaSumary(idea);
+        }
+    };
 }

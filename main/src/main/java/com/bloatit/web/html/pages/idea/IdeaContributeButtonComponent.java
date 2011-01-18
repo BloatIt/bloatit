@@ -31,7 +31,7 @@ public final class IdeaContributeButtonComponent extends HtmlPageComponent {
     protected HtmlElement produce() {
         final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
         {
-            HtmlLink link = new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute"));
+            final HtmlLink link = new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute"));
             link.setCssClass("button");
 
             contributeBlock.add(link);

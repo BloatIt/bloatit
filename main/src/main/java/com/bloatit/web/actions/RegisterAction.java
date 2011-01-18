@@ -21,11 +21,11 @@ import com.bloatit.web.utils.url.Url;
 @ParamContainer("member/docreate")
 public class RegisterAction extends Action {
 
-	public static final String LOGIN_CODE = "bloatit_login";
-	public static final String PASSWORD_CODE = "bloatit_password";
-	public static final String EMAIL_CODE = "bloatit_email";
-	public static final String COUNTRY_CODE = "bloatit_country";
-	public static final String LANGUAGE_CODE = "bloatit_lang";
+    public static final String LOGIN_CODE = "bloatit_login";
+    public static final String PASSWORD_CODE = "bloatit_password";
+    public static final String EMAIL_CODE = "bloatit_email";
+    public static final String COUNTRY_CODE = "bloatit_country";
+    public static final String LANGUAGE_CODE = "bloatit_lang";
 
     @RequestParam(name = RegisterAction.LOGIN_CODE, role = Role.POST)
     private final String login;
@@ -43,27 +43,27 @@ public class RegisterAction extends Action {
     private final String lang;
     private final RegisterActionUrl url;
 
-	public RegisterAction(RegisterActionUrl url) {
-		super(url);
+    public RegisterAction(final RegisterActionUrl url) {
+        super(url);
         this.url = url;
-		this.login = url.getLogin();
-		this.password = url.getPassword();
-		this.email = url.getEmail();
-		this.lang = url.getLang();
-		this.country = url.getCountry();
-	}
-
-	@Override
-	protected final Url doProcess() throws RedirectException {
-		Locale locale = new Locale(lang, country);
-
-		Member m = new Member(login, password, email, locale);
-		return new MemberPageUrl(m);
-	}
+        this.login = url.getLogin();
+        this.password = url.getPassword();
+        this.email = url.getEmail();
+        this.lang = url.getLang();
+        this.country = url.getCountry();
+    }
 
     @Override
-	protected final Url doProcessErrors() throws RedirectException {
+    protected final Url doProcess() throws RedirectException {
+        final Locale locale = new Locale(lang, country);
+
+        final Member m = new Member(login, password, email, locale);
+        return new MemberPageUrl(m);
+    }
+
+    @Override
+    protected final Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
-		return new LoginPageUrl();
-	}
+        return new LoginPageUrl();
+    }
 }

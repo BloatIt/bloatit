@@ -11,7 +11,7 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 /**
  * This is a financial contribution.
- *
+ * 
  * @see DaoContribution
  */
 public final class Contribution extends UserContent {
@@ -36,7 +36,7 @@ public final class Contribution extends UserContent {
     /**
      * You have to call {@link #accept(Offer)} when an offer is accepted. This will create
      * the {@link Transaction} needed so that the developer of the offer become rich.
-     *
+     * 
      * @param offer the validated offer.
      * @throws NotEnoughMoneyException if there is a bug and then a person does not have
      *         enough money.
@@ -55,7 +55,7 @@ public final class Contribution extends UserContent {
 
     /**
      * return true if you can access the <code>Transaction</code> property.
-     *
+     * 
      * @see #getTransaction()
      * @see Contribution#authenticate(AuthToken)
      */
@@ -76,7 +76,7 @@ public final class Contribution extends UserContent {
 
     /**
      * return true if you can access the <code>Amount</code> property.
-     *
+     * 
      * @see #getAmount()()
      * @see Contribution#authenticate(AuthToken)
      */
@@ -97,7 +97,7 @@ public final class Contribution extends UserContent {
 
     /**
      * return true if you can access the <code>Comment</code> property.
-     *
+     * 
      * @see #getComment()()
      * @see Contribution#authenticate(AuthToken)
      */

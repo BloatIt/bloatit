@@ -25,7 +25,7 @@ public final class PaylineAction extends LoggedAction {
     @RequestParam(level = Level.ERROR, name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
     private final BigDecimal amount;
 
-    public PaylineAction(PaylineActionUrl url) {
+    public PaylineAction(final PaylineActionUrl url) {
         super(url);
         amount = url.getAmount();
     }
@@ -33,13 +33,13 @@ public final class PaylineAction extends LoggedAction {
     @Override
     public Url doProcessRestricted() throws RedirectException {
         // Constructing the urls.
-        HttpHeader header = Context.getHeader();
-        String returnUrl = "http://" + header.getHttpHost() + new PaylinePageUrl("ok").urlString();
-        String cancelUrl = "http://" + header.getHttpHost() + new PaylinePageUrl("cancel").urlString();
-        String notificationUrl = "http://" + header.getHttpHost() + new PaylineNotifyActionUrl().urlString();
+        final HttpHeader header = Context.getHeader();
+        final String returnUrl = "http://" + header.getHttpHost() + new PaylinePageUrl("ok").urlString();
+        final String cancelUrl = "http://" + header.getHttpHost() + new PaylinePageUrl("cancel").urlString();
+        final String notificationUrl = "http://" + header.getHttpHost() + new PaylineNotifyActionUrl().urlString();
 
         // Make the payment request.
-        Payline payline = new Payline();
+        final Payline payline = new Payline();
         payline.authenticate(Context.getSession().getAuthToken());
         if (payline.canMakePayment()) {
             Reponse reponse;
@@ -49,7 +49,7 @@ public final class PaylineAction extends LoggedAction {
                     return new UrlStringBinder(reponse.getRedirectUrl());
                 }
                 session.notifyBad(reponse.getMessage());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyBad("Unauthorized !");
             }
             return Context.getSession().pickPreferredPage();

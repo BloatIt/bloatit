@@ -14,15 +14,15 @@ public class LazyLoaders {
         private T value = null;
         private final String name;
 
-        public LazyComponent(String name) {
+        public LazyComponent(final String name) {
             this.name = name;
         }
 
-        public final T getValue(Map<String, String> env) {
+        public final T getValue(final Map<String, String> env) {
             if (value != null) {
                 return value;
             }
-            String stringValue = env.get(name);
+            final String stringValue = env.get(name);
             if (stringValue != null) {
                 value = convert(stringValue);
                 return value;
@@ -37,16 +37,16 @@ public class LazyLoaders {
     }
 
     public static final class LazyMap extends LazyComponent<Map<String, String>> {
-        public LazyMap(String name) {
+        public LazyMap(final String name) {
             super(name);
         }
 
         @Override
-        public Map<String, String> convert(String stringValue) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            String[] namedValues = stringValue.split(";");
-            for (String namedValue : namedValues) {
-                String[] aValue = namedValue.split("=");
+        public Map<String, String> convert(final String stringValue) {
+            final HashMap<String, String> map = new HashMap<String, String>();
+            final String[] namedValues = stringValue.split(";");
+            for (final String namedValue : namedValues) {
+                final String[] aValue = namedValue.split("=");
                 if (aValue.length == 2) {
                     map.put(aValue[0].trim(), aValue[1].trim());
                 } else {
@@ -65,15 +65,15 @@ public class LazyLoaders {
 
     public static final class LazyInt extends LazyComponent<Integer> {
 
-        public LazyInt(String name) {
+        public LazyInt(final String name) {
             super(name);
         }
 
         @Override
-        public Integer convert(String stringValue) {
+        public Integer convert(final String stringValue) {
             try {
                 return Integer.valueOf(stringValue);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 Log.web().error("Malformed integer: " + stringValue);
             }
             return null;
@@ -90,13 +90,13 @@ public class LazyLoaders {
 
         private final String separator;
 
-        public LazyStringList(String name, String separator) {
+        public LazyStringList(final String name, final String separator) {
             super(name);
             this.separator = separator;
         }
 
         @Override
-        public List<String> convert(String stringValue) {
+        public List<String> convert(final String stringValue) {
             return Arrays.asList(stringValue.split(separator));
         }
 
@@ -108,12 +108,12 @@ public class LazyLoaders {
     }
 
     public static final class LazyString extends LazyComponent<String> {
-        public LazyString(String name) {
+        public LazyString(final String name) {
             super(name);
         }
 
         @Override
-        public String convert(String stringValue) {
+        public String convert(final String stringValue) {
             return stringValue;
         }
 

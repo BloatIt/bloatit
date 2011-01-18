@@ -43,8 +43,8 @@ public final class IdeaContributorsComponent extends HtmlDiv {
         try {
             extractData();
             add(produce(url));
-        } catch (UnauthorizedOperationException e) {
-            //No right, no display
+        } catch (final UnauthorizedOperationException e) {
+            // No right, no display
         }
 
     }
@@ -78,20 +78,20 @@ public final class IdeaContributorsComponent extends HtmlDiv {
 
     protected void extractData() throws UnauthorizedOperationException {
 
-            contributionCount = demand.getContributions().size();
+        contributionCount = demand.getContributions().size();
 
-            if (contributionCount > 0) {
+        if (contributionCount > 0) {
 
-                final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
-                final String contributionMinValue = demand.getContributionMin().toPlainString();
-                final String contributionMaxValue = demand.getContributionMax().toPlainString();
+            final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
+            final String contributionMinValue = demand.getContributionMin().toPlainString();
+            final String contributionMaxValue = demand.getContributionMax().toPlainString();
 
-                contributionMin = new HtmlParagraph(tr("Min: ") + contributionMinValue);
-                contributionMax = new HtmlParagraph(tr("Max: ") + contributionMaxValue);
-                contributionMean = new HtmlParagraph(tr("Mean: ") + contributionMeanValue);
-            }
+            contributionMin = new HtmlParagraph(tr("Min: ") + contributionMinValue);
+            contributionMax = new HtmlParagraph(tr("Max: ") + contributionMaxValue);
+            contributionMean = new HtmlParagraph(tr("Mean: ") + contributionMeanValue);
+        }
 
-            contributions = demand.getContributions();
+        contributions = demand.getContributions();
 
     }
 
@@ -102,9 +102,8 @@ public final class IdeaContributorsComponent extends HtmlDiv {
             public HtmlNode generate(final Contribution item) {
                 String itemString = tr("You are not authorized to see this.");
                 try {
-                    itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " "
-                            + item.getCreationDate().toString();
-                } catch (UnauthorizedOperationException e) {
+                    itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " " + item.getCreationDate().toString();
+                } catch (final UnauthorizedOperationException e) {
                     // do nothing
                 }
                 return new HtmlText(itemString);

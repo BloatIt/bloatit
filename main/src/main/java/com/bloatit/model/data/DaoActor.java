@@ -60,7 +60,7 @@ public abstract class DaoActor {
 
     /**
      * Initialize the creation date to now.
-     *
+     * 
      * @param login is the login or name of this actor
      * @param email is the email of this actor. (No check is performed on the correctness
      *        of this email address)
@@ -99,7 +99,7 @@ public abstract class DaoActor {
     /**
      * This method is used by hibernate. You can use it if you want to change the email.
      * (No check is performed on the correctness of the new email)
-     *
+     * 
      * @param email the new email.
      */
     public abstract void setEmail(final String email);
@@ -121,20 +121,18 @@ public abstract class DaoActor {
     }
 
     /**
-     * @return all the <code>DaoBankTransaction</code> created by <code>this</code>,
-     *         order by <code>creationDate</code>, most recent first.
+     * @return all the <code>DaoBankTransaction</code> created by <code>this</code>, order
+     *         by <code>creationDate</code>, most recent first.
      */
     public final PageIterable<DaoBankTransaction> getBankTransactions() {
         return new QueryCollection<DaoBankTransaction>(
                 SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
-                SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author"))
-                    .setEntity("author", this);
+                SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author")).setEntity("author", this);
     }
-
 
     /**
      * Set the external account for this actor.
-     *
+     * 
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */

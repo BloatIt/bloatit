@@ -32,7 +32,7 @@ public class TopBar extends HtmlDiv {
             String displayName = "John Doe";
             try {
                 displayName = session.getAuthToken().getMember().getDisplayName();
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // no right, leave invalid name
             }
             final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(displayName);
@@ -42,7 +42,7 @@ public class TopBar extends HtmlDiv {
             karma.setCssClass("karma");
             try {
                 karma.addText(HtmlTools.compressKarma(session.getAuthToken().getMember().getKarma()));
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // No right, no display the karma
             }
             add(new HtmlSpan().setCssClass(TOP_BAR_COMPONENT_CSS_CLASS).add(memberLink).add(karma));
@@ -57,7 +57,7 @@ public class TopBar extends HtmlDiv {
             try {
                 internalAccount = member.getInternalAccount();
                 internalAccount.authenticate(session.getAuthToken());
-                CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
+                final CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
                 euroMoney.add(new HtmlText(cl.getDefaultString()));
 
                 final HtmlBranch money = new AccountChargingPageUrl().getHtmlLink(euroMoney);
@@ -72,10 +72,9 @@ public class TopBar extends HtmlDiv {
                     money.add(localeMoney);
                 }
                 add(new HtmlSpan().setCssClass(TOP_BAR_COMPONENT_CSS_CLASS).add(money));
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // no right, no money displayed
             }
-
 
             // Display logout link
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(Context.tr("Logout"));

@@ -28,7 +28,7 @@ public final class HtmlTitleBlock extends HtmlBranch {
         add(this.title);
     }
 
-    public HtmlTitleBlock(final HtmlElement titleText, int level) {
+    public HtmlTitleBlock(final HtmlElement titleText, final int level) {
         super();
         this.title = new HtmlTitle(titleText, level);
         add(title);

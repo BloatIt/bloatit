@@ -144,7 +144,7 @@ public class HttpHeader {
 
     private final Map<String, String> env;
 
-    public HttpHeader(Map<String, String> env) {
+    public HttpHeader(final Map<String, String> env) {
         super();
         this.env = env;
         System.out.println(env);

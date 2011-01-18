@@ -26,16 +26,16 @@ public final class IdeaOfferComponent extends HtmlPageComponent {
     private final Offer offer;
     private final boolean currentOffer;
 
-    public IdeaOfferComponent(Offer offer, boolean b) {
+    public IdeaOfferComponent(final Offer offer, final boolean b) {
         super();
         this.offer = offer;
         this.currentOffer = b;
 
-        if (offer != null){
+        if (offer != null) {
             try {
                 add(produce());
-            } catch (UnauthorizedOperationException e) {
-                //No right, no display
+            } catch (final UnauthorizedOperationException e) {
+                // No right, no display
             }
         }
     }
@@ -46,27 +46,27 @@ public final class IdeaOfferComponent extends HtmlPageComponent {
 
         author = new HtmlParagraph(Context.tr("Author : ") + offer.getAuthor().getDisplayName(), "offer_author");
 
-        HtmlParagraph price = new HtmlParagraph(Context.tr("Price : ") + Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString(),
-                "offer_price");
-        HtmlParagraph expirationDate = new HtmlParagraph(Context.tr("Expiration date : ")
+        final HtmlParagraph price = new HtmlParagraph(Context.tr("Price : ")
+                + Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString(), "offer_price");
+        final HtmlParagraph expirationDate = new HtmlParagraph(Context.tr("Expiration date : ")
                 + Context.getLocalizator().getDate(offer.getDateExpire()).toDateTimeString(FormatStyle.LONG, FormatStyle.MEDIUM), "offer_expiry_date");
-        HtmlImage authorAvatar = new HtmlImage(offer.getAuthor().getAvatar(), "offer_avatar");
-        HtmlParagraph creationDate = new HtmlParagraph(Context.tr("Creation Date : ")
+        final HtmlImage authorAvatar = new HtmlImage(offer.getAuthor().getAvatar(), "offer_avatar");
+        final HtmlParagraph creationDate = new HtmlParagraph(Context.tr("Creation Date : ")
                 + Context.getLocalizator().getDate(offer.getCreationDate()).toDateTimeString(FormatStyle.LONG, FormatStyle.MEDIUM),
                 "offer_creation_date");
 
-        HtmlParagraph title = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
-        HtmlParagraph description = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
+        final HtmlParagraph title = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
+        final HtmlParagraph description = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
 
         final HtmlDiv offerBlock = new HtmlDiv("offer_block");
         {
 
-            if(this.currentOffer){
+            if (this.currentOffer) {
                 offerBlock.add(new HtmlSpan().addText(Context.tr("Currently favored offer")).setCssClass("offer_validated_info"));
                 offerBlock.setCssClass("offer_block_validated");
             }
 
-            HtmlDiv offerMainBlock = new HtmlDiv("offer_main_block");
+            final HtmlDiv offerMainBlock = new HtmlDiv("offer_main_block");
             offerBlock.add(offerMainBlock);
 
             offerMainBlock.add(authorAvatar);

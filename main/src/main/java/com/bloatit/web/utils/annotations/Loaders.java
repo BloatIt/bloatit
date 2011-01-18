@@ -84,9 +84,9 @@ public final class Loaders {
             return (Loader<T>) new ToMember();
         } else if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
-        } else if(theClass.equals(Kudosable.class)) {
-        	return (Loader<T>) new ToKudosable();
-        } else if(theClass.equals(Comment.class)) {
+        } else if (theClass.equals(Kudosable.class)) {
+            return (Loader<T>) new ToKudosable();
+        } else if (theClass.equals(Comment.class)) {
             return (Loader<T>) new ToComment();
         }
         return null;
@@ -114,11 +114,11 @@ public final class Loaders {
             super(message);
         }
 
-        public ConversionErrorException(String message, Throwable cause) {
+        public ConversionErrorException(final String message, final Throwable cause) {
             super(message, cause);
         }
 
-        public ConversionErrorException(Throwable cause) {
+        public ConversionErrorException(final Throwable cause) {
             super(cause);
         }
     }

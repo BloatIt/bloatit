@@ -18,7 +18,7 @@ public class Context {
     private static HttpHeader header = null;
     private static long currentTime = 0;
 
-    private Context(){
+    private Context() {
         // desactivate CTOR.
     }
 
@@ -43,21 +43,21 @@ public class Context {
     /**
      * @see Localizator#tr(String, Object...)
      */
-    public static String tr(final String str, Object... parameters) {
+    public static String tr(final String str, final Object... parameters) {
         return localizator.tr(str, parameters);
     }
 
     /**
      * @see Localizator#trn(String, String, long)
      */
-    public static String trn(String singular, String plural, long amount) {
+    public static String trn(final String singular, final String plural, final long amount) {
         return localizator.trn(singular, plural, amount);
     }
 
     /**
      * @see Localizator#trn(String, String, long, Object...)
      */
-    public static String trn(String singular, String plural, long amount, Object... parameters) {
+    public static String trn(final String singular, final String plural, final long amount, final Object... parameters) {
         return localizator.trn(singular, plural, amount, parameters);
     }
 
@@ -76,7 +76,7 @@ public class Context {
         return Context.currentTime;
     }
 
-    static void reInitializeContext(HttpHeader header, Session session) {
+    static void reInitializeContext(final HttpHeader header, final Session session) {
         updateTime();
         setHeader(header);
         setSession(session);
@@ -87,11 +87,11 @@ public class Context {
         Context.currentTime = new Date().getTime() / MILLISECOND_DIV;
     }
 
-    private static void setHeader(HttpHeader header) {
+    private static void setHeader(final HttpHeader header) {
         Context.header = header;
     }
 
-    private static void setLocalizator(Localizator localizator) {
+    private static void setLocalizator(final Localizator localizator) {
         Context.localizator = localizator;
     }
 

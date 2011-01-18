@@ -35,8 +35,7 @@ public class HtmlTools {
 
     /**
      * <p>
-     * Creates an HtmlElement that can be directly used to display the website
-     * logo
+     * Creates an HtmlElement that can be directly used to display the website logo
      * </p>
      * <p>
      * Logo should be placed into a container that will specify its font size
@@ -45,15 +44,15 @@ public class HtmlTools {
      * @return the HtmlElement to be placed into a page
      */
     public static HtmlElement generateLogo() {
-        HtmlSpan logoBloatit = new HtmlSpan("logo_bloatit");
+        final HtmlSpan logoBloatit = new HtmlSpan("logo_bloatit");
 
         // Rendering Bloat
-        HtmlSpan logoBloatitBloat = new HtmlSpan("logo_bloatit_bloat");
+        final HtmlSpan logoBloatitBloat = new HtmlSpan("logo_bloatit_bloat");
         logoBloatitBloat.addText("Bloat");
         logoBloatit.add(logoBloatitBloat);
 
         // Rendering It
-        HtmlSpan logoBloatitIt = new HtmlSpan("logo_bloatit_it");
+        final HtmlSpan logoBloatitIt = new HtmlSpan("logo_bloatit_it");
         logoBloatitIt.addText("It");
         logoBloatit.add(logoBloatitIt);
 
@@ -77,8 +76,7 @@ public class HtmlTools {
      * <li>1 000 000 000 000 = ∞</li>
      * </p>
      * 
-     * @param karma
-     *            the karma value to compress
+     * @param karma the karma value to compress
      * @return the compressed String to display
      */
     public static String compressKarma(final long karma) {
@@ -129,18 +127,15 @@ public class HtmlTools {
      * <p>
      * Date is rendered :
      * <li> <code>now</code> if it's been posted less than one second ago</li>
-     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago
-     * </li>
+     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago</li>
      * <li> <code>Jan 12, 1952</code> otherwise</li>
      * </p>
      * <p>
-     * Note, this method will completly ignore <i>any</i> time information, and
-     * display only the date. To display time, use
-     * {@link #formatDateTime(DateLocale)}.
+     * Note, this method will completly ignore <i>any</i> time information, and display
+     * only the date. To display time, use {@link #formatDateTime(DateLocale)}.
      * </p>
      * 
-     * @param date
-     *            the localized date to render
+     * @param date the localized date to render
      * @return the rendered date
      */
     public static String formatDate(final DateLocale date) {
@@ -152,9 +147,9 @@ public class HtmlTools {
             return Context.tr("now");
         } else if (diff < MINUTE) {
             return Context.trn("{0} second ago", "{0} seconds ago", Long.valueOf(diff / SECOND), Long.valueOf(diff / SECOND));
-        } else if (diff < HOUR ){
+        } else if (diff < HOUR) {
             return Context.trn("{0} minute ago", "{0} minutes ago", Long.valueOf(diff / MINUTE), Long.valueOf(diff / SECOND));
-        } else if (diff < DAY ){
+        } else if (diff < DAY) {
             return Context.trn("{0} hour ago", "{0} hours ago", Long.valueOf(diff / HOUR), Long.valueOf(diff / HOUR));
         }
 
@@ -168,17 +163,15 @@ public class HtmlTools {
      * <p>
      * DateTime is rendered :
      * <li> <code>now</code> if it's been posted less than one second ago</li>
-     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago
-     * </li>
+     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago</li>
      * <li> <code>Jan 12, 1952  3:30pm</code> otherwise</li>
      * </p>
      * <p>
-     * Note, this method will always display date & time. To display only the
-     * date, use {@link #formatDate(DateLocale)}
+     * Note, this method will always display date & time. To display only the date, use
+     * {@link #formatDate(DateLocale)}
      * </p>
      * 
-     * @param date
-     *            the localized date to render
+     * @param date the localized date to render
      * @return the rendered date
      */
     public static String formatDateTime(final DateLocale date) {
@@ -204,35 +197,33 @@ public class HtmlTools {
      * <code>&quot;bread&quot; &amp; &quot;butter&quot;</code> .
      * </p>
      * <p>
-     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does
-     * not support DTDs or external entities.
+     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does not
+     * support DTDs or external entities.
      * </p>
      * <p>
-     * Note that unicode characters greater than 0x7f are currently escaped to
-     * their numerical \\u equivalent. This may change with future releases of
-     * the library used
+     * Note that unicode characters greater than 0x7f are currently escaped to their
+     * numerical \\u equivalent. This may change with future releases of the library used
      * </p>
      */
-    public static String escape(String str) {
+    public static String escape(final String str) {
         return StringEscapeUtils.escapeXml(str);
     }
 
     /**
      * <p>
-     * Unescapes a string containing XML entity escapes to a string containing
-     * the actual Unicode characters corresponding to the escapes.
+     * Unescapes a string containing XML entity escapes to a string containing the actual
+     * Unicode characters corresponding to the escapes.
      * </p>
      * <p>
-     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does
-     * not support DTDs or external entities.
+     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does not
+     * support DTDs or external entities.
      * </p>
      * <p>
-     * Note that numerical \\u unicode codes are unescaped to their respective
-     * unicode characters. This may change in future releases of the underlying
-     * library
+     * Note that numerical \\u unicode codes are unescaped to their respective unicode
+     * characters. This may change in future releases of the underlying library
      * </p>
      */
-    public static String unescape(String str) {
+    public static String unescape(final String str) {
         return StringEscapeUtils.unescapeXml(str);
     }
 

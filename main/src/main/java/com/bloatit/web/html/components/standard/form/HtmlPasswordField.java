@@ -13,7 +13,7 @@ package com.bloatit.web.html.components.standard.form;
 
 /**
  * A class used to create input fields of password type The result will be :
- *
+ * 
  * <pre>
  * <p>
  *      <label for="...">plop</label>

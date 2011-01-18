@@ -36,15 +36,15 @@ public final class LoginPage extends Page {
     @Override
     protected void doCreate() throws RedirectException {
         final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
-        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.trc("Login (noun)","Login"));
+        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.trc("Login (noun)", "Login"));
         final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
-        final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)","Login"));
+        final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
 
         loginForm.add(loginField);
         loginForm.add(passwordField);
         loginForm.add(submitButton);
 
-        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)","Login"), 1);
+        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
         loginTitle.add(loginForm);
 
         final HtmlTitleBlock signupTitle = new HtmlTitleBlock(Context.tr("Signup"), 1);

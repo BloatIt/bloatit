@@ -56,7 +56,7 @@ public final class SCGIServer {
     public static void main(final String[] args) {
         try {
             new SCGIServer().run();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Log.server().fatal(e);
         }
     }
@@ -138,11 +138,11 @@ public final class SCGIServer {
 
             final long startTime = System.nanoTime();
 
-            BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
+            final BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
             final Map<String, String> env = SCGIUtils.parse(bis);
 
-            HttpHeader header = new HttpHeader(env);
-            HttpPost post = new HttpPost(bis, header.getContentLength());
+            final HttpHeader header = new HttpHeader(env);
+            final HttpPost post = new HttpPost(bis, header.getContentLength());
 
             SessionManager.clearExpiredSessions();
 
@@ -169,7 +169,7 @@ public final class SCGIServer {
     }
 
     private void webPrintException(final Exception e) {
-        StringBuilder display = new StringBuilder();
+        final StringBuilder display = new StringBuilder();
         display.append("Content-type: text/plain\r\n\r\n");
         display.append(e.toString());
         display.append(" :\n");
@@ -182,7 +182,7 @@ public final class SCGIServer {
 
         try {
             clientSocket.getOutputStream().write(display.toString().getBytes());
-        } catch (IOException e1) {
+        } catch (final IOException e1) {
             Log.web().fatal("Cannot send exception through the SCGI soket.", e1);
         }
     }
@@ -190,7 +190,7 @@ public final class SCGIServer {
     private static final class ShutdownHook extends Thread {
         private final Socket clientSocket;
 
-        public ShutdownHook(Socket clientSocket) {
+        public ShutdownHook(final Socket clientSocket) {
             super();
             this.clientSocket = clientSocket;
         }
@@ -202,7 +202,7 @@ public final class SCGIServer {
                 if (clientSocket != null) {
                     clientSocket.close();
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 Log.server().error("Fail to close the socket on shutdown.", e);
             }
             SessionManager.SaveSessions();

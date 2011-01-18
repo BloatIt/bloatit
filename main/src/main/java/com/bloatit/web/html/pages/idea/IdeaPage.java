@@ -60,7 +60,7 @@ public final class IdeaPage extends Page {
         if (idea != null) {
             try {
                 return idea.getTitle();
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // Return the default one.
             }
         }
@@ -87,9 +87,9 @@ public final class IdeaPage extends Page {
 
         final Locale defaultLocale = Context.getLocalizator().getLocale();
         try {
-            Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
+            final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
             add(new HtmlTitleBlock("VLC" + " - " + translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             // no right no description and no title.
         }
         add(new IdeaHeadComponent(idea));

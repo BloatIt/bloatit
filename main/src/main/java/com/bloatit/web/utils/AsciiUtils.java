@@ -41,8 +41,8 @@ public final class AsciiUtils {
 
     /**
      * <p>
-     * Replaces accents from a String and replaces them with the same
-     * non-accentuated character
+     * Replaces accents from a String and replaces them with the same non-accentuated
+     * character
      * </p>
      * <p>
      * Example : <code>AsciiUtils.convertNonAscii(Gračišće)</code> will return

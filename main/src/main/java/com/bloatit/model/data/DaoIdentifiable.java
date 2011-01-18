@@ -27,7 +27,7 @@ public abstract class DaoIdentifiable {
     public final Integer getId() {
         return id;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

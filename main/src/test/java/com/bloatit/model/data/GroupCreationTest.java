@@ -40,31 +40,31 @@ public class GroupCreationTest extends TestCase {
         try {
             DaoGroup.createAndPersiste("b217", "", DaoGroup.Right.PUBLIC);
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoGroup.createAndPersiste("", "plop3@plop.com", DaoGroup.Right.PUBLIC);
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoGroup.createAndPersiste("b219", "plop2@plop.com", null);
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoGroup.createAndPersiste("myGroup", null, DaoGroup.Right.PUBLIC);
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoGroup.createAndPersiste(null, "plop@plop.com", DaoGroup.Right.PUBLIC);
             fail();
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         SessionManager.endWorkUnitAndFlush();
@@ -85,7 +85,7 @@ public class GroupCreationTest extends TestCase {
 
     public void testGetGroupByName() {
         SessionManager.beginWorkUnit();
-        DaoGroup b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PUBLIC);
+        final DaoGroup b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PUBLIC);
 
         assertEquals(b219.getId(), DaoGroup.getByName("b219").getId());
         assertNull(DaoGroup.getByName("Inexistant"));

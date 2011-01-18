@@ -24,7 +24,7 @@ public class IdeaMakeOfferButtonComponent extends HtmlPageComponent {
 
         final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
         {
-            HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
+            final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
             link.setCssClass("button");
 
             makeOfferBlock.add(link);

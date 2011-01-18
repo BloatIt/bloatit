@@ -24,15 +24,15 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CommentReplyPageUrl;
 
 /**
- * A component designed to be inserted into an idea page and that will
- * be used to display a comment (either main comment or child comment).
+ * A component designed to be inserted into an idea page and that will be used to display
+ * a comment (either main comment or child comment).
  */
 public final class IdeaCommentComponent extends HtmlPageComponent {
 
     private final Comment comment;
     private final boolean child;
 
-    public IdeaCommentComponent(final Comment comment, boolean child) {
+    public IdeaCommentComponent(final Comment comment, final boolean child) {
         super();
         this.comment = comment;
         this.child = child;
@@ -40,16 +40,16 @@ public final class IdeaCommentComponent extends HtmlPageComponent {
     }
 
     protected HtmlElement produce() {
-        final HtmlDiv commentBlock = (child)?new HtmlDiv("child_comment_block"):new HtmlDiv("main_comment_block");
+        final HtmlDiv commentBlock = (child) ? new HtmlDiv("child_comment_block") : new HtmlDiv("main_comment_block");
         {
-            CommentKudoComponent commentKudo = new CommentKudoComponent(comment);
+            final CommentKudoComponent commentKudo = new CommentKudoComponent(comment);
             commentBlock.add(commentKudo);
 
-            HtmlParagraph commentText = new HtmlParagraph();
+            final HtmlParagraph commentText = new HtmlParagraph();
             commentText.add(new HtmlRawTextRenderer(comment.getText()));
             commentBlock.add(commentText);
 
-            HtmlDiv commentInfo = new HtmlDiv("comment_info");
+            final HtmlDiv commentInfo = new HtmlDiv("comment_info");
             commentText.add(commentInfo);
 
             final HtmlSpan date = new HtmlSpan();
@@ -62,7 +62,7 @@ public final class IdeaCommentComponent extends HtmlPageComponent {
                 author.addText(comment.getAuthor().getLogin());
                 author.setCssClass("comment_author");
                 commentInfo.add(author);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // print nothing
             }
 
@@ -71,7 +71,7 @@ public final class IdeaCommentComponent extends HtmlPageComponent {
 
             }
 
-            if(!child){
+            if (!child) {
                 final HtmlDiv reply = new HtmlDiv("comment_reply");
                 final HtmlLink replyLink = new HtmlLink(new CommentReplyPageUrl(comment).urlString(), Context.tr("reply"));
                 replyLink.setCssClass("button");

@@ -5,7 +5,7 @@ import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 
-public class CommentKudoComponent extends HtmlPageComponent{
+public class CommentKudoComponent extends HtmlPageComponent {
 
     public CommentKudoComponent(final Comment comment) {
         super();

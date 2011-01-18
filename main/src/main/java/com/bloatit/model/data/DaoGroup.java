@@ -58,7 +58,7 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Create a group and add it into the db.
-     *
+     * 
      * @param name it the unique and non updatable name of the group.
      * @param owner is the DaoMember creating this group.
      * @param right is the type of group we are creating.
@@ -86,7 +86,7 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Create a DaoGroup
-     *
+     * 
      * @param login is the name of the group. It must be unique.
      * @param email ...
      * @param right is the default right value for this group.
@@ -112,7 +112,7 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Add a member in this group.
-     *
+     * 
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer this group.
      *        (This may change if the number of role change !)
@@ -141,7 +141,7 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Finds if a member is in this group, and which is its status.
-     *
+     * 
      * @return {@value MemberStatus#UNKNOWN} if the member is not in this group.
      */
     public MemberStatus getMemberStatus(final DaoMember member) {
@@ -174,7 +174,7 @@ public final class DaoGroup extends DaoActor {
     }
 
     @Override
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 

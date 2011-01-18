@@ -21,7 +21,8 @@ import java.util.Map;
 /**
  * SCGIUtils connector.<br>
  * Version: 1.0<br>
- * Home page: http://gist.github.com/38425 See also: http://en.wikipedia.org/wiki/SCGIUtils
+ * Home page: http://gist.github.com/38425 See also:
+ * http://en.wikipedia.org/wiki/SCGIUtils
  */
 class SCGIUtils {
 
@@ -42,10 +43,11 @@ class SCGIUtils {
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
 
     /**
-     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGIUtils</a> request headers.<br>
+     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGIUtils</a> request
+     * headers.<br>
      * After the headers had been loaded, you can read the body of the request manually
      * from the same {@code input} stream:
-     *
+     * 
      * <pre>
      * // Load the SCGIUtils headers.
      * Socket clientSocket = socket.accept();
@@ -54,7 +56,7 @@ class SCGIUtils {
      * // Read the body of the request.
      * bis.read(new byte[Integer.parseInt(env.get(&quot;CONTENT_LENGTH&quot;))]);
      * </pre>
-     *
+     * 
      * @param input an efficient (buffered) input stream.
      * @return strings passed via the SCGIUtils request.
      */

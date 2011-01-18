@@ -22,15 +22,15 @@ public class DateParsingException extends Exception {
         super();
     }
 
-    public DateParsingException(String message, Throwable cause) {
+    public DateParsingException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public DateParsingException(String message) {
+    public DateParsingException(final String message) {
         super(message);
     }
 
-    public DateParsingException(Throwable cause) {
+    public DateParsingException(final Throwable cause) {
         super(cause);
     }
 

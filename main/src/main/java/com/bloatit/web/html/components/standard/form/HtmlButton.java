@@ -27,7 +27,7 @@ public final class HtmlButton extends HtmlLeaf {
 
     /**
      * Creates a HtmlButton
-     *
+     * 
      * @param label the text that will be shown on the button
      */
     public HtmlButton(final String value) {

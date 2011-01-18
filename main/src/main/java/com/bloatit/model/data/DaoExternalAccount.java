@@ -39,7 +39,7 @@ public final class DaoExternalAccount extends DaoAccount {
 
     /**
      * Create and persiste a DaoExternalAccount
-     *
+     * 
      * @see DaoExternalAccount#DaoExternalAccount(DaoActor, AccountType, String)
      */
     public static DaoExternalAccount createAndPersist(final DaoActor actor, final AccountType type, final String bankCode) {
@@ -56,7 +56,7 @@ public final class DaoExternalAccount extends DaoAccount {
 
     /**
      * Create a new External account.
-     *
+     * 
      * @param actor is the owner of the account
      * @param type is the account type
      * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE !!
@@ -87,11 +87,11 @@ public final class DaoExternalAccount extends DaoAccount {
         return type;
     }
 
-    public void setBankCode(String bankCode) {
+    public void setBankCode(final String bankCode) {
         this.bankCode = bankCode;
     }
 
-    public void setType(AccountType type) {
+    public void setType(final AccountType type) {
         this.type = type;
     }
 
@@ -110,6 +110,5 @@ public final class DaoExternalAccount extends DaoAccount {
     protected DaoExternalAccount() {
         super();
     }
-
 
 }

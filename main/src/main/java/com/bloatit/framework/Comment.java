@@ -29,6 +29,7 @@ public final class Comment extends Kudosable {
 
     /**
      * Return all the children comment of this comment.
+     * 
      * @see DaoComment#getChildren()
      */
     public PageIterable<Comment> getChildren() {
@@ -52,6 +53,7 @@ public final class Comment extends Kudosable {
 
     /**
      * Add a comment to the list of children of this comment.
+     * 
      * @see #addChildComment(String)
      */
     public void addChildComment(final Comment comment) {

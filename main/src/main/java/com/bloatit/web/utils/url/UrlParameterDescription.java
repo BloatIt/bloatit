@@ -13,7 +13,12 @@ public final class UrlParameterDescription<T> {
     private final String conversionErrorMsg;
     private final Message.Level level;
 
-    public UrlParameterDescription(String name, Class<T> valueClass, Role role, String defaultValue, String conversionErrorMsg, Level level) {
+    public UrlParameterDescription(final String name,
+                                   final Class<T> valueClass,
+                                   final Role role,
+                                   final String defaultValue,
+                                   final String conversionErrorMsg,
+                                   final Level level) {
         super();
         this.name = name;
         this.valueClass = valueClass;

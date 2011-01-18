@@ -76,8 +76,6 @@ public final class ContributePage extends LoggedPage {
 
         final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Contribute"));
 
-
-
         // Create the form
         contribForm.add(contribField);
         contribForm.add(commentField);

@@ -58,7 +58,7 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Create a new contribution. Update the internal account of the member (block the
      * value that is reserved to this contribution)
-     *
+     * 
      * @param member the person making the contribution.
      * @param demand the demand on which we add a contribution.
      * @param amount the amount of the contribution.
@@ -88,7 +88,7 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Set the state to ACCEPTED, and create the transaction. If there is not enough money
      * then throw and set the state to canceled.
-     *
+     * 
      * @param offer the offer that is accepted.
      * @throws NotEnoughMoneyException if there is not enough money to create the
      *         transaction.
@@ -161,7 +161,7 @@ public final class DaoContribution extends DaoUserContent {
         super();
     }
 
-    protected DaoDemand getDemand(){
+    protected DaoDemand getDemand() {
         return demand;
     }
 }

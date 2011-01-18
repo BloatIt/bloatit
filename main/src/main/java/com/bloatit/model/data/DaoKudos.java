@@ -51,7 +51,7 @@ public final class DaoKudos extends DaoUserContent {
     public int getValue() {
         return value;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

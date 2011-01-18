@@ -19,7 +19,7 @@ public abstract class Actor extends Identifiable {
     /**
      * Tells if a user can access the <code>Email</code> property. You have to unlock this
      * Actor using the {@link Actor#authenticate(AuthToken)} method.
-     *
+     * 
      * @param action can be read/write/delete. for example use <code>READ</code> to know
      *        if you can use {@link Member#getGroups()}.
      * @return true if you can access the parameter <code>Email</code>.
@@ -27,7 +27,7 @@ public abstract class Actor extends Identifiable {
      * @see Actor#setEmail()
      * @see Actor#authenticate(AuthToken)
      */
-    public final boolean canAccessEmail(Action action) {
+    public final boolean canAccessEmail(final Action action) {
         return new ActorRight.Email().canAccess(calculateRole(getLoginUnprotected()), action);
     }
 
@@ -104,7 +104,7 @@ public abstract class Actor extends Identifiable {
     /**
      * The internal account is the account we manage internally. Users can add/get money
      * to/from it, and can use this money to contribute on projects.
-     *
+     * 
      * @throw UnauthorizedOperationException if you do not have the right to access the
      *        <code>InternalAccount</code> property.
      */

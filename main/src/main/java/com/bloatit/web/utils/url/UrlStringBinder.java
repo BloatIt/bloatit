@@ -6,7 +6,7 @@ public class UrlStringBinder extends Url {
 
     private final String url;
 
-    public UrlStringBinder(String url) {
+    public UrlStringBinder(final String url) {
         super("");
         this.url = url;
     }
@@ -28,9 +28,8 @@ public class UrlStringBinder extends Url {
     }
 
     @Override
-    protected void constructUrl(StringBuilder sb) {
+    protected void constructUrl(final StringBuilder sb) {
         sb.append(url);
     }
-
 
 }

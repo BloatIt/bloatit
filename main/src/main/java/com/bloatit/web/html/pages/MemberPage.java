@@ -63,7 +63,7 @@ public final class MemberPage extends Page {
             }
             memberTitle.add(new HtmlText("Karma: " + member.getKarma()));
             add(memberTitle);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             add(new HtmlParagraph(Context.tr("For obscure reasons, you are not allowed to see the details of this member.")));
         }
     }
@@ -73,7 +73,7 @@ public final class MemberPage extends Page {
         if (member != null) {
             try {
                 return tr("Member - ") + member.getLogin();
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 return tr("Member - Jhon Do");
             }
         }

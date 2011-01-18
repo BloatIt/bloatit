@@ -46,7 +46,7 @@ public final class IdeaProgressBarComponent extends HtmlPageComponent {
                     progressBarBlock.addText(progressValue + "%");
                 }
                 progressBarBlock.addText(demand.getContribution().toString());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // No right, no progress bar
             }
 

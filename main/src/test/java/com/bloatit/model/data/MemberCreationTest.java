@@ -80,43 +80,43 @@ public class MemberCreationTest extends TestCase {
         try {
             DaoMember.createAndPersist(null, "pass", "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", null, "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", "pass", null, Locale.FRANCE);
             assertTrue(false);
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", "pass", "ZDQSDV", null);
             assertTrue(false);
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("", "pass", "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", "", "mail@nowhere.com", Locale.FRANCE);
             assertTrue(false);
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
         try {
             DaoMember.createAndPersist("login", "pass", "", Locale.FRANCE);
             assertTrue(false);
-        } catch (NonOptionalParameterException e) {
+        } catch (final NonOptionalParameterException e) {
             assertTrue(true);
         }
     }
@@ -175,6 +175,5 @@ public class MemberCreationTest extends TestCase {
         assertFalse(DaoActor.exist(null));
         SessionManager.endWorkUnitAndFlush();
     }
-
 
 }

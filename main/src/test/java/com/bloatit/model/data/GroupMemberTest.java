@@ -128,7 +128,7 @@ public class GroupMemberTest extends TestCase {
         SessionManager.endWorkUnitAndFlush();
     }
 
-    public void testDuplicateAdd(){
+    public void testDuplicateAdd() {
         SessionManager.beginWorkUnit();
 
         DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
@@ -137,7 +137,7 @@ public class GroupMemberTest extends TestCase {
         try {
             SessionManager.flush();
             fail();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             assertTrue(true);
         }
 

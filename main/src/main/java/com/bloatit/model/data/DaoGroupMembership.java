@@ -35,7 +35,8 @@ class DaoGroupMembership extends DaoIdentifiable {
      */
     protected static DaoGroupMembership get(final DaoGroup group, final DaoMember member) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("from com.bloatit.model.data.DaoGroupMembership as gm where gm.bloatitGroup = :bloatitGroup and gm.member = :member");
+        final Query q = session
+                .createQuery("from com.bloatit.model.data.DaoGroupMembership as gm where gm.bloatitGroup = :bloatitGroup and gm.member = :member");
         q.setEntity("bloatitGroup", group);
         q.setEntity("member", member);
         return (DaoGroupMembership) q.uniqueResult();

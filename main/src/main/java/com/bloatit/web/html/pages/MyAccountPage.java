@@ -39,7 +39,7 @@ public final class MyAccountPage extends Page {
             try {
                 memberTitle = new HtmlTitleBlock(member.getFullname(), 2);
 
-                HtmlList userInfo = new HtmlList();
+                final HtmlList userInfo = new HtmlList();
                 memberTitle.add(userInfo);
 
                 userInfo.add(tr("Full name: ") + member.getFullname());
@@ -48,7 +48,7 @@ public final class MyAccountPage extends Page {
                 userInfo.add(tr("Karma: ") + member.getKarma());
 
                 add(memberTitle);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see your own details.")));
             }
         } else {
@@ -61,7 +61,7 @@ public final class MyAccountPage extends Page {
         if (session.getAuthToken() != null) {
             try {
                 return tr("My account - ") + session.getAuthToken().getMember().getLogin();
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 tr("My account - John Doe");
             }
         }

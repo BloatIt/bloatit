@@ -89,7 +89,8 @@ public final class IndexPage extends Page {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("index_description_block");
 
-        final String description = Context.tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
+        final String description = Context
+                .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
         descriptionBlock.add(new HtmlParagraph(description));
 
         final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), Context.tr("Submit a new idea"));
