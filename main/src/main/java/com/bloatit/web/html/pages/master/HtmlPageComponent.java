@@ -13,6 +13,9 @@ package com.bloatit.web.html.pages.master;
 
 import com.bloatit.web.html.HtmlLeaf;
 
+/**
+ * Beautiful useless layer.
+ */
 public abstract class HtmlPageComponent extends HtmlLeaf {
-    // TODO ?? Why nothing
+    // Ok there is nothing ...
 }

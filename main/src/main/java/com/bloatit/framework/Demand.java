@@ -26,7 +26,7 @@ public final class Demand extends Kudosable {
     private final DaoDemand dao;
 
     /**
-     * Create a new Demand.
+     * Create a new Demand. This method is not protected by any right management.
      *
      * @return null if the <code>dao</code> is null.
      */

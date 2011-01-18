@@ -10,6 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Member;
@@ -58,8 +59,7 @@ public final class MembersListPage extends Page {
                 final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 return new HtmlListItem(htmlLink).add(htmlKarma);
                 } catch (UnauthorizedOperationException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    Log.web().warn(e);
                 }
                 return new PlaceHolderElement();
             }

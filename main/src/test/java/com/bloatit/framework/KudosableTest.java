@@ -36,9 +36,4 @@ public class KudosableTest extends FrameworkTestUnit {
         assertEquals(1, demand.getPopularity());
     }
 
-    // TODO
-    // public void testGetState() {
-    // fail("Not yet implemented");
-    // }
-
 }

@@ -38,10 +38,6 @@ public final class SpecialsPage extends Page {
         final HtmlLink memeHtmlLink = new MembersListPageUrl().getHtmlLink(Context.tr("Members list"));
 
         pageList.add(memeHtmlLink);
-
-        // pageTitle.add(pageList);
-        // TODO : fix title
-
     }
 
     @Override

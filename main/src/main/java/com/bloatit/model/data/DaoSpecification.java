@@ -27,14 +27,13 @@ public final class DaoSpecification extends DaoUserContent {
 
     /**
      * Create a Specification.
-     * 
+     *
      * @param member is the author of the specification.
      * @param content is the content of the specification ...
      * @param demand yep, this is the demand on which the specification apply. Whhoohooo !
      * @throws NonOptionalParameterException if member or demand are null.
      */
     public DaoSpecification(final DaoMember member, final String content, final DaoDemand demand) {
-        // TODO test me more.
         super(member);
         if (demand == null) {
             throw new NonOptionalParameterException();
@@ -50,7 +49,7 @@ public final class DaoSpecification extends DaoUserContent {
     public void setContent(final String content) {
         this.content = content;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

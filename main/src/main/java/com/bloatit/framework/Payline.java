@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.model.data.DaoBankTransaction;
 import com.experian.payline.ws.impl.DoWebPaymentRequest;
 import com.experian.payline.ws.impl.DoWebPaymentResponse;
 import com.experian.payline.ws.impl.GetWebPaymentDetailsRequest;
@@ -122,7 +122,8 @@ public final class Payline extends Unlockable {
         return new Reponse(result, token);
     }
 
-    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl) throws UnauthorizedOperationException {
+    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl)
+            throws UnauthorizedOperationException {
         final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
         paymentRequest.setReturnURL(returnUrl);
@@ -205,11 +206,19 @@ public final class Payline extends Unlockable {
         ref.append("PAYLINE-");
         ref.append(member.getId());
         ref.append("-");
-        final PageIterable<DaoBankTransaction> bankTransaction = DaoBankTransaction.getAllTransactionsOf(member.getDao());
-        if (bankTransaction.size() == 0) {
-            ref.append("0");
-        } else {
-            ref.append(bankTransaction.iterator().next().getId() + 1);
+        PageIterable<BankTransaction> bankTransaction;
+        try {
+            bankTransaction = member.getBankTransactions();
+            if (bankTransaction.size() == 0) {
+                ref.append("0");
+            } else {
+                ref.append(bankTransaction.iterator().next().getId() + 1);
+            }
+        } catch (UnauthorizedOperationException e) {
+            Log.framework().fatal("Unauthorized exception should never append ! ", e);
+            assert false;
+            ref.append("ERROR");
+            return ref.toString();
         }
         return ref.toString();
     }

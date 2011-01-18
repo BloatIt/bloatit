@@ -42,5 +42,4 @@ public class DemandRight extends RightManager {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
-
 }

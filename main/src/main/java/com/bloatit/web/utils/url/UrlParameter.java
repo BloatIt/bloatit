@@ -13,7 +13,6 @@ import com.bloatit.web.utils.annotations.Loaders.ConversionErrorException;
 import com.bloatit.web.utils.annotations.Messages;
 
 public final class UrlParameter<T> extends UrlNode {
-    // TODO optimize me (Use some static classes ?)
     private final UrlParameterDescription<T> description;
     private final UrlParameterConstraints<T> constraints;
 

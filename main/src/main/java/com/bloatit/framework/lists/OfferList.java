@@ -17,7 +17,7 @@ public final class OfferList extends ListBinder<Offer, DaoOffer> {
         return new OfferIterator(dao);
     }
 
-    public final class OfferIterator extends com.bloatit.framework.lists.IteratorBinder<Offer, DaoOffer> {
+    static final class OfferIterator extends com.bloatit.framework.lists.IteratorBinder<Offer, DaoOffer> {
 
         public OfferIterator(final Iterable<DaoOffer> daoIterator) {
             super(daoIterator);

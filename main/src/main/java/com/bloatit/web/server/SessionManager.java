@@ -28,7 +28,6 @@ import javassist.NotFoundException;
 import com.bloatit.common.Log;
 import com.bloatit.framework.AuthToken;
 
-// TODO make me non public !
 public final class SessionManager {
 
     private static Map<UUID, Session> activeSessions = new HashMap<UUID, Session>();

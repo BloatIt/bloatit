@@ -39,9 +39,9 @@ public final class DemandManager {
         return new DemandList(DBRequests.searchDemands(searchString));
     }
 
+    // Can create if authenticated.
     public static boolean canCreate(final AuthToken authToken) {
-        // TODO: set right right
-        return true;
+        return authToken != null;
     }
 
 }

@@ -19,6 +19,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
+import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
@@ -118,6 +119,18 @@ public abstract class DaoActor {
     public final DaoExternalAccount getExternalAccount() {
         return externalAccount;
     }
+
+    /**
+     * @return all the <code>DaoBankTransaction</code> created by <code>this</code>,
+     *         order by <code>creationDate</code>, most recent first.
+     */
+    public final PageIterable<DaoBankTransaction> getBankTransactions() {
+        return new QueryCollection<DaoBankTransaction>(
+                SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
+                SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author"))
+                    .setEntity("author", this);
+    }
+
 
     /**
      * Set the external account for this actor.

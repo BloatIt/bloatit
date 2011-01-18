@@ -44,6 +44,7 @@ public abstract class Page extends HtmlElement implements Linkable {
         response.writePage(this);
     }
 
+    // TODO correct empty div for notifications ?
     public final void create() throws RedirectException {
         super.add(new HtmlTagText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         super.add(new HtmlTagText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
@@ -71,7 +72,6 @@ public abstract class Page extends HtmlElement implements Linkable {
         // Nothing. You can override it or not.
     }
 
-    // TODO correct empty div for notifications ?
     private HtmlElement doGenerateBody() {
 
         final HtmlGenericElement body = new HtmlGenericElement("body");

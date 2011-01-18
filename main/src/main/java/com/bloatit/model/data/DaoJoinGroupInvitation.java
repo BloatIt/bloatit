@@ -12,7 +12,7 @@ import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * TODO test me more ! This represent an invitation to join a group.
+ * This represent an invitation to join a group.
  */
 @Entity
 public final class DaoJoinGroupInvitation extends DaoIdentifiable {
@@ -49,7 +49,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * Create a new invitation. Set the state to PENDING.
-     * 
+     *
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
     private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
@@ -103,7 +103,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
         return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
                 .setEntity("group", group).setEntity("member", member).uniqueResult();
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

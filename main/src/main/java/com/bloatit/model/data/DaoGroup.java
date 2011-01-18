@@ -77,7 +77,6 @@ public final class DaoGroup extends DaoActor {
         return group;
     }
 
-    // TODO test me correctly !
     public static DaoGroup getByName(final String name) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.createQuery("from com.bloatit.model.data.DaoGroup where login = :login");
@@ -85,7 +84,13 @@ public final class DaoGroup extends DaoActor {
         return (DaoGroup) q.uniqueResult();
     }
 
-    // TODO comment
+    /**
+     * Create a DaoGroup
+     *
+     * @param login is the name of the group. It must be unique.
+     * @param email ...
+     * @param right is the default right value for this group.
+     */
     private DaoGroup(final String login, final String email, final Right right) {
         super(login);
         if (right == null || email == null || email.isEmpty()) {

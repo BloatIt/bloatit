@@ -2,7 +2,9 @@ package com.bloatit.framework;
 
 import java.util.Date;
 
+import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.framework.lists.BankTransactionList;
 import com.bloatit.framework.right.ActorRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoActor;
@@ -13,14 +15,6 @@ import com.bloatit.model.data.DaoActor;
 public abstract class Actor extends Identifiable {
 
     protected abstract DaoActor getDaoActor();
-
-    /**
-     * @see Identifiable#getId()
-     */
-    @Override
-    public final int getId() {
-        return getDaoActor().getId();
-    }
 
     /**
      * Tells if a user can access the <code>Email</code> property. You have to unlock this
@@ -127,14 +121,43 @@ public abstract class Actor extends Identifiable {
     }
 
     /**
-     * @throws UnauthorizedOperationException if you haven't the right to access the <code>ExtenralAccount</code> property.
+     * @throws UnauthorizedOperationException if you haven't the right to access the
+     *         <code>ExtenralAccount</code> property.
      */
     public final ExternalAccount getExternalAccount() throws UnauthorizedOperationException {
         new ActorRight.ExternalAccount().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
         return new ExternalAccount(getDaoActor().getExternalAccount());
     }
 
+    /**
+     * @return true if you can access the <code>ExternalAccount</code> property.
+     * @see #getBankTransactions()
+     */
+    public final boolean canAccessBankTransaction() {
+        return new ActorRight.BankTransaction().canAccess(calculateRole(getLoginUnprotected()), Action.READ);
+    }
+
+    /**
+     * @return all the bank transactions this actor has done.
+     * @throws UnauthorizedOperationException if you haven't the right to access the
+     *         <code>ExtenralAccount</code> property.
+     * @see DaoActor#getBankTransactions()
+     */
+    public final PageIterable<BankTransaction> getBankTransactions() throws UnauthorizedOperationException {
+        new ActorRight.BankTransaction().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
+        return new BankTransactionList(getDaoActor().getBankTransactions());
+    }
+
     protected DaoActor getDao() {
         return getDaoActor();
     }
+
+    /**
+     * @see Identifiable#getId()
+     */
+    @Override
+    public final int getId() {
+        return getDaoActor().getId();
+    }
+
 }

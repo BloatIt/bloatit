@@ -14,6 +14,10 @@ public class ActorRight extends RightManager {
         // nothing this is just a rename.
     }
 
+    public static class BankTransaction extends Private {
+        // nothing this is just a rename.
+    }
+
     public static class Login extends Public {
         // nothing this is just a rename.
     }

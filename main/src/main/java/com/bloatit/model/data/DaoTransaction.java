@@ -56,7 +56,6 @@ public final class DaoTransaction extends DaoIdentifiable {
      */
     private DaoTransaction(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
         super();
-        // TODO TEST ME MORE
         if (from.equals(to)) {
             throw new FatalErrorException("Cannot create a transaction on the same account.", null);
         }

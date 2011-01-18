@@ -13,7 +13,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.bloatit.common.Log;
-import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
@@ -78,17 +77,6 @@ public final class DaoBankTransaction extends DaoIdentifiable {
      */
     @Column(nullable = false, updatable = false, unique = true)
     private String reference;
-
-    /**
-     * @return all the <code>DaoBankTransaction</code> created by <code>author</code>,
-     *         order by <code>creationDate</code>, most recent first.
-     */
-    public static PageIterable<DaoBankTransaction> getAllTransactionsOf(DaoActor author) {
-        return new QueryCollection<DaoBankTransaction>(
-                SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
-                SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author"))
-                    .setEntity("author", author);
-    }
 
     /**
      * @return the <code>DaoBankTransaction</code> with this <code>token</code>. Return

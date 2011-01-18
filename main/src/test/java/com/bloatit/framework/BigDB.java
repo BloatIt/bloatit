@@ -100,8 +100,6 @@ public class BigDB {
                 }
             }
 
-            // TODO add Translation
-
             if (i % 100 == 0) {
                 SessionManager.flush();
                 SessionManager.clear();

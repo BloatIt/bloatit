@@ -80,7 +80,7 @@ public final class AccountChargingAction extends LoggedAction {
 
     @Override
 	protected Url doProcessErrors() throws RedirectException {
-    	// TODO
+        session.notifyList(url.getMessages());
 		return new LoginPageUrl();
     }
 

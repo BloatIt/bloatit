@@ -68,7 +68,6 @@ public final class DaoDemand extends DaoKudosable {
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
-    // @OrderBy(clause = "creationDate DESC") // TODO find why this is not working
     @IndexedEmbedded
     private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
@@ -150,7 +149,6 @@ public final class DaoDemand extends DaoKudosable {
      * @param Offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
-        // TODO test me !
         offers.remove(offer);
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
     }
@@ -198,8 +196,6 @@ public final class DaoDemand extends DaoKudosable {
      * @return the current offer for this demand, or null if there is no offer.
      */
     public DaoOffer getCurrentOffer() {
-        // TODO test me !
-
         // First try to find a validated offer.
         final String validatedQueriStr = "FROM DaoOffer " + //
                 "WHERE demand = :this AND state = :state " + //

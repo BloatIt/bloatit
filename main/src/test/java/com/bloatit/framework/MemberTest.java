@@ -9,7 +9,6 @@ import com.bloatit.framework.managers.MemberManager;
 public class MemberTest extends FrameworkTestUnit {
 
     public void testAddToPublicGroup() throws UnauthorizedOperationException {
-        // TODO correct the right management in groups
         final Member yo = MemberManager.getMemberByLogin("Yo");
 
         yo.authenticate(yoAuthToken);
@@ -38,7 +37,6 @@ public class MemberTest extends FrameworkTestUnit {
         try {
             yo.authenticate(fredAuthToken);
             // A user can only remove himself from a group.
-            // TODO : the admin should be able to remove a user from a group.
             yo.removeFromGroup(GroupManager.getByName("b219"));
             fail();
         } catch (final Exception e) {

@@ -102,8 +102,6 @@ public class DemandTest extends ModelTestUnit {
         demand = DBRequests.getById(DaoDemand.class, demand.getId());
 
         assertEquals(4, demand.getCommentsFromQuery().size());
-        // TODO correct order.
-        // assertEquals("4", demand.getComments().iterator().next().getText());
     }
 
     public void testAcceptContributions() throws Throwable {

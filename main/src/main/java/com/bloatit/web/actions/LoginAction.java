@@ -35,9 +35,11 @@ public final class LoginAction extends Action {
 
     @RequestParam(level = Level.ERROR, name = PASSWORD_CODE, role = RequestParam.Role.POST)
     private final String password;
+    private final LoginActionUrl url;
 
     public LoginAction(final LoginActionUrl url) {
         super(url);
+        this.url = url;
         this.login = url.getLogin();
         this.password = url.getPassword();
 
@@ -61,7 +63,7 @@ public final class LoginAction extends Action {
 
     @Override
     protected Url doProcessErrors() throws RedirectException {
-        // TODO
+        session.notifyList(url.getMessages());
         return new LoginPageUrl();
     }
 

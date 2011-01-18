@@ -18,15 +18,9 @@ import com.bloatit.model.data.util.SessionManager;
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "member_id", "bloatitGroup_id" }) })
 class DaoGroupMembership extends DaoIdentifiable {
 
-    /**
-     * TODO : declare a composite ID !
-     */
     @ManyToOne(optional = false)
     private DaoMember member;
 
-    /**
-     * TODO : declare a composite ID !
-     */
     @ManyToOne(optional = false)
     private DaoGroup bloatitGroup;
 

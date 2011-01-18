@@ -5,8 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import com.bloatit.common.PageIterable;
-import com.bloatit.framework.lists.BankTransactionList;
 import com.bloatit.model.data.DaoActor;
 import com.bloatit.model.data.DaoBankTransaction;
 import com.bloatit.model.data.DaoBankTransaction.State;
@@ -24,11 +22,6 @@ public final class BankTransaction extends Identifiable {
             return new BankTransaction(daoBankTransaction);
         }
         return null;
-    }
-
-    // TODO should be in the actor class.
-    public static PageIterable<BankTransaction> getAllTransactionsOf(final Actor author) {
-        return new BankTransactionList(DaoBankTransaction.getAllTransactionsOf(author.getDao()));
     }
 
     /**

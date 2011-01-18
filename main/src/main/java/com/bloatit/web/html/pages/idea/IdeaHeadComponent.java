@@ -33,6 +33,7 @@ import com.bloatit.web.utils.url.OfferPageUrl;
 
 public final class IdeaHeadComponent extends HtmlPageComponent {
 
+    private static final int SHORT_TEXT_VARIANCE = 5;
     private static final String IMPORTANT_CSS_CLASS = "important";
     private static final int SHORT_DESCRIPTION_LENGTH = 144;
 
@@ -60,13 +61,9 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
                 String shortDescription = tr("Error: you do not have the right to see the description.");
                 try {
                     Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
-                    shortDescription = translatedDescription.getText();
+                    shortDescription = translatedDescription.getShortText(SHORT_DESCRIPTION_LENGTH, SHORT_TEXT_VARIANCE);
                 } catch (UnauthorizedOperationException e1) {
                     // Do nothing.
-                }
-                if (shortDescription.length() > SHORT_DESCRIPTION_LENGTH) {
-                    // TODO create a tools to truncate less dirty
-                    shortDescription = shortDescription.substring(0, SHORT_DESCRIPTION_LENGTH - 1) + " ...";
                 }
 
                 final HtmlParagraph text = new HtmlParagraph(shortDescription);

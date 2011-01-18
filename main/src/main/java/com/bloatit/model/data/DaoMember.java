@@ -113,7 +113,7 @@ public final class DaoMember extends DaoActor {
     /**
      * You have to use CreateAndPersist instead of this constructor
      *
-     * @param locale TODO
+     * @param locale is the locale in which this user is. (The country and language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
      */
     private DaoMember(final String login, final String password, final String email, Locale locale) {
@@ -244,7 +244,6 @@ public final class DaoMember extends DaoActor {
     /**
      * @return All the received invitation to join a group which are in a specified state
      */
-    // TODO test
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
                 "from com.bloatit.model.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state  ").setEntity("reciever",
@@ -254,7 +253,6 @@ public final class DaoMember extends DaoActor {
     /**
      * @return All the sent invitation to join a group which are in a specified state
      */
-    // TODO test
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
                 "from com.bloatit.model.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state").setEntity("sender", this)
