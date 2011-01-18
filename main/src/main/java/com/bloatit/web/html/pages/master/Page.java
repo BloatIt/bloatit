@@ -1,6 +1,7 @@
 package com.bloatit.web.html.pages.master;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.ParamContainer;
@@ -10,6 +11,7 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.HtmlText;
+import com.bloatit.web.html.components.PlaceHolderElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlLink;
@@ -26,7 +28,8 @@ import com.bloatit.web.utils.url.Url;
 public abstract class Page extends HtmlElement implements Linkable {
 
     private final HtmlBranch content;
-    private final HtmlBranch notifications;
+    private HtmlBranch notifications;
+    private final PlaceHolderElement notificationBlock;
     private final Url thisUrl;
     protected final Session session;
 
@@ -34,7 +37,8 @@ public abstract class Page extends HtmlElement implements Linkable {
         super();
         this.thisUrl = url;
         content = new HtmlDiv().setId("body_content");
-        notifications = new HtmlDiv().setId("notifications");
+        notifications = null;
+        notificationBlock = new PlaceHolderElement();
         session = Context.getSession();
     }
 
@@ -44,7 +48,6 @@ public abstract class Page extends HtmlElement implements Linkable {
         response.writePage(this);
     }
 
-    // TODO correct empty div for notifications ?
     public final void create() throws RedirectException {
         super.add(new HtmlTagText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         super.add(new HtmlTagText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
@@ -108,7 +111,7 @@ public abstract class Page extends HtmlElement implements Linkable {
         if (getClass().getAnnotation(ParamContainer.class) != null) {
             return getClass().getAnnotation(ParamContainer.class).value();
         }
-        return getClass().getName().toLowerCase();
+        return getClass().getName().toLowerCase(Locale.ENGLISH);
     }
 
     protected String getCustomCss() {
@@ -138,6 +141,10 @@ public abstract class Page extends HtmlElement implements Linkable {
     }
 
     protected final void addNotification(final HtmlNotification note) {
+        if (notifications == null) {
+            notifications = new HtmlDiv().setId("notifications");
+            notificationBlock.add(notifications);
+        }
         notifications.add(note);
     }
 
@@ -182,6 +189,9 @@ public abstract class Page extends HtmlElement implements Linkable {
                 break;
             case GOOD:
                 addNotification(new HtmlNotification(Level.INFO, notification.getMessage()));
+                break;
+            default:
+                // do nothing, it should never append.
                 break;
             }
         }
