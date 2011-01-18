@@ -50,12 +50,6 @@ public abstract class JavaGenerator {
                                    ParamConstraint constraints) {
         name = toCamelAttributeName(name);
 
-        if (defaultValue == RequestParam.DEFAULT_DEFAULT_VALUE) {
-            defaultValue = "com.bloatit.web.annotations.RequestParam.DEFAULT_DEFAULT_VALUE";
-        } else {
-            defaultValue = "\"" + defaultValue + "\"";
-        }
-
         String createParameter = createParameter("\"" + nameString + "\"", defaultValue, type, role, level, malFormedMsg, constraints);
         _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ").append(createParameter);
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
@@ -103,7 +97,7 @@ public abstract class JavaGenerator {
         _gettersSetters.append("}\n\n");
     }
 
-    // nameString and defaultValue must be already escaped.
+    // nameString must be already escaped.
     public final String createParameter(String nameString,
                                         String defaultValue,
                                         String type,
@@ -119,7 +113,11 @@ public abstract class JavaGenerator {
         sb.append("new UrlParameterDescription<").append(type).append(">(");
         sb.append(nameString).append(", ").append(type).append(".class, ");
         addRole(role, sb);
-        sb.append(", ").append(defaultValue).append(", ");
+        if (defaultValue.equals(RequestParam.DEFAULT_DEFAULT_VALUE)){
+            sb.append(", ").append("RequestParam.DEFAULT_DEFAULT_VALUE").append(", ");
+        }else{
+            sb.append(", \"").append(defaultValue).append("\", ");
+        }
         if (malFormedMsg.equals(RequestParam.DEFAULT_ERROR_MSG)){
             sb.append("RequestParam.DEFAULT_ERROR_MSG").append(", ");
         }else{
