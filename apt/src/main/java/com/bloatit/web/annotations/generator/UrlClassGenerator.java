@@ -6,6 +6,7 @@ public class UrlClassGenerator extends JavaGenerator {
     public UrlClassGenerator(String name, String pageName, String pageType) {
         super(name);
         _import.append("import com.bloatit.web.exceptions.RedirectException;\n");
+        _import.append("import com.bloatit.common.Log;\n");
 
         _classHeader.append("@SuppressWarnings(\"unused\")\n");
         _classHeader.append("public final class ").append(className).append(" extends Url {\n");
