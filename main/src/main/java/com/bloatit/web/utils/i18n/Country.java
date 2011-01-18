@@ -33,7 +33,6 @@ import com.bloatit.web.utils.PropertyLoader;
  * <li>Deutschland -> de</li>
  * </p>
  */
-
 public final class Country implements Comparable<Country>, DropDownElement {
 
     private static final String COUNTRIES_PATH = "i18n/countries";
