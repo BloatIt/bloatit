@@ -127,7 +127,9 @@ public abstract class HtmlElement extends HtmlNode {
             txt.writeIndentation();
             txt.writeRawText(tag.getOpenTag());
             for (final HtmlNode html : this) {
-                html.write(txt);
+                if (html != null){
+                    html.write(txt);
+                }
             }
             txt.unindent();
             txt.writeLine(tag.getCloseTag());
