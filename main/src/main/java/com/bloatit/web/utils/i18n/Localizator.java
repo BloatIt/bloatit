@@ -17,6 +17,7 @@ import org.xnap.commons.i18n.I18nFactory;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
 import com.bloatit.framework.Member;
+import com.bloatit.web.html.components.standard.form.DropDownElement;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.PropertyLoader;
 import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
@@ -287,9 +288,18 @@ public final class Localizator {
     /**
      * Describes a Language using a two letters code and a name
      */
-    public static class LanguageDescriptor {
+    public static class LanguageDescriptor implements DropDownElement{
         public String code;
         public String name;
+        
+        @Override
+        public String getName() {
+            return name;
+        }
+        @Override
+        public String getCode() {
+            return code;
+        }
     }
 
     /**

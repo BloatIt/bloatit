@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.web.html.components.standard.form.DropDownElement;
 import com.bloatit.web.utils.PropertyLoader;
 
 /**
@@ -32,7 +33,7 @@ import com.bloatit.web.utils.PropertyLoader;
  * <li>Deutschland -> de</li>
  * </p>
  */
-public final class Country implements Comparable<Country> {
+public final class Country implements Comparable<Country>, DropDownElement {
     private static final String COUNTRIES_PATH = "i18n/countries";
     private static final Set<Country> availableCountries = createAvailableCountries();
     private final String name;

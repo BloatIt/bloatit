@@ -78,15 +78,15 @@ public final class RegisterPage extends Page {
         emailInput.setDefaultValue(email);
         form.add(emailInput);
 
-        final HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, Context.tr("Country"));
-        for (final Country entry : Country.getAvailableCountries()) {
-            countryInput.add(entry.getName(), entry.getCode());
+        HtmlDropDown<Country> countryInput = new HtmlDropDown<Country>(RegisterAction.COUNTRY_CODE, Context.tr("Country"));
+        for(Country entry : Country.getAvailableCountries()){
+        	countryInput.add(entry);
         }
         form.add(countryInput);
 
-        final HtmlDropDown langInput = new HtmlDropDown(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
-        for (final Entry<String, LanguageDescriptor> entry : Localizator.getAvailableLanguages().entrySet()) {
-            langInput.add(entry.getValue().name, entry.getValue().code);
+        HtmlDropDown<LanguageDescriptor> langInput = new HtmlDropDown<LanguageDescriptor>(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
+        for(Entry<String, LanguageDescriptor> entry : Localizator.getAvailableLanguages().entrySet()){
+        	langInput.add(entry.getValue());
         }
         form.add(langInput);
 
