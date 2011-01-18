@@ -26,6 +26,8 @@ public abstract class JavaGenerator {
 
         _import.append("import com.bloatit.web.annotations.Message.Level;\n");
         _import.append("import com.bloatit.web.annotations.RequestParam.Role;\n");
+        _import.append("import com.bloatit.web.annotations.RequestParam;\n");
+        _import.append("import com.bloatit.web.annotations.ParamConstraint;\n");
         _import.append("import com.bloatit.web.utils.url.UrlParameter;\n");
         _import.append("import com.bloatit.web.utils.annotations.Loaders;\n");
         _import.append("import com.bloatit.web.utils.annotations.Loaders.*;\n");
@@ -118,7 +120,11 @@ public abstract class JavaGenerator {
         sb.append(nameString).append(", ").append(type).append(".class, ");
         addRole(role, sb);
         sb.append(", ").append(defaultValue).append(", ");
-        sb.append("\"").append(malFormedMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+        if (malFormedMsg.equals(RequestParam.DEFAULT_ERROR_MSG)){
+            sb.append("RequestParam.DEFAULT_ERROR_MSG").append(", ");
+        }else{
+            sb.append("\"").append(malFormedMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
+        }
         addLevel(level, sb);
         sb.append("), ");
 
@@ -129,16 +135,23 @@ public abstract class JavaGenerator {
             sb.append(constraints.optional()).append(", ");
             sb.append(constraints.precision()).append(", ");
             sb.append(constraints.length()).append(", ");
-            sb.append("\"").append(constraints.minErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
-            sb.append("\"").append(constraints.maxErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
-            sb.append("\"").append(constraints.optionalErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
-            sb.append("\"").append(constraints.precisionErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\", ");
-            sb.append("\"").append(constraints.LengthErrorMsg().value().replaceAll("[\\\"]", "\\\\\"")).append("\"");
+            appendErrorMsg(constraints.minErrorMsg().value(), sb).append(", ");
+            appendErrorMsg(constraints.maxErrorMsg().value(), sb).append(", ");
+            appendErrorMsg(constraints.optionalErrorMsg().value(), sb).append(", ");
+            appendErrorMsg(constraints.precisionErrorMsg().value(), sb).append(", ");
+            appendErrorMsg(constraints.LengthErrorMsg().value(), sb);
         }
         sb.append(")");
 
         sb.append(");\n");
         return sb.toString();
+    }
+
+    private StringBuilder appendErrorMsg(String msg, StringBuilder sb) {
+        if (msg.equals(ParamConstraint.DEFAULT_ERROR_MSG)){
+            return sb.append("ParamConstraint.DEFAULT_ERROR_MSG");
+        }
+        return sb.append("\"").append(msg.replaceAll("[\\\"]", "\\\\\"")).append("\"");
     }
 
     private void addLevel(Level level, StringBuilder sb) {
