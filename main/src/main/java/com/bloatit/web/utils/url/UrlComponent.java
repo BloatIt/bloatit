@@ -9,7 +9,7 @@ import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.standard.HtmlLink;
 import com.bloatit.web.utils.annotations.Messages;
 
-public abstract class UrlComponent extends UrlNode {
+public abstract class UrlComponent extends UrlNode{
     private boolean isRegistered = false;
     private final List<UrlNode> nodes = new ArrayList<UrlNode>();
 

@@ -165,7 +165,7 @@ public final class SCGIServer {
 
             final long endTime = System.nanoTime();
             final double duration = ((endTime - startTime)) / 1000000.;
-            System.err.println("Page generated in " + duration + " ms");
+            Log.server().debug("Page generated in " + duration + " ms");
 
         }
     }

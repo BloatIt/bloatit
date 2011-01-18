@@ -140,7 +140,6 @@ public class BigDB {
         }
 
         if (text.isEmpty()) {
-            System.err.println("please install fortune for more fun (sudo apt-get install fortune-mod)");
             text = Long.toHexString(Double.doubleToLongBits(Math.random()));
         }
 
