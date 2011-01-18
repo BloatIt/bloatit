@@ -10,6 +10,8 @@
  */
 package com.bloatit.web.html.components.custom;
 
+import static com.bloatit.web.server.Context.tr;
+
 import com.bloatit.common.PageIterable;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -19,7 +21,6 @@ import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlSpan;
-import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.HtmlPagedListUrl;
 import com.bloatit.web.utils.url.UrlComponent;
 
@@ -74,14 +75,14 @@ public class HtmlPagedList<T> extends HtmlList {
         final HtmlSpan span = new HtmlSpan();
 
         if (currentPage > 1) {
-            span.add(generateLink(currentPage - 1, Context.tr("Previous")));
+            span.add(generateLink(currentPage - 1, tr("Previous")));
         }
 
         // first page
         span.add(generateLink(1));
 
         if (currentPage - NB_PAGES_RIGHT > 1) {
-            span.addText("...");
+            span.addText("…");
         }
 
         // center pages
@@ -92,14 +93,14 @@ public class HtmlPagedList<T> extends HtmlList {
         }
 
         if (currentPage + NB_PAGES_LEFT < pageCount) {
-            span.addText("...");
+            span.addText("…");
         }
 
         // Last page
         span.add(generateLink(pageCount));
 
         if (currentPage < pageCount) {
-            span.add(generateLink(currentPage + 1, Context.tr("Next")));
+            span.add(generateLink(currentPage + 1, tr("Next")));
         }
         return span;
     }

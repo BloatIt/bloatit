@@ -26,7 +26,6 @@ public final class PaylineNotifyAction extends Action {
     @Override
     public Url doProcess() throws RedirectException {
         Log.web().info("Get a payline notification: " + token);
-        System.out.println("GET A NOTIFY ! " + token);
         final Payline payline = new Payline();
         try {
             final Reponse paymentDetails = payline.getPaymentDetails(token);

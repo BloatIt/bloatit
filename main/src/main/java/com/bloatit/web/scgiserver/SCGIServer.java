@@ -53,6 +53,9 @@ import com.bloatit.web.utils.url.TestPageUrl;
 
 public final class SCGIServer {
 
+    private static final String SCGI_HOST = "127.0.0.1";
+    private static final int SCGI_PORT = 4000;
+
     public static void main(final String[] args) {
         try {
             new SCGIServer().run();
@@ -61,7 +64,6 @@ public final class SCGIServer {
         }
     }
 
-    private static final int SOKET_PORT = 4000;
 
     private ServerSocket providerSocket;
     private Socket clientSocket;
@@ -111,7 +113,7 @@ public final class SCGIServer {
 
         // Find a better way to clean the socket
         try {
-            final Socket cleanSocket = new Socket("127.0.0.1", SOKET_PORT);
+            final Socket cleanSocket = new Socket(SCGI_HOST, SCGI_PORT);
             cleanSocket.close();
         } catch (final IOException ex) {
             Log.server().warn("Init: Cleaning socket catch exception.", ex);
@@ -124,7 +126,7 @@ public final class SCGIServer {
         }
 
         Log.server().info("Init: Start BloatIt serveur");
-        providerSocket = new ServerSocket(SOKET_PORT);
+        providerSocket = new ServerSocket(SCGI_PORT);
     }
 
     private void run() throws IOException {

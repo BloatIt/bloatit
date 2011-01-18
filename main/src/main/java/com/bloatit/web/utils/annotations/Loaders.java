@@ -54,7 +54,7 @@ public final class Loaders {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "synthetic-access" })
     static <T> Loader<T> getLoader(final Class<T> theClass) {
         if (theClass.equals(Integer.class)) {
             return (Loader<T>) new ToInteger();

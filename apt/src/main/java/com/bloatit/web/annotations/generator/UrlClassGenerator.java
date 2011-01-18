@@ -46,7 +46,7 @@ public class UrlClassGenerator extends JavaGenerator {
         _classHeader.append(_constructorDefaults);
         if (_constructorDefaults.length() > 0) {
             _classHeader.append("    } catch (ConversionErrorException e) {\n");
-            _classHeader.append("        e.printStackTrace();\n");
+            _classHeader.append("        Log.web().fatal(e);\n");
             _classHeader.append("        assert false ;\n");
             _classHeader.append("    }\n");
         }

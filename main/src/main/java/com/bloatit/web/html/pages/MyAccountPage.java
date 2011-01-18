@@ -52,7 +52,7 @@ public final class MyAccountPage extends Page {
                 add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see your own details.")));
             }
         } else {
-            add(new HtmlTitle("No account", 2));
+            add(new HtmlTitle(tr("No account"), 2));
         }
     }
 

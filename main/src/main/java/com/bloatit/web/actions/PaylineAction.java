@@ -1,5 +1,7 @@
 package com.bloatit.web.actions;
 
+import static com.bloatit.web.server.Context.tr;
+
 import java.math.BigDecimal;
 
 import com.bloatit.common.UnauthorizedOperationException;
@@ -50,7 +52,7 @@ public final class PaylineAction extends LoggedAction {
                 }
                 session.notifyBad(reponse.getMessage());
             } catch (final UnauthorizedOperationException e) {
-                session.notifyBad("Unauthorized !");
+                session.notifyBad(tr("Unauthorized !"));
             }
             return Context.getSession().pickPreferredPage();
         }
