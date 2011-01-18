@@ -205,7 +205,7 @@ public final class SCGIServer {
             } catch (IOException e) {
                 Log.server().error("Fail to close the socket on shutdown.", e);
             }
-            SessionManager.SaveSessions();
+            SessionManager.saveSessions();
         }
     }
 }

@@ -66,7 +66,7 @@ public final class SessionManager {
         activeSessions.put(uuidKey, session);
     }
 
-    public static void SaveSessions() {
+    public static void saveSessions() {
         // TODO find a good place to save this
 
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
@@ -78,7 +78,7 @@ public final class SessionManager {
             Log.server().debug("Creating a new dir: " + dir);
         }
 
-        FileOutputStream fileOutputStream;
+        FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(new File(dump));
 
@@ -99,7 +99,19 @@ public final class SessionManager {
             fileOutputStream.close();
 
         } catch (IOException e) {
+
             Log.server().error("Failed to save sessions.", e);
+        } finally {
+            if(fileOutputStream != null) {
+                try {
+
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    Log.server().error("Failed to close the file after an other exception.");
+                    Log.server().error(e);
+                    e.printStackTrace();
+                }
+            }
         }
 
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
@@ -111,6 +123,8 @@ public final class SessionManager {
         String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
         String dump = dir + "/sessions.dump";
 
+        BufferedReader br = null;
+
         try {
             // Open the file that is the first
             // command line parameter
@@ -119,7 +133,7 @@ public final class SessionManager {
 
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            br = new BufferedReader(new InputStreamReader(in));
             String strLine;
             // Read File Line By Line
             while ((strLine = br.readLine()) != null) {
@@ -143,6 +157,14 @@ public final class SessionManager {
             }
 
         } catch (IOException e) {
+            if(br != null) {
+                try {
+                    br.close();
+                } catch (IOException e1) {
+                    Log.server().error(e1);
+                }
+            }
+
             // Failed to restore sessions
             Log.server().error("Failed to restore sessions.", e);
         }
