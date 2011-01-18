@@ -27,9 +27,6 @@ public final class IdeaTabPane extends HtmlPageComponent {
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
     private String activeTabKey;
 
-    @SuppressWarnings("unused")
-    private IdeaContributorsComponent contribution;
-
     public IdeaTabPane(final IdeaTabPaneUrl url, final Demand demand) {
         super();
         activeTabKey = url.getActiveTabKey();
@@ -52,7 +49,7 @@ public final class IdeaTabPane extends HtmlPageComponent {
         tabPane.addTab(new HtmlTab(Context.tr("Participations"), "participations_tab") {
             @Override
             public HtmlNode generateBody() {
-                return contribution = new IdeaContributorsComponent(url.getContributionUrl(), demand);
+                return new IdeaContributorsComponent(url.getContributionUrl(), demand);
             }
         });
 
