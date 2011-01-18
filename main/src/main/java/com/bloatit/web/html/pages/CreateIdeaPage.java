@@ -20,9 +20,9 @@ import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
-import com.bloatit.web.html.components.standard.form.HtmlDropDown;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlFormBlock;
+import com.bloatit.web.html.components.standard.form.HtmlSimpleDropDown;
 import com.bloatit.web.html.components.standard.form.HtmlSubmit;
 import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.components.standard.form.HtmlTextField;
@@ -114,7 +114,7 @@ public final class CreateIdeaPage extends LoggedPage {
 
         // Create the fields that will be used to describe the parameters of the
         // idea (project ...)
-        HtmlDropDown languageInput = new HtmlDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
+        HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
         for (Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
         }

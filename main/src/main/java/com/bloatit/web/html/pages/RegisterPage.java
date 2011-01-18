@@ -84,9 +84,9 @@ public final class RegisterPage extends Page {
         }
         form.add(countryInput);
 
-        HtmlDropDown<Country> langInput = new HtmlDropDown<Country>(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
+        HtmlDropDown<LanguageDescriptor> langInput = new HtmlDropDown<LanguageDescriptor>(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
         for(Entry<String, LanguageDescriptor> entry : Localizator.getAvailableLanguages().entrySet()){
-        	langInput.add(entry.getValue().name, entry.getValue().code);
+        	langInput.add(entry.getValue());
         }
         form.add(langInput);
 

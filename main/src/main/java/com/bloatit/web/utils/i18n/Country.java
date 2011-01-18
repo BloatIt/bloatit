@@ -34,7 +34,6 @@ import com.bloatit.web.utils.PropertyLoader;
  * </p>
  */
 public final class Country implements Comparable<Country>, DropDownElement {
-
     private static final String COUNTRIES_PATH = "i18n/countries";
     private static Set<Country> availableCountries = null;
     private final String name;
