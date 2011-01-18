@@ -45,7 +45,7 @@ public final class Localizator {
 
     private static final String SEPARATORS_REGEX = "[_-]";
 
-    private static Map<String, LanguageDescriptor> availableLanguages = null;
+    private static Map<String, LanguageDescriptor> availableLanguages = initLanguageList();
 
     private Locale locale;
     private final I18n i18n;
@@ -255,17 +255,15 @@ public final class Localizator {
      * @return a list with all the language descriptors
      */
     public static Map<String, LanguageDescriptor> getAvailableLanguages() {
-        if (availableLanguages == null) {
-            availableLanguages = new HashMap<String, LanguageDescriptor>();
-            initLanguageList();
-        }
         return availableLanguages;
     }
 
     /**
      * Parses the languages file and initializes the list of available languages
+     * Used in the init of the static field.
      */
-    private static void initLanguageList() {
+    private static Map<String, LanguageDescriptor> initLanguageList() {
+        Map<String, LanguageDescriptor> languages = new HashMap<String, Localizator.LanguageDescriptor>();
         try {
             Properties properties = PropertyLoader.loadProperties(LANGUAGES_PATH);
             for (Entry<?, ?> property : properties.entrySet()) {
@@ -273,14 +271,14 @@ public final class Localizator {
                 String value = (String) property.getValue();
 
                 // Remove the .code or .name
-                String lang = key.substring(0, key.lastIndexOf("."));
+                String lang = key.substring(0, key.lastIndexOf('.'));
 
                 LanguageDescriptor ld;
-                if (!availableLanguages.containsKey(lang)) {
+                if (!languages.containsKey(lang)) {
                     ld = new LanguageDescriptor();
-                    availableLanguages.put(lang, ld);
+                    languages.put(lang, ld);
                 } else {
-                    ld = availableLanguages.get(lang);
+                    ld = languages.get(lang);
                 }
 
                 if (key.endsWith("." + LANGUAGE_CODE)) {
@@ -292,6 +290,7 @@ public final class Localizator {
         } catch (IOException e) {
             throw new FatalErrorException("File describing available languages is not available at " + LANGUAGES_PATH, e);
         }
+        return languages;
     }
 
    /**

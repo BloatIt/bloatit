@@ -32,6 +32,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 
 /**
  * Class to handle localization of money amounts.
@@ -42,12 +43,13 @@ public final class CurrencyLocale {
     private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
     private static final int DISPLAY_PRECISION = 0;
 
+    private static Date lastParse = null;
+    private static Map<Currency, BigDecimal> currencies = new HashMap<Currency, BigDecimal>();
+
     private final Locale targetLocale;
     private final BigDecimal euroAmount;
     private final Currency currency;
 
-    private static Date lastParse = null;
-    private static Map<Currency, BigDecimal> currencies = new HashMap<Currency, BigDecimal>();
 
     /**
      * <p>
@@ -210,6 +212,7 @@ public final class CurrencyLocale {
                     br.close();
                 }
             } catch (Exception ex) {
+                Log.web().warn("Error clothing file: " + RATES_PATH);
             }
         }
     }
