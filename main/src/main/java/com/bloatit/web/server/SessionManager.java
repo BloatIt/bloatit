@@ -34,7 +34,7 @@ public final class SessionManager {
     private static final long CLEAN_EXPIRED_SESSION_COOLDOWN = 172800; // 2 days
     private static long nextCleanExpiredSession = 0;
 
-    private SessionManager(){
+    private SessionManager() {
         // desactivate CTOR
     }
 
@@ -52,10 +52,7 @@ public final class SessionManager {
     }
 
     public static Session getByKey(final String key) {
-        if (activeSessions.containsKey(key)) {
-            return activeSessions.get(key);
-        }
-        return null;
+        return activeSessions.get(UUID.fromString(key));
     }
 
     private static void restoreSession(final String key, final int memberId) {
@@ -141,7 +138,7 @@ public final class SessionManager {
 
             if (new File(dump).delete()) {
                 Log.server().info("deleting dump file: " + dump);
-            }else{
+            } else {
                 Log.server().error("Cannot delete dump file: " + dump);
             }
 

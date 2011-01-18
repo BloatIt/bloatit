@@ -95,7 +95,7 @@ public abstract class Page extends HtmlElement implements Linkable {
         final HtmlBranch centerColumn = new HtmlDiv().setId("center_column");
         center.add(centerColumn);
 
-        content.add(notifications);
+        content.add(notificationBlock);
         centerColumn.add(new Menu()).add(content);
 
         page.add(new Footer());

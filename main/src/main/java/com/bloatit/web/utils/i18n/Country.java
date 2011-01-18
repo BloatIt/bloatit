@@ -35,7 +35,7 @@ import com.bloatit.web.utils.PropertyLoader;
  */
 public final class Country implements Comparable<Country>, DropDownElement {
     private static final String COUNTRIES_PATH = "i18n/countries";
-    private static Set<Country> availableCountries = null;
+    private static final Set<Country> availableCountries = createAvailableCountries();
     private final String name;
     private final String code;
 
@@ -114,26 +114,26 @@ public final class Country implements Comparable<Country>, DropDownElement {
      * @return a list of the available countries
      */
     public static Set<Country> getAvailableCountries() {
-        if (availableCountries == null) {
-            availableCountries = new TreeSet<Country>();
-            initAvailableCountries();
-        }
         return availableCountries;
     }
 
     /**
-     * Loads countries from the <code>countries list </code>
+     * Used to initialize the {@link Country#availableCountries} static field.
+     *
+     * @return the list of country loaded from a country ressources file.
      */
-    private static void initAvailableCountries() {
+    private static Set<Country> createAvailableCountries() {
+        TreeSet<Country> countries = new TreeSet<Country>();
         try {
             Properties properties = PropertyLoader.loadProperties(COUNTRIES_PATH);
             for (Entry<?, ?> property : properties.entrySet()) {
                 String key = (String) property.getKey();
                 String value = (String) property.getValue();
-                availableCountries.add(new Country(value, key));
+                countries.add(new Country(value, key));
             }
         } catch (IOException e) {
             throw new FatalErrorException("File describing available countries is not available at " + COUNTRIES_PATH, e);
         }
+        return countries;
     }
 }
