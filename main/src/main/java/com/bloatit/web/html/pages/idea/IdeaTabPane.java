@@ -27,6 +27,13 @@ public final class IdeaTabPane extends HtmlPageComponent {
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
     private String activeTabKey;
 
+    /**
+     * Useful for Url generation
+     * Do not delete
+     */
+    @SuppressWarnings("unused")
+    private IdeaContributorsComponent contribution;
+
     public IdeaTabPane(final IdeaTabPaneUrl url, final Demand demand) {
         super();
         activeTabKey = url.getActiveTabKey();
