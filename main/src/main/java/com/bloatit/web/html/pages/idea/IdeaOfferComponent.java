@@ -11,6 +11,7 @@
 package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.framework.Batch;
 import com.bloatit.framework.Offer;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -55,8 +56,6 @@ public final class IdeaOfferComponent extends HtmlPageComponent {
                 + Context.getLocalizator().getDate(offer.getCreationDate()).toDateTimeString(FormatStyle.LONG, FormatStyle.MEDIUM),
                 "offer_creation_date");
 
-        final HtmlParagraph title = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_title");
-        final HtmlParagraph description = new HtmlParagraph(offer.getDescription().getDefaultTranslation().getTitle(), "offer_description");
 
         final HtmlDiv offerBlock = new HtmlDiv("offer_block");
         {
@@ -80,8 +79,12 @@ public final class IdeaOfferComponent extends HtmlPageComponent {
             }
 
             offerMainBlock.add(offerInfoBlock);
-            offerMainBlock.add(title);
-            offerMainBlock.add(description);
+            for (Batch batch : offer.getBatches()) {
+                final HtmlParagraph title = new HtmlParagraph(batch.getTitle(), "offer_title");
+                final HtmlParagraph description = new HtmlParagraph(batch.getDescription(), "offer_description");
+                offerMainBlock.add(title);
+                offerMainBlock.add(description);
+            }
 
         }
         return offerBlock;

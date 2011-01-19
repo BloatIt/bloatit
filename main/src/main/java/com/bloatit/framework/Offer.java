@@ -3,9 +3,8 @@ package com.bloatit.framework;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.right.OfferRight;
-import com.bloatit.framework.right.RightManager.Action;
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.lists.BatchList;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
 
@@ -20,7 +19,7 @@ public final class Offer extends Kudosable {
         return new Offer(dao);
     }
 
-    public Offer(final DaoOffer dao) {
+    private Offer(final DaoOffer dao) {
         super();
         this.dao = dao;
     }
@@ -30,33 +29,31 @@ public final class Offer extends Kudosable {
     }
 
     public Date getDateExpire() {
-        return dao.getDateExpire();
-    }
-
-    public boolean canSetdatExpire() {
-        return new OfferRight.DateExpire().canAccess(calculateRole(this), Action.WRITE);
-    }
-
-    public void setDateExpire(final Date dateExpire) throws UnauthorizedOperationException {
-        new OfferRight.DateExpire().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setDateExpire(dateExpire);
+        return dao.getExpirationDate();
     }
 
     public Demand getDemand() {
         return Demand.create(dao.getDemand());
     }
 
-    public Description getDescription() {
-        return new Description(dao.getDescription());
-    }
-
     public BigDecimal getAmount() {
         return dao.getAmount();
+    }
+
+    public PageIterable<Batch> getBatches() {
+        return new BatchList(dao.getBatches());
+    }
+
+    public void addBatch(Batch batch) {
+        dao.addBatch(batch.getDao());
+    }
+
+    public Date getExpirationDate() {
+        return dao.getExpirationDate();
     }
 
     @Override
     protected DaoKudosable getDaoKudosable() {
         return dao;
     }
-
 }

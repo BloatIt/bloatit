@@ -160,7 +160,7 @@ public final class Demand extends Kudosable {
     public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir)
             throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
-        return new Offer(dao.addOffer(getAuthToken().getMember().getDao(),
+        return Offer.create(dao.addOffer(getAuthToken().getMember().getDao(),
                                       amount,
                                       new Description(getAuthToken().getMember(), locale, title, text).getDao(),
                                       dateExpir));
@@ -268,7 +268,7 @@ public final class Demand extends Kudosable {
      */
     public Description getDescription() throws UnauthorizedOperationException {
         new DemandRight.Description().tryAccess(calculateRole(this), Action.READ);
-        return new Description(dao.getDescription());
+        return Description.create(dao.getDescription());
     }
 
     /**

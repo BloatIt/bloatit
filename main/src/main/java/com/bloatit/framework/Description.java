@@ -18,6 +18,13 @@ public final class Description extends Identifiable {
 
     private final DaoDescription dao;
 
+    static Description create(DaoDescription dao) {
+        if (dao != null){
+            return new Description(dao);
+        }
+        return null;
+    }
+
     /**
      * Create a Description. If you are looking for a way to create a new description see
      * {@link Demand#addOffer(java.math.BigDecimal, Locale, String, String, java.util.Date)}
@@ -35,7 +42,7 @@ public final class Description extends Identifiable {
     /**
      * Create a description using its dao representation.
      */
-    Description(final DaoDescription dao) {
+    private Description(final DaoDescription dao) {
         super();
         this.dao = dao;
     }
@@ -87,5 +94,4 @@ public final class Description extends Identifiable {
     public int getId() {
         return dao.getId();
     }
-
 }

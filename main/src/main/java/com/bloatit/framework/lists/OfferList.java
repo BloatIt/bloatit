@@ -29,7 +29,7 @@ public final class OfferList extends ListBinder<Offer, DaoOffer> {
 
         @Override
         protected Offer createFromDao(final DaoOffer dao) {
-            return new Offer(dao);
+            return Offer.create(dao);
         }
 
     }

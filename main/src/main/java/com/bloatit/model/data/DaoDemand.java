@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -37,10 +38,22 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
 public final class DaoDemand extends DaoKudosable {
 
     /**
+     * This is the state of the demand. It's used in the workflow modeling. The order is
+     * important !
+     */
+    public enum DemandState {
+        PENDING, PREPARING, DEVLOPPING, INCOME, DISCARDED, FINISHED
+    }
+
+    /**
      * This is a calculated value with the sum of the value of all contributions.
      */
     @Basic(optional = false)
     private BigDecimal contribution;
+
+    @Basic(optional = false)
+    @Enumerated
+    private DemandState demandState;
 
     /**
      * A description is a translatable text with an title.
@@ -72,10 +85,7 @@ public final class DaoDemand extends DaoKudosable {
     private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
-     * It is automatically in validated state (temporary)
-     * 
-     * @param member the author of the demand
-     * @param description
+     * @see #DaoDemand(DaoMember, DaoDescription)
      */
     public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -91,21 +101,55 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Create a DaoDemand and set it to the state validated.
-     * 
+     * @see #DaoDemand(DaoMember, DaoDescription, DaoOffer)
+     */
+    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description, final DaoOffer offer) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoDemand demand = new DaoDemand(member, description, offer);
+        try {
+            session.save(demand);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            session.beginTransaction();
+            throw e;
+        }
+        return demand;
+    }
+
+    /**
+     * Create a DaoDemand and set its state to the state PENDING.
+     *
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
      */
-    protected DaoDemand(final DaoMember member, final DaoDescription description) {
+    private DaoDemand(final DaoMember member, final DaoDescription description) {
         super(member);
         if (description == null) {
             throw new NonOptionalParameterException();
         }
-        setState(State.VALIDATED);
         this.description = description;
         this.specification = null;
         this.contribution = BigDecimal.ZERO;
+        this.setDemandState(DemandState.PENDING);
+    }
+
+    /**
+     * Create a DaoDemand, add an offer and set its state to the state
+     * {@link DemandState#PREPARING}.
+     *
+     * @param member is the author of the demand
+     * @param description is the description ...
+     * @param offer
+     * @throws NonOptionalParameterException if any of the parameter is null.
+     */
+    private DaoDemand(final DaoMember member, final DaoDescription description, final DaoOffer offer) {
+        this(member, description);
+        if (offer == null) {
+            throw new NonOptionalParameterException();
+        }
+        this.offers.add(offer);
+        this.setDemandState(DemandState.PREPARING);
     }
 
     /**
@@ -119,7 +163,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a specification.
-     * 
+     *
      * @param member author (must be non null).
      * @param content a string contain the specification (WARNING : UNTESTED)(must be non
      *        null).
@@ -130,7 +174,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a new offer for this demand.
-     * 
+     *
      * @param member the author of the offer
      * @param amount the amount that the author want to make the offer
      * @param description this is a description of the offer
@@ -145,7 +189,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     * 
+     *
      * @param Offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -155,7 +199,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     * 
+     *
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -192,7 +236,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      */
     public DaoOffer getCurrentOffer() {
@@ -223,6 +267,14 @@ public final class DaoDemand extends DaoKudosable {
 
     public Set<DaoOffer> getOffers() {
         return offers;
+    }
+
+    public void setDemandState(DemandState demandState) {
+        this.demandState = demandState;
+    }
+
+    public DemandState getDemandState() {
+        return demandState;
     }
 
     /**
