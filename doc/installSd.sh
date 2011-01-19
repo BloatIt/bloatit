@@ -10,27 +10,27 @@ apt-get install libnet-github-perl
 apt-get install libpath-class-perl
 echo "alias sd='git-sd'" >> ~/.bashrc
 
-cat << END > /etc/bash_completion.d/sd 
+cat << 'END' > /etc/bash_completion.d/sd 
 #!bash
 
 _sd_complete() 
 {
 	local cur prev opts
 	COMPREPLY=()
-	cur=""
-	prev=""
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
 	always="-v --verbose"
 
-	if [[  -eq 1 ]] ; then
+	if [[ $COMP_CWORD -eq 1 ]] ; then
 		opts="init clone setting ticket publish help push pull server"
-	elif [[  -eq 2 ]] ; then
-		case  in
+	elif [[ $COMP_CWORD -eq 2 ]] ; then
+		case $prev in
 			"ticket" )
 			opts="create update list edit search basics show history delete take give resolved comment attachment"
 		;;
 	esac
 	fi
-	COMPREPLY=(  )
+	COMPREPLY=( $(compgen -W "${opts} ${always}" -- ${cur}) )
 }
 complete -F _sd_complete sd
 END
