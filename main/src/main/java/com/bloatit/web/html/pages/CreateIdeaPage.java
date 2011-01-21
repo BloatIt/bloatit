@@ -12,7 +12,7 @@ package com.bloatit.web.html.pages;
 
 import java.util.Map.Entry;
 
-import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.demand.DemandManager;
 import com.bloatit.web.actions.CreateIdeaAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;

@@ -12,8 +12,8 @@ package com.bloatit.web.actions;
 
 import java.util.Locale;
 
-import com.bloatit.framework.Demand;
-import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.demand.Demand;
+import com.bloatit.framework.demand.DemandManager;
 import com.bloatit.web.annotations.ParamConstraint;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;

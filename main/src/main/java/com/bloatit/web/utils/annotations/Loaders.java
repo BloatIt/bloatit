@@ -7,12 +7,12 @@ import java.util.Date;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.framework.Comment;
-import com.bloatit.framework.Demand;
 import com.bloatit.framework.Identifiable;
 import com.bloatit.framework.Kudosable;
 import com.bloatit.framework.Member;
+import com.bloatit.framework.demand.Demand;
+import com.bloatit.framework.demand.DemandManager;
 import com.bloatit.framework.managers.CommentManager;
-import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.managers.KudosableManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.Loader;

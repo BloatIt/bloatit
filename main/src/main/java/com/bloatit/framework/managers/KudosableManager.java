@@ -11,10 +11,10 @@
 package com.bloatit.framework.managers;
 
 import com.bloatit.framework.Comment;
-import com.bloatit.framework.Demand;
 import com.bloatit.framework.Kudosable;
 import com.bloatit.framework.Offer;
 import com.bloatit.framework.Translation;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.model.data.DBRequests;
 import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoDemand;

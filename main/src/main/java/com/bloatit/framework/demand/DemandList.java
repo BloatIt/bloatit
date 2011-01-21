@@ -1,9 +1,9 @@
-package com.bloatit.framework.lists;
+package com.bloatit.framework.demand;
 
 import java.util.Iterator;
 
 import com.bloatit.common.PageIterable;
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.lists.ListBinder;
 import com.bloatit.model.data.DaoDemand;
 
 public final class DemandList extends ListBinder<Demand, DaoDemand> {

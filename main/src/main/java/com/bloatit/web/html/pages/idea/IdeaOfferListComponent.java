@@ -12,8 +12,8 @@ package com.bloatit.web.html.pages.idea;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.Demand;
 import com.bloatit.framework.Offer;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.model.data.NullCollection;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 
@@ -30,7 +30,7 @@ public class IdeaOfferListComponent extends HtmlDiv {
         final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
         try {
-            final Offer currentOffer = demand.getCurrentOffer();
+            final Offer currentOffer = demand.getSelectedOffer();
             offersBlock.add(new IdeaOfferComponent(currentOffer, true));
             for (final Offer offer : offers) {
                 if (!offer.equals(currentOffer)) {

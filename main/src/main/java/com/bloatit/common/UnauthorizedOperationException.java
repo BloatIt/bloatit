@@ -29,7 +29,12 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You try to accept/refuse an invitation, but you are not the receiver.
          */
-        INVITATION_RECIEVER_MISMATCH
+        INVITATION_RECIEVER_MISMATCH,
+
+        /**
+         * You try to delete a demand, but you are not the current developer.
+         */
+        NON_DEVELOPER_CANCEL_DEMAND
     }
 
     private final EnumSet<Role> roles;

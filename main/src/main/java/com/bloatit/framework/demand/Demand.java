@@ -1,4 +1,4 @@
-package com.bloatit.framework;
+package com.bloatit.framework.demand;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -6,11 +6,18 @@ import java.util.Locale;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.common.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.common.WrongDemandStateException;
+import com.bloatit.framework.AuthToken;
+import com.bloatit.framework.Comment;
+import com.bloatit.framework.Contribution;
+import com.bloatit.framework.Description;
+import com.bloatit.framework.Kudosable;
+import com.bloatit.framework.Member;
+import com.bloatit.framework.Offer;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.framework.lists.ContributionList;
 import com.bloatit.framework.lists.OfferList;
-import com.bloatit.framework.managers.DemandManager;
 import com.bloatit.framework.right.DemandRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoComment;
@@ -27,6 +34,11 @@ import com.bloatit.model.exceptions.NotEnoughMoneyException;
  */
 public final class Demand extends Kudosable {
     private final DaoDemand dao;
+    private AbstractDemandState stateObject;
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Create a new Demand. This method is not protected by any right management.
@@ -49,7 +61,7 @@ public final class Demand extends Kudosable {
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
     public Demand(final Member author, final Locale locale, final String title, final String description) {
-        dao = DaoDemand.createAndPersist(author.getDao(), DaoDescription.createAndPersist(author.getDao(), locale, title, description));
+        this(DaoDemand.createAndPersist(author.getDao(), DaoDescription.createAndPersist(author.getDao(), locale, title, description)));
     }
 
     /**
@@ -58,7 +70,34 @@ public final class Demand extends Kudosable {
     private Demand(final DaoDemand dao) {
         super();
         this.dao = dao;
+        switch (dao.getDemandState()) {
+        case PENDING:
+            stateObject = new PendingState(this);
+            break;
+        case DEVELOPPING:
+            stateObject = new DeveloppingState(this);
+            break;
+        case DISCARDED:
+            stateObject = new DiscardedState(this);
+            break;
+        case FINISHED:
+            stateObject = new FinishedState(this);
+            break;
+        case INCOME:
+            stateObject = new IncomeState(this);
+            break;
+        case PREPARING:
+            stateObject = new PreparingState(this);
+            break;
+        default:
+            assert false;
+            break;
+        }
     }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Can something
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @param action is the type of action you can do on the property. (READ for the
@@ -115,18 +154,9 @@ public final class Demand extends Kudosable {
         return new DemandRight.Specification().canAccess(calculateRole(this), Action.READ);
     }
 
-    /**
-     * Add a comment at the end of the comment list.
-     *
-     * @param text is the text of the comment.
-     * @throws UnauthorizedOperationException if you do not have the {@link Action#WRITE}
-     *         right on the <code>Comment</code> property.
-     * @see #authenticate(AuthToken)
-     */
-    public void addComment(final String text) throws UnauthorizedOperationException {
-        new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
-        dao.addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
-    }
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Do things.
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Add a contribution on this demand.
@@ -141,6 +171,7 @@ public final class Demand extends Kudosable {
      */
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
+        stateObject = stateObject.addContribution(amount, Offer.create(dao.getSelectedOffer()));
         dao.addContribution(getAuthToken().getMember().getDao(), amount, comment);
     }
 
@@ -148,7 +179,8 @@ public final class Demand extends Kudosable {
      * Add a new Offer on this Demand. You can do this operation when you are in the
      * {@link DemandState#PENDING} or {@link DemandState#PREPARING} DemandState. When you
      * add the first Offer, the state pass from {@link DemandState#PENDING} to
-     * {@link DemandState#PREPARING}; and this offer is selected (see {@link DaoDemand#setSelectedOffer(DaoOffer)}).
+     * {@link DemandState#PREPARING}; and this offer is selected (see
+     * {@link DaoDemand#setSelectedOffer(DaoOffer)}).
      *
      * @param amount must be positive (can be ZERO) non null.
      * @param locale must be non null. Is the locale in which the title and the text are
@@ -167,31 +199,83 @@ public final class Demand extends Kudosable {
     public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir)
             throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
-        if (dao.getDemandState() != DemandState.PENDING && dao.getDemandState() != DemandState.PREPARING) {
-            throw new WrongDemandStateException();
-        }
-        Offer offer = Offer.create(dao.addOffer(getAuthToken().getMember().getDao(),
-                                         amount,
-                                         new Description(getAuthToken().getMember(), locale, title, text).getDao(),
-                                         dateExpir));
-        if (dao.getDemandState() == DemandState.PENDING) {
-            dao.setSelectedOffer(offer.getDao());
-            setPreparing();
-        }
+        Offer offer = Offer.create(dao.addOffer(getAuthToken().getMember().getDao(), amount, new Description(getAuthToken().getMember(), locale,
+                title, text).getDao(), dateExpir));
+        stateObject = stateObject.addOffer(offer);
         return offer;
     }
 
     /**
-     * Create a new Specification on this demand.
+     * For now only the admin can delete an offer.
      *
+     * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#WRITE} right on the <code>Specification</code> property.
+     *         <code>DELETE</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)
      */
-    public void createSpecification(final String content) throws UnauthorizedOperationException {
-        new DemandRight.Specification().tryAccess(calculateRole(this), Action.WRITE);
-        dao.createSpecification(getAuthToken().getMember().getDao(), content);
+    public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
+        new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
+        if (dao.getSelectedOffer().getId() == offer.getId()) {
+            dao.computeSelectedOffer();
+        }
+        stateObject = stateObject.removeOffer(offer);
+        dao.removeOffer(offer.getDao());
     }
+
+    /**
+     * Works only in development state.
+     * @throws UnauthorizedOperationException If this is not the current developer thats try to cancel the dev.
+     */
+    public void CancelDevelopment() throws UnauthorizedOperationException {
+        if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
+            throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_DEMAND);
+        }
+        stateObject = stateObject.developerCanceled();
+    }
+
+    public void setSelectedOfferTimeOut(){
+        stateObject = stateObject.selectedOfferTimeOut(dao.getContribution(), Offer.create(dao.getSelectedOffer()));
+    }
+
+    @Override
+    protected void notifyValid() {
+        if (stateObject.getState() == DemandState.DISCARDED) {
+            stateObject = stateObject.popularityPending();
+        }
+    }
+
+    @Override
+    protected void notifyPending() {
+        if (stateObject.getState() == DemandState.DISCARDED) {
+            stateObject = stateObject.popularityPending();
+        }
+    }
+
+    @Override
+    protected void notifyRejected() {
+        stateObject = stateObject.popularityTooLow();
+    }
+
+    void setSelectedOffer(Offer offer) {
+        this.dao.setSelectedOffer(offer.getDao());
+    }
+
+    /**
+     * Add a comment at the end of the comment list.
+     *
+     * @param text is the text of the comment.
+     * @throws UnauthorizedOperationException if you do not have the {@link Action#WRITE}
+     *         right on the <code>Comment</code> property.
+     * @see #authenticate(AuthToken)
+     */
+    public void addComment(final String text) throws UnauthorizedOperationException {
+        new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
+        dao.addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Get something
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @return the first level comments on this demand.
@@ -235,7 +319,7 @@ public final class Demand extends Kudosable {
         if (dao.getOffers().isEmpty()) {
             return PROGRESSION_COEF * (1 - 1 / (1 + dao.getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
         }
-        final DaoOffer currentOffer = dao.getCurrentOffer();
+        final DaoOffer currentOffer = dao.getSelectedOffer();
         if (currentOffer.getAmount().floatValue() != 0) {
             return (dao.getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();
         }
@@ -305,20 +389,9 @@ public final class Demand extends Kudosable {
      *         <code>READ</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)
      */
-    public Offer getCurrentOffer() throws UnauthorizedOperationException {
+    public Offer getSelectedOffer() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
-        return Offer.create(dao.getCurrentOffer());
-    }
-
-    /**
-     * @return the specification.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         <code>READ</code> right on the <code>Specification</code> property.
-     * @see #authenticate(AuthToken)
-     */
-    public Specification getSpecification() throws UnauthorizedOperationException {
-        new DemandRight.Specification().tryAccess(calculateRole(this), Action.READ);
-        return new Specification(dao.getSpecification());
+        return Offer.create(dao.getSelectedOffer());
     }
 
     /**
@@ -329,51 +402,6 @@ public final class Demand extends Kudosable {
      */
     public String getTitle() throws UnauthorizedOperationException {
         return getDescription().getDefaultTranslation().getTitle();
-    }
-
-    /**
-     * For now only the admin can delete an offer.
-     *
-     * @param offer is the offer to delete.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         <code>DELETE</code> right on the <code>Offer</code> property.
-     * @see #authenticate(AuthToken)
-     */
-    public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
-        new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
-        dao.removeOffer(offer.getDao());
-    }
-
-    /**
-     * Set to preparing mode.
-     */
-    void setPreparing() {
-        if (dao.getDemandState() == DemandState.PENDING) {
-            dao.setDemandState(DemandState.PREPARING);
-        }
-        assert false;
-    }
-
-    void setDeveloping() {
-        if (dao.getDemandState() == DemandState.PREPARING) {
-            dao.setDemandState(DemandState.DEVELOPPING);
-        }
-        assert false;
-    }
-
-    void setIncome() {
-        if (dao.getDemandState() == DemandState.DEVELOPPING) {
-            dao.setDemandState(DemandState.INCOME);
-        }
-        assert false;
-    }
-
-    void setDiscarded() {
-        dao.setDemandState(DemandState.DISCARDED);
-    }
-
-    void setFinished() {
-        dao.setDemandState(DemandState.FINISHED);
     }
 
     /**

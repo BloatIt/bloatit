@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;

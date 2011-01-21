@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -251,23 +250,11 @@ public final class DaoDemand extends DaoKudosable {
      *
      * @return the current offer for this demand, or null if there is no offer.
      */
-    @Deprecated
-    public DaoOffer getCurrentOffer() {
-        // First try to find a validated offer.
-        final String validatedQueriStr = "FROM DaoOffer " + //
-                "WHERE demand = :this AND state = :state " + //
-                "ORDER BY amount ASC, creationDate DESC ";
-
-        final Query validateQuery = SessionManager.createQuery(validatedQueriStr).setEntity("this", this)
-                .setParameter("state", DaoKudosable.State.VALIDATED);
-        if (validateQuery.iterate().hasNext()) {
-            return (DaoOffer) validateQuery.iterate().next();
-        }
-
+    private DaoOffer getCurrentOffer() {
         // If there is no validated offer then we try to find a pending offer
         final String queryString = "FROM DaoOffer " + //
                 "WHERE demand = :this " + //
-                "AND state = :state " + //
+                "AND state <= :state " + // <= pending means also validated.
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
@@ -337,6 +324,10 @@ public final class DaoDemand extends DaoKudosable {
                 .setEntity("this", this).uniqueResult();
     }
 
+    public void computeSelectedOffer() {
+        selectedOffer = getCurrentOffer();
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -344,5 +335,6 @@ public final class DaoDemand extends DaoKudosable {
     protected DaoDemand() {
         super();
     }
+
 
 }

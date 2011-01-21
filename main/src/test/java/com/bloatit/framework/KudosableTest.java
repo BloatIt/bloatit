@@ -1,7 +1,8 @@
 package com.bloatit.framework;
 
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.demand.Demand;
+import com.bloatit.framework.demand.DemandManager;
 
 public class KudosableTest extends FrameworkTestUnit {
 

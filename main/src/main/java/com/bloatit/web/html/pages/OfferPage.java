@@ -12,7 +12,7 @@ package com.bloatit.web.html.pages;
 
 import java.math.BigDecimal;
 
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;

@@ -13,7 +13,7 @@ package com.bloatit.web.html.pages;
 
 import static com.bloatit.web.server.Context.tr;
 
-import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.demand.DemandManager;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;

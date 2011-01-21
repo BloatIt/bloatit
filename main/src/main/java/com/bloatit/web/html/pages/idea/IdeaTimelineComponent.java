@@ -10,7 +10,7 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;

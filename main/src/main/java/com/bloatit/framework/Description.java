@@ -3,6 +3,7 @@ package com.bloatit.framework;
 import java.util.Locale;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.lists.TranslationList;
 import com.bloatit.model.data.DaoDescription;
 
@@ -18,7 +19,7 @@ public final class Description extends Identifiable {
 
     private final DaoDescription dao;
 
-    static Description create(DaoDescription dao) {
+    public static Description create(DaoDescription dao) {
         if (dao != null){
             return new Description(dao);
         }
@@ -34,7 +35,7 @@ public final class Description extends Identifiable {
      * @param title is the title of the description
      * @param description is the main text of the description (the actual description)
      */
-    Description(final Member member, final Locale locale, final String title, final String description) {
+    public Description(final Member member, final Locale locale, final String title, final String description) {
         super();
         this.dao = DaoDescription.createAndPersist(member.getDao(), locale, title, description);
     }
@@ -50,7 +51,7 @@ public final class Description extends Identifiable {
     /**
      * @return the dao representation of this description.
      */
-    DaoDescription getDao() {
+    public DaoDescription getDao() {
         return dao;
     }
 

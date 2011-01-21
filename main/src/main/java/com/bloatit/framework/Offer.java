@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.lists.BatchList;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;

@@ -38,23 +38,35 @@ public final class DispatchServer {
         final Session session = findSession(header);
 
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
-
-        Context.reInitializeContext(header, session);
-
-        final String pageCode = header.getQueryString().getPageName();
-
-        // Merge post and get parameters.
-        final Parameters parameters = new Parameters();
-        parameters.putAll(header.getQueryString().getParameters());
-        parameters.putAll(header.getQueryString().getGetParameters());
-        parameters.putAll(post.getParameters());
-
         try {
-            final Linkable linkable = constructLinkable(pageCode, parameters, session);
-            linkable.writeToHttp(response);
-        } catch (final RedirectException e) {
-            Log.web().info("Redirect to " + e.getUrl(), e);
-            response.writeRedirect(e.getUrl().urlString());
+            com.bloatit.framework.Lock.doLock();
+
+            Context.reInitializeContext(header, session);
+
+            final String pageCode = header.getQueryString().getPageName();
+
+            // Merge post and get parameters.
+            final Parameters parameters = new Parameters();
+            parameters.putAll(header.getQueryString().getParameters());
+            parameters.putAll(header.getQueryString().getGetParameters());
+            parameters.putAll(post.getParameters());
+
+            try {
+                final Linkable linkable = constructLinkable(pageCode, parameters, session);
+                linkable.writeToHttp(response);
+            } catch (final RedirectException e) {
+                Log.web().info("Redirect to " + e.getUrl(), e);
+                response.writeRedirect(e.getUrl().urlString());
+            }
+
+        } catch (IOException ex) {
+            throw ex;
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (InterruptedException ex) {
+            Log.web().fatal("Cannot lock the framework.", ex);
+        } finally {
+            com.bloatit.framework.Lock.doUnLock();
         }
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
     }
@@ -87,7 +99,7 @@ public final class DispatchServer {
 
     /**
      * Return the session for the user. Either an existing session or a new session.
-     * 
+     *
      * @param header
      * @return the session matching the user
      */

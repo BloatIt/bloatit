@@ -15,7 +15,7 @@ import static com.bloatit.web.server.Context.tr;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Contribution;
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;

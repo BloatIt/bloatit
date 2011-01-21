@@ -17,9 +17,9 @@ import java.util.Locale;
 
 import com.bloatit.common.Image;
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.Demand;
 import com.bloatit.framework.Offer;
 import com.bloatit.framework.Translation;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.html.components.custom.HtmlKudoBlock;
 import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
@@ -86,7 +86,7 @@ public final class IdeaHeadComponent extends HtmlPageComponent {
 
                 Offer currentOffer = null;
                 try {
-                    currentOffer = idea.getCurrentOffer();
+                    currentOffer = idea.getSelectedOffer();
                 } catch (final UnauthorizedOperationException e1) {
                     // Nothing.
                 }
