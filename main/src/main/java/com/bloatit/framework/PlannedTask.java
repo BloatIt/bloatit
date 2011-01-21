@@ -54,8 +54,13 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
         PlannedTask.timer.schedule(this, time);
     }
 
-    public static void updatePlanedTask(Class<? extends PlannedTask> clazz, int id, Date time){
-        tasks.get(new Id(id, clazz)).schedule(time);
+    public static boolean updatePlanedTask(Class<? extends PlannedTask> clazz, int id, Date time){
+        PlannedTask plannedTask = tasks.get(new Id(id, clazz));
+        if (plannedTask != null){
+            plannedTask.schedule(time);
+            return true;
+        }
+        return false;
     }
 
     @Override

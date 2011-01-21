@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
+import com.bloatit.common.DateUtils;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.common.UnauthorizedOperationException.SpecialCode;
@@ -15,6 +16,7 @@ import com.bloatit.framework.Description;
 import com.bloatit.framework.Kudosable;
 import com.bloatit.framework.Member;
 import com.bloatit.framework.Offer;
+import com.bloatit.framework.PlannedTask;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.framework.lists.ContributionList;
 import com.bloatit.framework.lists.OfferList;
@@ -257,6 +259,9 @@ public final class Demand extends Kudosable {
     }
 
     void setSelectedOffer(Offer offer) {
+        if(!PlannedTask.updatePlanedTask(TaskSelectedOfferTimeOut.class, getId(), DateUtils.tomorrow())){
+            new TaskSelectedOfferTimeOut(this, DateUtils.tomorrow());
+        }
         this.dao.setSelectedOffer(offer.getDao());
     }
 

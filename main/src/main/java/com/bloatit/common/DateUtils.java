@@ -5,11 +5,11 @@ import java.util.Date;
 
 public class DateUtils {
 
-    static Date tomorrow() {
+    public static Date tomorrow() {
         return nowPlusSomeDays(1);
     }
 
-    static Date nowPlusSomeSeconds(int seconds) {
+    public static Date nowPlusSomeSeconds(int seconds) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.SECOND, seconds);
         return calendar.getTime();
@@ -18,19 +18,19 @@ public class DateUtils {
     /**
      * Return the date in <code>n</code> days. for example tomorrow = nowPlusSomeDays(1).
      */
-    static Date nowPlusSomeDays(int n) {
+    public static Date nowPlusSomeDays(int n) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, n);
         return calendar.getTime();
     }
 
-    static Date nowPlusSomeMonth(int month) {
+    public static Date nowPlusSomeMonth(int month) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, month);
         return calendar.getTime();
     }
 
-    static Date nowPlusSomeYears(int years) {
+    public static Date nowPlusSomeYears(int years) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, years);
         return calendar.getTime();
