@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.common.WrongDemandStateException;
 import com.bloatit.framework.lists.CommentList;
 import com.bloatit.framework.lists.ContributionList;
 import com.bloatit.framework.lists.OfferList;
@@ -14,6 +15,7 @@ import com.bloatit.framework.right.DemandRight;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoDemand;
+import com.bloatit.model.data.DaoDemand.DemandState;
 import com.bloatit.model.data.DaoDescription;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
@@ -143,7 +145,10 @@ public final class Demand extends Kudosable {
     }
 
     /**
-     * Add a new Offer on this Demand.
+     * Add a new Offer on this Demand. You can do this operation when you are in the
+     * {@link DemandState#PENDING} or {@link DemandState#PREPARING} DemandState. When you
+     * add the first Offer, the state pass from {@link DemandState#PENDING} to
+     * {@link DemandState#PREPARING}; and this offer is selected (see {@link DaoDemand#setSelectedOffer(DaoOffer)}).
      *
      * @param amount must be positive (can be ZERO) non null.
      * @param locale must be non null. Is the locale in which the title and the text are
@@ -155,15 +160,25 @@ public final class Demand extends Kudosable {
      * @return the newly created offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#WRITE} right on the <code>Offer</code> property.
+     * @throws WrongDemandStateException if the state is != from
+     *         {@link DemandState#PENDING} or {@link DemandState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
     public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir)
             throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
-        return Offer.create(dao.addOffer(getAuthToken().getMember().getDao(),
-                                      amount,
-                                      new Description(getAuthToken().getMember(), locale, title, text).getDao(),
-                                      dateExpir));
+        if (dao.getDemandState() != DemandState.PENDING && dao.getDemandState() != DemandState.PREPARING) {
+            throw new WrongDemandStateException();
+        }
+        Offer offer = Offer.create(dao.addOffer(getAuthToken().getMember().getDao(),
+                                         amount,
+                                         new Description(getAuthToken().getMember(), locale, title, text).getDao(),
+                                         dateExpir));
+        if (dao.getDemandState() == DemandState.PENDING) {
+            dao.setSelectedOffer(offer.getDao());
+            setPreparing();
+        }
+        return offer;
     }
 
     /**
@@ -327,6 +342,38 @@ public final class Demand extends Kudosable {
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
         dao.removeOffer(offer.getDao());
+    }
+
+    /**
+     * Set to preparing mode.
+     */
+    void setPreparing() {
+        if (dao.getDemandState() == DemandState.PENDING) {
+            dao.setDemandState(DemandState.PREPARING);
+        }
+        assert false;
+    }
+
+    void setDeveloping() {
+        if (dao.getDemandState() == DemandState.PREPARING) {
+            dao.setDemandState(DemandState.DEVELOPPING);
+        }
+        assert false;
+    }
+
+    void setIncome() {
+        if (dao.getDemandState() == DemandState.DEVELOPPING) {
+            dao.setDemandState(DemandState.INCOME);
+        }
+        assert false;
+    }
+
+    void setDiscarded() {
+        dao.setDemandState(DemandState.DISCARDED);
+    }
+
+    void setFinished() {
+        dao.setDemandState(DemandState.FINISHED);
     }
 
     /**

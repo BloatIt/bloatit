@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -42,7 +43,7 @@ public final class DaoDemand extends DaoKudosable {
      * important !
      */
     public enum DemandState {
-        PENDING, PREPARING, DEVLOPPING, INCOME, DISCARDED, FINISHED
+        PENDING, PREPARING, DEVELOPPING, INCOME, DISCARDED, FINISHED
     }
 
     /**
@@ -83,6 +84,16 @@ public final class DaoDemand extends DaoKudosable {
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
     private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
+
+    /**
+     * The selected offer is the offer that is most likely to be validated and used. If an
+     * offer is selected and has enough money and has a elapse time done then this offer
+     * go into dev.
+     */
+    @ManyToOne(optional = true)
+    @Cascade(value = { CascadeType.ALL })
+    @IndexedEmbedded
+    private DaoOffer selectedOffer;
 
     /**
      * @see #DaoDemand(DaoMember, DaoDescription)
@@ -130,6 +141,7 @@ public final class DaoDemand extends DaoKudosable {
         }
         this.description = description;
         this.specification = null;
+        this.setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
         this.setDemandState(DemandState.PENDING);
     }
@@ -239,6 +251,7 @@ public final class DaoDemand extends DaoKudosable {
      *
      * @return the current offer for this demand, or null if there is no offer.
      */
+    @Deprecated
     public DaoOffer getCurrentOffer() {
         // First try to find a validated offer.
         final String validatedQueriStr = "FROM DaoOffer " + //
@@ -292,6 +305,14 @@ public final class DaoDemand extends DaoKudosable {
                 .getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
     }
 
+    public DaoOffer getSelectedOffer() {
+        return selectedOffer;
+    }
+
+    public void setSelectedOffer(DaoOffer selectedOffer) {
+        this.selectedOffer = selectedOffer;
+    }
+
     public void addComment(final DaoComment comment) {
         comments.add(comment);
     }
@@ -323,4 +344,5 @@ public final class DaoDemand extends DaoKudosable {
     protected DaoDemand() {
         super();
     }
+
 }
