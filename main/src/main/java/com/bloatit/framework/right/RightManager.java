@@ -12,7 +12,7 @@ import com.bloatit.framework.Unlockable;
  * are really small classes. To store them correctly I use classes has namespace. For
  * example the {@link MemberRight} class is used to store every Accessor for the Member
  * class.
- *
+ * 
  * @see Accessor
  */
 public abstract class RightManager {
@@ -26,7 +26,7 @@ public abstract class RightManager {
      * roles, from the less privileged to the more. You can calculate the role of a user
      * using the {@link Unlockable} object (and calculateRole.) For now some of the roles
      * are not used.
-     *
+     * 
      * @see Unlockable
      */
     public enum Role {

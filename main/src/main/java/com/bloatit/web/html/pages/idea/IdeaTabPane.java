@@ -28,8 +28,7 @@ public final class IdeaTabPane extends HtmlPageComponent {
     private String activeTabKey;
 
     /**
-     * Useful for Url generation
-     * Do not delete
+     * Useful for Url generation Do not delete
      */
     @SuppressWarnings("unused")
     private IdeaContributorsComponent contribution;

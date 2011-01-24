@@ -101,11 +101,11 @@ public final class SessionManager {
         } catch (final IOException e) {
             Log.server().error("Failed to save sessions.", e);
         } finally {
-            if(fileOutputStream != null) {
+            if (fileOutputStream != null) {
                 try {
 
                     fileOutputStream.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     Log.server().error("Failed to close the file after an other exception.");
                     Log.server().error(e);
                     e.printStackTrace();
@@ -156,10 +156,10 @@ public final class SessionManager {
             }
 
         } catch (final IOException e) {
-            if(br != null) {
+            if (br != null) {
                 try {
                     br.close();
-                } catch (IOException e1) {
+                } catch (final IOException e1) {
                     Log.server().error(e1);
                 }
             }

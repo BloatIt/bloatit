@@ -44,7 +44,7 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
      * <p>
      * Do not use this method twice
      * </p>
-     *
+     * 
      * @param value the index of the element, 0 being the first element inserted with
      *        addText
      */
@@ -53,13 +53,13 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
         components.get(value).addAttribute("selected", "selected");
     }
 
-    public HtmlElement add(T elem) {
+    public HtmlElement add(final T elem) {
         final HtmlGenericElement opt = new HtmlGenericElement("option");
         opt.addText(elem.getName());
         opt.addAttribute("value", elem.getCode());
-        ((HtmlBranch)element).add(opt);
+        ((HtmlBranch) element).add(opt);
 
-        components.put(elem, ((HtmlBranch)element));
+        components.put(elem, ((HtmlBranch) element));
         return this;
     }
 }

@@ -16,16 +16,20 @@ public abstract class Identifiable extends Unlockable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        Identifiable other = (Identifiable) obj;
-        if (getId() != other.getId())
+        }
+        final Identifiable other = (Identifiable) obj;
+        if (getId() != other.getId()) {
             return false;
+        }
         return true;
     }
 

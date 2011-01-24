@@ -1,14 +1,13 @@
 package com.bloatit.framework.demand;
 
-
 public class IncomeState extends AbstractDemandState {
-    public IncomeState(Demand demand) {
+    public IncomeState(final Demand demand) {
         super(demand);
         demand.inIncomeState();
     }
 
     @Override
-    public AbstractDemandState closeIncome(boolean accepted) {
+    public AbstractDemandState closeIncome(final boolean accepted) {
         if (accepted) {
             return new FinishedState(demand);
         }

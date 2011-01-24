@@ -41,7 +41,7 @@ public final class Offer extends Kudosable {
         return new BatchList(dao.getBatches());
     }
 
-    public void addBatch(Batch batch) {
+    public void addBatch(final Batch batch) {
         dao.addBatch(batch.getDao());
     }
 

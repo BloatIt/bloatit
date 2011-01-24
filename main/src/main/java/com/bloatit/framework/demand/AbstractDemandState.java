@@ -2,18 +2,15 @@ package com.bloatit.framework.demand;
 
 import java.math.BigDecimal;
 
-import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.common.WrongDemandStateException;
-import com.bloatit.framework.Member;
 import com.bloatit.framework.Offer;
 import com.bloatit.model.data.DaoDemand.DemandState;
-import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 abstract class AbstractDemandState {
 
     protected final Demand demand;
 
-    public AbstractDemandState(Demand demand) {
+    public AbstractDemandState(final Demand demand) {
         this.demand = demand;
     }
 
@@ -21,22 +18,22 @@ abstract class AbstractDemandState {
         return demand.getDao().getDemandState();
     }
 
-    public AbstractDemandState eventAddOffer(Offer offer) {
+    public AbstractDemandState eventAddOffer(final Offer offer) {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState eventRemoveOffer(Offer offer) {
+    public AbstractDemandState eventRemoveOffer(final Offer offer) {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState eventAddContribution(final Member member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
+    public AbstractDemandState eventAddContribution() {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState eventSelectedOfferTimeOut(BigDecimal contribution) {
+    public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
@@ -61,7 +58,7 @@ abstract class AbstractDemandState {
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState closeIncome(boolean accepted) {
+    public AbstractDemandState closeIncome(final boolean accepted) {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }

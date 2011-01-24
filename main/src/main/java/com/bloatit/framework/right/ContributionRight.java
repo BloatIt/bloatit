@@ -1,6 +1,5 @@
 package com.bloatit.framework.right;
 
-
 public class ContributionRight extends RightManager {
 
     public static class Transaction extends PrivateReadOnly {
@@ -14,6 +13,5 @@ public class ContributionRight extends RightManager {
     public static class Comment extends PublicReadOnly {
         // nothing this is just a rename.
     }
-
 
 }

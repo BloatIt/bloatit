@@ -63,7 +63,6 @@ public final class SCGIServer {
         }
     }
 
-
     private ServerSocket providerSocket;
     private Socket clientSocket;
     private final DispatchServer dispatchServer;

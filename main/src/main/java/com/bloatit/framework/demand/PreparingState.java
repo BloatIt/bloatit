@@ -5,19 +5,19 @@ import java.math.BigDecimal;
 import com.bloatit.framework.Offer;
 
 public class PreparingState extends CanContributeMetaState {
-    public PreparingState(Demand demand) {
+    public PreparingState(final Demand demand) {
         super(demand);
         demand.inPreparingState();
     }
 
     @Override
-    public AbstractDemandState eventAddOffer(Offer offer) {
+    public AbstractDemandState eventAddOffer(final Offer offer) {
         demand.setSelectedOffer(offer);
         return this;
     }
 
     @Override
-    public AbstractDemandState eventRemoveOffer(Offer offer) {
+    public AbstractDemandState eventRemoveOffer(final Offer offer) {
         if (demand.getDao().getOffers().size() > 0) {
             return this;
         }
@@ -25,7 +25,7 @@ public class PreparingState extends CanContributeMetaState {
     }
 
     @Override
-    public AbstractDemandState eventSelectedOfferTimeOut(BigDecimal contribution) {
+    public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
         return handleEvent();
     }
 

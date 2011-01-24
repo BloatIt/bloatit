@@ -14,7 +14,7 @@ import com.bloatit.model.data.DaoInternalAccount;
  * amount under zero. An internal account can have some money blocked. When you contribute
  * on an idea, you do not spend the money directly, but it is blocked and you cannot use
  * it elsewhere.
- *
+ * 
  * @author tguyard
  */
 public final class InternalAccount extends Account {
@@ -40,7 +40,7 @@ public final class InternalAccount extends Account {
 
     /**
      * Return the amount blocked into contribution on non finished idea.
-     *
+     * 
      * @return a positive {@link BigDecimal}.
      * @throws UnauthorizedOperationException if you do not have the right to access the
      *         <code>Bloked</code> property.

@@ -9,14 +9,14 @@ public class Batch extends Identifiable {
 
     private final DaoBatch dao;
 
-    public static Batch create(DaoBatch dao) {
+    public static Batch create(final DaoBatch dao) {
         if (dao != null) {
             return new Batch(dao);
         }
         return null;
     }
 
-    private Batch(DaoBatch dao) {
+    private Batch(final DaoBatch dao) {
         this.dao = dao;
     }
 

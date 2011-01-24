@@ -8,15 +8,15 @@ public class WrongDemandStateException extends RuntimeException {
         super();
     }
 
-    public WrongDemandStateException(String message, Throwable cause) {
+    public WrongDemandStateException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public WrongDemandStateException(String message) {
+    public WrongDemandStateException(final String message) {
         super(message);
     }
 
-    public WrongDemandStateException(Throwable cause) {
+    public WrongDemandStateException(final Throwable cause) {
         super(cause);
     }
 

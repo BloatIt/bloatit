@@ -1,8 +1,7 @@
 package com.bloatit.framework.demand;
 
-
 public class DeveloppingState extends AbstractDemandState {
-    public DeveloppingState(Demand demand) {
+    public DeveloppingState(final Demand demand) {
         super(demand);
         demand.inDevelopmentState();
     }

@@ -9,6 +9,7 @@
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.html.pages;
+
 import static com.bloatit.web.server.Context.tr;
 
 import com.bloatit.web.annotations.ParamContainer;

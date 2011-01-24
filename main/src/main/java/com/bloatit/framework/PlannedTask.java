@@ -20,7 +20,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
         @SuppressWarnings("unused")
         private final Class<? extends PlannedTask> clazz;
 
-        public Id(int id, Class<? extends PlannedTask> clazz) {
+        public Id(final int id, final Class<? extends PlannedTask> clazz) {
             this.id = id;
             this.clazz = clazz;
         }
@@ -30,15 +30,14 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     private static Map<Id, PlannedTask> tasks = new HashMap<Id, PlannedTask>();
 
     private static final Timer timer = new Timer();
-    private Date runDate;
 
     /**
      * An id = 1 planed task.
-     *
+     * 
      * @param time
      * @param id
      */
-    public PlannedTask(Date time, int id) {
+    public PlannedTask(final Date time, final int id) {
         super();
         schedule(time);
         PlannedTask.tasks.put(new Id(id, getClass()), this);
@@ -49,14 +48,13 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
      * @param time
      * @see java.util.Timer#schedule(java.util.TimerTask, java.util.Date)
      */
-    public void schedule(Date time) {
-        this.runDate = time;
+    public void schedule(final Date time) {
         PlannedTask.timer.schedule(this, time);
     }
 
-    public static boolean updatePlanedTask(Class<? extends PlannedTask> clazz, int id, Date time){
-        PlannedTask plannedTask = tasks.get(new Id(id, clazz));
-        if (plannedTask != null){
+    public static boolean updatePlanedTask(final Class<? extends PlannedTask> clazz, final int id, final Date time) {
+        final PlannedTask plannedTask = tasks.get(new Id(id, clazz));
+        if (plannedTask != null) {
             plannedTask.schedule(time);
             return true;
         }
@@ -68,9 +66,9 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
         try {
             FrameworkMutex.lock();
             doRun();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             Log.framework().fatal("Planned task error. ", e);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             throw ex;
         } finally {
             remove(this);
@@ -78,7 +76,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
         }
     }
 
-    private void remove(PlannedTask task) {
+    private void remove(final PlannedTask task) {
         tasks.remove(task);
         task.cancel();
     }

@@ -61,7 +61,7 @@ public final class DaoComment extends DaoKudosable {
     /**
      * Create a comment. This constructor is protected because you should use the
      * createAndPersist method (to make sure your comment really goes into the db.
-     *
+     * 
      * @param member is the author.
      * @param text is the content.
      * @throws NonOptionalParameterException if the text is null
@@ -82,7 +82,7 @@ public final class DaoComment extends DaoKudosable {
     /**
      * Use a HQL query to return the children of this comment. It allows the use of
      * PageIterable. Order by creation date, older first.
-     *
+     * 
      * @return the list of this comment children. return an empty list if there is no
      *         child.
      */

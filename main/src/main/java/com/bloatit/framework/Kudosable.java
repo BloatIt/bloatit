@@ -124,11 +124,13 @@ public abstract class Kudosable extends UserContent {
 
     /**
      * This method is called each time this Kudosable is kudosed.
+     * 
      * @param positif true if it is a kudos false if it is an unKudos.
      */
-    protected void notifyKudos(boolean positif) {
+    protected void notifyKudos(final boolean positif) {
         // Implement me if you wish
     }
+
     /**
      * This method is called each time this Kudosable change its state to valid.
      */

@@ -128,7 +128,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     *
+     * 
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -140,15 +140,15 @@ public final class DaoDemand extends DaoKudosable {
         }
         this.description = description;
         this.specification = null;
-        this.setSelectedOffer(null);
+        setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
-        this.setDemandState(DemandState.PENDING);
+        setDemandState(DemandState.PENDING);
     }
 
     /**
      * Create a DaoDemand, add an offer and set its state to the state
      * {@link DemandState#PREPARING}.
-     *
+     * 
      * @param member is the author of the demand
      * @param description is the description ...
      * @param offer
@@ -160,7 +160,7 @@ public final class DaoDemand extends DaoKudosable {
             throw new NonOptionalParameterException();
         }
         this.offers.add(offer);
-        this.setDemandState(DemandState.PREPARING);
+        setDemandState(DemandState.PREPARING);
     }
 
     /**
@@ -174,7 +174,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a specification.
-     *
+     * 
      * @param member author (must be non null).
      * @param content a string contain the specification (WARNING : UNTESTED)(must be non
      *        null).
@@ -185,7 +185,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a new offer for this demand.
-     *
+     * 
      * @param member the author of the offer
      * @param amount the amount that the author want to make the offer
      * @param description this is a description of the offer
@@ -200,7 +200,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     *
+     * 
      * @param Offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -210,7 +210,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     *
+     * 
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -247,7 +247,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     *
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -269,7 +269,7 @@ public final class DaoDemand extends DaoKudosable {
         return offers;
     }
 
-    public void setDemandState(DemandState demandState) {
+    public void setDemandState(final DemandState demandState) {
         this.demandState = demandState;
     }
 
@@ -296,7 +296,7 @@ public final class DaoDemand extends DaoKudosable {
         return selectedOffer;
     }
 
-    public void setSelectedOffer(DaoOffer selectedOffer) {
+    public void setSelectedOffer(final DaoOffer selectedOffer) {
         this.selectedOffer = selectedOffer;
     }
 
@@ -335,6 +335,5 @@ public final class DaoDemand extends DaoKudosable {
     protected DaoDemand() {
         super();
     }
-
 
 }

@@ -14,7 +14,7 @@ public final class FrameworkMutex {
 
     /**
      * Reserve the Framework and make sure nobody else is using it.
-     *
+     * 
      * @throws InterruptedException
      */
     public static void lock() throws InterruptedException {

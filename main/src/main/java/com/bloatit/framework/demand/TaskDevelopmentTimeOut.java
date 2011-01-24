@@ -8,7 +8,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
     private static final long serialVersionUID = 5639581628713974313L;
     private final Demand demand;
 
-    public TaskDevelopmentTimeOut(Demand demand, Date time) {
+    public TaskDevelopmentTimeOut(final Demand demand, final Date time) {
         super(time, demand.getId());
         this.demand = demand;
     }

@@ -29,8 +29,8 @@ public abstract class DaoKudosable extends DaoUserContent {
      * This is the state of a Kudosable content. PENDING means that there is not enough
      * kudos to take a decision. VALIDATE means that the popularity is high enough to
      * validate this content. REFUSED means that the popularity is low enough to
-     * delete/reject this content. HIDDEN is a state between pending and rejected.
-     * Do not change the order !
+     * delete/reject this content. HIDDEN is a state between pending and rejected. Do not
+     * change the order !
      */
     public enum State {
         VALIDATED, PENDING, HIDDEN, REJECTED,
@@ -55,7 +55,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /**
      * initial state is PENDING, and popularity is 0.
-     *
+     * 
      * @param member the author.
      * @see DaoUserContent#DaoUserContent(DaoMember)
      */
@@ -67,7 +67,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /**
      * Create a new DaoKudos and add it to the list of kudos.
-     *
+     * 
      * @return the new popularity
      */
     public final int addKudos(final DaoMember member, final int value) {
@@ -79,7 +79,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /**
      * Use a HQL query to find if a member as already kudosed this kudosable.
-     *
+     * 
      * @param member The member that could have kudosed this kudosable. (Don't even think
      *        of passing a null member)
      * @return true if member has kudosed, false otherwise.

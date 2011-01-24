@@ -1,8 +1,7 @@
 package com.bloatit.framework.demand;
 
-
 public class DiscardedState extends AbstractDemandState {
-    public DiscardedState(Demand demand) {
+    public DiscardedState(final Demand demand) {
         super(demand);
         demand.inDiscardedState();
     }

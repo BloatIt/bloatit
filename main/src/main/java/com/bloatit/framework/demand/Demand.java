@@ -173,7 +173,8 @@ public final class Demand extends Kudosable {
      */
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
-        stateObject = stateObject.eventAddContribution(getAuthToken().getMember(), amount, comment);
+        dao.addContribution(getAuthToken().getMember().getDao(), amount, comment);
+        stateObject = stateObject.eventAddContribution();
     }
 
     /**
@@ -199,8 +200,8 @@ public final class Demand extends Kudosable {
     public void addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir)
             throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
-        Offer offer = Offer.create(dao.addOffer(getAuthToken().getMember().getDao(), amount, new Description(getAuthToken().getMember(), locale,
-                title, text).getDao(), dateExpir));
+        final Offer offer = Offer.create(dao.addOffer(getAuthToken().getMember().getDao(), amount, new Description(getAuthToken().getMember(),
+                locale, title, text).getDao(), dateExpir));
         stateObject = stateObject.eventAddOffer(offer);
     }
 
@@ -241,34 +242,53 @@ public final class Demand extends Kudosable {
         stateObject = stateObject.eventDevelopmentFinish();
     }
 
+    // ////////////////////////////////////////////////////////////////////////
+    // Slots and notification system
+    // ////////////////////////////////////////////////////////////////////////
+
     /**
      * Tells that we are in development state.
      */
-    void inDevelopmentState(){
+    void inDevelopmentState() {
         dao.setDemandState(DemandState.DEVELOPPING);
         new TaskDevelopmentTimeOut(this, getDao().getSelectedOffer().getExpirationDate());
     }
 
-    void inDiscardedState(){
+    /**
+     * Slot called when the demand change to {@link DiscardedState}.
+     */
+    void inDiscardedState() {
         dao.setDemandState(DemandState.DISCARDED);
     }
 
-    void inFinishedState(){
+    /**
+     * Slot called when this demand state change to {@link FinishedState}.
+     */
+    void inFinishedState() {
         dao.setDemandState(DemandState.FINISHED);
 
     }
 
-    void inIncomeState(){
+    /**
+     * Slot called when this demand state change to {@link IncomeState}.
+     */
+    void inIncomeState() {
         dao.setDemandState(DemandState.INCOME);
 
     }
 
-    void inPendingState(){
+    /**
+     * Slot called when this demand state change to {@link PendingState}.
+     */
+    void inPendingState() {
         dao.setDemandState(DemandState.PENDING);
 
     }
 
-    void inPreparingState(){
+    /**
+     * Slot called when this demand state change to {@link PreparingState}.
+     */
+    void inPreparingState() {
         dao.setDemandState(DemandState.PREPARING);
     }
 
@@ -305,7 +325,7 @@ public final class Demand extends Kudosable {
         stateObject = stateObject.eventRejected();
     }
 
-    void setSelectedOffer(Offer offer) {
+    void setSelectedOffer(final Offer offer) {
         if (!PlannedTask.updatePlanedTask(TaskSelectedOfferTimeOut.class, getId(), DateUtils.tomorrow())) {
             new TaskSelectedOfferTimeOut(this, DateUtils.tomorrow());
         }

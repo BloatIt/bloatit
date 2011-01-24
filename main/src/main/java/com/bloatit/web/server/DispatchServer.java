@@ -59,16 +59,16 @@ public final class DispatchServer {
                 response.writeRedirect(e.getUrl().urlString());
             }
 
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw ex;
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             throw ex;
-        } catch (InterruptedException ex) {
+        } catch (final InterruptedException ex) {
             Log.web().fatal("Cannot lock the framework.", ex);
         } finally {
-            try{
+            try {
                 com.bloatit.framework.FrameworkMutex.unLock();
-            }catch (Exception e) {
+            } catch (final Exception e) {
                 Log.web().fatal("Cannot unlock the framework.", e);
             }
         }
@@ -103,7 +103,7 @@ public final class DispatchServer {
 
     /**
      * Return the session for the user. Either an existing session or a new session.
-     *
+     * 
      * @param header
      * @return the session matching the user
      */

@@ -55,6 +55,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
      * @return the long name of the country (should be in the main language of the
      *         country)
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -62,6 +63,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
     /**
      * @return the ISO code of the country
      */
+    @Override
     public String getCode() {
         return code;
     }
