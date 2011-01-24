@@ -52,7 +52,13 @@ public final class SessionManager {
     }
 
     public static Session getByKey(final String key) {
-        return activeSessions.get(UUID.fromString(key));
+        try {
+            return activeSessions.get(UUID.fromString(key));
+        }
+        catch(IllegalArgumentException e) {
+            return null;
+        }
+
     }
 
     private static void restoreSession(final String key, final int memberId) {
