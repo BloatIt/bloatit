@@ -66,7 +66,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     @Override
     public void run() {
         try {
-            Lock.doLock();
+            FrameworkMutex.lock();
             doRun();
         } catch (InterruptedException e) {
             Log.framework().fatal("Planned task error. ", e);
@@ -74,7 +74,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
             throw ex;
         } finally {
             remove(this);
-            Lock.doUnLock();
+            FrameworkMutex.unLock();
         }
     }
 

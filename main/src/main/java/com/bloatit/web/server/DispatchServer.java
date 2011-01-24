@@ -39,7 +39,7 @@ public final class DispatchServer {
 
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
         try {
-            com.bloatit.framework.Lock.doLock();
+            com.bloatit.framework.FrameworkMutex.lock();
 
             Context.reInitializeContext(header, session);
 
@@ -66,7 +66,11 @@ public final class DispatchServer {
         } catch (InterruptedException ex) {
             Log.web().fatal("Cannot lock the framework.", ex);
         } finally {
-            com.bloatit.framework.Lock.doUnLock();
+            try{
+                com.bloatit.framework.FrameworkMutex.unLock();
+            }catch (Exception e) {
+                Log.web().fatal("Cannot unlock the framework.", e);
+            }
         }
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
     }

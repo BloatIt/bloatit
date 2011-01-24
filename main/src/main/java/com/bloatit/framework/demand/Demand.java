@@ -226,7 +226,9 @@ public final class Demand extends Kudosable {
 
     /**
      * Works only in development state.
-     * @throws UnauthorizedOperationException If this is not the current developer thats try to cancel the dev.
+     *
+     * @throws UnauthorizedOperationException If this is not the current developer thats
+     *         try to cancel the dev.
      */
     public void CancelDevelopment() throws UnauthorizedOperationException {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
@@ -235,7 +237,7 @@ public final class Demand extends Kudosable {
         stateObject = stateObject.developerCanceled();
     }
 
-    public void setSelectedOfferTimeOut(){
+    public void setSelectedOfferTimeOut() {
         stateObject = stateObject.selectedOfferTimeOut(dao.getContribution(), Offer.create(dao.getSelectedOffer()));
     }
 
@@ -259,7 +261,7 @@ public final class Demand extends Kudosable {
     }
 
     void setSelectedOffer(Offer offer) {
-        if(!PlannedTask.updatePlanedTask(TaskSelectedOfferTimeOut.class, getId(), DateUtils.tomorrow())){
+        if (!PlannedTask.updatePlanedTask(TaskSelectedOfferTimeOut.class, getId(), DateUtils.tomorrow())) {
             new TaskSelectedOfferTimeOut(this, DateUtils.tomorrow());
         }
         this.dao.setSelectedOffer(offer.getDao());
@@ -321,10 +323,10 @@ public final class Demand extends Kudosable {
      */
     public float getProgression() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
-        if (dao.getOffers().isEmpty()) {
+        final DaoOffer currentOffer = dao.getSelectedOffer();
+        if (dao.getOffers().isEmpty() || currentOffer == null) {
             return PROGRESSION_COEF * (1 - 1 / (1 + dao.getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
         }
-        final DaoOffer currentOffer = dao.getSelectedOffer();
         if (currentOffer.getAmount().floatValue() != 0) {
             return (dao.getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();
         }
