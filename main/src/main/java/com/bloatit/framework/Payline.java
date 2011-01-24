@@ -175,7 +175,9 @@ public final class Payline extends Unlockable {
     private String addOrderDetails(final BigDecimal amountX100, final DoWebPaymentRequest paymentRequest) {
         // Order details
         final Order order = new Order();
-        final String orderReference = createOrderRef(getAuthToken().getMember());
+        Member member = getAuthToken().getMember();
+        member.authenticate(getAuthToken());
+        final String orderReference = createOrderRef(member);
         order.setRef(orderReference);
         order.setOrigin(ORDER_ORIGINE);
         order.setCountry(Locale.FRANCE.getCountry());
@@ -200,7 +202,7 @@ public final class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     * 
+     *
      * @param member
      * @return
      */

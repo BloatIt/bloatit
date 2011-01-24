@@ -108,14 +108,6 @@ public final class SCGIServer {
         SessionManager.loadSessions();
         Runtime.getRuntime().addShutdownHook(new ShutdownHook(clientSocket));
 
-        // Find a better way to clean the socket
-        try {
-            final Socket cleanSocket = new Socket(SCGI_HOST, SCGI_PORT);
-            cleanSocket.close();
-        } catch (final IOException ex) {
-            Log.server().warn("Init: Cleaning socket catch exception.", ex);
-        }
-
         try {
             Thread.sleep(100);
         } catch (final InterruptedException ex) {
@@ -130,7 +122,7 @@ public final class SCGIServer {
         init();
         while (true) {
             // Wait for connection
-            Log.server().info("Wating connection");
+            Log.server().info("Waiting connection");
 
             // Load the SCGI headers.
             clientSocket = providerSocket.accept();

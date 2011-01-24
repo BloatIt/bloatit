@@ -40,8 +40,8 @@ public final class CreateIdeaAction extends Action {
     public static final String LANGUAGE_CODE = "bloatit_idea_lang";
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(max = "12",
-                     maxErrorMsg = @tr("The title must be 12 chars length max."), //
+    @ParamConstraint(max = "80",
+                     maxErrorMsg = @tr("The title must be 80 chars length max."), //
                      min = "10", minErrorMsg = @tr("The title must have at least 10 chars."),
                      optionalErrorMsg = @tr("Error you forgot to write a title"))
     private final String description;
