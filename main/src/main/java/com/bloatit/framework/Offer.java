@@ -29,10 +29,6 @@ public final class Offer extends Kudosable {
         return dao;
     }
 
-    public Date getDateExpire() {
-        return dao.getExpirationDate();
-    }
-
     public Demand getDemand() {
         return Demand.create(dao.getDemand());
     }

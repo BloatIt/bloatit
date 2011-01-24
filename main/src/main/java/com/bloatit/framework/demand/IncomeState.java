@@ -1,11 +1,10 @@
 package com.bloatit.framework.demand;
 
-import com.bloatit.model.data.DaoDemand.DemandState;
 
 public class IncomeState extends AbstractDemandState {
     public IncomeState(Demand demand) {
         super(demand);
-        demand.getDao().setDemandState(DemandState.INCOME);
+        demand.inIncomeState();
     }
 
     @Override
@@ -17,7 +16,7 @@ public class IncomeState extends AbstractDemandState {
     }
 
     @Override
-    public AbstractDemandState developerCanceled() {
+    public AbstractDemandState eventDeveloperCanceled() {
         return new DiscardedState(demand);
     }
 

@@ -34,7 +34,12 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You try to delete a demand, but you are not the current developer.
          */
-        NON_DEVELOPER_CANCEL_DEMAND
+        NON_DEVELOPER_CANCEL_DEMAND,
+
+        /**
+         * You try to finish a demand, but you are not the current developer.
+         */
+        NON_DEVELOPER_FINISHED_DEMAND
     }
 
     private final EnumSet<Role> roles;

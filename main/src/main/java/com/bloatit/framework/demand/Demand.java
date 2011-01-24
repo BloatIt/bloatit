@@ -173,8 +173,7 @@ public final class Demand extends Kudosable {
      */
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
-        stateObject = stateObject.addContribution(amount, Offer.create(dao.getSelectedOffer()));
-        dao.addContribution(getAuthToken().getMember().getDao(), amount, comment);
+        stateObject = stateObject.eventAddContribution(getAuthToken().getMember(), amount, comment);
     }
 
     /**
@@ -191,20 +190,18 @@ public final class Demand extends Kudosable {
      * @param text is the description of the offer. Must be non null.
      * @param dateExpir is the date when this offer should be finished. Must be non null.
      *        Must be in the future.
-     * @return the newly created offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#WRITE} right on the <code>Offer</code> property.
      * @throws WrongDemandStateException if the state is != from
      *         {@link DemandState#PENDING} or {@link DemandState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
-    public Offer addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir)
+    public void addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir)
             throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
         Offer offer = Offer.create(dao.addOffer(getAuthToken().getMember().getDao(), amount, new Description(getAuthToken().getMember(), locale,
                 title, text).getDao(), dateExpir));
-        stateObject = stateObject.addOffer(offer);
-        return offer;
+        stateObject = stateObject.eventAddOffer(offer);
     }
 
     /**
@@ -220,7 +217,7 @@ public final class Demand extends Kudosable {
         if (dao.getSelectedOffer().getId() == offer.getId()) {
             dao.computeSelectedOffer();
         }
-        stateObject = stateObject.removeOffer(offer);
+        stateObject = stateObject.eventRemoveOffer(offer);
         dao.removeOffer(offer.getDao());
     }
 
@@ -230,40 +227,89 @@ public final class Demand extends Kudosable {
      * @throws UnauthorizedOperationException If this is not the current developer thats
      *         try to cancel the dev.
      */
-    public void CancelDevelopment() throws UnauthorizedOperationException {
+    public void cancelDevelopment() throws UnauthorizedOperationException {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_DEMAND);
         }
-        stateObject = stateObject.developerCanceled();
+        stateObject = stateObject.eventDeveloperCanceled();
     }
 
-    public void setSelectedOfferTimeOut() {
-        stateObject = stateObject.selectedOfferTimeOut(dao.getContribution(), Offer.create(dao.getSelectedOffer()));
+    public void finishedDevelopment() throws UnauthorizedOperationException {
+        if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
+            throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_FINISHED_DEMAND);
+        }
+        stateObject = stateObject.eventDevelopmentFinish();
+    }
+
+    /**
+     * Tells that we are in development state.
+     */
+    void inDevelopmentState(){
+        dao.setDemandState(DemandState.DEVELOPPING);
+        new TaskDevelopmentTimeOut(this, getDao().getSelectedOffer().getExpirationDate());
+    }
+
+    void inDiscardedState(){
+        dao.setDemandState(DemandState.DISCARDED);
+    }
+
+    void inFinishedState(){
+        dao.setDemandState(DemandState.FINISHED);
+
+    }
+
+    void inIncomeState(){
+        dao.setDemandState(DemandState.INCOME);
+
+    }
+
+    void inPendingState(){
+        dao.setDemandState(DemandState.PENDING);
+
+    }
+
+    void inPreparingState(){
+        dao.setDemandState(DemandState.PREPARING);
+    }
+
+    /**
+     * Called by a {@link PlannedTask}
+     */
+    void developmentTimeOut() {
+        stateObject = stateObject.eventDevelopmentFinish();
+    }
+
+    /**
+     * Called by a {@link PlannedTask}
+     */
+    void selectedOfferTimeOut() {
+        stateObject = stateObject.eventSelectedOfferTimeOut(dao.getContribution());
     }
 
     @Override
     protected void notifyValid() {
         if (stateObject.getState() == DemandState.DISCARDED) {
-            stateObject = stateObject.popularityPending();
+            stateObject = stateObject.eventPopularityPending();
         }
     }
 
     @Override
     protected void notifyPending() {
         if (stateObject.getState() == DemandState.DISCARDED) {
-            stateObject = stateObject.popularityPending();
+            stateObject = stateObject.eventPopularityPending();
         }
     }
 
     @Override
     protected void notifyRejected() {
-        stateObject = stateObject.popularityTooLow();
+        stateObject = stateObject.eventRejected();
     }
 
     void setSelectedOffer(Offer offer) {
         if (!PlannedTask.updatePlanedTask(TaskSelectedOfferTimeOut.class, getId(), DateUtils.tomorrow())) {
             new TaskSelectedOfferTimeOut(this, DateUtils.tomorrow());
         }
+        stateObject = stateObject.eventAddOffer(offer);
         this.dao.setSelectedOffer(offer.getDao());
     }
 

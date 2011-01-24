@@ -1,18 +1,22 @@
 package com.bloatit.framework.demand;
 
 import com.bloatit.framework.Offer;
-import com.bloatit.model.data.DaoDemand.DemandState;
 
-public class PendingState extends AbstractDemandState {
+public class PendingState extends CanContributeMetaState {
 
     public PendingState(Demand demand) {
         super(demand);
-        demand.getDao().setDemandState(DemandState.PENDING);
+        demand.inPendingState();
     }
 
     @Override
-    public AbstractDemandState addOffer(Offer offer) {
+    public AbstractDemandState eventAddOffer(Offer offer) {
         demand.setSelectedOffer(offer);
         return new PreparingState(demand);
+    }
+
+    @Override
+    protected AbstractDemandState notifyAddContribution() {
+        return this;
     }
 }

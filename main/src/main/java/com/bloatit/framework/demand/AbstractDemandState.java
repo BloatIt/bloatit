@@ -2,9 +2,12 @@ package com.bloatit.framework.demand;
 
 import java.math.BigDecimal;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.common.WrongDemandStateException;
+import com.bloatit.framework.Member;
 import com.bloatit.framework.Offer;
 import com.bloatit.model.data.DaoDemand.DemandState;
+import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 abstract class AbstractDemandState {
 
@@ -18,22 +21,22 @@ abstract class AbstractDemandState {
         return demand.getDao().getDemandState();
     }
 
-    public AbstractDemandState addOffer(Offer offer) {
+    public AbstractDemandState eventAddOffer(Offer offer) {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState removeOffer(Offer offer) {
+    public AbstractDemandState eventRemoveOffer(Offer offer) {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState addContribution(BigDecimal contribution, Offer offer) {
+    public AbstractDemandState eventAddContribution(final Member member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState selectedOfferTimeOut(BigDecimal contribution, Offer offer) {
+    public AbstractDemandState eventSelectedOfferTimeOut(BigDecimal contribution) {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
@@ -43,17 +46,17 @@ abstract class AbstractDemandState {
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState developmentFinish() {
+    public AbstractDemandState eventDevelopmentFinish() {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState developerCanceled() {
+    public AbstractDemandState eventDeveloperCanceled() {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState popularityTooLow() {
+    public AbstractDemandState eventRejected() {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
@@ -63,7 +66,7 @@ abstract class AbstractDemandState {
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState popularityPending() {
+    public AbstractDemandState eventPopularityPending() {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }

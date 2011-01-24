@@ -1,20 +1,19 @@
 package com.bloatit.framework.demand;
 
-import com.bloatit.model.data.DaoDemand.DemandState;
 
 public class DeveloppingState extends AbstractDemandState {
     public DeveloppingState(Demand demand) {
         super(demand);
-        demand.getDao().setDemandState(DemandState.DEVELOPPING);
+        demand.inDevelopmentState();
     }
 
     @Override
-    public AbstractDemandState developmentFinish() {
+    public AbstractDemandState eventDevelopmentFinish() {
         return new FinishedState(demand);
     }
 
     @Override
-    public AbstractDemandState developerCanceled() {
+    public AbstractDemandState eventDeveloperCanceled() {
         return new DiscardedState(demand);
     }
 }
