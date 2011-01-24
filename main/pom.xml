@@ -71,13 +71,30 @@
 				</executions>
 			</plugin>
 
-			<!-- Exec -->
+			<!-- Exec-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2</version>
 				<configuration>
 					<mainClass>com.bloatit.web.scgiserver.SCGIServer</mainClass>
+					<arguments>
+					    <argument>-classpath</argument>
+					</arguments>
+				</configuration>
+			</plugin>
+			
+			<!-- Jar creation -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+				    <archive>
+				        <manifest>
+        					<mainClass>com.bloatit.web.scgiserver.SCGIServer</mainClass>
+					    </manifest>
+				    </archive>
 				</configuration>
 			</plugin>
 
@@ -224,5 +241,6 @@
 		</pluginRepository>
 
 	</pluginRepositories>
+	
 
 </project>

@@ -91,7 +91,7 @@ public class BigDB {
                 demand.addOffer(member,
                                 new BigDecimal((pick(50) + 10) * 10),
                                 DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
-                                new Date());
+                                new Date(System.currentTimeMillis()+200));
                 if (pick(2) == 0) {
                     for (final DaoContribution contrib : demand.getContributionsFromQuery()) {
                         try {
