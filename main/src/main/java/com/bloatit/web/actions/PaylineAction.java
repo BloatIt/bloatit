@@ -19,7 +19,7 @@ import com.bloatit.web.utils.url.PaylinePageUrl;
 import com.bloatit.web.utils.url.Url;
 import com.bloatit.web.utils.url.UrlStringBinder;
 
-@ParamContainer("payline-dopayment")
+@ParamContainer("paylinedopayment")
 public final class PaylineAction extends LoggedAction {
 
     public static final String CHARGE_AMOUNT_CODE = "amount";
