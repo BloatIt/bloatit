@@ -3,6 +3,7 @@ package com.bloatit.framework;
 import java.util.Locale;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.lists.TranslationList;
 import com.bloatit.model.data.DaoDescription;
 
@@ -11,15 +12,15 @@ import com.bloatit.model.data.DaoDescription;
  * description each time you create a demand.) There is no right management for this
  * class. I assume that if you can get a <code>Description</code> then you can access
  * every property in it.
- *
+ * 
  * @see DaoDescription
  */
 public final class Description extends Identifiable {
 
     private final DaoDescription dao;
 
-    static Description create(DaoDescription dao) {
-        if (dao != null){
+    public static Description create(final DaoDescription dao) {
+        if (dao != null) {
             return new Description(dao);
         }
         return null;
@@ -28,13 +29,13 @@ public final class Description extends Identifiable {
     /**
      * Create a Description. If you are looking for a way to create a new description see
      * {@link Demand#addOffer(java.math.BigDecimal, Locale, String, String, java.util.Date)}
-     *
+     * 
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
      * @param description is the main text of the description (the actual description)
      */
-    Description(final Member member, final Locale locale, final String title, final String description) {
+    public Description(final Member member, final Locale locale, final String title, final String description) {
         super();
         this.dao = DaoDescription.createAndPersist(member.getDao(), locale, title, description);
     }
@@ -50,7 +51,7 @@ public final class Description extends Identifiable {
     /**
      * @return the dao representation of this description.
      */
-    DaoDescription getDao() {
+    public DaoDescription getDao() {
         return dao;
     }
 

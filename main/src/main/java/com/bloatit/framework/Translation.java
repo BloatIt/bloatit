@@ -40,7 +40,7 @@ public final class Translation extends Kudosable {
 
     /**
      * Smart cut the text, add a "…" char, and return it.
-     *
+     * 
      * @param sizeMax is the maximum size the returned text can be.
      * @param variance is how far we are looking for the punctuation mark to cut the text.
      * @return a cut version of the text, find a point or a punctuation mark to cut it at
@@ -87,7 +87,7 @@ public final class Translation extends Kudosable {
         return wholeText.substring(0, sizeMax) + "…";
     }
 
-    private String performTheCutAndAddPoints(final int sizeMax, final String wholeText, int i) {
+    private String performTheCutAndAddPoints(final int sizeMax, final String wholeText, final int i) {
         if (i < (sizeMax - 1)) {
             return wholeText.substring(0, i) + " …";
         }

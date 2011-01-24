@@ -50,12 +50,12 @@ public final class IdeaOfferComponent extends HtmlPageComponent {
         final HtmlParagraph price = new HtmlParagraph(Context.tr("Price : ")
                 + Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString(), "offer_price");
         final HtmlParagraph expirationDate = new HtmlParagraph(Context.tr("Expiration date : ")
-                + Context.getLocalizator().getDate(offer.getDateExpire()).toDateTimeString(FormatStyle.LONG, FormatStyle.MEDIUM), "offer_expiry_date");
+                + Context.getLocalizator().getDate(offer.getExpirationDate()).toDateTimeString(FormatStyle.LONG, FormatStyle.MEDIUM),
+                "offer_expiry_date");
         final HtmlImage authorAvatar = new HtmlImage(offer.getAuthor().getAvatar(), "offer_avatar");
         final HtmlParagraph creationDate = new HtmlParagraph(Context.tr("Creation Date : ")
                 + Context.getLocalizator().getDate(offer.getCreationDate()).toDateTimeString(FormatStyle.LONG, FormatStyle.MEDIUM),
                 "offer_creation_date");
-
 
         final HtmlDiv offerBlock = new HtmlDiv("offer_block");
         {
@@ -79,7 +79,7 @@ public final class IdeaOfferComponent extends HtmlPageComponent {
             }
 
             offerMainBlock.add(offerInfoBlock);
-            for (Batch batch : offer.getBatches()) {
+            for (final Batch batch : offer.getBatches()) {
                 final HtmlParagraph title = new HtmlParagraph(batch.getTitle(), "offer_title");
                 final HtmlParagraph description = new HtmlParagraph(batch.getDescription(), "offer_description");
                 offerMainBlock.add(title);

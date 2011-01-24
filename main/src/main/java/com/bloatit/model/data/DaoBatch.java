@@ -32,7 +32,7 @@ public final class DaoBatch extends DaoIdentifiable {
     private Date expirationDate;
 
     /**
-     * The amount represents the money the member want to have to make his offer. 
+     * The amount represents the money the member want to have to make his offer.
      */
     @Basic(optional = false)
     private BigDecimal amount;
@@ -51,17 +51,17 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /**
      * Create a DaoOffer.
-     *
+     * 
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
-     * @param expirationDate is the date when this offer should be finish. Must be non null,
-     *        and in the future.
+     * @param expirationDate is the date when this offer should be finish. Must be non
+     *        null, and in the future.
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
      */
-    public DaoBatch(Date dateExpire, BigDecimal amount, DaoDescription description, DaoOffer offer) {
+    public DaoBatch(final Date dateExpire, final BigDecimal amount, final DaoDescription description, final DaoOffer offer) {
         super();
-        if (dateExpire == null || amount == null || description == null || offer == null){
+        if (dateExpire == null || amount == null || description == null || offer == null) {
             throw new NonOptionalParameterException();
         }
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
@@ -87,16 +87,16 @@ public final class DaoBatch extends DaoIdentifiable {
     public DaoDescription getDescription() {
         return description;
     }
-    
-    public DaoOffer getOffer(){
+
+    public DaoOffer getOffer() {
         return offer;
     }
-    
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
-    protected DaoBatch(){
+    protected DaoBatch() {
         super();
     }
 

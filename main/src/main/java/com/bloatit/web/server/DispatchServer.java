@@ -38,23 +38,39 @@ public final class DispatchServer {
         final Session session = findSession(header);
 
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
-
-        Context.reInitializeContext(header, session);
-
-        final String pageCode = header.getQueryString().getPageName();
-
-        // Merge post and get parameters.
-        final Parameters parameters = new Parameters();
-        parameters.putAll(header.getQueryString().getParameters());
-        parameters.putAll(header.getQueryString().getGetParameters());
-        parameters.putAll(post.getParameters());
-
         try {
-            final Linkable linkable = constructLinkable(pageCode, parameters, session);
-            linkable.writeToHttp(response);
-        } catch (final RedirectException e) {
-            Log.web().info("Redirect to " + e.getUrl(), e);
-            response.writeRedirect(e.getUrl().urlString());
+            com.bloatit.framework.FrameworkMutex.lock();
+
+            Context.reInitializeContext(header, session);
+
+            final String pageCode = header.getQueryString().getPageName();
+
+            // Merge post and get parameters.
+            final Parameters parameters = new Parameters();
+            parameters.putAll(header.getQueryString().getParameters());
+            parameters.putAll(header.getQueryString().getGetParameters());
+            parameters.putAll(post.getParameters());
+
+            try {
+                final Linkable linkable = constructLinkable(pageCode, parameters, session);
+                linkable.writeToHttp(response);
+            } catch (final RedirectException e) {
+                Log.web().info("Redirect to " + e.getUrl(), e);
+                response.writeRedirect(e.getUrl().urlString());
+            }
+
+        } catch (final IOException ex) {
+            throw ex;
+        } catch (final RuntimeException ex) {
+            throw ex;
+        } catch (final InterruptedException ex) {
+            Log.web().fatal("Cannot lock the framework.", ex);
+        } finally {
+            try {
+                com.bloatit.framework.FrameworkMutex.unLock();
+            } catch (final Exception e) {
+                Log.web().fatal("Cannot unlock the framework.", e);
+            }
         }
         com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
     }

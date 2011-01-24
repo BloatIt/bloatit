@@ -42,7 +42,7 @@ public class PropertyLoader {
      * <li><i>name</i> can optionally end with <b>.properties</b></ki>
      * <li>leading <b>/</b> in <i>name</i> will be ignored Therefore all the following
      * <i>names</i> are the same :
-     *
+     * 
      * <pre>
      * foo.bar
      * foo.bar.properties
@@ -51,9 +51,9 @@ public class PropertyLoader {
      * /foo/bar
      * /foo/bar.properties
      * </pre>
-     *
+     * 
      * </p>
-     *
+     * 
      * @param name classpath resource name
      * @return resource converted to java.util.Properties
      * @throws IOException when <i>name</i> doesn't describe a valid properties file
@@ -74,9 +74,9 @@ public class PropertyLoader {
         name = name.replace('.', '/');
 
         Properties result = null;
-        name = "/" + name +  SUFFIX;
-        final File f =  new File(PropertyLoader.class.getResource(name).getFile());
-        FileInputStream fis =  new FileInputStream(f);
+        name = "/" + name + SUFFIX;
+        final File f = new File(PropertyLoader.class.getResource(name).getFile());
+        final FileInputStream fis = new FileInputStream(f);
         final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
         try {
             result = new Properties();

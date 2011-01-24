@@ -13,8 +13,8 @@ package com.bloatit.web.html.pages.idea;
 import java.util.Locale;
 
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.Demand;
 import com.bloatit.framework.Translation;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.custom.renderer.HtmlRawTextRenderer;
 import com.bloatit.web.html.components.standard.HtmlDiv;

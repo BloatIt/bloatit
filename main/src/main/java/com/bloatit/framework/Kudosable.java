@@ -10,7 +10,7 @@ import com.bloatit.model.data.DaoUserContent;
 
 public abstract class Kudosable extends UserContent {
 
-    private static final int TURN_VALIDE = 100;
+    private static final int TURN_VALID = 100;
     private static final int TURN_REJECTED = -100;
     private static final int TURN_HIDDEN = -10;
     private static final int TURN_PENDING = 10;
@@ -33,19 +33,17 @@ public abstract class Kudosable extends UserContent {
     public final void unkudos() throws UnauthorizedOperationException {
         tryKudos();
         addKudos(-1);
+        notifyKudos(false);
     }
 
     public final void kudos() throws UnauthorizedOperationException {
         tryKudos();
         addKudos(1);
+        notifyKudos(true);
     }
 
     public final State getState() {
         return getDaoKudosable().getState();
-    }
-
-    protected final void setState(final State newState) {
-        getDaoKudosable().setState(newState);
     }
 
     @Override
@@ -65,35 +63,100 @@ public abstract class Kudosable extends UserContent {
     private void calculateNewState(final int newPop) {
         switch (getState()) {
         case PENDING:
-            if (newPop >= TURN_VALIDE) {
+            if (newPop >= turnValid()) {
                 setState(State.VALIDATED);
-            } else if (newPop <= TURN_HIDDEN && newPop > TURN_REJECTED) {
+                notifyValid();
+            } else if (newPop <= turnHidden() && newPop > turnRejected()) {
                 setState(State.HIDDEN);
-            } else if (newPop <= TURN_REJECTED) {
+                notifyHidden();
+            } else if (newPop <= turnRejected()) {
                 setState(State.REJECTED);
+                notifyRejected();
             }
             // NO BREAK IT IS OK !!
         case VALIDATED:
             if (newPop <= TURN_PENDING) {
                 setState(State.PENDING);
+                notifyPending();
             }
             break;
         case HIDDEN:
         case REJECTED:
-            if (newPop >= TURN_PENDING && newPop < TURN_VALIDE) {
+            if (newPop >= turnPending() && newPop < turnValid()) {
                 setState(State.PENDING);
-            } else if (newPop >= TURN_VALIDE) {
+                notifyPending();
+            } else if (newPop >= turnValid()) {
                 setState(State.VALIDATED);
-            } else if (newPop <= TURN_HIDDEN && newPop > TURN_REJECTED) {
+                notifyValid();
+            } else if (newPop <= turnHidden() && newPop > turnRejected()) {
                 setState(State.VALIDATED);
-            } else if (newPop <= TURN_REJECTED) {
+                notifyValid();
+            } else if (newPop <= turnRejected()) {
                 setState(State.REJECTED);
+                notifyRejected();
             }
             break;
         default:
             assert false;
             break;
         }
+    }
+
+    private void setState(final State newState) {
+        getDaoKudosable().setState(newState);
+    }
+
+    protected int turnPending() {
+        return TURN_PENDING;
+    }
+
+    protected int turnValid() {
+        return TURN_VALID;
+    }
+
+    protected int turnRejected() {
+        return TURN_REJECTED;
+    }
+
+    protected int turnHidden() {
+        return TURN_HIDDEN;
+    }
+
+    /**
+     * This method is called each time this Kudosable is kudosed.
+     * 
+     * @param positif true if it is a kudos false if it is an unKudos.
+     */
+    protected void notifyKudos(final boolean positif) {
+        // Implement me if you wish
+    }
+
+    /**
+     * This method is called each time this Kudosable change its state to valid.
+     */
+    protected void notifyValid() {
+        // Implement me if you wish
+    }
+
+    /**
+     * This method is called each time this Kudosable change its state to pending.
+     */
+    protected void notifyPending() {
+        // Implement me if you wish
+    }
+
+    /**
+     * This method is called each time this Kudosable change its state to rejected.
+     */
+    protected void notifyRejected() {
+        // Implement me if you wish
+    }
+
+    /**
+     * This method is called each time this Kudosable change its state to Hidden.
+     */
+    protected void notifyHidden() {
+        // Implement me if you wish
     }
 
     public final int getPopularity() {

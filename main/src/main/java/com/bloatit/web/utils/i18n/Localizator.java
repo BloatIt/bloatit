@@ -288,14 +288,15 @@ public final class Localizator {
     /**
      * Describes a Language using a two letters code and a name
      */
-    public static class LanguageDescriptor implements DropDownElement{
+    public static class LanguageDescriptor implements DropDownElement {
         public String code;
         public String name;
-        
+
         @Override
         public String getName() {
             return name;
         }
+
         @Override
         public String getCode() {
             return code;

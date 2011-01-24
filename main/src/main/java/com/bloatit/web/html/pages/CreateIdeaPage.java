@@ -12,7 +12,7 @@ package com.bloatit.web.html.pages;
 
 import java.util.Map.Entry;
 
-import com.bloatit.framework.managers.DemandManager;
+import com.bloatit.framework.demand.DemandManager;
 import com.bloatit.web.actions.CreateIdeaAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -115,8 +115,8 @@ public final class CreateIdeaPage extends LoggedPage {
 
         // Create the fields that will be used to describe the parameters of the
         // idea (project ...)
-        HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
-        for (Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
+        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
+        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
         }
 

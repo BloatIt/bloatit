@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.bloatit.common.PageIterable;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.lists.BatchList;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
@@ -28,10 +29,6 @@ public final class Offer extends Kudosable {
         return dao;
     }
 
-    public Date getDateExpire() {
-        return dao.getExpirationDate();
-    }
-
     public Demand getDemand() {
         return Demand.create(dao.getDemand());
     }
@@ -44,7 +41,7 @@ public final class Offer extends Kudosable {
         return new BatchList(dao.getBatches());
     }
 
-    public void addBatch(Batch batch) {
+    public void addBatch(final Batch batch) {
         dao.addBatch(batch.getDao());
     }
 

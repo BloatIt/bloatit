@@ -55,13 +55,13 @@ public final class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     *
+     * 
      * @param member is the author of the offer. Must be non null.
      * @param demand is the demand on which this offer is made. Must be non null.
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param description is the description of the demand. Must be non null.
-     * @param expirationDate is the date when this offer should be finish. Must be non null,
-     *        and in the future.
+     * @param expirationDate is the date when this offer should be finish. Must be non
+     *        null, and in the future.
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
      */
@@ -80,17 +80,17 @@ public final class DaoOffer extends DaoKudosable {
      * @return All the batches for this offer. (Even the MasterBatch).
      */
     public PageIterable<DaoBatch> getBatches() {
-        String query = "from DaoBatch where offer = :this order by expirationDate";
-        String queryCount = "select count(*) from DaoBatch where offer = :this";
+        final String query = "from DaoBatch where offer = :this order by expirationDate";
+        final String queryCount = "select count(*) from DaoBatch where offer = :this";
         return new QueryCollection<DaoBatch>( //
                 SessionManager.createQuery(query).setEntity("this", this),//
                 SessionManager.createQuery(queryCount).setEntity("this", this));//
     }
 
-    public void addBatch(DaoBatch batch) {
+    public void addBatch(final DaoBatch batch) {
         amount = batch.getAmount().add(amount);
-        Date expiration = batch.getExpirationDate();
-        if (expirationDate.before(expiration)){
+        final Date expiration = batch.getExpirationDate();
+        if (expirationDate.before(expiration)) {
             expirationDate = expiration;
         }
         batches.add(batch);
@@ -99,11 +99,11 @@ public final class DaoOffer extends DaoKudosable {
     /**
      * @return a cloned version of the expirationDate attribute.
      */
-    public Date getExpirationDate(){
+    public Date getExpirationDate() {
         return (Date) expirationDate.clone();
     }
 
-    public BigDecimal getAmount(){
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -115,7 +115,7 @@ public final class DaoOffer extends DaoKudosable {
         super();
     }
 
-    public DaoDemand getDemand(){
+    public DaoDemand getDemand() {
         return demand;
     }
 }

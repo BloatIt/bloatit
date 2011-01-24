@@ -10,7 +10,7 @@
  */
 package com.bloatit.web.html.pages;
 
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;

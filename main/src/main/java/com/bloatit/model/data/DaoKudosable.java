@@ -29,10 +29,11 @@ public abstract class DaoKudosable extends DaoUserContent {
      * This is the state of a Kudosable content. PENDING means that there is not enough
      * kudos to take a decision. VALIDATE means that the popularity is high enough to
      * validate this content. REFUSED means that the popularity is low enough to
-     * delete/reject this content. HIDDEN is a state between pending and rejected.
+     * delete/reject this content. HIDDEN is a state between pending and rejected. Do not
+     * change the order !
      */
     public enum State {
-        PENDING, VALIDATED, REJECTED, HIDDEN
+        VALIDATED, PENDING, HIDDEN, REJECTED,
     }
 
     /**

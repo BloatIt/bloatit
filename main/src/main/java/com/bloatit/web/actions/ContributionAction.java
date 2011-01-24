@@ -13,7 +13,7 @@ package com.bloatit.web.actions;
 import java.math.BigDecimal;
 
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamConstraint;

@@ -9,11 +9,11 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -42,7 +42,7 @@ public final class DaoDemand extends DaoKudosable {
      * important !
      */
     public enum DemandState {
-        PENDING, PREPARING, DEVLOPPING, INCOME, DISCARDED, FINISHED
+        PENDING, PREPARING, DEVELOPPING, INCOME, DISCARDED, FINISHED
     }
 
     /**
@@ -85,6 +85,16 @@ public final class DaoDemand extends DaoKudosable {
     private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
+     * The selected offer is the offer that is most likely to be validated and used. If an
+     * offer is selected and has enough money and has a elapse time done then this offer
+     * go into dev.
+     */
+    @ManyToOne(optional = true)
+    @Cascade(value = { CascadeType.ALL })
+    @IndexedEmbedded
+    private DaoOffer selectedOffer;
+
+    /**
      * @see #DaoDemand(DaoMember, DaoDescription)
      */
     public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description) {
@@ -118,7 +128,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     *
+     * 
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -130,14 +140,15 @@ public final class DaoDemand extends DaoKudosable {
         }
         this.description = description;
         this.specification = null;
+        setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
-        this.setDemandState(DemandState.PENDING);
+        setDemandState(DemandState.PENDING);
     }
 
     /**
      * Create a DaoDemand, add an offer and set its state to the state
      * {@link DemandState#PREPARING}.
-     *
+     * 
      * @param member is the author of the demand
      * @param description is the description ...
      * @param offer
@@ -149,7 +160,7 @@ public final class DaoDemand extends DaoKudosable {
             throw new NonOptionalParameterException();
         }
         this.offers.add(offer);
-        this.setDemandState(DemandState.PREPARING);
+        setDemandState(DemandState.PREPARING);
     }
 
     /**
@@ -163,7 +174,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a specification.
-     *
+     * 
      * @param member author (must be non null).
      * @param content a string contain the specification (WARNING : UNTESTED)(must be non
      *        null).
@@ -174,7 +185,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a new offer for this demand.
-     *
+     * 
      * @param member the author of the offer
      * @param amount the amount that the author want to make the offer
      * @param description this is a description of the offer
@@ -189,7 +200,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     *
+     * 
      * @param Offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -199,7 +210,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     *
+     * 
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -236,25 +247,14 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     *
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      */
-    public DaoOffer getCurrentOffer() {
-        // First try to find a validated offer.
-        final String validatedQueriStr = "FROM DaoOffer " + //
-                "WHERE demand = :this AND state = :state " + //
-                "ORDER BY amount ASC, creationDate DESC ";
-
-        final Query validateQuery = SessionManager.createQuery(validatedQueriStr).setEntity("this", this)
-                .setParameter("state", DaoKudosable.State.VALIDATED);
-        if (validateQuery.iterate().hasNext()) {
-            return (DaoOffer) validateQuery.iterate().next();
-        }
-
+    private DaoOffer getCurrentOffer() {
         // If there is no validated offer then we try to find a pending offer
         final String queryString = "FROM DaoOffer " + //
                 "WHERE demand = :this " + //
-                "AND state = :state " + //
+                "AND state <= :state " + // <= pending means also validated.
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
@@ -269,7 +269,7 @@ public final class DaoDemand extends DaoKudosable {
         return offers;
     }
 
-    public void setDemandState(DemandState demandState) {
+    public void setDemandState(final DemandState demandState) {
         this.demandState = demandState;
     }
 
@@ -290,6 +290,14 @@ public final class DaoDemand extends DaoKudosable {
     public PageIterable<DaoComment> getCommentsFromQuery() {
         return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, ""), SessionManager
                 .getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
+    }
+
+    public DaoOffer getSelectedOffer() {
+        return selectedOffer;
+    }
+
+    public void setSelectedOffer(final DaoOffer selectedOffer) {
+        this.selectedOffer = selectedOffer;
     }
 
     public void addComment(final DaoComment comment) {
@@ -316,6 +324,10 @@ public final class DaoDemand extends DaoKudosable {
                 .setEntity("this", this).uniqueResult();
     }
 
+    public void computeSelectedOffer() {
+        selectedOffer = getCurrentOffer();
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -323,4 +335,5 @@ public final class DaoDemand extends DaoKudosable {
     protected DaoDemand() {
         super();
     }
+
 }

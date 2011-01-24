@@ -10,7 +10,7 @@
  */
 package com.bloatit.web.html.pages.idea;
 
-import com.bloatit.framework.Demand;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlNode;
@@ -28,8 +28,7 @@ public final class IdeaTabPane extends HtmlPageComponent {
     private String activeTabKey;
 
     /**
-     * Useful for Url generation
-     * Do not delete
+     * Useful for Url generation Do not delete
      */
     @SuppressWarnings("unused")
     private IdeaContributorsComponent contribution;

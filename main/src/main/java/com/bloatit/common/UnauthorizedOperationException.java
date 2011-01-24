@@ -29,25 +29,35 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You try to accept/refuse an invitation, but you are not the receiver.
          */
-        INVITATION_RECIEVER_MISMATCH
+        INVITATION_RECIEVER_MISMATCH,
+
+        /**
+         * You try to delete a demand, but you are not the current developer.
+         */
+        NON_DEVELOPER_CANCEL_DEMAND,
+
+        /**
+         * You try to finish a demand, but you are not the current developer.
+         */
+        NON_DEVELOPER_FINISHED_DEMAND
     }
 
     private final EnumSet<Role> roles;
     private final Action action;
     private final SpecialCode code;
 
-    public UnauthorizedOperationException(EnumSet<Role> roles, Action action, SpecialCode code) {
+    public UnauthorizedOperationException(final EnumSet<Role> roles, final Action action, final SpecialCode code) {
         super();
         this.roles = roles;
         this.action = action;
         this.code = code;
     }
 
-    public UnauthorizedOperationException(EnumSet<Role> roles, Action action) {
+    public UnauthorizedOperationException(final EnumSet<Role> roles, final Action action) {
         this(roles, action, SpecialCode.NOTHING_SPECIAL);
     }
 
-    public UnauthorizedOperationException(SpecialCode code) {
+    public UnauthorizedOperationException(final SpecialCode code) {
         super();
         this.roles = null;
         this.action = null;

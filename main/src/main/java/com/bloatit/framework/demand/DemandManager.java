@@ -8,12 +8,10 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.framework.managers;
+package com.bloatit.framework.demand;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.AuthToken;
-import com.bloatit.framework.Demand;
-import com.bloatit.framework.lists.DemandList;
 import com.bloatit.model.data.DBRequests;
 import com.bloatit.model.data.DaoDemand;
 
