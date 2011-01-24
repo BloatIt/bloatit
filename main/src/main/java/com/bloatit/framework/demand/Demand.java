@@ -31,6 +31,7 @@ import com.bloatit.model.data.DaoOffer;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
+// TODO : delete comment.
 /**
  * A demand is an idea :)
  */
@@ -138,17 +139,6 @@ public final class Demand extends Kudosable {
     }
 
     /**
-     * @param action is the type of action you can do on the property. (<code>READ</code>
-     *        for the getter, <code>WRITE</code> for the SETTER etc.)
-     * @return true if you can access the <code>Specification</code> property.
-     * @see #createSpecification(String)
-     * @see #getSpecification()
-     */
-    public boolean canAccessSpecification(final Action action) {
-        return new DemandRight.Specification().canAccess(calculateRole(this), action);
-    }
-
-    /**
      * @return true if you can access the <code>Description</code> property.
      * @see #getDescription()
      */
@@ -242,6 +232,48 @@ public final class Demand extends Kudosable {
         stateObject = stateObject.eventDevelopmentFinish();
     }
 
+    /**
+     * Add a comment at the end of the comment list.
+     *
+     * @param text is the text of the comment.
+     * @throws UnauthorizedOperationException if you do not have the {@link Action#WRITE}
+     *         right on the <code>Comment</code> property.
+     * @see #authenticate(AuthToken)
+     */
+    public void addComment(final String text) throws UnauthorizedOperationException {
+        new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
+        dao.addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
+    }
+
+    public void notifyOfferKudos(Offer offer, boolean positif) {
+        boolean isSelectedOffer = offer.equals(getSelectedOfferUnprotected());
+        if (positif && !isSelectedOffer) {
+            if (offer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
+                dao.setSelectedOffer(offer.getDao());
+            }
+        }
+        if (!positif && isSelectedOffer) {
+            for (Offer thisOffer : getOffersUnprotected()) {
+                if (thisOffer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
+                    dao.computeSelectedOffer();
+                }
+
+            }
+        }
+    }
+
+    /**
+     * Used by Offer class. You should never have to use it
+     * @param offer the offer to unselect. Nothing is done if the offer is not selected.
+     */
+    public void unSelectOffer(Offer offer){
+        if(offer.equals(getSelectedOfferUnprotected())){
+            setSelectedOffer(null);
+            dao.computeSelectedOffer();
+        }
+
+    }
+
     // ////////////////////////////////////////////////////////////////////////
     // Slots and notification system
     // ////////////////////////////////////////////////////////////////////////
@@ -266,7 +298,6 @@ public final class Demand extends Kudosable {
      */
     void inFinishedState() {
         dao.setDemandState(DemandState.FINISHED);
-
     }
 
     /**
@@ -326,29 +357,19 @@ public final class Demand extends Kudosable {
     }
 
     void setSelectedOffer(final Offer offer) {
-        if (!PlannedTask.updatePlanedTask(TaskSelectedOfferTimeOut.class, getId(), DateUtils.tomorrow())) {
-            new TaskSelectedOfferTimeOut(this, DateUtils.tomorrow());
-        }
-        stateObject = stateObject.eventAddOffer(offer);
+        Date validationDate = DateUtils.tomorrow();
+        new TaskSelectedOfferTimeOut(this, validationDate);
+        this.dao.setValidationDate(validationDate);
         this.dao.setSelectedOffer(offer.getDao());
-    }
-
-    /**
-     * Add a comment at the end of the comment list.
-     *
-     * @param text is the text of the comment.
-     * @throws UnauthorizedOperationException if you do not have the {@link Action#WRITE}
-     *         right on the <code>Comment</code> property.
-     * @see #authenticate(AuthToken)
-     */
-    public void addComment(final String text) throws UnauthorizedOperationException {
-        new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
-        dao.addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Get something
     // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public Date getValidationDate() {
+        return dao.getValidationDate();
+    }
 
     /**
      * @return the first level comments on this demand.
@@ -451,6 +472,10 @@ public final class Demand extends Kudosable {
      */
     public PageIterable<Offer> getOffers() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
+        return getOffersUnprotected();
+    }
+
+    private PageIterable<Offer> getOffersUnprotected(){
         return new OfferList(dao.getOffersFromQuery());
     }
 
@@ -464,6 +489,10 @@ public final class Demand extends Kudosable {
      */
     public Offer getSelectedOffer() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
+        return getSelectedOfferUnprotected();
+    }
+
+    private Offer getSelectedOfferUnprotected() {
         return Offer.create(dao.getSelectedOffer());
     }
 
@@ -475,6 +504,10 @@ public final class Demand extends Kudosable {
      */
     public String getTitle() throws UnauthorizedOperationException {
         return getDescription().getDefaultTranslation().getTitle();
+    }
+
+    public DemandState getDemandState() {
+        return dao.getDemandState();
     }
 
     /**

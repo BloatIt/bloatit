@@ -5,6 +5,10 @@ import java.util.Date;
 
 public class DateUtils {
 
+    public static Date yesterday() {
+        return nowPlusSomeDays(-1);
+    }
+
     public static Date tomorrow() {
         return nowPlusSomeDays(1);
     }

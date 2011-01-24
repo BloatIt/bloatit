@@ -50,7 +50,18 @@ public final class Offer extends Kudosable {
     }
 
     @Override
+    protected void notifyKudos(boolean positif) {
+        Demand.create(dao.getDemand()).notifyOfferKudos(this, positif);
+    }
+
+    @Override
+    protected void notifyRejected() {
+        Demand.create(dao.getDemand()).unSelectOffer(this);
+    }
+
+    @Override
     protected DaoKudosable getDaoKudosable() {
         return dao;
     }
+
 }

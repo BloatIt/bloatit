@@ -198,6 +198,7 @@ public class DemandTest extends ModelTestUnit {
                                                new Date());
         SessionManager.flush();
 
+        demand.computeSelectedOffer();
         assertEquals(demand.getSelectedOffer(), offer);
 
     }

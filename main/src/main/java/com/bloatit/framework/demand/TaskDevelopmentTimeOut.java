@@ -2,6 +2,8 @@ package com.bloatit.framework.demand;
 
 import java.util.Date;
 
+import com.bloatit.common.Log;
+import com.bloatit.common.WrongDemandStateException;
 import com.bloatit.framework.PlannedTask;
 
 public class TaskDevelopmentTimeOut extends PlannedTask {
@@ -15,7 +17,11 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
 
     @Override
     public void doRun() {
-        demand.developmentTimeOut();
+        try {
+            demand.developmentTimeOut();
+        } catch (WrongDemandStateException e) {
+            Log.framework().fatal(e);
+        }
     }
 
 }

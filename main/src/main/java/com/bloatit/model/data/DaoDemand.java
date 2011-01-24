@@ -72,17 +72,17 @@ public final class DaoDemand extends DaoKudosable {
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
-    private final Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
+    private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
     @OneToMany(mappedBy = "demand")
     @OrderBy(clause = "creationDate DESC")
     @Cascade(value = { CascadeType.ALL })
-    private final Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
+    private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
-    private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
+    private Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
      * The selected offer is the offer that is most likely to be validated and used. If an
@@ -93,6 +93,9 @@ public final class DaoDemand extends DaoKudosable {
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
     private DaoOffer selectedOffer;
+
+    @Basic(optional = true)
+    private Date validationDate;
 
     /**
      * @see #DaoDemand(DaoMember, DaoDescription)
@@ -140,6 +143,7 @@ public final class DaoDemand extends DaoKudosable {
         }
         this.description = description;
         this.specification = null;
+        this.validationDate = null;
         setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
         setDemandState(DemandState.PENDING);
@@ -217,6 +221,9 @@ public final class DaoDemand extends DaoKudosable {
      * @throws NotEnoughMoneyException
      */
     public void addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+        if (amount == null) {
+            throw new NonOptionalParameterException();
+        }
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             Log.data().fatal("Cannot create a contribution with this amount " + amount.toEngineeringString() + " by member " + member.getId());
             throw new FatalErrorException("The amount of a contribution cannot be <= 0.", null);
@@ -326,6 +333,14 @@ public final class DaoDemand extends DaoKudosable {
 
     public void computeSelectedOffer() {
         selectedOffer = getCurrentOffer();
+    }
+
+    public void setValidationDate(Date validationDate) {
+        this.validationDate = validationDate;
+    }
+
+    public Date getValidationDate() {
+        return validationDate;
     }
 
     // ======================================================================

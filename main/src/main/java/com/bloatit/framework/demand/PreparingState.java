@@ -12,7 +12,6 @@ public class PreparingState extends CanContributeMetaState {
 
     @Override
     public AbstractDemandState eventAddOffer(final Offer offer) {
-        demand.setSelectedOffer(offer);
         return this;
     }
 
