@@ -43,7 +43,7 @@ abstract class AbstractDemandState {
         throw new WrongDemandStateException();
     }
 
-    public AbstractDemandState eventDevelopmentFinish() {
+    public AbstractDemandState eventDevelopmentFinished() {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }
@@ -69,6 +69,16 @@ abstract class AbstractDemandState {
     }
 
     public AbstractDemandState popularityValidated() {
+        // Implement me if you wish.
+        throw new WrongDemandStateException();
+    }
+
+    public AbstractDemandState eventCloseBatch(boolean accepted) {
+        // Implement me if you wish.
+        throw new WrongDemandStateException();
+    }
+
+    public AbstractDemandState eventBatchDevelopmentFinished() {
         // Implement me if you wish.
         throw new WrongDemandStateException();
     }

@@ -28,7 +28,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Enumerate the different state a BankTranscation can be in. After being
-     * <code>ACCEPTED</code> a transaction must be <code>VALIDATED</code>.
+     * <code>ACCEPTED</code> a transaction must be <code>ACCEPTED</code>.
      */
     public enum State {
         PENDING, ACCEPTED, REFUSED, VALIDATED

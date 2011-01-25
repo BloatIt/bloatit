@@ -1,15 +1,16 @@
 package com.bloatit.model.data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
@@ -35,7 +36,8 @@ public final class DaoOffer extends DaoKudosable {
     private DaoDemand demand;
 
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
-    private final Set<DaoBatch> batches = new HashSet<DaoBatch>();
+    @OrderBy("expirationDate ASC")
+    private final List<DaoBatch> batches = new ArrayList<DaoBatch>();
 
     /**
      * The expirationDate is calculated from the batches variables.

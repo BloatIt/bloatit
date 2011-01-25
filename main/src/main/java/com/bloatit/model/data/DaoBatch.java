@@ -2,10 +2,14 @@ package com.bloatit.model.data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
@@ -23,6 +27,10 @@ import com.bloatit.model.data.util.NonOptionalParameterException;
 @Entity
 public final class DaoBatch extends DaoIdentifiable {
 
+    public enum State {
+        PENDING, DEVELOPPING, DONE, CANCELED
+    }
+
     /**
      * After this date, the Batch should be done.
      */
@@ -36,6 +44,14 @@ public final class DaoBatch extends DaoIdentifiable {
      */
     @Basic(optional = false)
     private BigDecimal amount;
+
+    @Basic(optional = false)
+    @Enumerated
+    private State state;
+
+    @OneToMany(mappedBy = "batch")
+    @Cascade(value = { CascadeType.ALL })
+    private Set<DaoBatchVote> votes = new HashSet<DaoBatchVote>(0);
 
     /**
      * Remember a description is a title with some content. (Translatable)
@@ -73,6 +89,7 @@ public final class DaoBatch extends DaoIdentifiable {
         this.amount = amount;
         this.description = description;
         this.offer = offer;
+        this.setState(State.PENDING);
     }
 
     public Date getExpirationDate() {
@@ -91,6 +108,39 @@ public final class DaoBatch extends DaoIdentifiable {
         return offer;
     }
 
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public boolean hasVoted(DaoActor actor) {
+        // false is ignored in the equals and hashcode.
+        return votes.contains(new DaoBatchVote(actor, this, false));
+    }
+
+    public void vote(DaoActor actor, boolean positif) {
+        if (!hasVoted(actor)) {
+            votes.add(new DaoBatchVote(actor, this, positif));
+        } else {
+            throw new FatalErrorException("Actor has already voted.");
+        }
+    }
+
+    public int getVoteResult() {
+        int result = 0;
+        for (DaoBatchVote vote : votes) {
+            if (vote.isPositif()) {
+                result++;
+            } else {
+                result--;
+            }
+        }
+        return result;
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -99,7 +149,8 @@ public final class DaoBatch extends DaoIdentifiable {
         super();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -111,7 +162,8 @@ public final class DaoBatch extends DaoIdentifiable {
         return result;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

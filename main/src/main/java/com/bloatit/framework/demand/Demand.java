@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.common.DateUtils;
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.common.UnauthorizedOperationException.SpecialCode;
@@ -249,7 +250,17 @@ public final class Demand extends Kudosable {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_FINISHED_DEMAND);
         }
-        stateObject = stateObject.eventDevelopmentFinish();
+        if(!getSelectedOfferUnprotected().hasBatchLeft()){
+            throw new FatalErrorException("There is no batch left for this Offer !");
+        }
+
+        getSelectedOfferUnprotected().currentBatchDone();
+
+        if(getSelectedOfferUnprotected().hasBatchLeft()){
+            stateObject = stateObject.eventBatchDevelopmentFinished();
+        }else{
+            stateObject = stateObject.eventDevelopmentFinished();
+        }
     }
 
     /**
@@ -348,7 +359,7 @@ public final class Demand extends Kudosable {
      * Called by a {@link PlannedTask}
      */
     void developmentTimeOut() {
-        stateObject = stateObject.eventDevelopmentFinish();
+        stateObject = stateObject.eventDevelopmentFinished();
     }
 
     /**

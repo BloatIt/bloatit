@@ -6,6 +6,8 @@ import java.util.Date;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.lists.BatchList;
+import com.bloatit.model.data.DaoBatch;
+import com.bloatit.model.data.DaoBatch.State;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
 
@@ -47,6 +49,37 @@ public final class Offer extends Kudosable {
 
     public Date getExpirationDate() {
         return dao.getExpirationDate();
+    }
+
+    public boolean hasBatchLeft() {
+        return getCurrentDaoBatch() != null;
+    }
+
+    // public Batch getCurrentBatch() {
+    // return Batch.create(getCurrentDaoBatch());
+    // }
+
+    public void currentBatchDone() {
+        getCurrentDaoBatch().setState(State.DONE);
+    }
+
+    public void currentBatchDevelopping() {
+        getCurrentDaoBatch().setState(State.DEVELOPPING);
+    }
+
+    public void cancel() {
+        for (DaoBatch batch : dao.getBatches()) {
+            batch.setState(State.CANCELED);
+        }
+    }
+
+    private DaoBatch getCurrentDaoBatch() {
+        for (DaoBatch batch : dao.getBatches()) {
+            if (batch.getState() == State.PENDING || batch.getState() == State.DEVELOPPING) {
+                return batch;
+            }
+        }
+        return null;
     }
 
     @Override
