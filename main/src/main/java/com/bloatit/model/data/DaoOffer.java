@@ -118,4 +118,48 @@ public final class DaoOffer extends DaoKudosable {
     public DaoDemand getDemand() {
         return demand;
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((batches == null) ? 0 : batches.hashCode());
+        result = prime * result + ((demand == null) ? 0 : demand.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof DaoOffer)) {
+            return false;
+        }
+        DaoOffer other = (DaoOffer) obj;
+        if (batches == null) {
+            if (other.batches != null) {
+                return false;
+            }
+        } else if (!batches.equals(other.batches)) {
+            return false;
+        }
+        if (demand == null) {
+            if (other.demand != null) {
+                return false;
+            }
+        } else if (!demand.equals(other.demand)) {
+            return false;
+        }
+        return true;
+    }
 }

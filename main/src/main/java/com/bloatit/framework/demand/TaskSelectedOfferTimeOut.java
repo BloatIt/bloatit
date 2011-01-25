@@ -18,6 +18,7 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
     @Override
     public void doRun() {
         try {
+            System.out.println(demand);
             demand.selectedOfferTimeOut();
         } catch (WrongDemandStateException e) {
             Log.framework().fatal(e);

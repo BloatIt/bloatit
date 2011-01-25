@@ -27,7 +27,7 @@ public final class DaoSpecification extends DaoUserContent {
 
     /**
      * Create a Specification.
-     * 
+     *
      * @param member is the author of the specification.
      * @param content is the content of the specification ...
      * @param demand yep, this is the demand on which the specification apply. Whhoohooo !
@@ -60,5 +60,49 @@ public final class DaoSpecification extends DaoUserContent {
 
     protected DaoDemand getDemand() {
         return demand;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((content == null) ? 0 : content.hashCode());
+        result = prime * result + ((demand == null) ? 0 : demand.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof DaoSpecification)) {
+            return false;
+        }
+        DaoSpecification other = (DaoSpecification) obj;
+        if (content == null) {
+            if (other.content != null) {
+                return false;
+            }
+        } else if (!content.equals(other.content)) {
+            return false;
+        }
+        if (demand == null) {
+            if (other.demand != null) {
+                return false;
+            }
+        } else if (!demand.equals(other.demand)) {
+            return false;
+        }
+        return true;
     }
 }

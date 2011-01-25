@@ -222,7 +222,27 @@ public final class Demand extends Kudosable {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_DEMAND);
         }
+        cancel();
         stateObject = stateObject.eventDeveloperCanceled();
+    }
+
+    /**
+     * Cancel all the contribution on this demand.
+     */
+    private void cancel() {
+        for (Contribution contribution : getContributionsUnprotected()) {
+            contribution.cancel();
+        }
+    }
+
+    /**
+     * Accept all the contribution on this demand.
+     * @throws NotEnoughMoneyException
+     */
+    private void accept() throws NotEnoughMoneyException {
+        for (Contribution contribution : getContributionsUnprotected()) {
+            contribution.accept(getSelectedOfferUnprotected());
+        }
     }
 
     public void finishedDevelopment() throws UnauthorizedOperationException {
@@ -264,10 +284,11 @@ public final class Demand extends Kudosable {
 
     /**
      * Used by Offer class. You should never have to use it
+     *
      * @param offer the offer to unselect. Nothing is done if the offer is not selected.
      */
-    public void unSelectOffer(Offer offer){
-        if(offer.equals(getSelectedOfferUnprotected())){
+    public void unSelectOffer(Offer offer) {
+        if (offer.equals(getSelectedOfferUnprotected())) {
             setSelectedOffer(null);
             dao.computeSelectedOffer();
         }
@@ -390,6 +411,13 @@ public final class Demand extends Kudosable {
      */
     public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+        return getContributionsUnprotected();
+    }
+
+    /**
+     * @see #getContribution()
+     */
+    private PageIterable<Contribution> getContributionsUnprotected() {
         return new ContributionList(dao.getContributionsFromQuery());
     }
 
@@ -475,7 +503,7 @@ public final class Demand extends Kudosable {
         return getOffersUnprotected();
     }
 
-    private PageIterable<Offer> getOffersUnprotected(){
+    private PageIterable<Offer> getOffersUnprotected() {
         return new OfferList(dao.getOffersFromQuery());
     }
 
@@ -490,6 +518,23 @@ public final class Demand extends Kudosable {
     public Offer getSelectedOffer() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
         return getSelectedOfferUnprotected();
+    }
+
+    /**
+     * A validated offer is an offer selected for more than one day. (If you are in
+     * {@link DemandState#DEVELOPPING} state then there should be always a validated
+     * offer.
+     *
+     * @return the validated offer or null if there is no valid offer.
+     * @throws UnauthorizedOperationException if you do not have the <code>READ</code>
+     *         right on the offer property
+     */
+    public Offer getValidatedOffer() throws UnauthorizedOperationException {
+        new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
+        if (dao.getSelectedOffer() != null && getValidationDate().before(new Date())) {
+            return getSelectedOfferUnprotected();
+        }
+        return null;
     }
 
     private Offer getSelectedOfferUnprotected() {

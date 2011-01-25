@@ -46,12 +46,11 @@ public final class DaoBatch extends DaoIdentifiable {
     private DaoDescription description;
 
     @ManyToOne(optional = false)
-    @Cascade(value = { CascadeType.ALL })
     private DaoOffer offer;
 
     /**
      * Create a DaoOffer.
-     * 
+     *
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must be non
@@ -100,4 +99,47 @@ public final class DaoBatch extends DaoIdentifiable {
         super();
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof DaoBatch)) {
+            return false;
+        }
+        DaoBatch other = (DaoBatch) obj;
+        if (amount == null) {
+            if (other.amount != null) {
+                return false;
+            }
+        } else if (!amount.equals(other.amount)) {
+            return false;
+        }
+        if (expirationDate == null) {
+            if (other.expirationDate != null) {
+                return false;
+            }
+        } else if (!expirationDate.equals(other.expirationDate)) {
+            return false;
+        }
+        return true;
+    }
 }

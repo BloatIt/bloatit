@@ -58,7 +58,7 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Create a new contribution. Update the internal account of the member (block the
      * value that is reserved to this contribution)
-     * 
+     *
      * @param member the person making the contribution.
      * @param demand the demand on which we add a contribution.
      * @param amount the amount of the contribution.
@@ -88,7 +88,7 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Set the state to ACCEPTED, and create the transaction. If there is not enough money
      * then throw and set the state to canceled.
-     * 
+     *
      * @param offer the offer that is accepted.
      * @throws NotEnoughMoneyException if there is not enough money to create the
      *         transaction.
@@ -130,6 +130,7 @@ public final class DaoContribution extends DaoUserContent {
         }
         try {
             getAuthor().getInternalAccount().unBlock(amount);
+            demand.cancelContribution(amount);
         } catch (final NotEnoughMoneyException e) {
             Log.data().fatal(e);
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
@@ -163,5 +164,46 @@ public final class DaoContribution extends DaoUserContent {
 
     protected DaoDemand getDemand() {
         return demand;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((demand == null) ? 0 : demand.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof DaoContribution)) {
+            return false;
+        }
+        DaoContribution other = (DaoContribution) obj;
+        if (amount == null) {
+            if (other.amount != null) {
+                return false;
+            }
+        } else if (!amount.equals(other.amount)) {
+            return false;
+        }
+        if (demand == null) {
+            if (other.demand != null) {
+                return false;
+            }
+        } else if (!demand.equals(other.demand)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
+import javassist.NotFoundException;
+import mockit.Mock;
+import mockit.Mockit;
+
 import com.bloatit.common.DateUtils;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.UnauthorizedOperationException;
@@ -13,6 +17,8 @@ import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDemand.DemandState;
 import com.bloatit.model.data.DaoDescription;
+import com.bloatit.model.data.DaoMember;
+import com.bloatit.model.data.DaoMember.Role;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
@@ -316,7 +322,14 @@ public class DemandTest extends FrameworkTestUnit {
         assertEquals(DemandState.PREPARING, demand.getDemandState());
     }
 
-    public void testBeginDev() throws NotEnoughMoneyException, UnauthorizedOperationException {
+    public static class MockDemandValidationTimeOut {
+        @Mock
+        public Date getValidationDate() {
+            return DateUtils.yesterday();
+        }
+    }
+
+    public void testBeginDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
         Demand demand = createDemandByThomas();
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
@@ -332,42 +345,142 @@ public class DemandTest extends FrameworkTestUnit {
         demand.addContribution(new BigDecimal("20"), "plip");
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
+        Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
+
         new TaskSelectedOfferTimeOut(demand, new Date());
+        FrameworkMutex.unLock();
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
+            FrameworkMutex.lock();
         } catch (InterruptedException e) {
             fail();
         }
 
+        Mockit.tearDownMocks();
+
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
     }
 
-    public void testRemoveOffer() {
-        fail("Not yet implemented");
+    public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
+        Demand demand = createDemandByThomas();
+        DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin", Locale.FRANCE);
+        admin.setRole(Role.ADMIN);
+        assertEquals(DemandState.PENDING, demand.getDemandState());
+
+        demand.authenticate(fredAuthToken);
+        demand.addContribution(new BigDecimal("100"), "plop");
+        assertEquals(DemandState.PENDING, demand.getDemandState());
+
+        demand.authenticate(tomAuthToken);
+        demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "description", DateUtils.tomorrow());
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
+
+        assertNotNull(demand.getSelectedOffer());
+
+        try {
+            demand.authenticate(tomAuthToken);
+            demand.removeOffer(demand.getSelectedOffer());
+            fail();
+        } catch (UnauthorizedOperationException e) {
+            assertTrue(true);
+        }
+
+        try {
+            demand.authenticate(new AuthToken("admin", "admin"));
+            demand.removeOffer(demand.getSelectedOffer());
+            assertTrue(true);
+        } catch (UnauthorizedOperationException e) {
+            fail();
+        }
+
+        assertEquals(0, demand.getOffers().size());
     }
 
-    public void testCancelDevelopment() {
-        fail("Not yet implemented");
+    public void testCancelDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        Demand demand = createDemandAddOffer120AddContribution120BeginDev();
+
+        try {
+            demand.cancelDevelopment();
+            fail();
+        } catch (UnauthorizedOperationException e) {
+            assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_CANCEL_DEMAND, e.getCode());
+        }
+
+        demand.authenticate(tomAuthToken);
+
+        assertEquals(new BigDecimal("120"), demand.getContribution());
+
+        demand.cancelDevelopment();
+
+        assertEquals(BigDecimal.ZERO, demand.getContribution());
+
+        assertEquals(DemandState.DISCARDED, demand.getDemandState());
+
     }
 
-    public void testFinishedDevelopment() {
-        fail("Not yet implemented");
+    private Demand createDemandAddOffer120AddContribution120BeginDev() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        Demand demand = createDemandByThomas();
+        assertEquals(DemandState.PENDING, demand.getDemandState());
+
+        demand.authenticate(fredAuthToken);
+        demand.addContribution(new BigDecimal("100"), "plop");
+        assertEquals(DemandState.PENDING, demand.getDemandState());
+
+        demand.authenticate(tomAuthToken);
+        demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "description", DateUtils.tomorrow());
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
+
+        demand.authenticate(yoAuthToken);
+        demand.addContribution(new BigDecimal("20"), "plip");
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
+
+        Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
+
+        new TaskSelectedOfferTimeOut(demand, new Date());
+        FrameworkMutex.unLock();
+        try {
+            Thread.sleep(1000);
+            FrameworkMutex.lock();
+        } catch (InterruptedException e) {
+            fail();
+        }
+
+        Mockit.tearDownMocks();
+
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        return demand;
     }
 
-    public void testAddComment() {
-        fail("Not yet implemented");
+    public void testFinishedDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        Demand demand = createDemandAddOffer120AddContribution120BeginDev();
+
+        try {
+            demand.finishedDevelopment();
+            fail();
+        } catch (UnauthorizedOperationException e) {
+            assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_DEMAND, e.getCode());
+        }
+
+        demand.authenticate(tomAuthToken);
+        demand.finishedDevelopment();
+
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertEquals(new BigDecimal("120"), demand.getContribution());
     }
 
-    public void testGetContributionMax() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetContributionMin() {
-        fail("Not yet implemented");
-    }
-
-    public void testGetSelectedOffer() {
-        fail("Not yet implemented");
-    }
-
+    // public void testAddComment() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetContributionMax() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetContributionMin() {
+    // fail("Not yet implemented");
+    // }
+    //
+    // public void testGetSelectedOffer() {
+    // fail("Not yet implemented");
+    // }
 }

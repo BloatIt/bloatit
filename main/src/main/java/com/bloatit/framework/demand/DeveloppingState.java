@@ -8,7 +8,7 @@ public class DeveloppingState extends AbstractDemandState {
 
     @Override
     public AbstractDemandState eventDevelopmentFinish() {
-        return new FinishedState(demand);
+        return new IncomeState(demand);
     }
 
     @Override

@@ -72,17 +72,17 @@ public final class DaoDemand extends DaoKudosable {
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
-    private Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
+    private final Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
     @OneToMany(mappedBy = "demand")
     @OrderBy(clause = "creationDate DESC")
     @Cascade(value = { CascadeType.ALL })
-    private Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
+    private final Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
-    private Set<DaoComment> comments = new HashSet<DaoComment>(0);
+    private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
      * The selected offer is the offer that is most likely to be validated and used. If an
@@ -131,7 +131,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     * 
+     *
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -152,7 +152,7 @@ public final class DaoDemand extends DaoKudosable {
     /**
      * Create a DaoDemand, add an offer and set its state to the state
      * {@link DemandState#PREPARING}.
-     * 
+     *
      * @param member is the author of the demand
      * @param description is the description ...
      * @param offer
@@ -178,7 +178,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a specification.
-     * 
+     *
      * @param member author (must be non null).
      * @param content a string contain the specification (WARNING : UNTESTED)(must be non
      *        null).
@@ -189,7 +189,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a new offer for this demand.
-     * 
+     *
      * @param member the author of the offer
      * @param amount the amount that the author want to make the offer
      * @param description this is a description of the offer
@@ -204,17 +204,22 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     * 
+     *
      * @param Offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
         offers.remove(offer);
+        if (offer.equals(selectedOffer)){
+            selectedOffer = null;
+        }
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
     }
 
+
+
     /**
      * Add a contribution to a demand.
-     * 
+     *
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -254,7 +259,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -349,6 +354,43 @@ public final class DaoDemand extends DaoKudosable {
 
     protected DaoDemand() {
         super();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof DaoDemand)) {
+            return false;
+        }
+        DaoDemand other = (DaoDemand) obj;
+        if (description == null) {
+            if (other.description != null) {
+                return false;
+            }
+        } else if (!description.equals(other.description)) {
+            return false;
+        }
+        return true;
+    }
+
+    void cancelContribution(BigDecimal amount) {
+        this.contribution = this.contribution.subtract(amount);
     }
 
 }

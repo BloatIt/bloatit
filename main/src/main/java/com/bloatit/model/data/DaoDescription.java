@@ -51,7 +51,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Create a daoDescription. Set the default locale to "locale"
-     * 
+     *
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
@@ -80,7 +80,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Get a translation for a given locale.
-     * 
+     *
      * @param locale the locale in which we want the description
      * @return null if no translation exists for this locale.
      */
@@ -117,4 +117,50 @@ public final class DaoDescription extends DaoIdentifiable {
     protected DaoDescription() {
         super();
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((defaultLocale == null) ? 0 : defaultLocale.hashCode());
+        result = prime * result + ((translations == null) ? 0 : translations.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof DaoDescription)) {
+            return false;
+        }
+        DaoDescription other = (DaoDescription) obj;
+        if (defaultLocale == null) {
+            if (other.defaultLocale != null) {
+                return false;
+            }
+        } else if (!defaultLocale.equals(other.defaultLocale)) {
+            return false;
+        }
+        if (translations == null) {
+            if (other.translations != null) {
+                return false;
+            }
+        } else if (!translations.equals(other.translations)) {
+            return false;
+        }
+        return true;
+    }
+
+
 }
