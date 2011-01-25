@@ -1,0 +1,28 @@
+@import "../include/constants";
+@import "../include/tools";
+
+#session_bar {
+    float:right;
+  
+    padding-top: 15px;
+    padding-bottom: 0.6em;
+
+}
+
+.session_bar_component {
+    padding-left: 1em;
+    padding-right: 1em;
+
+    border-left : 1px solid @border_color;
+}
+
+.session_bar_component:first-of-type {
+    border-left : none;
+}
+
+.session_bar_component .money .locale_money {
+    color: @money_color;
+    font-size: 0.7em;
+    vertical-align: super;
+    margin-left: 0.2em;
+}

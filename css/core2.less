@@ -8,26 +8,92 @@
 @import "core/notifications";
 @import "core/tabs";
 
+
+
 body {
     color: @default_text_color;
     font-family: @default_fonts;
-    //background-color: @default_background_color;
-    .vertical-gradient(rgb(230,230,230), rgb(250,250,250));
-    
+    background-color: @default_background_color;
+    //.vertical-gradient(rgb(230,230,230), rgb(250,250,250));
+
+
     overflow-y:scroll;
     
-    font-size:0.9em;
+    
     .no_insets;
 }
+
+
 
 #page {
     .no_insets;
 }
 
-#topbar {
-    clear: both;
+#header {
+    .no_insets;
+    .horizontal-gradient(@default_background_color, white);
 }
 
+#header_content {
+    .no_insets;
+    max-width: 1024px;
+    min-width: 200px;
+    margin: 0px auto;
+
+
+}
+
+#content {
+    .no_insets;
+    max-width: 1024px;
+    min-width: 200px;
+    margin: 0px auto;
+
+}
+
+
+#main_menu_block {
+    clear: both;
+    padding-top:20px;
+    padding-bottom:30px;
+
+
+    text-align : center;
+}
+
+#main_menu {
+
+
+
+    display:inline-block;
+    text-align:center;
+
+    border: 1px solid @border_color;
+
+    .rounded_corners(10px);
+    background-color: @light_background_color;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#menu_item {
+    display:table-cell;
+     .no_insets;
+    padding-left: 30px;
+    padding-right: 30px;  
+    padding-right: 30px;  
+    padding-top: 4px;
+    padding-bottom: 4px;
+    
+    border-left : 1px solid @border_color;
+
+}
+
+#menu_item:first-of-type {
+    border-left : none;
+}
+
+/*
 #footer {
     bottom: 0px;
     margin: 0;
@@ -41,11 +107,7 @@ body {
     
 }
 
-#header {
-    max-width: 1200px;
-    min-width: 200px;
-    margin: 0px auto;
-}
+
 
 #center {
     background-color: rgb(252,252,252);
@@ -104,4 +166,4 @@ body {
 
     background-color: rgb(255,255,255);
 }
-
+*/
