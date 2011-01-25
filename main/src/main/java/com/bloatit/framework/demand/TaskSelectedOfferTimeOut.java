@@ -2,6 +2,8 @@ package com.bloatit.framework.demand;
 
 import java.util.Date;
 
+import com.bloatit.common.Log;
+import com.bloatit.common.WrongDemandStateException;
 import com.bloatit.framework.PlannedTask;
 
 public class TaskSelectedOfferTimeOut extends PlannedTask {
@@ -15,7 +17,11 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
 
     @Override
     public void doRun() {
-        demand.selectedOfferTimeOut();
+        try {
+            demand.selectedOfferTimeOut();
+        } catch (WrongDemandStateException e) {
+            Log.framework().fatal(e);
+        }
     }
 
 }

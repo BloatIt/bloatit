@@ -1,9 +1,9 @@
 package com.bloatit.framework;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Locale;
 
+import com.bloatit.common.DateUtils;
 import com.bloatit.model.data.DaoComment;
 import com.bloatit.model.data.DaoContribution;
 import com.bloatit.model.data.DaoDemand;
@@ -90,7 +90,7 @@ public class SimpleTestDB {
             demand.addOffer(fred,
                             new BigDecimal("200"),
                             DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
-                            new Date());
+                            DateUtils.tomorrow());
 
             demand.getOffers().iterator().next().setState(State.VALIDATED);
 

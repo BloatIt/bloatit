@@ -55,7 +55,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     * 
+     *
      * @param member is the author of the offer. Must be non null.
      * @param demand is the demand on which this offer is made. Must be non null.
      * @param amount is the amount of the offer. Must be non null, and > 0.
@@ -71,7 +71,7 @@ public final class DaoOffer extends DaoKudosable {
             throw new NonOptionalParameterException();
         }
         this.demand = demand;
-        this.amount = amount;
+        this.amount = BigDecimal.ZERO; // Will be updated by addBatch
         this.expirationDate = dateExpire;
         addBatch(new DaoBatch(dateExpire, amount, description, this));
     }

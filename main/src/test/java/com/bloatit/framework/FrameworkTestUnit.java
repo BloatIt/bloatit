@@ -21,10 +21,12 @@ public class FrameworkTestUnit extends TestCase {
         fredAuthToken = new AuthToken("Fred", "other");
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
+        FrameworkMutex.lock();
     }
 
     @Override
     protected void tearDown() throws Exception {
+        FrameworkMutex.unLock();
         super.tearDown();
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
