@@ -47,6 +47,9 @@ public final class DaoOffer extends DaoKudosable {
     @DateBridge(resolution = Resolution.DAY)
     private Date expirationDate;
 
+    @Basic(optional = false)
+    private int currentBatch;
+
     /**
      * The amount represents the money the member want to have to make his offer. This is
      * a calculated field used for performance speedup.
@@ -76,6 +79,7 @@ public final class DaoOffer extends DaoKudosable {
         this.amount = BigDecimal.ZERO; // Will be updated by addBatch
         this.expirationDate = dateExpire;
         addBatch(new DaoBatch(dateExpire, amount, description, this));
+        this.currentBatch = 0;
     }
 
     /**
@@ -96,6 +100,22 @@ public final class DaoOffer extends DaoKudosable {
             expirationDate = expiration;
         }
         batches.add(batch);
+    }
+
+    public DaoBatch getCurrentBatch(){
+        return batches.get(currentBatch);
+    }
+
+    public boolean hasBatchesLeft(){
+        return currentBatch < batches.size();
+    }
+
+    public void passToNextBatch(){
+        currentBatch++;
+    }
+
+    public void cancelEverythingLeft(){
+        currentBatch = batches.size();
     }
 
     /**

@@ -7,9 +7,10 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.lists.BatchList;
 import com.bloatit.model.data.DaoBatch;
-import com.bloatit.model.data.DaoBatch.State;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
+
+// TODO rightManagement
 
 public final class Offer extends Kudosable {
 
@@ -52,40 +53,28 @@ public final class Offer extends Kudosable {
     }
 
     public boolean hasBatchLeft() {
-        return getCurrentDaoBatch() != null;
+        return findCurrentDaoBatch() != null;
     }
 
-    // public Batch getCurrentBatch() {
-    // return Batch.create(getCurrentDaoBatch());
-    // }
-
-    public void voteUp(Actor actor){
-        getCurrentDaoBatch().vote(actor.getDao(), true);
-    }
-
-    public void voteDown(Actor actor){
-        getCurrentDaoBatch().vote(actor.getDao(), false);
-    }
-
-    public void currentBatchDone() {
-        getCurrentDaoBatch().setState(State.DONE);
-    }
-
-    public void currentBatchDevelopping() {
-        getCurrentDaoBatch().setState(State.DEVELOPPING);
-    }
-
-    public void cancel() {
-        for (DaoBatch batch : dao.getBatches()) {
-            batch.setState(State.CANCELED);
+    public void closeCurrentBatch(boolean valide) {
+        if (valide) {
+            if (dao.hasBatchesLeft()) {
+                getDemand().setOfferIsValidated();
+            } else {
+                getDemand().setBatchIsValidated();
+            }
+        } else {
+            getDemand().setBatchIsRejected();
         }
     }
 
-    private DaoBatch getCurrentDaoBatch() {
-        for (DaoBatch batch : dao.getBatches()) {
-            if (batch.getState() == State.PENDING || batch.getState() == State.DEVELOPPING) {
-                return batch;
-            }
+    public void cancelEverythingLeft() {
+        dao.cancelEverythingLeft();
+    }
+
+    private DaoBatch findCurrentDaoBatch() {
+        if (dao.hasBatchesLeft()) {
+            return dao.getCurrentBatch();
         }
         return null;
     }

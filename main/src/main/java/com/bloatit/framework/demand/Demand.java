@@ -9,7 +9,7 @@ import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.common.UnauthorizedOperationException.SpecialCode;
-import com.bloatit.common.WrongDemandStateException;
+import com.bloatit.common.WrongStateException;
 import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.Contribution;
@@ -33,6 +33,8 @@ import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 // TODO : delete comment.
+//
+
 /**
  * A demand is an idea :)
  */
@@ -184,7 +186,7 @@ public final class Demand extends Kudosable {
      *        Must be in the future.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#WRITE} right on the <code>Offer</code> property.
-     * @throws WrongDemandStateException if the state is != from
+     * @throws WrongStateException if the state is != from
      *         {@link DemandState#PENDING} or {@link DemandState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
@@ -246,7 +248,7 @@ public final class Demand extends Kudosable {
         }
     }
 
-    public void finishedDevelopment() throws UnauthorizedOperationException {
+    public void finishDevelopment() throws UnauthorizedOperationException {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_FINISHED_DEMAND);
         }
@@ -254,13 +256,8 @@ public final class Demand extends Kudosable {
             throw new FatalErrorException("There is no batch left for this Offer !");
         }
 
-        getSelectedOfferUnprotected().currentBatchDone();
-
-        if(getSelectedOfferUnprotected().hasBatchLeft()){
-            stateObject = stateObject.eventBatchDevelopmentFinished();
-        }else{
-            stateObject = stateObject.eventDevelopmentFinished();
-        }
+        stateObject = stateObject.eventBatchDevelopmentFinished();
+        // The offer really don't care to know if the current batch is under development or not.
     }
 
     /**
@@ -315,7 +312,7 @@ public final class Demand extends Kudosable {
      */
     void inDevelopmentState() {
         dao.setDemandState(DemandState.DEVELOPPING);
-        new TaskDevelopmentTimeOut(this, getDao().getSelectedOffer().getExpirationDate());
+        new TaskDevelopmentTimeOut(this, getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
     }
 
     /**
@@ -359,7 +356,7 @@ public final class Demand extends Kudosable {
      * Called by a {@link PlannedTask}
      */
     void developmentTimeOut() {
-        stateObject = stateObject.eventDevelopmentFinished();
+        stateObject = stateObject.eventBatchDevelopmentFinished();
     }
 
     /**
@@ -394,6 +391,24 @@ public final class Demand extends Kudosable {
         this.dao.setValidationDate(validationDate);
         this.dao.setSelectedOffer(offer.getDao());
     }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Offer feedBack
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public void setOfferIsValidated(){
+        stateObject = stateObject.eventOfferIsValidated();
+    }
+
+    public void setBatchIsValidated(){
+        stateObject = stateObject.eventBatchIsValidated();
+    }
+
+    public void setBatchIsRejected() {
+        stateObject = stateObject.eventBatchIsRejected();
+    }
+
+
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Get something
@@ -577,5 +592,4 @@ public final class Demand extends Kudosable {
     protected DaoKudosable getDaoKudosable() {
         return dao;
     }
-
 }

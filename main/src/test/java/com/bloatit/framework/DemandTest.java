@@ -455,14 +455,14 @@ public class DemandTest extends FrameworkTestUnit {
         Demand demand = createDemandAddOffer120AddContribution120BeginDev();
 
         try {
-            demand.finishedDevelopment();
+            demand.finishDevelopment();
             fail();
         } catch (UnauthorizedOperationException e) {
             assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_DEMAND, e.getCode());
         }
 
         demand.authenticate(tomAuthToken);
-        demand.finishedDevelopment();
+        demand.finishDevelopment();
 
         assertEquals(DemandState.INCOME, demand.getDemandState());
         assertEquals(new BigDecimal("120"), demand.getContribution());

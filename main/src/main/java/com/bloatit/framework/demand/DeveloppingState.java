@@ -7,11 +7,6 @@ public class DeveloppingState extends AbstractDemandState {
     }
 
     @Override
-    public AbstractDemandState eventDevelopmentFinished() {
-        return new IncomeState(demand);
-    }
-
-    @Override
     public AbstractDemandState eventBatchDevelopmentFinished() {
         return new IncomeState(demand);
     }

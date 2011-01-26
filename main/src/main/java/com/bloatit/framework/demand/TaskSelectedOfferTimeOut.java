@@ -3,7 +3,7 @@ package com.bloatit.framework.demand;
 import java.util.Date;
 
 import com.bloatit.common.Log;
-import com.bloatit.common.WrongDemandStateException;
+import com.bloatit.common.WrongStateException;
 import com.bloatit.framework.PlannedTask;
 
 public class TaskSelectedOfferTimeOut extends PlannedTask {
@@ -20,7 +20,7 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
         try {
             System.out.println(demand);
             demand.selectedOfferTimeOut();
-        } catch (WrongDemandStateException e) {
+        } catch (WrongStateException e) {
             Log.framework().fatal(e);
         }
     }

@@ -2,14 +2,10 @@ package com.bloatit.model.data;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
@@ -21,15 +17,12 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.common.DateUtils;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 
 @Entity
 public final class DaoBatch extends DaoIdentifiable {
-
-    public enum State {
-        PENDING, DEVELOPPING, DONE, CANCELED
-    }
 
     /**
      * After this date, the Batch should be done.
@@ -39,19 +32,25 @@ public final class DaoBatch extends DaoIdentifiable {
     @DateBridge(resolution = Resolution.DAY)
     private Date expirationDate;
 
+    private Date releaseDate;
+
+    @Basic(optional = false)
+    private int secondBeforeValidation;
+
+    private int nbMaxFatalBugs;
+    private int fatalBugsPercent;
+
+    private int nbMaxMajorBugs;
+    private int majorBugsPercent;
+
+    private int nbMaxMinorBugs;
+    private int minorBugsPercent;
+
     /**
      * The amount represents the money the member want to have to make his offer.
      */
     @Basic(optional = false)
     private BigDecimal amount;
-
-    @Basic(optional = false)
-    @Enumerated
-    private State state;
-
-    @OneToMany(mappedBy = "batch")
-    @Cascade(value = { CascadeType.ALL })
-    private Set<DaoBatchVote> votes = new HashSet<DaoBatchVote>(0);
 
     /**
      * Remember a description is a title with some content. (Translatable)
@@ -89,7 +88,10 @@ public final class DaoBatch extends DaoIdentifiable {
         this.amount = amount;
         this.description = description;
         this.offer = offer;
-        this.setState(State.PENDING);
+        this.nbMaxFatalBugs = 0;
+        this.nbMaxMajorBugs = Integer.MAX_VALUE;
+        this.nbMaxMinorBugs = Integer.MAX_VALUE;
+        this.secondBeforeValidation = DateUtils.SECOND_PER_WEEK;
     }
 
     public Date getExpirationDate() {
@@ -106,39 +108,6 @@ public final class DaoBatch extends DaoIdentifiable {
 
     public DaoOffer getOffer() {
         return offer;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public boolean hasVoted(DaoActor actor) {
-        // false is ignored in the equals and hashcode.
-        return votes.contains(new DaoBatchVote(actor, this, false));
-    }
-
-    public void vote(DaoActor actor, boolean positif) {
-        if (!hasVoted(actor)) {
-            votes.add(new DaoBatchVote(actor, this, positif));
-        } else {
-            throw new FatalErrorException("Actor has already voted.");
-        }
-    }
-
-    public int getVoteResult() {
-        int result = 0;
-        for (DaoBatchVote vote : votes) {
-            if (vote.isPositif()) {
-                result++;
-            } else {
-                result--;
-            }
-        }
-        return result;
     }
 
     // ======================================================================
