@@ -3,14 +3,29 @@
     <head>
       <meta content="text/html;charset=utf-8" http-equiv="content-type"></meta>
     
-      <link rel="stylesheet" type="text/css" media="handheld, all" href="/resources/css/core2.css"></link>
+      <link rel="stylesheet" type="text/css" media="handheld, all" href="/resources/css/core.css"></link>
     
       <link rel="stylesheet" type="text/css" media="handheld, all" href="/resources/css/demand.css"></link>
     
       <title>Linkeos - Afficher en m&#234;me temps un sous-titre en anglais et un sous-titre en n&#233;erlandais</title>
+
+<script type="text/javascript">     
+      function showHide(shID) {
+	if (document.getElementById(shID)) {
+		if (document.getElementById(shID).style.display != 'block') {
+			document.getElementById(shID).style.display = 'block';
+		}
+		else {
+			document.getElementById(shID).style.display = 'none';
+		}
+	}
+}
+ </script>
+
     </head>
   
     <body>
+     
 
     <div id="header" class="header">
         <div id="header_content" class="header_content">
@@ -124,13 +139,287 @@
                     </div>
                     </div>
                     <div class="demand_summary_share">
-                        <a href=#>+&nbsp;Partager</a>
-                    </share>
+                        <a href="javascript:showHide('demand_summary_share')">+&nbsp;Partager</a>
+                    </div>
+                </div>
+                <div id="demand_summary_share">
+                <div class="share_item" >
+                    <div class="identica" style="background-color: white;
+    border: 1px solid #ddd;display:inline-block;">
+    <a href="javascript:(function(){var%20d=document,w=window,e=w.getSelection,k=d.getSelection,x=d.selection,s=(e?e():(k)?k():(x?x.createRange().text:0)),f='http://identi.ca//index.php?action=bookmarklet',l=d.location,e=encodeURIComponent,g=f+'&status_textarea=%E2%80%9C'+((e(s))?e(s):e(document.title))+'%E2%80%9D%20%E2%80%94%20'+l.href;function%20a(){if(!w.open(g,'t','toolbar=0,resizable=0,scrollbars=1,status=1,width=450,height=200')){l.href=g;}}a();})()"><img src="http://www.nuxified.org/images/identica.png" style="border:none;"/></a>
+                    </div>
+                </div>
+                <div class="share_item" >
+                    <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+                </div>
+                <div class="share_item" >
+                    <a title="Publier sur Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="small-count" data-locale="fr"></a>
+<script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
+                </div>
+                <div class="share_item">
+                    <script type="text/javascript">
+                    (function() {
+                    var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
+                    s.type = 'text/javascript';
+                    s.async = true;
+                    s.src = 'http://widgets.digg.com/buttons.js';
+                    s1.parentNode.insertBefore(s, s1);
+                    })();
+                    </script>
+                    <!-- Compact Button -->
+                    <a class="DiggThisButton DiggCompact"></a>
                 </div>
             </div>
         </div>
+        
+        <div class="demand_body">
+                  <div class="tab_panel">
+
+                    <div class="tab_header">
+                      <div class="active_tab_title">
+                        <div class="active_tab_title_content">Description</div>
+                      </div>
+                    
+                      <div class="inactive_tab_title">
+                        <a href="/fr/idea/id-9/demand_tab_key-participations_tab">
+                          <div class="inactive_tab_title_content">Participations (15)</div>
+                        </a>
+
+                      </div>
+                    
+                      <div class="inactive_tab_title">
+                        <a href="/fr/idea/id-9/demand_tab_key-offer_tab">
+                          <div class="inactive_tab_title_content">Offres (2)</div>
+                        </a>
+                      </div>
+                      <div class="inactive_tab_title">
+                        <a href="/fr/idea/id-9/demand_tab_key-offer_tab">
+                          <div class="inactive_tab_title_content">Détails</div>
+                        </a>
+                      </div>
+                    </div>
+                  
+                    <div class="tab_body">
+
+                      <div>
+                        <div class="description_block">
+                          <div class="description_details">
+                            <a href="/fr/member/id-4">Cho&apos;gall</a>
+                          
+                            <p class="description_date">24 janv. 2011</p>
+                          </div>
+                        
+                          <p>Offrir la possibilit&#233; d&apos;afficher deux sous-titre &#224; la fois dans VLC.
+
+<br />
+
+<br />
+Afin de m&apos;entrainer &#224; parler anglais et n&#233;erlandais &#224; la fois, je souhaite pouvoir afficher les sous-titre de ces deux langues en m&#234;me temps dans VLC.
+<br />
+Parce que je suis tr&#232;s gentil, si on peut afficher deux sous-titre de n&apos;importe quelle langue &#231;a m&apos;ira aussi (si le n&#233;erlandais font bien s&#251;r partis des langues support&#233;es).
+
+<br />
+
+<br />
+Les fichiers de sous titre lus doivent &#234;tre s&#233;par&#233;s. Je ne veux pas avoir &#224; utiliser un logiciel quelconque qui combinera les sous titres. Je veux juste pouvoir clicker sur le bouton &quot;sous-titre&quot;, cocher une case &quot;afficher deux sous-titre simultan&#233;ment&quot; (wording &#224; revoir) et voil&#224; (ndt : en anglais dans le texte).
+
+<br />
+
+<br />
+Notes :
+<br />
+- Les sous-titres pourront &#234;tre dans des formats diff&#233;rents.
+<br />
+- Les sous-titres pourront ne pas &#234;tre synchronis&#233;s exactement de la m&#234;me mani&#232;re (un sous-titre pourra changer alors que le pr&#233;c&#233;dent est encore affich&#233;)
+
+<br />
+
+<br />
+J&apos;aimerais que ce soit impl&#233;ment&#233; dans la semaine, je suis en-effet en train de me pr&#233;parer &#224; un concours extr&#232;mement complexe (le concours de la bic&#233;phalie) qui aura lieu dans 3 semaines, et j&apos;ai besoin d&apos;au moins deux semaines pour maitriser parfaitement ces deux langues (j&apos;ai pu apprendre le Chinois et l&apos;Arabe en 3 jours auparavant, mais le n&#233;erlandais est quand m&#234;me tr&#232;s complexe).</p>
+
+                        
+                          <div class="description_footer"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+<div class="comments_block">
+                    <h2 class="comments_title">Commentaires</h2>
+                  
+                    <div class="main_comment_block">
+
+                      <div class="comment_kudo_block">
+                        <div class="kudo_box">
+                          <a title="kudo down" href="/fr/action/kudo/targetKudosable-13">
+                            <div class="kudo_box_up"></div>
+                          </a>
+                        
+                          <p class="kudo_box_score">1</p>
+                        
+                          <a href="/fr/action/kudo/targetKudosable-13">
+                            <div class="kudo_box_down"></div>
+
+                          </a>
+                        </div>
+                      </div>
+                    
+                      <p>Super id&#233;e !
+<br />
+J&apos;ai exactement le m&#234;me besoin mais avec 3 langues. Du coup pour &#234;tre un peu g&#233;n&#233;rique, je propose d&apos;avoir la possibilit&#233; de s&#233;lectionner n langues. Je connais un ami qui apprend en-effet l&apos;aram&#233;en, le latin, le grec, l&apos;h&#233;breu, le le haut-sindarin et l&apos;&#233;gyptien et qui serait sans doute preneur aussi.
+                        <div class="comment_info">
+
+                          <span class="comment_date">24 janv. 2011</span>
+                        
+                          <span class="comment_author">Cerb&#232;re</span>
+                        </div>
+                      </p>
+                    
+                      <div class="child_comment_block">
+                        <div class="comment_kudo_block">
+                          <div class="kudo_box">
+
+                            <a title="kudo down" href="/fr/action/kudo/targetKudosable-17">
+                              <div class="kudo_box_up"></div>
+                            </a>
+                          
+                            <p class="kudo_box_score">0</p>
+                          
+                            <a href="/fr/action/kudo/targetKudosable-17">
+                              <div class="kudo_box_down"></div>
+                            </a>
+                          </div>
+
+                        </div>
+                      
+                        <p>Je suis l&apos;ami de Cerb&#232;re qui a post&#233; ci-dessus et qui apprend des langues mortes. Je trouverais &#231;a g&#233;nial , mais il est indispensable de pouvoir r&#233;duire la taille du texte.
+<br />
+Je propose de forker cette demande pour inclure les demandes de changement (nombre de sous-titre non d&#233;fini et taille des sous-titre d&#233;finissable)
+                          <div class="comment_info">
+                            <span class="comment_date">24 janv. 2011</span>
+
+                          
+                            <span class="comment_author">Hydre</span>
+                          </div>
+                        </p>
+                      </div>
+                    
+                      <div class="child_comment_block">
+                        <div class="comment_kudo_block">
+                          <div class="kudo_box">
+                            <a title="kudo down" href="/fr/action/kudo/targetKudosable-22">
+
+                              <div class="kudo_box_up"></div>
+                            </a>
+                          
+                            <p class="kudo_box_score">0</p>
+                          
+                            <a href="/fr/action/kudo/targetKudosable-22">
+                              <div class="kudo_box_down"></div>
+                            </a>
+                          </div>
+                        </div>
+
+                      
+                        <p>OK pour moi, j&apos;aurais d&#251; y penser d&#232;s le d&#233;but, j&apos;ai merd&#233;, j&apos;avais mon cerveau gauche qui avait bu trop de vodka.
+                          <div class="comment_info">
+                            <span class="comment_date">24 janv. 2011</span>
+                          
+                            <span class="comment_author">Cho&apos;gall</span>
+
+                          </div>
+                        </p>
+                      </div>
+                    
+                      <div class="comment_reply">
+                        <a class="button" href="/fr/comment/reply/target-13">reply</a>
+                      </div>
+                    </div>
+                  
+                    <div class="main_comment_block">
+
+                      <div class="comment_kudo_block">
+                        <div class="kudo_box">
+                          <a title="kudo down" href="/fr/action/kudo/targetKudosable-21">
+                            <div class="kudo_box_up"></div>
+                          </a>
+                        
+                          <p class="kudo_box_score">1</p>
+                        
+                          <a href="/fr/action/kudo/targetKudosable-21">
+                            <div class="kudo_box_down"></div>
+
+                          </a>
+                        </div>
+                      </div>
+                    
+                      <p>Elle est naze votre id&#233;e, moi j&apos;apprends une langue en 2.53 minutes (moyenne v&#233;rifi&#233;e sur un &#233;chantillon de 353 langues) du coup autant afficher un seul sous-titre &#224; la fois
+                        <div class="comment_info">
+                          <span class="comment_date">24 janv. 2011</span>
+
+                        
+                          <span class="comment_author">ElephantMan</span>
+                        </div>
+                      </p>
+                    
+                      <div class="child_comment_block">
+                        <div class="comment_kudo_block">
+                          <div class="kudo_box">
+                            <a title="kudo down" href="/fr/action/kudo/targetKudosable-24">
+                              <div class="kudo_box_up"></div>
+
+                            </a>
+                          
+                            <p class="kudo_box_score">0</p>
+                          
+                            <a href="/fr/action/kudo/targetKudosable-24">
+                              <div class="kudo_box_down"></div>
+                            </a>
+                          </div>
+                        </div>
+                      
+                        <p>On ne peut pas vaincre un &#233;l&#233;phant ! Abandonnons cette demande !
+                          <div class="comment_info">
+
+                            <span class="comment_date">24 janv. 2011</span>
+                          
+                            <span class="comment_author">Cho&apos;gall</span>
+                          </div>
+                        </p>
+                      </div>
+                    
+                      <div class="comment_reply">
+                        <a class="button" href="/fr/comment/reply/target-21">reply</a>
+
+                      </div>
+                    </div>
+                  
+                    <div class="new_comment_block">
+                      <form action="/fr/idea/docomment/target-9" method="post">
+                        <div class="field">
+                          <div class="label">
+                            <label for="b2mhpnpfc5">Comment : </label>
+                          </div>
+
+                        
+                          <div class="input">
+                            <textarea id="b2mhpnpfc5" cols="80" name="bloatit_comment_content" rows="10"></textarea>
+                          </div>
+                        </div>
+                      
+                        <div class="field">
+                        <input value="Submit comment" type="submit"/>
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+
+         </div>
+                  </div>
+        
         <div id="footer">Ce site internet est sous la GNU Affero Public licence.</div>
-        </div>
+
     </body>
   </html>
 
