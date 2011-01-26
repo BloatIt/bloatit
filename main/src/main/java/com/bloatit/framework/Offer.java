@@ -59,6 +59,14 @@ public final class Offer extends Kudosable {
     // return Batch.create(getCurrentDaoBatch());
     // }
 
+    public void voteUp(Actor actor){
+        getCurrentDaoBatch().vote(actor.getDao(), true);
+    }
+
+    public void voteDown(Actor actor){
+        getCurrentDaoBatch().vote(actor.getDao(), false);
+    }
+
     public void currentBatchDone() {
         getCurrentDaoBatch().setState(State.DONE);
     }
