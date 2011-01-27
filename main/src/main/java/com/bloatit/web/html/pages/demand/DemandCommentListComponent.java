@@ -20,12 +20,12 @@ import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 
-public final class IdeaCommentListComponent extends HtmlPageComponent {
+public final class DemandCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
     private final Demand targetIdea;
 
-    public IdeaCommentListComponent(final Demand demand) {
+    public DemandCommentListComponent(final Demand demand) {
         super();
         this.targetIdea = demand;
         try {

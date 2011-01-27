@@ -22,7 +22,7 @@ import com.bloatit.web.utils.url.IdeaPageUrl;
 import com.bloatit.web.utils.url.IdeaTabPaneUrl;
 
 @ParamContainer(value = "demandTabPane", isComponent = true)
-public final class IdeaTabPane extends HtmlPageComponent {
+public final class DemandTabPane extends HtmlPageComponent {
 
     @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
     private String activeTabKey;
@@ -33,7 +33,7 @@ public final class IdeaTabPane extends HtmlPageComponent {
     @SuppressWarnings("unused")
     private IdeaContributorsComponent contribution;
 
-    public IdeaTabPane(final IdeaTabPaneUrl url, final Demand demand) {
+    public DemandTabPane(final IdeaTabPaneUrl url, final Demand demand) {
         super();
         activeTabKey = url.getActiveTabKey();
 
