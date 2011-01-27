@@ -100,7 +100,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
                 {
                     HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "demand_popularity_text");
-                    HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()), "demand_popularity_text");
+                    HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()), "demand_popularity_score");
 
                     final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
                     {
@@ -112,7 +112,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                         //Useless
                         KudoActionUrl uselessUrl = new KudoActionUrl(demand);
                         final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
-                        usefullLink.setCssClass("usefull");
+                        uselessLink.setCssClass("useless");
 
                         demandPopularityJudge.add(usefullLink);
                         demandPopularityJudge.add(uselessLink);
@@ -127,7 +127,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
                 //////////////////////
                 // Div demand_summary_progress
-                final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_popularity");
+                final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_progress");
                 {
 
                 }
