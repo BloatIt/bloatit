@@ -16,12 +16,16 @@ import com.bloatit.common.Image;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Translation;
 import com.bloatit.framework.demand.Demand;
+import com.bloatit.web.html.HtmlTools;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlImage;
+import com.bloatit.web.html.components.standard.HtmlLink;
+import com.bloatit.web.html.components.standard.HtmlParagraph;
 import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.url.KudoActionUrl;
 
 public final class DemandSummaryComponent extends HtmlPageComponent {
 
@@ -95,6 +99,28 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 // Div demand_summary_popularity
                 final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
                 {
+                    HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "demand_popularity_text");
+                    HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()), "demand_popularity_text");
+
+                    final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
+                    {
+                        //Usefull
+                        KudoActionUrl usefullUrl = new KudoActionUrl(demand);
+                        final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
+                        usefullLink.setCssClass("usefull");
+
+                        //Useless
+                        KudoActionUrl uselessUrl = new KudoActionUrl(demand);
+                        final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
+                        usefullLink.setCssClass("usefull");
+
+                        demandPopularityJudge.add(usefullLink);
+                        demandPopularityJudge.add(uselessLink);
+                    }
+
+                    demandSummaryPopularity.add(popularityText);
+                    demandSummaryPopularity.add(popularityScore);
+                    demandSummaryPopularity.add(demandPopularityJudge);
 
                 }
                 demandSummaryBottom.add(demandSummaryPopularity);
@@ -109,7 +135,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
                 //////////////////////
                 // Div demand_summary_share
-                final HtmlDiv demandSummaryShare = new HtmlDiv("demand_summary_share");
+                final HtmlDiv demandSummaryShare = new HtmlDiv("demand_summary_share_button");
                 {
 
                 }

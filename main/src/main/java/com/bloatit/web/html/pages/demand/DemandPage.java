@@ -20,7 +20,7 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
 
 @ParamContainer("demand")
 public final class DemandPage extends Page {
@@ -30,16 +30,16 @@ public final class DemandPage extends Page {
     @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
     private final Demand demand;
 
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "idea")
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
     private final String title;
 
     private DemandTabPane demandTabPane;
-    private final IdeaPageUrl url;
+    private final DemandPageUrl url;
 
-    public DemandPage(final IdeaPageUrl url) {
+    public DemandPage(final DemandPageUrl url) {
         super(url);
         this.url = url;
-        demand = url.getIdea();
+        demand = url.getDemand();
         title = url.getTitle();
     }
 

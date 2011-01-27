@@ -18,8 +18,8 @@ import com.bloatit.web.html.components.custom.HtmlTabBlock;
 import com.bloatit.web.html.components.custom.HtmlTabBlock.HtmlTab;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.IdeaPageUrl;
-import com.bloatit.web.utils.url.IdeaTabPaneUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
+import com.bloatit.web.utils.url.DemandTabPaneUrl;
 
 @ParamContainer(value = "demandTabPane", isComponent = true)
 public final class DemandTabPane extends HtmlPageComponent {
@@ -33,11 +33,11 @@ public final class DemandTabPane extends HtmlPageComponent {
     @SuppressWarnings("unused")
     private IdeaContributorsComponent contribution;
 
-    public DemandTabPane(final IdeaTabPaneUrl url, final Demand demand) {
+    public DemandTabPane(final DemandTabPaneUrl url, final Demand demand) {
         super();
         activeTabKey = url.getActiveTabKey();
 
-        final IdeaPageUrl demandUrl = new IdeaPageUrl(demand);
+        final DemandPageUrl demandUrl = new DemandPageUrl(demand);
         demandUrl.setDemandTabPaneUrl(url);
 
         // Create tab pane
