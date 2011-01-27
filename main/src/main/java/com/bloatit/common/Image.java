@@ -27,8 +27,9 @@ public class Image {
     private final ImageType imageType;
 
     /**
-     * the identifier of the image. If image is local, the unique name of the image If
+     * @param identifier the identifier of the image. If image is local, the unique name of the image If
      * image is distant, the complete URI to the image
+     * @param imageType LOCAL or DISTANT
      */
     private final String identifier;
 
@@ -52,7 +53,7 @@ public class Image {
      * <p>
      * Should <i>always</i> be used <i>after</i> a call to isLocal.
      * </p>
-     * 
+     *
      * @return the identifier of the image
      * @see Image#isLocal()
      */
