@@ -169,9 +169,9 @@ public final class SCGIServer {
         display.append(" :\n");
 
         for (final StackTraceElement s : e.getStackTrace()) {
-            display.append("\t");
+            display.append('\t');
             display.append(s);
-            display.append("\n");
+            display.append('\n');
         }
 
         try {
