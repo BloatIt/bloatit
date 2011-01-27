@@ -5,6 +5,10 @@ import java.util.Date;
 
 public class DateUtils {
 
+    public static final int SECOND_PER_HOUR = 3600;
+    public static final int SECOND_PER_DAY = SECOND_PER_HOUR * 24;
+    public static final int SECOND_PER_WEEK = SECOND_PER_DAY * 7;
+
     public static Date yesterday() {
         return nowPlusSomeDays(-1);
     }

@@ -60,7 +60,7 @@ public abstract class DaoActor {
 
     /**
      * Initialize the creation date to now.
-     * 
+     *
      * @param login is the login or name of this actor
      * @param email is the email of this actor. (No check is performed on the correctness
      *        of this email address)
@@ -99,7 +99,7 @@ public abstract class DaoActor {
     /**
      * This method is used by hibernate. You can use it if you want to change the email.
      * (No check is performed on the correctness of the new email)
-     * 
+     *
      * @param email the new email.
      */
     public abstract void setEmail(final String email);
@@ -132,7 +132,7 @@ public abstract class DaoActor {
 
     /**
      * Set the external account for this actor.
-     * 
+     *
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
@@ -155,4 +155,41 @@ public abstract class DaoActor {
         super();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public final int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((login == null) ? 0 : login.hashCode());
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj.getClass().equals(getClass()))) {
+            return false;
+        }
+        DaoActor other = (DaoActor) obj;
+        if (login == null) {
+            if (other.login != null) {
+                return false;
+            }
+        } else if (!login.equals(other.login)) {
+            return false;
+        }
+        return true;
+    }
 }

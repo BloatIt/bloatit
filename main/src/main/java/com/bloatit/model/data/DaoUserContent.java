@@ -38,7 +38,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /**
      * Initialize the creation date to now.
-     * 
+     *
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */
@@ -77,5 +77,57 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     protected DaoUserContent() {
         super();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((asGroup == null) ? 0 : asGroup.hashCode());
+        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+        result = prime * result + ((member == null) ? 0 : member.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof DaoUserContent)) {
+            return false;
+        }
+        DaoUserContent other = (DaoUserContent) obj;
+        if (asGroup == null) {
+            if (other.asGroup != null) {
+                return false;
+            }
+        } else if (!asGroup.equals(other.asGroup)) {
+            return false;
+        }
+        if (creationDate == null) {
+            if (other.creationDate != null) {
+                return false;
+            }
+        } else if (!creationDate.equals(other.creationDate)) {
+            return false;
+        }
+        if (member == null) {
+            if (other.member != null) {
+                return false;
+            }
+        } else if (!member.equals(other.member)) {
+            return false;
+        }
+        return true;
     }
 }

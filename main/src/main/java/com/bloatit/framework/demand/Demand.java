@@ -5,10 +5,11 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.common.DateUtils;
+import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.common.UnauthorizedOperationException.SpecialCode;
-import com.bloatit.common.WrongDemandStateException;
+import com.bloatit.common.WrongStateException;
 import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.Contribution;
@@ -32,6 +33,8 @@ import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
 // TODO : delete comment.
+//
+
 /**
  * A demand is an idea :)
  */
@@ -183,7 +186,7 @@ public final class Demand extends Kudosable {
      *        Must be in the future.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#WRITE} right on the <code>Offer</code> property.
-     * @throws WrongDemandStateException if the state is != from
+     * @throws WrongStateException if the state is != from
      *         {@link DemandState#PENDING} or {@link DemandState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
@@ -222,14 +225,39 @@ public final class Demand extends Kudosable {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_DEMAND);
         }
+        cancel();
         stateObject = stateObject.eventDeveloperCanceled();
     }
 
-    public void finishedDevelopment() throws UnauthorizedOperationException {
+    /**
+     * Cancel all the contribution on this demand.
+     */
+    private void cancel() {
+        for (Contribution contribution : getContributionsUnprotected()) {
+            contribution.cancel();
+        }
+    }
+
+    /**
+     * Accept all the contribution on this demand.
+     * @throws NotEnoughMoneyException
+     */
+    private void accept() throws NotEnoughMoneyException {
+        for (Contribution contribution : getContributionsUnprotected()) {
+            contribution.accept(getSelectedOfferUnprotected());
+        }
+    }
+
+    public void finishDevelopment() throws UnauthorizedOperationException {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_FINISHED_DEMAND);
         }
-        stateObject = stateObject.eventDevelopmentFinish();
+        if(!getSelectedOfferUnprotected().hasBatchLeft()){
+            throw new FatalErrorException("There is no batch left for this Offer !");
+        }
+
+        stateObject = stateObject.eventBatchDevelopmentFinished();
+        // The offer really don't care to know if the current batch is under development or not.
     }
 
     /**
@@ -264,10 +292,11 @@ public final class Demand extends Kudosable {
 
     /**
      * Used by Offer class. You should never have to use it
+     *
      * @param offer the offer to unselect. Nothing is done if the offer is not selected.
      */
-    public void unSelectOffer(Offer offer){
-        if(offer.equals(getSelectedOfferUnprotected())){
+    public void unSelectOffer(Offer offer) {
+        if (offer.equals(getSelectedOfferUnprotected())) {
             setSelectedOffer(null);
             dao.computeSelectedOffer();
         }
@@ -283,7 +312,7 @@ public final class Demand extends Kudosable {
      */
     void inDevelopmentState() {
         dao.setDemandState(DemandState.DEVELOPPING);
-        new TaskDevelopmentTimeOut(this, getDao().getSelectedOffer().getExpirationDate());
+        new TaskDevelopmentTimeOut(this, getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
     }
 
     /**
@@ -327,7 +356,7 @@ public final class Demand extends Kudosable {
      * Called by a {@link PlannedTask}
      */
     void developmentTimeOut() {
-        stateObject = stateObject.eventDevelopmentFinish();
+        stateObject = stateObject.eventBatchDevelopmentFinished();
     }
 
     /**
@@ -364,6 +393,24 @@ public final class Demand extends Kudosable {
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
+    // Offer feedBack
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public void setOfferIsValidated(){
+        stateObject = stateObject.eventOfferIsValidated();
+    }
+
+    public void setBatchIsValidated(){
+        stateObject = stateObject.eventBatchIsValidated();
+    }
+
+    public void setBatchIsRejected() {
+        stateObject = stateObject.eventBatchIsRejected();
+    }
+
+
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
     // Get something
     // /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -390,6 +437,13 @@ public final class Demand extends Kudosable {
      */
     public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+        return getContributionsUnprotected();
+    }
+
+    /**
+     * @see #getContribution()
+     */
+    private PageIterable<Contribution> getContributionsUnprotected() {
         return new ContributionList(dao.getContributionsFromQuery());
     }
 
@@ -475,7 +529,7 @@ public final class Demand extends Kudosable {
         return getOffersUnprotected();
     }
 
-    private PageIterable<Offer> getOffersUnprotected(){
+    private PageIterable<Offer> getOffersUnprotected() {
         return new OfferList(dao.getOffersFromQuery());
     }
 
@@ -490,6 +544,23 @@ public final class Demand extends Kudosable {
     public Offer getSelectedOffer() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
         return getSelectedOfferUnprotected();
+    }
+
+    /**
+     * A validated offer is an offer selected for more than one day. (If you are in
+     * {@link DemandState#DEVELOPPING} state then there should be always a validated
+     * offer.
+     *
+     * @return the validated offer or null if there is no valid offer.
+     * @throws UnauthorizedOperationException if you do not have the <code>READ</code>
+     *         right on the offer property
+     */
+    public Offer getValidatedOffer() throws UnauthorizedOperationException {
+        new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
+        if (dao.getSelectedOffer() != null && getValidationDate().before(new Date())) {
+            return getSelectedOfferUnprotected();
+        }
+        return null;
     }
 
     private Offer getSelectedOfferUnprotected() {
@@ -521,5 +592,4 @@ public final class Demand extends Kudosable {
     protected DaoKudosable getDaoKudosable() {
         return dao;
     }
-
 }

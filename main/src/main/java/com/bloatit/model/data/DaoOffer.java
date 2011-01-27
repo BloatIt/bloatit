@@ -1,15 +1,16 @@
 package com.bloatit.model.data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
@@ -17,6 +18,7 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.common.DateUtils;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.NonOptionalParameterException;
@@ -35,7 +37,8 @@ public final class DaoOffer extends DaoKudosable {
     private DaoDemand demand;
 
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
-    private final Set<DaoBatch> batches = new HashSet<DaoBatch>();
+    @OrderBy("expirationDate ASC")
+    private final List<DaoBatch> batches = new ArrayList<DaoBatch>();
 
     /**
      * The expirationDate is calculated from the batches variables.
@@ -44,6 +47,9 @@ public final class DaoOffer extends DaoKudosable {
     @Field(index = Index.UN_TOKENIZED, store = Store.YES)
     @DateBridge(resolution = Resolution.DAY)
     private Date expirationDate;
+
+    @Basic(optional = false)
+    private int currentBatch;
 
     /**
      * The amount represents the money the member want to have to make his offer. This is
@@ -73,7 +79,8 @@ public final class DaoOffer extends DaoKudosable {
         this.demand = demand;
         this.amount = BigDecimal.ZERO; // Will be updated by addBatch
         this.expirationDate = dateExpire;
-        addBatch(new DaoBatch(dateExpire, amount, description, this));
+        addBatch(new DaoBatch(dateExpire, amount, description, this, DateUtils.SECOND_PER_WEEK));
+        this.currentBatch = 0;
     }
 
     /**
@@ -94,6 +101,22 @@ public final class DaoOffer extends DaoKudosable {
             expirationDate = expiration;
         }
         batches.add(batch);
+    }
+
+    public DaoBatch getCurrentBatch(){
+        return batches.get(currentBatch);
+    }
+
+    public boolean hasBatchesLeft(){
+        return currentBatch < batches.size();
+    }
+
+    public void passToNextBatch(){
+        currentBatch++;
+    }
+
+    public void cancelEverythingLeft(){
+        currentBatch = batches.size();
     }
 
     /**
@@ -118,4 +141,57 @@ public final class DaoOffer extends DaoKudosable {
     public DaoDemand getDemand() {
         return demand;
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((demand == null) ? 0 : demand.hashCode());
+        result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        DaoOffer other = (DaoOffer) obj;
+        if (amount == null) {
+            if (other.amount != null) {
+                return false;
+            }
+        } else if (!amount.equals(other.amount)) {
+            return false;
+        }
+        if (demand == null) {
+            if (other.demand != null) {
+                return false;
+            }
+        } else if (!demand.equals(other.demand)) {
+            return false;
+        }
+        if (expirationDate == null) {
+            if (other.expirationDate != null) {
+                return false;
+            }
+        } else if (!expirationDate.equals(other.expirationDate)) {
+            return false;
+        }
+        return true;
+    }
+
 }

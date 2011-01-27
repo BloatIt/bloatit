@@ -19,4 +19,9 @@ public class IncomeState extends AbstractDemandState {
         return new DiscardedState(demand);
     }
 
+    @Override
+    public AbstractDemandState eventCloseBatch(final boolean accepted){
+        return new DeveloppingState(demand);
+    }
+
 }

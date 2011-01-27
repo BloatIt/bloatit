@@ -38,7 +38,7 @@ public final class DaoTranslation extends DaoKudosable {
 
     /**
      * Create a new translation.
-     * 
+     *
      * @param member
      * @param description
      * @param locale
@@ -82,6 +82,60 @@ public final class DaoTranslation extends DaoKudosable {
 
     protected DaoDescription getDescription() {
         return description;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((locale == null) ? 0 : locale.hashCode());
+        result = prime * result + ((text == null) ? 0 : text.hashCode());
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof DaoTranslation)) {
+            return false;
+        }
+        DaoTranslation other = (DaoTranslation) obj;
+        if (locale == null) {
+            if (other.locale != null) {
+                return false;
+            }
+        } else if (!locale.equals(other.locale)) {
+            return false;
+        }
+        if (text == null) {
+            if (other.text != null) {
+                return false;
+            }
+        } else if (!text.equals(other.text)) {
+            return false;
+        }
+        if (title == null) {
+            if (other.title != null) {
+                return false;
+            }
+        } else if (!title.equals(other.title)) {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -6,8 +6,11 @@ import java.util.Date;
 import com.bloatit.common.PageIterable;
 import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.lists.BatchList;
+import com.bloatit.model.data.DaoBatch;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
+
+// TODO rightManagement
 
 public final class Offer extends Kudosable {
 
@@ -47,6 +50,33 @@ public final class Offer extends Kudosable {
 
     public Date getExpirationDate() {
         return dao.getExpirationDate();
+    }
+
+    public boolean hasBatchLeft() {
+        return findCurrentDaoBatch() != null;
+    }
+
+    public void closeCurrentBatch(boolean valide) {
+        if (valide) {
+            if (dao.hasBatchesLeft()) {
+                getDemand().setOfferIsValidated();
+            } else {
+                getDemand().setBatchIsValidated();
+            }
+        } else {
+            getDemand().setBatchIsRejected();
+        }
+    }
+
+    public void cancelEverythingLeft() {
+        dao.cancelEverythingLeft();
+    }
+
+    private DaoBatch findCurrentDaoBatch() {
+        if (dao.hasBatchesLeft()) {
+            return dao.getCurrentBatch();
+        }
+        return null;
     }
 
     @Override

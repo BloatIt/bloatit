@@ -37,7 +37,6 @@
 		<mapping class="com.bloatit.model.data.DaoTranslation" />
 		<mapping class="com.bloatit.model.data.DaoTransaction" />
 		<mapping class="com.bloatit.model.data.DaoDescription" />
-		<mapping class="com.bloatit.model.data.DaoSpecification" />
 		<mapping class="com.bloatit.model.data.DaoKudos" />
 		<mapping class="com.bloatit.model.data.DaoComment" />
 		<mapping class="com.bloatit.model.data.DaoGroupMembership" />
@@ -47,7 +46,9 @@
 		<mapping class="com.bloatit.model.data.DaoOffer" />
 		<mapping class="com.bloatit.model.data.DaoJoinGroupInvitation" />
 		<mapping class="com.bloatit.model.data.DaoBankTransaction" />
+		<mapping class="com.bloatit.model.data.DaoBug" />
 		<mapping class="com.bloatit.model.data.DaoBatch" />
+		
 		<!--<mapping class="com.bloatit.model.data.DaoUserContent" /> <mapping 
 			class="com.bloatit.model.data.DaoKudosable" /> <mapping class="com.bloatit.model.data.DaoIdentifiable" 
 			/> -->

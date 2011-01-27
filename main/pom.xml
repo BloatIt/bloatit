@@ -212,6 +212,13 @@
 			<type>pom</type>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.dspace.dependencies.jmockit</groupId>
+			<artifactId>dspace-jmockit</artifactId>
+			<version>0.999.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 		
 		<!-- Java mail -->
 		<dependency>

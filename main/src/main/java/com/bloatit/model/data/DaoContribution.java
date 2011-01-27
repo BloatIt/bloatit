@@ -1,13 +1,17 @@
 package com.bloatit.model.data;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
@@ -26,7 +30,7 @@ public final class DaoContribution extends DaoUserContent {
      * The state of a contribution should follow the state of the associated demand.
      */
     public enum State {
-        PENDING, ACCEPTED, CANCELED
+        PENDING, VALIDATED, CANCELED
     }
 
     /**
@@ -52,13 +56,19 @@ public final class DaoContribution extends DaoUserContent {
      * contribution and only on those. (Except when a user add on offer on his own offer
      * -> no transaction)
      */
-    @OneToOne(optional = true)
-    private DaoTransaction transaction;
+    @OneToMany(orphanRemoval = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private final Set<DaoTransaction> transaction = new HashSet<DaoTransaction>();
+
+    @Basic(optional = false)
+    private int percentDone;
+
+    @Basic(optional = false)
+    private BigDecimal alreadyGivenMoney;
 
     /**
      * Create a new contribution. Update the internal account of the member (block the
      * value that is reserved to this contribution)
-     * 
+     *
      * @param member the person making the contribution.
      * @param demand the demand on which we add a contribution.
      * @param amount the amount of the contribution.
@@ -82,24 +92,36 @@ public final class DaoContribution extends DaoUserContent {
         this.state = State.PENDING;
         this.demand = demand;
         this.comment = comment;
+        this.percentDone = 0;
+        this.alreadyGivenMoney = BigDecimal.ZERO;
         getAuthor().getInternalAccount().block(amount);
     }
 
     /**
-     * Set the state to ACCEPTED, and create the transaction. If there is not enough money
-     * then throw and set the state to canceled.
-     * 
+     * Create a transaction from the contributor to the developer. If there is not enough
+     * money then throw and set the state to canceled. After that if all the money is
+     * transfered, the state of this contribution is become VALIDATED.
+     *
      * @param offer the offer that is accepted.
+     * @param percent integer ]0,100]. It is the percent of the total amount and not a
+     *        percent of what is remaining. It is the percent of the total amount to
+     *        transfer. There is a "round" done here, but we assure that when 100% is
+     *        reached then everything is transfered. For example : 90% then 10% is ok and
+     *        everything is transfered. 60% then 60% will throw an exception.
      * @throws NotEnoughMoneyException if there is not enough money to create the
      *         transaction.
      */
-    public void accept(final DaoOffer offer) throws NotEnoughMoneyException {
+    public void validate(final DaoOffer offer, int percent) throws NotEnoughMoneyException {
         if (state != State.PENDING) {
-            throw new FatalErrorException("Cannot accept a contribution if its state isn't PENDING");
+            throw new FatalErrorException("Cannot validate a contribution if its state isn't PENDING");
         }
+        if (percent > 100 || percent <= 0 || (percentDone + percent) > 100) {
+            throw new FatalErrorException("Percent must be > 0 and <= 100.");
+        }
+        BigDecimal moneyToGive = calculateHowMuchToTransfer(percent);
         try {
             // First we try to unblock. It can throw a notEnouthMoneyException.
-            getAuthor().getInternalAccount().unBlock(amount);
+            getAuthor().getInternalAccount().unBlock(moneyToGive);
         } catch (final NotEnoughMoneyException e) {
             // If it fails then there is a bug in our code. Set the state to
             // canceled and throw a fatalError.
@@ -110,15 +132,31 @@ public final class DaoContribution extends DaoUserContent {
         try {
             // If we succeeded the unblock then we create a transaction.
             if (getAuthor() != offer.getAuthor()) {
-                this.transaction = DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), amount);
+                this.transaction.add(DaoTransaction.createAndPersist(getAuthor().getInternalAccount(),
+                                                                     offer.getAuthor().getInternalAccount(),
+                                                                     moneyToGive));
             }
-            // if the transaction is ok then we set the state to ACCEPTED.
-            this.state = State.ACCEPTED;
+            // if the transaction is ok then we set the state to VALIDATED.
+            this.percentDone += percent;
+            this.alreadyGivenMoney = alreadyGivenMoney.add(moneyToGive);
+            if (percentDone == 100) {
+                this.state = State.VALIDATED;
+            }
         } catch (final NotEnoughMoneyException e) {
             this.state = State.CANCELED;
-            Log.data().error(e);
+            Log.data().fatal(e);
             throw e;
         }
+    }
+
+    private BigDecimal calculateHowMuchToTransfer(int percent) {
+        BigDecimal moneyToGive;
+        if ((percent + percentDone) == 100) {
+            moneyToGive = amount.subtract(alreadyGivenMoney);
+        } else {
+            moneyToGive = amount.multiply(new BigDecimal((amount.floatValue() * percent) / 100));
+        }
+        return moneyToGive;
     }
 
     /**
@@ -129,7 +167,9 @@ public final class DaoContribution extends DaoUserContent {
             throw new FatalErrorException("Cannot cancel a contribution if its state isn't PENDING");
         }
         try {
-            getAuthor().getInternalAccount().unBlock(amount);
+            BigDecimal moneyToCancel = amount.subtract(alreadyGivenMoney);
+            getAuthor().getInternalAccount().unBlock(moneyToCancel);
+            demand.cancelContribution(moneyToCancel);
         } catch (final NotEnoughMoneyException e) {
             Log.data().fatal(e);
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
@@ -143,10 +183,6 @@ public final class DaoContribution extends DaoUserContent {
 
     public State getState() {
         return state;
-    }
-
-    public DaoTransaction getTransaction() {
-        return transaction;
     }
 
     public String getComment() {
@@ -164,4 +200,59 @@ public final class DaoContribution extends DaoUserContent {
     protected DaoDemand getDemand() {
         return demand;
     }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+        result = prime * result + ((demand == null) ? 0 : demand.hashCode());
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        DaoContribution other = (DaoContribution) obj;
+        if (amount == null) {
+            if (other.amount != null) {
+                return false;
+            }
+        } else if (!amount.equals(other.amount)) {
+            return false;
+        }
+        if (comment == null) {
+            if (other.comment != null) {
+                return false;
+            }
+        } else if (!comment.equals(other.comment)) {
+            return false;
+        }
+        if (demand == null) {
+            if (other.demand != null) {
+                return false;
+            }
+        } else if (!demand.equals(other.demand)) {
+            return false;
+        }
+        return true;
+    }
+
 }

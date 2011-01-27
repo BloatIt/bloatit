@@ -9,12 +9,17 @@ public class KudosableTest extends FrameworkTestUnit {
     public void testCanKudos() throws UnauthorizedOperationException {
         final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
 
+        demand.authenticate(fredAuthToken);
+        assertTrue(demand.canKudos());
+        demand.kudos();
+        assertFalse(demand.canKudos());
+
         demand.authenticate(yoAuthToken);
         assertTrue(demand.canKudos());
         demand.kudos();
         assertFalse(demand.canKudos());
 
-        demand.authenticate(fredAuthToken);
+        demand.authenticate(tomAuthToken);
         assertTrue(demand.canKudos());
         demand.kudos();
         assertFalse(demand.canKudos());
