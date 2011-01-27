@@ -18,6 +18,7 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
+import com.bloatit.common.DateUtils;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.NonOptionalParameterException;
@@ -78,7 +79,7 @@ public final class DaoOffer extends DaoKudosable {
         this.demand = demand;
         this.amount = BigDecimal.ZERO; // Will be updated by addBatch
         this.expirationDate = dateExpire;
-        addBatch(new DaoBatch(dateExpire, amount, description, this));
+        addBatch(new DaoBatch(dateExpire, amount, description, this, DateUtils.SECOND_PER_WEEK));
         this.currentBatch = 0;
     }
 
@@ -147,9 +148,10 @@ public final class DaoOffer extends DaoKudosable {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + ((batches == null) ? 0 : batches.hashCode());
+        int result = super.hashCode();
+        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
         result = prime * result + ((demand == null) ? 0 : demand.hashCode());
+        result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
         return result;
     }
 
@@ -161,18 +163,18 @@ public final class DaoOffer extends DaoKudosable {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
+        if (!super.equals(obj)) {
             return false;
         }
-        if (!(obj instanceof DaoOffer)) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         DaoOffer other = (DaoOffer) obj;
-        if (batches == null) {
-            if (other.batches != null) {
+        if (amount == null) {
+            if (other.amount != null) {
                 return false;
             }
-        } else if (!batches.equals(other.batches)) {
+        } else if (!amount.equals(other.amount)) {
             return false;
         }
         if (demand == null) {
@@ -182,6 +184,14 @@ public final class DaoOffer extends DaoKudosable {
         } else if (!demand.equals(other.demand)) {
             return false;
         }
+        if (expirationDate == null) {
+            if (other.expirationDate != null) {
+                return false;
+            }
+        } else if (!expirationDate.equals(other.expirationDate)) {
+            return false;
+        }
         return true;
     }
+
 }

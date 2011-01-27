@@ -55,7 +55,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /**
      * initial state is PENDING, and popularity is 0.
-     * 
+     *
      * @param member the author.
      * @see DaoUserContent#DaoUserContent(DaoMember)
      */
@@ -67,7 +67,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /**
      * Create a new DaoKudos and add it to the list of kudos.
-     * 
+     *
      * @return the new popularity
      */
     public final int addKudos(final DaoMember member, final int value) {
@@ -79,7 +79,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /**
      * Use a HQL query to find if a member as already kudosed this kudosable.
-     * 
+     *
      * @param member The member that could have kudosed this kudosable. (Don't even think
      *        of passing a null member)
      * @return true if member has kudosed, false otherwise.
@@ -114,4 +114,23 @@ public abstract class DaoKudosable extends DaoUserContent {
     protected DaoKudosable() {
         super();
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+
+
 }

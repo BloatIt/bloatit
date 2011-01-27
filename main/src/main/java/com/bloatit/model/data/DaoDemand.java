@@ -209,13 +209,11 @@ public final class DaoDemand extends DaoKudosable {
      */
     public void removeOffer(final DaoOffer offer) {
         offers.remove(offer);
-        if (offer.equals(selectedOffer)){
+        if (offer.equals(selectedOffer)) {
             selectedOffer = null;
         }
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
     }
-
-
 
     /**
      * Add a contribution to a demand.
@@ -348,6 +346,33 @@ public final class DaoDemand extends DaoKudosable {
         return validationDate;
     }
 
+    /**
+     * Called by contribution when canceled.
+     *
+     * @param amount
+     */
+    void cancelContribution(BigDecimal amount) {
+        this.contribution = this.contribution.subtract(amount);
+    }
+
+    public void validateContributions(int percent) {
+        if (selectedOffer == null) {
+            throw new FatalErrorException("The selectedOffer shouldn't be null here !");
+        }
+        if (percent == 0) {
+            return;
+        }
+        for (DaoContribution contribution : getContributionsFromQuery()) {
+            try {
+                if(contribution.getState() == DaoContribution.State.PENDING){
+                    contribution.validate(selectedOffer, percent);
+                }
+            } catch (NotEnoughMoneyException e) {
+                Log.data().fatal(e);
+            }
+        }
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -356,7 +381,8 @@ public final class DaoDemand extends DaoKudosable {
         super();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -367,7 +393,8 @@ public final class DaoDemand extends DaoKudosable {
         return result;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -388,9 +415,4 @@ public final class DaoDemand extends DaoKudosable {
         }
         return true;
     }
-
-    void cancelContribution(BigDecimal amount) {
-        this.contribution = this.contribution.subtract(amount);
-    }
-
 }

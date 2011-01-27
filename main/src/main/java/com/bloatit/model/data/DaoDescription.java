@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
@@ -31,7 +32,7 @@ public final class DaoDescription extends DaoIdentifiable {
     /**
      * This is a set of translation of this description
      */
-    @OneToMany(mappedBy = "description")
+    @OneToMany(mappedBy = "description", fetch=FetchType.EAGER)
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
     private final Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);

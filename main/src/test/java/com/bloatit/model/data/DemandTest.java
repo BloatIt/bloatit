@@ -139,7 +139,7 @@ public class DemandTest extends ModelTestUnit {
         demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
         for (final DaoContribution Contribution : demand.getContributionsFromQuery()) {
-            Contribution.accept(Offer);
+            Contribution.validate(Offer, 100);
         }
 
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));

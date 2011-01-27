@@ -44,7 +44,7 @@ public final class Contribution extends UserContent {
      *         enough money.
      */
     public void accept(final Offer offer) throws NotEnoughMoneyException {
-        dao.accept(offer.getDao());
+        dao.validate(offer.getDao(), 100);
     }
 
     /**
@@ -55,27 +55,6 @@ public final class Contribution extends UserContent {
      */
     public void cancel() {
         dao.cancel();
-    }
-
-    /**
-     * return true if you can access the <code>Transaction</code> property.
-     *
-     * @see #getTransaction()
-     * @see Contribution#authenticate(AuthToken)
-     */
-    public boolean canAccessTransaction() {
-        return new ContributionRight.Transaction().canAccess(calculateRole(this), Action.READ);
-    }
-
-    /**
-     * @return the transaction associated with this Contribution. It can be null (for
-     *         example, if the transaction is not done yet).
-     * @throws UnauthorizedOperationException if you do not have the right to access the
-     *         <code>Transaction</code> property.
-     */
-    public Transaction getTransaction() throws UnauthorizedOperationException {
-        new ContributionRight.Transaction().tryAccess(calculateRole(this), Action.READ);
-        return new Transaction(dao.getTransaction());
     }
 
     /**

@@ -96,7 +96,7 @@ public class SimpleTestDB {
 
             for (final DaoContribution contribution : demand.getContributionsFromQuery()) {
                 try {
-                    contribution.accept(demand.getOffers().iterator().next());
+                    contribution.validate(demand.getOffers().iterator().next(), 100);
                 } catch (final NotEnoughMoneyException e) {
                     e.printStackTrace();
                 }

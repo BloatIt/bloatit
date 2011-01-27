@@ -95,7 +95,7 @@ public class BigDB {
                 if (pick(2) == 0) {
                     for (final DaoContribution contrib : demand.getContributionsFromQuery()) {
                         try {
-                            contrib.accept(demand.getOffers().iterator().next());
+                            contrib.validate(demand.getOffers().iterator().next(), 100);
                         } catch (final NotEnoughMoneyException e) {
                             e.printStackTrace();
                         }
