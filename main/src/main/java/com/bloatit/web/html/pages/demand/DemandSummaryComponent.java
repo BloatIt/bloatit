@@ -10,13 +10,18 @@
  */
 package com.bloatit.web.html.pages.demand;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.bloatit.common.Image;
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.framework.Offer;
 import com.bloatit.framework.Translation;
 import com.bloatit.framework.demand.Demand;
+import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlTools;
+import com.bloatit.web.html.components.PlaceHolderElement;
+import com.bloatit.web.html.components.custom.HtmlProgressBar;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.components.standard.HtmlLink;
@@ -25,13 +30,15 @@ import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.i18n.CurrencyLocale;
+import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.KudoActionUrl;
+import com.bloatit.web.utils.url.OfferPageUrl;
 
 public final class DemandSummaryComponent extends HtmlPageComponent {
 
-    private static final int SHORT_TEXT_VARIANCE = 50;
-    private static final int SHORT_DESCRIPTION_LENGTH = 200;
     private static final String IMPORTANT_CSS_CLASS = "important";
+
 
     public DemandSummaryComponent(final Demand demand) {
         super();
@@ -81,12 +88,6 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
                 }
                 demandSummaryTop.add(demandSummaryCenter);
-
-                /*final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
-                karmaBlock.add(new HtmlKudoBlock(demand));
-
-                leftBlock.add(karmaBlock);*/
-
             }
             demandSummary.add(demandSummaryTop);
 
@@ -121,7 +122,6 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                     demandSummaryPopularity.add(popularityText);
                     demandSummaryPopularity.add(popularityScore);
                     demandSummaryPopularity.add(demandPopularityJudge);
-
                 }
                 demandSummaryBottom.add(demandSummaryPopularity);
 
@@ -129,6 +129,65 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 // Div demand_summary_progress
                 final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_progress");
                 {
+                    float progressValue = 0;
+                    //Progress bar
+                    try {
+
+
+                        progressValue = (float) Math.floor(demand.getProgression());
+                        float cappedProgressValue = progressValue;
+                        if (cappedProgressValue > Demand.PROGRESSION_PERCENT) {
+                            cappedProgressValue = Demand.PROGRESSION_PERCENT;
+                        }
+
+                        final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+                        demandSummaryProgress.add(progressBar);
+
+                        //Progress text
+                        demandSummaryProgress.add(generateProgressText(demand, progressValue));
+
+                    } catch (final UnauthorizedOperationException e) {
+                        // No right, no progress bar
+                    }
+
+
+                    //////////////////////
+                    // Div demand_summary_actions
+                    final HtmlDiv demandSummaryActions = new HtmlDiv("demand_summary_actions");
+                    {
+                        final HtmlDiv demandSummaryActionsButtons = new HtmlDiv("demand_summary_actions_buttons");
+                        {
+                            //Contribute block
+                            final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
+                            {
+
+                                HtmlParagraph contributeText = new HtmlParagraph(Context.tr("You share this need and you want participate financially?"));
+                                contributeBlock.add(contributeText);
+
+                                final HtmlLink link = new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute"));
+                                link.setCssClass("button");
+                                contributeBlock.add(link);
+
+                            }
+                            demandSummaryActionsButtons.add(contributeBlock);
+
+                            //Make an offer block
+                            final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
+                            {
+                                HtmlParagraph makeOfferText = new HtmlParagraph(Context.tr("You are a developer and want to be paid to achieve this request?"));
+                                makeOfferBlock.add(makeOfferText);
+
+                                final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
+                                link.setCssClass("button");
+                                makeOfferBlock.add(link);
+
+
+                            }
+                            demandSummaryActionsButtons.add(makeOfferBlock);
+                        }
+                        demandSummaryActions.add(demandSummaryActionsButtons);
+                    }
+                    demandSummaryProgress.add(demandSummaryActions);
 
                 }
                 demandSummaryBottom.add(demandSummaryProgress);
@@ -137,104 +196,10 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 // Div demand_summary_share
                 final HtmlDiv demandSummaryShare = new HtmlDiv("demand_summary_share_button");
                 {
-
+                    HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('demand_summary_share')", Context.tr("+ Share"));
+                    demandSummaryShare.add(showHideShareBlock);
                 }
                 demandSummaryBottom.add(demandSummaryShare);
-
-                /*final Locale defaultLocale = Context.getLocalizator().getLocale();
-                String shortDescription = tr("Error: you do not have the right to see the description.");
-                try {
-                    final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
-                    shortDescription = translatedDescription.getShortText(SHORT_DESCRIPTION_LENGTH, SHORT_TEXT_VARIANCE);
-                } catch (final UnauthorizedOperationException e1) {
-                    // Do nothing.
-                }
-
-                final HtmlParagraph text = new HtmlParagraph(shortDescription);
-                text.setCssClass("idea_link_text");
-                demandSumaryBottom.add(text);
-
-                float progressValue = 0;
-                try {
-                    progressValue = (float) Math.floor(demand.getProgression());
-                    float cappedProgressValue = progressValue;
-                    if (cappedProgressValue > Demand.PROGRESSION_PERCENT) {
-                        cappedProgressValue = Demand.PROGRESSION_PERCENT;
-                    }
-
-                    final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
-                    demandSumaryBottom.add(progressBar);
-                } catch (final UnauthorizedOperationException e) {
-                    // No right, no progress bar
-                }
-
-                Offer currentOffer = null;
-                try {
-                    currentOffer = demand.getSelectedOffer();
-                } catch (final UnauthorizedOperationException e1) {
-                    // Nothing.
-                }
-                if (currentOffer == null) {
-
-                    final HtmlSpan amount = new HtmlSpan();
-                    amount.setCssClass(IMPORTANT_CSS_CLASS);
-
-                    CurrencyLocale currency;
-                    try {
-                        currency = Context.getLocalizator().getCurrency(demand.getContribution());
-
-                        amount.addText(currency.getDefaultString());
-
-                    } catch (final UnauthorizedOperationException e) {
-                        // No right, no display
-                    }
-                    final HtmlParagraph progressText = new HtmlParagraph();
-                    progressText.setCssClass("idea_progress_text");
-
-                    progressText.add(amount);
-                    progressText.addText(Context.tr(" no offer ("));
-                    progressText.add(new OfferPageUrl(demand).getHtmlLink(Context.tr("make an offer")));
-                    progressText.addText(Context.tr(")"));
-
-                    demandSumaryBottom.add(progressText);
-                } else {
-
-                    // Amount
-                    CurrencyLocale amountCurrency;
-                    try {
-                        amountCurrency = Context.getLocalizator().getCurrency(demand.getContribution());
-                        final HtmlSpan amount = new HtmlSpan();
-                        amount.setCssClass(IMPORTANT_CSS_CLASS);
-                        amount.addText(amountCurrency.getDefaultString());
-
-                        // Target
-                        final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
-                        final HtmlSpan target = new HtmlSpan();
-                        target.setCssClass(IMPORTANT_CSS_CLASS);
-                        target.addText(targetCurrency.getDefaultString());
-
-                        // Progress
-                        final HtmlSpan progress = new HtmlSpan();
-                        progress.setCssClass(IMPORTANT_CSS_CLASS);
-                        final NumberFormat format = NumberFormat.getNumberInstance();
-                        format.setMinimumFractionDigits(0);
-                        progress.addText("" + format.format(progressValue) + " %");
-
-                        final HtmlParagraph progressText = new HtmlParagraph();
-                        progressText.setCssClass("idea_progress_text");
-
-                        progressText.add(amount);
-                        progressText.addText(Context.tr(" i.e. "));
-                        progressText.add(progress);
-                        progressText.addText(Context.tr(" of "));
-                        progressText.add(target);
-                        progressText.addText(Context.tr(" requested "));
-
-                        demandSumaryBottom.add(progressText);
-                    } catch (final UnauthorizedOperationException e) {
-                        // No right, no display
-                    }
-                }*/
 
             }
             demandSummary.add(demandSummaryBottom);
@@ -244,20 +209,83 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
             final HtmlDiv demand_sumary_share = new HtmlDiv("demand_sumary_share", "demand_sumary_share");
             {
 
-                /*demand_sumary_share.add(new IdeaContributeButtonComponent(demand));
-                demand_sumary_share.add(new IdeaMakeOfferButtonComponent(demand));*/
 
             }
             demandSummary.add(demand_sumary_share);
 
-            /*
-            final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
-            {
-                rightBlock.add(new HtmlImage(new Image("/resources/img/idea.png", Image.ImageType.DISTANT)));
-            }
-            demandSumary.add(rightBlock);*/
         }
 
         add(demandSummary);
+    }
+
+    private HtmlElement generateProgressText(Demand demand, float progressValue) {
+
+        Offer currentOffer = null;
+        try {
+            currentOffer = demand.getSelectedOffer();
+        } catch (final UnauthorizedOperationException e1) {
+            // Nothing.
+        }
+        if (currentOffer == null) {
+
+            final HtmlSpan amount = new HtmlSpan();
+            amount.setCssClass(IMPORTANT_CSS_CLASS);
+
+            CurrencyLocale currency;
+            try {
+                currency = Context.getLocalizator().getCurrency(demand.getContribution());
+
+                amount.addText(currency.getDefaultString());
+
+            } catch (final UnauthorizedOperationException e) {
+                // No right, no display
+            }
+            final HtmlParagraph progressText = new HtmlParagraph();
+            progressText.setCssClass("demand_progress_text");
+
+            progressText.add(amount);
+            progressText.addText(Context.tr(" no offer"));
+
+            return progressText;
+        } else {
+
+            // Amount
+            CurrencyLocale amountCurrency;
+            try {
+                amountCurrency = Context.getLocalizator().getCurrency(demand.getContribution());
+                final HtmlSpan amount = new HtmlSpan();
+                amount.setCssClass(IMPORTANT_CSS_CLASS);
+                amount.addText(amountCurrency.getDefaultString());
+
+                // Target
+                final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
+                final HtmlSpan target = new HtmlSpan();
+                target.setCssClass(IMPORTANT_CSS_CLASS);
+                target.addText(targetCurrency.getDefaultString());
+
+                // Progress
+                final HtmlSpan progress = new HtmlSpan();
+                progress.setCssClass(IMPORTANT_CSS_CLASS);
+                final NumberFormat format = NumberFormat.getNumberInstance();
+                format.setMinimumFractionDigits(0);
+                progress.addText("" + format.format(progressValue) + " %");
+
+                final HtmlParagraph progressText = new HtmlParagraph();
+                progressText.setCssClass("demand_progress_text");
+
+                progressText.add(amount);
+                progressText.addText(Context.tr(" i.e. "));
+                progressText.add(progress);
+                progressText.addText(Context.tr(" of "));
+                progressText.add(target);
+                progressText.addText(Context.tr(" requested "));
+
+                return progressText;
+            } catch (final UnauthorizedOperationException e) {
+                // No right, no display
+                return new PlaceHolderElement();
+            }
+        }
+
     }
 }
