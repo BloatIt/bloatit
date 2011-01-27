@@ -23,7 +23,7 @@ import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
-import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.Url;
 
@@ -83,7 +83,7 @@ public final class CreateIdeaAction extends Action {
 
         d.authenticate(session.getAuthToken());
 
-        final IdeaPageUrl to = new IdeaPageUrl(d);
+        final DemandPageUrl to = new DemandPageUrl(d);
 
         return to;
     }

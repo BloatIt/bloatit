@@ -26,7 +26,7 @@ import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
-import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 /**
@@ -72,7 +72,7 @@ public final class ContributionAction extends LoggedAction {
             targetIdea.addContribution(amount, comment);
             session.notifyGood(Context
                     .tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
-            return new IdeaPageUrl(targetIdea);
+            return new DemandPageUrl(targetIdea);
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
             session.addParam(AMOUNT_CODE, amount);

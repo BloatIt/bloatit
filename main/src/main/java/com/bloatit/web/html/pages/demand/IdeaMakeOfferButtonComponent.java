@@ -8,28 +8,27 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.html.components.custom;
+package com.bloatit.web.html.pages.demand;
 
-import com.bloatit.framework.Kudosable;
-import com.bloatit.web.html.HtmlTools;
+import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlLink;
-import com.bloatit.web.html.components.standard.HtmlParagraph;
-import com.bloatit.web.utils.url.KudoActionUrl;
+import com.bloatit.web.html.pages.master.HtmlPageComponent;
+import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.url.OfferPageUrl;
 
-public class HtmlKudoBlock extends HtmlDiv {
+public class IdeaMakeOfferButtonComponent extends HtmlPageComponent {
 
-    public HtmlKudoBlock(final Kudosable kudosable) {
-        super("kudo_box");
+    public IdeaMakeOfferButtonComponent(final Demand demand) {
+        super();
 
-        final HtmlLink kudoUpLink = new KudoActionUrl(kudosable).getHtmlLink(new HtmlDiv("kudo_box_up"));
-        kudoUpLink.setTitle("kudo up");
-        final HtmlLink kudoDownLink = new KudoActionUrl(kudosable).getHtmlLink(new HtmlDiv("kudo_box_down"));
-        kudoUpLink.setTitle("kudo down");
+        final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
+        {
+            final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
+            link.setCssClass("button");
 
-        add(kudoUpLink);
-        add(new HtmlParagraph(HtmlTools.compressKarma(kudosable.getPopularity()), "kudo_box_score"));
-        add(kudoDownLink);
-
+            makeOfferBlock.add(link);
+        }
+        add(makeOfferBlock);
     }
 }

@@ -30,7 +30,7 @@ import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IdeaCommentActionUrl;
-import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.KudoActionUrl;
@@ -76,7 +76,7 @@ public final class SCGIServer {
         dispatchServer.addLinkable(LoginPageUrl.getName(), LoginPageUrl.class);
         dispatchServer.addLinkable(IdeasListUrl.getName(), IdeasListUrl.class);
         dispatchServer.addLinkable(CreateIdeaPageUrl.getName(), CreateIdeaPageUrl.class);
-        dispatchServer.addLinkable(IdeaPageUrl.getName(), IdeaPageUrl.class);
+        dispatchServer.addLinkable(DemandPageUrl.getName(), DemandPageUrl.class);
         dispatchServer.addLinkable(MyAccountPageUrl.getName(), MyAccountPageUrl.class);
         dispatchServer.addLinkable(SpecialsPageUrl.getName(), SpecialsPageUrl.class);
         dispatchServer.addLinkable(MembersListPageUrl.getName(), MembersListPageUrl.class);
