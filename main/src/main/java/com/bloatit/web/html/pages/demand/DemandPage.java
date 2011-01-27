@@ -83,30 +83,12 @@ public final class DemandPage extends Page {
         // - The tab panel
         // - The comments
 
-        add(new DemandSumaryComponent(demand));
+        add(new DemandSummaryComponent(demand));
         add(new DemandTabPane(url.getDemandTabPaneUrl(),demand));
         add(new DemandCommentListComponent(demand));
 
 
 
     }
-
-    /*
-     * private HtmlElement generateBody() { final HtmlDiv demandBody = new
-     * HtmlDiv("demand_body"); { demandBody.add(generateBodyLeft());
-     * demandBody.add(generateBodyRight()); } return demandBody; }
-     *
-     * private HtmlElement generateBodyLeft() { final HtmlDiv left = new
-     * HtmlDiv("leftColumn"); { demandTabPane = new
-     * IdeaTabPane(url.getDemandTabPaneUrl(), idea); left.add(demandTabPane); //
-     * Comments left.add(new IdeaCommentListComponent(idea)); } return left;
-     *
-     * }
-     *
-     * private HtmlElement generateBodyRight() { final HtmlDiv right = new
-     * HtmlDiv("rightColumn"); { final HtmlDiv rightBlock = new
-     * HtmlDiv("right_block"); { rightBlock.add(new IdeaSummaryComponent(idea));
-     * } right.add(rightBlock); } return right; }
-     */
 
 }

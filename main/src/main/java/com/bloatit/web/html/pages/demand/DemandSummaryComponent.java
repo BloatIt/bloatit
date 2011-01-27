@@ -23,13 +23,13 @@ import com.bloatit.web.html.components.standard.HtmlTitle;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
 
-public final class DemandSumaryComponent extends HtmlPageComponent {
+public final class DemandSummaryComponent extends HtmlPageComponent {
 
     private static final int SHORT_TEXT_VARIANCE = 50;
     private static final int SHORT_DESCRIPTION_LENGTH = 200;
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public DemandSumaryComponent(final Demand demand) {
+    public DemandSummaryComponent(final Demand demand) {
         super();
 
         //Extract locales stuffs
@@ -38,25 +38,25 @@ public final class DemandSumaryComponent extends HtmlPageComponent {
 
         //////////////////////
         // Div demand_summary
-        final HtmlDiv demandSumary = new HtmlDiv("demand_summary");
+        final HtmlDiv demandSummary = new HtmlDiv("demand_summary");
         {
             //////////////////////
             // Div demand_summary_top
-            final HtmlDiv demandSumaryTop = new HtmlDiv("demand_summary_top");
+            final HtmlDiv demandSummaryTop = new HtmlDiv("demand_summary_top");
             {
                 //////////////////////
                 // Div demand_summary_left
-                final HtmlDiv demandSumaryLeft = new HtmlDiv("demand_summary_left");
+                final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
                 {
                     //Add project image
                     HtmlImage projectImage = new HtmlImage(new Image("vlc.png", Image.ImageType.LOCAL), "project_image");
-                    demandSumaryLeft.add(projectImage);
+                    demandSummaryLeft.add(projectImage);
                 }
-                demandSumaryTop.add(demandSumaryLeft);
+                demandSummaryTop.add(demandSummaryLeft);
 
                 //////////////////////
                 // Div demand_summary_center
-                final HtmlDiv demandSumaryCenter = new HtmlDiv("demand_summary_center");
+                final HtmlDiv demandSummaryCenter = new HtmlDiv("demand_summary_center");
                 {
                     //Try to display the title
                     try {
@@ -69,14 +69,14 @@ public final class DemandSumaryComponent extends HtmlPageComponent {
                         title.addText(" – ");
                         title.addText(translatedDescription.getTitle());
 
-                        demandSumaryCenter.add(title);
+                        demandSummaryCenter.add(title);
 
                     } catch (final UnauthorizedOperationException e) {
                         // no right no description and no title
                     }
 
                 }
-                demandSumaryTop.add(demandSumaryCenter);
+                demandSummaryTop.add(demandSummaryCenter);
 
                 /*final HtmlDiv karmaBlock = new HtmlDiv("idea_karma");
                 karmaBlock.add(new HtmlKudoBlock(demand));
@@ -84,12 +84,36 @@ public final class DemandSumaryComponent extends HtmlPageComponent {
                 leftBlock.add(karmaBlock);*/
 
             }
-            demandSumary.add(demandSumaryTop);
+            demandSummary.add(demandSummaryTop);
 
             //////////////////////
             // Div demand_summary_bottom
-            final HtmlDiv demandSumaryBottom = new HtmlDiv("demand_sumary_bottom");
+            final HtmlDiv demandSummaryBottom = new HtmlDiv("demand_sumary_bottom");
             {
+
+                //////////////////////
+                // Div demand_summary_popularity
+                final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
+                {
+
+                }
+                demandSummaryBottom.add(demandSummaryPopularity);
+
+                //////////////////////
+                // Div demand_summary_progress
+                final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_popularity");
+                {
+
+                }
+                demandSummaryBottom.add(demandSummaryProgress);
+
+                //////////////////////
+                // Div demand_summary_share
+                final HtmlDiv demandSummaryShare = new HtmlDiv("demand_summary_share");
+                {
+
+                }
+                demandSummaryBottom.add(demandSummaryShare);
 
                 /*final Locale defaultLocale = Context.getLocalizator().getLocale();
                 String shortDescription = tr("Error: you do not have the right to see the description.");
@@ -187,7 +211,7 @@ public final class DemandSumaryComponent extends HtmlPageComponent {
                 }*/
 
             }
-            demandSumary.add(demandSumaryBottom);
+            demandSummary.add(demandSummaryBottom);
 
             //////////////////////
             // Div demand_summary_share
@@ -198,7 +222,7 @@ public final class DemandSumaryComponent extends HtmlPageComponent {
                 demand_sumary_share.add(new IdeaMakeOfferButtonComponent(demand));*/
 
             }
-            demandSumary.add(demand_sumary_share);
+            demandSummary.add(demand_sumary_share);
 
             /*
             final HtmlDiv rightBlock = new HtmlDiv("idea_summary_right");
@@ -208,6 +232,6 @@ public final class DemandSumaryComponent extends HtmlPageComponent {
             demandSumary.add(rightBlock);*/
         }
 
-        add(demandSumary);
+        add(demandSummary);
     }
 }
