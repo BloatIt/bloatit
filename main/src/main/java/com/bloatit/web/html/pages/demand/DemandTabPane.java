@@ -10,6 +10,7 @@
  */
 package com.bloatit.web.html.pages.demand;
 
+import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
@@ -52,15 +53,31 @@ public final class DemandTabPane extends HtmlPageComponent {
         });
 
         // Create participations tab
-        tabPane.addTab(new HtmlTab(Context.tr("Participations"), "participations_tab") {
-            @Override
-            public HtmlNode generateBody() {
-                return new IdeaContributorsComponent(url.getContributionUrl(), demand);
-            }
-        });
+        try {
+            tabPane.addTab(new HtmlTab(Context.tr("Participations ({0})", demand.getContributions().size()), "participations_tab") {
+                @Override
+                public HtmlNode generateBody() {
+                    return new IdeaContributorsComponent(url.getContributionUrl(), demand);
+                }
+            });
+        } catch (UnauthorizedOperationException e1) {
+            // No access to contributions, the tab is not displayed
+        }
 
         // Create Comments tab
-        tabPane.addTab(new HtmlTab(Context.tr("Offers"), "offer_tab") {
+        try {
+            tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", demand.getOffers().size()), "offers_tab") {
+                @Override
+                public HtmlNode generateBody() {
+                    return new IdeaOfferListComponent(demand);
+                }
+            });
+        } catch (UnauthorizedOperationException e) {
+            // No access to offer, the tab is not displayed
+        }
+
+     // Create Details tab
+        tabPane.addTab(new HtmlTab(Context.tr("Details"), "details_tab") {
             @Override
             public HtmlNode generateBody() {
                 return new IdeaOfferListComponent(demand);
