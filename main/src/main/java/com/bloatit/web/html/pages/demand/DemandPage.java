@@ -12,21 +12,14 @@ package com.bloatit.web.html.pages.demand;
 
 import static com.bloatit.web.server.Context.tr;
 
-import java.util.Locale;
-
 import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.Translation;
 import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.IdeaPageUrl;
 
 @ParamContainer("demand")
@@ -35,18 +28,18 @@ public final class DemandPage extends Page {
     public static final String IDEA_FIELD_NAME = "id";
 
     @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
-    private final Demand idea;
+    private final Demand demand;
 
     @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "idea")
     private final String title;
 
-    private IdeaTabPane demandTabPane;
+    private DemandTabPane demandTabPane;
     private final IdeaPageUrl url;
 
     public DemandPage(final IdeaPageUrl url) {
         super(url);
         this.url = url;
-        idea = url.getIdea();
+        demand = url.getIdea();
         title = url.getTitle();
     }
 
@@ -57,9 +50,9 @@ public final class DemandPage extends Page {
 
     @Override
     protected String getTitle() {
-        if (idea != null) {
+        if (demand != null) {
             try {
-                return idea.getTitle();
+                return demand.getTitle();
             } catch (final UnauthorizedOperationException e) {
                 // Return the default one.
             }
@@ -69,11 +62,11 @@ public final class DemandPage extends Page {
 
     @Override
     protected String getCustomCss() {
-        return "idea.css";
+        return "demand.css";
     }
 
     public Demand getDemand() {
-        return idea;
+        return demand;
     }
 
     @Override
@@ -85,48 +78,35 @@ public final class DemandPage extends Page {
             return;
         }
 
-        final Locale defaultLocale = Context.getLocalizator().getLocale();
-        try {
-            final Translation translatedDescription = idea.getDescription().getTranslationOrDefault(defaultLocale);
-            add(new HtmlTitleBlock("VLC" + " - " + translatedDescription.getTitle(), 1).setCssClass("pageTitle"));
-        } catch (final UnauthorizedOperationException e) {
-            // no right no description and no title.
-        }
-        add(new IdeaHeadComponent(idea));
-        add(generateBody());
-    }
+        // The demand page is composed by 3 parts:
+        // - The sumary
+        // - The tab panel
+        // - The comments
 
-    private HtmlElement generateBody() {
-        final HtmlDiv demandBody = new HtmlDiv("demand_body");
-        {
-            demandBody.add(generateBodyLeft());
-            demandBody.add(generateBodyRight());
-        }
-        return demandBody;
-    }
+        add(new DemandSumaryComponent(demand));
+        add(new DemandTabPane(url.getDemandTabPaneUrl(),demand));
+        add(new DemandCommentListComponent(demand));
 
-    private HtmlElement generateBodyLeft() {
-        final HtmlDiv left = new HtmlDiv("leftColumn");
-        {
-            demandTabPane = new IdeaTabPane(url.getDemandTabPaneUrl(), idea);
-            left.add(demandTabPane);
-            // Comments
-            left.add(new IdeaCommentListComponent(idea));
-        }
-        return left;
+
 
     }
 
-    private HtmlElement generateBodyRight() {
-        final HtmlDiv right = new HtmlDiv("rightColumn");
-        {
-            final HtmlDiv rightBlock = new HtmlDiv("right_block");
-            {
-                rightBlock.add(new IdeaSummaryComponent(idea));
-            }
-            right.add(rightBlock);
-        }
-        return right;
-    }
+    /*
+     * private HtmlElement generateBody() { final HtmlDiv demandBody = new
+     * HtmlDiv("demand_body"); { demandBody.add(generateBodyLeft());
+     * demandBody.add(generateBodyRight()); } return demandBody; }
+     *
+     * private HtmlElement generateBodyLeft() { final HtmlDiv left = new
+     * HtmlDiv("leftColumn"); { demandTabPane = new
+     * IdeaTabPane(url.getDemandTabPaneUrl(), idea); left.add(demandTabPane); //
+     * Comments left.add(new IdeaCommentListComponent(idea)); } return left;
+     *
+     * }
+     *
+     * private HtmlElement generateBodyRight() { final HtmlDiv right = new
+     * HtmlDiv("rightColumn"); { final HtmlDiv rightBlock = new
+     * HtmlDiv("right_block"); { rightBlock.add(new IdeaSummaryComponent(idea));
+     * } right.add(rightBlock); } return right; }
+     */
 
 }
