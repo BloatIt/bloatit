@@ -23,7 +23,7 @@ import com.bloatit.web.annotations.tr;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.DateLocale;
-import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
 import com.bloatit.web.utils.url.OfferActionUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 import com.bloatit.web.utils.url.Url;
@@ -75,7 +75,7 @@ public final class OfferAction extends LoggedAction {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
             return session.pickPreferredPage();
         }
-        return new IdeaPageUrl(targetIdea);
+        return new DemandPageUrl(targetIdea);
     }
 
     @Override

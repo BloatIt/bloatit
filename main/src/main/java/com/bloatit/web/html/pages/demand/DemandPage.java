@@ -20,7 +20,7 @@ import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.exceptions.RedirectException;
 import com.bloatit.web.html.pages.master.Page;
-import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
 
 @ParamContainer("demand")
 public final class DemandPage extends Page {
@@ -30,16 +30,16 @@ public final class DemandPage extends Page {
     @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
     private final Demand demand;
 
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "idea")
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
     private final String title;
 
     private DemandTabPane demandTabPane;
-    private final IdeaPageUrl url;
+    private final DemandPageUrl url;
 
-    public DemandPage(final IdeaPageUrl url) {
+    public DemandPage(final DemandPageUrl url) {
         super(url);
         this.url = url;
-        demand = url.getIdea();
+        demand = url.getDemand();
         title = url.getTitle();
     }
 
@@ -83,30 +83,12 @@ public final class DemandPage extends Page {
         // - The tab panel
         // - The comments
 
-        add(new DemandSumaryComponent(demand));
+        add(new DemandSummaryComponent(demand));
         add(new DemandTabPane(url.getDemandTabPaneUrl(),demand));
         add(new DemandCommentListComponent(demand));
 
 
 
     }
-
-    /*
-     * private HtmlElement generateBody() { final HtmlDiv demandBody = new
-     * HtmlDiv("demand_body"); { demandBody.add(generateBodyLeft());
-     * demandBody.add(generateBodyRight()); } return demandBody; }
-     *
-     * private HtmlElement generateBodyLeft() { final HtmlDiv left = new
-     * HtmlDiv("leftColumn"); { demandTabPane = new
-     * IdeaTabPane(url.getDemandTabPaneUrl(), idea); left.add(demandTabPane); //
-     * Comments left.add(new IdeaCommentListComponent(idea)); } return left;
-     *
-     * }
-     *
-     * private HtmlElement generateBodyRight() { final HtmlDiv right = new
-     * HtmlDiv("rightColumn"); { final HtmlDiv rightBlock = new
-     * HtmlDiv("right_block"); { rightBlock.add(new IdeaSummaryComponent(idea));
-     * } right.add(rightBlock); } return right; }
-     */
 
 }

@@ -30,7 +30,7 @@ import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.i18n.CurrencyLocale;
-import com.bloatit.web.utils.url.IdeaPageUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
 import com.bloatit.web.utils.url.OfferPageUrl;
 
 public final class HtmlIdeaSumary extends HtmlDiv {
@@ -60,7 +60,7 @@ public final class HtmlIdeaSumary extends HtmlDiv {
             project.setCssClass("project");
             project.addText("VLC");
 
-            final HtmlLink linkTitle = new IdeaPageUrl(idea).getHtmlLink("");
+            final HtmlLink linkTitle = new DemandPageUrl(idea).getHtmlLink("");
             linkTitle.setCssClass("idea_link");
 
             linkTitle.add(project);
@@ -83,7 +83,7 @@ public final class HtmlIdeaSumary extends HtmlDiv {
                     // Do nothing.
                 }
 
-                final HtmlLink linkText = new IdeaPageUrl(idea).getHtmlLink(new HtmlParagraph(shortDescription));
+                final HtmlLink linkText = new DemandPageUrl(idea).getHtmlLink(new HtmlParagraph(shortDescription));
                 linkText.setCssClass("idea_link_text");
 
                 ideaTitle.add(linkText);

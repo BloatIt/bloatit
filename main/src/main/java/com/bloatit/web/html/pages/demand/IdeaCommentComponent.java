@@ -42,8 +42,8 @@ public final class IdeaCommentComponent extends HtmlPageComponent {
     protected HtmlElement produce() {
         final HtmlDiv commentBlock = (child) ? new HtmlDiv("child_comment_block") : new HtmlDiv("main_comment_block");
         {
-            final CommentKudoComponent commentKudo = new CommentKudoComponent(comment);
-            commentBlock.add(commentKudo);
+            //final CommentKudoComponent commentKudo = new CommentKudoComponent(comment);
+            //commentBlock.add(commentKudo);
 
             final HtmlParagraph commentText = new HtmlParagraph();
             commentText.add(new HtmlRawTextRenderer(comment.getText()));
