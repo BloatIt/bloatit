@@ -204,6 +204,7 @@
             <version>2.3</version>
         </dependency>
 
+        <!-- Web services -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>apache-cxf</artifactId>
@@ -218,6 +219,19 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
+		<!-- Java mail -->
+		<dependency>
+            <groupId>org.apache.geronimo.javamail</groupId>
+            <artifactId>geronimo-javamail_1.4_provider</artifactId>
+            <version>1.7</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-javamail_1.4_spec</artifactId>
+            <version>1.6</version>
+        </dependency>
 	</dependencies>
 
 	<pluginRepositories>

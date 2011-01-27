@@ -18,6 +18,8 @@ import java.util.Map;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
+import com.bloatit.framework.FrameworkLauncher;
+import com.bloatit.mail.MailServer;
 import com.bloatit.web.server.DispatchServer;
 import com.bloatit.web.server.HttpResponse;
 import com.bloatit.web.server.SessionManager;
@@ -56,6 +58,7 @@ public final class SCGIServer {
     private static final int SCGI_PORT = 4000;
 
     public static void main(final String[] args) {
+        FrameworkLauncher.launch();
         try {
             new SCGIServer().run();
         } catch (final IOException e) {
@@ -197,6 +200,7 @@ public final class SCGIServer {
                 Log.server().error("Fail to close the socket on shutdown.", e);
             }
             SessionManager.saveSessions();
+            MailServer.getInstance().quickStop();
         }
     }
 }

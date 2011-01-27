@@ -17,14 +17,18 @@ public class HtmlProgressBar extends HtmlDiv {
 
     public HtmlProgressBar(final float progress) {
         super("progress_bar_block");
-        final HtmlDiv progressBarDiv = new HtmlDiv("progress_bar");
+
+
+        add(new HtmlDiv("progress_bar_background"));
+
+        final HtmlDiv progressBarState = new HtmlDiv("progress_bar_state");
         {
-            final HtmlDiv progressBarState = new HtmlDiv("progress_bar_state");
-            {
-                progressBarState.addAttribute("style", "width: " + progress + "%;");
-            }
-            progressBarDiv.add(progressBarState);
+            progressBarState.addAttribute("style", "width: " + progress + "%;");
         }
-        add(progressBarDiv);
+        add(progressBarState);
+
+
+        add(new HtmlDiv("progress_bar_border"));
+
     }
 }

@@ -85,12 +85,12 @@ public class HtmlTools {
         if (abs_karma < THOUSAND) {
             result = cutNumber(abs_karma.toString());
         } else if (abs_karma < MILLION) {
-            result = cutNumber(new Double(abs_karma / THOUSAND).toString()) + "K";
+            result = cutNumber(Double.toString(abs_karma / THOUSAND).toString()) + "K";
         } else if (abs_karma < BILLION) {
-            result = cutNumber(new Double(abs_karma / MILLION).toString()) + "M";
+            result = cutNumber(Double.toString(abs_karma / MILLION)) + "M";
 
         } else if (abs_karma < TRILLION) {
-            result = cutNumber(new Double(abs_karma / BILLION).toString()) + "T";
+            result = cutNumber(Double.toString(abs_karma / BILLION).toString()) + "T";
         } else {
             result = "∞";
         }
