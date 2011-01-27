@@ -23,36 +23,26 @@ import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 
 /**
- * 
+ * <p>A thread in charges of asynchronous mail sending.</p>
  */
 public class MailServer extends Thread {
-    /**
-     * Describes the absolute URI to the directory used to store not yet sent
-     * emails
-     */
     private final static String WIP_MAIL_DIRECTORY = System.getProperty("user.home") + "/.local/share/bloatit/temp_mail";
-
-    /**
-     * Describes the absolute URI to the directory used to store already sent
-     * emails
-     */
     private final static String SENT_MAIL_DIRECTORY = System.getProperty("user.home") + "/.local/share/bloatit/sent_mail";
-
     private final static String FLUSH_AND_STOP = "FLUSHANDSTOP";
     private final static long MILLISECOND = 1L;
-    private final static long SECOND = 1000 * MILLISECOND;
-    private final static long MINUTE = 60 * SECOND;
+    private final static long SECOND = 1000L * MILLISECOND;
+    private final static long MINUTE = 60L * SECOND;
 
     private final Properties mailProperties;
     private final Session session;
-    private static MailServer instance;
     private final LinkedBlockingQueue<String> mailsFileName;
-
-    private boolean stop;
     private final Semaphore stopMutex;
-
+    
+    private boolean stop;
     private long numberOfTries;
 
+    private static MailServer instance;
+    
     private MailServer() throws IOException {
         mailsFileName = new LinkedBlockingQueue<String>();
         mailProperties = ConfigurationManager.loadProperties("mail");
@@ -336,24 +326,5 @@ public class MailServer extends Thread {
         for (File child : children) {
             mailsFileName.add(child.getName());
         }
-    }
-
-    public static void main(String[] args) throws IOException, InterruptedException {
-        MailServer.init();
-        MailServer ms = MailServer.getInstance();
-
-        Mail m = new Mail("yplenet@gmail.com", "test s", "test c\n", "test");
-        ms.send(m);
-
-        ms.flushAndStop();
-        
-        Mail m2 = new Mail("yplenet@gmail.com", "test 2s", "test 2c\n", "test2");
-        ms.send(m2);
-
-        Mail m3 = new Mail("yplenet@gmail.com", "test 3s", "test 3c\n", "test3");
-        ms.send(m3);
-
-        ms.join();
-        Log.mail().trace("Properly shutting down");
     }
 }
