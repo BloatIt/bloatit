@@ -19,6 +19,8 @@ public final class Log {
     private static final Logger DATA = Logger.getLogger("com.bloatit.model.data");
     private static final Logger WEB = Logger.getLogger("com.bloatit.web");
     private static final Logger SERVER = Logger.getLogger("com.bloatit.web.server");
+    private static final Logger MAIL = Logger.getLogger("com.bloatit.mail");
+    
 
     public static Logger framework() {
         return FRAMEWORK;
@@ -34,5 +36,9 @@ public final class Log {
 
     public static Logger server() {
         return SERVER;
+    }
+
+    public static Logger mail() {
+        return MAIL;
     }
 }

@@ -8,7 +8,7 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.utils;
+package com.bloatit.common;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,7 +65,7 @@ public class PropertyLoader {
         if (name == null) {
             throw new IllegalArgumentException("null input: name");
         }
-        if (name.startsWith("/")) {
+        if (name.charAt(0) == '/') {
             name = name.substring(1);
         }
         if (name.endsWith(SUFFIX)) {
