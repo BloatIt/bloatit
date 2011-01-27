@@ -7,7 +7,7 @@ import org.hibernate.HibernateException;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
-public class GroupCreationTest extends TestCase {
+public class DaoGroupCreationTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();

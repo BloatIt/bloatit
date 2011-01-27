@@ -4,7 +4,14 @@ import com.bloatit.common.FatalErrorException;
 import com.bloatit.model.data.DaoExternalAccount.AccountType;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 
-public class AccountTest extends ModelTestUnit {
+/**
+ * The class <code>DaoAccountTest</code> contains tests for the class <code>{@link DaoAccount}</code>.
+ *
+ * @generatedBy CodePro at 27/01/11 16:38
+ * @author tom
+ * @version $Revision: 1.0 $
+ */
+public class DaoAccountTest extends ModelTestUnit {
 
     public void testDaoAccountDaoActor() {
         final DaoMember localTom = DaoMember.getByLogin(tom.getLogin());

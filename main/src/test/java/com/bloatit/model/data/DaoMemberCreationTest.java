@@ -10,7 +10,7 @@ import com.bloatit.model.data.DaoMember.Role;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
-public class MemberCreationTest extends TestCase {
+public class DaoMemberCreationTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {

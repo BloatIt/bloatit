@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 
 import com.bloatit.model.data.util.SessionManager;
 
-public class UserContentTest extends TestCase {
+public class DaoUserContentTest extends TestCase {
 
     public void testGetAuthor() {
         assertEquals(yo, demand.getAuthor());

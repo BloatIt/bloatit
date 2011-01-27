@@ -71,8 +71,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return the new popularity
      */
     public final int addKudos(final DaoMember member, final int value) {
-        final DaoKudos ku = DaoKudos.createAndPersist(member, value);
-        kudos.add(ku);
+        kudos.add(new DaoKudos(member, value));
         popularity += value;
         return popularity;
     }

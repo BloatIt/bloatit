@@ -11,7 +11,7 @@ import com.bloatit.model.data.util.SessionManager;
 /**
  * Unit test for Member and groups
  */
-public class GroupMemberTest extends TestCase {
+public class DaoGroupMemberTest extends TestCase {
 
     private DaoMember tom;
     private DaoMember fred;
@@ -20,7 +20,7 @@ public class GroupMemberTest extends TestCase {
     private DaoGroup b217;
     private DaoGroup b219;
 
-    public GroupMemberTest(final String testName) {
+    public DaoGroupMemberTest(final String testName) {
         super(testName);
     }
 

@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import com.bloatit.model.data.util.NonOptionalParameterException;
 
-public class DescriptionTest extends ModelTestUnit {
+public class DaoDescriptionTest extends ModelTestUnit {
 
     public void testCreateAndPersist() {
         DaoDescription.createAndPersist(DaoMember.getByLogin(yo.getLogin()), Locale.FRANCE, "A title", "a text");

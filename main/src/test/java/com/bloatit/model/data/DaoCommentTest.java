@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 
-public class CommentTest extends ModelTestUnit {
+public class DaoCommentTest extends ModelTestUnit {
 
     public void testCreateAndPersist() {
         final DaoComment comment = DaoComment.createAndPersist(DaoMember.getByLogin(yo.getLogin()), "A text");

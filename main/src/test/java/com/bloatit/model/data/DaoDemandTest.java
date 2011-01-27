@@ -7,9 +7,9 @@ import java.util.Locale;
 import com.bloatit.model.data.util.SessionManager;
 
 /**
- * I assume the GroupMemberTest is run without error.
+ * I assume the DaoGroupMemberTest is run without error.
  */
-public class DemandTest extends ModelTestUnit {
+public class DaoDemandTest extends ModelTestUnit {
 
     public void testCreateDemand() {
         final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
@@ -20,24 +20,11 @@ public class DemandTest extends ModelTestUnit {
         assertEquals(demand, yo.getDemands().iterator().next());
     }
 
-    public void testAddSpecification() {
-        final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
-                                                                                                new Locale("fr"),
-                                                                                                "Ma super demande !",
-                                                                                                "Ceci est la descption de ma demande :) "));
-
-        demand.createSpecification(tom, "This is the spécification");
-
-        assertNotNull(demand.getSpecification());
-    }
-
     public void testRetrieveDemand() {
         final DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
-
-        demand.createSpecification(tom, "This is the spécification");
 
         assertEquals(demand, DBRequests.getAll(DaoDemand.class).iterator().next());
 
@@ -49,8 +36,6 @@ public class DemandTest extends ModelTestUnit {
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
-        demand.createSpecification(tom, "This is the spécification");
-
         SessionManager.flush();
 
         demand.delete();
@@ -63,7 +48,6 @@ public class DemandTest extends ModelTestUnit {
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "));
-        demand.createSpecification(tom, "This is the spécification");
         fred.getInternalAccount().setAmount(new BigDecimal("100"));
         yo.getInternalAccount().setAmount(new BigDecimal("100"));
 
@@ -87,7 +71,6 @@ public class DemandTest extends ModelTestUnit {
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "));
-        demand.createSpecification(tom, "This is the spécification");
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
@@ -126,7 +109,6 @@ public class DemandTest extends ModelTestUnit {
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
-        demand.createSpecification(tom, "This is the spécification");
         final DaoOffer Offer = demand.addOffer(fred,
                                                new BigDecimal("200"),
                                                DaoDescription.createAndPersist(fred,
@@ -155,7 +137,6 @@ public class DemandTest extends ModelTestUnit {
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "));
-        demand.createSpecification(tom, "This is the spécification");
         demand.addOffer(fred,
                         new BigDecimal("200"),
                         DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
@@ -188,7 +169,6 @@ public class DemandTest extends ModelTestUnit {
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
-        demand.createSpecification(tom, "This is the spécification");
         final DaoOffer offer = demand.addOffer(fred,
                                                new BigDecimal("200"),
                                                DaoDescription.createAndPersist(fred,
@@ -208,7 +188,6 @@ public class DemandTest extends ModelTestUnit {
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
-        demand.createSpecification(tom, "This is the spécification");
         demand.addOffer(fred,
                         new BigDecimal("200"),
                         DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
