@@ -3,6 +3,7 @@ package com.bloatit.web.html;
 import java.util.Collections;
 import java.util.Iterator;
 
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.web.server.Text;
 
 /**
@@ -24,11 +25,14 @@ public class HtmlTagText extends HtmlNode {
 
     /**
      * Creates a component to add raw Html to a page
-     * 
+     *
      * @param content the Html string to add
      */
     public HtmlTagText(final String content) {
         super();
+        if(content == null) {
+            throw new NonOptionalParameterException();
+        }
         this.content = content;
     }
 

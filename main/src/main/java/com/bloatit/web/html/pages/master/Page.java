@@ -3,6 +3,7 @@ package com.bloatit.web.html.pages.master;
 import java.io.IOException;
 import java.util.Locale;
 
+import com.bloatit.common.Image;
 import com.bloatit.web.annotations.Message;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
@@ -14,7 +15,7 @@ import com.bloatit.web.html.HtmlText;
 import com.bloatit.web.html.components.PlaceHolderElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import com.bloatit.web.html.components.standard.HtmlLink;
+import com.bloatit.web.html.components.standard.HtmlImage;
 import com.bloatit.web.html.pages.master.HtmlNotification.Level;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.server.HttpResponse;
@@ -36,7 +37,7 @@ public abstract class Page extends HtmlElement implements Linkable {
     public Page(final Url url) {
         super();
         this.thisUrl = url;
-        content = new HtmlDiv().setId("body_content");
+        content = new HtmlDiv().setId("content");
         notifications = null;
         notificationBlock = new PlaceHolderElement();
         session = Context.getSession();
@@ -54,6 +55,8 @@ public abstract class Page extends HtmlElement implements Linkable {
         final HtmlBranch html = new HtmlGenericElement("html");
 
         super.add(html);
+
+
         html.addAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
         html.add(new Header(getTitle(), getCustomCss()));
@@ -79,26 +82,31 @@ public abstract class Page extends HtmlElement implements Linkable {
 
         final HtmlGenericElement body = new HtmlGenericElement("body");
 
+        final HtmlBranch header = new HtmlDiv("header").setId("header");
+        body.add(header);
+        final HtmlBranch headerContent = new HtmlDiv("header_content").setId("header_content");
+        header.add(headerContent);
+        header.add(new HtmlGenericElement("hr").setId("header_end"));
+
+        headerContent.add(generateLogo());
+        headerContent.add(new SessionBar());
+
+
+
+        body.add(new Menu());
+
+
+
         final HtmlBranch page = new HtmlDiv("page").setId("page");
         body.add(page);
 
-        final HtmlBranch header = new HtmlDiv("header").setId("header");
+        page.add(content);
 
-        header.add(new TopBar());
-        header.add(generateTitle());
 
-        page.add(header);
-
-        final HtmlBranch center = new HtmlDiv().setId("center");
-        page.add(center);
-
-        final HtmlBranch centerColumn = new HtmlDiv().setId("center_column");
-        center.add(centerColumn);
 
         content.add(notificationBlock);
-        centerColumn.add(new Menu()).add(content);
 
-        page.add(new Footer());
+        body.add(new Footer());
 
         return body;
     }
@@ -167,14 +175,19 @@ public abstract class Page extends HtmlElement implements Linkable {
         }
     }
 
-    protected final String generateLogo() {
-        return "<span class=\"logo_bloatit\"><span class=\"logo_bloatit_bloat\">Bloat</span><span class=\"logo_bloatit_it\">It</span></span>";
-    }
 
-    private HtmlElement generateTitle() {
+
+    private HtmlElement generateLogo() {
         Context.getSession();
 
-        return new HtmlDiv().setId("logo").add(new HtmlLink(new IndexPageUrl().urlString(), new HtmlTagText(generateLogo())));
+        HtmlDiv logoDiv = new HtmlDiv("logo", "logo");
+
+        HtmlImage logoImage = new HtmlImage(new Image("logo_linkeos.png", Image.ImageType.LOCAL));
+        logoImage.setCssClass("logo_linkeos");
+
+        logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
+
+        return logoDiv;
     }
 
     private void addWaitingNotifications() {

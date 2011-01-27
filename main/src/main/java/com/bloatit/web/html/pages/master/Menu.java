@@ -1,40 +1,29 @@
 package com.bloatit.web.html.pages.master;
 
 import com.bloatit.web.html.components.standard.HtmlDiv;
-import com.bloatit.web.html.components.standard.HtmlLink;
-import com.bloatit.web.html.components.standard.HtmlList;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.IdeasListUrl;
-import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.MembersListPageUrl;
 import com.bloatit.web.utils.url.PageNotFoundUrl;
-import com.bloatit.web.utils.url.SpecialsPageUrl;
 
 public class Menu extends HtmlDiv {
 
     protected Menu() {
         super();
 
-        setId("main_menu");
+        setId("main_menu_block");
 
-        final HtmlList primaryList = new HtmlList();
+        final HtmlDiv mainMenu = new HtmlDiv("main_menu", "main_menu");
 
-        primaryList.add(new HtmlLink(new IdeasListUrl().urlString(), Context.tr("Ideas")));
-        primaryList.add(new HtmlLink(new IndexPageUrl().urlString(), Context.tr("Projects")));
-        primaryList.add((new HtmlLink(new IndexPageUrl().urlString(), Context.tr("Groups"))));
-        primaryList.add(new HtmlLink(new MembersListPageUrl().urlString(), Context.tr("Members")));
 
-        final HtmlList secondaryList = new HtmlList();
 
-        secondaryList.add(new HtmlLink(new SpecialsPageUrl().urlString(), Context.tr("Specials page")));
-        secondaryList.add(new HtmlLink(new PageNotFoundUrl().urlString(), Context.tr("Contact")));
-        secondaryList.add(new HtmlLink(new PageNotFoundUrl().urlString(), Context.tr("Documentation")));
-        secondaryList.add(new HtmlLink(new PageNotFoundUrl().urlString(), Context.tr("About BloatIt")));
-        secondaryList.add(new HtmlLink(new PageNotFoundUrl().urlString(), Context.tr("Press")));
+        mainMenu.add(new HtmlDiv("menu_item").add(new IdeasListUrl().getHtmlLink(Context.tr("Demands"))));
+        mainMenu.add(new HtmlDiv("menu_item").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Projects"))));
+        mainMenu.add(new HtmlDiv("menu_item").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Brainstorm"))));
+        mainMenu.add(new HtmlDiv("menu_item").add(new MembersListPageUrl().getHtmlLink(Context.tr("Members"))));
+        mainMenu.add(new HtmlDiv("menu_item").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Documentation"))));
 
-        add(primaryList);
-        add(secondaryList);
-
+        add(mainMenu);
     }
 
 }
