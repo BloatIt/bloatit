@@ -129,7 +129,7 @@ public final class DaoComment extends DaoKudosable {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        int result = super.hashCode();
         result = prime * result + ((text == null) ? 0 : text.hashCode());
         return result;
     }
@@ -143,7 +143,10 @@ public final class DaoComment extends DaoKudosable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof DaoComment)) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
             return false;
         }
         DaoComment other = (DaoComment) obj;

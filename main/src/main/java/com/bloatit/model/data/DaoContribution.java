@@ -208,8 +208,9 @@ public final class DaoContribution extends DaoUserContent {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        int result = super.hashCode();
         result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((comment == null) ? 0 : comment.hashCode());
         result = prime * result + ((demand == null) ? 0 : demand.hashCode());
         return result;
     }
@@ -223,7 +224,10 @@ public final class DaoContribution extends DaoUserContent {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof DaoContribution)) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
             return false;
         }
         DaoContribution other = (DaoContribution) obj;
@@ -232,6 +236,13 @@ public final class DaoContribution extends DaoUserContent {
                 return false;
             }
         } else if (!amount.equals(other.amount)) {
+            return false;
+        }
+        if (comment == null) {
+            if (other.comment != null) {
+                return false;
+            }
+        } else if (!comment.equals(other.comment)) {
             return false;
         }
         if (demand == null) {
@@ -243,4 +254,5 @@ public final class DaoContribution extends DaoUserContent {
         }
         return true;
     }
+
 }

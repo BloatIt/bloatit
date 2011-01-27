@@ -396,6 +396,4 @@ public final class DaoDemand extends DaoKudosable {
         }
         return true;
     }
-
-
 }
