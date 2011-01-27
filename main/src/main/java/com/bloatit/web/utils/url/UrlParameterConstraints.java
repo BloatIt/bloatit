@@ -119,7 +119,7 @@ public class UrlParameterConstraints<U> {
 
         public EnumSet<ConstraintError> getConstraintErrors(final T value) {
             final EnumSet<ConstraintError> enumSet = EnumSet.noneOf(ConstraintError.class);
-            if (value == null && constraints.isOptional() == false) {
+            if (value == null && !constraints.isOptional()) {
                 enumSet.add(ConstraintError.OPTIONAL_ERROR);
             }
             // do not perform constraint checking if the values are null.

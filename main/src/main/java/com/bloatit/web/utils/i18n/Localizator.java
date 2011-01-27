@@ -16,10 +16,10 @@ import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
+import com.bloatit.common.PropertyLoader;
 import com.bloatit.framework.Member;
 import com.bloatit.web.html.components.standard.form.DropDownElement;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.PropertyLoader;
 import com.bloatit.web.utils.i18n.DateLocale.FormatStyle;
 
 /**
