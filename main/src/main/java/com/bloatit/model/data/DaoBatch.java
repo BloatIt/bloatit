@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.hibernate.Query;
 import org.hibernate.annotations.Cascade;
@@ -69,7 +68,7 @@ public final class DaoBatch extends DaoIdentifiable {
     /**
      * Remember a description is a title with some content. (Translatable)
      */
-    @OneToOne
+    @ManyToOne
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
     private DaoDescription description;

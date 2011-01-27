@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -13,7 +14,6 @@ import javax.persistence.OrderBy;
 import org.hibernate.Query;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Entity;
 
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.NonOptionalParameterException;

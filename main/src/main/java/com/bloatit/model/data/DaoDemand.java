@@ -63,11 +63,6 @@ public final class DaoDemand extends DaoKudosable {
     @IndexedEmbedded
     private DaoDescription description;
 
-    @OneToOne(mappedBy = "demand")
-    @Cascade(value = { CascadeType.ALL })
-    @IndexedEmbedded
-    private DaoSpecification specification;
-
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "popularity desc")
@@ -142,7 +137,6 @@ public final class DaoDemand extends DaoKudosable {
             throw new NonOptionalParameterException();
         }
         this.description = description;
-        this.specification = null;
         this.validationDate = null;
         setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
@@ -174,17 +168,6 @@ public final class DaoDemand extends DaoKudosable {
     public void delete() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         session.delete(this);
-    }
-
-    /**
-     * Create a specification.
-     *
-     * @param member author (must be non null).
-     * @param content a string contain the specification (WARNING : UNTESTED)(must be non
-     *        null).
-     */
-    public void createSpecification(final DaoMember member, final String content) {
-        specification = new DaoSpecification(member, content, this);
     }
 
     /**
@@ -240,9 +223,6 @@ public final class DaoDemand extends DaoKudosable {
         contribution = contribution.add(amount);
     }
 
-    public DaoSpecification getSpecification() {
-        return specification;
-    }
 
     public DaoDescription getDescription() {
         return description;
@@ -381,20 +361,18 @@ public final class DaoDemand extends DaoKudosable {
         super();
     }
 
-    /*
-     * (non-Javadoc)
+    /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        int result = super.hashCode();
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         return result;
     }
 
-    /*
-     * (non-Javadoc)
+    /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -402,7 +380,10 @@ public final class DaoDemand extends DaoKudosable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof DaoDemand)) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
             return false;
         }
         DaoDemand other = (DaoDemand) obj;
@@ -415,4 +396,6 @@ public final class DaoDemand extends DaoKudosable {
         }
         return true;
     }
+
+
 }

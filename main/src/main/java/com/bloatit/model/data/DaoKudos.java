@@ -43,7 +43,7 @@ public final class DaoKudos extends DaoUserContent {
      * @param member is the person creating the kudos.
      * @param value is value of the kudos.
      */
-    private DaoKudos(final DaoMember member, final int value) {
+    public DaoKudos(final DaoMember member, final int value) {
         super(member);
         this.value = value;
     }
@@ -60,18 +60,20 @@ public final class DaoKudos extends DaoUserContent {
         super();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        int result = super.hashCode();
         result = prime * result + value;
         return result;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -79,10 +81,10 @@ public final class DaoKudos extends DaoUserContent {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
+        if (!super.equals(obj)) {
             return false;
         }
-        if (!(obj instanceof DaoKudos)) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         DaoKudos other = (DaoKudos) obj;
@@ -91,4 +93,5 @@ public final class DaoKudos extends DaoUserContent {
         }
         return true;
     }
+
 }
