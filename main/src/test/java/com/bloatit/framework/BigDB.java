@@ -16,6 +16,7 @@ import com.bloatit.model.data.DaoExternalAccount;
 import com.bloatit.model.data.DaoExternalAccount.AccountType;
 import com.bloatit.model.data.DaoGroup;
 import com.bloatit.model.data.DaoMember;
+import com.bloatit.model.data.DaoOffer;
 import com.bloatit.model.data.DaoTransaction;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
@@ -88,10 +89,11 @@ public class BigDB {
 
             final DaoMember member = members.get(pick(nbUsers));
             if (pick(2) == 0) {
-                demand.addOffer(member,
-                                new BigDecimal((pick(50) + 10) * 10),
-                                DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
-                                new Date(System.currentTimeMillis()+200));
+                demand.addOffer(DaoOffer.createAndPersist(member, demand, new BigDecimal((pick(50) + 10) * 10), DaoDescription.createAndPersist(member,
+                                                                                                                                   new Locale("fr"),
+                                                                                                                                   "Offre",
+                                                                                                                                   fortune(254)),
+                        new Date(System.currentTimeMillis() + 200)));
                 if (pick(2) == 0) {
                     for (final DaoContribution contrib : demand.getContributionsFromQuery()) {
                         try {

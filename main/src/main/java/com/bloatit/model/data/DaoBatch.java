@@ -11,7 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.DateBridge;
@@ -22,6 +24,7 @@ import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.DaoBug.Level;
 import com.bloatit.model.data.DaoBug.State;
@@ -55,7 +58,7 @@ public final class DaoBatch extends DaoIdentifiable {
     private int majorBugsPercent;
 
     // nullable.
-    private Level validationLevel;
+    private Level levelToValidate;
 
     /**
      * The amount represents the money the member want to have to make his offer.
@@ -80,6 +83,20 @@ public final class DaoBatch extends DaoIdentifiable {
     @ManyToOne(optional = false)
     private DaoOffer offer;
 
+    public static DaoBatch createAndPersist(final Date dateExpire, final BigDecimal amount, final DaoDescription description, final DaoOffer offer, int secondBeforeValidation) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoBatch batch = new DaoBatch(dateExpire, amount, description, offer, secondBeforeValidation);
+        try {
+            session.save(batch);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            Log.data().error(e);
+            session.beginTransaction();
+            throw e;
+        }
+        return batch;
+    }
+
     /**
      * Create a DaoBatch.
      *
@@ -91,7 +108,7 @@ public final class DaoBatch extends DaoIdentifiable {
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
      */
-    public DaoBatch(final Date dateExpire, final BigDecimal amount, final DaoDescription description, final DaoOffer offer, int secondBeforeValidation) {
+    private DaoBatch(final Date dateExpire, final BigDecimal amount, final DaoDescription description, final DaoOffer offer, int secondBeforeValidation) {
         super();
         if (dateExpire == null || amount == null || description == null || offer == null) {
             throw new NonOptionalParameterException();
@@ -107,7 +124,7 @@ public final class DaoBatch extends DaoIdentifiable {
         this.description = description;
         this.offer = offer;
         this.secondBeforeValidation = secondBeforeValidation;
-        this.validationLevel = null;
+        this.levelToValidate = Level.FATAL;
     }
 
     public void updateMajorFatalPercent(int fatalPercent, int majorPercent) {
@@ -125,18 +142,40 @@ public final class DaoBatch extends DaoIdentifiable {
         this.releaseDate = new Date();
     }
 
-    public void validate(){
-        if (validationLevel == null && canValidatePart(Level.FATAL)){
-            validationLevel = Level.FATAL;
+    /**
+     * Tells that the Income state of this batch is finished, and everything is OK. The
+     * validation can be partial (when some major or minor bugs are open). The validate
+     * method may also validate nothing if some FATAL bugs are open, or if the validation
+     * period is not open. You can change this behavior using the <code>force</code>
+     * parameter. The force parameter allows to validate the batch without taking into
+     * account these previous restrictions.
+     *
+     * @param force force the validation of this batch. Do not take care of the bugs and
+     *        the timeOuts.
+     * @return true if all the batch is validated.
+     */
+    public boolean validate(boolean force) {
+        if (levelToValidate == Level.FATAL && (force || shouldValidatePart(Level.FATAL))) {
+            levelToValidate = Level.MAJOR;
             offer.getDemand().validateContributions(fatalBugsPercent);
         }
-        if (validationLevel == Level.FATAL && canValidatePart(Level.MAJOR)){
-            validationLevel = Level.MINOR;
+        // if fatalBugPercent == 100, there is nothing left to validate so it is
+        // automatically validated.
+        if (levelToValidate == Level.MAJOR && (force || shouldValidatePart(Level.MAJOR) || fatalBugsPercent == 100)) {
+            levelToValidate = Level.MINOR;
             offer.getDemand().validateContributions(majorBugsPercent);
         }
-        if (validationLevel == Level.MAJOR && canValidatePart(Level.MINOR)){
+        // when minorBugPercent == 0, there is nothing left to validate so it is
+        // automatically validated.
+        if (levelToValidate == Level.MINOR && (force || shouldValidatePart(Level.MINOR) || getMinorBugsPercent() == 0)) {
+            levelToValidate = null;
             offer.getDemand().validateContributions(getMinorBugsPercent());
         }
+        if(levelToValidate == null){
+            offer.passToNextBatch();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -144,7 +183,7 @@ public final class DaoBatch extends DaoIdentifiable {
      *
      * @return
      */
-    public boolean canValidatePart(Level level) {
+    public boolean shouldValidatePart(Level level) {
         if (validationPeriodFinished() && getNonResolvedBugs(level).size() == 0) {
             return true;
         }
@@ -192,7 +231,7 @@ public final class DaoBatch extends DaoIdentifiable {
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
-    public void addBug(DaoBug bug){
+    public void addBug(DaoBug bug) {
         bugs.add(bug);
     }
 

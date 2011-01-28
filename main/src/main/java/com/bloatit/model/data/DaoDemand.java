@@ -172,17 +172,9 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a new offer for this demand.
-     *
-     * @param member the author of the offer
-     * @param amount the amount that the author want to make the offer
-     * @param description this is a description of the offer
-     * @param dateExpir this is when the offer should be finish ?
-     * @return the newly created offer.
      */
-    public DaoOffer addOffer(final DaoMember member, final BigDecimal amount, final DaoDescription description, final Date dateExpir) {
-        final DaoOffer offer = new DaoOffer(member, this, amount, description, dateExpir);
+    public void addOffer(DaoOffer offer) {
         offers.add(offer);
-        return offer;
     }
 
     /**
@@ -222,7 +214,6 @@ public final class DaoDemand extends DaoKudosable {
         contributions.add(new DaoContribution(member, this, amount, comment));
         contribution = contribution.add(amount);
     }
-
 
     public DaoDescription getDescription() {
         return description;
@@ -344,7 +335,7 @@ public final class DaoDemand extends DaoKudosable {
         }
         for (DaoContribution contribution : getContributionsFromQuery()) {
             try {
-                if(contribution.getState() == DaoContribution.State.PENDING){
+                if (contribution.getState() == DaoContribution.State.PENDING) {
                     contribution.validate(selectedOffer, percent);
                 }
             } catch (NotEnoughMoneyException e) {
@@ -361,7 +352,8 @@ public final class DaoDemand extends DaoKudosable {
         super();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -372,7 +364,8 @@ public final class DaoDemand extends DaoKudosable {
         return result;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

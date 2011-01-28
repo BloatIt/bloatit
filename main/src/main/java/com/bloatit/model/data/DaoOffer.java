@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -20,6 +22,7 @@ import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.DateUtils;
 import com.bloatit.common.FatalErrorException;
+import com.bloatit.common.Log;
 import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
@@ -59,6 +62,23 @@ public final class DaoOffer extends DaoKudosable {
     @Basic(optional = false)
     private BigDecimal amount;
 
+
+    public static DaoOffer createAndPersist(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final DaoDescription description, final Date dateExpire) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoOffer offer = new DaoOffer(member, demand, amount, description, dateExpire);
+        try {
+            session.save(offer);
+            // Must be done here because of non null property in addBatch.
+            offer.addBatch(DaoBatch.createAndPersist(dateExpire, amount, description, offer, DateUtils.SECOND_PER_WEEK));
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            Log.data().error(e);
+            session.beginTransaction();
+            throw e;
+        }
+        return offer;
+    }
+
     /**
      * Create a DaoOffer.
      *
@@ -71,7 +91,7 @@ public final class DaoOffer extends DaoKudosable {
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
      */
-    public DaoOffer(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final DaoDescription description, final Date dateExpire) {
+    private DaoOffer(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final DaoDescription description, final Date dateExpire) {
         super(member);
         if (demand == null || description == null || dateExpire == null) {
             throw new NonOptionalParameterException();
@@ -79,7 +99,6 @@ public final class DaoOffer extends DaoKudosable {
         this.demand = demand;
         this.amount = BigDecimal.ZERO; // Will be updated by addBatch
         this.expirationDate = dateExpire;
-        addBatch(new DaoBatch(dateExpire, amount, description, this, DateUtils.SECOND_PER_WEEK));
         this.currentBatch = 0;
     }
 
@@ -111,7 +130,7 @@ public final class DaoOffer extends DaoKudosable {
         return currentBatch < batches.size();
     }
 
-    public void passToNextBatch(){
+    void passToNextBatch(){
         currentBatch++;
     }
 

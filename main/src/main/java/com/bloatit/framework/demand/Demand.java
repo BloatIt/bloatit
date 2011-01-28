@@ -29,6 +29,7 @@ import com.bloatit.model.data.DaoDemand.DemandState;
 import com.bloatit.model.data.DaoDescription;
 import com.bloatit.model.data.DaoKudosable;
 import com.bloatit.model.data.DaoOffer;
+import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 import com.bloatit.model.exceptions.NotEnoughMoneyException;
 
@@ -175,27 +176,25 @@ public final class Demand extends Kudosable {
      * {@link DemandState#PENDING} or {@link DemandState#PREPARING} DemandState. When you
      * add the first Offer, the state pass from {@link DemandState#PENDING} to
      * {@link DemandState#PREPARING}; and this offer is selected (see
-     * {@link DaoDemand#setSelectedOffer(DaoOffer)}).
+     * {@link DaoDemand#setSelectedOffer(DaoOffer)}). The parameters of this function are
+     * used to create the first (non optional) batch in this offer.
      *
-     * @param amount must be positive (can be ZERO) non null.
-     * @param locale must be non null. Is the locale in which the title and the text are
-     *        written.
-     * @param title is the title of the offer. Must be non null.
-     * @param text is the description of the offer. Must be non null.
-     * @param dateExpir is the date when this offer should be finished. Must be non null.
-     *        Must be in the future.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#WRITE} right on the <code>Offer</code> property.
-     * @throws WrongStateException if the state is != from
-     *         {@link DemandState#PENDING} or {@link DemandState#PREPARING}.
+     * @throws WrongStateException if the state is != from {@link DemandState#PENDING} or
+     *         {@link DemandState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
-    public void addOffer(final BigDecimal amount, final Locale locale, final String title, final String text, final Date dateExpir)
-            throws UnauthorizedOperationException {
+    public void addOffer(Offer offer) throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
-        final Offer offer = Offer.create(dao.addOffer(getAuthToken().getMember().getDao(), amount, new Description(getAuthToken().getMember(),
-                locale, title, text).getDao(), dateExpir));
+        if (offer == null) {
+            throw new NonOptionalParameterException();
+        }
+        if (!offer.getDemand().equals(this)) {
+            throw new IllegalArgumentException();
+        }
         stateObject = stateObject.eventAddOffer(offer);
+        dao.addOffer(offer.getDao());
     }
 
     /**
@@ -236,28 +235,28 @@ public final class Demand extends Kudosable {
         for (Contribution contribution : getContributionsUnprotected()) {
             contribution.cancel();
         }
+        // Maybe I should make sure everything is canceled in every Offer/batches ?
     }
 
-    /**
-     * Accept all the contribution on this demand.
-     * @throws NotEnoughMoneyException
-     */
-    private void accept() throws NotEnoughMoneyException {
-        for (Contribution contribution : getContributionsUnprotected()) {
-            contribution.accept(getSelectedOfferUnprotected());
-        }
-    }
-
-    public void finishDevelopment() throws UnauthorizedOperationException {
+    public void releaseCurrentBatch() throws UnauthorizedOperationException {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_FINISHED_DEMAND);
         }
-        if(!getSelectedOfferUnprotected().hasBatchLeft()){
+        if (getSelectedOfferUnprotected().isFinished()) {
             throw new FatalErrorException("There is no batch left for this Offer !");
         }
 
-        stateObject = stateObject.eventBatchDevelopmentFinished();
-        // The offer really don't care to know if the current batch is under development or not.
+        stateObject = stateObject.eventBatchReleased();
+        // The offer really don't care to know if the current batch is under development
+        // or not.
+    }
+
+    // TODO authorization
+    public boolean validateCurrentBatch(boolean force) {
+        if (getSelectedOfferUnprotected().isFinished()) {
+            throw new FatalErrorException("There is no batch left for this Offer !");
+        }
+        return getSelectedOfferUnprotected().validateCurrentBatch(force);
     }
 
     /**
@@ -356,7 +355,7 @@ public final class Demand extends Kudosable {
      * Called by a {@link PlannedTask}
      */
     void developmentTimeOut() {
-        stateObject = stateObject.eventBatchDevelopmentFinished();
+        stateObject = stateObject.eventBatchReleased();
     }
 
     /**
@@ -382,7 +381,7 @@ public final class Demand extends Kudosable {
 
     @Override
     protected void notifyRejected() {
-        stateObject = stateObject.eventRejected();
+        stateObject = stateObject.eventDemandRejected();
     }
 
     void setSelectedOffer(final Offer offer) {
@@ -396,19 +395,17 @@ public final class Demand extends Kudosable {
     // Offer feedBack
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    public void setOfferIsValidated(){
+    public void setOfferIsValidated() {
         stateObject = stateObject.eventOfferIsValidated();
     }
 
-    public void setBatchIsValidated(){
+    public void setBatchIsValidated() {
         stateObject = stateObject.eventBatchIsValidated();
     }
 
     public void setBatchIsRejected() {
         stateObject = stateObject.eventBatchIsRejected();
     }
-
-
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Get something
@@ -584,7 +581,7 @@ public final class Demand extends Kudosable {
     /**
      * @return the dao object of this Demand.
      */
-    protected DaoDemand getDao() {
+    public DaoDemand getDao() {
         return dao;
     }
 

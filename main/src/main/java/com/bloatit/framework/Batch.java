@@ -15,6 +15,10 @@ public class Batch extends Identifiable {
 
     private final DaoBatch dao;
 
+    // ////////////////////////////////////////////////////////////////////////
+    // Construction
+    // ////////////////////////////////////////////////////////////////////////
+
     public static Batch create(final DaoBatch dao) {
         if (dao != null) {
             return new Batch(dao);
@@ -26,31 +30,6 @@ public class Batch extends Identifiable {
         this.dao = dao;
     }
 
-    @Override
-    public int getId() {
-        return getDao().getId();
-    }
-
-    public Date getExpirationDate() {
-        return getDao().getExpirationDate();
-    }
-
-    public BigDecimal getAmount() {
-        return getDao().getAmount();
-    }
-
-    public String getTitle() {
-        return getDao().getDescription().getDefaultTranslation().getTitle();
-    }
-
-    public String getDescription() {
-        return getDao().getDescription().getDefaultTranslation().getText();
-    }
-
-    public void addBug(Member member, Batch batch, String description, Locale locale, Level errorLevel){
-        dao.addBug(new Bug(member, batch, description, locale, errorLevel).getDao());
-    }
-
     /**
      * @param fatalPercent
      * @param majorPercent
@@ -59,6 +38,14 @@ public class Batch extends Identifiable {
     public void updateMajorFatalPercent(int fatalPercent, int majorPercent) {
         dao.updateMajorFatalPercent(fatalPercent, majorPercent);
     }
+
+    public void addBug(Member member, Batch batch, String description, Locale locale, Level errorLevel) {
+        dao.addBug(new Bug(member, batch, description, locale, errorLevel).getDao());
+    }
+
+    // ////////////////////////////////////////////////////////////////////////
+    // Work-flow
+    // ////////////////////////////////////////////////////////////////////////
 
     /**
      * @see com.bloatit.model.data.DaoBatch#release()
@@ -70,18 +57,29 @@ public class Batch extends Identifiable {
     /**
      * @see com.bloatit.model.data.DaoBatch#validate()
      */
-    public void validate() {
-        dao.validate();
+    public boolean validate() {
+        return dao.validate(false);
+    }
+
+    /**
+     * @see com.bloatit.model.data.DaoBatch#validate()
+     */
+    public boolean forceValidate() {
+        return dao.validate(true);
     }
 
     /**
      * @param level
      * @return
-     * @see com.bloatit.model.data.DaoBatch#canValidatePart(com.bloatit.model.data.DaoBug.Level)
+     * @see com.bloatit.model.data.DaoBatch#shouldValidatePart(com.bloatit.model.data.DaoBug.Level)
      */
-    public boolean canValidatePart(Level level) {
-        return dao.canValidatePart(level);
+    public boolean shouldValidatePart(Level level) {
+        return dao.shouldValidatePart(level);
     }
+
+    // ////////////////////////////////////////////////////////////////////////
+    // getters
+    // ////////////////////////////////////////////////////////////////////////
 
     /**
      * @param level
@@ -153,8 +151,28 @@ public class Batch extends Identifiable {
         return dao.getMinorBugsPercent();
     }
 
+    public Date getExpirationDate() {
+        return getDao().getExpirationDate();
+    }
+
+    public BigDecimal getAmount() {
+        return getDao().getAmount();
+    }
+
+    public String getTitle() {
+        return getDao().getDescription().getDefaultTranslation().getTitle();
+    }
+
+    public String getDescription() {
+        return getDao().getDescription().getDefaultTranslation().getText();
+    }
+
     DaoBatch getDao() {
         return dao;
     }
 
+    @Override
+    public int getId() {
+        return getDao().getId();
+    }
 }

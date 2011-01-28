@@ -1,6 +1,5 @@
 package com.bloatit.framework.demand;
 
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
@@ -15,6 +14,7 @@ import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.AuthToken;
 import com.bloatit.framework.FrameworkMutex;
 import com.bloatit.framework.FrameworkTestUnit;
+import com.bloatit.framework.Offer;
 import com.bloatit.framework.right.RightManager.Action;
 import com.bloatit.model.data.DaoDemand;
 import com.bloatit.model.data.DaoDemand.DemandState;
@@ -234,87 +234,14 @@ public class DemandTest extends FrameworkTestUnit {
         }
 
         try {
-            demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "description", DateUtils.tomorrow());
+            Offer offer = new Offer(fredAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
+                    DateUtils.tomorrow());
+            demand.addOffer(offer);
         } catch (UnauthorizedOperationException e) {
             fail();
         }
 
         assertEquals(DemandState.PREPARING, demand.getDemandState());
-
-        try {
-            demand.addOffer(null, Locale.FRENCH, "title", "description", DateUtils.tomorrow());
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (NonOptionalParameterException e) {
-            assertTrue(true);
-        }
-        try {
-            demand.addOffer(new BigDecimal("120"), null, "title", "description", DateUtils.tomorrow());
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (NonOptionalParameterException e) {
-            assertTrue(true);
-        }
-        try {
-            demand.addOffer(new BigDecimal("120"), Locale.FRENCH, null, "description", DateUtils.tomorrow());
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (NonOptionalParameterException e) {
-            assertTrue(true);
-        }
-        try {
-            demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "", "description", DateUtils.tomorrow());
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (NonOptionalParameterException e) {
-            assertTrue(true);
-        }
-        try {
-            demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", null, DateUtils.tomorrow());
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (NonOptionalParameterException e) {
-            assertTrue(true);
-        }
-        try {
-            demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "", DateUtils.tomorrow());
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (NonOptionalParameterException e) {
-            assertTrue(true);
-        }
-        try {
-            demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "description", null);
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (NonOptionalParameterException e) {
-            assertTrue(true);
-        }
-
-        try {
-            demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "description", DateUtils.yesterday());
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (FatalErrorException e) {
-            assertTrue(true);
-        }
-
-        try {
-            demand.addOffer(new BigDecimal("-1"), Locale.FRENCH, "title", "description", DateUtils.yesterday());
-            fail();
-        } catch (UnauthorizedOperationException e) {
-            fail();
-        } catch (FatalErrorException e) {
-            assertTrue(true);
-        }
 
         try {
             assertNotNull(demand.getSelectedOffer());
@@ -340,25 +267,15 @@ public class DemandTest extends FrameworkTestUnit {
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(tomAuthToken);
-        demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "description", DateUtils.tomorrow());
+        Offer offer = new Offer(tomAuthToken.getMember(), demand,new BigDecimal("120"), "description", "title", Locale.FRENCH, DateUtils.tomorrow());
+        demand.addOffer(offer);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         demand.authenticate(yoAuthToken);
         demand.addContribution(new BigDecimal("20"), "plip");
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
-
-        new TaskSelectedOfferTimeOut(demand, new Date());
-        FrameworkMutex.unLock();
-        try {
-            Thread.sleep(1000);
-            FrameworkMutex.lock();
-        } catch (InterruptedException e) {
-            fail();
-        }
-
-        Mockit.tearDownMocks();
+        passeIntoDev(demand);
 
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
     }
@@ -374,7 +291,8 @@ public class DemandTest extends FrameworkTestUnit {
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(tomAuthToken);
-        demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "description", DateUtils.tomorrow());
+        Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH, DateUtils.tomorrow());
+        demand.addOffer(offer);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         assertNotNull(demand.getSelectedOffer());
@@ -429,25 +347,16 @@ public class DemandTest extends FrameworkTestUnit {
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(tomAuthToken);
-        demand.addOffer(new BigDecimal("120"), Locale.FRENCH, "title", "description", DateUtils.tomorrow());
+        Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH, DateUtils.tomorrow());
+        demand.addOffer(offer);
+
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         demand.authenticate(yoAuthToken);
         demand.addContribution(new BigDecimal("20"), "plip");
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
-
-        new TaskSelectedOfferTimeOut(demand, new Date());
-        FrameworkMutex.unLock();
-        try {
-            Thread.sleep(1000);
-            FrameworkMutex.lock();
-        } catch (InterruptedException e) {
-            fail();
-        }
-
-        Mockit.tearDownMocks();
+        passeIntoDev(demand);
 
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
         return demand;
@@ -457,19 +366,52 @@ public class DemandTest extends FrameworkTestUnit {
         Demand demand = createDemandAddOffer120AddContribution120BeginDev();
 
         try {
-            demand.finishDevelopment();
+            demand.releaseCurrentBatch();
             fail();
         } catch (UnauthorizedOperationException e) {
             assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_DEMAND, e.getCode());
         }
 
         demand.authenticate(tomAuthToken);
-        demand.finishDevelopment();
+        demand.releaseCurrentBatch();
 
         assertEquals(DemandState.INCOME, demand.getDemandState());
         assertEquals(new BigDecimal("120"), demand.getContribution());
     }
 
+    public void testOfferWithALotOfBatch() throws UnauthorizedOperationException, NotEnoughMoneyException{
+        Demand demand = createDemandByThomas();
+        Offer offer = new Offer(tomAuthToken.getMember(), demand,new BigDecimal("10"), "description", "title", Locale.FRENCH, DateUtils.tomorrow());
+        demand.authenticate(fredAuthToken);
+        offer.addBatch(DateUtils.tomorrow(), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(DateUtils.nowPlusSomeDays(2), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(DateUtils.nowPlusSomeDays(4), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(DateUtils.nowPlusSomeDays(9), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
+        demand.addOffer(offer);
+
+        demand.authenticate(yoAuthToken);
+        demand.addContribution(new BigDecimal("12"), null);
+        demand.addContribution(new BigDecimal("13"), null);
+        demand.authenticate(fredAuthToken);
+        demand.addContribution(new BigDecimal("14"), null);
+        demand.addContribution(new BigDecimal("15"), null);
+        demand.authenticate(tomAuthToken);
+        demand.addContribution(new BigDecimal("16"), null);
+
+        passeIntoDev(demand);
+
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+
+        assertTrue(demand.validateCurrentBatch(true));
+        assertTrue(demand.validateCurrentBatch(true));
+        assertTrue(demand.validateCurrentBatch(true));
+        assertTrue(demand.validateCurrentBatch(true));
+        assertTrue(demand.getSelectedOffer().isFinished());
+
+
+
+
+    }
     // public void testAddComment() {
     // fail("Not yet implemented");
     // }
@@ -485,4 +427,18 @@ public class DemandTest extends FrameworkTestUnit {
     // public void testGetSelectedOffer() {
     // fail("Not yet implemented");
     // }
+
+    private void passeIntoDev(Demand demand) {
+        Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
+
+        new TaskSelectedOfferTimeOut(demand, new Date());
+        FrameworkMutex.unLock();
+        try {
+            Thread.sleep(1000);
+            FrameworkMutex.lock();
+        } catch (InterruptedException e) {
+            fail();
+        }
+        Mockit.tearDownMocks();
+    }
 }

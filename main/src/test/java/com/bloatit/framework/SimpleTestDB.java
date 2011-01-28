@@ -13,6 +13,7 @@ import com.bloatit.model.data.DaoExternalAccount.AccountType;
 import com.bloatit.model.data.DaoGroup;
 import com.bloatit.model.data.DaoKudosable.State;
 import com.bloatit.model.data.DaoMember;
+import com.bloatit.model.data.DaoOffer;
 import com.bloatit.model.data.DaoTransaction;
 import com.bloatit.model.data.DaoTranslation;
 import com.bloatit.model.data.util.SessionManager;
@@ -86,10 +87,11 @@ public class SimpleTestDB {
             demand.addContribution(yo, new BigDecimal("120"), "I'm so generous too");
             demand.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
 
-            demand.addOffer(fred,
-                            new BigDecimal("200"),
-                            DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
-                            DateUtils.tomorrow());
+            demand.addOffer(DaoOffer.createAndPersist(fred, demand, new BigDecimal("200"), DaoDescription.createAndPersist(fred,
+                                                                                                              new Locale("fr"),
+                                                                                                              "Mon Offre",
+                                                                                                              "Voici la description"), DateUtils
+                    .tomorrow()));
 
             demand.getOffers().iterator().next().setState(State.VALIDATED);
 

@@ -48,12 +48,7 @@ abstract class AbstractDemandState {
         throw new WrongStateException();
     }
 
-    public AbstractDemandState eventRejected() {
-        // Implement me if you wish.
-        throw new WrongStateException();
-    }
-
-    public AbstractDemandState closeIncome(final boolean accepted) {
+    public AbstractDemandState eventDemandRejected() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -68,12 +63,7 @@ abstract class AbstractDemandState {
         throw new WrongStateException();
     }
 
-    public AbstractDemandState eventCloseBatch(boolean accepted) {
-        // Implement me if you wish.
-        throw new WrongStateException();
-    }
-
-    public AbstractDemandState eventBatchDevelopmentFinished() {
+    public AbstractDemandState eventBatchReleased() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
@@ -88,6 +78,7 @@ abstract class AbstractDemandState {
         throw new WrongStateException();
     }
 
+    // When every batches are finished
     public AbstractDemandState eventOfferIsValidated() {
         // Implement me if you wish.
         throw new WrongStateException();

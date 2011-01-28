@@ -29,7 +29,6 @@ public class TestAll {
         suite.addTestSuite(KudosableTest.class);
         suite.addTestSuite(MemberTest.class);
         suite.addTestSuite(OfferTest.class);
-        suite.addTestSuite(DemandTest.class);
         suite.addTest(com.bloatit.framework.demand.TestAll.suite());
         return suite;
     }

@@ -76,10 +76,7 @@ public class DaoDemandTest extends ModelTestUnit {
         SessionManager.beginWorkUnit();
         demand = DBRequests.getById(DaoDemand.class, demand.getId());
 
-        demand.addOffer(fred,
-                        new BigDecimal("200"),
-                        DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
-                        new Date());
+        demand.addOffer(createOffer(demand));
 
         assertEquals(1, demand.getOffers().size());
     }
@@ -109,25 +106,30 @@ public class DaoDemandTest extends ModelTestUnit {
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
-        final DaoOffer Offer = demand.addOffer(fred,
-                                               new BigDecimal("200"),
-                                               DaoDescription.createAndPersist(fred,
-                                                                               new Locale("fr"),
-                                                                               "Ma super offre !",
-                                                                               "Ceci est la descption de mon Offre:) "),
-                                               new Date());
+        DaoOffer offer = createOffer(demand);
+        demand.addOffer(offer);
 
         demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
         demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
         for (final DaoContribution Contribution : demand.getContributionsFromQuery()) {
-            Contribution.validate(Offer, 100);
+            Contribution.validate(offer, 100);
         }
 
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
         assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("68")));
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("32")));
+    }
+
+    private DaoOffer createOffer(final DaoDemand demand) {
+        return DaoOffer.createAndPersist(fred, demand,
+                                               new BigDecimal("200"),
+                                               DaoDescription.createAndPersist(fred,
+                                                                               new Locale("fr"),
+                                                                               "Ma super offre !",
+                                                                               "Ceci est la descption de mon Offre:) "),
+                                               new Date());
     }
 
     public void testRejectContribution() throws Throwable {
@@ -137,10 +139,7 @@ public class DaoDemandTest extends ModelTestUnit {
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "));
-        demand.addOffer(fred,
-                        new BigDecimal("200"),
-                        DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
-                        new Date());
+        demand.addOffer(createOffer(demand));
         fred.getInternalAccount().setAmount(new BigDecimal("100"));
         yo.getInternalAccount().setAmount(new BigDecimal("100"));
         demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
@@ -169,13 +168,9 @@ public class DaoDemandTest extends ModelTestUnit {
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
-        final DaoOffer offer = demand.addOffer(fred,
-                                               new BigDecimal("200"),
-                                               DaoDescription.createAndPersist(fred,
-                                                                               new Locale("fr"),
-                                                                               "Ma super offre !",
-                                                                               "Ceci est la descption de mon Offre:) "),
-                                               new Date());
+
+        final DaoOffer offer = createOffer(demand);
+        demand.addOffer(offer);
         SessionManager.flush();
 
         demand.computeSelectedOffer();
@@ -188,10 +183,7 @@ public class DaoDemandTest extends ModelTestUnit {
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
-        demand.addOffer(fred,
-                        new BigDecimal("200"),
-                        DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
-                        new Date());
+        demand.addOffer(createOffer(demand));
         SessionManager.flush();
 
         assertTrue(DBRequests.searchDemands("super").iterator().hasNext());
