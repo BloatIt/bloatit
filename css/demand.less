@@ -5,11 +5,13 @@
 
 
 .demand_summary {
-    .rounded_corners(4px);
-    border: 1px solid @border_color;
-    background-color: @light_background_color;
+    .box;
     
     padding : 10px;
+}
+
+.demand_summary_top{
+    margin-bottom:20px;
 }
 
 .demand_summary_left {
@@ -18,10 +20,15 @@
 
 .demand_summary_center {
     display:table-cell;
-    vertical-align : top;
+    vertical-align : middle;
     padding-left : 20px;
     padding-left : 20px;
+
     width: 100%;
+    
+    h1{
+    .no_insets;
+    }
 }
 
 .project_image {
@@ -289,9 +296,7 @@ display:table-cell;
 
 .comments_block{
     margin-top: 25px;
-    .rounded_corners(4px);
-    border: 1px solid @border_color;
-    background-color: @light_background_color;
+    .box;
     
     padding : 10px;
     

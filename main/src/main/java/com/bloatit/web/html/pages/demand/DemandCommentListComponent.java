@@ -14,20 +14,35 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.Comment;
 import com.bloatit.framework.demand.Demand;
+import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.html.HtmlElement;
+import com.bloatit.web.html.HtmlTools;
+import com.bloatit.web.html.components.custom.renderer.HtmlRawTextRenderer;
 import com.bloatit.web.html.components.standard.HtmlDiv;
+import com.bloatit.web.html.components.standard.HtmlLink;
+import com.bloatit.web.html.components.standard.HtmlParagraph;
+import com.bloatit.web.html.components.standard.HtmlSpan;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
+import com.bloatit.web.html.components.standard.form.HtmlForm;
+import com.bloatit.web.html.components.standard.form.HtmlSubmit;
+import com.bloatit.web.html.components.standard.form.HtmlTextArea;
 import com.bloatit.web.html.pages.master.HtmlPageComponent;
 import com.bloatit.web.server.Context;
+import com.bloatit.web.utils.url.CommentReplyPageUrl;
+import com.bloatit.web.utils.url.IdeaCommentActionUrl;
+import com.bloatit.web.utils.url.KudoActionUrl;
+import com.bloatit.web.utils.url.MemberPageUrl;
 
 public final class DemandCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
-    private final Demand targetIdea;
+    private final Demand targetDemand;
+    private static final int NB_COLUMNS = 80;
+    private static final int NB_ROWS = 10;
 
     public DemandCommentListComponent(final Demand demand) {
         super();
-        this.targetIdea = demand;
+        this.targetDemand = demand;
         try {
             this.comments = demand.getComments();
             add(produce());
@@ -45,14 +60,109 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
 
         final HtmlDiv commentsBlock = new HtmlDiv("comments_block");
         {
-            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments"), 2).setCssClass("comments_title"));
+            commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", comments.size()), 2).setCssClass("comments_title"));
 
             for (final Comment comment : comments) {
-                commentsBlock.add(new IdeaCommentComponent(comment, false));
+                commentsBlock.add(generateComment(comment, false));
             }
-            commentsBlock.add(new IdeaNewCommentComponent(targetIdea));
+            commentsBlock.add(generateNewCommentComponent(targetDemand));
         }
         return commentsBlock;
+    }
+
+    private HtmlElement generateComment(Comment comment, boolean child) {
+        final HtmlDiv commentBlock = (child) ? new HtmlDiv("child_comment_block") : new HtmlDiv("main_comment_block");
+        {
+
+            final HtmlParagraph commentText = new HtmlParagraph();
+            commentText.add(new HtmlRawTextRenderer(comment.getText()));
+            commentBlock.add(commentText);
+
+
+
+            final HtmlDiv commentInfo = new HtmlDiv("comment_info");
+            commentBlock.add(commentInfo);
+
+            commentInfo.addText(Context.tr("Created by "));
+
+
+            commentInfo.addText(Context.tr("Created by "));
+
+            try {
+                final MemberPageUrl memberUrl = new MemberPageUrl(comment.getAuthor());
+                commentInfo.add(memberUrl.getHtmlLink(comment.getAuthor().getDisplayName()));
+            } catch (final UnauthorizedOperationException e1) {
+                // Nothing.
+            }
+
+            commentInfo.addText(" – ");
+
+            final HtmlSpan dateSpan = new HtmlSpan("comment_date");
+            dateSpan.addText(HtmlTools.formatDate(Context.getLocalizator().getDate(comment.getCreationDate())));
+            commentInfo.add(dateSpan);
+
+            commentInfo.addText(" – ");
+
+            //////////////////////
+            // Popularity
+            final HtmlSpan commentPopularity = new HtmlSpan("comment_populatity");
+            {
+
+                commentPopularity.addText(Context.tr("Popularity: {0}", HtmlTools.compressKarma(comment.getPopularity())));
+
+                commentPopularity.addText(" (");
+
+                //Usefull
+                KudoActionUrl usefullUrl = new KudoActionUrl(comment);
+                final HtmlLink usefullLink = usefullUrl.getHtmlLink(Context.tr("Usefull"));
+                usefullLink.setCssClass("usefull");
+
+                //Useless
+                KudoActionUrl uselessUrl = new KudoActionUrl(comment);
+                final HtmlLink uselessLink = uselessUrl.getHtmlLink(Context.tr("Useless"));
+                uselessLink.setCssClass("useless");
+
+                commentPopularity.add(usefullLink);
+                commentPopularity.addText(" – ");
+                commentPopularity.add(uselessLink);
+
+
+                commentPopularity.addText(")");
+
+
+            }
+            commentInfo.add(commentPopularity);
+
+            //Display child elements
+            for (final Comment childComment : comment.getChildren()) {
+                commentBlock.add(generateComment(childComment, true));
+
+            }
+
+            if (!child) {
+                final HtmlDiv reply = new HtmlDiv("comment_reply");
+                final HtmlLink replyLink = new HtmlLink(new CommentReplyPageUrl(comment).urlString(), Context.tr("Reply"));
+                reply.add(replyLink);
+                commentBlock.add(reply);
+            }
+        }
+        return commentBlock;
+    }
+
+    private HtmlElement generateNewCommentComponent(Demand demand) {
+        final IdeaCommentActionUrl url = new IdeaCommentActionUrl(demand);
+        final HtmlDiv commentBlock = new HtmlDiv("new_comment_block");
+
+        final HtmlForm form = new HtmlForm(url.urlString());
+        commentBlock.add(form);
+
+        final HtmlTextArea commentInput = new HtmlTextArea(IdeaCommentAction.COMMENT_CONTENT_CODE, Context.tr("New comment : "), NB_ROWS, NB_COLUMNS);
+        form.add(commentInput);
+        commentInput.setComment(Context.tr("Use this field to comment the demand. If you want to reply to a previous comment, use the reply link."));
+
+        form.add(new HtmlSubmit(Context.tr("Submit comment")));
+
+        return commentBlock;
     }
 
 }
