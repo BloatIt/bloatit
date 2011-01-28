@@ -402,14 +402,30 @@ public class DemandTest extends FrameworkTestUnit {
 
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
         assertTrue(demand.validateCurrentBatch(true));
-        assertTrue(demand.validateCurrentBatch(true));
-        assertTrue(demand.validateCurrentBatch(true));
-        assertTrue(demand.validateCurrentBatch(true));
-        assertTrue(demand.getSelectedOffer().isFinished());
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.FINISHED, demand.getDemandState());
 
     }
     // public void testAddComment() {

@@ -77,9 +77,9 @@ public final class Offer extends Kudosable {
         boolean isAllValidated = findCurrentDaoBatch().validate(force);
         if (isAllValidated) {
             if (dao.hasBatchesLeft()) {
-                getDemand().setOfferIsValidated();
-            } else {
                 getDemand().setBatchIsValidated();
+            } else {
+                getDemand().setOfferIsValidated();
             }
         }
         return isAllValidated;

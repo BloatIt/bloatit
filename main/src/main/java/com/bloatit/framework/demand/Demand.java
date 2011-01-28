@@ -77,29 +77,7 @@ public final class Demand extends Kudosable {
     private Demand(final DaoDemand dao) {
         super();
         this.dao = dao;
-        switch (dao.getDemandState()) {
-        case PENDING:
-            stateObject = new PendingState(this);
-            break;
-        case DEVELOPPING:
-            stateObject = new DeveloppingState(this);
-            break;
-        case DISCARDED:
-            stateObject = new DiscardedState(this);
-            break;
-        case FINISHED:
-            stateObject = new FinishedState(this);
-            break;
-        case INCOME:
-            stateObject = new IncomeState(this);
-            break;
-        case PREPARING:
-            stateObject = new PreparingState(this);
-            break;
-        default:
-            assert false;
-            break;
-        }
+
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +146,7 @@ public final class Demand extends Kudosable {
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
         dao.addContribution(getAuthToken().getMember().getDao(), amount, comment);
-        stateObject = stateObject.eventAddContribution();
+        setStateObject(getStateObject().eventAddContribution());
     }
 
     /**
@@ -193,7 +171,7 @@ public final class Demand extends Kudosable {
         if (!offer.getDemand().equals(this)) {
             throw new IllegalArgumentException();
         }
-        stateObject = stateObject.eventAddOffer(offer);
+        setStateObject(getStateObject().eventAddOffer(offer));
         dao.addOffer(offer.getDao());
     }
 
@@ -210,7 +188,7 @@ public final class Demand extends Kudosable {
         if (dao.getSelectedOffer().getId() == offer.getId()) {
             dao.computeSelectedOffer();
         }
-        stateObject = stateObject.eventRemoveOffer(offer);
+        setStateObject(getStateObject().eventRemoveOffer(offer));
         dao.removeOffer(offer.getDao());
     }
 
@@ -225,7 +203,7 @@ public final class Demand extends Kudosable {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_DEMAND);
         }
         cancel();
-        stateObject = stateObject.eventDeveloperCanceled();
+        setStateObject(getStateObject().eventDeveloperCanceled());
     }
 
     /**
@@ -246,7 +224,7 @@ public final class Demand extends Kudosable {
             throw new FatalErrorException("There is no batch left for this Offer !");
         }
 
-        stateObject = stateObject.eventBatchReleased();
+        setStateObject(getStateObject().eventBatchReleased());
         // The offer really don't care to know if the current batch is under development
         // or not.
     }
@@ -255,6 +233,9 @@ public final class Demand extends Kudosable {
     public boolean validateCurrentBatch(boolean force) {
         if (getSelectedOfferUnprotected().isFinished()) {
             throw new FatalErrorException("There is no batch left for this Offer !");
+        }
+        if (getDemandState() != DemandState.INCOME) {
+            throw new WrongStateException();
         }
         return getSelectedOfferUnprotected().validateCurrentBatch(force);
     }
@@ -355,33 +336,33 @@ public final class Demand extends Kudosable {
      * Called by a {@link PlannedTask}
      */
     void developmentTimeOut() {
-        stateObject = stateObject.eventBatchReleased();
+        setStateObject(getStateObject().eventBatchReleased());
     }
 
     /**
      * Called by a {@link PlannedTask}
      */
     void selectedOfferTimeOut() {
-        stateObject = stateObject.eventSelectedOfferTimeOut(dao.getContribution());
+        setStateObject(getStateObject().eventSelectedOfferTimeOut(dao.getContribution()));
     }
 
     @Override
     protected void notifyValid() {
-        if (stateObject.getState() == DemandState.DISCARDED) {
-            stateObject = stateObject.eventPopularityPending();
+        if (getStateObject().getState() == DemandState.DISCARDED) {
+            setStateObject(getStateObject().eventPopularityPending());
         }
     }
 
     @Override
     protected void notifyPending() {
-        if (stateObject.getState() == DemandState.DISCARDED) {
-            stateObject = stateObject.eventPopularityPending();
+        if (getStateObject().getState() == DemandState.DISCARDED) {
+            setStateObject(getStateObject().eventPopularityPending());
         }
     }
 
     @Override
     protected void notifyRejected() {
-        stateObject = stateObject.eventDemandRejected();
+        setStateObject(getStateObject().eventDemandRejected());
     }
 
     void setSelectedOffer(final Offer offer) {
@@ -396,15 +377,15 @@ public final class Demand extends Kudosable {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public void setOfferIsValidated() {
-        stateObject = stateObject.eventOfferIsValidated();
+        setStateObject(getStateObject().eventOfferIsValidated());
     }
 
     public void setBatchIsValidated() {
-        stateObject = stateObject.eventBatchIsValidated();
+        setStateObject(getStateObject().eventBatchIsValidated());
     }
 
     public void setBatchIsRejected() {
-        stateObject = stateObject.eventBatchIsRejected();
+        setStateObject(getStateObject().eventBatchIsRejected());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -588,5 +569,48 @@ public final class Demand extends Kudosable {
     @Override
     protected DaoKudosable getDaoKudosable() {
         return dao;
+    }
+
+    public void setStateObject(AbstractDemandState stateObject) {
+        this.stateObject = stateObject;
+    }
+
+    public AbstractDemandState getStateObject() {
+        switch (dao.getDemandState()) {
+        case PENDING:
+            if (stateObject == null || !stateObject.getClass().equals(PendingState.class)) {
+                setStateObject(new PendingState(this));
+            }
+            break;
+        case DEVELOPPING:
+            if (stateObject == null || !stateObject.getClass().equals(DeveloppingState.class)) {
+                setStateObject(new DeveloppingState(this));
+            }
+            break;
+        case DISCARDED:
+            if (stateObject == null || !stateObject.getClass().equals(DiscardedState.class)) {
+                setStateObject(new DiscardedState(this));
+            }
+            break;
+        case FINISHED:
+            if (stateObject == null || !stateObject.getClass().equals(FinishedState.class)) {
+                setStateObject(new FinishedState(this));
+            }
+            break;
+        case INCOME:
+            if (stateObject == null || !stateObject.getClass().equals(IncomeState.class)) {
+                setStateObject(new IncomeState(this));
+            }
+            break;
+        case PREPARING:
+            if (stateObject == null || !stateObject.getClass().equals(PreparingState.class)) {
+                setStateObject(new PreparingState(this));
+            }
+            break;
+        default:
+            assert false;
+            break;
+        }
+        return stateObject;
     }
 }
