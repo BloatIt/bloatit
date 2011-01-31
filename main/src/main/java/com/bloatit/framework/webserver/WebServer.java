@@ -25,12 +25,13 @@ import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.masters.PageNotFound;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.ModelManagerAccessor;
 
 public class WebServer implements ScgiProcessor {
     private final Map<String, Class<? extends Url>> urls = new HashMap<String, Class<? extends Url>>();
 
     public WebServer() {
-        // Nothing here.
+        // Nothing.
     }
 
     public final void addLinkable(final String name, final Class<? extends Url> urlClass) {
@@ -42,7 +43,7 @@ public class WebServer implements ScgiProcessor {
         final Session session = findSession(header);
 
         try {
-            com.bloatit.model.Model.lock();
+            ModelManagerAccessor.lock();
 
             Context.reInitializeContext(header, session);
 
@@ -55,21 +56,21 @@ public class WebServer implements ScgiProcessor {
             parameters.putAll(post.getParameters());
 
             try {
-                com.bloatit.data.SessionManager.beginWorkUnit();
+                ModelManagerAccessor.open();
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response);
             } catch (final RedirectException e) {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(e.getUrl().urlString());
             } finally {
-                com.bloatit.data.SessionManager.endWorkUnitAndFlush();
+                ModelManagerAccessor.close();
             }
 
         } catch (final InterruptedException ex) {
             Log.framework().fatal("Cannot lock the framework.", ex);
         } finally {
             try {
-                com.bloatit.model.Model.unLock();
+                ModelManagerAccessor.unLock();
             } catch (final Exception e) {
                 Log.framework().fatal("Cannot unlock the framework.", e);
             }
