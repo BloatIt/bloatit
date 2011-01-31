@@ -92,6 +92,10 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         this.asGroup = asGroup;
     }
 
+    public void add(DaoFileMetadata daoFileMetadata) {
+        this.files.add(daoFileMetadata);
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -153,4 +157,5 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         }
         return true;
     }
+
 }

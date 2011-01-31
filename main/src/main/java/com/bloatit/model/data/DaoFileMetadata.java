@@ -2,12 +2,11 @@ package com.bloatit.model.data;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.annotations.Entity;
 
 import com.bloatit.common.Log;
 import com.bloatit.model.data.util.NonOptionalParameterException;
@@ -35,9 +34,6 @@ public class DaoFileMetadata extends DaoUserContent {
     @Basic(optional = false)
     @Enumerated
     private final FileType type;
-
-    @ManyToOne(optional = true)
-    private final DaoUserContent relatedContent;
 
     public static DaoFileMetadata createAndPersist(DaoMember member, DaoUserContent relatedContent, String filename, String directory, FileType type, int size) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -73,7 +69,7 @@ public class DaoFileMetadata extends DaoUserContent {
         this.directory = directory;
         this.type = type;
         this.shortDescription = null;
-        this.relatedContent = relatedContent;
+        relatedContent.add(this);
         // At the end to make sure the assignment are done.
         // It works only if equal is final !!
         if (this.equals(relatedContent)) {
@@ -125,10 +121,6 @@ public class DaoFileMetadata extends DaoUserContent {
 
     public FileType getType() {
         return type;
-    }
-
-    public DaoUserContent getRelatedContent() {
-        return relatedContent;
     }
 
     /* (non-Javadoc)
