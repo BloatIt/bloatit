@@ -48,6 +48,7 @@
 		<mapping class="com.bloatit.model.data.DaoBankTransaction" />
 		<mapping class="com.bloatit.model.data.DaoBug" />
 		<mapping class="com.bloatit.model.data.DaoBatch" />
+		<mapping class="com.bloatit.model.data.DaoFile" />
 		
 		<!--<mapping class="com.bloatit.model.data.DaoUserContent" /> <mapping 
 			class="com.bloatit.model.data.DaoKudosable" /> <mapping class="com.bloatit.model.data.DaoIdentifiable" 
