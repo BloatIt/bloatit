@@ -2,7 +2,7 @@ package com.bloatit.framework.demand;
 
 import java.math.BigDecimal;
 
-import com.bloatit.common.WrongDemandStateException;
+import com.bloatit.common.WrongStateException;
 import com.bloatit.framework.Offer;
 import com.bloatit.model.data.DaoDemand.DemandState;
 
@@ -20,57 +20,68 @@ abstract class AbstractDemandState {
 
     public AbstractDemandState eventAddOffer(final Offer offer) {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
     }
 
     public AbstractDemandState eventRemoveOffer(final Offer offer) {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
     }
 
     public AbstractDemandState eventAddContribution() {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
     }
 
     public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
     }
 
     public AbstractDemandState developmentTimeOut() {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
-    }
-
-    public AbstractDemandState eventDevelopmentFinish() {
-        // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
     }
 
     public AbstractDemandState eventDeveloperCanceled() {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
     }
 
-    public AbstractDemandState eventRejected() {
+    public AbstractDemandState eventDemandRejected() {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
-    }
-
-    public AbstractDemandState closeIncome(final boolean accepted) {
-        // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
     }
 
     public AbstractDemandState eventPopularityPending() {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
     }
 
     public AbstractDemandState popularityValidated() {
         // Implement me if you wish.
-        throw new WrongDemandStateException();
+        throw new WrongStateException();
+    }
+
+    public AbstractDemandState eventBatchReleased() {
+        // Implement me if you wish.
+        throw new WrongStateException();
+    }
+
+    public AbstractDemandState eventBatchIsRejected() {
+        // Implement me if you wish.
+        throw new WrongStateException();
+    }
+
+    public AbstractDemandState eventBatchIsValidated() {
+        // Implement me if you wish.
+        throw new WrongStateException();
+    }
+
+    // When every batches are finished
+    public AbstractDemandState eventOfferIsValidated() {
+        // Implement me if you wish.
+        throw new WrongStateException();
     }
 
 }

@@ -49,7 +49,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * Create a new invitation. Set the state to PENDING.
-     * 
+     *
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
     private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
@@ -110,6 +110,58 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     protected DaoJoinGroupInvitation() {
         super();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((group == null) ? 0 : group.hashCode());
+        result = prime * result + ((receiver == null) ? 0 : receiver.hashCode());
+        result = prime * result + ((sender == null) ? 0 : sender.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof DaoJoinGroupInvitation)) {
+            return false;
+        }
+        DaoJoinGroupInvitation other = (DaoJoinGroupInvitation) obj;
+        if (group == null) {
+            if (other.group != null) {
+                return false;
+            }
+        } else if (!group.equals(other.group)) {
+            return false;
+        }
+        if (receiver == null) {
+            if (other.receiver != null) {
+                return false;
+            }
+        } else if (!receiver.equals(other.receiver)) {
+            return false;
+        }
+        if (sender == null) {
+            if (other.sender != null) {
+                return false;
+            }
+        } else if (!sender.equals(other.sender)) {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -12,7 +12,6 @@ import com.bloatit.web.html.HtmlElement;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.HtmlTagText;
 import com.bloatit.web.html.HtmlText;
-import com.bloatit.web.html.components.PlaceHolderElement;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlGenericElement;
 import com.bloatit.web.html.components.standard.HtmlImage;
@@ -30,7 +29,7 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     private final HtmlBranch content;
     private HtmlBranch notifications;
-    private final PlaceHolderElement notificationBlock;
+    private final HtmlDiv notificationBlock;
     private final Url thisUrl;
     protected final Session session;
 
@@ -39,7 +38,7 @@ public abstract class Page extends HtmlElement implements Linkable {
         this.thisUrl = url;
         content = new HtmlDiv().setId("content");
         notifications = null;
-        notificationBlock = new PlaceHolderElement();
+        notificationBlock = new HtmlDiv("notifications");
         session = Context.getSession();
     }
 

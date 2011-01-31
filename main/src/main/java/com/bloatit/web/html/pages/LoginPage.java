@@ -13,8 +13,7 @@ package com.bloatit.web.html.pages;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.html.components.standard.HtmlGenericElement;
-import com.bloatit.web.html.components.standard.HtmlLink;
+import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
 import com.bloatit.web.html.components.standard.form.HtmlPasswordField;
@@ -24,7 +23,6 @@ import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.LoginActionUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.RegisterPageUrl;
 
 @ParamContainer("login")
 public final class LoginPage extends Page {
@@ -35,32 +33,30 @@ public final class LoginPage extends Page {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
-        final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.trc("Login (noun)", "Login"));
-        final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
-        final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
 
-        loginForm.add(loginField);
-        loginForm.add(passwordField);
-        loginForm.add(submitButton);
+        final HtmlDiv box = new HtmlDiv("padding_box");
+        {
+            final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
+            final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.trc("Login (noun)", "Login"));
+            final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
+            final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
 
-        final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
-        loginTitle.add(loginForm);
+            loginForm.add(loginField);
+            loginForm.add(passwordField);
+            loginForm.add(submitButton);
 
-        final HtmlTitleBlock signupTitle = new HtmlTitleBlock(Context.tr("Signup"), 1);
-        signupTitle.add(new HtmlLink(new RegisterPageUrl().urlString(), Context.tr("Click here.")));
+            final HtmlTitleBlock loginTitle = new HtmlTitleBlock(Context.trc("Login (verb)", "Login"), 1);
+            loginTitle.add(loginForm);
 
-        final HtmlGenericElement group = new HtmlGenericElement();
+            box.add(loginTitle);
+        }
+        add(box);
 
-        group.add(loginTitle);
-        group.add(signupTitle);
-
-        add(group);
     }
 
     @Override
     protected String getTitle() {
-        return "Login or signup";
+        return Context.trc("Login (verb)", "Login");
     }
 
     @Override

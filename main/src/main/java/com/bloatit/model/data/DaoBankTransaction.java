@@ -28,7 +28,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Enumerate the different state a BankTranscation can be in. After being
-     * <code>ACCEPTED</code> a transaction must be <code>VALIDATED</code>.
+     * <code>ACCEPTED</code> a transaction must be <code>ACCEPTED</code>.
      */
     public enum State {
         PENDING, ACCEPTED, REFUSED, VALIDATED
@@ -144,7 +144,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the external to
      * the internal account.
-     * 
+     *
      * @return true if performed, false otherwise.
      */
     public boolean validated() {
@@ -218,4 +218,55 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     public String getProcessInformations() {
         return processInformations;
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((author == null) ? 0 : author.hashCode());
+        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+        result = prime * result + ((token == null) ? 0 : token.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof DaoBankTransaction)) {
+            return false;
+        }
+        DaoBankTransaction other = (DaoBankTransaction) obj;
+        if (author == null) {
+            if (other.author != null) {
+                return false;
+            }
+        } else if (!author.equals(other.author)) {
+            return false;
+        }
+        if (creationDate == null) {
+            if (other.creationDate != null) {
+                return false;
+            }
+        } else if (!creationDate.equals(other.creationDate)) {
+            return false;
+        }
+        if (token == null) {
+            if (other.token != null) {
+                return false;
+            }
+        } else if (!token.equals(other.token)) {
+            return false;
+        }
+        return true;
+    }
+
+
 }

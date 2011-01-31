@@ -1,4 +1,4 @@
-/*
+*
  * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
  * can redistribute it and/or modify it under the terms of the GNU Affero General Public
  * License as published by the Free Software Foundation, either version 3 of the License,
@@ -21,6 +21,7 @@ import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkLauncher;
 import com.bloatit.framework.UploadedFile;
+import com.bloatit.framework.Framework;
 import com.bloatit.mail.MailServer;
 import com.bloatit.web.server.DispatchServer;
 import com.bloatit.web.server.HttpResponse;
@@ -35,8 +36,9 @@ import com.bloatit.web.utils.url.CreateIdeaPageUrl;
 import com.bloatit.web.utils.url.FileUploadPageUrl;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IdeaCommentActionUrl;
+import com.bloatit.web.utils.url.DemandListUrl;
 import com.bloatit.web.utils.url.DemandPageUrl;
-import com.bloatit.web.utils.url.IdeasListUrl;
+import com.bloatit.web.utils.url.IdeaCommentActionUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.KudoActionUrl;
 import com.bloatit.web.utils.url.LoginActionUrl;
@@ -61,11 +63,13 @@ public final class SCGIServer {
     private static final int SCGI_PORT = 4000;
 
     public static void main(final String[] args) {
-        FrameworkLauncher.launch();
+        Framework.launch();
         try {
             new SCGIServer().run();
         } catch (final IOException e) {
             Log.server().fatal(e);
+        } finally {
+            Framework.shutdown();
         }
     }
 
@@ -80,14 +84,13 @@ public final class SCGIServer {
         dispatchServer = new DispatchServer();
         dispatchServer.addLinkable(IndexPageUrl.getName(), IndexPageUrl.class);
         dispatchServer.addLinkable(LoginPageUrl.getName(), LoginPageUrl.class);
-        dispatchServer.addLinkable(IdeasListUrl.getName(), IdeasListUrl.class);
+        dispatchServer.addLinkable(DemandListUrl.getName(), DemandListUrl.class);
         dispatchServer.addLinkable(CreateIdeaPageUrl.getName(), CreateIdeaPageUrl.class);
         dispatchServer.addLinkable(DemandPageUrl.getName(), DemandPageUrl.class);
         dispatchServer.addLinkable(MyAccountPageUrl.getName(), MyAccountPageUrl.class);
         dispatchServer.addLinkable(SpecialsPageUrl.getName(), SpecialsPageUrl.class);
         dispatchServer.addLinkable(MembersListPageUrl.getName(), MembersListPageUrl.class);
         dispatchServer.addLinkable(MemberPageUrl.getName(), MemberPageUrl.class);
-        dispatchServer.addLinkable(GlobalSearchPageUrl.getName(), GlobalSearchPageUrl.class);
         dispatchServer.addLinkable(ContributePageUrl.getName(), ContributePageUrl.class);
         dispatchServer.addLinkable(OfferPageUrl.getName(), OfferPageUrl.class);
         dispatchServer.addLinkable(TestPageUrl.getName(), TestPageUrl.class);

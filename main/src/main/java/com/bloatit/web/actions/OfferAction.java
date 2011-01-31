@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import com.bloatit.common.UnauthorizedOperationException;
+import com.bloatit.framework.Offer;
 import com.bloatit.framework.demand.Demand;
 import com.bloatit.web.annotations.Message.Level;
 import com.bloatit.web.annotations.ParamContainer;
@@ -70,7 +71,9 @@ public final class OfferAction extends LoggedAction {
     public Url doProcessRestricted() {
         try {
             targetIdea.authenticate(session.getAuthToken());
-            targetIdea.addOffer(price, Locale.FRENCH, title, description, expiryDate.getJavaDate());
+            Offer offer = new Offer(session.getAuthToken().getMember(), targetIdea, price, description, title, Locale.FRENCH,
+                    expiryDate.getJavaDate());
+            targetIdea.addOffer(offer);
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
             return session.pickPreferredPage();

@@ -67,4 +67,45 @@ class DaoGroupMembership extends DaoIdentifiable {
     protected DaoGroupMembership() {
         super();
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((bloatitGroup == null) ? 0 : bloatitGroup.hashCode());
+        result = prime * result + ((member == null) ? 0 : member.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof DaoGroupMembership)) {
+            return false;
+        }
+        DaoGroupMembership other = (DaoGroupMembership) obj;
+        if (bloatitGroup == null) {
+            if (other.bloatitGroup != null) {
+                return false;
+            }
+        } else if (!bloatitGroup.equals(other.bloatitGroup)) {
+            return false;
+        }
+        if (member == null) {
+            if (other.member != null) {
+                return false;
+            }
+        } else if (!member.equals(other.member)) {
+            return false;
+        }
+        return true;
+    }
 }

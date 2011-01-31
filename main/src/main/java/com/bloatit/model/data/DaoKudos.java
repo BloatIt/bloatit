@@ -12,7 +12,7 @@ import com.bloatit.model.data.util.SessionManager;
  * A kudos is a positive or negative appreciation of a Kudosable content. [ Yes there is a
  * 's' at the end of kudos even when there is only one. ] The kudos is an internal storing
  * class. You should never have to use it in other package.
- * 
+ *
  * @see DaoKudosable#addKudos(DaoMember, int)
  */
 @Entity
@@ -39,11 +39,11 @@ public final class DaoKudos extends DaoUserContent {
 
     /**
      * Create a new kudos.
-     * 
+     *
      * @param member is the person creating the kudos.
      * @param value is value of the kudos.
      */
-    private DaoKudos(final DaoMember member, final int value) {
+    public DaoKudos(final DaoMember member, final int value) {
         super(member);
         this.value = value;
     }
@@ -59,4 +59,39 @@ public final class DaoKudos extends DaoUserContent {
     protected DaoKudos() {
         super();
     }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + value;
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        DaoKudos other = (DaoKudos) obj;
+        if (value != other.value) {
+            return false;
+        }
+        return true;
+    }
+
 }

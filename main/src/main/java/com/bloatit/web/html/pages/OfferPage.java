@@ -19,7 +19,7 @@ import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
 import com.bloatit.web.html.HtmlElement;
-import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
+import com.bloatit.web.html.components.custom.HtmlDemandSumary;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.components.standard.form.HtmlDateField;
 import com.bloatit.web.html.components.standard.form.HtmlForm;
@@ -77,7 +77,7 @@ public final class OfferPage extends LoggedPage {
     public HtmlElement createRestrictedContent() {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
-        offerPageContainer.add(new HtmlIdeaSumary(targetIdea));
+        offerPageContainer.add(new HtmlDemandSumary(targetIdea));
 
         // Create offer form
         final OfferActionUrl offerActionUrl = new OfferActionUrl(targetIdea);

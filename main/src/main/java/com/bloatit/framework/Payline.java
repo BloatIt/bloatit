@@ -149,6 +149,8 @@ public final class Payline extends Unlockable {
         paymentRequest.setSecurityMode("ssl");
 
         final WebPaymentAPI_Service paylineService = new WebPaymentAPI_Service();
+
+        // TODO catch exceptions !!
         final DoWebPaymentResponse apiReponse = paylineService.getWebPaymentAPI().doWebPayment(paymentRequest);
 
         final Reponse reponse = new Reponse(apiReponse);

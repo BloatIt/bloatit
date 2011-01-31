@@ -45,7 +45,7 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     /**
      * Create a new transaction and update the two accounts.
-     * 
+     *
      * @param from is the account from which we will take money.
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
@@ -92,6 +92,66 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     protected DaoTransaction() {
         super();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+        result = prime * result + ((from == null) ? 0 : from.hashCode());
+        result = prime * result + ((to == null) ? 0 : to.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof DaoTransaction)) {
+            return false;
+        }
+        DaoTransaction other = (DaoTransaction) obj;
+        if (amount == null) {
+            if (other.amount != null) {
+                return false;
+            }
+        } else if (!amount.equals(other.amount)) {
+            return false;
+        }
+        if (creationDate == null) {
+            if (other.creationDate != null) {
+                return false;
+            }
+        } else if (!creationDate.equals(other.creationDate)) {
+            return false;
+        }
+        if (from == null) {
+            if (other.from != null) {
+                return false;
+            }
+        } else if (!from.equals(other.from)) {
+            return false;
+        }
+        if (to == null) {
+            if (other.to != null) {
+                return false;
+            }
+        } else if (!to.equals(other.to)) {
+            return false;
+        }
+        return true;
     }
 
 }

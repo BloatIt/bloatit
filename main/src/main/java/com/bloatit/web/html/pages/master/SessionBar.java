@@ -16,6 +16,7 @@ import com.bloatit.web.utils.url.AccountChargingPageUrl;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.LogoutActionUrl;
 import com.bloatit.web.utils.url.MyAccountPageUrl;
+import com.bloatit.web.utils.url.RegisterPageUrl;
 
 public class SessionBar extends HtmlDiv {
 
@@ -81,8 +82,10 @@ public class SessionBar extends HtmlDiv {
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(logoutLink));
 
         } else {
-            final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.tr("Login / Signup"));
+            final HtmlLink loginLink = new LoginPageUrl().getHtmlLink(Context.trc("Login (verb)", "Login"));
+            final HtmlLink signupLink = new RegisterPageUrl().getHtmlLink(Context.trc("Sign in (verb)", "Sign in"));
             add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(loginLink));
+            add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(signupLink));
         }
     }
 }

@@ -37,9 +37,8 @@ public final class DispatchServer {
     public void process(final HttpHeader header, final HttpPost post, final HttpResponse response) throws IOException {
         final Session session = findSession(header);
 
-        com.bloatit.model.data.util.SessionManager.beginWorkUnit();
         try {
-            com.bloatit.framework.FrameworkMutex.lock();
+            com.bloatit.framework.Framework.lock();
 
             Context.reInitializeContext(header, session);
 
@@ -52,27 +51,25 @@ public final class DispatchServer {
             parameters.putAll(post.getParameters());
 
             try {
+                com.bloatit.model.data.util.SessionManager.beginWorkUnit();
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response);
             } catch (final RedirectException e) {
                 Log.web().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(e.getUrl().urlString());
+            }finally{
+                com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
             }
 
-        } catch (final IOException ex) {
-            throw ex;
-        } catch (final RuntimeException ex) {
-            throw ex;
         } catch (final InterruptedException ex) {
             Log.web().fatal("Cannot lock the framework.", ex);
         } finally {
             try {
-                com.bloatit.framework.FrameworkMutex.unLock();
+                com.bloatit.framework.Framework.unLock();
             } catch (final Exception e) {
                 Log.web().fatal("Cannot unlock the framework.", e);
             }
         }
-        com.bloatit.model.data.util.SessionManager.endWorkUnitAndFlush();
     }
 
     @SuppressWarnings("deprecation")
@@ -103,7 +100,7 @@ public final class DispatchServer {
 
     /**
      * Return the session for the user. Either an existing session or a new session.
-     * 
+     *
      * @param header
      * @return the session matching the user
      */

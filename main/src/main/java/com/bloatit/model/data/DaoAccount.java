@@ -55,7 +55,7 @@ public abstract class DaoAccount {
     /**
      * This constructor initialize the creation and modification dates. The amount is set
      * to 0
-     * 
+     *
      * @param actor is the owner of this account
      * @throws NonOptionalParameterException if the actor == null
      */
@@ -72,7 +72,7 @@ public abstract class DaoAccount {
     /**
      * WARNING: the order is not specified yet. Maybe it will be ordered by date (if
      * needed)
-     * 
+     *
      * @return all the transactions that are from/to this account.
      */
     public final PageIterable<DaoTransaction> getTransactions() {
@@ -82,7 +82,7 @@ public abstract class DaoAccount {
     /**
      * If you want to take away from this account some money, you have to know if there is
      * enough money in it.
-     * 
+     *
      * @param amount The quantity of money you want to get.
      * @return true if this operation is allowed.
      */
@@ -111,7 +111,7 @@ public abstract class DaoAccount {
     /**
      * To modify the value of the amount, you have to create a transaction. This method is
      * protected to be used by transaction only !
-     * 
+     *
      * @param value the quantity of money to add to the amount of this account. (May be a
      *        negative value)
      */
@@ -124,7 +124,7 @@ public abstract class DaoAccount {
     /**
      * To modify the value of the amount, you have to create a transaction. This method is
      * protected to be used by transaction only !
-     * 
+     *
      * @param value the quantity of money to subtract to the amount of this account. (May
      *        be a negative value)
      */
@@ -145,7 +145,7 @@ public abstract class DaoAccount {
     /**
      * This is for hibernate only. The amount must be modified by some higher level
      * methods. For test purpose it is protected, but it will be private.
-     * 
+     *
      * @see DaoTransaction
      * @param amount the new amount to set.
      */
@@ -160,4 +160,49 @@ public abstract class DaoAccount {
     protected DaoAccount() {
         super();
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public final int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((actor == null) ? 0 : actor.hashCode());
+        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj.getClass().equals(getClass()))) {
+            return false;
+        }
+        DaoAccount other = (DaoAccount) obj;
+        if (actor == null) {
+            if (other.actor != null) {
+                return false;
+            }
+        } else if (!actor.equals(other.actor)) {
+            return false;
+        }
+        if (creationDate == null) {
+            if (other.creationDate != null) {
+                return false;
+            }
+        } else if (!creationDate.equals(other.creationDate)) {
+            return false;
+        }
+        return true;
+    }
+
 }

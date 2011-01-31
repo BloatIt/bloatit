@@ -2,6 +2,8 @@ package com.bloatit.framework;
 
 import java.util.Date;
 
+import com.bloatit.common.PageIterable;
+import com.bloatit.framework.lists.FileMetadataList;
 import com.bloatit.model.data.DaoUserContent;
 
 public abstract class UserContent extends Identifiable {
@@ -27,6 +29,10 @@ public abstract class UserContent extends Identifiable {
     @Override
     public final int getId() {
         return getDaoUserContent().getId();
+    }
+
+    public PageIterable<FileMetadata> getFiles() {
+        return new FileMetadataList(getDaoUserContent().getFiles());
     }
 
 }
