@@ -14,7 +14,7 @@ import com.bloatit.model.data.util.NonOptionalParameterException;
 import com.bloatit.model.data.util.SessionManager;
 
 @Entity
-public class DaoFile extends DaoUserContent {
+public class DaoFileMetadata extends DaoUserContent {
 
     public enum FileType {
         TEXT, HTML, TEX, PDF, ODT, DOC, BMP, JPG, PNG, SVG,
@@ -39,9 +39,9 @@ public class DaoFile extends DaoUserContent {
     @ManyToOne(optional = true)
     private final DaoUserContent relatedContent;
 
-    public static DaoFile createAndPersist(DaoMember member, DaoUserContent relatedContent, String filename, String directory, FileType type, int size) {
+    public static DaoFileMetadata createAndPersist(DaoMember member, DaoUserContent relatedContent, String filename, String directory, FileType type, int size) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoFile file = new DaoFile(member, relatedContent, filename, directory, type, size);
+        final DaoFileMetadata file = new DaoFileMetadata(member, relatedContent, filename, directory, type, size);
         try {
             session.save(file);
         } catch (final HibernateException e) {
@@ -63,7 +63,7 @@ public class DaoFile extends DaoUserContent {
      * @param type is the type of the file (found using its extension or mimetype)
      * @param size is the size of the file.
      */
-    private DaoFile(DaoMember member, DaoUserContent relatedContent, String filename, String directory, FileType type, int size) {
+    private DaoFileMetadata(DaoMember member, DaoUserContent relatedContent, String filename, String directory, FileType type, int size) {
         super(member);
         if (filename == null || directory == null || type == null || filename.isEmpty() || directory.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -130,5 +130,51 @@ public class DaoFile extends DaoUserContent {
     public DaoUserContent getRelatedContent() {
         return relatedContent;
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public final int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((directory == null) ? 0 : directory.hashCode());
+        result = prime * result + ((filename == null) ? 0 : filename.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        DaoFileMetadata other = (DaoFileMetadata) obj;
+        if (directory == null) {
+            if (other.directory != null) {
+                return false;
+            }
+        } else if (!directory.equals(other.directory)) {
+            return false;
+        }
+        if (filename == null) {
+            if (other.filename != null) {
+                return false;
+            }
+        } else if (!filename.equals(other.filename)) {
+            return false;
+        }
+        return true;
+    }
+
+
 
 }
