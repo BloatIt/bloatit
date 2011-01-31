@@ -22,16 +22,35 @@ public class MimeElement {
         return header;
     }
     
+    public String getHeaderField(String key){
+        return header.get(key);
+    }
+    
     public String toString(){
+        char CR = '\r';
+        char LF = '\n';
         String result = "";
         
         result += "[HEADER]\n";
         for(Entry<String, String> entry : header.entrySet()){
-            result += "\t ["+entry.getKey()+"]: "+entry.getValue() + "\n";
+            result += "\t["+entry.getKey()+"]: "+entry.getValue() + "\n";
         }
         result += "[CONTENT] \n \t";
+        
+        char previousChar = '0';
         for(byte b : content){
-            result+= (char)(b&0xff);
+            char currentChar = (char)(b&0xff);
+            if(currentChar == CR){
+                result += "{CR}";
+            } else if (currentChar == LF) {
+                result += "{LF}";
+            } else {
+                if(previousChar == CR || previousChar == LF){
+                    result += "\n\t";
+                }
+                result += currentChar;
+            }
+            previousChar = currentChar;
         }
         
         return result;

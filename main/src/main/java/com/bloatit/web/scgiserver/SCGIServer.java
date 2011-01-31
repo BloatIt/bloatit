@@ -1,4 +1,4 @@
-*
+/*
  * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
  * can redistribute it and/or modify it under the terms of the GNU Affero General Public
  * License as published by the Free Software Foundation, either version 3 of the License,
@@ -15,12 +15,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
-import com.bloatit.framework.FrameworkLauncher;
-import com.bloatit.framework.UploadedFile;
 import com.bloatit.framework.Framework;
 import com.bloatit.mail.MailServer;
 import com.bloatit.web.server.DispatchServer;
@@ -33,11 +30,9 @@ import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
-import com.bloatit.web.utils.url.FileUploadPageUrl;
-import com.bloatit.web.utils.url.GlobalSearchPageUrl;
-import com.bloatit.web.utils.url.IdeaCommentActionUrl;
 import com.bloatit.web.utils.url.DemandListUrl;
 import com.bloatit.web.utils.url.DemandPageUrl;
+import com.bloatit.web.utils.url.FileUploadPageUrl;
 import com.bloatit.web.utils.url.IdeaCommentActionUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.KudoActionUrl;
