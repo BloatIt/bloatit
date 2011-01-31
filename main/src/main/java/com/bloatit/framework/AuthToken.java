@@ -15,6 +15,8 @@ import java.util.UUID;
 
 import javassist.NotFoundException;
 
+import org.hibernate.classic.Session;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.managers.MemberManager;
 import com.bloatit.model.data.util.SessionManager;
@@ -29,7 +31,7 @@ public final class AuthToken {
 
     /**
      * Create an authoToken using the login and password of a person.
-     * 
+     *
      * @throws NotFoundException if the login is not found or if the password is wrong.
      */
     public AuthToken(final String login, final String password) throws NotFoundException {
@@ -45,7 +47,7 @@ public final class AuthToken {
     /**
      * NEVER Use this method. It is used by the SessionManager to persist the login
      * session of a user even in case of a server restart.
-     * 
+     *
      * @param memberId
      * @throws NotFoundException
      */
@@ -66,7 +68,8 @@ public final class AuthToken {
     }
 
     public Member getMember() {
-        if (SessionManager.getSessionFactory().getCurrentSession().contains(member.getDao())) {
+        Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        if (!currentSession.getTransaction().isActive() || currentSession.contains(member.getDao())) {
             return member;
         }
         return MemberManager.getMemberById(member.getId());
