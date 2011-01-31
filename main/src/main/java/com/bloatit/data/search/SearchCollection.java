@@ -1,4 +1,4 @@
-package com.bloatit.data;
+package com.bloatit.data.search;
 
 import java.util.Iterator;
 

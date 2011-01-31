@@ -33,10 +33,6 @@ public final class DemandManager {
         return DBRequests.count(DaoDemand.class);
     }
 
-    public static PageIterable<Demand> search(final String searchString) {
-        return new DemandList(DBRequests.searchDemands(searchString));
-    }
-
     // Can create if authenticated.
     public static boolean canCreate(final AuthToken authToken) {
         return authToken != null;

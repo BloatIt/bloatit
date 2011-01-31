@@ -11,6 +11,7 @@
 package com.bloatit.web.pages;
 
 // import java.util.Random;
+import com.bloatit.data.search.DemandSearch;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -25,7 +26,6 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.model.demand.Demand;
-import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.Page;
@@ -78,7 +78,7 @@ public final class DemandList extends Page {
                 final HtmlLink allFilter = allFilterUrl.getHtmlLink(Context.tr("all"));
 
                 final DemandListUrl preparingFilterUrl = url.clone();
-                final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("preparing"));
+                final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("in progress"));
 
                 final DemandListUrl finishedFilterUrl = url.clone();
                 final HtmlLink finishedFilter = finishedFilterUrl.getHtmlLink(Context.tr("finished"));
@@ -161,11 +161,8 @@ public final class DemandList extends Page {
 
         final PageIterable<Demand> ideaList;
 
-        if (searchString.equals("")) {
-            ideaList = DemandManager.getDemands();
-        } else {
-            ideaList = DemandManager.search(searchString);
-        }
+        DemandSearch search = new DemandSearch(searchString);
+        ideaList = search.search();
 
         final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 

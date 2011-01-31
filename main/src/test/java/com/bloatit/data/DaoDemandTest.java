@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
+import com.bloatit.data.search.DemandSearch;
+
 /**
  * I assume the DaoGroupMemberTest is run without error.
  */
@@ -179,7 +181,10 @@ public class DaoDemandTest extends ModelTestUnit {
         demand.addOffer(createOffer(demand));
         SessionManager.flush();
 
-        assertTrue(DBRequests.searchDemands("super").iterator().hasNext());
+
+        DemandSearch search = new DemandSearch("super");
+
+        assertTrue(search.search().iterator().hasNext());
     }
 
     public void testGetComment() {
