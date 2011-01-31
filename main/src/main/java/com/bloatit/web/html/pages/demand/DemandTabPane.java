@@ -35,7 +35,7 @@ import com.bloatit.web.utils.url.PageNotFoundUrl;
 @ParamContainer(value = "demandTabPane", isComponent = true)
 public final class DemandTabPane extends HtmlPageComponent {
 
-    @RequestParam(name = "demand_tab_key", defaultValue = "description_tab")
+    @RequestParam(name = "demand_tab_pane", defaultValue = "description_tab")
     private String activeTabKey;
 
     /**
@@ -52,7 +52,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         demandUrl.setDemandTabPaneUrl(url);
 
         // Create tab pane
-        final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_key", activeTabKey, demandUrl);
+        final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_pane", activeTabKey, demandUrl);
 
         // Create description tab
         tabPane.addTab(new HtmlTab(Context.tr("Description"), "description_tab") {

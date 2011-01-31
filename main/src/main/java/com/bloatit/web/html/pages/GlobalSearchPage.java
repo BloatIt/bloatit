@@ -16,7 +16,7 @@ import com.bloatit.framework.demand.DemandManager;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlNode;
-import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
+import com.bloatit.web.html.components.custom.HtmlDemandSumary;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlDiv;
 import com.bloatit.web.html.components.standard.HtmlListItem;
@@ -59,7 +59,7 @@ public final class GlobalSearchPage extends Page {
 
             @Override
             public HtmlNode generate(final Demand idea) {
-                return new HtmlListItem(new HtmlIdeaSumary(idea));
+                return new HtmlListItem(new HtmlDemandSumary(idea));
             }
         };
 

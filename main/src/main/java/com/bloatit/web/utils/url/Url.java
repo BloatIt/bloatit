@@ -6,6 +6,7 @@ import com.bloatit.web.server.Linkable;
 public abstract class Url extends UrlComponent {
 
     private final String name;
+    private String anchor = null;
 
     protected Url(final String name) {
         super();
@@ -19,8 +20,19 @@ public abstract class Url extends UrlComponent {
         }
         sb.append("/").append(name);
         super.constructUrl(sb);
+        if(anchor != null) {
+            sb.append("#").append(anchor);
+        }
     }
 
     public abstract Linkable createPage();
+
+    public String getAnchor() {
+        return anchor;
+    }
+
+    public void setAnchor(String anchor) {
+        this.anchor = anchor;
+    }
 
 }

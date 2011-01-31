@@ -16,21 +16,21 @@ import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.demand.DemandManager;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.html.HtmlNode;
-import com.bloatit.web.html.components.custom.HtmlIdeaSumary;
+import com.bloatit.web.html.components.custom.HtmlDemandSumary;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
 import com.bloatit.web.html.components.standard.HtmlRenderer;
 import com.bloatit.web.html.components.standard.HtmlTitleBlock;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.IdeasListUrl;
+import com.bloatit.web.utils.url.DemandListUrl;
 
-@ParamContainer("ideas/list")
-public final class IdeasList extends Page {
+@ParamContainer("demand/list")
+public final class DemandList extends Page {
 
-    private HtmlPagedList<Demand> pagedIdeaList;
-    private final IdeasListUrl url;
+    private HtmlPagedList<Demand> pagedDemandList;
+    private final DemandListUrl url;
 
-    public IdeasList(final IdeasListUrl url) {
+    public DemandList(final DemandListUrl url) {
         super(url);
         this.url = url;
 
@@ -39,23 +39,23 @@ public final class IdeasList extends Page {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Ideas list"), 1);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Demand list"), 1);
 
         final PageIterable<Demand> ideaList = DemandManager.getDemands();
 
         final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
-        final IdeasListUrl clonedUrl = url.clone();
-        pagedIdeaList = new HtmlPagedList<Demand>(demandItemRenderer, ideaList, clonedUrl, clonedUrl.getPagedIdeaListUrl());
+        final DemandListUrl clonedUrl = url.clone();
+        pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, ideaList, clonedUrl, clonedUrl.getPagedDemandListUrl());
 
-        pageTitle.add(pagedIdeaList);
+        pageTitle.add(pagedDemandList);
 
         add(pageTitle);
     }
 
     @Override
     public String getTitle() {
-        return "View all ideas - search ideas";
+        return Context.tr("View demands - search demands");
     }
 
     @Override
@@ -65,22 +65,22 @@ public final class IdeasList extends Page {
 
     @Override
     protected String getCustomCss() {
-        return "ideas-list.css";
+        return "demands-list.css";
     }
 
     static class IdeasListItem implements HtmlRenderer<Demand> {
 
-        private Demand idea;
+        private Demand demand;
 
         @Override
-        public HtmlNode generate(final Demand idea) {
-            this.idea = idea;
+        public HtmlNode generate(final Demand demand) {
+            this.demand = demand;
 
             return generateContent();
         }
 
         private HtmlNode generateContent() {
-            return new HtmlIdeaSumary(idea);
+            return new HtmlDemandSumary(demand);
         }
     };
 }

@@ -58,7 +58,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
      */
     protected HtmlElement produce() {
 
-        final HtmlDiv commentsBlock = new HtmlDiv("comments_block");
+        final HtmlDiv commentsBlock = new HtmlDiv("comments_block", "comments_block");
         {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", comments.size()), 2).setCssClass("comments_title"));
 
