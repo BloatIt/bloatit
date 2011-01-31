@@ -16,8 +16,8 @@ public class HttpHeader {
     private final LazyStringList httpAcceptLanguage = new LazyStringList("HTTP_ACCEPT_LANGUAGE", ",");
 
     /**
-     * example : Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.14pre) Gecko/20110107
-     * Ubuntu/10.04 (lucid) Namoroka/3.6.14pre
+     * example : Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.14pre)
+     * Gecko/20110107 Ubuntu/10.04 (lucid) Namoroka/3.6.14pre
      */
     private final LazyString httpUserAgent = new LazyString("HTTP_USER_AGENT");
 
@@ -27,7 +27,8 @@ public class HttpHeader {
     private final LazyString httpCacheControl = new LazyString("HTTP_CACHE_CONTROL");
 
     /**
-     * example : text/html,application/xhtml+xml,application/xml;q=0.9,* /*;q=0.8
+     * example : text/html,application/xhtml+xml,application/xml;q=0.9,*
+     * /*;q=0.8
      */
     private final LazyStringList httpAccept = new LazyStringList("HTTP_ACCEPT", ",");
 
@@ -39,7 +40,6 @@ public class HttpHeader {
     /**
      * example : 52610
      */
-
     private final LazyInt remotePort = new LazyInt("REMOTE_PORT");
     /**
      * example : gzip,deflate
@@ -62,8 +62,10 @@ public class HttpHeader {
      */
     private final LazyString scriptFilename = new LazyString("SCRIPT_FILENAME");
     /**
-     * example : SESS87038d7e49409b9d700737bd60ea56e8=b78427f651202b9466f2e01545458902;
-     * session_key=b30e0cca4d46fe4194f891358ff5d8d48343de0013cd228e4daedae21415030d
+     * example :
+     * SESS87038d7e49409b9d700737bd60ea56e8=b78427f651202b9466f2e01545458902;
+     * session_key
+     * =b30e0cca4d46fe4194f891358ff5d8d48343de0013cd228e4daedae21415030d
      */
     private final LazyMap httpCookie = new LazyMap("HTTP_COOKIE");
     /**
@@ -121,8 +123,8 @@ public class HttpHeader {
      */
     private final LazyString scgi = new LazyString("SCGIUtils");
     /**
-     * example :
-     * lang=fr&page=payline&param=result-cancel/token-EuuqQRn7AiPNrfqT7D0w1294355479323
+     * example : lang=fr&page=payline&param=result-cancel/token-
+     * EuuqQRn7AiPNrfqT7D0w1294355479323
      */
     private Query queryString = null;
     /**
@@ -134,7 +136,8 @@ public class HttpHeader {
      */
     private final LazyInt contentLength = new LazyInt("CONTENT_LENGTH");
     /**
-     * example : /fr/payline/result-cancel?token=EuuqQRn7AiPNrfqT7D0w1294355479323
+     * example :
+     * /fr/payline/result-cancel?token=EuuqQRn7AiPNrfqT7D0w1294355479323
      */
     private final LazyString requestUri = new LazyString("REQUEST_URI");
     /**
@@ -142,6 +145,11 @@ public class HttpHeader {
      */
     private final LazyInt httpXDoNotTrack = new LazyInt("HTTP_X_DO_NOT_TRACK");
 
+    /**
+     * example : multipart/form-data; boundary=---------------------------1317007049440113364772076208
+     */
+    private final LazyString contentType = new LazyString("CONTENT_TYPE");
+    
     private final Map<String, String> env;
 
     public HttpHeader(final Map<String, String> env) {
@@ -152,6 +160,10 @@ public class HttpHeader {
 
     public final String getPathInfo() {
         return pathInfo.getValue(env);
+    }
+    
+    public final String getContentType() {
+        return contentType.getValue(env);
     }
 
     public final List<String> getHttpAcceptLanguage() {

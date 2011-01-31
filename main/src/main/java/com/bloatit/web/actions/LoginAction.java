@@ -66,5 +66,4 @@ public final class LoginAction extends Action {
         session.notifyList(url.getMessages());
         return new LoginPageUrl();
     }
-
 }

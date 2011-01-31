@@ -16,8 +16,22 @@ public class ConfigurationManager {
     private final static String FALLBACK_FILE = "/etc/bloatit";
     private static final String SUFFIX = ".properties";
 
+    /**
+     * <p>
+     * Loads the content of a properties file in the default configuration file
+     * directory for bloatit. Returns it as a Properties list, aka a map
+     * containing the key->value pairs
+     * </p>
+     * <p>
+     * The <code>name</code> of the property file is the name of the file, or
+     * the path from the root of the configuration directory.
+     * </p>
+     * 
+     * @param name
+     *            the name of the property file
+     * @return a map key -> value
+     */
     public static Properties loadProperties(String name) {
-        
         if (name == null) {
             throw new IllegalArgumentException("null input: name");
         }
@@ -29,16 +43,16 @@ public class ConfigurationManager {
         }
         name = name.replace('.', '/');
         name = "/" + name + SUFFIX;
-        
+
         File f = new File(DEFAULT_FILE + name);
         if (!f.exists()) {
             f = new File(FALLBACK_FILE + name);
             if (!f.exists()) {
-                throw new FatalErrorException("Cannot locate a configuration file. Please create either " + DEFAULT_FILE  + name + " or "
-                        + FALLBACK_FILE  + name);
+                throw new FatalErrorException("Cannot locate a configuration file. Please create either " + DEFAULT_FILE + name + " or "
+                        + FALLBACK_FILE + name);
             }
         }
-        
+
         FileInputStream fis;
         try {
             fis = new FileInputStream(f);
@@ -47,13 +61,9 @@ public class ConfigurationManager {
             props.load(isr);
             return props;
         } catch (FileNotFoundException e) {
-            throw new FatalErrorException("Cannot load configuration file "+f.getAbsolutePath()+" might have been erroneously deleted");
+            throw new FatalErrorException("Cannot load configuration file " + f.getAbsolutePath() + " might have been erroneously deleted");
         } catch (IOException e) {
-            throw new FatalErrorException("Cannot load configuration file "+f.getAbsolutePath()+". I dunno why ...");
+            throw new FatalErrorException("Cannot load configuration file " + f.getAbsolutePath() + ". I dunno why ...");
         }
-    }
-    
-    public static void main (String[] args){
-        System.out.println(ConfigurationManager.loadProperties("mail"));
     }
 }

@@ -19,7 +19,7 @@ import java.nio.charset.Charset;
 import java.util.Properties;
 
 /**
- * Class used to load configuration files stored as properties
+ * Class used to load data files stored as properties
  */
 public class PropertyLoader {
 

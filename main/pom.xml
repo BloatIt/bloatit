@@ -225,6 +225,14 @@
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
             <version>1.6</version>
         </dependency>
+        
+        <!--  FileUpload tools -->
+        <dependency>
+        	<groupId>commons-fileupload</groupId>
+        	<artifactId>commons-fileupload</artifactId>
+        	<version>1.2.2</version>
+        	<type>jar</type>
+        </dependency>
 	</dependencies>
 
 	<pluginRepositories>

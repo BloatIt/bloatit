@@ -15,10 +15,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
 import com.bloatit.framework.FrameworkLauncher;
+import com.bloatit.framework.UploadedFile;
 import com.bloatit.mail.MailServer;
 import com.bloatit.web.server.DispatchServer;
 import com.bloatit.web.server.HttpResponse;
@@ -30,6 +32,7 @@ import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
+import com.bloatit.web.utils.url.FileUploadPageUrl;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IdeaCommentActionUrl;
 import com.bloatit.web.utils.url.DemandPageUrl;
@@ -92,6 +95,7 @@ public final class SCGIServer {
         dispatchServer.addLinkable(RegisterPageUrl.getName(), RegisterPageUrl.class);
         dispatchServer.addLinkable(PaylinePageUrl.getName(), PaylinePageUrl.class);
         dispatchServer.addLinkable(CommentReplyPageUrl.getName(), CommentReplyPageUrl.class);
+        dispatchServer.addLinkable(FileUploadPageUrl.getName(), FileUploadPageUrl.class);
 
         dispatchServer.addLinkable(LoginActionUrl.getName(), LoginActionUrl.class);
         dispatchServer.addLinkable(LogoutActionUrl.getName(), LogoutActionUrl.class);
@@ -134,9 +138,13 @@ public final class SCGIServer {
 
             final BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
             final Map<String, String> env = SCGIUtils.parse(bis);
+            
+//            for(Entry<String, String>item : env.entrySet()){
+//                System.out.println("[" + item.getKey() + "] : " + item.getValue());
+//            }
 
             final HttpHeader header = new HttpHeader(env);
-            final HttpPost post = new HttpPost(bis, header.getContentLength());
+            final HttpPost post = new HttpPost(bis, header.getContentLength(), header.getContentType());
 
             SessionManager.clearExpiredSessions();
 

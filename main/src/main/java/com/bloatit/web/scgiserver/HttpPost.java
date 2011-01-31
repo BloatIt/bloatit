@@ -12,7 +12,7 @@ public class HttpPost {
 
     private final Parameters parameters = new Parameters();
 
-    public HttpPost(final InputStream is, final int length) throws IOException {
+    public HttpPost(final InputStream is, final int length, String contentType) throws IOException {
         final byte[] postBytes = new byte[length];
         final int read = is.read(postBytes);
         if (read == length) {
@@ -20,22 +20,28 @@ public class HttpPost {
         } else {
             Log.server().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
         }
-        readBytes(postBytes);
+        readBytes(postBytes, contentType);
     }
 
-    private void readBytes(final byte[] postBytes) {
-        final String string = new String(postBytes);
-        for (final String param : string.split("&")) {
-            try {
-                final String[] pair = param.split("=");
-                if (pair.length >= 2) {
-                    final String key = URLDecoder.decode(pair[0], "UTF-8");
-                    String value;
-                    value = URLDecoder.decode(pair[1], "UTF-8");
-                    parameters.put(key, value);
+    private void readBytes(final byte[] postBytes, String contentType) throws IOException {
+        if (contentType != null && !contentType.equals("") && contentType.startsWith("multipart/form-data")) {
+            //parseMultipart(postBytes, contentType);
+            MultipartMime mm = new MultipartMime(postBytes, contentType);
+            System.out.println(mm);
+        } else {
+            final String string = new String(postBytes);
+            for (final String param : string.split("&")) {
+                try {
+                    final String[] pair = param.split("=");
+                    if (pair.length >= 2) {
+                        final String key = URLDecoder.decode(pair[0], "UTF-8");
+                        String value;
+                        value = URLDecoder.decode(pair[1], "UTF-8");
+                        parameters.put(key, value);
+                    }
+                } catch (final UnsupportedEncodingException e) {
+                    Log.web().error(e);
                 }
-            } catch (final UnsupportedEncodingException e) {
-                Log.web().error(e);
             }
         }
     }

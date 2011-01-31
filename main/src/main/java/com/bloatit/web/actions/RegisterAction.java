@@ -4,15 +4,22 @@
 package com.bloatit.web.actions;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import com.bloatit.common.MailUtils;
 import com.bloatit.framework.Member;
+import com.bloatit.web.annotations.ParamConstraint;
 import com.bloatit.web.annotations.ParamContainer;
 import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.annotations.RequestParam.Role;
+import com.bloatit.web.annotations.tr;
 import com.bloatit.web.exceptions.RedirectException;
+import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.LoginPageUrl;
 import com.bloatit.web.utils.url.MemberPageUrl;
 import com.bloatit.web.utils.url.RegisterActionUrl;
+import com.bloatit.web.utils.url.RegisterPageUrl;
 import com.bloatit.web.utils.url.Url;
 
 /**
@@ -28,12 +35,18 @@ public class RegisterAction extends Action {
     public static final String LANGUAGE_CODE = "bloatit_lang";
 
     @RequestParam(name = RegisterAction.LOGIN_CODE, role = Role.POST)
+    @ParamConstraint(min="4", minErrorMsg = @tr("Number of characters for login has to be superior to 4"),//
+                     max="15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
     private final String login;
 
     @RequestParam(name = RegisterAction.PASSWORD_CODE, role = Role.POST)
+    @ParamConstraint(min="4", minErrorMsg = @tr("Number of characters for password has to be superior to 4"),//
+                     max="15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
     private final String password;
 
     @RequestParam(name = RegisterAction.EMAIL_CODE, role = Role.POST)
+    @ParamConstraint(min="4", minErrorMsg = @tr("Number of characters for email has to be superior to 5"),//
+                     max="30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
     private final String email;
 
     @RequestParam(name = RegisterAction.COUNTRY_CODE, role = Role.POST)
@@ -55,6 +68,17 @@ public class RegisterAction extends Action {
 
     @Override
     protected final Url doProcess() throws RedirectException {
+        String userEmail = email.trim();
+        if(!MailUtils.isValidEmail(userEmail)){
+            session.notifyError(Context.tr("Invalid email address : " + userEmail));
+            session.addParameter(EMAIL_CODE, userEmail);
+            session.addParameter(LOGIN_CODE, login);
+            session.addParameter(PASSWORD_CODE, password);
+            session.addParameter(COUNTRY_CODE, country);
+            session.addParameter(LANGUAGE_CODE, lang);
+            throw new RedirectException(new RegisterPageUrl());
+        }
+        
         final Locale locale = new Locale(lang, country);
 
         final Member m = new Member(login, password, email, locale);
