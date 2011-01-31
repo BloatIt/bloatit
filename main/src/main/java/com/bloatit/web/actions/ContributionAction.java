@@ -12,22 +12,22 @@ package com.bloatit.web.actions;
 
 import java.math.BigDecimal;
 
-import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.demand.Demand;
-import com.bloatit.model.exceptions.NotEnoughMoneyException;
-import com.bloatit.web.annotations.Message.Level;
-import com.bloatit.web.annotations.ParamConstraint;
-import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.annotations.tr;
-import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.AccountChargingPageUrl;
-import com.bloatit.web.utils.url.ContributePageUrl;
-import com.bloatit.web.utils.url.ContributionActionUrl;
-import com.bloatit.web.utils.url.DemandPageUrl;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
+import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.tr;
+import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.demand.Demand;
+import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.ContributePageUrl;
+import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.DemandPageUrl;
 
 /**
  * A response to a form used to create a contribution to a demand

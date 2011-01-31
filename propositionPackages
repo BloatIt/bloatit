@@ -1,0 +1,29 @@
+
+
+framework/
+	scgiserver/
+	webserver/
+		WebServer
+		Page
+		Action
+		url/
+	xmlserver/
+	...
+	imapSendServer/
+	utils/
+		Configuration
+	exceptions/
+	
+html/
+	pages/
+	actions/
+	url/
+
+model/
+	demand/
+	...
+
+data/
+	Dao...
+
+

@@ -12,20 +12,21 @@ package com.bloatit.web.actions;
 
 import java.util.Locale;
 
-import com.bloatit.framework.demand.Demand;
-import com.bloatit.framework.demand.DemandManager;
-import com.bloatit.web.annotations.ParamConstraint;
-import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.annotations.tr;
-import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.CreateIdeaActionUrl;
-import com.bloatit.web.utils.url.CreateIdeaPageUrl;
-import com.bloatit.web.utils.url.DemandPageUrl;
-import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
+import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.tr;
+import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.masters.Action;
+import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandManager;
+import com.bloatit.web.url.CreateIdeaActionUrl;
+import com.bloatit.web.url.CreateIdeaPageUrl;
+import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.LoginPageUrl;
 
 /**
  * A response to a form used to create a new idea

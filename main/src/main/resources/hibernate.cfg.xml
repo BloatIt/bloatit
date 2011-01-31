@@ -30,28 +30,28 @@
 		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
 		<property name="hibernate.search.default.indexBase">/var/local/lucene/indexes</property>
 	
-		<mapping class="com.bloatit.model.data.DaoAccount" />
-		<mapping class="com.bloatit.model.data.DaoInternalAccount" />
-		<mapping class="com.bloatit.model.data.DaoExternalAccount" />
-		<mapping class="com.bloatit.model.data.DaoContribution" />
-		<mapping class="com.bloatit.model.data.DaoTranslation" />
-		<mapping class="com.bloatit.model.data.DaoTransaction" />
-		<mapping class="com.bloatit.model.data.DaoDescription" />
-		<mapping class="com.bloatit.model.data.DaoKudos" />
-		<mapping class="com.bloatit.model.data.DaoComment" />
-		<mapping class="com.bloatit.model.data.DaoGroupMembership" />
-		<mapping class="com.bloatit.model.data.DaoGroup" />
-		<mapping class="com.bloatit.model.data.DaoDemand" />
-		<mapping class="com.bloatit.model.data.DaoMember" />
-		<mapping class="com.bloatit.model.data.DaoOffer" />
-		<mapping class="com.bloatit.model.data.DaoJoinGroupInvitation" />
-		<mapping class="com.bloatit.model.data.DaoBankTransaction" />
-		<mapping class="com.bloatit.model.data.DaoBug" />
-		<mapping class="com.bloatit.model.data.DaoBatch" />
-		<mapping class="com.bloatit.model.data.DaoFileMetadata" />
+		<mapping class="com.bloatit.data.DaoAccount" />
+		<mapping class="com.bloatit.data.DaoInternalAccount" />
+		<mapping class="com.bloatit.data.DaoExternalAccount" />
+		<mapping class="com.bloatit.data.DaoContribution" />
+		<mapping class="com.bloatit.data.DaoTranslation" />
+		<mapping class="com.bloatit.data.DaoTransaction" />
+		<mapping class="com.bloatit.data.DaoDescription" />
+		<mapping class="com.bloatit.data.DaoKudos" />
+		<mapping class="com.bloatit.data.DaoComment" />
+		<mapping class="com.bloatit.data.DaoGroupMembership" />
+		<mapping class="com.bloatit.data.DaoGroup" />
+		<mapping class="com.bloatit.data.DaoDemand" />
+		<mapping class="com.bloatit.data.DaoMember" />
+		<mapping class="com.bloatit.data.DaoOffer" />
+		<mapping class="com.bloatit.data.DaoJoinGroupInvitation" />
+		<mapping class="com.bloatit.data.DaoBankTransaction" />
+		<mapping class="com.bloatit.data.DaoBug" />
+		<mapping class="com.bloatit.data.DaoBatch" />
+		<mapping class="com.bloatit.data.DaoFileMetadata" />
 		
-		<!--<mapping class="com.bloatit.model.data.DaoUserContent" /> <mapping 
-			class="com.bloatit.model.data.DaoKudosable" /> <mapping class="com.bloatit.model.data.DaoIdentifiable" 
+		<!--<mapping class="com.bloatit.data.DaoUserContent" /> <mapping 
+			class="com.bloatit.data.DaoKudosable" /> <mapping class="com.bloatit.data.DaoIdentifiable" 
 			/> -->
 	</session-factory>
 	

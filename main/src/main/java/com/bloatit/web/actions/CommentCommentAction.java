@@ -10,16 +10,16 @@
  */
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.Comment;
-import com.bloatit.web.annotations.Message.Level;
-import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.CommentCommentActionUrl;
-import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.Comment;
+import com.bloatit.web.url.CommentCommentActionUrl;
+import com.bloatit.web.url.LoginPageUrl;
 
 /**
  * A response to a form used to create a response to a comment

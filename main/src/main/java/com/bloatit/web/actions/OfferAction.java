@@ -13,21 +13,21 @@ package com.bloatit.web.actions;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import com.bloatit.common.UnauthorizedOperationException;
-import com.bloatit.framework.Offer;
-import com.bloatit.framework.demand.Demand;
-import com.bloatit.web.annotations.Message.Level;
-import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.annotations.RequestParam.Role;
-import com.bloatit.web.annotations.tr;
-import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.i18n.DateLocale;
-import com.bloatit.web.utils.url.DemandPageUrl;
-import com.bloatit.web.utils.url.OfferActionUrl;
-import com.bloatit.web.utils.url.OfferPageUrl;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.i18n.DateLocale;
+import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.tr;
+import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.Offer;
+import com.bloatit.model.demand.Demand;
+import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.OfferActionUrl;
+import com.bloatit.web.url.OfferPageUrl;
 
 /**
  * Class that will create a new offer based on data received from a form.
@@ -71,7 +71,7 @@ public final class OfferAction extends LoggedAction {
     public Url doProcessRestricted() {
         try {
             targetIdea.authenticate(session.getAuthToken());
-            Offer offer = new Offer(session.getAuthToken().getMember(), targetIdea, price, description, title, Locale.FRENCH,
+            final Offer offer = new Offer(session.getAuthToken().getMember(), targetIdea, price, description, title, Locale.FRENCH,
                     expiryDate.getJavaDate());
             targetIdea.addOffer(offer);
         } catch (final UnauthorizedOperationException e) {
