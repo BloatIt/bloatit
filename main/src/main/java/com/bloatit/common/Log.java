@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 // INFO
 // WARN -> not correct behavior but non so serious
 // ERROR -> should be reported to the admin
-// FATAL -> should be reported to the admin
+// FATAL -> should be reported to the admin NOW !
 
 public final class Log {
 

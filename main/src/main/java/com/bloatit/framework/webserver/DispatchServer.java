@@ -40,7 +40,7 @@ public final class DispatchServer {
         final Session session = findSession(header);
 
         try {
-            com.bloatit.model.Framework.lock();
+            com.bloatit.model.Model.lock();
 
             Context.reInitializeContext(header, session);
 
@@ -67,7 +67,7 @@ public final class DispatchServer {
             Log.framework().fatal("Cannot lock the framework.", ex);
         } finally {
             try {
-                com.bloatit.model.Framework.unLock();
+                com.bloatit.model.Model.unLock();
             } catch (final Exception e) {
                 Log.framework().fatal("Cannot unlock the framework.", e);
             }

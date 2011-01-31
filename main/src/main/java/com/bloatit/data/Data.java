@@ -3,9 +3,9 @@ package com.bloatit.data;
 import org.hibernate.FlushMode;
 import org.hibernate.classic.Session;
 
-public final class Model {
+public final class Data {
 
-    private Model() {
+    private Data() {
         // disactivate ctor;
     }
 

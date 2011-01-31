@@ -22,7 +22,7 @@ import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webserver.DispatchServer;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
-import com.bloatit.model.Framework;
+import com.bloatit.model.Model;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
@@ -57,13 +57,13 @@ public final class SCGIServer {
     private static final int SCGI_PORT = 4000;
 
     public static void main(final String[] args) {
-        Framework.launch();
+        Model.launch();
         try {
             new SCGIServer().run();
         } catch (final IOException e) {
             Log.framework().fatal(e);
         } finally {
-            Framework.shutdown();
+            Model.shutdown();
         }
     }
 

@@ -19,7 +19,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.AuthToken;
-import com.bloatit.model.Framework;
+import com.bloatit.model.Model;
 import com.bloatit.model.FrameworkTestUnit;
 import com.bloatit.model.Offer;
 import com.bloatit.model.right.RightManager.Action;
@@ -453,10 +453,10 @@ public class DemandTest extends FrameworkTestUnit {
         Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
 
         new TaskSelectedOfferTimeOut(demand, new Date());
-        Framework.unLock();
+        Model.unLock();
         try {
             Thread.sleep(1000);
-            Framework.lock();
+            Model.lock();
         } catch (final InterruptedException e) {
             fail();
         }

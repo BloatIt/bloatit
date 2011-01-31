@@ -97,7 +97,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     @Override
     public void run() {
         try {
-            Framework.lock();
+            Model.lock();
             doRun();
         } catch (final InterruptedException e) {
             Log.model().fatal("Planned task error. ", e);
@@ -105,7 +105,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
             throw ex;
         } finally {
             remove(this);
-            Framework.unLock();
+            Model.unLock();
         }
     }
 
