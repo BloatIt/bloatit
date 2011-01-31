@@ -1,15 +1,23 @@
 package com.bloatit.model.data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 
+import org.hibernate.Query;
+import org.hibernate.classic.Session;
 import org.hibernate.search.annotations.Indexed;
 
 import com.bloatit.common.Log;
+import com.bloatit.common.PageIterable;
 import com.bloatit.model.data.util.NonOptionalParameterException;
+import com.bloatit.model.data.util.SessionManager;
 
 /**
  * A user content is a content created by a user. There is no table DaoUserContent (the
@@ -35,6 +43,9 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     @Basic(optional = false)
     private Date creationDate;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private final Set<DaoFileMetadata> files = new HashSet<DaoFileMetadata>();
 
     /**
      * Initialize the creation date to now.
@@ -65,6 +76,16 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     }
 
     /**
+     * @return all the files associated with this DaoUserContent.
+     */
+    public final PageIterable<DaoFileMetadata> getFiles() {
+        Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        Query filesQuery = currentSession.createFilter(files, "where relatedContent = :this").setEntity("this", this);
+        Query filesSizeQuery = currentSession.createFilter(files, "select count(*) where relatedContent = :this").setEntity("this", this);
+        return new QueryCollection<DaoFileMetadata>(filesQuery, filesSizeQuery);
+    }
+
+    /**
      * null is the default value and means that the content has a member as author.
      */
     public final void setAsGroup(final DaoGroup asGroup) {
@@ -79,7 +100,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         super();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -92,7 +114,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         return result;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
