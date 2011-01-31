@@ -3,15 +3,33 @@ package com.bloatit.framework;
 import java.util.concurrent.Semaphore;
 
 import com.bloatit.mail.MailServer;
+import com.bloatit.model.Model;
 
 public class Framework {
     private static Semaphore mutex = new Semaphore(1, false);
+
     private Framework() {
         // do nothing
     }
 
-    public static void launch(){
+    public static void launch() {
         MailServer.init();
+    }
+
+    public static void shutdown(){
+        Model.shutdown();
+    }
+
+    public static void openReadOnly() {
+        Model.openReadOnly();
+    }
+
+    public static void open() {
+        Model.open();
+    }
+
+    public static void close() {
+        Model.close();
     }
 
     /**

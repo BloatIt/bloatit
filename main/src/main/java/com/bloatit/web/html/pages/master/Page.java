@@ -29,7 +29,7 @@ public abstract class Page extends HtmlElement implements Linkable {
 
     private final HtmlBranch content;
     private HtmlBranch notifications;
-    private final HtmlElement notificationBlock;
+    private final HtmlDiv notificationBlock;
     private final Url thisUrl;
     protected final Session session;
 

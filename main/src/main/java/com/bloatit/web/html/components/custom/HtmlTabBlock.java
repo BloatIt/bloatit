@@ -33,6 +33,7 @@ public final class HtmlTabBlock extends HtmlDiv {
         tabHeader = new HtmlDiv("tab_header");
         tabBody = new HtmlDiv("tab_body");
 
+        setId(tabBlockKey);
         add(tabHeader);
         add(tabBody);
     }
