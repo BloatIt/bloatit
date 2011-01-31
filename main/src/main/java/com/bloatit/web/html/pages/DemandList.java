@@ -15,6 +15,7 @@ import com.bloatit.common.PageIterable;
 import com.bloatit.framework.demand.Demand;
 import com.bloatit.framework.demand.DemandManager;
 import com.bloatit.web.annotations.ParamContainer;
+import com.bloatit.web.annotations.RequestParam;
 import com.bloatit.web.html.HtmlNode;
 import com.bloatit.web.html.components.custom.HtmlDemandSumary;
 import com.bloatit.web.html.components.custom.HtmlPagedList;
@@ -33,12 +34,17 @@ import com.bloatit.web.utils.url.DemandListUrl;
 @ParamContainer("demand/list")
 public final class DemandList extends Page {
 
+    public static final String SEARCH_STRING = "search_string";
+    @RequestParam(defaultValue = "", name = SEARCH_STRING)
+    private final String searchString;
+
     private HtmlPagedList<Demand> pagedDemandList;
     private final DemandListUrl url;
 
     public DemandList(final DemandListUrl url) {
         super(url);
         this.url = url;
+        this.searchString = url.getSearchString();
 
         generateContent();
     }
@@ -54,9 +60,11 @@ public final class DemandList extends Page {
             final HtmlTitle pageTitle = new HtmlTitle(Context.tr("Search a demand"), 1);
             demandSearchBlock.add(pageTitle);
 
-            final HtmlForm searchForm = new HtmlForm(new DemandListUrl().toString(), Method.GET);
+            final HtmlForm searchForm = new HtmlForm(new DemandListUrl().urlString(), Method.GET);
             {
-                HtmlTextField searchField = new HtmlTextField("search_string");
+                HtmlTextField searchField = new HtmlTextField(SEARCH_STRING);
+                searchField.setDefaultValue(searchString);
+
                 HtmlSubmit  searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search"));
 
                 searchForm.add(searchField);
@@ -163,7 +171,13 @@ public final class DemandList extends Page {
 
         //Demand list
 
-        final PageIterable<Demand> ideaList = DemandManager.getDemands();
+        final PageIterable<Demand> ideaList;
+
+        if(searchString.equals("")) {
+            ideaList = DemandManager.getDemands();
+        } else {
+            ideaList = DemandManager.search(searchString);
+        }
 
         final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
