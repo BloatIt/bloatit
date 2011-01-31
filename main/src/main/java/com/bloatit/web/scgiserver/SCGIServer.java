@@ -30,9 +30,9 @@ import com.bloatit.web.utils.url.ContributePageUrl;
 import com.bloatit.web.utils.url.ContributionActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaActionUrl;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
+import com.bloatit.web.utils.url.DemandPageUrl;
 import com.bloatit.web.utils.url.GlobalSearchPageUrl;
 import com.bloatit.web.utils.url.IdeaCommentActionUrl;
-import com.bloatit.web.utils.url.DemandPageUrl;
 import com.bloatit.web.utils.url.IdeasListUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 import com.bloatit.web.utils.url.KudoActionUrl;
@@ -63,6 +63,8 @@ public final class SCGIServer {
             new SCGIServer().run();
         } catch (final IOException e) {
             Log.server().fatal(e);
+        } finally {
+            Framework.shutdown();
         }
     }
 
