@@ -2,19 +2,21 @@ package com.bloatit.framework;
 
 import java.util.concurrent.Semaphore;
 
-/**
- * This mutex is used to lock all the framework. It is used in {@link PlannedTask}.
- */
-public final class FrameworkMutex {
-    private static Semaphore mutex = new Semaphore(1, false);
+import com.bloatit.mail.MailServer;
 
-    private FrameworkMutex() {
+public class Framework {
+    private static Semaphore mutex = new Semaphore(1, false);
+    private Framework() {
         // do nothing
+    }
+
+    public static void launch(){
+        MailServer.init();
     }
 
     /**
      * Reserve the Framework and make sure nobody else is using it.
-     * 
+     *
      * @throws InterruptedException
      */
     public static void lock() throws InterruptedException {
@@ -27,5 +29,4 @@ public final class FrameworkMutex {
     public static void unLock() {
         mutex.release();
     }
-
 }

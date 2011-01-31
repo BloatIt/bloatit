@@ -18,7 +18,7 @@ import java.util.Map;
 
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.Log;
-import com.bloatit.framework.FrameworkLauncher;
+import com.bloatit.framework.Framework;
 import com.bloatit.mail.MailServer;
 import com.bloatit.web.server.DispatchServer;
 import com.bloatit.web.server.HttpResponse;
@@ -58,7 +58,7 @@ public final class SCGIServer {
     private static final int SCGI_PORT = 4000;
 
     public static void main(final String[] args) {
-        FrameworkLauncher.launch();
+        Framework.launch();
         try {
             new SCGIServer().run();
         } catch (final IOException e) {

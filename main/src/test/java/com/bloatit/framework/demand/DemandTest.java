@@ -12,7 +12,7 @@ import com.bloatit.common.DateUtils;
 import com.bloatit.common.FatalErrorException;
 import com.bloatit.common.UnauthorizedOperationException;
 import com.bloatit.framework.AuthToken;
-import com.bloatit.framework.FrameworkMutex;
+import com.bloatit.framework.Framework;
 import com.bloatit.framework.FrameworkTestUnit;
 import com.bloatit.framework.Offer;
 import com.bloatit.framework.right.RightManager.Action;
@@ -448,10 +448,10 @@ public class DemandTest extends FrameworkTestUnit {
         Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
 
         new TaskSelectedOfferTimeOut(demand, new Date());
-        FrameworkMutex.unLock();
+        Framework.unLock();
         try {
             Thread.sleep(1000);
-            FrameworkMutex.lock();
+            Framework.lock();
         } catch (InterruptedException e) {
             fail();
         }

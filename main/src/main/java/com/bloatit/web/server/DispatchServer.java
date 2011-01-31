@@ -39,7 +39,7 @@ public final class DispatchServer {
 
         com.bloatit.model.data.util.SessionManager.beginWorkUnit();
         try {
-            com.bloatit.framework.FrameworkMutex.lock();
+            com.bloatit.framework.Framework.lock();
 
             Context.reInitializeContext(header, session);
 
@@ -67,7 +67,7 @@ public final class DispatchServer {
             Log.web().fatal("Cannot lock the framework.", ex);
         } finally {
             try {
-                com.bloatit.framework.FrameworkMutex.unLock();
+                com.bloatit.framework.Framework.unLock();
             } catch (final Exception e) {
                 Log.web().fatal("Cannot unlock the framework.", e);
             }
@@ -103,7 +103,7 @@ public final class DispatchServer {
 
     /**
      * Return the session for the user. Either an existing session or a new session.
-     * 
+     *
      * @param header
      * @return the session matching the user
      */
