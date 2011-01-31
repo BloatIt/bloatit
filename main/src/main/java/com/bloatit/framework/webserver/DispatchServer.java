@@ -57,19 +57,19 @@ public final class DispatchServer {
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response);
             } catch (final RedirectException e) {
-                Log.web().info("Redirect to " + e.getUrl(), e);
+                Log.framework().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(e.getUrl().urlString());
             } finally {
                 com.bloatit.data.SessionManager.endWorkUnitAndFlush();
             }
 
         } catch (final InterruptedException ex) {
-            Log.web().fatal("Cannot lock the framework.", ex);
+            Log.framework().fatal("Cannot lock the framework.", ex);
         } finally {
             try {
                 com.bloatit.model.Framework.unLock();
             } catch (final Exception e) {
-                Log.web().fatal("Cannot unlock the framework.", e);
+                Log.framework().fatal("Cannot unlock the framework.", e);
             }
         }
     }
@@ -83,17 +83,17 @@ public final class DispatchServer {
                 return urlClass.getConstructor(Parameters.class, Parameters.class).newInstance(params, session.getParams()).createPage();
             }
         } catch (final IllegalArgumentException e) {
-            Log.web().error("IllegalArgument calling url constructor.", e);
+            Log.framework().error("IllegalArgument calling url constructor.", e);
         } catch (final SecurityException e) {
-            Log.web().error("SecurityException calling url constructor.", e);
+            Log.framework().error("SecurityException calling url constructor.", e);
         } catch (final InstantiationException e) {
-            Log.web().error("InstantiationException calling url constructor.", e);
+            Log.framework().error("InstantiationException calling url constructor.", e);
         } catch (final IllegalAccessException e) {
-            Log.web().error("IllegalAccessException calling url constructor.", e);
+            Log.framework().error("IllegalAccessException calling url constructor.", e);
         } catch (final InvocationTargetException e) {
-            Log.web().error("InvocationTargetException calling url constructor.", e);
+            Log.framework().error("InvocationTargetException calling url constructor.", e);
         } catch (final NoSuchMethodException e) {
-            Log.web().error("NoSuchMethodException calling url constructor.", e);
+            Log.framework().error("NoSuchMethodException calling url constructor.", e);
         }
 
         session.notifyError(Context.tr("Unknow page: ") + pageCode);
@@ -102,7 +102,7 @@ public final class DispatchServer {
 
     /**
      * Return the session for the user. Either an existing session or a new session.
-     * 
+     *
      * @param header
      * @return the session matching the user
      */

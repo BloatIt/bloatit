@@ -46,7 +46,7 @@ public abstract class Accessor {
 
     public final void tryAccess(final EnumSet<Role> role, final Action action) throws UnauthorizedOperationException {
         if (!canAccess(role, action)) {
-            Log.framework().error("UnauthorizedOperationException - " + role + " - " + action + " - " + getClass().getName());
+            Log.model().error("UnauthorizedOperationException - " + role + " - " + action + " - " + getClass().getName());
             throw new UnauthorizedOperationException(role, action);
         }
     }

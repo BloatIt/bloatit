@@ -46,7 +46,7 @@ public final class SessionManager {
 
     public static void destroySession(final Session session) {
         if (activeSessions.containsKey(session.getKey())) {
-            Log.server().info("destroy session " + session.getKey());
+            Log.framework().info("destroy session " + session.getKey());
             activeSessions.remove(session.getKey());
         }
     }
@@ -66,7 +66,7 @@ public final class SessionManager {
         try {
             session.setAuthToken(new AuthToken(memberId));
         } catch (final NotFoundException e) {
-            Log.server().error(e);
+            Log.framework().error(e);
         }
         activeSessions.put(uuidKey, session);
     }
@@ -80,7 +80,7 @@ public final class SessionManager {
         final String dump = dir + "/sessions.dump";
 
         if (new File(dir).mkdirs()) {
-            Log.server().debug("Creating a new dir: " + dir);
+            Log.framework().debug("Creating a new dir: " + dir);
         }
 
         FileOutputStream fileOutputStream = null;
@@ -104,15 +104,15 @@ public final class SessionManager {
             fileOutputStream.close();
 
         } catch (final IOException e) {
-            Log.server().error("Failed to save sessions.", e);
+            Log.framework().error("Failed to save sessions.", e);
         } finally {
             if (fileOutputStream != null) {
                 try {
 
                     fileOutputStream.close();
                 } catch (final IOException e) {
-                    Log.server().error("Failed to close the file after an other exception.");
-                    Log.server().error(e);
+                    Log.framework().error("Failed to close the file after an other exception.");
+                    Log.framework().error(e);
                     e.printStackTrace();
                 }
             }
@@ -155,9 +155,9 @@ public final class SessionManager {
             br.close();
 
             if (new File(dump).delete()) {
-                Log.server().info("deleting dump file: " + dump);
+                Log.framework().info("deleting dump file: " + dump);
             } else {
-                Log.server().error("Cannot delete dump file: " + dump);
+                Log.framework().error("Cannot delete dump file: " + dump);
             }
 
         } catch (final IOException e) {
@@ -165,12 +165,12 @@ public final class SessionManager {
                 try {
                     br.close();
                 } catch (final IOException e1) {
-                    Log.server().error(e1);
+                    Log.framework().error(e1);
                 }
             }
 
             // Failed to restore sessions
-            Log.server().error("Failed to restore sessions.", e);
+            Log.framework().error("Failed to restore sessions.", e);
         }
 
         com.bloatit.data.SessionManager.endWorkUnitAndFlush();

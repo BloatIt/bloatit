@@ -15,14 +15,14 @@ public final class Log {
         // disactivate default ctor
     }
 
-    private static final Logger FRAMEWORK = Logger.getLogger("com.bloatit.model");
+    private static final Logger MODEL = Logger.getLogger("com.bloatit.model");
     private static final Logger DATA = Logger.getLogger("com.bloatit.data");
-    private static final Logger WEB = Logger.getLogger("com.bloatit.framework.webserver");
-    private static final Logger SERVER = Logger.getLogger("com.bloatit.framework.webserver.server");
+    private static final Logger WEB = Logger.getLogger("com.bloatit.web");
+    private static final Logger FRAMEWORK = Logger.getLogger("com.bloatit.framework");
     private static final Logger MAIL = Logger.getLogger("com.bloatit.mail");
 
-    public static Logger framework() {
-        return FRAMEWORK;
+    public static Logger model() {
+        return MODEL;
     }
 
     public static Logger data() {
@@ -33,8 +33,8 @@ public final class Log {
         return WEB;
     }
 
-    public static Logger server() {
-        return SERVER;
+    public static Logger framework() {
+        return FRAMEWORK;
     }
 
     public static Logger mail() {

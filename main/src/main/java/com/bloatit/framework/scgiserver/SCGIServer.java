@@ -61,7 +61,7 @@ public final class SCGIServer {
         try {
             new SCGIServer().run();
         } catch (final IOException e) {
-            Log.server().fatal(e);
+            Log.framework().fatal(e);
         } finally {
             Framework.shutdown();
         }
@@ -115,10 +115,10 @@ public final class SCGIServer {
         try {
             Thread.sleep(100);
         } catch (final InterruptedException ex) {
-            Log.server().warn("Init: Waiting has been interupted.", ex);
+            Log.framework().warn("Init: Waiting has been interupted.", ex);
         }
 
-        Log.server().info("Init: Start BloatIt serveur");
+        Log.framework().info("Init: Start BloatIt serveur");
         providerSocket = new ServerSocket(SCGI_PORT);
     }
 
@@ -126,7 +126,7 @@ public final class SCGIServer {
         init();
         while (true) {
             // Wait for connection
-            Log.server().info("Waiting connection");
+            Log.framework().info("Waiting connection");
 
             // Load the SCGI headers.
             clientSocket = providerSocket.accept();
@@ -149,20 +149,20 @@ public final class SCGIServer {
                 dispatchServer.process(header, post, new HttpResponse(clientSocket.getOutputStream()));
             } catch (final FatalErrorException e) {
                 webPrintException(e);
-                Log.web().fatal("Unknown Fatal exception", e);
+                Log.framework().fatal("Unknown Fatal exception", e);
             } catch (final SCGIRequestAbordedException e) {
                 webPrintException(e);
-                Log.web().info("SCGIUtils request aborded", e);
+                Log.framework().info("SCGIUtils request aborded", e);
             } catch (final Exception e) {
                 webPrintException(e);
-                Log.web().fatal("Unknown exception", e);
+                Log.framework().fatal("Unknown exception", e);
             }
 
             clientSocket.close();
 
             final long endTime = System.nanoTime();
             final double duration = ((endTime - startTime)) / 1000000.;
-            Log.server().debug("Page generated in " + duration + " ms");
+            Log.framework().debug("Page generated in " + duration + " ms");
 
         }
     }
@@ -182,7 +182,7 @@ public final class SCGIServer {
         try {
             clientSocket.getOutputStream().write(display.toString().getBytes());
         } catch (final IOException e1) {
-            Log.web().fatal("Cannot send exception through the SCGI soket.", e1);
+            Log.framework().fatal("Cannot send exception through the SCGI soket.", e1);
         }
     }
 
@@ -202,7 +202,7 @@ public final class SCGIServer {
                     clientSocket.close();
                 }
             } catch (final IOException e) {
-                Log.server().error("Fail to close the socket on shutdown.", e);
+                Log.framework().error("Fail to close the socket on shutdown.", e);
             }
             SessionManager.saveSessions();
             MailServer.getInstance().quickStop();

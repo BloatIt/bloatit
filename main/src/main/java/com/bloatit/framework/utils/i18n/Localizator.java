@@ -398,7 +398,7 @@ public final class Localizator {
             }
 
             if (!found) {
-                Log.web().error("Strange language code " + urlLang);
+                Log.framework().error("Strange language code " + urlLang);
             }
 
         } else {

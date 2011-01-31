@@ -222,7 +222,7 @@ public final class Payline extends Unlockable {
                 ref.append(bankTransaction.iterator().next().getId() + 1);
             }
         } catch (final UnauthorizedOperationException e) {
-            Log.framework().fatal("Unauthorized exception should never append ! ", e);
+            Log.model().fatal("Unauthorized exception should never append ! ", e);
             assert false;
             ref.append("ERROR");
             return ref.toString();

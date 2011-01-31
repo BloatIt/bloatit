@@ -16,9 +16,9 @@ public class HttpPost {
         final byte[] postBytes = new byte[length];
         final int read = is.read(postBytes);
         if (read == length) {
-            Log.server().debug("Post value read correctly.");
+            Log.framework().debug("Post value read correctly.");
         } else {
-            Log.server().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
+            Log.framework().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
         }
         readBytes(postBytes, contentType);
     }
@@ -40,7 +40,7 @@ public class HttpPost {
                         parameters.put(key, value);
                     }
                 } catch (final UnsupportedEncodingException e) {
-                    Log.web().error(e);
+                    Log.framework().error(e);
                 }
             }
         }

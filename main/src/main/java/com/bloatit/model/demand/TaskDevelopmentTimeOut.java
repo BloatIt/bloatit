@@ -20,7 +20,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
         try {
             demand.developmentTimeOut();
         } catch (final WrongStateException e) {
-            Log.framework().fatal(e);
+            Log.model().fatal(e);
         }
     }
 

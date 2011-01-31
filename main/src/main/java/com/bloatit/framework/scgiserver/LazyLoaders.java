@@ -50,7 +50,7 @@ class LazyLoaders {
                 if (aValue.length == 2) {
                     map.put(aValue[0].trim(), aValue[1].trim());
                 } else {
-                    Log.web().error("Malformed cookie value: " + namedValue);
+                    Log.framework().error("Malformed cookie value: " + namedValue);
                 }
             }
             return map;
@@ -74,7 +74,7 @@ class LazyLoaders {
             try {
                 return Integer.valueOf(stringValue);
             } catch (final Exception e) {
-                Log.web().error("Malformed integer: " + stringValue);
+                Log.framework().error("Malformed integer: " + stringValue);
             }
             return null;
         }

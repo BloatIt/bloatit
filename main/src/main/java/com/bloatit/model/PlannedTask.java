@@ -100,7 +100,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
             Framework.lock();
             doRun();
         } catch (final InterruptedException e) {
-            Log.framework().fatal("Planned task error. ", e);
+            Log.model().fatal("Planned task error. ", e);
         } catch (final RuntimeException ex) {
             throw ex;
         } finally {

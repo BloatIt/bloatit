@@ -21,7 +21,7 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
             System.out.println(demand);
             demand.selectedOfferTimeOut();
         } catch (final WrongStateException e) {
-            Log.framework().fatal(e);
+            Log.model().fatal(e);
         }
     }
 

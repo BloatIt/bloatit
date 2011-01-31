@@ -44,12 +44,12 @@ public class Query {
                     if (pair.length == 2) {
                         parameters.put(pair[0], pair[1]);
                     } else {
-                        Log.web().error("Malformed parameter " + namedValue);
+                        Log.framework().error("Malformed parameter " + namedValue);
                     }
                 }
             }
         } catch (final UnsupportedEncodingException ex) {
-            Log.web().error("Cannot parse url", ex);
+            Log.framework().error("Cannot parse url", ex);
         }
     }
 
