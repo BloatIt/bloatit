@@ -26,7 +26,7 @@ import com.bloatit.web.html.components.standard.form.HtmlTextField;
 import com.bloatit.web.html.pages.master.Page;
 import com.bloatit.web.server.Context;
 import com.bloatit.web.utils.url.CreateIdeaPageUrl;
-import com.bloatit.web.utils.url.GlobalSearchPageUrl;
+import com.bloatit.web.utils.url.DemandListUrl;
 import com.bloatit.web.utils.url.IndexPageUrl;
 
 @ParamContainer("index")
@@ -64,9 +64,9 @@ public final class IndexPage extends Page {
 
         final HtmlDiv searchBlock = new HtmlDiv("index_search_block");
 
-        final HtmlForm searchForm = new HtmlForm(new GlobalSearchPageUrl().urlString(), HtmlForm.Method.GET);
+        final HtmlForm searchForm = new HtmlForm(new DemandListUrl().urlString(), HtmlForm.Method.GET);
 
-        final HtmlTextField searchField = new HtmlTextField(GlobalSearchPage.SEARCH_CODE);
+        final HtmlTextField searchField = new HtmlTextField(DemandList.SEARCH_STRING);
 
         final HtmlSubmit searchButton = new HtmlSubmit(tr("Search"));
         searchForm.add(searchField);
