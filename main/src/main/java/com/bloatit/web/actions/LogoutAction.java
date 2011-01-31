@@ -11,12 +11,12 @@
 
 package com.bloatit.web.actions;
 
-import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.IndexPageUrl;
-import com.bloatit.web.utils.url.LogoutActionUrl;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.LogoutActionUrl;
 
 /**
  * A response to a form used to log out of the website

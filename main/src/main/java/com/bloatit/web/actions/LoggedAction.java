@@ -1,8 +1,9 @@
 package com.bloatit.web.actions;
 
-import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.masters.Action;
+import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.web.url.LoginPageUrl;
 
 /**
  * <p>

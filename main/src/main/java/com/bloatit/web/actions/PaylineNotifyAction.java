@@ -1,16 +1,17 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.Payline;
-import com.bloatit.framework.Payline.Reponse;
-import com.bloatit.framework.Payline.TokenNotfoundException;
-import com.bloatit.web.annotations.Message.Level;
-import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.utils.url.IndexPageUrl;
-import com.bloatit.web.utils.url.PaylineNotifyActionUrl;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.masters.Action;
+import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.Payline;
+import com.bloatit.model.Payline.Reponse;
+import com.bloatit.model.Payline.TokenNotfoundException;
+import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.PaylineNotifyActionUrl;
 
 @ParamContainer("payline/donotify")
 public final class PaylineNotifyAction extends Action {

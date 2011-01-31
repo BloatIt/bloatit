@@ -1,0 +1,53 @@
+package com.bloatit.framework.scgiserver;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import com.bloatit.common.Log;
+import com.bloatit.framework.utils.Parameters;
+
+public class HttpPost {
+
+    private final Parameters parameters = new Parameters();
+
+    public HttpPost(final InputStream is, final int length, final String contentType) throws IOException {
+        final byte[] postBytes = new byte[length];
+        final int read = is.read(postBytes);
+        if (read == length) {
+            Log.framework().debug("Post value read correctly.");
+        } else {
+            Log.framework().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
+        }
+        readBytes(postBytes, contentType);
+    }
+
+    private void readBytes(final byte[] postBytes, final String contentType) throws IOException {
+        if (contentType != null && !contentType.equals("") && contentType.startsWith("multipart/form-data")) {
+            // parseMultipart(postBytes, contentType);
+            final MultipartMime mm = new MultipartMime(postBytes, contentType);
+            System.out.println(mm);
+        } else {
+            final String string = new String(postBytes);
+            for (final String param : string.split("&")) {
+                try {
+                    final String[] pair = param.split("=");
+                    if (pair.length >= 2) {
+                        final String key = URLDecoder.decode(pair[0], "UTF-8");
+                        String value;
+                        value = URLDecoder.decode(pair[1], "UTF-8");
+                        parameters.put(key, value);
+                    }
+                } catch (final UnsupportedEncodingException e) {
+                    Log.framework().error(e);
+                }
+            }
+        }
+    }
+
+    public final Parameters getParameters() {
+        return parameters;
+    }
+
+}

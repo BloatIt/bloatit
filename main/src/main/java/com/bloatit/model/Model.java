@@ -1,42 +1,50 @@
 package com.bloatit.model;
 
-import org.hibernate.FlushMode;
-import org.hibernate.classic.Session;
+import java.util.concurrent.Semaphore;
 
-import com.bloatit.model.data.util.SessionManager;
+import com.bloatit.data.Data;
+import com.bloatit.framework.mailsender.MailServer;
 
-public final class Model {
+public class Model {
+    private static Semaphore mutex = new Semaphore(1, false);
 
     private Model() {
-        // disactivate ctor;
+        // do nothing
     }
 
     public static void launch() {
-        // For now do nothing.
+        MailServer.init();
     }
 
     public static void shutdown() {
-        // For now do nothing.
+        Data.shutdown();
     }
 
     public static void openReadOnly() {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-
-        session.setDefaultReadOnly(true);
-        session.setFlushMode(FlushMode.MANUAL);
-        session.beginTransaction();
+        Data.openReadOnly();
     }
 
     public static void open() {
-        Session session = SessionManager.getSessionFactory().getCurrentSession();
-
-        session.setDefaultReadOnly(false);
-        session.setFlushMode(FlushMode.AUTO);
-        session.beginTransaction();
+        Data.open();
     }
 
     public static void close() {
-        SessionManager.endWorkUnitAndFlush();
+        Data.close();
     }
 
+    /**
+     * Reserve the Data and make sure nobody else is using it.
+     *
+     * @throws InterruptedException
+     */
+    public static void lock() throws InterruptedException {
+        mutex.acquire();
+    }
+
+    /**
+     * Release the framework after we had reserved it.
+     */
+    public static void unLock() {
+        mutex.release();
+    }
 }

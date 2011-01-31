@@ -10,16 +10,17 @@
  */
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.AuthToken;
-import com.bloatit.framework.managers.LoginManager;
-import com.bloatit.web.annotations.Message.Level;
-import com.bloatit.web.annotations.ParamContainer;
-import com.bloatit.web.annotations.RequestParam;
-import com.bloatit.web.exceptions.RedirectException;
-import com.bloatit.web.server.Context;
-import com.bloatit.web.utils.url.LoginActionUrl;
-import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.Url;
+import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.masters.Action;
+import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.AuthToken;
+import com.bloatit.model.managers.LoginManager;
+import com.bloatit.web.url.LoginActionUrl;
+import com.bloatit.web.url.LoginPageUrl;
 
 /**
  * A response to a form used to log into the website

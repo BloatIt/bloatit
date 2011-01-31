@@ -24,16 +24,16 @@
 		<level value="warn" />
 	</logger>
 
-	<logger name="com.bloatit.model.data">
+	<logger name="com.bloatit.data">
+		<level value="trace" />
+	</logger>
+	<logger name="com.bloatit.model">
+		<level value="trace" />
+	</logger>
+	<logger name="com.bloatit.webr">
 		<level value="trace" />
 	</logger>
 	<logger name="com.bloatit.framework">
-		<level value="trace" />
-	</logger>
-	<logger name="com.bloatit.web">
-		<level value="trace" />
-	</logger>
-	<logger name="com.bloatit.web.server">
 		<level value="trace" />
 	</logger>
 	<logger name="com.bloatit.mail">
