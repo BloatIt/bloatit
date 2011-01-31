@@ -19,24 +19,26 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.scgiserver.HttpHeader;
 import com.bloatit.framework.scgiserver.HttpPost;
+import com.bloatit.framework.scgiserver.ScgiProcessor;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.masters.PageNotFound;
 import com.bloatit.framework.webserver.url.Url;
 
-public final class DispatchServer {
+public class WebServer implements ScgiProcessor {
     private final Map<String, Class<? extends Url>> urls = new HashMap<String, Class<? extends Url>>();
 
-    public DispatchServer() {
+    public WebServer() {
         // Nothing here.
     }
 
-    public void addLinkable(final String name, final Class<? extends Url> urlClass) {
+    public final void addLinkable(final String name, final Class<? extends Url> urlClass) {
         urls.put(name, urlClass);
     }
 
-    public void process(final HttpHeader header, final HttpPost post, final HttpResponse response) throws IOException {
+    @Override
+    public final boolean process(final HttpHeader header, final HttpPost post, final HttpResponse response) throws IOException {
         final Session session = findSession(header);
 
         try {
@@ -72,6 +74,7 @@ public final class DispatchServer {
                 Log.framework().fatal("Cannot unlock the framework.", e);
             }
         }
+        return true;
     }
 
     @SuppressWarnings("deprecation")

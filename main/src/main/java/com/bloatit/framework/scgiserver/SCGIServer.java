@@ -14,98 +14,31 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
-import com.bloatit.framework.webserver.DispatchServer;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
-import com.bloatit.model.Model;
-import com.bloatit.web.url.AccountChargingPageUrl;
-import com.bloatit.web.url.CommentCommentActionUrl;
-import com.bloatit.web.url.CommentReplyPageUrl;
-import com.bloatit.web.url.ContributePageUrl;
-import com.bloatit.web.url.ContributionActionUrl;
-import com.bloatit.web.url.CreateIdeaActionUrl;
-import com.bloatit.web.url.CreateIdeaPageUrl;
-import com.bloatit.web.url.DemandListUrl;
-import com.bloatit.web.url.DemandPageUrl;
-import com.bloatit.web.url.FileUploadPageUrl;
-import com.bloatit.web.url.IdeaCommentActionUrl;
-import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.KudoActionUrl;
-import com.bloatit.web.url.LoginActionUrl;
-import com.bloatit.web.url.LoginPageUrl;
-import com.bloatit.web.url.LogoutActionUrl;
-import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MyAccountPageUrl;
-import com.bloatit.web.url.OfferActionUrl;
-import com.bloatit.web.url.OfferPageUrl;
-import com.bloatit.web.url.PaylineActionUrl;
-import com.bloatit.web.url.PaylineNotifyActionUrl;
-import com.bloatit.web.url.PaylinePageUrl;
-import com.bloatit.web.url.RegisterActionUrl;
-import com.bloatit.web.url.RegisterPageUrl;
-import com.bloatit.web.url.SpecialsPageUrl;
-import com.bloatit.web.url.TestPageUrl;
 
 public final class SCGIServer {
 
     private static final int SCGI_PORT = 4000;
 
-    public static void main(final String[] args) {
-        Model.launch();
-        try {
-            new SCGIServer().run();
-        } catch (final IOException e) {
-            Log.framework().fatal(e);
-        } finally {
-            Model.shutdown();
-        }
-    }
-
     private ServerSocket providerSocket;
     private Socket clientSocket;
-    private final DispatchServer dispatchServer;
+    private final List<ScgiProcessor> processors = new ArrayList<ScgiProcessor>();
 
     public SCGIServer() {
         clientSocket = null;
         providerSocket = null;
+    }
 
-        dispatchServer = new DispatchServer();
-        dispatchServer.addLinkable(IndexPageUrl.getName(), IndexPageUrl.class);
-        dispatchServer.addLinkable(LoginPageUrl.getName(), LoginPageUrl.class);
-        dispatchServer.addLinkable(DemandListUrl.getName(), DemandListUrl.class);
-        dispatchServer.addLinkable(CreateIdeaPageUrl.getName(), CreateIdeaPageUrl.class);
-        dispatchServer.addLinkable(DemandPageUrl.getName(), DemandPageUrl.class);
-        dispatchServer.addLinkable(MyAccountPageUrl.getName(), MyAccountPageUrl.class);
-        dispatchServer.addLinkable(SpecialsPageUrl.getName(), SpecialsPageUrl.class);
-        dispatchServer.addLinkable(MembersListPageUrl.getName(), MembersListPageUrl.class);
-        dispatchServer.addLinkable(MemberPageUrl.getName(), MemberPageUrl.class);
-        dispatchServer.addLinkable(ContributePageUrl.getName(), ContributePageUrl.class);
-        dispatchServer.addLinkable(OfferPageUrl.getName(), OfferPageUrl.class);
-        dispatchServer.addLinkable(TestPageUrl.getName(), TestPageUrl.class);
-        dispatchServer.addLinkable(AccountChargingPageUrl.getName(), AccountChargingPageUrl.class);
-        dispatchServer.addLinkable(RegisterPageUrl.getName(), RegisterPageUrl.class);
-        dispatchServer.addLinkable(PaylinePageUrl.getName(), PaylinePageUrl.class);
-        dispatchServer.addLinkable(CommentReplyPageUrl.getName(), CommentReplyPageUrl.class);
-        dispatchServer.addLinkable(FileUploadPageUrl.getName(), FileUploadPageUrl.class);
-
-        dispatchServer.addLinkable(LoginActionUrl.getName(), LoginActionUrl.class);
-        dispatchServer.addLinkable(LogoutActionUrl.getName(), LogoutActionUrl.class);
-        dispatchServer.addLinkable(ContributionActionUrl.getName(), ContributionActionUrl.class);
-        dispatchServer.addLinkable(OfferActionUrl.getName(), OfferActionUrl.class);
-        dispatchServer.addLinkable(CreateIdeaActionUrl.getName(), CreateIdeaActionUrl.class);
-        dispatchServer.addLinkable(RegisterActionUrl.getName(), RegisterActionUrl.class);
-        dispatchServer.addLinkable(KudoActionUrl.getName(), KudoActionUrl.class);
-        dispatchServer.addLinkable(IdeaCommentActionUrl.getName(), IdeaCommentActionUrl.class);
-        dispatchServer.addLinkable(PaylineActionUrl.getName(), PaylineActionUrl.class);
-        dispatchServer.addLinkable(PaylineNotifyActionUrl.getName(), PaylineNotifyActionUrl.class);
-        dispatchServer.addLinkable(IdeaCommentActionUrl.getName(), IdeaCommentActionUrl.class);
-        dispatchServer.addLinkable(CommentCommentActionUrl.getName(), CommentCommentActionUrl.class);
+    public void addProcessor(ScgiProcessor processor) {
+        this.processors.add(processor);
     }
 
     private void init() throws IOException {
@@ -122,7 +55,7 @@ public final class SCGIServer {
         providerSocket = new ServerSocket(SCGI_PORT);
     }
 
-    private void run() throws IOException {
+    public void run() throws IOException {
         init();
         while (true) {
             // Wait for connection
@@ -146,7 +79,12 @@ public final class SCGIServer {
             SessionManager.clearExpiredSessions();
 
             try {
-                dispatchServer.process(header, post, new HttpResponse(clientSocket.getOutputStream()));
+
+                for (ScgiProcessor processor : processors) {
+                    if (processor.process(header, post, new HttpResponse(clientSocket.getOutputStream()))) {
+                        break;
+                    }
+                }
             } catch (final FatalErrorException e) {
                 webPrintException(e);
                 Log.framework().fatal("Unknown Fatal exception", e);
