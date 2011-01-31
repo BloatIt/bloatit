@@ -21,18 +21,48 @@ public class MimeElement {
     public Map<String, String> getHeader() {
         return header;
     }
-
-    @Override
-    public String toString() {
+    
+    public String getContentType(){
+        if(header.containsKey("Content-Type")){
+            return header.get("Content-Type");
+        } else {
+            return "text/plain";
+        }
+    }
+    
+    public boolean isPlainText(){
+        return getContentType().equals("plain/text");
+    }
+    
+    public String getHeaderField(String key){
+        return header.get(key);
+    }
+    
+    public String toString(){
+        char CR = '\r';
+        char LF = '\n';
         String result = "";
 
         result += "[HEADER]\n";
-        for (final Entry<String, String> entry : header.entrySet()) {
-            result += "\t [" + entry.getKey() + "]: " + entry.getValue() + "\n";
+        for(Entry<String, String> entry : header.entrySet()){
+            result += "\t["+entry.getKey()+"]: "+entry.getValue() + "\n";
         }
         result += "[CONTENT] \n \t";
-        for (final byte b : content) {
-            result += (char) (b & 0xff);
+        
+        char previousChar = '0';
+        for(byte b : content){
+            char currentChar = (char)(b&0xff);
+            if(currentChar == CR){
+                result += "{CR}";
+            } else if (currentChar == LF) {
+                result += "{LF}";
+            } else {
+                if(previousChar == CR || previousChar == LF){
+                    result += "\n\t";
+                }
+                result += currentChar;
+            }
+            previousChar = currentChar;
         }
 
         return result;

@@ -19,28 +19,31 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.scgiserver.HttpHeader;
 import com.bloatit.framework.scgiserver.HttpPost;
+import com.bloatit.framework.scgiserver.ScgiProcessor;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.masters.PageNotFound;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.ModelManagerAccessor;
 
-public final class DispatchServer {
+public class WebServer implements ScgiProcessor {
     private final Map<String, Class<? extends Url>> urls = new HashMap<String, Class<? extends Url>>();
 
-    public DispatchServer() {
-        // Nothing here.
+    public WebServer() {
+        // Nothing.
     }
 
-    public void addLinkable(final String name, final Class<? extends Url> urlClass) {
+    public final void addLinkable(final String name, final Class<? extends Url> urlClass) {
         urls.put(name, urlClass);
     }
 
-    public void process(final HttpHeader header, final HttpPost post, final HttpResponse response) throws IOException {
+    @Override
+    public final boolean process(final HttpHeader header, final HttpPost post, final HttpResponse response) throws IOException {
         final Session session = findSession(header);
 
         try {
-            com.bloatit.model.Model.lock();
+            ModelManagerAccessor.lock();
 
             Context.reInitializeContext(header, session);
 
@@ -53,25 +56,26 @@ public final class DispatchServer {
             parameters.putAll(post.getParameters());
 
             try {
-                com.bloatit.data.SessionManager.beginWorkUnit();
+                ModelManagerAccessor.open();
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response);
             } catch (final RedirectException e) {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(e.getUrl().urlString());
             } finally {
-                com.bloatit.data.SessionManager.endWorkUnitAndFlush();
+                ModelManagerAccessor.close();
             }
 
         } catch (final InterruptedException ex) {
             Log.framework().fatal("Cannot lock the framework.", ex);
         } finally {
             try {
-                com.bloatit.model.Model.unLock();
+                ModelManagerAccessor.unLock();
             } catch (final Exception e) {
                 Log.framework().fatal("Cannot unlock the framework.", e);
             }
         }
+        return true;
     }
 
     @SuppressWarnings("deprecation")

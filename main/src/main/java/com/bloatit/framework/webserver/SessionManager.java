@@ -116,9 +116,9 @@ public final class SessionManager {
                     e.printStackTrace();
                 }
             }
+            com.bloatit.data.SessionManager.endWorkUnitAndFlush();
         }
 
-        com.bloatit.data.SessionManager.endWorkUnitAndFlush();
     }
 
     public static void loadSessions() {
@@ -171,9 +171,10 @@ public final class SessionManager {
 
             // Failed to restore sessions
             Log.framework().error("Failed to restore sessions.", e);
+        }finally{
+            com.bloatit.data.SessionManager.endWorkUnitAndFlush();
         }
 
-        com.bloatit.data.SessionManager.endWorkUnitAndFlush();
 
     }
 
