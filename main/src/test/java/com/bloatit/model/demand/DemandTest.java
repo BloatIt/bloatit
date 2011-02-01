@@ -270,6 +270,7 @@ public class DemandTest extends FrameworkTestUnit {
         final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
         demand.addOffer(offer);
+        System.out.println(offer);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         demand.authenticate(yoAuthToken);
@@ -294,6 +295,7 @@ public class DemandTest extends FrameworkTestUnit {
         demand.authenticate(tomAuthToken);
         final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
+        System.out.println(offer);
         demand.addOffer(offer);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 

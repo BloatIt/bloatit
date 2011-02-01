@@ -1,10 +1,10 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.data.search.DemandSearch;
+import com.bloatit.framework.utils.DateUtils;
 
 /**
  * I assume the DaoGroupMemberTest is run without error.
@@ -124,7 +124,7 @@ public class DaoDemandTest extends ModelTestUnit {
 
     private DaoOffer createOffer(final DaoDemand demand) {
         return DaoOffer.createAndPersist(fred, demand, new BigDecimal("200"), DaoDescription
-                .createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), new Date());
+                .createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), DateUtils.tomorrow());
     }
 
     public void testRejectContribution() throws Throwable {
