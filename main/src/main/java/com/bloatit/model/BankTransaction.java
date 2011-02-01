@@ -13,13 +13,16 @@ import com.bloatit.data.DaoBankTransaction.State;
  * @see DaoBankTransaction
  */
 @Entity
-public final class BankTransaction extends Identifiable {
+public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
-    private final DaoBankTransaction dao;
-
-    public static BankTransaction create(final DaoBankTransaction daoBankTransaction) {
-        if (daoBankTransaction != null) {
-            return new BankTransaction(daoBankTransaction);
+    public static BankTransaction create(final DaoBankTransaction dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoBankTransaction> created = CacheManager.get(dao);
+            if (created == null) {
+                return new BankTransaction(dao);
+            }
+            return (BankTransaction) created;
         }
         return null;
     }
@@ -32,12 +35,11 @@ public final class BankTransaction extends Identifiable {
     }
 
     public BankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final String orderReference) {
-        this.dao = DaoBankTransaction.createAndPersist(message, token, author, value, orderReference);
+        super(DaoBankTransaction.createAndPersist(message, token, author, value, orderReference));
     }
 
     private BankTransaction(final DaoBankTransaction dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     /**

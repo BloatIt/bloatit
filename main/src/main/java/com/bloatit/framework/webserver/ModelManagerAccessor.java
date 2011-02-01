@@ -1,6 +1,7 @@
-package com.bloatit.model;
+package com.bloatit.framework.webserver;
 
 import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.model.AbstractModelManager;
 
 public class ModelManagerAccessor {
 

@@ -24,8 +24,7 @@ import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.right.MemberRight;
 import com.bloatit.model.right.RightManager.Action;
 
-public final class Member extends Actor {
-    private final DaoMember dao;
+public final class Member extends Actor<DaoMember> {
 
     /**
      * Create a new member using its Dao version.
@@ -34,20 +33,23 @@ public final class Member extends Actor {
      * @return the new member or null if dao is null.
      */
     public static Member create(final DaoMember dao) {
-        if (dao == null) {
-            return null;
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoMember> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Member(dao);
+            }
+            return (Member) created;
         }
-        return new Member(dao);
+        return null;
     }
 
     public Member(final String login, final String password, final String email, final Locale locale) {
-        super();
-        dao = DaoMember.createAndPersist(login, password, email, locale);
+        super(DaoMember.createAndPersist(login, password, email, locale));
     }
 
     private Member(final DaoMember dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     /**

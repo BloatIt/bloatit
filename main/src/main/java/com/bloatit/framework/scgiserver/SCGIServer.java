@@ -142,6 +142,7 @@ public final class SCGIServer {
             } catch (final IOException e) {
                 Log.framework().error("Fail to close the socket on shutdown.", e);
             }
+
             SessionManager.saveSessions();
             MailServer.getInstance().quickStop();
         }

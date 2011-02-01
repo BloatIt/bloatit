@@ -25,7 +25,6 @@ import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.masters.PageNotFound;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.ModelManagerAccessor;
 
 public class WebServer implements ScgiProcessor {
     private final Map<String, Class<? extends Url>> urls = new HashMap<String, Class<? extends Url>>();

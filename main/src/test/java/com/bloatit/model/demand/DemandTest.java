@@ -18,9 +18,9 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
+import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.model.AuthToken;
 import com.bloatit.model.FrameworkTestUnit;
-import com.bloatit.model.ModelManagerAccessor;
 import com.bloatit.model.Offer;
 import com.bloatit.model.right.RightManager.Action;
 

@@ -3,6 +3,7 @@ package com.bloatit.model;
 import junit.framework.TestCase;
 
 import com.bloatit.data.SessionManager;
+import com.bloatit.framework.webserver.ModelManagerAccessor;
 
 public class FrameworkTestUnit extends TestCase {
     protected AuthToken yoAuthToken;

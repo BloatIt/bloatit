@@ -15,13 +15,16 @@ import com.bloatit.model.lists.TranslationList;
  * 
  * @see DaoDescription
  */
-public final class Description extends Identifiable {
-
-    private final DaoDescription dao;
+public final class Description extends Identifiable<DaoDescription> {
 
     public static Description create(final DaoDescription dao) {
         if (dao != null) {
-            return new Description(dao);
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoDescription> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Description(dao);
+            }
+            return (Description) created;
         }
         return null;
     }
@@ -36,16 +39,14 @@ public final class Description extends Identifiable {
      * @param description is the main text of the description (the actual description)
      */
     public Description(final Member member, final Locale locale, final String title, final String description) {
-        super();
-        this.dao = DaoDescription.createAndPersist(member.getDao(), locale, title, description);
+        super(DaoDescription.createAndPersist(member.getDao(), locale, title, description));
     }
 
     /**
      * Create a description using its dao representation.
      */
     private Description(final DaoDescription dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     /**

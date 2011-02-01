@@ -29,7 +29,7 @@ public final class KudosList extends ListBinder<Kudos, DaoKudos> {
 
         @Override
         protected Kudos createFromDao(final DaoKudos dao) {
-            return new Kudos(dao);
+            return Kudos.create(dao);
         }
 
     }

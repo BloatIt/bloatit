@@ -12,7 +12,11 @@ import com.bloatit.model.right.RightManager.Action;
 /**
  * @see DaoActor
  */
-public abstract class Actor extends Identifiable {
+public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
+
+    protected Actor(final T id) {
+        super(id);
+    }
 
     protected abstract DaoActor getDaoActor();
 
@@ -110,7 +114,7 @@ public abstract class Actor extends Identifiable {
      */
     public final InternalAccount getInternalAccount() throws UnauthorizedOperationException {
         new ActorRight.InternalAccount().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return new InternalAccount(getDaoActor().getInternalAccount());
+        return InternalAccount.create(getDaoActor().getInternalAccount());
     }
 
     /**
@@ -126,7 +130,7 @@ public abstract class Actor extends Identifiable {
      */
     public final ExternalAccount getExternalAccount() throws UnauthorizedOperationException {
         new ActorRight.ExternalAccount().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return new ExternalAccount(getDaoActor().getExternalAccount());
+        return ExternalAccount.create(getDaoActor().getExternalAccount());
     }
 
     /**

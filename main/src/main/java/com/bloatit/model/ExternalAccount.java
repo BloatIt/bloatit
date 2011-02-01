@@ -10,17 +10,26 @@ import com.bloatit.model.right.RightManager.Action;
 /**
  * @see DaoExternalAccount
  */
-public final class ExternalAccount extends Account {
+public final class ExternalAccount extends Account<DaoExternalAccount> {
 
-    private final DaoExternalAccount dao;
-
-    public ExternalAccount(final Actor actor, final AccountType type, final String bankCode) {
-        dao = DaoExternalAccount.createAndPersist(actor.getDao(), type, bankCode);
+    public ExternalAccount(final Actor<?> actor, final AccountType type, final String bankCode) {
+        super(DaoExternalAccount.createAndPersist(actor.getDao(), type, bankCode));
     }
 
-    protected ExternalAccount(final DaoExternalAccount dao) {
-        super();
-        this.dao = dao;
+    public static ExternalAccount create(final DaoExternalAccount dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoExternalAccount> created = CacheManager.get(dao);
+            if (created == null) {
+                return new ExternalAccount(dao);
+            }
+            return (ExternalAccount) created;
+        }
+        return null;
+    }
+
+    private ExternalAccount(final DaoExternalAccount dao) {
+        super(dao);
     }
 
     protected DaoExternalAccount getDao() {

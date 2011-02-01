@@ -6,20 +6,22 @@ import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoUserContent;
 
-public class FileMetadata extends UserContent {
+public class FileMetadata extends UserContent<DaoFileMetadata> {
 
-    private final DaoFileMetadata dao;
-
-    public static FileMetadata create(final DaoFileMetadata file) {
-        if (file != null) {
-            return new FileMetadata(file);
+    public static FileMetadata create(final DaoFileMetadata dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoFileMetadata> created = CacheManager.get(dao);
+            if (created == null) {
+                return new FileMetadata(dao);
+            }
+            return (FileMetadata) created;
         }
         return null;
     }
 
     private FileMetadata(final DaoFileMetadata dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     @Override

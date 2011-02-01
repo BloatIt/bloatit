@@ -8,12 +8,16 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCo
 import com.bloatit.model.right.KudosableRight;
 import com.bloatit.model.right.RightManager.Action;
 
-public abstract class Kudosable extends UserContent {
+public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
 
     private static final int TURN_VALID = 100;
     private static final int TURN_REJECTED = -100;
     private static final int TURN_HIDDEN = -10;
     private static final int TURN_PENDING = 10;
+
+    public Kudosable(final T dao) {
+        super(dao);
+    }
 
     protected abstract DaoKudosable getDaoKudosable();
 

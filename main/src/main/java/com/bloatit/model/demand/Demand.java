@@ -20,9 +20,11 @@ import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.AuthToken;
+import com.bloatit.model.CacheManager;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Description;
+import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
@@ -39,8 +41,7 @@ import com.bloatit.model.right.RightManager.Action;
 /**
  * A demand is an idea :)
  */
-public final class Demand extends Kudosable {
-    private final DaoDemand dao;
+public final class Demand extends Kudosable<DaoDemand> {
     private AbstractDemandState stateObject;
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -49,14 +50,19 @@ public final class Demand extends Kudosable {
 
     /**
      * Create a new Demand. This method is not protected by any right management.
-     * 
+     *
      * @return null if the <code>dao</code> is null.
      */
     public static Demand create(final DaoDemand dao) {
         if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
             return null;
         }
-        return new Demand(dao);
+        @SuppressWarnings("unchecked")
+        Identifiable<DaoDemand> created = CacheManager.get(dao);
+        if (created == null) {
+            return new Demand(dao);
+        }
+        return (Demand) created;
     }
 
     /**
@@ -64,7 +70,7 @@ public final class Demand extends Kudosable {
      * Right management system is not working in this case). You have to use the
      * {@link DemandManager#canCreate(AuthToken)} to make sure you can create a new
      * demand.
-     * 
+     *
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
     public Demand(final Member author, final Locale locale, final String title, final String description) {
@@ -75,9 +81,7 @@ public final class Demand extends Kudosable {
      * Use the {@link #create(DaoDemand)} method.
      */
     private Demand(final DaoDemand dao) {
-        super();
-        this.dao = dao;
-
+        super(dao);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +138,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Add a contribution on this demand.
-     * 
+     *
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char long.
      * @throws NotEnoughMoneyException if the person logged does not have enough money to
@@ -156,7 +160,7 @@ public final class Demand extends Kudosable {
      * {@link DemandState#PREPARING}; and this offer is selected (see
      * {@link DaoDemand#setSelectedOffer(DaoOffer)}). The parameters of this function are
      * used to create the first (non optional) batch in this offer.
-     * 
+     *
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#WRITE} right on the <code>Offer</code> property.
      * @throws WrongStateException if the state is != from {@link DemandState#PENDING} or
@@ -177,7 +181,7 @@ public final class Demand extends Kudosable {
 
     /**
      * For now only the admin can delete an offer.
-     * 
+     *
      * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
      *         <code>DELETE</code> right on the <code>Offer</code> property.
@@ -194,7 +198,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Works only in development state.
-     * 
+     *
      * @throws UnauthorizedOperationException If this is not the current developer thats
      *         try to cancel the dev.
      */
@@ -242,7 +246,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Add a comment at the end of the comment list.
-     * 
+     *
      * @param text is the text of the comment.
      * @throws UnauthorizedOperationException if you do not have the {@link Action#WRITE}
      *         right on the <code>Comment</code> property.
@@ -272,7 +276,7 @@ public final class Demand extends Kudosable {
 
     /**
      * Used by Offer class. You should never have to use it
-     * 
+     *
      * @param offer the offer to unselect. Nothing is done if the offer is not selected.
      */
     public void unSelectOffer(final Offer offer) {
@@ -432,7 +436,7 @@ public final class Demand extends Kudosable {
     /**
      * Return the progression in percent. It compare the amount of contribution to the
      * amount of the current offer.
-     * 
+     *
      * @return a percentage. It can be > 100 if the amount of contributions is greater
      *         than the amount for the current offer. If the offer amount is 0 then it
      *         return Float.POSITIVE_INFINITY.
@@ -513,7 +517,7 @@ public final class Demand extends Kudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *         <code>READ</code> right on the <code>Offer</code> property.
@@ -528,7 +532,7 @@ public final class Demand extends Kudosable {
      * A validated offer is an offer selected for more than one day. (If you are in
      * {@link DemandState#DEVELOPPING} state then there should be always a validated
      * offer.
-     * 
+     *
      * @return the validated offer or null if there is no valid offer.
      * @throws UnauthorizedOperationException if you do not have the <code>READ</code>
      *         right on the offer property

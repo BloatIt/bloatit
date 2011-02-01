@@ -15,11 +15,11 @@ import java.io.IOException;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlNode;
-import com.bloatit.model.ModelManagerAccessor;
 
 /**
  * The mother of all actions

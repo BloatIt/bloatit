@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.scgiserver.SCGIServer;
+import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.model.ModelManager;
-import com.bloatit.model.ModelManagerAccessor;
 import com.bloatit.web.BloatitWebServer;
 
 public class BloatitServer {

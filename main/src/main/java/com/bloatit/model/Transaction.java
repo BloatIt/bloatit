@@ -14,17 +14,26 @@ import com.bloatit.model.right.AccountRight;
 import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.model.right.RightManager.Role;
 
-public final class Transaction extends Identifiable {
+public final class Transaction extends Identifiable<DaoTransaction> {
 
-    private final DaoTransaction dao;
-
-    public Transaction(final DaoTransaction dao) {
-        super();
-        this.dao = dao;
+    public static Transaction create(final DaoTransaction dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoTransaction> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Transaction(dao);
+            }
+            return (Transaction) created;
+        }
+        return null;
     }
 
-    Transaction(final InternalAccount from, final Account to, final BigDecimal amount) throws NotEnoughMoneyException {
-        this.dao = DaoTransaction.createAndPersist(from.getDao(), to.getDaoAccount(), amount);
+    private Transaction(final DaoTransaction dao) {
+        super(dao);
+    }
+
+    Transaction(final InternalAccount from, final Account<?> to, final BigDecimal amount) throws NotEnoughMoneyException {
+        super(DaoTransaction.createAndPersist(from.getDao(), to.getDaoAccount(), amount));
     }
 
     public boolean canAccessSomething() {
@@ -33,15 +42,15 @@ public final class Transaction extends Identifiable {
 
     public InternalAccount getFrom() throws UnauthorizedOperationException {
         new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
-        return new InternalAccount(dao.getFrom());
+        return InternalAccount.create(dao.getFrom());
     }
 
-    public Account getTo() throws UnauthorizedOperationException {
+    public Account<?> getTo() throws UnauthorizedOperationException {
         new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
         if (dao.getTo().getClass() == DaoInternalAccount.class) {
-            return new InternalAccount((DaoInternalAccount) dao.getTo());
+            return InternalAccount.create((DaoInternalAccount) dao.getTo());
         } else if (dao.getTo().getClass() == DaoExternalAccount.class) {
-            return new ExternalAccount((DaoExternalAccount) dao.getTo());
+            return ExternalAccount.create((DaoExternalAccount) dao.getTo());
         }
         throw new FatalErrorException("Cannot find the right Account child class.", null);
     }

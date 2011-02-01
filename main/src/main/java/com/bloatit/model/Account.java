@@ -20,7 +20,11 @@ import com.bloatit.model.right.RightManager.Action;
  * {@link InternalAccount} account is for the money we store for a user, the
  * {@link ExternalAccount} is an account in a bank.
  */
-public abstract class Account extends Identifiable {
+public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
+
+    protected Account(final T id) {
+        super(id);
+    }
 
     /**
      * Since the Account class is abstract we need a way to get the daoAccount for this
@@ -122,7 +126,7 @@ public abstract class Account extends Identifiable {
      * @throws UnauthorizedOperationException if you have not the right to access the
      *         <code>Actor</code> property in this class.
      */
-    public final Actor getActor() throws UnauthorizedOperationException {
+    public final Actor<?> getActor() throws UnauthorizedOperationException {
         new AccountRight.Actor().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getActorUnprotected();
     }
@@ -143,7 +147,7 @@ public abstract class Account extends Identifiable {
      * 
      * @see getActor;
      */
-    protected final Actor getActorUnprotected() {
+    protected final Actor<?> getActorUnprotected() {
         if (getDaoAccount().getActor().getClass() == DaoMember.class) {
             return Member.create((DaoMember) getDaoAccount().getActor());
         } else if (getDaoAccount().getActor().getClass() == DaoGroup.class) {

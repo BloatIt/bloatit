@@ -17,13 +17,22 @@ import com.bloatit.model.right.RightManager.Action;
  * 
  * @author tguyard
  */
-public final class InternalAccount extends Account {
+public final class InternalAccount extends Account<DaoInternalAccount> {
 
-    private final DaoInternalAccount dao;
+    public static InternalAccount create(final DaoInternalAccount dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoInternalAccount> created = CacheManager.get(dao);
+            if (created == null) {
+                return new InternalAccount(dao);
+            }
+            return (InternalAccount) created;
+        }
+        return null;
+    }
 
-    protected InternalAccount(final DaoInternalAccount dao) {
-        super();
-        this.dao = dao;
+    private InternalAccount(final DaoInternalAccount dao) {
+        super(dao);
     }
 
     public DaoInternalAccount getDao() {
