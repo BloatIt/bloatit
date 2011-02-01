@@ -1,9 +1,13 @@
 package com.bloatit.data.search;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.util.Version;
+import org.hibernate.search.FullTextFilter;
 import org.hibernate.search.FullTextQuery;
 
 import com.bloatit.data.NullCollection;
@@ -16,7 +20,8 @@ public abstract class Search<T> {
     private String searchStr;
     private Class<T> persistent;
     private String[] fields;
-
+    private String filter = null;
+    private final List<Pair<String,String>> filteredTerms = new ArrayList<Pair<String,String>>();
 
     protected void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
         this.persistent = persistent;
@@ -52,7 +57,8 @@ public abstract class Search<T> {
 
             FullTextQuery luceneQuery = SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent);
 
-            luceneQuery.enableFullTextFilter("searchFilter");
+            applyFilters(luceneQuery);
+
 
             return new SearchCollection<T>(luceneQuery);
         } catch (final ParseException e) {
@@ -61,7 +67,74 @@ public abstract class Search<T> {
 
     }
 
+    private void applyFilters(FullTextQuery luceneQuery) {
+        if(filter != null) {
+            FullTextFilter fullTextFilter = luceneQuery.enableFullTextFilter(filter);
+
+            fullTextFilter.setParameter("filteredTerms", filteredTerms);
+        }
+
+    }
+
+
     protected abstract void prepareSearch();
 
+
+    protected void addFilterTerm(String term, String value) {
+        filteredTerms.add(new Pair<String, String>(term, value));
+    }
+
+
+    protected void enableFilter(String filter) {
+        this.filter = filter;
+
+
+    }
+
+
+    public static class Pair<U, V> {
+
+        public final U key;
+        public final V value;
+
+        public Pair(U key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((key == null) ? 0 : key.hashCode());
+            result = prime * result + ((value == null) ? 0 : value.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            Pair other = (Pair) obj;
+            if (key == null) {
+                if (other.key != null)
+                    return false;
+            } else if (!key.equals(other.key))
+                return false;
+            if (value == null) {
+                if (other.value != null)
+                    return false;
+            } else if (!value.equals(other.value))
+                return false;
+            return true;
+        }
+
+
+
+    }
 
 }
