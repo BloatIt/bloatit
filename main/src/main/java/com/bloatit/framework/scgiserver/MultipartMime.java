@@ -1,15 +1,10 @@
 package com.bloatit.framework.scgiserver;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
@@ -23,21 +18,21 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * An example of a multipart mime :
  * 
  * <pre>
- * MIME-Version: 1.0
- * Content-Type: multipart/mixed; boundary="frontier"
- * 
- * This is a message with multiple parts in MIME format.
- * --frontier
- * Content-Type: text/plain
- * 
- * This is the body of the message.
- * --frontier
- * Content-Type: application/octet-stream
- * Content-Transfer-Encoding: base64
- * 
+ * MIME-Version: 1.0\r\n
+ * Content-Type: multipart/mixed; boundary="frontier"\r\n
+ * \r\n
+ * This is a message with multiple parts in MIME format.\r\n
+ * --frontier\r\n
+ * Content-Type: text/plain\r\n
+ * \r\n
+ * This is the body of the message.\r\n
+ * --frontier\r\n
+ * Content-Type: application/octet-stream\r\n
+ * Content-Transfer-Encoding: base64\r\n
+ * \r\n
  * PGh0bWw+CiAgPGhlYWQ+CiAgPC9oZWFkPgogIDxib2R5PgogICAgPHA+VGhpcyBpcyB0aGUg
- * Ym9keSBvZiB0aGUgbWVzc2FnZS48L3A+CiAgPC9ib2R5Pgo8L2h0bWw+Cg==
- * --frontier--
+ * Ym9keSBvZiB0aGUgbWVzc2FnZS48L3A+CiAgPC9ib2R5Pgo8L2h0bWw+Cg==\r\n
+ * --frontier--\r\n
  * </pre>
  * 
  * </p>
@@ -47,12 +42,16 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * level right now, and ignores character encoding.
  * </p>
  */
-public class MultipartMime {
-<<<<<<< HEAD:main/src/main/java/com/bloatit/web/scgiserver/MultipartMime.java
-    private static final byte HYPHEN = (byte)'-';
+public class MultipartMime implements Iterable<MimeElement> {
+
+    private enum State {
+        MULTIPART_HEADER, CONTENT_HEADER, MULTIPART_IGNORE, CONTENT_CONTENT, END, COMPLETE_BOUNDARY
+    }
+
+    private static final byte HYPHEN = (byte) '-';
     private static final byte CR = (byte) '\r';
     private static final byte LF = (byte) '\n';
-    
+
     /**
      * The character sequence used to separate 2 MimeElements in the multipart
      */
@@ -60,11 +59,6 @@ public class MultipartMime {
     /**
      * the List of mimeElements contained in the multipart
      */
-=======
-    private final String contentType;
-    private final byte[] boundary;
-
->>>>>>> 9d1554ed1686016ec6837bb2442a7fb6d5351a1c:main/src/main/java/com/bloatit/framework/scgiserver/MultipartMime.java
     private final List<MimeElement> elements;
     /**
      * The contentType. Can be multipart/mixed, multipart/form-data ...
@@ -88,15 +82,15 @@ public class MultipartMime {
      * <p>
      * 
      * @param postBytes
-     *            the bytes to parse
+     *            the stream from which the post will be parsed
      * @param contentType
      *            The contentType of the mimeElement, including it's boundary
      * @throws NonOptionalParameterException
-     *             if any parameter (<code>postBytes</code> or
+     *             if any parameter (<code>postStream</code> or
      *             <code>contentType</code> is null)
      */
-    public MultipartMime(final byte[] postBytes, final String contentType) {
-        if (postBytes == null || contentType == null) {
+    public MultipartMime(InputStream postStream, final String contentType) {
+        if (postStream == null || contentType == null) {
             throw new NonOptionalParameterException();
         }
 
@@ -105,7 +99,12 @@ public class MultipartMime {
         this.boundary = (contentType.substring(boundaryIndex + 9)).getBytes();
         this.contentType = new String((contentType.substring(0, boundaryIndex)).getBytes());
 
-        parseMultipart(postBytes, contentType);
+        try {
+            parseMultipart(postStream, contentType);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -153,230 +152,137 @@ public class MultipartMime {
         return result;
     }
 
+    @Override
+    public Iterator<MimeElement> iterator() {
+        return elements.iterator();
+    }
+
     /**
      * <p>
      * Takes a whole multipart mime and parses it entirely
      * </p>
      * 
-     * @param postBytes the bytes to parse (i.e. the multipart mime)
-     * @param contentType The content type String for the mime element, including the
-     *        boundary
+     * @param postBytes
+     *            the bytes to parse (i.e. the multipart mime)
+     * @param contentType
+     *            The content type String for the mime element, including the
+     *            boundary
      * @return a Parsed MimeMultipart
+     * @throws IOException
      */
-<<<<<<< HEAD:main/src/main/java/com/bloatit/web/scgiserver/MultipartMime.java
-    private void parseMultipart(final byte[] postBytes, String contentType) {
-        // An example of multipart Mime :
-        //
+    private void parseMultipart(InputStream postStream, String contentType) throws IOException {
         // MIME-Version: 1.0
         // Content-Type: multipart/mixed; boundary="frontier"
         //
-        // This is a message with multiple parts in MIME format. --frontier
+        // This is a message with multiple parts in MIME format.
+        // --frontier
         // Content-Type: text/plain
         //
-        // This is the body of the message. --frontier
-        // Content-Type: application/octet-stream Content-Transfer-Encoding:
-        //  base64
+        // This is the body of the message.
+        // --frontier
+        // Content-Type: application/octet-stream
+        // Content-Transfer-Encoding: base64
         //
         // PGh0bWw+CiAgPGhlYWQ+CiAgPC9oZWFkPgogIDxib2R5PgogICAgPHA+VGhpcyBpcyB0aGUg
         // Ym9keSBvZiB0aGUgbWVzc2FnZS48L3A+CiAgPC9ib2R5Pgo8L2h0bWw+Cg==
         // --frontier--
-        //
-        // Algorithm used :
-        // - We try to spot any occurence of double hyphens 
-        // - Whenever we find double hyphens, we check if next part matches boundary
-        // - If it does match boundary, we move to the next part of the element
-        // - If it doesn't, it means we are still into the previous element
-        ByteArrayInputStream input = new ByteArrayInputStream(postBytes);
-        ArrayList<Byte> boundBuff = new ArrayList<Byte>();
-        ArrayList<Byte> contentBuff = new ArrayList<Byte>();
-=======
-    private void parseMultipart(final byte[] postBytes, final String contentType) {
-        final ByteArrayInputStream input = new ByteArrayInputStream(postBytes);
-        final ArrayList<Byte> boundBuff = new ArrayList<Byte>();
-        final ArrayList<Byte> contentBuff = new ArrayList<Byte>();
->>>>>>> 9d1554ed1686016ec6837bb2442a7fb6d5351a1c:main/src/main/java/com/bloatit/framework/scgiserver/MultipartMime.java
-        int hyphenRead = 0;
-        byte b;
-        int i = 0;
-        while (input.available() > 0) {
-            b = (byte) input.read();
-            if (hyphenRead == 2) {
-                // We might be inside a boundary
-                if (i < boundary.length && boundary[i] == b) {
-                    boundBuff.add(b);
-                    i++;
-                } else if (i == boundary.length) {
-                    // Boundary complete ... content after this
-                    boundBuff.clear();
-                    int j = 0;
-                    final byte[] d = new byte[contentBuff.size()];
-                    for (final Byte c : contentBuff) {
-                        d[j] = c;
-                        j++;
-                    }
-                    parseMultipartContent(contentBuff);
-                    contentBuff.clear();
-                    hyphenRead = 0;
-                    i = 0;
-                } else {
-                    // Not part of bounday, dump the possible content
-                    contentBuff.addAll(boundBuff);
-                    if (b == HYPHEN) {
-                        // It's an hyphen, we have to count it as part of a
-                        // possible boundary marker
-                        hyphenRead = 1;
-                        boundBuff.add(b);
-                    } else {
-                        hyphenRead = 0;
-                        contentBuff.add(b);
-                    }
-                    i = 0;
-                }
-            } else if (b == HYPHEN) {
-                boundBuff.add(b);
-                hyphenRead++;
-            } else {
-                // Content
-                contentBuff.add(b);
+
+        byte[] completeBoundary = new byte[boundary.length + 4];
+        completeBoundary[0] = CR;
+        completeBoundary[1] = LF;
+        completeBoundary[2] = HYPHEN;
+        completeBoundary[3] = HYPHEN;
+        for (int i = 0; i < boundary.length; i++) {
+            completeBoundary[i + 4] = boundary[i];
+        }
+
+        ByteReader reader = new ByteReader(postStream);
+
+        State currentState = State.MULTIPART_HEADER;
+        while (currentState == State.MULTIPART_HEADER) {
+            String line = reader.readString();
+            if (line.isEmpty()) {
+                currentState = State.MULTIPART_IGNORE;
+            } else if (line.equals("--" + new String(boundary))) {
+                currentState = State.CONTENT_HEADER;
             }
         }
-    }
 
-    /**
-     * <p>
-     * Parses a multipartContent
-     * </p>
-     * 
-     * @param content
-     *            the content to parse
-     */
-<<<<<<< HEAD:main/src/main/java/com/bloatit/web/scgiserver/MultipartMime.java
-    private void parseMultipartContent(List<Byte> content) {
+        while (currentState == State.MULTIPART_IGNORE) {
+            String line = reader.readString();
+            if (line.equals("--" + new String(boundary))) {
+                currentState = State.CONTENT_HEADER;
+            }
+        }
 
-=======
-    private void parseMultipartContent(final List<Byte> content) {
-        final byte CR = (byte) '\r';
-        final byte LF = (byte) '\n';
->>>>>>> 9d1554ed1686016ec6837bb2442a7fb6d5351a1c:main/src/main/java/com/bloatit/framework/scgiserver/MultipartMime.java
+        int i = 0;
+        MimeElement me = null;
 
-        if (content.size() > 0) {
-            boolean foundCR = false;
-            boolean newLine = true;
-            boolean isContent = false;
-            final List<Byte> contentBytes = new ArrayList<Byte>();
-            final List<Byte> headerBytes = new ArrayList<Byte>();
-
-            for (final byte b : content) {
-
-                if (isContent) {
-                    contentBytes.add(b);
-                } else if (newLine) {
-                    // Previous characters were CRLF
-
+        int hyphens = 0;
+        
+        while (currentState != State.END) {
+            
+            if (currentState == State.COMPLETE_BOUNDARY) {
+                if(me != null){
+                    elements.add(me);
+                    me = null;
+                }
+                // Just finished parsing a boundary
+                if (reader.available() <= 0) {
+                    currentState = State.END;
+                } else {
+                    byte b = reader.read();
                     if (b == CR) {
-                        if (!foundCR) {
-                            foundCR = true;
-                        } else {
-                            newLine = false;
+                        // Do nothing
+                    } else if (b == LF) {
+                        currentState = State.CONTENT_HEADER;
+                    } else if (b == HYPHEN) {
+                        hyphens++;
+                        if (hyphens == 2) {
+                            currentState = State.END;
                         }
-                    } else {
-                        if (b == LF) {
-                            if (foundCR) {
-                                isContent = true;
-                            } else {
-                                newLine = false;
-                                headerBytes.add(b);
+                    }
+                }
+            } else if (currentState == State.CONTENT_HEADER) {
+                String line = reader.readString();
+                if (line.isEmpty()) {
+                    currentState = State.CONTENT_CONTENT;
+                    i = 0;
+                } else {
+                    final String[] elems = line.split(";");
+                    for (final String elem : elems) {
+                        final String[] headerElements = elem.split("[:=]");
+                        if (headerElements.length > 1) {
+                            if(me == null) {
+                                me = new MimeElement();
                             }
-                        } else {
-                            newLine = false;
-                            headerBytes.add(b);
+                            me.addHeader(headerElements[0].trim(), headerElements[1].trim());
                         }
                     }
-                } else if (foundCR) {
-                    // Previous character was CR
-                    if (b == LF) {
-                        newLine = true;
-                    } else {
-                        newLine = false;
-                    }
-                    foundCR = false;
-                    headerBytes.add(b);
+                }
+            } else /* (currentState == State.CONTENT_CONTENT) */{
+                if (reader.available() <= 0) {
+                    currentState = State.END;
                 } else {
-                    if (b == CR) {
-                        foundCR = true;
-                    }
-                    // Header
-                    headerBytes.add(b);
-                }
-            }
-            final MimeElement me = new MimeElement(contentBytes, parseHeader(headerBytes));
-            elements.add(me);
-        }
-    }
-
-<<<<<<< HEAD:main/src/main/java/com/bloatit/web/scgiserver/MultipartMime.java
-    /**
-     * <p>
-     * Parses the header of a MultipartMime content
-     * </p>
-     * 
-     * @param headerBytes
-     *            the bytes containing the header
-     * @return a map of header-name -> value
-     */
-    private Map<String, String> parseHeader(List<Byte> headerBytes) {
-        Map<String, String> result = new HashMap<String, String>();
-=======
-    private Map<String, String> parseHeader(final List<Byte> headerBytes) {
-        final Map<String, String> result = new HashMap<String, String>();
->>>>>>> 9d1554ed1686016ec6837bb2442a7fb6d5351a1c:main/src/main/java/com/bloatit/framework/scgiserver/MultipartMime.java
-
-        final byte[] bytes = new byte[headerBytes.size()];
-        int i = 0;
-        for (final byte b : headerBytes) {
-            bytes[i++] = b;
-        }
-
-        final InputStream plip = new ByteArrayInputStream(bytes);
-        final InputStreamReader isr = new InputStreamReader(plip);
-        final BufferedReader plop = new BufferedReader(isr);
-
-        try {
-            while (plop.ready()) {
-                final String line = plop.readLine();
-                final String[] elems = line.split(";");
-                for (final String elem : elems) {
-                    final String[] headerElements = elem.split("[:=]");
-                    if (headerElements.length > 1) {
-                        result.put(headerElements[0].trim(), headerElements[1].trim());
+                    byte b = reader.read();
+                    if (i < completeBoundary.length && b == completeBoundary[i]) {
+                        i++;
+                        if (i == completeBoundary.length) {
+                            i = 0;
+                            currentState = State.COMPLETE_BOUNDARY;
+                        }
+                    } else {
+                        if( i != 0 ){
+                            i = 0;
+                            for(int j = 0; j <= i ; j++){
+                                me.addContent(completeBoundary[j]);
+                            }
+                        }
+                        i = 0;
+                        me.addContent(b);
                     }
                 }
             }
-        } catch (final IOException e) {
-            e.printStackTrace();
         }
-
-        int l = 0;
-        for (final Entry<String, String> entry : result.entrySet()) {
-            l += entry.getKey().length() + entry.getValue().length();
-        }
-
-        return result;
     }
-<<<<<<< HEAD:main/src/main/java/com/bloatit/web/scgiserver/MultipartMime.java
-=======
-
-    @Override
-    public String toString() {
-        String result = "";
-
-        result += "[CONTENT-TYPE]: " + contentType + "\n";
-        result += "[BOUNDARY]: " + new String(boundary) + "\n";
-        for (final MimeElement element : elements) {
-            result += element.toString() + "\n";
-        }
-
-        return result;
-    }
->>>>>>> 9d1554ed1686016ec6837bb2442a7fb6d5351a1c:main/src/main/java/com/bloatit/framework/scgiserver/MultipartMime.java
 }

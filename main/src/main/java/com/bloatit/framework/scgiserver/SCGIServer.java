@@ -17,41 +17,6 @@ import java.net.Socket;
 import java.util.Map;
 
 import com.bloatit.common.Log;
-<<<<<<< HEAD:main/src/main/java/com/bloatit/web/scgiserver/SCGIServer.java
-import com.bloatit.framework.Framework;
-import com.bloatit.mail.MailServer;
-import com.bloatit.web.server.DispatchServer;
-import com.bloatit.web.server.HttpResponse;
-import com.bloatit.web.server.SessionManager;
-import com.bloatit.web.utils.url.AccountChargingPageUrl;
-import com.bloatit.web.utils.url.CommentCommentActionUrl;
-import com.bloatit.web.utils.url.CommentReplyPageUrl;
-import com.bloatit.web.utils.url.ContributePageUrl;
-import com.bloatit.web.utils.url.ContributionActionUrl;
-import com.bloatit.web.utils.url.CreateIdeaActionUrl;
-import com.bloatit.web.utils.url.CreateIdeaPageUrl;
-import com.bloatit.web.utils.url.DemandListUrl;
-import com.bloatit.web.utils.url.DemandPageUrl;
-import com.bloatit.web.utils.url.FileUploadPageUrl;
-import com.bloatit.web.utils.url.IdeaCommentActionUrl;
-import com.bloatit.web.utils.url.IndexPageUrl;
-import com.bloatit.web.utils.url.KudoActionUrl;
-import com.bloatit.web.utils.url.LoginActionUrl;
-import com.bloatit.web.utils.url.LoginPageUrl;
-import com.bloatit.web.utils.url.LogoutActionUrl;
-import com.bloatit.web.utils.url.MemberPageUrl;
-import com.bloatit.web.utils.url.MembersListPageUrl;
-import com.bloatit.web.utils.url.MyAccountPageUrl;
-import com.bloatit.web.utils.url.OfferActionUrl;
-import com.bloatit.web.utils.url.OfferPageUrl;
-import com.bloatit.web.utils.url.PaylineActionUrl;
-import com.bloatit.web.utils.url.PaylineNotifyActionUrl;
-import com.bloatit.web.utils.url.PaylinePageUrl;
-import com.bloatit.web.utils.url.RegisterActionUrl;
-import com.bloatit.web.utils.url.RegisterPageUrl;
-import com.bloatit.web.utils.url.SpecialsPageUrl;
-import com.bloatit.web.utils.url.TestPageUrl;
-=======
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webserver.DispatchServer;
@@ -86,7 +51,6 @@ import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
->>>>>>> 9d1554ed1686016ec6837bb2442a7fb6d5351a1c:main/src/main/java/com/bloatit/framework/scgiserver/SCGIServer.java
 
 public final class SCGIServer {
 
@@ -166,6 +130,7 @@ public final class SCGIServer {
 
             // Load the SCGI headers.
             clientSocket = providerSocket.accept();
+            Log.framework().trace("Received a connection");
 
             final long startTime = System.nanoTime();
 
@@ -192,15 +157,17 @@ public final class SCGIServer {
             } catch (final Exception e) {
                 webPrintException(e);
                 Log.framework().fatal("Unknown exception", e);
+            }finally {
+                Log.framework().trace("Closing connection");
+                clientSocket.close();    
             }
 
-            clientSocket.close();
-
+            
             final long endTime = System.nanoTime();
             final double duration = ((endTime - startTime)) / 1000000.;
             Log.framework().debug("Page generated in " + duration + " ms");
-
         }
+        
     }
 
     private void webPrintException(final Exception e) {

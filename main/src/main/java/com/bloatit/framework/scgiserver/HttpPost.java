@@ -8,27 +8,57 @@ import java.net.URLDecoder;
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.Parameters;
 
+/**
+ * A class to describe elements transmitted by an http POST query
+ */
 public class HttpPost {
-
     private final Parameters parameters = new Parameters();
 
+    /**
+     * <p>
+     * Construct an HttpPost from a POST request
+     * </p>
+     * 
+     * @param is
+     *            The stream to read containing the post Data
+     * @param length
+     *            The length of the post content
+     * @param contentType
+     *            The contentType of the post (obtained previouysly from the
+     *            request)
+     * @throws IOException
+     */
     public HttpPost(final InputStream is, final int length, final String contentType) throws IOException {
-        final byte[] postBytes = new byte[length];
-        final int read = is.read(postBytes);
-        if (read == length) {
-            Log.framework().debug("Post value read correctly.");
-        } else {
-            Log.framework().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
-        }
-        readBytes(postBytes, contentType);
+        readBytes(is, length, contentType);
     }
 
-    private void readBytes(final byte[] postBytes, final String contentType) throws IOException {
+    /**
+     * <p>
+     * Parses the post and fills the list of parameters
+     * </p>
+     * 
+     * @param postStream
+     *            the stream to read post from
+     * @param length
+     *            the length of the post
+     * @param contentType
+     *            the contentType of the post (text/plain, multipart/form-data
+     *            ...
+     * @throws IOException
+     */
+    private void readBytes(final InputStream postStream, final int length, final String contentType) throws IOException {
         if (contentType != null && !contentType.equals("") && contentType.startsWith("multipart/form-data")) {
-            // parseMultipart(postBytes, contentType);
-            final MultipartMime mm = new MultipartMime(postBytes, contentType);
-            System.out.println(mm);
+            Log.web().trace("Received a form-data, starting parsing");
+            processMultipart(postStream, contentType);
         } else {
+            final byte[] postBytes = new byte[length];
+            final int read = postStream.read(postBytes);
+            if (read == length) {
+                Log.framework().debug("Post value read correctly.");
+            } else {
+                Log.framework().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
+            }
+
             final String string = new String(postBytes);
             for (final String param : string.split("&")) {
                 try {
@@ -46,8 +76,24 @@ public class HttpPost {
         }
     }
 
+    /**
+     * Gets the list of parameters
+     * 
+     * @return the list of post parameters for the page
+     */
     public final Parameters getParameters() {
         return parameters;
+    }
+
+    private final void processMultipart(InputStream postStream, final String contentType) {
+        final MultipartMime mm = new MultipartMime(postStream, contentType);
+        Log.web().trace("Parsing of post data over");
+        System.out.println(mm);
+        /*
+         * for (MimeElement me : mm) {
+         * 
+         * }
+         */
     }
 
 }
