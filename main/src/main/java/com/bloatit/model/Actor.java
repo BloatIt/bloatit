@@ -151,8 +151,4 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         new ActorRight.BankTransaction().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
         return new BankTransactionList(getDaoActor().getBankTransactions());
     }
-
-    protected DaoActor getDao() {
-        return getDaoActor();
-    }
 }

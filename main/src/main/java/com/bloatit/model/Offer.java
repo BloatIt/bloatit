@@ -64,11 +64,11 @@ public final class Offer extends Kudosable<DaoOffer> {
                          final String description,
                          final int secondBeforeValidation) {
         // TODO blind me !
-        final Locale locale = dao.getBatches().iterator().next().getDescription().getDefaultLocale();
-        dao.addBatch(DaoBatch.createAndPersist(dateExpire,
+        final Locale locale = getDao().getBatches().iterator().next().getDescription().getDefaultLocale();
+        getDao().addBatch(DaoBatch.createAndPersist(dateExpire,
                                                amount,
-                                               DaoDescription.createAndPersist(dao.getAuthor(), locale, title, description),
-                                               dao,
+                                               DaoDescription.createAndPersist(getDao().getAuthor(), locale, title, description),
+                                               getDao(),
                                                secondBeforeValidation));
     }
 
@@ -84,7 +84,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         // If the validation is not complete, there is nothing to do in the demand
         final boolean isAllValidated = findCurrentDaoBatch().validate(force);
         if (isAllValidated) {
-            if (dao.hasBatchesLeft()) {
+            if (getDao().hasBatchesLeft()) {
                 getDemand().setBatchIsValidated();
             } else {
                 getDemand().setOfferIsValidated();
@@ -94,12 +94,12 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     public void cancelEverythingLeft() {
-        dao.cancelEverythingLeft();
+        getDao().cancelEverythingLeft();
     }
 
     private DaoBatch findCurrentDaoBatch() {
-        if (dao.hasBatchesLeft()) {
-            return dao.getCurrentBatch();
+        if (getDao().hasBatchesLeft()) {
+            return getDao().getCurrentBatch();
         }
         return null;
     }
@@ -126,24 +126,20 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
-    public DaoOffer getDao() {
-        return dao;
-    }
-
     public Demand getDemand() {
-        return Demand.create(dao.getDemand());
+        return Demand.create(getDao().getDemand());
     }
 
     public BigDecimal getAmount() {
-        return dao.getAmount();
+        return getDao().getAmount();
     }
 
     public PageIterable<Batch> getBatches() {
-        return new BatchList(dao.getBatches());
+        return new BatchList(getDao().getBatches());
     }
 
     public Date getExpirationDate() {
-        return dao.getExpirationDate();
+        return getDao().getExpirationDate();
     }
 
     // ////////////////////////////////////////////////////////////////////////

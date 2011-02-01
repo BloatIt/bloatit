@@ -46,56 +46,56 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * @see DaoBankTransaction#setAccepted()
      */
     public void setAccepted() {
-        dao.setAccepted();
+        getDao().setAccepted();
     }
 
     /**
      * @see DaoBankTransaction#setRefused()
      */
     public void setRefused() {
-        dao.setRefused();
+        getDao().setRefused();
     }
 
     /**
      * @see DaoBankTransaction#validated()
      */
     public boolean validated() {
-        return dao.validated();
+        return getDao().validated();
     }
 
     public String getMessage() {
-        return dao.getMessage();
+        return getDao().getMessage();
     }
 
     public BigDecimal getValue() {
-        return dao.getValue();
+        return getDao().getValue();
     }
 
     public State getState() {
-        return dao.getState();
+        return getDao().getState();
     }
 
     public Date getCreationDate() {
-        return dao.getCreationDate();
+        return getDao().getCreationDate();
     }
 
     public Date getModificationDate() {
-        return dao.getModificationDate();
+        return getDao().getModificationDate();
     }
 
     public String getReference() {
-        return dao.getReference();
+        return getDao().getReference();
     }
 
     public String getToken() {
-        return dao.getToken();
+        return getDao().getToken();
     }
 
     public void setProcessInformations(final String processInformations) {
-        dao.setProcessInformations(processInformations);
+        getDao().setProcessInformations(processInformations);
     }
 
     public String getProcessInformations() {
-        return dao.getProcessInformations();
+        return getDao().getProcessInformations();
     }
 }

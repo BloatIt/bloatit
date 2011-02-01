@@ -11,7 +11,7 @@ import com.bloatit.model.right.RightManager.Action;
 
 /**
  * This is a financial contribution.
- * 
+ *
  * @see DaoContribution
  */
 public final class Contribution extends UserContent<DaoContribution> {
@@ -39,13 +39,13 @@ public final class Contribution extends UserContent<DaoContribution> {
      * CALLED by demand. You have to call {@link #accept(Offer)} when an offer is
      * accepted. This will create the {@link Transaction} needed so that the developer of
      * the offer become rich.
-     * 
+     *
      * @param offer the validated offer.
      * @throws NotEnoughMoneyException if there is a bug and then a person does not have
      *         enough money.
      */
     public void accept(final Offer offer) throws NotEnoughMoneyException {
-        dao.validate(offer.getDao(), 100);
+        getDao().validate(offer.getDao(), 100);
     }
 
     /**
@@ -53,12 +53,12 @@ public final class Contribution extends UserContent<DaoContribution> {
      * Contribution is made is canceled. It allows the user to take back its money.
      */
     public void cancel() {
-        dao.cancel();
+        getDao().cancel();
     }
 
     /**
      * return true if you can access the <code>Amount</code> property.
-     * 
+     *
      * @see #getAmount()()
      * @see Contribution#authenticate(AuthToken)
      */
@@ -74,12 +74,12 @@ public final class Contribution extends UserContent<DaoContribution> {
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
         new ContributionRight.Amount().tryAccess(calculateRole(this), Action.READ);
-        return dao.getAmount();
+        return getDao().getAmount();
     }
 
     /**
      * return true if you can access the <code>Comment</code> property.
-     * 
+     *
      * @see #getComment()()
      * @see Contribution#authenticate(AuthToken)
      */
@@ -94,15 +94,11 @@ public final class Contribution extends UserContent<DaoContribution> {
      */
     public String getComment() throws UnauthorizedOperationException {
         new ContributionRight.Comment().tryAccess(calculateRole(this), Action.READ);
-        return dao.getComment();
-    }
-
-    protected DaoContribution getDao() {
-        return dao;
+        return getDao().getComment();
     }
 
     @Override
     protected DaoUserContent getDaoUserContent() {
-        return dao;
+        return getDao();
     }
 }

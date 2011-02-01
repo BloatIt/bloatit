@@ -42,41 +42,37 @@ public final class Transaction extends Identifiable<DaoTransaction> {
 
     public InternalAccount getFrom() throws UnauthorizedOperationException {
         new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
-        return InternalAccount.create(dao.getFrom());
+        return InternalAccount.create(getDao().getFrom());
     }
 
     public Account<?> getTo() throws UnauthorizedOperationException {
         new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
-        if (dao.getTo().getClass() == DaoInternalAccount.class) {
-            return InternalAccount.create((DaoInternalAccount) dao.getTo());
-        } else if (dao.getTo().getClass() == DaoExternalAccount.class) {
-            return ExternalAccount.create((DaoExternalAccount) dao.getTo());
+        if (getDao().getTo().getClass() == DaoInternalAccount.class) {
+            return InternalAccount.create((DaoInternalAccount) getDao().getTo());
+        } else if (getDao().getTo().getClass() == DaoExternalAccount.class) {
+            return ExternalAccount.create((DaoExternalAccount) getDao().getTo());
         }
         throw new FatalErrorException("Cannot find the right Account child class.", null);
     }
 
     public BigDecimal getAmount() throws UnauthorizedOperationException {
         new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
-        return dao.getAmount();
+        return getDao().getAmount();
     }
 
     public Date getCreationDate() throws UnauthorizedOperationException {
         new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
-        return dao.getCreationDate();
-    }
-
-    protected DaoTransaction getDao() {
-        return dao;
+        return getDao().getCreationDate();
     }
 
     protected EnumSet<Role> calculateRole() {
         if (getAuthToken() == null) {
             return EnumSet.of(Role.NOBODY);
         }
-        if (getAuthToken().getMember().getLoginUnprotected().equals(dao.getFrom().getActor().getLogin())) {
-            return calculateRole(dao.getFrom().getActor().getLogin());
-        } else if (getAuthToken().getMember().getLoginUnprotected().equals(dao.getTo().getActor().getLogin())) {
-            return calculateRole(dao.getTo().getActor().getLogin());
+        if (getAuthToken().getMember().getLoginUnprotected().equals(getDao().getFrom().getActor().getLogin())) {
+            return calculateRole(getDao().getFrom().getActor().getLogin());
+        } else if (getAuthToken().getMember().getLoginUnprotected().equals(getDao().getTo().getActor().getLogin())) {
+            return calculateRole(getDao().getTo().getActor().getLogin());
         } else {
             return EnumSet.of(Role.OTHER);
         }

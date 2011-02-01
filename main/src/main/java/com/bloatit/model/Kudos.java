@@ -21,17 +21,13 @@ public final class Kudos extends UserContent<DaoKudos> {
         super(dao);
     }
 
-    protected DaoKudos getDao() {
-        return dao;
-    }
-
     public int getValue() {
-        return dao.getValue();
+        return getDao().getValue();
     }
 
     @Override
     protected DaoUserContent getDaoUserContent() {
-        return dao;
+        return getDao();
     }
 
 }

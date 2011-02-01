@@ -50,7 +50,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
         // Only one kudos per person
-        if (dao.hasKudosed(getAuthToken().getMember().getDao())) {
+        if (getDao().hasKudosed(getAuthToken().getMember().getDao())) {
             errors.add(SpecialCode.ALREADY_KUDOSED);
         }
 
@@ -67,12 +67,12 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
     }
 
     public final State getState() {
-        return dao.getState();
+        return getDao().getState();
     }
 
     @Override
     protected final DaoUserContent getDaoUserContent() {
-        return dao;
+        return getDao();
     }
 
     private void addKudos(final int signe) throws UnauthorizedOperationException {
@@ -86,7 +86,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
 
         if (influence > 0) {
             getAuthor().addToKarma(influence);
-            calculateNewState(dao.addKudos(member.getDao(), signe * influence));
+            calculateNewState(getDao().addKudos(member.getDao(), signe * influence));
         }
     }
 
@@ -133,7 +133,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
     }
 
     private void setState(final State newState) {
-        dao.setState(newState);
+        getDao().setState(newState);
     }
 
     /**
@@ -218,7 +218,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
     }
 
     public final int getPopularity() {
-        return dao.getPopularity();
+        return getDao().getPopularity();
     }
 
 }

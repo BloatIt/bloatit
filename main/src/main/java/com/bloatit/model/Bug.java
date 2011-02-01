@@ -36,7 +36,7 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
      */
     public void addComment(final DaoComment comment) {
-        dao.addComment(comment);
+        getDao().addComment(comment);
     }
 
     /**
@@ -44,7 +44,7 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#setErrorLevel(com.bloatit.data.DaoBug.Level)
      */
     public void setErrorLevel(final Level level) {
-        dao.setErrorLevel(level);
+        getDao().setErrorLevel(level);
     }
 
     /**
@@ -52,7 +52,7 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#getAssignedTo()
      */
     public Member getAssignedTo() {
-        return Member.create(dao.getAssignedTo());
+        return Member.create(getDao().getAssignedTo());
     }
 
     /**
@@ -60,7 +60,7 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#getDescription()
      */
     public final String getDescription() {
-        return dao.getDescription();
+        return getDao().getDescription();
     }
 
     /**
@@ -68,7 +68,7 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#getLocale()
      */
     public final Locale getLocale() {
-        return dao.getLocale();
+        return getDao().getLocale();
     }
 
     /**
@@ -76,7 +76,7 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#getErrorLevel()
      */
     public final Level getErrorLevel() {
-        return dao.getErrorLevel();
+        return getDao().getErrorLevel();
     }
 
     /**
@@ -84,7 +84,7 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#getBatch()
      */
     public Batch getBatch() {
-        return Batch.create(dao.getBatch());
+        return Batch.create(getDao().getBatch());
     }
 
     /**
@@ -92,21 +92,21 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#getState()
      */
     public State getState() {
-        return dao.getState();
+        return getDao().getState();
     }
 
     /**
      * @see com.bloatit.data.DaoBug#setResolved()
      */
     public void setResolved() {
-        dao.setResolved();
+        getDao().setResolved();
     }
 
     /**
      * @see com.bloatit.data.DaoBug#setDeveloping()
      */
     public void setDeveloping() {
-        dao.setDeveloping();
+        getDao().setDeveloping();
     }
 
     /**
@@ -114,11 +114,6 @@ public class Bug extends Identifiable<DaoBug> {
      * @see com.bloatit.data.DaoBug#getComments()
      */
     public final PageIterable<Comment> getComments() {
-        return new CommentList(dao.getComments());
+        return new CommentList(getDao().getComments());
     }
-
-    DaoBug getDao() {
-        return dao;
-    }
-
 }

@@ -34,7 +34,7 @@ public final class Comment extends Kudosable<DaoComment> {
      * @see DaoComment#getChildren()
      */
     public PageIterable<Comment> getChildren() {
-        return new CommentList(dao.getChildren());
+        return new CommentList(getDao().getChildren());
     }
 
     /**
@@ -42,14 +42,14 @@ public final class Comment extends Kudosable<DaoComment> {
      * @see #addChildComment(Comment)
      */
     public void addChildComment(final String text) {
-        dao.addChildComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
+        getDao().addChildComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
     }
 
     /**
      * @return the text of this comment.
      */
     public String getText() {
-        return dao.getText();
+        return getDao().getText();
     }
 
     /**
@@ -58,11 +58,7 @@ public final class Comment extends Kudosable<DaoComment> {
      * @see #addChildComment(String)
      */
     public void addChildComment(final Comment comment) {
-        dao.addChildComment(comment.getDao());
-    }
-
-    protected DaoComment getDao() {
-        return dao;
+        getDao().addChildComment(comment.getDao());
     }
 
     /**

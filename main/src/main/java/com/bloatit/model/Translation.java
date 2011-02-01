@@ -23,20 +23,16 @@ public final class Translation extends Kudosable<DaoTranslation> {
         super(dao);
     }
 
-    public DaoTranslation getDao() {
-        return dao;
-    }
-
     public String getTitle() {
-        return dao.getTitle();
+        return getDao().getTitle();
     }
 
     public Locale getLocale() {
-        return dao.getLocale();
+        return getDao().getLocale();
     }
 
     public String getText() {
-        return dao.getText();
+        return getDao().getText();
     }
 
     /**
@@ -51,7 +47,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
         if (variance < 0) {
             throw new FatalErrorException("variance must be >= 0");
         }
-        final String wholeText = dao.getText();
+        final String wholeText = getDao().getText();
         if (wholeText.length() <= sizeMax) {
             return wholeText;
         }

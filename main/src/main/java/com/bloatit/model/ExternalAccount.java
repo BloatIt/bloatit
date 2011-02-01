@@ -32,10 +32,6 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
         super(dao);
     }
 
-    protected DaoExternalAccount getDao() {
-        return dao;
-    }
-
     /**
      * @return true if you can access the <code>BankCode</code> property.
      */
@@ -56,7 +52,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
      */
     public String getBankCode() throws UnauthorizedOperationException {
         new ExternalAccountRight.BankCode().tryAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
-        return dao.getBankCode();
+        return getDao().getBankCode();
     }
 
     /**
@@ -65,12 +61,12 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
      */
     public AccountType getType() throws UnauthorizedOperationException {
         new ExternalAccountRight.Type().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return dao.getType();
+        return getDao().getType();
     }
 
     @Override
     protected DaoAccount getDaoAccount() {
-        return dao;
+        return getDao();
     }
 
 }

@@ -50,26 +50,19 @@ public final class Description extends Identifiable<DaoDescription> {
     }
 
     /**
-     * @return the dao representation of this description.
-     */
-    public DaoDescription getDao() {
-        return dao;
-    }
-
-    /**
      * @return all the translations for a description and <code>this</code> also.
      * @see DaoDescription#getTranslations()
      */
     public PageIterable<Translation> getTranslations() {
-        return new TranslationList(dao.getTranslations());
+        return new TranslationList(getDao().getTranslations());
     }
 
     public void addTranslation(final Translation translation) {
-        dao.addTranslation(translation.getDao());
+        getDao().addTranslation(translation.getDao());
     }
 
     public Translation getTranslation(final Locale locale) {
-        return Translation.create(dao.getTranslation(locale));
+        return Translation.create(getDao().getTranslation(locale));
     }
 
     public Translation getTranslationOrDefault(final Locale locale) {
@@ -81,14 +74,14 @@ public final class Description extends Identifiable<DaoDescription> {
     }
 
     public Translation getDefaultTranslation() {
-        return Translation.create(dao.getDefaultTranslation());
+        return Translation.create(getDao().getDefaultTranslation());
     }
 
     public void setDefaultLocale(final Locale defaultLocale) {
-        dao.setDefaultLocale(defaultLocale);
+        getDao().setDefaultLocale(defaultLocale);
     }
 
     public Locale getDefaultLocale() {
-        return dao.getDefaultLocale();
+        return getDao().getDefaultLocale();
     }
 }

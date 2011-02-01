@@ -14,7 +14,7 @@ import com.bloatit.model.right.RightManager.Action;
  * amount under zero. An internal account can have some money blocked. When you contribute
  * on an idea, you do not spend the money directly, but it is blocked and you cannot use
  * it elsewhere.
- * 
+ *
  * @author tguyard
  */
 public final class InternalAccount extends Account<DaoInternalAccount> {
@@ -35,10 +35,6 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
         super(dao);
     }
 
-    public DaoInternalAccount getDao() {
-        return dao;
-    }
-
     /**
      * @return true if you can access the <code>Blocked</code> property.
      * @see #authenticate(AuthToken)
@@ -49,19 +45,19 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
 
     /**
      * Return the amount blocked into contribution on non finished idea.
-     * 
+     *
      * @return a positive {@link BigDecimal}.
      * @throws UnauthorizedOperationException if you do not have the right to access the
      *         <code>Bloked</code> property.
      */
     public BigDecimal getBlocked() throws UnauthorizedOperationException {
         new InternalAccountRight.Blocked().tryAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
-        return dao.getBlocked();
+        return getDao().getBlocked();
     }
 
     @Override
     protected DaoAccount getDaoAccount() {
-        return dao;
+        return getDao();
     }
 
 }

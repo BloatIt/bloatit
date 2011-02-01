@@ -26,7 +26,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
 
     @Override
     protected DaoUserContent getDaoUserContent() {
-        return dao;
+        return getDao();
     }
 
     /**
@@ -34,7 +34,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * @see com.bloatit.data.DaoFileMetadata#setShortDescription(java.lang.String)
      */
     public final void setShortDescription(final String shortDescription) {
-        dao.setShortDescription(shortDescription);
+        getDao().setShortDescription(shortDescription);
     }
 
     /**
@@ -42,7 +42,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * @see com.bloatit.data.DaoFileMetadata#getShortDescription()
      */
     public final String getShortDescription() {
-        return dao.getShortDescription();
+        return getDao().getShortDescription();
     }
 
     /**
@@ -50,7 +50,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * @see com.bloatit.data.DaoFileMetadata#getFilePath()
      */
     public final String getFilePath() {
-        return dao.getFilePath();
+        return getDao().getFilePath();
     }
 
     /**
@@ -58,7 +58,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * @see com.bloatit.data.DaoFileMetadata#getFilename()
      */
     public final File getFile() {
-        return new File(dao.getFilename());
+        return new File(getDao().getFilename());
     }
 
     /**
@@ -66,7 +66,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * @see com.bloatit.data.DaoFileMetadata#getFolder()
      */
     public final String getFolder() {
-        return dao.getFolder();
+        return getDao().getFolder();
     }
 
     /**
@@ -74,7 +74,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * @see com.bloatit.data.DaoFileMetadata#getSize()
      */
     public final int getSize() {
-        return dao.getSize();
+        return getDao().getSize();
     }
 
     /**
@@ -82,7 +82,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * @see com.bloatit.data.DaoFileMetadata#getType()
      */
     public FileType getType() {
-        return dao.getType();
+        return getDao().getType();
     }
 
     // public UserContent getRelatedContent() {

@@ -24,26 +24,21 @@ public final class Group extends Actor<DaoGroup> {
         super(dao);
     }
 
-    @Override
-    public DaoGroup getDao() {
-        return dao;
-    }
-
     public PageIterable<Member> getMembers() {
-        return new MemberList(dao.getMembers());
+        return new MemberList(getDao().getMembers());
     }
 
     public Right getRight() {
-        return dao.getRight();
+        return getDao().getRight();
     }
 
     public void setRight(final Right right) {
-        dao.setRight(right);
+        getDao().setRight(right);
     }
 
     @Override
     protected DaoActor getDaoActor() {
-        return dao;
+        return getDao();
     }
 
 }

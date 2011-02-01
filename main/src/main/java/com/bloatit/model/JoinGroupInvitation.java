@@ -21,29 +21,29 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
     }
 
     public Member getSender() {
-        return Member.create(dao.getSender());
+        return Member.create(getDao().getSender());
     }
 
     public Member getReciever() {
-        return Member.create(dao.getReceiver());
+        return Member.create(getDao().getReceiver());
     }
 
     public Group getGroup() {
-        return Group.create(dao.getGroup());
+        return Group.create(getDao().getGroup());
     }
 
     /**
      * @see DaoJoinGroupInvitation#accept()
      */
     public void accept() {
-        dao.accept();
+        getDao().accept();
     }
 
     /**
      * @see DaoJoinGroupInvitation#refuse()
      */
     public void refuse() {
-        dao.refuse();
+        getDao().refuse();
     }
 
 }

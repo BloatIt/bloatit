@@ -78,7 +78,7 @@ public final class Member extends Actor<DaoMember> {
             throw new UnauthorizedOperationException(SpecialCode.GROUP_NOT_PUBLIC);
         }
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
-        dao.addToGroup(group.getDao(), false);
+        getDao().addToGroup(group.getDao(), false);
     }
 
     /**
@@ -111,7 +111,7 @@ public final class Member extends Actor<DaoMember> {
      * @return all the received invitation with the specified state.
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
-        return dao.getReceivedInvitation(state);
+        return getDao().getReceivedInvitation(state);
     }
 
     /**
@@ -119,7 +119,7 @@ public final class Member extends Actor<DaoMember> {
      * @return all the sent invitation with the specified state.
      */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
-        return dao.getSentInvitation(state);
+        return getDao().getSentInvitation(state);
     }
 
     /**
@@ -162,7 +162,7 @@ public final class Member extends Actor<DaoMember> {
      */
     public void removeFromGroup(final Group group) throws UnauthorizedOperationException {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.DELETE);
-        dao.removeFromGroup(group.getDao());
+        getDao().removeFromGroup(group.getDao());
     }
 
     /**
@@ -173,7 +173,7 @@ public final class Member extends Actor<DaoMember> {
      */
     public PageIterable<Group> getGroups() throws UnauthorizedOperationException {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.READ);
-        return new GroupList(dao.getGroups());
+        return new GroupList(getDao().getGroups());
     }
 
     public boolean canGetKarma() {
@@ -182,13 +182,13 @@ public final class Member extends Actor<DaoMember> {
 
     public int getKarma() throws UnauthorizedOperationException {
         new MemberRight.Karma().tryAccess(calculateRole(this), Action.READ);
-        return dao.getKarma();
+        return getDao().getKarma();
     }
 
     private static final int INFLUENCE_MULTIPLICATOR = 10;
 
     protected int calculateInfluence() {
-        final int karma = dao.getKarma();
+        final int karma = getDao().getKarma();
         if (karma > 0) {
             return (int) (Math.log10(karma) * INFLUENCE_MULTIPLICATOR + 1);
         } else if (karma == 0) {
@@ -203,7 +203,7 @@ public final class Member extends Actor<DaoMember> {
 
     public String getDisplayName() throws UnauthorizedOperationException {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
-        if (dao.getFullname() != null && dao.getFullname().isEmpty()) {
+        if (getDao().getFullname() != null && getDao().getFullname().isEmpty()) {
             return getLogin();
         }
         return getFullname();
@@ -211,12 +211,12 @@ public final class Member extends Actor<DaoMember> {
 
     public String getFullname() throws UnauthorizedOperationException {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.READ);
-        return dao.getFullname();
+        return getDao().getFullname();
     }
 
     public void setFullname(final String fullname) throws UnauthorizedOperationException {
         new MemberRight.Name().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setFullname(fullname);
+        getDao().setFullname(fullname);
     }
 
     public boolean canSetPassword() {
@@ -225,7 +225,7 @@ public final class Member extends Actor<DaoMember> {
 
     public void setPassword(final String password) throws UnauthorizedOperationException {
         new MemberRight.Password().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setPassword(password);
+        getDao().setPassword(password);
     }
 
     public boolean canAccessLocale(final Action action) {
@@ -233,41 +233,41 @@ public final class Member extends Actor<DaoMember> {
     }
 
     public Locale getLocaleUnprotected() {
-        return dao.getLocale();
+        return getDao().getLocale();
     }
 
     public Locale getLocale() throws UnauthorizedOperationException {
         new MemberRight.Locale().tryAccess(calculateRole(this), Action.READ);
-        return dao.getLocale();
+        return getDao().getLocale();
     }
 
     public void setLocal(final Locale loacle) throws UnauthorizedOperationException {
         new MemberRight.Locale().tryAccess(calculateRole(this), Action.WRITE);
-        dao.setLocale(loacle);
+        getDao().setLocale(loacle);
     }
 
     public PageIterable<Demand> getDemands() {
-        return new DemandList(dao.getDemands());
+        return new DemandList(getDao().getDemands());
     }
 
     public PageIterable<Kudos> getKudos() {
-        return new KudosList(dao.getKudos());
+        return new KudosList(getDao().getKudos());
     }
 
     public PageIterable<Contribution> getContributions() {
-        return new ContributionList(dao.getTransactions());
+        return new ContributionList(getDao().getTransactions());
     }
 
     public PageIterable<Comment> getComments() {
-        return new CommentList(dao.getComments());
+        return new CommentList(getDao().getComments());
     }
 
     public PageIterable<Offer> getOffers() {
-        return new OfferList(dao.getOffers());
+        return new OfferList(getDao().getOffers());
     }
 
     public PageIterable<Translation> getTranslations() {
-        return new TranslationList(dao.getTranslations());
+        return new TranslationList(getDao().getTranslations());
     }
 
     public boolean isInGroup(final Group group) {
@@ -276,32 +276,27 @@ public final class Member extends Actor<DaoMember> {
 
     @Override
     protected DaoActor getDaoActor() {
-        return dao;
+        return getDao();
     }
 
     protected MemberStatus getStatusUnprotected(final Group group) {
-        return group.getDao().getMemberStatus(dao);
+        return group.getDao().getMemberStatus(getDao());
     }
 
     protected boolean isInGroupUnprotected(final Group group) {
-        return dao.isInGroup(group.getDao());
-    }
-
-    @Override
-    public DaoMember getDao() {
-        return dao;
+        return getDao().isInGroup(group.getDao());
     }
 
     protected void addToKarma(final int value) {
-        dao.addToKarma(value);
+        getDao().addToKarma(value);
     }
 
     protected String getPassword() {
-        return dao.getPassword();
+        return getDao().getPassword();
     }
 
     public Role getRole() {
-        return dao.getRole();
+        return getDao().getRole();
     }
 
     public Image getAvatar() {

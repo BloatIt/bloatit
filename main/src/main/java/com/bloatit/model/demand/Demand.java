@@ -149,7 +149,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
-        dao.addContribution(getAuthToken().getMember().getDao(), amount, comment);
+        getDao().addContribution(getAuthToken().getMember().getDao(), amount, comment);
         setStateObject(getStateObject().eventAddContribution());
     }
 
@@ -176,7 +176,7 @@ public final class Demand extends Kudosable<DaoDemand> {
             throw new IllegalArgumentException();
         }
         setStateObject(getStateObject().eventAddOffer(offer));
-        dao.addOffer(offer.getDao());
+        getDao().addOffer(offer.getDao());
     }
 
     /**
@@ -189,11 +189,11 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
-        if (dao.getSelectedOffer().getId() == offer.getId()) {
-            dao.computeSelectedOffer();
+        if (getDao().getSelectedOffer().getId() == offer.getId()) {
+            getDao().computeSelectedOffer();
         }
         setStateObject(getStateObject().eventRemoveOffer(offer));
-        dao.removeOffer(offer.getDao());
+        getDao().removeOffer(offer.getDao());
     }
 
     /**
@@ -254,20 +254,20 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public void addComment(final String text) throws UnauthorizedOperationException {
         new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
-        dao.addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
+        getDao().addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
     }
 
     public void notifyOfferKudos(final Offer offer, final boolean positif) {
         final boolean isSelectedOffer = offer.equals(getSelectedOfferUnprotected());
         if (positif && !isSelectedOffer) {
             if (offer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
-                dao.setSelectedOffer(offer.getDao());
+                getDao().setSelectedOffer(offer.getDao());
             }
         }
         if (!positif && isSelectedOffer) {
             for (final Offer thisOffer : getOffersUnprotected()) {
                 if (thisOffer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
-                    dao.computeSelectedOffer();
+                    getDao().computeSelectedOffer();
                 }
 
             }
@@ -282,7 +282,7 @@ public final class Demand extends Kudosable<DaoDemand> {
     public void unSelectOffer(final Offer offer) {
         if (offer.equals(getSelectedOfferUnprotected())) {
             setSelectedOffer(null);
-            dao.computeSelectedOffer();
+            getDao().computeSelectedOffer();
         }
 
     }
@@ -295,7 +295,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      * Tells that we are in development state.
      */
     void inDevelopmentState() {
-        dao.setDemandState(DemandState.DEVELOPPING);
+        getDao().setDemandState(DemandState.DEVELOPPING);
         new TaskDevelopmentTimeOut(this, getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
     }
 
@@ -303,21 +303,21 @@ public final class Demand extends Kudosable<DaoDemand> {
      * Slot called when the demand change to {@link DiscardedState}.
      */
     void inDiscardedState() {
-        dao.setDemandState(DemandState.DISCARDED);
+        getDao().setDemandState(DemandState.DISCARDED);
     }
 
     /**
      * Slot called when this demand state change to {@link FinishedState}.
      */
     void inFinishedState() {
-        dao.setDemandState(DemandState.FINISHED);
+        getDao().setDemandState(DemandState.FINISHED);
     }
 
     /**
      * Slot called when this demand state change to {@link IncomeState}.
      */
     void inIncomeState() {
-        dao.setDemandState(DemandState.INCOME);
+        getDao().setDemandState(DemandState.INCOME);
 
     }
 
@@ -325,7 +325,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      * Slot called when this demand state change to {@link PendingState}.
      */
     void inPendingState() {
-        dao.setDemandState(DemandState.PENDING);
+        getDao().setDemandState(DemandState.PENDING);
 
     }
 
@@ -333,7 +333,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      * Slot called when this demand state change to {@link PreparingState}.
      */
     void inPreparingState() {
-        dao.setDemandState(DemandState.PREPARING);
+        getDao().setDemandState(DemandState.PREPARING);
     }
 
     /**
@@ -347,7 +347,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      * Called by a {@link PlannedTask}
      */
     void selectedOfferTimeOut() {
-        setStateObject(getStateObject().eventSelectedOfferTimeOut(dao.getContribution()));
+        setStateObject(getStateObject().eventSelectedOfferTimeOut(getDao().getContribution()));
     }
 
     @Override
@@ -372,8 +372,8 @@ public final class Demand extends Kudosable<DaoDemand> {
     void setSelectedOffer(final Offer offer) {
         final Date validationDate = DateUtils.tomorrow();
         new TaskSelectedOfferTimeOut(this, validationDate);
-        this.dao.setValidationDate(validationDate);
-        this.dao.setSelectedOffer(offer.getDao());
+        this.getDao().setValidationDate(validationDate);
+        this.getDao().setSelectedOffer(offer.getDao());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -397,7 +397,7 @@ public final class Demand extends Kudosable<DaoDemand> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     public Date getValidationDate() {
-        return dao.getValidationDate();
+        return getDao().getValidationDate();
     }
 
     /**
@@ -408,7 +408,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public PageIterable<Comment> getComments() throws UnauthorizedOperationException {
         new DemandRight.Comment().tryAccess(calculateRole(this), Action.READ);
-        return new CommentList(dao.getCommentsFromQuery());
+        return new CommentList(getDao().getCommentsFromQuery());
     }
 
     /**
@@ -426,7 +426,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      * @see #getContribution()
      */
     private PageIterable<Contribution> getContributionsUnprotected() {
-        return new ContributionList(dao.getContributionsFromQuery());
+        return new ContributionList(getDao().getContributionsFromQuery());
     }
 
     private static final int PROGRESSION_COEF = 42;
@@ -446,12 +446,12 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public float getProgression() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
-        final DaoOffer currentOffer = dao.getSelectedOffer();
-        if (dao.getOffers().isEmpty() || currentOffer == null) {
-            return PROGRESSION_COEF * (1 - 1 / (1 + dao.getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
+        final DaoOffer currentOffer = getDao().getSelectedOffer();
+        if (getDao().getOffers().isEmpty() || currentOffer == null) {
+            return PROGRESSION_COEF * (1 - 1 / (1 + getDao().getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
         }
         if (currentOffer.getAmount().floatValue() != 0) {
-            return (dao.getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();
+            return (getDao().getContribution().floatValue() * PROGRESSION_PERCENT) / currentOffer.getAmount().floatValue();
         }
         return Float.POSITIVE_INFINITY;
     }
@@ -464,7 +464,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public BigDecimal getContribution() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
-        return dao.getContribution();
+        return getDao().getContribution();
     }
 
     /**
@@ -475,7 +475,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public BigDecimal getContributionMax() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
-        return dao.getContributionMax();
+        return getDao().getContributionMax();
     }
 
     /**
@@ -486,7 +486,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public BigDecimal getContributionMin() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
-        return dao.getContributionMin();
+        return getDao().getContributionMin();
     }
 
     /**
@@ -497,7 +497,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public Description getDescription() throws UnauthorizedOperationException {
         new DemandRight.Description().tryAccess(calculateRole(this), Action.READ);
-        return Description.create(dao.getDescription());
+        return Description.create(getDao().getDescription());
     }
 
     /**
@@ -512,7 +512,7 @@ public final class Demand extends Kudosable<DaoDemand> {
     }
 
     private PageIterable<Offer> getOffersUnprotected() {
-        return new OfferList(dao.getOffersFromQuery());
+        return new OfferList(getDao().getOffersFromQuery());
     }
 
     /**
@@ -539,14 +539,14 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     public Offer getValidatedOffer() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
-        if (dao.getSelectedOffer() != null && getValidationDate().before(new Date())) {
+        if (getDao().getSelectedOffer() != null && getValidationDate().before(new Date())) {
             return getSelectedOfferUnprotected();
         }
         return null;
     }
 
     private Offer getSelectedOfferUnprotected() {
-        return Offer.create(dao.getSelectedOffer());
+        return Offer.create(getDao().getSelectedOffer());
     }
 
     /**
@@ -560,14 +560,7 @@ public final class Demand extends Kudosable<DaoDemand> {
     }
 
     public DemandState getDemandState() {
-        return dao.getDemandState();
-    }
-
-    /**
-     * @return the dao object of this Demand.
-     */
-    public DaoDemand getDao() {
-        return dao;
+        return getDao().getDemandState();
     }
 
     public void setStateObject(final AbstractDemandState stateObject) {
@@ -575,7 +568,7 @@ public final class Demand extends Kudosable<DaoDemand> {
     }
 
     public AbstractDemandState getStateObject() {
-        switch (dao.getDemandState()) {
+        switch (getDao().getDemandState()) {
         case PENDING:
             if (stateObject == null || !stateObject.getClass().equals(PendingState.class)) {
                 setStateObject(new PendingState(this));

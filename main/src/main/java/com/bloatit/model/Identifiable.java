@@ -5,7 +5,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 public abstract class Identifiable<T extends IdentifiableInterface> extends Unlockable {
 
-    protected T dao;
+    private final T dao;
 
     protected Identifiable(final T id) {
         if (id == null) {
@@ -21,7 +21,7 @@ public abstract class Identifiable<T extends IdentifiableInterface> extends Unlo
      * @return a unique identifier for this object.
      */
     public final int getId(){
-        return dao.getId();
+        return getDao().getId();
     }
 
     @Override
@@ -48,6 +48,13 @@ public abstract class Identifiable<T extends IdentifiableInterface> extends Unlo
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the dao
+     */
+    public final T getDao() {
+        return dao;
     }
 
 }
