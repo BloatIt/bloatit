@@ -27,14 +27,6 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     }
 
     /**
-     * Since the Account class is abstract we need a way to get the daoAccount for this
-     * account.
-     *
-     * @return the {@link DaoAccount} for this {@link Account}.
-     */
-    protected abstract DaoAccount getDaoAccount();
-
-    /**
      * @return true if the authenticated user can access the <code>Transaction</code>
      *         property (It is a read only property).
      * @see #authenticate(AuthToken)
@@ -97,7 +89,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
         new AccountRight.LastModificationDate().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return getDaoAccount().getLastModificationDate();
+        return getDao().getLastModificationDate();
     }
 
     /**
@@ -107,7 +99,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      */
     public final BigDecimal getAmount() throws UnauthorizedOperationException {
         new AccountRight.Amount().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return getDaoAccount().getAmount();
+        return getDao().getAmount();
     }
 
     /**
@@ -117,7 +109,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      */
     public final PageIterable<Transaction> getTransactions() throws UnauthorizedOperationException {
         new AccountRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return new TransactionList(getDaoAccount().getTransactions());
+        return new TransactionList(getDao().getTransactions());
     }
 
     /**
@@ -138,7 +130,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      */
     public final Date getCreationDate() throws UnauthorizedOperationException {
         new AccountRight.CreationDate().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return getDaoAccount().getCreationDate();
+        return getDao().getCreationDate();
     }
 
     /**
@@ -148,10 +140,10 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @see getActor;
      */
     protected final Actor<?> getActorUnprotected() {
-        if (getDaoAccount().getActor().getClass() == DaoMember.class) {
-            return Member.create((DaoMember) getDaoAccount().getActor());
-        } else if (getDaoAccount().getActor().getClass() == DaoGroup.class) {
-            return Group.create((DaoGroup) getDaoAccount().getActor());
+        if (getDao().getActor().getClass() == DaoMember.class) {
+            return Member.create((DaoMember) getDao().getActor());
+        } else if (getDao().getActor().getClass() == DaoGroup.class) {
+            return Group.create((DaoGroup) getDao().getActor());
         }
         throw new FatalErrorException("Cannot find the right Actor child class.", null);
     }

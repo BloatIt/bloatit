@@ -33,7 +33,7 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     }
 
     Transaction(final InternalAccount from, final Account<?> to, final BigDecimal amount) throws NotEnoughMoneyException {
-        super(DaoTransaction.createAndPersist(from.getDao(), to.getDaoAccount(), amount));
+        super(DaoTransaction.createAndPersist(from.getDao(), to.getDao(), amount));
     }
 
     public boolean canAccessSomething() {

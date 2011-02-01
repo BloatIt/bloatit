@@ -2,7 +2,6 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 
-import com.bloatit.data.DaoAccount;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.InternalAccountRight;
@@ -54,10 +53,4 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
         new InternalAccountRight.Blocked().tryAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
         return getDao().getBlocked();
     }
-
-    @Override
-    protected DaoAccount getDaoAccount() {
-        return getDao();
-    }
-
 }

@@ -1,6 +1,5 @@
 package com.bloatit.model;
 
-import com.bloatit.data.DaoAccount;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -62,11 +61,6 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
     public AccountType getType() throws UnauthorizedOperationException {
         new ExternalAccountRight.Type().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getDao().getType();
-    }
-
-    @Override
-    protected DaoAccount getDaoAccount() {
-        return getDao();
     }
 
 }
