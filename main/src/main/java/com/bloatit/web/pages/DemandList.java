@@ -79,7 +79,9 @@ public final class DemandList extends Page {
             final HtmlTitle pageTitle = new HtmlTitle(Context.tr("Search a demand"), 1);
             demandSearchBlock.add(pageTitle);
 
-            final HtmlForm searchForm = new HtmlForm(new DemandListUrl().urlString(), Method.GET);
+            DemandListUrl formUrl = url.clone();
+            formUrl.setSearchString("");
+            final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
             {
                 final HtmlTextField searchField = new HtmlTextField(SEARCH_STRING_CODE);
                 searchField.setDefaultValue(searchString);
@@ -96,14 +98,23 @@ public final class DemandList extends Page {
                 final DemandListUrl allFilterUrl = url.clone();
                 allFilterUrl.setFilter(FILTER_ALL);
                 final HtmlLink allFilter = allFilterUrl.getHtmlLink(Context.tr("all"));
+                if(filter.equals(FILTER_ALL)) {
+                    allFilter.setCssClass("selected");
+                }
 
                 final DemandListUrl preparingFilterUrl = url.clone();
                 preparingFilterUrl.setFilter(FILTER_IN_PROGRESS);
                 final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("in progress"));
+                if(filter.equals(FILTER_IN_PROGRESS)) {
+                    preparingFilter.setCssClass("selected");
+                }
 
                 final DemandListUrl finishedFilterUrl = url.clone();
                 finishedFilterUrl.setFilter(FILTER_FINISHED);
                 final HtmlLink finishedFilter = finishedFilterUrl.getHtmlLink(Context.tr("finished"));
+                if(filter.equals(FILTER_FINISHED)) {
+                    finishedFilter.setCssClass("selected");
+                }
 
                 demandFilter.addText(Context.tr("Filter: "));
                 demandFilter.add(allFilter);
