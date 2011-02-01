@@ -14,19 +14,22 @@ import com.bloatit.model.lists.BatchList;
 
 // TODO rightManagement
 
-public final class Offer extends Kudosable {
-
-    private final DaoOffer dao;
+public final class Offer extends Kudosable<DaoOffer> {
 
     // ////////////////////////////////////////////////////////////////////////
     // Construction
     // ////////////////////////////////////////////////////////////////////////
 
     public static Offer create(final DaoOffer dao) {
-        if (dao == null) {
-            return null;
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoOffer> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Offer(dao);
+            }
+            return (Offer) created;
         }
-        return new Offer(dao);
+        return null;
     }
 
     /**
@@ -45,16 +48,15 @@ public final class Offer extends Kudosable {
                  final String description,
                  final Locale local,
                  final Date dateExpire) {
-        dao = DaoOffer.createAndPersist(member.getDao(),
+        super(DaoOffer.createAndPersist(member.getDao(),
                                         demand.getDao(),
                                         amount,
                                         DaoDescription.createAndPersist(member.getDao(), local, title, description),
-                                        dateExpire);
+                                        dateExpire));
     }
 
     private Offer(final DaoOffer dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     public void addBatch(final Date dateExpire,

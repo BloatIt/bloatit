@@ -3,8 +3,8 @@ package com.bloatit.framework.webserver.masters;
 import java.io.IOException;
 
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.ModelManagerAccessor;
 
 public abstract class Page extends HtmlElement implements Linkable {
 

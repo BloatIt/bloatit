@@ -14,23 +14,25 @@ import com.bloatit.model.right.RightManager.Action;
  * 
  * @see DaoContribution
  */
-public final class Contribution extends UserContent {
-
-    private final DaoContribution dao;
+public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * Create a <code>Contribution</code> or return null (if dao is null)
      */
     public static Contribution create(final DaoContribution dao) {
         if (dao != null) {
-            return new Contribution(dao);
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoContribution> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Contribution(dao);
+            }
+            return (Contribution) created;
         }
         return null;
     }
 
     private Contribution(final DaoContribution dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     /**

@@ -9,24 +9,26 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 
-public class Bug extends Identifiable {
-
-    private final DaoBug dao;
+public class Bug extends Identifiable<DaoBug> {
 
     public static Bug create(final DaoBug dao) {
         if (dao != null) {
-            return new Bug(dao);
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoBug> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Bug(dao);
+            }
+            return (Bug) created;
         }
         return null;
     }
 
     private Bug(final DaoBug dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     Bug(final Member member, final Batch batch, final String description, final Locale locale, final Level errorLevel) {
-        dao = new DaoBug(member.getDao(), batch.getDao(), description, locale, errorLevel);
+        super(new DaoBug(member.getDao(), batch.getDao(), description, locale, errorLevel));
     }
 
     @Override

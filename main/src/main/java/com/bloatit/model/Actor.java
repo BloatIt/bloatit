@@ -12,14 +12,18 @@ import com.bloatit.model.right.RightManager.Action;
 /**
  * @see DaoActor
  */
-public abstract class Actor extends Identifiable {
+public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
+
+    protected Actor(final T id) {
+        super(id);
+    }
 
     protected abstract DaoActor getDaoActor();
 
     /**
      * Tells if a user can access the <code>Email</code> property. You have to unlock this
      * Actor using the {@link Actor#authenticate(AuthToken)} method.
-     * 
+     *
      * @param action can be read/write/delete. for example use <code>READ</code> to know
      *        if you can use {@link Member#getGroups()}.
      * @return true if you can access the parameter <code>Email</code>.
@@ -61,7 +65,7 @@ public abstract class Actor extends Identifiable {
      * @see Actor#authenticate(AuthToken)
      */
     public final boolean canAccessLogin() {
-        return new ActorRight.Login().canAccess(Action.READ);
+        return new ActorRight.Login().canAccess(calculateRole(getLoginUnprotected()), Action.READ);
     }
 
     /**
@@ -104,13 +108,13 @@ public abstract class Actor extends Identifiable {
     /**
      * The internal account is the account we manage internally. Users can add/get money
      * to/from it, and can use this money to contribute on projects.
-     * 
+     *
      * @throw UnauthorizedOperationException if you do not have the right to access the
      *        <code>InternalAccount</code> property.
      */
     public final InternalAccount getInternalAccount() throws UnauthorizedOperationException {
         new ActorRight.InternalAccount().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return new InternalAccount(getDaoActor().getInternalAccount());
+        return InternalAccount.create(getDaoActor().getInternalAccount());
     }
 
     /**
@@ -126,7 +130,7 @@ public abstract class Actor extends Identifiable {
      */
     public final ExternalAccount getExternalAccount() throws UnauthorizedOperationException {
         new ActorRight.ExternalAccount().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return new ExternalAccount(getDaoActor().getExternalAccount());
+        return ExternalAccount.create(getDaoActor().getExternalAccount());
     }
 
     /**

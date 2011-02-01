@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.webserver.ModelManagerAccessor;
 
 public abstract class PlannedTask extends TimerTask implements Serializable {
 
@@ -71,7 +72,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
     /**
      * An id = 1 planed task.
-     *
+     * 
      * @param time
      * @param id
      */

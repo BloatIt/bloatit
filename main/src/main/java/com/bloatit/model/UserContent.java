@@ -6,7 +6,11 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.FileMetadataList;
 
-public abstract class UserContent extends Identifiable {
+public abstract class UserContent<T extends DaoUserContent> extends Identifiable<T> {
+
+    protected UserContent(final T dao) {
+        super(dao);
+    }
 
     protected abstract DaoUserContent getDaoUserContent();
 

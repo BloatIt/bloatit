@@ -11,9 +11,7 @@ import com.bloatit.data.DaoBug.State;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 
-public class Batch extends Identifiable {
-
-    private final DaoBatch dao;
+public class Batch extends Identifiable<DaoBatch> {
 
     // ////////////////////////////////////////////////////////////////////////
     // Construction
@@ -21,13 +19,18 @@ public class Batch extends Identifiable {
 
     public static Batch create(final DaoBatch dao) {
         if (dao != null) {
-            return new Batch(dao);
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoBatch> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Batch(dao);
+            }
+            return (Batch) created;
         }
         return null;
     }
 
     private Batch(final DaoBatch dao) {
-        this.dao = dao;
+        super(dao);
     }
 
     /**

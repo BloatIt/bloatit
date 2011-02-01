@@ -28,7 +28,7 @@ import com.bloatit.framework.utils.PageIterable;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class DaoActor {
+public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * Because of the different inheritance strategy we cannot inherit from identifiable.
@@ -59,7 +59,7 @@ public abstract class DaoActor {
 
     /**
      * Initialize the creation date to now.
-     * 
+     *
      * @param login is the login or name of this actor
      * @param email is the email of this actor. (No check is performed on the correctness
      *        of this email address)
@@ -98,7 +98,7 @@ public abstract class DaoActor {
     /**
      * This method is used by hibernate. You can use it if you want to change the email.
      * (No check is performed on the correctness of the new email)
-     * 
+     *
      * @param email the new email.
      */
     public abstract void setEmail(final String email);
@@ -131,7 +131,7 @@ public abstract class DaoActor {
 
     /**
      * Set the external account for this actor.
-     * 
+     *
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
@@ -142,6 +142,7 @@ public abstract class DaoActor {
         this.externalAccount = externalAccount;
     }
 
+    @Override
     public final Integer getId() {
         return id;
     }

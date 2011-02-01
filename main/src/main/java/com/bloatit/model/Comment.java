@@ -8,23 +8,25 @@ import com.bloatit.model.lists.CommentList;
 /**
  * @see DaoComment
  */
-public final class Comment extends Kudosable {
-
-    private final DaoComment dao;
+public final class Comment extends Kudosable<DaoComment> {
 
     /**
      * Create a new comment and return it. It return null if the <code>dao</code> is null.
      */
     public static Comment create(final DaoComment dao) {
-        if (dao == null) {
-            return null;
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoComment> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Comment(dao);
+            }
+            return (Comment) created;
         }
-        return new Comment(dao);
+        return null;
     }
 
     private Comment(final DaoComment dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     /**

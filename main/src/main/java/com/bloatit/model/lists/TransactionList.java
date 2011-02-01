@@ -29,7 +29,7 @@ public final class TransactionList extends ListBinder<Transaction, DaoTransactio
 
         @Override
         protected Transaction createFromDao(final DaoTransaction dao) {
-            return new Transaction(dao);
+            return Transaction.create(dao);
         }
 
     }

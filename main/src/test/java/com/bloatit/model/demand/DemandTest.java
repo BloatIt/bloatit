@@ -18,9 +18,9 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
+import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.model.AuthToken;
 import com.bloatit.model.FrameworkTestUnit;
-import com.bloatit.model.ModelManagerAccessor;
 import com.bloatit.model.Offer;
 import com.bloatit.model.right.RightManager.Action;
 
@@ -270,6 +270,7 @@ public class DemandTest extends FrameworkTestUnit {
         final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
         demand.addOffer(offer);
+        System.out.println(offer);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         demand.authenticate(yoAuthToken);
@@ -294,6 +295,7 @@ public class DemandTest extends FrameworkTestUnit {
         demand.authenticate(tomAuthToken);
         final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
+        System.out.println(offer);
         demand.addOffer(offer);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 

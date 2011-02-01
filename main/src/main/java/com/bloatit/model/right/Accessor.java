@@ -14,7 +14,7 @@ import com.bloatit.model.right.RightManager.Role;
  * cannot. This class implement the template method pattern so that child classes just
  * have to implement the can method. You have to create an Accessor child class for each
  * feature. For example you could have:
- * 
+ *
  * <pre>
  * class MemberCanAccessFullname extends Accessor {
  *     &#064;Override
@@ -23,10 +23,10 @@ import com.bloatit.model.right.RightManager.Role;
  *     }
  * }
  * </pre>
- * 
+ *
  * There are some useful functions and code organization to manage the creation of
  * Accessor classes see {@link RightManager}.
- * 
+ *
  * @see RighManager
  */
 public abstract class Accessor {
@@ -35,13 +35,10 @@ public abstract class Accessor {
 
     public final boolean canAccess(final EnumSet<Role> role, final Action action) {
         if (role.contains(Role.ADMIN)) {
+            Log.model().trace("Admin access");
             return true;
         }
         return can(role, action);
-    }
-
-    public final boolean canAccess(final Action action) {
-        return canAccess(EnumSet.of(Role.ADMIN), action);
     }
 
     public final void tryAccess(final EnumSet<Role> role, final Action action) throws UnauthorizedOperationException {

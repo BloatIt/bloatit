@@ -27,7 +27,7 @@ public final class KudosableManager {
         // Desactivate default ctor
     }
 
-    public static Kudosable getById(final Integer id) {
+    public static Kudosable<?> getById(final Integer id) {
 
         // Try with comment
         final DaoComment comment = DBRequests.getById(DaoComment.class, id);

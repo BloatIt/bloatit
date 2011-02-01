@@ -2,17 +2,20 @@ package com.bloatit.model;
 
 import com.bloatit.data.DaoJoinGroupInvitation;
 
-public final class JoinGroupInvitation extends Identifiable {
-
-    private final DaoJoinGroupInvitation dao;
+public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitation> {
 
     private JoinGroupInvitation(final DaoJoinGroupInvitation dao) {
-        this.dao = dao;
+        super(dao);
     }
 
     public static JoinGroupInvitation create(final DaoJoinGroupInvitation dao) {
         if (dao != null) {
-            return new JoinGroupInvitation(dao);
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoJoinGroupInvitation> created = CacheManager.get(dao);
+            if (created == null) {
+                return new JoinGroupInvitation(dao);
+            }
+            return (JoinGroupInvitation) created;
         }
         return null;
     }
