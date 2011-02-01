@@ -25,7 +25,6 @@ public class DaoDemandSearchFilter extends Filter {
 
     @Override
     public DocIdSet getDocIdSet(IndexReader reader) throws IOException {
-        System.err.println("getDocIdSet");
         OpenBitSet bitSet = new OpenBitSet( reader.maxDoc() );
         bitSet.set( 0, reader.maxDoc() ); // Set all document ok
 
@@ -35,7 +34,6 @@ public class DaoDemandSearchFilter extends Filter {
                 TermDocs termDocs = reader.termDocs(new Term( pair.key, pair.value.toLowerCase()));
 
                 while ( termDocs.next() ) {
-                    System.err.println("termDocs.next()");
                     bitSet.clear( termDocs.doc() );
                 }
             }

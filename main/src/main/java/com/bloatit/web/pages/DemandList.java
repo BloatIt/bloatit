@@ -13,6 +13,7 @@ package com.bloatit.web.pages;
 // import java.util.Random;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.search.DemandSearch;
+import com.bloatit.data.search.DemandSearch.SortMethod;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -20,7 +21,6 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
-import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -35,31 +35,26 @@ import com.bloatit.web.url.DemandListUrl;
 @ParamContainer("demand/list")
 public final class DemandList extends Page {
 
-    public static final String SEARCH_STRING_CODE = "search_string";
-    @RequestParam(defaultValue = "", name = SEARCH_STRING_CODE)
-    private final String searchString;
-
     public static final String FILTER_ALL = "all";
     public static final String FILTER_IN_PROGRESS = "in progress";
     public static final String FILTER_FINISHED = "finished";
     public static final String FILTER_CODE = "filter";
-    @RequestParam(defaultValue = "all", name = FILTER_CODE)
+    @RequestParam(defaultValue = FILTER_IN_PROGRESS, name = FILTER_CODE)
     private final String filter;
 
+    public static final String SORT_BY_RELEVANCE = "relevance";
     public static final String SORT_BY_CONTRIBUTION = "contribution";
     public static final String SORT_BY_PROGRESS = "progress";
     public static final String SORT_BY_POPULARITY = "popularity";
     public static final String SORT_BY_CREATION_DATE = "creation date";
     public static final String SORT_BY_EXPIRATION_DATE = "expiration date";
     public static final String SORT_CODE = "sort";
-    @RequestParam(defaultValue = "popularity", name = SORT_CODE)
+    @RequestParam(defaultValue = SORT_BY_POPULARITY, name = SORT_CODE)
     private final String sort;
 
-    public static final String ORDER_ASC = "asc";
-    public static final String ORDER_DESC = "desc";
-    public static final String ORDER_CODE = "order";
-    @RequestParam(defaultValue = "desc", name = ORDER_CODE)
-    private final String order;
+    public static final String SEARCH_STRING_CODE = "search_string";
+    @RequestParam(defaultValue = "", name = SEARCH_STRING_CODE)
+    private final String searchString;
 
     private HtmlPagedList<Demand> pagedDemandList;
     private final DemandListUrl url;
@@ -70,7 +65,6 @@ public final class DemandList extends Page {
         this.searchString = url.getSearchString();
         this.filter = url.getFilter();
         this.sort = url.getSort();
-        this.order = url.getOrder();
 
         generateContent();
     }
@@ -83,9 +77,6 @@ public final class DemandList extends Page {
         // Div demand_search_block
         final HtmlDiv demandSearchBlock = new HtmlDiv("demand_search_block");
         {
-            final HtmlTitle pageTitle = new HtmlTitle(Context.tr("Search a demand"), 1);
-            demandSearchBlock.add(pageTitle);
-
             DemandListUrl formUrl = url.clone();
             formUrl.setSearchString("");
             final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
@@ -93,7 +84,7 @@ public final class DemandList extends Page {
                 final HtmlTextField searchField = new HtmlTextField(SEARCH_STRING_CODE);
                 searchField.setDefaultValue(searchString);
 
-                final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search"));
+                final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search a demand"));
 
                 searchForm.add(searchField);
                 searchForm.add(searchButton);
@@ -105,21 +96,21 @@ public final class DemandList extends Page {
                 final DemandListUrl allFilterUrl = url.clone();
                 allFilterUrl.setFilter(FILTER_ALL);
                 final HtmlLink allFilter = allFilterUrl.getHtmlLink(Context.tr("all"));
-                if(filter.equals(FILTER_ALL)) {
+                if (filter.equals(FILTER_ALL)) {
                     allFilter.setCssClass("selected");
                 }
 
                 final DemandListUrl preparingFilterUrl = url.clone();
                 preparingFilterUrl.setFilter(FILTER_IN_PROGRESS);
                 final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("in progress"));
-                if(filter.equals(FILTER_IN_PROGRESS)) {
+                if (filter.equals(FILTER_IN_PROGRESS)) {
                     preparingFilter.setCssClass("selected");
                 }
 
                 final DemandListUrl finishedFilterUrl = url.clone();
                 finishedFilterUrl.setFilter(FILTER_FINISHED);
                 final HtmlLink finishedFilter = finishedFilterUrl.getHtmlLink(Context.tr("finished"));
-                if(filter.equals(FILTER_FINISHED)) {
+                if (filter.equals(FILTER_FINISHED)) {
                     finishedFilter.setCssClass("selected");
                 }
 
@@ -134,43 +125,52 @@ public final class DemandList extends Page {
 
             final HtmlDiv demandSort = new HtmlDiv("demand_sort");
             {
+                final DemandListUrl relevanceSortUrl = url.clone();
+                relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
+                final HtmlLink relevanceSort = relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
+                if (sort.equals(SORT_BY_RELEVANCE)) {
+                    relevanceSort.setCssClass("selected");
+                }
+
                 final DemandListUrl popularitySortUrl = url.clone();
                 popularitySortUrl.setSort(SORT_BY_POPULARITY);
                 final HtmlLink popularitySort = popularitySortUrl.getHtmlLink(Context.tr("popularity"));
-                if(sort.equals(SORT_BY_POPULARITY)) {
+                if (sort.equals(SORT_BY_POPULARITY)) {
                     popularitySort.setCssClass("selected");
                 }
 
                 final DemandListUrl contributionSortUrl = url.clone();
                 contributionSortUrl.setSort(SORT_BY_CONTRIBUTION);
                 final HtmlLink contributionSort = contributionSortUrl.getHtmlLink(Context.tr("contribution"));
-                if(sort.equals(SORT_BY_CONTRIBUTION)) {
+                if (sort.equals(SORT_BY_CONTRIBUTION)) {
                     contributionSort.setCssClass("selected");
                 }
 
                 final DemandListUrl progressSortUrl = url.clone();
                 progressSortUrl.setSort(SORT_BY_PROGRESS);
                 final HtmlLink progressSort = progressSortUrl.getHtmlLink(Context.tr("progress"));
-                if(sort.equals(SORT_BY_PROGRESS)) {
+                if (sort.equals(SORT_BY_PROGRESS)) {
                     progressSort.setCssClass("selected");
                 }
 
                 final DemandListUrl creationDateSortUrl = url.clone();
                 creationDateSortUrl.setSort(SORT_BY_CREATION_DATE);
                 final HtmlLink creationDateSort = creationDateSortUrl.getHtmlLink(Context.tr("creation date"));
-                if(sort.equals(SORT_BY_CREATION_DATE)) {
+                if (sort.equals(SORT_BY_CREATION_DATE)) {
                     creationDateSort.setCssClass("selected");
                 }
 
                 final DemandListUrl expirationDateSortUrl = url.clone();
                 expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
                 final HtmlLink expirationDateSort = expirationDateSortUrl.getHtmlLink(Context.tr("expiration date"));
-                if(sort.equals(SORT_BY_EXPIRATION_DATE)) {
+                if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
                     expirationDateSort.setCssClass("selected");
                 }
 
                 demandSort.addText(Context.tr("Sort by: "));
                 demandSort.add(popularitySort);
+                demandSort.addText(" – ");
+                demandSort.add(relevanceSort);
                 demandSort.addText(" – ");
                 demandSort.add(contributionSort);
                 demandSort.addText(" – ");
@@ -183,56 +183,50 @@ public final class DemandList extends Page {
             }
             demandSearchBlock.add(demandSort);
 
-            final HtmlDiv demandOrder = new HtmlDiv("demand_order");
-            {
-
-                final DemandListUrl descendingOrderUrl = url.clone();
-                descendingOrderUrl.setOrder(ORDER_DESC);
-                final HtmlLink descendingOrder = descendingOrderUrl.getHtmlLink(Context.tr("descending"));
-                if(order.equals(ORDER_DESC)) {
-                    descendingOrder.setCssClass("selected");
-                }
-
-                final DemandListUrl ascendingOrderUrl = url.clone();
-                ascendingOrderUrl.setOrder(ORDER_ASC);
-                final HtmlLink ascendingOrder = ascendingOrderUrl.getHtmlLink(Context.tr("ascending"));
-                if(order.equals(ORDER_ASC)) {
-                    ascendingOrder.setCssClass("selected");
-                }
-
-                demandOrder.addText(Context.tr("Order: "));
-                demandOrder.add(descendingOrder);
-                demandOrder.addText(" – ");
-                demandOrder.add(ascendingOrder);
-            }
-            demandSearchBlock.add(demandOrder);
-
-            // ////////////////////
-            // Div demand_advanced_search_button
-            final HtmlDiv demandAdvancedSearchButton = new HtmlDiv("demand_advanced_search_button");
-            {
-                final HtmlLink showHideShareBlock = new HtmlLink("javascript:showHide('demand_advanced_search')", Context.tr("+ Advanced search"));
-                demandAdvancedSearchButton.add(showHideShareBlock);
-            }
-            demandSearchBlock.add(demandAdvancedSearchButton);
-
-            // ////////////////////
-            // Div demand_advanced_search
-            final HtmlDiv demandAdvancedSearch = new HtmlDiv("demand_advanced_search", "demand_advanced_search");
-            {
-
-            }
-            demandSearchBlock.add(demandAdvancedSearch);
+            // /////////////////////
+            // // Div demand_advanced_search_button
+            // final HtmlDiv demandAdvancedSearchButton = new
+            // HtmlDiv("demand_advanced_search_button");
+            // {
+            // final HtmlLink showHideShareBlock = new
+            // HtmlLink("javascript:showHide('demand_advanced_search')",
+            // Context.tr("+ Advanced search"));
+            // demandAdvancedSearchButton.add(showHideShareBlock);
+            // }
+            // demandSearchBlock.add(demandAdvancedSearchButton);
+            //
+            // // ////////////////////
+            // // Div demand_advanced_search
+            // final HtmlDiv demandAdvancedSearch = new
+            // HtmlDiv("demand_advanced_search", "demand_advanced_search");
+            // {
+            //
+            // }
+            // demandSearchBlock.add(demandAdvancedSearch);
         }
         add(demandSearchBlock);
 
         // Demand list
-        final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
-        final DemandListUrl clonedUrl = url.clone();
-        pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, searchResult(), clonedUrl, clonedUrl.getPagedDemandListUrl());
+        PageIterable<Demand> results = searchResult();
 
-        add(pagedDemandList);
+        if (results.size() > 0) {
+
+            final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
+
+            final DemandListUrl clonedUrl = url.clone();
+            pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
+
+            add(pagedDemandList);
+        } else {
+
+            final HtmlDiv noResultBlock = new HtmlDiv("no_result_block");
+            {
+                noResultBlock.addText(Context.tr("No result"));
+            }
+            add(noResultBlock);
+        }
+
     }
 
     @Override
@@ -266,16 +260,15 @@ public final class DemandList extends Page {
         }
     };
 
-
     private PageIterable<Demand> searchResult() {
 
         DemandSearch search = new DemandSearch(searchString);
 
-        if(!filter.equals(FILTER_ALL)) {
-            if(filter.equals(FILTER_IN_PROGRESS)) {
+        if (!filter.equals(FILTER_ALL)) {
+            if (filter.equals(FILTER_IN_PROGRESS)) {
                 search.addDemandStateFilter(DemandState.FINISHED);
                 search.addDemandStateFilter(DemandState.DISCARDED);
-            } else if(filter.equals(FILTER_FINISHED)) {
+            } else if (filter.equals(FILTER_FINISHED)) {
                 search.addDemandStateFilter(DemandState.DEVELOPPING);
                 search.addDemandStateFilter(DemandState.INCOME);
                 search.addDemandStateFilter(DemandState.PENDING);
@@ -283,6 +276,19 @@ public final class DemandList extends Page {
             }
         }
 
+        if (sort.equals(SORT_BY_RELEVANCE)) {
+            search.setSortMethod(SortMethod.SORT_BY_RELEVANCE);
+        } else if (sort.equals(SORT_BY_CONTRIBUTION)) {
+            search.setSortMethod(SortMethod.SORT_BY_CONTRIBUTION);
+        } else if (sort.equals(SORT_BY_PROGRESS)) {
+            search.setSortMethod(SortMethod.SORT_BY_PROGRESS);
+        } else if (sort.equals(SORT_BY_POPULARITY)) {
+            search.setSortMethod(SortMethod.SORT_BY_POPULARITY);
+        } else if (sort.equals(SORT_BY_CREATION_DATE)) {
+            search.setSortMethod(SortMethod.SORT_BY_CREATION_DATE);
+        } else if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
+            search.setSortMethod(SortMethod.SORT_BY_EXPIRATION_DATE);
+        }
 
         return search.search();
     }

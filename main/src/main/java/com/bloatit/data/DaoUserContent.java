@@ -12,7 +12,9 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.Query;
 import org.hibernate.classic.Session;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -41,6 +43,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     private DaoGroup asGroup;
 
     @Basic(optional = false)
+    @Field(store = Store.NO)
     private Date creationDate;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -48,7 +51,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /**
      * Initialize the creation date to now.
-     * 
+     *
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */
