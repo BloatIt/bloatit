@@ -20,15 +20,11 @@ import com.bloatit.model.right.RightManager.Action;
  * {@link InternalAccount} account is for the money we store for a user, the
  * {@link ExternalAccount} is an account in a bank.
  */
-public abstract class Account extends Identifiable {
+public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
 
-    /**
-     * Since the Account class is abstract we need a way to get the daoAccount for this
-     * account.
-     * 
-     * @return the {@link DaoAccount} for this {@link Account}.
-     */
-    protected abstract DaoAccount getDaoAccount();
+    protected Account(final T id) {
+        super(id);
+    }
 
     /**
      * @return true if the authenticated user can access the <code>Transaction</code>
@@ -87,13 +83,13 @@ public abstract class Account extends Identifiable {
     /**
      * Every time a new transaction is done the modification date is update. This can be
      * used for security purpose.
-     * 
+     *
      * @throws UnauthorizedOperationException if you have not the right to access the
      *         <code>LastModificationDate</code> property in this class.
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
         new AccountRight.LastModificationDate().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return getDaoAccount().getLastModificationDate();
+        return getDao().getLastModificationDate();
     }
 
     /**
@@ -103,7 +99,7 @@ public abstract class Account extends Identifiable {
      */
     public final BigDecimal getAmount() throws UnauthorizedOperationException {
         new AccountRight.Amount().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return getDaoAccount().getAmount();
+        return getDao().getAmount();
     }
 
     /**
@@ -113,16 +109,16 @@ public abstract class Account extends Identifiable {
      */
     public final PageIterable<Transaction> getTransactions() throws UnauthorizedOperationException {
         new AccountRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return new TransactionList(getDaoAccount().getTransactions());
+        return new TransactionList(getDao().getTransactions());
     }
 
     /**
      * The actor is the person that possess this account.
-     * 
+     *
      * @throws UnauthorizedOperationException if you have not the right to access the
      *         <code>Actor</code> property in this class.
      */
-    public final Actor getActor() throws UnauthorizedOperationException {
+    public final Actor<?> getActor() throws UnauthorizedOperationException {
         new AccountRight.Actor().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
         return getActorUnprotected();
     }
@@ -134,30 +130,22 @@ public abstract class Account extends Identifiable {
      */
     public final Date getCreationDate() throws UnauthorizedOperationException {
         new AccountRight.CreationDate().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return getDaoAccount().getCreationDate();
+        return getDao().getCreationDate();
     }
 
     /**
      * This method is used only in the authentication process. You should never used it
      * anywhere else.
-     * 
+     *
      * @see getActor;
      */
-    protected final Actor getActorUnprotected() {
-        if (getDaoAccount().getActor().getClass() == DaoMember.class) {
-            return Member.create((DaoMember) getDaoAccount().getActor());
-        } else if (getDaoAccount().getActor().getClass() == DaoGroup.class) {
-            return Group.create((DaoGroup) getDaoAccount().getActor());
+    protected final Actor<?> getActorUnprotected() {
+        if (getDao().getActor().getClass() == DaoMember.class) {
+            return Member.create((DaoMember) getDao().getActor());
+        } else if (getDao().getActor().getClass() == DaoGroup.class) {
+            return Group.create((DaoGroup) getDao().getActor());
         }
         throw new FatalErrorException("Cannot find the right Actor child class.", null);
-    }
-
-    /**
-     * @see Identifiable#getId();
-     */
-    @Override
-    public final int getId() {
-        return getDaoAccount().getId();
     }
 
 }

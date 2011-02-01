@@ -32,7 +32,7 @@ public class Unlockable {
     /**
      * You have to authenticate a Unlockable before using a method which look for an
      * authenticated user.
-     * 
+     *
      * @param authToken it represent the user try to access this Unlockable. It can be
      *        null for a non authenticated user.
      */
@@ -49,7 +49,7 @@ public class Unlockable {
      * complete Member object to describe the author of a "content". You can use this
      * method (the login is unique). This method cannot set some Group roles, you have to
      * use the {@link Unlockable#calculateRole(Member, Group)} method.
-     * 
+     *
      * @return An EnumSet with the roles of the member authenticate by the
      *         {@link AuthToken}.
      */
@@ -80,7 +80,7 @@ public class Unlockable {
     /**
      * Helper function. Call the {@link Unlockable#calculateRole(Member)} method.
      */
-    protected final EnumSet<Role> calculateRole(final UserContent userContent) {
+    protected final EnumSet<Role> calculateRole(final UserContent<?> userContent) {
         if (userContent == null || userContent.getAuthor() == null) {
             // This should never append.
             throw new NonOptionalParameterException();
@@ -99,7 +99,7 @@ public class Unlockable {
     /**
      * Calculate the role {@link AuthToken} user, on a content created by
      * "member as group".
-     * 
+     *
      * @param member The creator of the content.
      * @param group the creator uses "group" to create the content.
      * @return all the role that correspond to the {@link AuthToken}.

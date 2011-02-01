@@ -13,13 +13,16 @@ import com.bloatit.data.DaoBankTransaction.State;
  * @see DaoBankTransaction
  */
 @Entity
-public final class BankTransaction extends Identifiable {
+public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
-    private final DaoBankTransaction dao;
-
-    public static BankTransaction create(final DaoBankTransaction daoBankTransaction) {
-        if (daoBankTransaction != null) {
-            return new BankTransaction(daoBankTransaction);
+    public static BankTransaction create(final DaoBankTransaction dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoBankTransaction> created = CacheManager.get(dao);
+            if (created == null) {
+                return new BankTransaction(dao);
+            }
+            return (BankTransaction) created;
         }
         return null;
     }
@@ -32,76 +35,67 @@ public final class BankTransaction extends Identifiable {
     }
 
     public BankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final String orderReference) {
-        this.dao = DaoBankTransaction.createAndPersist(message, token, author, value, orderReference);
+        super(DaoBankTransaction.createAndPersist(message, token, author, value, orderReference));
     }
 
     private BankTransaction(final DaoBankTransaction dao) {
-        super();
-        this.dao = dao;
-    }
-
-    /**
-     * @see Identifiable#getId()
-     */
-    @Override
-    public int getId() {
-        return dao.getId();
+        super(dao);
     }
 
     /**
      * @see DaoBankTransaction#setAccepted()
      */
     public void setAccepted() {
-        dao.setAccepted();
+        getDao().setAccepted();
     }
 
     /**
      * @see DaoBankTransaction#setRefused()
      */
     public void setRefused() {
-        dao.setRefused();
+        getDao().setRefused();
     }
 
     /**
      * @see DaoBankTransaction#validated()
      */
     public boolean validated() {
-        return dao.validated();
+        return getDao().validated();
     }
 
     public String getMessage() {
-        return dao.getMessage();
+        return getDao().getMessage();
     }
 
     public BigDecimal getValue() {
-        return dao.getValue();
+        return getDao().getValue();
     }
 
     public State getState() {
-        return dao.getState();
+        return getDao().getState();
     }
 
     public Date getCreationDate() {
-        return dao.getCreationDate();
+        return getDao().getCreationDate();
     }
 
     public Date getModificationDate() {
-        return dao.getModificationDate();
+        return getDao().getModificationDate();
     }
 
     public String getReference() {
-        return dao.getReference();
+        return getDao().getReference();
     }
 
     public String getToken() {
-        return dao.getToken();
+        return getDao().getToken();
     }
 
     public void setProcessInformations(final String processInformations) {
-        dao.setProcessInformations(processInformations);
+        getDao().setProcessInformations(processInformations);
     }
 
     public String getProcessInformations() {
-        return dao.getProcessInformations();
+        return getDao().getProcessInformations();
     }
 }

@@ -71,7 +71,7 @@
 				</executions>
 			</plugin>
 
-			<!-- Exec-->
+			<!-- Exec -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -79,22 +79,22 @@
 				<configuration>
 					<mainClass>com.bloatit.framework.webserver.scgiserver.SCGIServer</mainClass>
 					<arguments>
-					    <argument>-classpath</argument>
+						<argument>-classpath</argument>
 					</arguments>
 				</configuration>
 			</plugin>
-			
+
 			<!-- Jar creation -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<configuration>
-				    <archive>
-				        <manifest>
-        					<mainClass>com.bloatit.framework.webserver.scgiserver.SCGIServer</mainClass>
-					    </manifest>
-				    </archive>
+					<archive>
+						<manifest>
+							<mainClass>com.bloatit.framework.webserver.scgiserver.SCGIServer</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 
@@ -196,15 +196,15 @@
 			<artifactId>BloatItPaypalBinding</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-		
+
 		<!-- Jakarta language commons (to escape string) -->
 		<dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.3</version>
-        </dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.3</version>
+		</dependency>
 
-        <!-- Web services -->
+		<!-- Web services -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>apache-cxf</artifactId>
@@ -212,6 +212,7 @@
 			<type>pom</type>
 			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.dspace.dependencies.jmockit</groupId>
 			<artifactId>dspace-jmockit</artifactId>
@@ -219,28 +220,36 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Java mail -->
 		<dependency>
-            <groupId>org.apache.geronimo.javamail</groupId>
-            <artifactId>geronimo-javamail_1.4_provider</artifactId>
-            <version>1.7</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-javamail_1.4_spec</artifactId>
-            <version>1.6</version>
-        </dependency>
-        
-        <!--  FileUpload tools -->
-        <dependency>
-        	<groupId>commons-fileupload</groupId>
-        	<artifactId>commons-fileupload</artifactId>
-        	<version>1.2.2</version>
-        	<type>jar</type>
-        </dependency>
+			<groupId>org.apache.geronimo.javamail</groupId>
+			<artifactId>geronimo-javamail_1.4_provider</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-javamail_1.4_spec</artifactId>
+			<version>1.6</version>
+		</dependency>
 	</dependencies>
+
+	<!--  <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.acme</groupId>
+				<artifactId>java-coffee-machine</artifactId>
+				<version>7.5.194.3</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-jdk14</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		</dependencies>
+	</dependencyManagement> -->
 
 	<pluginRepositories>
 		<pluginRepository>
@@ -270,6 +279,6 @@
 		</pluginRepository>
 
 	</pluginRepositories>
-	
+
 
 </project>

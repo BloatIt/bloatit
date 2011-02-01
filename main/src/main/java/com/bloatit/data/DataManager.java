@@ -3,9 +3,9 @@ package com.bloatit.data;
 import org.hibernate.FlushMode;
 import org.hibernate.classic.Session;
 
-public final class Data {
+public final class DataManager {
 
-    private Data() {
+    private DataManager() {
         // disactivate ctor;
     }
 
@@ -17,20 +17,18 @@ public final class Data {
         // For now do nothing.
     }
 
-    public static void openReadOnly() {
+    public static void setReadOnly() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-
         session.setDefaultReadOnly(true);
         session.setFlushMode(FlushMode.MANUAL);
-        session.beginTransaction();
     }
 
     public static void open() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
 
+        session.beginTransaction();
         session.setDefaultReadOnly(false);
         session.setFlushMode(FlushMode.AUTO);
-        session.beginTransaction();
     }
 
     public static void close() {

@@ -12,16 +12,19 @@ import com.bloatit.model.lists.TranslationList;
  * description each time you create a demand.) There is no right management for this
  * class. I assume that if you can get a <code>Description</code> then you can access
  * every property in it.
- * 
+ *
  * @see DaoDescription
  */
-public final class Description extends Identifiable {
-
-    private final DaoDescription dao;
+public final class Description extends Identifiable<DaoDescription> {
 
     public static Description create(final DaoDescription dao) {
         if (dao != null) {
-            return new Description(dao);
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoDescription> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Description(dao);
+            }
+            return (Description) created;
         }
         return null;
     }
@@ -29,30 +32,21 @@ public final class Description extends Identifiable {
     /**
      * Create a Description. If you are looking for a way to create a new description see
      * {@link Demand#addOffer(java.math.BigDecimal, Locale, String, String, java.util.Date)}
-     * 
+     *
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
      * @param description is the main text of the description (the actual description)
      */
     public Description(final Member member, final Locale locale, final String title, final String description) {
-        super();
-        this.dao = DaoDescription.createAndPersist(member.getDao(), locale, title, description);
+        super(DaoDescription.createAndPersist(member.getDao(), locale, title, description));
     }
 
     /**
      * Create a description using its dao representation.
      */
     private Description(final DaoDescription dao) {
-        super();
-        this.dao = dao;
-    }
-
-    /**
-     * @return the dao representation of this description.
-     */
-    public DaoDescription getDao() {
-        return dao;
+        super(dao);
     }
 
     /**
@@ -60,15 +54,15 @@ public final class Description extends Identifiable {
      * @see DaoDescription#getTranslations()
      */
     public PageIterable<Translation> getTranslations() {
-        return new TranslationList(dao.getTranslations());
+        return new TranslationList(getDao().getTranslations());
     }
 
     public void addTranslation(final Translation translation) {
-        dao.addTranslation(translation.getDao());
+        getDao().addTranslation(translation.getDao());
     }
 
     public Translation getTranslation(final Locale locale) {
-        return Translation.create(dao.getTranslation(locale));
+        return Translation.create(getDao().getTranslation(locale));
     }
 
     public Translation getTranslationOrDefault(final Locale locale) {
@@ -80,19 +74,14 @@ public final class Description extends Identifiable {
     }
 
     public Translation getDefaultTranslation() {
-        return Translation.create(dao.getDefaultTranslation());
+        return Translation.create(getDao().getDefaultTranslation());
     }
 
     public void setDefaultLocale(final Locale defaultLocale) {
-        dao.setDefaultLocale(defaultLocale);
+        getDao().setDefaultLocale(defaultLocale);
     }
 
     public Locale getDefaultLocale() {
-        return dao.getDefaultLocale();
-    }
-
-    @Override
-    public int getId() {
-        return dao.getId();
+        return getDao().getDefaultLocale();
     }
 }

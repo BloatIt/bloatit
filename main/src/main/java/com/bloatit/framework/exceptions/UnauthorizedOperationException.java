@@ -21,6 +21,16 @@ public class UnauthorizedOperationException extends Exception {
         ALREADY_KUDOSED,
 
         /**
+         * Influence too low to unkudos a kudosable
+         */
+        INFLUENCE_LOW_ON_UNKUDOS,
+
+        /**
+         * Influence too low to kudos a kudosable
+         */
+        INFLUENCE_LOW_ON_KUDOS,
+
+        /**
          * You try to add somebody in a group, but this group is not public. You have to
          * use {@link JoinGroupInvitation} object to join a non public group.
          */
@@ -40,6 +50,7 @@ public class UnauthorizedOperationException extends Exception {
          * You try to finish a demand, but you are not the current developer.
          */
         NON_DEVELOPER_FINISHED_DEMAND
+
     }
 
     private final EnumSet<Role> roles;

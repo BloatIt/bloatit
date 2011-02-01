@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.Url;
@@ -29,6 +30,7 @@ public abstract class Action implements Linkable {
     private final UrlNode actionUrl;
 
     public Action(final UrlNode url) {
+        ModelManagerAccessor.open();
         this.actionUrl = url;
         session = Context.getSession();
     }

@@ -18,12 +18,13 @@ import org.hibernate.search.annotations.Indexed;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Indexed
-public abstract class DaoIdentifiable {
+public abstract class DaoIdentifiable implements IdentifiableInterface{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @DocumentId
     private Integer id;
 
+    @Override
     public final Integer getId() {
         return id;
     }

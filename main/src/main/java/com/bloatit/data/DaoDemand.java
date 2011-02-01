@@ -18,11 +18,15 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OrderBy;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.search.DaoDemandSearchFilterFactory;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -34,6 +38,7 @@ import com.bloatit.framework.utils.PageIterable;
  */
 @Entity
 @Indexed
+@FullTextFilterDef(name = "searchFilter", impl = DaoDemandSearchFilterFactory.class)
 public final class DaoDemand extends DaoKudosable {
 
     /**
@@ -48,9 +53,11 @@ public final class DaoDemand extends DaoKudosable {
      * This is a calculated value with the sum of the value of all contributions.
      */
     @Basic(optional = false)
+    @Field(store = Store.NO)
     private BigDecimal contribution;
 
     @Basic(optional = false)
+    @Field(store = Store.NO)
     @Enumerated
     private DemandState demandState;
 
@@ -125,7 +132,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     * 
+     *
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -145,7 +152,7 @@ public final class DaoDemand extends DaoKudosable {
     /**
      * Create a DaoDemand, add an offer and set its state to the state
      * {@link DemandState#PREPARING}.
-     * 
+     *
      * @param member is the author of the demand
      * @param description is the description ...
      * @param offer
@@ -178,7 +185,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     * 
+     *
      * @param Offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -191,7 +198,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     * 
+     *
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -227,7 +234,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -318,7 +325,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Called by contribution when canceled.
-     * 
+     *
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {

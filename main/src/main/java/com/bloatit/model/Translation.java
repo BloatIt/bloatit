@@ -2,45 +2,42 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.framework.exceptions.FatalErrorException;
 
-public final class Translation extends Kudosable {
-
-    private final DaoTranslation dao;
+public final class Translation extends Kudosable<DaoTranslation> {
 
     public static Translation create(final DaoTranslation dao) {
-        if (dao == null) {
-            return null;
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoTranslation> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Translation(dao);
+            }
+            return (Translation) created;
         }
-        return new Translation(dao);
+        return null;
     }
 
     private Translation(final DaoTranslation dao) {
-        super();
-        this.dao = dao;
-    }
-
-    public DaoTranslation getDao() {
-        return dao;
+        super(dao);
     }
 
     public String getTitle() {
-        return dao.getTitle();
+        return getDao().getTitle();
     }
 
     public Locale getLocale() {
-        return dao.getLocale();
+        return getDao().getLocale();
     }
 
     public String getText() {
-        return dao.getText();
+        return getDao().getText();
     }
 
     /**
      * Smart cut the text, add a "…" char, and return it.
-     * 
+     *
      * @param sizeMax is the maximum size the returned text can be.
      * @param variance is how far we are looking for the punctuation mark to cut the text.
      * @return a cut version of the text, find a point or a punctuation mark to cut it at
@@ -50,7 +47,7 @@ public final class Translation extends Kudosable {
         if (variance < 0) {
             throw new FatalErrorException("variance must be >= 0");
         }
-        final String wholeText = dao.getText();
+        final String wholeText = getDao().getText();
         if (wholeText.length() <= sizeMax) {
             return wholeText;
         }
@@ -94,9 +91,40 @@ public final class Translation extends Kudosable {
         return wholeText.substring(0, i - 1) + "…";
     }
 
+    // ////////////////////////////////////////////////////////////////////////
+    // kudosable configuration
+    // ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnPending()
+     */
     @Override
-    protected DaoKudosable getDaoKudosable() {
-        return dao;
+    protected int turnPending() {
+        return KudosableConfiguration.getTranslationTurnPending();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnValid()
+     */
+    @Override
+    protected int turnValid() {
+        return KudosableConfiguration.getTranslationTurnValid();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnRejected()
+     */
+    @Override
+    protected int turnRejected() {
+        return KudosableConfiguration.getTranslationTurnRejected();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnHidden()
+     */
+    @Override
+    protected int turnHidden() {
+        return KudosableConfiguration.getTranslationTurnHidden();
     }
 
 }

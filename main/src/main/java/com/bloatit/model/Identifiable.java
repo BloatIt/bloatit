@@ -1,11 +1,28 @@
 package com.bloatit.model;
 
-public abstract class Identifiable extends Unlockable {
+import com.bloatit.data.IdentifiableInterface;
+import com.bloatit.framework.exceptions.NonOptionalParameterException;
+
+public abstract class Identifiable<T extends IdentifiableInterface> extends Unlockable {
+
+    private final T dao;
+
+    protected Identifiable(final T id) {
+        if (id == null) {
+            throw new NonOptionalParameterException();
+        }
+        if (id.getId() != null) {
+            CacheManager.add(id.getId(), this);
+        }
+        dao = id;
+    }
 
     /**
      * @return a unique identifier for this object.
      */
-    public abstract int getId();
+    public final int getId(){
+        return getDao().getId();
+    }
 
     @Override
     public int hashCode() {
@@ -26,11 +43,18 @@ public abstract class Identifiable extends Unlockable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Identifiable other = (Identifiable) obj;
+        final Identifiable<?> other = (Identifiable<?>) obj;
         if (getId() != other.getId()) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the dao
+     */
+    public final T getDao() {
+        return dao;
     }
 
 }

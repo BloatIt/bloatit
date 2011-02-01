@@ -2,7 +2,6 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 
-import com.bloatit.data.DaoAccount;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.InternalAccountRight;
@@ -14,20 +13,25 @@ import com.bloatit.model.right.RightManager.Action;
  * amount under zero. An internal account can have some money blocked. When you contribute
  * on an idea, you do not spend the money directly, but it is blocked and you cannot use
  * it elsewhere.
- * 
+ *
  * @author tguyard
  */
-public final class InternalAccount extends Account {
+public final class InternalAccount extends Account<DaoInternalAccount> {
 
-    private final DaoInternalAccount dao;
-
-    protected InternalAccount(final DaoInternalAccount dao) {
-        super();
-        this.dao = dao;
+    public static InternalAccount create(final DaoInternalAccount dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoInternalAccount> created = CacheManager.get(dao);
+            if (created == null) {
+                return new InternalAccount(dao);
+            }
+            return (InternalAccount) created;
+        }
+        return null;
     }
 
-    public DaoInternalAccount getDao() {
-        return dao;
+    private InternalAccount(final DaoInternalAccount dao) {
+        super(dao);
     }
 
     /**
@@ -40,19 +44,13 @@ public final class InternalAccount extends Account {
 
     /**
      * Return the amount blocked into contribution on non finished idea.
-     * 
+     *
      * @return a positive {@link BigDecimal}.
      * @throws UnauthorizedOperationException if you do not have the right to access the
      *         <code>Bloked</code> property.
      */
     public BigDecimal getBlocked() throws UnauthorizedOperationException {
         new InternalAccountRight.Blocked().tryAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
-        return dao.getBlocked();
+        return getDao().getBlocked();
     }
-
-    @Override
-    protected DaoAccount getDaoAccount() {
-        return dao;
-    }
-
 }

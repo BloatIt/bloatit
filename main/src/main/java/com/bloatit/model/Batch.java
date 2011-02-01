@@ -11,9 +11,7 @@ import com.bloatit.data.DaoBug.State;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 
-public class Batch extends Identifiable {
-
-    private final DaoBatch dao;
+public class Batch extends Identifiable<DaoBatch> {
 
     // ////////////////////////////////////////////////////////////////////////
     // Construction
@@ -21,13 +19,18 @@ public class Batch extends Identifiable {
 
     public static Batch create(final DaoBatch dao) {
         if (dao != null) {
-            return new Batch(dao);
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoBatch> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Batch(dao);
+            }
+            return (Batch) created;
         }
         return null;
     }
 
     private Batch(final DaoBatch dao) {
-        this.dao = dao;
+        super(dao);
     }
 
     /**
@@ -36,11 +39,11 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#updateMajorFatalPercent(int, int)
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
-        dao.updateMajorFatalPercent(fatalPercent, majorPercent);
+        getDao().updateMajorFatalPercent(fatalPercent, majorPercent);
     }
 
     public void addBug(final Member member, final Batch batch, final String description, final Locale locale, final Level errorLevel) {
-        dao.addBug(new Bug(member, batch, description, locale, errorLevel).getDao());
+        getDao().addBug(new Bug(member, batch, description, locale, errorLevel).getDao());
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -51,21 +54,21 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#release()
      */
     public void release() {
-        dao.release();
+        getDao().release();
     }
 
     /**
      * @see com.bloatit.data.DaoBatch#validate()
      */
     public boolean validate() {
-        return dao.validate(false);
+        return getDao().validate(false);
     }
 
     /**
      * @see com.bloatit.data.DaoBatch#validate()
      */
     public boolean forceValidate() {
-        return dao.validate(true);
+        return getDao().validate(true);
     }
 
     /**
@@ -74,7 +77,7 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#shouldValidatePart(com.bloatit.data.DaoBug.Level)
      */
     public boolean shouldValidatePart(final Level level) {
-        return dao.shouldValidatePart(level);
+        return getDao().shouldValidatePart(level);
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -87,7 +90,7 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#getNonResolvedBugs(com.bloatit.data.DaoBug.Level)
      */
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
-        return dao.getNonResolvedBugs(level);
+        return getDao().getNonResolvedBugs(level);
     }
 
     /**
@@ -96,7 +99,7 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.Level)
      */
     public PageIterable<DaoBug> getBugs(final Level level) {
-        return dao.getBugs(level);
+        return getDao().getBugs(level);
     }
 
     /**
@@ -105,7 +108,7 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.State)
      */
     public PageIterable<DaoBug> getBugs(final State state) {
-        return dao.getBugs(state);
+        return getDao().getBugs(state);
     }
 
     /**
@@ -116,7 +119,7 @@ public class Batch extends Identifiable {
      *      com.bloatit.data.DaoBug.State)
      */
     public PageIterable<Bug> getBugs(final Level level, final State state) {
-        return new BugList(dao.getBugs(level, state));
+        return new BugList(getDao().getBugs(level, state));
     }
 
     /**
@@ -124,7 +127,7 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#getReleaseDate()
      */
     public final Date getReleaseDate() {
-        return dao.getReleaseDate();
+        return getDao().getReleaseDate();
     }
 
     /**
@@ -132,7 +135,7 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#getFatalBugsPercent()
      */
     public final int getFatalBugsPercent() {
-        return dao.getFatalBugsPercent();
+        return getDao().getFatalBugsPercent();
     }
 
     /**
@@ -140,7 +143,7 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#getMajorBugsPercent()
      */
     public final int getMajorBugsPercent() {
-        return dao.getMajorBugsPercent();
+        return getDao().getMajorBugsPercent();
     }
 
     /**
@@ -148,7 +151,7 @@ public class Batch extends Identifiable {
      * @see com.bloatit.data.DaoBatch#getMinorBugsPercent()
      */
     public final int getMinorBugsPercent() {
-        return dao.getMinorBugsPercent();
+        return getDao().getMinorBugsPercent();
     }
 
     public Date getExpirationDate() {
@@ -165,14 +168,5 @@ public class Batch extends Identifiable {
 
     public String getDescription() {
         return getDao().getDescription().getDefaultTranslation().getText();
-    }
-
-    DaoBatch getDao() {
-        return dao;
-    }
-
-    @Override
-    public int getId() {
-        return getDao().getId();
     }
 }

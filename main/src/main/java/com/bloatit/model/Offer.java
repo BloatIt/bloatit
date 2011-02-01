@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.demand.Demand;
@@ -14,19 +13,22 @@ import com.bloatit.model.lists.BatchList;
 
 // TODO rightManagement
 
-public final class Offer extends Kudosable {
-
-    private final DaoOffer dao;
+public final class Offer extends Kudosable<DaoOffer> {
 
     // ////////////////////////////////////////////////////////////////////////
     // Construction
     // ////////////////////////////////////////////////////////////////////////
 
     public static Offer create(final DaoOffer dao) {
-        if (dao == null) {
-            return null;
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoOffer> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Offer(dao);
+            }
+            return (Offer) created;
         }
-        return new Offer(dao);
+        return null;
     }
 
     /**
@@ -45,16 +47,15 @@ public final class Offer extends Kudosable {
                  final String description,
                  final Locale local,
                  final Date dateExpire) {
-        dao = DaoOffer.createAndPersist(member.getDao(),
+        super(DaoOffer.createAndPersist(member.getDao(),
                                         demand.getDao(),
                                         amount,
                                         DaoDescription.createAndPersist(member.getDao(), local, title, description),
-                                        dateExpire);
+                                        dateExpire));
     }
 
     private Offer(final DaoOffer dao) {
-        super();
-        this.dao = dao;
+        super(dao);
     }
 
     public void addBatch(final Date dateExpire,
@@ -63,11 +64,11 @@ public final class Offer extends Kudosable {
                          final String description,
                          final int secondBeforeValidation) {
         // TODO blind me !
-        final Locale locale = dao.getBatches().iterator().next().getDescription().getDefaultLocale();
-        dao.addBatch(DaoBatch.createAndPersist(dateExpire,
+        final Locale locale = getDao().getBatches().iterator().next().getDescription().getDefaultLocale();
+        getDao().addBatch(DaoBatch.createAndPersist(dateExpire,
                                                amount,
-                                               DaoDescription.createAndPersist(dao.getAuthor(), locale, title, description),
-                                               dao,
+                                               DaoDescription.createAndPersist(getDao().getAuthor(), locale, title, description),
+                                               getDao(),
                                                secondBeforeValidation));
     }
 
@@ -83,7 +84,7 @@ public final class Offer extends Kudosable {
         // If the validation is not complete, there is nothing to do in the demand
         final boolean isAllValidated = findCurrentDaoBatch().validate(force);
         if (isAllValidated) {
-            if (dao.hasBatchesLeft()) {
+            if (getDao().hasBatchesLeft()) {
                 getDemand().setBatchIsValidated();
             } else {
                 getDemand().setOfferIsValidated();
@@ -93,12 +94,12 @@ public final class Offer extends Kudosable {
     }
 
     public void cancelEverythingLeft() {
-        dao.cancelEverythingLeft();
+        getDao().cancelEverythingLeft();
     }
 
     private DaoBatch findCurrentDaoBatch() {
-        if (dao.hasBatchesLeft()) {
-            return dao.getCurrentBatch();
+        if (getDao().hasBatchesLeft()) {
+            return getDao().getCurrentBatch();
         }
         return null;
     }
@@ -125,29 +126,56 @@ public final class Offer extends Kudosable {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
-    @Override
-    protected DaoKudosable getDaoKudosable() {
-        return dao;
-    }
-
-    public DaoOffer getDao() {
-        return dao;
-    }
-
     public Demand getDemand() {
-        return Demand.create(dao.getDemand());
+        return Demand.create(getDao().getDemand());
     }
 
     public BigDecimal getAmount() {
-        return dao.getAmount();
+        return getDao().getAmount();
     }
 
     public PageIterable<Batch> getBatches() {
-        return new BatchList(dao.getBatches());
+        return new BatchList(getDao().getBatches());
     }
 
     public Date getExpirationDate() {
-        return dao.getExpirationDate();
+        return getDao().getExpirationDate();
+    }
+
+    // ////////////////////////////////////////////////////////////////////////
+    // Kudosable configuration
+    // ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnPending()
+     */
+    @Override
+    protected int turnPending() {
+        return KudosableConfiguration.getOfferTurnPending();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnValid()
+     */
+    @Override
+    protected int turnValid() {
+        return KudosableConfiguration.getOfferTurnValid();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnRejected()
+     */
+    @Override
+    protected int turnRejected() {
+        return KudosableConfiguration.getOfferTurnRejected();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnHidden()
+     */
+    @Override
+    protected int turnHidden() {
+        return KudosableConfiguration.getOfferTurnHidden();
     }
 
 }

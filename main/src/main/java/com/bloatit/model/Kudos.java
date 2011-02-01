@@ -3,26 +3,31 @@ package com.bloatit.model;
 import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoUserContent;
 
-public final class Kudos extends UserContent {
+public final class Kudos extends UserContent<DaoKudos> {
 
-    private final DaoKudos dao;
-
-    public Kudos(final DaoKudos dao) {
-        super();
-        this.dao = dao;
+    public static Kudos create(final DaoKudos dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoKudos> created = CacheManager.get(dao);
+            if (created == null) {
+                return new Kudos(dao);
+            }
+            return (Kudos) created;
+        }
+        return null;
     }
 
-    protected DaoKudos getDao() {
-        return dao;
+    private Kudos(final DaoKudos dao) {
+        super(dao);
     }
 
     public int getValue() {
-        return dao.getValue();
+        return getDao().getValue();
     }
 
     @Override
     protected DaoUserContent getDaoUserContent() {
-        return dao;
+        return getDao();
     }
 
 }

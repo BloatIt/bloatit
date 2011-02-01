@@ -66,7 +66,7 @@ public final class IndexPage extends Page {
 
         final HtmlForm searchForm = new HtmlForm(new DemandListUrl().urlString(), HtmlForm.Method.GET);
 
-        final HtmlTextField searchField = new HtmlTextField(DemandList.SEARCH_STRING);
+        final HtmlTextField searchField = new HtmlTextField(DemandList.SEARCH_STRING_CODE);
 
         final HtmlSubmit searchButton = new HtmlSubmit(tr("Search"));
         searchForm.add(searchField);

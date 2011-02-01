@@ -1,6 +1,5 @@
 package com.bloatit.model;
 
-import com.bloatit.data.DaoAccount;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -10,21 +9,26 @@ import com.bloatit.model.right.RightManager.Action;
 /**
  * @see DaoExternalAccount
  */
-public final class ExternalAccount extends Account {
+public final class ExternalAccount extends Account<DaoExternalAccount> {
 
-    private final DaoExternalAccount dao;
-
-    public ExternalAccount(final Actor actor, final AccountType type, final String bankCode) {
-        dao = DaoExternalAccount.createAndPersist(actor.getDao(), type, bankCode);
+    public ExternalAccount(final Actor<?> actor, final AccountType type, final String bankCode) {
+        super(DaoExternalAccount.createAndPersist(actor.getDao(), type, bankCode));
     }
 
-    protected ExternalAccount(final DaoExternalAccount dao) {
-        super();
-        this.dao = dao;
+    public static ExternalAccount create(final DaoExternalAccount dao) {
+        if (dao != null) {
+            @SuppressWarnings("unchecked")
+            final Identifiable<DaoExternalAccount> created = CacheManager.get(dao);
+            if (created == null) {
+                return new ExternalAccount(dao);
+            }
+            return (ExternalAccount) created;
+        }
+        return null;
     }
 
-    protected DaoExternalAccount getDao() {
-        return dao;
+    private ExternalAccount(final DaoExternalAccount dao) {
+        super(dao);
     }
 
     /**
@@ -47,7 +51,7 @@ public final class ExternalAccount extends Account {
      */
     public String getBankCode() throws UnauthorizedOperationException {
         new ExternalAccountRight.BankCode().tryAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
-        return dao.getBankCode();
+        return getDao().getBankCode();
     }
 
     /**
@@ -56,12 +60,7 @@ public final class ExternalAccount extends Account {
      */
     public AccountType getType() throws UnauthorizedOperationException {
         new ExternalAccountRight.Type().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
-        return dao.getType();
-    }
-
-    @Override
-    protected DaoAccount getDaoAccount() {
-        return dao;
+        return getDao().getType();
     }
 
 }
