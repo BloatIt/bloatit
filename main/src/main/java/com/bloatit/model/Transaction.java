@@ -65,11 +65,6 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         return dao.getCreationDate();
     }
 
-    @Override
-    public int getId() {
-        return dao.getId();
-    }
-
     protected DaoTransaction getDao() {
         return dao;
     }

@@ -30,11 +30,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
         return Group.create(getDaoUserContent().getAsGroup());
     }
 
-    @Override
-    public final int getId() {
-        return getDaoUserContent().getId();
-    }
-
     public PageIterable<FileMetadata> getFiles() {
         return new FileMetadataList(getDaoUserContent().getFiles());
     }

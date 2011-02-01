@@ -20,7 +20,9 @@ public abstract class Identifiable<T extends IdentifiableInterface> extends Unlo
     /**
      * @return a unique identifier for this object.
      */
-    public abstract int getId();
+    public final int getId(){
+        return dao.getId();
+    }
 
     @Override
     public int hashCode() {

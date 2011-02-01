@@ -12,7 +12,7 @@ import com.bloatit.model.lists.TranslationList;
  * description each time you create a demand.) There is no right management for this
  * class. I assume that if you can get a <code>Description</code> then you can access
  * every property in it.
- * 
+ *
  * @see DaoDescription
  */
 public final class Description extends Identifiable<DaoDescription> {
@@ -32,7 +32,7 @@ public final class Description extends Identifiable<DaoDescription> {
     /**
      * Create a Description. If you are looking for a way to create a new description see
      * {@link Demand#addOffer(java.math.BigDecimal, Locale, String, String, java.util.Date)}
-     * 
+     *
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
@@ -90,10 +90,5 @@ public final class Description extends Identifiable<DaoDescription> {
 
     public Locale getDefaultLocale() {
         return dao.getDefaultLocale();
-    }
-
-    @Override
-    public int getId() {
-        return dao.getId();
     }
 }

@@ -12,19 +12,17 @@ import com.bloatit.model.right.RightManager.Action;
 
 public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
 
-    private static final int TURN_VALID = 100;
-    private static final int TURN_REJECTED = -100;
-    private static final int TURN_HIDDEN = -10;
-    private static final int TURN_PENDING = 10;
+    private static final int TURN_VALID = KudosableConfiguration.getDefaultTurnValid();
+    private static final int TURN_REJECTED = KudosableConfiguration.getDefaultTurnRejected();
+    private static final int TURN_HIDDEN = KudosableConfiguration.getDefaultTurnHidden();
+    private static final int TURN_PENDING = KudosableConfiguration.getDefaultTurnPending();
 
-    private static final int MIN_INFLUENCE_TO_UNKUDOS = 2;
-    private static final int MIN_INFLUENCE_TO_KUDOS = 0;
+    private static final int MIN_INFLUENCE_TO_UNKUDOS = KudosableConfiguration.getMinInfluenceToUnkudos();
+    private static final int MIN_INFLUENCE_TO_KUDOS = KudosableConfiguration.getMinInfluenceToKudos();
 
     public Kudosable(final T dao) {
         super(dao);
     }
-
-    protected abstract DaoKudosable getDaoKudosable();
 
     public EnumSet<SpecialCode> canKudos() {
         return canKudos(1);
@@ -52,7 +50,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
         // Only one kudos per person
-        if (getDaoKudosable().hasKudosed(getAuthToken().getMember().getDao())) {
+        if (dao.hasKudosed(getAuthToken().getMember().getDao())) {
             errors.add(SpecialCode.ALREADY_KUDOSED);
         }
 
@@ -69,12 +67,12 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
     }
 
     public final State getState() {
-        return getDaoKudosable().getState();
+        return dao.getState();
     }
 
     @Override
     protected final DaoUserContent getDaoUserContent() {
-        return getDaoKudosable();
+        return dao;
     }
 
     private void addKudos(final int signe) throws UnauthorizedOperationException {
@@ -88,7 +86,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
 
         if (influence > 0) {
             getAuthor().addToKarma(influence);
-            calculateNewState(getDaoKudosable().addKudos(member.getDao(), signe * influence));
+            calculateNewState(dao.addKudos(member.getDao(), signe * influence));
         }
     }
 
@@ -135,7 +133,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
     }
 
     private void setState(final State newState) {
-        getDaoKudosable().setState(newState);
+        dao.setState(newState);
     }
 
     /**
@@ -220,7 +218,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
     }
 
     public final int getPopularity() {
-        return getDaoKudosable().getPopularity();
+        return dao.getPopularity();
     }
 
 }

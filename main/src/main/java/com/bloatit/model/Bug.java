@@ -31,11 +31,6 @@ public class Bug extends Identifiable<DaoBug> {
         super(new DaoBug(member.getDao(), batch.getDao(), description, locale, errorLevel));
     }
 
-    @Override
-    public int getId() {
-        return dao.getId();
-    }
-
     /**
      * @param comment
      * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)

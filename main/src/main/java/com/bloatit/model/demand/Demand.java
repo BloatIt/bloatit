@@ -8,7 +8,6 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -26,6 +25,7 @@ import com.bloatit.model.Contribution;
 import com.bloatit.model.Description;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
+import com.bloatit.model.KudosableConfiguration;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
@@ -570,11 +570,6 @@ public final class Demand extends Kudosable<DaoDemand> {
         return dao;
     }
 
-    @Override
-    protected DaoKudosable getDaoKudosable() {
-        return dao;
-    }
-
     public void setStateObject(final AbstractDemandState stateObject) {
         this.stateObject = stateObject;
     }
@@ -617,4 +612,41 @@ public final class Demand extends Kudosable<DaoDemand> {
         }
         return stateObject;
     }
+
+    // ////////////////////////////////////////////////////////////////////////
+    // Kudosable configuration
+    // ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnPending()
+     */
+    @Override
+    protected int turnPending() {
+        return KudosableConfiguration.getDemandTurnPending();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnValid()
+     */
+    @Override
+    protected int turnValid() {
+        return KudosableConfiguration.getDemandTurnValid();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnRejected()
+     */
+    @Override
+    protected int turnRejected() {
+        return KudosableConfiguration.getDemandTurnRejected();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnHidden()
+     */
+    @Override
+    protected int turnHidden() {
+        return KudosableConfiguration.getDemandTurnHidden();
+    }
+
 }

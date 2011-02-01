@@ -173,9 +173,4 @@ public class Batch extends Identifiable<DaoBatch> {
     DaoBatch getDao() {
         return dao;
     }
-
-    @Override
-    public int getId() {
-        return getDao().getId();
-    }
 }

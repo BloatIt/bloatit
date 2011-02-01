@@ -29,7 +29,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     /**
      * Since the Account class is abstract we need a way to get the daoAccount for this
      * account.
-     * 
+     *
      * @return the {@link DaoAccount} for this {@link Account}.
      */
     protected abstract DaoAccount getDaoAccount();
@@ -91,7 +91,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     /**
      * Every time a new transaction is done the modification date is update. This can be
      * used for security purpose.
-     * 
+     *
      * @throws UnauthorizedOperationException if you have not the right to access the
      *         <code>LastModificationDate</code> property in this class.
      */
@@ -122,7 +122,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
 
     /**
      * The actor is the person that possess this account.
-     * 
+     *
      * @throws UnauthorizedOperationException if you have not the right to access the
      *         <code>Actor</code> property in this class.
      */
@@ -144,7 +144,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     /**
      * This method is used only in the authentication process. You should never used it
      * anywhere else.
-     * 
+     *
      * @see getActor;
      */
     protected final Actor<?> getActorUnprotected() {
@@ -154,14 +154,6 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
             return Group.create((DaoGroup) getDaoAccount().getActor());
         }
         throw new FatalErrorException("Cannot find the right Actor child class.", null);
-    }
-
-    /**
-     * @see Identifiable#getId();
-     */
-    @Override
-    public final int getId() {
-        return getDaoAccount().getId();
     }
 
 }

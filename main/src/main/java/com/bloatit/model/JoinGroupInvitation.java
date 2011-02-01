@@ -46,9 +46,4 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
         dao.refuse();
     }
 
-    @Override
-    public int getId() {
-        return dao.getId();
-    }
-
 }

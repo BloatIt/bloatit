@@ -155,13 +155,4 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     protected DaoActor getDao() {
         return getDaoActor();
     }
-
-    /**
-     * @see Identifiable#getId()
-     */
-    @Override
-    public final int getId() {
-        return getDaoActor().getId();
-    }
-
 }

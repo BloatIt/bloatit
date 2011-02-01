@@ -43,14 +43,6 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
-     * @see Identifiable#getId()
-     */
-    @Override
-    public int getId() {
-        return dao.getId();
-    }
-
-    /**
      * @see DaoBankTransaction#setAccepted()
      */
     public void setAccepted() {

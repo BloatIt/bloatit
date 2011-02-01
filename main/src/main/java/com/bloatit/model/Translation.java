@@ -2,7 +2,6 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.framework.exceptions.FatalErrorException;
 
@@ -42,7 +41,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
 
     /**
      * Smart cut the text, add a "…" char, and return it.
-     * 
+     *
      * @param sizeMax is the maximum size the returned text can be.
      * @param variance is how far we are looking for the punctuation mark to cut the text.
      * @return a cut version of the text, find a point or a punctuation mark to cut it at
@@ -96,9 +95,40 @@ public final class Translation extends Kudosable<DaoTranslation> {
         return wholeText.substring(0, i - 1) + "…";
     }
 
+    // ////////////////////////////////////////////////////////////////////////
+    // kudosable configuration
+    // ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnPending()
+     */
     @Override
-    protected DaoKudosable getDaoKudosable() {
-        return dao;
+    protected int turnPending() {
+        return KudosableConfiguration.getTranslationTurnPending();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnValid()
+     */
+    @Override
+    protected int turnValid() {
+        return KudosableConfiguration.getTranslationTurnValid();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnRejected()
+     */
+    @Override
+    protected int turnRejected() {
+        return KudosableConfiguration.getTranslationTurnRejected();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnHidden()
+     */
+    @Override
+    protected int turnHidden() {
+        return KudosableConfiguration.getTranslationTurnHidden();
     }
 
 }

@@ -1,7 +1,6 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoKudosable;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 
@@ -31,7 +30,7 @@ public final class Comment extends Kudosable<DaoComment> {
 
     /**
      * Return all the children comment of this comment.
-     * 
+     *
      * @see DaoComment#getChildren()
      */
     public PageIterable<Comment> getChildren() {
@@ -55,20 +54,47 @@ public final class Comment extends Kudosable<DaoComment> {
 
     /**
      * Add a comment to the list of children of this comment.
-     * 
+     *
      * @see #addChildComment(String)
      */
     public void addChildComment(final Comment comment) {
         dao.addChildComment(comment.getDao());
     }
 
-    @Override
-    protected DaoKudosable getDaoKudosable() {
+    protected DaoComment getDao() {
         return dao;
     }
 
-    protected DaoComment getDao() {
-        return dao;
+    /**
+     * @see com.bloatit.model.Kudosable#turnPending()
+     */
+    @Override
+    protected int turnPending() {
+        return KudosableConfiguration.getCommentTurnPending();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnValid()
+     */
+    @Override
+    protected int turnValid() {
+        return KudosableConfiguration.getCommentTurnValid();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnRejected()
+     */
+    @Override
+    protected int turnRejected() {
+        return KudosableConfiguration.getCommentTurnRejected();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnHidden()
+     */
+    @Override
+    protected int turnHidden() {
+        return KudosableConfiguration.getCommentTurnHidden();
     }
 
 }

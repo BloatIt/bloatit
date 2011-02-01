@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -21,6 +20,7 @@ import javax.mail.internet.MimeMessage;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.ConfigurationManager;
+import com.bloatit.framework.utils.ConfigurationManager.PropertiesRetriever;
 
 /**
  * <p>
@@ -28,14 +28,14 @@ import com.bloatit.framework.utils.ConfigurationManager;
  * </p>
  */
 public class MailServer extends Thread {
-    private final static String WIP_MAIL_DIRECTORY = System.getProperty("user.home") + "/.local/share/bloatit/temp_mail";
-    private final static String SENT_MAIL_DIRECTORY = System.getProperty("user.home") + "/.local/share/bloatit/sent_mail";
+    private final static String WIP_MAIL_DIRECTORY = ConfigurationManager.SHARE_DIR + "temp_mail";
+    private final static String SENT_MAIL_DIRECTORY = ConfigurationManager.SHARE_DIR + "sent_mail";
     private final static String FLUSH_AND_STOP = "FLUSHANDSTOP";
     private final static long MILLISECOND = 1L;
     private final static long SECOND = 1000L * MILLISECOND;
     private final static long MINUTE = 60L * SECOND;
 
-    private final Properties mailProperties;
+    private final PropertiesRetriever mailProperties;
     private final Session session;
     private final LinkedBlockingQueue<String> mailsFileName;
     private final Semaphore stopMutex;
@@ -45,7 +45,7 @@ public class MailServer extends Thread {
 
     private static MailServer instance;
 
-    private MailServer() throws IOException {
+    private MailServer() {
         mailsFileName = new LinkedBlockingQueue<String>();
         mailProperties = ConfigurationManager.loadProperties("mail");
         stopMutex = new Semaphore(1);
@@ -56,7 +56,7 @@ public class MailServer extends Thread {
         createSentDirectory();
         createWipDirectory();
 
-        session = Session.getDefaultInstance(mailProperties, new javax.mail.Authenticator() {
+        session = Session.getDefaultInstance(mailProperties.getProperties(), new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(mailProperties.getProperty("mail.login"), (mailProperties.getProperty("mail.password")));
@@ -71,17 +71,13 @@ public class MailServer extends Thread {
      * <p>
      * This method has to be called when you start application
      * </p>
-     * 
+     *
      * @throws MailFatalError when the mail server cannot be created (i.e. : directories
      *         to store mails can't be created)
      */
     public static void init() {
-        try {
-            instance = new MailServer();
-            instance.start();
-        } catch (final IOException e) {
-            throw new MailFatalError("Couldn't create mail server.", e);
-        }
+        instance = new MailServer();
+        instance.start();
     }
 
     /**
@@ -92,7 +88,7 @@ public class MailServer extends Thread {
      * If no instance exists yet, this method will not create one, instead it will throw
      * an exception. Therefore, init should always be called before
      * </p>
-     * 
+     *
      * @return the MailServer instance
      * @throws MailFatalError if no instances of the MailServer exists
      */
@@ -118,7 +114,7 @@ public class MailServer extends Thread {
      * before doing any other actions (such as informing the user that the mail has been
      * sent, or updating the database).
      * </p>
-     * 
+     *
      * @param mail the mail to send
      */
     public void send(final Mail mail) {
@@ -228,13 +224,16 @@ public class MailServer extends Thread {
                 // Happens when waiting on the queue
                 try {
                     stopMutex.acquire();
-                    if (stop) {
-                        Log.mail().info("Shutting down NOW. " + mailsFileName.size() + " messages not handled");
-                        return;
-                    } else {
+                    try {
+
+                        if (stop) {
+                            Log.mail().info("Shutting down NOW. " + mailsFileName.size() + " messages not handled");
+                            return;
+                        }
                         Log.mail().error("Received an interruption without being asked to shutdown. Ignoring.", e);
+                    } finally {
+                        stopMutex.release();
                     }
-                    stopMutex.release();
                 } catch (final InterruptedException e1) {
                     Log.mail().fatal("Interrupted while trying to get the mutex. Shutting down", e1);
                     return;
@@ -270,7 +269,7 @@ public class MailServer extends Thread {
 
     /**
      * Computes the time to wait before we do a retry.
-     * 
+     *
      * @return The time in milliseconds before a retry to send a mail
      */
     private final long timeToRetry() {

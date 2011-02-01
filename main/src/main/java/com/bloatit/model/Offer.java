@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.demand.Demand;
@@ -127,11 +126,6 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
-    @Override
-    protected DaoKudosable getDaoKudosable() {
-        return dao;
-    }
-
     public DaoOffer getDao() {
         return dao;
     }
@@ -150,6 +144,42 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     public Date getExpirationDate() {
         return dao.getExpirationDate();
+    }
+
+    // ////////////////////////////////////////////////////////////////////////
+    // Kudosable configuration
+    // ////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnPending()
+     */
+    @Override
+    protected int turnPending() {
+        return KudosableConfiguration.getOfferTurnPending();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnValid()
+     */
+    @Override
+    protected int turnValid() {
+        return KudosableConfiguration.getOfferTurnValid();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnRejected()
+     */
+    @Override
+    protected int turnRejected() {
+        return KudosableConfiguration.getOfferTurnRejected();
+    }
+
+    /**
+     * @see com.bloatit.model.Kudosable#turnHidden()
+     */
+    @Override
+    protected int turnHidden() {
+        return KudosableConfiguration.getOfferTurnHidden();
     }
 
 }
