@@ -86,6 +86,7 @@ public class ConfigurationManager {
 
         private <T> T getSome(String key, T defaultValue, Class<T> clazz) {
             String property = prop.getProperty(key);
+            Log.framework().trace("Loading property: " + key + ", value: " + property);
             if (prop.getProperty(key) != null) {
                 try {
                     return Loaders.fromStr(clazz, property);

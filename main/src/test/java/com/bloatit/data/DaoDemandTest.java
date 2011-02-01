@@ -179,12 +179,15 @@ public class DaoDemandTest extends ModelTestUnit {
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "));
         demand.addOffer(createOffer(demand));
-        SessionManager.flush();
+
+        // This is needed to index the new Demand.
+        SessionManager.endWorkUnitAndFlush();
+        SessionManager.beginWorkUnit();
 
 
         DemandSearch search = new DemandSearch("super");
 
-        assertTrue(search.search().iterator().hasNext());
+        assertTrue(search.search().size() > 0);
     }
 
     public void testGetComment() {

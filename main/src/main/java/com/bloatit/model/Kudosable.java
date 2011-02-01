@@ -2,6 +2,7 @@ package com.bloatit.model;
 
 import java.util.EnumSet;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.State;
 import com.bloatit.data.DaoUserContent;
@@ -133,6 +134,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
     }
 
     private void setState(final State newState) {
+        Log.model().info("Kudosable: " + getId() + " change from state: " + this.getState() + ", to: " + newState);
         getDao().setState(newState);
     }
 
