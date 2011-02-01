@@ -19,7 +19,7 @@ public class DemandSearch extends Search<DaoDemand> {
 
     public DemandSearch(String searchText) {
         super();
-
+        sortMethod = SortMethod.SORT_BY_RELEVANCE;
         configure(DaoDemand.class, new String[] { "description.translations.title", "description.translations.text",
                 "offers.description.translations.title" }, searchText);
     }
@@ -47,22 +47,21 @@ public class DemandSearch extends Search<DaoDemand> {
             sort.setSort(new SortField("creationDate", SortField.STRING, false));
             break;
         case SORT_BY_EXPIRATION_DATE:
-            //TODO implement
+            // TODO implement
             break;
         case SORT_BY_POPULARITY:
             sort.setSort(new SortField("popularity", SortField.INT, true));
             break;
         case SORT_BY_PROGRESS:
-            //TODO index progress
+            // TODO index progress
             break;
         case SORT_BY_RELEVANCE:
-            //TODO relevance score based on multiple variable
+            // TODO relevance score based on multiple variable
             break;
         }
 
         setSort(sort);
     }
-
 
     public PageIterable<Demand> search() {
         return new DemandList(doSearch());

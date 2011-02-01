@@ -9,10 +9,13 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
+import com.bloatit.data.DaoFileMetadata;
+import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoKudosable.State;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
+import com.bloatit.data.DaoProject;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.SessionManager;
@@ -28,6 +31,7 @@ public class SimpleTestDB {
     private final DaoGroup b219;
     private final DaoGroup ubuntuUsers;
     private final DaoDemand demand;
+    private final DaoProject project;
 
     public SimpleTestDB() {
 
@@ -64,7 +68,15 @@ public class SimpleTestDB {
             e.printStackTrace();
         }
 
-        demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"));
+        project = DaoProject.createAndPersist("VLC",
+                                                         b219,
+                                                         DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"),
+                                                         DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
+
+
+
+
+        demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"), project);
         final DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
         final DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
         final DaoComment c21 = DaoComment.createAndPersist(tom, "plup");
@@ -106,7 +118,7 @@ public class SimpleTestDB {
             final DaoDemand demand1 = DaoDemand.createAndPersist(fred, DaoDescription.createAndPersist(fred,
                                                                                                        new Locale("en"),
                                                                                                        "I try it in English",
-                                                                                                       "Hello world"));
+                                                                                                       "Hello world"), project);
             demand1.getDescription().addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais",
                     "Salut le monde"));
             demand1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");

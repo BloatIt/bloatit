@@ -14,9 +14,12 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
+import com.bloatit.data.DaoFileMetadata;
+import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
+import com.bloatit.data.DaoProject;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -61,12 +64,20 @@ public class BigDB {
                 SessionManager.clear();
             }
         }
+
+        final DaoGroup group = DaoGroup.createAndPersiste("b2 ", "plop" + "@plop.com", DaoGroup.Right.PUBLIC);
+        DaoProject project = DaoProject.createAndPersist("VLC",
+                                                         group,
+                                                         DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"),
+                                                         DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
+
+
         for (int i = 0; i < nbUsers; i++) {
             final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
                                                                                                                 new Locale("fr"),
                                                                                                                 fortune(140),
                                                                                                                 fortune(1000) + fortune(1000)
-                                                                                                                        + fortune(1000)));
+                                                                                                                        + fortune(1000)), project);
 
             final int commentCount = (int) (Math.random() * 5);
 

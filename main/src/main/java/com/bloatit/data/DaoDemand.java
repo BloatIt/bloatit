@@ -95,31 +95,20 @@ public final class DaoDemand extends DaoKudosable {
     @IndexedEmbedded
     private DaoOffer selectedOffer;
 
+    @ManyToOne
+    @Cascade(value = { CascadeType.ALL })
+    @IndexedEmbedded
+    private DaoProject project;
+
     @Basic(optional = true)
     private Date validationDate;
 
     /**
      * @see #DaoDemand(DaoMember, DaoDescription)
      */
-    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description) {
+    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description, final DaoProject project) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoDemand demand = new DaoDemand(member, description);
-        try {
-            session.save(demand);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            session.beginTransaction();
-            throw e;
-        }
-        return demand;
-    }
-
-    /**
-     * @see #DaoDemand(DaoMember, DaoDescription, DaoOffer)
-     */
-    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description, final DaoOffer offer) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoDemand demand = new DaoDemand(member, description, offer);
+        final DaoDemand demand = new DaoDemand(member, description, project);
         try {
             session.save(demand);
         } catch (final HibernateException e) {
@@ -137,34 +126,18 @@ public final class DaoDemand extends DaoKudosable {
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
      */
-    private DaoDemand(final DaoMember member, final DaoDescription description) {
+    private DaoDemand(final DaoMember member, final DaoDescription description, final DaoProject project) {
         super(member);
-        if (description == null) {
+        if (description == null || project == null) {
             throw new NonOptionalParameterException();
         }
+        this.project = project;
+        project.addDemand(this);
         this.description = description;
         this.validationDate = null;
         setSelectedOffer(null);
         this.contribution = BigDecimal.ZERO;
         setDemandState(DemandState.PENDING);
-    }
-
-    /**
-     * Create a DaoDemand, add an offer and set its state to the state
-     * {@link DemandState#PREPARING}.
-     *
-     * @param member is the author of the demand
-     * @param description is the description ...
-     * @param offer
-     * @throws NonOptionalParameterException if any of the parameter is null.
-     */
-    private DaoDemand(final DaoMember member, final DaoDescription description, final DaoOffer offer) {
-        this(member, description);
-        if (offer == null) {
-            throw new NonOptionalParameterException();
-        }
-        this.offers.add(offer);
-        setDemandState(DemandState.PREPARING);
     }
 
     /**
@@ -350,6 +323,14 @@ public final class DaoDemand extends DaoKudosable {
         }
     }
 
+    /**
+     * @return the project
+     */
+    public DaoProject getProject() {
+        return project;
+    }
+
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -395,4 +376,5 @@ public final class DaoDemand extends DaoKudosable {
         }
         return true;
     }
+
 }

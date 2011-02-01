@@ -131,10 +131,8 @@ public class DaoGroupMemberTest extends TestCase {
         SessionManager.beginWorkUnit();
 
         DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
-        DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
-
         try {
-            SessionManager.flush();
+            DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
             fail();
         } catch (final Exception e) {
             assertTrue(true);

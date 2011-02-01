@@ -29,6 +29,7 @@ import com.bloatit.model.KudosableConfiguration;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
+import com.bloatit.model.Project;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
@@ -73,8 +74,10 @@ public final class Demand extends Kudosable<DaoDemand> {
      *
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
-    public Demand(final Member author, final Locale locale, final String title, final String description) {
-        this(DaoDemand.createAndPersist(author.getDao(), DaoDescription.createAndPersist(author.getDao(), locale, title, description)));
+    public Demand(final Member author, final Locale locale, final String title, final String description, final Project project) {
+        this(DaoDemand.createAndPersist(author.getDao(),
+                                        DaoDescription.createAndPersist(author.getDao(), locale, title, description),
+                                        project.getDao()));
     }
 
     /**

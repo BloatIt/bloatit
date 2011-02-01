@@ -17,8 +17,8 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.demand.Demand;
@@ -80,7 +80,8 @@ public final class CreateIdeaAction extends Action {
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);
-        final Demand d = new Demand(session.getAuthToken().getMember(), langLocale, description, specification);
+        // TODO make it work
+        final Demand d = new Demand(session.getAuthToken().getMember(), langLocale, description, specification, null);
 
         d.authenticate(session.getAuthToken());
 

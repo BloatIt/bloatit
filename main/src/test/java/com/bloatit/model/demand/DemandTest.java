@@ -13,6 +13,7 @@ import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoProject;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -22,24 +23,25 @@ import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.model.AuthToken;
 import com.bloatit.model.FrameworkTestUnit;
 import com.bloatit.model.Offer;
+import com.bloatit.model.Project;
 import com.bloatit.model.right.RightManager.Action;
 
 public class DemandTest extends FrameworkTestUnit {
 
     public void testCreate() {
         final Demand demand = Demand.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(), DaoDescription
-                .createAndPersist(tomAuthToken.getMember().getDao(), Locale.FRANCE, "title", "description")));
+                .createAndPersist(tomAuthToken.getMember().getDao(), Locale.FRANCE, "title", "description"), DaoProject.getByName("VLC")));
         assertNotNull(demand);
         assertNull(Demand.create(null));
     }
 
     private Demand createDemandByThomas() {
         return Demand.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(), DaoDescription.createAndPersist(tomAuthToken.getMember()
-                .getDao(), Locale.FRANCE, "title", "description")));
+                .getDao(), Locale.FRANCE, "title", "description"), DaoProject.getByName("VLC")));
     }
 
     public void testDemand() {
-        final Demand demand = new Demand(tomAuthToken.getMember(), Locale.FRANCE, "title", "Description");
+        final Demand demand = new Demand(tomAuthToken.getMember(), Locale.FRANCE, "title", "Description", Project.create(DaoProject.getByName("VLC")));
         assertEquals(demand.getAuthor(), tomAuthToken.getMember());
         try {
             assertEquals(demand.getDescription().getDefaultLocale(), Locale.FRANCE);
