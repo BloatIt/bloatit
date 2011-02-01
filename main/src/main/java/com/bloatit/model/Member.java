@@ -2,7 +2,6 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoGroup.MemberStatus;
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.data.DaoJoinGroupInvitation;
@@ -272,11 +271,6 @@ public final class Member extends Actor<DaoMember> {
 
     public boolean isInGroup(final Group group) {
         return isInGroupUnprotected(group);
-    }
-
-    @Override
-    protected DaoActor getDaoActor() {
-        return getDao();
     }
 
     protected MemberStatus getStatusUnprotected(final Group group) {

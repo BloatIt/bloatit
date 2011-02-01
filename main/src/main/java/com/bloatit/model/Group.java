@@ -1,6 +1,5 @@
 package com.bloatit.model;
 
-import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.framework.utils.PageIterable;
@@ -34,11 +33,6 @@ public final class Group extends Actor<DaoGroup> {
 
     public void setRight(final Right right) {
         getDao().setRight(right);
-    }
-
-    @Override
-    protected DaoActor getDaoActor() {
-        return getDao();
     }
 
 }

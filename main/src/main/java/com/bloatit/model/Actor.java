@@ -18,8 +18,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         super(id);
     }
 
-    protected abstract DaoActor getDaoActor();
-
     /**
      * Tells if a user can access the <code>Email</code> property. You have to unlock this
      * Actor using the {@link Actor#authenticate(AuthToken)} method.
@@ -42,7 +40,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public final String getEmail() throws UnauthorizedOperationException {
         new ActorRight.Email().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return getDaoActor().getEmail();
+        return getDao().getEmail();
     }
 
     /**
@@ -52,11 +50,11 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public final void setEmail(final String email) throws UnauthorizedOperationException {
         new ActorRight.Email().tryAccess(calculateRole(getLoginUnprotected()), Action.WRITE);
-        getDaoActor().setEmail(email);
+        getDao().setEmail(email);
     }
 
     protected final String getLoginUnprotected() {
-        return getDaoActor().getLogin();
+        return getDao().getLogin();
     }
 
     /**
@@ -93,7 +91,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public final Date getDateCreation() throws UnauthorizedOperationException {
         new ActorRight.DateCreation().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return getDaoActor().getDateCreation();
+        return getDao().getDateCreation();
     }
 
     /**
@@ -114,7 +112,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public final InternalAccount getInternalAccount() throws UnauthorizedOperationException {
         new ActorRight.InternalAccount().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return InternalAccount.create(getDaoActor().getInternalAccount());
+        return InternalAccount.create(getDao().getInternalAccount());
     }
 
     /**
@@ -130,7 +128,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public final ExternalAccount getExternalAccount() throws UnauthorizedOperationException {
         new ActorRight.ExternalAccount().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return ExternalAccount.create(getDaoActor().getExternalAccount());
+        return ExternalAccount.create(getDao().getExternalAccount());
     }
 
     /**
@@ -149,6 +147,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public final PageIterable<BankTransaction> getBankTransactions() throws UnauthorizedOperationException {
         new ActorRight.BankTransaction().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return new BankTransactionList(getDaoActor().getBankTransactions());
+        return new BankTransactionList(getDao().getBankTransactions());
     }
 }
