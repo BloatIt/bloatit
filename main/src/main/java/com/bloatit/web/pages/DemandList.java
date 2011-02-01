@@ -46,10 +46,17 @@ public final class DemandList extends Page {
     @RequestParam(defaultValue = "all", name = FILTER_CODE)
     private final String filter;
 
+    public static final String SORT_BY_CONTRIBUTION = "contribution";
+    public static final String SORT_BY_PROGRESS = "progress";
+    public static final String SORT_BY_POPULARITY = "popularity";
+    public static final String SORT_BY_CREATION_DATE = "creation date";
+    public static final String SORT_BY_EXPIRATION_DATE = "expiration date";
     public static final String SORT_CODE = "sort";
     @RequestParam(defaultValue = "popularity", name = SORT_CODE)
     private final String sort;
 
+    public static final String ORDER_ASC = "asc";
+    public static final String ORDER_DESC = "desc";
     public static final String ORDER_CODE = "order";
     @RequestParam(defaultValue = "desc", name = ORDER_CODE)
     private final String order;
@@ -127,25 +134,45 @@ public final class DemandList extends Page {
 
             final HtmlDiv demandSort = new HtmlDiv("demand_sort");
             {
-                final DemandListUrl contributionSortUrl = url.clone();
-                final HtmlLink contributionSort = contributionSortUrl.getHtmlLink(Context.tr("contribution"));
-
                 final DemandListUrl popularitySortUrl = url.clone();
+                popularitySortUrl.setSort(SORT_BY_POPULARITY);
                 final HtmlLink popularitySort = popularitySortUrl.getHtmlLink(Context.tr("popularity"));
+                if(sort.equals(SORT_BY_POPULARITY)) {
+                    popularitySort.setCssClass("selected");
+                }
+
+                final DemandListUrl contributionSortUrl = url.clone();
+                contributionSortUrl.setSort(SORT_BY_CONTRIBUTION);
+                final HtmlLink contributionSort = contributionSortUrl.getHtmlLink(Context.tr("contribution"));
+                if(sort.equals(SORT_BY_CONTRIBUTION)) {
+                    contributionSort.setCssClass("selected");
+                }
 
                 final DemandListUrl progressSortUrl = url.clone();
+                progressSortUrl.setSort(SORT_BY_PROGRESS);
                 final HtmlLink progressSort = progressSortUrl.getHtmlLink(Context.tr("progress"));
+                if(sort.equals(SORT_BY_PROGRESS)) {
+                    progressSort.setCssClass("selected");
+                }
 
                 final DemandListUrl creationDateSortUrl = url.clone();
+                creationDateSortUrl.setSort(SORT_BY_CREATION_DATE);
                 final HtmlLink creationDateSort = creationDateSortUrl.getHtmlLink(Context.tr("creation date"));
+                if(sort.equals(SORT_BY_CREATION_DATE)) {
+                    creationDateSort.setCssClass("selected");
+                }
 
                 final DemandListUrl expirationDateSortUrl = url.clone();
+                expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
                 final HtmlLink expirationDateSort = expirationDateSortUrl.getHtmlLink(Context.tr("expiration date"));
+                if(sort.equals(SORT_BY_EXPIRATION_DATE)) {
+                    expirationDateSort.setCssClass("selected");
+                }
 
                 demandSort.addText(Context.tr("Sort by: "));
-                demandSort.add(contributionSort);
-                demandSort.addText(" – ");
                 demandSort.add(popularitySort);
+                demandSort.addText(" – ");
+                demandSort.add(contributionSort);
                 demandSort.addText(" – ");
                 demandSort.add(progressSort);
                 demandSort.addText(" – ");
@@ -158,16 +185,25 @@ public final class DemandList extends Page {
 
             final HtmlDiv demandOrder = new HtmlDiv("demand_order");
             {
-                final DemandListUrl ascendingOrderUrl = url.clone();
-                final HtmlLink ascendingOrder = ascendingOrderUrl.getHtmlLink(Context.tr("ascending"));
 
                 final DemandListUrl descendingOrderUrl = url.clone();
+                descendingOrderUrl.setOrder(ORDER_DESC);
                 final HtmlLink descendingOrder = descendingOrderUrl.getHtmlLink(Context.tr("descending"));
+                if(order.equals(ORDER_DESC)) {
+                    descendingOrder.setCssClass("selected");
+                }
+
+                final DemandListUrl ascendingOrderUrl = url.clone();
+                ascendingOrderUrl.setOrder(ORDER_ASC);
+                final HtmlLink ascendingOrder = ascendingOrderUrl.getHtmlLink(Context.tr("ascending"));
+                if(order.equals(ORDER_ASC)) {
+                    ascendingOrder.setCssClass("selected");
+                }
 
                 demandOrder.addText(Context.tr("Order: "));
-                demandOrder.add(ascendingOrder);
-                demandOrder.addText(" – ");
                 demandOrder.add(descendingOrder);
+                demandOrder.addText(" – ");
+                demandOrder.add(ascendingOrder);
             }
             demandSearchBlock.add(demandOrder);
 
