@@ -19,20 +19,20 @@ public class DaoFileMetadata extends DaoUserContent {
     }
 
     @Basic(optional = false)
-    private final String filename;
+    private String filename;
 
     @Basic(optional = false)
-    private final String directory;
+    private String directory;
 
     @Basic(optional = false)
-    private final int size;
+    private int size;
 
     @Column(columnDefinition = "TEXT")
     private String shortDescription;
 
     @Basic(optional = false)
     @Enumerated
-    private final FileType type;
+    private FileType type;
 
     public static DaoFileMetadata createAndPersist(final DaoMember member,
                                                    final DaoUserContent relatedContent,
@@ -78,7 +78,9 @@ public class DaoFileMetadata extends DaoUserContent {
         this.directory = directory;
         this.type = type;
         this.shortDescription = null;
-        relatedContent.add(this);
+        if (relatedContent != null) {
+            relatedContent.add(this);
+        }
         // At the end to make sure the assignment are done.
         // It works only if equal is final !!
         if (equals(relatedContent)) {
@@ -176,6 +178,10 @@ public class DaoFileMetadata extends DaoUserContent {
             return false;
         }
         return true;
+    }
+
+    protected DaoFileMetadata() {
+        // for hibernate.
     }
 
 }

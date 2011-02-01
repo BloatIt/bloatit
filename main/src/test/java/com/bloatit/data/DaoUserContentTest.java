@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import com.bloatit.data.DaoFileMetadata.FileType;
+
 public class DaoUserContentTest extends TestCase {
 
     public void testGetAuthor() {
@@ -53,10 +55,16 @@ public class DaoUserContentTest extends TestCase {
             (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED)).addMember(yo, true);
         }
 
+        DaoProject project = DaoProject.createAndPersist("VLC",
+                                                         b219,
+                                                         DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"),
+                                                         DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
+
+
         demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                 new Locale("fr"),
                                                                                 "Ma super demande !",
-                                                                                "Ceci est la descption de ma demande :) "));
+                                                                                "Ceci est la descption de ma demande :) "), project);
 
         SessionManager.endWorkUnitAndFlush();
     }

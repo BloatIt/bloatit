@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import com.bloatit.data.DaoFileMetadata.FileType;
+
 public class ModelTestUnit extends TestCase {
 
     protected DaoMember tom;
@@ -12,6 +14,7 @@ public class ModelTestUnit extends TestCase {
     protected DaoGroup other;
     protected DaoGroup myGroup;
     protected DaoGroup b219;
+    protected DaoProject project;
 
     @Override
     protected void setUp() throws Exception {
@@ -32,6 +35,11 @@ public class ModelTestUnit extends TestCase {
         myGroup.addMember(yo, false);
         b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED);
         b219.addMember(yo, true);
+
+        project = DaoProject.createAndPersist("VLC",
+                                    b219,
+                                    DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"),
+                                    DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
         SessionManager.endWorkUnitAndFlush();
 
         SessionManager.beginWorkUnit();
