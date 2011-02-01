@@ -53,6 +53,7 @@ public final class DaoDemand extends DaoKudosable {
      * This is a calculated value with the sum of the value of all contributions.
      */
     @Basic(optional = false)
+    @Field(store = Store.NO)
     private BigDecimal contribution;
 
     @Basic(optional = false)

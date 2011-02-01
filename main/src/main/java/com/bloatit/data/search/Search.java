@@ -7,6 +7,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.util.Version;
 import org.hibernate.search.FullTextFilter;
 import org.hibernate.search.FullTextQuery;
@@ -23,6 +24,7 @@ public abstract class Search<T> {
     private String[] fields;
     private String filter = null;
     private final List<Pair<String,String>> filteredTerms = new ArrayList<Pair<String,String>>();
+    private Sort sort = null;
 
     protected void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
         this.persistent = persistent;
@@ -77,6 +79,9 @@ public abstract class Search<T> {
 
             fullTextFilter.setParameter("filteredTerms", filteredTerms);
         }
+        if(sort != null) {
+            luceneQuery.setSort(sort);
+        }
 
     }
 
@@ -93,6 +98,11 @@ public abstract class Search<T> {
         this.filter = filter;
 
 
+    }
+
+
+    protected void setSort(Sort sort) {
+        this.sort = sort;
     }
 
 
