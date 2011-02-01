@@ -79,7 +79,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
             }
             // NO BREAK IT IS OK !!
         case VALIDATED:
-            if (newPop <= TURN_PENDING) {
+            if (newPop <= turnPending()) {
                 setState(State.PENDING);
                 notifyPending();
             }
@@ -128,7 +128,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
 
     /**
      * This method is called each time this Kudosable is kudosed.
-     * 
+     *
      * @param positif true if it is a kudos false if it is an unKudos.
      */
     protected void notifyKudos(final boolean positif) {
