@@ -11,6 +11,7 @@
 package com.bloatit.web.pages;
 
 // import java.util.Random;
+import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.search.DemandSearch;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
@@ -34,9 +35,24 @@ import com.bloatit.web.url.DemandListUrl;
 @ParamContainer("demand/list")
 public final class DemandList extends Page {
 
-    public static final String SEARCH_STRING = "search_string";
-    @RequestParam(defaultValue = "", name = SEARCH_STRING)
+    public static final String SEARCH_STRING_CODE = "search_string";
+    @RequestParam(defaultValue = "", name = SEARCH_STRING_CODE)
     private final String searchString;
+
+    public static final String FILTER_ALL = "all";
+    public static final String FILTER_IN_PROGRESS = "in progress";
+    public static final String FILTER_FINISHED = "finished";
+    public static final String FILTER_CODE = "filter";
+    @RequestParam(defaultValue = "all", name = FILTER_CODE)
+    private final String filter;
+
+    public static final String SORT_CODE = "sort";
+    @RequestParam(defaultValue = "popularity", name = SORT_CODE)
+    private final String sort;
+
+    public static final String ORDER_CODE = "order";
+    @RequestParam(defaultValue = "desc", name = ORDER_CODE)
+    private final String order;
 
     private HtmlPagedList<Demand> pagedDemandList;
     private final DemandListUrl url;
@@ -45,6 +61,9 @@ public final class DemandList extends Page {
         super(url);
         this.url = url;
         this.searchString = url.getSearchString();
+        this.filter = url.getFilter();
+        this.sort = url.getSort();
+        this.order = url.getOrder();
 
         generateContent();
     }
@@ -60,9 +79,11 @@ public final class DemandList extends Page {
             final HtmlTitle pageTitle = new HtmlTitle(Context.tr("Search a demand"), 1);
             demandSearchBlock.add(pageTitle);
 
-            final HtmlForm searchForm = new HtmlForm(new DemandListUrl().urlString(), Method.GET);
+            DemandListUrl formUrl = url.clone();
+            formUrl.setSearchString("");
+            final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
             {
-                final HtmlTextField searchField = new HtmlTextField(SEARCH_STRING);
+                final HtmlTextField searchField = new HtmlTextField(SEARCH_STRING_CODE);
                 searchField.setDefaultValue(searchString);
 
                 final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search"));
@@ -75,13 +96,25 @@ public final class DemandList extends Page {
             final HtmlDiv demandFilter = new HtmlDiv("demand_filter");
             {
                 final DemandListUrl allFilterUrl = url.clone();
+                allFilterUrl.setFilter(FILTER_ALL);
                 final HtmlLink allFilter = allFilterUrl.getHtmlLink(Context.tr("all"));
+                if(filter.equals(FILTER_ALL)) {
+                    allFilter.setCssClass("selected");
+                }
 
                 final DemandListUrl preparingFilterUrl = url.clone();
+                preparingFilterUrl.setFilter(FILTER_IN_PROGRESS);
                 final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("in progress"));
+                if(filter.equals(FILTER_IN_PROGRESS)) {
+                    preparingFilter.setCssClass("selected");
+                }
 
                 final DemandListUrl finishedFilterUrl = url.clone();
+                finishedFilterUrl.setFilter(FILTER_FINISHED);
                 final HtmlLink finishedFilter = finishedFilterUrl.getHtmlLink(Context.tr("finished"));
+                if(filter.equals(FILTER_FINISHED)) {
+                    finishedFilter.setCssClass("selected");
+                }
 
                 demandFilter.addText(Context.tr("Filter: "));
                 demandFilter.add(allFilter);
@@ -158,16 +191,10 @@ public final class DemandList extends Page {
         add(demandSearchBlock);
 
         // Demand list
-
-        final PageIterable<Demand> ideaList;
-
-        DemandSearch search = new DemandSearch(searchString);
-        ideaList = search.search();
-
         final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
         final DemandListUrl clonedUrl = url.clone();
-        pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, ideaList, clonedUrl, clonedUrl.getPagedDemandListUrl());
+        pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, searchResult(), clonedUrl, clonedUrl.getPagedDemandListUrl());
 
         add(pagedDemandList);
     }
@@ -202,4 +229,25 @@ public final class DemandList extends Page {
             return new HtmlDemandSumary(demand);
         }
     };
+
+
+    private PageIterable<Demand> searchResult() {
+
+        DemandSearch search = new DemandSearch(searchString);
+
+        if(!filter.equals(FILTER_ALL)) {
+            if(filter.equals(FILTER_IN_PROGRESS)) {
+                search.addDemandStateFilter(DemandState.FINISHED);
+                search.addDemandStateFilter(DemandState.DISCARDED);
+            } else if(filter.equals(FILTER_FINISHED)) {
+                search.addDemandStateFilter(DemandState.DEVELOPPING);
+                search.addDemandStateFilter(DemandState.INCOME);
+                search.addDemandStateFilter(DemandState.PENDING);
+                search.addDemandStateFilter(DemandState.PREPARING);
+            }
+        }
+
+
+        return search.search();
+    }
 }
