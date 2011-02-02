@@ -67,12 +67,12 @@ public abstract class WebServer implements ScgiProcessor {
 
         } catch (final InterruptedException ex) {
             Log.framework().fatal("Cannot lock the framework.", ex);
+            response.writeException(ex);
+        } catch (RuntimeException e) {
+            response.writeException(e);
+            throw e;
         } finally {
-            try {
-                ModelManagerAccessor.unLock();
-            } catch (final Exception e) {
-                Log.framework().fatal("Cannot unlock the framework.", e);
-            }
+            ModelManagerAccessor.unLock();
         }
         return true;
     }

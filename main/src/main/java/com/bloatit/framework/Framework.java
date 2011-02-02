@@ -9,40 +9,42 @@ import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.model.AbstractModel;
 
 /**
- * This class represent the whole framework. 
- * @author Thomas Guyard
+ * This class represent the whole framework.
  *
+ * @author Thomas Guyard
  */
 public class Framework {
-    
+
     private final AbstractModel model;
-    private SCGIServer scgiServer;
+    private final SCGIServer scgiServer;
 
     public Framework(AbstractModel model) {
         this.model = model;
         this.scgiServer = new SCGIServer();
     }
-    
-    
+
     public void addProcessor(ScgiProcessor processor) {
         scgiServer.addProcessor(processor);
     }
 
-
-    public void initialize(){
+    public void initialize() {
         ModelManagerAccessor.launch(model);
     }
-    
-    public void run(){
+
+    public void run() {
         try {
             scgiServer.run();
         } catch (final IOException e) {
-            Log.framework().fatal(e);
+            Log.framework().fatal("IOException on the socket output", e);
+        } catch (final RuntimeException e) {
+            Log.framework().fatal("Unknown RuntimeException", e);
+        } catch (final Exception e) {
+            Log.framework().fatal("Unknown Exception", e);
         }
     }
-    
-    public void shutdown(){
+
+    public void shutdown() {
         ModelManagerAccessor.shutdown();
     }
-    
+
 }

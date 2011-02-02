@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
@@ -58,74 +57,46 @@ public final class SCGIServer {
 
     public void run() throws IOException {
         init();
+        Timer timer = new Timer();
         while (true) {
             // Wait for connection
             Log.framework().info("Waiting connection");
 
-            // Load the SCGI headers.
+            // Wait for a connection.
             clientSocket = providerSocket.accept();
             Log.framework().trace("Received a connection");
+            timer.start();
 
-            final long startTime = System.nanoTime();
 
+            // Parse the header and the post data.
             final BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
             final Map<String, String> env = SCGIUtils.parse(bis);
-
-            // for(Entry<String, String>item : env.entrySet()){
-            // System.out.println("[" + item.getKey() + "] : " + item.getValue());
-            // }
-
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(bis, header.getContentLength(), header.getContentType());
 
+            // FIXME: use timer ?
             SessionManager.clearExpiredSessions();
 
             try {
-
                 for (ScgiProcessor processor : processors) {
                     if (processor.process(header, post, new HttpResponse(new BufferedOutputStream(clientSocket.getOutputStream(), 1024)))) {
                         break;
                     }
                 }
-            } catch (final FatalErrorException e) {
-                webPrintException(e);
-                Log.framework().fatal("Unknown Fatal exception", e);
-            } catch (final SCGIRequestAbordedException e) {
-                webPrintException(e);
-                Log.framework().info("SCGIUtils request aborded", e);
+            }catch (final IOException e) {
+                Log.framework().fatal("SCGIServer: IOException on the socket output", e);
+            } catch (final RuntimeException e) {
+                Log.framework().fatal("SCGIServer: Unknown RuntimeException", e);
             } catch (final Exception e) {
-                webPrintException(e);
-                Log.framework().fatal("Unknown exception", e);
-            }finally {
+                Log.framework().fatal("SCGIServer: Unknown Exception", e);
+            } finally {
                 Log.framework().trace("Closing connection");
                 clientSocket.close();
             }
 
-
-            final long endTime = System.nanoTime();
-            final double duration = ((endTime - startTime)) / 1000000.;
-            Log.framework().debug("Page generated in " + duration + " ms");
+            Log.framework().debug("Page generated in " + timer.elapsed() + " ms");
         }
 
-    }
-
-    private void webPrintException(final Exception e) {
-        final StringBuilder display = new StringBuilder();
-        display.append("Content-type: text/plain\r\n\r\n");
-        display.append(e.toString());
-        display.append(" :\n");
-
-        for (final StackTraceElement s : e.getStackTrace()) {
-            display.append('\t');
-            display.append(s);
-            display.append('\n');
-        }
-
-        try {
-            clientSocket.getOutputStream().write(display.toString().getBytes());
-        } catch (final IOException e1) {
-            Log.framework().fatal("Cannot send exception through the SCGI soket.", e1);
-        }
     }
 
     private static final class ShutdownHook extends Thread {
