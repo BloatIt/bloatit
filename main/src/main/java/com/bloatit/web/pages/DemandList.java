@@ -256,7 +256,7 @@ public final class DemandList extends Page {
         }
 
         private HtmlNode generateContent() {
-            return new HtmlDemandSumary(demand);
+            return new HtmlDemandSumary(demand, false);
         }
     };
 

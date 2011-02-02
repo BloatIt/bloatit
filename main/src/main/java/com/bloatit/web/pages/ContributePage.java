@@ -12,9 +12,9 @@ package com.bloatit.web.pages;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
@@ -82,7 +82,7 @@ public final class ContributePage extends LoggedPage {
         contribForm.add(submitButton);
 
         final HtmlTitleBlock contribTitle = new HtmlTitleBlock(Context.tr("Contribute"), 1);
-        contribTitle.add(new HtmlDemandSumary(targetIdea));
+        contribTitle.add(new HtmlDemandSumary(targetIdea, false));
         contribTitle.add(contribForm);
 
         final HtmlDiv group = new HtmlDiv();

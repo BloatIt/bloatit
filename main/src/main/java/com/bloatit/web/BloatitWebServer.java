@@ -7,7 +7,7 @@ import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.CreateIdeaActionUrl;
-import com.bloatit.web.url.CreateIdeaPageUrl;
+import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandListUrl;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
@@ -37,7 +37,7 @@ public class BloatitWebServer extends WebServer {
         addLinkable(IndexPageUrl.getName(), IndexPageUrl.class);
         addLinkable(LoginPageUrl.getName(), LoginPageUrl.class);
         addLinkable(DemandListUrl.getName(), DemandListUrl.class);
-        addLinkable(CreateIdeaPageUrl.getName(), CreateIdeaPageUrl.class);
+        addLinkable(CreateDemandPageUrl.getName(), CreateDemandPageUrl.class);
         addLinkable(DemandPageUrl.getName(), DemandPageUrl.class);
         addLinkable(MyAccountPageUrl.getName(), MyAccountPageUrl.class);
         addLinkable(SpecialsPageUrl.getName(), SpecialsPageUrl.class);
