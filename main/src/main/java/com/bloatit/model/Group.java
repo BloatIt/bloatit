@@ -5,6 +5,12 @@ import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MemberList;
 
+/**
+ * This is a group ... There are member in it.
+ * @see DaoGroup
+ * 
+ * @author Thomas Guyard
+ */
 public final class Group extends Actor<DaoGroup> {
 
     public static Group create(final DaoGroup dao) {

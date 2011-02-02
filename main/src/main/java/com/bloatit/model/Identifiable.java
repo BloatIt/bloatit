@@ -3,24 +3,31 @@ package com.bloatit.model;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
+/**
+ * An identifiable is the base class for each class that map a dao class.
+ * 
+ * @author Thomas Guyard
+ * 
+ * @param <T> is the dao being mapped.
+ */
 public abstract class Identifiable<T extends IdentifiableInterface> extends Unlockable {
 
     private final T dao;
 
-    protected Identifiable(final T id) {
-        if (id == null) {
+    protected Identifiable(final T dao) {
+        if (dao == null) {
             throw new NonOptionalParameterException();
         }
-        if (id.getId() != null) {
-            CacheManager.add(id.getId(), this);
+        if (dao.getId() != null) {
+            CacheManager.add(dao.getId(), this);
         }
-        dao = id;
+        this.dao = dao;
     }
 
     /**
      * @return a unique identifier for this object.
      */
-    public final int getId(){
+    public final int getId() {
         return getDao().getId();
     }
 

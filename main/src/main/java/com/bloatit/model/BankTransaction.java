@@ -16,7 +16,7 @@ import com.bloatit.data.DaoBankTransaction.State;
 public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
-     * Check the cache, a corresponding BankTransaction exist return it, otherwise create
+     * Check the cache, if a corresponding BankTransaction exist return it, otherwise create
      * a BankTransaction using its dao representation. If the dao == null return null;
      */
     public static BankTransaction create(final DaoBankTransaction dao) {
