@@ -7,7 +7,7 @@ import com.bloatit.data.DataManager;
 import com.bloatit.framework.mailsender.MailServer;
 
 public class Model implements AbstractModel {
-    private static Semaphore mutex = new Semaphore(1, false);
+    private static final Semaphore mutex = new Semaphore(1, false);
 
     public Model() {
         // do nothing

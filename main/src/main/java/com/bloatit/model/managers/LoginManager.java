@@ -20,6 +20,7 @@ import com.bloatit.model.AuthToken;
 
 public final class LoginManager {
 
+    // FIXME not multithread safe.
     private static final Map<UUID, AuthToken> AUTH_TOKEN_LIST = new HashMap<UUID, AuthToken>();
 
     private LoginManager() {

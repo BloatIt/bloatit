@@ -67,7 +67,8 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
         }
     }
 
-    private static Map<Id, PlannedTask> tasks = new HashMap<Id, PlannedTask>();
+    // FIXME this is not threadSafe
+    private static final Map<Id, PlannedTask> tasks = new HashMap<Id, PlannedTask>();
     private static final Timer timer = new Timer();
 
     /**
