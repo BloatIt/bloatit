@@ -32,7 +32,7 @@ public class MimeElement {
     /**
      * The pairs reprsenting the header of the mime
      */
-    private Map<String, String> header;
+    private final Map<String, String> header;
 
     /**
      * The file where the data is saved (when it's a file)
@@ -56,7 +56,7 @@ public class MimeElement {
      * dump content into it. If content had previoulsy been added, it will be
      * beforehand pushed into the new file
      * </p>
-     * 
+     *
      * @param key
      *            the name of the header
      * @param value
@@ -94,7 +94,7 @@ public class MimeElement {
      * <p>
      * Return a Stream allowing to read the content of the mime
      * </p>
-     * 
+     *
      * @return the stream to read the content
      * @throws FileNotFoundException
      *             if the content is a file, and the file where it's stored is
@@ -111,7 +111,7 @@ public class MimeElement {
      * <p>
      * Gets the map containing the header
      * </p>
-     * 
+     *
      * @return a map containing <code>key->value</code> for each header element
      */
     public Map<String, String> getHeader() {
@@ -120,7 +120,7 @@ public class MimeElement {
 
     /**
      * Finds the string content type for the mime
-     * 
+     *
      * @return
      */
     public String getContentType() {
@@ -132,7 +132,7 @@ public class MimeElement {
 
     /**
      * Indicates wether the mime is used to store a file or not
-     * 
+     *
      * @return <code>true</code> if the mime is used to store a file
      *         <code>false</code> otherwise
      */
@@ -142,7 +142,7 @@ public class MimeElement {
 
     /**
      * Finds a given header for the the mime
-     * 
+     *
      * @param key
      *            the name of the header field
      * @return the value of the header field
@@ -151,6 +151,7 @@ public class MimeElement {
         return header.get(key);
     }
 
+    @Override
     public String toString() {
         String result = "";
 
@@ -174,5 +175,9 @@ public class MimeElement {
         }
 
         return result;
+    }
+
+    public void close() throws IOException {
+        content.close();
     }
 }

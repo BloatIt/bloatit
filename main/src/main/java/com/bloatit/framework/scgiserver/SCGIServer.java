@@ -11,6 +11,7 @@
 package com.bloatit.framework.scgiserver;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -82,7 +83,7 @@ public final class SCGIServer {
             try {
 
                 for (ScgiProcessor processor : processors) {
-                    if (processor.process(header, post, new HttpResponse(clientSocket.getOutputStream()))) {
+                    if (processor.process(header, post, new HttpResponse(new BufferedOutputStream(clientSocket.getOutputStream(), 1024)))) {
                         break;
                     }
                 }
@@ -97,15 +98,15 @@ public final class SCGIServer {
                 Log.framework().fatal("Unknown exception", e);
             }finally {
                 Log.framework().trace("Closing connection");
-                clientSocket.close();    
+                clientSocket.close();
             }
 
-            
+
             final long endTime = System.nanoTime();
             final double duration = ((endTime - startTime)) / 1000000.;
             Log.framework().debug("Page generated in " + duration + " ms");
         }
-        
+
     }
 
     private void webPrintException(final Exception e) {
