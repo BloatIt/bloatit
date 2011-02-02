@@ -15,7 +15,7 @@ public class FrameworkTestUnit extends TestCase {
     public static int init = init();
 
     private static int init() {
-        ModelManagerAccessor.launch(new ModelManager());
+        ModelManagerAccessor.launch(new Model());
         return 0;
     }
 

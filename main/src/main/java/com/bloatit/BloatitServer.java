@@ -1,25 +1,18 @@
 package com.bloatit;
 
-import java.io.IOException;
-
-import com.bloatit.common.Log;
-import com.bloatit.framework.scgiserver.SCGIServer;
-import com.bloatit.framework.webserver.ModelManagerAccessor;
-import com.bloatit.model.ModelManager;
+import com.bloatit.framework.Framework;
+import com.bloatit.model.Model;
 import com.bloatit.web.BloatitWebServer;
 
 public class BloatitServer {
 
     public static void main(String[] args) {
-        ModelManagerAccessor.launch(new ModelManager());
+        Framework framework = new Framework(new Model());
+        framework.addProcessor(new BloatitWebServer());
         try {
-            SCGIServer scgiServer = new SCGIServer();
-            scgiServer.addProcessor(new BloatitWebServer());
-            scgiServer.run();
-        } catch (final IOException e) {
-            Log.framework().fatal(e);
+            framework.run();
         } finally {
-            ModelManagerAccessor.shutdown();
+            framework.shutdown();
         }
     }
 

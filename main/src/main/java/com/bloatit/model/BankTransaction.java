@@ -15,6 +15,10 @@ import com.bloatit.data.DaoBankTransaction.State;
 @Entity
 public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
+    /**
+     * Check the cache, a corresponding BankTransaction exist return it, otherwise create
+     * a BankTransaction using its dao representation. If the dao == null return null;
+     */
     public static BankTransaction create(final DaoBankTransaction dao) {
         if (dao != null) {
             @SuppressWarnings("unchecked")
@@ -34,6 +38,18 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         return create(DaoBankTransaction.getByToken(token));
     }
 
+    /**
+     * Create a new BankTransaction.
+     * 
+     * @param message is the message from the bank. May be a Ok message or an error
+     * message.
+     * @param token is a token to authenticate this transaction. The online bank service
+     * should give it during the transaction.
+     * @param author it the person implied in this transaction (the one filling is
+     * account)
+     * @param value is the quantity of money transfered.
+     * @param orderReference is a reference we have to create and should be unique.
+     */
     public BankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final String orderReference) {
         super(DaoBankTransaction.createAndPersist(message, token, author, value, orderReference));
     }

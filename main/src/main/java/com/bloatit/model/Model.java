@@ -6,10 +6,10 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
 import com.bloatit.framework.mailsender.MailServer;
 
-public class ModelManager implements AbstractModelManager {
+public class Model implements AbstractModel {
     private static Semaphore mutex = new Semaphore(1, false);
 
-    public ModelManager() {
+    public Model() {
         // do nothing
     }
 

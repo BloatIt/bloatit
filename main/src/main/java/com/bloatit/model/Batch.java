@@ -11,12 +11,22 @@ import com.bloatit.data.DaoBug.State;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 
+/**
+ * A batch is a part of an offer. Simple offers are only composed of one batch.
+ * 
+ * @author Thomas Guyard
+ * 
+ */
 public class Batch extends Identifiable<DaoBatch> {
 
     // ////////////////////////////////////////////////////////////////////////
     // Construction
     // ////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Check the cache, if a corresponding Batch exist return it, otherwise create a new
+     * one using its dao representation. If the dao == null return null;
+     */
     public static Batch create(final DaoBatch dao) {
         if (dao != null) {
             @SuppressWarnings("unchecked")
@@ -116,7 +126,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @param state
      * @return
      * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.Level,
-     *      com.bloatit.data.DaoBug.State)
+     * com.bloatit.data.DaoBug.State)
      */
     public PageIterable<Bug> getBugs(final Level level, final State state) {
         return new BugList(getDao().getBugs(level, state));

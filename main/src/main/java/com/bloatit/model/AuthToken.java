@@ -67,6 +67,11 @@ public final class AuthToken {
         return key;
     }
 
+    /**
+     * If a transaction is active, make sure the member has an internal persistent dao.
+     * 
+     * @return the member that is authenticated by this token.
+     */
     public Member getMember() {
         final Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
         if (!currentSession.getTransaction().isActive() || currentSession.contains(member.getDao())) {

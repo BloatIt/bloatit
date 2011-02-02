@@ -1,13 +1,13 @@
 package com.bloatit.framework.webserver;
 
 import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.model.AbstractModelManager;
+import com.bloatit.model.AbstractModel;
 
 public class ModelManagerAccessor {
 
-    private static AbstractModelManager modelManager = null;
+    private static AbstractModel modelManager = null;
 
-    private static void setModelManager(AbstractModelManager manager) {
+    private static void setModelManager(AbstractModel manager) {
         if (modelManager == null) {
             modelManager = manager;
         } else {
@@ -16,36 +16,36 @@ public class ModelManagerAccessor {
     }
 
     /**
-     * @see com.bloatit.model.AbstractModelManager#launch()
+     * @see com.bloatit.model.AbstractModel#launch()
      */
-    public static void launch(AbstractModelManager manager) {
+    public static void launch(AbstractModel manager) {
         setModelManager(manager);
         modelManager.launch();
     }
 
     /**
-     * @see com.bloatit.model.AbstractModelManager#shutdown()
+     * @see com.bloatit.model.AbstractModel#shutdown()
      */
     public static void shutdown() {
         modelManager.shutdown();
     }
 
     /**
-     * @see com.bloatit.model.AbstractModelManager#setReadOnly()
+     * @see com.bloatit.model.AbstractModel#setReadOnly()
      */
     public static void setReadOnly() {
         modelManager.setReadOnly();
     }
 
     /**
-     * @see com.bloatit.model.AbstractModelManager#open()
+     * @see com.bloatit.model.AbstractModel#open()
      */
     public static void open() {
         modelManager.open();
     }
 
     /**
-     * @see com.bloatit.model.AbstractModelManager#close()
+     * @see com.bloatit.model.AbstractModel#close()
      */
     public static void close() {
         modelManager.close();
@@ -53,14 +53,14 @@ public class ModelManagerAccessor {
 
     /**
      * @throws InterruptedException
-     * @see com.bloatit.model.AbstractModelManager#lock()
+     * @see com.bloatit.model.AbstractModel#lock()
      */
     public static void lock() throws InterruptedException {
         modelManager.lock();
     }
 
     /**
-     * @see com.bloatit.model.AbstractModelManager#unLock()
+     * @see com.bloatit.model.AbstractModel#unLock()
      */
     public static void unLock() {
         modelManager.unLock();
