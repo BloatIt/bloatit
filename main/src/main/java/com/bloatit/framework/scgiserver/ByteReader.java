@@ -1,6 +1,7 @@
 package com.bloatit.framework.scgiserver;
 
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,7 +17,7 @@ import java.io.InputStream;
 public class ByteReader {
     private static final byte CR = (byte) '\r';
     private static final byte LF = (byte) '\n';
-    private InputStream input;
+    private final InputStream input;
 
     public ByteReader(InputStream input) {
         this.input = input;
@@ -32,12 +33,16 @@ public class ByteReader {
      * blocks until input data is available, the end of the stream is detected,
      * or an exception is thrown.
      * </p>
-     * 
+     *
      * @return
      * @throws IOException
      */
-    public byte read() throws IOException {
-        return (byte) input.read();
+    public byte read() throws EOFException, IOException {
+        int i = input.read();
+        if(i == -1) {
+            throw new EOFException();
+        }
+        return (byte) i;
     }
 
     /**
@@ -45,11 +50,11 @@ public class ByteReader {
      * Reads a line. Any single <code>'\n'</code> or <code>'\r'</code> will be
      * ignored (they won't even be shown in the byte array returned)
      * </p>
-     * 
+     *
      * @return
      * @throws IOException
      */
-    public byte[] readLine() throws IOException {
+    public byte[] readLine() throws EOFException, IOException {
         boolean end = false;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         boolean previousWasCR = false;
@@ -80,13 +85,13 @@ public class ByteReader {
      * Reads a line (i.e: reads to the next CRLF sequence) and converts data to
      * a string
      * </p>
-     * 
+     *
      * @return the string representation of the line
      * @throws IOException
      *             when the stream is not accessible
      * @see #readLine()
      */
-    public String readString() throws IOException {
+    public String readString() throws EOFException, IOException {
         return new String(readLine());
     }
 
@@ -103,7 +108,7 @@ public class ByteReader {
      * IOException if this input stream has been closed by invoking the close()
      * method. The available method for class InputStream always returns 0. This
      * method should be overridden by subclasses.
-     * 
+     *
      * @return an estimate of the number of bytes that can be read (or skipped
      *         over) from this input stream without blocking or 0 when it
      *         reaches the end of the input stream.
@@ -117,7 +122,7 @@ public class ByteReader {
     /**
      * Closes this input stream and releases any system resources associated
      * with the stream. The close method of InputStream does nothing.
-     * 
+     *
      * @throws IOException
      *             if an IO error occurs
      */

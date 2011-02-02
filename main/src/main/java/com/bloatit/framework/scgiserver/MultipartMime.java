@@ -1,5 +1,6 @@
 package com.bloatit.framework.scgiserver;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * </p>
  * <p>
  * An example of a multipart mime :
- * 
+ *
  * <pre>
  * MIME-Version: 1.0\r\n
  * Content-Type: multipart/mixed; boundary="frontier"\r\n
@@ -34,7 +35,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * Ym9keSBvZiB0aGUgbWVzc2FnZS48L3A+CiAgPC9ib2R5Pgo8L2h0bWw+Cg==\r\n
  * --frontier--\r\n
  * </pre>
- * 
+ *
  * </p>
  * <p>
  * When constructing a MultipartMime from a byte array, parsing will occur and
@@ -55,7 +56,7 @@ public class MultipartMime implements Iterable<MimeElement> {
     /**
      * The character sequence used to separate 2 MimeElements in the multipart
      */
-    private byte[] boundary;
+    private final byte[] boundary;
     /**
      * the List of mimeElements contained in the multipart
      */
@@ -63,7 +64,7 @@ public class MultipartMime implements Iterable<MimeElement> {
     /**
      * The contentType. Can be multipart/mixed, multipart/form-data ...
      */
-    private String contentType;
+    private final String contentType;
 
     /**
      * <p>
@@ -75,12 +76,12 @@ public class MultipartMime implements Iterable<MimeElement> {
      * </p>
      * <p>
      * Example contentType:
-     * 
+     *
      * <pre>
      * multipart/form-data; boundary=---------------------------19995485819364555411863804163
      * </pre>
      * <p>
-     * 
+     *
      * @param postBytes
      *            the stream from which the post will be parsed
      * @param contentType
@@ -118,7 +119,7 @@ public class MultipartMime implements Iterable<MimeElement> {
      * Name is in fact one of the parameters of the mimeElement header (part of
      * ContentDisposition according to RFC)
      * </p>
-     * 
+     *
      * @param name
      *            the name of the element to find
      * @return the element with a matching name, or null if no element has such
@@ -140,6 +141,7 @@ public class MultipartMime implements Iterable<MimeElement> {
      * situation. Perform your own tree parsing if you need to display in any
      * other fashion.
      */
+    @Override
     public String toString() {
         String result = "";
 
@@ -161,7 +163,7 @@ public class MultipartMime implements Iterable<MimeElement> {
      * <p>
      * Takes a whole multipart mime and parses it entirely
      * </p>
-     * 
+     *
      * @param postBytes
      *            the bytes to parse (i.e. the multipart mime)
      * @param contentType
@@ -218,20 +220,22 @@ public class MultipartMime implements Iterable<MimeElement> {
         int i = 0;
         MimeElement me = null;
 
+
         int hyphens = 0;
-        
-        while (currentState != State.END) {
-            
-            if (currentState == State.COMPLETE_BOUNDARY) {
-                if(me != null){
-                    elements.add(me);
-                    me = null;
-                }
-                // Just finished parsing a boundary
-                if (reader.available() <= 0) {
-                    currentState = State.END;
-                } else {
+
+        try {
+
+            while (currentState != State.END) {
+
+                if (currentState == State.COMPLETE_BOUNDARY) {
+                    if(me != null){
+                        elements.add(me);
+                        me.close();
+                        me = null;
+                    }
+                    // Just finished parsing a boundary
                     byte b = reader.read();
+
                     if (b == CR) {
                         // Do nothing
                     } else if (b == LF) {
@@ -242,28 +246,24 @@ public class MultipartMime implements Iterable<MimeElement> {
                             currentState = State.END;
                         }
                     }
-                }
-            } else if (currentState == State.CONTENT_HEADER) {
-                String line = reader.readString();
-                if (line.isEmpty()) {
-                    currentState = State.CONTENT_CONTENT;
-                    i = 0;
-                } else {
-                    final String[] elems = line.split(";");
-                    for (final String elem : elems) {
-                        final String[] headerElements = elem.split("[:=]");
-                        if (headerElements.length > 1) {
-                            if(me == null) {
-                                me = new MimeElement();
+                } else if (currentState == State.CONTENT_HEADER) {
+                    String line = reader.readString();
+                    if (line.isEmpty()) {
+                        currentState = State.CONTENT_CONTENT;
+                        i = 0;
+                    } else {
+                        final String[] elems = line.split(";");
+                        for (final String elem : elems) {
+                            final String[] headerElements = elem.split("[:=]");
+                            if (headerElements.length > 1) {
+                                if(me == null) {
+                                    me = new MimeElement();
+                                }
+                                me.addHeader(headerElements[0].trim(), headerElements[1].trim());
                             }
-                            me.addHeader(headerElements[0].trim(), headerElements[1].trim());
                         }
                     }
-                }
-            } else /* (currentState == State.CONTENT_CONTENT) */{
-                if (reader.available() <= 0) {
-                    currentState = State.END;
-                } else {
+                } else /* (currentState == State.CONTENT_CONTENT) */{
                     byte b = reader.read();
                     if (i < completeBoundary.length && b == completeBoundary[i]) {
                         i++;
@@ -273,15 +273,19 @@ public class MultipartMime implements Iterable<MimeElement> {
                         }
                     } else {
                         if( i != 0 ){
-                            i = 0;
-                            for(int j = 0; j <= i ; j++){
+                            for(int j = 0; j < i ; j++){
                                 me.addContent(completeBoundary[j]);
                             }
+                            i = 0;
                         }
                         i = 0;
                         me.addContent(b);
                     }
                 }
+            }
+        } catch(EOFException e) {
+            if(me != null) {
+                me.close();
             }
         }
     }
