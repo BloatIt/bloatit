@@ -22,6 +22,7 @@ public final class HttpResponse {
         output.write(url.getBytes());
         output.write("\r\n".getBytes());
         closeHeaders();
+        output.close();
     }
 
     public void writePage(final com.bloatit.framework.webserver.masters.Page page) throws IOException {
@@ -31,6 +32,7 @@ public final class HttpResponse {
         closeHeaders();
 
         page.write(htmlText);
+        output.close();
     }
 
     private void closeHeaders() throws IOException {
