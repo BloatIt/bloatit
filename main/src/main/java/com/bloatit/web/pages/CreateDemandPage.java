@@ -28,7 +28,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.demand.DemandManager;
-import com.bloatit.web.actions.CreateIdeaAction;
+import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.CreateIdeaActionUrl;
 
@@ -41,21 +41,21 @@ public final class CreateDemandPage extends LoggedPage {
     private static final int SPECIF_INPUT_NB_LINES = 10;
     private static final int SPECIF_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(name = CreateIdeaAction.DESCRIPTION_CODE, defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = CreateDemandAction.DESCRIPTION_CODE, defaultValue = "", role = Role.SESSION)
     private final String description;
 
-    @RequestParam(name = CreateIdeaAction.SPECIFICATION_CODE, defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = CreateDemandAction.SPECIFICATION_CODE, defaultValue = "", role = Role.SESSION)
     private final String specification;
 
-    @RequestParam(name = CreateIdeaAction.PROJECT_CODE, defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = CreateDemandAction.PROJECT_CODE, defaultValue = "", role = Role.SESSION)
     private final String project;
 
-    @RequestParam(name = CreateIdeaAction.CATEGORY_CODE, defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = CreateDemandAction.CATEGORY_CODE, defaultValue = "", role = Role.SESSION)
     private final String category;
 
     @SuppressWarnings("unused")
     // Will be used when language can be changed on Idea creation
-    @RequestParam(name = CreateIdeaAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = CreateDemandAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
     private final String lang;
 
     public CreateDemandPage(final CreateDemandPageUrl createIdeaPageUrl) {
@@ -100,12 +100,12 @@ public final class CreateDemandPage extends LoggedPage {
         createIdeaForm.add(new HtmlSubmit(Context.tr("submit")));
 
         // Create the fields that will describe the description of the idea
-        final HtmlTextField descriptionInput = new HtmlTextField(CreateIdeaAction.DESCRIPTION_CODE, Context.tr("Title"));
+        final HtmlTextField descriptionInput = new HtmlTextField(CreateDemandAction.DESCRIPTION_CODE, Context.tr("Title"));
         descriptionInput.setDefaultValue(description);
         descriptionInput.setComment(Context.tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
 
         // Create the fields that will describe the specification of the idea
-        final HtmlTextArea specificationInput = new HtmlTextArea(CreateIdeaAction.SPECIFICATION_CODE, Context.tr("Describe the idea"),
+        final HtmlTextArea specificationInput = new HtmlTextArea(CreateDemandAction.SPECIFICATION_CODE, Context.tr("Describe the idea"),
                 SPECIF_INPUT_NB_LINES, SPECIF_INPUT_NB_COLUMNS);
         specificationInput.setDefaultValue(specification);
         specificationInput.setComment(Context.tr("Enter a long description of the idea : list all features, describe them all "
@@ -115,14 +115,14 @@ public final class CreateDemandPage extends LoggedPage {
 
         // Create the fields that will be used to describe the parameters of the
         // idea (project ...)
-        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateIdeaAction.LANGUAGE_CODE, Context.tr("Language"));
+        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateDemandAction.LANGUAGE_CODE, Context.tr("Language"));
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
         }
 
-        final HtmlTextField categoryInput = new HtmlTextField(CreateIdeaAction.CATEGORY_CODE, Context.tr("Category"));
+        final HtmlTextField categoryInput = new HtmlTextField(CreateDemandAction.CATEGORY_CODE, Context.tr("Category"));
         categoryInput.setDefaultValue(category);
-        final HtmlTextField projectInput = new HtmlTextField(CreateIdeaAction.PROJECT_CODE, Context.tr("Project"));
+        final HtmlTextField projectInput = new HtmlTextField(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
         projectInput.setDefaultValue(project);
         paramBlock.add(languageInput);
         paramBlock.add(categoryInput);

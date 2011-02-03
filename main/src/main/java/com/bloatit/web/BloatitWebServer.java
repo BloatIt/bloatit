@@ -7,7 +7,7 @@ import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
-import com.bloatit.web.actions.CreateIdeaAction;
+import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.actions.KudoAction;
 import com.bloatit.web.actions.LoginAction;
@@ -140,7 +140,7 @@ public class BloatitWebServer extends WebServer {
             return new OfferAction(new OfferActionUrl(params, session.getParams()));
         }
         if (pageCode.equals(CreateIdeaActionUrl.getName())) {
-            return new CreateIdeaAction(new CreateIdeaActionUrl(params, session.getParams()));
+            return new CreateDemandAction(new CreateIdeaActionUrl(params, session.getParams()));
         }
         if (pageCode.equals(RegisterActionUrl.getName())) {
             return new RegisterAction(new RegisterActionUrl(params, session.getParams()));
