@@ -32,7 +32,7 @@ import com.bloatit.web.url.LoginPageUrl;
  * A response to a form used to create a new idea
  */
 @ParamContainer("idea/docreate")
-public final class CreateIdeaAction extends Action {
+public final class CreateDemandAction extends Action {
 
     public static final String DESCRIPTION_CODE = "bloatit_idea_description";
     public static final String SPECIFICATION_CODE = "bloatit_idea_specification";
@@ -60,7 +60,7 @@ public final class CreateIdeaAction extends Action {
     private final String lang;
     private final CreateIdeaActionUrl url;
 
-    public CreateIdeaAction(final CreateIdeaActionUrl url) {
+    public CreateDemandAction(final CreateIdeaActionUrl url) {
         super(url);
         this.url = url;
 

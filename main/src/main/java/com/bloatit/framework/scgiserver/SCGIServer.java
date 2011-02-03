@@ -41,7 +41,7 @@ public final class SCGIServer {
         this.processors.add(processor);
     }
 
-    private void init() throws IOException {
+    public void init() throws IOException {
         SessionManager.loadSessions();
         Runtime.getRuntime().addShutdownHook(new ShutdownHook(clientSocket));
 
@@ -55,8 +55,7 @@ public final class SCGIServer {
         providerSocket = new ServerSocket(SCGI_PORT);
     }
 
-    public void run() throws IOException {
-        init();
+    public void start() throws IOException {
         Timer timer = new Timer();
         while (true) {
             // Wait for connection

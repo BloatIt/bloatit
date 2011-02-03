@@ -1,6 +1,7 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -29,7 +30,7 @@ public class FileUploadPage extends MasterPage {
     @Override
     public void doCreate() {
         final HtmlForm plop = new HtmlForm(new IndexPageUrl().urlString());
-        add(plop);
+        add(new HtmlDiv("padding_box").add(plop));
 
         plop.addAttribute("enctype", "multipart/form-data");
 

@@ -2,7 +2,6 @@ package com.bloatit.model;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
-import com.bloatit.framework.mailsender.MailServer;
 
 public class Model implements AbstractModel {
     public Model() {
@@ -15,7 +14,6 @@ public class Model implements AbstractModel {
      */
     @Override
     public void launch() {
-        MailServer.init();
         Log.model().trace("Launching the Model.");
     }
 
