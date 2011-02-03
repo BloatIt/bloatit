@@ -18,12 +18,11 @@ import com.bloatit.framework.utils.PageIterable;
 
 public abstract class Search<T> {
 
-
     private String searchStr;
     private Class<T> persistent;
     private String[] fields;
     private String filter = null;
-    private final List<Pair<String,String>> filteredTerms = new ArrayList<Pair<String,String>>();
+    private final List<Pair<String, String>> filteredTerms = new ArrayList<Pair<String, String>>();
     private Sort sort = null;
 
     protected void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
@@ -31,7 +30,6 @@ public abstract class Search<T> {
         this.fields = fields;
         this.searchStr = searchStr;
     }
-
 
     /**
      * Create a search on the db using Hibernate Search and Lucene
@@ -53,7 +51,7 @@ public abstract class Search<T> {
 
         final org.apache.lucene.search.Query query;
 
-        if(searchStr.equals("")) {
+        if (searchStr.equals("")) {
             query = new MatchAllDocsQuery();
         } else {
             MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
@@ -68,43 +66,34 @@ public abstract class Search<T> {
 
         applyFilters(luceneQuery);
 
-
         return new SearchCollection<T>(luceneQuery);
 
     }
 
     private void applyFilters(FullTextQuery luceneQuery) {
-        if(filter != null) {
+        if (filter != null) {
             FullTextFilter fullTextFilter = luceneQuery.enableFullTextFilter(filter);
 
             fullTextFilter.setParameter("filteredTerms", filteredTerms);
         }
-        if(sort != null) {
+        if (sort != null) {
             luceneQuery.setSort(sort);
         }
-
     }
 
-
     protected abstract void prepareSearch();
-
 
     protected void addFilterTerm(String term, String value) {
         filteredTerms.add(new Pair<String, String>(term, value));
     }
 
-
     protected void enableFilter(String filter) {
         this.filter = filter;
-
-
     }
-
 
     protected void setSort(Sort sort) {
         this.sort = sort;
     }
-
 
     public static class Pair<U, V> {
 
@@ -133,7 +122,7 @@ public abstract class Search<T> {
                 return false;
             if (getClass() != obj.getClass())
                 return false;
-            Pair other = (Pair) obj;
+            Pair<?, ?> other = (Pair<?, ?>) obj;
             if (key == null) {
                 if (other.key != null)
                     return false;
@@ -146,8 +135,6 @@ public abstract class Search<T> {
                 return false;
             return true;
         }
-
-
 
     }
 
