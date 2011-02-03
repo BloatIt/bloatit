@@ -46,7 +46,7 @@ public final class SessionManager {
 
     /**
      * singleton pattern implementation.
-     * 
+     *
      * @return the current session.
      */
     public static SessionFactory getSessionFactory() {
@@ -68,8 +68,6 @@ public final class SessionManager {
             sessionFactory.getCurrentSession().getTransaction().rollback();
             throw e;
         }
-        // TODO see if it works.
-        // sessionFactory.getCurrentSession().close();
     }
 
     public static void flush() {

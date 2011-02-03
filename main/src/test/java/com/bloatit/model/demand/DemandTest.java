@@ -261,7 +261,7 @@ public class DemandTest extends FrameworkTestUnit {
     }
 
     public void testBeginDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        final Demand demand = createDemandByThomas();
+        Demand demand = createDemandByThomas();
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(fredAuthToken);
@@ -272,14 +272,13 @@ public class DemandTest extends FrameworkTestUnit {
         final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
         demand.addOffer(offer);
-        System.out.println(offer);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         demand.authenticate(yoAuthToken);
         demand.addContribution(new BigDecimal("20"), "plip");
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        passeIntoDev(demand);
+        demand = passeIntoDev(demand);
 
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
     }
@@ -345,7 +344,7 @@ public class DemandTest extends FrameworkTestUnit {
     }
 
     private Demand createDemandAddOffer120AddContribution120BeginDev() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        final Demand demand = createDemandByThomas();
+        Demand demand = createDemandByThomas();
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(fredAuthToken);
@@ -363,7 +362,7 @@ public class DemandTest extends FrameworkTestUnit {
         demand.addContribution(new BigDecimal("20"), "plip");
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        passeIntoDev(demand);
+        demand = passeIntoDev(demand);
 
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
         return demand;
@@ -387,7 +386,7 @@ public class DemandTest extends FrameworkTestUnit {
     }
 
     public void testOfferWithALotOfBatch() throws UnauthorizedOperationException, NotEnoughMoneyException {
-        final Demand demand = createDemandByThomas();
+        Demand demand = createDemandByThomas();
         final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("10"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
         demand.authenticate(fredAuthToken);
@@ -406,7 +405,7 @@ public class DemandTest extends FrameworkTestUnit {
         demand.authenticate(tomAuthToken);
         demand.addContribution(new BigDecimal("16"), null);
 
-        passeIntoDev(demand);
+        demand = passeIntoDev(demand);
 
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
@@ -453,10 +452,18 @@ public class DemandTest extends FrameworkTestUnit {
     // fail("Not yet implemented");
     // }
 
-    private void passeIntoDev(final Demand demand) {
+    // Passe into dev simulate the 1 day time to wait.
+    // We assume that all the model has been closed, then the time out append, and then
+    // the model is re-closed
+    // So you have to reload from the db the demand. (So it return it ...)
+    private Demand passeIntoDev(final Demand demand) {
+
+        ModelManagerAccessor.close();
+        ModelManagerAccessor.open();
+
         Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
 
-        new TaskSelectedOfferTimeOut(demand, new Date());
+        new TaskSelectedOfferTimeOut(demand.getId(), new Date());
         ModelManagerAccessor.unLock();
         try {
             Thread.sleep(1000);
@@ -465,5 +472,12 @@ public class DemandTest extends FrameworkTestUnit {
             fail();
         }
         Mockit.tearDownMocks();
+
+        // Some times has been spent. Model must have been closed and reopened.
+        ModelManagerAccessor.close();
+        ModelManagerAccessor.open();
+
+        return DemandManager.getDemandById(demand.getId());
+
     }
 }

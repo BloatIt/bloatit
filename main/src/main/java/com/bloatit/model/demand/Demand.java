@@ -299,7 +299,7 @@ public final class Demand extends Kudosable<DaoDemand> {
      */
     void inDevelopmentState() {
         getDao().setDemandState(DemandState.DEVELOPPING);
-        new TaskDevelopmentTimeOut(this, getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
+        new TaskDevelopmentTimeOut(this.getId(), getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
     }
 
     /**
@@ -374,7 +374,7 @@ public final class Demand extends Kudosable<DaoDemand> {
 
     void setSelectedOffer(final Offer offer) {
         final Date validationDate = DateUtils.tomorrow();
-        new TaskSelectedOfferTimeOut(this, validationDate);
+        new TaskSelectedOfferTimeOut(this.getId(), validationDate);
         this.getDao().setValidationDate(validationDate);
         this.getDao().setSelectedOffer(offer.getDao());
     }

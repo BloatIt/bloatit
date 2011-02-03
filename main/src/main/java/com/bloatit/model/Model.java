@@ -71,7 +71,7 @@ public class Model implements AbstractModel {
     @Override
     public void lock() throws InterruptedException {
         Log.model().trace("Locking the model.");
-        mutex.acquire();
+//        mutex.acquire();
     }
 
     /*
@@ -80,7 +80,7 @@ public class Model implements AbstractModel {
      */
     @Override
     public void unLock() {
-        mutex.release();
+//        mutex.release();
         Log.model().trace("unlocking the model.");
     }
 }

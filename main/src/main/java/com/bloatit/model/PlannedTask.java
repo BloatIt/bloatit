@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.bloatit.common.Log;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
 
 public abstract class PlannedTask extends TimerTask implements Serializable {
@@ -73,7 +72,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
     /**
      * An id = 1 planed task.
-     * 
+     *
      * @param time
      * @param id
      */
@@ -99,15 +98,13 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     @Override
     public void run() {
         try {
-            ModelManagerAccessor.lock();
+            ModelManagerAccessor.open();
             doRun();
-        } catch (final InterruptedException e) {
-            Log.model().fatal("Planned task error. ", e);
         } catch (final RuntimeException ex) {
             throw ex;
         } finally {
             remove(this);
-            ModelManagerAccessor.unLock();
+            ModelManagerAccessor.close();
         }
     }
 
