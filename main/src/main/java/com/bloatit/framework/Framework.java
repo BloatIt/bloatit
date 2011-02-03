@@ -40,6 +40,8 @@ public class Framework {
             Log.framework().fatal("Unknown RuntimeException", e);
         } catch (final Exception e) {
             Log.framework().fatal("Unknown Exception", e);
+        } catch (final Error e) {
+            Log.framework().fatal("Unknown error", e);
         }
     }
 
