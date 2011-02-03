@@ -2,6 +2,7 @@ package com.bloatit.framework.utils.i18n;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +49,7 @@ public final class Localizator {
 
     private static final String SEPARATORS_REGEX = "[_-]";
 
-    private static Map<String, LanguageDescriptor> availableLanguages = initLanguageList();
+    private static Map<String, LanguageDescriptor> availableLanguages = Collections.unmodifiableMap(initLanguageList());
 
     private Locale locale;
     private final I18n i18n;

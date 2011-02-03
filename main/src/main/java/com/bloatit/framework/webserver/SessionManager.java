@@ -26,52 +26,47 @@ import java.util.UUID;
 import javassist.NotFoundException;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.utils.ConfigurationManager;
+import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.AuthToken;
 
+/**
+ * This class is thread safe (synchronized).
+ */
 public final class SessionManager {
 
     private static Map<UUID, Session> activeSessions = new HashMap<UUID, Session>();
-    private static final long CLEAN_EXPIRED_SESSION_COOLDOWN = 172800; // 2 days
+
+    // TODO: configuration.
+    private static final long CLEAN_EXPIRED_SESSION_COOLDOWN = DateUtils.SECOND_PER_DAY * 2;
     private static long nextCleanExpiredSession = 0;
 
     private SessionManager() {
         // desactivate CTOR
     }
 
-    public static Session createSession() {
+    public static synchronized Session createSession() {
         final Session session = new Session();
         activeSessions.put(session.getKey(), session);
         return session;
     }
 
-    public static void destroySession(final Session session) {
+    public static synchronized void destroySession(final Session session) {
         if (activeSessions.containsKey(session.getKey())) {
             Log.framework().info("destroy session " + session.getKey());
             activeSessions.remove(session.getKey());
         }
     }
 
-    public static Session getByKey(final String key) {
+    public static synchronized Session getByKey(final String key) {
         try {
             return activeSessions.get(UUID.fromString(key));
         } catch (final IllegalArgumentException e) {
             return null;
         }
-
     }
 
-    private static void restoreSession(final String key, final int memberId) {
-        final UUID uuidKey = UUID.fromString(key);
-        final Session session = new Session(uuidKey);
-        try {
-            session.setAuthToken(new AuthToken(memberId));
-        } catch (final NotFoundException e) {
-            Log.framework().error(e);
-        }
-        activeSessions.put(uuidKey, session);
-    }
-
-    public static void saveSessions() {
+    public static synchronized void saveSessions() {
         // TODO find a good place to save this
 
         com.bloatit.data.SessionManager.beginWorkUnit();
@@ -121,11 +116,10 @@ public final class SessionManager {
 
     }
 
-    public static void loadSessions() {
+    public static synchronized void loadSessions() {
         com.bloatit.data.SessionManager.beginWorkUnit();
 
-        final String dir = System.getProperty("user.home") + "/.local/share/bloatit/";
-        final String dump = dir + "/sessions.dump";
+        final String dump = ConfigurationManager.SHARE_DIR + "/sessions.dump";
 
         BufferedReader br = null;
 
@@ -171,21 +165,31 @@ public final class SessionManager {
 
             // Failed to restore sessions
             Log.framework().error("Failed to restore sessions.", e);
-        }finally{
+        } finally {
             com.bloatit.data.SessionManager.endWorkUnitAndFlush();
         }
 
-
     }
 
-    public static void clearExpiredSessions() {
+    private static synchronized void restoreSession(final String key, final int memberId) {
+        final UUID uuidKey = UUID.fromString(key);
+        final Session session = new Session(uuidKey);
+        try {
+            session.setAuthToken(new AuthToken(memberId));
+        } catch (final NotFoundException e) {
+            Log.framework().error(e);
+        }
+        activeSessions.put(uuidKey, session);
+    }
+
+    public static synchronized void clearExpiredSessions() {
         if (nextCleanExpiredSession < Context.getTime()) {
             performClearExpiredSessions();
             nextCleanExpiredSession = Context.getTime() + CLEAN_EXPIRED_SESSION_COOLDOWN;
         }
     }
 
-    public static void performClearExpiredSessions() {
+    public static synchronized void performClearExpiredSessions() {
 
         final Iterator<Session> it = activeSessions.values().iterator();
 
