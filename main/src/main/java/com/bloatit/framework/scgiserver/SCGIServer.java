@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 
@@ -41,22 +40,14 @@ public final class SCGIServer {
         this.processors.add(processor);
     }
 
-    public void init() throws IOException {
+    public void init() {
         SessionManager.loadSessions();
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook(clientSocket));
-
-        try {
-            Thread.sleep(100);
-        } catch (final InterruptedException ex) {
-            Log.framework().warn("Init: Waiting has been interupted.", ex);
-        }
-
         Log.framework().info("Init: Start BloatIt serveur");
-        providerSocket = new ServerSocket(SCGI_PORT);
     }
 
     public void start() throws IOException {
         Timer timer = new Timer();
+        providerSocket = new ServerSocket(SCGI_PORT);
         while (true) {
             // Wait for connection
             Log.framework().info("Waiting connection");
@@ -65,7 +56,6 @@ public final class SCGIServer {
             clientSocket = providerSocket.accept();
             Log.framework().trace("Received a connection");
             timer.start();
-
 
             // Parse the header and the post data.
             final BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
@@ -82,7 +72,7 @@ public final class SCGIServer {
                         break;
                     }
                 }
-            }catch (final IOException e) {
+            } catch (final IOException e) {
                 Log.framework().fatal("SCGIServer: IOException on the socket output", e);
             } catch (final RuntimeException e) {
                 Log.framework().fatal("SCGIServer: Unknown RuntimeException", e);
@@ -98,27 +88,14 @@ public final class SCGIServer {
 
     }
 
-    private static final class ShutdownHook extends Thread {
-        private final Socket clientSocket;
-
-        public ShutdownHook(final Socket clientSocket) {
-            super();
-            this.clientSocket = clientSocket;
-        }
-
-        @Override
-        public void run() {
-            // TODO: lock to wait transaction end
-            try {
-                if (clientSocket != null) {
-                    clientSocket.close();
-                }
-            } catch (final IOException e) {
-                Log.framework().error("Fail to close the socket on shutdown.", e);
+    public void stop() {
+        // TODO: lock to wait transaction end
+        try {
+            if (clientSocket != null) {
+                clientSocket.close();
             }
-
-            SessionManager.saveSessions();
-            MailServer.getInstance().quickStop();
+        } catch (final IOException e) {
+            Log.framework().fatal("Fail to close the socket on shutdown.", e);
         }
     }
 }

@@ -2,17 +2,81 @@ package com.bloatit.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import com.bloatit.framework.webserver.ModelManagerAccessor;
 
+/**
+ * <p>
+ * Extends this task, implement the doRun method, and you have a custom planned task to
+ * run when you want.
+ * </p>
+ * <p>
+ * This class is thread safe. If you only implement the doRun method, there should be no
+ * thread safety problem with your sub classes.
+ * </p>
+ */
 public abstract class PlannedTask extends TimerTask implements Serializable {
 
     private static final long serialVersionUID = 7423363701470187880L;
 
+    private static final ConcurrentMap<Id, PlannedTask> tasks = new ConcurrentHashMap<Id, PlannedTask>();
+    /**
+     * The timer class is thread safe.
+     */
+    private static final Timer timer = new Timer();
+
+    /**
+     * An id = 1 planed task.
+     *
+     * @param time
+     * @param id
+     */
+    public PlannedTask(final Date time, final int id) {
+        super();
+        schedule(time);
+        final PlannedTask plannedTask = PlannedTask.tasks.get(new Id(id, getClass()));
+        if (plannedTask != null) {
+            plannedTask.cancel();
+        }
+        PlannedTask.tasks.put(new Id(id, getClass()), this);
+    }
+
+    /**
+     * @param task
+     * @param time
+     * @see java.util.Timer#schedule(java.util.TimerTask, java.util.Date)
+     */
+    public void schedule(final Date time) {
+        PlannedTask.timer.schedule(this, time);
+    }
+
+    @Override
+    public void run() {
+        try {
+            ModelManagerAccessor.open();
+            doRun();
+        } catch (final RuntimeException ex) {
+            throw ex;
+        } finally {
+            remove(this);
+            ModelManagerAccessor.close();
+        }
+    }
+
+    private void remove(final PlannedTask task) {
+        tasks.remove(task);
+        task.cancel();
+    }
+
+    public abstract void doRun();
+
+    /**
+     * Immutable class. It is an Id, use it to identify a plannedTask.
+     */
     private static final class Id implements Serializable {
         private static final long serialVersionUID = -6892244222686715273L;
         private final int id;
@@ -65,71 +129,4 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
             return true;
         }
     }
-
-    // FIXME this is not threadSafe
-    private static final Map<Id, PlannedTask> tasks = new HashMap<Id, PlannedTask>();
-    private static final Timer timer = new Timer();
-
-    /**
-     * An id = 1 planed task.
-     *
-     * @param time
-     * @param id
-     */
-    public PlannedTask(final Date time, final int id) {
-        super();
-        schedule(time);
-        final PlannedTask plannedTask = PlannedTask.tasks.get(new Id(id, getClass()));
-        if (plannedTask != null) {
-            plannedTask.cancel();
-        }
-        PlannedTask.tasks.put(new Id(id, getClass()), this);
-    }
-
-    /**
-     * @param task
-     * @param time
-     * @see java.util.Timer#schedule(java.util.TimerTask, java.util.Date)
-     */
-    public void schedule(final Date time) {
-        PlannedTask.timer.schedule(this, time);
-    }
-
-    @Override
-    public void run() {
-        try {
-            ModelManagerAccessor.open();
-            doRun();
-        } catch (final RuntimeException ex) {
-            throw ex;
-        } finally {
-            remove(this);
-            ModelManagerAccessor.close();
-        }
-    }
-
-    private void remove(final PlannedTask task) {
-        tasks.remove(task);
-        task.cancel();
-    }
-
-    public abstract void doRun();
-
-    // public static void saveTasks(OutputStream os) throws IOException {
-    // ObjectOutputStream oos = new ObjectOutputStream(os);
-    // oos.writeObject(PlannedTask.tasks);
-    // }
-    //
-    // @SuppressWarnings("unchecked")
-    // public static void loadTasks(InputStream is) throws IOException,
-    // ClassNotFoundException {
-    // ObjectInputStream ois = new ObjectInputStream(is);
-    // PlannedTask.tasks = (Map<Id, PlannedTask>) ois.readObject();
-    //
-    // // Relaunch the timers.
-    // for (Entry<Id, PlannedTask> task : PlannedTask.tasks.entrySet()) {
-    // timer.schedule(task.getValue(), task.getValue().runDate);
-    // }
-    // }
-
 }

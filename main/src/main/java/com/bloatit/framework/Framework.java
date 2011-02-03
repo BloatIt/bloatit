@@ -7,6 +7,7 @@ import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.scgiserver.SCGIServer;
 import com.bloatit.framework.scgiserver.ScgiProcessor;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
+import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.model.AbstractModel;
 
 /**
@@ -35,9 +36,7 @@ public class Framework {
         try {
             mailServer.init();
             scgiServer.init();
-        } catch (final IOException e) {
-            Log.framework().fatal("IOException on the socket output", e);
-            return false;
+            ModelManagerAccessor.init(model);
         } catch (final RuntimeException e) {
             Log.framework().fatal("Unknown RuntimeException", e);
             return false;
@@ -47,10 +46,9 @@ public class Framework {
         } catch (final Error e) {
             Log.framework().fatal("Unknown error", e);
             return false;
+        } finally {
+            Runtime.getRuntime().addShutdownHook(new ShutdownHook(this));
         }
-
-        ModelManagerAccessor.launch(model);
-
 
         return true;
     }
@@ -70,8 +68,25 @@ public class Framework {
         }
     }
 
-    public void shutdown() {
+    void shutdown() {
+        SessionManager.saveSessions();
+        scgiServer.stop();
+        MailServer.getInstance().quickStop();
         ModelManagerAccessor.shutdown();
+    }
+
+    private static final class ShutdownHook extends Thread {
+        private final Framework framework;
+
+        public ShutdownHook(Framework framework) {
+            super();
+            this.framework = framework;
+        }
+
+        @Override
+        public void run() {
+            framework.shutdown();
+        }
     }
 
 }

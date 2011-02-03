@@ -10,9 +10,9 @@
  */
 package com.bloatit.model.managers;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javassist.NotFoundException;
 
@@ -20,8 +20,7 @@ import com.bloatit.model.AuthToken;
 
 public final class LoginManager {
 
-    // FIXME not multithread safe.
-    private static final Map<UUID, AuthToken> AUTH_TOKEN_LIST = new HashMap<UUID, AuthToken>();
+    private static final ConcurrentMap<UUID, AuthToken> AUTH_TOKEN_LIST = new ConcurrentHashMap<UUID, AuthToken>();
 
     private LoginManager() {
         // Desactivate default ctor

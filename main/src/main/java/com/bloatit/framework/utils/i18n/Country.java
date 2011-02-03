@@ -11,6 +11,7 @@
 package com.bloatit.framework.utils.i18n;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -35,13 +36,13 @@ import com.bloatit.framework.webserver.components.form.DropDownElement;
  */
 public final class Country implements Comparable<Country>, DropDownElement {
     private static final String COUNTRIES_PATH = "i18n/countries";
-    private static final Set<Country> availableCountries = createAvailableCountries();
+    private static final Set<Country> availableCountries = Collections.unmodifiableSet(createAvailableCountries());
     private final String name;
     private final String code;
 
     /**
      * Creates a new country
-     * 
+     *
      * @param name the long name of the country
      * @param code the ISO code of the country
      */
@@ -112,7 +113,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
      * <p>
      * Lists all available countries ordered on their fullname
      * </p>
-     * 
+     *
      * @return a list of the available countries
      */
     public static Set<Country> getAvailableCountries() {
@@ -121,7 +122,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
 
     /**
      * Used to initialize the {@link Country#availableCountries} static field.
-     * 
+     *
      * @return the list of country loaded from a country ressources file.
      */
     private static Set<Country> createAvailableCountries() {

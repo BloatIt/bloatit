@@ -13,7 +13,7 @@ public class Model implements AbstractModel {
      * @see com.bloatit.model.AbstractModelManager#launch()
      */
     @Override
-    public void launch() {
+    public void init() {
         Log.model().trace("Launching the Model.");
     }
 

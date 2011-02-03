@@ -15,13 +15,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import com.bloatit.framework.utils.ConfigurationManager;
+
 /**
  * <p>
  * A class that represents a part of a mime multipart/form-data
  * </p>
  */
 public class MimeElement {
-    private final static String UPLOAD_TEMP_DIRECTORY = System.getProperty("user.home") + "/.local/share/bloatit/uploads_temp/";
+    private final static String UPLOAD_TEMP_DIRECTORY = ConfigurationManager.SHARE_DIR + "uploads_temp/";
     private final static String DEFAULT_CONTENT_TYPE = "text/plain";
 
     /**

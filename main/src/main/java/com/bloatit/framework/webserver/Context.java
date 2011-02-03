@@ -1,79 +1,98 @@
 package com.bloatit.framework.webserver;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.bloatit.framework.scgiserver.HttpHeader;
 import com.bloatit.framework.utils.i18n.Localizator;
 
 /**
  * <p>
- * A class that stores <b>all</b> the information about the current request
+ * A class that stores <b>all</b> the information about the current request.. The data are
+ * local to a thread.
  * </p>
  */
 public class Context {
     private static final int MILLISECOND_DIV = 1000;
 
-    private static Session session = null;
-    private static Localizator localizator = null;
-    private static HttpHeader header = null;
-    private static long currentTime = getCurrentTime();
+    static class ContextData {
+        public Session session = null;
+        public Localizator localizator = null;
+        public HttpHeader header = null;
+    }
+
+    static class UniqueThreadContext {
+        private static final ThreadLocal<ContextData> uniqueContextData = new ThreadLocal<ContextData>() {
+            @Override
+            protected ContextData initialValue() {
+                return new ContextData();
+            }
+        };
+
+        public static ContextData getContext() {
+            return uniqueContextData.get();
+        }
+    } // UniqueThreadContext
+
+    // Realy static
+    private static AtomicLong currentTime = new AtomicLong(getCurrentTime());
 
     private Context() {
         // desactivate CTOR.
     }
 
     public static Session getSession() {
-        return session;
+        return UniqueThreadContext.getContext().session;
     }
 
     /**
      * @see Localizator#tr(String)
      */
     public static String tr(final String str) {
-        return localizator.tr(str);
+        return getLocalizator().tr(str);
     }
 
     /**
      * @see Localizator#trc(String, String)
      */
     public static String trc(final String context, final String str) {
-        return localizator.trc(context, str);
+        return getLocalizator().trc(context, str);
     }
 
     /**
      * @see Localizator#tr(String, Object...)
      */
     public static String tr(final String str, final Object... parameters) {
-        return localizator.tr(str, parameters);
+        return getLocalizator().tr(str, parameters);
     }
 
     /**
      * @see Localizator#trn(String, String, long)
      */
     public static String trn(final String singular, final String plural, final long amount) {
-        return localizator.trn(singular, plural, amount);
+        return getLocalizator().trn(singular, plural, amount);
     }
 
     /**
      * @see Localizator#trn(String, String, long, Object...)
      */
     public static String trn(final String singular, final String plural, final long amount, final Object... parameters) {
-        return localizator.trn(singular, plural, amount, parameters);
+        return getLocalizator().trn(singular, plural, amount, parameters);
     }
 
     /**
      * Returns the localizator for the current context
      */
     public static Localizator getLocalizator() {
-        return localizator;
+        return UniqueThreadContext.getContext().localizator;
     }
 
     public static HttpHeader getHeader() {
-        return Context.header;
+        return UniqueThreadContext.getContext().header;
     }
 
     public static long getResquestTime() {
-        return Context.currentTime;
+        return Context.currentTime.get();
     }
 
     static void reInitializeContext(final HttpHeader header, final Session session) {
@@ -84,7 +103,7 @@ public class Context {
     }
 
     private static void updateTime() {
-        Context.currentTime = getCurrentTime();
+        Context.currentTime.set(getCurrentTime());
     }
 
     private static long getCurrentTime() {
@@ -92,14 +111,14 @@ public class Context {
     }
 
     private static void setHeader(final HttpHeader header) {
-        Context.header = header;
+        UniqueThreadContext.getContext().header = header;
     }
 
     private static void setLocalizator(final Localizator localizator) {
-        Context.localizator = localizator;
+        UniqueThreadContext.getContext().localizator = localizator;
     }
 
     private static void setSession(final Session session) {
-        Context.session = session;
+        UniqueThreadContext.getContext().session = session;
     }
 }
