@@ -11,9 +11,6 @@
 package com.bloatit.framework.webserver;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
@@ -23,18 +20,10 @@ import com.bloatit.framework.scgiserver.ScgiProcessor;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;
-import com.bloatit.framework.webserver.masters.PageNotFound;
-import com.bloatit.framework.webserver.url.Url;
 
 public abstract class WebServer implements ScgiProcessor {
-    private final Map<String, Class<? extends Url>> urls = new HashMap<String, Class<? extends Url>>();
 
     public WebServer() {
-        // Nothing.
-    }
-
-    public final void addLinkable(final String name, final Class<? extends Url> urlClass) {
-        urls.put(name, urlClass);
     }
 
     @Override
@@ -77,31 +66,7 @@ public abstract class WebServer implements ScgiProcessor {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
-    // It's OK
-    private Linkable constructLinkable(final String pageCode, final Parameters params, final Session session) {
-        try {
-            final Class<? extends Url> urlClass = urls.get(pageCode);
-            if (urlClass != null) {
-                return urlClass.getConstructor(Parameters.class, Parameters.class).newInstance(params, session.getParams()).createPage();
-            }
-        } catch (final IllegalArgumentException e) {
-            Log.framework().error("IllegalArgument calling url constructor.", e);
-        } catch (final SecurityException e) {
-            Log.framework().error("SecurityException calling url constructor.", e);
-        } catch (final InstantiationException e) {
-            Log.framework().error("InstantiationException calling url constructor.", e);
-        } catch (final IllegalAccessException e) {
-            Log.framework().error("IllegalAccessException calling url constructor.", e);
-        } catch (final InvocationTargetException e) {
-            Log.framework().error("InvocationTargetException calling url constructor.", e);
-        } catch (final NoSuchMethodException e) {
-            Log.framework().error("NoSuchMethodException calling url constructor.", e);
-        }
-
-        session.notifyError(Context.tr("Unknow page: ") + pageCode);
-        return new PageNotFound(null);
-    }
+    protected abstract Linkable constructLinkable(final String pageCode, final Parameters params, final Session session);
 
     /**
      * Return the session for the user. Either an existing session or a new session.
