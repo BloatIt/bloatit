@@ -103,18 +103,34 @@ body {
 
 #footer {
     text-align:center;
-    font-size: 0.9em;
+    font-size: 0.8em;
 
     .no_insets;
     margin: 0px auto;
     margin-top: 100px;
-    padding:30px;
+    padding:10px;
     max-width: 1024px;
     min-width: 200px;
 
     .rounded_corners(10px);
     border: 1px solid @border_color;
     background-color: @light_background_color;
+    
+    #link_block {
+        .column(3);
+    }
+    
+    #licence_block {
+        padding:20px;
+    }
+    
+    .footer_link {
+        a {
+            color: @dark_link_color;
+        }
+    }
+    
+    
 }
 
 /*
