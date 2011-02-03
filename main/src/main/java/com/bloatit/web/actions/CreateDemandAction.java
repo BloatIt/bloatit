@@ -23,7 +23,7 @@ import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.model.demand.DemandManager;
-import com.bloatit.web.url.CreateIdeaActionUrl;
+import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -58,9 +58,9 @@ public final class CreateDemandAction extends Action {
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
-    private final CreateIdeaActionUrl url;
+    private final CreateDemandActionUrl url;
 
-    public CreateDemandAction(final CreateIdeaActionUrl url) {
+    public CreateDemandAction(final CreateDemandActionUrl url) {
         super(url);
         this.url = url;
 

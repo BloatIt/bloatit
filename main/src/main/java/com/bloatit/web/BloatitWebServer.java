@@ -39,8 +39,8 @@ import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
-import com.bloatit.web.url.CreateIdeaActionUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
@@ -139,8 +139,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(OfferActionUrl.getName())) {
             return new OfferAction(new OfferActionUrl(params, session.getParams()));
         }
-        if (pageCode.equals(CreateIdeaActionUrl.getName())) {
-            return new CreateDemandAction(new CreateIdeaActionUrl(params, session.getParams()));
+        if (pageCode.equals(CreateDemandActionUrl.getName())) {
+            return new CreateDemandAction(new CreateDemandActionUrl(params, session.getParams()));
         }
         if (pageCode.equals(RegisterActionUrl.getName())) {
             return new RegisterAction(new RegisterActionUrl(params, session.getParams()));

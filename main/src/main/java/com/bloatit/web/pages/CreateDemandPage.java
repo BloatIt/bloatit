@@ -29,8 +29,8 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.actions.CreateDemandAction;
+import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
-import com.bloatit.web.url.CreateIdeaActionUrl;
 
 /**
  * Page that hosts the form to create a new Idea
@@ -87,7 +87,7 @@ public final class CreateDemandPage extends LoggedPage {
 
     private HtmlElement generateIdeaCreationForm() {
         final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(Context.tr("Create a new idea"), 1);
-        final CreateIdeaActionUrl doCreateUrl = new CreateIdeaActionUrl();
+        final CreateDemandActionUrl doCreateUrl = new CreateDemandActionUrl();
 
         // Create the form stub
         final HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
