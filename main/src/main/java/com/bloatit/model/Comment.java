@@ -1,6 +1,7 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoComment;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 
@@ -39,9 +40,12 @@ public final class Comment extends Kudosable<DaoComment> {
 
     /**
      * @param text is the comment text.
+     * @throws UnauthorizedOperationException if the user does not have the WRITE right on
+     *         the Comment property
      * @see #addChildComment(Comment)
+     *  TODO: Make the authentication system.
      */
-    public void addChildComment(final String text) {
+    public void addChildComment(final String text) throws UnauthorizedOperationException {
         getDao().addChildComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
     }
 

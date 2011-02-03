@@ -98,13 +98,13 @@ public final class Payline extends Unlockable {
     }
 
     public boolean canMakePayment() {
-        return getAuthToken() != null;
+        return getAuthTokenUnprotected() != null;
     }
 
     public void validatePayment(final String token) throws TokenNotfoundException {
         final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction != null) {
-            transaction.authenticate(getAuthToken());
+            transaction.authenticate(getAuthTokenUnprotected());
             if (!transaction.validated()) {
                 throw new TokenNotfoundException("Cannot validate the BankTransaction.");
             }
@@ -162,7 +162,7 @@ public final class Payline extends Unlockable {
         if (reponse.getToken() != null && !reponse.getToken().isEmpty()) {
             final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
                     reponse.getToken(),//
-                    getAuthToken().getMember().getDao(),//
+                    getAuthTokenUnprotected().getMember().getDao(),//
                     amount, //
                     orderReference);
             bankTransaction.setProcessInformations(reponse.getCode());
@@ -177,8 +177,8 @@ public final class Payline extends Unlockable {
     private String addOrderDetails(final BigDecimal amountX100, final DoWebPaymentRequest paymentRequest) {
         // Order details
         final Order order = new Order();
-        final Member member = getAuthToken().getMember();
-        member.authenticate(getAuthToken());
+        final Member member = getAuthTokenUnprotected().getMember();
+        member.authenticate(getAuthTokenUnprotected());
         final String orderReference = createOrderRef(member);
         order.setRef(orderReference);
         order.setOrigin(ORDER_ORIGINE);
@@ -204,7 +204,7 @@ public final class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     * 
+     *
      * @param member
      * @return
      */

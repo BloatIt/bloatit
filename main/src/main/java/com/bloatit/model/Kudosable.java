@@ -50,13 +50,18 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
         if (!new KudosableRight.Kudos().canAccess(calculateRole(this), Action.WRITE)) {
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
+
+        if (getAuthTokenUnprotected() == null){
+            errors.add(SpecialCode.AUTHENTICATION_NEEDED);
+        }
+
         // Only one kudos per person
-        if (getDao().hasKudosed(getAuthToken().getMember().getDao())) {
+        if (getDao().hasKudosed(getAuthTokenUnprotected().getMember().getDao())) {
             errors.add(SpecialCode.ALREADY_KUDOSED);
         }
 
         // Make sure we are in the right position
-        final Member member = getAuthToken().getMember();
+        final Member member = getAuthTokenUnprotected().getMember();
         final int influence = member.calculateInfluence();
         if (signe == -1 && influence < MIN_INFLUENCE_TO_UNKUDOS) {
             errors.add(SpecialCode.INFLUENCE_LOW_ON_UNKUDOS);

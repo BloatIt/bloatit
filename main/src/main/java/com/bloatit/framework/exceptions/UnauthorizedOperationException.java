@@ -3,6 +3,7 @@ package com.bloatit.framework.exceptions;
 import java.util.EnumSet;
 
 import com.bloatit.model.JoinGroupInvitation;
+import com.bloatit.model.Unlockable;
 import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.model.right.RightManager.Role;
 
@@ -10,6 +11,12 @@ public class UnauthorizedOperationException extends Exception {
     private static final long serialVersionUID = -3668632178618592431L;
 
     public enum SpecialCode {
+        /**
+         * You try to access a method that require authentication without authenticating the object.
+         * @see Unlockable#authenticate(com.bloatit.model.AuthToken)
+         */
+        AUTHENTICATION_NEEDED,
+
         /**
          * No special code. See the roles/action.
          */

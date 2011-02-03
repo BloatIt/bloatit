@@ -11,10 +11,11 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Comment;
@@ -50,7 +51,11 @@ public class CommentCommentAction extends LoggedAction {
         session.notifyGood(Context.tr("Your comment has been added."));
 
         targetComment.authenticate(session.getAuthToken());
-        targetComment.addChildComment(comment);
+        try {
+            targetComment.addChildComment(comment);
+        } catch (UnauthorizedOperationException e) {
+            // TODO do some stuff here.
+        }
 
         return session.pickPreferredPage();
     }
