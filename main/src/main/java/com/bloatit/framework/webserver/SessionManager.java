@@ -53,7 +53,8 @@ public final class SessionManager {
 
     public static Session getByKey(final String key) {
         try {
-            return activeSessions.get(UUID.fromString(key));
+            Session session = activeSessions.get(UUID.fromString(key));
+            return session;
         } catch (final IllegalArgumentException e) {
             return null;
         }
@@ -179,9 +180,9 @@ public final class SessionManager {
     }
 
     public static void clearExpiredSessions() {
-        if (nextCleanExpiredSession < Context.getTime()) {
+        if (nextCleanExpiredSession < Context.getResquestTime()) {
             performClearExpiredSessions();
-            nextCleanExpiredSession = Context.getTime() + CLEAN_EXPIRED_SESSION_COOLDOWN;
+            nextCleanExpiredSession = Context.getResquestTime() + CLEAN_EXPIRED_SESSION_COOLDOWN;
         }
     }
 

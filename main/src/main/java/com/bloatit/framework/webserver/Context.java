@@ -16,7 +16,7 @@ public class Context {
     private static Session session = null;
     private static Localizator localizator = null;
     private static HttpHeader header = null;
-    private static long currentTime = 0;
+    private static long currentTime = getCurrentTime();
 
     private Context() {
         // desactivate CTOR.
@@ -72,7 +72,7 @@ public class Context {
         return Context.header;
     }
 
-    public static long getTime() {
+    public static long getResquestTime() {
         return Context.currentTime;
     }
 
@@ -84,7 +84,11 @@ public class Context {
     }
 
     private static void updateTime() {
-        Context.currentTime = new Date().getTime() / MILLISECOND_DIV;
+        Context.currentTime = getCurrentTime();
+    }
+
+    private static long getCurrentTime() {
+        return new Date().getTime() / MILLISECOND_DIV;
     }
 
     private static void setHeader(final HttpHeader header) {
