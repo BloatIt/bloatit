@@ -80,7 +80,7 @@ public final class CreateDemandPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() {
         if (DemandManager.canCreate(session.getAuthToken())) {
-            return generateIdeaCreationForm();
+            return new HtmlDiv("padding_box").add(generateIdeaCreationForm());
         }
         return generateBadRightError();
     }
