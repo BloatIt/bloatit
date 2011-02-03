@@ -20,12 +20,12 @@ import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.web.actions.LoginAction;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
 @ParamContainer("login")
-public final class LoginPage extends Page {
+public final class LoginPage extends MasterPage {
 
     public LoginPage(final LoginPageUrl loginPageUrl) {
         super(loginPageUrl);
@@ -55,7 +55,7 @@ public final class LoginPage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return Context.trc("Login (verb)", "Login");
     }
 

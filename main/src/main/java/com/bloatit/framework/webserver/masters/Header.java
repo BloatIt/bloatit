@@ -1,4 +1,4 @@
-package com.bloatit.web.pages.master;
+package com.bloatit.framework.webserver.masters;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
@@ -24,7 +24,7 @@ public final class Header extends HtmlElement {
             add(customlink);
         }
 
-        add(new HtmlGenericElement("title").addText("Bloatit - " + title));
+        add(new HtmlGenericElement("title").addText(title));
     }
 
     @Override

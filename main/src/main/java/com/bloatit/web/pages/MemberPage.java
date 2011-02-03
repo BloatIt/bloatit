@@ -15,19 +15,19 @@ import static com.bloatit.framework.webserver.Context.tr;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.PageNotFoundException;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.RightManager.Action;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MemberPageUrl;
 
 @ParamContainer("member")
-public final class MemberPage extends Page {
+public final class MemberPage extends MasterPage {
 
     public static final String MEMBER_FIELD_NAME = "id";
 
@@ -68,7 +68,7 @@ public final class MemberPage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         if (member != null) {
             try {
                 return tr("Member - ") + member.getLogin();

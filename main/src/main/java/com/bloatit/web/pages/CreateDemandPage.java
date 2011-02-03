@@ -68,7 +68,7 @@ public final class CreateDemandPage extends LoggedPage {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return "Create new idea";
     }
 

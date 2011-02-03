@@ -59,7 +59,7 @@ public final class OfferPage extends LoggedPage {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return Context.tr("Make an offer");
     }
 

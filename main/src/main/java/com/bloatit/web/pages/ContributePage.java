@@ -92,7 +92,7 @@ public final class ContributePage extends LoggedPage {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return Context.tr("Contribute to a project");
     }
 

@@ -17,12 +17,12 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.web.components.HtmlDemandSumary;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("index")
-public final class IndexPage extends Page {
+public final class IndexPage extends MasterPage {
 
     public IndexPage(final IndexPageUrl indexPageUrl) {
         super(indexPageUrl);
@@ -85,7 +85,7 @@ public final class IndexPage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return "Finance free software";
     }
 

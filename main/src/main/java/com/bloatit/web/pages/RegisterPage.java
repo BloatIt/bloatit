@@ -28,12 +28,12 @@ import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.web.actions.RegisterAction;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 
 @ParamContainer("member/create")
-public final class RegisterPage extends Page {
+public final class RegisterPage extends MasterPage {
 
     @RequestParam(name = RegisterAction.LOGIN_CODE, defaultValue = "", role = Role.SESSION)
     private final String login;
@@ -105,7 +105,7 @@ public final class RegisterPage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return Context.tr("Make an offer");
     }
 

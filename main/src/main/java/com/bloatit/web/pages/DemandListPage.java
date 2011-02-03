@@ -29,11 +29,11 @@ import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandListPageUrl;
 
 @ParamContainer("demand/list")
-public final class DemandListPage extends Page {
+public final class DemandListPage extends MasterPage {
 
     public static final String FILTER_ALL = "all";
     public static final String FILTER_IN_PROGRESS = "in progress";
@@ -230,7 +230,7 @@ public final class DemandListPage extends Page {
     }
 
     @Override
-    public String getTitle() {
+    public String getPageTitle() {
         return Context.tr("View demands - search demands");
     }
 

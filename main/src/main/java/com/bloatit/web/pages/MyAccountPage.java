@@ -20,11 +20,11 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.model.Member;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MyAccountPageUrl;
 
 @ParamContainer("myaccount")
-public final class MyAccountPage extends Page {
+public final class MyAccountPage extends MasterPage {
 
     public MyAccountPage(final MyAccountPageUrl myAccountPageUrl) {
         super(myAccountPageUrl);
@@ -57,7 +57,7 @@ public final class MyAccountPage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         if (session.getAuthToken() != null) {
             try {
                 return tr("My account - ") + session.getAuthToken().getMember().getLogin();
