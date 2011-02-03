@@ -1,4 +1,4 @@
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.scgiserver.mime;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.activation.MimeTypeParseException;
+
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.scgiserver.ByteReader;
 
 /**
  * <p>
@@ -17,7 +20,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * </p>
  * <p>
  * An example of a multipart mime :
- *
+ * 
  * <pre>
  * MIME-Version: 1.0\r\n
  * Content-Type: multipart/mixed; boundary="frontier"\r\n
@@ -35,7 +38,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * Ym9keSBvZiB0aGUgbWVzc2FnZS48L3A+CiAgPC9ib2R5Pgo8L2h0bWw+Cg==\r\n
  * --frontier--\r\n
  * </pre>
- *
+ * 
  * </p>
  * <p>
  * When constructing a MultipartMime from a byte array, parsing will occur and
@@ -76,21 +79,22 @@ public class MultipartMime implements Iterable<MimeElement> {
      * </p>
      * <p>
      * Example contentType:
-     *
+     * 
      * <pre>
      * multipart/form-data; boundary=---------------------------19995485819364555411863804163
      * </pre>
      * <p>
-     *
+     * 
      * @param postBytes
      *            the stream from which the post will be parsed
      * @param contentType
      *            The contentType of the mimeElement, including it's boundary
+     * @throws MimeTypeParseException
      * @throws NonOptionalParameterException
      *             if any parameter (<code>postStream</code> or
      *             <code>contentType</code> is null)
      */
-    public MultipartMime(InputStream postStream, final String contentType) {
+    public MultipartMime(InputStream postStream, final String contentType) throws MimeTypeParseException {
         if (postStream == null || contentType == null) {
             throw new NonOptionalParameterException();
         }
@@ -103,6 +107,9 @@ public class MultipartMime implements Iterable<MimeElement> {
         try {
             parseMultipart(postStream, contentType);
         } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (MalformedMimeException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -119,7 +126,7 @@ public class MultipartMime implements Iterable<MimeElement> {
      * Name is in fact one of the parameters of the mimeElement header (part of
      * ContentDisposition according to RFC)
      * </p>
-     *
+     * 
      * @param name
      *            the name of the element to find
      * @return the element with a matching name, or null if no element has such
@@ -163,7 +170,7 @@ public class MultipartMime implements Iterable<MimeElement> {
      * <p>
      * Takes a whole multipart mime and parses it entirely
      * </p>
-     *
+     * 
      * @param postBytes
      *            the bytes to parse (i.e. the multipart mime)
      * @param contentType
@@ -171,8 +178,10 @@ public class MultipartMime implements Iterable<MimeElement> {
      *            boundary
      * @return a Parsed MimeMultipart
      * @throws IOException
+     * @throws MimeTypeParseException
+     * @throws MalformedMimeException
      */
-    private void parseMultipart(InputStream postStream, String contentType) throws IOException {
+    private void parseMultipart(InputStream postStream, String contentType) throws IOException, MimeTypeParseException, MalformedMimeException {
         // MIME-Version: 1.0
         // Content-Type: multipart/mixed; boundary="frontier"
         //
@@ -201,41 +210,44 @@ public class MultipartMime implements Iterable<MimeElement> {
         ByteReader reader = new ByteReader(postStream);
 
         State currentState = State.MULTIPART_HEADER;
-        while (currentState == State.MULTIPART_HEADER) {
-            String line = reader.readString();
-            if (line.isEmpty()) {
-                currentState = State.MULTIPART_IGNORE;
-            } else if (line.equals("--" + new String(boundary))) {
-                currentState = State.CONTENT_HEADER;
-            }
-        }
 
-        while (currentState == State.MULTIPART_IGNORE) {
-            String line = reader.readString();
-            if (line.equals("--" + new String(boundary))) {
-                currentState = State.CONTENT_HEADER;
+        // First, parsing the multipart header (if there is one left) and
+        // the multipart content
+        try {
+            while (currentState == State.MULTIPART_HEADER) {
+                String line = reader.readString();
+                if (line.isEmpty()) {
+                    currentState = State.MULTIPART_IGNORE;
+                } else if (line.equals("--" + new String(boundary))) {
+                    currentState = State.CONTENT_HEADER;
+                }
             }
+
+            while (currentState == State.MULTIPART_IGNORE) {
+                String line = reader.readString();
+                if (line.equals("--" + new String(boundary))) {
+                    currentState = State.CONTENT_HEADER;
+                }
+            }
+        } catch (EOFException e) {
+            currentState = State.END;
         }
 
         int i = 0;
         MimeElement me = null;
 
-
         int hyphens = 0;
-
         try {
-
             while (currentState != State.END) {
-
                 if (currentState == State.COMPLETE_BOUNDARY) {
-                    if(me != null){
+                    if (me != null) {
                         elements.add(me);
                         me.close();
                         me = null;
                     }
                     // Just finished parsing a boundary
-                    byte b = reader.read();
-
+                    byte b;
+                    b = reader.read();
                     if (b == CR) {
                         // Do nothing
                     } else if (b == LF) {
@@ -247,6 +259,7 @@ public class MultipartMime implements Iterable<MimeElement> {
                         }
                     }
                 } else if (currentState == State.CONTENT_HEADER) {
+                    // Reading one of the multipart header
                     String line = reader.readString();
                     if (line.isEmpty()) {
                         currentState = State.CONTENT_CONTENT;
@@ -256,7 +269,7 @@ public class MultipartMime implements Iterable<MimeElement> {
                         for (final String elem : elems) {
                             final String[] headerElements = elem.split("[:=]");
                             if (headerElements.length > 1) {
-                                if(me == null) {
+                                if (me == null) {
                                     me = new MimeElement();
                                 }
                                 me.addHeader(headerElements[0].trim(), headerElements[1].trim());
@@ -272,19 +285,28 @@ public class MultipartMime implements Iterable<MimeElement> {
                             currentState = State.COMPLETE_BOUNDARY;
                         }
                     } else {
-                        if( i != 0 ){
-                            for(int j = 0; j < i ; j++){
+                        if (i != 0) {
+                            for (int j = 0; j < i; j++) {
                                 me.addContent(completeBoundary[j]);
                             }
-                            i = 0;
                         }
                         i = 0;
                         me.addContent(b);
                     }
                 }
             }
-        } catch(EOFException e) {
-            if(me != null) {
+            /* currentState == State.END; */
+            // Insert here code to execute when we reach end, if needed
+        } catch (final EOFException e) {
+            // We reached end of file
+            throw new MimeTypeParseException("Reached end of file too early (expected --boundary-- and received EOF)");
+        } catch (IOException e) {
+            throw new IOException();
+        } catch (InvalidMimeEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            if (me != null) {
                 me.close();
             }
         }

@@ -5,7 +5,10 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import javax.activation.MimeTypeParseException;
+
 import com.bloatit.common.Log;
+import com.bloatit.framework.scgiserver.mime.MultipartMime;
 import com.bloatit.framework.utils.Parameters;
 
 /**
@@ -48,8 +51,13 @@ public class HttpPost {
      */
     private void readBytes(final InputStream postStream, final int length, final String contentType) throws IOException {
         if (contentType != null && !contentType.equals("") && contentType.startsWith("multipart/form-data")) {
-            Log.web().trace("Received a form-data, starting parsing");
-            processMultipart(postStream, contentType);
+            
+            try {
+                processMultipart(postStream, contentType);
+            } catch (MimeTypeParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             final byte[] postBytes = new byte[length];
             final int read = postStream.read(postBytes);
@@ -85,7 +93,8 @@ public class HttpPost {
         return parameters;
     }
 
-    private final void processMultipart(InputStream postStream, final String contentType) {
+    private final void processMultipart(InputStream postStream, final String contentType) throws MimeTypeParseException {
+        Log.web().trace("Received a form-data, starting parsing");
         final MultipartMime mm = new MultipartMime(postStream, contentType);
         Log.web().trace("Parsing of post data over");
         System.out.println(mm);
