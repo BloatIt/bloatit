@@ -14,15 +14,18 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
+import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.web.url.RegisterPageUrl;
 
 @ParamContainer("login")
 public final class LoginPage extends MasterPage {
@@ -49,6 +52,11 @@ public final class LoginPage extends MasterPage {
             loginTitle.add(loginForm);
 
             box.add(loginTitle);
+
+            box.add(new HtmlParagraph().add(new  RegisterPageUrl().getHtmlLink(Context.tr("No account ? Sign-in now."))));
+
+            box.add(new HtmlParagraph().add(new  PageNotFoundUrl().getHtmlLink(Context.tr("Password lost ?"))));
+
         }
         add(box);
 
