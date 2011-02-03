@@ -12,19 +12,20 @@ package com.bloatit.web.pages;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitle;
-import com.bloatit.framework.webserver.masters.Page;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.web.pages.master.MasterPage;
 
-public class PageNotFound extends Page {
+public class PageNotFound extends MasterPage {
 
     public PageNotFound(final PageNotFoundUrl pageNotFoundUrl) {
-        super();
+        super(pageNotFoundUrl);
     }
 
     @Override
-    protected String getTitle() {
-        return "Page not found";
+    protected String getPageTitle() {
+        return Context.tr("Page not found");
     }
 
     @Override
@@ -33,9 +34,14 @@ public class PageNotFound extends Page {
     }
 
     @Override
-    protected void create() throws RedirectException {
+    protected void doCreate() throws RedirectException {
+
+        HtmlDiv box = new HtmlDiv("padding_box");
+
         final HtmlTitle errorTitle = new HtmlTitle(Context.tr("Page not found"), 2);
-        add(errorTitle);
+        box.add(errorTitle);
+
+        add(box);
     }
 
 }

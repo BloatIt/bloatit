@@ -33,7 +33,7 @@ public abstract class MasterPage extends GenericPage {
     }
 
     @Override
-    protected void generateBody(HtmlGenericElement body) throws RedirectException {
+    protected final void generateBody(HtmlGenericElement body) throws RedirectException {
 
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);

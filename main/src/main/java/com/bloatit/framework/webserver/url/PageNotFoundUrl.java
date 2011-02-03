@@ -5,7 +5,7 @@ import com.bloatit.framework.utils.Parameters;
 @SuppressWarnings("unused")
 public final class PageNotFoundUrl extends Url implements Cloneable {
     public static String getName() {
-        return "pageNotFound";
+        return "pagenotfound";
     }
 
     @Override
