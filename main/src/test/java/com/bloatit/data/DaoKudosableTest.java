@@ -35,7 +35,6 @@ public class DaoKudosableTest extends TestCase {
             fred.setFullname("Frédéric Bertolus");
             SessionManager.flush();
         }
-        DaoGroup b219;
         {
             yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
             yo.setFullname("Yoann Plénet");
@@ -43,11 +42,10 @@ public class DaoKudosableTest extends TestCase {
 
             DaoGroup.createAndPersiste("Other", "plop@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
             DaoGroup.createAndPersiste("myGroup", "plop1@plop.com", DaoGroup.Right.PUBLIC).addMember(yo, false);
-            (b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED)).addMember(yo, true);
+            DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED).addMember(yo, true);
         }
 
         DaoProject project = DaoProject.createAndPersist("VLC",
-                                              b219,
                                               DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"),
                                               DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
 

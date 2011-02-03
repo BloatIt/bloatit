@@ -20,26 +20,24 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.meta.HtmlText;
-import com.bloatit.model.Member;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.Project;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.ProjectPageUrl;
 
 @ParamContainer("member")
-public final class MemberPage extends MasterPage {
+public final class ProjectPage extends MasterPage {
 
-    public static final String MEMBER_FIELD_NAME = "id";
+    public static final String PROJECT_FIELD_NAME = "id";
 
-    @RequestParam(name = MEMBER_FIELD_NAME, level = Level.ERROR)
-    private final Member member;
+    @RequestParam(name = PROJECT_FIELD_NAME, level = Level.ERROR)
+    private final Project project;
 
-    private final MemberPageUrl url;
+    private final ProjectPageUrl url;
 
-    public MemberPage(final MemberPageUrl url) {
+    public ProjectPage(final ProjectPageUrl url) {
         super(url);
         this.url = url;
-        this.member = url.getMember();
+        this.project = url.getProject();
     }
 
     @Override
@@ -48,32 +46,25 @@ public final class MemberPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        member.authenticate(session.getAuthToken());
+        project.authenticate(session.getAuthToken());
 
         try {
-            HtmlTitleBlock memberTitle;
-            memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
+            HtmlTitleBlock projectName;
+            projectName = new HtmlTitleBlock(project.getName(), 1);
 
-            memberTitle.add(new HtmlText(tr("Full name: ") + member.getFullname()));
-
-            memberTitle.add(new HtmlText(tr("Login: ") + member.getLogin()));
-            if (member.canAccessEmail(Action.READ)) {
-                memberTitle.add(new HtmlText(tr("Email: ") + member.getEmail()));
-            }
-            memberTitle.add(new HtmlText(tr("Karma: ") + member.getKarma()));
-            add(memberTitle);
+            add(projectName);
         } catch (final UnauthorizedOperationException e) {
-            add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this member.")));
+            add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this project.")));
         }
     }
 
     @Override
     protected String getPageTitle() {
-        if (member != null) {
+        if (project != null) {
             try {
-                return tr("Member - ") + member.getLogin();
+                return tr("Project - ") + project.getName();
             } catch (final UnauthorizedOperationException e) {
-                return tr("Member - John Doe");
+                return tr("Project - Windows 8");
             }
         }
         return tr("Member - No member");

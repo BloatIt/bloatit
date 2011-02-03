@@ -130,4 +130,16 @@ public class Unlockable {
         }
         return roles;
     }
+
+    /**
+     * Helper function.
+     * @return Nobody or Other
+     */
+    protected final EnumSet<Role> calculateNoOwnerRole() {
+        if(getAuthTokenUnprotected() == null) {
+            return  EnumSet.of(Role.NOBODY);
+        } else {
+            return  EnumSet.of(Role.OTHER);
+        }
+    }
 }

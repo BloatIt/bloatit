@@ -37,7 +37,6 @@ public class ModelTestUnit extends TestCase {
         b219.addMember(yo, true);
 
         project = DaoProject.createAndPersist("VLC",
-                                    b219,
                                     DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"),
                                     DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
         SessionManager.endWorkUnitAndFlush();

@@ -27,7 +27,9 @@ public class ModelManagerAccessor {
      * @see com.bloatit.model.AbstractModel#shutdown()
      */
     public static void shutdown() {
-        modelManager.shutdown();
+        if(modelManager != null) {
+            modelManager.shutdown();
+        }
     }
 
     /**

@@ -23,9 +23,6 @@ public class DaoProject extends DaoIdentifiable {
     private String name;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private DaoGroup owner;
-
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private DaoDescription description;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -34,9 +31,9 @@ public class DaoProject extends DaoIdentifiable {
     @OneToMany(mappedBy = "project")
     private final Set<DaoDemand> demands = new HashSet<DaoDemand>();
 
-    public static DaoProject createAndPersist(String name, DaoGroup owner, DaoDescription description, DaoFileMetadata image) {
+    public static DaoProject createAndPersist(String name, DaoDescription description, DaoFileMetadata image) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoProject project = new DaoProject(name, owner, description, image);
+        final DaoProject project = new DaoProject(name, description, image);
         try {
             session.save(project);
         } catch (final HibernateException e) {
@@ -47,13 +44,12 @@ public class DaoProject extends DaoIdentifiable {
         return project;
     }
 
-    private DaoProject(String name, DaoGroup owner, DaoDescription description, DaoFileMetadata image) {
+    private DaoProject(String name, DaoDescription description, DaoFileMetadata image) {
         super();
-        if (name == null || name.isEmpty() || owner == null || description == null || image == null) {
+        if (name == null || name.isEmpty() || description == null || image == null) {
             throw new NonOptionalParameterException();
         }
         this.name = name;
-        this.owner = owner;
         this.description = description;
         this.image = image;
     }
@@ -76,7 +72,6 @@ public class DaoProject extends DaoIdentifiable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((owner == null) ? 0 : owner.hashCode());
         return result;
     }
 
@@ -103,21 +98,8 @@ public class DaoProject extends DaoIdentifiable {
         } else if (!description.equals(other.description)) {
             return false;
         }
-        if (owner == null) {
-            if (other.owner != null) {
-                return false;
-            }
-        } else if (!owner.equals(other.owner)) {
-            return false;
-        }
-        return true;
-    }
 
-    /**
-     * @return the owner
-     */
-    public final DaoGroup getOwner() {
-        return owner;
+        return true;
     }
 
     /**
