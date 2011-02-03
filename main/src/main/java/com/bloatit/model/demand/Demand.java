@@ -171,12 +171,16 @@ public final class Demand extends Kudosable<DaoDemand> {
      * @see #authenticate(AuthToken)
      */
     public void addOffer(final Offer offer) throws UnauthorizedOperationException {
-        new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
         if (offer == null) {
             throw new NonOptionalParameterException();
         }
         if (!offer.getDemand().equals(this)) {
             throw new IllegalArgumentException();
+        }
+
+        new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
+        if (!offer.getAuthor().equals(getAuthToken().getMember())) {
+            throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
         }
         setStateObject(getStateObject().eventAddOffer(offer));
         getDao().addOffer(offer.getDao());

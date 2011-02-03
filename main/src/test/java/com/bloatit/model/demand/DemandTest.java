@@ -236,6 +236,7 @@ public class DemandTest extends FrameworkTestUnit {
         }
 
         try {
+            demand.authenticate(fredAuthToken);
             final Offer offer = new Offer(fredAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                     DateUtils.tomorrow());
             demand.addOffer(offer);
@@ -328,16 +329,24 @@ public class DemandTest extends FrameworkTestUnit {
             demand.cancelDevelopment();
             fail();
         } catch (final UnauthorizedOperationException e) {
+            assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED, e.getCode());
+        }
+
+        try {
+            demand.authenticate(yoAuthToken);
+            demand.cancelDevelopment();
+            fail();
+        } catch (final UnauthorizedOperationException e) {
             assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_CANCEL_DEMAND, e.getCode());
         }
 
         demand.authenticate(tomAuthToken);
 
-        assertEquals(new BigDecimal("120"), demand.getContribution());
+        assertEquals(120, demand.getContribution().intValue());
 
         demand.cancelDevelopment();
 
-        assertEquals(BigDecimal.ZERO, demand.getContribution());
+        assertEquals(0, demand.getContribution().intValue());
 
         assertEquals(DemandState.DISCARDED, demand.getDemandState());
 
@@ -375,6 +384,14 @@ public class DemandTest extends FrameworkTestUnit {
             demand.releaseCurrentBatch();
             fail();
         } catch (final UnauthorizedOperationException e) {
+            assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED, e.getCode());
+        }
+
+        try {
+            demand.authenticate(yoAuthToken);
+            demand.releaseCurrentBatch();
+            fail();
+        } catch (final UnauthorizedOperationException e) {
             assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_DEMAND, e.getCode());
         }
 
@@ -382,18 +399,20 @@ public class DemandTest extends FrameworkTestUnit {
         demand.releaseCurrentBatch();
 
         assertEquals(DemandState.INCOME, demand.getDemandState());
-        assertEquals(new BigDecimal("120"), demand.getContribution());
+        assertEquals(120, demand.getContribution().intValue());
     }
 
     public void testOfferWithALotOfBatch() throws UnauthorizedOperationException, NotEnoughMoneyException {
         Demand demand = createDemandByThomas();
         final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("10"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
-        demand.authenticate(fredAuthToken);
+
         offer.addBatch(DateUtils.tomorrow(), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
         offer.addBatch(DateUtils.nowPlusSomeDays(2), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
         offer.addBatch(DateUtils.nowPlusSomeDays(4), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
         offer.addBatch(DateUtils.nowPlusSomeDays(9), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
+
+        demand.authenticate(tomAuthToken);
         demand.addOffer(offer);
 
         demand.authenticate(yoAuthToken);
@@ -409,7 +428,9 @@ public class DemandTest extends FrameworkTestUnit {
 
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
+        demand.authenticate(tomAuthToken);
         demand.releaseCurrentBatch();
+
         assertEquals(DemandState.INCOME, demand.getDemandState());
         assertTrue(demand.validateCurrentBatch(true));
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());

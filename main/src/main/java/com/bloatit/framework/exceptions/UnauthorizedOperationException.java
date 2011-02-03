@@ -12,7 +12,9 @@ public class UnauthorizedOperationException extends Exception {
 
     public enum SpecialCode {
         /**
-         * You try to access a method that require authentication without authenticating the object.
+         * You try to access a method that require authentication without authenticating
+         * the object.
+         *
          * @see Unlockable#authenticate(com.bloatit.model.AuthToken)
          */
         AUTHENTICATION_NEEDED,
@@ -56,7 +58,13 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You try to finish a demand, but you are not the current developer.
          */
-        NON_DEVELOPER_FINISHED_DEMAND
+        NON_DEVELOPER_FINISHED_DEMAND,
+
+        /**
+         * You create an object and insert it with different person. For example Tom
+         * create an Offer and Yo insert it in the demand.
+         */
+        CREATOR_INSERTOR_MISMATCH
 
     }
 
