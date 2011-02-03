@@ -42,8 +42,6 @@ public abstract class WebServer implements ScgiProcessor {
         final Session session = findSession(header);
 
         try {
-            ModelManagerAccessor.lock();
-
             Context.reInitializeContext(header, session);
 
             final String pageCode = header.getQueryString().getPageName();
@@ -65,14 +63,9 @@ public abstract class WebServer implements ScgiProcessor {
                 ModelManagerAccessor.close();
             }
 
-        } catch (final InterruptedException ex) {
-            Log.framework().fatal("Cannot lock the framework.", ex);
-            response.writeException(ex);
         } catch (RuntimeException e) {
             response.writeException(e);
             throw e;
-        } finally {
-            ModelManagerAccessor.unLock();
         }
         return true;
     }

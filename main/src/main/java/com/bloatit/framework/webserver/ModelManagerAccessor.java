@@ -50,20 +50,4 @@ public class ModelManagerAccessor {
     public static void close() {
         modelManager.close();
     }
-
-    /**
-     * @throws InterruptedException
-     * @see com.bloatit.model.AbstractModel#lock()
-     */
-    public static void lock() throws InterruptedException {
-        modelManager.lock();
-    }
-
-    /**
-     * @see com.bloatit.model.AbstractModel#unLock()
-     */
-    public static void unLock() {
-        modelManager.unLock();
-    }
-
 }

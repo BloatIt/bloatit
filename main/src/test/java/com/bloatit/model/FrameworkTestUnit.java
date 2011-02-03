@@ -31,12 +31,10 @@ public class FrameworkTestUnit extends TestCase {
         fredAuthToken = new AuthToken("Fred", "other");
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
-        ModelManagerAccessor.lock();
     }
 
     @Override
     protected void tearDown() throws Exception {
-        ModelManagerAccessor.unLock();
         ModelManagerAccessor.close();
         super.tearDown();
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {

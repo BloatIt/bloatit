@@ -63,24 +63,4 @@ public class Model implements AbstractModel {
         CacheManager.clear();
         DataManager.close();
     }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.AbstractModelManager#lock()
-     */
-    @Override
-    public void lock() throws InterruptedException {
-        Log.model().trace("Locking the model.");
-//        mutex.acquire();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.AbstractModelManager#unLock()
-     */
-    @Override
-    public void unLock() {
-//        mutex.release();
-        Log.model().trace("unlocking the model.");
-    }
 }

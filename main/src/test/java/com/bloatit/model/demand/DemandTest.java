@@ -464,10 +464,8 @@ public class DemandTest extends FrameworkTestUnit {
         Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
 
         new TaskSelectedOfferTimeOut(demand.getId(), new Date());
-        ModelManagerAccessor.unLock();
         try {
             Thread.sleep(1000);
-            ModelManagerAccessor.lock();
         } catch (final InterruptedException e) {
             fail();
         }
