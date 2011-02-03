@@ -10,13 +10,16 @@ public class BloatitServer {
         Framework framework = new Framework(new Model());
         framework.addProcessor(new BloatitWebServer());
 
-        framework.initialize();
+
         try {
-            framework.run();
+            if(framework.initialize()) {
+                framework.run();
+            }
         } finally {
             framework.shutdown();
             System.exit(0);
         }
+
     }
 
 }

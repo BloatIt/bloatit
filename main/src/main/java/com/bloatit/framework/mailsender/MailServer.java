@@ -35,10 +35,10 @@ public class MailServer extends Thread {
     private final static long SECOND = 1000L * MILLISECOND;
     private final static long MINUTE = 60L * SECOND;
 
-    private final PropertiesRetriever mailProperties;
-    private final Session session;
-    private final LinkedBlockingQueue<String> mailsFileName;
-    private final Semaphore stopMutex;
+    private PropertiesRetriever mailProperties;
+    private Session session;
+    private LinkedBlockingQueue<String> mailsFileName;
+    private Semaphore stopMutex;
 
     private boolean stop;
     private long numberOfTries;
@@ -46,6 +46,17 @@ public class MailServer extends Thread {
     private static MailServer instance;
 
     private MailServer() {
+    }
+
+    /**
+     * <p>
+     * Initializes the mail server
+     * </p>
+     * <p>
+     * This method has to be called before you start application
+     * </p>
+     */
+    public void init() {
         mailsFileName = new LinkedBlockingQueue<String>();
         mailProperties = ConfigurationManager.loadProperties("mail");
         stopMutex = new Semaphore(1);
@@ -64,21 +75,6 @@ public class MailServer extends Thread {
         });
     }
 
-    /**
-     * <p>
-     * Initializes the mail server
-     * </p>
-     * <p>
-     * This method has to be called when you start application
-     * </p>
-     *
-     * @throws MailFatalError when the mail server cannot be created (i.e. : directories
-     *         to store mails can't be created)
-     */
-    public static void init() {
-        instance = new MailServer();
-        instance.start();
-    }
 
     /**
      * <p>
@@ -90,11 +86,12 @@ public class MailServer extends Thread {
      * </p>
      *
      * @return the MailServer instance
-     * @throws MailFatalError if no instances of the MailServer exists
+     * @throws MailFatalError when the mail server cannot be created (i.e. : directories
+     *         to store mails can't be created)
      */
     public static MailServer getInstance() {
         if (instance == null) {
-            throw new MailFatalError("Mail server not initialized. Use init().");
+            instance = new MailServer();
         }
         return instance;
     }

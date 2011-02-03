@@ -4,7 +4,6 @@ import java.util.concurrent.Semaphore;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
-import com.bloatit.framework.mailsender.MailServer;
 
 public class Model implements AbstractModel {
     private static final Semaphore mutex = new Semaphore(1, false);
@@ -19,7 +18,6 @@ public class Model implements AbstractModel {
      */
     @Override
     public void launch() {
-        MailServer.init();
         Log.model().trace("Launching the Model.");
     }
 
