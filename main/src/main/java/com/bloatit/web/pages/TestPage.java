@@ -34,14 +34,14 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.TestPageUrl;
 
 /**
  * A page to test various Html elements
  */
 @ParamContainer("test")
-public final class TestPage extends Page {
+public final class TestPage extends MasterPage {
 
     public TestPage(final TestPageUrl testPageUrl) {
         super(testPageUrl);
@@ -137,7 +137,7 @@ public final class TestPage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return "test page";
     }
 

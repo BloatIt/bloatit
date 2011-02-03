@@ -16,12 +16,12 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
 
 @ParamContainer("special")
-public final class SpecialsPage extends Page {
+public final class SpecialsPage extends MasterPage {
 
     public SpecialsPage(final SpecialsPageUrl specialsPageUrl) {
         super(specialsPageUrl);
@@ -41,7 +41,7 @@ public final class SpecialsPage extends Page {
     }
 
     @Override
-    public String getTitle() {
+    public String getPageTitle() {
         return "Special pages list";
     }
 

@@ -33,7 +33,7 @@ public final class AccountChargingPage extends LoggedPage {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return Context.tr("Charge your bloatit account");
     }
 

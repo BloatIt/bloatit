@@ -29,14 +29,14 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.actions.CreateIdeaAction;
+import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.CreateIdeaActionUrl;
-import com.bloatit.web.url.CreateIdeaPageUrl;
 
 /**
  * Page that hosts the form to create a new Idea
  */
-@ParamContainer("idea/create")
-public final class CreateIdeaPage extends LoggedPage {
+@ParamContainer("demand/create")
+public final class CreateDemandPage extends LoggedPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 10;
     private static final int SPECIF_INPUT_NB_COLUMNS = 80;
@@ -58,7 +58,7 @@ public final class CreateIdeaPage extends LoggedPage {
     @RequestParam(name = CreateIdeaAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
     private final String lang;
 
-    public CreateIdeaPage(final CreateIdeaPageUrl createIdeaPageUrl) {
+    public CreateDemandPage(final CreateDemandPageUrl createIdeaPageUrl) {
         super(createIdeaPageUrl);
         this.description = createIdeaPageUrl.getDescription();
         this.specification = createIdeaPageUrl.getSpecification();
@@ -68,7 +68,7 @@ public final class CreateIdeaPage extends LoggedPage {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return "Create new idea";
     }
 

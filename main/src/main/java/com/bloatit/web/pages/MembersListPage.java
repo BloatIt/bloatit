@@ -25,12 +25,12 @@ import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 
 @ParamContainer("memberList")
-public final class MembersListPage extends Page {
+public final class MembersListPage extends MasterPage {
 
     // Keep me here ! Y am needed for the Url generation !
     private HtmlPagedList<Member> pagedMemberList;
@@ -76,7 +76,7 @@ public final class MembersListPage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return "Members list";
     }
 

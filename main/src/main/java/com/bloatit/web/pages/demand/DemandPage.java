@@ -14,16 +14,17 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.webserver.PageNotFoundException;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.model.demand.Demand;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandPageUrl;
 
 @ParamContainer("demand")
-public final class DemandPage extends Page {
+public final class DemandPage extends MasterPage {
 
     public static final String IDEA_FIELD_NAME = "id";
 
@@ -51,7 +52,7 @@ public final class DemandPage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         if (demand != null) {
             try {
                 return demand.getTitle();
@@ -76,8 +77,7 @@ public final class DemandPage extends Page {
         addNotifications(url.getMessages());
 
         if (url.getMessages().hasMessage(Level.ERROR)) {
-            setPageNotFound();
-            return;
+            throw new PageNotFoundException();
         }
 
         // The demand page is composed by 3 parts:

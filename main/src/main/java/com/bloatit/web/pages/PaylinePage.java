@@ -1,17 +1,17 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.TokenNotfoundException;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.PaylinePageUrl;
 
 @ParamContainer("payline/result")
-public final class PaylinePage extends Page {
+public final class PaylinePage extends MasterPage {
 
     @RequestParam(name = "token", level = Level.INFO)
     private final String token;
@@ -38,7 +38,7 @@ public final class PaylinePage extends Page {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return "Transaction result";
     }
 

@@ -29,11 +29,11 @@ import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlPagedList;
-import com.bloatit.web.pages.master.Page;
-import com.bloatit.web.url.DemandListUrl;
+import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.DemandListPageUrl;
 
 @ParamContainer("demand/list")
-public final class DemandList extends Page {
+public final class DemandListPage extends MasterPage {
 
     public static final String FILTER_ALL = "all";
     public static final String FILTER_IN_PROGRESS = "in progress";
@@ -57,9 +57,9 @@ public final class DemandList extends Page {
     private final String searchString;
 
     private HtmlPagedList<Demand> pagedDemandList;
-    private final DemandListUrl url;
+    private final DemandListPageUrl url;
 
-    public DemandList(final DemandListUrl url) {
+    public DemandListPage(final DemandListPageUrl url) {
         super(url);
         this.url = url;
         this.searchString = url.getSearchString();
@@ -77,7 +77,7 @@ public final class DemandList extends Page {
         // Div demand_search_block
         final HtmlDiv demandSearchBlock = new HtmlDiv("demand_search_block");
         {
-            DemandListUrl formUrl = url.clone();
+            DemandListPageUrl formUrl = url.clone();
             formUrl.setSearchString("");
             final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
             {
@@ -93,21 +93,21 @@ public final class DemandList extends Page {
 
             final HtmlDiv demandFilter = new HtmlDiv("demand_filter");
             {
-                final DemandListUrl allFilterUrl = url.clone();
+                final DemandListPageUrl allFilterUrl = url.clone();
                 allFilterUrl.setFilter(FILTER_ALL);
                 final HtmlLink allFilter = allFilterUrl.getHtmlLink(Context.tr("all"));
                 if (filter.equals(FILTER_ALL)) {
                     allFilter.setCssClass("selected");
                 }
 
-                final DemandListUrl preparingFilterUrl = url.clone();
+                final DemandListPageUrl preparingFilterUrl = url.clone();
                 preparingFilterUrl.setFilter(FILTER_IN_PROGRESS);
                 final HtmlLink preparingFilter = preparingFilterUrl.getHtmlLink(Context.tr("in progress"));
                 if (filter.equals(FILTER_IN_PROGRESS)) {
                     preparingFilter.setCssClass("selected");
                 }
 
-                final DemandListUrl finishedFilterUrl = url.clone();
+                final DemandListPageUrl finishedFilterUrl = url.clone();
                 finishedFilterUrl.setFilter(FILTER_FINISHED);
                 final HtmlLink finishedFilter = finishedFilterUrl.getHtmlLink(Context.tr("finished"));
                 if (filter.equals(FILTER_FINISHED)) {
@@ -125,42 +125,42 @@ public final class DemandList extends Page {
 
             final HtmlDiv demandSort = new HtmlDiv("demand_sort");
             {
-                final DemandListUrl relevanceSortUrl = url.clone();
+                final DemandListPageUrl relevanceSortUrl = url.clone();
                 relevanceSortUrl.setSort(SORT_BY_RELEVANCE);
                 final HtmlLink relevanceSort = relevanceSortUrl.getHtmlLink(Context.tr("relevance"));
                 if (sort.equals(SORT_BY_RELEVANCE)) {
                     relevanceSort.setCssClass("selected");
                 }
 
-                final DemandListUrl popularitySortUrl = url.clone();
+                final DemandListPageUrl popularitySortUrl = url.clone();
                 popularitySortUrl.setSort(SORT_BY_POPULARITY);
                 final HtmlLink popularitySort = popularitySortUrl.getHtmlLink(Context.tr("popularity"));
                 if (sort.equals(SORT_BY_POPULARITY)) {
                     popularitySort.setCssClass("selected");
                 }
 
-                final DemandListUrl contributionSortUrl = url.clone();
+                final DemandListPageUrl contributionSortUrl = url.clone();
                 contributionSortUrl.setSort(SORT_BY_CONTRIBUTION);
                 final HtmlLink contributionSort = contributionSortUrl.getHtmlLink(Context.tr("contribution"));
                 if (sort.equals(SORT_BY_CONTRIBUTION)) {
                     contributionSort.setCssClass("selected");
                 }
 
-                final DemandListUrl progressSortUrl = url.clone();
+                final DemandListPageUrl progressSortUrl = url.clone();
                 progressSortUrl.setSort(SORT_BY_PROGRESS);
                 final HtmlLink progressSort = progressSortUrl.getHtmlLink(Context.tr("progress"));
                 if (sort.equals(SORT_BY_PROGRESS)) {
                     progressSort.setCssClass("selected");
                 }
 
-                final DemandListUrl creationDateSortUrl = url.clone();
+                final DemandListPageUrl creationDateSortUrl = url.clone();
                 creationDateSortUrl.setSort(SORT_BY_CREATION_DATE);
                 final HtmlLink creationDateSort = creationDateSortUrl.getHtmlLink(Context.tr("creation date"));
                 if (sort.equals(SORT_BY_CREATION_DATE)) {
                     creationDateSort.setCssClass("selected");
                 }
 
-                final DemandListUrl expirationDateSortUrl = url.clone();
+                final DemandListPageUrl expirationDateSortUrl = url.clone();
                 expirationDateSortUrl.setSort(SORT_BY_EXPIRATION_DATE);
                 final HtmlLink expirationDateSort = expirationDateSortUrl.getHtmlLink(Context.tr("expiration date"));
                 if (sort.equals(SORT_BY_EXPIRATION_DATE)) {
@@ -214,7 +214,7 @@ public final class DemandList extends Page {
 
             final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
-            final DemandListUrl clonedUrl = url.clone();
+            final DemandListPageUrl clonedUrl = url.clone();
             pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
 
             add(pagedDemandList);
@@ -230,7 +230,7 @@ public final class DemandList extends Page {
     }
 
     @Override
-    public String getTitle() {
+    public String getPageTitle() {
         return Context.tr("View demands - search demands");
     }
 
@@ -256,7 +256,7 @@ public final class DemandList extends Page {
         }
 
         private HtmlNode generateContent() {
-            return new HtmlDemandSumary(demand);
+            return new HtmlDemandSumary(demand, false);
         }
     };
 

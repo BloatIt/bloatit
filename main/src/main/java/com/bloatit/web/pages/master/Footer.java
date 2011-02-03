@@ -2,13 +2,35 @@ package com.bloatit.web.pages.master;
 
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.web.url.CreateDemandPageUrl;
+import com.bloatit.web.url.FileUploadPageUrl;
+import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.SpecialsPageUrl;
 
 public class Footer extends HtmlDiv {
 
     protected Footer() {
         super();
         setId("footer");
-        addText(Context.tr("This website is under GNU Affero Public Licence."));
+
+
+        HtmlDiv linkBlock = new HtmlDiv("link_block", "link_block"); {
+            linkBlock.add(new HtmlDiv("footer_link").add(new IndexPageUrl().getHtmlLink(Context.tr("Home page"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new SpecialsPageUrl().getHtmlLink(Context.tr("All pages"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new FileUploadPageUrl().getHtmlLink(Context.tr("Upload file"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new CreateDemandPageUrl().getHtmlLink(Context.tr("Create a demand"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Add a project"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Signal a bug"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Contacts"))));
+
+        }
+        add(linkBlock);
+
+        HtmlDiv licenceBlock = new HtmlDiv("licence_block", "licence_block"); {
+            licenceBlock.addText(Context.tr("This website use Bloatit framework, and is under GNU Affero Public Licence."));
+        }
+        add(licenceBlock);
     }
 
 }

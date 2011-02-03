@@ -24,7 +24,7 @@ import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.url.CreateIdeaActionUrl;
-import com.bloatit.web.url.CreateIdeaPageUrl;
+import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -100,6 +100,6 @@ public final class CreateIdeaAction extends Action {
         session.addParameter(CATEGORY_CODE, category);
         session.addParameter(url.getLangParameter());
 
-        return new CreateIdeaPageUrl();
+        return new CreateDemandPageUrl();
     }
 }

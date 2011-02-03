@@ -9,8 +9,8 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
     }
 
     @Override
-    public com.bloatit.framework.webserver.masters.PageNotFound createPage() {
-        return new com.bloatit.framework.webserver.masters.PageNotFound(this);
+    public com.bloatit.web.pages.PageNotFound createPage() {
+        return new com.bloatit.web.pages.PageNotFound(this);
     }
 
     public PageNotFoundUrl(final Parameters params, final Parameters session) {

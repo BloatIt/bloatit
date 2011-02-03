@@ -14,9 +14,9 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.HtmlDateField;
@@ -59,7 +59,7 @@ public final class OfferPage extends LoggedPage {
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return Context.tr("Make an offer");
     }
 
@@ -77,7 +77,7 @@ public final class OfferPage extends LoggedPage {
     public HtmlElement createRestrictedContent() {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
-        offerPageContainer.add(new HtmlDemandSumary(targetIdea));
+        offerPageContainer.add(new HtmlDemandSumary(targetIdea, false));
 
         // Create offer form
         final OfferActionUrl offerActionUrl = new OfferActionUrl(targetIdea);

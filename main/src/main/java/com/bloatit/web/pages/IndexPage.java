@@ -11,26 +11,18 @@
 
 package com.bloatit.web.pages;
 
-import static com.bloatit.framework.webserver.Context.tr;
-
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlSubmit;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
-import com.bloatit.model.demand.DemandManager;
-import com.bloatit.model.managers.MemberManager;
-import com.bloatit.web.pages.master.Page;
-import com.bloatit.web.url.CreateIdeaPageUrl;
-import com.bloatit.web.url.DemandListUrl;
+import com.bloatit.web.components.HtmlDemandSumary;
+import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("index")
-public final class IndexPage extends Page {
+public final class IndexPage extends MasterPage {
 
     public IndexPage(final IndexPageUrl indexPageUrl) {
         super(indexPageUrl);
@@ -38,21 +30,70 @@ public final class IndexPage extends Page {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final HtmlDiv statsBlock = new HtmlDiv("index_stats_block");
-        generateStatsBlock(statsBlock);
 
-        final HtmlDiv dualColumnBlock = new HtmlDiv("dual_column_block");
-        generateDualColumnBlock(dualColumnBlock);
+        final HtmlDiv globalDescription = new HtmlDiv("global_description");
+        {
+            HtmlParagraph globalConcept = new HtmlParagraph(Context.tr("Linkeos is a platform for free software funding."));
+            globalDescription.add(globalConcept);
 
-        add(generateSearchBlock());
-        add(statsBlock);
-        add(dualColumnBlock);
+            HtmlParagraph needText = new HtmlParagraph();
+            needText.addText(Context.tr("If you have a need about a free software, you can "));
+            needText.add(new CreateDemandPageUrl().getHtmlLink(Context.tr("create a new demand")));
+            needText.addText(Context.tr(" and contribute to it."));
+            globalDescription.add(needText);
+
+            HtmlParagraph devText = new HtmlParagraph();
+            devText.addText(Context.tr("If you are a developer, you can make an offer on existing demands to develop it again money."));
+            globalDescription.add(devText);
+
+
+            HtmlParagraph moreText = new HtmlParagraph();
+            moreText.addText(Context.tr("You can find more informations about Linkeos's in the documentation."));
+            globalDescription.add(moreText);
+
+        }
+        add(globalDescription);
+
+
+        final HtmlDiv demandList = new HtmlDiv("demand_list");
+        {
+            int demandCount = 6;
+
+            for(int i = 0; i < (demandCount+1)/2 ; i++) {
+
+                final HtmlDiv demandListRow = new HtmlDiv("demand_list_row");
+                {
+                    final HtmlDiv demandListLeftCase = new HtmlDiv("demand_list_left_case");
+                    {
+                        demandListLeftCase.add(new HtmlDemandSumary(null, true));
+                    }
+                    demandListRow.add(demandListLeftCase);
+
+                    final HtmlDiv demandListRightCase= new HtmlDiv("demand_list_right_case");
+                    {
+                        demandListRightCase.add(new HtmlDemandSumary(null, true));
+                    }
+                    demandListRow.add(demandListRightCase);
+
+                }
+                demandList.add(demandListRow);
+            }
+        }
+        add(demandList);
+
 
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return "Finance free software";
+    }
+
+
+
+    @Override
+    protected String getCustomCss() {
+        return "index.css";
     }
 
     @Override
@@ -60,44 +101,5 @@ public final class IndexPage extends Page {
         return true;
     }
 
-    private HtmlDiv generateSearchBlock() {
 
-        final HtmlDiv searchBlock = new HtmlDiv("index_search_block");
-
-        final HtmlForm searchForm = new HtmlForm(new DemandListUrl().urlString(), HtmlForm.Method.GET);
-
-        final HtmlTextField searchField = new HtmlTextField(DemandList.SEARCH_STRING_CODE);
-
-        final HtmlSubmit searchButton = new HtmlSubmit(tr("Search"));
-        searchForm.add(searchField);
-        searchForm.add(searchButton);
-        searchBlock.add(searchForm);
-        return searchBlock;
-    }
-
-    private void generateStatsBlock(final HtmlDiv statsBlock) {
-        statsBlock.add(new HtmlParagraph(DemandManager.getDemandsCount() + tr(" demands, ") + MemberManager.getMembersCount() + tr(" members…")));
-    }
-
-    private void generateDualColumnBlock(final HtmlDiv dualColumnBlock) {
-
-        final HtmlDiv hightlightDemandsBlock = new HtmlDiv("index_hightlight_demands_block");
-
-        dualColumnBlock.add(generateDescriptionBlock());
-        dualColumnBlock.add(hightlightDemandsBlock);
-    }
-
-    private HtmlDiv generateDescriptionBlock() {
-
-        final HtmlDiv descriptionBlock = new HtmlDiv("index_description_block");
-
-        final String description = Context
-                .tr("XXX is a platform to finance free software. Following, we must put a simple and complete description of the fonctionnement of XXXX.");
-        descriptionBlock.add(new HtmlParagraph(description));
-
-        final HtmlLink createIdeaPageLink = new HtmlLink(new CreateIdeaPageUrl().urlString(), tr("Submit a new idea"));
-        descriptionBlock.add(createIdeaPageLink);
-
-        return descriptionBlock;
-    }
 }

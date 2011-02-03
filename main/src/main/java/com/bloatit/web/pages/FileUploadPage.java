@@ -5,19 +5,19 @@ import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
-import com.bloatit.web.pages.master.Page;
+import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
 
 @ParamContainer("file/upload")
-public class FileUploadPage extends Page {
+public class FileUploadPage extends MasterPage {
 
     public FileUploadPage(final FileUploadPageUrl url) {
         super(url);
     }
 
     @Override
-    protected String getTitle() {
+    protected String getPageTitle() {
         return "Upload a file";
     }
 

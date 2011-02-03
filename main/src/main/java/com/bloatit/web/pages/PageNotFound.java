@@ -8,11 +8,12 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.framework.webserver.masters;
+package com.bloatit.web.pages;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlTitle;
+import com.bloatit.framework.webserver.masters.Page;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 
 public class PageNotFound extends Page {
