@@ -2,20 +2,12 @@ package com.bloatit.framework.scgiserver;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
-import javax.activation.MimeTypeParseException;
-
-import org.apache.solr.schema.UUIDField;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.Parameters;
-import com.bloatit.framework.webserver.mime.InvalidMimeEncodingException;
-import com.bloatit.framework.webserver.mime.MalformedMimeException;
-import com.bloatit.framework.webserver.mime.MimeElement;
-import com.bloatit.framework.webserver.mime.MultipartMimeParser;
-import com.bloatit.framework.webserver.mime.filenaming.UUIDFileNameGenerator;
+import com.bloatit.framework.webserver.postparsing.PostParameter;
+import com.bloatit.framework.webserver.postparsing.PostParser;
+import com.bloatit.framework.webserver.postparsing.exceptions.MalformedPostException;
 
 /**
  * A class to describe elements transmitted by an http POST query
@@ -43,6 +35,15 @@ public class HttpPost {
     }
 
     /**
+     * Gets the list of parameters
+     * 
+     * @return the list of post parameters for the page
+     */
+    public final Parameters getParameters() {
+        return parameters;
+    }
+
+    /**
      * <p>
      * Parses the post and fills the list of parameters
      * </p>
@@ -53,71 +54,90 @@ public class HttpPost {
      *            the length of the post
      * @param contentType
      *            the contentType of the post (text/plain, multipart/form-data
-     *            ...
+     *            ...)
      * @throws IOException
      */
     private void readBytes(final InputStream postStream, final int length, final String contentType) throws IOException {
-        if (contentType != null && !contentType.equals("") && contentType.startsWith("multipart/form-data")) {
-            System.out.println(contentType);
-            try {
-                processMultipart(postStream, contentType);
-            } catch (MimeTypeParseException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (InvalidMimeEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (MalformedMimeException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } else {
-
-            final byte[] postBytes = new byte[length];
-            final int read = postStream.read(postBytes);
-            if (read == length) {
-                Log.framework().debug("Post value read correctly.");
-            } else {
-                Log.framework().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
-            }
-
-            final String string = new String(postBytes);
-            for (final String param : string.split("&")) {
-                try {
-                    final String[] pair = param.split("=");
-                    if (pair.length >= 2) {
-                        final String key = URLDecoder.decode(pair[0], "UTF-8");
-                        String value;
-                        value = URLDecoder.decode(pair[1], "UTF-8");
-                        parameters.put(key, value);
-                    }
-                } catch (final UnsupportedEncodingException e) {
-                    Log.framework().error(e);
-                }
-            }
-
+        PostParser parser = new PostParser(postStream, length, contentType, UPLOAD_TEMP_DIRECTORY);
+        PostParameter pp;
+        while ((pp = getNext(parser)) != null) {
+            parameters.add(pp.getName(), pp.getValue());
         }
+    
+        // if (contentType != null && !contentType.equals("") &&
+        // contentType.startsWith("multipart/form-data")) {
+        // System.out.println(contentType);
+        // try {
+        // processMultipart(postStream, contentType);
+        // } catch (MimeTypeParseException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // } catch (InvalidMimeEncodingException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // } catch (MalformedMimeException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+        // } else {
+        //
+        // final byte[] postBytes = new byte[length];
+        // final int read = postStream.read(postBytes);
+        // if (read == length) {
+        // Log.framework().debug("Post value read correctly.");
+        // } else {
+        // Log.framework().error("End of strem reading the postBytes. There may be difficulties to generate the page.");
+        // }
+        //
+        // final String string = new String(postBytes);
+        // for (final String param : string.split("&")) {
+        // try {
+        // final String[] pair = param.split("=");
+        // if (pair.length >= 2) {
+        // final String key = URLDecoder.decode(pair[0], "UTF-8");
+        // String value;
+        // value = URLDecoder.decode(pair[1], "UTF-8");
+        // parameters.put(key, value);
+        // }
+        // } catch (final UnsupportedEncodingException e) {
+        // Log.framework().error(e);
+        // }
+        // }
+        //
+        // }
     }
 
     /**
-     * Gets the list of parameters
+     * Gets the next PostParameter in the parser, ignoring the exceptions
      * 
-     * @return the list of post parameters for the page
+     * @param parser
+     *            the <code>POST</code> parser from which content is read
+     * @return the next <code>PostParameter</code> or <code>null</code> if no
+     *         more content is available
      */
-    public final Parameters getParameters() {
-        return parameters;
-    }
-
-    private final void processMultipart(InputStream postStream, final String contentType) throws MimeTypeParseException, IOException,
-            InvalidMimeEncodingException, MalformedMimeException {
-        Log.web().trace("Received a form-data, starting parsing");
-        // final MultipartMime mm = new MultipartMime(postStream, contentType);$
-        final MultipartMimeParser mmp = new MultipartMimeParser(postStream, contentType, new UUIDFileNameGenerator(), UPLOAD_TEMP_DIRECTORY);
-        Log.web().trace("Parsing of post data over");
-        MimeElement me;
-        while ((me = mmp.readContent()) != null) {
-            System.out.println(me);
+    private PostParameter getNext(PostParser parser) {
+        while (true) {
+            try {
+                PostParameter pp = parser.readNext();
+                return pp;
+            } catch (MalformedPostException e) {
+                Log.web().error("Error in the post. We try to continue, but may have errors later in the page");
+            }
         }
     }
+
+    // private final void processMultipart(InputStream postStream, final String
+    // contentType) throws MimeTypeParseException, IOException,
+    // InvalidMimeEncodingException, MalformedMimeException {
+    // Log.web().trace("Received a form-data, starting parsing");
+    // // final MultipartMime mm = new MultipartMime(postStream, contentType);$
+    // final MultipartMimeParser mmp = new MultipartMimeParser(postStream,
+    // contentType, new UUIDFileNameGenerator(), UPLOAD_TEMP_DIRECTORY);
+    // Log.web().trace("Parsing of post data over");
+    // MimeElement me;
+    // while ((me = mmp.readContent()) != null) {
+    // System.out.println(me);
+    // }
+    // }
 
 }

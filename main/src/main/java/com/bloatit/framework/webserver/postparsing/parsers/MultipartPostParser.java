@@ -44,6 +44,8 @@ public class MultipartPostParser extends PostParameterParser {
      * the whole content of the element. If element is a file, the
      * <code>PageParameter</code> contains only the location of the file
      * 
+     * @return a <code>MimeElement</code> representing the content of this mime,
+     *         or <code>null</code> if end has been reached.
      * @throws MalformedMimeException
      *             if the format is incorrect
      * @throws InvalidMimeEncodingException
@@ -55,6 +57,9 @@ public class MultipartPostParser extends PostParameterParser {
     @Override
     public PostParameter readNext() throws IOException, InvalidMimeEncodingException, MalformedMimeException {
         MimeElement next = parser.readContent();
+        if (next == null) {
+            return null;
+        }
 
         if (next.isFile()) {
             return new PostParameter(next.getName(), next.getDestination().getAbsolutePath());

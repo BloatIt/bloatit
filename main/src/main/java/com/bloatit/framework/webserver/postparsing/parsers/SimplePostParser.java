@@ -18,6 +18,7 @@ public class SimplePostParser extends PostParameterParser {
     public SimplePostParser(final InputStream postStream, final int length) {
         this.postStream = postStream;
         this.length = length;
+
     }
 
     public void initParsing() throws IOException {
@@ -35,24 +36,31 @@ public class SimplePostParser extends PostParameterParser {
     }
 
     @Override
-    public PostParameter readNext() throws MalformedPostException {
-        if(i >= postData.length ){
+    public PostParameter readNext() throws MalformedPostException, IOException {
+        if (postData == null) {
+            initParsing();
+        }
+        if (i >= postData.length) {
             return null;
         }
+        Log.framework().trace("Reading simple POST data n°"+i);
         String param = postData[i];
-        try {
-            final String[] pair = param.split("=");
-            if (pair.length >= 2) {
-                final String key = URLDecoder.decode(pair[0], "UTF-8");
-                String value;
-                value = URLDecoder.decode(pair[1], "UTF-8");
-                return new PostParameter(key, value);
-            } else {
-                throw new MalformedPostException("Found post data that doesn't match the expected format: [" + param + "]");
+        while( i < postData.length){
+            try {
+                final String[] pair = param.split("=");
+                if (pair.length >= 2) {
+                    final String key = URLDecoder.decode(pair[0], "UTF-8");
+                    String value;
+                    value = URLDecoder.decode(pair[1], "UTF-8");
+                    i++;
+                    return new PostParameter(key, value);
+                } 
+                i++;
+            } catch (final UnsupportedEncodingException e) {
+                Log.framework().fatal("Encoding is UTF-8 not supported. This is bad, check system parameters", e);
+                throw new MalformedPostException("Encoding is UTF-8 not supported. This is bad, check system parameters", e);
             }
-        } catch (final UnsupportedEncodingException e) {
-            Log.framework().fatal("Encoding is UTF-8 not supported. This is bad, check system parameters", e);
-            throw new MalformedPostException("Encoding is UTF-8 not supported. This is bad, check system parameters", e);
         }
+        return null;
     }
 }

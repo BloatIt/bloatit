@@ -285,7 +285,12 @@ public class MultipartMimeParser {
                         for (final String elem : elems) {
                             final String[] headerElements = elem.split("[:=]");
                             if (headerElements.length > 1) {
-                                me.addHeader(headerElements[0].trim(), headerElements[1].trim());
+                                String headerContent = headerElements[1].trim();
+                                if(headerContent.startsWith("\"") && headerContent.endsWith("\"")){
+                                    // Remove the '"' surrounding some of the fields
+                                    headerContent = headerContent.substring(1, headerContent.length()-1);
+                                }
+                                me.addHeader(headerElements[0].trim(), headerContent);
                             }
                         }
                     }

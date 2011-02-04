@@ -58,8 +58,8 @@ public class PostParser {
         this.postStream = postStream;
         this.length = length;
         this.contentType = contentType;
-        this.parser = getParser();
         this.fileSavingDirectory = fileSavingDirectory;
+        this.parser = getParser();
     }
 
     /**
@@ -106,7 +106,11 @@ public class PostParser {
      * @return the parser to use to parse this data
      */
     private PostParameterParser getParser() {
-        String realType = (contentType.substring(0, contentType.indexOf(';'))).trim();
+        int indexOfType = contentType.indexOf(';');
+        if(indexOfType == -1 ){
+            return new SimplePostParser(postStream, length); 
+        }
+        String realType = (contentType.substring(0, indexOfType)).trim();
         if (!availableParsers.contains(realType) || realType.equals(DEFAULT_TYPE)) {
             return new SimplePostParser(postStream, length);
         }
