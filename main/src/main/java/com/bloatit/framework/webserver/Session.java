@@ -76,9 +76,9 @@ public final class Session {
 
     public void resetExpirationTime() {
         if (isLogged()) {
-            expirationTime = Context.getTime() + LOGGED_SESSION_DURATION;
+            expirationTime = Context.getResquestTime() + LOGGED_SESSION_DURATION;
         } else {
-            expirationTime = Context.getTime() + DEFAULT_SESSION_DURATION;
+            expirationTime = Context.getResquestTime() + DEFAULT_SESSION_DURATION;
         }
     }
 
@@ -96,7 +96,7 @@ public final class Session {
     }
 
     public boolean isExpired() {
-        return Context.getTime() > expirationTime;
+        return Context.getResquestTime() > expirationTime;
     }
 
     public void setLastStablePage(final Url p) {

@@ -1,13 +1,9 @@
 package com.bloatit.model;
 
-import java.util.concurrent.Semaphore;
-
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
 
 public class Model implements AbstractModel {
-    private static final Semaphore mutex = new Semaphore(1, false);
-
     public Model() {
         // do nothing
     }
@@ -17,7 +13,7 @@ public class Model implements AbstractModel {
      * @see com.bloatit.model.AbstractModelManager#launch()
      */
     @Override
-    public void launch() {
+    public void init() {
         Log.model().trace("Launching the Model.");
     }
 
@@ -60,25 +56,5 @@ public class Model implements AbstractModel {
         Log.model().trace("Close the current transaction.");
         CacheManager.clear();
         DataManager.close();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.AbstractModelManager#lock()
-     */
-    @Override
-    public void lock() throws InterruptedException {
-        Log.model().trace("Locking the model.");
-        mutex.acquire();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.AbstractModelManager#unLock()
-     */
-    @Override
-    public void unLock() {
-        mutex.release();
-        Log.model().trace("unlocking the model.");
     }
 }

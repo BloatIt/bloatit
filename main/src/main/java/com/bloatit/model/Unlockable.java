@@ -15,6 +15,8 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoGroup.MemberStatus;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.RightManager.Role;
 
 /**
@@ -40,7 +42,14 @@ public class Unlockable {
         this.token = authToken;
     }
 
-    protected final AuthToken getAuthToken() {
+    protected final AuthToken getAuthToken() throws UnauthorizedOperationException {
+        if (token != null){
+            return token;
+        }
+        throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
+    }
+
+    protected final AuthToken getAuthTokenUnprotected(){
         return token;
     }
 
@@ -120,5 +129,17 @@ public class Unlockable {
             }
         }
         return roles;
+    }
+
+    /**
+     * Helper function.
+     * @return Nobody or Other
+     */
+    protected final EnumSet<Role> calculateNoOwnerRole() {
+        if(getAuthTokenUnprotected() == null) {
+            return  EnumSet.of(Role.NOBODY);
+        } else {
+            return  EnumSet.of(Role.OTHER);
+        }
     }
 }

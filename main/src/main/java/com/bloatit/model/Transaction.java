@@ -66,12 +66,12 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     }
 
     protected EnumSet<Role> calculateRole() {
-        if (getAuthToken() == null) {
+        if (getAuthTokenUnprotected() == null) {
             return EnumSet.of(Role.NOBODY);
         }
-        if (getAuthToken().getMember().getLoginUnprotected().equals(getDao().getFrom().getActor().getLogin())) {
+        if (getAuthTokenUnprotected().getMember().getLoginUnprotected().equals(getDao().getFrom().getActor().getLogin())) {
             return calculateRole(getDao().getFrom().getActor().getLogin());
-        } else if (getAuthToken().getMember().getLoginUnprotected().equals(getDao().getTo().getActor().getLogin())) {
+        } else if (getAuthTokenUnprotected().getMember().getLoginUnprotected().equals(getDao().getTo().getActor().getLogin())) {
             return calculateRole(getDao().getTo().getActor().getLogin());
         } else {
             return EnumSet.of(Role.OTHER);

@@ -15,7 +15,7 @@ public class FrameworkTestUnit extends TestCase {
     public static int init = init();
 
     private static int init() {
-        ModelManagerAccessor.launch(new Model());
+        ModelManagerAccessor.init(new Model());
         return 0;
     }
 
@@ -31,12 +31,10 @@ public class FrameworkTestUnit extends TestCase {
         fredAuthToken = new AuthToken("Fred", "other");
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
-        ModelManagerAccessor.lock();
     }
 
     @Override
     protected void tearDown() throws Exception {
-        ModelManagerAccessor.unLock();
         ModelManagerAccessor.close();
         super.tearDown();
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {

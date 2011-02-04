@@ -17,11 +17,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
@@ -36,8 +38,9 @@ public final class CurrencyLocale {
     private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_DOWN;
     private static final int DISPLAY_PRECISION = 0;
 
+    private static Semaphore dateMutex = new Semaphore(1);
     private static Date lastParse = null;
-    private static Map<Currency, BigDecimal> currencies = new HashMap<Currency, BigDecimal>();
+    private static Map<Currency, BigDecimal> currencies = Collections.synchronizedMap(new HashMap<Currency, BigDecimal>());
 
     private final Locale targetLocale;
     private final BigDecimal euroAmount;
@@ -183,9 +186,8 @@ public final class CurrencyLocale {
         BufferedReader br = null;
         try {
             final File file = new File(RATES_PATH);
-            if (lastParse == null || lastParse.before(new Date(file.lastModified()))) {
+            if (fileUpdated(file)) {
                 // Only parse if the file has been updated in the meantime
-                lastParse = new Date();
 
                 br = new BufferedReader(new FileReader(file));
                 while (br.ready()) {
@@ -210,5 +212,21 @@ public final class CurrencyLocale {
                 Log.framework().warn("Error clothing file: " + RATES_PATH);
             }
         }
+    }
+
+    private static boolean fileUpdated(File file) {
+        boolean returnValue = false;
+        try {
+            dateMutex.acquire();
+            if (lastParse == null || lastParse.before(new Date(file.lastModified()))) {
+                returnValue = true;
+                lastParse = new Date();
+            }
+        } catch (InterruptedException e) {
+            throw new FatalErrorException("Cannot lock the CurrencyLocal date.", e);
+        } finally {
+            dateMutex.release();
+        }
+        return returnValue;
     }
 }
