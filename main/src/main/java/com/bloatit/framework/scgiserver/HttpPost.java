@@ -5,13 +5,23 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import javax.activation.MimeTypeParseException;
+
+import org.apache.solr.schema.UUIDField;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.webserver.mime.InvalidMimeEncodingException;
+import com.bloatit.framework.webserver.mime.MalformedMimeException;
+import com.bloatit.framework.webserver.mime.MimeElement;
+import com.bloatit.framework.webserver.mime.MultipartMimeParser;
+import com.bloatit.framework.webserver.mime.filenaming.UUIDFileNameGenerator;
 
 /**
  * A class to describe elements transmitted by an http POST query
  */
 public class HttpPost {
+    private final static String UPLOAD_TEMP_DIRECTORY = System.getProperty("user.home") + "/.local/share/bloatit/uploads_temp/";
     private final Parameters parameters = new Parameters();
 
     /**
@@ -48,8 +58,19 @@ public class HttpPost {
      */
     private void readBytes(final InputStream postStream, final int length, final String contentType) throws IOException {
         if (contentType != null && !contentType.equals("") && contentType.startsWith("multipart/form-data")) {
-            Log.web().trace("Received a form-data, starting parsing");
-            processMultipart(postStream, contentType);
+            System.out.println(contentType);
+            try {
+                processMultipart(postStream, contentType);
+            } catch (MimeTypeParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InvalidMimeEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (MalformedMimeException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else {
             final byte[] postBytes = new byte[length];
             final int read = postStream.read(postBytes);
@@ -85,15 +106,15 @@ public class HttpPost {
         return parameters;
     }
 
-    private final void processMultipart(InputStream postStream, final String contentType) {
-        final MultipartMime mm = new MultipartMime(postStream, contentType);
+    private final void processMultipart(InputStream postStream, final String contentType) throws MimeTypeParseException, IOException, InvalidMimeEncodingException, MalformedMimeException {
+        Log.web().trace("Received a form-data, starting parsing");
+        //final MultipartMime mm = new MultipartMime(postStream, contentType);$
+        final MultipartMimeParser mmp = new MultipartMimeParser(postStream, contentType, new UUIDFileNameGenerator(), UPLOAD_TEMP_DIRECTORY);
         Log.web().trace("Parsing of post data over");
-        System.out.println(mm);
-        /*
-         * for (MimeElement me : mm) {
-         * 
-         * }
-         */
+        MimeElement me;
+        while ((me = mmp.readContent()) != null) {
+            System.out.println(me);
+        }
     }
 
 }
