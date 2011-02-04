@@ -100,6 +100,16 @@ public final class SCGIServer {
             }
         }
 
+        public void kill() {
+            if (socket != null && !socket.isClosed()) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         private void generateAndSendReponse() throws IOException {
             // Wait for connection
             Log.framework().info("Waiting connection");
@@ -144,13 +154,7 @@ public final class SCGIServer {
         // TODO: lock to wait transaction end
         for (SCGIThread thread : threads) {
             if (thread.isAlive()) {
-                thread.interrupt();
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                thread.kill();
             }
         }
     }
