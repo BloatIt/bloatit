@@ -13,6 +13,7 @@ package com.bloatit.web.pages;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlListItem;
@@ -20,23 +21,21 @@ import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
-import com.bloatit.model.Member;
-import com.bloatit.model.managers.MemberManager;
-import com.bloatit.web.HtmlTools;
+import com.bloatit.model.Project;
+import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.url.MemberPageUrl;
-import com.bloatit.web.url.MembersListPageUrl;
+import com.bloatit.web.url.ProjectListPageUrl;
+import com.bloatit.web.url.ProjectPageUrl;
 
-@ParamContainer("member/list")
-public final class MembersListPage extends MasterPage {
+@ParamContainer("project/list")
+public final class ProjectListPage extends MasterPage {
 
     // Keep me here ! I am needed for the Url generation !
-    private HtmlPagedList<Member> pagedMemberList;
-    private final MembersListPageUrl url;
+    private HtmlPagedList<Project> pagedProjectList;
+    private final ProjectListPageUrl url;
 
-    public MembersListPage(final MembersListPageUrl url) {
+    public ProjectListPage(final ProjectListPageUrl url) {
         super(url);
         this.url = url;
         generateContent();
@@ -44,20 +43,20 @@ public final class MembersListPage extends MasterPage {
 
     private void generateContent() {
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 2);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Project list", 1);
 
-        final PageIterable<Member> memberList = MemberManager.getMembers();
+        final PageIterable<Project> projectList = ProjectManager.getProjects();
 
-        final HtmlRenderer<Member> memberItemRenderer = new HtmlRenderer<Member>() {
+        final HtmlRenderer<Project> projectItemRenderer = new HtmlRenderer<Project>() {
 
             @Override
-            public HtmlNode generate(final Member member) {
-                final MemberPageUrl memberUrl = new MemberPageUrl(member);
+            public HtmlNode generate(final Project project) {
+                final ProjectPageUrl memberUrl = new ProjectPageUrl(project);
                 try {
                     HtmlLink htmlLink;
-                    htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-                    final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
-                    return new HtmlListItem(htmlLink).add(htmlKarma);
+                    htmlLink = memberUrl.getHtmlLink(project.getName());
+
+                    return new HtmlListItem(htmlLink);
                 } catch (final UnauthorizedOperationException e) {
                     Log.web().warn(e);
                 }
@@ -66,10 +65,10 @@ public final class MembersListPage extends MasterPage {
         };
 
         // TODO: avoid conflict
-        final MembersListPageUrl clonedUrl = url.clone();
-        pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
+        final ProjectListPageUrl clonedUrl = url.clone();
+        pagedProjectList = new HtmlPagedList<Project>(projectItemRenderer, projectList, clonedUrl, clonedUrl.getPagedProjectListUrl());
 
-        pageTitle.add(pagedMemberList);
+        pageTitle.add(pagedProjectList);
 
         add(pageTitle);
 
@@ -77,7 +76,7 @@ public final class MembersListPage extends MasterPage {
 
     @Override
     protected String getPageTitle() {
-        return "Members list";
+        return Context.tr("Project list");
     }
 
     @Override

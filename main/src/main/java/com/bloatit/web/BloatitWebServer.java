@@ -32,6 +32,7 @@ import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.OfferPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.PaylinePage;
+import com.bloatit.web.pages.ProjectListPage;
 import com.bloatit.web.pages.ProjectPage;
 import com.bloatit.web.pages.RegisterPage;
 import com.bloatit.web.pages.SpecialsPage;
@@ -63,6 +64,7 @@ import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylinePageUrl;
+import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
@@ -136,6 +138,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(AddProjectPageUrl.getName())) {
             return new AddProjectPage(new AddProjectPageUrl(params, session.getParams()));
+        }
+        if (pageCode.equals(ProjectListPageUrl.getName())) {
+            return new ProjectListPage(new ProjectListPageUrl(params, session.getParams()));
         }
 
         //Actions

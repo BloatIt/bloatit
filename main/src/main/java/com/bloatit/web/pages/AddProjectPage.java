@@ -113,10 +113,10 @@ public final class AddProjectPage extends LoggedPage {
         shortDescriptionInput.setComment(Context.tr("Enter a short description of the projet in 120 characters."));
         addProjectForm.add(shortDescriptionInput);
 
-        final HtmlTextArea descriptionInput = new HtmlTextArea(AddProjectAction.DESCRIPTION_CODE, Context.tr("Describe briefly the project"),
+        final HtmlTextArea descriptionInput = new HtmlTextArea(AddProjectAction.DESCRIPTION_CODE, Context.tr("Describe the project"),
                 DESCRIPTION_INPUT_NB_LINES, DESCRIPTION_INPUT_NB_COLUMNS);
         descriptionInput.setDefaultValue(description);
-        descriptionInput.setComment(Context.tr("Optionnal. You can enter a long description of the projet : list all features, add siteweb links, etc."));
+        descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the projet : list all features, add siteweb links, etc."));
         addProjectForm.add(descriptionInput);
 
         //Language
