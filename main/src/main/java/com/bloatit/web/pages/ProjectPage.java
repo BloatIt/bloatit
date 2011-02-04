@@ -16,19 +16,22 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.model.Project;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.ProjectPageUrl;
 
-@ParamContainer("member")
+@ParamContainer("project")
 public final class ProjectPage extends MasterPage {
 
     public static final String PROJECT_FIELD_NAME = "id";
 
+    @ParamConstraint(optionalErrorMsg=@tr("The id of the project is incorrect or missing"))
     @RequestParam(name = PROJECT_FIELD_NAME, level = Level.ERROR)
     private final Project project;
 
@@ -42,6 +45,7 @@ public final class ProjectPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
+        session.notifyList(url.getMessages());
         if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }

@@ -16,8 +16,10 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
@@ -31,6 +33,7 @@ public final class MemberPage extends MasterPage {
 
     public static final String MEMBER_FIELD_NAME = "id";
 
+    @ParamConstraint(optionalErrorMsg=@tr("The id of the member is incorrect or missing"))
     @RequestParam(name = MEMBER_FIELD_NAME, level = Level.ERROR)
     private final Member member;
 
@@ -44,6 +47,7 @@ public final class MemberPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
+        session.notifyList(url.getMessages());
         if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }

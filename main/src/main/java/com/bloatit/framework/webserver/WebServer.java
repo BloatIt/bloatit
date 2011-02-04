@@ -20,6 +20,7 @@ import com.bloatit.framework.scgiserver.ScgiProcessor;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;
+import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 
 public abstract class WebServer implements ScgiProcessor {
 
@@ -45,6 +46,15 @@ public abstract class WebServer implements ScgiProcessor {
                 ModelManagerAccessor.open();
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response);
+            } catch (PageNotFoundException e) {
+                Log.framework().info("Page not found", e);
+                final Linkable linkable = constructLinkable(PageNotFoundUrl.getName(), parameters, session);
+                try {
+                    linkable.writeToHttp(response);
+                } catch (RedirectException e1) {
+                    Log.framework().info("Redirect to " + e.getUrl(), e);
+                    response.writeRedirect(e.getUrl().urlString());
+                }
             } catch (final RedirectException e) {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(e.getUrl().urlString());
