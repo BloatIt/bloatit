@@ -1,7 +1,5 @@
 package com.bloatit.framework;
 
-import java.io.IOException;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.scgiserver.SCGIServer;
@@ -57,8 +55,6 @@ public class Framework {
         try {
             mailServer.start();
             scgiServer.start();
-        } catch (final IOException e) {
-            Log.framework().fatal("IOException on the socket output", e);
         } catch (final RuntimeException e) {
             Log.framework().fatal("Unknown RuntimeException", e);
         } catch (final Exception e) {

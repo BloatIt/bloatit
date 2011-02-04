@@ -20,45 +20,97 @@ import java.util.List;
 import java.util.Map;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 
 public final class SCGIServer {
 
     private static final int SCGI_PORT = 4000;
+    private static final int NB_THREADS = 100;
 
-    private ServerSocket providerSocket;
-    private Socket clientSocket;
+    private final List<SCGIThread> threads = new ArrayList<SCGIThread>(NB_THREADS);
     private final List<ScgiProcessor> processors = new ArrayList<ScgiProcessor>();
 
     public SCGIServer() {
-        clientSocket = null;
-        providerSocket = null;
+        // Nothing ?
     }
 
     public void addProcessor(ScgiProcessor processor) {
         this.processors.add(processor);
     }
 
-    public void init() {
-        SessionManager.loadSessions();
-        Log.framework().info("Init: Start BloatIt serveur");
+    List<ScgiProcessor> getProcessors() {
+        return processors;
     }
 
-    public void start() throws IOException {
-        Timer timer = new Timer();
-        providerSocket = new ServerSocket(SCGI_PORT);
-        while (true) {
+    public void init() throws IOException {
+        SessionManager.loadSessions();
+        Log.framework().info("Init: Start BloatIt serveur");
+
+        for (int i = SCGI_PORT; i < SCGI_PORT + NB_THREADS; ++i) {
+            threads.add(new SCGIThread(i));
+        }
+    }
+
+    public void start() {
+        for (SCGIThread thread : threads) {
+            thread.start();
+        }
+
+        for (SCGIThread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    final class SCGIThread extends Thread {
+
+        private static final int NB_MAX_SOCKET_ERROR = 12;
+        private Socket socket;
+        private final ServerSocket provider;
+        private final Timer timer;
+
+        public SCGIThread(int port) throws IOException {
+            super();
+            provider = new ServerSocket(port);
+            timer = new Timer();
+        }
+
+        @Override
+        public void run() {
+            try {
+                int nbError = 0;
+                while (true) {
+                    try {
+                        generateAndSendReponse();
+                    } catch (IOException e) {
+                        nbError++;
+                        if (nbError > NB_MAX_SOCKET_ERROR) {
+                            throw new FatalErrorException("Too much errors on this socket.", e);
+                        }
+                        Log.framework().fatal("soket error on port: " + provider.getLocalPort(), e);
+                    }
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }
+
+        private void generateAndSendReponse() throws IOException {
             // Wait for connection
             Log.framework().info("Waiting connection");
 
             // Wait for a connection.
-            clientSocket = providerSocket.accept();
+            socket = provider.accept();
             Log.framework().trace("Received a connection");
             timer.start();
 
             // Parse the header and the post data.
-            final BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 4096);
+            final BufferedInputStream bis = new BufferedInputStream(socket.getInputStream(), 4096);
             final Map<String, String> env = SCGIUtils.parse(bis);
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(bis, header.getContentLength(), header.getContentType());
@@ -67,8 +119,8 @@ public final class SCGIServer {
             SessionManager.clearExpiredSessions();
 
             try {
-                for (ScgiProcessor processor : processors) {
-                    if (processor.process(header, post, new HttpResponse(new BufferedOutputStream(clientSocket.getOutputStream(), 1024)))) {
+                for (ScgiProcessor processor : getProcessors()) {
+                    if (processor.process(header, post, new HttpResponse(new BufferedOutputStream(socket.getOutputStream(), 1024)))) {
                         break;
                     }
                 }
@@ -80,7 +132,7 @@ public final class SCGIServer {
                 Log.framework().fatal("SCGIServer: Unknown Exception", e);
             } finally {
                 Log.framework().trace("Closing connection");
-                clientSocket.close();
+                socket.close();
             }
 
             Log.framework().debug("Page generated in " + timer.elapsed() + " ms");
@@ -90,12 +142,16 @@ public final class SCGIServer {
 
     public void stop() {
         // TODO: lock to wait transaction end
-        try {
-            if (clientSocket != null) {
-                clientSocket.close();
+        for (SCGIThread thread : threads) {
+            if (thread.isAlive()) {
+                thread.interrupt();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
-        } catch (final IOException e) {
-            Log.framework().fatal("Fail to close the socket on shutdown.", e);
         }
     }
 }
