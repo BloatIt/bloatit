@@ -72,6 +72,7 @@ public class HttpPost {
                 e.printStackTrace();
             }
         } else {
+
             final byte[] postBytes = new byte[length];
             final int read = postStream.read(postBytes);
             if (read == length) {
@@ -94,6 +95,7 @@ public class HttpPost {
                     Log.framework().error(e);
                 }
             }
+
         }
     }
 
@@ -106,9 +108,10 @@ public class HttpPost {
         return parameters;
     }
 
-    private final void processMultipart(InputStream postStream, final String contentType) throws MimeTypeParseException, IOException, InvalidMimeEncodingException, MalformedMimeException {
+    private final void processMultipart(InputStream postStream, final String contentType) throws MimeTypeParseException, IOException,
+            InvalidMimeEncodingException, MalformedMimeException {
         Log.web().trace("Received a form-data, starting parsing");
-        //final MultipartMime mm = new MultipartMime(postStream, contentType);$
+        // final MultipartMime mm = new MultipartMime(postStream, contentType);$
         final MultipartMimeParser mmp = new MultipartMimeParser(postStream, contentType, new UUIDFileNameGenerator(), UPLOAD_TEMP_DIRECTORY);
         Log.web().trace("Parsing of post data over");
         MimeElement me;

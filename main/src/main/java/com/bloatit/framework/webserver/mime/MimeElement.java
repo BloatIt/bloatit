@@ -25,12 +25,12 @@ import com.bloatit.framework.webserver.mime.filenaming.FileNamingGenerator;
  * </p>
  */
 public class MimeElement {
-
     private final static String DEFAULT_CONTENT_TYPE = "text/plain";
     private final static String FILE_NAME = "filename";
     private final static String CONTENT_ENCODING = "Content-Transfer-Encoding";
     private final static String DEFAULT_CONTENT_ENCODING = "binary";
     private final static String CONTENT_TYPE = "Content-Type";
+    private static final Object FIELD_NAME = "name";
 
     private static final Map<String, MimeDecoder> availableEncodings = new HashMap<String, MimeDecoder>() {
         private static final long serialVersionUID = 6626449431506692683L;
@@ -270,4 +270,17 @@ public class MimeElement {
     private MimeDecoder getDecoder() throws InvalidMimeEncodingException {
         return availableEncodings.get(getEncoding());
     }
+
+    public String getName() {
+        return header.get(FIELD_NAME);
+    }
+
+    public File getDestination() {
+        if(!isFile()){
+            return null;
+        }
+        return destination;
+    }
+    
+    
 }
