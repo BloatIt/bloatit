@@ -50,13 +50,15 @@ public class ModelManagerAccessor {
      * @see com.bloatit.model.AbstractModel#shutdown()
      */
     public static void shutdown() {
-        try {
-            mutex.acquire();
-            modelManager.shutdown();
-        } catch (InterruptedException e) {
-            throw new FatalErrorException(e);
-        } finally {
-            mutex.release();
+        if(modelManager != null) {
+            try {
+                mutex.acquire();
+                modelManager.shutdown();
+            } catch (InterruptedException e) {
+                throw new FatalErrorException(e);
+            } finally {
+                mutex.release();
+            }
         }
     }
 

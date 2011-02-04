@@ -1,4 +1,4 @@
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.webserver.mime;
 
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
@@ -33,13 +33,14 @@ public class ByteReader {
      * blocks until input data is available, the end of the stream is detected,
      * or an exception is thrown.
      * </p>
-     *
+     * 
      * @return
      * @throws IOException
      */
     public byte read() throws EOFException, IOException {
         int i = input.read();
-        if(i == -1) {
+        System.out.print((char) (i & 0Xff));
+        if (i == -1) {
             throw new EOFException();
         }
         return (byte) i;
@@ -50,31 +51,43 @@ public class ByteReader {
      * Reads a line. Any single <code>'\n'</code> or <code>'\r'</code> will be
      * ignored (they won't even be shown in the byte array returned)
      * </p>
-     *
+     * <p>
+     * If end of stream is reached before a line end is reached, the content
+     * will be returned, and considered as a normal line. Next call to readLine
+     * will then throw an EOFException indicating the end of the stream has been
+     * reached.
+     * </p>
+     * 
      * @return
      * @throws IOException
+     * @throws EOFException
      */
     public byte[] readLine() throws EOFException, IOException {
         boolean end = false;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         boolean previousWasCR = false;
         while (!end) {
-            if(available() == 0 ){
-                throw new IOException();
-            }
-            byte b = read();
-            if (b == CR) {
-                previousWasCR = true;
-            } else if (b == LF) {
-                if (previousWasCR) {
-                    end = true;
+            try {
+                byte b = read();
+                if (b == CR) {
+                    previousWasCR = true;
+                } else if (b == LF) {
+                    if (previousWasCR) {
+                        end = true;
+                    }
+                } else {
+                    if (previousWasCR) {
+                        baos.write(CR);
+                        previousWasCR = false;
+                    }
+                    baos.write(b);
                 }
-            } else {
-                if (previousWasCR) {
-                    baos.write(CR);
-                    previousWasCR = false;
+            } catch (EOFException e) {
+                if (baos.size() == 0) {
+                    throw new EOFException();
+                } else {
+                    return baos.toByteArray();
                 }
-                baos.write(b);
             }
         }
         return baos.toByteArray();
@@ -85,7 +98,14 @@ public class ByteReader {
      * Reads a line (i.e: reads to the next CRLF sequence) and converts data to
      * a string
      * </p>
-     *
+     * *
+     * <p>
+     * If end of stream is reached before a line end is reached, the content
+     * will be returned, and considered as a normal line. Next call to
+     * readString or readLine will then throw an EOFException indicating the end
+     * of the stream has been reached.
+     * </p>
+     * 
      * @return the string representation of the line
      * @throws IOException
      *             when the stream is not accessible
@@ -96,19 +116,14 @@ public class ByteReader {
     }
 
     /**
+     * <p>
      * Returns an estimate of the number of bytes that can be read (or skipped
      * over) from this input stream without blocking by the next invocation of a
      * method for this input stream. The next invocation might be the same
      * thread or another thread. A single read or skip of this many bytes will
-     * not block, but may read or skip fewer bytes. Note that while some
-     * implementations of InputStream will return the total number of bytes in
-     * the stream, many will not. It is never correct to use the return value of
-     * this method to allocate a buffer intended to hold all data in this
-     * stream. A subclass' implementation of this method may choose to throw an
-     * IOException if this input stream has been closed by invoking the close()
-     * method. The available method for class InputStream always returns 0. This
-     * method should be overridden by subclasses.
-     *
+     * not block, but may read or skip fewer bytes.
+     * </p>
+     * 
      * @return an estimate of the number of bytes that can be read (or skipped
      *         over) from this input stream without blocking or 0 when it
      *         reaches the end of the input stream.
@@ -122,7 +137,7 @@ public class ByteReader {
     /**
      * Closes this input stream and releases any system resources associated
      * with the stream. The close method of InputStream does nothing.
-     *
+     * 
      * @throws IOException
      *             if an IO error occurs
      */

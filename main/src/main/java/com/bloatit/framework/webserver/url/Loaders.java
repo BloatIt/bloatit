@@ -14,11 +14,13 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
+import com.bloatit.model.Project;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.model.managers.KudosableManager;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.managers.ProjectManager;
 
 public final class Loaders {
 
@@ -88,6 +90,8 @@ public final class Loaders {
             return (Loader<T>) new ToKudosable();
         } else if (theClass.equals(Comment.class)) {
             return (Loader<T>) new ToComment();
+        } else if (theClass.equals(Project.class)) {
+            return (Loader<T>) new ToProject();
         }
         return null;
     }
@@ -233,6 +237,13 @@ public final class Loaders {
         @Override
         public Identifiable fromString(final String data) {
             return MemberManager.getMemberById(Integer.valueOf(data));
+        }
+    }
+
+    private static class ToProject extends ToIdentifiable {
+        @Override
+        public Identifiable fromString(final String data) {
+            return ProjectManager.getProjectById(Integer.valueOf(data));
         }
     }
 

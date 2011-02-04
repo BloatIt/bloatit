@@ -35,7 +35,7 @@ public class Context {
     } // UniqueThreadContext
 
     // Realy static
-    private static AtomicLong currentTime = new AtomicLong();
+    private static AtomicLong requestTime = new AtomicLong(getCurrentTime());
 
     private Context() {
         // desactivate CTOR.
@@ -91,8 +91,8 @@ public class Context {
         return UniqueThreadContext.getContext().header;
     }
 
-    public static long getTime() {
-        return Context.currentTime.get();
+    public static long getResquestTime() {
+        return Context.requestTime.get();
     }
 
     static void reInitializeContext(final HttpHeader header, final Session session) {
@@ -103,7 +103,11 @@ public class Context {
     }
 
     private static void updateTime() {
-        Context.currentTime.set(new Date().getTime() / MILLISECOND_DIV);
+        Context.requestTime.set(getCurrentTime());
+    }
+
+    private static long getCurrentTime() {
+        return new Date().getTime() / MILLISECOND_DIV;
     }
 
     private static void setHeader(final HttpHeader header) {

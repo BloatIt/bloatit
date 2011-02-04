@@ -65,9 +65,9 @@ public class BigDB {
             }
         }
 
-        final DaoGroup group = DaoGroup.createAndPersiste("b2 ", "plop" + "@plop.com", DaoGroup.Right.PUBLIC);
+        DaoGroup.createAndPersiste("b2 ", "plop" + "@plop.com", DaoGroup.Right.PUBLIC);
+
         DaoProject project = DaoProject.createAndPersist("VLC",
-                                                         group,
                                                          DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"),
                                                          DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
 

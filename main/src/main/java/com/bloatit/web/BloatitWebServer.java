@@ -5,6 +5,7 @@ import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.web.actions.AddProjectAction;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateDemandAction;
@@ -17,6 +18,7 @@ import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.actions.PaylineNotifyAction;
 import com.bloatit.web.actions.RegisterAction;
 import com.bloatit.web.pages.AccountChargingPage;
+import com.bloatit.web.pages.AddProjectPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateDemandPage;
@@ -30,11 +32,15 @@ import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.OfferPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.PaylinePage;
+import com.bloatit.web.pages.ProjectListPage;
+import com.bloatit.web.pages.ProjectPage;
 import com.bloatit.web.pages.RegisterPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.demand.DemandPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.AddProjectActionUrl;
+import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -58,6 +64,8 @@ import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylinePageUrl;
+import com.bloatit.web.url.ProjectListPageUrl;
+import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
@@ -125,6 +133,15 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(FileUploadPageUrl.getName())) {
             return new FileUploadPage(new FileUploadPageUrl(params, session.getParams()));
         }
+        if (pageCode.equals(ProjectPageUrl.getName())) {
+            return new ProjectPage(new ProjectPageUrl(params, session.getParams()));
+        }
+        if (pageCode.equals(AddProjectPageUrl.getName())) {
+            return new AddProjectPage(new AddProjectPageUrl(params, session.getParams()));
+        }
+        if (pageCode.equals(ProjectListPageUrl.getName())) {
+            return new ProjectListPage(new ProjectListPageUrl(params, session.getParams()));
+        }
 
         //Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -163,7 +180,9 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(CommentCommentActionUrl.getName())) {
             return new CommentCommentAction(new CommentCommentActionUrl(params, session.getParams()));
         }
-
+        if (pageCode.equals(AddProjectActionUrl.getName())) {
+            return new AddProjectAction(new AddProjectActionUrl(params, session.getParams()));
+        }
 
         return new PageNotFound(new PageNotFoundUrl(params, session.getParams()));
     }

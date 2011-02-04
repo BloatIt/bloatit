@@ -44,8 +44,6 @@ public abstract class GenericPage extends Page {
         final HtmlGenericElement body = new HtmlGenericElement("body");
         html.add(body);
 
-        // Display waiting notifications
-        addWaitingNotifications();
 
         // Set the last stable page into the session
         if (isStable()) {
@@ -53,6 +51,10 @@ public abstract class GenericPage extends Page {
             session.setLastStablePage(thisUrl);
         }
         generateBody(body);
+
+     // Display waiting notifications
+        addWaitingNotifications();
+
     }
 
     protected abstract void generateBody(HtmlGenericElement body) throws RedirectException;
