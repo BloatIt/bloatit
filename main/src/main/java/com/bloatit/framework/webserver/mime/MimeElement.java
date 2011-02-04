@@ -1,4 +1,4 @@
-package com.bloatit.framework.scgiserver.mime;
+package com.bloatit.framework.webserver.mime;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,12 +12,12 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.scgiserver.mime.codec.MimeBase64Decoder;
-import com.bloatit.framework.scgiserver.mime.codec.MimeBinaryCodec;
-import com.bloatit.framework.scgiserver.mime.codec.MimeDecoder;
+import com.bloatit.framework.webserver.mime.decoders.MimeBase64Decoder;
+import com.bloatit.framework.webserver.mime.decoders.MimeBinaryDecoder;
+import com.bloatit.framework.webserver.mime.decoders.MimeDecoder;
+import com.bloatit.framework.webserver.mime.filenaming.FileNamingGenerator;
 
 /**
  * <p>
@@ -25,7 +25,7 @@ import com.bloatit.framework.scgiserver.mime.codec.MimeDecoder;
  * </p>
  */
 public class MimeElement {
-    private final static String UPLOAD_TEMP_DIRECTORY = System.getProperty("user.home") + "/.local/share/bloatit/uploads_temp/";
+
     private final static String DEFAULT_CONTENT_TYPE = "text/plain";
     private final static String FILE_NAME = "filename";
     private final static String CONTENT_ENCODING = "Content-Transfer-Encoding";
@@ -35,8 +35,8 @@ public class MimeElement {
     private static final Map<String, MimeDecoder> availableEncodings = new HashMap<String, MimeDecoder>() {
         private static final long serialVersionUID = 6626449431506692683L;
         {
-            put("binary", new MimeBinaryCodec());
-            put("8bit", new MimeBinaryCodec());
+            put("binary", new MimeBinaryDecoder());
+            put("8bit", new MimeBinaryDecoder());
             put("base64", new MimeBase64Decoder());
         }
     };
@@ -45,9 +45,9 @@ public class MimeElement {
      * The stream used to write content
      */
     private OutputStream contentOutput;
-    
+
     private ByteArrayOutputStream nonFileInput;
-    
+
     /**
      * The pairs reprsenting the header of the mime
      */
@@ -58,12 +58,23 @@ public class MimeElement {
      */
     private File destination;
     private MimeDecoder decoder;
+    private FileNamingGenerator nameGen;
+    private String fileSavingDirectory;
 
     /**
      * Creates a new empty mime element
+     * 
+     * @param fileSavingDirectory
      */
-    protected MimeElement() {
+    protected MimeElement(FileNamingGenerator nameGen, String fileSavingDirectory) {
         header = new HashMap<String, String>();
+        this.nameGen = nameGen;
+        if (fileSavingDirectory.endsWith("/")) {
+            this.fileSavingDirectory = fileSavingDirectory;
+        } else {
+            this.fileSavingDirectory = fileSavingDirectory + "/";
+        }
+
     }
 
     /**
@@ -216,6 +227,13 @@ public class MimeElement {
         contentOutput.write(b);
     }
 
+    /**
+     * Initializes the MimeElemend to get ready to write
+     * 
+     * @throws IOException
+     *             If an IO error occurs when creating the stream that will be
+     *             used to save content
+     */
     private void initializeWriter() throws IOException {
         if (decoder == null) {
             try {
@@ -226,11 +244,9 @@ public class MimeElement {
             }
         }
         if (isFile()) {
-            File uploadedFileDir = new File(UPLOAD_TEMP_DIRECTORY);
+            File uploadedFileDir = new File(fileSavingDirectory);
             uploadedFileDir.mkdirs();
-
-            final UUID uuid = UUID.randomUUID();
-            destination = new File(UPLOAD_TEMP_DIRECTORY + uuid.toString());
+            destination = new File(fileSavingDirectory + nameGen.generateName(this.getHeaderField(FILE_NAME)));
             try {
                 FileOutputStream fos = new FileOutputStream(destination);
                 contentOutput = new DecodingOuputStream(fos, decoder);
@@ -244,6 +260,13 @@ public class MimeElement {
         }
     }
 
+    /**
+     * Finds the current decoder to use with this file
+     * 
+     * @return the decoder to used with the mime
+     * @throws InvalidMimeEncodingException
+     *             When no decoder available can decode this content
+     */
     private MimeDecoder getDecoder() throws InvalidMimeEncodingException {
         return availableEncodings.get(getEncoding());
     }

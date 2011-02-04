@@ -1,9 +1,9 @@
-package com.bloatit.framework.scgiserver.mime;
+package com.bloatit.framework.webserver.mime;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.bloatit.framework.scgiserver.mime.codec.MimeDecoder;
+import com.bloatit.framework.webserver.mime.decoders.MimeDecoder;
 
 /**
  * <p>
@@ -83,7 +83,7 @@ public class DecodingOuputStream extends OutputStream {
 
     @Override
     public void write(int b) throws IOException {
-        output.write(b);
+        write((byte)b);
     }
 
     /**

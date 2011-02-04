@@ -1,4 +1,4 @@
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.webserver.mime;
 
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
@@ -39,6 +39,7 @@ public class ByteReader {
      */
     public byte read() throws EOFException, IOException {
         int i = input.read();
+        System.out.print((char) (i & 0Xff));
         if (i == -1) {
             throw new EOFException();
         }
@@ -115,18 +116,13 @@ public class ByteReader {
     }
 
     /**
+     * <p>
      * Returns an estimate of the number of bytes that can be read (or skipped
      * over) from this input stream without blocking by the next invocation of a
      * method for this input stream. The next invocation might be the same
      * thread or another thread. A single read or skip of this many bytes will
-     * not block, but may read or skip fewer bytes. Note that while some
-     * implementations of InputStream will return the total number of bytes in
-     * the stream, many will not. It is never correct to use the return value of
-     * this method to allocate a buffer intended to hold all data in this
-     * stream. A subclass' implementation of this method may choose to throw an
-     * IOException if this input stream has been closed by invoking the close()
-     * method. The available method for class InputStream always returns 0. This
-     * method should be overridden by subclasses.
+     * not block, but may read or skip fewer bytes.
+     * </p>
      * 
      * @return an estimate of the number of bytes that can be read (or skipped
      *         over) from this input stream without blocking or 0 when it

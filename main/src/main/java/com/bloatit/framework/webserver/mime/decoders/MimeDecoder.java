@@ -1,4 +1,4 @@
-package com.bloatit.framework.scgiserver.mime.codec;
+package com.bloatit.framework.webserver.mime.decoders;
 
 /**
  * <p>
