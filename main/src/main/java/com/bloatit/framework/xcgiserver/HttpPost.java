@@ -1,4 +1,4 @@
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.xcgiserver;
 
 import java.io.IOException;
 import java.io.InputStream;

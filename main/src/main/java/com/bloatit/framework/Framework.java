@@ -2,10 +2,10 @@ package com.bloatit.framework;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.mailsender.MailServer;
-import com.bloatit.framework.scgiserver.SCGIServer;
-import com.bloatit.framework.scgiserver.ScgiProcessor;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.framework.webserver.SessionManager;
+import com.bloatit.framework.xcgiserver.XcgiServer;
+import com.bloatit.framework.xcgiserver.XcgiProcessor;
 import com.bloatit.model.AbstractModel;
 
 /**
@@ -16,16 +16,16 @@ import com.bloatit.model.AbstractModel;
 public class Framework {
 
     private final AbstractModel model;
-    private final SCGIServer scgiServer;
+    private final XcgiServer scgiServer;
     private final MailServer mailServer;
 
     public Framework(AbstractModel model) {
         this.model = model;
-        this.scgiServer = new SCGIServer();
+        this.scgiServer = new XcgiServer();
         this.mailServer = MailServer.getInstance();
     }
 
-    public void addProcessor(ScgiProcessor processor) {
+    public void addProcessor(XcgiProcessor processor) {
         scgiServer.addProcessor(processor);
     }
 

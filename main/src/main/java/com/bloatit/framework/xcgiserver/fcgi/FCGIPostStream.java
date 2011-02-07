@@ -1,4 +1,4 @@
-package com.bloatit.framework.fcgi;
+package com.bloatit.framework.xcgiserver.fcgi;
 
 import java.io.IOException;
 import java.io.InputStream;

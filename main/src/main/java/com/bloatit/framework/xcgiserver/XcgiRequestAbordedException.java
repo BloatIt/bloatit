@@ -9,20 +9,20 @@
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.xcgiserver;
 
-public class SCGIRequestAbordedException extends RuntimeException {
+public class XcgiRequestAbordedException extends RuntimeException {
     private static final long serialVersionUID = -8861022396347552403L;
 
-    public SCGIRequestAbordedException(final String string, final Throwable cause) {
+    public XcgiRequestAbordedException(final String string, final Throwable cause) {
         super(string, cause);
     }
 
-    public SCGIRequestAbordedException(final String message) {
+    public XcgiRequestAbordedException(final String message) {
         super(message);
     }
 
-    public SCGIRequestAbordedException(final Throwable cause) {
+    public XcgiRequestAbordedException(final Throwable cause) {
         super(cause);
     }
 

@@ -1,4 +1,4 @@
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.xcgiserver.scgi;
 
 /*
  * Copyright (c) 2008 ArtemGr Permission to use, copy, modify, and/or distribute this
@@ -13,21 +13,33 @@ package com.bloatit.framework.scgiserver;
  */
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.bloatit.framework.xcgiserver.XcgiParser;
+
 /**
  * SCGIUtils connector.<br>
  * Version: 1.0<br>
- * Home page: http://gist.github.com/38425 See also:
- * http://en.wikipedia.org/wiki/SCGIUtils
+ * Home page: http://gist.github.com/38425 See also: http://en.wikipedia.org/wiki/SCGIUtils
  */
-class SCGIUtils {
+class SCGIParser implements XcgiParser {
 
-    private SCGIUtils() {
-        // Hide the ctor.
+    /** Used to decode the headers. */
+    public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
+
+
+    private final InputStream input;
+
+
+    private final OutputStream ouput;
+
+    public SCGIParser(final InputStream input, final OutputStream ouput) {
+        this.input = input;
+        this.ouput = ouput;
     }
 
     public static class SCGIException extends IOException {
@@ -39,15 +51,12 @@ class SCGIUtils {
         }
     }
 
-    /** Used to decode the headers. */
-    public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
+
 
     /**
-     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGIUtils</a> request
-     * headers.<br>
-     * After the headers had been loaded, you can read the body of the request manually
-     * from the same {@code input} stream:
-     * 
+     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGIUtils</a> request headers.<br>
+     * After the headers had been loaded, you can read the body of the request manually from the same {@code input} stream:
+     *
      * <pre>
      * // Load the SCGIUtils headers.
      * Socket clientSocket = socket.accept();
@@ -56,11 +65,13 @@ class SCGIUtils {
      * // Read the body of the request.
      * bis.read(new byte[Integer.parseInt(env.get(&quot;CONTENT_LENGTH&quot;))]);
      * </pre>
-     * 
-     * @param input an efficient (buffered) input stream.
+     *
+     *            an efficient (buffered) input stream.
      * @return strings passed via the SCGIUtils request.
      */
-    public static Map<String, String> parse(final InputStream input) throws IOException {
+    @Override
+    public Map<String, String> getEnv() throws IOException {
+
         final StringBuilder lengthString = new StringBuilder(12);
         String headers = "";
         for (;;) {
@@ -92,5 +103,15 @@ class SCGIUtils {
             headers = headers.substring(sep2 + 1);
         }
         return env;
+    }
+
+    @Override
+    public InputStream getPostStream() throws IOException {
+        return input;
+    }
+
+    @Override
+    public OutputStream getWriteStream() throws IOException {
+        return ouput;
     }
 }

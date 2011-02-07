@@ -1,10 +1,10 @@
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.xcgiserver;
 
 import java.io.IOException;
 
 import com.bloatit.framework.webserver.masters.HttpResponse;
 
-public interface ScgiProcessor {
+public interface XcgiProcessor {
 
     /**
      * Take a request and use the {@link HttpResponse} object to create a result.
