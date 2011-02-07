@@ -20,9 +20,11 @@ public @interface ParamConstraint {
     public static final int DEFAULT_LENGTH = Integer.MAX_VALUE;
 
 
+    boolean minIsExclusive() default false;
     String min() default DEFAULT_MIN_STR;
     tr minErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
+    boolean maxIsExclusive() default false;
     String max() default DEFAULT_MAX_STR;
     tr maxErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
