@@ -77,7 +77,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2</version>
 				<configuration>
-					<mainClass>com.bloatit.framework.webserver.scgiserver.SCGIServer</mainClass>
+					<mainClass>com.bloatit.BloatitServer</mainClass>
 					<arguments>
 						<argument>-classpath</argument>
 					</arguments>
@@ -92,7 +92,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.bloatit.framework.webserver.scgiserver.SCGIServer</mainClass>
+							<mainClass>com.bloatit.BloatitServer</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

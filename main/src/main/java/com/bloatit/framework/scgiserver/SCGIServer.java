@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.masters.HttpResponse;
 public final class SCGIServer {
 
     private static final int SCGI_PORT = 4000;
-    private static final int NB_THREADS = 100;
+    private static final int NB_THREADS = 2;
 
     private final List<SCGIThread> threads = new ArrayList<SCGIThread>(NB_THREADS);
     private final List<ScgiProcessor> processors = new ArrayList<ScgiProcessor>();
