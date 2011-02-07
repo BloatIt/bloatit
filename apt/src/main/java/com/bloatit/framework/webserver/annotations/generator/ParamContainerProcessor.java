@@ -17,10 +17,10 @@ import javax.lang.model.util.TypeKindVisitor6;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 
 @SupportedAnnotationTypes("com.bloatit.framework.webserver.annotations.ParamContainer")
@@ -129,7 +129,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
     }
 
     private String getType(Element attribute) {
-        return attribute.asType().toString();
+        return attribute.asType().toString().replaceAll("\\<.*\\>", "");
     }
 
     // try {

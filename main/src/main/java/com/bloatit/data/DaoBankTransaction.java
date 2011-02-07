@@ -27,10 +27,10 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Enumerate the different state a BankTranscation can be in. After being
-     * <code>ACCEPTED</code> a transaction must be <code>ACCEPTED</code>.
+     * <code>AUTHORIZED</code> a transaction must be <code>AUTHORIZED</code>.
      */
     public enum State {
-        PENDING, ACCEPTED, REFUSED, VALIDATED
+        PENDING, AUTHORIZED, REFUSED, VALIDATED
     }
 
     /**
@@ -130,24 +130,24 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     }
 
     /**
-     * Set the state to {@link State#ACCEPTED} if the current state is
+     * Set the state to {@link State#AUTHORIZED} if the current state is
      * {@link State#PENDING}. Reset the modification date.
      */
-    public void setAccepted() {
+    public void setAuthorized() {
         if (state == State.PENDING) {
             modificationDate = new Date();
-            state = State.ACCEPTED;
+            state = State.AUTHORIZED;
         }
     }
 
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the external to
      * the internal account.
-     * 
+     *
      * @return true if performed, false otherwise.
      */
-    public boolean validated() {
-        if (state != State.ACCEPTED) {
+    public boolean setValidated() {
+        if (state != State.AUTHORIZED) {
             return false;
         }
         modificationDate = new Date();
@@ -165,10 +165,8 @@ public final class DaoBankTransaction extends DaoIdentifiable {
      * Set the state to {@link State#REFUSED}.
      */
     public void setRefused() {
-        if (state == State.PENDING) {
-            modificationDate = new Date();
-            state = State.REFUSED;
-        }
+        modificationDate = new Date();
+        state = State.REFUSED;
     }
 
     public String getMessage() {

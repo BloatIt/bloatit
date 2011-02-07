@@ -12,8 +12,8 @@ import java.util.Properties;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.url.Loaders;
-import com.bloatit.framework.webserver.url.Loaders.ConversionErrorException;
 
 /**
  * A class to handle configuration files

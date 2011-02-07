@@ -44,7 +44,7 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     /**
      * Create a new transaction and update the two accounts.
-     * 
+     *
      * @param from is the account from which we will take money.
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.

@@ -1,7 +1,10 @@
 package com.bloatit.web.pages;
 
+import org.hibernate.CacheMode;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.data.SessionManager;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -22,18 +25,28 @@ public final class PaylinePage extends MasterPage {
 
     public PaylinePage(final PaylinePageUrl url) {
         super(url);
+
+        SessionManager.getSessionFactory().getCurrentSession().setDefaultReadOnly(false);
+        SessionManager.getSessionFactory().getCurrentSession().setCacheMode(CacheMode.NORMAL);
+
         token = url.getToken();
         ack = url.getAck();
 
         add(new HtmlParagraph(token));
         add(new HtmlParagraph(ack));
 
+        final Payline payline = new Payline();
         if (ack.equals("ok")) {
-            final Payline payline = new Payline();
             try {
                 payline.validatePayment(token);
             } catch (final TokenNotfoundException e) {
-                Log.web().fatal("Token not found." + e);
+                Log.web().fatal("Token not found.", e);
+            }
+        } else if (ack.equals("cancel")) {
+            try {
+                payline.cancelPayement(token);
+            } catch (final TokenNotfoundException e) {
+                Log.web().fatal("Token not found.", e);
             }
         }
     }

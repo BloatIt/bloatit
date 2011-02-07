@@ -16,12 +16,12 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -48,7 +48,7 @@ public final class ContributionAction extends LoggedAction {
     private final String comment;
 
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)
-    @ParamConstraint(min = "0", minErrorMsg = @tr("Amount must be superior than 0."),//
+    @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior than 0."),//
                      max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
                      precision = 0, precisionErrorMsg = @tr("Please do not use Cents."))
     private final BigDecimal amount;

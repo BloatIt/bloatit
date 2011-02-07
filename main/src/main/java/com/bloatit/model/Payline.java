@@ -105,24 +105,41 @@ public final class Payline extends Unlockable {
         final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction != null) {
             transaction.authenticate(getAuthTokenUnprotected());
-            if (!transaction.validated()) {
+            if (!transaction.setValidated()) {
                 throw new TokenNotfoundException("Cannot validate the BankTransaction.");
             }
+        } else {
+            throw new TokenNotfoundException("Token is not found in DB: " + token);
         }
-        throw new TokenNotfoundException("Token is not found in DB: " + token);
     }
 
+//    public void getTransactionDetails(final String token) throws TokenNotfoundException {
+//        final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
+//        final GetWebPaymentDetailsRequest request = createWebPaymementRequest(token);
+//        Transaction transaction = paylineApi.getWebPaymentAPI().getWebPaymentDetails(request).getTransaction();
+//
+//        System.err.println(transaction.getExplanation());
+//        System.err.println(transaction.getFraudResult());
+//        System.err.println(transaction.getIsPossibleFraud());
+//        System.err.println(transaction.getScore());
+//    }
+
     public Reponse getPaymentDetails(final String token) throws TokenNotfoundException {
+        final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
+        final GetWebPaymentDetailsRequest parameters = createWebPaymementRequest(token);
+        final Result result = paylineApi.getWebPaymentAPI().getWebPaymentDetails(parameters).getResult();
+        return new Reponse(result, token);
+    }
+
+    private GetWebPaymentDetailsRequest createWebPaymementRequest(final String token) throws TokenNotfoundException {
         final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction == null) {
             throw new TokenNotfoundException("Token is not found in DB: " + token);
         }
 
-        final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
         final GetWebPaymentDetailsRequest parameters = new GetWebPaymentDetailsRequest();
         parameters.setToken(token);
-        final Result result = paylineApi.getWebPaymentAPI().getWebPaymentDetails(parameters).getResult();
-        return new Reponse(result, token);
+        return parameters;
     }
 
     public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl)
@@ -167,7 +184,7 @@ public final class Payline extends Unlockable {
                     orderReference);
             bankTransaction.setProcessInformations(reponse.getCode());
             if (reponse.isAccepted()) {
-                bankTransaction.setAccepted();
+                bankTransaction.setAuthorized();
             } else {
                 bankTransaction.setRefused();
             }
@@ -228,6 +245,16 @@ public final class Payline extends Unlockable {
             return ref.toString();
         }
         return ref.toString();
+    }
+
+    public void cancelPayement(String token) throws TokenNotfoundException {
+        final BankTransaction transaction = BankTransaction.getByToken(token);
+        if (transaction != null) {
+            transaction.authenticate(getAuthTokenUnprotected());
+            transaction.setRefused();
+        } else {
+            throw new TokenNotfoundException("Token is not found in DB: " + token);
+        }
     }
 
 }

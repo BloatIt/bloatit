@@ -30,7 +30,9 @@ public class UrlParameterConstraints<U> {
     }
 
     private final Param<Integer> min;
+    private final boolean isMinExclusive;
     private final Param<Integer> max;
+    private final boolean isMaxExclusive;
     private final Param<Boolean> optional;
     private final Param<Integer> precision;
     private final Param<Integer> length;
@@ -40,7 +42,9 @@ public class UrlParameterConstraints<U> {
     }
 
     public UrlParameterConstraints(final Integer min,
+                                   final boolean isMinExclusive,
                                    final Integer max,
+                                   final boolean isMaxExclusive,
                                    final boolean optional,
                                    final int precision,
                                    final int length,
@@ -50,6 +54,8 @@ public class UrlParameterConstraints<U> {
                                    final String precisionErrorMsg,
                                    final String lenghtErrorMsg) {
         super();
+        this.isMinExclusive = isMinExclusive;
+        this.isMaxExclusive = isMaxExclusive;
         this.min = new Param<Integer>(min, minErrorMsg);
         this.max = new Param<Integer>(max, maxErrorMsg);
         this.optional = new Param<Boolean>(optional, optErrorMsg);
@@ -58,6 +64,8 @@ public class UrlParameterConstraints<U> {
     }
 
     public UrlParameterConstraints() {
+        this.isMinExclusive = false;
+        this.isMaxExclusive = false;
         this.min = new Param<Integer>(ParamConstraint.DEFAULT_MIN, "");
         this.max = new Param<Integer>(ParamConstraint.DEFAULT_MAX, "");
         this.optional = new Param<Boolean>(ParamConstraint.DEFAULT_OPTIONAL, "");
@@ -164,6 +172,9 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerMinConstraint(final String value) {
+            if (constraints.isMinExclusive()) {
+                return value.length() <= constraints.getMin();
+            }
             return value.length() < constraints.getMin();
         }
 
@@ -174,6 +185,9 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerMaxConstraint(final String value) {
+            if (constraints.isMaxExclusive()) {
+                return value.length() >= constraints.getMax();
+            }
             return value.length() > constraints.getMax();
         }
 
@@ -190,11 +204,17 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerMinConstraint(final T value) {
+            if (constraints.isMinExclusive()) {
+                return value.compareTo(constraints.getMin()) <= 0;
+            }
             return value.compareTo(constraints.getMin()) < 0;
         }
 
         @Override
         public boolean triggerMaxConstraint(final T value) {
+            if (constraints.isMaxExclusive()) {
+                return value.compareTo(constraints.getMax()) >= 0;
+            }
             return value.compareTo(constraints.getMax()) > 0;
         }
 
@@ -216,6 +236,9 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerMinConstraint(final BigDecimal value) {
+            if (constraints.isMinExclusive()) {
+                return value.compareTo(BigDecimal.valueOf(constraints.getMin())) <= 0;
+            }
             return value.compareTo(BigDecimal.valueOf(constraints.getMin())) < 0;
         }
 
@@ -231,6 +254,9 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerMaxConstraint(final BigDecimal value) {
+            if (constraints.isMaxExclusive()) {
+                return value.compareTo(BigDecimal.valueOf(constraints.getMax())) >= 0;
+            }
             return value.compareTo(BigDecimal.valueOf(constraints.getMax())) > 0;
         }
     }
@@ -242,6 +268,9 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerMinConstraint(final Object value) {
+            if (constraints.isMinExclusive()) {
+                return value.toString().length() <= constraints.getMin();
+            }
             return value.toString().length() < constraints.getMin();
         }
 
@@ -257,6 +286,9 @@ public class UrlParameterConstraints<U> {
 
         @Override
         public boolean triggerMaxConstraint(final Object value) {
+            if (constraints.isMaxExclusive()) {
+                return value.toString().length() >= constraints.getMax();
+            }
             return value.toString().length() > constraints.getMax();
         }
     }
@@ -279,5 +311,19 @@ public class UrlParameterConstraints<U> {
 
     public final int getLength() {
         return length.getValue();
+    }
+
+    /**
+     * @return the isMinExclusive
+     */
+    public boolean isMinExclusive() {
+        return isMinExclusive;
+    }
+
+    /**
+     * @return the isMaxExclusive
+     */
+    public boolean isMaxExclusive() {
+        return isMaxExclusive;
     }
 }

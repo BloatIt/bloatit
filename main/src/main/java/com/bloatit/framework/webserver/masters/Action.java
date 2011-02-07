@@ -13,6 +13,7 @@ package com.bloatit.framework.webserver.masters;
 
 import java.io.IOException;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
@@ -37,6 +38,7 @@ public abstract class Action implements Linkable {
 
     @Override
     public final void writeToHttp(final HttpResponse response) throws RedirectException, IOException {
+        Log.framework().trace("Processing action: "+ actionUrl.urlString());
         response.writeRedirect(process().urlString());
     }
 

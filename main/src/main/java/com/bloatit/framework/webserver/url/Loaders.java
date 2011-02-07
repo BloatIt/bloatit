@@ -5,10 +5,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Identifiable;
@@ -37,11 +37,7 @@ public final class Loaders {
         }
         @SuppressWarnings("unchecked")
         final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
-        try {
-            return loader.toString(obj);
-        } catch (final Exception e) {
-            throw new ConversionErrorException("Cannot convert " + obj + " to String.", e);
-        }
+        return loader.toString(obj);
     }
 
     public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException {
@@ -49,15 +45,11 @@ public final class Loaders {
             return null;
         }
         final Loader<T> loader = getLoader(toClass);
-        try {
-            return loader.fromString(value);
-        } catch (final Exception e) {
-            throw new ConversionErrorException("Cannot convert " + value + " to " + toClass.toString(), e);
-        }
+        return loader.fromString(value);
     }
 
     @SuppressWarnings({ "unchecked", "synthetic-access" })
-    static <T> Loader<T> getLoader(final Class<T> theClass) {
+    static <T> Loader<T> getLoader(final Class<T> theClass) throws ConversionErrorException {
         if (theClass.equals(Integer.class)) {
             return (Loader<T>) new ToInteger();
         } else if (theClass.equals(Byte.class)) {
@@ -93,7 +85,7 @@ public final class Loaders {
         } else if (theClass.equals(Project.class)) {
             return (Loader<T>) new ToProject();
         }
-        return null;
+        throw new ConversionErrorException("Cannot find a convertion class for: " + theClass);
     }
 
     /**
@@ -107,72 +99,80 @@ public final class Loaders {
         }
     }
 
-    /**
-     * This exception is thrown when a parameter is found, but cannot be converted to the
-     * right type.
-     */
-    public static class ConversionErrorException extends Exception {
-        private static final long serialVersionUID = 1L;
-
-        protected ConversionErrorException(final String message) {
-            super(message);
-        }
-
-        public ConversionErrorException(final String message, final Throwable cause) {
-            super(message, cause);
-        }
-
-        public ConversionErrorException(final Throwable cause) {
-            super(cause);
-        }
-    }
-
     private static class ToInteger extends Loader<Integer> {
         @Override
-        public Integer fromString(final String data) {
-            return Integer.decode(data);
+        public Integer fromString(final String data) throws ConversionErrorException {
+            try {
+                return Integer.decode(data);
+            } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
         }
     }
 
     private static class ToFloat extends Loader<Float> {
         @Override
-        public Float fromString(final String data) {
-            return Float.valueOf(data);
+        public Float fromString(final String data) throws ConversionErrorException {
+            try {
+                return Float.valueOf(data);
+            } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
         }
     }
 
     private static class ToBigdecimal extends Loader<BigDecimal> {
         @Override
-        public BigDecimal fromString(final String data) {
-            return new BigDecimal(data);
+        public BigDecimal fromString(final String data) throws ConversionErrorException {
+            try {
+                return new BigDecimal(data);
+            } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
         }
     }
 
     private static class ToByte extends Loader<Byte> {
         @Override
-        public Byte fromString(final String data) {
-            return Byte.valueOf(data);
+        public Byte fromString(final String data) throws ConversionErrorException {
+            try {
+                return Byte.valueOf(data);
+            } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
         }
     }
 
     private static class ToShort extends Loader<Short> {
         @Override
-        public Short fromString(final String data) {
-            return Short.valueOf(data);
+        public Short fromString(final String data) throws ConversionErrorException {
+            try {
+                return Short.valueOf(data);
+            } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
         }
     }
 
     private static class ToLong extends Loader<Long> {
         @Override
-        public Long fromString(final String data) {
-            return Long.valueOf(data);
+        public Long fromString(final String data) throws ConversionErrorException {
+            try {
+                return Long.valueOf(data);
+            } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
         }
     }
 
     private static class ToDouble extends Loader<Double> {
         @Override
-        public Double fromString(final String data) {
-            return Double.valueOf(data);
+        public Double fromString(final String data) throws ConversionErrorException {
+            try {
+                return Double.valueOf(data);
+            } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
         }
     }
 
@@ -199,65 +199,80 @@ public final class Loaders {
 
     private static class ToDate extends Loader<Date> {
         @Override
-        public Date fromString(final String data) {
+        public Date fromString(final String data) throws ConversionErrorException {
             try {
                 return DateFormat.getInstance().parse(data);
             } catch (final ParseException e) {
-                throw new FatalErrorException(e);
+                throw new ConversionErrorException(e);
             }
         }
     }
 
     private static class ToBloatitDate extends Loader<DateLocale> {
         @Override
-        public DateLocale fromString(final String data) {
+        public DateLocale fromString(final String data) throws ConversionErrorException {
             try {
                 return new DateLocale(data, Context.getLocalizator().getLocale());
             } catch (final DateParsingException e) {
-                throw new FatalErrorException(e);
+                throw new ConversionErrorException(e);
             }
         }
     }
 
-    private abstract static class ToIdentifiable extends Loader<Identifiable> {
+    private abstract static class ToIdentifiable extends Loader<Identifiable<?>> {
         @Override
-        public String toString(final Identifiable id) {
+        public final String toString(final Identifiable<?> id) {
             return String.valueOf(id.getId());
         }
+
+        @Override
+        public final Identifiable<?> fromString(final String data) throws ConversionErrorException {
+            try {
+                Identifiable<?> fromStr = doFromString(Integer.valueOf(data));
+                if (fromStr == null) {
+                    throw new ConversionErrorException("Identifiable not found for Id: " + data);
+                }
+                return fromStr;
+            } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
+        }
+
+        public abstract Identifiable<?> doFromString(int i);
     }
 
     private static class ToDemand extends ToIdentifiable {
         @Override
-        public Identifiable fromString(final String data) {
-            return DemandManager.getDemandById(Integer.valueOf(data));
+        public Identifiable<?> doFromString(int i) {
+            return DemandManager.getDemandById(i);
         }
     }
 
     private static class ToMember extends ToIdentifiable {
         @Override
-        public Identifiable fromString(final String data) {
-            return MemberManager.getMemberById(Integer.valueOf(data));
+        public Identifiable<?> doFromString(int i) {
+            return MemberManager.getMemberById(i);
         }
     }
 
     private static class ToProject extends ToIdentifiable {
         @Override
-        public Identifiable fromString(final String data) {
-            return ProjectManager.getProjectById(Integer.valueOf(data));
+        public Identifiable<?> doFromString(int i) {
+            return ProjectManager.getProjectById(i);
         }
     }
 
     private static class ToKudosable extends ToIdentifiable {
         @Override
-        public Identifiable fromString(final String data) {
-            return KudosableManager.getById(Integer.valueOf(data));
+        public Identifiable<?> doFromString(int i) {
+            return KudosableManager.getById(i);
         }
     }
 
     private static class ToComment extends ToIdentifiable {
         @Override
-        public Identifiable fromString(final String data) {
-            return CommentManager.getCommentById(Integer.valueOf(data));
+        public Identifiable<?> doFromString(int i) {
+            return CommentManager.getCommentById(i);
         }
     }
 }
