@@ -33,13 +33,12 @@ public class ByteReader {
      * blocks until input data is available, the end of the stream is detected,
      * or an exception is thrown.
      * </p>
-     * 
+     *
      * @return
      * @throws IOException
      */
     public byte read() throws EOFException, IOException {
         int i = input.read();
-        System.out.print((char) (i & 0Xff));
         if (i == -1) {
             throw new EOFException();
         }
@@ -57,7 +56,7 @@ public class ByteReader {
      * will then throw an EOFException indicating the end of the stream has been
      * reached.
      * </p>
-     * 
+     *
      * @return
      * @throws IOException
      * @throws EOFException
@@ -105,7 +104,7 @@ public class ByteReader {
      * readString or readLine will then throw an EOFException indicating the end
      * of the stream has been reached.
      * </p>
-     * 
+     *
      * @return the string representation of the line
      * @throws IOException
      *             when the stream is not accessible
@@ -123,7 +122,7 @@ public class ByteReader {
      * thread or another thread. A single read or skip of this many bytes will
      * not block, but may read or skip fewer bytes.
      * </p>
-     * 
+     *
      * @return an estimate of the number of bytes that can be read (or skipped
      *         over) from this input stream without blocking or 0 when it
      *         reaches the end of the input stream.
@@ -137,7 +136,7 @@ public class ByteReader {
     /**
      * Closes this input stream and releases any system resources associated
      * with the stream. The close method of InputStream does nothing.
-     * 
+     *
      * @throws IOException
      *             if an IO error occurs
      */
