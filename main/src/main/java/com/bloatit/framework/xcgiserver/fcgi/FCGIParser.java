@@ -1,4 +1,4 @@
-package com.bloatit.framework.fcgi;
+package com.bloatit.framework.xcgiserver.fcgi;
 
 /*
  * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
@@ -21,9 +21,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.NotImplementedException;
 
-public class FCGIParser {
+import com.bloatit.framework.xcgiserver.XcgiParser;
 
-    //The buffer size mustn't be more than 65000 (max size of a record)
+public class FCGIParser implements XcgiParser {
+
+    // The buffer size mustn't be more than 65000 (max size of a record)
     private static final int DEFAULT_OUTPUT_RECORD_SIZE = 1024;
 
     final static byte FCGI_VERSION_1 = 1;
@@ -47,7 +49,6 @@ public class FCGIParser {
     final static byte FCGI_AUTHORIZER = 2;
     final static byte FCGI_FILTER = 3;
 
-    private final InputStream input;
     DataInputStream dataInput;
     boolean paramStreamOpen = true;
     boolean postStreamOpen = true;
@@ -58,10 +59,8 @@ public class FCGIParser {
     private final FCGIPostStream postStream;
 
     public FCGIParser(final InputStream input, OutputStream bos) throws IOException {
-        this.input = input;
-
-        writeStream = new BufferedOutputStream(new FCGIOutputStream(this,bos), DEFAULT_OUTPUT_RECORD_SIZE);
-        postStream = new  FCGIPostStream(this);
+        writeStream = new BufferedOutputStream(new FCGIOutputStream(this, bos), DEFAULT_OUTPUT_RECORD_SIZE);
+        postStream = new FCGIPostStream(this);
 
         dataInput = new DataInputStream(input);
         env = new HashMap<String, String>();
@@ -77,10 +76,12 @@ public class FCGIParser {
         }
     }
 
+    @Override
     public OutputStream getWriteStream() {
         return writeStream;
     }
 
+    @Override
     public Map<String, String> getEnv() throws IOException {
 
         while (paramStreamOpen) {
@@ -92,8 +93,9 @@ public class FCGIParser {
 
     public void fetchPostRecord() throws IOException {
 
-        //TODO: comment that
-        while(postStreamOpen && !(parseRecord() == FCGI_STDIN));
+        // TODO: comment that
+        while (postStreamOpen && !(parseRecord() == FCGI_STDIN))
+            ;
 
     }
 
@@ -103,7 +105,6 @@ public class FCGIParser {
         }
     }
 
-
     private byte parseRecord() throws IOException {
 
         byte version = dataInput.readByte();
@@ -111,14 +112,16 @@ public class FCGIParser {
         int requestId = dataInput.readUnsignedShort();
         int contentLength = dataInput.readUnsignedShort();
         int paddingLength = dataInput.readUnsignedByte();
-        //Reserved byte
+        // Reserved byte
         dataInput.skip(1);
 
         if (version != FCGI_VERSION_1) {
             throw new FCGIException("Bad FCGI version code. Found '" + version + "' but '" + FCGI_VERSION_1 + "' excepted.");
         }
 
-        // TODO: make something with requestId
+        if(requestId != 1) {
+            throw new FCGIException("Bad request ID. Found '" + requestId + "' but '" + 1 + "' excepted.");
+        }
 
         switch (type) {
         case FCGI_BEGIN_REQUEST:
@@ -240,7 +243,6 @@ public class FCGIParser {
         return usedLength;
     }
 
-
     private void parseStdinRecord(int contentLength) throws IOException {
         if (contentLength == 0) {
             // End of stdin stream
@@ -252,9 +254,9 @@ public class FCGIParser {
 
         int readLength = 0;
 
-        while(readLength < contentLength) {
-            int size  = dataInput.read(data,readLength, contentLength-readLength);
-            if(size == -1) {
+        while (readLength < contentLength) {
+            int size = dataInput.read(data, readLength, contentLength - readLength);
+            if (size == -1) {
                 throw new EOFException();
             }
             readLength += size;
@@ -281,6 +283,7 @@ public class FCGIParser {
         return l;
     }
 
+    @Override
     public InputStream getPostStream() {
         return postStream;
     }
@@ -288,9 +291,5 @@ public class FCGIParser {
     public boolean isPostStreamOpen() {
         return postStreamOpen;
     }
-
-
-
-
 
 }

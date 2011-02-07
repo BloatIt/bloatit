@@ -14,15 +14,15 @@ import java.io.IOException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.scgiserver.HttpHeader;
-import com.bloatit.framework.scgiserver.HttpPost;
-import com.bloatit.framework.scgiserver.ScgiProcessor;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.framework.xcgiserver.HttpHeader;
+import com.bloatit.framework.xcgiserver.HttpPost;
+import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
-public abstract class WebServer implements ScgiProcessor {
+public abstract class WebServer implements XcgiProcessor {
 
     public WebServer() {
     }

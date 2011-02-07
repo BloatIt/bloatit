@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.framework.scgiserver.HttpHeader;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlStringBinder;
+import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
 import com.bloatit.web.url.PaylineActionUrl;
