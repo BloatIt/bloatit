@@ -5,11 +5,11 @@ import java.util.Iterator;
 
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.Message.What;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.framework.webserver.url.Loaders.ConversionErrorException;
 
 public final class UrlParameter<T> extends UrlNode {
     private final UrlParameterDescription<T> description;

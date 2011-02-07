@@ -28,6 +28,7 @@ public abstract class JavaGenerator {
         _import.append("import com.bloatit.framework.webserver.annotations.RequestParam.Role;\n");
         _import.append("import com.bloatit.framework.webserver.annotations.RequestParam;\n");
         _import.append("import com.bloatit.framework.webserver.annotations.ParamConstraint;\n");
+        _import.append("import com.bloatit.framework.webserver.annotations.ConversionErrorException;\n");
         _import.append("import com.bloatit.common.Log;\n");
         _import.append("import com.bloatit.framework.exceptions.RedirectException;\n");
         _import.append("import com.bloatit.framework.utils.*;\n");
