@@ -38,15 +38,13 @@ public final class HtmlDemandSumary extends HtmlDiv {
     public HtmlDemandSumary(final Demand demand, boolean compact) {
         super("demand_summary");
 
-        if(demand == null) {
+        if (demand == null) {
             addText("");
             return;
         }
 
         // Extract locales stuffs
         final Locale defaultLocale = Context.getLocalizator().getLocale();
-
-
 
         // ////////////////////
         // Div demand_summary_top
@@ -98,8 +96,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
             final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
             {
                 final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "demand_popularity_text");
-                final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()),
-                        "demand_popularity_score");
+                final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()), "demand_popularity_score");
 
                 demandSummaryPopularity.add(popularityText);
                 demandSummaryPopularity.add(popularityScore);
@@ -151,10 +148,8 @@ public final class HtmlDemandSumary extends HtmlDiv {
                         contributionsDemandUrl.getDemandTabPaneUrl().setActiveTabKey("participations_tab");
                         contributionsDemandUrl.setAnchor("demand_tab_pane");
 
-                        demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment",
-                                                                                           "{0} comments",
-                                                                                           commentsCount,
-                                                                                           new Integer(commentsCount))));
+                        demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment", "{0} comments", commentsCount, new Integer(
+                                commentsCount))));
                         demandSummaryDetails.addText(" – ");
                         demandSummaryDetails.add(offersDemandUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(
                                 offersCount))));
@@ -175,7 +170,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
         }
         add(demandSummaryBottom);
-
 
     }
 
@@ -208,46 +202,43 @@ public final class HtmlDemandSumary extends HtmlDiv {
             progressText.addText(Context.tr(" no offer"));
 
             return progressText;
-        } else {
-
-            // Amount
-            CurrencyLocale amountCurrency;
-            try {
-                amountCurrency = Context.getLocalizator().getCurrency(demand.getContribution());
-                final HtmlSpan amount = new HtmlSpan();
-                amount.setCssClass(IMPORTANT_CSS_CLASS);
-                amount.addText(amountCurrency.getDefaultString());
-
-                // Target
-                final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
-                final HtmlSpan target = new HtmlSpan();
-                target.setCssClass(IMPORTANT_CSS_CLASS);
-                target.addText(targetCurrency.getDefaultString());
-
-                // Progress
-                final HtmlSpan progress = new HtmlSpan();
-                progress.setCssClass(IMPORTANT_CSS_CLASS);
-                final NumberFormat format = NumberFormat.getNumberInstance();
-                format.setMinimumFractionDigits(0);
-                progress.addText("" + format.format(progressValue) + " %");
-
-                final HtmlParagraph progressText = new HtmlParagraph();
-                progressText.setCssClass("demand_progress_text");
-
-                progressText.add(amount);
-                progressText.addText(Context.tr(" i.e. "));
-                progressText.add(progress);
-                progressText.addText(Context.tr(" of "));
-                progressText.add(target);
-                progressText.addText(Context.tr(" requested "));
-
-                return progressText;
-            } catch (final UnauthorizedOperationException e) {
-                // No right, no display
-                return new PlaceHolderElement();
-            }
         }
 
-    }
+        // Amount
+        CurrencyLocale amountCurrency;
+        try {
+            amountCurrency = Context.getLocalizator().getCurrency(demand.getContribution());
+            final HtmlSpan amount = new HtmlSpan();
+            amount.setCssClass(IMPORTANT_CSS_CLASS);
+            amount.addText(amountCurrency.getDefaultString());
 
+            // Target
+            final CurrencyLocale targetCurrency = Context.getLocalizator().getCurrency(currentOffer.getAmount());
+            final HtmlSpan target = new HtmlSpan();
+            target.setCssClass(IMPORTANT_CSS_CLASS);
+            target.addText(targetCurrency.getDefaultString());
+
+            // Progress
+            final HtmlSpan progress = new HtmlSpan();
+            progress.setCssClass(IMPORTANT_CSS_CLASS);
+            final NumberFormat format = NumberFormat.getNumberInstance();
+            format.setMinimumFractionDigits(0);
+            progress.addText("" + format.format(progressValue) + " %");
+
+            final HtmlParagraph progressText = new HtmlParagraph();
+            progressText.setCssClass("demand_progress_text");
+
+            progressText.add(amount);
+            progressText.addText(Context.tr(" i.e. "));
+            progressText.add(progress);
+            progressText.addText(Context.tr(" of "));
+            progressText.add(target);
+            progressText.addText(Context.tr(" requested "));
+
+            return progressText;
+        } catch (final UnauthorizedOperationException e) {
+            // No right, no display
+            return new PlaceHolderElement();
+        }
+    }
 }

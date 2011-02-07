@@ -2,9 +2,9 @@ package com.bloatit.web.actions;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Payline;
@@ -33,6 +33,7 @@ public final class PaylineNotifyAction extends Action {
             if (paymentDetails.isAccepted()) {
                 payline.validatePayment(token);
             } else {
+                payline.cancelPayement(token);
                 Log.web().error("Payment is not accepted: " + token);
             }
         } catch (final TokenNotfoundException e) {

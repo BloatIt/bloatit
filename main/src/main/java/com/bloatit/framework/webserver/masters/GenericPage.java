@@ -2,6 +2,7 @@ package com.bloatit.framework.webserver.masters;
 
 import java.util.Locale;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.Notification;
@@ -31,6 +32,7 @@ public abstract class GenericPage extends Page {
 
     @Override
     public final void create() throws RedirectException {
+        Log.framework().trace("Writing page: "+ thisUrl.urlString());
         super.add(new HtmlTagText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         super.add(new HtmlTagText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
         final HtmlBranch html = new HtmlGenericElement("html");

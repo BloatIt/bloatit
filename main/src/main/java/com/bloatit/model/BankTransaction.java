@@ -59,10 +59,10 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
-     * @see DaoBankTransaction#setAccepted()
+     * @see DaoBankTransaction#setAuthorized()
      */
-    public void setAccepted() {
-        getDao().setAccepted();
+    public void setAuthorized() {
+        getDao().setAuthorized();
     }
 
     /**
@@ -73,10 +73,10 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
-     * @see DaoBankTransaction#validated()
+     * @see DaoBankTransaction#setValidated()
      */
-    public boolean validated() {
-        return getDao().validated();
+    public boolean setValidated() {
+        return getDao().setValidated();
     }
 
     public String getMessage() {

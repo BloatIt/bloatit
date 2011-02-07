@@ -31,6 +31,7 @@ public final class DemandPage extends MasterPage {
     @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
     private final Demand demand;
 
+    @SuppressWarnings("unused")
     @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
     private final String title;
 

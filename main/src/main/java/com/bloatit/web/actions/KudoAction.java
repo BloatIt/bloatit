@@ -29,7 +29,7 @@ public final class KudoAction extends LoggedAction {
     public static final String TARGET_KUDOSABLE = "targetKudosable";
 
     @RequestParam(name = TARGET_KUDOSABLE, level = Level.ERROR)
-    private final Kudosable targetKudosable;
+    private final Kudosable<?> targetKudosable;
 
     private final KudoActionUrl url;
 
