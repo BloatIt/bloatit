@@ -11,7 +11,6 @@
 package com.bloatit.framework.scgiserver;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,6 +20,7 @@ import java.util.Map;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.fcgi.FCGIParser;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 
@@ -82,21 +82,17 @@ public final class SCGIServer {
 
         @Override
         public void run() {
-            try {
-                int nbError = 0;
-                while (true) {
-                    try {
-                        generateAndSendReponse();
-                    } catch (IOException e) {
-                        nbError++;
-                        if (nbError > NB_MAX_SOCKET_ERROR) {
-                            throw new FatalErrorException("Too much errors on this socket.", e);
-                        }
-                        Log.framework().fatal("soket error on port: " + provider.getLocalPort(), e);
+            int nbError = 0;
+            while (true) {
+                try {
+                    generateAndSendReponse();
+                } catch (IOException e) {
+                    nbError++;
+                    if (nbError > NB_MAX_SOCKET_ERROR) {
+                        throw new FatalErrorException("Too much errors on this socket.", e);
                     }
+                    Log.framework().fatal("soket error on port: " + provider.getLocalPort(), e);
                 }
-            } catch (Exception e) {
-                // TODO: handle exception
             }
         }
 
@@ -121,16 +117,22 @@ public final class SCGIServer {
 
             // Parse the header and the post data.
             final BufferedInputStream bis = new BufferedInputStream(socket.getInputStream(), 4096);
-            final Map<String, String> env = SCGIUtils.parse(bis);
+            FCGIParser parser = new FCGIParser(bis, socket.getOutputStream());
+
+            final Map<String, String> env = parser.getEnv();
             final HttpHeader header = new HttpHeader(env);
-            final HttpPost post = new HttpPost(bis, header.getContentLength(), header.getContentType());
+            final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
+
+//            for(Entry<String, String> entry: env.entrySet()) {
+//                System.err.println(entry.getKey() + " -> "+ entry.getValue());
+//            }
 
             // FIXME: use timer ?
             SessionManager.clearExpiredSessions();
 
             try {
                 for (ScgiProcessor processor : getProcessors()) {
-                    if (processor.process(header, post, new HttpResponse(new BufferedOutputStream(socket.getOutputStream(), 1024)))) {
+                    if (processor.process(header, post, new HttpResponse(parser.getWriteStream()))) {
                         break;
                     }
                 }
@@ -142,7 +144,7 @@ public final class SCGIServer {
                 Log.framework().fatal("SCGIServer: Unknown Exception", e);
             } finally {
                 Log.framework().trace("Closing connection");
-                socket.close();
+                parser.getWriteStream().close();
             }
 
             Log.framework().debug("Page generated in " + timer.elapsed() + " ms");
