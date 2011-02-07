@@ -18,7 +18,6 @@ public class SimplePostParser extends PostParameterParser {
     public SimplePostParser(final InputStream postStream, final int length) {
         this.postStream = postStream;
         this.length = length;
-
     }
 
     public void initParsing() throws IOException {
@@ -37,15 +36,18 @@ public class SimplePostParser extends PostParameterParser {
 
     @Override
     public PostParameter readNext() throws MalformedPostException, IOException {
+        if (length == 0) {
+            return null;
+        }
         if (postData == null) {
             initParsing();
         }
         if (i >= postData.length) {
             return null;
         }
-        Log.framework().trace("Reading simple POST data n°"+i);
+        Log.framework().trace("Reading simple POST data n°" + i);
         String param = postData[i];
-        while( i < postData.length){
+        while (i < postData.length) {
             try {
                 final String[] pair = param.split("=");
                 if (pair.length >= 2) {
@@ -54,7 +56,7 @@ public class SimplePostParser extends PostParameterParser {
                     value = URLDecoder.decode(pair[1], "UTF-8");
                     i++;
                     return new PostParameter(key, value);
-                } 
+                }
                 i++;
             } catch (final UnsupportedEncodingException e) {
                 Log.framework().fatal("Encoding is UTF-8 not supported. This is bad, check system parameters", e);
