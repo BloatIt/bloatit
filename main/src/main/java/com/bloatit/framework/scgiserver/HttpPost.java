@@ -20,7 +20,7 @@ public class HttpPost {
      * <p>
      * Construct an HttpPost from a POST request
      * </p>
-     * 
+     *
      * @param is
      *            The stream to read containing the post Data
      * @param length
@@ -36,7 +36,7 @@ public class HttpPost {
 
     /**
      * Gets the list of parameters
-     * 
+     *
      * @return the list of post parameters for the page
      */
     public final Parameters getParameters() {
@@ -47,7 +47,7 @@ public class HttpPost {
      * <p>
      * Parses the post and fills the list of parameters
      * </p>
-     * 
+     *
      * @param postStream
      *            the stream to read post from
      * @param length
@@ -63,7 +63,7 @@ public class HttpPost {
         while ((pp = getNext(parser)) != null) {
             parameters.add(pp.getName(), pp.getValue());
         }
-    
+
         // if (contentType != null && !contentType.equals("") &&
         // contentType.startsWith("multipart/form-data")) {
         // System.out.println(contentType);
@@ -109,21 +109,23 @@ public class HttpPost {
 
     /**
      * Gets the next PostParameter in the parser, ignoring the exceptions
-     * 
+     *
      * @param parser
      *            the <code>POST</code> parser from which content is read
      * @return the next <code>PostParameter</code> or <code>null</code> if no
      *         more content is available
      */
     private PostParameter getNext(PostParser parser) {
-        while (true) {
-            try {
-                PostParameter pp = parser.readNext();
-                return pp;
-            } catch (MalformedPostException e) {
-                Log.web().error("Error in the post. We try to continue, but may have errors later in the page");
-            }
+        // TODO: remonter différentes execption selon les cas d'erreurs
+        // while (true) {
+        try {
+            PostParameter pp = parser.readNext();
+            return pp;
+        } catch (MalformedPostException e) {
+            Log.web().error("Error in the post. We try to continue, but may have errors later in the page");
+            return null;
         }
+        // }
     }
 
     // private final void processMultipart(InputStream postStream, final String
