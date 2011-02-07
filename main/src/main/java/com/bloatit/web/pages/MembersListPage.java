@@ -11,6 +11,7 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -31,7 +32,6 @@ import com.bloatit.web.url.MembersListPageUrl;
 
 @ParamContainer("member/list")
 public final class MembersListPage extends MasterPage {
-
     // Keep me here ! I am needed for the Url generation !
     private HtmlPagedList<Member> pagedMemberList;
     private final MembersListPageUrl url;
@@ -39,40 +39,20 @@ public final class MembersListPage extends MasterPage {
     public MembersListPage(final MembersListPageUrl url) {
         super(url);
         this.url = url;
-        generateContent();
     }
 
-    private void generateContent() {
-
+    @Override
+    protected void doCreate() throws RedirectException {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 2);
-
         final PageIterable<Member> memberList = MemberManager.getMembers();
-
-        final HtmlRenderer<Member> memberItemRenderer = new HtmlRenderer<Member>() {
-
-            @Override
-            public HtmlNode generate(final Member member) {
-                final MemberPageUrl memberUrl = new MemberPageUrl(member);
-                try {
-                    HtmlLink htmlLink;
-                    htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-                    final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
-                    return new HtmlListItem(htmlLink).add(htmlKarma);
-                } catch (final UnauthorizedOperationException e) {
-                    Log.web().warn(e);
-                }
-                return new PlaceHolderElement();
-            }
-        };
+        final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
 
         // TODO: avoid conflict
         final MembersListPageUrl clonedUrl = url.clone();
         pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
         pageTitle.add(pagedMemberList);
-
         add(pageTitle);
-
     }
 
     @Override
@@ -83,5 +63,21 @@ public final class MembersListPage extends MasterPage {
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    private final class MemberRenderer implements HtmlRenderer<Member> {
+        @Override
+        public HtmlNode generate(final Member member) {
+            final MemberPageUrl memberUrl = new MemberPageUrl(member);
+            try {
+                HtmlLink htmlLink;
+                htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
+                final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
+                return new HtmlListItem(htmlLink).add(htmlKarma);
+            } catch (final UnauthorizedOperationException e) {
+                Log.web().warn(e);
+            }
+            return new PlaceHolderElement();
+        }
     }
 }

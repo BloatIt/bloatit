@@ -1,6 +1,7 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -35,6 +36,10 @@ public final class PaylinePage extends MasterPage {
                 Log.web().fatal("Token not found." + e);
             }
         }
+    }
+
+    @Override
+    protected void doCreate() throws RedirectException {
     }
 
     @Override

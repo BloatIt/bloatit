@@ -11,6 +11,7 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
@@ -38,17 +39,13 @@ public final class ProjectListPage extends MasterPage {
     public ProjectListPage(final ProjectListPageUrl url) {
         super(url);
         this.url = url;
-        generateContent();
     }
 
-    private void generateContent() {
-
+    @Override
+    protected void doCreate() throws RedirectException {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Project list", 1);
-
         final PageIterable<Project> projectList = ProjectManager.getProjects();
-
         final HtmlRenderer<Project> projectItemRenderer = new HtmlRenderer<Project>() {
-
             @Override
             public HtmlNode generate(final Project project) {
                 final ProjectPageUrl memberUrl = new ProjectPageUrl(project);

@@ -13,6 +13,7 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlList;
@@ -28,10 +29,10 @@ public final class MyAccountPage extends MasterPage {
 
     public MyAccountPage(final MyAccountPageUrl myAccountPageUrl) {
         super(myAccountPageUrl);
-        generateContent();
     }
 
-    private void generateContent() {
+    @Override
+    protected void doCreate() throws RedirectException {
         if (session.getAuthToken() != null) {
             final Member member = session.getAuthToken().getMember();
             member.authenticate(session.getAuthToken());

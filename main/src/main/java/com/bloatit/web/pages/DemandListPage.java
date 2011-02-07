@@ -14,6 +14,7 @@ package com.bloatit.web.pages;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.search.DemandSearch;
 import com.bloatit.data.search.DemandSearch.SortMethod;
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -65,12 +66,11 @@ public final class DemandListPage extends MasterPage {
         this.searchString = url.getSearchString();
         this.filter = url.getFilter();
         this.sort = url.getSort();
-
-        generateContent();
     }
 
-    private void generateContent() {
 
+    @Override
+    protected void doCreate() throws RedirectException {
         // Search block
 
         // ////////////////////
