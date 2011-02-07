@@ -43,13 +43,13 @@ public class Unlockable {
     }
 
     protected final AuthToken getAuthToken() throws UnauthorizedOperationException {
-        if (token != null){
+        if (token != null) {
             return token;
         }
         throw new UnauthorizedOperationException(SpecialCode.AUTHENTICATION_NEEDED);
     }
 
-    protected final AuthToken getAuthTokenUnprotected(){
+    protected final AuthToken getAuthTokenUnprotected() {
         return token;
     }
 
@@ -133,13 +133,13 @@ public class Unlockable {
 
     /**
      * Helper function.
+     *
      * @return Nobody or Other
      */
     protected final EnumSet<Role> calculateNoOwnerRole() {
-        if(getAuthTokenUnprotected() == null) {
-            return  EnumSet.of(Role.NOBODY);
-        } else {
-            return  EnumSet.of(Role.OTHER);
+        if (getAuthTokenUnprotected() == null) {
+            return EnumSet.of(Role.NOBODY);
         }
+        return EnumSet.of(Role.OTHER);
     }
 }
