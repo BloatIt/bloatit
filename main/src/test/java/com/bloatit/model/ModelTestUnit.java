@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
 
-public class FrameworkTestUnit extends TestCase {
+public class ModelTestUnit extends TestCase {
     protected AuthToken yoAuthToken;
     protected AuthToken tomAuthToken;
     protected AuthToken fredAuthToken;

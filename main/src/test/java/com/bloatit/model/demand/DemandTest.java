@@ -21,12 +21,12 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.model.AuthToken;
-import com.bloatit.model.FrameworkTestUnit;
+import com.bloatit.model.ModelTestUnit;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
 import com.bloatit.model.right.RightManager.Action;
 
-public class DemandTest extends FrameworkTestUnit {
+public class DemandTest extends ModelTestUnit {
 
     public void testCreate() {
         final Demand demand = Demand.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(), DaoDescription

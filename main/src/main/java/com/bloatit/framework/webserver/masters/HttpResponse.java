@@ -47,12 +47,17 @@ public final class HttpResponse {
     public void writePage(final com.bloatit.framework.webserver.masters.Page page) throws IOException {
         writeCookies();
         output.write("Content-Type: text/html\r\n".getBytes());
-        // output.write("X-LIGHTTPD-send-file: /tmp/test.txt \r\n".getBytes());
-        // System.err.println("plop");
 
-        closeHeaders();
+         closeHeaders();
 
         page.write(htmlText);
+    }
+
+    public void writeResource(String path, long size) throws IOException {
+        String sendString = "X-Sendfile2: "+path+" 0-"+size+"\r\n";
+        output.write(sendString.getBytes());
+
+        closeHeaders();
     }
 
     private void closeHeaders() throws IOException {
@@ -64,5 +69,7 @@ public final class HttpResponse {
         output.write(Context.getSession().getKey().toString().getBytes());
         output.write("; path=/; Max-Age=1296000; Version=1 \r\n".getBytes());
     }
+
+
 
 }

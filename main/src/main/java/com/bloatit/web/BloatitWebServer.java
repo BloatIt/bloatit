@@ -17,6 +17,7 @@ import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.actions.PaylineNotifyAction;
 import com.bloatit.web.actions.RegisterAction;
+import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
 import com.bloatit.web.pages.CommentReplyPage;
@@ -49,6 +50,7 @@ import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
@@ -70,6 +72,7 @@ import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
+import com.bloatit.web.url.UploadFileActionUrl;
 
 public class BloatitWebServer extends WebServer {
 
@@ -182,6 +185,13 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(AddProjectActionUrl.getName())) {
             return new AddProjectAction(new AddProjectActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(UploadFileActionUrl.getName())) {
+            return new UploadFileAction(new UploadFileActionUrl(params, session.getParams()));
+        }
+
+        if (pageCode.equals(FileResourceUrl.getName())) {
+            return new FileResource(new FileResourceUrl(params, session.getParams()));
         }
 
         return new PageNotFound(new PageNotFoundUrl(params, session.getParameters()));
