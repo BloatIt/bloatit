@@ -79,7 +79,7 @@ public class DaoFileMetadata extends DaoUserContent {
         this.type = type;
         this.shortDescription = null;
         if (relatedContent != null) {
-            relatedContent.add(this);
+            relatedContent.addFile(this);
         }
         // At the end to make sure the assignment are done.
         // It works only if equal is final !!
@@ -134,6 +134,18 @@ public class DaoFileMetadata extends DaoUserContent {
         return type;
     }
 
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
+
+    protected DaoFileMetadata() {
+        // for hibernate.
+    }
+
+    // ======================================================================
+    // equals hashcode.
+    // ======================================================================
+
     /*
      * (non-Javadoc)
      * @see java.lang.Object#hashCode()
@@ -178,10 +190,6 @@ public class DaoFileMetadata extends DaoUserContent {
             return false;
         }
         return true;
-    }
-
-    protected DaoFileMetadata() {
-        // for hibernate.
     }
 
 }

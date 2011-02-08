@@ -23,7 +23,7 @@ import com.bloatit.framework.utils.PageIterable;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class DaoAccount implements IdentifiableInterface{
+public abstract class DaoAccount implements IdentifiableInterface {
 
     /**
      * Because of the different inheritance strategy we cannot inherit from identifiable.
@@ -70,6 +70,64 @@ public abstract class DaoAccount implements IdentifiableInterface{
     }
 
     /**
+     * If you want to take away from this account some money, you have to know if there is
+     * enough money in it.
+     *
+     * @param amount The quantity of money you want to get.
+     * @return true if this operation is allowed.
+     */
+    protected abstract boolean hasEnoughMoney(BigDecimal amount);
+
+    /**
+     * Used internally or by subclasses to every time the Amount is changed. It reset the
+     * modification date to now.
+     */
+    protected final void resetModificationDate() {
+        lastModificationDate = new Date();
+    }
+
+    /**
+     * To modify the value of the amount, you have to create a transaction. This method is
+     * protected to be used by transaction only !
+     *
+     * @param value the quantity of money to add to the amount of this account. (May be a
+     *        negative value)
+     */
+    final void addToAmountValue(final BigDecimal value) {
+        resetModificationDate();
+        lastModificationDate = new Date();
+        amount = amount.add(value);
+    }
+
+    /**
+     * To modify the value of the amount, you have to create a transaction. This method is
+     * protected to be used by transaction only !
+     *
+     * @param value the quantity of money to subtract to the amount of this account. (May
+     *        be a negative value)
+     */
+    protected final void substractToAmountValue(final BigDecimal value) {
+        resetModificationDate();
+        lastModificationDate = new Date();
+        amount = amount.subtract(value);
+    }
+
+    /**
+     * This is for hibernate only. The amount must be modified by some higher level
+     * methods. For test purpose it is protected, but it will be private.
+     *
+     * @see DaoTransaction
+     * @param amount the new amount to set.
+     */
+    protected final void setAmount(final BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    // ======================================================================
+    // Getters
+    // ======================================================================
+
+    /**
      * WARNING: the order is not specified yet. Maybe it will be ordered by date (if
      * needed)
      *
@@ -78,15 +136,6 @@ public abstract class DaoAccount implements IdentifiableInterface{
     public final PageIterable<DaoTransaction> getTransactions() {
         return new QueryCollection<DaoTransaction>("from DaoTransaction as t where t.from = :this or t.to = :this").setEntity("this", this);
     }
-
-    /**
-     * If you want to take away from this account some money, you have to know if there is
-     * enough money in it.
-     *
-     * @param amount The quantity of money you want to get.
-     * @return true if this operation is allowed.
-     */
-    protected abstract boolean hasEnoughMoney(BigDecimal amount);
 
     public final Date getLastModificationDate() {
         return (Date) lastModificationDate.clone();
@@ -109,51 +158,6 @@ public abstract class DaoAccount implements IdentifiableInterface{
         return (Date) creationDate.clone();
     }
 
-    /**
-     * To modify the value of the amount, you have to create a transaction. This method is
-     * protected to be used by transaction only !
-     *
-     * @param value the quantity of money to add to the amount of this account. (May be a
-     *        negative value)
-     */
-    protected final void addToAmountValue(final BigDecimal value) {
-        resetModificationDate();
-        lastModificationDate = new Date();
-        amount = amount.add(value);
-    }
-
-    /**
-     * To modify the value of the amount, you have to create a transaction. This method is
-     * protected to be used by transaction only !
-     *
-     * @param value the quantity of money to subtract to the amount of this account. (May
-     *        be a negative value)
-     */
-    protected final void substractToAmountValue(final BigDecimal value) {
-        resetModificationDate();
-        lastModificationDate = new Date();
-        amount = amount.subtract(value);
-    }
-
-    /**
-     * Used internally or by subclasses to every time the Amount is changed. It reset the
-     * modification date to now.
-     */
-    protected final void resetModificationDate() {
-        lastModificationDate = new Date();
-    }
-
-    /**
-     * This is for hibernate only. The amount must be modified by some higher level
-     * methods. For test purpose it is protected, but it will be private.
-     *
-     * @see DaoTransaction
-     * @param amount the new amount to set.
-     */
-    protected final void setAmount(final BigDecimal amount) {
-        this.amount = amount;
-    }
-
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -161,6 +165,10 @@ public abstract class DaoAccount implements IdentifiableInterface{
     protected DaoAccount() {
         super();
     }
+
+    // ======================================================================
+    // equals and hashCode.
+    // ======================================================================
 
     /*
      * (non-Javadoc)

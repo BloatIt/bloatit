@@ -94,7 +94,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         this.asGroup = asGroup;
     }
 
-    public void add(final DaoFileMetadata daoFileMetadata) {
+    public void addFile(final DaoFileMetadata daoFileMetadata) {
         this.files.add(daoFileMetadata);
     }
 
@@ -105,6 +105,10 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     protected DaoUserContent() {
         super();
     }
+
+    // ======================================================================
+    // hashcode and equals
+    // ======================================================================
 
     /*
      * (non-Javadoc)

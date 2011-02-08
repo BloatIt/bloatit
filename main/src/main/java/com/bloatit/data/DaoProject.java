@@ -17,7 +17,7 @@ import org.hibernate.Session;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 @Entity
-public class DaoProject extends DaoIdentifiable {
+public final class DaoProject extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = false)
     private String name;
@@ -30,6 +30,19 @@ public class DaoProject extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "project")
     private final Set<DaoDemand> demands = new HashSet<DaoDemand>();
+
+    // ======================================================================
+    // Static HQL requests
+    // ======================================================================
+
+    public static DaoProject getByName(String name) {
+        Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
+        return (DaoProject) query.uniqueResult();
+    }
+
+    // ======================================================================
+    // Construction
+    // ======================================================================
 
     public static DaoProject createAndPersist(String name, DaoDescription description, DaoFileMetadata image) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -54,14 +67,53 @@ public class DaoProject extends DaoIdentifiable {
         this.image = image;
     }
 
-    public static DaoProject getByName(String name) {
-        Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
-        return (DaoProject) query.uniqueResult();
-    }
-
     protected void addDemand(DaoDemand demand) {
         demands.add(demand);
     }
+
+    // ======================================================================
+    // Getters
+    // ======================================================================
+
+    /**
+     * @return the description
+     */
+    public DaoDescription getDescription() {
+        return description;
+    }
+
+    /**
+     * @return the image
+     */
+    public DaoFileMetadata getImage() {
+        return image;
+    }
+
+    /**
+     * @return the demands
+     */
+    public Set<DaoDemand> getDemands() {
+        return demands;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    // ======================================================================
+    // For Hibernate mapping.
+    // ======================================================================
+
+    protected DaoProject() {
+        super();
+    }
+
+    // ======================================================================
+    // equals and hashcode.
+    // ======================================================================
 
     /*
      * (non-Javadoc)
@@ -100,38 +152,6 @@ public class DaoProject extends DaoIdentifiable {
         }
 
         return true;
-    }
-
-    /**
-     * @return the description
-     */
-    public final DaoDescription getDescription() {
-        return description;
-    }
-
-    /**
-     * @return the image
-     */
-    public final DaoFileMetadata getImage() {
-        return image;
-    }
-
-    /**
-     * @return the demands
-     */
-    public final Set<DaoDemand> getDemands() {
-        return demands;
-    }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    protected DaoProject() {
-        super();
     }
 
 }

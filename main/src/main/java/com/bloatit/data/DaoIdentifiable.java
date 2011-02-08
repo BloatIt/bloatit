@@ -18,7 +18,7 @@ import org.hibernate.search.annotations.Indexed;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Indexed
-public abstract class DaoIdentifiable implements IdentifiableInterface{
+public abstract class DaoIdentifiable implements IdentifiableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @DocumentId
@@ -36,6 +36,10 @@ public abstract class DaoIdentifiable implements IdentifiableInterface{
     protected DaoIdentifiable() {
         super();
     }
+
+    // ======================================================================
+    // equals and hashcode
+    // ======================================================================
 
     @Override
     public abstract int hashCode();

@@ -66,6 +66,10 @@ class DaoGroupMembership extends DaoIdentifiable {
         super();
     }
 
+    // ======================================================================
+    // equals and hashcode
+    // ======================================================================
+
     /*
      * (non-Javadoc)
      * @see java.lang.Object#hashCode()

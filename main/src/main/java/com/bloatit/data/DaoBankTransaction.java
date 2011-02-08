@@ -23,8 +23,6 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 @Entity
 public final class DaoBankTransaction extends DaoIdentifiable {
 
-    private static final int DEFAULT_STRING_LENGTH = 64;
-
     /**
      * Enumerate the different state a BankTranscation can be in. After being
      * <code>AUTHORIZED</code> a transaction must be <code>AUTHORIZED</code>.
@@ -32,6 +30,8 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     public enum State {
         PENDING, AUTHORIZED, REFUSED, VALIDATED
     }
+
+    private static final int DEFAULT_STRING_LENGTH = 64;
 
     /**
      * When doing automatic transaction with a bank, we can received a message (mostly
@@ -77,6 +77,10 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     @Column(nullable = false, updatable = false, unique = true)
     private String reference;
 
+    // ======================================================================
+    // Static HQL queries.
+    // ======================================================================
+
     /**
      * @return the <code>DaoBankTransaction</code> with this <code>token</code>. Return
      *         null if not found.
@@ -85,6 +89,10 @@ public final class DaoBankTransaction extends DaoIdentifiable {
         return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token").setString("token", token)
                 .uniqueResult();
     }
+
+    // ======================================================================
+    // Construction
+    // ======================================================================
 
     public static DaoBankTransaction createAndPersist(final String message,
                                                       final String token,
@@ -123,10 +131,6 @@ public final class DaoBankTransaction extends DaoIdentifiable {
         this.reference = orderReference;
         this.creationDate = new Date();
         this.modificationDate = (Date) creationDate.clone();
-    }
-
-    protected DaoBankTransaction() {
-        super();
     }
 
     /**
@@ -169,6 +173,15 @@ public final class DaoBankTransaction extends DaoIdentifiable {
         state = State.REFUSED;
     }
 
+    public void setProcessInformations(final String processInformations) {
+        modificationDate = new Date();
+        this.processInformations = processInformations;
+    }
+
+    // ======================================================================
+    // Getters
+    // ======================================================================
+
     public String getMessage() {
         return message;
     }
@@ -207,14 +220,21 @@ public final class DaoBankTransaction extends DaoIdentifiable {
         return reference;
     }
 
-    public void setProcessInformations(final String processInformations) {
-        modificationDate = new Date();
-        this.processInformations = processInformations;
-    }
-
     public String getProcessInformations() {
         return processInformations;
     }
+
+    // ======================================================================
+    // For hibernate mapping.
+    // ======================================================================
+
+    protected DaoBankTransaction() {
+        super();
+    }
+
+    // ======================================================================
+    // equals and hashCode.
+    // ======================================================================
 
     /*
      * (non-Javadoc)

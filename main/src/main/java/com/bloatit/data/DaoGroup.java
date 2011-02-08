@@ -55,9 +55,24 @@ public final class DaoGroup extends DaoActor {
     @Cascade(value = { CascadeType.ALL })
     private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
+    // ======================================================================
+    // Static HQL Requests
+    // ======================================================================
+
+    public static DaoGroup getByName(final String name) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query q = session.createQuery("from com.bloatit.data.DaoGroup where login = :login");
+        q.setString("login", name);
+        return (DaoGroup) q.uniqueResult();
+    }
+
+    // ======================================================================
+    // Construction
+    // ======================================================================
+
     /**
      * Create a group and add it into the db.
-     * 
+     *
      * @param name it the unique and non updatable name of the group.
      * @param owner is the DaoMember creating this group.
      * @param right is the type of group we are creating.
@@ -76,16 +91,9 @@ public final class DaoGroup extends DaoActor {
         return group;
     }
 
-    public static DaoGroup getByName(final String name) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("from com.bloatit.data.DaoGroup where login = :login");
-        q.setString("login", name);
-        return (DaoGroup) q.uniqueResult();
-    }
-
     /**
      * Create a DaoGroup
-     * 
+     *
      * @param login is the name of the group. It must be unique.
      * @param email ...
      * @param right is the default right value for this group.
@@ -99,19 +107,18 @@ public final class DaoGroup extends DaoActor {
         this.email = email;
     }
 
-    /**
-     * @return all the member in this group. (Use a HQL query).
-     */
-    public PageIterable<DaoMember> getMembers() {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query filter = session.createFilter(getGroupMembership(), "select this.member order by login");
-        final Query count = session.createFilter(getGroupMembership(), "select count(*)");
-        return new QueryCollection<DaoMember>(filter, count);
+    public void setRight(final Right right) {
+        this.right = right;
+    }
+
+    @Override
+    public void setEmail(final String email) {
+        this.email = email;
     }
 
     /**
      * Add a member in this group.
-     * 
+     *
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer this group.
      *        (This may change if the number of role change !)
@@ -130,17 +137,27 @@ public final class DaoGroup extends DaoActor {
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
     }
 
+    // ======================================================================
+    // Getters
+    // ======================================================================
+
+    /**
+     * @return all the member in this group. (Use a HQL query).
+     */
+    public PageIterable<DaoMember> getMembers() {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query filter = session.createFilter(getGroupMembership(), "select this.member order by login");
+        final Query count = session.createFilter(getGroupMembership(), "select count(*)");
+        return new QueryCollection<DaoMember>(filter, count);
+    }
+
     public Right getRight() {
         return right;
     }
 
-    public void setRight(final Right right) {
-        this.right = right;
-    }
-
     /**
      * Finds if a member is in this group, and which is its status.
-     * 
+     *
      * @return {@value MemberStatus#UNKNOWN} if the member is not in this group.
      */
     public MemberStatus getMemberStatus(final DaoMember member) {
@@ -160,21 +177,16 @@ public final class DaoGroup extends DaoActor {
         return MemberStatus.IN_GROUP;
     }
 
-    /**
-     * Used in DaoMember.
-     */
-    protected Set<DaoGroupMembership> getGroupMembership() {
-        return groupMembership;
-    }
-
     @Override
     public String getEmail() {
         return email;
     }
 
-    @Override
-    public void setEmail(final String email) {
-        this.email = email;
+    /**
+     * Used in DaoMember.
+     */
+    protected Set<DaoGroupMembership> getGroupMembership() {
+        return groupMembership;
     }
 
     // ======================================================================

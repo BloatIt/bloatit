@@ -18,22 +18,35 @@ import org.hibernate.annotations.CascadeType;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
+/**
+ * Represent a bug on a Released part of a batch. It is like a bug in a bugtracker.
+ */
 @Entity
-public class DaoBug extends DaoUserContent {
+public final class DaoBug extends DaoUserContent {
 
+    /**
+     * Criticality of the bug. A {@link Level#FATAL} error is a very important error etc.
+     */
     public enum Level {
         FATAL, MAJOR, MINOR
     }
 
+    /**
+     * It is the state of the bug ... The developer change it during the process of fixing
+     * it.
+     */
     public enum State {
         PENDING, DEVELOPING, RESOLVED
     }
 
     @Basic(optional = false)
-    private final String description;
+    private String description;
 
+    /**
+     * This is the language in which the description is written.
+     */
     @Basic(optional = false)
-    private final Locale locale;
+    private Locale locale;
 
     @Basic(optional = false)
     @Enumerated
@@ -45,7 +58,7 @@ public class DaoBug extends DaoUserContent {
     private final Set<DaoComment> comments = new HashSet<DaoComment>();
 
     @ManyToOne(optional = false)
-    private final DaoBatch batch;
+    private DaoBatch batch;
 
     @Basic(optional = false)
     @Enumerated
@@ -71,6 +84,12 @@ public class DaoBug extends DaoUserContent {
         this.errorLevel = level;
     }
 
+    /**
+     * The person assigned to a bug is the developer (the member that has created the
+     * offer).
+     *
+     * @return the member assigned to this bug.
+     */
     public DaoMember getAssignedTo() {
         return getBatch().getOffer().getAuthor();
     }
@@ -78,21 +97,21 @@ public class DaoBug extends DaoUserContent {
     /**
      * @return the description
      */
-    public final String getDescription() {
+    public String getDescription() {
         return description;
     }
 
     /**
      * @return the locale
      */
-    public final Locale getLocale() {
+    public Locale getLocale() {
         return locale;
     }
 
     /**
      * @return the errorLevel
      */
-    public final Level getErrorLevel() {
+    public Level getErrorLevel() {
         return errorLevel;
     }
 
@@ -115,11 +134,23 @@ public class DaoBug extends DaoUserContent {
     /**
      * @return the comments
      */
-    public final PageIterable<DaoComment> getComments() {
+    public PageIterable<DaoComment> getComments() {
         final Query allComments = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "");
         final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "selecte count(*)");
         return new QueryCollection<DaoComment>(allComments, allCommentsSize);
     }
+
+    // ======================================================================
+    // Hibernate mapping
+    // ======================================================================
+
+    protected DaoBug() {
+        super();
+    }
+
+    // ======================================================================
+    // equals hashcode.
+    // ======================================================================
 
     /*
      * (non-Javadoc)

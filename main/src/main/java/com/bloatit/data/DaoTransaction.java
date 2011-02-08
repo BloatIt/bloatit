@@ -93,6 +93,10 @@ public final class DaoTransaction extends DaoIdentifiable {
         super();
     }
 
+    // ======================================================================
+    // hashcode and equals.
+    // ======================================================================
+
     /*
      * (non-Javadoc)
      * @see java.lang.Object#hashCode()

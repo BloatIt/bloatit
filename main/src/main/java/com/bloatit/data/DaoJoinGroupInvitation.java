@@ -34,6 +34,19 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     @Enumerated
     private State state;
 
+    // ======================================================================
+    // Static HQL requests
+    // ======================================================================
+
+    public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
+        return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
+                .setEntity("group", group).setEntity("member", member).uniqueResult();
+    }
+
+    // ======================================================================
+    // Construction.
+    // ======================================================================
+
     public static DaoJoinGroupInvitation createAndPersist(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoJoinGroupInvitation joinDemand = new DaoJoinGroupInvitation(sender, reciever, group);
@@ -48,7 +61,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * Create a new invitation. Set the state to PENDING.
-     * 
+     *
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
     private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
@@ -82,6 +95,10 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
         }
     }
 
+    // ======================================================================
+    // Getters
+    // ======================================================================
+
     public DaoMember getSender() {
         return sender;
     }
@@ -98,11 +115,6 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
         return group;
     }
 
-    public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
-        return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
-                .setEntity("group", group).setEntity("member", member).uniqueResult();
-    }
-
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -110,6 +122,10 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     protected DaoJoinGroupInvitation() {
         super();
     }
+
+    // ======================================================================
+    // equals and hashcode
+    // ======================================================================
 
     /*
      * (non-Javadoc)

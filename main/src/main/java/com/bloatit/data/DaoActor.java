@@ -57,6 +57,26 @@ public abstract class DaoActor implements IdentifiableInterface {
     @Cascade(value = { CascadeType.ALL })
     private DaoExternalAccount externalAccount;
 
+    // ======================================================================
+    // HQL static requests.
+    // ======================================================================
+
+    /**
+     * This method use a HQL request. If you intend to use "getByLogin" or "getByName",
+     * "exist" is useless. (In that case you'd better test if getByLogin != null, to
+     * minimize the number of HQL request).
+     */
+    public static boolean exist(final String login) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where login = :login");
+        q.setString("login", login);
+        return ((Long) q.uniqueResult()) > 0;
+    }
+
+    // ======================================================================
+    // Construction.
+    // ======================================================================
+
     /**
      * Initialize the creation date to now.
      *
@@ -81,18 +101,6 @@ public abstract class DaoActor implements IdentifiableInterface {
         this.externalAccount = new DaoExternalAccount(this);
     }
 
-    /**
-     * This method use a HQL request. If you intend to use "getByLogin" or "getByName",
-     * "exist" is useless. (In that case you'd better test if getByLogin != null, to
-     * minimize the number of HQL request).
-     */
-    public static boolean exist(final String login) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where login = :login");
-        q.setString("login", login);
-        return ((Long) q.uniqueResult()) > 0;
-    }
-
     public abstract String getEmail();
 
     /**
@@ -102,6 +110,23 @@ public abstract class DaoActor implements IdentifiableInterface {
      * @param email the new email.
      */
     public abstract void setEmail(final String email);
+
+    // ======================================================================
+    // Getters.
+    // ======================================================================
+
+    /**
+     * Set the external account for this actor.
+     *
+     * @param externalAccount the new external account for this actor
+     * @throws FatalErrorException if the externalAccount.getActor() != this
+     */
+    public final void setExternalAccount(final DaoExternalAccount externalAccount) {
+        if (externalAccount.getActor() != this) {
+            throw new FatalErrorException("Add an external account to the wrong user.", null);
+        }
+        this.externalAccount = externalAccount;
+    }
 
     public final String getLogin() {
         return login;
@@ -129,19 +154,6 @@ public abstract class DaoActor implements IdentifiableInterface {
                 SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author")).setEntity("author", this);
     }
 
-    /**
-     * Set the external account for this actor.
-     *
-     * @param externalAccount the new external account for this actor
-     * @throws FatalErrorException if the externalAccount.getActor() != this
-     */
-    public final void setExternalAccount(final DaoExternalAccount externalAccount) {
-        if (externalAccount.getActor() != this) {
-            throw new FatalErrorException("Add an external account to the wrong user.", null);
-        }
-        this.externalAccount = externalAccount;
-    }
-
     @Override
     public final Integer getId() {
         return id;
@@ -154,6 +166,10 @@ public abstract class DaoActor implements IdentifiableInterface {
     protected DaoActor() {
         super();
     }
+
+    // ======================================================================
+    // equals and hashCode.
+    // ======================================================================
 
     /*
      * (non-Javadoc)

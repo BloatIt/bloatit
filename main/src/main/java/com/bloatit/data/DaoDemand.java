@@ -103,6 +103,10 @@ public final class DaoDemand extends DaoKudosable {
     @Basic(optional = true)
     private Date validationDate;
 
+    // ======================================================================
+    // Construct.
+    // ======================================================================
+
     /**
      * @see #DaoDemand(DaoMember, DaoDescription)
      */
@@ -149,24 +153,8 @@ public final class DaoDemand extends DaoKudosable {
         session.delete(this);
     }
 
-    /**
-     * Add a new offer for this demand.
-     */
-    public void addOffer(final DaoOffer offer) {
-        offers.add(offer);
-    }
-
-    /**
-     * delete offer from this demand AND FROM DB !
-     *
-     * @param Offer the offer we want to delete.
-     */
-    public void removeOffer(final DaoOffer offer) {
-        offers.remove(offer);
-        if (offer.equals(selectedOffer)) {
-            selectedOffer = null;
-        }
-        SessionManager.getSessionFactory().getCurrentSession().delete(offer);
+    public void addComment(final DaoComment comment) {
+        comments.add(comment);
     }
 
     /**
@@ -193,6 +181,73 @@ public final class DaoDemand extends DaoKudosable {
         contributions.add(new DaoContribution(member, this, amount, comment));
         contribution = contribution.add(amount);
     }
+
+    /**
+     * Add a new offer for this demand.
+     */
+    public void addOffer(final DaoOffer offer) {
+        offers.add(offer);
+    }
+
+    /**
+     * delete offer from this demand AND FROM DB !
+     *
+     * @param Offer the offer we want to delete.
+     */
+    public void removeOffer(final DaoOffer offer) {
+        offers.remove(offer);
+        if (offer.equals(selectedOffer)) {
+            selectedOffer = null;
+        }
+        SessionManager.getSessionFactory().getCurrentSession().delete(offer);
+    }
+
+    public void computeSelectedOffer() {
+        selectedOffer = getCurrentOffer();
+    }
+
+    public void setSelectedOffer(final DaoOffer selectedOffer) {
+        this.selectedOffer = selectedOffer;
+    }
+
+    public void setValidationDate(final Date validationDate) {
+        this.validationDate = validationDate;
+    }
+
+    public void validateContributions(final int percent) {
+        if (selectedOffer == null) {
+            throw new FatalErrorException("The selectedOffer shouldn't be null here !");
+        }
+        if (percent == 0) {
+            return;
+        }
+        for (final DaoContribution contribution : getContributionsFromQuery()) {
+            try {
+                if (contribution.getState() == DaoContribution.State.PENDING) {
+                    contribution.validate(selectedOffer, percent);
+                }
+            } catch (final NotEnoughMoneyException e) {
+                Log.data().fatal(e);
+            }
+        }
+    }
+
+    /**
+     * Called by contribution when canceled.
+     *
+     * @param amount
+     */
+    void cancelContribution(final BigDecimal amount) {
+        this.contribution = this.contribution.subtract(amount);
+    }
+
+    public void setDemandState(final DemandState demandState) {
+        this.demandState = demandState;
+    }
+
+    // ======================================================================
+    // Getters.
+    // ======================================================================
 
     public DaoDescription getDescription() {
         return description;
@@ -229,10 +284,6 @@ public final class DaoDemand extends DaoKudosable {
         return offers;
     }
 
-    public void setDemandState(final DemandState demandState) {
-        this.demandState = demandState;
-    }
-
     public DemandState getDemandState() {
         return demandState;
     }
@@ -256,14 +307,6 @@ public final class DaoDemand extends DaoKudosable {
         return selectedOffer;
     }
 
-    public void setSelectedOffer(final DaoOffer selectedOffer) {
-        this.selectedOffer = selectedOffer;
-    }
-
-    public void addComment(final DaoComment comment) {
-        comments.add(comment);
-    }
-
     public BigDecimal getContribution() {
         return contribution;
     }
@@ -284,43 +327,8 @@ public final class DaoDemand extends DaoKudosable {
                 .setEntity("this", this).uniqueResult();
     }
 
-    public void computeSelectedOffer() {
-        selectedOffer = getCurrentOffer();
-    }
-
-    public void setValidationDate(final Date validationDate) {
-        this.validationDate = validationDate;
-    }
-
     public Date getValidationDate() {
         return validationDate;
-    }
-
-    /**
-     * Called by contribution when canceled.
-     *
-     * @param amount
-     */
-    void cancelContribution(final BigDecimal amount) {
-        this.contribution = this.contribution.subtract(amount);
-    }
-
-    public void validateContributions(final int percent) {
-        if (selectedOffer == null) {
-            throw new FatalErrorException("The selectedOffer shouldn't be null here !");
-        }
-        if (percent == 0) {
-            return;
-        }
-        for (final DaoContribution contribution : getContributionsFromQuery()) {
-            try {
-                if (contribution.getState() == DaoContribution.State.PENDING) {
-                    contribution.validate(selectedOffer, percent);
-                }
-            } catch (final NotEnoughMoneyException e) {
-                Log.data().fatal(e);
-            }
-        }
     }
 
     /**
@@ -330,7 +338,6 @@ public final class DaoDemand extends DaoKudosable {
         return project;
     }
 
-
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -338,6 +345,10 @@ public final class DaoDemand extends DaoKudosable {
     protected DaoDemand() {
         super();
     }
+
+    // ======================================================================
+    // equals hashcode.
+    // ======================================================================
 
     /*
      * (non-Javadoc)

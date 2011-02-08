@@ -61,6 +61,10 @@ public final class DaoOffer extends DaoKudosable {
     @Basic(optional = false)
     private BigDecimal amount;
 
+    // ======================================================================
+    // Construction
+    // ======================================================================
+
     public static DaoOffer createAndPersist(final DaoMember member,
                                             final DaoDemand demand,
                                             final BigDecimal amount,
@@ -83,7 +87,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     * 
+     *
      * @param member is the author of the offer. Must be non null.
      * @param demand is the demand on which this offer is made. Must be non null.
      * @param amount is the amount of the offer. Must be non null, and > 0.
@@ -104,15 +108,8 @@ public final class DaoOffer extends DaoKudosable {
         this.currentBatch = 0;
     }
 
-    /**
-     * @return All the batches for this offer. (Even the MasterBatch).
-     */
-    public PageIterable<DaoBatch> getBatches() {
-        final String query = "from DaoBatch where offer = :this order by expirationDate";
-        final String queryCount = "select count(*) from DaoBatch where offer = :this";
-        return new QueryCollection<DaoBatch>( //
-                SessionManager.createQuery(query).setEntity("this", this),//
-                SessionManager.createQuery(queryCount).setEntity("this", this));//
+    public void cancelEverythingLeft() {
+        currentBatch = batches.size();
     }
 
     public void addBatch(final DaoBatch batch) {
@@ -124,10 +121,6 @@ public final class DaoOffer extends DaoKudosable {
         batches.add(batch);
     }
 
-    public DaoBatch getCurrentBatch() {
-        return batches.get(currentBatch);
-    }
-
     public boolean hasBatchesLeft() {
         return currentBatch < batches.size();
     }
@@ -136,8 +129,23 @@ public final class DaoOffer extends DaoKudosable {
         currentBatch++;
     }
 
-    public void cancelEverythingLeft() {
-        currentBatch = batches.size();
+    // ======================================================================
+    // Getters
+    // ======================================================================
+
+    /**
+     * @return All the batches for this offer. (Even the MasterBatch).
+     */
+    public PageIterable<DaoBatch> getBatches() {
+        final String query = "from DaoBatch where offer = :this order by expirationDate";
+        final String queryCount = "select count(*) from DaoBatch where offer = :this";
+        return new QueryCollection<DaoBatch>( //
+                SessionManager.createQuery(query).setEntity("this", this),//
+                SessionManager.createQuery(queryCount).setEntity("this", this));//
+    }
+
+    public DaoBatch getCurrentBatch() {
+        return batches.get(currentBatch);
     }
 
     /**
@@ -162,6 +170,10 @@ public final class DaoOffer extends DaoKudosable {
     public DaoDemand getDemand() {
         return demand;
     }
+
+    // ======================================================================
+    // equals and hashcode.
+    // ======================================================================
 
     /*
      * (non-Javadoc)

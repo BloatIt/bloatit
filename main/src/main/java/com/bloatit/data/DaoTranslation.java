@@ -38,7 +38,7 @@ public final class DaoTranslation extends DaoKudosable {
 
     /**
      * Create a new translation.
-     * 
+     *
      * @param member
      * @param description
      * @param locale
@@ -83,6 +83,10 @@ public final class DaoTranslation extends DaoKudosable {
     protected DaoDescription getDescription() {
         return description;
     }
+
+    // ======================================================================
+    // hashcode and equals
+    // ======================================================================
 
     /*
      * (non-Javadoc)

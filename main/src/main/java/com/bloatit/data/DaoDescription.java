@@ -51,7 +51,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Create a daoDescription. Set the default locale to "locale"
-     * 
+     *
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
@@ -64,14 +64,6 @@ public final class DaoDescription extends DaoIdentifiable {
     }
 
     /**
-     * Use a HQL query to get the Translations of this description in a PageIterable This
-     * will return every translation EVEN this description.
-     */
-    public PageIterable<DaoTranslation> getTranslations() {
-        return new QueryCollection<DaoTranslation>("from DaoTransaltion as t where t.description = :this").setEntity("this", this);
-    }
-
-    /**
      * Add a new translation to this description.
      */
     public void addTranslation(final DaoTranslation translation) {
@@ -79,17 +71,15 @@ public final class DaoDescription extends DaoIdentifiable {
     }
 
     /**
-     * Get a translation for a given locale.
-     * 
-     * @param locale the locale in which we want the description
-     * @return null if no translation exists for this locale.
+     * Change the default locale.
      */
-    public DaoTranslation getTranslation(final Locale locale) {
-        final Query q = SessionManager.createQuery("from com.bloatit.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
-        q.setLocale("locale", locale);
-        q.setEntity("this", this);
-        return (DaoTranslation) q.uniqueResult();
+    public void setDefaultLocale(final Locale defaultLocale) {
+        this.defaultLocale = defaultLocale;
     }
+
+    // ======================================================================
+    // Getters.
+    // ======================================================================
 
     /**
      * @return the default translation for this description (using default locale)
@@ -99,10 +89,24 @@ public final class DaoDescription extends DaoIdentifiable {
     }
 
     /**
-     * Change the default locale.
+     * Use a HQL query to get the Translations of this description in a PageIterable This
+     * will return every translation EVEN this description.
      */
-    public void setDefaultLocale(final Locale defaultLocale) {
-        this.defaultLocale = defaultLocale;
+    public PageIterable<DaoTranslation> getTranslations() {
+        return new QueryCollection<DaoTranslation>("from DaoTransaltion as t where t.description = :this").setEntity("this", this);
+    }
+
+    /**
+     * Get a translation for a given locale.
+     *
+     * @param locale the locale in which we want the description
+     * @return null if no translation exists for this locale.
+     */
+    public DaoTranslation getTranslation(final Locale locale) {
+        final Query q = SessionManager.createQuery("from com.bloatit.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
+        q.setLocale("locale", locale);
+        q.setEntity("this", this);
+        return (DaoTranslation) q.uniqueResult();
     }
 
     public Locale getDefaultLocale() {
@@ -116,6 +120,10 @@ public final class DaoDescription extends DaoIdentifiable {
     protected DaoDescription() {
         super();
     }
+
+    // ======================================================================
+    // equals hashcode
+    // ======================================================================
 
     /*
      * (non-Javadoc)

@@ -55,29 +55,9 @@ public final class DaoMember extends DaoActor {
     @Cascade(value = { CascadeType.ALL })
     private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
-    /**
-     * Create a member. The member login must be unique, and you cannot change it.
-     *
-     * @param login The login of the member.
-     * @param password The password of the member (md5 ??)
-     * @param locale the locale of the user.
-     * @return The newly created DaoMember
-     * @throws HibernateException If there is any problem connecting to the db. Or if the
-     *         member as a non unique login. If an exception is thrown then the
-     *         transaction is rolled back and reopened.
-     */
-    public static DaoMember createAndPersist(final String login, final String password, final String email, final Locale locale) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoMember theMember = new DaoMember(login, password, email, locale);
-        try {
-            session.save(theMember);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            session.beginTransaction();
-            throw e;
-        }
-        return theMember;
-    }
+    // ======================================================================
+    // Static HQL requests
+    // ======================================================================
 
     /**
      * Find a DaoMember using its login.
@@ -108,6 +88,34 @@ public final class DaoMember extends DaoActor {
         q.setString("login", login);
         q.setString("password", password);
         return (DaoMember) q.uniqueResult();
+    }
+
+    // ======================================================================
+    // Construction
+    // ======================================================================
+
+    /**
+     * Create a member. The member login must be unique, and you cannot change it.
+     *
+     * @param login The login of the member.
+     * @param password The password of the member (md5 ??)
+     * @param locale the locale of the user.
+     * @return The newly created DaoMember
+     * @throws HibernateException If there is any problem connecting to the db. Or if the
+     *         member as a non unique login. If an exception is thrown then the
+     *         transaction is rolled back and reopened.
+     */
+    public static DaoMember createAndPersist(final String login, final String password, final String email, final Locale locale) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoMember theMember = new DaoMember(login, password, email, locale);
+        try {
+            session.save(theMember);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            session.beginTransaction();
+            throw e;
+        }
+        return theMember;
     }
 
     /**
@@ -167,6 +175,35 @@ public final class DaoMember extends DaoActor {
         }
     }
 
+    public void setRole(final Role role) {
+        this.role = role;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+    public void setFullname(final String firstname) {
+        fullname = firstname;
+    }
+
+    @Override
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    public void addToKarma(final int value) {
+        karma += value;
+    }
+
+    public void setLocale(final Locale locale) {
+        this.locale = locale;
+    }
+
+    // ======================================================================
+    // Getters
+    // ======================================================================
+
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or PROTECTED
      * groups. ]
@@ -180,20 +217,25 @@ public final class DaoMember extends DaoActor {
         return new QueryCollection<DaoGroup>(filter, count);
     }
 
-    public String getFullname() {
-        return fullname;
+    public Role getRole() {
+        return role;
     }
 
-    public void setFullname(final String firstname) {
-        fullname = firstname;
+    public String getFullname() {
+        return fullname;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(final String password) {
-        this.password = password;
+    @Override
+    public String getEmail() {
+        return email;
+    }
+
+    public Locale getLocale() {
+        return locale;
     }
 
     /**
@@ -257,16 +299,6 @@ public final class DaoMember extends DaoActor {
     }
 
     /**
-     * Base method to all the get something created by the user.
-     */
-    private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass) {
-        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(theClass);
-        final QueryCollection<T> q = new QueryCollection<T>("from " + meta.getEntityName() + " as x where x.member = :author");
-        q.setEntity("author", this);
-        return q;
-    }
-
-    /**
      * @return if the current member is in the "group".
      */
     public boolean isInGroup(final DaoGroup group) {
@@ -281,38 +313,18 @@ public final class DaoMember extends DaoActor {
         return ((Long) q.uniqueResult()) >= 1;
     }
 
-    public void addToKarma(final int value) {
-        karma += value;
-    }
-
     public Integer getKarma() {
         return karma;
     }
 
-    public void setRole(final Role role) {
-        this.role = role;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setLocale(final Locale locale) {
-        this.locale = locale;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    @Override
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public void setEmail(final String email) {
-        this.email = email;
+    /**
+     * Base method to all the get something created by the user.
+     */
+    private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass) {
+        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(theClass);
+        final QueryCollection<T> q = new QueryCollection<T>("from " + meta.getEntityName() + " as x where x.member = :author");
+        q.setEntity("author", this);
+        return q;
     }
 
     /**
