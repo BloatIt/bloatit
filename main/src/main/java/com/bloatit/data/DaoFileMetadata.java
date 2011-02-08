@@ -1,7 +1,6 @@
 package com.bloatit.data;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -36,7 +35,7 @@ public class DaoFileMetadata extends DaoUserContent {
     @Enumerated
     private FileType type;
 
-    @OneToOne(optional = true, mappedBy = "file", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(optional = true, mappedBy = "file")
     private DaoImage image;
 
     public static DaoFileMetadata createAndPersist(final DaoMember member,
