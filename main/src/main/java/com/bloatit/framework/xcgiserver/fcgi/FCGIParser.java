@@ -1,15 +1,23 @@
+/*
+ * Copyright (C) 2011 Linkeos.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.framework.xcgiserver.fcgi;
 
-/*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
- */
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -23,11 +31,50 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.framework.xcgiserver.XcgiParser;
 
+/**
+ * <p>
+ * Parse a fastcgi input stream to extract http params and post stream.
+ * </p>
+ * <p>
+ * The fastcgi protocol specification can be found here: {@link http
+ * ://www.fastcgi.com/devkit/doc/fcgi-spec.html}
+ * </p>
+ * <p>
+ * The fastcgi protocol use 2 stream, 1 input stream and 1 output stream,
+ * composed by records. The input stream contains the request and the
+ * outputstream contains the response.
+ * </p>
+ * <p>
+ * In the input stream, 2 virtuals stream are composed by 2 type of record: the
+ * params records and the stdin record.
+ * </p>
+ *
+ */
 public class FCGIParser implements XcgiParser {
 
-    // The buffer size mustn't be more than 65000 (max size of a record)
+    /**
+     * <p>
+     * The response is encapsuled in FCGI_STDOUT record. The size of the content
+     * of a record is coded with 2 bytes so the size can not exceed 65536 bytes.
+     * The {@link FCGIOutputStream} charged to generete the output records is
+     * not protected so a buffedOutputStream is use to cut the response in small
+     * blocks.
+     * </p>
+     * The output record size mustn't be more than 65000 (max size of a record).
+     * <p>
+     * If the output record size is too small, the overhead weigth due to FCGI
+     * record's header will be heavy.
+     * </p>
+     * <p>
+     * If the output record size is too big, the global latency of the response
+     * will increase.
+     * </p>
+     */
     private static final int DEFAULT_OUTPUT_RECORD_SIZE = 1024;
 
+    /**
+     * The FCGI version is always 1.
+     */
     final static byte FCGI_VERSION_1 = 1;
 
     final static byte FCGI_BEGIN_REQUEST = 1;
@@ -59,7 +106,7 @@ public class FCGIParser implements XcgiParser {
     private final FCGIPostStream postStream;
 
     public FCGIParser(final InputStream input, OutputStream bos) throws IOException {
-        writeStream = new BufferedOutputStream(new FCGIOutputStream(this, new  BufferedOutputStream(bos, 1024)), DEFAULT_OUTPUT_RECORD_SIZE);
+        writeStream = new BufferedOutputStream(new FCGIOutputStream(this, new BufferedOutputStream(bos, 1024)), DEFAULT_OUTPUT_RECORD_SIZE);
         postStream = new FCGIPostStream(this);
 
         dataInput = new DataInputStream(input);
@@ -262,7 +309,8 @@ public class FCGIParser implements XcgiParser {
     /**
      * Converts a 4 byte array of unsigned bytes to an long
      *
-     * @param b an array of 4 unsigned bytes
+     * @param b
+     *            an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */
     public static final long unsignedIntToLong(byte[] b) {
