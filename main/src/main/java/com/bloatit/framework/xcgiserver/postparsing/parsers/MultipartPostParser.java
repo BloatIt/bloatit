@@ -1,5 +1,6 @@
 package com.bloatit.framework.xcgiserver.postparsing.parsers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
@@ -21,7 +22,7 @@ public class MultipartPostParser extends PostParameterParser {
      * <p>
      * Creates a new MultipartPostParser
      * </p>
-     * 
+     *
      * @param contentType
      *            the contentType of the mime, including its boundary
      * @param postStream
@@ -43,7 +44,7 @@ public class MultipartPostParser extends PostParameterParser {
      * If element is not a file, returns a <code>PageParameter</code> containing
      * the whole content of the element. If element is a file, the
      * <code>PageParameter</code> contains only the location of the file
-     * 
+     *
      * @return a <code>MimeElement</code> representing the content of this mime,
      *         or <code>null</code> if end has been reached.
      * @throws MalformedMimeException
@@ -66,12 +67,14 @@ public class MultipartPostParser extends PostParameterParser {
         }
 
         InputStream is = next.getContent();
-        StringBuilder sb = new StringBuilder();
         int read;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         while ((read = is.read()) != -1) {
-            sb.append((char) (read & 0xff));
+            bos.write((byte)read);
         }
 
-        return new PostParameter(next.getName(), sb.toString());
+        String s = new String(bos.toByteArray(),"UTF-8");
+
+        return new PostParameter(next.getName(), s);
     }
 }

@@ -59,7 +59,7 @@ public class FCGIParser implements XcgiParser {
     private final FCGIPostStream postStream;
 
     public FCGIParser(final InputStream input, OutputStream bos) throws IOException {
-        writeStream = new BufferedOutputStream(new FCGIOutputStream(this, bos), DEFAULT_OUTPUT_RECORD_SIZE);
+        writeStream = new BufferedOutputStream(new FCGIOutputStream(this, new  BufferedOutputStream(bos, 1024)), DEFAULT_OUTPUT_RECORD_SIZE);
         postStream = new FCGIPostStream(this);
 
         dataInput = new DataInputStream(input);

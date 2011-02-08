@@ -41,7 +41,8 @@ public class FCGIOutputStream extends OutputStream {
     public void close() throws IOException {
         // Close stdout stream
         fcgiParser.fetchAll();
-        sendStdoutRecord(null, 0, 0);
+        byte[] b = new byte[0];
+        sendStdoutRecord(b, 0, 0);
         sendEndRecord();
         outputStream.close();
     }
