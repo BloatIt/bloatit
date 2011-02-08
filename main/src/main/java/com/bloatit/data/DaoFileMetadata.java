@@ -23,7 +23,7 @@ public class DaoFileMetadata extends DaoUserContent {
     private String filename;
 
     @Basic(optional = false)
-    private String directory;
+    private String url;
 
     @Basic(optional = false)
     private int size;
@@ -41,11 +41,11 @@ public class DaoFileMetadata extends DaoUserContent {
     public static DaoFileMetadata createAndPersist(final DaoMember member,
                                                    final DaoUserContent relatedContent,
                                                    final String filename,
-                                                   final String directory,
+                                                   final String url,
                                                    final FileType type,
                                                    final int size) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoFileMetadata file = new DaoFileMetadata(member, relatedContent, filename, directory, type, size);
+        final DaoFileMetadata file = new DaoFileMetadata(member, relatedContent, filename, url, type, size);
         try {
             session.save(file);
         } catch (final HibernateException e) {
@@ -70,16 +70,16 @@ public class DaoFileMetadata extends DaoUserContent {
     private DaoFileMetadata(final DaoMember member,
                             final DaoUserContent relatedContent,
                             final String filename,
-                            final String directory,
+                            final String url,
                             final FileType type,
                             final int size) {
         super(member);
-        if (filename == null || directory == null || type == null || filename.isEmpty() || directory.isEmpty()) {
+        if (filename == null || url == null || type == null || filename.isEmpty() || url.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.size = size;
         this.filename = filename;
-        this.directory = directory;
+        this.url = url;
         this.type = type;
         this.shortDescription = null;
         if (relatedContent != null) {
@@ -118,10 +118,10 @@ public class DaoFileMetadata extends DaoUserContent {
     }
 
     /**
-     * @return the the directory + filename.
+     * @return the url.
      */
-    public final String getFilePath() {
-        return directory + filename;
+    public final String getUrl() {
+        return url;
     }
 
     /**
@@ -136,13 +136,6 @@ public class DaoFileMetadata extends DaoUserContent {
      */
     public final String getFilename() {
         return filename;
-    }
-
-    /**
-     * @return the directory
-     */
-    public final String getFolder() {
-        return directory;
     }
 
     /**
@@ -176,7 +169,7 @@ public class DaoFileMetadata extends DaoUserContent {
     public final int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((directory == null) ? 0 : directory.hashCode());
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
         result = prime * result + ((filename == null) ? 0 : filename.hashCode());
         return result;
     }
@@ -197,11 +190,11 @@ public class DaoFileMetadata extends DaoUserContent {
             return false;
         }
         final DaoFileMetadata other = (DaoFileMetadata) obj;
-        if (directory == null) {
-            if (other.directory != null) {
+        if (url == null) {
+            if (other.url != null) {
                 return false;
             }
-        } else if (!directory.equals(other.directory)) {
+        } else if (!url.equals(other.url)) {
             return false;
         }
         if (filename == null) {

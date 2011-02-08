@@ -77,7 +77,7 @@ public class FCGIParser implements XcgiParser {
     }
 
     @Override
-    public OutputStream getWriteStream() {
+    public OutputStream getResponseStream() {
         return writeStream;
     }
 
