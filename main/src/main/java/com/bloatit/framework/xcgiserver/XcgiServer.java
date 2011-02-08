@@ -1,11 +1,19 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * Copyright (C) 2011 Linkeos.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you
  * can redistribute it and/or modify it under the terms of the GNU Affero General Public
  * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * or (at your option) any later version.
+ *
+ * BloatIt is distributed in the hope that it will
  * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.xcgiserver;
@@ -125,16 +133,16 @@ public final class XcgiServer {
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
 
-//            for(Entry<String, String> entry: env.entrySet()) {
-//                System.err.println(entry.getKey() + " -> "+ entry.getValue());
-//            }
+            // for(Entry<String, String> entry: env.entrySet()) {
+            // System.err.println(entry.getKey() + " -> "+ entry.getValue());
+            // }
 
             // FIXME: use timer ?
             SessionManager.clearExpiredSessions();
 
             try {
                 for (XcgiProcessor processor : getProcessors()) {
-                    if (processor.process(header, post, new HttpResponse(parser.getWriteStream()))) {
+                    if (processor.process(header, post, new HttpResponse(parser.getResponseStream()))) {
                         break;
                     }
                 }
@@ -146,14 +154,14 @@ public final class XcgiServer {
                 Log.framework().fatal("SCGIServer: Unknown Exception", e);
             } finally {
                 Log.framework().trace("Closing connection");
-                parser.getWriteStream().close();
+                parser.getResponseStream().close();
             }
 
             Log.framework().debug("Page generated in " + timer.elapsed() + " ms");
         }
 
         private XcgiParser getXCGIParser(InputStream is, OutputStream os) throws IOException {
-            //You can also use scgi parser
+            // You can also use scgi parser
             return new FCGIParser(is, os);
         }
 

@@ -32,6 +32,9 @@ import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 
+/**
+ * A page that hosts the form used to contribute on a Demand 
+ */
 @ParamContainer("contribute")
 public final class ContributePage extends LoggedPage {
 

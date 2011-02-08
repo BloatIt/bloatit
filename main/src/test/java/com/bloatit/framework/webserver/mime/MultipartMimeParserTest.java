@@ -18,12 +18,7 @@
  */
 package com.bloatit.framework.webserver.mime;
 
-import java.io.ByteArrayInputStream;
-
 import com.bloatit.framework.FrameworkTestUnit;
-import com.bloatit.framework.xcgiserver.mime.MimeElement;
-import com.bloatit.framework.xcgiserver.mime.MultipartMimeParser;
-import com.bloatit.framework.xcgiserver.mime.filenaming.UUIDFileNameGenerator;
 
 /**
  * 

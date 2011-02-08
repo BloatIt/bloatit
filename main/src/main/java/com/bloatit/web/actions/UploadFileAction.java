@@ -49,7 +49,7 @@ public final class UploadFileAction extends Action {
 
         System.err.println("wow" + wow);
         System.err.println("fichier "+fichier);
-        FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(), fichier);
+        FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(), fichier, fichier, "Test upload");
 
         return new IndexPageUrl();
     }

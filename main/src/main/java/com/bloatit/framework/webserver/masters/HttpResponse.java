@@ -5,16 +5,16 @@ import java.io.OutputStream;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.components.writers.IndentedHtmlText;
+import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
 
 public final class HttpResponse {
 
     private final OutputStream output;
-    private final IndentedHtmlText htmlText;
+    private final IndentedHtmlStream htmlText;
 
     public HttpResponse(final OutputStream output) {
         this.output = output;
-        this.htmlText = new IndentedHtmlText(output);
+        this.htmlText = new IndentedHtmlStream(output);
     }
 
     public void writeException(final Exception e) {
@@ -53,9 +53,13 @@ public final class HttpResponse {
         page.write(htmlText);
     }
 
-    public void writeResource(String path, long size) throws IOException {
-        String sendString = "X-Sendfile2: "+path+" 0-"+size+"\r\n";
-        output.write(sendString.getBytes());
+    public void writeResource(String path, long size, String fileName) throws IOException {
+
+        String sendString1 = "Content-Disposition: inline; filename="+fileName+"\r\n";
+
+        String sendString2 = "X-Sendfile2: "+path+" 0-"+size+"\r\n";
+        output.write(sendString1.getBytes());
+        output.write(sendString2.getBytes());
 
         closeHeaders();
     }

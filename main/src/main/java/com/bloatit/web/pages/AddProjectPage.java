@@ -29,7 +29,6 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.actions.AddProjectAction;
-import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
 
@@ -92,13 +91,9 @@ public final class AddProjectPage extends LoggedPage {
 
         // Create the form stub
         final HtmlForm addProjectForm = new HtmlForm(doCreateUrl.urlString());
+        addProjectForm.enableFileUpload();
+
         createIdeaTitle.add(addProjectForm);
-
-
-
-
-
-
 
         // Create the field for the name of the project
         final HtmlTextField projectNameInput = new HtmlTextField(AddProjectAction.PROJECT_NAME_CODE, Context.tr("Project name"));
@@ -120,14 +115,14 @@ public final class AddProjectPage extends LoggedPage {
         addProjectForm.add(descriptionInput);
 
         //Language
-        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateDemandAction.LANGUAGE_CODE, Context.tr("Language"));
+        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(AddProjectAction.LANGUAGE_CODE, Context.tr("Language"));
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
         }
         languageInput.setComment(Context.tr("Language of the descriptions."));
         addProjectForm.add(languageInput);
 
-        final HtmlFileInput projectImageInput = new HtmlFileInput("project_image", Context.tr("Project logo"));
+        final HtmlFileInput projectImageInput = new HtmlFileInput(AddProjectAction.IMAGE_CODE, Context.tr("Project logo"));
         projectImageInput.setComment("Optional. The logo must be an image on a usable licence, in png with transparency for the background. The size must be 50px × 50px.");
         addProjectForm.add(projectImageInput);
 

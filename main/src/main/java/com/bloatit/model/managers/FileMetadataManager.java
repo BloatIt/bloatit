@@ -33,7 +33,7 @@ public final class FileMetadataManager {
         return FileMetadata.create(DBRequests.getById(DaoFileMetadata.class, id));
     }
 
-    public static FileMetadata createFromTempFile(final Member author, String tempFileUrl) {
+    public static FileMetadata createFromTempFile(final Member author, String tempFileUrl, String filename, String description) {
 
         createWipDirectory();
 
@@ -67,8 +67,8 @@ public final class FileMetadataManager {
         }
 
 
-        FileMetadata file = new FileMetadata(author, storedFile.getName(), storedFile.getParent()+"/", type, (int) storedFile.length());
-
+        FileMetadata file = new FileMetadata(author, filename, storedFile.getPath(), type, (int) storedFile.length());
+        file.setShortDescription(description);
         return file;
 
     }

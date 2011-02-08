@@ -28,11 +28,11 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * Create a new FileMetadata.
      * @see DaoFileMetadata#createAndPersist(com.bloatit.data.DaoMember, DaoUserContent, String, String, FileType, int)
      */
-    public FileMetadata(final Member author, String filename,  String directory, FileType type, int size) {
+    public FileMetadata(final Member author, String filename,  String url, FileType type, int size) {
         this(DaoFileMetadata.createAndPersist(author.getDao(),
                 null,
                 filename,
-                directory,
+                url,
                 type,
                 size));
     }
@@ -60,14 +60,6 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
 
     /**
      * @return
-     * @see com.bloatit.data.DaoFileMetadata#getFilePath()
-     */
-    public final String getFilePath() {
-        return getDao().getFilePath();
-    }
-
-    /**
-     * @return
      * @see com.bloatit.data.DaoFileMetadata#getFilename()
      */
     public final File getFile() {
@@ -76,10 +68,10 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
 
     /**
      * @return
-     * @see com.bloatit.data.DaoFileMetadata#getFolder()
+     * @see com.bloatit.data.DaoFileMetadata#getUrl()
      */
-    public final String getFolder() {
-        return getDao().getFolder();
+    public final String getUrl() {
+        return getDao().getUrl();
     }
 
     /**
@@ -98,8 +90,12 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
         return getDao().getType();
     }
 
-    // public UserContent getRelatedContent() {
-    // return UserContent.create(dao.getRelatedContent());
-    // }
+    /**
+     * @return
+     * @see com.bloatit.data.DaoFileMetadata#getFileName()
+     */
+    public String getFileName() {
+        return getDao().getFilename();
+    }
 
 }

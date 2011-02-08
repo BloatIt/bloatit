@@ -12,18 +12,26 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.util.Locale;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
+import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.HtmlTitle;
+import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Project;
+import com.bloatit.model.Translation;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 
 @ParamContainer("project")
@@ -53,10 +61,26 @@ public final class ProjectPage extends MasterPage {
         project.authenticate(session.getAuthToken());
 
         try {
-            HtmlTitleBlock projectName;
-            projectName = new HtmlTitleBlock(project.getName(), 1);
 
-            add(projectName);
+            HtmlDiv box = new HtmlDiv("padding_box");
+
+            HtmlTitle projectName;
+            projectName = new HtmlTitle(project.getName(), 1);
+            box.add(projectName);
+
+            box.add(new HtmlImage(new FileResourceUrl(project.getImage()), "float_right"));
+
+            final Locale defaultLocale = Context.getLocalizator().getLocale();
+            final Translation translatedDescription = project.getDescription().getTranslationOrDefault(defaultLocale);
+
+            final HtmlParagraph shortDescription = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle()));
+            final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
+
+            box.add(shortDescription);
+            box.add(description);
+
+
+            add(box);
         } catch (final UnauthorizedOperationException e) {
             add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this project.")));
         }

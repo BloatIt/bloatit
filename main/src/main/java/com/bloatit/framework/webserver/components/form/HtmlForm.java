@@ -27,4 +27,8 @@ public class HtmlForm extends HtmlBranch {
     public HtmlForm(final String action) {
         this(action, Method.POST);
     }
+
+    public void enableFileUpload() {
+        addAttribute("enctype", "multipart/form-data");
+    }
 }

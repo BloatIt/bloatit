@@ -1,8 +1,11 @@
 package com.bloatit.framework.xcgiserver.postparsing.parsers;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import com.bloatit.framework.xcgiserver.mime.InvalidMimeEncodingException;
 import com.bloatit.framework.xcgiserver.mime.MalformedMimeException;
@@ -15,13 +18,18 @@ import com.bloatit.framework.xcgiserver.postparsing.PostParameter;
  * Parser used to handle multipart posts (mixed or form-data alike).
  */
 public class MultipartPostParser extends PostParameterParser {
-    MultipartMimeParser parser;
+    private static final String MULTIPART_SAVED_URL = "";
+    private static final String MULTIPART_ORIGINAL_FILENAME = "/filename";
+    private static final String MULTIPART_CONTENTYPE = "/contenttype";
+
+    private final MultipartMimeParser parser;
+    private final Queue<PostParameter> buffer;
 
     /**
      * <p>
      * Creates a new MultipartPostParser
      * </p>
-     * 
+     *
      * @param contentType
      *            the contentType of the mime, including its boundary
      * @param postStream
@@ -33,6 +41,7 @@ public class MultipartPostParser extends PostParameterParser {
      */
     public MultipartPostParser(String contentType, InputStream postStream, String fileSavingDirectory) {
         parser = new MultipartMimeParser(postStream, contentType, new UUIDFileNameGenerator(), fileSavingDirectory);
+        buffer = new LinkedList<PostParameter>();
     }
 
     /**
@@ -43,7 +52,7 @@ public class MultipartPostParser extends PostParameterParser {
      * If element is not a file, returns a <code>PageParameter</code> containing
      * the whole content of the element. If element is a file, the
      * <code>PageParameter</code> contains only the location of the file
-     * 
+     *
      * @return a <code>MimeElement</code> representing the content of this mime,
      *         or <code>null</code> if end has been reached.
      * @throws MalformedMimeException
@@ -56,22 +65,30 @@ public class MultipartPostParser extends PostParameterParser {
      */
     @Override
     public PostParameter readNext() throws IOException, InvalidMimeEncodingException, MalformedMimeException {
+        if (!buffer.isEmpty()) {
+            return buffer.poll();
+        }
+
         MimeElement next = parser.readContent();
         if (next == null) {
             return null;
         }
 
         if (next.isFile()) {
-            return new PostParameter(next.getName(), next.getDestination().getAbsolutePath());
+            buffer.add(new PostParameter(next.getName() + MULTIPART_ORIGINAL_FILENAME, next.getFilename()));
+            buffer.add(new PostParameter(next.getName() + MULTIPART_CONTENTYPE, next.getContentType()));
+            return new PostParameter(next.getName() + MULTIPART_SAVED_URL, next.getDestination().getAbsolutePath());
         }
 
         InputStream is = next.getContent();
-        StringBuilder sb = new StringBuilder();
         int read;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         while ((read = is.read()) != -1) {
-            sb.append((char) (read & 0xff));
+            bos.write((byte)read);
         }
 
-        return new PostParameter(next.getName(), sb.toString());
+        String s = new String(bos.toByteArray(),"UTF-8");
+
+        return new PostParameter(next.getName(), s);
     }
 }
