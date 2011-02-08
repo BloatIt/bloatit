@@ -11,14 +11,25 @@
 package com.bloatit.framework.webserver.components.meta;
 
 /**
+ * <p>
  * Represents the leaves of the html tree : no other element can be added inside
+ * </p>
  */
 public abstract class HtmlLeaf extends HtmlElement {
 
+    /**
+     * Creates a new Leaf
+     * 
+     * @param tag
+     *            the <code>String</code> representation of the tag
+     */
     public HtmlLeaf(final String tag) {
         super(tag);
     }
 
+    /**
+     * Creates a new Leaf
+     */
     public HtmlLeaf() {
         super();
     }

@@ -12,7 +12,9 @@
 package com.bloatit.framework.webserver.components.meta;
 
 /**
- * Class to describe HtmlContainers
+ * <p>
+ * An HtmlBranch is a DOM Component that can get childre
+ * </p>
  */
 public abstract class HtmlBranch extends HtmlElement {
 

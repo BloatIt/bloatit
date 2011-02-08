@@ -71,6 +71,7 @@ public abstract class HtmlStream {
 
     /**
      * ??
+     * 
      * @param text
      */
     protected final void append(final String text) {

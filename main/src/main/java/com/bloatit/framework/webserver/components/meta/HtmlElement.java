@@ -7,7 +7,10 @@ import java.util.List;
 import com.bloatit.framework.webserver.components.writers.HtmlStream;
 
 /**
- * <p>An 
+ * <p>
+ * An <code>HtmlElement</code> represents any HtmlNode which is not raw text,
+ * hence it should be the mother class of all HtmlTags that are created.
+ * </p>
  */
 public abstract class HtmlElement extends HtmlNode {
 
@@ -24,6 +27,32 @@ public abstract class HtmlElement extends HtmlNode {
         this.tag = null;
     }
 
+    /**
+     * <p>
+     * Add an attribute to an element
+     * </p>
+     * <p>
+     * Special treatment will happen if the attribute <code>name</code> is
+     * <code>id<code>
+     * </p>
+     * <p>
+     * Example :
+     * 
+     * <pre>
+     * HtmlElement e = new HtmlElement(&quot;img&quot;);
+     * e.addAttribute(&quot;src&quot;, &quot;example.com/plop.png&quot;);
+     * 
+     * </pre>
+     * 
+     * will be used to create : {@code <img src="example.com/plop.png />}
+     * </p>
+     * 
+     * @param name
+     *            the name of the attribute to add
+     * @param value
+     *            the value of the attribute to add
+     * @return itself
+     */
     public HtmlElement addAttribute(final String name, final String value) {
         if (name.equals("id")) {
             setId(value);
@@ -33,11 +62,25 @@ public abstract class HtmlElement extends HtmlNode {
         return this;
     }
 
+    /**
+     * Add a son to this HtmlElement
+     * 
+     * @param html
+     *            the htmlNode son to add
+     * @return itself
+     */
     public HtmlElement add(final HtmlNode html) {
         children.add(html);
         return this;
     }
 
+    /**
+     * Adds some raw text to this HtmlElement
+     * 
+     * @param text
+     *            the text to add
+     * @return itself
+     */
     protected HtmlElement addText(final String text) {
         children.add(new HtmlText(text));
         return this;
@@ -56,7 +99,8 @@ public abstract class HtmlElement extends HtmlNode {
      * Shortcut to element.addAttribute("id",value)
      * </p>
      * 
-     * @param id the value of the id
+     * @param id
+     *            the value of the id
      * @return the element
      */
     public HtmlElement setId(final String id) {
@@ -80,6 +124,12 @@ public abstract class HtmlElement extends HtmlNode {
         return null;
     }
 
+    /**
+     * Return wether this element has at least one child
+     * 
+     * @return <code>true</code> if this element has at least one child,
+     *         <code>false</code> otherwise
+     */
     public boolean hasChild() {
         return iterator().hasNext();
     }
@@ -97,6 +147,13 @@ public abstract class HtmlElement extends HtmlNode {
         addAttribute("class", cssClass);
         return this;
     }
+
+    /**
+     * <p>Indicates whether the tag can be self closed or not</p>
+     * <p>
+     * All inheriting classes 
+     */
+    public abstract boolean selfClosable();
 
     @Override
     public Iterator<HtmlNode> iterator() {
@@ -136,9 +193,4 @@ public abstract class HtmlElement extends HtmlNode {
             txt.writeIndentation();
         }
     }
-
-    /**
-     * Indicates whether the tag is self closed or not
-     */
-    public abstract boolean selfClosable();
 }
