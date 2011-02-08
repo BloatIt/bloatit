@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.mime.filenaming;
+package com.bloatit.framework.xcgiserver.mime.filenaming;
 
 /**
  * A simple interface to describe file name generators that will be used to save

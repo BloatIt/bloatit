@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.mime;
+package com.bloatit.framework.xcgiserver.mime;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
-import com.bloatit.framework.webserver.mime.filenaming.FileNamingGenerator;
+import com.bloatit.framework.xcgiserver.mime.filenaming.FileNamingGenerator;
 
 /**
  * <p>

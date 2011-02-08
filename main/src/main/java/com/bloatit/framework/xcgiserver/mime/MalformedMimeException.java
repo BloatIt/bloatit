@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.mime;
+package com.bloatit.framework.xcgiserver.mime;
 
 import java.io.EOFException;
 

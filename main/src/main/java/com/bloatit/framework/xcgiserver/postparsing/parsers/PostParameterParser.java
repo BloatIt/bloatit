@@ -1,12 +1,12 @@
-package com.bloatit.framework.webserver.postparsing.parsers;
+package com.bloatit.framework.xcgiserver.postparsing.parsers;
 
 import java.io.EOFException;
 import java.io.IOException;
 
-import com.bloatit.framework.webserver.mime.InvalidMimeEncodingException;
-import com.bloatit.framework.webserver.mime.MalformedMimeException;
-import com.bloatit.framework.webserver.postparsing.PostParameter;
-import com.bloatit.framework.webserver.postparsing.exceptions.MalformedPostException;
+import com.bloatit.framework.xcgiserver.mime.InvalidMimeEncodingException;
+import com.bloatit.framework.xcgiserver.mime.MalformedMimeException;
+import com.bloatit.framework.xcgiserver.postparsing.PostParameter;
+import com.bloatit.framework.xcgiserver.postparsing.exceptions.MalformedPostException;
 
 /**
  * <p>

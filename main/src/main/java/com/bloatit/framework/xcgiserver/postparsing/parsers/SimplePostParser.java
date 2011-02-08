@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.postparsing.parsers;
+package com.bloatit.framework.xcgiserver.postparsing.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,8 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.webserver.postparsing.PostParameter;
-import com.bloatit.framework.webserver.postparsing.exceptions.MalformedPostException;
+import com.bloatit.framework.xcgiserver.postparsing.PostParameter;
+import com.bloatit.framework.xcgiserver.postparsing.exceptions.MalformedPostException;
 
 public class SimplePostParser extends PostParameterParser {
     private final int length;
