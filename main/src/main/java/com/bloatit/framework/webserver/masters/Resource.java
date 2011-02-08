@@ -27,12 +27,14 @@ public abstract class Resource implements Linkable {
             throw new RedirectException(new PageNotFoundUrl());
         }
 
-        response.writeResource(file.getPath(), getFileSize());
+        response.writeResource(file.getPath(), getFileSize(), getFileName());
     }
 
     public abstract String getFileUrl();
 
     public abstract long getFileSize();
+
+    public abstract  String getFileName();
 
 
 }

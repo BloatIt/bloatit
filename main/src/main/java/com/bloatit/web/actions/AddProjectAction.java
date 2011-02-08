@@ -40,13 +40,13 @@ public final class AddProjectAction extends Action {
     public static final String DESCRIPTION_CODE = "bloatit_project_description";
     public static final String PROJECT_NAME_CODE = "bloatit_idea_project";
     public static final String IMAGE_CODE = "image";
+    public static final String IMAGE_NAME_CODE = "image/filename";
+    public static final String IMAGE_CONTENT_TYPE_CODE = "image/contenttype";
     public static final String LANGUAGE_CODE = "bloatit_idea_lang";
 
     @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(max = "120",
-                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-                     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
-                     optionalErrorMsg = @tr("You forgot to write a short description"))
+    @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
+    min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String shortDescription;
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
@@ -54,14 +54,18 @@ public final class AddProjectAction extends Action {
     private final String description;
 
     @RequestParam(name = PROJECT_NAME_CODE, role = Role.POST)
-    @ParamConstraint(max = "100",
-                     maxErrorMsg = @tr("The project name must be 1OO chars length max."), //
-                     min = "3", minErrorMsg = @tr("The project name must have at least 3 chars."),
-                     optionalErrorMsg = @tr("The project name is requiered."))
+    @ParamConstraint(max = "100", maxErrorMsg = @tr("The project name must be 1OO chars length max."), //
+    min = "3", minErrorMsg = @tr("The project name must have at least 3 chars."), optionalErrorMsg = @tr("The project name is requiered."))
     private final String projectName;
 
     @RequestParam(name = IMAGE_CODE, role = Role.POST)
     private final String image;
+
+    @RequestParam(name = IMAGE_NAME_CODE, role = Role.POST)
+    private final String imageFileName;
+
+    @RequestParam(name = IMAGE_CONTENT_TYPE_CODE, role = Role.POST)
+    private final String imageContentType;
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
@@ -76,6 +80,8 @@ public final class AddProjectAction extends Action {
         this.projectName = url.getProjectName();
         this.lang = url.getLang();
         this.image = url.getImage();
+        this.imageFileName = url.getImageFileName();
+        this.imageContentType = url.getImageContentType();
 
     }
 
@@ -88,7 +94,8 @@ public final class AddProjectAction extends Action {
         }
         final Locale langLocale = new Locale(lang);
 
-        FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(), image);
+        FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(), image, imageFileName,
+                "Image for the project '" + projectName + "'");
 
         final Project p = new Project(projectName, session.getAuthToken().getMember(), langLocale, shortDescription, description, fileImage);
 

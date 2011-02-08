@@ -20,7 +20,9 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.web.url.FileResourceUrl;
 
 /**
- * A response to a form used to create a new idea
+ * A file resource is a resource representing a file
+ * @author fred
+ *
  */
 @ParamContainer("resource")
 public final class FileResource extends Resource {
@@ -40,11 +42,16 @@ public final class FileResource extends Resource {
 
     @Override
     public String getFileUrl() {
-        return file.getFilePath();
+        return file.getUrl();
     }
 
     @Override
     public long getFileSize() {
         return file.getSize();
+    }
+
+    @Override
+    public String getFileName() {
+        return file.getFileName();
     }
 }
