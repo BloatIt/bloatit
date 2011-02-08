@@ -15,8 +15,8 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
@@ -40,14 +40,10 @@ public final class CommentReplyPage extends LoggedPage {
     @RequestParam(name = CommentCommentAction.COMMENT_TARGET, level = Level.ERROR)
     private final Comment targetComment;
 
-    @RequestParam(name = CommentCommentAction.COMMENT_CONTENT_CODE, role = Role.SESSION, defaultValue = "")
-    private final String comment;
-
     public CommentReplyPage(final CommentReplyPageUrl url) {
         super(url);
         this.url = url;
         this.targetComment = url.getTargetComment();
-        this.comment = url.getComment();
     }
 
     @Override
@@ -56,11 +52,12 @@ public final class CommentReplyPage extends LoggedPage {
 
         final HtmlTitleBlock htb = new HtmlTitleBlock(Context.tr("Reply to a comment"), 1);
 
-        final HtmlForm form = new HtmlForm(new CommentCommentActionUrl(targetComment).urlString());
+        CommentCommentActionUrl commentCommentActionUrl = new CommentCommentActionUrl(targetComment);
+        final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
         htb.add(form);
 
-        final HtmlTextArea commentInput = new HtmlTextArea(CommentCommentAction.COMMENT_CONTENT_CODE, Context.tr("Content"), NB_LINES, NB_COLUMNS);
-        commentInput.setDefaultValue(comment);
+        FormFieldData<String> createFormFieldData = commentCommentActionUrl.getCommentParameter().createFormFieldData();
+        final HtmlTextArea commentInput = new HtmlTextArea(createFormFieldData, Context.tr("Content"), NB_LINES, NB_COLUMNS);
         form.add(commentInput);
 
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));

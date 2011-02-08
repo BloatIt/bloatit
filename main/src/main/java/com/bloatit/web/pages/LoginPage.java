@@ -16,6 +16,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -39,9 +40,15 @@ public final class LoginPage extends MasterPage {
 
         final HtmlDiv box = new HtmlDiv("padding_box");
         {
-            final HtmlForm loginForm = new HtmlForm(new LoginActionUrl().urlString());
-            final HtmlTextField loginField = new HtmlTextField(LoginAction.LOGIN_CODE, Context.trc("Login (noun)", "Login"));
+            LoginActionUrl loginActionUrl = new LoginActionUrl();
+            final HtmlForm loginForm = new HtmlForm(loginActionUrl.urlString());
+
+            // Login field
+            FormFieldData<String> loginData = loginActionUrl.getLoginParameter().createFormFieldData();
+            final HtmlTextField loginField = new HtmlTextField(loginData, Context.trc("Login (noun)", "Login"));
+            // passwordField
             final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));
+            // sublit.
             final HtmlSubmit submitButton = new HtmlSubmit(Context.trc("Login (verb)", "Login"));
 
             loginForm.add(loginField);
@@ -53,9 +60,9 @@ public final class LoginPage extends MasterPage {
 
             box.add(loginTitle);
 
-            box.add(new HtmlParagraph().add(new  RegisterPageUrl().getHtmlLink(Context.tr("No account ? Sign-in now."))));
+            box.add(new HtmlParagraph().add(new RegisterPageUrl().getHtmlLink(Context.tr("No account ? Sign-in now."))));
 
-            box.add(new HtmlParagraph().add(new  PageNotFoundUrl().getHtmlLink(Context.tr("Password lost ?"))));
+            box.add(new HtmlParagraph().add(new PageNotFoundUrl().getHtmlLink(Context.tr("Password lost ?"))));
 
         }
         add(box);

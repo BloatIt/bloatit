@@ -12,14 +12,16 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.math.BigDecimal;
+
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 
@@ -53,8 +55,8 @@ public final class AccountChargingPage extends LoggedPage {
         final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
-            final HtmlTextField amount = new HtmlTextField(PaylineAction.CHARGE_AMOUNT_CODE, "Amount");
-            amount.setDefaultValue("100");
+            FormFieldData<BigDecimal> loginData = chargeActionUrl.getAmountParameter().createFormFieldData();
+            final HtmlMoneyField amount = new HtmlMoneyField(loginData, "Amount");
             final HtmlSubmit submit = new HtmlSubmit(tr("Submit"));
 
             form.add(amount);

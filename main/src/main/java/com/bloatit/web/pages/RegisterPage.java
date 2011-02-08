@@ -22,6 +22,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
@@ -34,12 +35,6 @@ import com.bloatit.web.url.RegisterPageUrl;
 
 @ParamContainer("member/create")
 public final class RegisterPage extends MasterPage {
-
-    @RequestParam(name = RegisterAction.LOGIN_CODE, defaultValue = "", role = Role.SESSION)
-    private final String login;
-
-    @RequestParam(name = RegisterAction.PASSWORD_CODE, defaultValue = "", role = Role.SESSION)
-    private final String password;
 
     @RequestParam(name = RegisterAction.EMAIL_CODE, defaultValue = "", role = Role.SESSION)
     private final String email;
@@ -54,8 +49,6 @@ public final class RegisterPage extends MasterPage {
 
     public RegisterPage(final RegisterPageUrl url) {
         super(url);
-        this.login = url.getLogin();
-        this.password = url.getPassword();
         this.email = url.getEmail();
         this.country = url.getCountry();
         this.lang = url.getLang();
@@ -68,15 +61,16 @@ public final class RegisterPage extends MasterPage {
         {
 
             final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Register"), 1);
-            final HtmlForm form = new HtmlForm(new RegisterActionUrl().urlString());
+            RegisterActionUrl registerActionUrl = new RegisterActionUrl();
+            final HtmlForm form = new HtmlForm(registerActionUrl.urlString());
             container.add(form);
 
-            final HtmlTextField loginInput = new HtmlTextField(RegisterAction.LOGIN_CODE, Context.trc("Login (noun)", "Login"));
-            loginInput.setDefaultValue(login);
+            FormFieldData<String> loginFieldData = registerActionUrl.getLoginParameter().createFormFieldData();
+            final HtmlTextField loginInput = new HtmlTextField(loginFieldData, Context.trc("Login (noun)", "Login"));
             form.add(loginInput);
 
-            final HtmlPasswordField passwordInput = new HtmlPasswordField(RegisterAction.PASSWORD_CODE, Context.tr("Password"));
-            passwordInput.setDefaultValue(password);
+            FormFieldData<String> passwordFieldData = registerActionUrl.getPasswordParameter().createFormFieldData();
+            final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData, Context.tr("Password"));
             form.add(passwordInput);
 
             final HtmlTextField emailInput = new HtmlTextField(RegisterAction.EMAIL_CODE, Context.tr("Email"));
