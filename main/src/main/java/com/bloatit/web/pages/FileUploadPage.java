@@ -6,9 +6,7 @@ import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
-import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.UploadFileActionUrl;
 
@@ -43,7 +41,5 @@ public class FileUploadPage extends MasterPage {
         plop.add(hfi);
         plop.add(new HtmlSubmit("Send"));
 
-
-        plop.add(new FileResourceUrl(FileMetadataManager.getFileMetadataById(379)).getHtmlLink("svg"));
     }
 }
