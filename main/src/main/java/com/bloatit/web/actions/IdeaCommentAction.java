@@ -13,9 +13,9 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.demand.Demand;
@@ -74,6 +74,6 @@ public final class IdeaCommentAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParameter(COMMENT_CONTENT_CODE, comment);
+        session.addParameter(url.getCommentParameter());
     }
 }

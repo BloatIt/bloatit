@@ -6,7 +6,7 @@ public class Message {
     }
 
     public enum What {
-        NOT_FOUND, CONVERSION_ERROR, MIN_ERROR, MAX_ERROR, NO_ERROR, LENGTH_ERROR, OPTIONAL_ERROR, PRECISION_ERROR
+        UNKNOWN, NOT_FOUND, CONVERSION_ERROR, MIN_ERROR, MAX_ERROR, NO_ERROR, LENGTH_ERROR, OPTIONAL_ERROR, PRECISION_ERROR
     }
 
     private final Level level;
@@ -21,6 +21,12 @@ public class Message {
         this.level = level;
         this.message = extractErrorMessage(message, name, value);
         this.what = what;
+    }
+
+    public Message(final String message, final Level level){
+        this.level = level;
+        this.message = message;
+        this.what = What.UNKNOWN;
     }
 
     private String extractErrorMessage(String aMessage, String name, String value) {

@@ -11,8 +11,8 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Member;
@@ -70,11 +70,11 @@ public class RegisterAction extends Action {
         final String userEmail = email.trim();
         if (!MailUtils.isValidEmail(userEmail)) {
             session.notifyError(Context.tr("Invalid email address : " + userEmail));
-            session.addParameter(EMAIL_CODE, userEmail);
-            session.addParameter(LOGIN_CODE, login);
-            session.addParameter(PASSWORD_CODE, password);
-            session.addParameter(COUNTRY_CODE, country);
-            session.addParameter(LANGUAGE_CODE, lang);
+            session.addParameter(url.getEmailParameter());
+            session.addParameter(url.getLoginParameter());
+            session.addParameter(url.getPasswordParameter());
+            session.addParameter(url.getCountryParameter());
+            session.addParameter(url.getLangParameter());
             throw new RedirectException(new RegisterPageUrl());
         }
 

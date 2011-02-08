@@ -5,7 +5,6 @@ import java.util.Locale;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.Notification;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -101,15 +100,15 @@ public abstract class GenericPage extends Page {
 
     private void addWaitingNotifications() {
 
-        for (final Notification notification : session.getNotifications()) {
-            switch (notification.getType()) {
+        for (final Message notification : session.getNotifications()) {
+            switch (notification.getLevel()) {
             case ERROR:
                 addNotification(new HtmlNotification(Level.ERROR, notification.getMessage()));
                 break;
-            case BAD:
+            case WARNING:
                 addNotification(new HtmlNotification(Level.WARNING, notification.getMessage()));
                 break;
-            case GOOD:
+            case INFO:
                 addNotification(new HtmlNotification(Level.INFO, notification.getMessage()));
                 break;
             default:

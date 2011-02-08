@@ -1,6 +1,7 @@
 package com.bloatit.framework.webserver.url;
 
 import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.utils.SessionParameters;
 
 @SuppressWarnings("unused")
 public final class PageNotFoundUrl extends Url implements Cloneable {
@@ -13,10 +14,10 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
         return new com.bloatit.web.pages.PageNotFound(this);
     }
 
-    public PageNotFoundUrl(final Parameters params, final Parameters session) {
+    public PageNotFoundUrl(final Parameters params, final SessionParameters session) {
         this();
-        parseParameters(session, true);
-        parseParameters(params, false);
+        parseSessionParameters(session);
+        parseParameters(params);
     }
 
     public PageNotFoundUrl() {
