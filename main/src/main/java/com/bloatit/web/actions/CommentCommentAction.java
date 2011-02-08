@@ -73,6 +73,6 @@ public class CommentCommentAction extends LoggedAction {
 
     @Override
     protected final void transmitParameters() {
-        session.addParameter(COMMENT_CONTENT_CODE, comment);
+        session.addParameter(url.getCommentParameter());
     }
 }

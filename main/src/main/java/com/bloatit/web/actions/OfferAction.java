@@ -17,11 +17,11 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Offer;
 import com.bloatit.model.demand.Demand;
@@ -88,12 +88,12 @@ public final class OfferAction extends LoggedAction {
         if (targetIdea != null) {
 
             final OfferPageUrl redirectUrl = new OfferPageUrl(targetIdea);
-            session.addParameter(DESCRIPTION_CODE, description);
-            session.addParam(PRICE_CODE, price);
-            session.addParameter(TITLE_CODE, title);
+            session.addParameter(url.getDescriptionParameter());
+            session.addParameter(url.getPriceParameter());
+            session.addParameter(url.getTitleParameter());
 
             if (expiryDate != null) {
-                session.addParameter(EXPIRY_CODE, expiryDate.toString());
+                session.addParameter(url.getExpiryDateParameter());
             }
             return redirectUrl;
         }
@@ -107,12 +107,12 @@ public final class OfferAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParameter(DESCRIPTION_CODE, description);
-        session.addParam(PRICE_CODE, price);
-        session.addParameter(TITLE_CODE, title);
+        session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getPriceParameter());
+        session.addParameter(url.getTitleParameter());
 
         if (expiryDate != null) {
-            session.addParameter(EXPIRY_CODE, expiryDate.toString());
+            session.addParameter(url.getExpiryDateParameter());
         }
     }
 }

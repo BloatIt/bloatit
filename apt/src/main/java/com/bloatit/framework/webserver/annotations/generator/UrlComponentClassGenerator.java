@@ -13,10 +13,10 @@ public class UrlComponentClassGenerator extends JavaGenerator {
     @Override
     protected void generateConstructor() {
         // Constructor with Parameters from session and from Post/Get
-        _classHeader.append("public ").append(className).append("(Parameters params, Parameters session) {\n");
+        _classHeader.append("public ").append(className).append("(Parameters params, SessionParameters session) {\n");
         _classHeader.append("    this();\n");
-        _classHeader.append("    parseParameters(session, true);\n");
-        _classHeader.append("    parseParameters(params, false);\n");
+        _classHeader.append("    parseSessionParameters(session);\n");
+        _classHeader.append("    parseParameters(params);\n");
         _classHeader.append("}\n");
 
         // Constructor with required parameters

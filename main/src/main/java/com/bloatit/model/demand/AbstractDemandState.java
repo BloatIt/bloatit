@@ -38,7 +38,7 @@ abstract class AbstractDemandState {
         throw new WrongStateException();
     }
 
-    public AbstractDemandState developmentTimeOut() {
+    public AbstractDemandState eventDevelopmentTimeOut() {
         // Implement me if you wish.
         throw new WrongStateException();
     }

@@ -10,7 +10,8 @@
  */
 package com.bloatit.web.pages;
 
-import com.bloatit.framework.webserver.Context;
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
@@ -34,7 +35,7 @@ public final class AccountChargingPage extends LoggedPage {
 
     @Override
     protected String getPageTitle() {
-        return Context.tr("Charge your bloatit account");
+        return tr("Charge your account");
     }
 
     @Override
@@ -44,7 +45,8 @@ public final class AccountChargingPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-        final HtmlTitleBlock title = new HtmlTitleBlock(Context.tr("Charge your account"), 1);
+
+        final HtmlTitleBlock title = new HtmlTitleBlock(tr("Charge your account"), 1);
 
         title.add(new HtmlParagraph("utiliser la carte de test n° 4970100000325734 avec une date d’expiration valide et le cryptogramme visuel 123."));
 
@@ -52,7 +54,8 @@ public final class AccountChargingPage extends LoggedPage {
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
             final HtmlTextField amount = new HtmlTextField(PaylineAction.CHARGE_AMOUNT_CODE, "Amount");
-            final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
+            amount.setDefaultValue("100");
+            final HtmlSubmit submit = new HtmlSubmit(tr("Submit"));
 
             form.add(amount);
             form.add(submit);

@@ -94,10 +94,10 @@ public final class CreateDemandAction extends Action {
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
 
-        session.addParameter(DESCRIPTION_CODE, description);
-        session.addParameter(SPECIFICATION_CODE, specification);
-        session.addParameter(PROJECT_CODE, project);
-        session.addParameter(CATEGORY_CODE, category);
+        session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getSpecificationParameter());
+        session.addParameter(url.getProjectParameter());
+        session.addParameter(url.getCategoryParameter());
         session.addParameter(url.getLangParameter());
 
         return new CreateDemandPageUrl();

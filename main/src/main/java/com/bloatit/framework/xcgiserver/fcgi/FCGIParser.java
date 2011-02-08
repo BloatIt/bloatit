@@ -96,7 +96,6 @@ public class FCGIParser implements XcgiParser {
         // TODO: comment that
         while (postStreamOpen && !(parseRecord() == FCGI_STDIN))
             ;
-
     }
 
     public void fetchAll() throws IOException {
@@ -106,7 +105,6 @@ public class FCGIParser implements XcgiParser {
     }
 
     private byte parseRecord() throws IOException {
-
         byte version = dataInput.readByte();
         byte type = dataInput.readByte();
         int requestId = dataInput.readUnsignedShort();
@@ -119,7 +117,7 @@ public class FCGIParser implements XcgiParser {
             throw new FCGIException("Bad FCGI version code. Found '" + version + "' but '" + FCGI_VERSION_1 + "' excepted.");
         }
 
-        if(requestId != 1) {
+        if (requestId != 1) {
             throw new FCGIException("Bad request ID. Found '" + requestId + "' but '" + 1 + "' excepted.");
         }
 
@@ -171,7 +169,6 @@ public class FCGIParser implements XcgiParser {
     }
 
     private void parseParamsRecord(int contentLength) throws IOException {
-
         if (contentLength == 0) {
             // End of param stream
             paramStreamOpen = false;
@@ -191,9 +188,7 @@ public class FCGIParser implements XcgiParser {
 
     private int parseNameValuePair() throws IOException {
         int usedLength = 0;
-
         long nameLength = 0;
-
         byte firstNameLengthByte = dataInput.readByte();
         usedLength++;
 
@@ -267,8 +262,7 @@ public class FCGIParser implements XcgiParser {
     /**
      * Converts a 4 byte array of unsigned bytes to an long
      *
-     * @param b
-     *            an array of 4 unsigned bytes
+     * @param b an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */
     public static final long unsignedIntToLong(byte[] b) {
@@ -291,5 +285,4 @@ public class FCGIParser implements XcgiParser {
     public boolean isPostStreamOpen() {
         return postStreamOpen;
     }
-
 }

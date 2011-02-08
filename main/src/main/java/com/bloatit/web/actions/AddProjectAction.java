@@ -44,20 +44,24 @@ public final class AddProjectAction extends Action {
 
     @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
     @ParamConstraint(max = "120",
-                     maxErrorMsg = @tr("The short description must be 12 chars length max."), //
+                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
                      min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
-                     optionalErrorMsg = @tr("Error you forgot to write a short description"))
+                     optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String shortDescription;
 
-    @RequestParam(name = DESCRIPTION_CODE, defaultValue = "", role = Role.POST)
+    @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
+    @ParamConstraint(optional = true)
     private final String description;
 
     @RequestParam(name = PROJECT_NAME_CODE, role = Role.POST)
+    @ParamConstraint(max = "100",
+                     maxErrorMsg = @tr("The project name must be 1OO chars length max."), //
+                     min = "3", minErrorMsg = @tr("The project name must have at least 3 chars."),
+                     optionalErrorMsg = @tr("The project name is requiered."))
     private final String projectName;
 
     @RequestParam(name = IMAGE_CODE, role = Role.POST)
     private final String image;
-
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
@@ -83,8 +87,6 @@ public final class AddProjectAction extends Action {
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);
-        // TODO make it work
-
 
         FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(), image);
 
@@ -101,9 +103,9 @@ public final class AddProjectAction extends Action {
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
 
-        session.addParameter(SHORT_DESCRIPTION_CODE, shortDescription);
-        session.addParameter(DESCRIPTION_CODE, description);
-        session.addParameter(PROJECT_NAME_CODE, projectName);
+        session.addParameter(url.getShortDescriptionParameter());
+        session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getProjectNameParameter());
         session.addParameter(url.getLangParameter());
 
         return new AddProjectPageUrl();

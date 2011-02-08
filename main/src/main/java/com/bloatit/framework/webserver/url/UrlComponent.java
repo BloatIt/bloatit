@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
@@ -42,15 +43,30 @@ public abstract class UrlComponent extends UrlNode {
     }
 
     @Override
-    protected final void parseParameters(final Parameters params, final boolean pickValue) {
+    protected final void parseParameters(final Parameters params) {
         if (params == null) {
             return;
         }
         registerIfNotAlreadyDone();
         for (final UrlNode node : nodes) {
-            node.parseParameters(params, pickValue);
+            node.parseParameters(params);
         }
     }
+
+    /* (non-Javadoc)
+     * @see com.bloatit.framework.webserver.url.UrlNode#parseSessionParameters(com.bloatit.framework.utils.SessionParameters)
+     */
+    @Override
+    protected void parseSessionParameters(SessionParameters params) {
+        if (params == null) {
+            return;
+        }
+        registerIfNotAlreadyDone();
+        for (final UrlNode node : nodes) {
+            node.parseSessionParameters(params);
+        }
+    }
+
 
     @Override
     @Deprecated
@@ -84,4 +100,5 @@ public abstract class UrlComponent extends UrlNode {
         }
         return messages;
     }
+
 }
