@@ -25,11 +25,11 @@ import com.bloatit.framework.xcgiserver.mime.filenaming.FileNamingGenerator;
  * </p>
  */
 public class MimeElement {
-    private final static String DEFAULT_CONTENT_TYPE = "text/plain";
-    private final static String FILE_NAME = "filename";
-    private final static String CONTENT_ENCODING = "Content-Transfer-Encoding";
-    private final static String DEFAULT_CONTENT_ENCODING = "binary";
-    private final static String CONTENT_TYPE = "Content-Type";
+    private static final String DEFAULT_CONTENT_TYPE = "text/plain";
+    private static final String FILE_NAME = "filename";
+    private static final String CONTENT_ENCODING = "Content-Transfer-Encoding";
+    private static final String DEFAULT_CONTENT_ENCODING = "binary";
+    private static final String CONTENT_TYPE = "Content-Type";
     private static final Object FIELD_NAME = "name";
 
     private static final Map<String, MimeDecoder> availableEncodings = new HashMap<String, MimeDecoder>() {
@@ -40,7 +40,7 @@ public class MimeElement {
             put("base64", new MimeBase64Decoder());
         }
     };
-
+    
     /**
      * The stream used to write content
      */
@@ -129,6 +129,41 @@ public class MimeElement {
      */
     public String getHeaderField(String key) {
         return header.get(key);
+    }
+
+    /**
+     * Finds the name of the element or null if no name has been set
+     * 
+     * @return the name of the element or null if no name has been set
+     */
+    public String getName() {
+        return header.get(FIELD_NAME);
+    }
+
+    /**
+     * Finds the absolute pathname of the file in which the uploaded file has
+     * been stored
+     * 
+     * @return the absolute filepath or <code>null</code> if it's not a file
+     */
+    public File getDestination() {
+        if (!isFile()) {
+            return null;
+        }
+        return destination;
+    }
+
+    /**
+     * Finds the original filename for the file
+     * 
+     * @return the original filename or <code>null</code> if MimeElement is not
+     *         a file
+     */
+    public String getFilename() {
+        if (isFile()) {
+            return getHeaderField(FILE_NAME);
+        }
+        return null;
     }
 
     /**
@@ -285,17 +320,6 @@ public class MimeElement {
      */
     private MimeDecoder getDecoder() throws InvalidMimeEncodingException {
         return availableEncodings.get(getEncoding());
-    }
-
-    public String getName() {
-        return header.get(FIELD_NAME);
-    }
-
-    public File getDestination() {
-        if (!isFile()) {
-            return null;
-        }
-        return destination;
     }
 
 }
