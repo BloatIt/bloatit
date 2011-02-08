@@ -27,10 +27,7 @@ public abstract class MasterPage extends GenericPage {
         notificationBlock = new HtmlDiv("notifications");
     }
 
-    @SuppressWarnings("unused")
-    protected void doCreate() throws RedirectException {
-        // Nothing. You can override it or not.
-    }
+    protected abstract void doCreate() throws RedirectException;
 
     @Override
     protected final void generateBody(HtmlGenericElement body) throws RedirectException {

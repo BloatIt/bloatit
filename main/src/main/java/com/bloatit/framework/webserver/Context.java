@@ -3,8 +3,8 @@ package com.bloatit.framework.webserver;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.bloatit.framework.scgiserver.HttpHeader;
 import com.bloatit.framework.utils.i18n.Localizator;
+import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
  * <p>

@@ -8,11 +8,12 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.xcgiserver;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,24 +24,25 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
+import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 
-public final class SCGIServer {
+public final class XcgiServer {
 
     private static final int SCGI_PORT = 4000;
     private static final int NB_THREADS = 2;
 
-    private final List<SCGIThread> threads = new ArrayList<SCGIThread>(NB_THREADS);
-    private final List<ScgiProcessor> processors = new ArrayList<ScgiProcessor>();
+    private final List<XcgiThread> threads = new ArrayList<XcgiThread>(NB_THREADS);
+    private final List<XcgiProcessor> processors = new ArrayList<XcgiProcessor>();
 
-    public SCGIServer() {
+    public XcgiServer() {
         // Nothing ?
     }
 
-    public void addProcessor(ScgiProcessor processor) {
+    public void addProcessor(XcgiProcessor processor) {
         this.processors.add(processor);
     }
 
-    List<ScgiProcessor> getProcessors() {
+    List<XcgiProcessor> getProcessors() {
         return processors;
     }
 
@@ -49,16 +51,16 @@ public final class SCGIServer {
         Log.framework().info("Init: Start BloatIt serveur");
 
         for (int i = SCGI_PORT; i < SCGI_PORT + NB_THREADS; ++i) {
-            threads.add(new SCGIThread(i));
+            threads.add(new XcgiThread(i));
         }
     }
 
     public void start() {
-        for (SCGIThread thread : threads) {
+        for (XcgiThread thread : threads) {
             thread.start();
         }
 
-        for (SCGIThread thread : threads) {
+        for (XcgiThread thread : threads) {
             try {
                 thread.join();
             } catch (InterruptedException e) {
@@ -67,14 +69,14 @@ public final class SCGIServer {
         }
     }
 
-    final class SCGIThread extends Thread {
+    final class XcgiThread extends Thread {
 
         private static final int NB_MAX_SOCKET_ERROR = 12;
         private Socket socket;
         private final ServerSocket provider;
         private final Timer timer;
 
-        public SCGIThread(int port) throws IOException {
+        public XcgiThread(int port) throws IOException {
             super();
             provider = new ServerSocket(port);
             timer = new Timer();
@@ -82,21 +84,17 @@ public final class SCGIServer {
 
         @Override
         public void run() {
-            try {
-                int nbError = 0;
-                while (true) {
-                    try {
-                        generateAndSendReponse();
-                    } catch (IOException e) {
-                        nbError++;
-                        if (nbError > NB_MAX_SOCKET_ERROR) {
-                            throw new FatalErrorException("Too much errors on this socket.", e);
-                        }
-                        Log.framework().fatal("soket error on port: " + provider.getLocalPort(), e);
+            int nbError = 0;
+            while (true) {
+                try {
+                    generateAndSendReponse();
+                } catch (IOException e) {
+                    nbError++;
+                    if (nbError > NB_MAX_SOCKET_ERROR) {
+                        throw new FatalErrorException("Too much errors on this socket.", e);
                     }
+                    Log.framework().fatal("soket error on port: " + provider.getLocalPort(), e);
                 }
-            } catch (Exception e) {
-                // TODO: handle exception
             }
         }
 
@@ -121,16 +119,22 @@ public final class SCGIServer {
 
             // Parse the header and the post data.
             final BufferedInputStream bis = new BufferedInputStream(socket.getInputStream(), 4096);
-            final Map<String, String> env = SCGIUtils.parse(bis);
+            XcgiParser parser = getXCGIParser(bis, socket.getOutputStream());
+
+            final Map<String, String> env = parser.getEnv();
             final HttpHeader header = new HttpHeader(env);
-            final HttpPost post = new HttpPost(bis, header.getContentLength(), header.getContentType());
+            final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
+
+//            for(Entry<String, String> entry: env.entrySet()) {
+//                System.err.println(entry.getKey() + " -> "+ entry.getValue());
+//            }
 
             // FIXME: use timer ?
             SessionManager.clearExpiredSessions();
 
             try {
-                for (ScgiProcessor processor : getProcessors()) {
-                    if (processor.process(header, post, new HttpResponse(new BufferedOutputStream(socket.getOutputStream(), 1024)))) {
+                for (XcgiProcessor processor : getProcessors()) {
+                    if (processor.process(header, post, new HttpResponse(parser.getWriteStream()))) {
                         break;
                     }
                 }
@@ -142,17 +146,22 @@ public final class SCGIServer {
                 Log.framework().fatal("SCGIServer: Unknown Exception", e);
             } finally {
                 Log.framework().trace("Closing connection");
-                socket.close();
+                parser.getWriteStream().close();
             }
 
             Log.framework().debug("Page generated in " + timer.elapsed() + " ms");
+        }
+
+        private XcgiParser getXCGIParser(InputStream is, OutputStream os) throws IOException {
+            //You can also use scgi parser
+            return new FCGIParser(is, os);
         }
 
     }
 
     public void stop() {
         // TODO: lock to wait transaction end
-        for (SCGIThread thread : threads) {
+        for (XcgiThread thread : threads) {
             if (thread.isAlive()) {
                 thread.kill();
             }

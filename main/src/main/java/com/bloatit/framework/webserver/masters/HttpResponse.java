@@ -31,7 +31,6 @@ public final class HttpResponse {
 
         try {
             output.write(display.toString().getBytes());
-            output.close();
         } catch (final IOException e1) {
             Log.framework().fatal("Cannot send exception through the SCGI soket.", e1);
         }
@@ -43,17 +42,17 @@ public final class HttpResponse {
         output.write(url.getBytes());
         output.write("\r\n".getBytes());
         closeHeaders();
-        output.close();
     }
 
     public void writePage(final com.bloatit.framework.webserver.masters.Page page) throws IOException {
         writeCookies();
         output.write("Content-Type: text/html\r\n".getBytes());
+        // output.write("X-LIGHTTPD-send-file: /tmp/test.txt \r\n".getBytes());
+        // System.err.println("plop");
 
         closeHeaders();
 
         page.write(htmlText);
-        output.close();
     }
 
     private void closeHeaders() throws IOException {

@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.webserver.mime.filenaming.FileNamingGenerator;
 
@@ -130,7 +131,7 @@ public class MultipartMimeParser {
      * @throws NonOptionalParameterException
      *             if any parameter is null
      */
-    public MultipartMimeParser(InputStream multiPartStream, final String contentType, final FileNamingGenerator nameGen, String fileSavingDirectory){
+    public MultipartMimeParser(InputStream multiPartStream, final String contentType, final FileNamingGenerator nameGen, String fileSavingDirectory) {
         if (multiPartStream == null || contentType == null || nameGen == null || fileSavingDirectory == null) {
             throw new NonOptionalParameterException();
         }
@@ -286,9 +287,10 @@ public class MultipartMimeParser {
                             final String[] headerElements = elem.split("[:=]");
                             if (headerElements.length > 1) {
                                 String headerContent = headerElements[1].trim();
-                                if(headerContent.startsWith("\"") && headerContent.endsWith("\"")){
-                                    // Remove the '"' surrounding some of the fields
-                                    headerContent = headerContent.substring(1, headerContent.length()-1);
+                                if (headerContent.startsWith("\"") && headerContent.endsWith("\"")) {
+                                    // Remove the '"' surrounding some of the
+                                    // fields
+                                    headerContent = headerContent.substring(1, headerContent.length() - 1);
                                 }
                                 me.addHeader(headerElements[0].trim(), headerContent);
                             }
@@ -316,16 +318,26 @@ public class MultipartMimeParser {
         } catch (EOFException e) {
             throw new MalformedMimeException("Malformed mime, expected data, received EOF", e);
         }
-        // Do boundary related stuff here
+
         byte b0 = multipartStream.read();
         byte b1 = multipartStream.read();
         if (b0 == CR && b1 == LF) {
             currentState = State.CONTENT_HEADER;
         } else if (b0 == HYPHEN && b1 == HYPHEN) {
             currentState = State.END;
+            try {
+                // Consume epilogue (any text till an empty line or EOF, whichever comes first)
+                String line = null;
+                while (line == null || !line.isEmpty()) {
+                    line = multipartStream.readString();
+                }
+            } catch (EOFException e) {
+                Log.framework().trace("Read EOF");
+            }
         } else {
             throw new MalformedMimeException("Malformed mime, expected \"--\" or \\r\\n and read '" + (char) (b0 & 0xff) + (char) (b1 & 0xff) + "'");
         }
+
         if (me != null) {
             me.close();
         }
@@ -354,5 +366,4 @@ public class MultipartMimeParser {
     public boolean available() {
         return currentState != State.END;
     }
-
 }

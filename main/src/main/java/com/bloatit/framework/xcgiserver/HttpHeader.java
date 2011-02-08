@@ -1,12 +1,12 @@
-package com.bloatit.framework.scgiserver;
+package com.bloatit.framework.xcgiserver;
 
 import java.util.List;
 import java.util.Map;
 
-import com.bloatit.framework.scgiserver.LazyLoaders.LazyInt;
-import com.bloatit.framework.scgiserver.LazyLoaders.LazyMap;
-import com.bloatit.framework.scgiserver.LazyLoaders.LazyString;
-import com.bloatit.framework.scgiserver.LazyLoaders.LazyStringList;
+import com.bloatit.framework.xcgiserver.LazyLoaders.LazyInt;
+import com.bloatit.framework.xcgiserver.LazyLoaders.LazyMap;
+import com.bloatit.framework.xcgiserver.LazyLoaders.LazyString;
+import com.bloatit.framework.xcgiserver.LazyLoaders.LazyStringList;
 
 public class HttpHeader {
 

@@ -3,7 +3,7 @@ package com.bloatit.framework.webserver.components.writers;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.bloatit.framework.scgiserver.SCGIRequestAbordedException;
+import com.bloatit.framework.xcgiserver.XcgiRequestAbordedException;
 
 /**
  * Each class implementing the text interface has its own way to manage indentation and
@@ -22,7 +22,7 @@ public abstract class Text {
         try {
             out.write(text.getBytes());
         } catch (final IOException ex) {
-            throw new SCGIRequestAbordedException(ex);
+            throw new XcgiRequestAbordedException(ex);
         }
     }
 

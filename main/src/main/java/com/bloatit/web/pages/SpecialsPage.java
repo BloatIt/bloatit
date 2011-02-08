@@ -11,6 +11,7 @@
 
 package com.bloatit.web.pages;
 
+import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlLink;
@@ -25,18 +26,15 @@ public final class SpecialsPage extends MasterPage {
 
     public SpecialsPage(final SpecialsPageUrl specialsPageUrl) {
         super(specialsPageUrl);
-        generateContent();
     }
 
-    private void generateContent() {
-
+    @Override
+    protected void doCreate() throws RedirectException {
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock(Context.tr("Special pages"), 2);
         pageTitle.setCssClass("page_title");
 
         final HtmlList pageList = new HtmlList();
-
         final HtmlLink memeHtmlLink = new MembersListPageUrl().getHtmlLink(Context.tr("Members list"));
-
         pageList.add(memeHtmlLink);
     }
 

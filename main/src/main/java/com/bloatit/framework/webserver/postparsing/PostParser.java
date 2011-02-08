@@ -1,5 +1,6 @@
 package com.bloatit.framework.webserver.postparsing;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -75,9 +76,12 @@ public class PostParser {
      *             <code>POST</code> (using readNext) till it returns
      *             <code>null</code> as some parameters may be valid after this.
      */
-    public PostParameter readNext() throws MalformedPostException {
+    public PostParameter readNext() throws MalformedPostException, EOFException {
         try {
             return parser.readNext();
+        }catch(EOFException e){
+            Log.framework().error("Reached EOF before end of Mime, aborting parsing", e);
+            throw new EOFException();
         } catch (IOException e) {
             throw new FatalErrorException("IO Error when parsing post, either reading post stream or writing uploaded file to the disk", e);
         } catch (InvalidMimeEncodingException e) {

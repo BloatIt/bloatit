@@ -19,7 +19,7 @@ public class MultipartPostParser extends PostParameterParser {
 
     /**
      * <p>
-     * Creates a new MumtipartPostParser
+     * Creates a new MultipartPostParser
      * </p>
      * 
      * @param contentType

@@ -12,14 +12,13 @@ server.document-root       = "/home/fred/projets/bloatit/www"
 
 Uncomment 'mod_rewrite' in 'server.modules'
 
-Create  '/etc/lighttpd/conf-available/10-scgi.conf', fill it following this
+Create  '/etc/lighttpd/conf-available/10-fastcgi.conf', fill it following this
 template:
 
-server.modules   += ( "mod_scgi" )
-scgi.server = (
+server.modules   += ( "mod_fastcgi" )
+fastcgi.server = (
     "bloatit" =>
     (
-        "bloatit-scgi" =>
         (
          "host" => "127.0.0.1",
          "port" => 4000,
@@ -29,9 +28,9 @@ scgi.server = (
     ))
 
 
-Create a symbolic link of '10-scgi.conf' in '/etc/lighttpd/conf-enabled/':
+Create a symbolic link of '10-fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
 cd /etc/lighttpd/conf-enabled/
-ln -s ../conf-available/10-scgi.conf
+ln -s ../conf-available/10-fastcgi.conf
 
 Create a symbolic link of 'lighttpd/rewrite.lighttpd.conf' in '/etc/lighttpd/conf-enabled/':
 cd /etc/lighttpd/conf-enabled/
