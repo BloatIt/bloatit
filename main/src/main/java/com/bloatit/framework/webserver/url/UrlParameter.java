@@ -6,11 +6,13 @@ import java.util.Iterator;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.utils.SessionParameters;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.Message.What;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
 
 public final class UrlParameter<T> extends UrlNode {
     private final UrlParameterDescription<T> description;
@@ -59,7 +61,7 @@ public final class UrlParameter<T> extends UrlNode {
         try {
             return Loaders.toStr(value);
         } catch (final ConversionErrorException e) {
-            return "null";
+            return "";
         }
     }
 
@@ -159,5 +161,52 @@ public final class UrlParameter<T> extends UrlNode {
 
     public final Role getRole() {
         return description.getRole();
+    }
+
+    public FormFieldData<T> createFormFieldData() {
+        return new FieldDataFromUrl<T>(this);
+    }
+
+    static class FieldDataFromUrl<T> implements FormFieldData<T> {
+
+        private final UrlParameter<T> parameterFromSession;
+        private final String name;
+
+        public FieldDataFromUrl(UrlParameter<T> parameter) {
+            super();
+            name = parameter.getName();
+            this.parameterFromSession = Context.getSession().pickParameter(parameter);
+        }
+
+        @Override
+        public String getFieldName() {
+            return name;
+        }
+
+        @Override
+        public T getFieldDefaultValue() {
+            if (parameterFromSession != null) {
+                return parameterFromSession.getValue();
+            }
+            return null;
+
+        }
+
+        @Override
+        public String getFieldDefaultValueAsString() {
+            if (parameterFromSession != null) {
+                return parameterFromSession.getStringValue();
+            }
+            return null;
+        }
+
+        @Override
+        public Messages getFieldMessages() {
+            if (parameterFromSession != null) {
+                return parameterFromSession.getMessages();
+            }
+            return new Messages();
+        }
+
     }
 }

@@ -10,6 +10,8 @@
  */
 package com.bloatit.framework.webserver.components.form;
 
+
+
 /**
  * Class used to create a file uploading box
  */
@@ -21,6 +23,13 @@ public final class HtmlFileInput extends HtmlFormField<String> {
 
     public HtmlFileInput(final String name, final String label) {
         super(new HtmlSimpleInput("file"), name, label);
+    }
+
+    public HtmlFileInput(final FormFieldData<String> data, final String label) {
+        super(new HtmlSimpleInput("file"), data.getFieldName(), label);
+        setDefaultValue(data);
+
+        addErrorMessages(data.getFieldMessages());
     }
 
     @Override

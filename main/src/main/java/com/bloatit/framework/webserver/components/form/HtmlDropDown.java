@@ -37,6 +37,12 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
         super(new HtmlGenericElement("select"), name, label);
     }
 
+    public HtmlDropDown(final FormFieldData<T> data, final String label) {
+        super(new HtmlGenericElement("select"), data.getFieldName(), label);
+        setDefaultValue(data);
+        addErrorMessages(data.getFieldMessages());
+    }
+
     /**
      * <p>
      * Sets the default value of the drop down box
@@ -44,13 +50,18 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
      * <p>
      * Do not use this method twice
      * </p>
-     * 
+     *
      * @param value the index of the element, 0 being the first element inserted with
      *        addText
      */
     @Override
     protected void doSetDefaultValue(final T value) {
         components.get(value).addAttribute("selected", "selected");
+    }
+
+    @Override
+    protected void doSetDefaultValue(String defaultValueAsString) {
+        // TODO: I don't even understand...
     }
 
     public HtmlElement add(final T elem) {
@@ -62,4 +73,5 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
         components.put(elem, ((HtmlBranch) element));
         return this;
     }
+
 }

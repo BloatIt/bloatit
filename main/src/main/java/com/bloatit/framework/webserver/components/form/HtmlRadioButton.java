@@ -25,9 +25,22 @@ public final class HtmlRadioButton extends HtmlFormField<Boolean> {
         addAttribute("value", value);
     }
 
+    public HtmlRadioButton(final FormFieldData<Boolean> data, final String value, final String label, final LabelPosition position) {
+        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT)), data.getFieldName(), label, position);
+        setDefaultValue(data);
+        addErrorMessages(data.getFieldMessages());
+    }
+
     @Override
     protected void doSetDefaultValue(final Boolean value) {
         if (value.booleanValue()) {
+            addAttribute("checked", "checked");
+        }
+    }
+
+    @Override
+    protected void doSetDefaultValue(String defaultValueAsString) {
+        if (Boolean.parseBoolean(defaultValueAsString)) {
             addAttribute("checked", "checked");
         }
     }

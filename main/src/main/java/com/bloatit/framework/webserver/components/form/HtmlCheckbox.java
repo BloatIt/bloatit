@@ -22,9 +22,22 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
         super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), name, label, position);
     }
 
+    public HtmlCheckbox(final FormFieldData<Boolean> data, final String label, final LabelPosition position) {
+        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), data.getFieldName(), label, position);
+        setDefaultValue(data);
+        addErrorMessages(data.getFieldMessages());
+    }
+
     @Override
     protected void doSetDefaultValue(final Boolean value) {
         if (value.booleanValue()) {
+            addAttribute("checked", "checked");
+        }
+    }
+
+    @Override
+    protected void doSetDefaultValue(String defaultValueAsString) {
+        if (Boolean.parseBoolean(defaultValueAsString)) {
             addAttribute("checked", "checked");
         }
     }

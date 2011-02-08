@@ -37,6 +37,12 @@ public final class HtmlTextArea extends HtmlFormField<String> {
         super(new HtmlSimpleTextArea(rows, cols), name, label);
     }
 
+    public HtmlTextArea(final FormFieldData<String> data, final String label, final int rows, final int cols) {
+        super(new HtmlSimpleTextArea(rows, cols), data.getFieldName(), label);
+        setDefaultValue(data);
+        addErrorMessages(data.getFieldMessages());
+    }
+
     @Override
     public void setComment(final String comment) {
         final HtmlDiv commentBlock = new HtmlDiv("comment_after");

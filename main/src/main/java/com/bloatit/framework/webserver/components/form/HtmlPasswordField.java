@@ -13,7 +13,7 @@ package com.bloatit.framework.webserver.components.form;
 
 /**
  * A class used to create input fields of password type The result will be :
- * 
+ *
  * <pre>
  * <p>
  *      <label for="...">plop</label>
@@ -29,6 +29,12 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
 
     public HtmlPasswordField(final String name, final String label) {
         super(new HtmlSimpleInput("password"), name, label);
+    }
+
+    public HtmlPasswordField(final FormFieldData<String> data, final String label) {
+        super(new HtmlSimpleInput("password"), data.getFieldName(), label);
+        setDefaultValue(data);
+        addErrorMessages(data.getFieldMessages());
     }
 
     @Override

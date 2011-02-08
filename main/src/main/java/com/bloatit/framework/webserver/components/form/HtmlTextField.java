@@ -23,6 +23,12 @@ public final class HtmlTextField extends HtmlFormField<String> {
         super(new HtmlSimpleInput("text"), name, label);
     }
 
+    public HtmlTextField(final FormFieldData<String> data, final String label) {
+        super(new HtmlSimpleInput("text"), data.getFieldName(), label);
+        setDefaultValue(data);
+        addErrorMessages(data.getFieldMessages());
+    }
+
     @Override
     protected void doSetDefaultValue(final String value) {
         addAttribute("value", value);

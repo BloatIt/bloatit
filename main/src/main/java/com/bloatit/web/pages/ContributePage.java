@@ -10,24 +10,24 @@
  */
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
-import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.demand.Demand;
-import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
@@ -38,22 +38,12 @@ public final class ContributePage extends LoggedPage {
     @RequestParam(level = Level.ERROR)
     private final Demand targetIdea;
 
-    @RequestParam(name = ContributionAction.AMOUNT_CODE, role = Role.SESSION)
-    @ParamConstraint(optional = true)
-    private final BigDecimal contributionAmountParam;
-
-    @RequestParam(name = ContributionAction.COMMENT_CODE, role = Role.SESSION)
-    @ParamConstraint(optional = true)
-    private final String contributionCommentParam;
-
     private final ContributePageUrl url;
 
     public ContributePage(final ContributePageUrl url) {
         super(url);
         this.url = url;
         targetIdea = url.getTargetIdea();
-        contributionAmountParam = url.getContributionAmountParam();
-        contributionCommentParam = url.getContributionCommentParam();
     }
 
     @Override
@@ -70,23 +60,21 @@ public final class ContributePage extends LoggedPage {
         contribForm.setCssClass("padding_box");
 
         // Input field : choose amount
-        final HtmlMoneyField contribField = new HtmlMoneyField(ContributionAction.AMOUNT_CODE);
-        contribField.setLabel(Context.tr("Choose amount: "));
-        contribField.setDefaultValueAndNotify(Context.getSession().pickParameter(formActionUrl.getAmountParameter()));
+        FormFieldData<BigDecimal> amountFieldData = formActionUrl.getAmountParameter().createFormFieldData();
+        final HtmlMoneyField contribField = new HtmlMoneyField(amountFieldData, tr("Choose amount: "));
 
         // Input field : comment
-        final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE, 10, 60);
-        commentField.setLabel(Context.tr("Comment (optional) : "));
-        commentField.setDefaultValueAndNotify(Context.getSession().pickParameter(formActionUrl.getCommentParameter()));
+        FormFieldData<String> commentFieldData = formActionUrl.getCommentParameter().createFormFieldData();
+        final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment (optional) : "), 10, 60);
 
-        final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Contribute"));
+        final HtmlSubmit submitButton = new HtmlSubmit(tr("Contribute"));
 
         // Create the form
         contribForm.add(contribField);
         contribForm.add(commentField);
         contribForm.add(submitButton);
 
-        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(Context.tr("Contribute"), 1);
+        final HtmlTitleBlock contribTitle = new HtmlTitleBlock(tr("Contribute"), 1);
         contribTitle.add(new HtmlDemandSumary(targetIdea, false));
         contribTitle.add(contribForm);
 
@@ -98,7 +86,7 @@ public final class ContributePage extends LoggedPage {
 
     @Override
     protected String getPageTitle() {
-        return Context.tr("Contribute to a project");
+        return tr("Contribute to a project");
     }
 
     @Override
@@ -108,6 +96,6 @@ public final class ContributePage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return Context.tr("You must be logged to contribute");
+        return tr("You must be logged to contribute");
     }
 }

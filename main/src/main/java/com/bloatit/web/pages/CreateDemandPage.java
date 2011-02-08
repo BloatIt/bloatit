@@ -10,16 +10,16 @@
  */
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.Map.Entry;
 
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
-import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
-import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlFormBlock;
 import com.bloatit.framework.webserver.components.form.HtmlSimpleDropDown;
@@ -41,30 +41,8 @@ public final class CreateDemandPage extends LoggedPage {
     private static final int SPECIF_INPUT_NB_LINES = 10;
     private static final int SPECIF_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(name = CreateDemandAction.DESCRIPTION_CODE, defaultValue = "", role = Role.SESSION)
-    private final String description;
-
-    @RequestParam(name = CreateDemandAction.SPECIFICATION_CODE, defaultValue = "", role = Role.SESSION)
-    private final String specification;
-
-    @RequestParam(name = CreateDemandAction.PROJECT_CODE, defaultValue = "", role = Role.SESSION)
-    private final String project;
-
-    @RequestParam(name = CreateDemandAction.CATEGORY_CODE, defaultValue = "", role = Role.SESSION)
-    private final String category;
-
-    @SuppressWarnings("unused")
-    // Will be used when language can be changed on Idea creation
-    @RequestParam(name = CreateDemandAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
-    private final String lang;
-
     public CreateDemandPage(final CreateDemandPageUrl createIdeaPageUrl) {
         super(createIdeaPageUrl);
-        this.description = createIdeaPageUrl.getDescription();
-        this.specification = createIdeaPageUrl.getSpecification();
-        this.project = createIdeaPageUrl.getProject();
-        this.category = createIdeaPageUrl.getCategory();
-        this.lang = createIdeaPageUrl.getLang();
     }
 
     @Override
@@ -86,44 +64,44 @@ public final class CreateDemandPage extends LoggedPage {
     }
 
     private HtmlElement generateIdeaCreationForm() {
-        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(Context.tr("Create a new idea"), 1);
+        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(tr("Create a new idea"), 1);
         final CreateDemandActionUrl doCreateUrl = new CreateDemandActionUrl();
 
         // Create the form stub
         final HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
-        final HtmlFormBlock specifBlock = new HtmlFormBlock(Context.tr("Specify the new idea"));
-        final HtmlFormBlock paramBlock = new HtmlFormBlock(Context.tr("Parameters of the new idea"));
+        final HtmlFormBlock specifBlock = new HtmlFormBlock(tr("Specify the new idea"));
+        final HtmlFormBlock paramBlock = new HtmlFormBlock(tr("Parameters of the new idea"));
 
         createIdeaTitle.add(createIdeaForm);
         createIdeaForm.add(specifBlock);
         createIdeaForm.add(paramBlock);
-        createIdeaForm.add(new HtmlSubmit(Context.tr("submit")));
+        createIdeaForm.add(new HtmlSubmit(tr("submit")));
 
         // Create the fields that will describe the description of the idea
-        final HtmlTextField descriptionInput = new HtmlTextField(CreateDemandAction.DESCRIPTION_CODE, Context.tr("Title"));
-        descriptionInput.setDefaultValue(description);
-        descriptionInput.setComment(Context.tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
+        FormFieldData<String> descriptionFieldData = doCreateUrl.getDescriptionParameter().createFormFieldData();
+        final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData, tr("Title"));
+        descriptionInput.setComment(tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
 
         // Create the fields that will describe the specification of the idea
-        final HtmlTextArea specificationInput = new HtmlTextArea(CreateDemandAction.SPECIFICATION_CODE, Context.tr("Describe the idea"),
-                SPECIF_INPUT_NB_LINES, SPECIF_INPUT_NB_COLUMNS);
-        specificationInput.setDefaultValue(specification);
-        specificationInput.setComment(Context.tr("Enter a long description of the idea : list all features, describe them all "
+        FormFieldData<String> specificationFieldData = doCreateUrl.getSpecificationParameter().createFormFieldData();
+        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData, tr("Describe the idea"), SPECIF_INPUT_NB_LINES,
+                SPECIF_INPUT_NB_COLUMNS);
+        specificationInput.setComment(tr("Enter a long description of the idea : list all features, describe them all "
                 + "... Try to leave as little room for ambiguity as possible."));
         specifBlock.add(descriptionInput);
         specifBlock.add(specificationInput);
 
         // Create the fields that will be used to describe the parameters of the
         // idea (project ...)
-        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateDemandAction.LANGUAGE_CODE, Context.tr("Language"));
+        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
         }
 
-        final HtmlTextField categoryInput = new HtmlTextField(CreateDemandAction.CATEGORY_CODE, Context.tr("Category"));
-        categoryInput.setDefaultValue(category);
-        final HtmlTextField projectInput = new HtmlTextField(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
-        projectInput.setDefaultValue(project);
+        FormFieldData<String> categoryFieldData = doCreateUrl.getCategoryParameter().createFormFieldData();
+        final HtmlTextField categoryInput = new HtmlTextField(categoryFieldData, tr("Category"));
+        FormFieldData<String> projectFieldData = doCreateUrl.getProjectParameter().createFormFieldData();
+        final HtmlTextField projectInput = new HtmlTextField(projectFieldData, tr("Project"));
         paramBlock.add(languageInput);
         paramBlock.add(categoryInput);
         paramBlock.add(projectInput);
@@ -141,6 +119,6 @@ public final class CreateDemandPage extends LoggedPage {
 
     @Override
     public String getRefusalReason() {
-        return Context.tr("You must be logged to create a new idea.");
+        return tr("You must be logged to create a new idea.");
     }
 }

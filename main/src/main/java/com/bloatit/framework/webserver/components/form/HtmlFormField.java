@@ -19,7 +19,6 @@ import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlLeaf;
 import com.bloatit.framework.webserver.url.Messages;
-import com.bloatit.framework.webserver.url.UrlParameter;
 
 /**
  * <p>
@@ -42,7 +41,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     public enum LabelPosition {
 
         /**
-         * <b>BEFORE</b> means the label is positionned before the aformentionned element.
+         * <b>BEFORE</b> means the label is positioned before the aforementioned element.
          * Example :
          * <p>
          * <label> ... </label><element />
@@ -50,7 +49,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
          */
         BEFORE,
         /**
-         * <b>AFTER</b> means the label is positionned after the aformentionned element.
+         * <b>AFTER</b> means the label is positioned after the aforementioned element.
          * Example :
          * <p>
          * <element /><label> ... </label>
@@ -70,7 +69,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     /**
      * Creates a form field for a given element, with a given name. If a label is added,
-     * it will will be positionned BEFORE the element
+     * it will will be positioned BEFORE the element
      *
      * @param element the element to add
      * @param name the name of the element
@@ -81,7 +80,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     /**
      * Creates a form field for a given element, with a given name and a given label The
-     * Label will be positionned BEFORE the element
+     * Label will be positioned BEFORE the element
      *
      * @param element the element to add
      * @param name the name of the element
@@ -154,25 +153,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         this.commentPh.add(commentBlock);
     }
 
-    public void notify(final String notification) {
-        final HtmlDiv notifyBlock = new HtmlDiv("notification_error");
-        notifyBlock.addText(notification);
-        this.notificationPh.add(notifyBlock);
-    }
-
-    public void notify(Messages messages) {
+    public void addErrorMessages(Messages messages) {
         final HtmlDiv notifyBlock = new HtmlDiv("notification_error");
         for (Message message : messages) {
             notifyBlock.add(new HtmlParagraph(message.getMessage()));
         }
         this.notificationPh.add(notifyBlock);
-    }
-
-    public void setDefaultValueAndNotify(final UrlParameter<T> parameter){
-        if (parameter != null){
-            setDefaultValue(parameter.getValue());
-            notify(parameter.getMessages());
-        }
     }
 
     protected void checkIdLabel() {
@@ -225,6 +211,15 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         }
     }
 
+    protected final void setDefaultValue(final FormFieldData<T> data) {
+        String defaultValueAsString = data.getFieldDefaultValueAsString();
+        if (data.getFieldDefaultValue() == null && defaultValueAsString != null) {
+            this.doSetDefaultValue(defaultValueAsString);
+        } else {
+            this.setDefaultValue(data.getFieldDefaultValue());
+        }
+    }
+
     /**
      * Initializes the placeholder for the label
      */
@@ -260,4 +255,6 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * @param value the value
      */
     protected abstract void doSetDefaultValue(T value);
+
+    protected abstract void doSetDefaultValue(String defaultValueAsString);
 }

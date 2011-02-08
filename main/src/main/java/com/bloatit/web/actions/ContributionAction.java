@@ -89,12 +89,8 @@ public final class ContributionAction extends LoggedAction {
     @Override
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
-        if (comment != null) {
-            session.addParameter(url.getCommentParameter());
-        }
-        if (amount != null) {
-            session.addParameter(url.getAmountParameter());
-        }
+        session.addParameter(url.getCommentParameter());
+        session.addParameter(url.getAmountParameter());
 
         return new ContributePageUrl(targetIdea);
     }

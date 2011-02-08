@@ -26,8 +26,19 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
         super(new HtmlSimpleInput("text"), name, label);
     }
 
+    public HtmlDateField(final FormFieldData<DateLocale> data, final String label) {
+        super(new HtmlSimpleInput("text"), data.getFieldName(), label);
+        setDefaultValue(data);
+        addErrorMessages(data.getFieldMessages());
+    }
+
     @Override
     protected void doSetDefaultValue(final DateLocale value) {
         addAttribute("value", value.toString(DateLocale.FormatStyle.SHORT));
+    }
+
+    @Override
+    protected void doSetDefaultValue(String defaultValueAsString) {
+        addAttribute("value", defaultValueAsString);
     }
 }

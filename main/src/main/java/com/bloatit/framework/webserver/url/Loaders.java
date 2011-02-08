@@ -35,7 +35,7 @@ public final class Loaders {
 
     public static <T> String toStr(final T obj) throws ConversionErrorException {
         if (obj == null) {
-            return "null";
+            return "";
         }
         @SuppressWarnings("unchecked")
         final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());

@@ -40,6 +40,12 @@ public class HtmlSimpleDropDown extends HtmlFormField<String> {
         super(new HtmlGenericElement("select"), name, label);
     }
 
+    public HtmlSimpleDropDown(final FormFieldData<String> data, final String label) {
+        super(new HtmlGenericElement("select"), data.getFieldName(), label);
+        setDefaultValue(data);
+        addErrorMessages(data.getFieldMessages());
+    }
+
     /**
      * <p>
      * Sets the default value of the drop down box
@@ -47,7 +53,7 @@ public class HtmlSimpleDropDown extends HtmlFormField<String> {
      * <p>
      * Do not use this method twice
      * </p>
-     * 
+     *
      * @param elem is the name of the element to select
      */
     @Override
@@ -57,7 +63,7 @@ public class HtmlSimpleDropDown extends HtmlFormField<String> {
 
     /**
      * Adds a new line to the drop down
-     * 
+     *
      * @param displayedName the text displayed for the element
      * @param value the real value (not visible) of the element
      * @return itself
