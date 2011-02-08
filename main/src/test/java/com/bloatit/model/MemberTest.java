@@ -6,7 +6,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.managers.GroupManager;
 import com.bloatit.model.managers.MemberManager;
 
-public class MemberTest extends FrameworkTestUnit {
+public class MemberTest extends ModelTestUnit {
 
     public void testAddToPublicGroup() throws UnauthorizedOperationException {
         final Member yo = MemberManager.getMemberByLogin("Yo");

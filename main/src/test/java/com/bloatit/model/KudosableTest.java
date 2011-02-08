@@ -4,7 +4,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.model.demand.DemandManager;
 
-public class KudosableTest extends FrameworkTestUnit {
+public class KudosableTest extends ModelTestUnit {
 
     public void testCanKudos() throws UnauthorizedOperationException {
         final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
