@@ -10,18 +10,21 @@
  */
 package com.bloatit.web.pages;
 
+import java.math.BigDecimal;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.web.actions.ContributionAction;
@@ -35,10 +38,12 @@ public final class ContributePage extends LoggedPage {
     @RequestParam(level = Level.ERROR)
     private final Demand targetIdea;
 
-    @RequestParam(name = ContributionAction.AMOUNT_CODE, defaultValue = "", role = Role.SESSION)
-    private final String contributionAmountParam;
+    @RequestParam(name = ContributionAction.AMOUNT_CODE, role = Role.SESSION)
+    @ParamConstraint(optional = true)
+    private final BigDecimal contributionAmountParam;
 
-    @RequestParam(name = ContributionAction.COMMENT_CODE, defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = ContributionAction.COMMENT_CODE, role = Role.SESSION)
+    @ParamConstraint(optional = true)
     private final String contributionCommentParam;
 
     private final ContributePageUrl url;
@@ -65,14 +70,14 @@ public final class ContributePage extends LoggedPage {
         contribForm.setCssClass("padding_box");
 
         // Input field : choose amount
-        final HtmlTextField contribField = new HtmlTextField(ContributionAction.AMOUNT_CODE);
+        final HtmlMoneyField contribField = new HtmlMoneyField(ContributionAction.AMOUNT_CODE);
         contribField.setLabel(Context.tr("Choose amount: "));
-        contribField.setDefaultValue(contributionAmountParam);
+        contribField.setDefaultValueAndNotify(Context.getSession().pickParameter(formActionUrl.getAmountParameter()));
 
         // Input field : comment
         final HtmlTextArea commentField = new HtmlTextArea(ContributionAction.COMMENT_CODE, 10, 60);
         commentField.setLabel(Context.tr("Comment (optional) : "));
-        commentField.setDefaultValue(contributionCommentParam);
+        commentField.setDefaultValueAndNotify(Context.getSession().pickParameter(formActionUrl.getCommentParameter()));
 
         final HtmlSubmit submitButton = new HtmlSubmit(Context.tr("Contribute"));
 

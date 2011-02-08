@@ -48,7 +48,7 @@ public final class ContributionAction extends LoggedAction {
     private final String comment;
 
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)
-    @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior than 0."),//
+    @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior to 0."),//
                      max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
                      precision = 0, precisionErrorMsg = @tr("Please do not use Cents."))
     private final BigDecimal amount;

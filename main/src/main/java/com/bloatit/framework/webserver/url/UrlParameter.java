@@ -36,10 +36,15 @@ public final class UrlParameter<T> extends UrlNode {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void parseSessionParameters(SessionParameters params) {
-        UrlParameter<?> pick = params.pick(getName());
+        UrlParameter<?> pick = params.look(getName());
         if (pick != null) {
+            value = (T) pick.value;
+            strValue = pick.strValue;
+            conversionError = pick.conversionError;
+
             setValueFromString(pick.getStringValue());
         }
     }

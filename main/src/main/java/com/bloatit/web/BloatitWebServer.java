@@ -187,11 +187,11 @@ public class BloatitWebServer extends WebServer {
             return new AddProjectAction(new AddProjectActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(UploadFileActionUrl.getName())) {
-            return new UploadFileAction(new UploadFileActionUrl(params, session.getParams()));
+            return new UploadFileAction(new UploadFileActionUrl(params, session.getParameters()));
         }
 
         if (pageCode.equals(FileResourceUrl.getName())) {
-            return new FileResource(new FileResourceUrl(params, session.getParams()));
+            return new FileResource(new FileResourceUrl(params, session.getParameters()));
         }
 
         return new PageNotFound(new PageNotFoundUrl(params, session.getParameters()));

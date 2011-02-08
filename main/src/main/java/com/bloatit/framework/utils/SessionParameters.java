@@ -31,17 +31,14 @@ public class SessionParameters extends HashMap<String, UrlParameter<?>> {
 
     /**
      * <p>
-     * Finds a parameter into the list and removes it.
+     * Finds a parameter into the list and DO NOT REMOVE IT.
      * </p>
      *
      * @param name the name of the parameter to find
      * @return the string value of the parameter
      */
-    public final UrlParameter<?> pick(final String name) {
+    public final UrlParameter<?> look(final String name) {
         final UrlParameter<?> value = get(name);
-        if (value != null) {
-            remove(name);
-        }
         return value;
     }
 }
