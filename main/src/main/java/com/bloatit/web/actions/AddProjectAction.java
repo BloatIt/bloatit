@@ -33,7 +33,7 @@ import com.bloatit.web.url.ProjectPageUrl;
 /**
  * A response to a form used to create a new idea
  */
-@ParamContainer("projetc/add")
+@ParamContainer("project/doadd")
 public final class AddProjectAction extends Action {
 
     public static final String SHORT_DESCRIPTION_CODE = "bloatit_project_short_description";

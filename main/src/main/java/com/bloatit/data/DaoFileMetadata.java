@@ -15,7 +15,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 public class DaoFileMetadata extends DaoUserContent {
 
     public enum FileType {
-        TEXT, HTML, TEX, PDF, ODT, DOC, BMP, JPG, PNG, SVG,
+        TEXT, HTML, TEX, PDF, ODT, DOC, BMP, JPG, PNG, SVG, UNKNOWN
     }
 
     @Basic(optional = false)

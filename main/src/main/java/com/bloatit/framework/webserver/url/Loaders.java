@@ -11,6 +11,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
 import com.bloatit.model.Comment;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
@@ -18,6 +19,7 @@ import com.bloatit.model.Project;
 import com.bloatit.model.demand.Demand;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.CommentManager;
+import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.KudosableManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.ProjectManager;
@@ -84,6 +86,8 @@ public final class Loaders {
             return (Loader<T>) new ToComment();
         } else if (theClass.equals(Project.class)) {
             return (Loader<T>) new ToProject();
+        } else if (theClass.equals(FileMetadata.class)) {
+            return (Loader<T>) new ToFileMetadata();
         }
         throw new ConversionErrorException("Cannot find a convertion class for: " + theClass);
     }
@@ -259,6 +263,13 @@ public final class Loaders {
         @Override
         public Identifiable<?> doFromString(int i) {
             return ProjectManager.getProjectById(i);
+        }
+    }
+
+    private static class ToFileMetadata extends ToIdentifiable {
+        @Override
+        public Identifiable<?> doFromString(int i) {
+            return FileMetadataManager.getFileMetadataById(i);
         }
     }
 
