@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.bloatit.framework.webserver.components.writers.Text;
+import com.bloatit.framework.webserver.components.writers.HtmlStream;
 
 /**
- * Class used to describe all preconstructed HtmlElements
+ * <p>An 
  */
 public abstract class HtmlElement extends HtmlNode {
 
     private final List<HtmlNode> children = new ArrayList<HtmlNode>();
-    private final Tag tag;
+    private final HtmlTag tag;
 
     public HtmlElement(final String tag) {
         super();
-        this.tag = new Tag(tag);
+        this.tag = new HtmlTag(tag);
     }
 
     public HtmlElement() {
@@ -104,7 +104,7 @@ public abstract class HtmlElement extends HtmlNode {
     }
 
     @Override
-    public final void write(final Text txt) {
+    public final void write(final HtmlStream txt) {
         if (tag != null) {
             writeTagAndOffspring(txt);
         } else {
@@ -114,11 +114,11 @@ public abstract class HtmlElement extends HtmlNode {
         }
     }
 
-    private void writeTagAndOffspring(final Text txt) {
+    private void writeTagAndOffspring(final HtmlStream txt) {
         if (selfClosable() && !hasChild()) {
             txt.writeNewLineChar();
             txt.writeIndentation();
-            txt.writeRawText(tag.getClosedTag());
+            txt.writeRawText(tag.getSelfClosingTag());
             txt.writeNewLineChar();
             txt.writeIndentation();
         } else {

@@ -2,9 +2,24 @@ package com.bloatit.framework.webserver.components.writers;
 
 import java.io.OutputStream;
 
-public final class SimpleHtmlText extends Text {
+/**
+ * <p>
+ * An implementation of an {@link HtmlStream} that just display raw text (no
+ * indentation, no line breaks ...)
+ * </p>
+ * <p>
+ * Should be used in production environments
+ * </p>
+ */
+public final class SimpleHtmlStream extends HtmlStream {
 
-    public SimpleHtmlText(final OutputStream out) {
+    /**
+     * Creates a new SimpleHtmlStream
+     * 
+     * @param out
+     *            the underlying stream
+     */
+    public SimpleHtmlStream(final OutputStream out) {
         super(out);
     }
 
@@ -13,11 +28,17 @@ public final class SimpleHtmlText extends Text {
         append(newText);
     }
 
+    /**
+     * Nothing
+     */
     @Override
     public void writeIndentation() {
         // Do nothing
     }
 
+    /**
+     * Nothing
+     */
     @Override
     public void writeNewLineChar() {
         // Do nothing
@@ -28,11 +49,17 @@ public final class SimpleHtmlText extends Text {
         append(newText);
     }
 
+    /**
+     * Nothing
+     */
     @Override
     public void indent() {
         // Do nothing
     }
 
+    /**
+     * Nothing
+     */
     @Override
     public void unindent() {
         // Do nothing

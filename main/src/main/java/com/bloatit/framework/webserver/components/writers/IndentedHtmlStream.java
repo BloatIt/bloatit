@@ -2,12 +2,25 @@ package com.bloatit.framework.webserver.components.writers;
 
 import java.io.OutputStream;
 
-public final class IndentedHtmlText extends Text {
+/**
+ * <p>
+ * An implementation of {@link HtmlStream} that use indentation.
+ * </p>
+ * <p>
+ * Should be used in debug and build environments
+ * </p>
+ */
+public final class IndentedHtmlStream extends HtmlStream {
     private int indentCount;
     private final String indentSeparator;
     private final String lineSeparator;
 
-    public IndentedHtmlText(final OutputStream out) {
+    /**
+     * Creates a new IndentedHtmlStream
+     * 
+     * @param out
+     */
+    public IndentedHtmlStream(final OutputStream out) {
         super(out);
         this.indentSeparator = "  ";
         this.lineSeparator = "\n";
