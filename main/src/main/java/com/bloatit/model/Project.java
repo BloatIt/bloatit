@@ -1,13 +1,12 @@
 package com.bloatit.model;
 
 import java.util.Locale;
-import java.util.Set;
 
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoProject;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.model.demand.DemandList;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.right.ProjectRight;
 import com.bloatit.model.right.RightManager.Action;
@@ -58,9 +57,9 @@ public class Project extends Identifiable<DaoProject> {
      * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoProject#getDescription()
      */
-    public final DaoDescription getDescription() throws UnauthorizedOperationException {
+    public final Description getDescription() throws UnauthorizedOperationException {
         new ProjectRight.Name().tryAccess(calculateNoOwnerRole(), Action.READ);
-        return getDao().getDescription();
+        return Description.create(getDao().getDescription());
     }
 
     /**
@@ -68,9 +67,9 @@ public class Project extends Identifiable<DaoProject> {
      * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoProject#getImage()
      */
-    public final DaoFileMetadata getImage() throws UnauthorizedOperationException {
+    public final FileMetadata getImage() throws UnauthorizedOperationException {
         new ProjectRight.Name().tryAccess(calculateNoOwnerRole(), Action.READ);
-        return getDao().getImage();
+        return FileMetadata.create(getDao().getImage());
     }
 
     /**
@@ -78,9 +77,10 @@ public class Project extends Identifiable<DaoProject> {
      * @throws UnauthorizedOperationException
      * @see com.bloatit.data.DaoProject#getDemands()
      */
-    public final Set<DaoDemand> getDemands() throws UnauthorizedOperationException {
+    public final DemandList getDemands() throws UnauthorizedOperationException {
         new ProjectRight.Name().tryAccess(calculateNoOwnerRole(), Action.READ);
-        return getDao().getDemands();
+        // TODO: implement
+        return null;
     }
 
 }

@@ -12,7 +12,6 @@ package com.bloatit.web.actions;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -25,6 +24,7 @@ import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
@@ -39,6 +39,7 @@ public final class AddProjectAction extends Action {
     public static final String SHORT_DESCRIPTION_CODE = "bloatit_project_short_description";
     public static final String DESCRIPTION_CODE = "bloatit_project_description";
     public static final String PROJECT_NAME_CODE = "bloatit_idea_project";
+    public static final String IMAGE_CODE = "image";
     public static final String LANGUAGE_CODE = "bloatit_idea_lang";
 
     @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
@@ -54,6 +55,9 @@ public final class AddProjectAction extends Action {
     @RequestParam(name = PROJECT_NAME_CODE, role = Role.POST)
     private final String projectName;
 
+    @RequestParam(name = IMAGE_CODE, role = Role.POST)
+    private final String image;
+
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
@@ -67,6 +71,7 @@ public final class AddProjectAction extends Action {
         this.description = url.getDescription();
         this.projectName = url.getProjectName();
         this.lang = url.getLang();
+        this.image = url.getImage();
 
     }
 
@@ -81,9 +86,9 @@ public final class AddProjectAction extends Action {
         // TODO make it work
 
 
-        FileMetadata image = new FileMetadata(session.getAuthToken().getMember(), "null", "/dev/", FileType.PNG, 42);
+        FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(), image);
 
-        final Project p = new Project(projectName, session.getAuthToken().getMember(), langLocale, shortDescription, description, image);
+        final Project p = new Project(projectName, session.getAuthToken().getMember(), langLocale, shortDescription, description, fileImage);
 
         p.authenticate(session.getAuthToken());
 

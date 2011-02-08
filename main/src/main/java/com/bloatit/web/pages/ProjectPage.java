@@ -12,18 +12,25 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.util.Locale;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
+import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Project;
+import com.bloatit.model.Translation;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 
 @ParamContainer("project")
@@ -55,6 +62,19 @@ public final class ProjectPage extends MasterPage {
         try {
             HtmlTitleBlock projectName;
             projectName = new HtmlTitleBlock(project.getName(), 1);
+
+
+            projectName.add(new HtmlImage(new FileResourceUrl(project.getImage())));
+
+            final Locale defaultLocale = Context.getLocalizator().getLocale();
+            final Translation translatedDescription = project.getDescription().getTranslationOrDefault(defaultLocale);
+
+            final HtmlParagraph shortDescription = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getTitle()));
+            final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(translatedDescription.getText()));
+
+            projectName.add(shortDescription);
+            projectName.add(description);
+
 
             add(projectName);
         } catch (final UnauthorizedOperationException e) {
