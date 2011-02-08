@@ -26,7 +26,7 @@ import com.bloatit.framework.xcgiserver.XcgiParser;
  * Version: 1.0<br>
  * Home page: http://gist.github.com/38425 See also: http://en.wikipedia.org/wiki/SCGIUtils
  */
-class SCGIParser implements XcgiParser {
+public class SCGIParser implements XcgiParser {
 
     /** Used to decode the headers. */
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
@@ -111,7 +111,7 @@ class SCGIParser implements XcgiParser {
     }
 
     @Override
-    public OutputStream getWriteStream() throws IOException {
+    public OutputStream getResponseStream() throws IOException {
         return ouput;
     }
 }
