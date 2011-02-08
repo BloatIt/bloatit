@@ -1,9 +1,11 @@
 package com.bloatit.data;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -33,6 +35,9 @@ public class DaoFileMetadata extends DaoUserContent {
     @Basic(optional = false)
     @Enumerated
     private FileType type;
+
+    @OneToOne(optional = true, mappedBy = "file", cascade = CascadeType.ALL, orphanRemoval = true)
+    private DaoImage image;
 
     public static DaoFileMetadata createAndPersist(final DaoMember member,
                                                    final DaoUserContent relatedContent,
@@ -93,6 +98,24 @@ public class DaoFileMetadata extends DaoUserContent {
      */
     public final void setShortDescription(final String shortDescription) {
         this.shortDescription = shortDescription;
+    }
+
+    /**
+     * Tells that the current File is an image. Used in DaoImage constructor.
+     *
+     * @param image the image to set.
+     */
+    void setImage(DaoImage image) {
+        this.image = image;
+    }
+
+    /**
+     * If the file is an image, it should be associated with a DaoImage object.
+     *
+     * @return the image object associated with this file. It can be null.
+     */
+    public DaoImage getImage() {
+        return image;
     }
 
     /**
