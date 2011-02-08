@@ -7,9 +7,9 @@ import java.io.InputStream;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.utils.Parameters;
-import com.bloatit.framework.webserver.postparsing.PostParameter;
-import com.bloatit.framework.webserver.postparsing.PostParser;
-import com.bloatit.framework.webserver.postparsing.exceptions.MalformedPostException;
+import com.bloatit.framework.xcgiserver.postparsing.PostParameter;
+import com.bloatit.framework.xcgiserver.postparsing.PostParser;
+import com.bloatit.framework.xcgiserver.postparsing.exceptions.MalformedPostException;
 
 /**
  * A class to describe elements transmitted by an http POST query

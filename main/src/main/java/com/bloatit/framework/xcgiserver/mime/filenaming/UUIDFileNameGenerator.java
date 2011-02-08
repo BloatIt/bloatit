@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.mime.filenaming;
+package com.bloatit.framework.xcgiserver.mime.filenaming;
 
 import java.util.UUID;
 

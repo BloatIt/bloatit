@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.postparsing;
+package com.bloatit.framework.xcgiserver.postparsing;
 
 /**
  * <p>Simple class to describe a post parameter</p>

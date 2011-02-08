@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.mime.decoders;
+package com.bloatit.framework.xcgiserver.mime.decoders;
 
 import java.util.Arrays;
 

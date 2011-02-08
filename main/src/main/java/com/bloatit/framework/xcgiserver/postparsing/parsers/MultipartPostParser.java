@@ -1,15 +1,15 @@
-package com.bloatit.framework.webserver.postparsing.parsers;
+package com.bloatit.framework.xcgiserver.postparsing.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidParameterException;
 
-import com.bloatit.framework.webserver.mime.InvalidMimeEncodingException;
-import com.bloatit.framework.webserver.mime.MalformedMimeException;
-import com.bloatit.framework.webserver.mime.MimeElement;
-import com.bloatit.framework.webserver.mime.MultipartMimeParser;
-import com.bloatit.framework.webserver.mime.filenaming.UUIDFileNameGenerator;
-import com.bloatit.framework.webserver.postparsing.PostParameter;
+import com.bloatit.framework.xcgiserver.mime.InvalidMimeEncodingException;
+import com.bloatit.framework.xcgiserver.mime.MalformedMimeException;
+import com.bloatit.framework.xcgiserver.mime.MimeElement;
+import com.bloatit.framework.xcgiserver.mime.MultipartMimeParser;
+import com.bloatit.framework.xcgiserver.mime.filenaming.UUIDFileNameGenerator;
+import com.bloatit.framework.xcgiserver.postparsing.PostParameter;
 
 /**
  * Parser used to handle multipart posts (mixed or form-data alike).

@@ -14,12 +14,8 @@
  * Please contact the author if you need another license.
  * This module is provided "as is", without warranties of any kind.
  */
-package com.bloatit.framework.webserver.mime.decoders;
+package com.bloatit.framework.xcgiserver.mime.decoders;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.bloatit.framework.webserver.mime.DecodingOuputStream;
 
 /**
  * Decoder that takes data encoded in base64 and returns the data in non base64

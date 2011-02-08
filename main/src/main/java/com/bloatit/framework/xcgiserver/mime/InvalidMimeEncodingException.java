@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.mime;
+package com.bloatit.framework.xcgiserver.mime;
 
 public class InvalidMimeEncodingException extends Exception {
     private static final long serialVersionUID = -1100275740713977221L;

@@ -3,7 +3,8 @@ package com.bloatit.framework.webserver.mime.decoders;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.bloatit.framework.webserver.mime.DecodingOuputStream;
+import com.bloatit.framework.xcgiserver.mime.DecodingOuputStream;
+import com.bloatit.framework.xcgiserver.mime.decoders.MimeBase64Decoder;
 
 public class TestMimeBase64Decoder {
 

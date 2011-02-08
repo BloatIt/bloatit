@@ -1,9 +1,9 @@
-package com.bloatit.framework.webserver.mime;
+package com.bloatit.framework.xcgiserver.mime;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.bloatit.framework.webserver.mime.decoders.MimeDecoder;
+import com.bloatit.framework.xcgiserver.mime.decoders.MimeDecoder;
 
 /**
  * <p>

@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.mime;
+package com.bloatit.framework.xcgiserver.mime;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.webserver.mime.decoders.MimeBase64Decoder;
-import com.bloatit.framework.webserver.mime.decoders.MimeBinaryDecoder;
-import com.bloatit.framework.webserver.mime.decoders.MimeDecoder;
-import com.bloatit.framework.webserver.mime.filenaming.FileNamingGenerator;
+import com.bloatit.framework.xcgiserver.mime.decoders.MimeBase64Decoder;
+import com.bloatit.framework.xcgiserver.mime.decoders.MimeBinaryDecoder;
+import com.bloatit.framework.xcgiserver.mime.decoders.MimeDecoder;
+import com.bloatit.framework.xcgiserver.mime.filenaming.FileNamingGenerator;
 
 /**
  * <p>

@@ -1,4 +1,4 @@
-package com.bloatit.framework.webserver.postparsing.exceptions;
+package com.bloatit.framework.xcgiserver.postparsing.exceptions;
 
 /**
  * Exception used to represent any malformed post
