@@ -9,6 +9,10 @@ public class UUIDFileNameGenerator implements FileNamingGenerator{
     public String generateName(String fileName) {
         final UUID uuid = UUID.randomUUID();
         int separatorIndex = fileName.lastIndexOf(SEPARATOR);
+        if(separatorIndex == -1 ){
+            return uuid.toString();
+        }
+            
         
         return uuid.toString() + fileName.substring(separatorIndex, fileName.length());
     }

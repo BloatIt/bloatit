@@ -89,6 +89,9 @@ public class MimeElement {
      */
     public InputStream getContent() throws FileNotFoundException {
         if (destination == null) {
+            if (nonFileInput == null) {
+                return new ByteArrayInputStream(new byte[0]);
+            }
             return new ByteArrayInputStream(nonFileInput.toByteArray());
         }
         return new FileInputStream(destination);
@@ -138,7 +141,20 @@ public class MimeElement {
         return header.containsKey(FILE_NAME);
     }
 
+    /**
+     * <p>
+     * Closes the Underlying stream of the MimeElement
+     * </p>
+     * 
+     * @throws IOException
+     *             If the stream cannot be closed
+     */
     public void close() throws IOException {
+        if (contentOutput == null) {
+            // Closed before content, we initialize it anyway so we generate a
+            // filename and other stuff that can be needed.
+            initializeWriter();
+        }
         contentOutput.close();
     }
 
@@ -276,11 +292,10 @@ public class MimeElement {
     }
 
     public File getDestination() {
-        if(!isFile()){
+        if (!isFile()) {
             return null;
         }
         return destination;
     }
-    
-    
+
 }
