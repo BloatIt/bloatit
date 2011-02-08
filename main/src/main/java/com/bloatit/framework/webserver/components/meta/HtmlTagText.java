@@ -4,15 +4,25 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
-import com.bloatit.framework.webserver.components.writers.Text;
+import com.bloatit.framework.webserver.components.writers.HtmlStream;
 
 /**
  * <p>
  * HtmlTagText are used to input <b>un</b>escaped text
  * </p>
  * <p>
- * Should be used in the weird situations where other standard tags are not flexible
- * enough
+ * Should be used in the weird situations where other standard tags are not
+ * flexible enough.
+ * </p>
+ * <p>
+ * Usage :
+ * 
+ * <pre>
+ * {@code another_component.add(new HtmlTagText("<span class="plop">foo</span>));}
+ * </pre>
+ * 
+ * <b>Note : </b> In the previous example, class <code>HtmlSpan</code> should be
+ * used
  * </p>
  */
 public class HtmlTagText extends HtmlNode {
@@ -26,7 +36,8 @@ public class HtmlTagText extends HtmlNode {
     /**
      * Creates a component to add raw Html to a page
      * 
-     * @param content the Html string to add
+     * @param content
+     *            the Html string to add
      */
     public HtmlTagText(final String content) {
         super();
@@ -43,14 +54,15 @@ public class HtmlTagText extends HtmlNode {
     }
 
     /**
-     * Do not use Only present as a quick hack to write a tad cleaner html content
+     * Do not use Only present as a quick hack to write a tad cleaner html
+     * content
      */
     public String _getContent() {
         return content;
     }
 
     @Override
-    public final void write(final Text txt) {
+    public final void write(final HtmlStream txt) {
         txt.writeRawText(content);
     }
 }

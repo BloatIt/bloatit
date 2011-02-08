@@ -5,16 +5,16 @@ import java.io.OutputStream;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.components.writers.IndentedHtmlText;
+import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
 
 public final class HttpResponse {
 
     private final OutputStream output;
-    private final IndentedHtmlText htmlText;
+    private final IndentedHtmlStream htmlText;
 
     public HttpResponse(final OutputStream output) {
         this.output = output;
-        this.htmlText = new IndentedHtmlText(output);
+        this.htmlText = new IndentedHtmlStream(output);
     }
 
     public void writeException(final Exception e) {
