@@ -11,13 +11,12 @@
 
 package com.bloatit.framework.webserver;
 
-import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 import java.util.UUID;
 
-import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlParameter;
@@ -46,7 +45,7 @@ public final class Session {
     public static final long DEFAULT_SESSION_DURATION = 86400; // 1 days in seconds
 
     private final UUID key;
-    private final Deque<Notification> notificationList;
+    private final Deque<Message> notificationList;
     private AuthToken authToken;
 
     private Url lastStablePage = null;
@@ -57,7 +56,7 @@ public final class Session {
     /**
      * The place to store session data
      */
-    private final Parameters sessionParams = new Parameters();
+    private final SessionParameters parameters = new SessionParameters();
 
     Session() {
         this(UUID.randomUUID());
@@ -66,7 +65,7 @@ public final class Session {
     Session(final UUID id) {
         this.key = id;
         authToken = null;
-        notificationList = new ArrayDeque<Notification>();
+        notificationList = new ArrayDeque<Message>();
         resetExpirationTime();
     }
 
@@ -124,15 +123,15 @@ public final class Session {
     }
 
     public final void notifyGood(final String message) {
-        notificationList.add(new Notification(message, Notification.Type.GOOD));
+        notificationList.add(new Message(message, Message.Level.INFO));
     }
 
     public final void notifyBad(final String message) {
-        notificationList.add(new Notification(message, Notification.Type.BAD));
+        notificationList.add(new Message(message, Message.Level.WARNING));
     }
 
     public final void notifyError(final String message) {
-        notificationList.add(new Notification(message, Notification.Type.ERROR));
+        notificationList.add(new Message(message, Message.Level.ERROR));
     }
 
     /**
@@ -160,90 +159,23 @@ public final class Session {
         notificationList.clear();
     }
 
-    public Deque<Notification> getNotifications() {
+    public Deque<Message> getNotifications() {
         return notificationList;
     }
 
     /**
      * Finds all the session parameters
-     * 
+     *
      * @return the parameter of the session
      * @deprecated use a RequestParam
      */
     @Deprecated
-    public Parameters getParams() {
-        return sessionParams;
-    }
-
-    /**
-     * Finds a given parameter in the session
-     * 
-     * @param paramKey the key of the parameter
-     * @return the value of the parameter
-     * @deprecated use a RequestParam
-     */
-    @Deprecated
-    public String getParam(final String paramKey) {
-        return sessionParams.get(paramKey);
-    }
-
-    /**
-     * <p>
-     * Saves a new parameter in the session. The parameter will be saved only if <code>
-     * paramValue</code> is <i>not null</i>. If you want to save a <code>null</code>
-     * value, use {@link #addParamForced(String, String)}.
-     * </p>
-     * <p>
-     * Session parameters are available until they are checked, or session ends
-     * </p>
-     * 
-     * @param paramKey
-     * @param paramValue
-     */
-    public void addParameter(final String paramKey, final String paramValue) {
-        if (paramValue != null && paramKey != null) {
-            sessionParams.put(paramKey, paramValue);
-        }
+    public SessionParameters getParameters() {
+        return parameters;
     }
 
     public void addParameter(final UrlParameter<?> param) {
-        sessionParams.put(param.getName(), param.getStringValue());
-    }
-
-    /**
-     * <p>
-     * Saves a new parameter in the session. This method will save even <code>
-     * null</code> parameters.
-     * </p>
-     * <p>
-     * Session parameters are available until they are checked, or session ends
-     * </p>
-     * 
-     * @param paramKey
-     * @param paramValue
-     */
-    public void addParamForced(final String paramKey, final String paramValue) {
-        sessionParams.put(paramKey, paramValue);
-    }
-
-    /**
-     * <p>
-     * Saves a new <code>BigDecimal</code> in the session.
-     * </p>
-     * <p>
-     * This method is null-safe : if <code>paramValue</code> is null, the method doesn't
-     * fail but no parameter is added
-     * </p>
-     * <p>
-     * Session parameters are available until they are checked, or session ends
-     * </p>
-     * 
-     * @param paramKey
-     * @param paramValue
-     */
-    public void addParam(final String paramKey, final BigDecimal paramValue) {
-        if (paramValue != null) {
-            sessionParams.put(paramKey, paramValue.toPlainString());
-        }
+        parameters.put(param.getName(), param);
+        // Maybe auto notify here ?
     }
 }

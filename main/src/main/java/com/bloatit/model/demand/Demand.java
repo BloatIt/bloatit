@@ -344,10 +344,10 @@ public final class Demand extends Kudosable<DaoDemand> {
     }
 
     /**
-     * Called by a {@link PlannedTask}
+     * Called by a {@link PlannedTask}. For now do nothing...
      */
     void developmentTimeOut() {
-        setStateObject(getStateObject().eventBatchReleased());
+        setStateObject(getStateObject().eventDevelopmentTimeOut());
     }
 
     /**

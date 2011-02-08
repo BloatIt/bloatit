@@ -1,6 +1,7 @@
 package com.bloatit.framework.webserver.url;
 
 import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.utils.SessionParameters;
 
 public abstract class UrlNode implements Iterable<UrlNode>, Cloneable {
 
@@ -19,7 +20,8 @@ public abstract class UrlNode implements Iterable<UrlNode>, Cloneable {
 
     public abstract Messages getMessages();
 
-    protected abstract void parseParameters(final Parameters params, boolean pickValue);
+    protected abstract void parseSessionParameters(final SessionParameters params);
+    protected abstract void parseParameters(final Parameters params);
 
     /**
      * Begin with a '/' and no slash at the end.

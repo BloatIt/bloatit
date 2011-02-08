@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.annotations.Message.Level;
@@ -27,15 +28,19 @@ public final class UrlParameter<T> extends UrlNode {
     }
 
     @Override
-    protected final void parseParameters(final Parameters params, final boolean pickValue) {
+    protected final void parseParameters(final Parameters params) {
         final String aValue;
-        if (pickValue) {
-            aValue = params.pick(getName());
-        } else {
-            aValue = params.look(getName());
-        }
+        aValue = params.look(getName());
         if (aValue != null) {
             setValueFromString(aValue);
+        }
+    }
+
+    @Override
+    protected void parseSessionParameters(SessionParameters params) {
+        UrlParameter<?> pick = params.pick(getName());
+        if (pick != null) {
+            setValueFromString(pick.getStringValue());
         }
     }
 

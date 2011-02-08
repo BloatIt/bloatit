@@ -75,8 +75,8 @@ public final class ContributionAction extends LoggedAction {
             return new DemandPageUrl(targetIdea);
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
-            session.addParam(AMOUNT_CODE, amount);
-            session.addParameter(COMMENT_CODE, comment);
+            session.addParameter(url.getAmountParameter());
+            session.addParameter(url.getCommentParameter());
 
             session.setTargetPage(this.url);
             return new AccountChargingPageUrl();
@@ -90,10 +90,10 @@ public final class ContributionAction extends LoggedAction {
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
         if (comment != null) {
-            session.addParameter(COMMENT_CODE, comment);
+            session.addParameter(url.getCommentParameter());
         }
         if (amount != null) {
-            session.addParam(AMOUNT_CODE, amount);
+            session.addParameter(url.getAmountParameter());
         }
 
         return new ContributePageUrl(targetIdea);
@@ -106,7 +106,7 @@ public final class ContributionAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-        session.addParameter(COMMENT_CODE, comment);
-        session.addParam(AMOUNT_CODE, amount);
+        session.addParameter(url.getCommentParameter());
+        session.addParameter(url.getAmountParameter());
     }
 }

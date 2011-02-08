@@ -11,8 +11,10 @@
 
 package com.bloatit.framework.webserver.components;
 
+
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webserver.components.meta.HtmlLeaf;
+import com.bloatit.framework.webserver.url.Url;
 
 /**
  * Used to display an image
@@ -34,5 +36,10 @@ public class HtmlImage extends HtmlLeaf {
     public HtmlImage(final Image image, final String cssClass) {
         this(image);
         addAttribute("class", cssClass);
+    }
+
+    public HtmlImage(Url imageUrl) {
+        super("img");
+        addAttribute("src", imageUrl.urlString());
     }
 }

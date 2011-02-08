@@ -27,7 +27,7 @@ public class Parameters extends HashMap<String, String> {
     /**
      * Create a list of parameter with initialized containing a single element
      * <code>name</code>-><code>value</code>
-     * 
+     *
      * @param name
      *            the name of the first parameter to inser
      * @param value
@@ -40,7 +40,7 @@ public class Parameters extends HashMap<String, String> {
 
     /**
      * Add a parameter to the list
-     * 
+     *
      * @param name
      *            the name of the parameter to add
      * @param value
@@ -56,7 +56,7 @@ public class Parameters extends HashMap<String, String> {
      * <p>
      * Finds a parameter into the list and removes it.
      * </p>
-     * 
+     *
      * @param name the name of the parameter to find
      * @return the string value of the parameter
      */
@@ -72,13 +72,10 @@ public class Parameters extends HashMap<String, String> {
      * <p>
      * Finds a parameter into the list without removing it.
      * </p>
-     * 
-     * @deprecated please use pick instead, this method goes against the usage
-     *             of this class
+     *
      * @param name the name of the parameter to find
      * @return the string value of the parameter
      */
-    @Deprecated
     public final String look(final String name) {
         return get(name);
     }

@@ -17,6 +17,7 @@ import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.actions.PaylineNotifyAction;
 import com.bloatit.web.actions.RegisterAction;
+import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
 import com.bloatit.web.pages.CommentReplyPage;
@@ -49,6 +50,7 @@ import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
@@ -70,6 +72,7 @@ import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
+import com.bloatit.web.url.UploadFileActionUrl;
 
 public class BloatitWebServer extends WebServer {
 
@@ -83,108 +86,115 @@ public class BloatitWebServer extends WebServer {
 
         //Pages
         if (pageCode.equals(IndexPageUrl.getName())) {
-            return new IndexPage(new IndexPageUrl(params, session.getParams()));
+            return new IndexPage(new IndexPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(LoginPageUrl.getName())) {
-            return new LoginPage(new LoginPageUrl(params, session.getParams()));
+            return new LoginPage(new LoginPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(DemandListPageUrl.getName())) {
-            return new DemandListPage(new DemandListPageUrl(params, session.getParams()));
+            return new DemandListPage(new DemandListPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(CreateDemandPageUrl.getName())) {
-            return new CreateDemandPage(new CreateDemandPageUrl(params, session.getParams()));
+            return new CreateDemandPage(new CreateDemandPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(DemandPageUrl.getName())) {
-            return new DemandPage(new DemandPageUrl(params, session.getParams()));
+            return new DemandPage(new DemandPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(MyAccountPageUrl.getName())) {
-            return new MyAccountPage(new MyAccountPageUrl(params, session.getParams()));
+            return new MyAccountPage(new MyAccountPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(SpecialsPageUrl.getName())) {
-            return new SpecialsPage(new SpecialsPageUrl(params, session.getParams()));
+            return new SpecialsPage(new SpecialsPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(MembersListPageUrl.getName())) {
-            return new MembersListPage(new MembersListPageUrl(params, session.getParams()));
+            return new MembersListPage(new MembersListPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(MemberPageUrl.getName())) {
-            return new MemberPage(new MemberPageUrl(params, session.getParams()));
+            return new MemberPage(new MemberPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ContributePageUrl.getName())) {
-            return new ContributePage(new ContributePageUrl(params, session.getParams()));
+            return new ContributePage(new ContributePageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(OfferPageUrl.getName())) {
-            return new OfferPage(new OfferPageUrl(params, session.getParams()));
+            return new OfferPage(new OfferPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(TestPageUrl.getName())) {
-            return new TestPage(new TestPageUrl(params, session.getParams()));
+            return new TestPage(new TestPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(AccountChargingPageUrl.getName())) {
-            return new AccountChargingPage(new AccountChargingPageUrl(params, session.getParams()));
+            return new AccountChargingPage(new AccountChargingPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(RegisterPageUrl.getName())) {
-            return new RegisterPage(new RegisterPageUrl(params, session.getParams()));
+            return new RegisterPage(new RegisterPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylinePageUrl.getName())) {
-            return new PaylinePage(new PaylinePageUrl(params, session.getParams()));
+            return new PaylinePage(new PaylinePageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(CommentReplyPageUrl.getName())) {
-            return new CommentReplyPage(new CommentReplyPageUrl(params, session.getParams()));
+            return new CommentReplyPage(new CommentReplyPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(FileUploadPageUrl.getName())) {
-            return new FileUploadPage(new FileUploadPageUrl(params, session.getParams()));
+            return new FileUploadPage(new FileUploadPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ProjectPageUrl.getName())) {
-            return new ProjectPage(new ProjectPageUrl(params, session.getParams()));
+            return new ProjectPage(new ProjectPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(AddProjectPageUrl.getName())) {
-            return new AddProjectPage(new AddProjectPageUrl(params, session.getParams()));
+            return new AddProjectPage(new AddProjectPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ProjectListPageUrl.getName())) {
-            return new ProjectListPage(new ProjectListPageUrl(params, session.getParams()));
+            return new ProjectListPage(new ProjectListPageUrl(params, session.getParameters()));
         }
 
         //Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
-            return new LoginAction(new LoginActionUrl(params, session.getParams()));
+            return new LoginAction(new LoginActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(LogoutActionUrl.getName())) {
-            return new LogoutAction(new LogoutActionUrl(params, session.getParams()));
+            return new LogoutAction(new LogoutActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(ContributionActionUrl.getName())) {
-            return new ContributionAction(new ContributionActionUrl(params, session.getParams()));
+            return new ContributionAction(new ContributionActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(OfferActionUrl.getName())) {
-            return new OfferAction(new OfferActionUrl(params, session.getParams()));
+            return new OfferAction(new OfferActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(CreateDemandActionUrl.getName())) {
-            return new CreateDemandAction(new CreateDemandActionUrl(params, session.getParams()));
+            return new CreateDemandAction(new CreateDemandActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(RegisterActionUrl.getName())) {
-            return new RegisterAction(new RegisterActionUrl(params, session.getParams()));
+            return new RegisterAction(new RegisterActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(KudoActionUrl.getName())) {
-            return new KudoAction(new KudoActionUrl(params, session.getParams()));
+            return new KudoAction(new KudoActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(IdeaCommentActionUrl.getName())) {
-            return new IdeaCommentAction(new IdeaCommentActionUrl(params, session.getParams()));
+            return new IdeaCommentAction(new IdeaCommentActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylineActionUrl.getName())) {
-            return new PaylineAction(new PaylineActionUrl(params, session.getParams()));
+            return new PaylineAction(new PaylineActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylineNotifyActionUrl.getName())) {
-            return new PaylineNotifyAction(new PaylineNotifyActionUrl(params, session.getParams()));
+            return new PaylineNotifyAction(new PaylineNotifyActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(IdeaCommentActionUrl.getName())) {
-            return new IdeaCommentAction(new IdeaCommentActionUrl(params, session.getParams()));
+            return new IdeaCommentAction(new IdeaCommentActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(CommentCommentActionUrl.getName())) {
-            return new CommentCommentAction(new CommentCommentActionUrl(params, session.getParams()));
+            return new CommentCommentAction(new CommentCommentActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(AddProjectActionUrl.getName())) {
-            return new AddProjectAction(new AddProjectActionUrl(params, session.getParams()));
+            return new AddProjectAction(new AddProjectActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(UploadFileActionUrl.getName())) {
+            return new UploadFileAction(new UploadFileActionUrl(params, session.getParams()));
         }
 
-        return new PageNotFound(new PageNotFoundUrl(params, session.getParams()));
+        if (pageCode.equals(FileResourceUrl.getName())) {
+            return new FileResource(new FileResourceUrl(params, session.getParams()));
+        }
+
+        return new PageNotFound(new PageNotFoundUrl(params, session.getParameters()));
     }
 
 }
