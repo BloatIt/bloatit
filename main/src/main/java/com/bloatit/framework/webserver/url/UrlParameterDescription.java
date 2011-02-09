@@ -4,24 +4,24 @@ import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 
-public final class UrlParameterDescription<T> {
+public final class UrlParameterDescription<U> {
 
     private final String name;
-    private final Class<T> valueClass;
+    private final Class<U> convertInto;
     private final Role role;
     private final String defaultValue;
     private final String conversionErrorMsg;
     private final Message.Level level;
 
     public UrlParameterDescription(final String name,
-                                   final Class<T> valueClass,
+                                   final Class<U> convertInto,
                                    final Role role,
                                    final String defaultValue,
                                    final String conversionErrorMsg,
                                    final Level level) {
         super();
         this.name = name;
-        this.valueClass = valueClass;
+        this.convertInto = convertInto;
         this.role = role;
         this.defaultValue = defaultValue;
         this.conversionErrorMsg = conversionErrorMsg;
@@ -32,8 +32,8 @@ public final class UrlParameterDescription<T> {
         return name;
     }
 
-    public final Class<T> getValueClass() {
-        return valueClass;
+    public final Class<U> getConvertInto() {
+        return convertInto;
     }
 
     public final Role getRole() {

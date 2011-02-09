@@ -43,7 +43,7 @@ public class Query {
                     if (!namedValue.isEmpty()) {
                         final String[] pair = namedValue.split("-");
                         if (pair.length == 2) {
-                            parameters.put(pair[0], pair[1]);
+                            parameters.add(pair[0], pair[1]);
                         } else {
                             Log.framework().error("Malformed parameter " + namedValue + " in '" + parametersString + "'");
                         }
