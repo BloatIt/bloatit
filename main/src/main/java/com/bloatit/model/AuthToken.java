@@ -18,6 +18,7 @@ import javassist.NotFoundException;
 import org.hibernate.classic.Session;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.SessionManager;
 import com.bloatit.model.managers.MemberManager;
 
@@ -31,15 +32,22 @@ public final class AuthToken {
 
     /**
      * Create an authoToken using the login and password of a person.
-     * 
+     *
      * @throws NotFoundException if the login is not found or if the password is wrong.
      */
     public AuthToken(final String login, final String password) throws NotFoundException {
         final Member tmp = MemberManager.getByLoginAndPassword(login, password);
         if (tmp == null) {
-            Log.model().warn("Authentication error " + login + " " + password);
+            Log.model().warn("Authentication error with login " + login);
             throw new NotFoundException("Identification or authentication failed");
         }
+
+        if (tmp.getActivationState() != ActivationState.ACTIVE) {
+            //TODO: display a different notification error
+            Log.model().warn("Authentication with inactive or deleted account with login " + login);
+            throw new NotFoundException("Authentication with inactive or deleted");
+        }
+
         member = tmp;
         key = UUID.randomUUID();
     }
@@ -47,7 +55,7 @@ public final class AuthToken {
     /**
      * NEVER Use this method. It is used by the SessionManager to persist the login
      * session of a user even in case of a server restart.
-     * 
+     *
      * @param memberId
      * @throws NotFoundException
      */
@@ -69,7 +77,7 @@ public final class AuthToken {
 
     /**
      * If a transaction is active, make sure the member has an internal persistent dao.
-     * 
+     *
      * @return the member that is authenticated by this token.
      */
     public Member getMember() {

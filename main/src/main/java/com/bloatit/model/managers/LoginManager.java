@@ -20,6 +20,7 @@ import com.bloatit.model.AuthToken;
 
 public final class LoginManager {
 
+    //TODO: clear
     private static final ConcurrentMap<UUID, AuthToken> AUTH_TOKEN_LIST = new ConcurrentHashMap<UUID, AuthToken>();
 
     private LoginManager() {

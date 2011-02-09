@@ -6,6 +6,8 @@ package com.bloatit.web.actions;
 import java.util.Locale;
 
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.mailsender.Mail;
+import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -17,7 +19,7 @@ import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.url.LoginPageUrl;
-import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 
@@ -35,17 +37,17 @@ public class RegisterAction extends Action {
 
     @RequestParam(name = RegisterAction.LOGIN_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4"),//
-                     max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
+    max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
     private final String login;
 
     @RequestParam(name = RegisterAction.PASSWORD_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4"),//
-                     max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
+    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
     private final String password;
 
     @RequestParam(name = RegisterAction.EMAIL_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5"),//
-                     max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
+    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
     private final String email;
 
     @RequestParam(name = RegisterAction.COUNTRY_CODE, role = Role.POST)
@@ -80,8 +82,20 @@ public class RegisterAction extends Action {
 
         final Locale locale = new Locale(lang, country);
 
+        //TODO verify duplicate for avoid crashes
         final Member m = new Member(login, password, email, locale);
-        return new MemberPageUrl(m);
+        String activationKey = m.getActivationKey();
+        MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
+
+        String content = Context.tr("Your Elveos.org account {0} was created. Please click on the following link to activate your account: \n\n {1}", login, url.externalUrlString(Context.getHeader()));
+
+        Mail activationMail = new Mail(email, Context.tr("Elveos.org account activation"), content, "member-docreate");
+
+        MailServer.getInstance().send(activationMail);
+
+        session.notifyGood(Context.tr("Account created, you will receive a mail for activate it."));
+
+        return session.pickPreferredPage();
     }
 
     @Override

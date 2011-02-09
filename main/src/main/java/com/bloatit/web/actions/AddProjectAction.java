@@ -89,6 +89,7 @@ public final class AddProjectAction extends Action {
     protected Url doProcess() throws RedirectException {
         session.notifyList(url.getMessages());
         if (!DemandManager.canCreate(session.getAuthToken())) {
+            //TODO: use ProjectManager and not DemandManager here
             session.notifyError(Context.tr("You must be logged in to add a project."));
             return new LoginPageUrl();
         }

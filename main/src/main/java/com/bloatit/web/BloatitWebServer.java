@@ -13,6 +13,7 @@ import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.actions.KudoAction;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
+import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.actions.PaylineNotifyAction;
@@ -58,6 +59,7 @@ import com.bloatit.web.url.KudoActionUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
+import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MyAccountPageUrl;
@@ -189,7 +191,11 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(UploadFileActionUrl.getName())) {
             return new UploadFileAction(new UploadFileActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(MemberActivationActionUrl.getName())) {
+            return new MemberActivationAction(new MemberActivationActionUrl(params, session.getParameters()));
+        }
 
+        //Resource page
         if (pageCode.equals(FileResourceUrl.getName())) {
             return new FileResource(new FileResourceUrl(params, session.getParameters()));
         }
