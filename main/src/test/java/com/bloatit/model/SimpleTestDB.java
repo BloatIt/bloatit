@@ -14,6 +14,7 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoKudosable.State;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoProject;
 import com.bloatit.data.DaoTransaction;
@@ -39,10 +40,13 @@ public class SimpleTestDB {
 
         tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
         tom.setFullname("Thomas Guyard");
+        tom.setActivationState(ActivationState.ACTIVE);
         fred = DaoMember.createAndPersist("Fred", "other", "fred@gmail.com", Locale.FRANCE);
         fred.setFullname("Frédéric Bertolus");
+        fred.setActivationState(ActivationState.ACTIVE);
         yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
+        yo.setActivationState(ActivationState.ACTIVE);
 
         other = DaoGroup.createAndPersiste("other", "plop@plop.com", DaoGroup.Right.PROTECTED);
         b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED);
@@ -69,13 +73,12 @@ public class SimpleTestDB {
         }
 
         project = DaoProject.createAndPersist("VLC",
-                                                         DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"),
-                                                         DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
+                                              DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"),
+                                              DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
 
-
-
-
-        demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"), project);
+        demand = DaoDemand.createAndPersist(yo,
+                                            DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
+                                            project);
         final DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
         final DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
         final DaoComment c21 = DaoComment.createAndPersist(tom, "plup");

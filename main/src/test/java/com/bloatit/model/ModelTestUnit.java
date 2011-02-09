@@ -11,7 +11,6 @@ public class ModelTestUnit extends TestCase {
     protected AuthToken fredAuthToken;
     protected SimpleTestDB db;
 
-
     public static int init = init();
 
     private static int init() {
@@ -20,24 +19,26 @@ public class ModelTestUnit extends TestCase {
         return 0;
     }
 
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         SessionManager.generateTestSessionFactory();
         db = new SimpleTestDB();
         ModelManagerAccessor.open();
-        yoAuthToken = new AuthToken("Yo", "plop");
-        tomAuthToken = new AuthToken("Thomas", "password");
-        fredAuthToken = new AuthToken("Fred", "other");
-        ModelManagerAccessor.close();
+        try {
+            yoAuthToken = new AuthToken("Yo", "plop");
+            tomAuthToken = new AuthToken("Thomas", "password");
+            fredAuthToken = new AuthToken("Fred", "other");
+        } finally {
+            ModelManagerAccessor.close();
+        }
         ModelManagerAccessor.open();
     }
 
     @Override
     protected void tearDown() throws Exception {
-        ModelManagerAccessor.close();
         super.tearDown();
+        ModelManagerAccessor.close();
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
         }

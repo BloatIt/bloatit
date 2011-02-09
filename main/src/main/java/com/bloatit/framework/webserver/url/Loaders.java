@@ -249,7 +249,7 @@ public final class Loaders {
     private static class ToDemand extends ToIdentifiable {
         @Override
         public Identifiable<?> doFromString(int i) {
-            return DemandManager.getDemandById(i);
+            return (Identifiable<?>) DemandManager.getDemandById(i);
         }
     }
 

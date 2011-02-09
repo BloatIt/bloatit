@@ -26,7 +26,11 @@ public final class DemandManager {
         return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
     }
 
-    public static DemandImplementation getDemandById(final Integer id) {
+    public static Demand getDemandById(final Integer id) {
+        return getDemandImplementationById(id);
+    }
+
+    static DemandImplementation getDemandImplementationById(final Integer id) {
         return DemandImplementation.create(DBRequests.getById(DaoDemand.class, id));
     }
 

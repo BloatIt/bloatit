@@ -206,7 +206,7 @@ public final class DemandListPage extends MasterPage {
         }
         add(demandSearchBlock);
 
-        // DemandImplementation list
+        // Demand list
 
         PageIterable<Demand> results = searchResult();
 

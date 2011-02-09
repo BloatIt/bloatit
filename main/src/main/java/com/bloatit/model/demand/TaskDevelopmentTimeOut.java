@@ -22,7 +22,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
     @Override
     public void doRun() {
         try {
-            DemandImplementation demand = DemandManager.getDemandById(demandId);
+            DemandImplementation demand = DemandManager.getDemandImplementationById(demandId);
             if (demand != null) {
                 demand.developmentTimeOut();
             } else {

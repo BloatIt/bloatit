@@ -87,9 +87,9 @@ public final class Offer extends Kudosable<DaoOffer> {
         final boolean isAllValidated = findCurrentDaoBatch().validate(force);
         if (isAllValidated) {
             if (getDao().hasBatchesLeft()) {
-                getDemand().setBatchIsValidated();
+                getDemandImplementation().setBatchIsValidated();
             } else {
-                getDemand().setOfferIsValidated();
+                getDemandImplementation().setOfferIsValidated();
             }
         }
         return isAllValidated;
@@ -116,7 +116,7 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     @Override
     protected void notifyKudos(final boolean positif) {
-        getDemand().notifyOfferKudos(this, positif);
+        getDemandImplementation().notifyOfferKudos(this, positif);
     }
 
     @Override
@@ -128,7 +128,11 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
-    public DemandImplementation getDemand() {
+    public Demand getDemand() {
+        return getDemandImplementation();
+    }
+
+    private DemandImplementation getDemandImplementation() {
         return DemandImplementation.create(getDao().getDemand());
     }
 

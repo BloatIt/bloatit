@@ -12,6 +12,7 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoProject;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -288,6 +289,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
         final DemandImplementation demand = createDemandByThomas();
         final DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin", Locale.FRANCE);
+        admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
@@ -497,7 +499,7 @@ public class DemandImplementationTest extends ModelTestUnit {
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
 
-        return DemandManager.getDemandById(demand.getId());
+        return (DemandImplementation) DemandManager.getDemandById(demand.getId());
 
     }
 }

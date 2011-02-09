@@ -65,7 +65,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
 
     /**
-     * Add a new Offer on this DemandImplementation. You can do this operation when you are in the
+     * Add a new Offer on this Demand. You can do this operation when you are in the
      * {@link DemandState#PENDING} or {@link DemandState#PREPARING} DemandState. When you
      * add the first Offer, the state pass from {@link DemandState#PENDING} to
      * {@link DemandState#PREPARING}; and this offer is selected (see
@@ -85,7 +85,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
      *
      * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
-     *         <code>DELETE</code> right on the <code>Offer</code> property.
+     *         <code>DELETED</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)
      */
     void removeOffer(final Offer offer) throws UnauthorizedOperationException;
@@ -131,7 +131,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     PageIterable<Comment> getComments() throws UnauthorizedOperationException;
 
     /**
-     * @return all the Contributions on this DemandImplementation.
+     * @return all the Contributions on this Demand.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#READ} right on the <code>Contribution</code> property.
      * @see #authenticate(AuthToken)

@@ -4,11 +4,10 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoDescription;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.lists.TranslationList;
 
 /**
- * A description must be created through the DemandImplementation class. (For example, you create a
+ * A description must be created through the Demand class. (For example, you create a
  * description each time you create a demand.) There is no right management for this
  * class. I assume that if you can get a <code>Description</code> then you can access
  * every property in it.
@@ -31,7 +30,7 @@ public final class Description extends Identifiable<DaoDescription> {
 
     /**
      * Create a Description. If you are looking for a way to create a new description see
-     * {@link DemandImplementation#addOffer(java.math.BigDecimal, Locale, String, String, java.util.Date)}
+     * {@link Demand#addOffer(java.math.BigDecimal, Locale, String, String, java.util.Date)}
      *
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
