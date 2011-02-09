@@ -18,9 +18,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
-import com.bloatit.framework.utils.ConfigurationManager;
-import com.bloatit.framework.utils.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 
 /**
  * <p>

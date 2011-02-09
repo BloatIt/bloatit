@@ -1,4 +1,4 @@
-package com.bloatit.framework.utils;
+package com.bloatit.common;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,6 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Properties;
 
-import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.url.Loaders;
