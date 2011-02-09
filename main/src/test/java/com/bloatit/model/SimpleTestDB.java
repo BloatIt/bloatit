@@ -15,6 +15,7 @@ import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoKudosable.State;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.ActivationState;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoProject;
 import com.bloatit.data.DaoTransaction;
@@ -47,6 +48,11 @@ public class SimpleTestDB {
         yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
         yo.setActivationState(ActivationState.ACTIVE);
+
+        DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin@gmail.com", Locale.FRANCE);
+        admin.setFullname("Administrator");
+        admin.setActivationState(ActivationState.ACTIVE);
+        admin.setRole(Role.ADMIN);
 
         other = DaoGroup.createAndPersiste("other", "plop@plop.com", DaoGroup.Right.PROTECTED);
         b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED);

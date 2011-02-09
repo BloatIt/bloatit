@@ -109,7 +109,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
                 commentPopularity.addText(Context.tr("Popularity: {0}", HtmlTools.compressKarma(comment.getPopularity())));
 
                 if (!comment.isOwnedByMe()) {
-                    int vote = comment.getVote();
+                    int vote = comment.getUserVoteValue();
                     if (vote == 0) {
                         commentPopularity.addText(" (");
 

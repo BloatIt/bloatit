@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.State;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
@@ -25,7 +26,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         super(dao);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#canKudos()
      */
     @Override
@@ -33,7 +35,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return canVote(1);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#canUnkudos()
      */
     @Override
@@ -41,7 +44,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return canVote(-1);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#unkudos()
      */
     @Override
@@ -52,17 +56,18 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     @Override
-    public int getVote() {
+    public int getUserVoteValue() {
         AuthToken authToken = getAuthTokenUnprotected();
 
-        if (getAuthTokenUnprotected() == null){
+        if (getAuthTokenUnprotected() == null) {
             return 0;
         }
 
         return getDao().getVote(authToken.getMember().getDao());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#kudos()
      */
     @Override
@@ -80,13 +85,18 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
 
-        if (getAuthTokenUnprotected() == null){
+        if (getAuthTokenUnprotected() == null) {
             errors.add(SpecialCode.AUTHENTICATION_NEEDED);
-            //Stop tests here: the other tests need an AuthToken
+            // Stop tests here: the other tests need an AuthToken
             return errors;
         }
 
-     // Only one kudos per person
+        if (getAuthTokenUnprotected().getMember().getRole() == Role.ADMIN) {
+            // Stop here. The member is an admin. He must be able to kudos everything.
+            return errors;
+        }
+
+        // I cannot kudos my own content.
         if (isOwnedByMe()) {
             errors.add(SpecialCode.OWNED_BY_ME);
         }
@@ -95,9 +105,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         if (getDao().hasKudosed(getAuthTokenUnprotected().getMember().getDao())) {
             errors.add(SpecialCode.ALREADY_VOTED);
         }
-
-
-
 
         // Make sure we are in the right position
         final Member member = getAuthTokenUnprotected().getMember();
@@ -116,7 +123,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return getAuthor().equals(getAuthTokenUnprotected().getMember());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#getState()
      */
     @Override
@@ -135,7 +143,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
             throw new UnauthorizedOperationException(canKudos.iterator().next());
         }
 
-     // Make sure we are in the right position
+        // Make sure we are in the right position
         final Member member = getAuthToken().getMember();
         final int influence = member.calculateInfluence();
 
@@ -144,11 +152,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
             calculateNewState(getDao().addKudos(member.getDao(), sign * influence));
         }
 
-        return influence*sign;
+        return influence * sign;
     }
-
-
-
 
     private void calculateNewState(final int newPop) {
         switch (getState()) {
@@ -278,7 +283,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         // Implement me if you wish
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#getPopularity()
      */
     @Override

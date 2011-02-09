@@ -72,6 +72,10 @@ public final class MembersListPage extends MasterPage {
     }
 
     private final class MemberRenderer implements HtmlRenderer<Member> {
+        public MemberRenderer() {
+            // TODO Auto-generated constructor stub
+        }
+
         @Override
         public HtmlNode generate(final Member member) {
             final MemberPageUrl memberUrl = new MemberPageUrl(member);

@@ -8,25 +8,25 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.Demand;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.AdministrationPageUrl;
 
 @ParamContainer("doadministration")
 public class AdministrationAction extends Action {
 
-    @RequestParam(name = "coucou", role = Role.POST)
-    private final List<String> test;
-
+    @RequestParam(name = "ids", role = Role.POST)
+    private final List<Demand> demands;
 
     public AdministrationAction(AdministrationActionUrl url) {
         super(url);
-        test = url.getTest();
+        demands = url.getDemands();
     }
 
     @Override
     protected Url doProcess() throws RedirectException {
-        for (String str : test) {
-            session.notifyGood(str);
+        for (Demand demand : demands) {
+            session.notifyGood(demand.toString());
         }
         return new AdministrationPageUrl();
     }

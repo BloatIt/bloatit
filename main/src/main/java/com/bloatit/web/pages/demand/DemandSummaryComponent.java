@@ -114,7 +114,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                     demandSummaryPopularity.add(popularityScore);
 
                     if (!demand.isOwnedByMe()) {
-                        int vote = demand.getVote();
+                        int vote = demand.getUserVoteValue();
                         if (vote == 0) {
                             final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
                             {
