@@ -35,7 +35,7 @@ import com.bloatit.web.url.CreateDemandPageUrl;
 /**
  * Page that hosts the form to create a new Idea
  */
-@ParamContainer("demandImplementation/create")
+@ParamContainer("demand/create")
 public final class CreateDemandPage extends LoggedPage {
 
     private static final int SPECIF_INPUT_NB_LINES = 10;

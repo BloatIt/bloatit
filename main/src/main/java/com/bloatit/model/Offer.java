@@ -83,7 +83,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     public boolean validateCurrentBatch(final boolean force) {
-        // If the validation is not complete, there is nothing to do in the demandImplementation
+        // If the validation is not complete, there is nothing to do in the demand
         final boolean isAllValidated = findCurrentDaoBatch().validate(force);
         if (isAllValidated) {
             if (getDao().hasBatchesLeft()) {

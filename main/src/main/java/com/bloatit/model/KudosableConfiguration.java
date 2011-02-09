@@ -12,7 +12,7 @@ public class KudosableConfiguration {
     private static final int DEFAULT_TURN_HIDDEN = conf.getInt("kudosable.default.turn_hidden", -10);
     private static final int DEFAULT_TURN_PENDING = conf.getInt("kudosable.default.turn_pending", 10);
 
-    // Comment demandImplementation offer translation
+    // Comment demand offer translation
     private static final int COMMENT_TURN_VALID = conf.getInt("kudosable.comment.turn_valid", getDefaultTurnValid());
     private static final int COMMENT_TURN_REJECTED = conf.getInt("kudosable.comment.turn_rejected", getDefaultTurnRejected());
     private static final int COMMENT_TURN_HIDDEN = conf.getInt("kudosable.comment.turn_hidden", getDefaultTurnHidden());

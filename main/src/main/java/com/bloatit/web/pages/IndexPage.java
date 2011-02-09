@@ -38,7 +38,7 @@ public final class IndexPage extends MasterPage {
 
             HtmlParagraph needText = new HtmlParagraph();
             needText.addText(Context.tr("If you have a need about a free software, you can "));
-            needText.add(new CreateDemandPageUrl().getHtmlLink(Context.tr("create a new demandImplementation")));
+            needText.add(new CreateDemandPageUrl().getHtmlLink(Context.tr("create a new demand")));
             needText.addText(Context.tr(" and contribute to it."));
             globalDescription.add(needText);
 

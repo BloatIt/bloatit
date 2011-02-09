@@ -66,7 +66,7 @@ public final class DemandPage extends MasterPage {
 
     @Override
     protected String getCustomCss() {
-        return "demandImplementation.css";
+        return "demand.css";
     }
 
     public Demand getDemand() {
@@ -81,7 +81,7 @@ public final class DemandPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        // The demandImplementation page is composed by 3 parts:
+        // The demand page is composed by 3 parts:
         // - The sumary
         // - The tab panel
         // - The comments

@@ -161,7 +161,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
                                                                                                 new Integer(contributionsCount))));
 
                     } catch (final UnauthorizedOperationException e) {
-                        // No right to see demandImplementation details
+                        // No right to see demand details
                     }
 
                 }

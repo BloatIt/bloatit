@@ -1,19 +1,19 @@
 package com.bloatit.model.demand;
 
 public class DiscardedState extends AbstractDemandState {
-    public DiscardedState(final DemandImplementation demandImplementation) {
-        super(demandImplementation);
-        demandImplementation.inDiscardedState();
+    public DiscardedState(final DemandImplementation demand) {
+        super(demand);
+        demand.inDiscardedState();
     }
 
     @Override
     public AbstractDemandState eventPopularityPending() {
-        return new PendingState(demandImplementation);
+        return new PendingState(demand);
     }
 
     @Override
     public AbstractDemandState popularityValidated() {
-        return new PendingState(demandImplementation);
+        return new PendingState(demand);
     }
 
 }

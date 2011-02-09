@@ -35,7 +35,7 @@ public final class KudosableManager {
             return Comment.create(comment);
         }
 
-        // Try with demandImplementation
+        // Try with demand
         final DaoDemand demand = DBRequests.getById(DaoDemand.class, id);
         if (demand != null) {
             return DemandImplementation.create(demand);
