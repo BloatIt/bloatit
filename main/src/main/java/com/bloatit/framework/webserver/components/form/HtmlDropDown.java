@@ -14,13 +14,15 @@ package com.bloatit.framework.webserver.components.form;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.cfg.NotYetImplementedException;
+
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 
 /**
  * <p>
- * Class to handle Html drop down boxes (aka Html select).
+ * Class to handle Html drop down boxes (aka Html {@code<select>}).
  * </p>
  * <p>
  * Usage is : create the object, then use addText to add a new line
@@ -29,10 +31,25 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
     private final Map<T, HtmlBranch> components = new HashMap<T, HtmlBranch>();
 
+    /**
+     * Creates a new HtmlDropDown with a given attribute <code>name</code>
+     * 
+     * @param name
+     *            the value of the Html attribute <code>name</code>
+     */
     public HtmlDropDown(final String name) {
         super(new HtmlGenericElement("select"), name);
     }
 
+    /**
+     * Creates a new HtmlDropDown with a given attribute <code>name</code> and
+     * an html {@code label} to explain the usage of the drop down
+     * 
+     * @param name
+     *            the value of the Html attribute <code>name</code>
+     * @param label
+     *            the text displayed to explain the drop down
+     */
     public HtmlDropDown(final String name, final String label) {
         super(new HtmlGenericElement("select"), name, label);
     }
@@ -48,22 +65,36 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
      * Sets the default value of the drop down box
      * </p>
      * <p>
-     * Do not use this method twice
+     * <b>Do not use this method twice</b>
      * </p>
-     *
-     * @param value the index of the element, 0 being the first element inserted with
-     *        addText
+     * 
+     * @param value
+     *            the element to set as the default value
      */
     @Override
     protected void doSetDefaultValue(final T value) {
         components.get(value).addAttribute("selected", "selected");
     }
 
+    /**
+     * Sets the default value based on a string value
+     * @throws NotYetImplementedException everytime (not yet implemented)
+     */
     @Override
     protected void doSetDefaultValue(String defaultValueAsString) {
         // TODO: I don't even understand...
+        throw new NotYetImplementedException("The method doSetDefaultValue(string) is not yet implemented (Tom's fault)");
     }
 
+    /**
+     * <p>
+     * Adds a new selectable value to the DropDown
+     * </p>
+     * 
+     * @param elem
+     *            the value to add
+     * @return itself
+     */
     public HtmlElement add(final T elem) {
         final HtmlGenericElement opt = new HtmlGenericElement("option");
         opt.addText(elem.getName());
@@ -73,5 +104,4 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
         components.put(elem, ((HtmlBranch) element));
         return this;
     }
-
 }
