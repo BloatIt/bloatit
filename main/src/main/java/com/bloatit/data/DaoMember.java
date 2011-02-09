@@ -26,6 +26,10 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * Ok if you need a comment to understand what is a member, then I cannot do anything for
  * you ...
+ *
+ * <p>
+ * What is the difference between a member and an actor ??
+ * </p>
  */
 @Entity
 public final class DaoMember extends DaoActor {
@@ -33,6 +37,11 @@ public final class DaoMember extends DaoActor {
     public enum Role {
         NORMAL, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
     }
+
+    public enum ActivationState {
+        VALIDATING, ACTIVE, DELETE
+    }
+
 
     private String fullname;
     @Basic(optional = false)
@@ -42,6 +51,10 @@ public final class DaoMember extends DaoActor {
     @Basic(optional = false)
     @Enumerated
     private Role role;
+
+    @Basic(optional = false)
+    @Enumerated
+    private ActivationState state;
 
     @Basic(optional = false)
     @Column(unique = true)
@@ -144,6 +157,7 @@ public final class DaoMember extends DaoActor {
         setLocale(locale);
         this.email = email;
         this.role = Role.NORMAL;
+        this.state = ActivationState.VALIDATING;
         this.password = password;
         this.karma = 0;
         this.fullname = "";
@@ -177,6 +191,10 @@ public final class DaoMember extends DaoActor {
 
     public void setRole(final Role role) {
         this.role = role;
+    }
+
+    public void setActivationState(final ActivationState state) {
+        this.state = state;
     }
 
     public void setPassword(final String password) {
@@ -219,6 +237,10 @@ public final class DaoMember extends DaoActor {
 
     public Role getRole() {
         return role;
+    }
+
+    public ActivationState getActivationState() {
+        return state;
     }
 
     public String getFullname() {
