@@ -20,7 +20,6 @@ import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Member;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
-import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 
@@ -88,13 +87,15 @@ public class RegisterAction extends Action {
         String activationKey = m.getActivationKey();
         MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
 
-        String content = Context.tr("Your Elveos.org account {0} was created. Please click on the following link to activate your account: \n\n {1}", login, url.urlString());
+        String content = Context.tr("Your Elveos.org account {0} was created. Please click on the following link to activate your account: \n\n {1}", login, url.externalUrlString(Context.getHeader()));
 
         Mail activationMail = new Mail(email, Context.tr("Elveos.org account activation"), content, "member-docreate");
 
         MailServer.getInstance().send(activationMail);
 
-        return new MemberPageUrl(m);
+        session.notifyGood(Context.tr("Account created, you will receive a mail for activate it."));
+
+        return session.pickPreferredPage();
     }
 
     @Override
