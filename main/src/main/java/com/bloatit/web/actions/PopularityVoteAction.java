@@ -71,7 +71,7 @@ public final class PopularityVoteAction extends LoggedAction {
 
 
             } else {
-                EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();
+                EnumSet<SpecialCode> canVote = targetKudosable.canVoteDown();
 
                 if(canVote.isEmpty()) {
                     int weight = targetKudosable.voteDown();

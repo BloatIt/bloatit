@@ -201,12 +201,14 @@ public final class Member extends Actor<DaoMember> {
         return getDao().getKarma();
     }
 
-    private static final int INFLUENCE_MULTIPLICATOR = 10;
+    private static final float INFLUENCE_MULTIPLICATOR = 2;
+    private static final float INFLUENCE_DIVISER = 100;
+    private static final float INFLUENCE_BASE = 1;
 
     protected int calculateInfluence() {
         final int karma = getDao().getKarma();
         if (karma > 0) {
-            return (int) (Math.log10(karma) * INFLUENCE_MULTIPLICATOR + 1);
+            return (int) (Math.log10((INFLUENCE_DIVISER+karma)/INFLUENCE_DIVISER) * INFLUENCE_MULTIPLICATOR + INFLUENCE_BASE);
         } else if (karma == 0) {
             return 1;
         }
