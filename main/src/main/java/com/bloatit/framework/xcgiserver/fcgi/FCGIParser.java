@@ -236,15 +236,15 @@ public class FCGIParser implements XcgiParser {
     private int parseNameValuePair() throws IOException {
         int usedLength = 0;
         long nameLength = 0;
-        byte firstNameLengthByte = dataInput.readByte();
+        int firstNameLengthByte = dataInput.readUnsignedByte();
         usedLength++;
 
         if ((firstNameLengthByte & 0x80) != 0) {// 10000000
-            byte[] lengthArray = new byte[4];
+            int[] lengthArray = new int[4];
             lengthArray[0] = firstNameLengthByte;
-            lengthArray[1] = dataInput.readByte();
-            lengthArray[2] = dataInput.readByte();
-            lengthArray[3] = dataInput.readByte();
+            lengthArray[1] = dataInput.readUnsignedByte();
+            lengthArray[2] = dataInput.readUnsignedByte();
+            lengthArray[3] = dataInput.readUnsignedByte();
             usedLength += 3;
 
             nameLength = unsignedIntToLong(lengthArray);
@@ -254,15 +254,15 @@ public class FCGIParser implements XcgiParser {
 
         long valueLength = 0;
 
-        byte firstValueLengthByte = dataInput.readByte();
+        int firstValueLengthByte = dataInput.readUnsignedByte();
         usedLength++;
 
-        if ((firstValueLengthByte & 0x80) != 0) { // 10000000
-            byte[] lengthArray = new byte[4];
+        if ((firstValueLengthByte >> 7) == 1) { // 10000000
+            int[] lengthArray = new int[4];
             lengthArray[0] = firstValueLengthByte;
-            lengthArray[1] = dataInput.readByte();
-            lengthArray[2] = dataInput.readByte();
-            lengthArray[3] = dataInput.readByte();
+            lengthArray[1] = dataInput.readUnsignedByte();
+            lengthArray[2] = dataInput.readUnsignedByte();
+            lengthArray[3] = dataInput.readUnsignedByte();
             usedLength += 3;
 
             valueLength = unsignedIntToLong(lengthArray);
@@ -313,15 +313,14 @@ public class FCGIParser implements XcgiParser {
      *            an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */
-    public static final long unsignedIntToLong(byte[] b) {
+    public static final long unsignedIntToLong(int[] b) {
         long l = 0;
-        l |= b[0] & 0xFF;
-        l <<= 8;
-        l |= b[1] & 0xFF;
-        l <<= 8;
-        l |= b[2] & 0xFF;
-        l <<= 8;
-        l |= b[3] & 0xFF;
+
+        l += b[0];
+        l += b[1] << 8;
+        l += b[2] << 16;
+        l += (b[3] & 0x7F) << 24;
+
         return l;
     }
 
