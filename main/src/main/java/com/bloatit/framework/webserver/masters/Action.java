@@ -19,6 +19,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlNode;
 
@@ -38,8 +39,13 @@ public abstract class Action implements Linkable {
 
     @Override
     public final void writeToHttp(final HttpResponse response) throws RedirectException, IOException {
-        Log.framework().trace("Processing action: "+ actionUrl.urlString());
-        response.writeRedirect(process().urlString());
+        Log.framework().trace("Processing action: " + actionUrl.urlString());
+        Url url = process();
+        if (url != null) {
+            response.writeRedirect(url.urlString());
+        } else {
+            response.writeRedirect(new PageNotFoundUrl().urlString());
+        }
     }
 
     public final Url process() throws RedirectException {

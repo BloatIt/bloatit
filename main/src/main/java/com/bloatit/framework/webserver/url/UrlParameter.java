@@ -2,8 +2,11 @@ package com.bloatit.framework.webserver.url;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
+import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.utils.AsciiUtils;
+import com.bloatit.framework.utils.HttpParameter;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.Context;
@@ -14,15 +17,15 @@ import com.bloatit.framework.webserver.annotations.Message.What;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 
-public final class UrlParameter<T> extends UrlNode {
-    private final UrlParameterDescription<T> description;
-    private final UrlParameterConstraints<T> constraints;
+public class UrlParameter<T, U> extends UrlNode {
+    private final UrlParameterDescription<U> description;
+    private final UrlParameterConstraints<U> constraints;
 
     private T value;
     private String strValue;
     private boolean conversionError;
 
-    public UrlParameter(final T value, final UrlParameterDescription<T> description, final UrlParameterConstraints<T> constraints) {
+    public UrlParameter(final T value, final UrlParameterDescription<U> description, final UrlParameterConstraints<U> constraints) {
         setValue(value); // Also set the defaultValue;
         this.description = description;
         this.constraints = constraints;
@@ -31,23 +34,22 @@ public final class UrlParameter<T> extends UrlNode {
 
     @Override
     protected final void parseParameters(final Parameters params) {
-        final String aValue;
-        aValue = params.look(getName());
+        HttpParameter aValue = params.look(getName());
         if (aValue != null) {
-            setValueFromString(aValue);
+            setValueFromHttpParameter(aValue);
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected void parseSessionParameters(SessionParameters params) {
-        UrlParameter<?> pick = params.look(getName());
+        UrlParameter<?, ?> pick = params.look(getName());
         if (pick != null) {
             value = (T) pick.value;
             strValue = pick.strValue;
             conversionError = pick.conversionError;
 
-            setValueFromString(pick.getStringValue());
+            setValueFromHttpParameter(new HttpParameter(pick.getStringValue()));
         }
     }
 
@@ -88,19 +90,38 @@ public final class UrlParameter<T> extends UrlNode {
         }
     }
 
-    private void setValueFromString(final String string) {
+    @SuppressWarnings("unchecked")
+    private void setValueFromHttpParameter(final HttpParameter httpParam) {
+        conversionError = false;
+        strValue = httpParam.getSimpleValue();
         try {
-            conversionError = false;
-            strValue = string;
-            setValue(Loaders.fromStr(getValueClass(), string));
+            if (this.value instanceof List<?>) {
+                StringBuilder sb = new StringBuilder();
+                @SuppressWarnings("rawtypes")
+                List casted = List.class.cast(this.value);
+                for (String aValue : httpParam) {
+                    // TODO make me works !
+                    sb.append("&").append(getName()).append("=").append(aValue);
+                    casted.add(Loaders.fromStr(getValueClass(), aValue));
+                }
+                strValue = sb.toString();
+            } else {
+                // TODO make sure this is working
+                strValue = httpParam.getSimpleValue();
+                if (value == null || getValueClass().equals(value.getClass())) {
+                    setValue((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
+                } else {
+                    throw new FatalErrorException("Type mismatch. You are trying to convert a parameter using the wrong loader class.");
+                }
+            }
         } catch (final ConversionErrorException e) {
             conversionError = true;
         }
     }
 
     @Override
-    public UrlParameter<T> clone() {
-        return new UrlParameter<T>(value, description, constraints);
+    public UrlParameter<T, U> clone() {
+        return new UrlParameter<T, U>(value, description, constraints);
     }
 
     @Override
@@ -109,6 +130,7 @@ public final class UrlParameter<T> extends UrlNode {
         return Collections.EMPTY_LIST.iterator();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Messages getMessages() {
         final Messages messages = new Messages();
@@ -116,7 +138,7 @@ public final class UrlParameter<T> extends UrlNode {
             final Message message = new Message(getConversionErrorMsg(), getLevel(), What.CONVERSION_ERROR, getName(), getStringValue());
             messages.add(message);
         } else if (constraints != null) {
-            constraints.computeConstraints(getValue(), getValueClass(), messages, getLevel(), getName(), getStringValue());
+            constraints.computeConstraints((U) getValue(), getValueClass(), messages, getLevel(), getName(), getStringValue());
         }
         return messages;
     }
@@ -139,12 +161,12 @@ public final class UrlParameter<T> extends UrlNode {
     @Deprecated
     public void addParameter(final String aName, final String aValue) {
         if (this.getName().equals(aName)) {
-            this.setValueFromString(aValue);
+            this.setValueFromHttpParameter(new HttpParameter(aValue));
         }
     }
 
-    private Class<T> getValueClass() {
-        return description.getValueClass();
+    private Class<U> getValueClass() {
+        return description.getConvertInto();
     }
 
     private String getConversionErrorMsg() {
@@ -164,15 +186,15 @@ public final class UrlParameter<T> extends UrlNode {
     }
 
     public FormFieldData<T> createFormFieldData() {
-        return new FieldDataFromUrl<T>(this);
+        return new FieldDataFromUrl<T, U>(this);
     }
 
-    static class FieldDataFromUrl<T> implements FormFieldData<T> {
+    static class FieldDataFromUrl<T, U> implements FormFieldData<T> {
 
-        private final UrlParameter<T> parameterFromSession;
+        private final UrlParameter<T, U> parameterFromSession;
         private final String name;
 
-        public FieldDataFromUrl(UrlParameter<T> parameter) {
+        public FieldDataFromUrl(UrlParameter<T, U> parameter) {
             super();
             name = parameter.getName();
             this.parameterFromSession = Context.getSession().pickParameter(parameter);

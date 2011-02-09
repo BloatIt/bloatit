@@ -180,16 +180,12 @@ public final class Session {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> UrlParameter<T> pickParameter(UrlParameter<T> param) {
-        final UrlParameter<?> value = parameters.get(param.getName());
-        if (value != null) {
-            parameters.remove(param.getName());
-        }
-        return (UrlParameter<T>) value;
+    public <T,U> UrlParameter<T,U> pickParameter(UrlParameter<T,U> param) {
+        return (UrlParameter<T,U>) parameters.pick(param.getName());
     }
 
-    public void addParameter(final UrlParameter<?> param) {
-        parameters.put(param.getName(), param);
+    public void addParameter(final UrlParameter<?,?> param) {
+        parameters.add(param.getName(), param);
         // Maybe auto notify here ?
     }
 }

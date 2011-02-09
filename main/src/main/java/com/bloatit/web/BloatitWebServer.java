@@ -6,6 +6,7 @@ import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddProjectAction;
+import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateDemandAction;
@@ -22,6 +23,7 @@ import com.bloatit.web.actions.RegisterAction;
 import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
+import com.bloatit.web.pages.AdministrationPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateDemandPage;
@@ -44,6 +46,8 @@ import com.bloatit.web.pages.demand.DemandPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
+import com.bloatit.web.url.AdministrationActionUrl;
+import com.bloatit.web.url.AdministrationPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -149,6 +153,9 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ProjectListPageUrl.getName())) {
             return new ProjectListPage(new ProjectListPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(AdministrationPageUrl.getName())) {
+            return new AdministrationPage(new AdministrationPageUrl(params, session.getParameters()));
+        }
 
         //Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -198,6 +205,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(PaylineReturnActionUrl.getName())) {
             return new PaylineReturnAction(new PaylineReturnActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AdministrationActionUrl.getName())) {
+            return new AdministrationAction(new AdministrationActionUrl(params, session.getParameters()));
         }
 
         //Resource page
