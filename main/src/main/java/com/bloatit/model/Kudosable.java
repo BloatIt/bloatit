@@ -29,37 +29,50 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * @see com.bloatit.model.KudosableInterface#canKudos()
      */
     @Override
-    public EnumSet<SpecialCode> canKudos() {
-        return canKudos(1);
+    public EnumSet<SpecialCode> canVoteUp() {
+        return canVote(1);
     }
 
     /* (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#canUnkudos()
      */
     @Override
-    public EnumSet<SpecialCode> canUnkudos() {
-        return canKudos(-1);
+    public EnumSet<SpecialCode> canVoteDown() {
+        return canVote(-1);
     }
 
     /* (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#unkudos()
      */
     @Override
-    public final void unkudos() throws UnauthorizedOperationException {
-        addKudos(-1);
+    public final int voteDown() throws UnauthorizedOperationException {
+        int vote = vote(-1);
         notifyKudos(false);
+        return vote;
+    }
+
+    @Override
+    public int getVote() {
+        AuthToken authToken = getAuthTokenUnprotected();
+
+        if (getAuthTokenUnprotected() == null){
+            return 0;
+        }
+
+        return getDao().getVote(authToken.getMember().getDao());
     }
 
     /* (non-Javadoc)
      * @see com.bloatit.model.KudosableInterface#kudos()
      */
     @Override
-    public final void kudos() throws UnauthorizedOperationException {
-        addKudos(1);
+    public final int voteUp() throws UnauthorizedOperationException {
+        int vote = vote(1);
         notifyKudos(true);
+        return vote;
     }
 
-    private final EnumSet<SpecialCode> canKudos(int signe) {
+    private final EnumSet<SpecialCode> canVote(int sign) {
         EnumSet<SpecialCode> errors = EnumSet.noneOf(SpecialCode.class);
 
         // See if we can kudos.
@@ -73,17 +86,17 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
         // Only one kudos per person
         if (getDao().hasKudosed(getAuthTokenUnprotected().getMember().getDao())) {
-            errors.add(SpecialCode.ALREADY_KUDOSED);
+            errors.add(SpecialCode.ALREADY_VOTED);
         }
 
         // Make sure we are in the right position
         final Member member = getAuthTokenUnprotected().getMember();
         final int influence = member.calculateInfluence();
-        if (signe == -1 && influence < MIN_INFLUENCE_TO_UNKUDOS) {
-            errors.add(SpecialCode.INFLUENCE_LOW_ON_UNKUDOS);
+        if (sign == -1 && influence < MIN_INFLUENCE_TO_UNKUDOS) {
+            errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN);
         }
-        if (signe == 1 && influence < MIN_INFLUENCE_TO_KUDOS) {
-            errors.add(SpecialCode.INFLUENCE_LOW_ON_KUDOS);
+        if (sign == 1 && influence < MIN_INFLUENCE_TO_KUDOS) {
+            errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP);
         }
         return errors;
     }
@@ -101,20 +114,26 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return getDao();
     }
 
-    private void addKudos(final int signe) throws UnauthorizedOperationException {
-        EnumSet<SpecialCode> canKudos = canKudos(signe);
+    private int vote(final int sign) throws UnauthorizedOperationException {
+        EnumSet<SpecialCode> canKudos = canVote(sign);
         if (!canKudos.isEmpty()) {
             throw new UnauthorizedOperationException(canKudos.iterator().next());
         }
-        // Make sure we are in the right position
+
+     // Make sure we are in the right position
         final Member member = getAuthToken().getMember();
         final int influence = member.calculateInfluence();
 
         if (influence > 0) {
             getAuthor().addToKarma(influence);
-            calculateNewState(getDao().addKudos(member.getDao(), signe * influence));
+            calculateNewState(getDao().addKudos(member.getDao(), sign * influence));
         }
+
+        return influence*sign;
     }
+
+
+
 
     private void calculateNewState(final int newPop) {
         switch (getState()) {

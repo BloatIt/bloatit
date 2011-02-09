@@ -10,33 +10,41 @@
  */
 package com.bloatit.web.actions;
 
+import java.util.EnumSet;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.KudosableInterface;
-import com.bloatit.web.url.KudoActionUrl;
+import com.bloatit.web.url.PopularityVoteActionUrl;
 
 /**
- * A response to a form used to kudo any <code>kudosable</code> on the bloatit website
+ * A response to a form used to assess any <code>kudosable</code> on the bloatit website
  */
-@ParamContainer("action/kudo")
-public final class KudoAction extends LoggedAction {
+@ParamContainer("popularity/vote")
+public final class PopularityVoteAction extends LoggedAction {
 
     public static final String TARGET_KUDOSABLE = "targetKudosable";
+    public static final String VOTE_UP = "voteUp";
 
     @RequestParam(name = TARGET_KUDOSABLE, level = Level.ERROR)
     private final KudosableInterface<?> targetKudosable;
 
-    private final KudoActionUrl url;
+    @RequestParam(name = VOTE_UP, level = Level.ERROR)
+    private final Boolean voteUp;
 
-    public KudoAction(final KudoActionUrl url) {
+    private final PopularityVoteActionUrl url;
+
+    public PopularityVoteAction(final PopularityVoteActionUrl url) {
         super(url);
         this.url = url;
         this.targetKudosable = url.getTargetKudosable();
+        this.voteUp = url.getVoteUp();
         session.notifyList(url.getMessages());
     }
 
@@ -46,10 +54,39 @@ public final class KudoAction extends LoggedAction {
         targetKudosable.authenticate(session.getAuthToken());
 
         try {
-            targetKudosable.kudos();
-            session.notifyGood(Context.tr("Kudo applied"));
+            if(voteUp) {
+                EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();
+
+                if(canVote.isEmpty()) {
+                    int weight = targetKudosable.voteUp();
+                    session.notifyGood(Context.tr("Vote up applied: {0}", weight));
+                } else {
+                    if(canVote.contains(SpecialCode.ALREADY_VOTED)) {
+                        session.notifyBad(Context.tr("You already voted on that."));
+                    }
+                    if(canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP)) {
+                        session.notifyBad(Context.tr("You have a too low reputation to vote up that."));
+                    }
+                }
+
+
+            } else {
+                EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();
+
+                if(canVote.isEmpty()) {
+                    int weight = targetKudosable.voteDown();
+                    session.notifyGood(Context.tr("Vote down applied: {0}", weight));
+                } else {
+                    if(canVote.contains(SpecialCode.ALREADY_VOTED)) {
+                        session.notifyBad(Context.tr("You already voted on that."));
+                    }
+                    if(canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN)) {
+                        session.notifyBad(Context.tr("You have a too low reputation to vote up that."));
+                    }
+                }
+            }
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to kudo that."));
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to vote on that."));
         }
 
         return session.pickPreferredPage();

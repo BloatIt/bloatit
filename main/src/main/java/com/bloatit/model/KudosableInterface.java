@@ -9,13 +9,15 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCo
 
 public interface KudosableInterface<T extends DaoKudosable> extends UserContentInterface<T> {
 
-    EnumSet<SpecialCode> canKudos();
+    EnumSet<SpecialCode> canVoteUp();
 
-    EnumSet<SpecialCode> canUnkudos();
+    EnumSet<SpecialCode> canVoteDown();
 
-    void unkudos() throws UnauthorizedOperationException;
+    int getVote();
 
-    void kudos() throws UnauthorizedOperationException;
+    int voteDown() throws UnauthorizedOperationException;
+
+    int voteUp() throws UnauthorizedOperationException;
 
     State getState();
 

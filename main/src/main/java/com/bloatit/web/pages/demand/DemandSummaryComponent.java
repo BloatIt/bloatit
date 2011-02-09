@@ -33,8 +33,8 @@ import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
-import com.bloatit.web.url.KudoActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
+import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 
 public final class DemandSummaryComponent extends HtmlPageComponent {
@@ -65,7 +65,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                         final HtmlImage projectImage = new HtmlImage(imageUrl, "project_image");
                         demandSummaryLeft.add(projectImage);
                     } catch (UnauthorizedOperationException e) {
-                     // no right, no image
+                        // no right, no image
                     }
 
                 }
@@ -110,25 +110,41 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                     final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()),
                             "demand_popularity_score");
 
-                    final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
-                    {
-                        // Usefull
-                        final KudoActionUrl usefullUrl = new KudoActionUrl(demand);
-                        final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
-                        usefullLink.setCssClass("usefull");
-
-                        // Useless
-                        final KudoActionUrl uselessUrl = new KudoActionUrl(demand);
-                        final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
-                        uselessLink.setCssClass("useless");
-
-                        demandPopularityJudge.add(usefullLink);
-                        demandPopularityJudge.add(uselessLink);
-                    }
-
                     demandSummaryPopularity.add(popularityText);
                     demandSummaryPopularity.add(popularityScore);
-                    demandSummaryPopularity.add(demandPopularityJudge);
+
+                    int vote = demand.getVote();
+                    if (vote == 0) {
+                        final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
+                        {
+
+                            // Usefull
+                            final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(demand, true);
+                            final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
+                            usefullLink.setCssClass("usefull");
+
+                            // Useless
+                            final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(demand, false);
+                            final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
+                            uselessLink.setCssClass("useless");
+
+                            demandPopularityJudge.add(usefullLink);
+                            demandPopularityJudge.add(uselessLink);
+                        }
+                        demandSummaryPopularity.add(demandPopularityJudge);
+                    } else {
+                        //Already voted
+                        final HtmlDiv demandPopularityJudged = new HtmlDiv("demand_popularity_judged");
+                        {
+                            if (vote > 0) {
+                                demandPopularityJudged.add(new HtmlParagraph("+" + vote, "usefull"));
+                            } else {
+                                demandPopularityJudged.add(new HtmlParagraph("−" + Math.abs(vote), "useless"));
+                            }
+                        }
+                        demandSummaryPopularity.add(demandPopularityJudged);
+                    }
+
                 }
                 demandSummaryBottom.add(demandSummaryPopularity);
 

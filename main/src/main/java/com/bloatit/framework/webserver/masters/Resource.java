@@ -17,15 +17,17 @@ public abstract class Resource implements Linkable {
 
         File file = new File(getFileUrl());
 
+        if(!file.exists()) {
+            Log.web().error("File not exist: '"+file.getParent()+"'.");
+            throw new RedirectException(new PageNotFoundUrl());
+        }
+
+
         if(!file.getParent().equals(FILE_STORAGE_DIRECTORY)) {
             Log.web().error("Invalid stored file directory: '"+file.getParent()+"' instead of '"+FILE_STORAGE_DIRECTORY+"' expected.");
             throw new RedirectException(new PageNotFoundUrl());
         }
 
-        if(!file.exists()) {
-            Log.web().error("File not exist: '"+file.getParent()+"'.");
-            throw new RedirectException(new PageNotFoundUrl());
-        }
 
         response.writeResource(file.getPath(), getFileSize(), getFileName());
     }

@@ -30,8 +30,8 @@ import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.IdeaCommentActionUrl;
-import com.bloatit.web.url.KudoActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.PopularityVoteActionUrl;
 
 public final class DemandCommentListComponent extends HtmlPageComponent {
 
@@ -110,12 +110,12 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
                 commentPopularity.addText(" (");
 
                 // Usefull
-                final KudoActionUrl usefullUrl = new KudoActionUrl(comment);
+                final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(comment, true);
                 final HtmlLink usefullLink = usefullUrl.getHtmlLink(Context.tr("Usefull"));
                 usefullLink.setCssClass("usefull");
 
                 // Useless
-                final KudoActionUrl uselessUrl = new KudoActionUrl(comment);
+                final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(comment, false);
                 final HtmlLink uselessLink = uselessUrl.getHtmlLink(Context.tr("Useless"));
                 uselessLink.setCssClass("useless");
 

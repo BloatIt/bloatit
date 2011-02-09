@@ -10,7 +10,6 @@ import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.actions.IdeaCommentAction;
-import com.bloatit.web.actions.KudoAction;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.actions.MemberActivationAction;
@@ -18,6 +17,7 @@ import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.actions.PaylineNotifyAction;
 import com.bloatit.web.actions.PaylineReturnAction;
+import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.RegisterAction;
 import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
@@ -56,7 +56,6 @@ import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.KudoActionUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
@@ -70,6 +69,7 @@ import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylinePageUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
+import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
@@ -169,8 +169,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(RegisterActionUrl.getName())) {
             return new RegisterAction(new RegisterActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(KudoActionUrl.getName())) {
-            return new KudoAction(new KudoActionUrl(params, session.getParameters()));
+        if (pageCode.equals(PopularityVoteActionUrl.getName())) {
+            return new PopularityVoteAction(new PopularityVoteActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(IdeaCommentActionUrl.getName())) {
             return new IdeaCommentAction(new IdeaCommentActionUrl(params, session.getParameters()));
