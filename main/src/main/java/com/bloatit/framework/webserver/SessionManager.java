@@ -25,8 +25,8 @@ import java.util.UUID;
 
 import javassist.NotFoundException;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
-import com.bloatit.framework.utils.ConfigurationManager;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.AuthToken;
 

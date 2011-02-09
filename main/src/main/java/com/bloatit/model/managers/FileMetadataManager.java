@@ -12,11 +12,11 @@ package com.bloatit.model.managers;
 
 import java.io.File;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
-import com.bloatit.framework.utils.ConfigurationManager;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 

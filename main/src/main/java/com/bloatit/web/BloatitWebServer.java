@@ -11,7 +11,6 @@ import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.actions.IdeaCommentAction;
-import com.bloatit.web.actions.KudoAction;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.actions.MemberActivationAction;
@@ -19,6 +18,7 @@ import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.actions.PaylineNotifyAction;
 import com.bloatit.web.actions.PaylineReturnAction;
+import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.RegisterAction;
 import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
@@ -28,6 +28,7 @@ import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateDemandPage;
 import com.bloatit.web.pages.DemandListPage;
+import com.bloatit.web.pages.Documentation;
 import com.bloatit.web.pages.FileUploadPage;
 import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
@@ -56,11 +57,11 @@ import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.DocumentationUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.KudoActionUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
@@ -74,6 +75,7 @@ import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylinePageUrl;
 import com.bloatit.web.url.PaylineReturnActionUrl;
+import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
@@ -92,7 +94,7 @@ public class BloatitWebServer extends WebServer {
     @Override
     protected Linkable constructLinkable(String pageCode, Parameters params, Session session) {
 
-        //Pages
+        // Pages
         if (pageCode.equals(IndexPageUrl.getName())) {
             return new IndexPage(new IndexPageUrl(params, session.getParameters()));
         }
@@ -156,8 +158,11 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(AdministrationPageUrl.getName())) {
             return new AdministrationPage(new AdministrationPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(DocumentationUrl.getName())) {
+            return new Documentation(new DocumentationUrl(params, session.getParameters()));
+        }
 
-        //Actions
+        // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
             return new LoginAction(new LoginActionUrl(params, session.getParameters()));
         }
@@ -176,8 +181,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(RegisterActionUrl.getName())) {
             return new RegisterAction(new RegisterActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(KudoActionUrl.getName())) {
-            return new KudoAction(new KudoActionUrl(params, session.getParameters()));
+        if (pageCode.equals(PopularityVoteActionUrl.getName())) {
+            return new PopularityVoteAction(new PopularityVoteActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(IdeaCommentActionUrl.getName())) {
             return new IdeaCommentAction(new IdeaCommentActionUrl(params, session.getParameters()));
@@ -210,7 +215,7 @@ public class BloatitWebServer extends WebServer {
             return new AdministrationAction(new AdministrationActionUrl(params, session.getParameters()));
         }
 
-        //Resource page
+        // Resource page
         if (pageCode.equals(FileResourceUrl.getName())) {
             return new FileResource(new FileResourceUrl(params, session.getParameters()));
         }

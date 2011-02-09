@@ -67,3 +67,11 @@ mail.from=
 mail.login=
 mail.password=
 
+************************************
+*  Configure internal mail server  *
+************************************
+Create file ~/.config/bloatit/web.properties
+Add inside the following content : 
+
+bloatit.documentation.dir=<PATH_TO_ELVEOS>/doc/websitedoc/
+

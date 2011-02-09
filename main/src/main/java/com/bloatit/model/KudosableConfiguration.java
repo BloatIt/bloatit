@@ -1,7 +1,7 @@
 package com.bloatit.model;
 
-import com.bloatit.framework.utils.ConfigurationManager;
-import com.bloatit.framework.utils.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.ConfigurationManager;
+import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 
 public class KudosableConfiguration {
 
@@ -35,7 +35,7 @@ public class KudosableConfiguration {
 
 
 
-    private static final int MIN_INFLUENCE_TO_UNKUDOS = conf.getInt("kudosable.min_influence_unkudo", 2);
+    private static final int MIN_INFLUENCE_TO_UNKUDOS = conf.getInt("kudosable.min_influence_unkudo", 1);
     private static final int MIN_INFLUENCE_TO_KUDOS = conf.getInt("kudosable.min_influence_kudo", 0);
     /**
      * @return the defaultTurnValid

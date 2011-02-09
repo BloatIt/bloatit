@@ -38,17 +38,17 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You try to (un)kudos a kudosable that has already been (un)kudosed by you.
          */
-        ALREADY_KUDOSED,
+        ALREADY_VOTED,
 
         /**
          * Influence too low to unkudos a kudosable
          */
-        INFLUENCE_LOW_ON_UNKUDOS,
+        INFLUENCE_LOW_ON_VOTE_DOWN,
 
         /**
          * Influence too low to kudos a kudosable
          */
-        INFLUENCE_LOW_ON_KUDOS,
+        INFLUENCE_LOW_ON_VOTE_UP,
 
         /**
          * You try to add somebody in a group, but this group is not public. You have to
@@ -75,7 +75,12 @@ public class UnauthorizedOperationException extends Exception {
          * You create an object and insert it with different person. For example Tom
          * create an Offer and Yo insert it in the demand.
          */
-        CREATOR_INSERTOR_MISMATCH
+        CREATOR_INSERTOR_MISMATCH,
+
+        /**
+         * You try to vote but you are the author
+         */
+        OWNED_BY_ME
 
     }
 

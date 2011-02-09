@@ -10,19 +10,19 @@ public class KudosableTest extends ModelTestUnit {
         final DemandImplementation demand = (DemandImplementation) DemandManager.getDemandById(db.getDemand().getId());
 
         demand.authenticate(fredAuthToken);
-        assertTrue(demand.canKudos().isEmpty());
-        demand.kudos();
-        assertFalse(demand.canKudos().isEmpty());
+        assertTrue(demand.canVoteUp().isEmpty());
+        demand.voteUp();
+        assertFalse(demand.canVoteUp().isEmpty());
 
         demand.authenticate(yoAuthToken);
-        assertTrue(demand.canKudos().isEmpty());
-        demand.kudos();
-        assertFalse(demand.canKudos().isEmpty());
+        assertTrue(demand.canVoteUp().isEmpty());
+        demand.voteUp();
+        assertFalse(demand.canVoteUp().isEmpty());
 
         demand.authenticate(tomAuthToken);
-        assertTrue(demand.canKudos().isEmpty());
-        demand.kudos();
-        assertFalse(demand.canKudos().isEmpty());
+        assertTrue(demand.canVoteUp().isEmpty());
+        demand.voteUp();
+        assertFalse(demand.canVoteUp().isEmpty());
     }
 
     public void testUnkudos() {
@@ -38,7 +38,7 @@ public class KudosableTest extends ModelTestUnit {
         final DemandImplementation demand = (DemandImplementation) DemandManager.getDemandById(db.getDemand().getId());
 
         demand.authenticate(yoAuthToken);
-        demand.kudos();
+        demand.voteUp();
         assertEquals(1, demand.getPopularity());
     }
 
