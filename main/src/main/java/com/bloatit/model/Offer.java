@@ -10,8 +10,7 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.demand.Demand;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.lists.BatchList;
 
 // TODO rightManagement
@@ -44,7 +43,7 @@ public final class Offer extends Kudosable<DaoOffer> {
      *        Must be in the future.
      */
     public Offer(final Member member,
-                 final DemandInterface demand,
+                 final Demand demand,
                  final BigDecimal amount,
                  final String title,
                  final String description,
@@ -84,7 +83,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     public boolean validateCurrentBatch(final boolean force) {
-        // If the validation is not complete, there is nothing to do in the demand
+        // If the validation is not complete, there is nothing to do in the demandImplementation
         final boolean isAllValidated = findCurrentDaoBatch().validate(force);
         if (isAllValidated) {
             if (getDao().hasBatchesLeft()) {
@@ -129,8 +128,8 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
-    public Demand getDemand() {
-        return Demand.create(getDao().getDemand());
+    public DemandImplementation getDemand() {
+        return DemandImplementation.create(getDao().getDemand());
     }
 
     public BigDecimal getAmount() {

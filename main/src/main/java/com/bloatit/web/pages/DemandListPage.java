@@ -27,13 +27,13 @@ import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandListPageUrl;
 
-@ParamContainer("demand/list")
+@ParamContainer("demandImplementation/list")
 public final class DemandListPage extends MasterPage {
 
     public static final String FILTER_ALL = "all";
@@ -57,7 +57,7 @@ public final class DemandListPage extends MasterPage {
     @RequestParam(defaultValue = "", name = SEARCH_STRING_CODE)
     private final String searchString;
 
-    private HtmlPagedList<DemandInterface> pagedDemandList;
+    private HtmlPagedList<Demand> pagedDemandList;
     private final DemandListPageUrl url;
 
     public DemandListPage(final DemandListPageUrl url) {
@@ -84,7 +84,7 @@ public final class DemandListPage extends MasterPage {
                 final HtmlTextField searchField = new HtmlTextField(SEARCH_STRING_CODE);
                 searchField.setDefaultValue(searchString);
 
-                final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search a demand"));
+                final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search a demandImplementation"));
 
                 searchForm.add(searchField);
                 searchForm.add(searchButton);
@@ -206,16 +206,16 @@ public final class DemandListPage extends MasterPage {
         }
         add(demandSearchBlock);
 
-        // Demand list
+        // DemandImplementation list
 
-        PageIterable<DemandInterface> results = searchResult();
+        PageIterable<Demand> results = searchResult();
 
         if (results.size() > 0) {
 
-            final HtmlRenderer<DemandInterface> demandItemRenderer = new IdeasListItem();
+            final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
 
             final DemandListPageUrl clonedUrl = url.clone();
-            pagedDemandList = new HtmlPagedList<DemandInterface>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
+            pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
 
             add(pagedDemandList);
         } else {
@@ -244,12 +244,12 @@ public final class DemandListPage extends MasterPage {
         return "demands-list.css";
     }
 
-    static class IdeasListItem implements HtmlRenderer<DemandInterface> {
+    static class IdeasListItem implements HtmlRenderer<Demand> {
 
-        private DemandInterface demand;
+        private Demand demand;
 
         @Override
-        public HtmlNode generate(final DemandInterface demand) {
+        public HtmlNode generate(final Demand demand) {
             this.demand = demand;
 
             return generateContent();
@@ -260,7 +260,7 @@ public final class DemandListPage extends MasterPage {
         }
     };
 
-    private PageIterable<DemandInterface> searchResult() {
+    private PageIterable<Demand> searchResult() {
 
         DemandSearch search = new DemandSearch(searchString);
 

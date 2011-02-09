@@ -11,13 +11,13 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
 import com.bloatit.model.Comment;
+import com.bloatit.model.Demand;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.Project;
-import com.bloatit.model.demand.Demand;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.model.managers.FileMetadataManager;
@@ -75,7 +75,7 @@ public final class Loaders {
             return (Loader<T>) new ToString();
         } else if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
-        } else if (theClass.equals(Demand.class) || theClass.equals(DemandInterface.class)) {
+        } else if (theClass.equals(DemandImplementation.class) || theClass.equals(Demand.class)) {
             return (Loader<T>) new ToDemand();
         } else if (theClass.equals(Member.class)) {
             return (Loader<T>) new ToMember();

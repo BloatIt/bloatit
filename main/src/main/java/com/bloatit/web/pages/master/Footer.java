@@ -21,7 +21,7 @@ public class Footer extends HtmlDiv {
             linkBlock.add(new HtmlDiv("footer_link").add(new IndexPageUrl().getHtmlLink(Context.tr("Home page"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new SpecialsPageUrl().getHtmlLink(Context.tr("All pages"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new FileUploadPageUrl().getHtmlLink(Context.tr("Upload file"))));
-            linkBlock.add(new HtmlDiv("footer_link").add(new CreateDemandPageUrl().getHtmlLink(Context.tr("Create a demand"))));
+            linkBlock.add(new HtmlDiv("footer_link").add(new CreateDemandPageUrl().getHtmlLink(Context.tr("Create a demandImplementation"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new AddProjectPageUrl().getHtmlLink(Context.tr("Add a project"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new ProjectListPageUrl().getHtmlLink(Context.tr("Project list"))));
             linkBlock.add(new HtmlDiv("footer_link").add(new PageNotFoundUrl().getHtmlLink(Context.tr("Signal a bug"))));

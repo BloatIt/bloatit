@@ -33,8 +33,8 @@ import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A DaoDemand is a kudosable content. It has a translatable description, and can have a
- * specification and some offers. The state of the demand is managed by its super class
- * DaoKudosable. On a demand we can add some comment and some contriutions.
+ * specification and some offers. The state of the demandImplementation is managed by its super class
+ * DaoKudosable. On a demandImplementation we can add some comment and some contriutions.
  */
 @Entity
 @Indexed
@@ -42,7 +42,7 @@ import com.bloatit.framework.utils.PageIterable;
 public final class DaoDemand extends DaoKudosable {
 
     /**
-     * This is the state of the demand. It's used in the workflow modeling. The order is
+     * This is the state of the demandImplementation. It's used in the workflow modeling. The order is
      * important !
      */
     public enum DemandState {
@@ -69,13 +69,13 @@ public final class DaoDemand extends DaoKudosable {
     @IndexedEmbedded
     private DaoDescription description;
 
-    @OneToMany(mappedBy = "demand")
+    @OneToMany(mappedBy = "demandImplementation")
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
     private final Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
-    @OneToMany(mappedBy = "demand")
+    @OneToMany(mappedBy = "demandImplementation")
     @OrderBy(clause = "creationDate DESC")
     @Cascade(value = { CascadeType.ALL })
     private final Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
@@ -126,7 +126,7 @@ public final class DaoDemand extends DaoKudosable {
     /**
      * Create a DaoDemand and set its state to the state PENDING.
      *
-     * @param member is the author of the demand
+     * @param member is the author of the demandImplementation
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
      */
@@ -158,7 +158,7 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Add a contribution to a demand.
+     * Add a contribution to a demandImplementation.
      *
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
@@ -183,14 +183,14 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Add a new offer for this demand.
+     * Add a new offer for this demandImplementation.
      */
     public void addOffer(final DaoOffer offer) {
         offers.add(offer);
     }
 
     /**
-     * delete offer from this demand AND FROM DB !
+     * delete offer from this demandImplementation AND FROM DB !
      *
      * @param Offer the offer we want to delete.
      */
@@ -263,14 +263,14 @@ public final class DaoDemand extends DaoKudosable {
     /**
      * The current offer is the offer with the max popularity then the min amount.
      *
-     * @return the current offer for this demand, or null if there is no offer.
+     * @return the current offer for this demandImplementation, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
         // If there is no validated offer then we try to find a pending offer
         final String queryString = "FROM DaoOffer " + //
-                "WHERE demand = :this " + //
+                "WHERE demandImplementation = :this " + //
                 "AND state <= :state " + // <= pending means also validated.
-                "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
+                "AND popularity = (select max(popularity) from DaoOffer where demandImplementation = :this) " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
             return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this).setParameter("state", DaoKudosable.State.PENDING)
@@ -312,7 +312,7 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * @return the minimum value of the contribution on this demand.
+     * @return the minimum value of the contribution on this demandImplementation.
      */
     public BigDecimal getContributionMin() {
         return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
@@ -320,7 +320,7 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * @return the maximum value of the contribution on this demand.
+     * @return the maximum value of the contribution on this demandImplementation.
      */
     public BigDecimal getContributionMax() {
         return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")

@@ -19,20 +19,20 @@ import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandPageUrl;
 
-@ParamContainer("demand")
+@ParamContainer("demandImplementation")
 public final class DemandPage extends MasterPage {
 
     public static final String IDEA_FIELD_NAME = "id";
 
     @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
-    private final DemandInterface demand;
+    private final Demand demand;
 
     @SuppressWarnings("unused")
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demandImplementation")
     private final String title;
 
     private final DemandPageUrl url;
@@ -66,10 +66,10 @@ public final class DemandPage extends MasterPage {
 
     @Override
     protected String getCustomCss() {
-        return "demand.css";
+        return "demandImplementation.css";
     }
 
-    public DemandInterface getDemand() {
+    public Demand getDemand() {
         return demand;
     }
 
@@ -81,7 +81,7 @@ public final class DemandPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        // The demand page is composed by 3 parts:
+        // The demandImplementation page is composed by 3 parts:
         // - The sumary
         // - The tab panel
         // - The comments

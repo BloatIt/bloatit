@@ -22,6 +22,7 @@ import com.bloatit.model.AuthToken;
 import com.bloatit.model.CacheManager;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.Demand;
 import com.bloatit.model.Description;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
@@ -40,9 +41,9 @@ import com.bloatit.model.right.RightManager.Action;
 //
 
 /**
- * A demand is an idea :)
+ * A demandImplementation is an idea :)
  */
-public final class Demand extends Kudosable<DaoDemand> implements DemandInterface {
+public final class DemandImplementation extends Kudosable<DaoDemand> implements Demand {
     private AbstractDemandState stateObject;
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -50,31 +51,31 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create a new Demand. This method is not protected by any right management.
+     * Create a new DemandImplementation. This method is not protected by any right management.
      *
      * @return null if the <code>dao</code> is null.
      */
-    public static Demand create(final DaoDemand dao) {
+    public static DemandImplementation create(final DaoDemand dao) {
         if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
             return null;
         }
         @SuppressWarnings("unchecked")
         Identifiable<DaoDemand> created = CacheManager.get(dao);
         if (created == null) {
-            return new Demand(dao);
+            return new DemandImplementation(dao);
         }
-        return (Demand) created;
+        return (DemandImplementation) created;
     }
 
     /**
-     * Create a new demand. The right management for creating a demand is specific. (The
+     * Create a new demandImplementation. The right management for creating a demandImplementation is specific. (The
      * Right management system is not working in this case). You have to use the
      * {@link DemandManager#canCreate(AuthToken)} to make sure you can create a new
-     * demand.
+     * demandImplementation.
      *
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
-    public Demand(final Member author, final Locale locale, final String title, final String description, final Project project) {
+    public DemandImplementation(final Member author, final Locale locale, final String title, final String description, final Project project) {
         this(DaoDemand.createAndPersist(author.getDao(),
                                         DaoDescription.createAndPersist(author.getDao(), locale, title, description),
                                         project.getDao()));
@@ -83,7 +84,7 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     /**
      * Use the {@link #create(DaoDemand)} method.
      */
-    private Demand(final DaoDemand dao) {
+    private DemandImplementation(final DaoDemand dao) {
         super(dao);
     }
 
@@ -91,31 +92,41 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     // Can something
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    /* (non-Javadoc)
-     * @see com.bloatit.model.demand.DemandInterface#canAccessComment(com.bloatit.model.right.RightManager.Action)
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#canAccessComment(com.bloatit.model.right
+     * .RightManager.Action)
      */
     @Override
     public boolean canAccessComment(final Action action) {
         return new DemandRight.Comment().canAccess(calculateRole(this), action);
     }
 
-    /* (non-Javadoc)
-     * @see com.bloatit.model.demand.DemandInterface#canAccessContribution(com.bloatit.model.right.RightManager.Action)
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#canAccessContribution(com.bloatit.model
+     * .right.RightManager.Action)
      */
     @Override
     public boolean canAccessContribution(final Action action) {
         return new DemandRight.Contribute().canAccess(calculateRole(this), action);
     }
 
-    /* (non-Javadoc)
-     * @see com.bloatit.model.demand.DemandInterface#canAccessOffer(com.bloatit.model.right.RightManager.Action)
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#canAccessOffer(com.bloatit.model.right
+     * .RightManager.Action)
      */
     @Override
     public boolean canAccessOffer(final Action action) {
         return new DemandRight.Offer().canAccess(calculateRole(this), action);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#canAccessDescription()
      */
     @Override
@@ -127,8 +138,10 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     // Do things.
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    /* (non-Javadoc)
-     * @see com.bloatit.model.demand.DemandInterface#addContribution(java.math.BigDecimal, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#addContribution(java.math.BigDecimal,
+     * java.lang.String)
      */
     @Override
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
@@ -137,7 +150,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         setStateObject(getStateObject().eventAddContribution());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#addOffer(com.bloatit.model.Offer)
      */
     @Override
@@ -157,7 +171,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         getDao().addOffer(offer.getDao());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#removeOffer(com.bloatit.model.Offer)
      */
     @Override
@@ -170,7 +185,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         getDao().removeOffer(offer.getDao());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#cancelDevelopment()
      */
     @Override
@@ -183,7 +199,7 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     /**
-     * Cancel all the contribution on this demand.
+     * Cancel all the contribution on this demandImplementation.
      */
     private void cancel() {
         for (final Contribution contribution : getContributionsUnprotected()) {
@@ -192,7 +208,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         // Maybe I should make sure everything is canceled in every Offer/batches ?
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#releaseCurrentBatch()
      */
     @Override
@@ -210,7 +227,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     // TODO authorization
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#validateCurrentBatch(boolean)
      */
     @Override
@@ -224,7 +242,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return getSelectedOfferUnprotected().validateCurrentBatch(force);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#addComment(java.lang.String)
      */
     @Override
@@ -250,8 +269,10 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.bloatit.model.demand.DemandInterface#unSelectOffer(com.bloatit.model.Offer)
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#unSelectOffer(com.bloatit.model.Offer)
      */
     @Override
     public void unSelectOffer(final Offer offer) {
@@ -275,21 +296,21 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     /**
-     * Slot called when the demand change to {@link DiscardedState}.
+     * Slot called when the demandImplementation change to {@link DiscardedState}.
      */
     void inDiscardedState() {
         getDao().setDemandState(DemandState.DISCARDED);
     }
 
     /**
-     * Slot called when this demand state change to {@link FinishedState}.
+     * Slot called when this demandImplementation state change to {@link FinishedState}.
      */
     void inFinishedState() {
         getDao().setDemandState(DemandState.FINISHED);
     }
 
     /**
-     * Slot called when this demand state change to {@link IncomeState}.
+     * Slot called when this demandImplementation state change to {@link IncomeState}.
      */
     void inIncomeState() {
         getDao().setDemandState(DemandState.INCOME);
@@ -297,7 +318,7 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     /**
-     * Slot called when this demand state change to {@link PendingState}.
+     * Slot called when this demandImplementation state change to {@link PendingState}.
      */
     void inPendingState() {
         getDao().setDemandState(DemandState.PENDING);
@@ -305,7 +326,7 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     /**
-     * Slot called when this demand state change to {@link PreparingState}.
+     * Slot called when this demandImplementation state change to {@link PreparingState}.
      */
     void inPreparingState() {
         getDao().setDemandState(DemandState.PREPARING);
@@ -371,7 +392,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     // Get something
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getValidationDate()
      */
     @Override
@@ -379,7 +401,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return getDao().getValidationDate();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getComments()
      */
     @Override
@@ -388,7 +411,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return new CommentList(getDao().getCommentsFromQuery());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getContributions()
      */
     @Override
@@ -408,7 +432,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
     public static final int PROGRESSION_PERCENT = 100;
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getProgression()
      */
     @Override
@@ -424,7 +449,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return Float.POSITIVE_INFINITY;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getContribution()
      */
     @Override
@@ -433,7 +459,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return getDao().getContribution();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getContributionMax()
      */
     @Override
@@ -442,7 +469,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return getDao().getContributionMax();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getContributionMin()
      */
     @Override
@@ -451,7 +479,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return getDao().getContributionMin();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getDescription()
      */
     @Override
@@ -460,7 +489,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return Description.create(getDao().getDescription());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getOffers()
      */
     @Override
@@ -473,7 +503,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return new OfferList(getDao().getOffersFromQuery());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getSelectedOffer()
      */
     @Override
@@ -482,7 +513,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return getSelectedOfferUnprotected();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getValidatedOffer()
      */
     @Override
@@ -498,7 +530,8 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return Offer.create(getDao().getSelectedOffer());
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getTitle()
      */
     @Override
@@ -506,10 +539,6 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         return getDescription().getDefaultTranslation().getTitle();
     }
 
-    /* (non-Javadoc)
-     * @see com.bloatit.model.demand.DemandInterface#getDemandState()
-     */
-    @Override
     public DemandState getDemandState() {
         return getDao().getDemandState();
     }
@@ -518,10 +547,10 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
         this.stateObject = stateObject;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getStateObject()
      */
-    @Override
     public AbstractDemandState getStateObject() {
         switch (getDao().getDemandState()) {
         case PENDING:

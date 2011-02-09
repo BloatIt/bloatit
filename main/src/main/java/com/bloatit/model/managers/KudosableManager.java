@@ -19,7 +19,7 @@ import com.bloatit.model.Comment;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandImplementation;
 
 public final class KudosableManager {
 
@@ -35,10 +35,10 @@ public final class KudosableManager {
             return Comment.create(comment);
         }
 
-        // Try with demand
+        // Try with demandImplementation
         final DaoDemand demand = DBRequests.getById(DaoDemand.class, id);
         if (demand != null) {
-            return Demand.create(demand);
+            return DemandImplementation.create(demand);
         }
 
         // Try with offer

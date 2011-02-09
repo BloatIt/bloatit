@@ -19,7 +19,7 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 /**
- * A contribution is a financial participation on a demand. Each contribution can have a
+ * A contribution is a financial participation on a demandImplementation. Each contribution can have a
  * little comment/description text on it (144 char max like twitter)
  */
 @Entity
@@ -27,7 +27,7 @@ public final class DaoContribution extends DaoUserContent {
     protected static final int COMMENT_MAX_LENGTH = 144;
 
     /**
-     * The state of a contribution should follow the state of the associated demand.
+     * The state of a contribution should follow the state of the associated demandImplementation.
      */
     public enum State {
         PENDING, VALIDATED, CANCELED
@@ -51,7 +51,7 @@ public final class DaoContribution extends DaoUserContent {
     private String comment;
 
     /**
-     * If the demand is validated then the contribution is also validated and then we
+     * If the demandImplementation is validated then the contribution is also validated and then we
      * create a transaction. So there should be a non null transaction on each validated
      * contribution and only on those. (Except when a user add on offer on his own offer
      * -> no transaction)
@@ -70,7 +70,7 @@ public final class DaoContribution extends DaoUserContent {
      * value that is reserved to this contribution)
      *
      * @param member the person making the contribution.
-     * @param demand the demand on which we add a contribution.
+     * @param demandImplementation the demandImplementation on which we add a contribution.
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.
      * @throws NonOptionalParameterException if any of the parameter is null except

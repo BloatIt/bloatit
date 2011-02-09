@@ -51,18 +51,18 @@ public class UnauthorizedOperationException extends Exception {
         INVITATION_RECIEVER_MISMATCH,
 
         /**
-         * You try to delete a demand, but you are not the current developer.
+         * You try to delete a demandImplementation, but you are not the current developer.
          */
         NON_DEVELOPER_CANCEL_DEMAND,
 
         /**
-         * You try to finish a demand, but you are not the current developer.
+         * You try to finish a demandImplementation, but you are not the current developer.
          */
         NON_DEVELOPER_FINISHED_DEMAND,
 
         /**
          * You create an object and insert it with different person. For example Tom
-         * create an Offer and Yo insert it in the demand.
+         * create an Offer and Yo insert it in the demandImplementation.
          */
         CREATOR_INSERTOR_MISMATCH
 

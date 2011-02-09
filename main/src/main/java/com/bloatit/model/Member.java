@@ -16,7 +16,6 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.model.demand.DemandList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
@@ -263,7 +262,7 @@ public final class Member extends Actor<DaoMember> {
         getDao().setLocale(loacle);
     }
 
-    public PageIterable<DemandInterface> getDemands() {
+    public PageIterable<Demand> getDemands() {
         return new DemandList(getDao().getDemands());
     }
 
