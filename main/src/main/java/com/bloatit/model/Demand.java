@@ -176,12 +176,20 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     BigDecimal getContributionMin() throws UnauthorizedOperationException;
 
     /**
-     * @return the current Description of this offer.
+     * @return the current Description of this demand.
      * @throws UnauthorizedOperationException if the user does not has the right on the
      *         <code>Description</code> property.
      * @see #authenticate(AuthToken)
      */
     Description getDescription() throws UnauthorizedOperationException;
+
+    /**
+     * @return the current associate project of this offer.
+     * @throws UnauthorizedOperationException if the user does not has the right on the
+     *         <code>Project</code> property.
+     * @see #authenticate(AuthToken)
+     */
+    Project getProject() throws UnauthorizedOperationException;
 
     /**
      * @return all the offers on this demandImplementation.
