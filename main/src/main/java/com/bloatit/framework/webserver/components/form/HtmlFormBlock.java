@@ -15,18 +15,33 @@ import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 
 /**
- * Creates blocks in a form
+ * <p>
+ * Creates display blocks in a form
+ * </p>
+ * <p>
+ * Form blocks should be used to separate various sections of a form. For
+ * example personnal user data could be in one formblock and website preferences
+ * in another one.
+ * </p>
  * 
  * <pre>
- * <fieldset>
+ * {@code<fieldset>
  *      <legend>my legend here</legend>
  *      <form element />
  *      <another form element />
- * </fieldset>
+ * </fieldset>}
  * </pre>
  */
 public final class HtmlFormBlock extends HtmlBranch {
 
+    /**
+     * <p>
+     * Create a new displayed form block, with a displayed legend
+     * </p>
+     * 
+     * @param legend
+     *            The text displayed to explain content of the form block
+     */
     public HtmlFormBlock(final String legend) {
         super("fieldset");
         final HtmlBranch legendBranch = new HtmlGenericElement("legend");
