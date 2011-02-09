@@ -27,13 +27,13 @@ import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * An offer is a developer offer to a demandImplementation.
+ * An offer is a developer offer to a demand.
  */
 @Entity
 public final class DaoOffer extends DaoKudosable {
 
     /**
-     * This is demandImplementation on which this offer is done.
+     * This is demand on which this offer is done.
      */
     @ManyToOne(optional = false)
     private DaoDemand demand;
@@ -89,9 +89,9 @@ public final class DaoOffer extends DaoKudosable {
      * Create a DaoOffer.
      *
      * @param member is the author of the offer. Must be non null.
-     * @param demandImplementation is the demandImplementation on which this offer is made. Must be non null.
+     * @param demand is the demand on which this offer is made. Must be non null.
      * @param amount is the amount of the offer. Must be non null, and > 0.
-     * @param description is the description of the demandImplementation. Must be non null.
+     * @param description is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must be non
      *        null, and in the future.
      * @throws NonOptionalParameterException if a parameter is null.

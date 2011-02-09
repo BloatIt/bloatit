@@ -52,7 +52,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     boolean canAccessDescription();
 
     /**
-     * Add a contribution on this demandImplementation.
+     * Add a contribution on this demand.
      *
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char long.
@@ -123,7 +123,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     Date getValidationDate();
 
     /**
-     * @return the first level comments on this demandImplementation.
+     * @return the first level comments on this demand.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#READ} right on the <code>Comment</code> property.
      * @see #authenticate(AuthToken)
@@ -152,7 +152,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     float getProgression() throws UnauthorizedOperationException;
 
     /**
-     * @return return the sum of the values of all the contributions on this demandImplementation.
+     * @return return the sum of the values of all the contributions on this demand.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#READ} right on the <code>Contribution</code> property.
      * @see #authenticate(AuthToken)
@@ -184,7 +184,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     Description getDescription() throws UnauthorizedOperationException;
 
     /**
-     * @return the current associate project of this offer.
+     * @return the current associate project of this demand.
      * @throws UnauthorizedOperationException if the user does not has the right on the
      *         <code>Project</code> property.
      * @see #authenticate(AuthToken)
@@ -192,7 +192,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     Project getProject() throws UnauthorizedOperationException;
 
     /**
-     * @return all the offers on this demandImplementation.
+     * @return all the offers on this demand.
      * @throws UnauthorizedOperationException if the user does not has the
      *         <code>READ</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)
@@ -202,7 +202,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     /**
      * The current offer is the offer with the max popularity then the min amount.
      *
-     * @return the current offer for this demandImplementation, or null if there is no offer.
+     * @return the current offer for this demand, or null if there is no offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *         <code>READ</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)

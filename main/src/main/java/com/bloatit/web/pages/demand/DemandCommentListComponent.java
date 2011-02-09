@@ -153,7 +153,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
 
         final HtmlTextArea commentInput = new HtmlTextArea(IdeaCommentAction.COMMENT_CONTENT_CODE, Context.tr("New comment : "), NB_ROWS, NB_COLUMNS);
         form.add(commentInput);
-        commentInput.setComment(Context.tr("Use this field to comment the demandImplementation. If you want to reply to a previous comment, use the reply link."));
+        commentInput.setComment(Context.tr("Use this field to comment the demand. If you want to reply to a previous comment, use the reply link."));
 
         form.add(new HtmlSubmit(Context.tr("Submit comment")));
 

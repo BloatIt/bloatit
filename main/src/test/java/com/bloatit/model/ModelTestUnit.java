@@ -16,6 +16,7 @@ public class ModelTestUnit extends TestCase {
 
     private static int init() {
         ModelManagerAccessor.init(new Model());
+        SessionManager.generateTestSessionFactory();
         return 0;
     }
 

@@ -4,15 +4,15 @@ import com.bloatit.model.Offer;
 
 public class PendingState extends CanContributeMetaState {
 
-    public PendingState(final DemandImplementation demandImplementation) {
-        super(demandImplementation);
-        demandImplementation.inPendingState();
+    public PendingState(final DemandImplementation demand) {
+        super(demand);
+        demand.inPendingState();
     }
 
     @Override
     public AbstractDemandState eventAddOffer(final Offer offer) {
-        demandImplementation.setSelectedOffer(offer);
-        return new PreparingState(demandImplementation);
+        demand.setSelectedOffer(offer);
+        return new PreparingState(demand);
     }
 
     @Override

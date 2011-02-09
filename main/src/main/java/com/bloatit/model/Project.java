@@ -30,10 +30,10 @@ public class Project extends Identifiable<DaoProject> {
     }
 
     /**
-     * Create a new project. The right management for creating a demandImplementation is specific. (The
+     * Create a new project. The right management for creating a demand is specific. (The
      * Right management system is not working in this case). You have to use the
      * {@link DemandManager#canCreate(AuthToken)} to make sure you can create a new
-     * demandImplementation.
+     * demand.
      *
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */

@@ -42,123 +42,123 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testDemand() {
-        final DemandImplementation demandImplementation = new DemandImplementation(tomAuthToken.getMember(), Locale.FRANCE, "title", "Description", Project.create(DaoProject.getByName("VLC")));
-        assertEquals(demandImplementation.getAuthor(), tomAuthToken.getMember());
+        final DemandImplementation demand = new DemandImplementation(tomAuthToken.getMember(), Locale.FRANCE, "title", "Description", Project.create(DaoProject.getByName("VLC")));
+        assertEquals(demand.getAuthor(), tomAuthToken.getMember());
         try {
-            assertEquals(demandImplementation.getDescription().getDefaultLocale(), Locale.FRANCE);
-            assertEquals(demandImplementation.getDescription().getDefaultTranslation().getTitle(), "title");
-            assertEquals(demandImplementation.getDescription().getDefaultTranslation().getText(), "Description");
+            assertEquals(demand.getDescription().getDefaultLocale(), Locale.FRANCE);
+            assertEquals(demand.getDescription().getDefaultTranslation().getTitle(), "title");
+            assertEquals(demand.getDescription().getDefaultTranslation().getText(), "Description");
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
     }
 
     public void testCanAccessComment() {
-        final DemandImplementation demandImplementation = createDemandByThomas();
-        assertTrue(demandImplementation.canAccessComment(Action.READ));
-        assertFalse(demandImplementation.canAccessComment(Action.WRITE));
-        assertFalse(demandImplementation.canAccessComment(Action.DELETE));
+        final DemandImplementation demand = createDemandByThomas();
+        assertTrue(demand.canAccessComment(Action.READ));
+        assertFalse(demand.canAccessComment(Action.WRITE));
+        assertFalse(demand.canAccessComment(Action.DELETE));
 
         // other
-        demandImplementation.authenticate(fredAuthToken);
-        assertTrue(demandImplementation.canAccessComment(Action.READ));
-        assertTrue(demandImplementation.canAccessComment(Action.WRITE));
-        assertFalse(demandImplementation.canAccessComment(Action.DELETE));
+        demand.authenticate(fredAuthToken);
+        assertTrue(demand.canAccessComment(Action.READ));
+        assertTrue(demand.canAccessComment(Action.WRITE));
+        assertFalse(demand.canAccessComment(Action.DELETE));
 
-        // demandImplementation creator
-        demandImplementation.authenticate(tomAuthToken);
-        assertTrue(demandImplementation.canAccessComment(Action.READ));
-        assertTrue(demandImplementation.canAccessComment(Action.WRITE));
-        assertFalse(demandImplementation.canAccessComment(Action.DELETE));
+        // demand creator
+        demand.authenticate(tomAuthToken);
+        assertTrue(demand.canAccessComment(Action.READ));
+        assertTrue(demand.canAccessComment(Action.WRITE));
+        assertFalse(demand.canAccessComment(Action.DELETE));
 
         // For now nobody can delete a comment
     }
 
     public void testCanAccessContribution() {
-        final DemandImplementation demandImplementation = createDemandByThomas();
-        assertTrue(demandImplementation.canAccessContribution(Action.READ));
-        assertFalse(demandImplementation.canAccessContribution(Action.WRITE));
-        assertFalse(demandImplementation.canAccessContribution(Action.DELETE));
+        final DemandImplementation demand = createDemandByThomas();
+        assertTrue(demand.canAccessContribution(Action.READ));
+        assertFalse(demand.canAccessContribution(Action.WRITE));
+        assertFalse(demand.canAccessContribution(Action.DELETE));
 
-        // owner of demandImplementation.
-        demandImplementation.authenticate(tomAuthToken);
-        assertTrue(demandImplementation.canAccessContribution(Action.READ));
-        assertTrue(demandImplementation.canAccessContribution(Action.WRITE));
-        assertFalse(demandImplementation.canAccessContribution(Action.DELETE));
+        // owner of demand.
+        demand.authenticate(tomAuthToken);
+        assertTrue(demand.canAccessContribution(Action.READ));
+        assertTrue(demand.canAccessContribution(Action.WRITE));
+        assertFalse(demand.canAccessContribution(Action.DELETE));
 
         // other
-        demandImplementation.authenticate(fredAuthToken);
-        assertTrue(demandImplementation.canAccessContribution(Action.READ));
-        assertTrue(demandImplementation.canAccessContribution(Action.WRITE));
-        assertFalse(demandImplementation.canAccessContribution(Action.DELETE));
+        demand.authenticate(fredAuthToken);
+        assertTrue(demand.canAccessContribution(Action.READ));
+        assertTrue(demand.canAccessContribution(Action.WRITE));
+        assertFalse(demand.canAccessContribution(Action.DELETE));
     }
 
     public void testCanAccessOffer() {
-        final DemandImplementation demandImplementation = createDemandByThomas();
-        assertTrue(demandImplementation.canAccessOffer(Action.READ));
-        assertFalse(demandImplementation.canAccessOffer(Action.WRITE));
-        assertFalse(demandImplementation.canAccessOffer(Action.DELETE));
+        final DemandImplementation demand = createDemandByThomas();
+        assertTrue(demand.canAccessOffer(Action.READ));
+        assertFalse(demand.canAccessOffer(Action.WRITE));
+        assertFalse(demand.canAccessOffer(Action.DELETE));
 
         // other
-        demandImplementation.authenticate(fredAuthToken);
-        assertTrue(demandImplementation.canAccessOffer(Action.READ));
-        assertTrue(demandImplementation.canAccessOffer(Action.WRITE));
-        assertFalse(demandImplementation.canAccessOffer(Action.DELETE));
+        demand.authenticate(fredAuthToken);
+        assertTrue(demand.canAccessOffer(Action.READ));
+        assertTrue(demand.canAccessOffer(Action.WRITE));
+        assertFalse(demand.canAccessOffer(Action.DELETE));
 
-        // owner of demandImplementation.
-        demandImplementation.authenticate(tomAuthToken);
-        assertTrue(demandImplementation.canAccessOffer(Action.READ));
-        assertTrue(demandImplementation.canAccessOffer(Action.WRITE));
-        assertFalse(demandImplementation.canAccessOffer(Action.DELETE));
+        // owner of demand.
+        demand.authenticate(tomAuthToken);
+        assertTrue(demand.canAccessOffer(Action.READ));
+        assertTrue(demand.canAccessOffer(Action.WRITE));
+        assertFalse(demand.canAccessOffer(Action.DELETE));
     }
 
     public void testCanAccessDescription() {
-        final DemandImplementation demandImplementation = createDemandByThomas();
-        assertTrue(demandImplementation.canAccessDescription());
-        demandImplementation.authenticate(yoAuthToken);
-        assertTrue(demandImplementation.canAccessDescription());
-        demandImplementation.authenticate(tomAuthToken);
-        assertTrue(demandImplementation.canAccessDescription());
+        final DemandImplementation demand = createDemandByThomas();
+        assertTrue(demand.canAccessDescription());
+        demand.authenticate(yoAuthToken);
+        assertTrue(demand.canAccessDescription());
+        demand.authenticate(tomAuthToken);
+        assertTrue(demand.canAccessDescription());
     }
 
     public void testAddContribution() throws UnauthorizedOperationException {
-        final DemandImplementation demandImplementation = createDemandByThomas();
+        final DemandImplementation demand = createDemandByThomas();
 
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
+        assertEquals(DemandState.PENDING, demand.getDemandState());
 
-        demandImplementation.authenticate(fredAuthToken);
+        demand.authenticate(fredAuthToken);
         try {
-            demandImplementation.addContribution(new BigDecimal("10"), "comment");
+            demand.addContribution(new BigDecimal("10"), "comment");
         } catch (final NotEnoughMoneyException e) {
             fail();
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
 
-        assertEquals(demandImplementation.getContribution(), new BigDecimal("10"));
+        assertEquals(demand.getContribution(), new BigDecimal("10"));
 
         try {
-            demandImplementation.addContribution(new BigDecimal("10"), null);
+            demand.addContribution(new BigDecimal("10"), null);
         } catch (final NotEnoughMoneyException e) {
             fail();
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
 
-        assertEquals(demandImplementation.getContribution(), new BigDecimal("20"));
+        assertEquals(demand.getContribution(), new BigDecimal("20"));
 
         try {
-            demandImplementation.addContribution(new BigDecimal("10"), "");
+            demand.addContribution(new BigDecimal("10"), "");
         } catch (final NotEnoughMoneyException e) {
             fail();
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
 
-        assertEquals(demandImplementation.getContribution(), new BigDecimal("30"));
+        assertEquals(demand.getContribution(), new BigDecimal("30"));
 
         try {
-            demandImplementation.addContribution(null, "comment");
+            demand.addContribution(null, "comment");
             fail();
         } catch (final NotEnoughMoneyException e) {
             fail();
@@ -168,10 +168,10 @@ public class DemandImplementationTest extends ModelTestUnit {
             assertTrue(true);
         }
 
-        assertEquals(demandImplementation.getContribution(), new BigDecimal("30"));
+        assertEquals(demand.getContribution(), new BigDecimal("30"));
 
         try {
-            demandImplementation.addContribution(new BigDecimal("-10"), "comment");
+            demand.addContribution(new BigDecimal("-10"), "comment");
             fail();
         } catch (final NotEnoughMoneyException e) {
             fail();
@@ -181,10 +181,10 @@ public class DemandImplementationTest extends ModelTestUnit {
             assertTrue(true);
         }
 
-        assertEquals(demandImplementation.getContribution(), new BigDecimal("30"));
+        assertEquals(demand.getContribution(), new BigDecimal("30"));
 
         try {
-            demandImplementation.addContribution(new BigDecimal("0"), "comment");
+            demand.addContribution(new BigDecimal("0"), "comment");
             fail();
         } catch (final NotEnoughMoneyException e) {
             fail();
@@ -194,11 +194,11 @@ public class DemandImplementationTest extends ModelTestUnit {
             assertTrue(true);
         }
 
-        assertEquals(demandImplementation.getContribution(), new BigDecimal("30"));
-        demandImplementation.authenticate(null);
+        assertEquals(demand.getContribution(), new BigDecimal("30"));
+        demand.authenticate(null);
 
         try {
-            demandImplementation.addContribution(new BigDecimal("10"), "comment");
+            demand.addContribution(new BigDecimal("10"), "comment");
             fail();
         } catch (final NotEnoughMoneyException e) {
             fail();
@@ -206,12 +206,12 @@ public class DemandImplementationTest extends ModelTestUnit {
             assertTrue(true);
         }
 
-        assertEquals(demandImplementation.getContribution(), new BigDecimal("30"));
+        assertEquals(demand.getContribution(), new BigDecimal("30"));
 
         // Tom have 1000 money.
-        demandImplementation.authenticate(tomAuthToken);
+        demand.authenticate(tomAuthToken);
         try {
-            demandImplementation.addContribution(new BigDecimal("1001"), "comment");
+            demand.addContribution(new BigDecimal("1001"), "comment");
             fail();
         } catch (final NotEnoughMoneyException e) {
             assertTrue(true);
@@ -219,40 +219,40 @@ public class DemandImplementationTest extends ModelTestUnit {
             fail();
         }
 
-        assertEquals(demandImplementation.getContribution(), new BigDecimal("30"));
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
+        assertEquals(demand.getContribution(), new BigDecimal("30"));
+        assertEquals(DemandState.PENDING, demand.getDemandState());
     }
 
     public void testAddOffer() {
-        final DemandImplementation demandImplementation = createDemandByThomas();
+        final DemandImplementation demand = createDemandByThomas();
 
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
-        demandImplementation.authenticate(fredAuthToken);
+        assertEquals(DemandState.PENDING, demand.getDemandState());
+        demand.authenticate(fredAuthToken);
 
         try {
-            assertNull(demandImplementation.getSelectedOffer());
-            assertEquals(0, demandImplementation.getOffers().getPageSize());
+            assertNull(demand.getSelectedOffer());
+            assertEquals(0, demand.getOffers().getPageSize());
         } catch (final UnauthorizedOperationException e1) {
             fail();
         }
 
         try {
-            demandImplementation.authenticate(fredAuthToken);
-            final Offer offer = new Offer(fredAuthToken.getMember(), demandImplementation, new BigDecimal("120"), "description", "title", Locale.FRENCH,
+            demand.authenticate(fredAuthToken);
+            final Offer offer = new Offer(fredAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                     DateUtils.tomorrow());
-            demandImplementation.addOffer(offer);
+            demand.addOffer(offer);
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
 
-        assertEquals(DemandState.PREPARING, demandImplementation.getDemandState());
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         try {
-            assertNotNull(demandImplementation.getSelectedOffer());
+            assertNotNull(demand.getSelectedOffer());
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
-        assertEquals(DemandState.PREPARING, demandImplementation.getDemandState());
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
     }
 
     public static class MockDemandValidationTimeOut {
@@ -263,149 +263,149 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testBeginDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        DemandImplementation demandImplementation = createDemandByThomas();
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
+        DemandImplementation demand = createDemandByThomas();
+        assertEquals(DemandState.PENDING, demand.getDemandState());
 
-        demandImplementation.authenticate(fredAuthToken);
-        demandImplementation.addContribution(new BigDecimal("100"), "plop");
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
+        demand.authenticate(fredAuthToken);
+        demand.addContribution(new BigDecimal("100"), "plop");
+        assertEquals(DemandState.PENDING, demand.getDemandState());
 
-        demandImplementation.authenticate(tomAuthToken);
-        final Offer offer = new Offer(tomAuthToken.getMember(), demandImplementation, new BigDecimal("120"), "description", "title", Locale.FRENCH,
+        demand.authenticate(tomAuthToken);
+        final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
-        demandImplementation.addOffer(offer);
-        assertEquals(DemandState.PREPARING, demandImplementation.getDemandState());
+        demand.addOffer(offer);
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        demandImplementation.authenticate(yoAuthToken);
-        demandImplementation.addContribution(new BigDecimal("20"), "plip");
-        assertEquals(DemandState.PREPARING, demandImplementation.getDemandState());
+        demand.authenticate(yoAuthToken);
+        demand.addContribution(new BigDecimal("20"), "plip");
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        demandImplementation = passeIntoDev(demandImplementation);
+        demand = passeIntoDev(demand);
 
-        assertEquals(DemandState.DEVELOPPING, demandImplementation.getDemandState());
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
     }
 
     public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
-        final DemandImplementation demandImplementation = createDemandByThomas();
+        final DemandImplementation demand = createDemandByThomas();
         final DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin", Locale.FRANCE);
         admin.setRole(Role.ADMIN);
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
+        assertEquals(DemandState.PENDING, demand.getDemandState());
 
-        demandImplementation.authenticate(fredAuthToken);
-        demandImplementation.addContribution(new BigDecimal("100"), "plop");
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
+        demand.authenticate(fredAuthToken);
+        demand.addContribution(new BigDecimal("100"), "plop");
+        assertEquals(DemandState.PENDING, demand.getDemandState());
 
-        demandImplementation.authenticate(tomAuthToken);
-        final Offer offer = new Offer(tomAuthToken.getMember(), demandImplementation, new BigDecimal("120"), "description", "title", Locale.FRENCH,
+        demand.authenticate(tomAuthToken);
+        final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
         System.out.println(offer);
-        demandImplementation.addOffer(offer);
-        assertEquals(DemandState.PREPARING, demandImplementation.getDemandState());
+        demand.addOffer(offer);
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        assertNotNull(demandImplementation.getSelectedOffer());
+        assertNotNull(demand.getSelectedOffer());
 
         try {
-            demandImplementation.authenticate(tomAuthToken);
-            demandImplementation.removeOffer(demandImplementation.getSelectedOffer());
+            demand.authenticate(tomAuthToken);
+            demand.removeOffer(demand.getSelectedOffer());
             fail();
         } catch (final UnauthorizedOperationException e) {
             assertTrue(true);
         }
 
         try {
-            demandImplementation.authenticate(new AuthToken("admin", "admin"));
-            demandImplementation.removeOffer(demandImplementation.getSelectedOffer());
+            demand.authenticate(new AuthToken("admin", "admin"));
+            demand.removeOffer(demand.getSelectedOffer());
             assertTrue(true);
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
 
-        assertEquals(0, demandImplementation.getOffers().size());
+        assertEquals(0, demand.getOffers().size());
     }
 
     public void testCancelDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        final DemandImplementation demandImplementation = createDemandAddOffer120AddContribution120BeginDev();
+        final DemandImplementation demand = createDemandAddOffer120AddContribution120BeginDev();
 
         try {
-            demandImplementation.cancelDevelopment();
+            demand.cancelDevelopment();
             fail();
         } catch (final UnauthorizedOperationException e) {
             assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED, e.getCode());
         }
 
         try {
-            demandImplementation.authenticate(yoAuthToken);
-            demandImplementation.cancelDevelopment();
+            demand.authenticate(yoAuthToken);
+            demand.cancelDevelopment();
             fail();
         } catch (final UnauthorizedOperationException e) {
             assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_CANCEL_DEMAND, e.getCode());
         }
 
-        demandImplementation.authenticate(tomAuthToken);
+        demand.authenticate(tomAuthToken);
 
-        assertEquals(120, demandImplementation.getContribution().intValue());
+        assertEquals(120, demand.getContribution().intValue());
 
-        demandImplementation.cancelDevelopment();
+        demand.cancelDevelopment();
 
-        assertEquals(0, demandImplementation.getContribution().intValue());
+        assertEquals(0, demand.getContribution().intValue());
 
-        assertEquals(DemandState.DISCARDED, demandImplementation.getDemandState());
+        assertEquals(DemandState.DISCARDED, demand.getDemandState());
 
     }
 
     private DemandImplementation createDemandAddOffer120AddContribution120BeginDev() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        DemandImplementation demandImplementation = createDemandByThomas();
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
+        DemandImplementation demand = createDemandByThomas();
+        assertEquals(DemandState.PENDING, demand.getDemandState());
 
-        demandImplementation.authenticate(fredAuthToken);
-        demandImplementation.addContribution(new BigDecimal("100"), "plop");
-        assertEquals(DemandState.PENDING, demandImplementation.getDemandState());
+        demand.authenticate(fredAuthToken);
+        demand.addContribution(new BigDecimal("100"), "plop");
+        assertEquals(DemandState.PENDING, demand.getDemandState());
 
-        demandImplementation.authenticate(tomAuthToken);
-        final Offer offer = new Offer(tomAuthToken.getMember(), demandImplementation, new BigDecimal("120"), "description", "title", Locale.FRENCH,
+        demand.authenticate(tomAuthToken);
+        final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
-        demandImplementation.addOffer(offer);
+        demand.addOffer(offer);
 
-        assertEquals(DemandState.PREPARING, demandImplementation.getDemandState());
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        demandImplementation.authenticate(yoAuthToken);
-        demandImplementation.addContribution(new BigDecimal("20"), "plip");
-        assertEquals(DemandState.PREPARING, demandImplementation.getDemandState());
+        demand.authenticate(yoAuthToken);
+        demand.addContribution(new BigDecimal("20"), "plip");
+        assertEquals(DemandState.PREPARING, demand.getDemandState());
 
-        demandImplementation = passeIntoDev(demandImplementation);
+        demand = passeIntoDev(demand);
 
-        assertEquals(DemandState.DEVELOPPING, demandImplementation.getDemandState());
-        return demandImplementation;
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
+        return demand;
     }
 
     public void testFinishedDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        final DemandImplementation demandImplementation = createDemandAddOffer120AddContribution120BeginDev();
+        final DemandImplementation demand = createDemandAddOffer120AddContribution120BeginDev();
 
         try {
-            demandImplementation.releaseCurrentBatch();
+            demand.releaseCurrentBatch();
             fail();
         } catch (final UnauthorizedOperationException e) {
             assertEquals(UnauthorizedOperationException.SpecialCode.AUTHENTICATION_NEEDED, e.getCode());
         }
 
         try {
-            demandImplementation.authenticate(yoAuthToken);
-            demandImplementation.releaseCurrentBatch();
+            demand.authenticate(yoAuthToken);
+            demand.releaseCurrentBatch();
             fail();
         } catch (final UnauthorizedOperationException e) {
             assertEquals(UnauthorizedOperationException.SpecialCode.NON_DEVELOPER_FINISHED_DEMAND, e.getCode());
         }
 
-        demandImplementation.authenticate(tomAuthToken);
-        demandImplementation.releaseCurrentBatch();
+        demand.authenticate(tomAuthToken);
+        demand.releaseCurrentBatch();
 
-        assertEquals(DemandState.INCOME, demandImplementation.getDemandState());
-        assertEquals(120, demandImplementation.getContribution().intValue());
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertEquals(120, demand.getContribution().intValue());
     }
 
     public void testOfferWithALotOfBatch() throws UnauthorizedOperationException, NotEnoughMoneyException {
-        DemandImplementation demandImplementation = createDemandByThomas();
-        final Offer offer = new Offer(tomAuthToken.getMember(), demandImplementation, new BigDecimal("10"), "description", "title", Locale.FRENCH,
+        DemandImplementation demand = createDemandByThomas();
+        final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("10"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
 
         offer.addBatch(DateUtils.tomorrow(), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
@@ -413,48 +413,48 @@ public class DemandImplementationTest extends ModelTestUnit {
         offer.addBatch(DateUtils.nowPlusSomeDays(4), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
         offer.addBatch(DateUtils.nowPlusSomeDays(9), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
 
-        demandImplementation.authenticate(tomAuthToken);
-        demandImplementation.addOffer(offer);
+        demand.authenticate(tomAuthToken);
+        demand.addOffer(offer);
 
-        demandImplementation.authenticate(yoAuthToken);
-        demandImplementation.addContribution(new BigDecimal("12"), null);
-        demandImplementation.addContribution(new BigDecimal("13"), null);
-        demandImplementation.authenticate(fredAuthToken);
-        demandImplementation.addContribution(new BigDecimal("14"), null);
-        demandImplementation.addContribution(new BigDecimal("15"), null);
-        demandImplementation.authenticate(tomAuthToken);
-        demandImplementation.addContribution(new BigDecimal("16"), null);
+        demand.authenticate(yoAuthToken);
+        demand.addContribution(new BigDecimal("12"), null);
+        demand.addContribution(new BigDecimal("13"), null);
+        demand.authenticate(fredAuthToken);
+        demand.addContribution(new BigDecimal("14"), null);
+        demand.addContribution(new BigDecimal("15"), null);
+        demand.authenticate(tomAuthToken);
+        demand.addContribution(new BigDecimal("16"), null);
 
-        demandImplementation = passeIntoDev(demandImplementation);
+        demand = passeIntoDev(demand);
 
-        assertEquals(DemandState.DEVELOPPING, demandImplementation.getDemandState());
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
-        demandImplementation.authenticate(tomAuthToken);
-        demandImplementation.releaseCurrentBatch();
+        demand.authenticate(tomAuthToken);
+        demand.releaseCurrentBatch();
 
-        assertEquals(DemandState.INCOME, demandImplementation.getDemandState());
-        assertTrue(demandImplementation.validateCurrentBatch(true));
-        assertEquals(DemandState.DEVELOPPING, demandImplementation.getDemandState());
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
-        demandImplementation.releaseCurrentBatch();
-        assertEquals(DemandState.INCOME, demandImplementation.getDemandState());
-        assertTrue(demandImplementation.validateCurrentBatch(true));
-        assertEquals(DemandState.DEVELOPPING, demandImplementation.getDemandState());
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
-        demandImplementation.releaseCurrentBatch();
-        assertEquals(DemandState.INCOME, demandImplementation.getDemandState());
-        assertTrue(demandImplementation.validateCurrentBatch(true));
-        assertEquals(DemandState.DEVELOPPING, demandImplementation.getDemandState());
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
-        demandImplementation.releaseCurrentBatch();
-        assertEquals(DemandState.INCOME, demandImplementation.getDemandState());
-        assertTrue(demandImplementation.validateCurrentBatch(true));
-        assertEquals(DemandState.DEVELOPPING, demandImplementation.getDemandState());
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
-        demandImplementation.releaseCurrentBatch();
-        assertEquals(DemandState.INCOME, demandImplementation.getDemandState());
-        assertTrue(demandImplementation.validateCurrentBatch(true));
-        assertEquals(DemandState.FINISHED, demandImplementation.getDemandState());
+        demand.releaseCurrentBatch();
+        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertTrue(demand.validateCurrentBatch(true));
+        assertEquals(DemandState.FINISHED, demand.getDemandState());
 
     }
 
@@ -477,15 +477,15 @@ public class DemandImplementationTest extends ModelTestUnit {
     // Passe into dev simulate the 1 day time to wait.
     // We assume that all the model has been closed, then the time out append, and then
     // the model is re-closed
-    // So you have to reload from the db the demandImplementation. (So it return it ...)
-    private DemandImplementation passeIntoDev(final DemandImplementation demandImplementation) {
+    // So you have to reload from the db the demand. (So it return it ...)
+    private DemandImplementation passeIntoDev(final DemandImplementation demand) {
 
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
 
         Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
 
-        new TaskSelectedOfferTimeOut(demandImplementation.getId(), new Date());
+        new TaskSelectedOfferTimeOut(demand.getId(), new Date());
         try {
             Thread.sleep(1000);
         } catch (final InterruptedException e) {
@@ -497,7 +497,7 @@ public class DemandImplementationTest extends ModelTestUnit {
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
 
-        return DemandManager.getDemandById(demandImplementation.getId());
+        return DemandManager.getDemandById(demand.getId());
 
     }
 }

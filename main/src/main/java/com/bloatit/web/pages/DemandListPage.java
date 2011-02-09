@@ -33,7 +33,7 @@ import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandListPageUrl;
 
-@ParamContainer("demandImplementation/list")
+@ParamContainer("demand/list")
 public final class DemandListPage extends MasterPage {
 
     public static final String FILTER_ALL = "all";
@@ -84,7 +84,7 @@ public final class DemandListPage extends MasterPage {
                 final HtmlTextField searchField = new HtmlTextField(SEARCH_STRING_CODE);
                 searchField.setDefaultValue(searchString);
 
-                final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search a demandImplementation"));
+                final HtmlSubmit searchButton = new HtmlSubmit(Context.trc("Search (verb)", "Search a demand"));
 
                 searchForm.add(searchField);
                 searchForm.add(searchButton);

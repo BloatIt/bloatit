@@ -119,7 +119,7 @@ public final class DaoBatch extends DaoIdentifiable {
      * Create a DaoBatch.
      *
      * @param amount is the amount of the offer. Must be non null, and > 0.
-     * @param text is the description of the demandImplementation. Must be non null.
+     * @param text is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must be non
      *        null, and in the future.
      * @param secondBeforeValidation TODO

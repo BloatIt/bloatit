@@ -45,7 +45,7 @@ public final class AuthToken {
         if (tmp.getActivationState() != ActivationState.ACTIVE) {
             //TODO: display a different notification error
             Log.model().warn("Authentication with inactive or deleted account with login " + login);
-            throw new NotFoundException("Authentication with inactive or deleted");
+            throw new NotFoundException("Authentication with inactive or deleted account.");
         }
 
         member = tmp;

@@ -36,7 +36,7 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
-     * CALLED by demandImplementation. You have to call {@link #accept(Offer)} when an offer is
+     * CALLED by demand. You have to call {@link #accept(Offer)} when an offer is
      * accepted. This will create the {@link Transaction} needed so that the developer of
      * the offer become rich.
      *
@@ -49,7 +49,7 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
-     * CALLED by demandImplementation. You have to call {@link #cancel()} when the demandImplementation on which this
+     * CALLED by demand. You have to call {@link #cancel()} when the demand on which this
      * Contribution is made is canceled. It allows the user to take back its money.
      */
     public void cancel() {
