@@ -283,10 +283,10 @@ public class FCGIParser implements XcgiParser {
 
         if ((firstNameLengthByte & 0x80) != 0) {// 10000000
             int[] lengthArray = new int[4];
-            lengthArray[0] = firstNameLengthByte;
-            lengthArray[1] = dataInput.readUnsignedByte();
+            lengthArray[3] = firstNameLengthByte;
             lengthArray[2] = dataInput.readUnsignedByte();
-            lengthArray[3] = dataInput.readUnsignedByte();
+            lengthArray[1] = dataInput.readUnsignedByte();
+            lengthArray[0] = dataInput.readUnsignedByte();
             usedLength += 3;
 
             nameLength = unsignedIntToLong(lengthArray);
@@ -301,10 +301,10 @@ public class FCGIParser implements XcgiParser {
 
         if ((firstValueLengthByte >> 7) == 1) { // 10000000
             int[] lengthArray = new int[4];
-            lengthArray[0] = firstValueLengthByte;
-            lengthArray[1] = dataInput.readUnsignedByte();
+            lengthArray[3] = firstValueLengthByte;
             lengthArray[2] = dataInput.readUnsignedByte();
-            lengthArray[3] = dataInput.readUnsignedByte();
+            lengthArray[1] = dataInput.readUnsignedByte();
+            lengthArray[0] = dataInput.readUnsignedByte();
             usedLength += 3;
 
             valueLength = unsignedIntToLong(lengthArray);
