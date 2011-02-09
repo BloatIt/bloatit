@@ -84,8 +84,6 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
 
             commentInfo.addText(Context.tr("Created by "));
 
-            commentInfo.addText(Context.tr("Created by "));
-
             try {
                 final MemberPageUrl memberUrl = new MemberPageUrl(comment.getAuthor());
                 commentInfo.add(memberUrl.getHtmlLink(comment.getAuthor().getDisplayName()));

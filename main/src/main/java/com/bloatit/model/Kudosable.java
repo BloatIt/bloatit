@@ -113,6 +113,9 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     @Override
     public boolean isOwnedByMe() {
+        if(getAuthTokenUnprotected() == null) {
+            return false;
+        }
         return getAuthor().equals(getAuthTokenUnprotected().getMember());
     }
 
