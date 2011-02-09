@@ -23,7 +23,7 @@ import com.bloatit.model.Demand;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandPageUrl;
 
-@ParamContainer("demandImplementation")
+@ParamContainer("demand")
 public final class DemandPage extends MasterPage {
 
     public static final String IDEA_FIELD_NAME = "id";
