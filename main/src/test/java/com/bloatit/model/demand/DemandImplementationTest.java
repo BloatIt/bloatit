@@ -497,7 +497,7 @@ public class DemandImplementationTest extends ModelTestUnit {
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
 
-        return DemandManager.getDemandById(demand.getId());
+        return (DemandImplementation) DemandManager.getDemandById(demand.getId());
 
     }
 }
