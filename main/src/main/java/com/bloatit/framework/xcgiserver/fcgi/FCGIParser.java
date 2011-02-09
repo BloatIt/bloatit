@@ -77,6 +77,9 @@ public class FCGIParser implements XcgiParser {
      */
     final static byte FCGI_VERSION_1 = 1;
 
+    /**
+     * Values of type component of record
+     */
     final static byte FCGI_BEGIN_REQUEST = 1;
     final static byte FCGI_ABORT_REQUEST = 2;
     final static byte FCGI_END_REQUEST = 3;
@@ -90,23 +93,62 @@ public class FCGIParser implements XcgiParser {
     final static byte FCGI_UNKNOWN_TYPE = 11;
     final static byte FCGI_MAXTYPE = FCGI_UNKNOWN_TYPE;
 
+    /**
+     * Mask for flags component of FCGI_BEGIN_REQUEST body
+     */
     final static byte FCGI_KEEP_CONN = 1;
 
+    /**
+     * Values for role component of FCGI_BeginRequestBody
+     */
     final static byte FCGI_RESPONDER = 1;
     final static byte FCGI_AUTHORIZER = 2;
     final static byte FCGI_FILTER = 3;
 
+    /**
+     * Input stream
+     */
     DataInputStream dataInput;
+
+    /**
+     * Status of param input stream.
+     * The param input stream is closed when a empty FCGI_PARAMS record is received.
+     */
     boolean paramStreamOpen = true;
+
+    /**
+     * Status of post input stream.
+     * The post input stream is closed when a empty FCGI_STDIN record is received.
+     */
     boolean postStreamOpen = true;
 
+    /**
+     * Http header params.
+     * This map is full with param input stream record's content.
+     */
     private final Map<String, String> env;
 
-    private final OutputStream writeStream;
+    /**
+     * Stream give to users to write their response.
+     */
+    private final OutputStream responseStream;
+
+    /**
+     * Stream give to users to read the post content
+     */
     private final FCGIPostStream postStream;
 
-    public FCGIParser(final InputStream input, OutputStream bos) throws IOException {
-        writeStream = new BufferedOutputStream(new FCGIOutputStream(this, new BufferedOutputStream(bos, 8192)), DEFAULT_OUTPUT_RECORD_SIZE);
+    /**
+     * Create a fcgi parser with the 2 stream of the web server's socket.
+     * @param input stream containing data from the web server
+     * @param output stream where to write the response to the web server
+     * @throws IOException
+     */
+    public FCGIParser(final InputStream input, OutputStream output) throws IOException {
+        // The FCGIOutputStream has a BufferedOutputStream before and a BufferedOutputStream after.
+        // The first avoid to give too small or too big packet to put in on record and the second avoid to
+        responseStream = new BufferedOutputStream(new FCGIOutputStream(this, new BufferedOutputStream(output, 8192)), DEFAULT_OUTPUT_RECORD_SIZE);
+
         postStream = new FCGIPostStream(this);
 
         dataInput = new DataInputStream(input);
@@ -125,7 +167,7 @@ public class FCGIParser implements XcgiParser {
 
     @Override
     public OutputStream getResponseStream() {
-        return writeStream;
+        return responseStream;
     }
 
     @Override

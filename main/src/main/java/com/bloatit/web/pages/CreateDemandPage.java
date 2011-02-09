@@ -14,12 +14,17 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.Map.Entry;
 
+import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlFormBlock;
 import com.bloatit.framework.webserver.components.form.HtmlSimpleDropDown;
@@ -27,7 +32,9 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
@@ -47,7 +54,7 @@ public final class CreateDemandPage extends LoggedPage {
 
     @Override
     protected String getPageTitle() {
-        return "Create new idea";
+        return "Create new demand";
     }
 
     @Override
@@ -64,13 +71,13 @@ public final class CreateDemandPage extends LoggedPage {
     }
 
     private HtmlElement generateIdeaCreationForm() {
-        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(tr("Create a new idea"), 1);
+        final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(tr("Create a new demand"), 1);
         final CreateDemandActionUrl doCreateUrl = new CreateDemandActionUrl();
 
         // Create the form stub
         final HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
-        final HtmlFormBlock specifBlock = new HtmlFormBlock(tr("Specify the new idea"));
-        final HtmlFormBlock paramBlock = new HtmlFormBlock(tr("Parameters of the new idea"));
+        final HtmlFormBlock specifBlock = new HtmlFormBlock(tr("Specify the new demand"));
+        final HtmlFormBlock paramBlock = new HtmlFormBlock(tr("Parameters of the new demand"));
 
         createIdeaTitle.add(createIdeaForm);
         createIdeaForm.add(specifBlock);
@@ -97,14 +104,22 @@ public final class CreateDemandPage extends LoggedPage {
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
         }
-
-        FormFieldData<String> categoryFieldData = doCreateUrl.getCategoryParameter().createFormFieldData();
-        final HtmlTextField categoryInput = new HtmlTextField(categoryFieldData, tr("Category"));
-        FormFieldData<String> projectFieldData = doCreateUrl.getProjectParameter().createFormFieldData();
-        final HtmlTextField projectInput = new HtmlTextField(projectFieldData, tr("Project"));
         paramBlock.add(languageInput);
-        paramBlock.add(categoryInput);
+
+        final HtmlDropDown<ProjectElement> projectInput = new HtmlDropDown<ProjectElement>(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
+        for (Project project : ProjectManager.getProjects()) {
+            try {
+                projectInput.add(new  ProjectElement(project));
+            } catch (UnauthorizedOperationException e) {
+                Log.web().warn(e);
+                // Not display private projects
+            }
+        }
+        //TODO: set the default value to "select a project"
         paramBlock.add(projectInput);
+
+        //TODO: add form to create a new project
+
 
         final HtmlDiv group = new HtmlDiv();
         group.add(createIdeaTitle);
@@ -120,5 +135,31 @@ public final class CreateDemandPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return tr("You must be logged to create a new idea.");
+    }
+
+    /**
+     * Class use to display projects in a dropdown html element
+     */
+    class ProjectElement implements DropDownElement {
+
+
+        private final String name;
+        private final String code;
+
+        public ProjectElement(Project project) throws UnauthorizedOperationException {
+            name = project.getName();
+            code = String.valueOf(project.getId());
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String getCode() {
+            return code;
+        }
+
     }
 }

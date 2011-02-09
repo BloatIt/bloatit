@@ -21,8 +21,9 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.DemandFactory;
 import com.bloatit.model.Demand;
+import com.bloatit.model.DemandFactory;
+import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
@@ -35,10 +36,9 @@ import com.bloatit.web.url.LoginPageUrl;
 @ParamContainer("idea/docreate")
 public final class CreateDemandAction extends Action {
 
-    public static final String DESCRIPTION_CODE = "bloatit_idea_description";
-    public static final String SPECIFICATION_CODE = "bloatit_idea_specification";
-    public static final String PROJECT_CODE = "bloatit_idea_project";
-    public static final String CATEGORY_CODE = "bloatit_idea_category";
+    public static final String DESCRIPTION_CODE = "description";
+    public static final String SPECIFICATION_CODE = "specification";
+    public static final String PROJECT_CODE = "project";
     public static final String LANGUAGE_CODE = "bloatit_idea_lang";
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
@@ -51,11 +51,9 @@ public final class CreateDemandAction extends Action {
     @RequestParam(name = SPECIFICATION_CODE, role = Role.POST)
     private final String specification;
 
-    @RequestParam(name = PROJECT_CODE, defaultValue = "", role = Role.POST)
-    private final String project;
+    @RequestParam(name = PROJECT_CODE, role = Role.POST)
+    private final Project project;
 
-    @RequestParam(name = CATEGORY_CODE, defaultValue = "", role = Role.POST)
-    private final String category;
 
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
@@ -68,7 +66,6 @@ public final class CreateDemandAction extends Action {
         this.description = url.getDescription();
         this.specification = url.getSpecification();
         this.project = url.getProject();
-        this.category = url.getCategory();
         this.lang = url.getLang();
 
     }
@@ -81,8 +78,7 @@ public final class CreateDemandAction extends Action {
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);
-        // TODO make it work
-        final Demand d = DemandFactory.createDemand(session.getAuthToken().getMember(), langLocale, description, specification, null);
+        final Demand d = DemandFactory.createDemand(session.getAuthToken().getMember(), langLocale, description, specification, project);
 
         d.authenticate(session.getAuthToken());
 
@@ -98,7 +94,6 @@ public final class CreateDemandAction extends Action {
         session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getSpecificationParameter());
         session.addParameter(url.getProjectParameter());
-        session.addParameter(url.getCategoryParameter());
         session.addParameter(url.getLangParameter());
 
         return new CreateDemandPageUrl();
