@@ -2,6 +2,7 @@ package com.bloatit.framework.webserver.url;
 
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.utils.SessionParameters;
+import com.bloatit.framework.xcgiserver.HttpHeader;
 
 public abstract class UrlNode implements Iterable<UrlNode>, Cloneable {
 
@@ -18,9 +19,14 @@ public abstract class UrlNode implements Iterable<UrlNode>, Cloneable {
         return sb.toString();
     }
 
+    public final String externalUrlString(HttpHeader header) {
+        return header.getHttpHost() + urlString();
+    }
+
     public abstract Messages getMessages();
 
     protected abstract void parseSessionParameters(final SessionParameters params);
+
     protected abstract void parseParameters(final Parameters params);
 
     /**
