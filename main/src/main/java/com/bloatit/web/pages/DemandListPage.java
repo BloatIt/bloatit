@@ -31,6 +31,7 @@ import com.bloatit.model.Demand;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 
 @ParamContainer("demand/list")
@@ -77,6 +78,8 @@ public final class DemandListPage extends MasterPage {
         // Div demand_search_block
         final HtmlDiv demandSearchBlock = new HtmlDiv("demand_search_block");
         {
+
+
             DemandListPageUrl formUrl = url.clone();
             formUrl.setSearchString("");
             final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
@@ -203,8 +206,21 @@ public final class DemandListPage extends MasterPage {
             //
             // }
             // demandSearchBlock.add(demandAdvancedSearch);
+
+            //Create a demand
+            final HtmlDiv createDemandBlock = new HtmlDiv("demand_create_block");
+            {
+                createDemandBlock.addText(Context.tr("If you have an idea or a need about a free software, you can "));
+                HtmlLink creatDemandLink = new CreateDemandPageUrl().getHtmlLink(Context.tr("submit a new feature"));
+                //creatDemandLink.setCssClass("button");
+                createDemandBlock.add(creatDemandLink);
+            }
+            demandSearchBlock.add(createDemandBlock);
         }
         add(demandSearchBlock);
+
+
+
 
         // Demand list
 
