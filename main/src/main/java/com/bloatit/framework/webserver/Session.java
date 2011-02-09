@@ -46,6 +46,8 @@ public final class Session {
 
     private final UUID key;
     private final Deque<Message> notificationList;
+
+    //TODO: use string reference to avoid to keep reference on Member object
     private AuthToken authToken;
 
     private Url lastStablePage = null;
