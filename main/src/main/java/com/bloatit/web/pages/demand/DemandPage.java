@@ -32,7 +32,7 @@ public final class DemandPage extends MasterPage {
     private final Demand demand;
 
     @SuppressWarnings("unused")
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demandImplementation")
+    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
     private final String title;
 
     private final DemandPageUrl url;
