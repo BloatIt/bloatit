@@ -48,4 +48,22 @@ service lighttpd restart
 Verify the loading in logs:
 cat /var/log/lighttpd/error.log
 
+************************************
+*  Configure internal mail server  *
+************************************
+Create file ~/.config/bloatit/mail.properties
+Add in the following content : 
+
+#mail.smtp.host=smtp.gmail.com (example value with gmail)
+mail.smtp.host= 
+mail.smtp.socketFactory.port=465 
+mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory 
+mail.smtp.auth=true
+mail.smtp.port=465
+#mail.from=example@gmail.com
+#mail.login=example@gmail.com
+#mail.password=<example password>
+mail.from=
+mail.login=
+mail.password=
 
