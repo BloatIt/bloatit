@@ -11,6 +11,7 @@ package com.bloatit.framework.xcgiserver.scgi;
  * CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE
  * USE OR PERFORMANCE OF THIS SOFTWARE.
  */
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -112,6 +113,6 @@ public class SCGIParser implements XcgiParser {
 
     @Override
     public OutputStream getResponseStream() throws IOException {
-        return ouput;
+        return new BufferedOutputStream(ouput, 1024);
     }
 }
