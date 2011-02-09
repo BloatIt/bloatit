@@ -16,8 +16,8 @@ import org.xnap.commons.i18n.I18n;
 import org.xnap.commons.i18n.I18nFactory;
 
 import com.bloatit.common.Log;
+import com.bloatit.common.PropertyLoader;
 import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.utils.PropertyLoader;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.form.DropDownElement;

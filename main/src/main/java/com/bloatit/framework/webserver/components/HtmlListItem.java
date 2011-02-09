@@ -7,9 +7,7 @@ package com.bloatit.framework.webserver.components;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 
-/**
- * @author fred
- */
+
 public class HtmlListItem extends HtmlBranch {
 
     public HtmlListItem(final HtmlNode node) {

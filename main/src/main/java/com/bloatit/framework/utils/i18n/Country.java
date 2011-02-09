@@ -18,8 +18,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.bloatit.common.PropertyLoader;
 import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.utils.PropertyLoader;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
 
 /**

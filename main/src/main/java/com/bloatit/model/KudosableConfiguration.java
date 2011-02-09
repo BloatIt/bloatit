@@ -1,7 +1,7 @@
 package com.bloatit.model;
 
-import com.bloatit.framework.utils.ConfigurationManager;
-import com.bloatit.framework.utils.ConfigurationManager.PropertiesRetriever;
+import com.bloatit.common.ConfigurationManager;
+import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 
 public class KudosableConfiguration {
 

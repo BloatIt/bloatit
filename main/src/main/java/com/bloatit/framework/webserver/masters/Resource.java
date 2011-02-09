@@ -3,9 +3,9 @@ package com.bloatit.framework.webserver.masters;
 import java.io.File;
 import java.io.IOException;
 
+import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.utils.ConfigurationManager;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 
 public abstract class Resource implements Linkable {
