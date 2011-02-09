@@ -22,7 +22,7 @@ import com.bloatit.model.AuthToken;
 import com.bloatit.model.CacheManager;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
-import com.bloatit.model.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.model.Description;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
@@ -41,9 +41,9 @@ import com.bloatit.model.right.RightManager.Action;
 //
 
 /**
- * A demand is an idea :)
+ * A demandImplementation is an idea :)
  */
-public final class Demand extends Kudosable<DaoDemand> implements DemandInterface {
+public final class DemandImplementation extends Kudosable<DaoDemand> implements Demand {
     private AbstractDemandState stateObject;
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -51,31 +51,31 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create a new Demand. This method is not protected by any right management.
+     * Create a new DemandImplementation. This method is not protected by any right management.
      *
      * @return null if the <code>dao</code> is null.
      */
-    public static Demand create(final DaoDemand dao) {
+    public static DemandImplementation create(final DaoDemand dao) {
         if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
             return null;
         }
         @SuppressWarnings("unchecked")
         Identifiable<DaoDemand> created = CacheManager.get(dao);
         if (created == null) {
-            return new Demand(dao);
+            return new DemandImplementation(dao);
         }
-        return (Demand) created;
+        return (DemandImplementation) created;
     }
 
     /**
-     * Create a new demand. The right management for creating a demand is specific. (The
+     * Create a new demandImplementation. The right management for creating a demandImplementation is specific. (The
      * Right management system is not working in this case). You have to use the
      * {@link DemandManager#canCreate(AuthToken)} to make sure you can create a new
-     * demand.
+     * demandImplementation.
      *
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
-    public Demand(final Member author, final Locale locale, final String title, final String description, final Project project) {
+    public DemandImplementation(final Member author, final Locale locale, final String title, final String description, final Project project) {
         this(DaoDemand.createAndPersist(author.getDao(),
                                         DaoDescription.createAndPersist(author.getDao(), locale, title, description),
                                         project.getDao()));
@@ -84,7 +84,7 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     /**
      * Use the {@link #create(DaoDemand)} method.
      */
-    private Demand(final DaoDemand dao) {
+    private DemandImplementation(final DaoDemand dao) {
         super(dao);
     }
 
@@ -199,7 +199,7 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     /**
-     * Cancel all the contribution on this demand.
+     * Cancel all the contribution on this demandImplementation.
      */
     private void cancel() {
         for (final Contribution contribution : getContributionsUnprotected()) {
@@ -296,21 +296,21 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     /**
-     * Slot called when the demand change to {@link DiscardedState}.
+     * Slot called when the demandImplementation change to {@link DiscardedState}.
      */
     void inDiscardedState() {
         getDao().setDemandState(DemandState.DISCARDED);
     }
 
     /**
-     * Slot called when this demand state change to {@link FinishedState}.
+     * Slot called when this demandImplementation state change to {@link FinishedState}.
      */
     void inFinishedState() {
         getDao().setDemandState(DemandState.FINISHED);
     }
 
     /**
-     * Slot called when this demand state change to {@link IncomeState}.
+     * Slot called when this demandImplementation state change to {@link IncomeState}.
      */
     void inIncomeState() {
         getDao().setDemandState(DemandState.INCOME);
@@ -318,7 +318,7 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     /**
-     * Slot called when this demand state change to {@link PendingState}.
+     * Slot called when this demandImplementation state change to {@link PendingState}.
      */
     void inPendingState() {
         getDao().setDemandState(DemandState.PENDING);
@@ -326,7 +326,7 @@ public final class Demand extends Kudosable<DaoDemand> implements DemandInterfac
     }
 
     /**
-     * Slot called when this demand state change to {@link PreparingState}.
+     * Slot called when this demandImplementation state change to {@link PreparingState}.
      */
     void inPreparingState() {
         getDao().setDemandState(DemandState.PREPARING);

@@ -24,7 +24,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Comment;
-import com.bloatit.model.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.pages.master.HtmlPageComponent;
@@ -36,11 +36,11 @@ import com.bloatit.web.url.MemberPageUrl;
 public final class DemandCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
-    private final DemandInterface targetDemand;
+    private final Demand targetDemand;
     private static final int NB_COLUMNS = 80;
     private static final int NB_ROWS = 10;
 
-    public DemandCommentListComponent(final DemandInterface demand) {
+    public DemandCommentListComponent(final Demand demand) {
         super();
         this.targetDemand = demand;
         try {
@@ -144,7 +144,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
         return commentBlock;
     }
 
-    private HtmlElement generateNewCommentComponent(final DemandInterface demand) {
+    private HtmlElement generateNewCommentComponent(final Demand demand) {
         final IdeaCommentActionUrl url = new IdeaCommentActionUrl(demand);
         final HtmlDiv commentBlock = new HtmlDiv("new_comment_block");
 
@@ -153,7 +153,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
 
         final HtmlTextArea commentInput = new HtmlTextArea(IdeaCommentAction.COMMENT_CONTENT_CODE, Context.tr("New comment : "), NB_ROWS, NB_COLUMNS);
         form.add(commentInput);
-        commentInput.setComment(Context.tr("Use this field to comment the demand. If you want to reply to a previous comment, use the reply link."));
+        commentInput.setComment(Context.tr("Use this field to comment the demandImplementation. If you want to reply to a previous comment, use the reply link."));
 
         form.add(new HtmlSubmit(Context.tr("Submit comment")));
 

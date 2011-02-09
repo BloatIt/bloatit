@@ -23,7 +23,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
@@ -40,7 +40,7 @@ public final class OfferAction extends LoggedAction {
     public static final String DESCRIPTION_CODE = "offer_description";
 
     @RequestParam(level = Level.ERROR, role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
-    private DemandInterface targetIdea = null;
+    private Demand targetIdea = null;
 
     @RequestParam(name = PRICE_CODE, role = Role.POST, conversionErrorMsg = @tr("Invalid or missing value for price field."))
     private final BigDecimal price;

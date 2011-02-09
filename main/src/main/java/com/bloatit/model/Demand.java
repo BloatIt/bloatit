@@ -13,7 +13,7 @@ import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.RightManager.Action;
 
-public interface DemandInterface extends KudosableInterface<DaoDemand> {
+public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * @param action is the type of action you can do on the property. (READ for the
@@ -52,7 +52,7 @@ public interface DemandInterface extends KudosableInterface<DaoDemand> {
     boolean canAccessDescription();
 
     /**
-     * Add a contribution on this demand.
+     * Add a contribution on this demandImplementation.
      *
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char long.
@@ -65,7 +65,7 @@ public interface DemandInterface extends KudosableInterface<DaoDemand> {
     void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
 
     /**
-     * Add a new Offer on this Demand. You can do this operation when you are in the
+     * Add a new Offer on this DemandImplementation. You can do this operation when you are in the
      * {@link DemandState#PENDING} or {@link DemandState#PREPARING} DemandState. When you
      * add the first Offer, the state pass from {@link DemandState#PENDING} to
      * {@link DemandState#PREPARING}; and this offer is selected (see
@@ -123,7 +123,7 @@ public interface DemandInterface extends KudosableInterface<DaoDemand> {
     Date getValidationDate();
 
     /**
-     * @return the first level comments on this demand.
+     * @return the first level comments on this demandImplementation.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#READ} right on the <code>Comment</code> property.
      * @see #authenticate(AuthToken)
@@ -131,7 +131,7 @@ public interface DemandInterface extends KudosableInterface<DaoDemand> {
     PageIterable<Comment> getComments() throws UnauthorizedOperationException;
 
     /**
-     * @return all the Contributions on this Demand.
+     * @return all the Contributions on this DemandImplementation.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#READ} right on the <code>Contribution</code> property.
      * @see #authenticate(AuthToken)
@@ -152,7 +152,7 @@ public interface DemandInterface extends KudosableInterface<DaoDemand> {
     float getProgression() throws UnauthorizedOperationException;
 
     /**
-     * @return return the sum of the values of all the contributions on this demand.
+     * @return return the sum of the values of all the contributions on this demandImplementation.
      * @throws UnauthorizedOperationException if the user does not has the
      *         {@link Action#READ} right on the <code>Contribution</code> property.
      * @see #authenticate(AuthToken)
@@ -184,7 +184,7 @@ public interface DemandInterface extends KudosableInterface<DaoDemand> {
     Description getDescription() throws UnauthorizedOperationException;
 
     /**
-     * @return all the offers on this demand.
+     * @return all the offers on this demandImplementation.
      * @throws UnauthorizedOperationException if the user does not has the
      *         <code>READ</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)
@@ -194,7 +194,7 @@ public interface DemandInterface extends KudosableInterface<DaoDemand> {
     /**
      * The current offer is the offer with the max popularity then the min amount.
      *
-     * @return the current offer for this demand, or null if there is no offer.
+     * @return the current offer for this demandImplementation, or null if there is no offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *         <code>READ</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)

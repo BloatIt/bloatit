@@ -2,15 +2,15 @@ package com.bloatit.model;
 
 import java.util.Locale;
 
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandImplementation;
 
 public class DemandFactory {
 
-    public static DemandInterface createDemand(final Member author,
+    public static Demand createDemand(final Member author,
                                                final Locale locale,
                                                final String title,
                                                final String description,
                                                final Project project) {
-        return new Demand(author, locale, title, description, project);
+        return new DemandImplementation(author, locale, title, description, project);
     }
 }

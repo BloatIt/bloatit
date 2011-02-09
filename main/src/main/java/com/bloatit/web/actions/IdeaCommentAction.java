@@ -18,7 +18,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -31,7 +31,7 @@ public final class IdeaCommentAction extends LoggedAction {
     public static final String COMMENT_TARGET = "target";
 
     @RequestParam(name = COMMENT_TARGET, level = Level.ERROR)
-    private final DemandInterface targetIdea;
+    private final Demand targetIdea;
 
     @RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level = Level.ERROR)
     private final String comment;

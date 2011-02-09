@@ -23,11 +23,11 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
     public void doRun() {
         try {
 
-            Demand demand = DemandManager.getDemandById(id);
-            if (demand != null) {
-                demand.selectedOfferTimeOut();
+            DemandImplementation demandImplementation = DemandManager.getDemandById(id);
+            if (demandImplementation != null) {
+                demandImplementation.selectedOfferTimeOut();
             } else {
-                Log.framework().fatal("Cannot perform the selectedOfferTimeOut. Demand not found: " + id);
+                Log.framework().fatal("Cannot perform the selectedOfferTimeOut. DemandImplementation not found: " + id);
             }
 
         } catch (final WrongStateException e) {

@@ -244,7 +244,7 @@ public final class Member extends Actor<DaoMember> {
         getDao().setLocale(loacle);
     }
 
-    public PageIterable<DemandInterface> getDemands() {
+    public PageIterable<Demand> getDemands() {
         return new DemandList(getDao().getDemands());
     }
 

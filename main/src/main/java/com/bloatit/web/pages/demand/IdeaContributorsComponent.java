@@ -22,7 +22,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Contribution;
-import com.bloatit.model.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.url.IdeaContributorsComponentUrl;
 
@@ -34,10 +34,10 @@ public final class IdeaContributorsComponent extends HtmlDiv {
     private HtmlParagraph contributionMax;
     private HtmlParagraph contributionMean;
     private PageIterable<Contribution> contributions;
-    private final DemandInterface demand;
+    private final Demand demand;
     private HtmlPagedList<Contribution> participationsList;
 
-    public IdeaContributorsComponent(final IdeaContributorsComponentUrl url, final DemandInterface demand) {
+    public IdeaContributorsComponent(final IdeaContributorsComponentUrl url, final Demand demand) {
         super();
         this.demand = demand;
         try {

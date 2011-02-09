@@ -6,7 +6,7 @@ import org.apache.lucene.search.SortField;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.model.demand.DemandList;
 
 public class DemandSearch extends Search<DaoDemand> {
@@ -63,7 +63,7 @@ public class DemandSearch extends Search<DaoDemand> {
         setSort(sort);
     }
 
-    public PageIterable<DemandInterface> search() {
+    public PageIterable<Demand> search() {
         return new DemandList(doSearch());
     }
 

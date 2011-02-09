@@ -25,10 +25,10 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.pages.master.HtmlPageComponent;
@@ -40,7 +40,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public DemandSummaryComponent(final DemandInterface demand) {
+    public DemandSummaryComponent(final Demand demand) {
         super();
 
         // Extract locales stuffs
@@ -135,8 +135,8 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
                         progressValue = (float) Math.floor(demand.getProgression());
                         float cappedProgressValue = progressValue;
-                        if (cappedProgressValue > Demand.PROGRESSION_PERCENT) {
-                            cappedProgressValue = Demand.PROGRESSION_PERCENT;
+                        if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
+                            cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
                         }
 
                         final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
@@ -216,7 +216,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         add(demandSummary);
     }
 
-    private HtmlElement generateProgressText(final DemandInterface demand, final float progressValue) {
+    private HtmlElement generateProgressText(final Demand demand, final float progressValue) {
 
         Offer currentOffer = null;
         try {
