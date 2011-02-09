@@ -41,6 +41,7 @@ import com.bloatit.web.pages.RegisterPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.demand.DemandPage;
+import com.bloatit.web.pages.doc.DocumentationHome;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
@@ -52,6 +53,7 @@ import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
+import com.bloatit.web.url.DocumentationHomeUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IdeaCommentActionUrl;
@@ -148,6 +150,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(ProjectListPageUrl.getName())) {
             return new ProjectListPage(new ProjectListPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(DocumentationHomeUrl.getName())) {
+            return new DocumentationHome(new DocumentationHomeUrl(params, session.getParameters()));
         }
 
         //Actions
