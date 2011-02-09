@@ -45,8 +45,8 @@ import com.bloatit.web.url.CreateDemandPageUrl;
 @ParamContainer("demand/create")
 public final class CreateDemandPage extends LoggedPage {
 
-    private static final int SPECIF_INPUT_NB_LINES = 10;
-    private static final int SPECIF_INPUT_NB_COLUMNS = 80;
+    private static final int SPECIF_INPUT_NB_LINES = 20;
+    private static final int SPECIF_INPUT_NB_COLUMNS = 100;
 
     public CreateDemandPage(final CreateDemandPageUrl createIdeaPageUrl) {
         super(createIdeaPageUrl);
@@ -87,6 +87,7 @@ public final class CreateDemandPage extends LoggedPage {
         // Create the fields that will describe the description of the idea
         FormFieldData<String> descriptionFieldData = doCreateUrl.getDescriptionParameter().createFormFieldData();
         final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData, tr("Title"));
+        descriptionInput.setCssClass("input_long_400px");
         descriptionInput.setComment(tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
 
         // Create the fields that will describe the specification of the idea
