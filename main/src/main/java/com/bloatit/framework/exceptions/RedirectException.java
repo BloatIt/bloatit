@@ -13,12 +13,21 @@ package com.bloatit.framework.exceptions;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.IndexPageUrl;
 
-// No serialization possible because IndexPageUrl is not serialisable.
+/**
+ * A redirect exception can occurs when generating a page. It will be handled by the
+ * webServer to send a redirect on the right url.
+ */
+// No serialization possible because IndexPageUrl is not serializable.
 @SuppressWarnings("serial")
 public class RedirectException extends Exception {
 
     private final Url url;
 
+    /**
+     * Create a {@link RedirectException} that redirect to <code>url</code>.
+     *
+     * @param url is where the user will be redirect to.
+     */
     public RedirectException(final Url url) {
         if (url == null) {
             this.url = new IndexPageUrl();
@@ -27,6 +36,9 @@ public class RedirectException extends Exception {
         }
     }
 
+    /**
+     * @return the redirection url.
+     */
     public final Url getUrl() {
         return url;
     }

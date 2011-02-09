@@ -11,17 +11,29 @@
 
 package com.bloatit.framework.exceptions;
 
+/**
+ * Custom RuntimeException exception type.
+ */
 public class FatalErrorException extends RuntimeException {
     private static final long serialVersionUID = -8861022396347552403L;
 
+    /**
+     * @see RuntimeException#RuntimeException(String, Throwable)
+     */
     public FatalErrorException(final String string, final Throwable cause) {
         super(string, cause);
     }
 
+    /**
+     * @see RuntimeException#RuntimeException(String)
+     */
     public FatalErrorException(final String message) {
         super(message);
     }
 
+    /**
+     * @see RuntimeException#RuntimeException(Throwable)
+     */
     public FatalErrorException(final Throwable cause) {
         super(cause);
     }

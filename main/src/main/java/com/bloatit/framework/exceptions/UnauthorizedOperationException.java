@@ -7,6 +7,17 @@ import com.bloatit.model.Unlockable;
 import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.model.right.RightManager.Role;
 
+/**
+ * This exception is thrown when you try to access a property without the having right.
+ * <p>
+ * An {@link UnauthorizedOperationException} should give you some informations about why
+ * you failed to access a property. To do so, tree different informations can be
+ * available:
+ * <li>The role in which the user was when trying to access the property.</li>
+ * <li>The action the user try to do.</li>
+ * <li>A special code for every possible special access error.</li>
+ * </p>
+ */
 public class UnauthorizedOperationException extends Exception {
     private static final long serialVersionUID = -3668632178618592431L;
 
