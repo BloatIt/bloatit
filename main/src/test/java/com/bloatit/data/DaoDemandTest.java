@@ -180,7 +180,7 @@ public class DaoDemandTest extends ModelTestUnit {
                                                                                                 "Ceci est la descption de ma demande :) "), project);
         demand.addOffer(createOffer(demand));
 
-        // This is needed to index the new Demand.
+        // This is needed to index the new DemandImplementation.
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
 

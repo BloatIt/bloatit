@@ -14,6 +14,7 @@ import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.AuthToken;
+import com.bloatit.model.Demand;
 
 public final class DemandManager {
 
@@ -21,12 +22,12 @@ public final class DemandManager {
         // Desactivate default ctor
     }
 
-    public static PageIterable<DemandInterface> getDemands() {
+    public static PageIterable<Demand> getDemands() {
         return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
     }
 
-    public static Demand getDemandById(final Integer id) {
-        return Demand.create(DBRequests.getById(DaoDemand.class, id));
+    public static DemandImplementation getDemandById(final Integer id) {
+        return DemandImplementation.create(DBRequests.getById(DaoDemand.class, id));
     }
 
     public static int getDemandsCount() {

@@ -8,14 +8,14 @@ import com.bloatit.model.Offer;
 
 abstract class AbstractDemandState {
 
-    protected final Demand demand;
+    protected final DemandImplementation demandImplementation;
 
-    public AbstractDemandState(final Demand demand) {
-        this.demand = demand;
+    public AbstractDemandState(final DemandImplementation demandImplementation) {
+        this.demandImplementation = demandImplementation;
     }
 
     public DemandState getState() {
-        return demand.getDao().getDemandState();
+        return demandImplementation.getDao().getDemandState();
     }
 
     public AbstractDemandState eventAddOffer(final Offer offer) {

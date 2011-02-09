@@ -23,14 +23,14 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.Demand;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.DemandPageUrl;
 
 /**
- * A response to a form used to create a contribution to a demand
+ * A response to a form used to create a contribution to a demandImplementation
  */
 @ParamContainer("action/contribute")
 public final class ContributionAction extends LoggedAction {
@@ -40,7 +40,7 @@ public final class ContributionAction extends LoggedAction {
     public static final String TARGET_IDEA = "targetIdea";
 
     @RequestParam(name = TARGET_IDEA, level = Level.ERROR)
-    private final DemandInterface targetIdea;
+    private final Demand targetIdea;
 
     @RequestParam(name = COMMENT_CODE, role = Role.POST)
     @ParamConstraint(optional = true, //

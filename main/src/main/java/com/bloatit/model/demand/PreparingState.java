@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import com.bloatit.model.Offer;
 
 public class PreparingState extends CanContributeMetaState {
-    public PreparingState(final Demand demand) {
-        super(demand);
-        demand.inPreparingState();
+    public PreparingState(final DemandImplementation demandImplementation) {
+        super(demandImplementation);
+        demandImplementation.inPreparingState();
     }
 
     @Override
@@ -17,10 +17,10 @@ public class PreparingState extends CanContributeMetaState {
 
     @Override
     public AbstractDemandState eventRemoveOffer(final Offer offer) {
-        if (demand.getDao().getOffers().size() > 0) {
+        if (demandImplementation.getDao().getOffers().size() > 0) {
             return this;
         }
-        return new PendingState(demand);
+        return new PendingState(demandImplementation);
     }
 
     @Override

@@ -4,20 +4,21 @@ import java.util.Iterator;
 
 import com.bloatit.data.DaoDemand;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Demand;
 import com.bloatit.model.lists.ListBinder;
 
-public final class DemandList extends ListBinder<DemandInterface, DaoDemand> {
+public final class DemandList extends ListBinder<Demand, DaoDemand> {
 
     public DemandList(final PageIterable<DaoDemand> daoCollection) {
         super(daoCollection);
     }
 
     @Override
-    protected Iterator<DemandInterface> createFromDaoIterator(final Iterator<DaoDemand> dao) {
+    protected Iterator<Demand> createFromDaoIterator(final Iterator<DaoDemand> dao) {
         return new DemandIterator(dao);
     }
 
-    static final class DemandIterator extends com.bloatit.model.lists.IteratorBinder<DemandInterface, DaoDemand> {
+    static final class DemandIterator extends com.bloatit.model.lists.IteratorBinder<Demand, DaoDemand> {
 
         public DemandIterator(final Iterable<DaoDemand> daoIterator) {
             super(daoIterator);
@@ -28,8 +29,8 @@ public final class DemandList extends ListBinder<DemandInterface, DaoDemand> {
         }
 
         @Override
-        protected DemandInterface createFromDao(final DaoDemand dao) {
-            return Demand.create(dao);
+        protected Demand createFromDao(final DaoDemand dao) {
+            return DemandImplementation.create(dao);
         }
 
     }
