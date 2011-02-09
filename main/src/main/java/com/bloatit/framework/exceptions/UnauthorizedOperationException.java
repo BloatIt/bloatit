@@ -75,7 +75,12 @@ public class UnauthorizedOperationException extends Exception {
          * You create an object and insert it with different person. For example Tom
          * create an Offer and Yo insert it in the demand.
          */
-        CREATOR_INSERTOR_MISMATCH
+        CREATOR_INSERTOR_MISMATCH,
+
+        /**
+         * You try to vote but you are the author
+         */
+        OWNED_BY_ME
 
     }
 

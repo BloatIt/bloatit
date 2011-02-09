@@ -108,38 +108,40 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
 
                 commentPopularity.addText(Context.tr("Popularity: {0}", HtmlTools.compressKarma(comment.getPopularity())));
 
-                int vote = comment.getVote();
-                if (vote == 0) {
-                    commentPopularity.addText(" (");
+                if (!comment.isOwnedByMe()) {
+                    int vote = comment.getVote();
+                    if (vote == 0) {
+                        commentPopularity.addText(" (");
 
-                    // Usefull
-                    final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(comment, true);
-                    final HtmlLink usefullLink = usefullUrl.getHtmlLink(Context.tr("Usefull"));
-                    usefullLink.setCssClass("usefull");
+                        // Usefull
+                        final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(comment, true);
+                        final HtmlLink usefullLink = usefullUrl.getHtmlLink(Context.tr("Usefull"));
+                        usefullLink.setCssClass("usefull");
 
-                    // Useless
-                    final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(comment, false);
-                    final HtmlLink uselessLink = uselessUrl.getHtmlLink(Context.tr("Useless"));
-                    uselessLink.setCssClass("useless");
+                        // Useless
+                        final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(comment, false);
+                        final HtmlLink uselessLink = uselessUrl.getHtmlLink(Context.tr("Useless"));
+                        uselessLink.setCssClass("useless");
 
-                    commentPopularity.add(usefullLink);
-                    commentPopularity.addText(" – ");
-                    commentPopularity.add(uselessLink);
+                        commentPopularity.add(usefullLink);
+                        commentPopularity.addText(" – ");
+                        commentPopularity.add(uselessLink);
 
-                    commentPopularity.addText(")");
-                } else {
-                    //Already voted
-                    final HtmlSpan voted = new HtmlSpan("comment_voted");
-                    {
-                        if (vote > 0) {
-                            voted.addText("+" + vote);
-                            voted.setCssClass("comment_voted usefull");
-                        } else {
-                            voted.addText("−" + Math.abs(vote));
-                            voted.setCssClass("comment_voted useless");
+                        commentPopularity.addText(")");
+                    } else {
+                        // Already voted
+                        final HtmlSpan voted = new HtmlSpan("comment_voted");
+                        {
+                            if (vote > 0) {
+                                voted.addText("+" + vote);
+                                voted.setCssClass("comment_voted usefull");
+                            } else {
+                                voted.addText("−" + Math.abs(vote));
+                                voted.setCssClass("comment_voted useless");
+                            }
                         }
+                        commentPopularity.add(voted);
                     }
-                    commentPopularity.add(voted);
                 }
 
             }

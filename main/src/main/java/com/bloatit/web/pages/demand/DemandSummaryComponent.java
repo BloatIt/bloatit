@@ -113,36 +113,42 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                     demandSummaryPopularity.add(popularityText);
                     demandSummaryPopularity.add(popularityScore);
 
-                    int vote = demand.getVote();
-                    if (vote == 0) {
-                        final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
-                        {
+                    if (!demand.isOwnedByMe()) {
+                        int vote = demand.getVote();
+                        if (vote == 0) {
+                            final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
+                            {
 
-                            // Usefull
-                            final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(demand, true);
-                            final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
-                            usefullLink.setCssClass("usefull");
+                                // Usefull
+                                final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(demand, true);
+                                final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
+                                usefullLink.setCssClass("usefull");
 
-                            // Useless
-                            final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(demand, false);
-                            final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
-                            uselessLink.setCssClass("useless");
+                                // Useless
+                                final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(demand, false);
+                                final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
+                                uselessLink.setCssClass("useless");
 
-                            demandPopularityJudge.add(usefullLink);
-                            demandPopularityJudge.add(uselessLink);
-                        }
-                        demandSummaryPopularity.add(demandPopularityJudge);
-                    } else {
-                        //Already voted
-                        final HtmlDiv demandPopularityJudged = new HtmlDiv("demand_popularity_judged");
-                        {
-                            if (vote > 0) {
-                                demandPopularityJudged.add(new HtmlParagraph("+" + vote, "usefull"));
-                            } else {
-                                demandPopularityJudged.add(new HtmlParagraph("−" + Math.abs(vote), "useless"));
+                                demandPopularityJudge.add(usefullLink);
+                                demandPopularityJudge.add(uselessLink);
                             }
+                            demandSummaryPopularity.add(demandPopularityJudge);
+                        } else {
+                            // Already voted
+                            final HtmlDiv demandPopularityJudged = new HtmlDiv("demand_popularity_judged");
+                            {
+                                if (vote > 0) {
+                                    demandPopularityJudged.add(new HtmlParagraph("+" + vote, "usefull"));
+                                } else {
+                                    demandPopularityJudged.add(new HtmlParagraph("−" + Math.abs(vote), "useless"));
+                                }
+                            }
+                            demandSummaryPopularity.add(demandPopularityJudged);
                         }
-                        demandSummaryPopularity.add(demandPopularityJudged);
+                    } else {
+                        final HtmlDiv demandPopularityNone = new HtmlDiv("demand_popularity_none");
+
+                        demandSummaryPopularity.add(demandPopularityNone);
                     }
 
                 }

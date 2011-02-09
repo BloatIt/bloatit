@@ -82,12 +82,22 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
         if (getAuthTokenUnprotected() == null){
             errors.add(SpecialCode.AUTHENTICATION_NEEDED);
+            //Stop tests here: the other tests need an AuthToken
+            return errors;
+        }
+
+     // Only one kudos per person
+        if (isOwnedByMe()) {
+            errors.add(SpecialCode.OWNED_BY_ME);
         }
 
         // Only one kudos per person
         if (getDao().hasKudosed(getAuthTokenUnprotected().getMember().getDao())) {
             errors.add(SpecialCode.ALREADY_VOTED);
         }
+
+
+
 
         // Make sure we are in the right position
         final Member member = getAuthTokenUnprotected().getMember();
@@ -99,6 +109,11 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
             errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP);
         }
         return errors;
+    }
+
+    @Override
+    public boolean isOwnedByMe() {
+        return getAuthor().equals(getAuthTokenUnprotected().getMember());
     }
 
     /* (non-Javadoc)

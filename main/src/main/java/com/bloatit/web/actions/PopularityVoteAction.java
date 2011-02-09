@@ -61,15 +61,8 @@ public final class PopularityVoteAction extends LoggedAction {
                     int weight = targetKudosable.voteUp();
                     session.notifyGood(Context.tr("Vote up applied: {0}", weight));
                 } else {
-                    if(canVote.contains(SpecialCode.ALREADY_VOTED)) {
-                        session.notifyBad(Context.tr("You already voted on that."));
-                    }
-                    if(canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP)) {
-                        session.notifyBad(Context.tr("You have a too low reputation to vote up that."));
-                    }
+                    analyseErrors(canVote);
                 }
-
-
             } else {
                 EnumSet<SpecialCode> canVote = targetKudosable.canVoteDown();
 
@@ -77,12 +70,7 @@ public final class PopularityVoteAction extends LoggedAction {
                     int weight = targetKudosable.voteDown();
                     session.notifyGood(Context.tr("Vote down applied: {0}", weight));
                 } else {
-                    if(canVote.contains(SpecialCode.ALREADY_VOTED)) {
-                        session.notifyBad(Context.tr("You already voted on that."));
-                    }
-                    if(canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN)) {
-                        session.notifyBad(Context.tr("You have a too low reputation to vote up that."));
-                    }
+                    analyseErrors(canVote);
                 }
             }
         } catch (final UnauthorizedOperationException e) {
@@ -90,6 +78,21 @@ public final class PopularityVoteAction extends LoggedAction {
         }
 
         return session.pickPreferredPage();
+    }
+
+    public void analyseErrors(EnumSet<SpecialCode> canVote) {
+        if(canVote.contains(SpecialCode.ALREADY_VOTED)) {
+            session.notifyBad(Context.tr("You already voted on that."));
+        }
+        if(canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP)) {
+            session.notifyBad(Context.tr("You have a too low reputation to vote up that."));
+        }
+        if(canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN)) {
+            session.notifyBad(Context.tr("You have a too low reputation to vote down that."));
+        }
+        if(canVote.contains(SpecialCode.OWNED_BY_ME)) {
+            session.notifyBad(Context.tr("You can't vote for yourself!."));
+        }
     }
 
     @Override

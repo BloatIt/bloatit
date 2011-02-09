@@ -23,4 +23,6 @@ public interface KudosableInterface<T extends DaoKudosable> extends UserContentI
 
     int getPopularity();
 
+    public abstract boolean isOwnedByMe();
+
 }
