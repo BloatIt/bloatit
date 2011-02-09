@@ -102,7 +102,7 @@ public final class IdeaContributorsComponent extends HtmlDiv {
             public HtmlNode generate(final Contribution item) {
                 String itemString = tr("You are not authorized to see this.");
                 try {
-                    itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " " + item.getCreationDate().toString();
+                    itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " " + item.getCreationDate().toString()+ " "+ item.getComment();
                 } catch (final UnauthorizedOperationException e) {
                     // do nothing
                 }
