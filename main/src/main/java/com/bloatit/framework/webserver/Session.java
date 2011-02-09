@@ -47,7 +47,7 @@ public final class Session {
     private final UUID key;
     private final Deque<Message> notificationList;
 
-    //TODO: use string reference to avoid to keep reference on Member object
+    // TODO: use string reference to avoid to keep reference on Member object
     private AuthToken authToken;
 
     private Url lastStablePage = null;
@@ -105,6 +105,9 @@ public final class Session {
     }
 
     public Url getLastStablePage() {
+        if (lastStablePage == null) {
+            return new IndexPageUrl();
+        }
         return lastStablePage;
     }
 

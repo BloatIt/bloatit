@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlStringBinder;
 import com.bloatit.framework.xcgiserver.HttpHeader;
@@ -17,7 +17,7 @@ import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
-import com.bloatit.web.url.PaylinePageUrl;
+import com.bloatit.web.url.PaylineReturnActionUrl;
 
 @ParamContainer("paylinedopayment")
 public final class PaylineAction extends LoggedAction {
@@ -36,9 +36,9 @@ public final class PaylineAction extends LoggedAction {
     public Url doProcessRestricted() throws RedirectException {
         // Constructing the urls.
         final HttpHeader header = Context.getHeader();
-        final String returnUrl = "http://" + header.getHttpHost() + new PaylinePageUrl("ok").urlString();
-        final String cancelUrl = "http://" + header.getHttpHost() + new PaylinePageUrl("cancel").urlString();
-        final String notificationUrl = "http://" + header.getHttpHost() + new PaylineNotifyActionUrl().urlString();
+        final String returnUrl = new PaylineReturnActionUrl("ok").externalUrlString(header);
+        final String cancelUrl = new PaylineReturnActionUrl("cancel").externalUrlString(header);
+        final String notificationUrl = new PaylineNotifyActionUrl().externalUrlString(header);
 
         // Make the payment request.
         final Payline payline = new Payline();

@@ -17,6 +17,7 @@ import com.bloatit.web.actions.MemberActivationAction;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.actions.PaylineAction;
 import com.bloatit.web.actions.PaylineNotifyAction;
+import com.bloatit.web.actions.PaylineReturnAction;
 import com.bloatit.web.actions.RegisterAction;
 import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
@@ -68,6 +69,7 @@ import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
 import com.bloatit.web.url.PaylineNotifyActionUrl;
 import com.bloatit.web.url.PaylinePageUrl;
+import com.bloatit.web.url.PaylineReturnActionUrl;
 import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
@@ -193,6 +195,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(MemberActivationActionUrl.getName())) {
             return new MemberActivationAction(new MemberActivationActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(PaylineReturnActionUrl.getName())) {
+            return new PaylineReturnAction(new PaylineReturnActionUrl(params, session.getParameters()));
         }
 
         //Resource page
