@@ -1,9 +1,11 @@
-package com.bloatit.web.pages.doc;
+package com.bloatit.web.pages;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.bloatit.common.ConfigurationManager;
+import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
@@ -12,29 +14,35 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.pages.master.MasterPage;
-import com.bloatit.web.url.DocumentationHomeUrl;
+import com.bloatit.web.url.DocumentationUrl;
 
 @ParamContainer("documentation")
-public class DocumentationHome extends MasterPage {
+public class Documentation extends MasterPage {
     private final static String DOC_TARGET = "doc";
-    private final static String ELVEOS_DOC_DIR = "/home/yoann/elveos/internal/doc/";
 
     @RequestParam(name = DOC_TARGET, level = Level.ERROR, defaultValue = "home")
     private final String docTarget;
 
-    public DocumentationHome(DocumentationHomeUrl url) {
+    public Documentation(DocumentationUrl url) {
         super(url);
         docTarget = url.getDocTarget();
     }
 
     @Override
     protected void doCreate() throws RedirectException {
+
+        String dir = ConfigurationManager.loadProperties("web.properties").getProperty("bloatit.documentation.dir");
+        if (dir == null) {
+            throw new FatalErrorException("Please configure your documentation dir : create " + ConfigurationManager.ETC_DIR
+                    + "/web.properties and add inside the property 'bloatit.documentation.dir=<value>'");
+        }
+
         HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Elveos documentation home"), 1);
         add(master);
 
         FileInputStream fis;
         try {
-            fis = new FileInputStream(ELVEOS_DOC_DIR + docTarget);
+            fis = new FileInputStream(dir + docTarget);
             byte[] b = new byte[fis.available()];
             fis.read(b);
             HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(new String(b));

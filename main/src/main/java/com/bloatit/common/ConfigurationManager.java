@@ -18,24 +18,24 @@ import com.bloatit.framework.webserver.url.Loaders;
  * A class to handle configuration files
  */
 public class ConfigurationManager {
-    public static String SHARE_DIR = System.getProperty("user.home") + "/.local/share/bloatit/";
-
-    private final static String ETC_DIR = System.getProperty("user.home") + "/.config/bloatit/";
+    public final static String SHARE_DIR = System.getProperty("user.home") + "/.local/share/bloatit/";
+    public final static String ETC_DIR = System.getProperty("user.home") + "/.config/bloatit/";
     private final static String FALLBACK_ETC_DIR = "/etc/bloatit/";
     private static final String SUFFIX = ".properties";
 
     /**
      * <p>
-     * Loads the content of a properties file in the default configuration file directory
-     * for bloatit. Returns it as a Properties list, aka a map containing the key->value
-     * pairs
+     * Loads the content of a properties file in the default configuration file
+     * directory for bloatit. Returns it as a Properties list, aka a map
+     * containing the key->value pairs
      * </p>
      * <p>
-     * The <code>name</code> of the property file is the name of the file, or the path
-     * from the root of the configuration directory.
+     * The <code>name</code> of the property file is the name of the file, or
+     * the path from the root of the configuration directory.
      * </p>
-     *
-     * @param name the name of the property file
+     * 
+     * @param name
+     *            the name of the property file
      * @return a map key -> value
      */
     public static PropertiesRetriever loadProperties(String name) {
@@ -150,7 +150,8 @@ public class ConfigurationManager {
          * @param key
          * @param defaultValue
          * @return
-         * @see java.util.Properties#getProperty(java.lang.String, java.lang.String)
+         * @see java.util.Properties#getProperty(java.lang.String,
+         *      java.lang.String)
          */
         public String getProperty(String key, String defaultValue) {
             return prop.getProperty(key, defaultValue);
