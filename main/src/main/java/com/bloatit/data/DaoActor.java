@@ -78,11 +78,10 @@ public abstract class DaoActor implements IdentifiableInterface {
     // ======================================================================
 
     /**
-     * Initialize the creation date to now.
+     * Create a new DaoActor. Initialize the creation date to now. Create a new
+     * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
      *
-     * @param login is the login or name of this actor
-     * @param email is the email of this actor. (No check is performed on the correctness
-     *        of this email address)
+     * @param login is the login or name of this actor. It must be non null, and unique.
      * @throws NonOptionalParameterException if login or mail is null.
      */
     protected DaoActor(final String login) {
@@ -101,11 +100,13 @@ public abstract class DaoActor implements IdentifiableInterface {
         this.externalAccount = new DaoExternalAccount(this);
     }
 
+    /**
+     * @return the email of this actor.
+     */
     public abstract String getEmail();
 
     /**
-     * This method is used by hibernate. You can use it if you want to change the email.
-     * (No check is performed on the correctness of the new email)
+     * No check is performed on the correctness of the new email.
      *
      * @param email the new email.
      */
@@ -163,6 +164,9 @@ public abstract class DaoActor implements IdentifiableInterface {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * For hibernate mapping. Do not use it.
+     */
     protected DaoActor() {
         super();
     }

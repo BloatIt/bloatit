@@ -14,6 +14,8 @@ import javax.persistence.OneToOne;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.InternalAccount;
 
 /**
  * A DaoAccount generalize the idea of bank account for our system. This class is mapped
@@ -53,8 +55,7 @@ public abstract class DaoAccount implements IdentifiableInterface {
     private BigDecimal amount;
 
     /**
-     * This constructor initialize the creation and modification dates. The amount is set
-     * to 0
+     * Initialize the creation and modification dates. The amount is set to 0.
      *
      * @param actor is the owner of this account
      * @throws NonOptionalParameterException if the actor == null
@@ -70,10 +71,11 @@ public abstract class DaoAccount implements IdentifiableInterface {
     }
 
     /**
-     * If you want to take away from this account some money, you have to know if there is
-     * enough money in it.
+     * Tells if you can take <code>amount</code> money in the account. On
+     * {@link InternalAccount} the money has to exist. The {@link ExternalAccount} can
+     * have negative amount of money.
      *
-     * @param amount The quantity of money you want to get.
+     * @param amount The quantity of money you want to get. Should be > 0.
      * @return true if this operation is allowed.
      */
     protected abstract boolean hasEnoughMoney(BigDecimal amount);
@@ -87,8 +89,13 @@ public abstract class DaoAccount implements IdentifiableInterface {
     }
 
     /**
+     * <p>
+     * Add <code>value</code> into the account.
+     * </p>
+     * <p>
      * To modify the value of the amount, you have to create a transaction. This method is
      * protected to be used by transaction only !
+     * </p>
      *
      * @param value the quantity of money to add to the amount of this account. (May be a
      *        negative value)
@@ -100,8 +107,11 @@ public abstract class DaoAccount implements IdentifiableInterface {
     }
 
     /**
+     * <p>
+     * Substract <code>value</code> from the account.
+     * </p>
      * To modify the value of the amount, you have to create a transaction. This method is
-     * protected to be used by transaction only !
+     * protected to be used by transaction only ! </p>
      *
      * @param value the quantity of money to subtract to the amount of this account. (May
      *        be a negative value)
@@ -114,7 +124,7 @@ public abstract class DaoAccount implements IdentifiableInterface {
 
     /**
      * This is for hibernate only. The amount must be modified by some higher level
-     * methods. For test purpose it is protected, but it will be private.
+     * methods. For test purpose it is protected, but it should be private.
      *
      * @see DaoTransaction
      * @param amount the new amount to set.
@@ -128,8 +138,13 @@ public abstract class DaoAccount implements IdentifiableInterface {
     // ======================================================================
 
     /**
+     * <p>
+     * Find all the transaction made from or to this account.
+     * </p>
+     * <p>
      * WARNING: the order is not specified yet. Maybe it will be ordered by date (if
      * needed)
+     * </p>
      *
      * @return all the transactions that are from/to this account.
      */
@@ -162,6 +177,9 @@ public abstract class DaoAccount implements IdentifiableInterface {
     // For hibernate mapping
     // ======================================================================
 
+    /**
+     * For hibernate mapping.
+     */
     protected DaoAccount() {
         super();
     }

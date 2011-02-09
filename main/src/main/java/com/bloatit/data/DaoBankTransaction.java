@@ -28,7 +28,28 @@ public final class DaoBankTransaction extends DaoIdentifiable {
      * <code>AUTHORIZED</code> a transaction must be <code>AUTHORIZED</code>.
      */
     public enum State {
-        PENDING, AUTHORIZED, REFUSED, VALIDATED
+        /**
+         * A <code>PENDING</code> BankTransaction is in an not known yet state. We are
+         * waiting for more informations to know in which state it will be.
+         */
+        PENDING,
+
+        /**
+         * A transaction is <code>AUTHORIZED</code> when you give the right card code and
+         * the bank says that you can do the transaction.
+         */
+        AUTHORIZED,
+
+        /**
+         * A refused transaction is a transaction that went wrong (error in the CB code,
+         * bug, not money in the account.
+         */
+        REFUSED,
+
+        /**
+         * When the transaction is actually performed it pass in <code>VALIDATE</code> state.
+         */
+        VALIDATED
     }
 
     private static final int DEFAULT_STRING_LENGTH = 64;
