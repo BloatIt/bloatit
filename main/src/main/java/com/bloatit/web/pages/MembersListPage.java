@@ -15,6 +15,7 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlListItem;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
@@ -43,6 +44,8 @@ public final class MembersListPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
+        final HtmlDiv box = new HtmlDiv("padding_box");
+
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 2);
         final PageIterable<Member> memberList = MemberManager.getMembers();
         final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
@@ -52,7 +55,10 @@ public final class MembersListPage extends MasterPage {
         pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
         pageTitle.add(pagedMemberList);
-        add(pageTitle);
+
+        box.add(pageTitle);
+
+        add(box);
     }
 
     @Override
