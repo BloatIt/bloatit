@@ -23,7 +23,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.model.Translation;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlTabBlock;
 import com.bloatit.web.components.HtmlTabBlock.HtmlTab;
@@ -44,7 +44,7 @@ public final class DemandTabPane extends HtmlPageComponent {
     @SuppressWarnings("unused")
     private IdeaContributorsComponent contribution;
 
-    public DemandTabPane(final DemandTabPaneUrl url, final Demand demand) {
+    public DemandTabPane(final DemandTabPaneUrl url, final DemandInterface demand) {
         super();
         activeTabKey = url.getActiveTabKey();
 
@@ -98,7 +98,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
     }
 
-    private HtmlNode generateDescriptionTabContent(final Demand demand) {
+    private HtmlNode generateDescriptionTabContent(final DemandInterface demand) {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {

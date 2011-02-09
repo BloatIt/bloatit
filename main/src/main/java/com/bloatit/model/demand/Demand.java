@@ -42,7 +42,7 @@ import com.bloatit.model.right.RightManager.Action;
 /**
  * A demand is an idea :)
  */
-public final class Demand extends Kudosable<DaoDemand> {
+public final class Demand extends Kudosable<DaoDemand> implements DemandInterface {
     private AbstractDemandState stateObject;
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -91,46 +91,34 @@ public final class Demand extends Kudosable<DaoDemand> {
     // Can something
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @param action is the type of action you can do on the property. (READ for the
-     *        getter, WRITE for the SETTER etc.)
-     * @return true if you can access the <code>Comment</code> property.
-     * @see #getComments()
-     * @see #addComment(String)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#canAccessComment(com.bloatit.model.right.RightManager.Action)
      */
+    @Override
     public boolean canAccessComment(final Action action) {
         return new DemandRight.Comment().canAccess(calculateRole(this), action);
     }
 
-    /**
-     * @param action is the type of action you can do on the property. (READ for the
-     *        getter, WRITE for the SETTER etc.)
-     * @return true if you can access the <code>Contribution</code> property.
-     * @see #getContribution()
-     * @see #getContributionMax()
-     * @see #getContributionMin()
-     * @see #getContributions()
-     * @see #addContribution(BigDecimal, String)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#canAccessContribution(com.bloatit.model.right.RightManager.Action)
      */
+    @Override
     public boolean canAccessContribution(final Action action) {
         return new DemandRight.Contribute().canAccess(calculateRole(this), action);
     }
 
-    /**
-     * @param action is the type of action you can do on the property. (READ for the
-     *        getter, WRITE for the SETTER etc.)
-     * @return true if you can access the <code>Offer</code> property.
-     * @see #getOffers()
-     * @see #addOffer(BigDecimal, Locale, String, String, Date)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#canAccessOffer(com.bloatit.model.right.RightManager.Action)
      */
+    @Override
     public boolean canAccessOffer(final Action action) {
         return new DemandRight.Offer().canAccess(calculateRole(this), action);
     }
 
-    /**
-     * @return true if you can access the <code>Description</code> property.
-     * @see #getDescription()
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#canAccessDescription()
      */
+    @Override
     public boolean canAccessDescription() {
         return new DemandRight.Specification().canAccess(calculateRole(this), Action.READ);
     }
@@ -139,37 +127,20 @@ public final class Demand extends Kudosable<DaoDemand> {
     // Do things.
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Add a contribution on this demand.
-     *
-     * @param amount must be a positive non null value.
-     * @param comment can be null or empty and should be less than 140 char long.
-     * @throws NotEnoughMoneyException if the person logged does not have enough money to
-     *         make this contribution.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#WRITE} right on the <code>Contribution</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#addContribution(java.math.BigDecimal, java.lang.String)
      */
+    @Override
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
         getDao().addContribution(getAuthToken().getMember().getDao(), amount, comment);
         setStateObject(getStateObject().eventAddContribution());
     }
 
-    /**
-     * Add a new Offer on this Demand. You can do this operation when you are in the
-     * {@link DemandState#PENDING} or {@link DemandState#PREPARING} DemandState. When you
-     * add the first Offer, the state pass from {@link DemandState#PENDING} to
-     * {@link DemandState#PREPARING}; and this offer is selected (see
-     * {@link DaoDemand#setSelectedOffer(DaoOffer)}). The parameters of this function are
-     * used to create the first (non optional) batch in this offer.
-     *
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#WRITE} right on the <code>Offer</code> property.
-     * @throws WrongStateException if the state is != from {@link DemandState#PENDING} or
-     *         {@link DemandState#PREPARING}.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#addOffer(com.bloatit.model.Offer)
      */
+    @Override
     public void addOffer(final Offer offer) throws UnauthorizedOperationException {
         if (offer == null) {
             throw new NonOptionalParameterException();
@@ -186,14 +157,10 @@ public final class Demand extends Kudosable<DaoDemand> {
         getDao().addOffer(offer.getDao());
     }
 
-    /**
-     * For now only the admin can delete an offer.
-     *
-     * @param offer is the offer to delete.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         <code>DELETE</code> right on the <code>Offer</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#removeOffer(com.bloatit.model.Offer)
      */
+    @Override
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
         if (getDao().getSelectedOffer().getId() == offer.getId()) {
@@ -203,12 +170,10 @@ public final class Demand extends Kudosable<DaoDemand> {
         getDao().removeOffer(offer.getDao());
     }
 
-    /**
-     * Works only in development state.
-     *
-     * @throws UnauthorizedOperationException If this is not the current developer thats
-     *         try to cancel the dev.
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#cancelDevelopment()
      */
+    @Override
     public void cancelDevelopment() throws UnauthorizedOperationException {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_DEMAND);
@@ -227,6 +192,10 @@ public final class Demand extends Kudosable<DaoDemand> {
         // Maybe I should make sure everything is canceled in every Offer/batches ?
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#releaseCurrentBatch()
+     */
+    @Override
     public void releaseCurrentBatch() throws UnauthorizedOperationException {
         if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
             throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_FINISHED_DEMAND);
@@ -241,6 +210,10 @@ public final class Demand extends Kudosable<DaoDemand> {
     }
 
     // TODO authorization
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#validateCurrentBatch(boolean)
+     */
+    @Override
     public boolean validateCurrentBatch(final boolean force) {
         if (getSelectedOfferUnprotected().isFinished()) {
             throw new FatalErrorException("There is no batch left for this Offer !");
@@ -251,14 +224,10 @@ public final class Demand extends Kudosable<DaoDemand> {
         return getSelectedOfferUnprotected().validateCurrentBatch(force);
     }
 
-    /**
-     * Add a comment at the end of the comment list.
-     *
-     * @param text is the text of the comment.
-     * @throws UnauthorizedOperationException if you do not have the {@link Action#WRITE}
-     *         right on the <code>Comment</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#addComment(java.lang.String)
      */
+    @Override
     public void addComment(final String text) throws UnauthorizedOperationException {
         new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
         getDao().addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
@@ -281,11 +250,10 @@ public final class Demand extends Kudosable<DaoDemand> {
         }
     }
 
-    /**
-     * Used by Offer class. You should never have to use it
-     *
-     * @param offer the offer to unselect. Nothing is done if the offer is not selected.
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#unSelectOffer(com.bloatit.model.Offer)
      */
+    @Override
     public void unSelectOffer(final Offer offer) {
         if (offer.equals(getSelectedOfferUnprotected())) {
             setSelectedOffer(null);
@@ -403,27 +371,27 @@ public final class Demand extends Kudosable<DaoDemand> {
     // Get something
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getValidationDate()
+     */
+    @Override
     public Date getValidationDate() {
         return getDao().getValidationDate();
     }
 
-    /**
-     * @return the first level comments on this demand.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#READ} right on the <code>Comment</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getComments()
      */
+    @Override
     public PageIterable<Comment> getComments() throws UnauthorizedOperationException {
         new DemandRight.Comment().tryAccess(calculateRole(this), Action.READ);
         return new CommentList(getDao().getCommentsFromQuery());
     }
 
-    /**
-     * @return all the Contributions on this Demand.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#READ} right on the <code>Contribution</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getContributions()
      */
+    @Override
     public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         return getContributionsUnprotected();
@@ -440,17 +408,10 @@ public final class Demand extends Kudosable<DaoDemand> {
     private static final int PROGRESSION_CONTRIBUTION_DIVISOR = 200;
     public static final int PROGRESSION_PERCENT = 100;
 
-    /**
-     * Return the progression in percent. It compare the amount of contribution to the
-     * amount of the current offer.
-     *
-     * @return a percentage. It can be > 100 if the amount of contributions is greater
-     *         than the amount for the current offer. If the offer amount is 0 then it
-     *         return Float.POSITIVE_INFINITY.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#READ} right on the <code>Contribution</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getProgression()
      */
+    @Override
     public float getProgression() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         final DaoOffer currentOffer = getDao().getSelectedOffer();
@@ -463,56 +424,46 @@ public final class Demand extends Kudosable<DaoDemand> {
         return Float.POSITIVE_INFINITY;
     }
 
-    /**
-     * @return return the sum of the values of all the contributions on this demand.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#READ} right on the <code>Contribution</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getContribution()
      */
+    @Override
     public BigDecimal getContribution() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         return getDao().getContribution();
     }
 
-    /**
-     * @return return the value of the contribution with the max contribution.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#READ} right on the <code>Contribution</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getContributionMax()
      */
+    @Override
     public BigDecimal getContributionMax() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         return getDao().getContributionMax();
     }
 
-    /**
-     * @return return the value of the contribution with the min contribution.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         {@link Action#READ} right on the <code>Contribution</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getContributionMin()
      */
+    @Override
     public BigDecimal getContributionMin() throws UnauthorizedOperationException {
         new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
         return getDao().getContributionMin();
     }
 
-    /**
-     * @return the current Description of this offer.
-     * @throws UnauthorizedOperationException if the user does not has the right on the
-     *         <code>Description</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getDescription()
      */
+    @Override
     public Description getDescription() throws UnauthorizedOperationException {
         new DemandRight.Description().tryAccess(calculateRole(this), Action.READ);
         return Description.create(getDao().getDescription());
     }
 
-    /**
-     * @return all the offers on this demand.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         <code>READ</code> right on the <code>Offer</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getOffers()
      */
+    @Override
     public PageIterable<Offer> getOffers() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
         return getOffersUnprotected();
@@ -522,28 +473,19 @@ public final class Demand extends Kudosable<DaoDemand> {
         return new OfferList(getDao().getOffersFromQuery());
     }
 
-    /**
-     * The current offer is the offer with the max popularity then the min amount.
-     *
-     * @return the current offer for this demand, or null if there is no offer.
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         <code>READ</code> right on the <code>Offer</code> property.
-     * @see #authenticate(AuthToken)
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getSelectedOffer()
      */
+    @Override
     public Offer getSelectedOffer() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
         return getSelectedOfferUnprotected();
     }
 
-    /**
-     * A validated offer is an offer selected for more than one day. (If you are in
-     * {@link DemandState#DEVELOPPING} state then there should be always a validated
-     * offer.
-     *
-     * @return the validated offer or null if there is no valid offer.
-     * @throws UnauthorizedOperationException if you do not have the <code>READ</code>
-     *         right on the offer property
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getValidatedOffer()
      */
+    @Override
     public Offer getValidatedOffer() throws UnauthorizedOperationException {
         new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
         if (getDao().getSelectedOffer() != null && getValidationDate().before(new Date())) {
@@ -556,16 +498,18 @@ public final class Demand extends Kudosable<DaoDemand> {
         return Offer.create(getDao().getSelectedOffer());
     }
 
-    /**
-     * @throws UnauthorizedOperationException if the user does not has the
-     *         <code>READ</code> right on the <code>Description</code> property.
-     * @see #authenticate(AuthToken)
-     * @see #getDescription()
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getTitle()
      */
+    @Override
     public String getTitle() throws UnauthorizedOperationException {
         return getDescription().getDefaultTranslation().getTitle();
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getDemandState()
+     */
+    @Override
     public DemandState getDemandState() {
         return getDao().getDemandState();
     }
@@ -574,6 +518,10 @@ public final class Demand extends Kudosable<DaoDemand> {
         this.stateObject = stateObject;
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getStateObject()
+     */
+    @Override
     public AbstractDemandState getStateObject() {
         switch (getDao().getDemandState()) {
         case PENDING:

@@ -21,7 +21,7 @@ public final class DemandManager {
         // Desactivate default ctor
     }
 
-    public static PageIterable<Demand> getDemands() {
+    public static PageIterable<DemandInterface> getDemands() {
         return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
     }
 

@@ -17,6 +17,7 @@ import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.Project;
 import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.model.managers.FileMetadataManager;
@@ -74,7 +75,7 @@ public final class Loaders {
             return (Loader<T>) new ToString();
         } else if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
-        } else if (theClass.equals(Demand.class)) {
+        } else if (theClass.equals(Demand.class) || theClass.equals(DemandInterface.class)) {
             return (Loader<T>) new ToDemand();
         } else if (theClass.equals(Member.class)) {
             return (Loader<T>) new ToMember();

@@ -19,13 +19,15 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDateField;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.url.OfferActionUrl;
@@ -35,7 +37,7 @@ import com.bloatit.web.url.OfferPageUrl;
 public final class OfferPage extends LoggedPage {
 
     @RequestParam(level = Level.ERROR)
-    private Demand targetIdea = null;
+    private DemandInterface targetIdea = null;
 
     @RequestParam(name = OfferAction.PRICE_CODE, level = Level.INFO, role = Role.SESSION)
     private final BigDecimal price;
@@ -85,15 +87,16 @@ public final class OfferPage extends LoggedPage {
         offerForm.setCssClass("padding_box");
 
         // Title field
-        final HtmlTextField titleField = new HtmlTextField(OfferAction.TITLE_CODE, Context.tr("Title to the offer"));
-        titleField.setDefaultValue(title);
+        FormFieldData<String> titleFieldData = offerActionUrl.getTitleParameter().createFormFieldData();
+        final HtmlTextField titleField = new HtmlTextField(titleFieldData, Context.tr("Title to the offer"));
         offerForm.add(titleField);
 
         // Price field
-        final HtmlTextField priceField = new HtmlTextField(OfferAction.PRICE_CODE, Context.tr("Offer price"));
+        FormFieldData<BigDecimal> priceFieldData = offerActionUrl.getPriceParameter().createFormFieldData();
+        final HtmlMoneyField priceField = new HtmlMoneyField(priceFieldData, Context.tr("Offer price"));
         priceField.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
         if (price != null) {
-            priceField.setDefaultValue(price.toPlainString());
+            priceField.setDefaultValue(price);
         }
         offerForm.add(priceField);
 

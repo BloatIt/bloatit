@@ -13,11 +13,11 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Kudosable;
+import com.bloatit.model.KudosableInterface;
 import com.bloatit.web.url.KudoActionUrl;
 
 /**
@@ -29,7 +29,7 @@ public final class KudoAction extends LoggedAction {
     public static final String TARGET_KUDOSABLE = "targetKudosable";
 
     @RequestParam(name = TARGET_KUDOSABLE, level = Level.ERROR)
-    private final Kudosable<?> targetKudosable;
+    private final KudosableInterface<?> targetKudosable;
 
     private final KudoActionUrl url;
 

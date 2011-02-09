@@ -27,17 +27,14 @@ import com.bloatit.model.right.RightManager.Role;
  * attribute.</li> <li>The argument of the calculateRole method represent the author of
  * the attribute.</li>
  */
-public class Unlockable {
+public class Unlockable implements UnlockableInterface {
 
     private AuthToken token = null;
 
-    /**
-     * You have to authenticate a Unlockable before using a method which look for an
-     * authenticated user.
-     *
-     * @param authToken it represent the user try to access this Unlockable. It can be
-     *        null for a non authenticated user.
+    /* (non-Javadoc)
+     * @see com.bloatit.model.UnlockableInterface#authenticate(com.bloatit.model.AuthToken)
      */
+    @Override
     public final void authenticate(final AuthToken authToken) {
         this.token = authToken;
     }
@@ -89,7 +86,7 @@ public class Unlockable {
     /**
      * Helper function. Call the {@link Unlockable#calculateRole(Member)} method.
      */
-    protected final EnumSet<Role> calculateRole(final UserContent<?> userContent) {
+    protected final EnumSet<Role> calculateRole(final UserContentInterface<?> userContent) {
         if (userContent == null || userContent.getAuthor() == null) {
             // This should never append.
             throw new NonOptionalParameterException();

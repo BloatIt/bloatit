@@ -28,6 +28,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.pages.master.HtmlPageComponent;
@@ -39,7 +40,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public DemandSummaryComponent(final Demand demand) {
+    public DemandSummaryComponent(final DemandInterface demand) {
         super();
 
         // Extract locales stuffs
@@ -215,7 +216,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         add(demandSummary);
     }
 
-    private HtmlElement generateProgressText(final Demand demand, final float progressValue) {
+    private HtmlElement generateProgressText(final DemandInterface demand, final float progressValue) {
 
         Offer currentOffer = null;
         try {

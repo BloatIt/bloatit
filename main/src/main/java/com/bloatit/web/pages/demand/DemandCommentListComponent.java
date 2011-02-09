@@ -24,7 +24,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Comment;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.pages.master.HtmlPageComponent;
@@ -36,11 +36,11 @@ import com.bloatit.web.url.MemberPageUrl;
 public final class DemandCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
-    private final Demand targetDemand;
+    private final DemandInterface targetDemand;
     private static final int NB_COLUMNS = 80;
     private static final int NB_ROWS = 10;
 
-    public DemandCommentListComponent(final Demand demand) {
+    public DemandCommentListComponent(final DemandInterface demand) {
         super();
         this.targetDemand = demand;
         try {
@@ -144,7 +144,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
         return commentBlock;
     }
 
-    private HtmlElement generateNewCommentComponent(final Demand demand) {
+    private HtmlElement generateNewCommentComponent(final DemandInterface demand) {
         final IdeaCommentActionUrl url = new IdeaCommentActionUrl(demand);
         final HtmlDiv commentBlock = new HtmlDiv("new_comment_block");
 

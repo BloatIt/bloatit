@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
@@ -57,7 +57,7 @@ public final class DemandListPage extends MasterPage {
     @RequestParam(defaultValue = "", name = SEARCH_STRING_CODE)
     private final String searchString;
 
-    private HtmlPagedList<Demand> pagedDemandList;
+    private HtmlPagedList<DemandInterface> pagedDemandList;
     private final DemandListPageUrl url;
 
     public DemandListPage(final DemandListPageUrl url) {
@@ -208,14 +208,14 @@ public final class DemandListPage extends MasterPage {
 
         // Demand list
 
-        PageIterable<Demand> results = searchResult();
+        PageIterable<DemandInterface> results = searchResult();
 
         if (results.size() > 0) {
 
-            final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
+            final HtmlRenderer<DemandInterface> demandItemRenderer = new IdeasListItem();
 
             final DemandListPageUrl clonedUrl = url.clone();
-            pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
+            pagedDemandList = new HtmlPagedList<DemandInterface>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
 
             add(pagedDemandList);
         } else {
@@ -244,12 +244,12 @@ public final class DemandListPage extends MasterPage {
         return "demands-list.css";
     }
 
-    static class IdeasListItem implements HtmlRenderer<Demand> {
+    static class IdeasListItem implements HtmlRenderer<DemandInterface> {
 
-        private Demand demand;
+        private DemandInterface demand;
 
         @Override
-        public HtmlNode generate(final Demand demand) {
+        public HtmlNode generate(final DemandInterface demand) {
             this.demand = demand;
 
             return generateContent();
@@ -260,7 +260,7 @@ public final class DemandListPage extends MasterPage {
         }
     };
 
-    private PageIterable<Demand> searchResult() {
+    private PageIterable<DemandInterface> searchResult() {
 
         DemandSearch search = new DemandSearch(searchString);
 
