@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;

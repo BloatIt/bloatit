@@ -18,7 +18,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 

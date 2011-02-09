@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.bloatit.data.DaoDemand;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.model.lists.ListBinder;
 
 public final class DemandList extends ListBinder<DemandInterface, DaoDemand> {

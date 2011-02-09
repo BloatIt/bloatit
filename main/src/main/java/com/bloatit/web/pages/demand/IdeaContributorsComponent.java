@@ -22,7 +22,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Contribution;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.url.IdeaContributorsComponentUrl;
 

@@ -21,7 +21,8 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.DemandFactory;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
@@ -81,7 +82,7 @@ public final class CreateDemandAction extends Action {
         }
         final Locale langLocale = new Locale(lang);
         // TODO make it work
-        final Demand d = new Demand(session.getAuthToken().getMember(), langLocale, description, specification, null);
+        final DemandInterface d = DemandFactory.createDemand(session.getAuthToken().getMember(), langLocale, description, specification, null);
 
         d.authenticate(session.getAuthToken());
 

@@ -11,7 +11,6 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.demand.Demand;
-import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.model.lists.BatchList;
 
 // TODO rightManagement

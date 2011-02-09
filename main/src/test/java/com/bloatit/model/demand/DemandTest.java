@@ -21,6 +21,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.model.AuthToken;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.model.ModelTestUnit;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;

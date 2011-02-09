@@ -14,8 +14,8 @@ import com.bloatit.data.NullCollection;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.model.Offer;
-import com.bloatit.model.demand.DemandInterface;
 
 public class IdeaOfferListComponent extends HtmlDiv {
 

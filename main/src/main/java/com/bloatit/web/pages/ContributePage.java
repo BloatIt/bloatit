@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;

@@ -19,7 +19,7 @@ import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandPageUrl;
 

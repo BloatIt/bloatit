@@ -1,4 +1,4 @@
-package com.bloatit.model.demand;
+package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,12 +11,6 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.AuthToken;
-import com.bloatit.model.Comment;
-import com.bloatit.model.Contribution;
-import com.bloatit.model.Description;
-import com.bloatit.model.KudosableInterface;
-import com.bloatit.model.Offer;
 import com.bloatit.model.right.RightManager.Action;
 
 public interface DemandInterface extends KudosableInterface<DaoDemand> {
@@ -225,9 +219,4 @@ public interface DemandInterface extends KudosableInterface<DaoDemand> {
      * @see #getDescription()
      */
     String getTitle() throws UnauthorizedOperationException;
-
-    DemandState getDemandState();
-
-    AbstractDemandState getStateObject();
-
 }

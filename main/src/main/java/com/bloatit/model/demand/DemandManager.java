@@ -14,6 +14,7 @@ import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.AuthToken;
+import com.bloatit.model.DemandInterface;
 
 public final class DemandManager {
 

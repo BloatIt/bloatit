@@ -24,7 +24,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Comment;
-import com.bloatit.model.demand.DemandInterface;
+import com.bloatit.model.DemandInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.pages.master.HtmlPageComponent;
