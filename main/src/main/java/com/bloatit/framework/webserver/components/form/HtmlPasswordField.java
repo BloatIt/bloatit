@@ -12,21 +12,51 @@
 package com.bloatit.framework.webserver.components.form;
 
 /**
- * A class used to create input fields of password type The result will be :
- *
- * <pre>
  * <p>
- *      <label for="...">plop</label>
- *      <input id="..." type="password" class="cssClass" ...>default value</input>
+ * A class used to create input fields of password type
  * </p>
+ * <p>
+ * The result will be :
+ * 
+ * <pre>
+ * {@code
+ * <label for="...">plop</label>
+ * <input id="..." type="password" class="cssClass" ...>default value</input>}
  * </pre>
+ * 
+ * </p>
  */
 public final class HtmlPasswordField extends HtmlFormField<String> {
 
+    /**
+     * <p>
+     * Creates a form field for a given element, and a given name.
+     * </p>
+     * <p>
+     * If a label is added, it will will be positioned BEFORE the element
+     * </p>
+     * 
+     * @param name
+     *            the name of the element
+     */
     public HtmlPasswordField(final String name) {
         super(new HtmlSimpleInput("password"), name);
     }
 
+    /**
+     * <p>
+     * Creates a form field for a given element, with a given name and a given
+     * label.
+     * </p>
+     * <p>
+     * The Label will be positioned BEFORE the element
+     * </p>
+     * 
+     * @param name
+     *            the name of the element
+     * @param label
+     *            the label of the element
+     */
     public HtmlPasswordField(final String name, final String label) {
         super(new HtmlSimpleInput("password"), name, label);
     }

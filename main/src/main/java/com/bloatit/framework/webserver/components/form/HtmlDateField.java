@@ -8,13 +8,14 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.framework.webserver.components.form;
 
 import com.bloatit.framework.utils.i18n.DateLocale;
 
 /**
+ * <p>
  * Class used to create input fields used to input date
+ * </p>
  */
 public final class HtmlDateField extends HtmlFormField<DateLocale> {
 
