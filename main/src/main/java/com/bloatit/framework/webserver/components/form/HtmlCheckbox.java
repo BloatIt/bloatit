@@ -12,22 +12,99 @@ package com.bloatit.framework.webserver.components.form;
 
 import com.bloatit.framework.webserver.components.form.HtmlSimpleInput.InputType;
 
+/**
+ * <p>
+ * A class that represents an html {@code <input type="checkbox" />} tag (a
+ * simple multiple choice answer tickable box)
+ * </p>
+ * <p>
+ * <b>Note</b>: One shouldn't create much checkboxes directly, but should
+ * instead use the beautiful {@link CheckBoxGroup} class
+ * </p>
+ * 
+ * @see CheckBoxGroup
+ * @see CheckBoxGroup#addCheckBox(String, String)
+ */
 public final class HtmlCheckbox extends HtmlFormField<Boolean> {
 
-    public HtmlCheckbox(final String name, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), name, position);
+    /**
+     * <p>
+     * Creates a new checkbox with a given attribute <code>name</code> and a
+     * given relative position of the label compared to the checkbox
+     * </p>
+     * <p>
+     * Example of <code>LabelPosition.BEFORE</code> :<br />
+     * {@code <label form="anId3">I like nothing</label><input type="checkbox" name="nothin" id="anId3" />}
+     * </p>
+     * <p>
+     * Example of <code>LabelPosition.AFTER</code> :<br />
+     * {@code <input type="checkbox" name="nothin" id="anId3" /><label form="anId3">I like nothing</label>}
+     * </p>
+     * <p>
+     * <b>NOTE</b>: This method shouldn't be used, a checkbox without label is
+     * useless
+     * </p>
+     * 
+     * @param name
+     *            the value of the attribute <code>name</code> of the checkbox
+     * @param labelPosition
+     *            the relative position of the label compared to the checkbox
+     */
+    public HtmlCheckbox(final String name, final LabelPosition labelPosition) {
+        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), name, labelPosition);
     }
 
+    /**
+     * <p>
+     * Creates a new checkbox with a given attribute <code>name</code>, a
+     * <code>label</code> and a given relative position of the label compared to
+     * the checkbox
+     * </p>
+     * <p>
+     * Example of <code>LabelPosition.BEFORE</code> :<br />
+     * {@code <label form="anId3">I like nothing</label><input type="checkbox" name="nothin" id="anId3" />}
+     * </p>
+     * <p>
+     * Example of <code>LabelPosition.AFTER</code> :<br />
+     * {@code <input type="checkbox" name="nothin" id="anId3" /><label form="anId3">I like nothing</label>}
+     * </p>
+     * 
+     * @param name
+     *            the value of the attribute <code>name</code> of the checkbox
+     * @param label
+     *            the text displayed to explain the use of this checkbox
+     * @param labelPosition
+     *            the relative position of the label compared to the checkbox
+     */
     public HtmlCheckbox(final String name, final String label, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), name, label, position);
     }
 
+    /**
+     * <p>
+     * Creates a new checkbox from a <code>FormFieldData</code>
+     * </p>
+     * <p>
+     * Example of <code>LabelPosition.BEFORE</code> :<br />
+     * {@code <label form="anId3">I like nothing</label><input type="checkbox" name="nothin" id="anId3" />}
+     * </p>
+     * <p>
+     * Example of <code>LabelPosition.AFTER</code> :<br />
+     * {@code <input type="checkbox" name="nothin" id="anId3" /><label form="anId3">I like nothing</label>}
+     * </p>
+     * 
+     * @param data
+     * @param label
+     *            the text displayed to explain the use of this checkbox
+     * @param labelPosition
+     *            the relative position of the label compared to the checkbox
+     */
     public HtmlCheckbox(final FormFieldData<Boolean> data, final String label, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), data.getFieldName(), label, position);
         setDefaultValue(data);
         addErrorMessages(data.getFieldMessages());
     }
-
+    
     @Override
     protected void doSetDefaultValue(final Boolean value) {
         if (value.booleanValue()) {
