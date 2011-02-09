@@ -93,7 +93,7 @@ public final class Member extends Actor<DaoMember> {
      * @param group
      *            the group in which you want to invite somebody
      * @param action
-     *            WRITE for create a new invitation, DELETE to accept/refuse it,
+     *            WRITE for create a new invitation, DELETED to accept/refuse it,
      *            READ to list the invitations you have recieved.
      * @return true if you can invite/accept/refuse.
      */
@@ -135,7 +135,7 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To accept an invitation you must have the DELETE right on the "invite"
+     * To accept an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done.
      *
      * @param invitation
@@ -151,7 +151,7 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To refuse an invitation you must have the DELETE right on the "invite"
+     * To refuse an invitation you must have the DELETED right on the "invite"
      * property. If the invitation is not in PENDING state then nothing is done.
      *
      * @param invitation
@@ -167,7 +167,7 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To remove this member from a group you have to have the DELETE right on
+     * To remove this member from a group you have to have the DELETED right on
      * the "group" property. If the member is not in the "group", nothing is
      * done. (Although it should be considered as an error and will be logged)
      *

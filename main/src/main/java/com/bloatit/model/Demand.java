@@ -85,7 +85,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
      *
      * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
-     *         <code>DELETE</code> right on the <code>Offer</code> property.
+     *         <code>DELETED</code> right on the <code>Offer</code> property.
      * @see #authenticate(AuthToken)
      */
     void removeOffer(final Offer offer) throws UnauthorizedOperationException;

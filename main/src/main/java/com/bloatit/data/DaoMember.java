@@ -39,7 +39,7 @@ public final class DaoMember extends DaoActor {
     }
 
     public enum ActivationState {
-        VALIDATING, ACTIVE, DELETE
+        VALIDATING, ACTIVE, DELETED
     }
 
 
