@@ -8,7 +8,7 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.framework.utils;
+package com.bloatit.common;
 
 import java.io.File;
 import java.io.FileInputStream;

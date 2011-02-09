@@ -7,7 +7,9 @@ import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 
 /**
- * A class used to create renderers 
+ * <p>
+ * A class used to represent Markdown text in html format
+ * </p>
  */
 public class HtmlMarkdownRenderer extends PlaceHolderElement {
     private final MarkdownParser parser;
