@@ -51,7 +51,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create a new DemandImplementation. This method is not protected by any right management.
+     * Create a new DemandImplementation. This method is not protected by any right
+     * management.
      *
      * @return null if the <code>dao</code> is null.
      */
@@ -252,23 +253,6 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         getDao().addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
     }
 
-    public void notifyOfferKudos(final Offer offer, final boolean positif) {
-        final boolean isSelectedOffer = offer.equals(getSelectedOfferUnprotected());
-        if (positif && !isSelectedOffer) {
-            if (offer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
-                getDao().setSelectedOffer(offer.getDao());
-            }
-        }
-        if (!positif && isSelectedOffer) {
-            for (final Offer thisOffer : getOffersUnprotected()) {
-                if (thisOffer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
-                    getDao().computeSelectedOffer();
-                }
-
-            }
-        }
-    }
-
     /*
      * (non-Javadoc)
      * @see
@@ -375,6 +359,29 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Offer feedBack
     // /////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Method called by Offer when the offer is kudosed. Update the selectedOffer using it
+     * popularity.
+     *
+     * @param offer the offer that has been kudosed.
+     * @param positif true means kudos up, false kudos down.
+     */
+    public void notifyOfferKudos(final Offer offer, final boolean positif) {
+        final boolean isSelectedOffer = offer.equals(getSelectedOfferUnprotected());
+        if (positif && !isSelectedOffer) {
+            if (offer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
+                getDao().setSelectedOffer(offer.getDao());
+            }
+        }
+        if (!positif && isSelectedOffer) {
+            for (final Offer thisOffer : getOffersUnprotected()) {
+                if (thisOffer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
+                    getDao().computeSelectedOffer();
+                }
+            }
+        }
+    }
 
     public void setOfferIsValidated() {
         setStateObject(getStateObject().eventOfferIsValidated());
@@ -495,7 +502,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public Project getProject() throws UnauthorizedOperationException {
-        //TODO: access right
+        // TODO: access right
         return Project.create(getDao().getProject());
     }
 
@@ -549,6 +556,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         return getDescription().getDefaultTranslation().getTitle();
     }
 
+    @Override
     public DemandState getDemandState() {
         return getDao().getDemandState();
     }

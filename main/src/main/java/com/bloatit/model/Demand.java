@@ -227,4 +227,6 @@ public interface Demand extends KudosableInterface<DaoDemand> {
      * @see #getDescription()
      */
     String getTitle() throws UnauthorizedOperationException;
+
+    DemandState getDemandState();
 }

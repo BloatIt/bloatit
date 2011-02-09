@@ -37,13 +37,13 @@ public class DemandImplementationTest extends ModelTestUnit {
         assertNull(DemandImplementation.create(null));
     }
 
-    private DemandImplementation createDemandByThomas() {
+    private Demand createDemandByThomas() {
         return DemandImplementation.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(), DaoDescription.createAndPersist(tomAuthToken.getMember()
                 .getDao(), Locale.FRANCE, "title", "description"), DaoProject.getByName("VLC")));
     }
 
     public void testDemand() {
-        final DemandImplementation demand = new DemandImplementation(tomAuthToken.getMember(), Locale.FRANCE, "title", "Description", Project.create(DaoProject.getByName("VLC")));
+        final Demand demand = new DemandImplementation(tomAuthToken.getMember(), Locale.FRANCE, "title", "Description", Project.create(DaoProject.getByName("VLC")));
         assertEquals(demand.getAuthor(), tomAuthToken.getMember());
         try {
             assertEquals(demand.getDescription().getDefaultLocale(), Locale.FRANCE);
@@ -55,7 +55,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testCanAccessComment() {
-        final DemandImplementation demand = createDemandByThomas();
+        final Demand demand = createDemandByThomas();
         assertTrue(demand.canAccessComment(Action.READ));
         assertFalse(demand.canAccessComment(Action.WRITE));
         assertFalse(demand.canAccessComment(Action.DELETE));
@@ -76,7 +76,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testCanAccessContribution() {
-        final DemandImplementation demand = createDemandByThomas();
+        final Demand demand = createDemandByThomas();
         assertTrue(demand.canAccessContribution(Action.READ));
         assertFalse(demand.canAccessContribution(Action.WRITE));
         assertFalse(demand.canAccessContribution(Action.DELETE));
@@ -95,7 +95,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testCanAccessOffer() {
-        final DemandImplementation demand = createDemandByThomas();
+        final Demand demand = createDemandByThomas();
         assertTrue(demand.canAccessOffer(Action.READ));
         assertFalse(demand.canAccessOffer(Action.WRITE));
         assertFalse(demand.canAccessOffer(Action.DELETE));
@@ -114,7 +114,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testCanAccessDescription() {
-        final DemandImplementation demand = createDemandByThomas();
+        final Demand demand = createDemandByThomas();
         assertTrue(demand.canAccessDescription());
         demand.authenticate(yoAuthToken);
         assertTrue(demand.canAccessDescription());
@@ -123,7 +123,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testAddContribution() throws UnauthorizedOperationException {
-        final DemandImplementation demand = createDemandByThomas();
+        final Demand demand = createDemandByThomas();
 
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
@@ -225,7 +225,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testAddOffer() {
-        final DemandImplementation demand = createDemandByThomas();
+        final Demand demand = createDemandByThomas();
 
         assertEquals(DemandState.PENDING, demand.getDemandState());
         demand.authenticate(fredAuthToken);
@@ -264,7 +264,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testBeginDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        DemandImplementation demand = createDemandByThomas();
+        Demand demand = createDemandByThomas();
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(fredAuthToken);
@@ -287,7 +287,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testRemoveOffer() throws NotEnoughMoneyException, UnauthorizedOperationException, NotFoundException {
-        final DemandImplementation demand = createDemandByThomas();
+        final Demand demand = createDemandByThomas();
         final DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin", Locale.FRANCE);
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
@@ -326,7 +326,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testCancelDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        final DemandImplementation demand = createDemandAddOffer120AddContribution120BeginDev();
+        final Demand demand = createDemandAddOffer120AddContribution120BeginDev();
 
         try {
             demand.cancelDevelopment();
@@ -355,8 +355,8 @@ public class DemandImplementationTest extends ModelTestUnit {
 
     }
 
-    private DemandImplementation createDemandAddOffer120AddContribution120BeginDev() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        DemandImplementation demand = createDemandByThomas();
+    private Demand createDemandAddOffer120AddContribution120BeginDev() throws NotEnoughMoneyException, UnauthorizedOperationException {
+        Demand demand = createDemandByThomas();
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(fredAuthToken);
@@ -381,7 +381,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testFinishedDevelopment() throws NotEnoughMoneyException, UnauthorizedOperationException {
-        final DemandImplementation demand = createDemandAddOffer120AddContribution120BeginDev();
+        final Demand demand = createDemandAddOffer120AddContribution120BeginDev();
 
         try {
             demand.releaseCurrentBatch();
@@ -406,7 +406,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     }
 
     public void testOfferWithALotOfBatch() throws UnauthorizedOperationException, NotEnoughMoneyException {
-        DemandImplementation demand = createDemandByThomas();
+        Demand demand = createDemandByThomas();
         final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("10"), "description", "title", Locale.FRENCH,
                 DateUtils.tomorrow());
 
@@ -480,7 +480,7 @@ public class DemandImplementationTest extends ModelTestUnit {
     // We assume that all the model has been closed, then the time out append, and then
     // the model is re-closed
     // So you have to reload from the db the demand. (So it return it ...)
-    private DemandImplementation passeIntoDev(final DemandImplementation demand) {
+    private Demand passeIntoDev(final Demand demand) {
 
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
@@ -499,7 +499,7 @@ public class DemandImplementationTest extends ModelTestUnit {
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
 
-        return (DemandImplementation) DemandManager.getDemandById(demand.getId());
+        return (Demand) DemandManager.getDemandById(demand.getId());
 
     }
 }
