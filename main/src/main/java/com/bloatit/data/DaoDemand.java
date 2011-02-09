@@ -69,13 +69,13 @@ public final class DaoDemand extends DaoKudosable {
     @IndexedEmbedded
     private DaoDescription description;
 
-    @OneToMany(mappedBy = "demandImplementation")
+    @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
     @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
     private final Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
-    @OneToMany(mappedBy = "demandImplementation")
+    @OneToMany(mappedBy = "demand")
     @OrderBy(clause = "creationDate DESC")
     @Cascade(value = { CascadeType.ALL })
     private final Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
