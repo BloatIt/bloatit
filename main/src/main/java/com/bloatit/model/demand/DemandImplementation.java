@@ -491,6 +491,16 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /*
      * (non-Javadoc)
+     * @see com.bloatit.model.demand.DemandInterface#getProject()
+     */
+    @Override
+    public Project getProject() throws UnauthorizedOperationException {
+        //TODO: access right
+        return Project.create(getDao().getProject());
+    }
+
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.model.demand.DemandInterface#getOffers()
      */
     @Override

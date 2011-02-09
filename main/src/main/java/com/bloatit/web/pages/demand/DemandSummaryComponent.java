@@ -14,7 +14,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -33,8 +32,10 @@ import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributePageUrl;
+import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.KudoActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
+import com.bloatit.web.url.ProjectPageUrl;
 
 public final class DemandSummaryComponent extends HtmlPageComponent {
 
@@ -59,8 +60,14 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
                 {
                     // Add project image
-                    final HtmlImage projectImage = new HtmlImage(new Image("vlc.png", Image.ImageType.LOCAL), "project_image");
-                    demandSummaryLeft.add(projectImage);
+                    try {
+                        FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
+                        final HtmlImage projectImage = new HtmlImage(imageUrl, "project_image");
+                        demandSummaryLeft.add(projectImage);
+                    } catch (UnauthorizedOperationException e) {
+                     // no right, no image
+                    }
+
                 }
                 demandSummaryTop.add(demandSummaryLeft);
 
@@ -72,7 +79,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                     try {
                         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
                         final HtmlSpan projectSpan = new HtmlSpan("demand_project_title");
-                        projectSpan.addText("VLC");
+                        projectSpan.add(new ProjectPageUrl(demand.getProject()).getHtmlLink(demand.getProject().getName()));
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("demand_title");
                         title.add(projectSpan);
