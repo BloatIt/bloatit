@@ -15,11 +15,11 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.model.Offer;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 
 public class IdeaOfferListComponent extends HtmlDiv {
 
-    public IdeaOfferListComponent(final Demand demand) {
+    public IdeaOfferListComponent(final DemandInterface demand) {
         super();
         PageIterable<Offer> offers = new NullCollection<Offer>();
         try {

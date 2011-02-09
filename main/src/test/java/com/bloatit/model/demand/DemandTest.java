@@ -29,7 +29,7 @@ import com.bloatit.model.right.RightManager.Action;
 public class DemandTest extends ModelTestUnit {
 
     public void testCreate() {
-        final Demand demand = Demand.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(), DaoDescription
+        final DemandInterface demand = Demand.create(DaoDemand.createAndPersist(tomAuthToken.getMember().getDao(), DaoDescription
                 .createAndPersist(tomAuthToken.getMember().getDao(), Locale.FRANCE, "title", "description"), DaoProject.getByName("VLC")));
         assertNotNull(demand);
         assertNull(Demand.create(null));

@@ -28,6 +28,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.url.DemandPageUrl;
 
@@ -35,7 +36,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
 
-    public HtmlDemandSumary(final Demand demand, boolean compact) {
+    public HtmlDemandSumary(final DemandInterface demand, boolean compact) {
         super("demand_summary");
 
         if (demand == null) {
@@ -173,7 +174,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
     }
 
-    private HtmlElement generateProgressText(final Demand demand, final float progressValue) {
+    private HtmlElement generateProgressText(final DemandInterface demand, final float progressValue) {
 
         Offer currentOffer = null;
         try {

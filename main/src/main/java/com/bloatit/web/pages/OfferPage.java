@@ -27,7 +27,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.url.OfferActionUrl;
@@ -37,7 +37,7 @@ import com.bloatit.web.url.OfferPageUrl;
 public final class OfferPage extends LoggedPage {
 
     @RequestParam(level = Level.ERROR)
-    private Demand targetIdea = null;
+    private DemandInterface targetIdea = null;
 
     @RequestParam(name = OfferAction.PRICE_CODE, level = Level.INFO, role = Role.SESSION)
     private final BigDecimal price;

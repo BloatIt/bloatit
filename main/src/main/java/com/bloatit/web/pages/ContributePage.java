@@ -27,19 +27,19 @@ import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 
 /**
- * A page that hosts the form used to contribute on a Demand 
+ * A page that hosts the form used to contribute on a Demand
  */
 @ParamContainer("contribute")
 public final class ContributePage extends LoggedPage {
 
     @RequestParam(level = Level.ERROR)
-    private final Demand targetIdea;
+    private final DemandInterface targetIdea;
 
     private final ContributePageUrl url;
 

@@ -36,9 +36,6 @@ import com.bloatit.web.url.RegisterPageUrl;
 @ParamContainer("member/create")
 public final class RegisterPage extends MasterPage {
 
-    @RequestParam(name = RegisterAction.EMAIL_CODE, defaultValue = "", role = Role.SESSION)
-    private final String email;
-
     @SuppressWarnings("unused")
     @RequestParam(name = RegisterAction.COUNTRY_CODE, defaultValue = "", role = Role.SESSION)
     private final String country;
@@ -49,7 +46,6 @@ public final class RegisterPage extends MasterPage {
 
     public RegisterPage(final RegisterPageUrl url) {
         super(url);
-        this.email = url.getEmail();
         this.country = url.getCountry();
         this.lang = url.getLang();
     }
@@ -73,8 +69,8 @@ public final class RegisterPage extends MasterPage {
             final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData, Context.tr("Password"));
             form.add(passwordInput);
 
-            final HtmlTextField emailInput = new HtmlTextField(RegisterAction.EMAIL_CODE, Context.tr("Email"));
-            emailInput.setDefaultValue(email);
+            FormFieldData<String> emailFieldData = registerActionUrl.getEmailParameter().createFormFieldData();
+            final HtmlTextField emailInput = new HtmlTextField(emailFieldData, Context.tr("Email"));
             form.add(emailInput);
 
             final HtmlDropDown<Country> countryInput = new HtmlDropDown<Country>(RegisterAction.COUNTRY_CODE, Context.tr("Country"));

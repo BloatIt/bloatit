@@ -19,7 +19,7 @@ import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandPageUrl;
 
@@ -29,7 +29,7 @@ public final class DemandPage extends MasterPage {
     public static final String IDEA_FIELD_NAME = "id";
 
     @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
-    private final Demand demand;
+    private final DemandInterface demand;
 
     @SuppressWarnings("unused")
     @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
@@ -69,7 +69,7 @@ public final class DemandPage extends MasterPage {
         return "demand.css";
     }
 
-    public Demand getDemand() {
+    public DemandInterface getDemand() {
         return demand;
     }
 

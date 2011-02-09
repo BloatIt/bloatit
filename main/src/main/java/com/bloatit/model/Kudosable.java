@@ -11,7 +11,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCo
 import com.bloatit.model.right.KudosableRight;
 import com.bloatit.model.right.RightManager.Action;
 
-public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
+public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface<T> {
 
     private static final int TURN_VALID = KudosableConfiguration.getDefaultTurnValid();
     private static final int TURN_REJECTED = KudosableConfiguration.getDefaultTurnRejected();
@@ -25,19 +25,35 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
         super(dao);
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.KudosableInterface#canKudos()
+     */
+    @Override
     public EnumSet<SpecialCode> canKudos() {
         return canKudos(1);
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.KudosableInterface#canUnkudos()
+     */
+    @Override
     public EnumSet<SpecialCode> canUnkudos() {
         return canKudos(-1);
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.KudosableInterface#unkudos()
+     */
+    @Override
     public final void unkudos() throws UnauthorizedOperationException {
         addKudos(-1);
         notifyKudos(false);
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.KudosableInterface#kudos()
+     */
+    @Override
     public final void kudos() throws UnauthorizedOperationException {
         addKudos(1);
         notifyKudos(true);
@@ -72,6 +88,10 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
         return errors;
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.KudosableInterface#getState()
+     */
+    @Override
     public final State getState() {
         return getDao().getState();
     }
@@ -224,6 +244,10 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> {
         // Implement me if you wish
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.KudosableInterface#getPopularity()
+     */
+    @Override
     public final int getPopularity() {
         return getDao().getPopularity();
     }

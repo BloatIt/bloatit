@@ -4,11 +4,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
+import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.demand.Demand;
+import com.bloatit.model.demand.DemandInterface;
 import com.bloatit.model.lists.BatchList;
 
 // TODO rightManagement
@@ -41,14 +44,14 @@ public final class Offer extends Kudosable<DaoOffer> {
      *        Must be in the future.
      */
     public Offer(final Member member,
-                 final Demand demand,
+                 final DemandInterface demand,
                  final BigDecimal amount,
                  final String title,
                  final String description,
                  final Locale local,
                  final Date dateExpire) {
         super(DaoOffer.createAndPersist(member.getDao(),
-                                        demand.getDao(),
+                                        DBRequests.getById(DaoDemand.class, demand.getId()),
                                         amount,
                                         DaoDescription.createAndPersist(member.getDao(), local, title, description),
                                         dateExpire));
