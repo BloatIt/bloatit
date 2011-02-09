@@ -16,6 +16,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlListItem;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
@@ -43,6 +44,9 @@ public final class ProjectListPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
+
+        final HtmlDiv box = new HtmlDiv("padding_box");
+
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Project list", 1);
         final PageIterable<Project> projectList = ProjectManager.getProjects();
         final HtmlRenderer<Project> projectItemRenderer = new HtmlRenderer<Project>() {
@@ -67,7 +71,8 @@ public final class ProjectListPage extends MasterPage {
 
         pageTitle.add(pagedProjectList);
 
-        add(pageTitle);
+        box.add(pageTitle);
+        add(box);
 
     }
 
