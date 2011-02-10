@@ -2,12 +2,18 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
+import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.form.HtmlCheckbox;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlFormField.LabelPosition;
@@ -19,12 +25,18 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.AdministrationPageUrl;
+import com.bloatit.web.url.DemandPageUrl;
 
 @ParamContainer("administration")
 public class AdministrationPage extends LoggedPage {
 
+    @RequestParam(level = Level.ERROR)
+    @ParamConstraint(optional = true)
+    private final String action;
+
     public AdministrationPage(AdministrationPageUrl url) {
         super(url);
+        this.action = url.getAction();
     }
 
     private void addCell(HtmlBranch node, Object obj) {
@@ -55,14 +67,40 @@ public class AdministrationPage extends LoggedPage {
                 throw new RedirectException(new PageNotFoundUrl());
             }
 
+            PageIterable<Demand> demands = null;
+
+            // Print the list of actions.
+            if (action == null || action.isEmpty() || action.equals("null")) {
+                HtmlBranch links = new HtmlDiv("admin_menu");
+                links.add(new HtmlLink(new AdministrationPageUrl("select_offer").urlString(), tr("Select an offer")));
+                links.add(new HtmlLink(new AdministrationPageUrl("begin_dev").urlString(), tr("Change a demand to ''in development''")));
+                links.add(new HtmlLink(new AdministrationPageUrl("cancel_dev").urlString(), tr("Cancel a developing demand")));
+                links.add(new HtmlLink(new AdministrationPageUrl("change_popularity").urlString(), tr("Change popularity")));
+                links.add(new HtmlLink(new AdministrationPageUrl("change_state").urlString(), tr("Change kudosable state")));
+            } else if (action == "select_offer") {
+                demands = DemandManager.getDemands(DemandState.PREPARING);
+            } else if (action == "begin_dev") {
+                demands = DemandManager.getDemands(DemandState.PREPARING);
+            } else if (action == "cancel_dev") {
+                demands = DemandManager.getDemands(DemandState.DEVELOPPING);
+            } else if (action == "change_popularity") {
+                demands = DemandManager.getDemands();
+            } else if (action == "change_state") {
+                demands = DemandManager.getDemands();
+            }
+
+            if (demands == null) {
+                return form;
+            }
+
             HtmlGenericElement table = new HtmlGenericElement("table");
             table.addAttribute("border", "1");
 
             HtmlGenericElement header = new HtmlGenericElement("tr");
             table.add(header);
             addCell(header, tr("*"));
-            addCell(header, tr("id"));
-            addCell(header, tr("title"));
+            addCell(header, tr("Id"));
+            addCell(header, tr("Title"));
             addCell(header, tr("Contribution"));
             addCell(header, tr("Contributions.size"));
             addCell(header, tr("Offers"));
@@ -73,8 +111,6 @@ public class AdministrationPage extends LoggedPage {
             addCell(header, tr("AsGroup"));
             addCell(header, tr("Popularity"));
             addCell(header, tr("DemandState"));
-
-            PageIterable<Demand> demands = DemandManager.getDemands();
 
             // TODO Sort.
             // TODO Filters
@@ -90,13 +126,14 @@ public class AdministrationPage extends LoggedPage {
                 table.add(line);
                 line.add(new HtmlGenericElement("td").add(new HtmlCheckbox("ids", LabelPosition.AFTER).addAttribute("value", demand.getId()
                         .toString())));
-                addCell(line, demand.getId());
+
+                line.add(new HtmlGenericElement("td").add(new HtmlLink(new DemandPageUrl(demand).urlString(), demand.getId().toString())));
                 addCell(line, demand.getTitle());
                 addCell(line, demand.getContribution());
                 addCell(line, demand.getContributions().size());
-                addCell(line, demand.getOffers());
                 addCell(line, demand.getSelectedOffer());
                 addCell(line, demand.getValidatedOffer());
+                addCell(line, demand.getOffers().size());
                 addCell(line, demand.getCreationDate());
                 addCell(line, demand.getAuthor());
                 addCell(line, demand.getAsGroup());

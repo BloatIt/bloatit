@@ -28,13 +28,13 @@ public class AdministrationAction extends Action {
         for (Demand demand : demands) {
             session.notifyGood(demand.toString());
         }
-        return new AdministrationPageUrl();
+        return new AdministrationPageUrl("");
     }
 
     @Override
     protected Url doProcessErrors() throws RedirectException {
         session.notifyError("Ça marche pas");
-        return new AdministrationPageUrl();
+        return new AdministrationPageUrl("");
     }
 
 }

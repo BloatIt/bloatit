@@ -12,6 +12,7 @@ package com.bloatit.model.demand;
 
 import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.AuthToken;
 import com.bloatit.model.Demand;
@@ -24,6 +25,13 @@ public final class DemandManager {
 
     public static PageIterable<Demand> getDemands() {
         return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
+    }
+
+    public static PageIterable<Demand> getDemands(DemandState state) {
+        return new DemandList(DBRequests.getDemands(state, null, null, null, null, null, null, null, null, null, null, null, null, null,//
+                                                    null,
+                                                    null,
+                                                    null));
     }
 
     public static Demand getDemandById(final Integer id) {
