@@ -14,6 +14,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.HtmlLink;
+import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.form.HtmlCheckbox;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlFormField.LabelPosition;
@@ -60,7 +61,7 @@ public class AdministrationPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
 
-        HtmlForm form = new HtmlForm(new AdministrationActionUrl().urlString());
+        PlaceHolderElement everything = new PlaceHolderElement();
         try {
             if (session.getAuthToken().getMember().getRole() != Role.ADMIN) {
                 session.notifyError(tr("You have to be the administrator to access this page."));
@@ -72,27 +73,38 @@ public class AdministrationPage extends LoggedPage {
             // Print the list of actions.
             if (action == null || action.isEmpty() || action.equals("null")) {
                 HtmlBranch links = new HtmlDiv("admin_menu");
+                everything.add(links);
                 links.add(new HtmlLink(new AdministrationPageUrl("select_offer").urlString(), tr("Select an offer")));
                 links.add(new HtmlLink(new AdministrationPageUrl("begin_dev").urlString(), tr("Change a demand to ''in development''")));
                 links.add(new HtmlLink(new AdministrationPageUrl("cancel_dev").urlString(), tr("Cancel a developing demand")));
                 links.add(new HtmlLink(new AdministrationPageUrl("change_popularity").urlString(), tr("Change popularity")));
                 links.add(new HtmlLink(new AdministrationPageUrl("change_state").urlString(), tr("Change kudosable state")));
-            } else if (action == "select_offer") {
+            } else if (action.equals("select_offer")) {
+                System.err.println(action);
                 demands = DemandManager.getDemands(DemandState.PREPARING);
-            } else if (action == "begin_dev") {
+            } else if (action.equals("begin_dev")) {
+                System.err.println(action);
                 demands = DemandManager.getDemands(DemandState.PREPARING);
-            } else if (action == "cancel_dev") {
+            } else if (action.equals("cancel_dev")) {
+                System.err.println(action);
                 demands = DemandManager.getDemands(DemandState.DEVELOPPING);
-            } else if (action == "change_popularity") {
+            } else if (action.equals("change_popularity")) {
+                System.err.println(action);
                 demands = DemandManager.getDemands();
-            } else if (action == "change_state") {
+            } else if (action.equals("change_state")) {
+                System.err.println(action);
                 demands = DemandManager.getDemands();
             }
+
+            System.err.println(demands);
+            System.err.println(action);
 
             if (demands == null) {
-                return form;
+                return everything;
             }
 
+            HtmlForm form = new HtmlForm(new AdministrationActionUrl().urlString());
+            everything.add(form);
             HtmlGenericElement table = new HtmlGenericElement("table");
             table.addAttribute("border", "1");
 
@@ -148,7 +160,7 @@ public class AdministrationPage extends LoggedPage {
             session.notifyError(tr("You have to be the administrator to access this page."));
             throw new RedirectException(new PageNotFoundUrl());
         }
-        return form;
+        return everything;
     }
 
     @Override
