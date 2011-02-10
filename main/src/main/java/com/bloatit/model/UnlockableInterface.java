@@ -11,4 +11,6 @@ public interface UnlockableInterface {
      */
     void authenticate(final AuthToken authToken);
 
+    // TODO getRole.
+
 }

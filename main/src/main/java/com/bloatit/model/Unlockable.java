@@ -31,8 +31,10 @@ public class Unlockable implements UnlockableInterface {
 
     private AuthToken token = null;
 
-    /* (non-Javadoc)
-     * @see com.bloatit.model.UnlockableInterface#authenticate(com.bloatit.model.AuthToken)
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.model.UnlockableInterface#authenticate(com.bloatit.model.AuthToken)
      */
     @Override
     public final void authenticate(final AuthToken authToken) {
@@ -63,24 +65,25 @@ public class Unlockable implements UnlockableInterface {
         if (token == null) {
             return EnumSet.of(Role.NOBODY);
         }
+        EnumSet<Role> enums = EnumSet.noneOf(Role.class);
+
         if (token.getMember().getLoginUnprotected().equals(login)) {
-            switch (token.getMember().getRole()) {
-            case NORMAL:
-                return EnumSet.of(Role.OWNER);
-            }
-        } else {
-            switch (token.getMember().getRole()) {
-            case PRIVILEGED:
-                return EnumSet.range(Role.PRIVILEGED, Role.PRIVILEGED);
-            case REVIEWER:
-                return EnumSet.range(Role.PRIVILEGED, Role.REVIEWER);
-            case MODERATOR:
-                return EnumSet.range(Role.PRIVILEGED, Role.MODERATOR);
-            case ADMIN:
-                return EnumSet.range(Role.PRIVILEGED, Role.ADMIN);
-            }
+            enums.add(Role.OWNER);
         }
-        return EnumSet.of(Role.OTHER);
+
+        switch (token.getMember().getRole()) {
+        case NORMAL:
+            enums.add(Role.AUTHENTICATED);
+        case PRIVILEGED:
+            enums.addAll(EnumSet.range(Role.AUTHENTICATED, Role.PRIVILEGED));
+        case REVIEWER:
+            enums.addAll(EnumSet.range(Role.AUTHENTICATED, Role.REVIEWER));
+        case MODERATOR:
+            enums.addAll(EnumSet.range(Role.AUTHENTICATED, Role.MODERATOR));
+        case ADMIN:
+            enums.addAll(EnumSet.range(Role.AUTHENTICATED, Role.ADMIN));
+        }
+        return enums;
     }
 
     /**
@@ -131,12 +134,12 @@ public class Unlockable implements UnlockableInterface {
     /**
      * Helper function.
      *
-     * @return Nobody or Other
+     * @return Role.NOBODY or Role.AUTHENTICATED
      */
     protected final EnumSet<Role> calculateNoOwnerRole() {
         if (getAuthTokenUnprotected() == null) {
             return EnumSet.of(Role.NOBODY);
         }
-        return EnumSet.of(Role.OTHER);
+        return EnumSet.of(Role.AUTHENTICATED);
     }
 }

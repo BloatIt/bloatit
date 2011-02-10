@@ -26,10 +26,6 @@ import com.bloatit.framework.utils.PageIterable;
 /**
  * Ok if you need a comment to understand what is a member, then I cannot do anything for
  * you ...
- *
- * <p>
- * What is the difference between a member and an actor ??
- * </p>
  */
 @Entity
 public final class DaoMember extends DaoActor {
@@ -41,7 +37,6 @@ public final class DaoMember extends DaoActor {
     public enum ActivationState {
         VALIDATING, ACTIVE, DELETED
     }
-
 
     private String fullname;
     @Basic(optional = false)
