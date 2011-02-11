@@ -10,7 +10,6 @@ import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Demand;
 import com.bloatit.web.url.AdministrationActionUrl;
-import com.bloatit.web.url.AdministrationPageUrl;
 
 @ParamContainer("doadministration")
 public class AdministrationAction extends Action {
@@ -28,13 +27,15 @@ public class AdministrationAction extends Action {
         for (Demand demand : demands) {
             session.notifyGood(demand.toString());
         }
-        return new AdministrationPageUrl("");
+// TODO : Uncomment (and fix)        return new AdministrationPageUrl("");
+        return null;
     }
 
     @Override
     protected Url doProcessErrors() throws RedirectException {
         session.notifyError("Ça marche pas");
-        return new AdministrationPageUrl("");
+// TODO : Uncomment (and fix)       return new AdministrationPageUrl("");
+        return null;
     }
 
 }
