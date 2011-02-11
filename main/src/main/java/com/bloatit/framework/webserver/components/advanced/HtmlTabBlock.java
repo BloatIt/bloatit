@@ -8,7 +8,7 @@
  * License for more details. You should have received a copy of the GNU Affero General
  * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.components;
+package com.bloatit.framework.webserver.components.advanced;
 
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
