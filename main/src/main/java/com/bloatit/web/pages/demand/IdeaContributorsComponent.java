@@ -12,6 +12,7 @@ package com.bloatit.web.pages.demand;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.math.BigDecimal;
 import java.util.Iterator;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -20,12 +21,9 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Demand;
 import com.bloatit.web.components.HtmlPagedList;
@@ -82,9 +80,9 @@ public final class IdeaContributorsComponent extends HtmlDiv {
 
         if (contributionCount > 0) {
 
-            final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
-            final String contributionMinValue = demand.getContributionMin().toPlainString();
-            final String contributionMaxValue = demand.getContributionMax().toPlainString();
+            final String contributionMeanValue = Context.getLocalizator().getCurrency(demand.getContribution().divide(new BigDecimal(contributionCount))).getDefaultString();
+            final String contributionMinValue = Context.getLocalizator().getCurrency(demand.getContributionMin()).getDefaultString();
+            final String contributionMaxValue = Context.getLocalizator().getCurrency(demand.getContributionMax()).getDefaultString();
 
             contributionMin = new HtmlParagraph(tr("Min: ") + contributionMinValue);
             contributionMax = new HtmlParagraph(tr("Max: ") + contributionMaxValue);
@@ -95,22 +93,6 @@ public final class IdeaContributorsComponent extends HtmlDiv {
 
     }
 
-    private HtmlRenderer<Contribution> generateContributionRenderer() {
-        return new HtmlRenderer<Contribution>() {
-
-            @Override
-            public HtmlNode generate(final Contribution item) {
-                String itemString = tr("You are not authorized to see this.");
-                try {
-                    itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " " + item.getCreationDate().toString() + " "
-                            + item.getComment();
-                } catch (final UnauthorizedOperationException e) {
-                    // do nothing
-                }
-                return new HtmlText(itemString);
-            }
-        };
-    }
 
     private static final class ContributionTableModel implements HtmlTableModel {
         private Iterator<Contribution> it;
@@ -172,7 +154,8 @@ public final class IdeaContributorsComponent extends HtmlDiv {
                     value = contribution.getAuthor().getDisplayName();
                     break;
                 case 1:
-                    value = contribution.getAmount().toPlainString();
+                    //TODO: align money at right in CSS
+                    value = Context.getLocalizator().getCurrency(contribution.getAmount()).getDefaultString();
                     break;
                 case 2:
                     value = contribution.getCreationDate().toString();
