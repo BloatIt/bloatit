@@ -15,7 +15,7 @@ import com.bloatit.web.HtmlTools;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
-import com.bloatit.web.url.MyAccountPageUrl;
+import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 
 public class SessionBar extends HtmlDiv {
@@ -36,7 +36,7 @@ public class SessionBar extends HtmlDiv {
             } catch (final UnauthorizedOperationException e) {
                 // no right, leave invalid name
             }
-            final HtmlLink memberLink = new MyAccountPageUrl().getHtmlLink(displayName);
+            final HtmlLink memberLink = new MemberPageUrl(Context.getSession().getAuthToken().getMember()).getHtmlLink(displayName);
 
             // Display user karma
             final HtmlBranch karma = new HtmlSpan();

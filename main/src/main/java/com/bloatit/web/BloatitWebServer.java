@@ -34,7 +34,6 @@ import com.bloatit.web.pages.IndexPage;
 import com.bloatit.web.pages.LoginPage;
 import com.bloatit.web.pages.MemberPage;
 import com.bloatit.web.pages.MembersListPage;
-import com.bloatit.web.pages.MyAccountPage;
 import com.bloatit.web.pages.OfferPage;
 import com.bloatit.web.pages.PageNotFound;
 import com.bloatit.web.pages.PaylinePage;
@@ -68,7 +67,6 @@ import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
-import com.bloatit.web.url.MyAccountPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
@@ -109,9 +107,6 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(DemandPageUrl.getName())) {
             return new DemandPage(new DemandPageUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(MyAccountPageUrl.getName())) {
-            return new MyAccountPage(new MyAccountPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(SpecialsPageUrl.getName())) {
             return new SpecialsPage(new SpecialsPageUrl(params, session.getParameters()));
@@ -222,5 +217,4 @@ public class BloatitWebServer extends WebServer {
 
         return new PageNotFound(new PageNotFoundUrl(params, session.getParameters()));
     }
-
 }

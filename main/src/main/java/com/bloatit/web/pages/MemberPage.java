@@ -14,6 +14,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -68,7 +69,7 @@ public final class MemberPage extends MasterPage {
         
         member.authenticate(session.getAuthToken());
         try {
-            HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
+            HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Member: ") + member.getDisplayName(), 1);
             master.add(memberTitle);
             HtmlList memberInfo = new HtmlList();
             memberTitle.add(memberInfo);
