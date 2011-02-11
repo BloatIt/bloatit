@@ -35,7 +35,7 @@ public class KudosableConfiguration {
 
 
 
-    private static final int MIN_INFLUENCE_TO_UNKUDOS = conf.getInt("kudosable.min_influence_unkudo", 2);
+    private static final int MIN_INFLUENCE_TO_UNKUDOS = conf.getInt("kudosable.min_influence_unkudo", 1);
     private static final int MIN_INFLUENCE_TO_KUDOS = conf.getInt("kudosable.min_influence_kudo", 0);
     /**
      * @return the defaultTurnValid

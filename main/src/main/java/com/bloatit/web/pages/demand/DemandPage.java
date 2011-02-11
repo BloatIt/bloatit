@@ -77,6 +77,8 @@ public final class DemandPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         addNotifications(url.getMessages());
 
+        demand.authenticate(session.getAuthToken());
+
         if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }

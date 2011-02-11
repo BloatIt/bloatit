@@ -89,6 +89,26 @@ public abstract class DaoKudosable extends DaoUserContent {
         return (Long) q.uniqueResult() > 0;
     }
 
+    /**
+     * Use a HQL query to find if a member as already kudosed this kudosable.
+     *
+     * @param member The member that could have kudosed this kudosable. (Don't even think
+     *        of passing a null member)
+     * @return true if member has kudosed, false otherwise.
+     */
+    public final int getVote(final DaoMember member) {
+        final Query q = SessionManager.getSessionFactory().getCurrentSession()
+                .createQuery("select k.value from " + this.getClass().getName() + " as a join a.kudos as k where k.member = :member and a = :this");
+        q.setEntity("member", member);
+        q.setEntity("this", this);
+        //return 0 if no vote
+        Integer vote = (Integer) q.uniqueResult();
+        if(vote == null) {
+            return 0;
+        }
+        return  vote;
+    }
+
     public final State getState() {
         return state;
     }

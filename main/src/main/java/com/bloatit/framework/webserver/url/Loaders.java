@@ -15,6 +15,7 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
+import com.bloatit.model.KudosableInterface;
 import com.bloatit.model.Member;
 import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandImplementation;
@@ -81,7 +82,7 @@ public final class Loaders {
             return (Loader<T>) new ToMember();
         } else if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
-        } else if (theClass.equals(Kudosable.class)) {
+        } else if (theClass.equals(KudosableInterface.class) || theClass.equals(Kudosable.class)) {
             return (Loader<T>) new ToKudosable();
         } else if (theClass.equals(Comment.class)) {
             return (Loader<T>) new ToComment();

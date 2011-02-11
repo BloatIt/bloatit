@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bloatit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-07 13:41+0100\n"
+"POT-Creation-Date: 2011-02-09 22:12+0100\n"
 "PO-Revision-Date: 2011-01-06 19:18+0100\n"
 "Last-Translator: Frédéric Bertolus <fred@elveos.fr>\n"
 "Language-Team: Français <dev@elveos.fr>\n"
@@ -21,96 +21,175 @@ msgstr ""
 "X-Language: fr_FR\n"
 "X-Source-Language: C\n"
 
-#: com/bloatit/web/actions/OfferAction.java:38
-msgid "The target idea is mandatory to make an offer."
-msgstr "L'idée cible est obligatoire pour faire une offre."
-
-#: com/bloatit/web/actions/OfferAction.java:41
-msgid "Invalid or missing value for price field."
-msgstr "La valeur pour le champ \"prix\" est manquante ou invalide."
-
-#: com/bloatit/web/actions/LogoutAction.java:32
-msgid "Logout success."
-msgstr "Déconnexion réussie."
-
-#: com/bloatit/web/actions/CreateIdeaAction.java:76
-msgid "You must be logged in to create an idea."
-msgstr "Vous devez être connecté pour créer une idée."
-
-#: com/bloatit/web/actions/KudoAction.java:48
-msgid "Kudo applied"
-msgstr "Kudo appliqué"
-
-#: com/bloatit/web/actions/KudoAction.java:51
-msgid "For obscure reasons, you are not allowed to kudo that."
+#: com/bloatit/framework/utils/i18n/CurrencyLocale.java:74
+msgid ""
+"We can't handle properly the country you selected, considering you're from "
+"the US"
 msgstr ""
-"Pour des raisons obscures, vous n'êtes pas autorisé à contribuer à cette "
-"idée."
+"Nous ne supportons pas correctement le pays sélectionné, vous serez "
+"considéré comme étant au États Unis"
 
-#: com/bloatit/web/actions/LoginAction.java:51
-msgid "Login success."
-msgstr "Connexion réussi."
-
-#: com/bloatit/web/actions/LoginAction.java:57
-msgid "Login failed. Wrong login or password."
-msgstr "Echec de la connexion. Mauvais identifiant ou mot de passe."
-
-#: com/bloatit/web/actions/AccountChargingAction.java:61
-msgid "Your current rights do not allow you to charge money"
-msgstr "Vos droits actuels ne vous permettent pas de créditer de l'argent"
-
-#: com/bloatit/web/actions/ContributionAction.java:65
-#, java-format
-msgid "Thanks you for crediting {0} on this idea"
-msgstr "Merci d'avoir crédité {0} sur cette idée"
-
-#: com/bloatit/web/actions/ContributionAction.java:70
-msgid "For obscure reasons, you are not allowed to contribute on this idea."
-msgstr ""
-"Pour des raisons obscures, vous n'êtes pas autorisé à contribuer à cette "
-"idée."
-
-#: com/bloatit/web/actions/ContributionAction.java:74
-msgid "You need to charge your account before you can contribute."
-msgstr "Vous devez créditer votre compte avant de contribuer."
-
-#: com/bloatit/web/server/DispatchServer.java:143
-msgid "Unknow page: "
-msgstr "Page inconnue : "
-
-#: com/bloatit/web/html/HtmlTools.java:100
+#: com/bloatit/web/HtmlTools.java:147 com/bloatit/web/HtmlTools.java:183
 msgid "now"
 msgstr "maintenant"
 
-#: com/bloatit/web/html/HtmlTools.java:102
-msgid "%d seconds ago"
-msgstr "il y a %d secondes"
+#: com/bloatit/web/HtmlTools.java:149
+#, java-format
+msgid "{0} second ago"
+msgid_plural "{0} seconds ago"
+msgstr[0] "il y a {0} seconde"
+msgstr[1] "il y a {0} secondes"
 
-#: com/bloatit/web/html/HtmlTools.java:105
-msgid "MMM d, ''yy 'at' HH:mm"
-msgstr "MMM d, ''yy 'à ' HH:mm"
+#: com/bloatit/web/HtmlTools.java:151
+#, java-format
+msgid "{0} minute ago"
+msgid_plural "{0} minutes ago"
+msgstr[0] "il y a {0} minute"
+msgstr[1] "il y a {0} minutes"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:83
-msgid "Create a new idea"
-msgstr "Créer une nouvelle idée"
+#: com/bloatit/web/HtmlTools.java:153
+#, java-format
+msgid "{0} hour ago"
+msgid_plural "{0} hours ago"
+msgstr[0] "il y a {0} heure"
+msgstr[1] "il y a {0} heures"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:88
-msgid "Specify the new idea"
-msgstr "Spécifiez la nouvelle idée"
+#: com/bloatit/web/HtmlTools.java:185
+#, java-format
+msgid "{0} seconds ago"
+msgstr "il y a {0} secondes"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:89
-msgid "Parameters of the new idea"
-msgstr "Paramètres de la nouvelle idée"
+#: com/bloatit/web/pages/ProjectPage.java:42
+msgid "The id of the project is incorrect or missing"
+msgstr "L'identifiant du projet est incorrect ou manquant"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:94
+#: com/bloatit/web/pages/ProjectPage.java:85
+msgid ""
+"For obscure reasons, you are not allowed to see the details of this project."
+msgstr ""
+"Pour des raisons obscures, vous n'êtes pas autorisé à voir les détails de ce "
+"projet."
+
+#: com/bloatit/web/pages/ProjectPage.java:93
+msgid "Project - "
+msgstr "Projet - "
+
+#: com/bloatit/web/pages/ProjectPage.java:95
+msgid "Project - Windows 8"
+msgstr "Projet - Windows 8"
+
+#: com/bloatit/web/pages/ProjectPage.java:98
+#: com/bloatit/web/pages/MemberPage.java:83
+msgid "Member - No member"
+msgstr "Membre - Personne"
+
+#: com/bloatit/web/pages/MyAccountPage.java:46
+#: com/bloatit/web/pages/MemberPage.java:61
+msgid "Full name: "
+msgstr "Nom complet :"
+
+#: com/bloatit/web/pages/MyAccountPage.java:47
+#: com/bloatit/web/pages/MemberPage.java:63
+msgid "Login: "
+msgstr "Se connecter :"
+
+#: com/bloatit/web/pages/MyAccountPage.java:48
+#: com/bloatit/web/pages/MemberPage.java:65
+msgid "Email: "
+msgstr "Email :"
+
+#: com/bloatit/web/pages/MyAccountPage.java:49
+#: com/bloatit/web/pages/MemberPage.java:67
+msgid "Karma: "
+msgstr "Karma :"
+
+#: com/bloatit/web/pages/MyAccountPage.java:53
+msgid "For obscure reasons, you are not allowed to see your own details."
+msgstr ""
+"Pour des raisons obscures, vous n'êtes pas autorisé à voir les détails vous "
+"concernant."
+
+#: com/bloatit/web/pages/MyAccountPage.java:56
+msgid "No account"
+msgstr "Aucun compte"
+
+#: com/bloatit/web/pages/MyAccountPage.java:64
+msgid "My account - "
+msgstr "Mon compte - "
+
+#: com/bloatit/web/pages/MyAccountPage.java:66
+msgid "My account - John Doe"
+msgstr "Mon compte - Monsieur X"
+
+#: com/bloatit/web/pages/MyAccountPage.java:69
+msgid "My account - No account"
+msgstr "Mon compte - Aucun compte"
+
+#: com/bloatit/web/pages/RegisterPage.java:59
+msgid "Register"
+msgstr "S'inscrire"
+
+#: com/bloatit/web/pages/RegisterPage.java:65
+#: com/bloatit/web/pages/LoginPage.java:48
+msgctxt "Login (noun)"
+msgid "Login"
+msgstr "Identifiant"
+
+#: com/bloatit/web/pages/RegisterPage.java:69
+#: com/bloatit/web/pages/LoginPage.java:50
+msgid "Password"
+msgstr "Mot de passe"
+
+#: com/bloatit/web/pages/RegisterPage.java:73
+msgid "Email"
+msgstr "Email"
+
+#: com/bloatit/web/pages/RegisterPage.java:76
+msgid "Country"
+msgstr "Pays"
+
+#: com/bloatit/web/pages/RegisterPage.java:83
+#: com/bloatit/web/pages/CreateDemandPage.java:104
+#: com/bloatit/web/pages/AddProjectPage.java:100
+msgid "Language"
+msgstr "Langue"
+
+#: com/bloatit/web/pages/RegisterPage.java:89
+#: com/bloatit/web/pages/CommentReplyPage.java:63
+#: com/bloatit/web/pages/AccountChargingPage.java:60
+msgid "Submit"
+msgstr "Valider"
+
+#: com/bloatit/web/pages/RegisterPage.java:99
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:209
+#: com/bloatit/web/pages/OfferPage.java:65
+#: com/bloatit/web/pages/OfferPage.java:80
+#: com/bloatit/web/pages/OfferPage.java:113
+msgid "Make an offer"
+msgstr "Faire une offre"
+
+#: com/bloatit/web/pages/CreateDemandPage.java:74
+msgid "Create a new demand"
+msgstr "Créer une nouvelle demande"
+
+#: com/bloatit/web/pages/CreateDemandPage.java:79
+msgid "Specify the new demand"
+msgstr "Spécifiez la nouvelle demande"
+
+#: com/bloatit/web/pages/CreateDemandPage.java:80
+msgid "Parameters of the new demand"
+msgstr "Paramètres de la nouvelle demande"
+
+#: com/bloatit/web/pages/CreateDemandPage.java:85
+#: com/bloatit/web/pages/AddProjectPage.java:112
 msgid "submit"
 msgstr "valider"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:98
+#: com/bloatit/web/pages/CreateDemandPage.java:89
 msgid "Title"
 msgstr "Titre"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:100
+#: com/bloatit/web/pages/CreateDemandPage.java:91
 msgid ""
 "The title of the new idea must be permit to identify clearly the idea's "
 "specificity."
@@ -118,11 +197,11 @@ msgstr ""
 "Le titre de la nouvelle idée doit permettre d'identifier clairement la "
 "spécificité de l'idée."
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:101
+#: com/bloatit/web/pages/CreateDemandPage.java:95
 msgid "Describe the idea"
 msgstr "Décrivez l'idée"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:103
+#: com/bloatit/web/pages/CreateDemandPage.java:97
 msgid ""
 "Enter a long description of the idea : list all features, describe them all "
 "... Try to leave as little room for ambiguity as possible."
@@ -130,319 +209,911 @@ msgstr ""
 "Tapez une longue description de l'idée : liste des fonctionnalités, décrivez "
 "les toutes... Essayez de laisser le moins d'ambiguité possible."
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:110
-#: com/bloatit/web/html/pages/RegisterPage.java:90
-msgid "Language"
-msgstr "Langue"
-
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:115
-msgid "Category"
-msgstr "Catégorie"
-
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:117
+#: com/bloatit/web/pages/CreateDemandPage.java:110
 msgid "Project"
 msgstr "Projet"
 
-#: com/bloatit/web/html/pages/CreateIdeaPage.java:136
+#: com/bloatit/web/pages/CreateDemandPage.java:138
 msgid "You must be logged to create a new idea."
 msgstr "Vous devez être connecté pour créer une nouvelle idée."
 
-#: com/bloatit/web/html/pages/MyAccountPage.java:41
-msgid "Full name: "
-msgstr "Nom complet :"
+#: com/bloatit/web/pages/ProjectListPage.java:81
+#: com/bloatit/web/pages/master/Footer.java:26
+msgid "Project list"
+msgstr "Liste des projets"
 
-#: com/bloatit/web/html/pages/MyAccountPage.java:42
-msgid "Login: "
-msgstr "Se connecter&nbsp;:"
-
-#: com/bloatit/web/html/pages/MyAccountPage.java:43
-msgid "Email: "
-msgstr "Email :"
-
-#: com/bloatit/web/html/pages/MyAccountPage.java:44
-msgid "Karma: "
-msgstr "Karma :"
-
-#: com/bloatit/web/html/pages/RegisterPage.java:68
-msgid "Register"
-msgstr "S'inscrire"
-
-#: com/bloatit/web/html/pages/RegisterPage.java:72
-#: com/bloatit/web/html/pages/LoginPage.java:41
-msgctxt "Login (noun)"
-msgid "Login"
-msgstr "Identifiant"
-
-#: com/bloatit/web/html/pages/RegisterPage.java:76
-#: com/bloatit/web/html/pages/LoginPage.java:42
-msgid "Password"
-msgstr "Mot de passe"
-
-#: com/bloatit/web/html/pages/RegisterPage.java:80
-msgid "Email"
-msgstr "Email"
-
-#: com/bloatit/web/html/pages/RegisterPage.java:84
-msgid "Country"
-msgstr "Pays"
-
-#: com/bloatit/web/html/pages/RegisterPage.java:96
-#: com/bloatit/web/html/pages/AccountChargingPage.java:53
-msgid "Submit"
-msgstr "Valider"
-
-#: com/bloatit/web/html/pages/RegisterPage.java:104
-#: com/bloatit/web/html/pages/idea/IdeaMakeOfferButtonComponent.java:31
-#: com/bloatit/web/html/pages/OfferPage.java:64
-#: com/bloatit/web/html/pages/OfferPage.java:79
-#: com/bloatit/web/html/pages/OfferPage.java:108
-msgid "Make an offer"
-msgstr "Faire une offre"
-
-#: com/bloatit/web/html/pages/IdeasList.java:59
-msgid "Ideas list"
-msgstr "Liste des idées"
-
-#: com/bloatit/web/html/pages/IdeasList.java:172
-#: com/bloatit/web/html/pages/idea/IdeaHeadComponent.java:100
-msgid " no offer ("
-msgstr "aucune offre ("
-
-#: com/bloatit/web/html/pages/IdeasList.java:173
-#: com/bloatit/web/html/pages/idea/IdeaHeadComponent.java:101
-msgid "make an offer"
-msgstr "faire une offre"
-
-#: com/bloatit/web/html/pages/IdeasList.java:174
-#: com/bloatit/web/html/pages/idea/IdeaHeadComponent.java:102
-msgid ")"
-msgstr ")"
-
-#: com/bloatit/web/html/pages/IdeasList.java:201
-#: com/bloatit/web/html/pages/idea/IdeaHeadComponent.java:130
-msgid " i.e. "
-msgstr "soit "
-
-#: com/bloatit/web/html/pages/IdeasList.java:203
-#: com/bloatit/web/html/pages/idea/IdeaHeadComponent.java:132
-msgid " of "
-msgstr " de "
-
-#: com/bloatit/web/html/pages/IdeasList.java:206
-#: com/bloatit/web/html/pages/idea/IdeaHeadComponent.java:134
-msgid " requested "
-msgid_plural " requested "
-msgstr[0] " demandé "
-msgstr[1] " demandés"
-
-#: com/bloatit/web/html/pages/LoginPage.java:43
-#: com/bloatit/web/html/pages/LoginPage.java:49
+#: com/bloatit/web/pages/LoginPage.java:52
+#: com/bloatit/web/pages/LoginPage.java:58
+#: com/bloatit/web/pages/LoginPage.java:74
+#: com/bloatit/web/pages/master/SessionBar.java:85
 msgctxt "Login (verb)"
 msgid "Login"
 msgstr "Se connecter"
 
-#: com/bloatit/web/html/pages/LoginPage.java:52
-msgid "Signup"
-msgstr "S'inscrire"
+#: com/bloatit/web/pages/LoginPage.java:63
+msgid "No account ? Sign-in now."
+msgstr "Vous n'avez pas de compte ? Inscrivez-vous maintenant."
 
-#: com/bloatit/web/html/pages/LoginPage.java:53
-msgid "Click here."
-msgstr "Cliquez ici."
+#: com/bloatit/web/pages/LoginPage.java:65
+msgid "Password lost ?"
+msgstr "Mot de passe perdu ?"
 
-#: com/bloatit/web/html/pages/SpecialsPage.java:34
+#: com/bloatit/web/pages/CommentReplyPage.java:53
+#: com/bloatit/web/pages/CommentReplyPage.java:76
+msgid "Reply to a comment"
+msgstr "Répondre à un commentaire"
+
+#: com/bloatit/web/pages/CommentReplyPage.java:60
+msgid "Content"
+msgstr "Contenu"
+
+#: com/bloatit/web/pages/CommentReplyPage.java:71
+msgid "you must be logged in to comment."
+msgstr "Vous devez être connecté pour commenter."
+
+#: com/bloatit/web/pages/AddProjectPage.java:69
+msgid "Add a new project"
+msgstr "Ajouter un nouveau projet"
+
+#: com/bloatit/web/pages/AddProjectPage.java:80
+msgid "Project name"
+msgstr "Nom du projet"
+
+#: com/bloatit/web/pages/AddProjectPage.java:81
+msgid "The name of the existing project."
+msgstr "Le nom d'un projet existant."
+
+#: com/bloatit/web/pages/AddProjectPage.java:86
+msgid "Describe briefly the project"
+msgstr "Décrivez brievement le projet"
+
+#: com/bloatit/web/pages/AddProjectPage.java:88
+msgid "Enter a short description of the projet in 120 characters."
+msgstr "Entrez une courte description du projet en 120 caractères."
+
+#: com/bloatit/web/pages/AddProjectPage.java:92
+msgid "Describe the project"
+msgstr "Décrivez le projet"
+
+#: com/bloatit/web/pages/AddProjectPage.java:95
+msgid ""
+"Mininum 10 character. You can enter a long description of the projet : list "
+"all features, add siteweb links, etc."
+msgstr ""
+"Minimum 10 caractère. Vous pouvez entrez un longue description du projet : "
+"liste des fonctionnalités, liens vers le site, etc."
+
+#: com/bloatit/web/pages/AddProjectPage.java:104
+msgid "Language of the descriptions."
+msgstr "Langue des descriptions."
+
+#: com/bloatit/web/pages/AddProjectPage.java:107
+msgid "Project logo"
+msgstr "Logo du projet"
+
+#: com/bloatit/web/pages/AddProjectPage.java:127
+msgid "You must be logged to add a new project."
+msgstr "Vous devez être connecté pour créer un nouveau projet."
+
+#: com/bloatit/web/pages/SpecialsPage.java:33
 msgid "Special pages"
 msgstr "Pages spéciales"
 
-#: com/bloatit/web/html/pages/SpecialsPage.java:39
+#: com/bloatit/web/pages/SpecialsPage.java:37
 msgid "Members list"
 msgstr "Liste des membres"
 
-#: com/bloatit/web/html/pages/ContributePage.java:71
-msgid "Choose amount : "
-msgstr "Choisissez le montant :"
+#: com/bloatit/web/pages/MemberPage.java:36
+msgid "The id of the member is incorrect or missing"
+msgstr "L'identifiant du membre est incorrect ou manquant"
 
-#: com/bloatit/web/html/pages/ContributePage.java:76
-msgid "Comment (optional) : "
-msgstr "Commentaires (optionnel) :"
-
-#: com/bloatit/web/html/pages/ContributePage.java:79
-#: com/bloatit/web/html/pages/ContributePage.java:101
-#: com/bloatit/web/html/pages/idea/IdeaContributeButtonComponent.java:38
-msgid "Contribute"
-msgstr "Contribuer"
-
-#: com/bloatit/web/html/pages/ContributePage.java:113
-msgid "Contribute to a project"
-msgstr "Contribuer à un projet"
-
-#: com/bloatit/web/html/pages/ContributePage.java:123
-msgid "You must be logged to contribute"
-msgstr "Vous devez être connecté pour contribuer"
-
-#: com/bloatit/web/html/pages/IndexPage.java:70
-#: com/bloatit/web/html/pages/GlobalSearchPage.java:96
-msgid "Search"
-msgstr "Recherche"
-
-#: com/bloatit/web/html/pages/IndexPage.java:98
+#: com/bloatit/web/pages/MemberPage.java:70
 msgid ""
-"XXX is a platform to finance free software. Following, we must put a simple "
-"and complete description of the fonctionnement of XXXX."
+"For obscure reasons, you are not allowed to see the details of this member."
 msgstr ""
-"XXX est une plateforme de financement de logiciels libre. Ci-dessous,nous "
-"devons ajouter une description simple et complète du fonctionnement de XXX."
+"Pour des raisons obscures, vous n'êtes pas autorisé à voir les détails de ce "
+"membre."
 
-#: com/bloatit/web/html/pages/IndexPage.java:101
-msgid "Submit a new idea"
-msgstr "Soumettre une nouvelle idée"
+#: com/bloatit/web/pages/MemberPage.java:78
+msgid "Member - "
+msgstr "Membres - "
 
-#: com/bloatit/web/html/pages/PageNotFound.java:29
-msgid "Page not found"
-msgstr "Page introuvable"
+#: com/bloatit/web/pages/MemberPage.java:80
+msgid "Member - John Doe"
+msgstr "Membre - Monsieur X"
 
-#: com/bloatit/web/html/pages/AccountChargingPage.java:37
-msgid "Charge your bloatit account"
-msgstr "Crediter votre compte BloatIt"
-
-#: com/bloatit/web/html/pages/AccountChargingPage.java:47
-msgid "Charge your account"
-msgstr "Crediter votre compte"
-
-#: com/bloatit/web/html/pages/master/Footer.java:11
-msgid "This website is under GNU Affero Public Licence."
-msgstr "Ce site internet est sous la GNU Affero Public licence."
-
-#: com/bloatit/web/html/pages/master/TopBar.java:70
-msgid "Logout"
-msgstr "Déconnexion"
-
-#: com/bloatit/web/html/pages/master/TopBar.java:77
-msgid "Login / Signup"
-msgstr "Se connecter / S'inscrire"
-
-#: com/bloatit/web/html/pages/master/Menu.java:22
-msgid "Ideas"
-msgstr "Idées"
-
-#: com/bloatit/web/html/pages/master/Menu.java:23
-msgid "Projects"
-msgstr "Projets"
-
-#: com/bloatit/web/html/pages/master/Menu.java:24
-msgid "Groups"
-msgstr "Groupes"
-
-#: com/bloatit/web/html/pages/master/Menu.java:25
-msgid "Members"
-msgstr "Membres"
-
-#: com/bloatit/web/html/pages/master/Menu.java:29
-msgid "Specials page"
-msgstr "Pages spéciales"
-
-#: com/bloatit/web/html/pages/master/Menu.java:30
-msgid "Contact"
-msgstr "Contact"
-
-#: com/bloatit/web/html/pages/master/Menu.java:31
-msgid "Documentation"
-msgstr "Documentation"
-
-#: com/bloatit/web/html/pages/master/Menu.java:32
-msgid "About BloatIt"
-msgstr "À propos de BloatIt"
-
-#: com/bloatit/web/html/pages/master/Menu.java:33
-msgid "Press"
-msgstr "Presse"
-
-#: com/bloatit/web/html/pages/master/Page.java:123
-msgid "Page Not Found !"
-msgstr "Page introuvable !"
-
-#: com/bloatit/web/html/pages/idea/IdeaTabPane.java:44
+#: com/bloatit/web/pages/demand/DemandTabPane.java:58
 msgid "Description"
 msgstr "Description"
 
-#: com/bloatit/web/html/pages/idea/IdeaTabPane.java:52
-msgid "Participations"
-msgstr "Participations"
+#: com/bloatit/web/pages/demand/DemandTabPane.java:67
+#, java-format
+msgid "Participations ({0})"
+msgstr "Participations ({0})"
 
-#: com/bloatit/web/html/pages/idea/IdeaTabPane.java:60
-msgid "Offers"
-msgstr "Offres"
+#: com/bloatit/web/pages/demand/DemandTabPane.java:79
+#, java-format
+msgid "Offers ({0})"
+msgstr "Offres ({0})"
 
-#: com/bloatit/web/html/pages/idea/IdeaOfferComponent.java:63
+#: com/bloatit/web/pages/demand/DemandTabPane.java:90
+msgid "Details"
+msgstr "Détails"
+
+#: com/bloatit/web/pages/demand/DemandTabPane.java:127
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:85
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:87
+msgid "Created by "
+msgstr "Créé par "
+
+#: com/bloatit/web/pages/demand/DemandTabPane.java:136
+msgid " – "
+msgstr " – "
+
+#: com/bloatit/web/pages/demand/DemandTabPane.java:146
+msgid "Translate"
+msgstr "Traduire"
+
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:63
+#, java-format
+msgid "Comments ({0})"
+msgstr "Commentaires ({0})"
+
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:109
+#, java-format
+msgid "Popularity: {0}"
+msgstr "Popularité : {0}"
+
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:118
+msgid "Usefull"
+msgstr "Pertinent"
+
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:123
+msgid "Useless"
+msgstr "Inutile"
+
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:159
+msgid "Reply"
+msgstr "Répondre"
+
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:174
+msgid "New comment : "
+msgstr "Nouveau commentaire :"
+
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:176
+msgid ""
+"Use this field to comment the demand. If you want to reply to a previous "
+"comment, use the reply link."
+msgstr ""
+"Utilisez ce champ pour commenter la demande. Si vous voulez répondre à un "
+"commentaire précédent, utilisez le lien ''Répondre''."
+
+#: com/bloatit/web/pages/demand/DemandCommentListComponent.java:178
+msgid "Submit comment"
+msgstr "Poster le commentaire"
+
+#: com/bloatit/web/pages/demand/IdeaOfferComponent.java:48
 msgid "Author : "
 msgstr "Auteurs :"
 
-#: com/bloatit/web/html/pages/idea/IdeaOfferComponent.java:64
+#: com/bloatit/web/pages/demand/IdeaOfferComponent.java:50
 msgid "Price : "
 msgstr "Prix :"
 
-#: com/bloatit/web/html/pages/idea/IdeaOfferComponent.java:65
+#: com/bloatit/web/pages/demand/IdeaOfferComponent.java:52
 msgid "Expiration date : "
 msgstr "Date d'expiration :"
 
-#: com/bloatit/web/html/pages/idea/IdeaOfferComponent.java:67
+#: com/bloatit/web/pages/demand/IdeaOfferComponent.java:56
 msgid "Creation Date : "
 msgstr "Date de création :"
 
-#: com/bloatit/web/html/pages/idea/IdeaPage.java:60
+#: com/bloatit/web/pages/demand/IdeaOfferComponent.java:64
+msgid "Currently favored offer"
+msgstr "Offre actuellement préférée"
+
+#: com/bloatit/web/pages/demand/DemandPage.java:64
 msgid "Idea not found !"
 msgstr "Idée introuvable !"
 
-#: com/bloatit/web/html/pages/idea/IdeaContributorsComponent.java:50
-msgid "&nbsp;contributions"
-msgstr "&nbsp;contributions"
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:109
+#: com/bloatit/web/components/HtmlDemandSumary.java:104
+msgid "Popularity"
+msgstr "Popularité"
 
-#: com/bloatit/web/html/pages/idea/IdeaContributorsComponent.java:82
-msgid "Min:&nbsp;"
-msgstr "Min:&nbsp;"
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:192
+msgid "You share this need and you want participate financially?"
+msgstr "Vous partagez ce besoin et vous souhaitez participer financièrement ?"
 
-#: com/bloatit/web/html/pages/idea/IdeaContributorsComponent.java:83
-msgid "Max:&nbsp;"
-msgstr "Max:&nbsp;"
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:195
+#: com/bloatit/web/pages/ContributePage.java:73
+#: com/bloatit/web/pages/ContributePage.java:80
+msgid "Contribute"
+msgstr "Contribuer"
 
-#: com/bloatit/web/html/pages/idea/IdeaContributorsComponent.java:84
-msgid "Mean:&nbsp;"
-msgstr "Moyenne:&nbsp;"
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:206
+msgid "You are a developer and want to be paid to achieve this request?"
+msgstr ""
+"Vous êtes développeur et souhaitez être rémunéré pour réaliser cette demande "
+"?"
 
-#: com/bloatit/web/html/pages/idea/IdeaCommentListComponent.java:39
-msgid "Comments"
-msgstr "Commentaires"
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:227
+msgid "+ Share"
+msgstr "+ Partager"
 
-#: com/bloatit/web/html/pages/OfferPage.java:74
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:274
+#: com/bloatit/web/components/HtmlDemandSumary.java:208
+msgid " no offer"
+msgstr "aucune offre"
+
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:304
+#: com/bloatit/web/components/HtmlDemandSumary.java:238
+msgid " i.e. "
+msgstr "soit "
+
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:306
+#: com/bloatit/web/components/HtmlDemandSumary.java:240
+msgid " of "
+msgstr " de "
+
+#: com/bloatit/web/pages/demand/DemandSummaryComponent.java:308
+#: com/bloatit/web/components/HtmlDemandSumary.java:242
+msgid " requested "
+msgstr " demandé "
+
+#: com/bloatit/web/pages/demand/IdeaContributorsComponent.java:57
+msgid " contributions"
+msgstr " contributions"
+
+#: com/bloatit/web/pages/demand/IdeaContributorsComponent.java:89
+msgid "Min: "
+msgstr "Min :"
+
+#: com/bloatit/web/pages/demand/IdeaContributorsComponent.java:90
+msgid "Max: "
+msgstr "Max :"
+
+#: com/bloatit/web/pages/demand/IdeaContributorsComponent.java:91
+msgid "Mean: "
+msgstr "Moyenne :"
+
+#: com/bloatit/web/pages/demand/IdeaContributorsComponent.java:103
+msgid "You are not authorized to see this."
+msgstr "Vous n'avez pas l'autorisation de voir ceci."
+
+#: com/bloatit/web/pages/ContributePage.java:67
+msgid "Choose amount: "
+msgstr "Choisissez le montant :"
+
+#: com/bloatit/web/pages/ContributePage.java:71
+msgid "Comment (optional) : "
+msgstr "Commentaires (optionnel) :"
+
+#: com/bloatit/web/pages/ContributePage.java:92
+msgid "Contribute to a project"
+msgstr "Contribuer à un projet"
+
+#: com/bloatit/web/pages/ContributePage.java:102
+msgid "You must be logged to contribute"
+msgstr "Vous devez être connecté pour contribuer"
+
+#: com/bloatit/web/pages/IndexPage.java:36
+msgid "Linkeos is a platform for free software funding."
+msgstr "Linkeos est une platforme de financement de logiciel libre."
+
+#: com/bloatit/web/pages/IndexPage.java:40
+msgid "If you have a need about a free software, you can "
+msgstr "Si vous avez un besoin concernant un logiciel libre, vous pouvez "
+
+#: com/bloatit/web/pages/IndexPage.java:41
+msgid "create a new demand"
+msgstr "créer une nouvelle demande"
+
+#: com/bloatit/web/pages/IndexPage.java:42
+msgid " and contribute to it."
+msgstr "et contribuer à celle-ci."
+
+#: com/bloatit/web/pages/IndexPage.java:46
+msgid ""
+"If you are a developer, you can make an offer on existing demands to develop "
+"it again money."
+msgstr ""
+"Si vous êtes développeur, vous pouvez faire une offre sur une demande "
+"existant pour la développer contre rétribution."
+
+#: com/bloatit/web/pages/IndexPage.java:51
+msgid "You can find more informations about Linkeos's in the documentation."
+msgstr ""
+"Vous pouvez trouver plus d'informations concernant Linkeos dans la "
+"documentation."
+
+#: com/bloatit/web/pages/PageNotFound.java:28
+#: com/bloatit/web/pages/PageNotFound.java:41
+msgid "Page not found"
+msgstr "Page introuvable"
+
+#: com/bloatit/web/pages/TestPage.java:52
+msgid "Html testing page"
+msgstr "Page de test du Html"
+
+#: com/bloatit/web/pages/TestPage.java:53
+msgid "Common markups"
+msgstr "Balises courantes"
+
+#: com/bloatit/web/pages/TestPage.java:54
+msgid "Formulaires"
+msgstr "Formulaires"
+
+#: com/bloatit/web/pages/TestPage.java:55
+msgid "Listes"
+msgstr "Listes"
+
+#: com/bloatit/web/pages/TestPage.java:64
+msgid "Another title"
+msgstr "Un autre titre"
+
+#: com/bloatit/web/pages/TestPage.java:74
+msgid "some text without paragraph"
+msgstr "du texte sans paragraphe"
+
+#: com/bloatit/web/pages/TestPage.java:84
+msgid "First form block"
+msgstr "Premier block de formulaire"
+
+#: com/bloatit/web/pages/TestPage.java:85
+msgid "text"
+msgstr "texte"
+
+#: com/bloatit/web/pages/TestPage.java:87
+msgid "Useless button"
+msgstr "Bouton inutile"
+
+#: com/bloatit/web/pages/TestPage.java:93
+msgid "Quand êtes vous disponibles ?"
+msgstr "Quand êtes vous disponibles ?"
+
+#: com/bloatit/web/pages/TestPage.java:103
+msgid "muahahah"
+msgstr "muahahah"
+
+#: com/bloatit/web/pages/TestPage.java:104
+msgid "c'est vraiment chiant de générer des tests"
+msgstr "c'est vraiment chiant de générer des tests"
+
+#: com/bloatit/web/pages/TestPage.java:105
+msgid "et de 3"
+msgstr "et de 3"
+
+#: com/bloatit/web/pages/TestPage.java:107
+msgid "yet another text field"
+msgstr "encore un autre champ de texte"
+
+#: com/bloatit/web/pages/TestPage.java:120
+msgid "Not numbered list"
+msgstr "Liste non numérotée"
+
+#: com/bloatit/web/pages/TestPage.java:127
+msgid "Numbered list"
+msgstr "Liste numérotée"
+
+#: com/bloatit/web/pages/DemandListPage.java:90
+msgctxt "Search (verb)"
+msgid "Search a demand"
+msgstr "Rechercher une demande"
+
+#: com/bloatit/web/pages/DemandListPage.java:101
+msgid "all"
+msgstr "toutes"
+
+#: com/bloatit/web/pages/DemandListPage.java:108
+msgid "in progress"
+msgstr "actives"
+
+#: com/bloatit/web/pages/DemandListPage.java:115
+msgid "finished"
+msgstr "terminées"
+
+#: com/bloatit/web/pages/DemandListPage.java:120
+msgid "Filter: "
+msgstr "Filtre :"
+
+#: com/bloatit/web/pages/DemandListPage.java:133
+msgid "relevance"
+msgstr "pertinence"
+
+#: com/bloatit/web/pages/DemandListPage.java:140
+msgid "popularity"
+msgstr "popularité"
+
+#: com/bloatit/web/pages/DemandListPage.java:147
+msgid "contribution"
+msgstr "contribution"
+
+#: com/bloatit/web/pages/DemandListPage.java:154
+msgid "progress"
+msgstr "progrès"
+
+#: com/bloatit/web/pages/DemandListPage.java:161
+msgid "creation date"
+msgstr "date de création"
+
+#: com/bloatit/web/pages/DemandListPage.java:168
+msgid "expiration date"
+msgstr "date d'expiration"
+
+#: com/bloatit/web/pages/DemandListPage.java:173
+msgid "Sort by: "
+msgstr "Trier par :"
+
+#: com/bloatit/web/pages/DemandListPage.java:213
+msgid "If you have an idea or a need about a free software, you can "
+msgstr ""
+"Si vous avez une idée ou un besoin concernant un logiciel libre, vous pouvez "
+
+#: com/bloatit/web/pages/DemandListPage.java:214
+msgid "submit a new feature"
+msgstr "proposer une nouvelle demande"
+
+#: com/bloatit/web/pages/DemandListPage.java:241
+msgid "No result"
+msgstr "Aucun résultat"
+
+#: com/bloatit/web/pages/DemandListPage.java:250
+msgid "View demands - search demands"
+msgstr "Voir les demands - Rechercher des demandes"
+
+#: com/bloatit/web/pages/AccountChargingPage.java:40
+#: com/bloatit/web/pages/AccountChargingPage.java:51
+msgid "Charge your account"
+msgstr "Crediter votre compte"
+
+#: com/bloatit/web/pages/master/Footer.java:21
+msgid "Home page"
+msgstr "Page d'acceuil"
+
+#: com/bloatit/web/pages/master/Footer.java:22
+msgid "All pages"
+msgstr "Toutes les pages"
+
+#: com/bloatit/web/pages/master/Footer.java:23
+msgid "Upload file"
+msgstr "Upload de fichier"
+
+#: com/bloatit/web/pages/master/Footer.java:24
+msgid "Create a demand"
+msgstr "Créer une demande"
+
+#: com/bloatit/web/pages/master/Footer.java:25
+msgid "Add a project"
+msgstr "Ajouter un projet"
+
+#: com/bloatit/web/pages/master/Footer.java:27
+msgid "Signal a bug"
+msgstr "Signaler un bug"
+
+#: com/bloatit/web/pages/master/Footer.java:28
+msgid "Contacts"
+msgstr "Contacts"
+
+#: com/bloatit/web/pages/master/Footer.java:34
+msgid ""
+"This website use Bloatit framework, and is under GNU Affero Public Licence."
+msgstr ""
+"Ce site utilise Bloatit framework, et est sous la GNU Affero Public Licence."
+
+#: com/bloatit/web/pages/master/SessionBar.java:81
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: com/bloatit/web/pages/master/SessionBar.java:86
+msgctxt "Sign in (verb)"
+msgid "Sign in"
+msgstr "S'inscrire"
+
+#: com/bloatit/web/pages/master/Menu.java:20
+msgid "Demands"
+msgstr "Demandes"
+
+#: com/bloatit/web/pages/master/Menu.java:21
+msgid "Projects"
+msgstr "Projets"
+
+#: com/bloatit/web/pages/master/Menu.java:22
+msgid "Brainstorm"
+msgstr "Brainstorming"
+
+#: com/bloatit/web/pages/master/Menu.java:23
+msgid "Members"
+msgstr "Membres"
+
+#: com/bloatit/web/pages/master/Menu.java:24
+msgid "Documentation"
+msgstr "Documentation"
+
+#: com/bloatit/web/pages/OfferPage.java:75
 msgid "You must be logged to make an offer"
 msgstr "Vous devez être connecté pour faire une offre"
 
-#: com/bloatit/web/html/pages/OfferPage.java:90
+#: com/bloatit/web/pages/OfferPage.java:91
 msgid "Title to the offer"
 msgstr "Titre de l'offre"
 
-#: com/bloatit/web/html/pages/OfferPage.java:95
+#: com/bloatit/web/pages/OfferPage.java:96
 msgid "Offer price"
 msgstr "Prix de l'offre"
 
-#: com/bloatit/web/html/pages/OfferPage.java:100
+#: com/bloatit/web/pages/OfferPage.java:97
+msgid "The price must be in euros (€) and can't contains cents."
+msgstr "Le prix doit être en euros (€) et ne doit pas contenir de centimes."
+
+#: com/bloatit/web/pages/OfferPage.java:104
 msgid "Expiration date"
 msgstr "Date d'expiration"
 
-#: com/bloatit/web/html/pages/OfferPage.java:104
+#: com/bloatit/web/pages/OfferPage.java:105
+msgid "Date formatted in ISO format. Example: 2012/03/15 for March 15, 2012."
+msgstr "Format de date ISO. Exemple : 2012/03/15 for March 15, 2012."
+
+#: com/bloatit/web/pages/OfferPage.java:109
 msgid "Description of the offer"
 msgstr "Description de l'offre"
 
-#: com/bloatit/web/html/pages/GlobalSearchPage.java:54
-msgid "Search result"
-msgstr "Résultat de la recherche"
+#: com/bloatit/web/pages/Documentation.java:40
+msgid "Elveos documentation home"
+msgstr "Accueil de la documentation d'Elveos"
 
-#: com/bloatit/web/html/components/custom/HtmlPagedList.java:75
+#: com/bloatit/web/pages/Documentation.java:64
+msgid "Welcome to the elveos documentation page"
+msgstr "Bienvenue sur la page de la documentation d'Elveos"
+
+#: com/bloatit/web/actions/OfferAction.java:42
+msgid "The target idea is mandatory to make an offer."
+msgstr "L'idée cible est obligatoire pour faire une offre."
+
+#: com/bloatit/web/actions/OfferAction.java:45
+msgid "Invalid or missing value for price field."
+msgstr "La valeur pour le champ \"prix\" est manquante ou invalide."
+
+#: com/bloatit/web/actions/OfferAction.java:78
+msgid "For obscure reasons, you are not allowed to make an offer on this idea."
+msgstr ""
+"Pour des raisons obscures, vous n'êtes pas autorisé à faire une offre sur "
+"cette idée."
+
+#: com/bloatit/web/actions/OfferAction.java:105
+msgid "You must be logged to make an offer."
+msgstr "Vous devez être connecté pour faire une offre."
+
+#: com/bloatit/web/actions/PopularityVoteAction.java:62
+#, java-format
+msgid "Vote up applied: {0}"
+msgstr "Vote positif appliqué : {0}"
+
+#: com/bloatit/web/actions/PopularityVoteAction.java:71
+#, java-format
+msgid "Vote down applied: {0}"
+msgstr "Vote négatif appliqué : {0}"
+
+#: com/bloatit/web/actions/PopularityVoteAction.java:77
+msgid "For obscure reasons, you are not allowed to vote on that."
+msgstr "Pour des raisons obscures, vous n'êtes pas autorisé à voter ceci."
+
+#: com/bloatit/web/actions/PopularityVoteAction.java:85
+msgid "You already voted on that."
+msgstr "Vous avez déja voté ceci."
+
+#: com/bloatit/web/actions/PopularityVoteAction.java:88
+msgid "You have a too low reputation to vote up that."
+msgstr "Vous avez une réputation trop faible pour voter positivement ceci."
+
+#: com/bloatit/web/actions/PopularityVoteAction.java:91
+msgid "You have a too low reputation to vote down that."
+msgstr "Vous avez une réputation trop faible pour voter négativement ceci."
+
+#: com/bloatit/web/actions/PopularityVoteAction.java:94
+msgid "You can't vote for yourself!."
+msgstr "Vous ne pouvez pas voter pour vous-même !"
+
+#: com/bloatit/web/actions/AddProjectAction.java:48
+msgid "The short description must be 120 chars length max."
+msgstr "La description courte doit faire au maximum 120 caractères de long."
+
+#: com/bloatit/web/actions/AddProjectAction.java:49
+msgid "The short description must have at least 10 chars."
+msgstr "La description courte doit avoir au moins 10 caractères."
+
+#: com/bloatit/web/actions/AddProjectAction.java:49
+msgid "You forgot to write a short description"
+msgstr "Vous avez oublié d'écrire une description courte"
+
+#: com/bloatit/web/actions/AddProjectAction.java:57
+msgid "The project name must be 1OO chars length max."
+msgstr "Le nom du projet doit avoir au maximun 100 caractères."
+
+#: com/bloatit/web/actions/AddProjectAction.java:58
+msgid "The project name must have at least 3 chars."
+msgstr "Le nom du projet doit avoir au moins 3 caractères."
+
+#: com/bloatit/web/actions/AddProjectAction.java:58
+msgid "The project name is requiered."
+msgstr "Le nom du projet est obligatoire."
+
+#: com/bloatit/web/actions/AddProjectAction.java:93
+msgid "You must be logged in to add a project."
+msgstr "Vous devez être connecté pour ajouter un projet."
+
+#: com/bloatit/web/actions/LogoutAction.java:36
+msgid "Logout success."
+msgstr "Déconnexion réussie."
+
+#: com/bloatit/web/actions/LogoutAction.java:48
+msgid ""
+"You should log in before you log out ...Note : if you log in using the form "
+"below, you'll be immediatlylogged out (yes this is a stupid behavior, but we "
+"try to use generic code... sometimes generic meands stupid ;)"
+msgstr ""
+"Vous devez vous connecter avant de vous déconnecter... Notez : si vous "
+"connectez en utilisant le champs si dessous, vous allez être immédiatement "
+"déconnecté (oui, c'est un comportement stupide, mais nous essayons "
+"d'utiliser du code généric ... et parfois générique signifie stupid)"
+
+#: com/bloatit/web/actions/LoginAction.java:56
+msgid "Login success."
+msgstr "Connexion réussi."
+
+#: com/bloatit/web/actions/LoginAction.java:61
+msgid "Login failed. Wrong login or password."
+msgstr "Echec de la connexion. Mauvais identifiant ou mot de passe."
+
+#: com/bloatit/web/actions/MemberActivationAction.java:66
+msgid "Activation sucess, you can now login."
+msgstr "Activation réussie, vous pouvez maintenant vous connecter."
+
+#: com/bloatit/web/actions/MemberActivationAction.java:68
+msgid "Wrong activation key for this member."
+msgstr "Clé d'activation erronée pour ce membre."
+
+#: com/bloatit/web/actions/MemberActivationAction.java:72
+msgid "No activation is necessary for this member."
+msgstr "Aucune activation est nécessaire pour ce membre."
+
+#: com/bloatit/web/actions/MemberActivationAction.java:76
+msgid "Activation impossible on a no existing member."
+msgstr "Activation impossible sur un membre qui n'existe pas."
+
+#: com/bloatit/web/actions/IdeaCommentAction.java:51
+#: com/bloatit/web/actions/CommentCommentAction.java:51
+msgid "Your comment has been added."
+msgstr "Votre commentaire a été ajouté."
+
+#: com/bloatit/web/actions/IdeaCommentAction.java:57
+msgid "For obscure reasons, you are not allowed to add a comment on this idea."
+msgstr ""
+"Pour des raisons obscures, vous n'êtes pas autorisé à commenter cette idée."
+
+#: com/bloatit/web/actions/IdeaCommentAction.java:72
+#: com/bloatit/web/actions/CommentCommentAction.java:71
+msgid "You must be logged in to comment."
+msgstr "Vous devez être connecté pour commenter."
+
+#: com/bloatit/web/actions/CreateDemandAction.java:46
+msgid "The title must be 80 chars length max."
+msgstr "Le titre doit avoir au maximum 80 caractères."
+
+#: com/bloatit/web/actions/CreateDemandAction.java:47
+msgid "The title must have at least 10 chars."
+msgstr "Le titre doit avoir au minimum 10 caractères."
+
+#: com/bloatit/web/actions/CreateDemandAction.java:48
+msgid "Error you forgot to write a title"
+msgstr "Error vous avez oublié d'écrire un titre"
+
+#: com/bloatit/web/actions/CreateDemandAction.java:77
+msgid "You must be logged in to create an idea."
+msgstr "Vous devez être connecté pour créer une idée."
+
+#: com/bloatit/web/actions/RegisterAction.java:39
+msgid "Number of characters for login has to be superior to 4"
+msgstr "Le nombre de caractère pour le login doit être supérieur à 4"
+
+#: com/bloatit/web/actions/RegisterAction.java:40
+msgid "Number of characters for login has to be inferior to 15"
+msgstr "Le nombre de caractères pour le login doit être inférieur à 15"
+
+#: com/bloatit/web/actions/RegisterAction.java:44
+msgid "Number of characters for password has to be superior to 4"
+msgstr "Le nombre de caractère pour le mot de passe doit être supérieur à 4"
+
+#: com/bloatit/web/actions/RegisterAction.java:45
+msgid "Number of characters for password has to be inferior to 15"
+msgstr "Le nombre de caractères pour le mot de passe doit être inférieur à 15"
+
+#: com/bloatit/web/actions/RegisterAction.java:49
+msgid "Number of characters for email has to be superior to 5"
+msgstr "Le nombre de caractère pour l''email doit être supérieur à 5"
+
+#: com/bloatit/web/actions/RegisterAction.java:50
+msgid "Number of characters for email address has to be inferior to 30"
+msgstr "Le nombre de caractères pour l''email doit être inférieur à 30"
+
+#: com/bloatit/web/actions/RegisterAction.java:74
+msgid "Invalid email address : "
+msgstr "Adresse email invalide :"
+
+#: com/bloatit/web/actions/RegisterAction.java:90
+#, java-format
+msgid ""
+"Your Elveos.org account ''{0}'' was created. Please click on the following "
+"link to activate your account: \n"
+"\n"
+" {1}"
+msgstr ""
+"Votre compte Elveos.org ''{0}'' a été créé. Cliquez sur le lien ci-dessous "
+"pour activer votre compte : \n"
+"\n"
+" {1}"
+
+#: com/bloatit/web/actions/RegisterAction.java:92
+msgid "Elveos.org account activation"
+msgstr "Activation du compte Elveos.org"
+
+#: com/bloatit/web/actions/RegisterAction.java:96
+msgid "Account created, you will receive a mail for activate it."
+msgstr "Compte créé, vous allez recevoir un email d'activation."
+
+#: com/bloatit/web/actions/ContributionAction.java:47
+msgid "Your comment is too long. It must be less than 140 char long."
+msgstr ""
+"Votre commentaire est trop long. Il doit faire moins de 140 caractères."
+
+#: com/bloatit/web/actions/ContributionAction.java:51
+msgid "Amount must be superior to 0."
+msgstr "Le montant doit être supérieur à 0."
+
+#: com/bloatit/web/actions/ContributionAction.java:52
+msgid "We cannot accept such a generous offer!"
+msgstr "Nous ne pouvons accepter une offre si généreuse !"
+
+#: com/bloatit/web/actions/ContributionAction.java:53
+msgid "Please do not use Cents."
+msgstr "N'utilisez pas les centimes."
+
+#: com/bloatit/web/actions/ContributionAction.java:74
+#, java-format
+msgid "Thanks you for crediting {0} on this idea"
+msgstr "Merci d''avoir crédité {0} sur cette idée"
+
+#: com/bloatit/web/actions/ContributionAction.java:77
+msgid "You need to charge your account before you can contribute."
+msgstr "Vous devez créditer votre compte avant de contribuer."
+
+#: com/bloatit/web/actions/ContributionAction.java:84
+msgid "For obscure reasons, you are not allowed to contribute on this idea."
+msgstr ""
+"Pour des raisons obscures, vous n'êtes pas autorisé à contribuer à cette "
+"idée."
+
+#: com/bloatit/web/actions/ContributionAction.java:100
+msgid "You must be logged to contribute."
+msgstr "Vous devez être connecté pour contribuer."
+
+#: com/bloatit/web/actions/PaylineReturnAction.java:36
+msgid "Your account has been credited."
+msgstr "Votre compte a été crédité."
+
+#: com/bloatit/web/actions/PaylineReturnAction.java:43
+#: com/bloatit/web/actions/PaylineReturnAction.java:55
+msgid "Error in filling up your account."
+msgstr "Erreur lors du chargement de votre compte."
+
+#: com/bloatit/web/actions/PaylineAction.java:55
+msgid "Unauthorized !"
+msgstr "Non autorisé !"
+
+#: com/bloatit/web/actions/PaylineAction.java:69
+msgid "You must be logged to charge your account."
+msgstr "Vous devez être connecté pour créditer votre compte"
+
+#: com/bloatit/web/components/HtmlDemandSumary.java:157
+#, java-format
+msgid "{0} comment"
+msgid_plural "{0} comments"
+msgstr[0] "{0} commentaire"
+msgstr[1] "{0} commentaires"
+
+#: com/bloatit/web/components/HtmlDemandSumary.java:160
+#, java-format
+msgid "{0} offer"
+msgid_plural "{0} offers"
+msgstr[0] "{0} offre"
+msgstr[1] "{0} offres"
+
+#: com/bloatit/web/components/HtmlDemandSumary.java:163
+#, java-format
+msgid "{0} contribution"
+msgid_plural "{0} contributions"
+msgstr[0] "{0} contribution"
+msgstr[1] "{0} contributions"
+
+#: com/bloatit/web/components/HtmlPagedList.java:78
 msgid "Previous"
 msgstr "Précédent"
 
-#: com/bloatit/web/html/components/custom/HtmlPagedList.java:100
+#: com/bloatit/web/components/HtmlPagedList.java:103
 msgid "Next"
 msgstr "Suivant"
+
+#: com/bloatit/web/FileResource.java:32
+msgid "The id of the resource is incorrect or missing"
+msgstr "L'id de la ressource est manquante ou incorrecte"
+
+#~ msgid "Kudo applied"
+#~ msgstr "Kudo appliqué"
+
+#~ msgid "Your current rights do not allow you to charge money"
+#~ msgstr "Vos droits actuels ne vous permettent pas de créditer de l'argent"
+
+#~ msgid "Unknow page: "
+#~ msgstr "Page inconnue : "
+
+#~ msgid "MMM d, ''yy 'at' HH:mm"
+#~ msgstr "MMM d, ''yy 'à ' HH:mm"
+
+#~ msgid "Category"
+#~ msgstr "Catégorie"
+
+#~ msgid "Ideas list"
+#~ msgstr "Liste des idées"
+
+#~ msgid "make an offer"
+#~ msgstr "faire une offre"
+
+#~ msgid ")"
+#~ msgstr ")"
+
+#~ msgid "Click here."
+#~ msgstr "Cliquez ici."
+
+#~ msgid "Search"
+#~ msgstr "Recherche"
+
+#~ msgid ""
+#~ "XXX is a platform to finance free software. Following, we must put a "
+#~ "simple and complete description of the fonctionnement of XXXX."
+#~ msgstr ""
+#~ "XXX est une plateforme de financement de logiciels libre. Ci-dessous,nous "
+#~ "devons ajouter une description simple et complète du fonctionnement de "
+#~ "XXX."
+
+#~ msgid "Charge your bloatit account"
+#~ msgstr "Crediter votre compte BloatIt"
+
+#~ msgid "Login / Signup"
+#~ msgstr "Se connecter / S'inscrire"
+
+#~ msgid "Ideas"
+#~ msgstr "Idées"
+
+#~ msgid "Groups"
+#~ msgstr "Groupes"
+
+#~ msgid "Specials page"
+#~ msgstr "Pages spéciales"
+
+#~ msgid "About BloatIt"
+#~ msgstr "À propos de BloatIt"
+
+#~ msgid "Page Not Found !"
+#~ msgstr "Page introuvable !"
+
+#~ msgid "Min:&nbsp;"
+#~ msgstr "Min:&nbsp;"
+
+#~ msgid "Max:&nbsp;"
+#~ msgstr "Max:&nbsp;"
+
+#~ msgid "Mean:&nbsp;"
+#~ msgstr "Moyenne:&nbsp;"
 
 #~ msgid "Login:"
 #~ msgstr "Identifiant :"
@@ -461,9 +1132,6 @@ msgstr "Suivant"
 
 #~ msgid "language : "
 #~ msgstr "langue :"
-
-#~ msgid "Demands"
-#~ msgstr "Demandes"
 
 #~ msgid "Sigup"
 #~ msgstr "S'inscrire"

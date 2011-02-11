@@ -74,7 +74,7 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         } else if (getAuthTokenUnprotected().getMember().getLoginUnprotected().equals(getDao().getTo().getActor().getLogin())) {
             return calculateRole(getDao().getTo().getActor().getLogin());
         } else {
-            return EnumSet.of(Role.OTHER);
+            return EnumSet.of(Role.AUTHENTICATED);
         }
     }
 }

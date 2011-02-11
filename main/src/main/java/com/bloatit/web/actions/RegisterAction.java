@@ -87,7 +87,7 @@ public class RegisterAction extends Action {
         String activationKey = m.getActivationKey();
         MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
 
-        String content = Context.tr("Your Elveos.org account {0} was created. Please click on the following link to activate your account: \n\n {1}", login, url.externalUrlString(Context.getHeader()));
+        String content = Context.tr("Your Elveos.org account ''{0}'' was created. Please click on the following link to activate your account: \n\n {1}", login, url.externalUrlString(Context.getHeader()));
 
         Mail activationMail = new Mail(email, Context.tr("Elveos.org account activation"), content, "member-docreate");
 

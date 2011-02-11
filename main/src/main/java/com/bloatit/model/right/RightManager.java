@@ -30,7 +30,7 @@ public abstract class RightManager {
      * @see Unlockable
      */
     public enum Role {
-        GROUP_ADMIN, IN_GROUP, NOBODY, OTHER, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
+        GROUP_ADMIN, IN_GROUP, NOBODY, AUTHENTICATED, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class RightManager {
      * {@link Accessor#can(EnumSet, Action)} method
      */
     protected static boolean otherCanRead(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.OTHER) && Action.READ == action;
+        return role.contains(Role.AUTHENTICATED) && Action.READ == action;
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class RightManager {
      * {@link Accessor#can(EnumSet, Action)} method
      */
     protected static boolean otherCanWrite(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.OTHER) && Action.WRITE == action;
+        return role.contains(Role.AUTHENTICATED) && Action.WRITE == action;
     }
 
     /**
@@ -109,7 +109,7 @@ public abstract class RightManager {
      * {@link Accessor#can(EnumSet, Action)} method
      */
     protected static boolean otherCanDelete(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.OTHER) && Action.DELETE == action;
+        return role.contains(Role.AUTHENTICATED) && Action.DELETE == action;
     }
 
     /**

@@ -4,8 +4,8 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
 import com.bloatit.framework.webserver.SessionManager;
-import com.bloatit.framework.xcgiserver.XcgiServer;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
+import com.bloatit.framework.xcgiserver.XcgiServer;
 import com.bloatit.model.AbstractModel;
 
 /**

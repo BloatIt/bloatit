@@ -9,16 +9,28 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCo
 
 public interface KudosableInterface<T extends DaoKudosable> extends UserContentInterface<T> {
 
-    EnumSet<SpecialCode> canKudos();
+    EnumSet<SpecialCode> canVoteUp();
 
-    EnumSet<SpecialCode> canUnkudos();
+    EnumSet<SpecialCode> canVoteDown();
 
-    void unkudos() throws UnauthorizedOperationException;
+    /**
+     * Gets the influence value the authenticated user has added to this kudosable. If the
+     * user has not voted yet then the returned value is 0. It is a positive value for a
+     * vote up and a negative vote for a kudos down.
+     *
+     * @return the influence value that the authenticated user has added to this
+     *         kudosable.
+     */
+    int getUserVoteValue();
 
-    void kudos() throws UnauthorizedOperationException;
+    int voteDown() throws UnauthorizedOperationException;
+
+    int voteUp() throws UnauthorizedOperationException;
 
     State getState();
 
     int getPopularity();
+
+    public abstract boolean isOwnedByMe();
 
 }

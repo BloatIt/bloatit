@@ -86,6 +86,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
             if (parm.generatedFrom().isEmpty()) {
                 generator.addAttribute(getType(attribute), //
+                                       getConversionType(attribute), //
                                        attributeUrlString, //
                                        parm.defaultValue(), //
                                        attributeName, //
@@ -93,7 +94,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
                                        parm.level(), //
                                        parm.conversionErrorMsg().value(), //
                                        attribute.getAnnotation(ParamConstraint.class));
-                generator.addGetterSetter(getType(attribute), attributeName);
+                generator.addGetterSetter(getType(attribute), getConversionType(attribute), attributeName);
                 if (!parm.defaultValue().equals(RequestParam.DEFAULT_DEFAULT_VALUE)) {
                     generator.addDefaultParameter(attributeName, getType(attribute), parm.defaultValue());
                 } else if (parm.level() == Level.ERROR && (parm.role() == Role.GET || parm.role() == Role.PRETTY)) {
@@ -130,6 +131,17 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
     private String getType(Element attribute) {
         return attribute.asType().toString().replaceAll("\\<.*\\>", "");
+    }
+
+    private String getConversionType(Element attribute) {
+        String string = attribute.asType().toString().replaceAll("\\<.*\\>", "");
+        if (string.endsWith("List")) {
+            string = attribute.asType().toString();
+            int start = string.indexOf("<") + 1;
+            int stop = string.lastIndexOf(">");
+            return string.substring(start, stop);
+        }
+        return getType(attribute);
     }
 
     // try {

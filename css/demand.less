@@ -232,6 +232,35 @@ display:table-cell;
     }
 }
 
+.demand_popularity_judged {
+    .no_insets;
+    display:table-cell;
+    vertical-align: top;
+    text-align: center;
+    font-size: 0.6em;
+    
+    
+    p {
+        .no_insets;
+        margin-left: -10px;
+    }
+        
+    .usefull {
+        color: @useful_color;
+    }
+    
+    .useless {
+        color: @useless_color;
+    }
+}
+
+.demand_popularity_none {
+    .no_insets;
+    display:table-cell;
+    width: 10px;
+    height: 10px;
+}
+
 #demand_summary_share {
     border-top : 1px solid @border_color;
     margin-top: 30px;
@@ -353,6 +382,11 @@ display:table-cell;
     .useless {
         color: @useless_color;
     }
+}
+
+.comment_voted {
+    vertical-align: super;
+    font-size: 0.9em;
 }
 
 .child_comment_block {

@@ -44,6 +44,7 @@ public abstract class JavaGenerator {
     }
 
     public final void addAttribute(String type,
+                                   String conversionType,
                                    String nameString,
                                    String defaultValue,
                                    String name,
@@ -53,9 +54,14 @@ public abstract class JavaGenerator {
                                    ParamConstraint constraints) {
         name = toCamelAttributeName(name);
 
-        String createParameter = createParameter("\"" + nameString + "\"", defaultValue, type, role, level, malFormedMsg, constraints);
-        _attributes.append("private UrlParameter<").append(type).append("> ").append(name).append(" = ").append(createParameter);
+        String createParameter = createParameter("\"" + nameString + "\"", defaultValue, type, conversionType, role, level, malFormedMsg, constraints);
+        _attributes.append("private");
+        declareUrlParameter(_attributes, type, conversionType).append(name).append(" = ").append(createParameter);
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
+    }
+
+    private StringBuilder declareUrlParameter(StringBuilder sb, String type, String conversionType) {
+        return sb.append(" UrlParameter<").append(type).append(", ").append(conversionType).append("> ");
     }
 
     public final void addConstructorParameter(String type, String attributeName) {
@@ -73,12 +79,13 @@ public abstract class JavaGenerator {
                 .append(".class, \"").append(defaultValue).append("\"));\n");
     }
 
-    public void addGetterSetter(String type, String name) {
+    public void addGetterSetter(String type, String conversionType, String name) {
         _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
         _gettersSetters.append("    return this.").append(name).append(".getValue();\n");
         _gettersSetters.append("}\n\n");
 
-        _gettersSetters.append("public UrlParameter<").append(type).append("> ").append(getGetterName(name)).append("Parameter(){ \n");
+        _gettersSetters.append("public UrlParameter<").append(type).append(", ").append(conversionType).append("> ").append(getGetterName(name))
+                .append("Parameter(){ \n");
         _gettersSetters.append("    return this.").append(name).append(";\n");
         _gettersSetters.append("}\n\n");
 
@@ -104,32 +111,37 @@ public abstract class JavaGenerator {
     public final String createParameter(String nameString,
                                         String defaultValue,
                                         String type,
+                                        String conversionType,
                                         Role role,
                                         Level level,
                                         String malFormedMsg,
                                         ParamConstraint constraints) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" new UrlParameter<").append(type).append(">(");
-        sb.append("null, ");
+        sb.append(" new UrlParameter<").append(type).append(", ").append(conversionType).append(">(");
+        if (type.equals(conversionType)) {
+            sb.append("null, ");
+        } else {
+            sb.append("new java.util.ArrayList(), ");
+        }
 
-        sb.append("new UrlParameterDescription<").append(type).append(">(");
-        sb.append(nameString).append(", ").append(type).append(".class, ");
+        sb.append("new UrlParameterDescription<").append(conversionType).append(">(");
+        sb.append(nameString).append(", ").append(conversionType).append(".class, ");
         addRole(role, sb);
-        if (defaultValue.equals(RequestParam.DEFAULT_DEFAULT_VALUE)){
+        if (defaultValue.equals(RequestParam.DEFAULT_DEFAULT_VALUE)) {
             sb.append(", ").append("RequestParam.DEFAULT_DEFAULT_VALUE").append(", ");
-        }else{
+        } else {
             sb.append(", \"").append(defaultValue).append("\", ");
         }
-        if (malFormedMsg.equals(RequestParam.DEFAULT_ERROR_MSG)){
+        if (malFormedMsg.equals(RequestParam.DEFAULT_ERROR_MSG)) {
             sb.append("RequestParam.DEFAULT_ERROR_MSG").append(", ");
-        }else{
+        } else {
             sb.append("\"").append(malFormedMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
         }
         addLevel(level, sb);
         sb.append("), ");
 
-        sb.append("new UrlParameterConstraints<").append(type).append(">(");
+        sb.append("new UrlParameterConstraints<").append(conversionType).append(">(");
         if (constraints != null) {
             sb.append(constraints.min().equals(ParamConstraint.DEFAULT_MIN_STR) ? ParamConstraint.DEFAULT_MIN : constraints.min()).append(", ");
             sb.append(constraints.minIsExclusive()).append(", ");
@@ -151,7 +163,7 @@ public abstract class JavaGenerator {
     }
 
     private StringBuilder appendErrorMsg(String msg, StringBuilder sb) {
-        if (msg.equals(ParamConstraint.DEFAULT_ERROR_MSG)){
+        if (msg.equals(ParamConstraint.DEFAULT_ERROR_MSG)) {
             return sb.append("ParamConstraint.DEFAULT_ERROR_MSG");
         }
         return sb.append("\"").append(msg.replaceAll("[\\\"]", "\\\\\"")).append("\"");
