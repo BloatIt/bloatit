@@ -2,7 +2,6 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -11,7 +10,6 @@ import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
@@ -23,7 +21,6 @@ import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.model.Demand;
-import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.AdministrationPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
@@ -33,11 +30,16 @@ public class AdministrationPage extends LoggedPage {
 
     @RequestParam(level = Level.ERROR)
     @ParamConstraint(optional = true)
-    private final String action;
+    private final String filter;
+
+    @RequestParam(level = Level.ERROR)
+    @ParamConstraint(optional = true)
+    private final Boolean hasSelectedOffer;
 
     public AdministrationPage(AdministrationPageUrl url) {
         super(url);
-        this.action = url.getAction();
+        this.filter = url.getFilter();
+        this.hasSelectedOffer = url.getHasSelectedOffer();
     }
 
     private void addCell(HtmlBranch node, Object obj) {
@@ -71,34 +73,6 @@ public class AdministrationPage extends LoggedPage {
             PageIterable<Demand> demands = null;
 
             // Print the list of actions.
-            if (action == null || action.isEmpty() || action.equals("null")) {
-                HtmlBranch links = new HtmlDiv("admin_menu");
-                everything.add(links);
-                links.add(new HtmlLink(new AdministrationPageUrl("select_offer").urlString(), tr("Select an offer")));
-                links.add(new HtmlLink(new AdministrationPageUrl("begin_dev").urlString(), tr("Change a demand to ''in development''")));
-                links.add(new HtmlLink(new AdministrationPageUrl("cancel_dev").urlString(), tr("Cancel a developing demand")));
-                links.add(new HtmlLink(new AdministrationPageUrl("change_popularity").urlString(), tr("Change popularity")));
-                links.add(new HtmlLink(new AdministrationPageUrl("change_state").urlString(), tr("Change kudosable state")));
-            } else if (action.equals("select_offer")) {
-                System.err.println(action);
-                demands = DemandManager.getDemands(DemandState.PREPARING);
-            } else if (action.equals("begin_dev")) {
-                System.err.println(action);
-                demands = DemandManager.getDemands(DemandState.PREPARING);
-            } else if (action.equals("cancel_dev")) {
-                System.err.println(action);
-                demands = DemandManager.getDemands(DemandState.DEVELOPPING);
-            } else if (action.equals("change_popularity")) {
-                System.err.println(action);
-                demands = DemandManager.getDemands();
-            } else if (action.equals("change_state")) {
-                System.err.println(action);
-                demands = DemandManager.getDemands();
-            }
-
-            System.err.println(demands);
-            System.err.println(action);
-
             if (demands == null) {
                 return everything;
             }

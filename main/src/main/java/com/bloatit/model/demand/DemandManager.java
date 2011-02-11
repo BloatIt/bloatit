@@ -27,8 +27,8 @@ public final class DemandManager {
         return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
     }
 
-    public static PageIterable<Demand> getDemands(DemandState state) {
-        return new DemandList(DBRequests.getDemands(state, null, null, null, null, null, null, null, null, null, null, null, null, null,//
+    public static PageIterable<Demand> getDemands(DemandState state, boolean hasSelectedOffer) {
+        return new DemandList(DBRequests.getDemands(state, null, null, null, null, null, null, null, hasSelectedOffer, null, null, null, null, null,//
                                                     null,
                                                     null,
                                                     null));
