@@ -19,10 +19,10 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlListItem;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
+import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
@@ -46,7 +46,7 @@ public final class MembersListPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         final HtmlDiv box = new HtmlDiv("padding_box");
 
-        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 2);
+        final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
         final PageIterable<Member> memberList = MemberManager.getMembers();
         final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
 
@@ -82,8 +82,10 @@ public final class MembersListPage extends MasterPage {
             try {
                 HtmlLink htmlLink;
                 htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-                final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
-                return new HtmlListItem(htmlLink).add(htmlKarma);
+                HtmlSpan karma = new HtmlSpan("karma");
+                karma.addText(HtmlTools.compressKarma(member.getKarma()));
+//                final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
+                return new HtmlListItem(htmlLink).add(karma);
             } catch (final UnauthorizedOperationException e) {
                 Log.web().warn(e);
             }

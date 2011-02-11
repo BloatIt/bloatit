@@ -20,6 +20,8 @@ import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
+import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
@@ -28,12 +30,21 @@ import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MemberPageUrl;
 
+/**
+ * <p>
+ * A page used to display member information.
+ * </p>
+ * <p>
+ * If the consulted member is the same as the logged member, then this page will
+ * propose to edit account parameters
+ * </p>
+ */
 @ParamContainer("member")
 public final class MemberPage extends MasterPage {
 
     public static final String MEMBER_FIELD_NAME = "id";
 
-    @ParamConstraint(optionalErrorMsg=@tr("The id of the member is incorrect or missing"))
+    @ParamConstraint(optionalErrorMsg = @tr("The id of the member is incorrect or missing"))
     @RequestParam(name = MEMBER_FIELD_NAME, level = Level.ERROR)
     private final Member member;
 
@@ -51,21 +62,24 @@ public final class MemberPage extends MasterPage {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }
-
+        
+        final HtmlDiv master = new HtmlDiv("padding_box");
+        add(master);
+        
         member.authenticate(session.getAuthToken());
-
         try {
-            HtmlTitleBlock memberTitle;
-            memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
-
-            memberTitle.add(new HtmlText(tr("Full name: ") + member.getFullname()));
-
-            memberTitle.add(new HtmlText(tr("Login: ") + member.getLogin()));
+            HtmlTitleBlock memberTitle = new HtmlTitleBlock(member.getFullname(), 1);
+            master.add(memberTitle);
+            HtmlList memberInfo = new HtmlList();
+            memberTitle.add(memberInfo);
+            
+            memberInfo.add((tr("Full name: ") + member.getFullname()));
+            memberInfo.add(tr("Login: ") + member.getLogin());
             if (member.canAccessEmail(Action.READ)) {
-                memberTitle.add(new HtmlText(tr("Email: ") + member.getEmail()));
+                memberInfo.add(new HtmlText(tr("Email: ") + member.getEmail()));
             }
-            memberTitle.add(new HtmlText(tr("Karma: ") + member.getKarma()));
-            add(memberTitle);
+            memberInfo.add(new HtmlText(tr("Karma: ") + member.getKarma()));
+            
         } catch (final UnauthorizedOperationException e) {
             add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this member.")));
         }
