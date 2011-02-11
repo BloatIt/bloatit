@@ -17,7 +17,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DocumentationUrl;
@@ -29,7 +29,8 @@ import com.bloatit.web.url.DocumentationUrl;
  * <p>
  * Documentation system is based on markdown files hosted on the server. This
  * page is a container used to view these markdown documents. <br />
- * Document to display is chosen via the GET parameter Documenvalue tation#DOC_TARGET.
+ * Document to display is chosen via the GET parameter Documenvalue
+ * tation#DOC_TARGET.
  * </p>
  */
 @ParamContainer("documentation")
@@ -65,15 +66,22 @@ public class Documentation extends MasterPage {
             throw new FatalErrorException("Please configure your documentation dir : create " + ConfigurationManager.ETC_DIR
                     + "/web.properties and add inside the property 'bloatit.documentation.dir=<value>'");
         }
-        HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Elveos documentation"), 1);
+        HtmlDiv master = new HtmlDiv();
         add(master);
 
         FileInputStream fis;
+        String language = Context.getLocalizator().getLanguageCode();
         try {
-            File targetFile = new File(dir + docTarget);
+            File targetFile = new File(dir + docTarget + "_" + language);
+
+            if (!targetFile.exists()) {
+                Log.web().warn("User tried to access doc file " + docTarget + "_" + language + " but it doesn't exist.");
+                session.notifyBad(Context.tr("Documentation file {0} doesn't exist in language {1}, using english instead", docTarget, language));
+                targetFile = new File(dir + docTarget + "_" + "en");
+            }
             fis = new FileInputStream(targetFile);
 
-            MarkdownDocumentationMarker mdm = new MarkdownDocumentationMarker(docTarget, "fr");
+            MarkdownDocumentationMarker mdm = new MarkdownDocumentationMarker(docTarget, language);
             MarkdownDocumentationContent mdc = cache.get(mdm);
 
             if (mdc == null || mdc.savedDate.before(new Date(targetFile.lastModified()))) {
@@ -84,31 +92,29 @@ public class Documentation extends MasterPage {
                 fis.read(b);
                 String markDownContent = new String(b);
                 HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(markDownContent);
-                master.add(content);
-
                 cache.put(mdm, new MarkdownDocumentationContent(new Date(), content.getRendereredContent()));
+                master.add( content);
             } else {
                 Log.web().trace("Using cache for documentation file " + docTarget);
-                master.add(new HtmlMarkdownRenderer(mdc.htmlString, true));
+                master.add( new HtmlMarkdownRenderer(mdc.htmlString, true));
             }
 
         } catch (FileNotFoundException e) {
-            // User asked a wrong documentation file, redirecting him to the doc home
-            Log.web().warn("A user trie to access documentation file "+ docTarget+ " but file is not available.");
+            // User asked a wrong documentation file, redirecting him to the doc
+            // home
+            Log.web().warn("A user tries to access documentation file " + docTarget + " but file is not available.");
             session.notifyBad(Context.tr("Documentation entry {0} doesn't exist. Sending you to documentation home page", docTarget));
-            
+
             DocumentationUrl redirectTo = new DocumentationUrl();
             redirectTo.setDocTarget(DEFAULT_DOC);
             throw new RedirectException(redirectTo);
         } catch (IOException e) {
             throw new FatalErrorException("An error occured while parsing the documentation file " + docTarget, e);
         }
+        
     }
 
-    @Override
-    protected String getPageTitle() {
-        return Context.tr("Welcome to the elveos documentation page");
-    }
+
 
     /**
      * Nested class used as a key to cache parsed content
@@ -167,5 +173,10 @@ public class Documentation extends MasterPage {
             this.savedDate = savedDate;
             this.htmlString = htmlString;
         }
+    }
+
+    @Override
+    protected String getPageTitle() {
+        return Context.tr("Elveos documentation: {0}", docTarget);
     }
 }
