@@ -20,7 +20,7 @@ package com.bloatit.model.demand;
  * The Class DiscardedState.
  */
 public class DiscardedState extends AbstractDemandState {
-    
+
     /**
      * Instantiates a new discarded state.
      * 
@@ -31,7 +31,9 @@ public class DiscardedState extends AbstractDemandState {
         demand.inDiscardedState();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventPopularityPending()
      */
     @Override
@@ -39,7 +41,9 @@ public class DiscardedState extends AbstractDemandState {
         return new PendingState(demand);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.bloatit.model.demand.AbstractDemandState#popularityValidated()
      */
     @Override

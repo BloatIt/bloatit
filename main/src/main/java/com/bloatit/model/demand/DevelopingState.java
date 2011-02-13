@@ -20,7 +20,7 @@ package com.bloatit.model.demand;
  * The Class DeveloppingState.
  */
 public class DevelopingState extends AbstractDemandState {
-    
+
     /**
      * Instantiates a new developing state.
      * 
@@ -31,7 +31,9 @@ public class DevelopingState extends AbstractDemandState {
         demand.inDevelopmentState();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventBatchReleased()
      */
     @Override
@@ -39,7 +41,9 @@ public class DevelopingState extends AbstractDemandState {
         return new IncomeState(demand);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
      */
     @Override
@@ -47,7 +51,9 @@ public class DevelopingState extends AbstractDemandState {
         return new DiscardedState(demand);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventDevelopmentTimeOut()
      */
     @Override
@@ -55,6 +61,5 @@ public class DevelopingState extends AbstractDemandState {
         // TODO: make Penality.
         return this;
     }
-
 
 }

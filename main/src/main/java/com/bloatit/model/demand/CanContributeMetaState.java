@@ -56,8 +56,8 @@ public abstract class CanContributeMetaState extends AbstractDemandState {
 
     /**
      * Test if the current demand should pass in DevelopingState. To pass in
-     * {@link DevelopingState} state we have to have a selected offer, enough
-     * contribution and the validation period spent.
+     * {@link DevelopingState} state we have to have a selected offer, enough contribution
+     * and the validation period spent.
      * 
      * @return the abstract demand state (Developing or this.)
      */
