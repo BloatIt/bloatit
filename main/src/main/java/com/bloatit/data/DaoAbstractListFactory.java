@@ -23,23 +23,36 @@ abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
     }
 
     public final PageIterable<T> createCollection() {
-        criteria.setProjection(projections);
+        prepareCriteria();
         return new CriteriaCollection<T>(criteria);
     }
 
-    public Criteria add(Criterion criterion) {
+    @SuppressWarnings("unchecked")
+    public final T uniqueResult() {
+        prepareCriteria();
+        return (T) criteria.uniqueResult();
+    }
+
+    private void prepareCriteria() {
+        if (projections.getLength() > 0) {
+            criteria.setProjection(projections);
+        }
+    }
+
+    protected Criteria add(Criterion criterion) {
         return criteria.add(criterion);
     }
 
-    public Criteria addOrder(Order order) {
+    protected Criteria addOrder(Order order) {
         return criteria.addOrder(order);
     }
 
-    public ProjectionList add(Projection proj) {
+    protected ProjectionList add(Projection proj) {
         return projections.add(proj);
     }
 
-    public ProjectionList add(Projection projection, String alias) {
+    protected ProjectionList add(Projection projection, String alias) {
         return projections.add(projection, alias);
     }
+
 }
