@@ -23,18 +23,40 @@ import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.model.PlannedTask;
 
 /**
+ * <p>
  * This is a planned task. It cannot store object from the Model layer (it would introduce
  * multithred bugs)
+ * </p>
+ * <p>
+ * Tells that the current development of a specified demand should be finish (the
+ * expiration date is reached).
+ * </p>
  */
 public class TaskDevelopmentTimeOut extends PlannedTask {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5639581628713974313L;
+
+    /** The demand id. */
     private final int demandId;
 
+    /**
+     * Instantiates a new task development time out.
+     * 
+     * @param demandId the demand id on which we will have to perform a
+     * "development time out".
+     * @param time the date when this task will be run.
+     */
     public TaskDevelopmentTimeOut(final int demandId, final Date time) {
         super(time, demandId);
         this.demandId = demandId;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.PlannedTask#doRun()
+     */
     @Override
     public void doRun() {
         try {

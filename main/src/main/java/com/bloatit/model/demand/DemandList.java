@@ -23,27 +23,59 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Demand;
 import com.bloatit.model.lists.ListBinder;
 
+/**
+ * The Class DemandList. It is a ListBinder to transform PageIterable<DaoDemand> to
+ * PageIterable<Demand>
+ */
 public final class DemandList extends ListBinder<Demand, DaoDemand> {
 
+    /**
+     * Instantiates a new demand list.
+     * 
+     * @param daoCollection the dao collection
+     */
     public DemandList(final PageIterable<DaoDemand> daoCollection) {
         super(daoCollection);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     */
     @Override
     protected Iterator<Demand> createFromDaoIterator(final Iterator<DaoDemand> dao) {
         return new DemandIterator(dao);
     }
 
+    /**
+     * The Class DemandIterator is an iterator on DaoDemand that return Demands.
+     */
     static final class DemandIterator extends com.bloatit.model.lists.IteratorBinder<Demand, DaoDemand> {
 
+        /**
+         * Instantiates a new demand iterator.
+         * 
+         * @param daoIterator the dao iterator
+         */
         public DemandIterator(final Iterable<DaoDemand> daoIterator) {
             super(daoIterator);
         }
 
+        /**
+         * Instantiates a new demand iterator.
+         * 
+         * @param daoIterator the dao iterator
+         */
         public DemandIterator(final Iterator<DaoDemand> daoIterator) {
             super(daoIterator);
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         */
         @Override
         protected Demand createFromDao(final DaoDemand dao) {
             return DemandImplementation.create(dao);

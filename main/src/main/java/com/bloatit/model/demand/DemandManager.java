@@ -23,16 +23,35 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.AuthToken;
 import com.bloatit.model.Demand;
 
+/**
+ * The Class DemandManager is a class with only static member. Use it to do some requests
+ * on the DB returning demands.
+ */
 public final class DemandManager {
 
+    /**
+     * Desactivate default ctor
+     */
     private DemandManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets the all demands stored in the DB.
+     * 
+     * @return the demands
+     */
     public static PageIterable<Demand> getDemands() {
         return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
     }
 
+    /**
+     * Gets the demands with a specified state and with on offer selected or not.
+     * 
+     * @param state the state of the demands to return
+     * @param hasSelectedOffer true if you want demands with a selected offer.
+     * @return the demands
+     */
     public static PageIterable<Demand> getDemands(DemandState state, boolean hasSelectedOffer) {
         // return new DemandList(DBRequests.getDemands(state, null, null, null, null,
         // null, null, null, hasSelectedOffer, null, null, null, null, null,//
@@ -43,19 +62,42 @@ public final class DemandManager {
         return null;
     }
 
+    /**
+     * Gets the demand by id.
+     * 
+     * @param id the id of the demand we are looking for.
+     * @return the demand or null if not found.
+     */
     public static Demand getDemandById(final Integer id) {
         return getDemandImplementationById(id);
     }
 
+    /**
+     * Gets the demandImplementation by id.
+     * 
+     * @param id the id of the demand
+     * @return the demand or null if not found
+     */
     static DemandImplementation getDemandImplementationById(final Integer id) {
         return DemandImplementation.create(DBRequests.getById(DaoDemand.class, id));
     }
 
+    /**
+     * Gets the number of demand.
+     * 
+     * @return the number of demand.
+     */
     public static int getDemandsCount() {
         return DBRequests.count(DaoDemand.class);
     }
 
     // Can create if authenticated.
+    /**
+     * Tells if a user can create a demand.
+     * 
+     * @param authToken the auth token representing the user wanting to create a demand.
+     * @return true, if successful
+     */
     public static boolean canCreate(final AuthToken authToken) {
         return authToken != null;
     }

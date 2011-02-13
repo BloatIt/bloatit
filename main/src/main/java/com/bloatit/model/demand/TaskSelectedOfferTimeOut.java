@@ -23,18 +23,39 @@ import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.model.PlannedTask;
 
 /**
+ * <p>
  * This is a planned task. It cannot store object from the Model layer (it would introduce
  * multithred bugs)
+ * </p>
+ * <p>
+ * Tells that the selected offer of a specified demand is validated (and may begin the
+ * Development)
+ * </p>
  */
 public class TaskSelectedOfferTimeOut extends PlannedTask {
+
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5639581628713974313L;
+
+    /** The id. */
     private final int id;
 
+    /**
+     * Instantiates a new task selected offer time out.
+     * 
+     * @param id the id
+     * @param time the date when to run this task.
+     */
     public TaskSelectedOfferTimeOut(final int id, final Date time) {
         super(time, id);
         this.id = id;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.PlannedTask#doRun()
+     */
     @Override
     public void doRun() {
         try {
