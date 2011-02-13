@@ -19,17 +19,36 @@ package com.bloatit.data;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
+/**
+ * A factory for creating DaoIdentifiable Lists objects (PageIterable) using hibernate
+ * Criteria query.
+ * 
+ * @param <T> the generic type
+ */
 class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractListFactory<T> {
 
+    /**
+     * Instantiates a new dao identifiable list factory.
+     * 
+     * @param criteria the criteria
+     */
     protected DaoIdentifiableListFactory(Criteria criteria) {
         super(criteria);
     }
 
+    /**
+     * Instantiates a new dao identifiable list factory.
+     */
     public DaoIdentifiableListFactory() {
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoIdentifiable.class));
     }
 
-    public void withId(Integer id) {
+    /**
+     * Add a WHERE close to have only the identifiable with the id <code>id</code>
+     * 
+     * @param id the id
+     */
+    public void idEquals(Integer id) {
         add(Restrictions.eq("id", id));
     }
 }

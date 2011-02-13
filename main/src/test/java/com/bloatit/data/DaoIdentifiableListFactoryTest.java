@@ -12,7 +12,7 @@ public class DaoIdentifiableListFactoryTest extends DataTestUnit {
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
         DaoIdentifiableListFactory<DaoIdentifiable> factory = new DaoIdentifiableListFactory<DaoIdentifiable>();
-        factory.withId(demand.getId());
+        factory.idEquals(demand.getId());
         assertEquals(demand, factory.uniqueResult());
     }
 
