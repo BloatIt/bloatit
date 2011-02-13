@@ -6,10 +6,6 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 
@@ -33,120 +29,6 @@ public final class DBRequests {
      */
     private DBRequests() {
         // disactivated
-    }
-
-    private static abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
-        private final Criteria criteria;
-        private final ProjectionList projections = Projections.projectionList();
-
-        public enum OrderType {
-            ASC, DESC
-        }
-
-        public DaoAbstractListFactory(Criteria criteria) {
-            super();
-            this.criteria = criteria;
-        }
-
-        public final PageIterable<T> createCollection() {
-            criteria.setProjection(projections);
-            return new CriteriaCollection<T>(criteria);
-        }
-
-        public Criteria add(Criterion criterion) {
-            return criteria.add(criterion);
-        }
-
-        public Criteria addOrder(Order order) {
-            return criteria.addOrder(order);
-        }
-
-        public ProjectionList add(Projection proj) {
-            return projections.add(proj);
-        }
-
-        public ProjectionList add(Projection projection, String alias) {
-            return projections.add(projection, alias);
-        }
-    }
-
-    private static class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractListFactory<T> {
-
-        protected DaoIdentifiableListFactory(Criteria criteria) {
-            super(criteria);
-        }
-    }
-
-    private static class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiableListFactory<T> {
-
-        private static final String MEMBER = "member";
-        private static final String FILES = "files";
-        private static final String IS_DELETED = "isDeleted";
-        private static final String AS_GROUP = "asGroup";
-
-        protected DaoUserContentListFactory(Criteria criteria) {
-            super(criteria);
-        }
-
-        public DaoUserContentListFactory() {
-            super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoUserContent.class));
-        }
-
-        public void groupByMember() {
-            add(Projections.groupProperty(MEMBER));
-        }
-
-        public void groupByAsGroup(Order order) {
-            add(Projections.groupProperty(AS_GROUP));
-        }
-
-        public void orderByMember(OrderType order) {
-            if (order == OrderType.ASC) {
-                addOrder(Order.asc(MEMBER));
-            } else {
-                addOrder(Order.desc(MEMBER));
-            }
-        }
-
-        public void orderByAsGroup(OrderType order) {
-            if (order == OrderType.ASC) {
-                addOrder(Order.asc(AS_GROUP));
-            } else {
-                addOrder(Order.desc(AS_GROUP));
-            }
-        }
-
-        public void onlyDeleted() {
-            add(Restrictions.eq(IS_DELETED, false));
-        }
-
-        public void onlyNonDeleted() {
-            add(Restrictions.eq(IS_DELETED, true));
-        }
-
-        public void withoutFile() {
-            add(Restrictions.isEmpty(FILES));
-        }
-
-        public void withFile() {
-            add(Restrictions.isNotEmpty(FILES));
-        }
-
-        public void withAnyGroup() {
-            add(Restrictions.isNotNull(AS_GROUP));
-        }
-
-        public void withNoGroup() {
-            add(Restrictions.isNull(AS_GROUP));
-        }
-
-        public void fromMember(DaoMember member) {
-            add(Restrictions.eq(MEMBER, member));
-        }
-
-        public void fromGroup(DaoGroup group) {
-            add(Restrictions.eq(AS_GROUP, group));
-        }
     }
 
     public static PageIterable<DaoUserContent> getUserContents() {
