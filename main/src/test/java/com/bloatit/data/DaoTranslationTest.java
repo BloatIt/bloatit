@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
-public class DaoTranslationTest extends ModelTestUnit {
+public class DaoTranslationTest extends DataTestUnit {
 
     public void testDaoTranslationDaoMemberDaoDescriptionLocaleStringString() {
         final DaoDescription description = DaoDescription.createAndPersist(yo, Locale.ENGLISH, "English title", "English body");

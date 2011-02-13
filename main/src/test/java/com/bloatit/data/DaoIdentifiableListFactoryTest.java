@@ -2,7 +2,7 @@ package com.bloatit.data;
 
 import java.util.Locale;
 
-public class DaoIdentifiableListFactoryTest extends ModelTestUnit {
+public class DaoIdentifiableListFactoryTest extends DataTestUnit {
 
     public void testDaoIdentifiableListFactory() {
 
