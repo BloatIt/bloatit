@@ -18,19 +18,38 @@ package com.bloatit.model.demand;
 
 import com.bloatit.model.Offer;
 
+/**
+ * The Class PendingState.
+ */
 public class PendingState extends CanContributeMetaState {
 
+    /**
+     * Instantiates a new pending state.
+     * 
+     * @param demand the demand on which this state apply.
+     */
     public PendingState(final DemandImplementation demand) {
         super(demand);
         demand.inPendingState();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit.model.Offer)
+     */
     @Override
     public AbstractDemandState eventAddOffer(final Offer offer) {
         demand.setSelectedOffer(offer);
         return new PreparingState(demand);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
+     */
     @Override
     protected AbstractDemandState notifyAddContribution() {
         return this;

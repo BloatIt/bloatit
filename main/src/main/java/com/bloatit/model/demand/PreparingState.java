@@ -20,17 +20,40 @@ import java.math.BigDecimal;
 
 import com.bloatit.model.Offer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PreparingState.
+ */
 public class PreparingState extends CanContributeMetaState {
+
+    /**
+     * Instantiates a new preparing state.
+     * 
+     * @param demand the demand on which this state apply.
+     */
     public PreparingState(final DemandImplementation demand) {
         super(demand);
         demand.inPreparingState();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit.model.Offer)
+     */
     @Override
     public AbstractDemandState eventAddOffer(final Offer offer) {
         return this;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventRemoveOffer(com.bloatit.model
+     * .Offer)
+     */
     @Override
     public AbstractDemandState eventRemoveOffer(final Offer offer) {
         if (demand.getDao().getOffers().size() > 0) {
@@ -39,11 +62,23 @@ public class PreparingState extends CanContributeMetaState {
         return new PendingState(demand);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventSelectedOfferTimeOut(java.math
+     * .BigDecimal)
+     */
     @Override
     public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
         return handleEvent();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
+     */
     @Override
     public AbstractDemandState notifyAddContribution() {
         return handleEvent();

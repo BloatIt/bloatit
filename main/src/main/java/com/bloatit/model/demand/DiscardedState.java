@@ -16,17 +16,32 @@
 //
 package com.bloatit.model.demand;
 
+/**
+ * The Class DiscardedState.
+ */
 public class DiscardedState extends AbstractDemandState {
+    
+    /**
+     * Instantiates a new discarded state.
+     * 
+     * @param demand the demand on which this state apply.
+     */
     public DiscardedState(final DemandImplementation demand) {
         super(demand);
         demand.inDiscardedState();
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.AbstractDemandState#eventPopularityPending()
+     */
     @Override
     public AbstractDemandState eventPopularityPending() {
         return new PendingState(demand);
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.AbstractDemandState#popularityValidated()
+     */
     @Override
     public AbstractDemandState popularityValidated() {
         return new PendingState(demand);

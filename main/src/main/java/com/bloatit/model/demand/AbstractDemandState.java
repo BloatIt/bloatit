@@ -22,79 +22,186 @@ import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.model.Offer;
 
+/**
+ * The Class AbstractDemandState implement the Abstract base class of the State design
+ * pattern. Each method in it is an event that can change the demandState. Each sub-class
+ * is a state.
+ */
 abstract class AbstractDemandState {
 
+    /** The demand. */
     protected final DemandImplementation demand;
 
+    /**
+     * Instantiates a new abstract demand state.
+     * 
+     * @param demand the demand on which this state apply.
+     */
     public AbstractDemandState(final DemandImplementation demand) {
         this.demand = demand;
     }
 
+    /**
+     * Gets the demandState associated with this state.
+     * 
+     * @return the state
+     */
     public DemandState getState() {
         return demand.getDao().getDemandState();
     }
 
+    /**
+     * Event add offer. Called when an offer is add to the demand.
+     * 
+     * @param offer the offer
+     * @return the state object representing the demandState, after recieving this event
+     */
     public AbstractDemandState eventAddOffer(final Offer offer) {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event remove offer.
+     * 
+     * @param offer the offer
+     * @return the state object representing the demandState, after recieving this event
+     */
     public AbstractDemandState eventRemoveOffer(final Offer offer) {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event add contribution.
+     * 
+     * @return the state object representing the demandState, after recieving this event
+     */
     public AbstractDemandState eventAddContribution() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event selected offer time out.
+     * 
+     * @param contribution the contribution
+     * @return the state object representing the demandState, after recieving this event
+     */
     public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event development time out.
+     * 
+     * @return the state object representing the demandState, after receiving this event
+     */
     public AbstractDemandState eventDevelopmentTimeOut() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event developer canceled.
+     * 
+     * @return the state object representing the demandState, after receiving this event
+     * @throws WrongStateException if this event occurs whereas the demand was not in the
+     * right state (For example you cannot Finish a development if you are not in
+     * development state).
+     */
     public AbstractDemandState eventDeveloperCanceled() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event demand rejected.
+     * 
+     * @return the state object representing the demandState, after receiving this event
+     * @throws WrongStateException if this event occurs whereas the demand was not in the
+     * right state (For example you cannot Finish a development if you are not in
+     * development state).
+     */
     public AbstractDemandState eventDemandRejected() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event popularity pending.
+     * 
+     * @return the state object representing the demandState, after recieving this event
+     * @throws WrongStateException if this event occurs whereas the demand was not in the
+     * right state (For example you cannot Finish a development if you are not in
+     * development state).
+     */
     public AbstractDemandState eventPopularityPending() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Popularity validated.
+     * 
+     * @return the state object representing the demandState, after recieving this event
+     * @throws WrongStateException if this event occurs whereas the demand was not in the
+     * right state (For example you cannot Finish a development if you are not in
+     * development state).
+     */
     public AbstractDemandState popularityValidated() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event batch released.
+     * 
+     * @return the state object representing the demandState, after recieving this event
+     * @throws WrongStateException if this event occurs whereas the demand was not in the
+     * right state (For example you cannot Finish a development if you are not in
+     * development state).
+     */
     public AbstractDemandState eventBatchReleased() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event batch is rejected.
+     * 
+     * @return the state object representing the demandState, after recieving this event
+     * @throws WrongStateException if this event occurs whereas the demand was not in the
+     * right state (For example you cannot Finish a development if you are not in
+     * development state).
+     */
     public AbstractDemandState eventBatchIsRejected() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
+    /**
+     * Event batch is validated.
+     * 
+     * @return the state object representing the demandState, after recieving this event
+     * @throws WrongStateException if this event occurs whereas the demand was not in the
+     * right state (For example you cannot Finish a development if you are not in
+     * development state).
+     */
     public AbstractDemandState eventBatchIsValidated() {
         // Implement me if you wish.
         throw new WrongStateException();
     }
 
-    // When every batches are finished
+    /**
+     * Event offer is validated is called when every batches are finished.
+     * 
+     * @return the state object representing the demandState, after recieving this event
+     * @throws WrongStateException if this event occurs whereas the demand was not in the
+     * right state (For example you cannot Finish a development if you are not in
+     * development state).
+     */
     public AbstractDemandState eventOfferIsValidated() {
         // Implement me if you wish.
         throw new WrongStateException();

@@ -593,8 +593,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
             }
             break;
         case DEVELOPPING:
-            if (stateObject == null || !stateObject.getClass().equals(DeveloppingState.class)) {
-                setStateObject(new DeveloppingState(this));
+            if (stateObject == null || !stateObject.getClass().equals(DevelopingState.class)) {
+                setStateObject(new DevelopingState(this));
             }
             break;
         case DISCARDED:

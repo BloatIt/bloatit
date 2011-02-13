@@ -21,26 +21,52 @@ import java.util.Date;
 
 import com.bloatit.data.DaoOffer;
 
+/**
+ * The Class CanContributeMetaState is not a real state. Every state that allows to
+ * contribute should inherit from it.
+ */
 public abstract class CanContributeMetaState extends AbstractDemandState {
 
+    /**
+     * Instantiates a new can contribute meta state.
+     * 
+     * @param demand the demand on which this state apply.
+     */
     public CanContributeMetaState(final DemandImplementation demand) {
         super(demand);
     }
 
+    /**
+     * Notify that a new contribution arrived. This method is called each time a new
+     * contribution is done on the demand.
+     * 
+     * @return the abstract demand state
+     */
     protected abstract AbstractDemandState notifyAddContribution();
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.demand.AbstractDemandState#eventAddContribution()
+     */
     @Override
     public final AbstractDemandState eventAddContribution() {
         return notifyAddContribution();
     }
 
+    /**
+     * Test if the current demand should pass in DevelopingState. To pass in
+     * {@link DevelopingState} state we have to have a selected offer, enough
+     * contribution and the validation period spent.
+     * 
+     * @return the abstract demand state (Developing or this.)
+     */
     protected final AbstractDemandState handleEvent() {
         final BigDecimal contribution = demand.getDao().getContribution();
         final DaoOffer selectedOffer = demand.getDao().getSelectedOffer();
         final Date validationDate = demand.getDao().getValidationDate();
-        if (selectedOffer != null && validationDate != null && contribution.compareTo(selectedOffer.getAmount()) >= 0
-                && new Date().after(validationDate)) {
-            return new DeveloppingState(demand);
+        if (selectedOffer != null && validationDate != null && contribution.compareTo(selectedOffer.getAmount()) >= 0 && new Date().after(validationDate)) {
+            return new DevelopingState(demand);
         }
         return this;
     }

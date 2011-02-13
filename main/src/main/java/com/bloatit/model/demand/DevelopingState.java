@@ -16,17 +16,32 @@
 //
 package com.bloatit.model.demand;
 
-public class DeveloppingState extends AbstractDemandState {
-    public DeveloppingState(final DemandImplementation demand) {
+/**
+ * The Class DeveloppingState.
+ */
+public class DevelopingState extends AbstractDemandState {
+    
+    /**
+     * Instantiates a new developing state.
+     * 
+     * @param demand the demand on which this state apply.
+     */
+    public DevelopingState(final DemandImplementation demand) {
         super(demand);
         demand.inDevelopmentState();
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.AbstractDemandState#eventBatchReleased()
+     */
     @Override
     public AbstractDemandState eventBatchReleased() {
         return new IncomeState(demand);
     }
 
+    /* (non-Javadoc)
+     * @see com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
+     */
     @Override
     public AbstractDemandState eventDeveloperCanceled() {
         return new DiscardedState(demand);

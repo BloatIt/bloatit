@@ -16,12 +16,26 @@
 //
 package com.bloatit.model.demand;
 
+/**
+ * The Class IncomeState.
+ */
 public class IncomeState extends AbstractDemandState {
+
+    /**
+     * Instantiates a new income state.
+     * 
+     * @param demand the demand on which this state apply.
+     */
     public IncomeState(final DemandImplementation demand) {
         super(demand);
         demand.inIncomeState();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
+     */
     @Override
     public AbstractDemandState eventDeveloperCanceled() {
         return new DiscardedState(demand);
@@ -29,24 +43,27 @@ public class IncomeState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
+     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventBatchIsRejected()
      */
     @Override
     public AbstractDemandState eventBatchIsRejected() {
-        return new DeveloppingState(demand);
+        return new DevelopingState(demand);
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventBatchIsValidated()
      */
     @Override
     public AbstractDemandState eventBatchIsValidated() {
-        return new DeveloppingState(demand);
+        return new DevelopingState(demand);
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventOfferIsValidated()
      */
     @Override
