@@ -1,15 +1,9 @@
 package com.bloatit.data;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 
-import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
