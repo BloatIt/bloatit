@@ -75,7 +75,6 @@ public final class DBRequests {
         protected DaoIdentifiableListFactory(Criteria criteria) {
             super(criteria);
         }
-
     }
 
     private static class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiableListFactory<T> {
@@ -148,7 +147,6 @@ public final class DBRequests {
         public void fromGroup(DaoGroup group) {
             add(Restrictions.eq(AS_GROUP, group));
         }
-
     }
 
     public static PageIterable<DaoUserContent> getUserContents() {
