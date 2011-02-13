@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import com.bloatit.framework.utils.PageIterable;
 
@@ -15,6 +16,10 @@ abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
 
     public enum OrderType {
         ASC, DESC
+    }
+
+    public enum Comparator {
+        EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL
     }
 
     public DaoAbstractListFactory(Criteria criteria) {
@@ -36,6 +41,40 @@ abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
     private void prepareCriteria() {
         if (projections.getLength() > 0) {
             criteria.setProjection(projections);
+        }
+    }
+
+    protected Criterion createSizeCriterion(Comparator cmp, String element, int nb) {
+        switch (cmp) {
+        case EQUAL:
+            return Restrictions.sizeEq(element, nb);
+        case LESS:
+            return Restrictions.sizeLt(element, nb);
+        case LESS_EQUAL:
+            return Restrictions.sizeLe(element, nb);
+        case GREATER:
+            return Restrictions.sizeGt(element, nb);
+        case GREATER_EQUAL:
+            return Restrictions.sizeGe(element, nb);
+        default:
+            return Restrictions.sizeEq(element, nb);
+        }
+    }
+
+    protected Criterion createNbCriterion(Comparator cmp, String element, Object nb) {
+        switch (cmp) {
+        case EQUAL:
+            return Restrictions.eq(element, nb);
+        case LESS:
+            return Restrictions.lt(element, nb);
+        case LESS_EQUAL:
+            return Restrictions.le(element, nb);
+        case GREATER:
+            return Restrictions.gt(element, nb);
+        case GREATER_EQUAL:
+            return Restrictions.ge(element, nb);
+        default:
+            return Restrictions.eq(element, nb);
         }
     }
 

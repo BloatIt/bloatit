@@ -28,10 +28,13 @@ public final class DemandManager {
     }
 
     public static PageIterable<Demand> getDemands(DemandState state, boolean hasSelectedOffer) {
-        return new DemandList(DBRequests.getDemands(state, null, null, null, null, null, null, null, hasSelectedOffer, null, null, null, null, null,//
-                                                    null,
-                                                    null,
-                                                    null));
+        // return new DemandList(DBRequests.getDemands(state, null, null, null, null,
+        // null, null, null, hasSelectedOffer, null, null, null, null, null,//
+        // null,
+        // null,
+        // null));
+        // TODO !!
+        return null;
     }
 
     public static Demand getDemandById(final Integer id) {
