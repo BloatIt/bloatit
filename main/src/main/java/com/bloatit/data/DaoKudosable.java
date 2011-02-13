@@ -30,7 +30,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * delete/reject this content. HIDDEN is a state between pending and rejected. Do not
      * change the order !
      */
-    public enum State {
+    public enum PopularityState {
         VALIDATED, PENDING, HIDDEN, REJECTED,
     }
 
@@ -49,7 +49,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     @Basic(optional = false)
     @Field(store = Store.NO)
     @Enumerated
-    private State state;
+    private PopularityState state;
 
     /**
      * initial state is PENDING, and popularity is 0.
@@ -60,7 +60,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     public DaoKudosable(final DaoMember member) {
         super(member);
         popularity = 0;
-        setState(State.PENDING);
+        setState(PopularityState.PENDING);
     }
 
     /**
@@ -109,7 +109,7 @@ public abstract class DaoKudosable extends DaoUserContent {
         return  vote;
     }
 
-    public final State getState() {
+    public final PopularityState getState() {
         return state;
     }
 
@@ -120,7 +120,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     /**
      * The state must be update from the framework layer.
      */
-    public final void setState(final State state) {
+    public final void setState(final PopularityState state) {
         this.state = state;
     }
 

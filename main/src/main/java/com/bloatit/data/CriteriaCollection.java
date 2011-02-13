@@ -23,6 +23,10 @@ public class CriteriaCollection<T> implements PageIterable<T> {
         this.criteria = criteria;
     }
 
+    protected Criteria getCriteria() {
+        return criteria;
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public final Iterator<T> iterator() {

@@ -3,7 +3,7 @@ package com.bloatit.model;
 import java.util.EnumSet;
 
 import com.bloatit.data.DaoKudosable;
-import com.bloatit.data.DaoKudosable.State;
+import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 
@@ -27,7 +27,7 @@ public interface KudosableInterface<T extends DaoKudosable> extends UserContentI
 
     int voteUp() throws UnauthorizedOperationException;
 
-    State getState();
+    PopularityState getState();
 
     int getPopularity();
 

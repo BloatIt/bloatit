@@ -46,12 +46,15 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     @Field(store = Store.NO)
     private Date creationDate;
 
+    @Basic(optional = false)
+    private Boolean isDeleted;
+
     @OneToMany(cascade = CascadeType.ALL)
     private final Set<DaoFileMetadata> files = new HashSet<DaoFileMetadata>();
 
     /**
      * Initialize the creation date to now.
-     *
+     * 
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */
@@ -63,6 +66,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         }
         this.member = member;
         this.creationDate = new Date();
+        this.setIsDeleted(false);
     }
 
     public final DaoMember getAuthor() {
@@ -85,6 +89,14 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         final Query filesQuery = currentSession.createFilter(files, "where relatedContent = :this").setEntity("this", this);
         final Query filesSizeQuery = currentSession.createFilter(files, "select count(*) where relatedContent = :this").setEntity("this", this);
         return new QueryCollection<DaoFileMetadata>(filesQuery, filesSizeQuery);
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     /**
@@ -112,6 +124,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -126,6 +139,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

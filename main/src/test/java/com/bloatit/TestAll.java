@@ -24,8 +24,9 @@ public class TestAll {
         TestSuite suite;
 
         suite = new TestSuite("Tests in package com.bloatit");
-        suite.addTest(com.bloatit.model.TestAll.suite());
         suite.addTest(com.bloatit.data.TestAll.suite());
+        suite.addTest(com.bloatit.model.TestAll.suite());
+        suite.addTest(com.bloatit.framework.TestAll.suite());
         return suite;
     }
 }

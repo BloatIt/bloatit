@@ -12,7 +12,7 @@ import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoGroup;
-import com.bloatit.data.DaoKudosable.State;
+import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
@@ -113,7 +113,7 @@ public class SimpleTestDB {
                                                       DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
                                                       DateUtils.tomorrow()));
 
-            demand.getOffers().iterator().next().setState(State.VALIDATED);
+            demand.getOffers().iterator().next().setState(PopularityState.VALIDATED);
 
             for (final DaoContribution contribution : demand.getContributionsFromQuery()) {
                 try {

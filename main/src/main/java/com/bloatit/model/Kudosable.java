@@ -4,7 +4,7 @@ import java.util.EnumSet;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
-import com.bloatit.data.DaoKudosable.State;
+import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -131,7 +131,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * @see com.bloatit.model.KudosableInterface#getState()
      */
     @Override
-    public final State getState() {
+    public final PopularityState getState() {
         return getDao().getState();
     }
 
@@ -162,35 +162,35 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         switch (getState()) {
         case PENDING:
             if (newPop >= turnValid()) {
-                setState(State.VALIDATED);
+                setState(PopularityState.VALIDATED);
                 notifyValid();
             } else if (newPop <= turnHidden() && newPop > turnRejected()) {
-                setState(State.HIDDEN);
+                setState(PopularityState.HIDDEN);
                 notifyHidden();
             } else if (newPop <= turnRejected()) {
-                setState(State.REJECTED);
+                setState(PopularityState.REJECTED);
                 notifyRejected();
             }
             // NO BREAK IT IS OK !!
         case VALIDATED:
             if (newPop <= turnPending()) {
-                setState(State.PENDING);
+                setState(PopularityState.PENDING);
                 notifyPending();
             }
             break;
         case HIDDEN:
         case REJECTED:
             if (newPop >= turnPending() && newPop < turnValid()) {
-                setState(State.PENDING);
+                setState(PopularityState.PENDING);
                 notifyPending();
             } else if (newPop >= turnValid()) {
-                setState(State.VALIDATED);
+                setState(PopularityState.VALIDATED);
                 notifyValid();
             } else if (newPop <= turnHidden() && newPop > turnRejected()) {
-                setState(State.VALIDATED);
+                setState(PopularityState.VALIDATED);
                 notifyValid();
             } else if (newPop <= turnRejected()) {
-                setState(State.REJECTED);
+                setState(PopularityState.REJECTED);
                 notifyRejected();
             }
             break;
@@ -200,7 +200,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         }
     }
 
-    private void setState(final State newState) {
+    private void setState(final PopularityState newState) {
         Log.model().info("Kudosable: " + getId() + " change from state: " + this.getState() + ", to: " + newState);
         getDao().setState(newState);
     }
@@ -209,7 +209,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * You can redefine me if you want to customize the state calculation limits. Default
      * value is {@value #TURN_PENDING}.
      *
-     * @return The popularity to for a Kudosable to reach to turn to {@link State#PENDING}
+     * @return The popularity to for a Kudosable to reach to turn to {@link PopularityState#PENDING}
      *         state.
      */
     protected int turnPending() {
@@ -221,7 +221,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * value is {@value #TURN_VALID}.
      *
      * @return The popularity to for a Kudosable to reach to turn to
-     *         {@link State#VALIDATED} state.
+     *         {@link PopularityState#VALIDATED} state.
      */
     protected int turnValid() {
         return TURN_VALID;
@@ -232,7 +232,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * value is {@value #TURN_REJECTED}.
      *
      * @return The popularity to for a Kudosable to reach to turn to
-     *         {@link State#REJECTED} state.
+     *         {@link PopularityState#REJECTED} state.
      */
     protected int turnRejected() {
         return TURN_REJECTED;
@@ -242,7 +242,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * You can redefine me if you want to customize the state calculation limits. Default
      * value is {@value #TURN_HIDDEN}.
      *
-     * @return The popularity to for a Kudosable to reach to turn to {@link State#HIDDEN}
+     * @return The popularity to for a Kudosable to reach to turn to {@link PopularityState#HIDDEN}
      *         state.
      */
     protected int turnHidden() {

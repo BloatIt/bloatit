@@ -273,7 +273,7 @@ public final class DaoDemand extends DaoKudosable {
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
-            return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this).setParameter("state", DaoKudosable.State.PENDING)
+            return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this).setParameter("state", DaoKudosable.PopularityState.PENDING)
                     .iterate().next();
         } catch (final NoSuchElementException e) {
             return null;
