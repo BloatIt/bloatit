@@ -67,7 +67,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Create a daoDescription. Set the default locale to "locale"
-     *
+     * 
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
@@ -114,7 +114,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Get a translation for a given locale.
-     *
+     * 
      * @param locale the locale in which we want the description
      * @return null if no translation exists for this locale.
      */
@@ -143,6 +143,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -156,6 +157,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

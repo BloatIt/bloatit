@@ -85,7 +85,7 @@ public final class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     *
+     * 
      * @param login the member login.
      * @return null if not found. (or if login == null)
      */
@@ -99,11 +99,11 @@ public final class DaoMember extends DaoActor {
     /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     *
+     * 
      * @param login the member login.
      * @param password the password of the member "login". It is a string corresponding to
-     *        the string in the database. This method does not perform any sha1 or md5
-     *        transformation.
+     * the string in the database. This method does not perform any sha1 or md5
+     * transformation.
      * @return null if not found. (or if login == null or password == null)
      */
     public static DaoMember getByLoginAndPassword(final String login, final String password) {
@@ -120,14 +120,14 @@ public final class DaoMember extends DaoActor {
 
     /**
      * Create a member. The member login must be unique, and you cannot change it.
-     *
+     * 
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @param locale the locale of the user.
      * @return The newly created DaoMember
      * @throws HibernateException If there is any problem connecting to the db. Or if the
-     *         member as a non unique login. If an exception is thrown then the
-     *         transaction is rolled back and reopened.
+     * member as a non unique login. If an exception is thrown then the transaction is
+     * rolled back and reopened.
      */
     public static DaoMember createAndPersist(final String login, final String password, final String email, final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -144,7 +144,7 @@ public final class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     *
+     * 
      * @param locale is the locale in which this user is. (The country and language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
      */
@@ -179,7 +179,7 @@ public final class DaoMember extends DaoActor {
      * @param isAdmin tell if the member is an admin of the group 'aGroup'
      */
     public void addToGroup(final DaoGroup aGroup, final boolean isAdmin) {
-        DaoGroupMembership daoGroupMembership = new DaoGroupMembership(this, aGroup, isAdmin);
+        final DaoGroupMembership daoGroupMembership = new DaoGroupMembership(this, aGroup, isAdmin);
         if (groupMembership.contains(daoGroupMembership)) {
             throw new FatalErrorException("This member is already in the group: " + aGroup.getId());
         }
@@ -236,7 +236,7 @@ public final class DaoMember extends DaoActor {
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or PROTECTED
      * groups. ]
-     *
+     * 
      * @return All the groups this member is in. (Use a HQL query)
      */
     public PageIterable<DaoGroup> getGroups() {
@@ -317,18 +317,20 @@ public final class DaoMember extends DaoActor {
      * @return All the received invitation to join a group which are in a specified state
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
-        return new QueryCollection<DaoJoinGroupInvitation>(
-                "from com.bloatit.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state  ").setEntity("reciever", this)
-                .setEntity("state", state);
+        return new QueryCollection<DaoJoinGroupInvitation>("from com.bloatit.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state  ").setEntity("reciever",
+                                                                                                                                                                           this)
+                                                                                                                                                                .setEntity("state",
+                                                                                                                                                                           state);
     }
 
     /**
      * @return All the sent invitation to join a group which are in a specified state
      */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
-        return new QueryCollection<DaoJoinGroupInvitation>(
-                "from com.bloatit.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state").setEntity("sender", this)
-                .setEntity("state", state);
+        return new QueryCollection<DaoJoinGroupInvitation>("from com.bloatit.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state").setEntity("sender",
+                                                                                                                                                                     this)
+                                                                                                                                                          .setEntity("state",
+                                                                                                                                                                     state);
     }
 
     /**

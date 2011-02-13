@@ -103,7 +103,7 @@ public final class DaoBug extends DaoUserContent {
     /**
      * The person assigned to a bug is the developer (the member that has created the
      * offer).
-     *
+     * 
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {
@@ -170,6 +170,7 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -183,6 +184,7 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

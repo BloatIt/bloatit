@@ -103,13 +103,13 @@ public final class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     *
+     * 
      * @param member is the author of the offer. Must be non null.
      * @param demand is the demand on which this offer is made. Must be non null.
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param description is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must be non
-     *        null, and in the future.
+     * null, and in the future.
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
      */
@@ -156,8 +156,8 @@ public final class DaoOffer extends DaoKudosable {
         final String query = "from DaoBatch where offer = :this order by expirationDate";
         final String queryCount = "select count(*) from DaoBatch where offer = :this";
         return new QueryCollection<DaoBatch>( //
-                SessionManager.createQuery(query).setEntity("this", this),//
-                SessionManager.createQuery(queryCount).setEntity("this", this));//
+                                             SessionManager.createQuery(query).setEntity("this", this),//
+                                             SessionManager.createQuery(queryCount).setEntity("this", this));//
     }
 
     public DaoBatch getCurrentBatch() {
@@ -193,6 +193,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -207,6 +208,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

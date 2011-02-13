@@ -42,15 +42,12 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
 
     /**
      * Create a new FileMetadata.
-     * @see DaoFileMetadata#createAndPersist(com.bloatit.data.DaoMember, DaoUserContent, String, String, FileType, int)
+     * 
+     * @see DaoFileMetadata#createAndPersist(com.bloatit.data.DaoMember, DaoUserContent,
+     * String, String, FileType, int)
      */
-    public FileMetadata(final Member author, String filename,  String url, FileType type, int size) {
-        this(DaoFileMetadata.createAndPersist(author.getDao(),
-                null,
-                filename,
-                url,
-                type,
-                size));
+    public FileMetadata(final Member author, String filename, String url, FileType type, int size) {
+        this(DaoFileMetadata.createAndPersist(author.getDao(), null, filename, url, type, size));
     }
 
     @Override

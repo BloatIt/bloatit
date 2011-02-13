@@ -64,11 +64,11 @@ public final class DaoImage extends DaoIdentifiable {
 
     /**
      * Create an image.
-     *
+     * 
      * @param horizontalSize is the number of pixels for the X coordinate.
      * @param verticalSize is the number of pixels for the Y coordinate.
      * @param compression is a string describing the type of compression. This parameter
-     *        is optional (it can be null, or empty).
+     * is optional (it can be null, or empty).
      * @param file is the file where this image is stored.
      */
     private DaoImage(int horizontalSize, int verticalSize, String compression, DaoFileMetadata file) {
@@ -132,6 +132,7 @@ public final class DaoImage extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -144,6 +145,7 @@ public final class DaoImage extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -157,7 +159,7 @@ public final class DaoImage extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        DaoImage other = (DaoImage) obj;
+        final DaoImage other = (DaoImage) obj;
         if (file == null) {
             if (other.file != null) {
                 return false;

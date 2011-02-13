@@ -52,7 +52,7 @@ public final class DaoProject extends DaoIdentifiable {
     // ======================================================================
 
     public static DaoProject getByName(String name) {
-        Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
+        final Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
         return (DaoProject) query.uniqueResult();
     }
 
@@ -133,6 +133,7 @@ public final class DaoProject extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -145,6 +146,7 @@ public final class DaoProject extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -158,7 +160,7 @@ public final class DaoProject extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        DaoProject other = (DaoProject) obj;
+        final DaoProject other = (DaoProject) obj;
         if (description == null) {
             if (other.description != null) {
                 return false;

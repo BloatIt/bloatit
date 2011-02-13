@@ -82,7 +82,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         }
         this.member = member;
         this.creationDate = new Date();
-        this.setIsDeleted(false);
+        setIsDeleted(false);
     }
 
     public final DaoMember getAuthor() {

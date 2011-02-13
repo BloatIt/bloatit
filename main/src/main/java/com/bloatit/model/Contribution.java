@@ -27,7 +27,7 @@ import com.bloatit.model.right.RightManager.Action;
 
 /**
  * This is a financial contribution.
- *
+ * 
  * @see DaoContribution
  */
 public final class Contribution extends UserContent<DaoContribution> {
@@ -55,10 +55,10 @@ public final class Contribution extends UserContent<DaoContribution> {
      * CALLED by demand. You have to call {@link #accept(Offer)} when an offer is
      * accepted. This will create the {@link Transaction} needed so that the developer of
      * the offer become rich.
-     *
+     * 
      * @param offer the validated offer.
      * @throws NotEnoughMoneyException if there is a bug and then a person does not have
-     *         enough money.
+     * enough money.
      */
     public void accept(final Offer offer) throws NotEnoughMoneyException {
         getDao().validate(offer.getDao(), 100);
@@ -74,7 +74,7 @@ public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * return true if you can access the <code>Amount</code> property.
-     *
+     * 
      * @see #getAmount()()
      * @see Contribution#authenticate(AuthToken)
      */
@@ -85,7 +85,7 @@ public final class Contribution extends UserContent<DaoContribution> {
     /**
      * @return the amount.
      * @throws UnauthorizedOperationException if you do not have the right to access the
-     *         <code>Amount</code> property.
+     * <code>Amount</code> property.
      * @see Contribution#authenticate(AuthToken)
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
@@ -95,7 +95,7 @@ public final class Contribution extends UserContent<DaoContribution> {
 
     /**
      * return true if you can access the <code>Comment</code> property.
-     *
+     * 
      * @see #getComment()()
      * @see Contribution#authenticate(AuthToken)
      */
@@ -106,7 +106,7 @@ public final class Contribution extends UserContent<DaoContribution> {
     /**
      * @return the comment.
      * @throws UnauthorizedOperationException if you do not have the right to access the
-     *         <code>Comment</code> property.
+     * <code>Comment</code> property.
      */
     public String getComment() throws UnauthorizedOperationException {
         new ContributionRight.Comment().tryAccess(calculateRole(this), Action.READ);

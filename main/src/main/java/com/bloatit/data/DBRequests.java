@@ -43,85 +43,86 @@ public final class DBRequests {
 
     public static PageIterable<DaoUserContent> getUserContents() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(DaoUserContent.class);
+        final Criteria criteria = session.createCriteria(DaoUserContent.class);
         return new CriteriaCollection<DaoUserContent>(criteria);
     }
 
-//    public static PageIterable<DaoDemand> getDemands(DemandState dState,
-//                                                     Date creationDate,
-//                                                     Comparator creationDateCmp,
-//                                                     DaoMember member,
-//                                                     DaoGroup asGroup,
-//                                                     Boolean hasAsGroup,
-//                                                     Integer popularity,
-//                                                     Comparator popularityCmp,
-//                                                     Boolean hasSelectedOffer,
-//                                                     Integer nbOffer,
-//                                                     Comparator offreCmp,
-//                                                     BigDecimal contribution,
-//                                                     Comparator contributionCmp,
-//                                                     Integer nbComments,
-//                                                     Comparator nbCommentsCmp,
-//                                                     Date validationDate,
-//                                                     Comparator validationDateCmp) {
-//
-//        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-//        Criteria criteria = session.createCriteria(DaoDemand.class);
-//
-//        if (dState != null) {
-//            criteria.add(Restrictions.eq("demandState", dState));
-//        }
-//
-//        if (creationDate != null) {
-//            criteria.add(createNbCriterion(creationDateCmp, "creationDate", creationDate));
-//        }
-//
-//        if (member != null) {
-//            criteria.add(Restrictions.eq("member", member));
-//        }
-//
-//        if (asGroup != null) {
-//            criteria.add(Restrictions.eq("asGroup", asGroup));
-//        }
-//
-//        if (hasAsGroup != null) {
-//            if (hasSelectedOffer) {
-//                criteria.add(Restrictions.isNotNull("asGroup"));
-//            } else {
-//                criteria.add(Restrictions.isNull("asGroup"));
-//            }
-//        }
-//
-//        if (popularity != null) {
-//            criteria.add(createNbCriterion(popularityCmp, "popularity", popularity));
-//        }
-//
-//        if (hasSelectedOffer != null) {
-//            if (hasSelectedOffer) {
-//                criteria.add(Restrictions.isNotNull("selectedOffer"));
-//            } else {
-//                criteria.add(Restrictions.isNull("selectedOffer"));
-//            }
-//        }
-//
-//        if (nbOffer != null) {
-//            criteria.add(createSizeCriterion(offreCmp, "offers", nbOffer));
-//        }
-//
-//        if (contribution != null) {
-//            criteria.add(createNbCriterion(contributionCmp, "contribution", contribution));
-//        }
-//
-//        if (nbComments != null) {
-//            criteria.add(createSizeCriterion(nbCommentsCmp, "comments", nbComments));
-//        }
-//
-//        if (validationDate != null) {
-//            criteria.add(createNbCriterion(validationDateCmp, "validationDate", validationDate));
-//        }
-//
-//        return new CriteriaCollection<DaoDemand>(criteria);
-//    }
+    // public static PageIterable<DaoDemand> getDemands(DemandState dState,
+    // Date creationDate,
+    // Comparator creationDateCmp,
+    // DaoMember member,
+    // DaoGroup asGroup,
+    // Boolean hasAsGroup,
+    // Integer popularity,
+    // Comparator popularityCmp,
+    // Boolean hasSelectedOffer,
+    // Integer nbOffer,
+    // Comparator offreCmp,
+    // BigDecimal contribution,
+    // Comparator contributionCmp,
+    // Integer nbComments,
+    // Comparator nbCommentsCmp,
+    // Date validationDate,
+    // Comparator validationDateCmp) {
+    //
+    // final Session session = SessionManager.getSessionFactory().getCurrentSession();
+    // Criteria criteria = session.createCriteria(DaoDemand.class);
+    //
+    // if (dState != null) {
+    // criteria.add(Restrictions.eq("demandState", dState));
+    // }
+    //
+    // if (creationDate != null) {
+    // criteria.add(createNbCriterion(creationDateCmp, "creationDate", creationDate));
+    // }
+    //
+    // if (member != null) {
+    // criteria.add(Restrictions.eq("member", member));
+    // }
+    //
+    // if (asGroup != null) {
+    // criteria.add(Restrictions.eq("asGroup", asGroup));
+    // }
+    //
+    // if (hasAsGroup != null) {
+    // if (hasSelectedOffer) {
+    // criteria.add(Restrictions.isNotNull("asGroup"));
+    // } else {
+    // criteria.add(Restrictions.isNull("asGroup"));
+    // }
+    // }
+    //
+    // if (popularity != null) {
+    // criteria.add(createNbCriterion(popularityCmp, "popularity", popularity));
+    // }
+    //
+    // if (hasSelectedOffer != null) {
+    // if (hasSelectedOffer) {
+    // criteria.add(Restrictions.isNotNull("selectedOffer"));
+    // } else {
+    // criteria.add(Restrictions.isNull("selectedOffer"));
+    // }
+    // }
+    //
+    // if (nbOffer != null) {
+    // criteria.add(createSizeCriterion(offreCmp, "offers", nbOffer));
+    // }
+    //
+    // if (contribution != null) {
+    // criteria.add(createNbCriterion(contributionCmp, "contribution", contribution));
+    // }
+    //
+    // if (nbComments != null) {
+    // criteria.add(createSizeCriterion(nbCommentsCmp, "comments", nbComments));
+    // }
+    //
+    // if (validationDate != null) {
+    // criteria.add(createNbCriterion(validationDateCmp, "validationDate",
+    // validationDate));
+    // }
+    //
+    // return new CriteriaCollection<DaoDemand>(criteria);
+    // }
 
     /**
      * Make sure you test if the return is != null:

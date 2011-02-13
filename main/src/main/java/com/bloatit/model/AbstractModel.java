@@ -19,9 +19,9 @@ package com.bloatit.model;
 /**
  * You have to implement a model manager in the model layer. The model manager allows you
  * to plug your model into the web framework.
- *
+ * 
  * @author Thomas Guyard
- *
+ * 
  */
 public interface AbstractModel {
 

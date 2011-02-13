@@ -77,7 +77,7 @@ public final class DaoExternalAccount extends DaoAccount {
      * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE !!
      * @throws NonOptionalParameterException if any of the parameter is null
      * @throws anExceptionToDefine when we will check the validity of the IBAN we will
-     *         have to throw an exception if its not valid.
+     * have to throw an exception if its not valid.
      */
     private DaoExternalAccount(final DaoActor actor, final AccountType type, final String bankCode) {
         super(actor);

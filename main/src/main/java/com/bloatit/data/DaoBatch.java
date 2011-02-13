@@ -48,7 +48,7 @@ import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A DaoBatch is a part of a DaoOffer.
- *
+ * 
  * @author Thomas Guyard
  */
 @Entity
@@ -109,7 +109,7 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /**
      * Create a new DaoBatch and add it into the db.
-     *
+     * 
      * @see #DaoBatch(Date, BigDecimal, DaoDescription, DaoOffer, int)
      * @return the newly created {@link DaoBatch}
      */
@@ -133,20 +133,16 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /**
      * Create a DaoBatch.
-     *
+     * 
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must be non
-     *        null, and in the future.
+     * null, and in the future.
      * @param secondBeforeValidation TODO
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
      */
-    private DaoBatch(final Date dateExpire,
-                     final BigDecimal amount,
-                     final DaoDescription description,
-                     final DaoOffer offer,
-                     final int secondBeforeValidation) {
+    private DaoBatch(final Date dateExpire, final BigDecimal amount, final DaoDescription description, final DaoOffer offer, final int secondBeforeValidation) {
         super();
         if (dateExpire == null || amount == null || description == null || offer == null) {
             throw new NonOptionalParameterException();
@@ -175,11 +171,11 @@ public final class DaoBatch extends DaoIdentifiable {
      * Set the percent of money the developer will received when all bugs of one level are
      * closed. This method take parameters for the Fatal and Major level. The Minor level
      * is calculated from it (see {@link #getMinorBugsPercent()}).
-     *
+     * 
      * @param fatalPercent is the percent of the money the developer will get when all the
-     *        {@link Level#FATAL} bugs are closed. It must be > 0 and <= 100.
+     * {@link Level#FATAL} bugs are closed. It must be > 0 and <= 100.
      * @param majorPercent is the percent of the money the developer will get when all the
-     *        {@link Level#MAJOR} bugs are closed. It must be > 0 and <= 100.
+     * {@link Level#MAJOR} bugs are closed. It must be > 0 and <= 100.
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
         if (fatalPercent < 0 || majorPercent < 0) {
@@ -206,9 +202,9 @@ public final class DaoBatch extends DaoIdentifiable {
      * period is not open. You can change this behavior using the <code>force</code>
      * parameter. The force parameter allows to validate the batch without taking into
      * account these previous restrictions.
-     *
+     * 
      * @param force force the validation of this batch. Do not take care of the bugs and
-     *        the timeOuts.
+     * the timeOuts.
      * @return true if all the batch is validated.
      */
     public boolean validate(final boolean force) {
@@ -237,7 +233,7 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /**
      * You can validate a batch after its release and when the bugs requirement are done.
-     *
+     * 
      * @return
      */
     public boolean shouldValidatePart(final Level level) {
@@ -259,36 +255,51 @@ public final class DaoBatch extends DaoIdentifiable {
     // ======================================================================
 
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
-        org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        final Query filteredBugs = currentSession.createFilter(bugs, "where level = :level and state!=:state").setParameter("level", level)
-                .setParameter("state", State.RESOLVED);
+        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        final Query filteredBugs = currentSession.createFilter(bugs, "where level = :level and state!=:state")
+                                                 .setParameter("level", level)
+                                                 .setParameter("state", State.RESOLVED);
         final Query filteredBugsSize = currentSession.createFilter(bugs, "select count (*) where level = :level and state!=:state")
-                .setParameter("level", level).setParameter("state", State.RESOLVED);
+                                                     .setParameter("level", level)
+                                                     .setParameter("state", State.RESOLVED);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level) {
-        final Query filteredBugs = SessionManager.getSessionFactory().getCurrentSession().createFilter(bugs, "where level = :level")
-                .setParameter("level", level);
-        final Query filteredBugsSize = SessionManager.getSessionFactory().getCurrentSession()
-                .createFilter(bugs, "select count (*) where level = :level").setParameter("level", level);
+        final Query filteredBugs = SessionManager.getSessionFactory()
+                                                 .getCurrentSession()
+                                                 .createFilter(bugs, "where level = :level")
+                                                 .setParameter("level", level);
+        final Query filteredBugsSize = SessionManager.getSessionFactory()
+                                                     .getCurrentSession()
+                                                     .createFilter(bugs, "select count (*) where level = :level")
+                                                     .setParameter("level", level);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
     public PageIterable<DaoBug> getBugs(final State state) {
-        final Query filteredBugs = SessionManager.getSessionFactory().getCurrentSession().createFilter(bugs, "where state = :state")
-                .setParameter("state", state);
-        final Query filteredBugsSize = SessionManager.getSessionFactory().getCurrentSession()
-                .createFilter(bugs, "select count (*) where state = :state").setParameter("state", state);
+        final Query filteredBugs = SessionManager.getSessionFactory()
+                                                 .getCurrentSession()
+                                                 .createFilter(bugs, "where state = :state")
+                                                 .setParameter("state", state);
+        final Query filteredBugsSize = SessionManager.getSessionFactory()
+                                                     .getCurrentSession()
+                                                     .createFilter(bugs, "select count (*) where state = :state")
+                                                     .setParameter("state", state);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level, final State state) {
-        final Query filteredBugs = SessionManager.getSessionFactory().getCurrentSession()
-                .createFilter(bugs, "where level = :level and state = :state").setParameter("level", level).setParameter("state", state);
-        final Query filteredBugsSize = SessionManager.getSessionFactory().getCurrentSession()
-                .createFilter(bugs, "select count (*) where level = :level and state = :state").setParameter("level", level)
-                .setParameter("state", state);
+        final Query filteredBugs = SessionManager.getSessionFactory()
+                                                 .getCurrentSession()
+                                                 .createFilter(bugs, "where level = :level and state = :state")
+                                                 .setParameter("level", level)
+                                                 .setParameter("state", state);
+        final Query filteredBugsSize = SessionManager.getSessionFactory()
+                                                     .getCurrentSession()
+                                                     .createFilter(bugs, "select count (*) where level = :level and state = :state")
+                                                     .setParameter("level", level)
+                                                     .setParameter("state", state);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
@@ -350,6 +361,7 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -368,6 +380,7 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

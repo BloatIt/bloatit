@@ -52,19 +52,19 @@ public final class Offer extends Kudosable<DaoOffer> {
     /**
      * @param amount must be positive (can be ZERO) non null.
      * @param locale must be non null. Is the locale in which the title and the text are
-     *        written.
+     * written.
      * @param title is the title of the offer. Must be non null.
      * @param text is the description of the offer. Must be non null.
      * @param dateExpir is the date when this offer should be finished. Must be non null.
-     *        Must be in the future.
+     * Must be in the future.
      */
     public Offer(final Member member,
-                 final Demand demand,
-                 final BigDecimal amount,
-                 final String title,
-                 final String description,
-                 final Locale local,
-                 final Date dateExpire) {
+            final Demand demand,
+            final BigDecimal amount,
+            final String title,
+            final String description,
+            final Locale local,
+            final Date dateExpire) {
         super(DaoOffer.createAndPersist(member.getDao(),
                                         DBRequests.getById(DaoDemand.class, demand.getId()),
                                         amount,
@@ -76,18 +76,14 @@ public final class Offer extends Kudosable<DaoOffer> {
         super(dao);
     }
 
-    public void addBatch(final Date dateExpire,
-                         final BigDecimal amount,
-                         final String title,
-                         final String description,
-                         final int secondBeforeValidation) {
+    public void addBatch(final Date dateExpire, final BigDecimal amount, final String title, final String description, final int secondBeforeValidation) {
         // TODO blind me !
         final Locale locale = getDao().getBatches().iterator().next().getDescription().getDefaultLocale();
         getDao().addBatch(DaoBatch.createAndPersist(dateExpire,
-                                               amount,
-                                               DaoDescription.createAndPersist(getDao().getAuthor(), locale, title, description),
-                                               getDao(),
-                                               secondBeforeValidation));
+                                                    amount,
+                                                    DaoDescription.createAndPersist(getDao().getAuthor(), locale, title, description),
+                                                    getDao(),
+                                                    secondBeforeValidation));
     }
 
     // ////////////////////////////////////////////////////////////////////////

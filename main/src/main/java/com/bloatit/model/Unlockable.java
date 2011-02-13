@@ -39,6 +39,7 @@ public class Unlockable implements UnlockableInterface {
 
     /*
      * (non-Javadoc)
+     * 
      * @see
      * com.bloatit.model.UnlockableInterface#authenticate(com.bloatit.model.AuthToken)
      */
@@ -63,15 +64,15 @@ public class Unlockable implements UnlockableInterface {
      * complete Member object to describe the author of a "content". You can use this
      * method (the login is unique). This method cannot set some Group roles, you have to
      * use the {@link Unlockable#calculateRole(Member, Group)} method.
-     *
+     * 
      * @return An EnumSet with the roles of the member authenticate by the
-     *         {@link AuthToken}.
+     * {@link AuthToken}.
      */
     protected final EnumSet<Role> calculateRole(final String login) {
         if (token == null) {
             return EnumSet.of(Role.NOBODY);
         }
-        EnumSet<Role> enums = EnumSet.noneOf(Role.class);
+        final EnumSet<Role> enums = EnumSet.noneOf(Role.class);
 
         if (token.getMember().getLoginUnprotected().equals(login)) {
             enums.add(Role.OWNER);
@@ -114,7 +115,7 @@ public class Unlockable implements UnlockableInterface {
     /**
      * Calculate the role {@link AuthToken} user, on a content created by
      * "member as group".
-     *
+     * 
      * @param member The creator of the content.
      * @param group the creator uses "group" to create the content.
      * @return all the role that correspond to the {@link AuthToken}.
@@ -139,7 +140,7 @@ public class Unlockable implements UnlockableInterface {
 
     /**
      * Helper function.
-     *
+     * 
      * @return Role.NOBODY or Role.AUTHENTICATED
      */
     protected final EnumSet<Role> calculateNoOwnerRole() {

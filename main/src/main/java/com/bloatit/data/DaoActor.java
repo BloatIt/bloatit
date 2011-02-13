@@ -96,7 +96,7 @@ public abstract class DaoActor implements IdentifiableInterface {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     *
+     * 
      * @param login is the login or name of this actor. It must be non null, and unique.
      * @throws NonOptionalParameterException if login or mail is null.
      */
@@ -123,7 +123,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * No check is performed on the correctness of the new email.
-     *
+     * 
      * @param email the new email.
      */
     public abstract void setEmail(final String email);
@@ -134,7 +134,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * Set the external account for this actor.
-     *
+     * 
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
@@ -163,12 +163,12 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * @return all the <code>DaoBankTransaction</code> created by <code>this</code>, order
-     *         by <code>creationDate</code>, most recent first.
+     * by <code>creationDate</code>, most recent first.
      */
     public final PageIterable<DaoBankTransaction> getBankTransactions() {
-        return new QueryCollection<DaoBankTransaction>(
-                SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
-                SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author")).setEntity("author", this);
+        return new QueryCollection<DaoBankTransaction>(SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
+                                                       SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author")).setEntity("author",
+                                                                                                                                                               this);
     }
 
     @Override
@@ -193,6 +193,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -205,6 +206,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

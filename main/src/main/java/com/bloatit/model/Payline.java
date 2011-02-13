@@ -129,16 +129,18 @@ public final class Payline extends Unlockable {
         }
     }
 
-//    public void getTransactionDetails(final String token) throws TokenNotfoundException {
-//        final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
-//        final GetWebPaymentDetailsRequest request = createWebPaymementRequest(token);
-//        Transaction transaction = paylineApi.getWebPaymentAPI().getWebPaymentDetails(request).getTransaction();
-//
-//        System.err.println(transaction.getExplanation());
-//        System.err.println(transaction.getFraudResult());
-//        System.err.println(transaction.getIsPossibleFraud());
-//        System.err.println(transaction.getScore());
-//    }
+    // public void getTransactionDetails(final String token) throws TokenNotfoundException
+    // {
+    // final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
+    // final GetWebPaymentDetailsRequest request = createWebPaymementRequest(token);
+    // Transaction transaction =
+    // paylineApi.getWebPaymentAPI().getWebPaymentDetails(request).getTransaction();
+    //
+    // System.err.println(transaction.getExplanation());
+    // System.err.println(transaction.getFraudResult());
+    // System.err.println(transaction.getIsPossibleFraud());
+    // System.err.println(transaction.getScore());
+    // }
 
     public Reponse getPaymentDetails(final String token) throws TokenNotfoundException {
         final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
@@ -158,8 +160,8 @@ public final class Payline extends Unlockable {
         return parameters;
     }
 
-    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl)
-            throws UnauthorizedOperationException {
+    public Reponse
+            doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl) throws UnauthorizedOperationException {
         final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
         paymentRequest.setReturnURL(returnUrl);
@@ -194,10 +196,10 @@ public final class Payline extends Unlockable {
     private void createBankTransaction(final BigDecimal amount, final String orderReference, final Reponse reponse) {
         if (reponse.getToken() != null && !reponse.getToken().isEmpty()) {
             final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
-                    reponse.getToken(),//
-                    getAuthTokenUnprotected().getMember().getDao(),//
-                    amount, //
-                    orderReference);
+                                                                        reponse.getToken(),//
+                                                                        getAuthTokenUnprotected().getMember().getDao(),//
+                                                                        amount, //
+                                                                        orderReference);
             bankTransaction.setProcessInformations(reponse.getCode());
             if (reponse.isAccepted()) {
                 bankTransaction.setAuthorized();
@@ -237,7 +239,7 @@ public final class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     *
+     * 
      * @param member
      * @return
      */

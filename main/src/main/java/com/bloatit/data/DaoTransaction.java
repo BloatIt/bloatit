@@ -44,8 +44,7 @@ public final class DaoTransaction extends DaoIdentifiable {
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 
-    public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount)
-            throws NotEnoughMoneyException {
+    public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoTransaction transaction = new DaoTransaction(from, to, amount);
         try {
@@ -60,12 +59,12 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     /**
      * Create a new transaction and update the two accounts.
-     *
+     * 
      * @param from is the account from which we will take money.
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
      * @throws NotEnoughMoneyException if there is not enough money to make the
-     *         transaction
+     * transaction
      * @throws FatalErrorException if to == from
      * @throws NullPointerException if any of the parameters = null
      */
@@ -115,6 +114,7 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -130,6 +130,7 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

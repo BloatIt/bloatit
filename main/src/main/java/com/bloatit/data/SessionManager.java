@@ -41,8 +41,9 @@ public final class SessionManager {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            final SessionFactory buildSessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "update")
-                    .buildSessionFactory();
+            final SessionFactory buildSessionFactory = new AnnotationConfiguration().configure()
+                                                                                    .setProperty("hibernate.hbm2ddl.auto", "update")
+                                                                                    .buildSessionFactory();
 
             if (System.getProperty("lucene") == null || System.getProperty("lucene").equals("1")) {
                 Search.getFullTextSession(buildSessionFactory.getCurrentSession()).createIndexer(DaoDemand.class).startAndWait();
@@ -62,7 +63,7 @@ public final class SessionManager {
 
     /**
      * singleton pattern implementation.
-     *
+     * 
      * @return the current session.
      */
     public static SessionFactory getSessionFactory() {
@@ -104,8 +105,10 @@ public final class SessionManager {
     public static void generateTestSessionFactory() {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            sessionFactory = new AnnotationConfiguration().configure().setProperty("hibernate.hbm2ddl.auto", "create-drop")
-                    .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost/bloatit_test").buildSessionFactory();
+            sessionFactory = new AnnotationConfiguration().configure()
+                                                          .setProperty("hibernate.hbm2ddl.auto", "create-drop")
+                                                          .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost/bloatit_test")
+                                                          .buildSessionFactory();
         } catch (final Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             Log.data().fatal("Initial SessionFactory creation failed.", ex);

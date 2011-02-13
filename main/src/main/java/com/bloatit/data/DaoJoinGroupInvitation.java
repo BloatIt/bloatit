@@ -56,7 +56,9 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
         return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
-                .setEntity("group", group).setEntity("member", member).uniqueResult();
+                                                      .setEntity("group", group)
+                                                      .setEntity("member", member)
+                                                      .uniqueResult();
     }
 
     // ======================================================================
@@ -77,7 +79,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * Create a new invitation. Set the state to PENDING.
-     *
+     * 
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
     private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
@@ -145,6 +147,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -159,6 +162,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

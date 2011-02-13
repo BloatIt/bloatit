@@ -47,7 +47,7 @@ public final class Comment extends Kudosable<DaoComment> {
 
     /**
      * Return all the children comment of this comment.
-     *
+     * 
      * @see DaoComment#getChildren()
      */
     public PageIterable<Comment> getChildren() {
@@ -57,9 +57,8 @@ public final class Comment extends Kudosable<DaoComment> {
     /**
      * @param text is the comment text.
      * @throws UnauthorizedOperationException if the user does not have the WRITE right on
-     *         the Comment property
-     * @see #addChildComment(Comment)
-     *  TODO: Make the authentication system.
+     * the Comment property
+     * @see #addChildComment(Comment) TODO: Make the authentication system.
      */
     public void addChildComment(final String text) throws UnauthorizedOperationException {
         getDao().addChildComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
@@ -74,7 +73,7 @@ public final class Comment extends Kudosable<DaoComment> {
 
     /**
      * Add a comment to the list of children of this comment.
-     *
+     * 
      * @see #addChildComment(String)
      */
     public void addChildComment(final Comment comment) {

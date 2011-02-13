@@ -50,12 +50,11 @@ public class Project extends Identifiable<DaoProject> {
      * Right management system is not working in this case). You have to use the
      * {@link DemandManager#canCreate(AuthToken)} to make sure you can create a new
      * demand.
-     *
+     * 
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
     public Project(String name, final Member author, final Locale locale, final String title, final String description, FileMetadata image) {
-        this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description),
-                image.getDao()));
+        this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description), image.getDao()));
     }
 
     /**
@@ -66,7 +65,6 @@ public class Project extends Identifiable<DaoProject> {
         new ProjectRight.Name().tryAccess(calculateNoOwnerRole(), Action.READ);
         return getDao().getName();
     }
-
 
     /**
      * @return

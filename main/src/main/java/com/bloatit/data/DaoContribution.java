@@ -84,18 +84,17 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Create a new contribution. Update the internal account of the member (block the
      * value that is reserved to this contribution)
-     *
+     * 
      * @param member the person making the contribution.
      * @param demand the demand on which we add a contribution.
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.
      * @throws NonOptionalParameterException if any of the parameter is null except
-     *         comment.
+     * comment.
      * @throws NotEnoughMoneyException if the account of "member" has not enough money in
-     *         it.
+     * it.
      */
-    public DaoContribution(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final String comment)
-                                                                                                                         throws NotEnoughMoneyException {
+    public DaoContribution(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         super(member);
         if (demand == null) {
             throw new NonOptionalParameterException();
@@ -117,15 +116,15 @@ public final class DaoContribution extends DaoUserContent {
      * Create a transaction from the contributor to the developer. If there is not enough
      * money then throw and set the state to canceled. After that if all the money is
      * transfered, the state of this contribution is become VALIDATED.
-     *
+     * 
      * @param offer the offer that is accepted.
      * @param percent integer ]0,100]. It is the percent of the total amount and not a
-     *        percent of what is remaining. It is the percent of the total amount to
-     *        transfer. There is a "round" done here, but we assure that when 100% is
-     *        reached then everything is transfered. For example : 90% then 10% is ok and
-     *        everything is transfered. 60% then 60% will throw an exception.
+     * percent of what is remaining. It is the percent of the total amount to transfer.
+     * There is a "round" done here, but we assure that when 100% is reached then
+     * everything is transfered. For example : 90% then 10% is ok and everything is
+     * transfered. 60% then 60% will throw an exception.
      * @throws NotEnoughMoneyException if there is not enough money to create the
-     *         transaction.
+     * transaction.
      */
     public void validate(final DaoOffer offer, final int percent) throws NotEnoughMoneyException {
         if (state != State.PENDING) {
@@ -148,9 +147,7 @@ public final class DaoContribution extends DaoUserContent {
         try {
             // If we succeeded the unblock then we create a transaction.
             if (getAuthor() != offer.getAuthor()) {
-                this.transaction.add(DaoTransaction.createAndPersist(getAuthor().getInternalAccount(),
-                                                                     offer.getAuthor().getInternalAccount(),
-                                                                     moneyToGive));
+                this.transaction.add(DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), moneyToGive));
             }
             // if the transaction is ok then we set the state to VALIDATED.
             this.percentDone += percent;
@@ -223,6 +220,7 @@ public final class DaoContribution extends DaoUserContent {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -237,6 +235,7 @@ public final class DaoContribution extends DaoUserContent {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

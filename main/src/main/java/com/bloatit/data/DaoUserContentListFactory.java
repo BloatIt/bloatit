@@ -21,7 +21,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
-
 class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiableListFactory<T> {
 
     private static final String MEMBER = "member";

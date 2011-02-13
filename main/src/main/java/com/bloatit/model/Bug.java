@@ -57,6 +57,7 @@ public class Bug extends Identifiable<DaoBug> {
 
     /**
      * Create a new Bug.
+     * 
      * @param member is the author of the bug.
      * @param batch is the batch on which this bug has been set.
      * @param description is a complete description of the bug.

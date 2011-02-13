@@ -63,7 +63,8 @@ public final class DaoBankTransaction extends DaoIdentifiable {
         REFUSED,
 
         /**
-         * When the transaction is actually performed it pass in <code>VALIDATE</code> state.
+         * When the transaction is actually performed it pass in <code>VALIDATE</code>
+         * state.
          */
         VALIDATED
     }
@@ -120,11 +121,10 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * @return the <code>DaoBankTransaction</code> with this <code>token</code>. Return
-     *         null if not found.
+     * null if not found.
      */
     public static DaoBankTransaction getByToken(final String token) {
-        return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token").setString("token", token)
-                .uniqueResult();
+        return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token").setString("token", token).uniqueResult();
     }
 
     // ======================================================================
@@ -184,7 +184,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the external to
      * the internal account.
-     *
+     * 
      * @return true if performed, false otherwise.
      */
     public boolean setValidated() {
@@ -275,6 +275,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -289,6 +290,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

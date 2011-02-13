@@ -141,7 +141,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     *
+     * 
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -175,7 +175,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     *
+     * 
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -207,7 +207,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     *
+     * 
      * @param Offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -250,7 +250,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Called by contribution when canceled.
-     *
+     * 
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -278,7 +278,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     *
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -289,8 +289,11 @@ public final class DaoDemand extends DaoKudosable {
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
-            return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this).setParameter("state", DaoKudosable.PopularityState.PENDING)
-                    .iterate().next();
+            return (DaoOffer) SessionManager.createQuery(queryString)
+                                            .setEntity("this", this)
+                                            .setParameter("state", DaoKudosable.PopularityState.PENDING)
+                                            .iterate()
+                                            .next();
         } catch (final NoSuchElementException e) {
             return null;
         }
@@ -315,8 +318,8 @@ public final class DaoDemand extends DaoKudosable {
      * Use a HQL query to get the first level comments as a PageIterable collection
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, ""), SessionManager
-                .getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, ""),
+                                               SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
     }
 
     public DaoOffer getSelectedOffer() {
@@ -332,7 +335,8 @@ public final class DaoDemand extends DaoKudosable {
      */
     public BigDecimal getContributionMin() {
         return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
-                .setEntity("this", this).uniqueResult();
+                                          .setEntity("this", this)
+                                          .uniqueResult();
     }
 
     /**
@@ -340,7 +344,8 @@ public final class DaoDemand extends DaoKudosable {
      */
     public BigDecimal getContributionMax() {
         return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")
-                .setEntity("this", this).uniqueResult();
+                                          .setEntity("this", this)
+                                          .uniqueResult();
     }
 
     public Date getValidationDate() {
@@ -368,6 +373,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -380,6 +386,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

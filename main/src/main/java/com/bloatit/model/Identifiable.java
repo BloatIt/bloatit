@@ -21,9 +21,9 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 /**
  * An identifiable is the base class for each class that map a dao class.
- *
+ * 
  * @author Thomas Guyard
- *
+ * 
  * @param <T> is the dao being mapped.
  */
 public abstract class Identifiable<T extends IdentifiableInterface> extends Unlockable implements IdentifiableInterface {

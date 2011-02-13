@@ -23,6 +23,7 @@ import com.bloatit.model.lists.MemberList;
 
 /**
  * This is a group ... There are member in it.
+ * 
  * @see DaoGroup
  * 
  * @author Thomas Guyard

@@ -47,7 +47,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
     /**
      * An id = 1 planed task.
-     *
+     * 
      * @param time
      * @param id
      */
@@ -105,6 +105,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
         /*
          * (non-Javadoc)
+         * 
          * @see java.lang.Object#hashCode()
          */
         @Override
@@ -118,6 +119,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
         /*
          * (non-Javadoc)
+         * 
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override
