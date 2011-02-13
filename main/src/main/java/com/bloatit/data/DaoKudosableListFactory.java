@@ -13,7 +13,7 @@ class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserContentList
     }
 
     public DaoKudosableListFactory() {
-        super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoUserContent.class));
+        super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoKudosable.class));
     }
 
     public void orderByPopularity(DaoAbstractListFactory.OrderType order) {
