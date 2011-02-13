@@ -8,6 +8,10 @@ import com.bloatit.data.DaoKudosable.PopularityState;
 
 class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserContentListFactory<T> {
 
+    private static final String KUDOS = "kudos";
+    private static final String STATE = "state";
+    private static final String POPULARITY = "popularity";
+
     protected DaoKudosableListFactory(Criteria criteria) {
         super(criteria);
     }
@@ -18,22 +22,22 @@ class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserContentList
 
     public void orderByPopularity(DaoAbstractListFactory.OrderType order) {
         if (order == OrderType.ASC) {
-            addOrder(Order.asc("popularity"));
+            addOrder(Order.asc(POPULARITY));
         } else {
-            addOrder(Order.desc("popularity"));
+            addOrder(Order.desc(POPULARITY));
         }
     }
 
     public void popularity(Comparator cmp, int value) {
-        add(createNbCriterion(cmp, "popularity", value));
+        add(createNbCriterion(cmp, POPULARITY, value));
     }
 
     public void stateEquals(PopularityState state) {
-        add(Restrictions.eq("state", state));
+        add(Restrictions.eq(STATE, state));
     }
-    
-    public void kudosSize(Comparator cmp, int number){
-        add(createNbCriterion(cmp, "kudos", number));
+
+    public void kudosSize(Comparator cmp, int number) {
+        add(createNbCriterion(cmp, KUDOS, number));
     }
 
 }
