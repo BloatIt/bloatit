@@ -22,27 +22,58 @@ import com.bloatit.data.DaoGroup;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Group;
 
+/**
+ * The Class GroupList transforms PageIterable<DaoGroup> to PageIterable<Group>.
+ */
 public final class GroupList extends ListBinder<Group, DaoGroup> {
 
+    /**
+     * Instantiates a new group list.
+     * 
+     * @param daoCollection the dao collection
+     */
     public GroupList(final PageIterable<DaoGroup> daoCollection) {
         super(daoCollection);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     */
     @Override
     protected Iterator<Group> createFromDaoIterator(final Iterator<DaoGroup> dao) {
         return new GroupIterator(dao);
     }
 
+    /**
+     * The Class GroupIterator.
+     */
     static final class GroupIterator extends com.bloatit.model.lists.IteratorBinder<Group, DaoGroup> {
 
+        /**
+         * Instantiates a new group iterator.
+         * 
+         * @param daoIterator the dao iterator
+         */
         public GroupIterator(final Iterable<DaoGroup> daoIterator) {
             super(daoIterator);
         }
 
+        /**
+         * Instantiates a new group iterator.
+         * 
+         * @param daoIterator the dao iterator
+         */
         public GroupIterator(final Iterator<DaoGroup> daoIterator) {
             super(daoIterator);
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         */
         @Override
         protected Group createFromDao(final DaoGroup dao) {
             return Group.create(dao);

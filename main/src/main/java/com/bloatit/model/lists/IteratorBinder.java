@@ -16,35 +16,75 @@
 //
 package com.bloatit.model.lists;
 
+/**
+ * The Class IteratorBinder is the base class of the iterator used in the List classes.
+ * The List classes transform PageIterable<Dao...> to PageIterable<...>.
+ * 
+ * @param <E> the Model representation of a Dao element.
+ * @param <DAO> the Dao Element. (If <code>E</code> id Demand then <code>DAO</code> must
+ * be DaoDemand.
+ */
 public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
 
+    /** The dao iterator. */
     private final java.util.Iterator<DAO> daoIterator;
 
+    /**
+     * Instantiates a new iterator binder.
+     * 
+     * @param daoIterator the dao iterator
+     */
     public IteratorBinder(final java.util.Iterator<DAO> daoIterator) {
         super();
         this.daoIterator = daoIterator;
     }
 
+    /**
+     * Instantiates a new iterator binder.
+     * 
+     * @param daoIterator the dao iterator
+     */
     public IteratorBinder(final Iterable<DAO> daoIterator) {
         super();
         this.daoIterator = daoIterator.iterator();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Iterator#hasNext()
+     */
     @Override
     public final boolean hasNext() {
         return daoIterator.hasNext();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Iterator#next()
+     */
     @Override
     public final E next() {
         return createFromDao(daoIterator.next());
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.util.Iterator#remove()
+     */
     @Override
     public final void remove() {
         daoIterator.remove();
     }
 
+    /**
+     * Creates the from dao.
+     * 
+     * @param dao the dao
+     * @return the e
+     */
     protected abstract E createFromDao(DAO dao);
 
 }

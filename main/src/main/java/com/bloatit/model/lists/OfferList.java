@@ -22,27 +22,58 @@ import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Offer;
 
+/**
+ * The Class OfferList transforms PageIterable<DaoOffer> to PageIterable<Offer>.
+ */
 public final class OfferList extends ListBinder<Offer, DaoOffer> {
 
+    /**
+     * Instantiates a new offer list.
+     * 
+     * @param daoCollection the dao collection
+     */
     public OfferList(final PageIterable<DaoOffer> daoCollection) {
         super(daoCollection);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     */
     @Override
     protected Iterator<Offer> createFromDaoIterator(final Iterator<DaoOffer> dao) {
         return new OfferIterator(dao);
     }
 
+    /**
+     * The Class OfferIterator.
+     */
     static final class OfferIterator extends com.bloatit.model.lists.IteratorBinder<Offer, DaoOffer> {
 
+        /**
+         * Instantiates a new offer iterator.
+         * 
+         * @param daoIterator the dao iterator
+         */
         public OfferIterator(final Iterable<DaoOffer> daoIterator) {
             super(daoIterator);
         }
 
+        /**
+         * Instantiates a new offer iterator.
+         * 
+         * @param daoIterator the dao iterator
+         */
         public OfferIterator(final Iterator<DaoOffer> daoIterator) {
             super(daoIterator);
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         */
         @Override
         protected Offer createFromDao(final DaoOffer dao) {
             return Offer.create(dao);

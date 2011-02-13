@@ -22,27 +22,59 @@ import com.bloatit.data.DaoContribution;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Contribution;
 
+/**
+ * The Class ContributionList transforms PageIterable<DaoContribution> to
+ * PageIterable<Contribution>.
+ */
 public final class ContributionList extends ListBinder<Contribution, DaoContribution> {
 
+    /**
+     * Instantiates a new contribution list.
+     * 
+     * @param daoCollection the dao collection
+     */
     public ContributionList(final PageIterable<DaoContribution> daoCollection) {
         super(daoCollection);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     */
     @Override
     protected Iterator<Contribution> createFromDaoIterator(final Iterator<DaoContribution> dao) {
         return new ContributionIterator(dao);
     }
 
+    /**
+     * The Class ContributionIterator.
+     */
     static final class ContributionIterator extends com.bloatit.model.lists.IteratorBinder<Contribution, DaoContribution> {
 
+        /**
+         * Instantiates a new contribution iterator.
+         * 
+         * @param daoIterator the dao iterator
+         */
         public ContributionIterator(final Iterable<DaoContribution> daoIterator) {
             super(daoIterator);
         }
 
+        /**
+         * Instantiates a new contribution iterator.
+         * 
+         * @param daoIterator the dao iterator
+         */
         public ContributionIterator(final Iterator<DaoContribution> daoIterator) {
             super(daoIterator);
         }
 
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         */
         @Override
         protected Contribution createFromDao(final DaoContribution dao) {
             return Contribution.create(dao);
