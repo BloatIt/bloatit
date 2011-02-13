@@ -20,11 +20,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
-import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoOffer;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.lists.BatchList;

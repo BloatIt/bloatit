@@ -16,11 +16,11 @@
 //
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoTranslation;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Offer;

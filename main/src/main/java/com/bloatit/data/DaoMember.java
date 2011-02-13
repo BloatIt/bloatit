@@ -35,6 +35,7 @@ import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoJoinGroupInvitation.State;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;

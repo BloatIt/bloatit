@@ -20,9 +20,9 @@ import java.io.File;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
-import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 

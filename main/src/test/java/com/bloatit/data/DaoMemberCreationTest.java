@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import org.hibernate.HibernateException;
 
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 public class DaoMemberCreationTest extends TestCase {

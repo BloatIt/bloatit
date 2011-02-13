@@ -16,8 +16,8 @@
 //
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoComment;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Comment;
 
 public final class CommentManager {

@@ -42,6 +42,7 @@ import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.data.search.DaoDemandSearchFilterFactory;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;

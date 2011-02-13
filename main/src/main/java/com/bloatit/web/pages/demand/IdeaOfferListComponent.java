@@ -10,7 +10,7 @@
  */
 package com.bloatit.web.pages.demand;
 
-import com.bloatit.data.NullCollection;
+import com.bloatit.data.queries.NullCollection;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.components.HtmlDiv;

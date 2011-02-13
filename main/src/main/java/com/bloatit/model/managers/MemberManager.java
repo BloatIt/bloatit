@@ -16,9 +16,9 @@
 //
 package com.bloatit.model.managers;
 
-import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoActor;
 import com.bloatit.data.DaoMember;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Member;
 import com.bloatit.model.lists.MemberList;

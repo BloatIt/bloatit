@@ -3,6 +3,7 @@ package com.bloatit.data;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.data.search.DemandSearch;
 import com.bloatit.framework.utils.DateUtils;
 
