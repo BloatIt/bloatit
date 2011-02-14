@@ -16,11 +16,20 @@
 //
 package com.bloatit.model.managers;
 
+import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.data.DaoProject;
+import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Comment;
 import com.bloatit.model.Group;
+import com.bloatit.model.Identifiable;
 import com.bloatit.model.JoinGroupInvitation;
 import com.bloatit.model.Member;
+import com.bloatit.model.Project;
+import com.bloatit.model.lists.GroupList;
+import com.bloatit.model.lists.ProjectList;
 
 public final class GroupManager {
 
@@ -38,5 +47,13 @@ public final class GroupManager {
 
     public static JoinGroupInvitation getInvitation(final Group group, final Member member) {
         return JoinGroupInvitation.create(DaoJoinGroupInvitation.getInvitation(group.getDao(), member.getDao()));
+    }
+
+    public static Group getGroupById(int id) {
+        return Group.create(DBRequests.getById(DaoGroup.class, id));
+    }
+    
+    public static PageIterable<Group> getGroups(){
+        return new GroupList(DBRequests.getAll(DaoGroup.class));
     }
 }
