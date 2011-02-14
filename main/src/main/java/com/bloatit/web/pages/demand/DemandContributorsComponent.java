@@ -28,6 +28,7 @@ import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableMo
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Demand;
+import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.DemandContributorsComponentUrl;
 
 @ParamContainer(value = "DemandContributorsComponent", isComponent = true)
@@ -77,6 +78,8 @@ public final class DemandContributorsComponent extends HtmlDiv {
 
                 HtmlTable table = new HtmlTable(new ContributionTableModel(demand.getContributions()));
                 contributorsBlock.add(table);
+
+                contributorsBlock.add(new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute")));
 
             } catch (UnauthorizedOperationException e) {
             }
