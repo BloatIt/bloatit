@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import junit.framework.TestCase;
 
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -55,10 +56,10 @@ public class DaoGroupMemberTest extends TestCase {
 
     public void testAddUserToGroup() {
         SessionManager.beginWorkUnit();
-        DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
-        DaoMember.getByLogin(yo.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
-        DaoMember.getByLogin(yo.getLogin()).addToGroup(DaoGroup.getByName(b217.getLogin()), false);
-        DaoMember.getByLogin(yo.getLogin()).addToGroup(DaoGroup.getByName(b216.getLogin()), false);
+        DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()));
+        DaoMember.getByLogin(yo.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()));
+        DaoMember.getByLogin(yo.getLogin()).addToGroup(DaoGroup.getByName(b217.getLogin()));
+        DaoMember.getByLogin(yo.getLogin()).addToGroup(DaoGroup.getByName(b216.getLogin()));
         SessionManager.endWorkUnitAndFlush();
     }
 
@@ -130,14 +131,47 @@ public class DaoGroupMemberTest extends TestCase {
     public void testDuplicateAdd() {
         SessionManager.beginWorkUnit();
 
-        DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
+        DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()));
         try {
-            DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()), false);
+            DaoMember.getByLogin(fred.getLogin()).addToGroup(DaoGroup.getByName(b219.getLogin()));
             fail();
         } catch (final Exception e) {
             assertTrue(true);
         }
 
+        SessionManager.endWorkUnitAndFlush();
+    }
+    
+    public void testAddRight(){
+        SessionManager.beginWorkUnit();
+        
+        DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
+        DaoGroup b219 = DaoGroup.getByName(this.b219.getLogin());
+        fred.addToGroup(b219);
+        fred.addGroupRight(b219, UserGroupRight.ADMIN);
+        fred.addGroupRight(b219, UserGroupRight.TREASURER);
+        if(!(fred.getGroupRights(b219).contains(UserGroupRight.ADMIN) &&  fred.getGroupRights(b219).contains(UserGroupRight.TREASURER)) ){
+            fail();
+        }
+        
+        SessionManager.endWorkUnitAndFlush();
+    }
+    
+    public void testRemoveRight(){
+        SessionManager.beginWorkUnit();
+        
+        DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
+        DaoGroup b219 = DaoGroup.getByName(this.b219.getLogin());
+        
+        fred.addToGroup(b219);
+        fred.addGroupRight(b219, UserGroupRight.ADMIN);
+        fred.addGroupRight(b219, UserGroupRight.TREASURER);
+        
+        fred.removeGroupRight(b219, UserGroupRight.ADMIN);
+        if(fred.getGroupRights(b219).contains(UserGroupRight.ADMIN) || !fred.getGroupRights(b219).contains(UserGroupRight.TREASURER)){
+            fail();
+        }
+        
         SessionManager.endWorkUnitAndFlush();
     }
 

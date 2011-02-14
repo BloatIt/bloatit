@@ -30,6 +30,7 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -41,20 +42,12 @@ import com.bloatit.framework.utils.PageIterable;
 public final class DaoGroup extends DaoActor {
 
     /**
-     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go in. The
-     * PROTECTED that everybody can see, but require an invitation to go in.
+     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go
+     * in. The PROTECTED that everybody can see, but require an invitation to go
+     * in.
      */
     public enum Right {
         PUBLIC, PROTECTED;
-    }
-
-    /**
-     * This is the status of a member in a Group. For now there is only ADMIN for a
-     * priviliged role, but we can imagine a lot of other things (for example a role for
-     * people who can "speak as")
-     */
-    public enum MemberStatus {
-        UNKNOWN, IN_GROUP, ADMIN
     }
 
     /**
@@ -66,7 +59,7 @@ public final class DaoGroup extends DaoActor {
 
     @Basic(optional = false)
     @Column(unique = true)
-    private String email;
+    private String contact;
 
     @OneToMany(mappedBy = "bloatitGroup")
     @Cascade(value = { CascadeType.ALL })
@@ -90,15 +83,18 @@ public final class DaoGroup extends DaoActor {
     /**
      * Create a group and add it into the db.
      * 
-     * @param name it the unique and non updatable name of the group.
-     * @param owner is the DaoMember creating this group.
-     * @param right is the type of group we are creating.
+     * @param name
+     *            it the unique and non updatable name of the group.
+     * @param owner
+     *            is the DaoMember creating this group.
+     * @param right
+     *            is the type of group we are creating.
      * @return the newly created group.
      * @throws HibernateException
      */
-    public static DaoGroup createAndPersiste(final String login, final String email, final Right right) {
+    public static DaoGroup createAndPersiste(final String login, final String contact, final Right right) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoGroup group = new DaoGroup(login, email, right);
+        final DaoGroup group = new DaoGroup(login, contact, right);
         try {
             session.save(group);
         } catch (final HibernateException e) {
@@ -111,17 +107,20 @@ public final class DaoGroup extends DaoActor {
     /**
      * Create a DaoGroup
      * 
-     * @param login is the name of the group. It must be unique.
-     * @param email ...
-     * @param right is the default right value for this group.
+     * @param login
+     *            is the name of the group. It must be unique.
+     * @param contact
+     *            ...
+     * @param right
+     *            is the default right value for this group.
      */
-    private DaoGroup(final String login, final String email, final Right right) {
+    private DaoGroup(final String login, final String contact, final Right right) {
         super(login);
-        if (right == null || email == null || email.isEmpty()) {
+        if (right == null || contact == null || contact.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.right = right;
-        this.email = email;
+        this.contact = contact;
     }
 
     public void setRight(final Right right) {
@@ -129,19 +128,21 @@ public final class DaoGroup extends DaoActor {
     }
 
     @Override
-    public void setEmail(final String email) {
-        this.email = email;
+    public void setContact(final String contact) {
+        this.contact = contact;
     }
 
     /**
      * Add a member in this group.
      * 
-     * @param member The member to add
-     * @param isAdmin true if the member need to have the right to administer this group.
-     * (This may change if the number of role change !)
+     * @param member
+     *            The member to add
+     * @param isAdmin
+     *            true if the member need to have the right to administer this
+     *            group. (This may change if the number of role change !)
      */
     public void addMember(final DaoMember member, final boolean isAdmin) {
-        groupMembership.add(new DaoGroupMembership(member, this, isAdmin));
+        groupMembership.add(new DaoGroupMembership(member, this));
     }
 
     /**
@@ -175,27 +176,32 @@ public final class DaoGroup extends DaoActor {
     /**
      * Finds if a member is in this group, and which is its status.
      * 
-     * @return {@value MemberStatus#UNKNOWN} if the member is not in this group.
+     * @return {@code null} if the member is not in this group, or a set
+     *         otherwise. <br />
+     *         Note, the returned set can be empty if the user is only a Member
      */
-    public MemberStatus getMemberStatus(final DaoMember member) {
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
+    public Set<UserGroupRight> getMemberStatus(final DaoMember member) {
+        final Query q = SessionManager
+                .getSessionFactory()
+                .getCurrentSession()
+                .createQuery(
+                        "select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
         q.setEntity("member", member);
         q.setEntity("group", this);
         final DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
         if (gm == null) {
-            return MemberStatus.UNKNOWN;
+            return null;
         }
-        if (gm.isAdmin()) {
-            return MemberStatus.ADMIN;
+        Set<UserGroupRight> rights = new HashSet<DaoGroupRight.UserGroupRight>();
+        for (DaoGroupRight groupRight : gm.getRights()) {
+            rights.add(groupRight.getUserStatus());
         }
-        return MemberStatus.IN_GROUP;
+        return rights;
     }
 
     @Override
-    public String getEmail() {
-        return email;
+    public String getContact() {
+        return contact;
     }
 
     /**
