@@ -25,7 +25,6 @@ import com.bloatit.model.lists.MemberList;
  * This is a group ... There are member in it.
  * 
  * @see DaoGroup
- * 
  * @author Thomas Guyard
  */
 public final class Group extends Actor<DaoGroup> {
@@ -41,8 +40,8 @@ public final class Group extends Actor<DaoGroup> {
         }
         return null;
     }
-    
-    public Group(String login, String email, Right right){
+
+    public Group(String login, String email, Right right) {
         super(DaoGroup.createAndPersiste(login, email, right));
     }
 
@@ -60,6 +59,10 @@ public final class Group extends Actor<DaoGroup> {
 
     public void setRight(final Right right) {
         getDao().setRight(right);
+    }
+
+    public boolean isPublic() {
+        return (getDao().getRight() == Right.PUBLIC);
     }
 
 }

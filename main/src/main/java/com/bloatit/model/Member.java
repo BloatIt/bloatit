@@ -19,15 +19,17 @@ package com.bloatit.model;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.Set;
 
-import com.bloatit.data.DaoGroup.MemberStatus;
 import com.bloatit.data.DaoGroup.Right;
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoJoinGroupInvitation;
 import com.bloatit.data.DaoJoinGroupInvitation.State;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.exceptions.MemberNotInGroupException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.Image;
@@ -47,7 +49,8 @@ public final class Member extends Actor<DaoMember> {
     /**
      * Create a new member using its Dao version.
      * 
-     * @param dao a DaoMember
+     * @param dao
+     *            a DaoMember
      * @return the new member or null if dao is null.
      */
     public static Member create(final DaoMember dao) {
@@ -71,11 +74,12 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * Tells if a user can access the group property. You have to unlock this Member using
-     * the {@link Member#authenticate(AuthToken)} method.
+     * Tells if a user can access the group property. You have to unlock this
+     * Member using the {@link Member#authenticate(AuthToken)} method.
      * 
-     * @param action can be read/write/delete. for example use READ to know if you can use
-     * {@link Member#getGroups()}.
+     * @param action
+     *            can be read/write/delete. for example use READ to know if you
+     *            can use {@link Member#getGroups()}.
      * @return true if you can use the method.
      */
     public boolean canAccessGroups(final Action action) {
@@ -83,12 +87,14 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To add a user into a public group, you have to make sure you can access the groups
-     * with the {@link Action#WRITE} action.
+     * To add a user into a public group, you have to make sure you can access
+     * the groups with the {@link Action#WRITE} action.
      * 
-     * @param group must be a public group.
-     * @throws UnauthorizedOperationException if the authenticated member do not have the
-     * right to use this methods.
+     * @param group
+     *            must be a public group.
+     * @throws UnauthorizedOperationException
+     *             if the authenticated member do not have the right to use this
+     *             methods.
      * @see Member#canAccessGroups(Action)
      */
     public void addToPublicGroup(final Group group) throws UnauthorizedOperationException {
@@ -96,15 +102,37 @@ public final class Member extends Actor<DaoMember> {
             throw new UnauthorizedOperationException(SpecialCode.GROUP_NOT_PUBLIC);
         }
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
-        getDao().addToGroup(group.getDao(), false);
+        getDao().addToGroup(group.getDao());
+    }
+
+    /**
+     * <p>
+     * Gives some new rights to a user in a groups
+     * </p>
+     * 
+     * @throws MemberNotInGroupException
+     *             when <code>this</code> is not part of <code>group</code>
+     * @throws UnauthorizedOperationException
+     *             if the authenticated user is not <code>ADMIN</code> of
+     *             <code>group</code>
+     */
+    public void addGroupRight(final Group group, UserGroupRight newRight) throws UnauthorizedOperationException, MemberNotInGroupException {
+        if (!this.isInGroup(group)) {
+            throw new MemberNotInGroupException();
+        }
+        
+        new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
+        getDao().addGroupRight(group.getDao(), newRight);
     }
 
     /**
      * Tells if a user can access the property "invite".
      * 
-     * @param group the group in which you want to invite somebody
-     * @param action WRITE for create a new invitation, DELETED to accept/refuse it, READ
-     * to list the invitations you have recieved.
+     * @param group
+     *            the group in which you want to invite somebody
+     * @param action
+     *            WRITE for create a new invitation, DELETED to accept/refuse
+     *            it, READ to list the invitations you have recieved.
      * @return true if you can invite/accept/refuse.
      */
     public boolean canInvite(final Group group, final Action action) {
@@ -112,11 +140,13 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To invite a member into a group you have to have the WRITE right on the "invite"
-     * property.
+     * To invite a member into a group you have to have the WRITE right on the
+     * "invite" property.
      * 
-     * @param member The member you want to invite
-     * @param group The group in which you invite a member.
+     * @param member
+     *            The member you want to invite
+     * @param group
+     *            The group in which you invite a member.
      * @throws UnauthorizedOperationException
      */
     public void invite(final Member member, final Group group) throws UnauthorizedOperationException {
@@ -125,7 +155,8 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * @param state can be PENDING, ACCEPTED or REFUSED
+     * @param state
+     *            can be PENDING, ACCEPTED or REFUSED
      * @return all the received invitation with the specified state.
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
@@ -133,7 +164,8 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * @param state can be PENDING, ACCEPTED or REFUSED
+     * @param state
+     *            can be PENDING, ACCEPTED or REFUSED
      * @return all the sent invitation with the specified state.
      */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
@@ -141,10 +173,11 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To accept an invitation you must have the DELETED right on the "invite" property.
-     * If the invitation is not in PENDING state then nothing is done.
+     * To accept an invitation you must have the DELETED right on the "invite"
+     * property. If the invitation is not in PENDING state then nothing is done.
      * 
-     * @param invitation the authenticate member must be receiver of the invitation.
+     * @param invitation
+     *            the authenticate member must be receiver of the invitation.
      * @throws UnauthorizedOperationException
      */
     public void acceptInvitation(final JoinGroupInvitation invitation) throws UnauthorizedOperationException {
@@ -156,10 +189,11 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To refuse an invitation you must have the DELETED right on the "invite" property.
-     * If the invitation is not in PENDING state then nothing is done.
+     * To refuse an invitation you must have the DELETED right on the "invite"
+     * property. If the invitation is not in PENDING state then nothing is done.
      * 
-     * @param invitation the authenticate member must be receiver of the invitation.
+     * @param invitation
+     *            the authenticate member must be receiver of the invitation.
      * @throws UnauthorizedOperationException
      */
     public void refuseInvitation(final JoinGroupInvitation invitation) throws UnauthorizedOperationException {
@@ -171,11 +205,12 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To remove this member from a group you have to have the DELETED right on the
-     * "group" property. If the member is not in the "group", nothing is done. (Although
-     * it should be considered as an error and will be logged)
+     * To remove this member from a group you have to have the DELETED right on
+     * the "group" property. If the member is not in the "group", nothing is
+     * done. (Although it should be considered as an error and will be logged)
      * 
-     * @param group is the group from which the user will be removed.
+     * @param group
+     *            is the group from which the user will be removed.
      * @throws UnauthorizedOperationException
      */
     public void removeFromGroup(final Group group) throws UnauthorizedOperationException {
@@ -184,7 +219,8 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To get the groups you have the have the READ right on the "group" property.
+     * To get the groups you have the have the READ right on the "group"
+     * property.
      * 
      * @return all the group in which this member is.
      * @throws UnauthorizedOperationException
@@ -294,7 +330,18 @@ public final class Member extends Actor<DaoMember> {
         return isInGroupUnprotected(group);
     }
 
-    protected MemberStatus getStatusUnprotected(final Group group) {
+    /**
+     * Returns the status of the member in a given <code>group</code>
+     * 
+     * @param group
+     *            the group in whoch we want to know member status
+     * @return a <code>Set</code> containing all the roles of the member for
+     *         <code>group</code> or <code>null</code> if the member is not part
+     *         of this group. <br />
+     *         Note the set can be empty if the member has no preset role
+     *         (standard member).
+     */
+    protected Set<UserGroupRight> getStatusUnprotected(final Group group) {
         return group.getDao().getMemberStatus(getDao());
     }
 
@@ -320,7 +367,7 @@ public final class Member extends Actor<DaoMember> {
 
     public String getActivationKey() {
         final DaoMember m = getDao();
-        final String digest = "" + m.getId() + m.getEmail() + m.getFullname() + m.getPassword();
+        final String digest = "" + m.getId() + m.getContact() + m.getFullname() + m.getPassword();
 
         return sha1(digest);
     }

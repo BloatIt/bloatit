@@ -18,8 +18,9 @@
 package com.bloatit.model;
 
 import java.util.EnumSet;
+import java.util.Set;
 
-import com.bloatit.data.DaoGroup.MemberStatus;
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
@@ -126,13 +127,13 @@ public class Unlockable implements UnlockableInterface {
         }
         final EnumSet<Role> roles = calculateRole(member.getLoginUnprotected());
         if (group != null) {
-            final MemberStatus status = token.getMember().getStatusUnprotected(group);
-            if (status == MemberStatus.ADMIN) {
-                roles.add(Role.GROUP_ADMIN);
-                roles.add(Role.IN_GROUP);
+            final Set<UserGroupRight> status = token.getMember().getStatusUnprotected(group);
+            if(status == null){
+                return roles;
             }
-            if (status == MemberStatus.IN_GROUP) {
-                roles.add(Role.IN_GROUP);
+            roles.add(Role.IN_GROUP);
+            if (status.contains(UserGroupRight.ADMIN)) {
+                roles.add(Role.GROUP_ADMIN);
             }
         }
         return roles;
