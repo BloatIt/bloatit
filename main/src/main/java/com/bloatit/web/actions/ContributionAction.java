@@ -72,7 +72,9 @@ public final class ContributionAction extends LoggedAction {
             targetIdea.addContribution(amount, comment);
             session.notifyGood(Context
                     .tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
-            return new DemandPageUrl(targetIdea);
+            DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
+            demandPageUrl.getDemandTabPaneUrl().setActiveTabKey("participations_tab");
+            return demandPageUrl;
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));
             session.addParameter(url.getAmountParameter());
