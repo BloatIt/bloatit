@@ -60,7 +60,7 @@ public class CreateTeamAction extends LoggedAction{
             // TODO save parameters
             throw new RedirectException(new CreateTeamPageUrl());
         }
-        Group newGroup = new Group(login, email, groupRight);
+        Group newGroup = new Group(login, email, groupRight, session.getAuthToken().getMember());
         
         return new TeamPageUrl(newGroup);
     }

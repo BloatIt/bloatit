@@ -2,6 +2,7 @@ package com.bloatit.data;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 /**
@@ -17,10 +18,11 @@ public class DaoGroupRight extends DaoIdentifiable {
     private DaoGroupMembership membership;
 
     @Basic(optional = false)
+    @Enumerated
     private UserGroupRight userStatus;
 
     public enum UserGroupRight {
-        MEMBER, LEADER, ADMIN, TREASURER, DEVELOPER, 
+        ADMIN, LEADER, MEMBER, TREASURER, DEVELOPER,
     }
 
     protected DaoGroupRight(DaoGroupMembership membership, UserGroupRight userStatus) {

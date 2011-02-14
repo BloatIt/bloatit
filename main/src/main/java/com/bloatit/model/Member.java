@@ -120,9 +120,32 @@ public final class Member extends Actor<DaoMember> {
         if (!this.isInGroup(group)) {
             throw new MemberNotInGroupException();
         }
-        
+
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
+        addGroupRightUnprotected(group, newRight);
+    }
+
+    /**
+     * Give some right to the user to a group without checking if the user can
+     * get these rights
+     * 
+     * @param group
+     *            the group to add rights to the user
+     * @param newRight
+     *            the new right to add
+     */
+    protected void addGroupRightUnprotected(Group group, UserGroupRight newRight) {
         getDao().addGroupRight(group.getDao(), newRight);
+    }
+
+    /**
+     * Adds a user to a group without checking if the group is Public or not
+     * 
+     * @param group
+     *            the group to which the user will be added
+     */
+    protected void addToGroupUnprotected(Group group) {
+        getDao().addToGroup(group.getDao());
     }
 
     /**

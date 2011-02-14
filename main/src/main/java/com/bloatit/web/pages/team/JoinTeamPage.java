@@ -1,12 +1,17 @@
 package com.bloatit.web.pages.team;
 
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Group;
 import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.JoinTeamPageUrl;
 
 @ParamContainer("team/join")
@@ -23,17 +28,29 @@ public class JoinTeamPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
-        return null;
+        HtmlDiv master = new HtmlDiv("padding_box");
+        
+        HtmlForm form = new HtmlForm(new JoinTeamActionUrl(targetTeam).urlString());
+        master.add(form);
+        
+        form.add(new HtmlSubmit(Context.tr("send")));
+        //HtmlTextArea justification = new HtmlTextArea("", rows, cols)
+        
+        return master;
     }
 
     @Override
     public String getRefusalReason() {
-        return null;
+        return Context.tr("You must be logged before you try to join a team.");
     }
 
     @Override
     protected String getPageTitle() {
-        return null;
+        if (targetTeam.isPublic()) {
+            return Context.tr("Join a team");
+        } else {
+            return Context.tr("Request to join a team");
+        }
     }
 
     @Override

@@ -8,12 +8,16 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlLink;
+import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.web.actions.JoinTeamAction;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -45,19 +49,24 @@ public class TeamPage extends MasterPage {
             HtmlTitleBlock title = new HtmlTitleBlock(targetTeam.getLogin(), 1);
             master.add(title);
 
-            if (targetTeam.isPublic()) {
-                title.addText("Join group");
-            } else {
-                title.addText("Send a request to join group");
+            if (!session.getAuthToken().getMember().isInGroup(targetTeam)) {
+                if (targetTeam.isPublic()) {
+                    HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this group"));
+                    title.add(joinLink);
+                } else {
+                    title.addText("Send a request to join group");
+                }
             }
 
             if (targetTeam.canAccessEmail(Action.READ)) {
                 title.addText("email : " + targetTeam.getEmail());
             }
 
+            HtmlList memberList = new HtmlList();
+            title.add(memberList);
             PageIterable<Member> members = targetTeam.getMembers();
             for (Member m : members) {
-                title.addText(m.getDisplayName());
+                memberList.add("Member: " + m.getDisplayName());
             }
 
         } catch (UnauthorizedOperationException e) {
