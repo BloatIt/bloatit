@@ -1,7 +1,6 @@
 ************************************
 *  Install and configure lighttpd  *
 ************************************
-
 Install lighttpd:
 apt-get install lighttpd
 
@@ -24,6 +23,7 @@ fastcgi.server = (
          "port" => 4000,
          "check-local" => "disable",
          "disable-time" => 0,
+         "allow-x-send-file" => "enable",
         )
     ))
 
@@ -36,12 +36,9 @@ Create a symbolic link of 'lighttpd/rewrite.lighttpd.conf' in '/etc/lighttpd/con
 cd /etc/lighttpd/conf-enabled/
 ln -s /home/fred/projets/bloatit/lighttpd/rewrite.lighttpd.conf
 
-
-
 **********************
 *  Restart lighttpd  *
 **********************
-
 Restart lighttpd config:
 service lighttpd restart
 
@@ -67,9 +64,9 @@ mail.from=
 mail.login=
 mail.password=
 
-************************************
-*  Configure internal mail server  *
-************************************
+*****************************************************
+*  Configure link to website documentation content  *
+*****************************************************
 Create file ~/.config/bloatit/web.properties
 Add inside the following content : 
 
