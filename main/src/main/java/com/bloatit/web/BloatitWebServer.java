@@ -10,6 +10,7 @@ import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateDemandAction;
+import com.bloatit.web.actions.CreateTeamAction;
 import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
@@ -43,6 +44,8 @@ import com.bloatit.web.pages.RegisterPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.demand.DemandPage;
+import com.bloatit.web.pages.team.CreateTeamPage;
+import com.bloatit.web.pages.team.TeamsPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
@@ -54,6 +57,8 @@ import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
+import com.bloatit.web.url.CreateTeamActionUrl;
+import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.DocumentationUrl;
@@ -79,6 +84,7 @@ import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
+import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
 import com.bloatit.web.url.UploadFileActionUrl;
 
@@ -156,7 +162,13 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(DocumentationUrl.getName())) {
             return new Documentation(new DocumentationUrl(params, session.getParameters()));
         }
-
+        if (pageCode.equals(TeamsPageUrl.getName())) {
+            return new TeamsPage(new TeamsPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(CreateTeamPageUrl.getName())) {
+            return new CreateTeamPage(new CreateTeamPageUrl(params, session.getParameters()));
+        }
+        
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
             return new LoginAction(new LoginActionUrl(params, session.getParameters()));
@@ -208,6 +220,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(AdministrationActionUrl.getName())) {
             return new AdministrationAction(new AdministrationActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(CreateTeamActionUrl.getName())) {
+            return new CreateTeamAction(new CreateTeamActionUrl(params, session.getParameters()));
         }
 
         // Resource page
