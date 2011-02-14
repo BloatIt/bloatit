@@ -66,7 +66,7 @@ public class Documentation extends MasterPage {
             throw new FatalErrorException("Please configure your documentation dir : create " + ConfigurationManager.ETC_DIR
                     + "/web.properties and add inside the property 'bloatit.documentation.dir=<value>'");
         }
-        HtmlDiv master = new HtmlDiv();
+        HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
 
         FileInputStream fis;
@@ -93,10 +93,10 @@ public class Documentation extends MasterPage {
                 String markDownContent = new String(b);
                 HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(markDownContent);
                 cache.put(mdm, new MarkdownDocumentationContent(new Date(), content.getRendereredContent()));
-                master.add( content);
+                master.add(content);
             } else {
                 Log.web().trace("Using cache for documentation file " + docTarget);
-                master.add( new HtmlMarkdownRenderer(mdc.htmlString, true));
+                master.add(new HtmlMarkdownRenderer(mdc.htmlString, true));
             }
 
         } catch (FileNotFoundException e) {
@@ -111,15 +111,18 @@ public class Documentation extends MasterPage {
         } catch (IOException e) {
             throw new FatalErrorException("An error occured while parsing the documentation file " + docTarget, e);
         }
-        
+
     }
 
-
+    @Override
+    protected String getPageTitle() {
+        return Context.tr("Elveos documentation: {0}", docTarget);
+    }
 
     /**
      * Nested class used as a key to cache parsed content
      */
-    protected class MarkdownDocumentationMarker {
+    private class MarkdownDocumentationMarker {
         public String name;
         public String lang;
 
@@ -164,7 +167,7 @@ public class Documentation extends MasterPage {
     /**
      * Nested class used as a MapEntry.value to cache parsed markdown content
      */
-    protected class MarkdownDocumentationContent {
+    private class MarkdownDocumentationContent {
         public Date savedDate;
         public String htmlString;
 
@@ -173,10 +176,5 @@ public class Documentation extends MasterPage {
             this.savedDate = savedDate;
             this.htmlString = htmlString;
         }
-    }
-
-    @Override
-    protected String getPageTitle() {
-        return Context.tr("Elveos documentation: {0}", docTarget);
     }
 }

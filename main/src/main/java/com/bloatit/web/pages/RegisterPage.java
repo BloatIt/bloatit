@@ -33,6 +33,11 @@ import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 
+/**
+ * <p>
+ * Page used by users to create their bloatit accounts
+ * </p>
+ */
 @ParamContainer("member/create")
 public final class RegisterPage extends MasterPage {
 
@@ -52,46 +57,42 @@ public final class RegisterPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
+        final HtmlDiv master = new HtmlDiv("padding_box");
+        add(master);
 
-        final HtmlDiv box = new HtmlDiv("padding_box");
-        {
+        final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Register"), 1);
+        RegisterActionUrl registerActionUrl = new RegisterActionUrl();
+        final HtmlForm form = new HtmlForm(registerActionUrl.urlString());
+        container.add(form);
 
-            final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Register"), 1);
-            RegisterActionUrl registerActionUrl = new RegisterActionUrl();
-            final HtmlForm form = new HtmlForm(registerActionUrl.urlString());
-            container.add(form);
+        FormFieldData<String> loginFieldData = registerActionUrl.getLoginParameter().createFormFieldData();
+        final HtmlTextField loginInput = new HtmlTextField(loginFieldData, Context.trc("Login (noun)", "Login"));
+        form.add(loginInput);
 
-            FormFieldData<String> loginFieldData = registerActionUrl.getLoginParameter().createFormFieldData();
-            final HtmlTextField loginInput = new HtmlTextField(loginFieldData, Context.trc("Login (noun)", "Login"));
-            form.add(loginInput);
+        FormFieldData<String> passwordFieldData = registerActionUrl.getPasswordParameter().createFormFieldData();
+        final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData, Context.tr("Password"));
+        form.add(passwordInput);
 
-            FormFieldData<String> passwordFieldData = registerActionUrl.getPasswordParameter().createFormFieldData();
-            final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData, Context.tr("Password"));
-            form.add(passwordInput);
+        FormFieldData<String> emailFieldData = registerActionUrl.getEmailParameter().createFormFieldData();
+        final HtmlTextField emailInput = new HtmlTextField(emailFieldData, Context.tr("Email"));
+        form.add(emailInput);
 
-            FormFieldData<String> emailFieldData = registerActionUrl.getEmailParameter().createFormFieldData();
-            final HtmlTextField emailInput = new HtmlTextField(emailFieldData, Context.tr("Email"));
-            form.add(emailInput);
-
-            final HtmlDropDown<Country> countryInput = new HtmlDropDown<Country>(RegisterAction.COUNTRY_CODE, Context.tr("Country"));
-            for (final Country entry : Country.getAvailableCountries()) {
-                countryInput.add(entry);
-            }
-            form.add(countryInput);
-
-            final HtmlDropDown<LanguageDescriptor> langInput = new HtmlDropDown<LanguageDescriptor>(RegisterAction.LANGUAGE_CODE,
-                    Context.tr("Language"));
-            for (final Entry<String, LanguageDescriptor> entry : Localizator.getAvailableLanguages().entrySet()) {
-                langInput.add(entry.getValue());
-            }
-            form.add(langInput);
-
-            final HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));
-            form.add(button);
-
-            box.add(container);
+        final HtmlDropDown<Country> countryInput = new HtmlDropDown<Country>(RegisterAction.COUNTRY_CODE, Context.tr("Country"));
+        for (final Country entry : Country.getAvailableCountries()) {
+            countryInput.add(entry);
         }
-        add(box);
+        form.add(countryInput);
+
+        final HtmlDropDown<LanguageDescriptor> langInput = new HtmlDropDown<LanguageDescriptor>(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
+        for (final Entry<String, LanguageDescriptor> entry : Localizator.getAvailableLanguages().entrySet()) {
+            langInput.add(entry.getValue());
+        }
+        form.add(langInput);
+
+        final HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));
+        form.add(button);
+
+        master.add(container);
     }
 
     @Override

@@ -82,12 +82,14 @@ public class RegisterAction extends Action {
 
         final Locale locale = new Locale(lang, country);
 
-        //TODO verify duplicate for avoid crashes
+        // TODO verify duplicate to avoid crashes
         final Member m = new Member(login, password, email, locale);
         String activationKey = m.getActivationKey();
         MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
 
-        String content = Context.tr("Your Elveos.org account ''{0}'' was created. Please click on the following link to activate your account: \n\n {1}", login, url.externalUrlString(Context.getHeader()));
+        String content = Context.tr(
+                "Your Elveos.org account ''{0}'' was created. Please click on the following link to activate your account: \n\n {1}", login,
+                url.externalUrlString(Context.getHeader()));
 
         Mail activationMail = new Mail(email, Context.tr("Elveos.org account activation"), content, "member-docreate");
 
