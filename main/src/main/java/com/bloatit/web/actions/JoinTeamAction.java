@@ -3,6 +3,7 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.web.url.JoinTeamActionUrl;
 
 @ParamContainer("team/dojoin")
 public class JoinTeamAction extends LoggedAction{
