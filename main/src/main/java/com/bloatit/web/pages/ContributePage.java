@@ -65,10 +65,12 @@ public final class ContributePage extends LoggedPage {
         // Input field : choose amount
         FormFieldData<BigDecimal> amountFieldData = formActionUrl.getAmountParameter().createFormFieldData();
         final HtmlMoneyField contribField = new HtmlMoneyField(amountFieldData, tr("Choose amount: "));
+        contribField.setComment(Context.tr("The minimun is 1€. Don't use cents."));
 
         // Input field : comment
         FormFieldData<String> commentFieldData = formActionUrl.getCommentParameter().createFormFieldData();
-        final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment (optional) : "), 10, 60);
+        final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment: "), 10, 60);
+        commentField.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list."));
 
         final HtmlSubmit submitButton = new HtmlSubmit(tr("Contribute"));
 
