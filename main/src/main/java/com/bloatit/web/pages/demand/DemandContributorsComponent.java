@@ -28,14 +28,14 @@ import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableMo
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Demand;
-import com.bloatit.web.url.IdeaContributorsComponentUrl;
+import com.bloatit.web.url.DemandContributorsComponentUrl;
 
 @ParamContainer(value = "DemandContributorsComponent", isComponent = true)
-public final class IdeaContributorsComponent extends HtmlDiv {
+public final class DemandContributorsComponent extends HtmlDiv {
 
     private final Demand demand;
 
-    public IdeaContributorsComponent(final IdeaContributorsComponentUrl url, final Demand demand) {
+    public DemandContributorsComponent(final DemandContributorsComponentUrl url, final Demand demand) {
         super();
         this.demand = demand;
         try {
@@ -47,7 +47,7 @@ public final class IdeaContributorsComponent extends HtmlDiv {
 
     }
 
-    protected HtmlElement produce(IdeaContributorsComponentUrl url) {
+    protected HtmlElement produce(DemandContributorsComponentUrl url) {
         final HtmlDiv contributorsBlock = new HtmlDiv("contribution_block");
         {
 
