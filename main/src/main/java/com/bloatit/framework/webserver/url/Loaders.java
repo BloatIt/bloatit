@@ -13,6 +13,7 @@ import com.bloatit.framework.webserver.annotations.Loader;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Demand;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Group;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.KudosableInterface;
@@ -22,6 +23,7 @@ import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.managers.GroupManager;
 import com.bloatit.model.managers.KudosableManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.ProjectManager;
@@ -90,6 +92,8 @@ public final class Loaders {
             return (Loader<T>) new ToProject();
         } else if (theClass.equals(FileMetadata.class)) {
             return (Loader<T>) new ToFileMetadata();
+        } else if (theClass.equals(Group.class)) {
+            return (Loader<T>) new ToGroup();
         }
         throw new ConversionErrorException("Cannot find a convertion class for: " + theClass);
     }
@@ -286,6 +290,13 @@ public final class Loaders {
         @Override
         public Identifiable<?> doFromString(int i) {
             return CommentManager.getCommentById(i);
+        }
+    }
+    
+    private static class ToGroup extends ToIdentifiable {
+        @Override
+        public Identifiable<?> doFromString(int i) {
+            return GroupManager.getGroupById(i);
         }
     }
 }

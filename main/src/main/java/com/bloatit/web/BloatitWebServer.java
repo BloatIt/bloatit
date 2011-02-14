@@ -45,6 +45,7 @@ import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.demand.DemandPage;
 import com.bloatit.web.pages.team.CreateTeamPage;
+import com.bloatit.web.pages.team.TeamPage;
 import com.bloatit.web.pages.team.TeamsPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
@@ -84,6 +85,7 @@ import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
+import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
 import com.bloatit.web.url.UploadFileActionUrl;
@@ -165,9 +167,13 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(TeamsPageUrl.getName())) {
             return new TeamsPage(new TeamsPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(TeamPageUrl.getName())) {
+            return new TeamPage(new TeamPageUrl(params, session.getParameters()));
+        }
         if (pageCode.equals(CreateTeamPageUrl.getName())) {
             return new CreateTeamPage(new CreateTeamPageUrl(params, session.getParameters()));
         }
+        
         
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {

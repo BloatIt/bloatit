@@ -41,6 +41,10 @@ public final class Group extends Actor<DaoGroup> {
         }
         return null;
     }
+    
+    public Group(String login, String email, Right right){
+        super(DaoGroup.createAndPersiste(login, email, right));
+    }
 
     private Group(final DaoGroup dao) {
         super(dao);
