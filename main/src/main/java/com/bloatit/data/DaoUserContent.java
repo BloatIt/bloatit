@@ -33,7 +33,6 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.queries.NullCollection;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -67,8 +66,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     @Basic(optional = false)
     private Boolean isDeleted;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private final Set<DaoFileMetadata> files = new HashSet<DaoFileMetadata>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private final Set<DaoFileMetadata> files = new HashSet<DaoFileMetadata>();
 
     /**
      * Initialize the creation date to now.
@@ -104,10 +103,9 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      */
     public final PageIterable<DaoFileMetadata> getFiles() {
         final Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-//        final Query filesQuery = currentSession.createFilter(files, "where relatedContent = :this").setEntity("this", this);
-//        final Query filesSizeQuery = currentSession.createFilter(files, "select count(*) where relatedContent = :this").setEntity("this", this);
-//        return new QueryCollection<DaoFileMetadata>(filesQuery, filesSizeQuery);
-        return new NullCollection<DaoFileMetadata>();
+        final Query filesQuery = currentSession.createFilter(files, "where relatedContent = :this").setEntity("this", this);
+        final Query filesSizeQuery = currentSession.createFilter(files, "select count(*) where relatedContent = :this").setEntity("this", this);
+        return new QueryCollection<DaoFileMetadata>(filesQuery, filesSizeQuery);
     }
 
     public Boolean isDeleted() {
@@ -126,7 +124,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     }
 
     public void addFile(final DaoFileMetadata daoFileMetadata) {
-//        this.files.add(daoFileMetadata);
+        this.files.add(daoFileMetadata);
     }
 
     // ======================================================================

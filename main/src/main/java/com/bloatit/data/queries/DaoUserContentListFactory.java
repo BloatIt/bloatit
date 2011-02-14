@@ -74,11 +74,11 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
     }
 
     public void withoutFile() {
-//        add(Restrictions.isEmpty(FILES));
+        add(Restrictions.isEmpty(FILES));
     }
 
     public void withFile() {
-//        add(Restrictions.isNotEmpty(FILES));
+        add(Restrictions.isNotEmpty(FILES));
     }
 
     public void withAnyGroup() {
