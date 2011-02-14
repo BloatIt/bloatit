@@ -105,6 +105,10 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
 
+        if (getDao().isPopularityLocked()) {
+            errors.add(SpecialCode.KUDOSABLE_LOCKED);
+        }
+
         if (getAuthTokenUnprotected() == null) {
             errors.add(SpecialCode.AUTHENTICATION_NEEDED);
             // Stop tests here: the other tests need an AuthToken
@@ -112,7 +116,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         }
 
         if (getAuthTokenUnprotected().getMember().getRole() == Role.ADMIN) {
-            // Stop here. The member is an admin. He must be able to kudos everything.
+            // Stop here. The member is an admin. He must be able to kudos
+            // everything.
             return errors;
         }
 
@@ -227,44 +232,44 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation limits. Default
-     * value is {@value #TURN_PENDING}.
+     * You can redefine me if you want to customize the state calculation
+     * limits. Default value is {@value #TURN_PENDING}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     * {@link PopularityState#PENDING} state.
+     *         {@link PopularityState#PENDING} state.
      */
     protected int turnPending() {
         return TURN_PENDING;
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation limits. Default
-     * value is {@value #TURN_VALID}.
+     * You can redefine me if you want to customize the state calculation
+     * limits. Default value is {@value #TURN_VALID}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     * {@link PopularityState#VALIDATED} state.
+     *         {@link PopularityState#VALIDATED} state.
      */
     protected int turnValid() {
         return TURN_VALID;
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation limits. Default
-     * value is {@value #TURN_REJECTED}.
+     * You can redefine me if you want to customize the state calculation
+     * limits. Default value is {@value #TURN_REJECTED}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     * {@link PopularityState#REJECTED} state.
+     *         {@link PopularityState#REJECTED} state.
      */
     protected int turnRejected() {
         return TURN_REJECTED;
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation limits. Default
-     * value is {@value #TURN_HIDDEN}.
+     * You can redefine me if you want to customize the state calculation
+     * limits. Default value is {@value #TURN_HIDDEN}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     * {@link PopularityState#HIDDEN} state.
+     *         {@link PopularityState#HIDDEN} state.
      */
     protected int turnHidden() {
         return TURN_HIDDEN;
@@ -287,21 +292,24 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     /**
-     * This method is called each time this Kudosable change its state to pending.
+     * This method is called each time this Kudosable change its state to
+     * pending.
      */
     protected void notifyPending() {
         // Implement me if you wish
     }
 
     /**
-     * This method is called each time this Kudosable change its state to rejected.
+     * This method is called each time this Kudosable change its state to
+     * rejected.
      */
     protected void notifyRejected() {
         // Implement me if you wish
     }
 
     /**
-     * This method is called each time this Kudosable change its state to Hidden.
+     * This method is called each time this Kudosable change its state to
+     * Hidden.
      */
     protected void notifyHidden() {
         // Implement me if you wish

@@ -153,7 +153,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * This method is used only in the authentication process. You should never used it
      * anywhere else.
      * 
-     * @see getActor;
+     * @see #getActor()
      */
     protected final Actor<?> getActorUnprotected() {
         if (getDao().getActor().getClass() == DaoMember.class) {

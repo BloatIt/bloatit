@@ -196,7 +196,7 @@ public final class Loaders {
     private static class ToBoolean extends Loader<Boolean> {
         @Override
         public Boolean fromString(final String data) {
-            return Boolean.valueOf(data);
+            return Boolean.valueOf(data) || data.equals("on");
         }
     }
 

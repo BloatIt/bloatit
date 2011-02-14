@@ -143,7 +143,7 @@ public final class DBRequests {
      * @param <T>
      * @param persistant
      * @param id
-     * @return
+     * @return the persistent object that has a id equals to <code>id</code>, or null if non existing.
      */
     @SuppressWarnings("unchecked")
     public static <T> T getById(final Class<T> persistant, final Integer id) {

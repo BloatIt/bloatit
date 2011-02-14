@@ -26,7 +26,7 @@ import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.SessionManager;
 
-class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiableListFactory<T> {
+public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiableListFactory<T> {
 
     private static final String MEMBER = "member";
     private static final String FILES = "files";
@@ -45,7 +45,7 @@ class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiabl
         add(Projections.groupProperty(MEMBER));
     }
 
-    public void groupByAsGroup(Order order) {
+    public void groupByAsGroup() {
         add(Projections.groupProperty(AS_GROUP));
     }
 
@@ -65,20 +65,20 @@ class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiabl
         }
     }
 
-    public void onlyDeleted() {
-        add(Restrictions.eq(IS_DELETED, false));
-    }
-
-    public void onlyNonDeleted() {
+    public void deletedOnly() {
         add(Restrictions.eq(IS_DELETED, true));
     }
 
+    public void nonDeletedOnly() {
+        add(Restrictions.eq(IS_DELETED, false));
+    }
+
     public void withoutFile() {
-        add(Restrictions.isEmpty(FILES));
+//        add(Restrictions.isEmpty(FILES));
     }
 
     public void withFile() {
-        add(Restrictions.isNotEmpty(FILES));
+//        add(Restrictions.isNotEmpty(FILES));
     }
 
     public void withAnyGroup() {

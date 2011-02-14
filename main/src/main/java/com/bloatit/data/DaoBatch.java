@@ -235,7 +235,7 @@ public final class DaoBatch extends DaoIdentifiable {
     /**
      * You can validate a batch after its release and when the bugs requirement are done.
      * 
-     * @return
+     * @return true if an admin should validate this Batch part. False otherwise.
      */
     public boolean shouldValidatePart(final Level level) {
         if (validationPeriodFinished() && getNonResolvedBugs(level).size() == 0) {
