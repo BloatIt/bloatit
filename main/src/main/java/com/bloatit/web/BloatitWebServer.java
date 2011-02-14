@@ -173,8 +173,10 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(CreateTeamPageUrl.getName())) {
             return new CreateTeamPage(new CreateTeamPageUrl(params, session.getParameters()));
         }
-        
-        
+        if (pageCode.equals(JoinTeamPageUrl.getName())) {
+            return new JoinTeamPage(new JoinTeamPageUrl(params, session.getParameters()));
+        }
+
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
             return new LoginAction(new LoginActionUrl(params, session.getParameters()));
@@ -229,6 +231,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(CreateTeamActionUrl.getName())) {
             return new CreateTeamAction(new CreateTeamActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(JoinTeamActionUrl.getName())) {
+            return new JoinTeamAction(new JoinTeamActionUrl(params, session.getParameters()));
         }
 
         // Resource page

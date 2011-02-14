@@ -2,6 +2,7 @@ package com.bloatit.web.pages.team;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -10,6 +11,8 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Group;
+import com.bloatit.model.Member;
+import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -21,7 +24,7 @@ import com.bloatit.web.url.TeamPageUrl;
 @ParamContainer("team")
 public class TeamPage extends MasterPage {
     private TeamPageUrl url;
-    
+
     @RequestParam(level = Level.ERROR)
     private Group targetTeam;
 
@@ -35,14 +38,28 @@ public class TeamPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
-        
+
+        targetTeam.authenticate(session.getAuthToken());
+
         try {
             HtmlTitleBlock title = new HtmlTitleBlock(targetTeam.getLogin(), 1);
             master.add(title);
-            
-            // TODO
-            title.addText("email : " + targetTeam.getEmail());
-            
+
+            if (targetTeam.isPublic()) {
+                title.addText("Join group");
+            } else {
+                title.addText("Send a request to join group");
+            }
+
+            if (targetTeam.canAccessEmail(Action.READ)) {
+                title.addText("email : " + targetTeam.getEmail());
+            }
+
+            PageIterable<Member> members = targetTeam.getMembers();
+            for (Member m : members) {
+                title.addText(m.getDisplayName());
+            }
+
         } catch (UnauthorizedOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
