@@ -39,6 +39,11 @@ public class UnauthorizedOperationException extends Exception {
          * You try to (un)kudos a kudosable that has already been (un)kudosed by you.
          */
         ALREADY_VOTED,
+        
+        /**
+         * You try to (un)kudos a locked kudosable.
+         */
+        KUDOSABLE_LOCKED,
 
         /**
          * Influence too low to unkudos a kudosable
@@ -80,7 +85,12 @@ public class UnauthorizedOperationException extends Exception {
         /**
          * You try to vote but you are the author
          */
-        OWNED_BY_ME
+        OWNED_BY_ME,
+        
+        /**
+         * You tried to do an action reserved for the admin.
+         */
+        ADMIN_ONLY
 
     }
 

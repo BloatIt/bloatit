@@ -40,7 +40,9 @@ public final class TransactionList extends ListBinder<Transaction, DaoTransactio
     /*
      * (non-Javadoc)
      * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Transaction> createFromDaoIterator(final Iterator<DaoTransaction> dao) {
@@ -73,13 +75,13 @@ public final class TransactionList extends ListBinder<Transaction, DaoTransactio
         /*
          * (non-Javadoc)
          * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Transaction createFromDao(final DaoTransaction dao) {
             return Transaction.create(dao);
         }
-
     }
-
 }

@@ -108,7 +108,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         return new QueryCollection<DaoFileMetadata>(filesQuery, filesSizeQuery);
     }
 
-    public Boolean getIsDeleted() {
+    public Boolean isDeleted() {
         return isDeleted;
     }
 

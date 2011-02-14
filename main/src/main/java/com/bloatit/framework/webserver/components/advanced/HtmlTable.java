@@ -5,13 +5,13 @@ import com.bloatit.framework.webserver.components.HtmlGenericElement;
 public class HtmlTable extends HtmlGenericElement {
 
     private final HtmlTableModel model;
-    private final int colomnCount;
+    private final int columnCount;
 
     public HtmlTable(HtmlTableModel model) {
         super("table");
         this.model = model;
 
-        colomnCount = model.getColumnCount();
+        columnCount = model.getColumnCount();
 
         generateHeader();
         generateBody();
@@ -22,9 +22,12 @@ public class HtmlTable extends HtmlGenericElement {
         while (model.next()) {
             HtmlGenericElement tr = new HtmlGenericElement("tr");
 
-            for (int i = 0; i < colomnCount; i++) {
+            for (int i = 0; i < columnCount; i++) {
                 HtmlGenericElement td = new HtmlGenericElement("td");
                 td.addText(model.getBody(i));
+                if(model.getColumnCss(i) != null) {
+                    td.setCssClass(model.getColumnCss(i));
+                }
                 tr.add(td);
             }
             add(tr);
@@ -34,7 +37,7 @@ public class HtmlTable extends HtmlGenericElement {
     private void generateHeader() {
         HtmlGenericElement tr = new HtmlGenericElement("tr");
 
-        for (int i = 0; i < colomnCount; i++) {
+        for (int i = 0; i < columnCount; i++) {
             HtmlGenericElement th = new HtmlGenericElement("th");
             th.addText(model.getHeader(i));
             tr.add(th);
@@ -42,15 +45,27 @@ public class HtmlTable extends HtmlGenericElement {
         add(tr);
     }
 
-    public interface HtmlTableModel {
+    public static abstract class HtmlTableModel {
 
-        int getColumnCount();
 
-        String getHeader(int column);
 
-        String getBody(int column);
+        public abstract int getColumnCount();
 
-        boolean next();
+        public abstract String getHeader(int column);
+
+        public abstract String getBody(int column);
+
+        public abstract boolean next();
+
+        public boolean hasHeader() {
+            return true;
+        }
+
+        public String getColumnCss(int column) {
+            return null;
+        }
+
+
     }
 
 }

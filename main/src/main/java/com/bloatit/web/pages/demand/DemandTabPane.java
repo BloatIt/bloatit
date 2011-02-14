@@ -42,7 +42,7 @@ public final class DemandTabPane extends HtmlPageComponent {
      * Useful for Url generation Do not delete
      */
     @SuppressWarnings("unused")
-    private IdeaContributorsComponent contribution;
+    private DemandContributorsComponent contribution;
 
     public DemandTabPane(final DemandTabPaneUrl url, final Demand demand) {
         super();
@@ -67,7 +67,7 @@ public final class DemandTabPane extends HtmlPageComponent {
             tabPane.addTab(new HtmlTab(Context.tr("Participations ({0})", demand.getContributions().size()), "participations_tab") {
                 @Override
                 public HtmlNode generateBody() {
-                    return new IdeaContributorsComponent(url.getContributionUrl(), demand);
+                    return new DemandContributorsComponent(url.getContributionUrl(), demand);
                 }
             });
         } catch (final UnauthorizedOperationException e1) {

@@ -82,13 +82,9 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Create a group and add it into the db.
-     * 
-     * @param name
-     *            it the unique and non updatable name of the group.
-     * @param owner
-     *            is the DaoMember creating this group.
-     * @param right
-     *            is the type of group we are creating.
+     * @param login it the unique and non updatable name of the group.
+     * @param email is the email to contact this group (Unique).
+     * @param right is the type of group we are creating (Public or Private).
      * @return the newly created group.
      * @throws HibernateException
      */

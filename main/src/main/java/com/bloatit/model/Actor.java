@@ -42,7 +42,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * if you can use {@link Member#getGroups()}.
      * @return true if you can access the parameter <code>Email</code>.
      * @see Actor#getEmail()
-     * @see Actor#setEmail()
+     * @see Actor#setEmail(String)
      * @see Actor#authenticate(AuthToken)
      */
     public final boolean canAccessEmail(final Action action) {
@@ -60,7 +60,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * @see DaoActor#setEmail()
+     * @see DaoActor#setEmail(String)
      * @throws UnauthorizedOperationException if you don't have the <code>WRITE</code>
      * right on the <code>Email</code> property
      */

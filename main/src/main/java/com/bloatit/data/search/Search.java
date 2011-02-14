@@ -25,27 +25,29 @@ public abstract class Search<T> {
     private final List<Pair<String, String>> filteredTerms = new ArrayList<Pair<String, String>>();
     private Sort sort = null;
 
+    /**
+     * Create a search on the db using Hibernate Search and Lucene
+     * 
+     * <pre>
+     * DBRequests.search(DaoDemand.class, new String[] { &quot;description.translations.title&quot;,
+     *                                                  &quot;description.translations.text&quot;,
+     *                                                  &quot;offers.description.translations.title&quot; }, &quot;Search string&quot;);
+     * </pre>
+     * 
+     * @param persistent
+     *            is the class object associated with T.
+     * @param fields
+     *            is a list of field on which we are doing the search. These
+     *            field are relative to the persistent class.
+     * @param searchStr
+     *            is the string we are looking for.
+     */
     protected void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
         this.persistent = persistent;
         this.fields = fields;
         this.searchStr = searchStr;
     }
 
-    /**
-     * Create a search on the db using Hibernate Search and Lucene
-     *
-     * <pre>
-     * DBRequests.search(DaoDemand.class, new String[] { &quot;description.translations.title&quot;, &quot;description.translations.text&quot;,
-     *         &quot;offers.description.translations.title&quot; }, &quot;Search string&quot;);
-     * </pre>
-     *
-     * @param <T> is a persistent class (something like Dao...)
-     * @param persistent is the class object associated with T.
-     * @param fields is a list of field on which we are doing the search. These field are
-     *        relative to the persistent class.
-     * @param searchStr is the string we are looking for.
-     * @return a PageIterable with the search results.
-     */
     protected final PageIterable<T> doSearch() {
         prepareSearch();
 

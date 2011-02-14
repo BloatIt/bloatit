@@ -125,7 +125,7 @@ public final class DaoDemand extends DaoKudosable {
     // ======================================================================
 
     /**
-     * @see #DaoDemand(DaoMember, DaoDescription)
+     * @see #DaoDemand(DaoMember, DaoDescription, DaoProject)
      */
     public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description, final DaoProject project) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -209,7 +209,7 @@ public final class DaoDemand extends DaoKudosable {
     /**
      * delete offer from this demand AND FROM DB !
      * 
-     * @param Offer the offer we want to delete.
+     * @param offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
         offers.remove(offer);
@@ -319,7 +319,7 @@ public final class DaoDemand extends DaoKudosable {
      * Use a HQL query to get the first level comments as a PageIterable collection
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, ""),
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "order by creationDate asc"),
                                                SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
     }
 

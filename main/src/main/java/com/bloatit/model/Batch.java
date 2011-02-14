@@ -84,14 +84,14 @@ public class Batch extends Identifiable<DaoBatch> {
     }
 
     /**
-     * @see com.bloatit.data.DaoBatch#validate()
+     * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
     public boolean validate() {
         return getDao().validate(false);
     }
 
     /**
-     * @see com.bloatit.data.DaoBatch#validate()
+     * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
     public boolean forceValidate() {
         return getDao().validate(true);
