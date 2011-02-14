@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.math.BigDecimal;
@@ -26,6 +42,7 @@ import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.data.search.DaoDemandSearchFilterFactory;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -125,7 +142,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     *
+     * 
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -159,7 +176,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     *
+     * 
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -191,7 +208,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     *
+     * 
      * @param Offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -234,7 +251,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Called by contribution when canceled.
-     *
+     * 
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -262,7 +279,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     *
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -273,8 +290,11 @@ public final class DaoDemand extends DaoKudosable {
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
-            return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this).setParameter("state", DaoKudosable.State.PENDING)
-                    .iterate().next();
+            return (DaoOffer) SessionManager.createQuery(queryString)
+                                            .setEntity("this", this)
+                                            .setParameter("state", DaoKudosable.PopularityState.PENDING)
+                                            .iterate()
+                                            .next();
         } catch (final NoSuchElementException e) {
             return null;
         }
@@ -299,8 +319,8 @@ public final class DaoDemand extends DaoKudosable {
      * Use a HQL query to get the first level comments as a PageIterable collection
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, ""), SessionManager
-                .getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, ""),
+                                               SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
     }
 
     public DaoOffer getSelectedOffer() {
@@ -316,7 +336,8 @@ public final class DaoDemand extends DaoKudosable {
      */
     public BigDecimal getContributionMin() {
         return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
-                .setEntity("this", this).uniqueResult();
+                                          .setEntity("this", this)
+                                          .uniqueResult();
     }
 
     /**
@@ -324,7 +345,8 @@ public final class DaoDemand extends DaoKudosable {
      */
     public BigDecimal getContributionMax() {
         return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")
-                .setEntity("this", this).uniqueResult();
+                                          .setEntity("this", this)
+                                          .uniqueResult();
     }
 
     public Date getValidationDate() {
@@ -352,6 +374,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -364,6 +387,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

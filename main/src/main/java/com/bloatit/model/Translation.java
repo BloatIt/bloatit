@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.model;
 
 import java.util.Locale;
@@ -37,11 +53,11 @@ public final class Translation extends Kudosable<DaoTranslation> {
 
     /**
      * Smart cut the text, add a "…" char, and return it.
-     *
+     * 
      * @param sizeMax is the maximum size the returned text can be.
      * @param variance is how far we are looking for the punctuation mark to cut the text.
      * @return a cut version of the text, find a point or a punctuation mark to cut it at
-     *         the best position possible.
+     * the best position possible.
      */
     public String getShortText(final int sizeMax, final int variance) {
         if (variance < 0) {

@@ -329,12 +329,12 @@ msgstr "Description"
 #: com/bloatit/web/pages/demand/DemandTabPane.java:67
 #, java-format
 msgid "Participations ({0})"
-msgstr "Participations ({0})"
+msgstr "Participations ({0})"
 
 #: com/bloatit/web/pages/demand/DemandTabPane.java:79
 #, java-format
 msgid "Offers ({0})"
-msgstr "Offres ({0})"
+msgstr "Offres ({0})"
 
 #: com/bloatit/web/pages/demand/DemandTabPane.java:90
 msgid "Details"
@@ -362,7 +362,7 @@ msgstr "Commentaires ({0})"
 #: com/bloatit/web/pages/demand/DemandCommentListComponent.java:109
 #, java-format
 msgid "Popularity: {0}"
-msgstr "Popularité : {0}"
+msgstr "Popularité : {0}"
 
 #: com/bloatit/web/pages/demand/DemandCommentListComponent.java:118
 msgid "Usefull"
@@ -378,7 +378,7 @@ msgstr "Répondre"
 
 #: com/bloatit/web/pages/demand/DemandCommentListComponent.java:174
 msgid "New comment : "
-msgstr "Nouveau commentaire :"
+msgstr "Nouveau commentaire :"
 
 #: com/bloatit/web/pages/demand/DemandCommentListComponent.java:176
 msgid ""
@@ -394,19 +394,19 @@ msgstr "Poster le commentaire"
 
 #: com/bloatit/web/pages/demand/IdeaOfferComponent.java:48
 msgid "Author : "
-msgstr "Auteurs :"
+msgstr "Auteurs :"
 
 #: com/bloatit/web/pages/demand/IdeaOfferComponent.java:50
 msgid "Price : "
-msgstr "Prix :"
+msgstr "Prix :"
 
 #: com/bloatit/web/pages/demand/IdeaOfferComponent.java:52
 msgid "Expiration date : "
-msgstr "Date d'expiration :"
+msgstr "Date d'expiration :"
 
 #: com/bloatit/web/pages/demand/IdeaOfferComponent.java:56
 msgid "Creation Date : "
-msgstr "Date de création :"
+msgstr "Date de création :"
 
 #: com/bloatit/web/pages/demand/IdeaOfferComponent.java:64
 msgid "Currently favored offer"
@@ -414,7 +414,7 @@ msgstr "Offre actuellement préférée"
 
 #: com/bloatit/web/pages/demand/DemandPage.java:64
 msgid "Idea not found !"
-msgstr "Idée introuvable !"
+msgstr "Idée introuvable !"
 
 #: com/bloatit/web/pages/demand/DemandSummaryComponent.java:109
 #: com/bloatit/web/components/HtmlDemandSumary.java:104
@@ -439,7 +439,7 @@ msgstr ""
 
 #: com/bloatit/web/pages/demand/DemandSummaryComponent.java:227
 msgid "+ Share"
-msgstr "+ Partager"
+msgstr "+ Partager"
 
 #: com/bloatit/web/pages/demand/DemandSummaryComponent.java:274
 #: com/bloatit/web/components/HtmlDemandSumary.java:208
@@ -483,11 +483,11 @@ msgstr "Vous n'avez pas l'autorisation de voir ceci."
 
 #: com/bloatit/web/pages/ContributePage.java:67
 msgid "Choose amount: "
-msgstr "Choisissez le montant :"
+msgstr "Choisissez le montant :"
 
 #: com/bloatit/web/pages/ContributePage.java:71
 msgid "Comment (optional) : "
-msgstr "Commentaires (optionnel) :"
+msgstr "Commentaires (optionnel) :"
 
 #: com/bloatit/web/pages/ContributePage.java:92
 msgid "Contribute to a project"
@@ -570,7 +570,7 @@ msgstr "Bouton inutile"
 
 #: com/bloatit/web/pages/TestPage.java:93
 msgid "Quand êtes vous disponibles ?"
-msgstr "Quand êtes vous disponibles ?"
+msgstr "Quand êtes vous disponibles ?"
 
 #: com/bloatit/web/pages/TestPage.java:103
 msgid "muahahah"
@@ -615,7 +615,7 @@ msgstr "terminées"
 
 #: com/bloatit/web/pages/DemandListPage.java:120
 msgid "Filter: "
-msgstr "Filtre :"
+msgstr "Filtre :"
 
 #: com/bloatit/web/pages/DemandListPage.java:133
 msgid "relevance"
@@ -643,7 +643,7 @@ msgstr "date d'expiration"
 
 #: com/bloatit/web/pages/DemandListPage.java:173
 msgid "Sort by: "
-msgstr "Trier par :"
+msgstr "Trier par :"
 
 #: com/bloatit/web/pages/DemandListPage.java:213
 msgid "If you have an idea or a need about a free software, you can "
@@ -787,12 +787,12 @@ msgstr "Vous devez être connecté pour faire une offre."
 #: com/bloatit/web/actions/PopularityVoteAction.java:62
 #, java-format
 msgid "Vote up applied: {0}"
-msgstr "Vote positif appliqué : {0}"
+msgstr "Vote positif appliqué : {0}"
 
 #: com/bloatit/web/actions/PopularityVoteAction.java:71
 #, java-format
 msgid "Vote down applied: {0}"
-msgstr "Vote négatif appliqué : {0}"
+msgstr "Vote négatif appliqué : {0}"
 
 #: com/bloatit/web/actions/PopularityVoteAction.java:77
 msgid "For obscure reasons, you are not allowed to vote on that."
@@ -812,7 +812,7 @@ msgstr "Vous avez une réputation trop faible pour voter négativement ceci."
 
 #: com/bloatit/web/actions/PopularityVoteAction.java:94
 msgid "You can't vote for yourself!."
-msgstr "Vous ne pouvez pas voter pour vous-même !"
+msgstr "Vous ne pouvez pas voter pour vous-même !"
 
 #: com/bloatit/web/actions/AddProjectAction.java:48
 msgid "The short description must be 120 chars length max."
@@ -949,7 +949,7 @@ msgid ""
 " {1}"
 msgstr ""
 "Votre compte Elveos.org ''{0}'' a été créé. Cliquez sur le lien ci-dessous "
-"pour activer votre compte : \n"
+"pour activer votre compte : \n"
 "\n"
 " {1}"
 
@@ -1008,7 +1008,7 @@ msgstr "Erreur lors du chargement de votre compte."
 
 #: com/bloatit/web/actions/PaylineAction.java:55
 msgid "Unauthorized !"
-msgstr "Non autorisé !"
+msgstr "Non autorisé !"
 
 #: com/bloatit/web/actions/PaylineAction.java:69
 msgid "You must be logged to charge your account."

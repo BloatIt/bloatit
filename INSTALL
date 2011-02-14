@@ -45,6 +45,13 @@ service lighttpd restart
 Verify the loading in logs:
 cat /var/log/lighttpd/error.log
 
+
+************************************
+*  Install gettext                 *
+************************************
+
+sudo apt-get install gettext
+
 ************************************
 *  Configure internal mail server  *
 ************************************
@@ -71,4 +78,24 @@ Create file ~/.config/bloatit/web.properties
 Add inside the following content : 
 
 bloatit.documentation.dir=<PATH_TO_ELVEOS>/doc/websitedoc/
+
+
+************************************
+*  Configure access right          *
+************************************
+
+The lighttpd process will need to read in ~/.local/share (depending of java 
+process user). You may need to run the java process with the lighttpd user or 
+change the right:
+
+chmod 777 ~/.local
+chmod 777 ~/.local/share
+
+************************************
+*  Install and run                 *
+************************************
+
+mvn clean install -Dmaven.test.skip=true
+cd main
+mvn exec:java
 

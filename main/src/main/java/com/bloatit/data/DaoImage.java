@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import javax.persistence.Basic;
@@ -48,11 +64,11 @@ public final class DaoImage extends DaoIdentifiable {
 
     /**
      * Create an image.
-     *
+     * 
      * @param horizontalSize is the number of pixels for the X coordinate.
      * @param verticalSize is the number of pixels for the Y coordinate.
      * @param compression is a string describing the type of compression. This parameter
-     *        is optional (it can be null, or empty).
+     * is optional (it can be null, or empty).
      * @param file is the file where this image is stored.
      */
     private DaoImage(int horizontalSize, int verticalSize, String compression, DaoFileMetadata file) {
@@ -116,6 +132,7 @@ public final class DaoImage extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -128,6 +145,7 @@ public final class DaoImage extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -141,7 +159,7 @@ public final class DaoImage extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        DaoImage other = (DaoImage) obj;
+        final DaoImage other = (DaoImage) obj;
         if (file == null) {
             if (other.file != null) {
                 return false;

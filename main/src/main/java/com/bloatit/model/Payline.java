@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.model;
 
 import java.math.BigDecimal;
@@ -113,16 +129,18 @@ public final class Payline extends Unlockable {
         }
     }
 
-//    public void getTransactionDetails(final String token) throws TokenNotfoundException {
-//        final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
-//        final GetWebPaymentDetailsRequest request = createWebPaymementRequest(token);
-//        Transaction transaction = paylineApi.getWebPaymentAPI().getWebPaymentDetails(request).getTransaction();
-//
-//        System.err.println(transaction.getExplanation());
-//        System.err.println(transaction.getFraudResult());
-//        System.err.println(transaction.getIsPossibleFraud());
-//        System.err.println(transaction.getScore());
-//    }
+    // public void getTransactionDetails(final String token) throws TokenNotfoundException
+    // {
+    // final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
+    // final GetWebPaymentDetailsRequest request = createWebPaymementRequest(token);
+    // Transaction transaction =
+    // paylineApi.getWebPaymentAPI().getWebPaymentDetails(request).getTransaction();
+    //
+    // System.err.println(transaction.getExplanation());
+    // System.err.println(transaction.getFraudResult());
+    // System.err.println(transaction.getIsPossibleFraud());
+    // System.err.println(transaction.getScore());
+    // }
 
     public Reponse getPaymentDetails(final String token) throws TokenNotfoundException {
         final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
@@ -142,8 +160,8 @@ public final class Payline extends Unlockable {
         return parameters;
     }
 
-    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl)
-            throws UnauthorizedOperationException {
+    public Reponse
+            doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl) throws UnauthorizedOperationException {
         final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
         paymentRequest.setReturnURL(returnUrl);
@@ -178,10 +196,10 @@ public final class Payline extends Unlockable {
     private void createBankTransaction(final BigDecimal amount, final String orderReference, final Reponse reponse) {
         if (reponse.getToken() != null && !reponse.getToken().isEmpty()) {
             final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
-                    reponse.getToken(),//
-                    getAuthTokenUnprotected().getMember().getDao(),//
-                    amount, //
-                    orderReference);
+                                                                        reponse.getToken(),//
+                                                                        getAuthTokenUnprotected().getMember().getDao(),//
+                                                                        amount, //
+                                                                        orderReference);
             bankTransaction.setProcessInformations(reponse.getCode());
             if (reponse.isAccepted()) {
                 bankTransaction.setAuthorized();
@@ -221,7 +239,7 @@ public final class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     *
+     * 
      * @param member
      * @return
      */

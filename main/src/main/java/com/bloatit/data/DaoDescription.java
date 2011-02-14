@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.util.HashSet;
@@ -15,6 +31,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -51,7 +68,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Create a daoDescription. Set the default locale to "locale"
-     *
+     * 
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
@@ -98,7 +115,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /**
      * Get a translation for a given locale.
-     *
+     * 
      * @param locale the locale in which we want the description
      * @return null if no translation exists for this locale.
      */
@@ -127,6 +144,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -140,6 +158,7 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

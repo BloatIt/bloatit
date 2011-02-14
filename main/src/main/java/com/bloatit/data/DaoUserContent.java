@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.util.Date;
@@ -17,6 +33,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -46,12 +63,15 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     @Field(store = Store.NO)
     private Date creationDate;
 
+    @Basic(optional = false)
+    private Boolean isDeleted;
+
     @OneToMany(cascade = CascadeType.ALL)
     private final Set<DaoFileMetadata> files = new HashSet<DaoFileMetadata>();
 
     /**
      * Initialize the creation date to now.
-     *
+     * 
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */
@@ -63,6 +83,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         }
         this.member = member;
         this.creationDate = new Date();
+        setIsDeleted(false);
     }
 
     public final DaoMember getAuthor() {
@@ -85,6 +106,14 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         final Query filesQuery = currentSession.createFilter(files, "where relatedContent = :this").setEntity("this", this);
         final Query filesSizeQuery = currentSession.createFilter(files, "select count(*) where relatedContent = :this").setEntity("this", this);
         return new QueryCollection<DaoFileMetadata>(filesQuery, filesSizeQuery);
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     /**
@@ -112,6 +141,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -126,6 +156,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

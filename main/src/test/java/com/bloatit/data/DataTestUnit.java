@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 
 import com.bloatit.data.DaoFileMetadata.FileType;
 
-public class ModelTestUnit extends TestCase {
+public class DataTestUnit extends TestCase {
 
     protected DaoMember tom;
     protected DaoMember fred;

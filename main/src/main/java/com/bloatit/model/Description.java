@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.model;
 
 import java.util.Locale;
@@ -11,7 +27,7 @@ import com.bloatit.model.lists.TranslationList;
  * description each time you create a demand.) There is no right management for this
  * class. I assume that if you can get a <code>Description</code> then you can access
  * every property in it.
- *
+ * 
  * @see DaoDescription
  */
 public final class Description extends Identifiable<DaoDescription> {
@@ -31,7 +47,7 @@ public final class Description extends Identifiable<DaoDescription> {
     /**
      * Create a Description. If you are looking for a way to create a new description see
      * {@link Demand#addOffer(java.math.BigDecimal, Locale, String, String, java.util.Date)}
-     *
+     * 
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description

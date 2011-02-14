@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.math.BigDecimal;
@@ -21,6 +37,7 @@ import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.DateUtils;
@@ -87,13 +104,13 @@ public final class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     *
+     * 
      * @param member is the author of the offer. Must be non null.
      * @param demand is the demand on which this offer is made. Must be non null.
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param description is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must be non
-     *        null, and in the future.
+     * null, and in the future.
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
      */
@@ -140,8 +157,8 @@ public final class DaoOffer extends DaoKudosable {
         final String query = "from DaoBatch where offer = :this order by expirationDate";
         final String queryCount = "select count(*) from DaoBatch where offer = :this";
         return new QueryCollection<DaoBatch>( //
-                SessionManager.createQuery(query).setEntity("this", this),//
-                SessionManager.createQuery(queryCount).setEntity("this", this));//
+                                             SessionManager.createQuery(query).setEntity("this", this),//
+                                             SessionManager.createQuery(queryCount).setEntity("this", this));//
     }
 
     public DaoBatch getCurrentBatch() {
@@ -177,6 +194,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -191,6 +209,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

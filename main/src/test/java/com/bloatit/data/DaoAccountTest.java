@@ -12,7 +12,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * @author tom
  * @version $Revision: 1.0 $
  */
-public class DaoAccountTest extends ModelTestUnit {
+public class DaoAccountTest extends DataTestUnit {
 
     public void testDaoAccountDaoActor() {
         final DaoMember localTom = DaoMember.getByLogin(tom.getLogin());

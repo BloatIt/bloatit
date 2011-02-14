@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.math.BigDecimal;
@@ -32,10 +48,10 @@ public final class DaoInternalAccount extends DaoAccount {
 
     /**
      * bloc an amount of money, and reset the modification date.
-     *
+     * 
      * @param blocked the amount we want to block
      * @throws NotEnoughMoneyException if there is not enough money to block. (nothing is
-     *         done, modification date is unchanged)
+     * done, modification date is unchanged)
      */
     protected void block(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(getAmount()) > 0) {
@@ -49,10 +65,10 @@ public final class DaoInternalAccount extends DaoAccount {
 
     /**
      * unbloc an amount of money, and reset the modification date.
-     *
+     * 
      * @param blocked the amount of money we want to unblock.
      * @throws NotEnoughMoneyException if there is not enough money already bloken.
-     *         (nothing is done, modification date is unchanged)
+     * (nothing is done, modification date is unchanged)
      */
     protected void unBlock(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(this.blocked) > 0) {

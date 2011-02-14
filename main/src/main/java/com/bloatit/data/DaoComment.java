@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.util.HashSet;
@@ -19,6 +35,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -60,7 +77,7 @@ public final class DaoComment extends DaoKudosable {
     /**
      * Create a comment. This constructor is protected because you should use the
      * createAndPersist method (to make sure your comment really goes into the db.
-     *
+     * 
      * @param member is the author.
      * @param text is the content.
      * @throws NonOptionalParameterException if the text is null
@@ -95,9 +112,9 @@ public final class DaoComment extends DaoKudosable {
     /**
      * Use a HQL query to return the children of this comment. It allows the use of
      * PageIterable. Order by creation date, older first.
-     *
+     * 
      * @return the list of this comment children. return an empty list if there is no
-     *         child.
+     * child.
      */
     public PageIterable<DaoComment> getChildren() {
         return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by creationDate asc").setEntity("this", this);
@@ -123,6 +140,7 @@ public final class DaoComment extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -135,6 +153,7 @@ public final class DaoComment extends DaoKudosable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

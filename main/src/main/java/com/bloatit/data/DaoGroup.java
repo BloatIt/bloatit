@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.util.HashSet;
@@ -14,6 +30,7 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -72,7 +89,7 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Create a group and add it into the db.
-     *
+     * 
      * @param name it the unique and non updatable name of the group.
      * @param owner is the DaoMember creating this group.
      * @param right is the type of group we are creating.
@@ -93,7 +110,7 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Create a DaoGroup
-     *
+     * 
      * @param login is the name of the group. It must be unique.
      * @param email ...
      * @param right is the default right value for this group.
@@ -118,10 +135,10 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Add a member in this group.
-     *
+     * 
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer this group.
-     *        (This may change if the number of role change !)
+     * (This may change if the number of role change !)
      */
     public void addMember(final DaoMember member, final boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(member, this, isAdmin));
@@ -157,14 +174,13 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Finds if a member is in this group, and which is its status.
-     *
+     * 
      * @return {@value MemberStatus#UNKNOWN} if the member is not in this group.
      */
     public MemberStatus getMemberStatus(final DaoMember member) {
-        final Query q = SessionManager
-                .getSessionFactory()
-                .getCurrentSession()
-                .createQuery("select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
         q.setEntity("member", member);
         q.setEntity("group", this);
         final DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();

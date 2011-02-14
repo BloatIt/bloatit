@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.math.BigDecimal;
@@ -12,6 +28,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.ExternalAccount;
@@ -56,7 +73,7 @@ public abstract class DaoAccount implements IdentifiableInterface {
 
     /**
      * Initialize the creation and modification dates. The amount is set to 0.
-     *
+     * 
      * @param actor is the owner of this account
      * @throws NonOptionalParameterException if the actor == null
      */
@@ -74,7 +91,7 @@ public abstract class DaoAccount implements IdentifiableInterface {
      * Tells if you can take <code>amount</code> money in the account. On
      * {@link InternalAccount} the money has to exist. The {@link ExternalAccount} can
      * have negative amount of money.
-     *
+     * 
      * @param amount The quantity of money you want to get. Should be > 0.
      * @return true if this operation is allowed.
      */
@@ -96,9 +113,9 @@ public abstract class DaoAccount implements IdentifiableInterface {
      * To modify the value of the amount, you have to create a transaction. This method is
      * protected to be used by transaction only !
      * </p>
-     *
+     * 
      * @param value the quantity of money to add to the amount of this account. (May be a
-     *        negative value)
+     * negative value)
      */
     final void addToAmountValue(final BigDecimal value) {
         resetModificationDate();
@@ -112,9 +129,9 @@ public abstract class DaoAccount implements IdentifiableInterface {
      * </p>
      * To modify the value of the amount, you have to create a transaction. This method is
      * protected to be used by transaction only ! </p>
-     *
+     * 
      * @param value the quantity of money to subtract to the amount of this account. (May
-     *        be a negative value)
+     * be a negative value)
      */
     protected final void substractToAmountValue(final BigDecimal value) {
         resetModificationDate();
@@ -125,7 +142,7 @@ public abstract class DaoAccount implements IdentifiableInterface {
     /**
      * This is for hibernate only. The amount must be modified by some higher level
      * methods. For test purpose it is protected, but it should be private.
-     *
+     * 
      * @see DaoTransaction
      * @param amount the new amount to set.
      */
@@ -145,7 +162,7 @@ public abstract class DaoAccount implements IdentifiableInterface {
      * WARNING: the order is not specified yet. Maybe it will be ordered by date (if
      * needed)
      * </p>
-     *
+     * 
      * @return all the transactions that are from/to this account.
      */
     public final PageIterable<DaoTransaction> getTransactions() {
@@ -190,6 +207,7 @@ public abstract class DaoAccount implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -203,6 +221,7 @@ public abstract class DaoAccount implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

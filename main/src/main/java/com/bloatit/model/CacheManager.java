@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.model;
 
 import java.util.HashMap;
@@ -9,15 +25,15 @@ import com.bloatit.data.IdentifiableInterface;
 /**
  * The cache manager is the class responsible of the model level cache. There is a cache
  * different on each thread.
- *
+ * 
  * @author Thomas Guyard
- *
+ * 
  */
 public final class CacheManager {
 
     /**
      * Used to have a cache object for each threads.
-     *
+     * 
      * @author Thomas Guyard
      */
     static class UniqueThreadCache {
@@ -50,7 +66,7 @@ public final class CacheManager {
 
     /**
      * Add a model class to the cache.
-     *
+     * 
      * @param id is the identifant of the object into the cache.
      * @param identifiable is the object to store into the cache.
      * @return identifiable.
@@ -64,7 +80,7 @@ public final class CacheManager {
 
     /**
      * Get a class from the cache using its identifant.
-     *
+     * 
      * @param identifiable is the id of the object you are looking for.
      * @return the object if it exist, null otherwise.
      */

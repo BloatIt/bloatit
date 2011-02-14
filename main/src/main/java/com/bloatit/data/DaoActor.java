@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.util.Date;
@@ -18,6 +34,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -80,7 +97,7 @@ public abstract class DaoActor implements IdentifiableInterface {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     *
+     * 
      * @param login is the login or name of this actor. It must be non null, and unique.
      * @throws NonOptionalParameterException if login or mail is null.
      */
@@ -107,7 +124,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * No check is performed on the correctness of the new email.
-     *
+     * 
      * @param email the new email.
      */
     public abstract void setEmail(final String email);
@@ -118,7 +135,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * Set the external account for this actor.
-     *
+     * 
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
@@ -147,12 +164,12 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * @return all the <code>DaoBankTransaction</code> created by <code>this</code>, order
-     *         by <code>creationDate</code>, most recent first.
+     * by <code>creationDate</code>, most recent first.
      */
     public final PageIterable<DaoBankTransaction> getBankTransactions() {
-        return new QueryCollection<DaoBankTransaction>(
-                SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
-                SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author")).setEntity("author", this);
+        return new QueryCollection<DaoBankTransaction>(SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
+                                                       SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author")).setEntity("author",
+                                                                                                                                                               this);
     }
 
     @Override
@@ -177,6 +194,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -189,6 +207,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

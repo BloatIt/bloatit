@@ -12,15 +12,18 @@ package com.bloatit.web.pages.demand;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import java.math.BigDecimal;
+import java.util.Iterator;
+
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
-import com.bloatit.framework.webserver.components.HtmlRenderer;
+import com.bloatit.framework.webserver.components.advanced.HtmlTable;
+import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Demand;
 import com.bloatit.web.components.HtmlPagedList;
@@ -63,14 +66,9 @@ public final class IdeaContributorsComponent extends HtmlDiv {
                 contributorsBlock.add(contributionMean);
             }
 
-            // Create contribution renderer
-            final HtmlRenderer<Contribution> contributionRenderer = generateContributionRenderer();
+            HtmlTable table = new HtmlTable(new  ContributionTableModel(contributions));
 
-            // Create paged list
-            url = url.clone();
-            participationsList = new HtmlPagedList<Contribution>(contributionRenderer, contributions, url, url.getParticipationsListUrl());
-            participationsList.setCssClass("contribution_list");
-            contributorsBlock.add(participationsList);
+            contributorsBlock.add(table);
 
         }
         return contributorsBlock;
@@ -82,9 +80,9 @@ public final class IdeaContributorsComponent extends HtmlDiv {
 
         if (contributionCount > 0) {
 
-            final float contributionMeanValue = demand.getContribution().floatValue() / contributionCount;
-            final String contributionMinValue = demand.getContributionMin().toPlainString();
-            final String contributionMaxValue = demand.getContributionMax().toPlainString();
+            final String contributionMeanValue = Context.getLocalizator().getCurrency(demand.getContribution().divide(new BigDecimal(contributionCount))).getDefaultString();
+            final String contributionMinValue = Context.getLocalizator().getCurrency(demand.getContributionMin()).getDefaultString();
+            final String contributionMaxValue = Context.getLocalizator().getCurrency(demand.getContributionMax()).getDefaultString();
 
             contributionMin = new HtmlParagraph(tr("Min: ") + contributionMinValue);
             contributionMax = new HtmlParagraph(tr("Max: ") + contributionMaxValue);
@@ -95,19 +93,87 @@ public final class IdeaContributorsComponent extends HtmlDiv {
 
     }
 
-    private HtmlRenderer<Contribution> generateContributionRenderer() {
-        return new HtmlRenderer<Contribution>() {
 
-            @Override
-            public HtmlNode generate(final Contribution item) {
-                String itemString = tr("You are not authorized to see this.");
-                try {
-                    itemString = item.getAuthor().getLogin() + " " + item.getAmount().toPlainString() + " " + item.getCreationDate().toString()+ " "+ item.getComment();
-                } catch (final UnauthorizedOperationException e) {
-                    // do nothing
-                }
-                return new HtmlText(itemString);
+    private static final class ContributionTableModel implements HtmlTableModel {
+        private Iterator<Contribution> it;
+        private Contribution contribution;
+        private final PageIterable<Contribution> contributions;
+
+        private ContributionTableModel(PageIterable<Contribution> contributions) {
+            this.contributions = contributions;
+
+        }
+
+        @Override
+        public int getColumnCount() {
+            return 4;
+        }
+
+        @Override
+        public String getHeader(int column) {
+            String value;
+            switch (column) {
+            case 0:
+                value = Context.tr("Author");
+                break;
+            case 1:
+                value = Context.tr("Amount");
+                break;
+            case 2:
+                value = Context.tr("Date");
+                break;
+            case 3:
+                value = Context.tr("Comment");
+                break;
+            default:
+                value = "";
+                break;
             }
-        };
+            return value;
+        }
+
+        @Override
+        public boolean next() {
+            if(it == null) {
+                it = contributions.iterator();
+            }
+
+            if (it.hasNext()) {
+                contribution = it.next();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public String getBody(int column) {
+            String value = "";
+            try {
+                switch (column) {
+                case 0:
+                    value = contribution.getAuthor().getDisplayName();
+                    break;
+                case 1:
+                    //TODO: align money at right in CSS
+                    value = Context.getLocalizator().getCurrency(contribution.getAmount()).getDefaultString();
+                    break;
+                case 2:
+                    value = contribution.getCreationDate().toString();
+                    break;
+                case 3:
+                    value = contribution.getComment();
+                    break;
+                }
+
+            } catch (UnauthorizedOperationException e) {
+                //Display nothing
+            }
+
+            if(value == null) {
+                value = "";
+            }
+            return value;
+        }
     }
+
 }

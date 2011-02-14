@@ -1,14 +1,30 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
-import com.bloatit.data.DBRequests;
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoOffer;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.lists.BatchList;
@@ -36,19 +52,19 @@ public final class Offer extends Kudosable<DaoOffer> {
     /**
      * @param amount must be positive (can be ZERO) non null.
      * @param locale must be non null. Is the locale in which the title and the text are
-     *        written.
+     * written.
      * @param title is the title of the offer. Must be non null.
      * @param text is the description of the offer. Must be non null.
      * @param dateExpir is the date when this offer should be finished. Must be non null.
-     *        Must be in the future.
+     * Must be in the future.
      */
     public Offer(final Member member,
-                 final Demand demand,
-                 final BigDecimal amount,
-                 final String title,
-                 final String description,
-                 final Locale local,
-                 final Date dateExpire) {
+            final Demand demand,
+            final BigDecimal amount,
+            final String title,
+            final String description,
+            final Locale local,
+            final Date dateExpire) {
         super(DaoOffer.createAndPersist(member.getDao(),
                                         DBRequests.getById(DaoDemand.class, demand.getId()),
                                         amount,
@@ -60,18 +76,14 @@ public final class Offer extends Kudosable<DaoOffer> {
         super(dao);
     }
 
-    public void addBatch(final Date dateExpire,
-                         final BigDecimal amount,
-                         final String title,
-                         final String description,
-                         final int secondBeforeValidation) {
+    public void addBatch(final Date dateExpire, final BigDecimal amount, final String title, final String description, final int secondBeforeValidation) {
         // TODO blind me !
         final Locale locale = getDao().getBatches().iterator().next().getDescription().getDefaultLocale();
         getDao().addBatch(DaoBatch.createAndPersist(dateExpire,
-                                               amount,
-                                               DaoDescription.createAndPersist(getDao().getAuthor(), locale, title, description),
-                                               getDao(),
-                                               secondBeforeValidation));
+                                                    amount,
+                                                    DaoDescription.createAndPersist(getDao().getAuthor(), locale, title, description),
+                                                    getDao(),
+                                                    secondBeforeValidation));
     }
 
     // ////////////////////////////////////////////////////////////////////////

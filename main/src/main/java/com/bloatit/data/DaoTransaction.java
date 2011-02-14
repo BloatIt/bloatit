@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.math.BigDecimal;
@@ -28,8 +44,7 @@ public final class DaoTransaction extends DaoIdentifiable {
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 
-    public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount)
-            throws NotEnoughMoneyException {
+    public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoTransaction transaction = new DaoTransaction(from, to, amount);
         try {
@@ -44,12 +59,12 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     /**
      * Create a new transaction and update the two accounts.
-     *
+     * 
      * @param from is the account from which we will take money.
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
      * @throws NotEnoughMoneyException if there is not enough money to make the
-     *         transaction
+     * transaction
      * @throws FatalErrorException if to == from
      * @throws NullPointerException if any of the parameters = null
      */
@@ -99,6 +114,7 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -114,6 +130,7 @@ public final class DaoTransaction extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.util.HashSet;
@@ -30,7 +46,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * delete/reject this content. HIDDEN is a state between pending and rejected. Do not
      * change the order !
      */
-    public enum State {
+    public enum PopularityState {
         VALIDATED, PENDING, HIDDEN, REJECTED,
     }
 
@@ -49,23 +65,23 @@ public abstract class DaoKudosable extends DaoUserContent {
     @Basic(optional = false)
     @Field(store = Store.NO)
     @Enumerated
-    private State state;
+    private PopularityState state;
 
     /**
      * initial state is PENDING, and popularity is 0.
-     *
+     * 
      * @param member the author.
      * @see DaoUserContent#DaoUserContent(DaoMember)
      */
     public DaoKudosable(final DaoMember member) {
         super(member);
         popularity = 0;
-        setState(State.PENDING);
+        setState(PopularityState.PENDING);
     }
 
     /**
      * Create a new DaoKudos and add it to the list of kudos.
-     *
+     * 
      * @return the new popularity
      */
     public final int addKudos(final DaoMember member, final int value) {
@@ -76,14 +92,16 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /**
      * Use a HQL query to find if a member as already kudosed this kudosable.
-     *
+     * 
      * @param member The member that could have kudosed this kudosable. (Don't even think
-     *        of passing a null member)
+     * of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
     public final boolean hasKudosed(final DaoMember member) {
-        final Query q = SessionManager.getSessionFactory().getCurrentSession()
-                .createQuery("select count(k) from " + this.getClass().getName() + " as a join a.kudos as k where k.member = :member and a = :this");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select count(k) from " + this.getClass().getName()
+                                              + " as a join a.kudos as k where k.member = :member and a = :this");
         q.setEntity("member", member);
         q.setEntity("this", this);
         return (Long) q.uniqueResult() > 0;
@@ -91,25 +109,27 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /**
      * Use a HQL query to find if a member as already kudosed this kudosable.
-     *
+     * 
      * @param member The member that could have kudosed this kudosable. (Don't even think
-     *        of passing a null member)
+     * of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
     public final int getVote(final DaoMember member) {
-        final Query q = SessionManager.getSessionFactory().getCurrentSession()
-                .createQuery("select k.value from " + this.getClass().getName() + " as a join a.kudos as k where k.member = :member and a = :this");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select k.value from " + this.getClass().getName()
+                                              + " as a join a.kudos as k where k.member = :member and a = :this");
         q.setEntity("member", member);
         q.setEntity("this", this);
-        //return 0 if no vote
-        Integer vote = (Integer) q.uniqueResult();
-        if(vote == null) {
+        // return 0 if no vote
+        final Integer vote = (Integer) q.uniqueResult();
+        if (vote == null) {
             return 0;
         }
-        return  vote;
+        return vote;
     }
 
-    public final State getState() {
+    public final PopularityState getState() {
         return state;
     }
 
@@ -120,7 +140,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     /**
      * The state must be update from the framework layer.
      */
-    public final void setState(final State state) {
+    public final void setState(final PopularityState state) {
         this.state = state;
     }
 
@@ -138,6 +158,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -147,6 +168,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

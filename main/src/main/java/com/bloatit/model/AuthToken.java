@@ -1,13 +1,19 @@
-/*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
- */
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 
 package com.bloatit.model;
 
@@ -32,7 +38,7 @@ public final class AuthToken {
 
     /**
      * Create an authoToken using the login and password of a person.
-     *
+     * 
      * @throws NotFoundException if the login is not found or if the password is wrong.
      */
     public AuthToken(final String login, final String password) throws NotFoundException {
@@ -55,7 +61,7 @@ public final class AuthToken {
     /**
      * NEVER Use this method. It is used by the SessionManager to persist the login
      * session of a user even in case of a server restart.
-     *
+     * 
      * @param memberId
      * @throws NotFoundException
      */
@@ -77,7 +83,7 @@ public final class AuthToken {
 
     /**
      * If a transaction is active, make sure the member has an internal persistent dao.
-     *
+     * 
      * @return the member that is authenticated by this token.
      */
     public Member getMember() {
@@ -85,7 +91,7 @@ public final class AuthToken {
         if (!currentSession.getTransaction().isActive() || currentSession.contains(member.getDao())) {
             return member;
         }
-        Member memberById = MemberManager.getMemberById(member.getId());
+        final Member memberById = MemberManager.getMemberById(member.getId());
         return memberById;
     }
 

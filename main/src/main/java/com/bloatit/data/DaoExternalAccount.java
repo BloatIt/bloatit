@@ -1,3 +1,19 @@
+//
+// Copyright (c) 2011 Linkeos.
+//
+// This file is part of Elveos.org.
+// Elveos.org is free software: you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation, either version 3 of the License, or (at your
+// option) any later version.
+//
+// Elveos.org is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+// more details.
+// You should have received a copy of the GNU General Public License along
+// with Elveos.org. If not, see http://www.gnu.org/licenses/.
+//
 package com.bloatit.data;
 
 import java.math.BigDecimal;
@@ -61,7 +77,7 @@ public final class DaoExternalAccount extends DaoAccount {
      * @param bankCode is the bank code (for now IBAN...) THERE IS NO CHECK HERE !!
      * @throws NonOptionalParameterException if any of the parameter is null
      * @throws anExceptionToDefine when we will check the validity of the IBAN we will
-     *         have to throw an exception if its not valid.
+     * have to throw an exception if its not valid.
      */
     private DaoExternalAccount(final DaoActor actor, final AccountType type, final String bankCode) {
         super(actor);
