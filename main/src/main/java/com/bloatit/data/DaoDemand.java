@@ -319,7 +319,7 @@ public final class DaoDemand extends DaoKudosable {
      * Use a HQL query to get the first level comments as a PageIterable collection
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, ""),
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "order by creationDate asc"),
                                                SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
     }
 

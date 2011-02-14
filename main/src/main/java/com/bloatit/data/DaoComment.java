@@ -117,7 +117,7 @@ public final class DaoComment extends DaoKudosable {
      * child.
      */
     public PageIterable<DaoComment> getChildren() {
-        return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by creationDate asc").setEntity("this", this);
+        return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by c.creationDate asc").setEntity("this", this);
     }
 
     /**
