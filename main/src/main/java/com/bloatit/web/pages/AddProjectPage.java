@@ -49,7 +49,7 @@ public final class AddProjectPage extends LoggedPage {
 
     @Override
     protected String getPageTitle() {
-        return "Create new idea";
+        return "Add a project";
     }
 
     @Override

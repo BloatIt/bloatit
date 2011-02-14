@@ -72,11 +72,11 @@ public class Documentation extends MasterPage {
         FileInputStream fis;
         String language = Context.getLocalizator().getLanguageCode();
         try {
-            File targetFile = new File(dir + docTarget + "_" + language);
+            File targetFile = new File(dir + "/" + docTarget + "_" + language);
 
             if (!targetFile.exists()) {
                 Log.web().warn("User tried to access doc file " + docTarget + "_" + language + " but it doesn't exist.");
-                session.notifyBad(Context.tr("Documentation file {0} doesn't exist in language {1}, using english instead", docTarget, language));
+                session.notifyBad(Context.tr("Documentation file {0} doesn''t exist in language {1}, using english instead", docTarget, language));
                 targetFile = new File(dir + docTarget + "_" + "en");
             }
             fis = new FileInputStream(targetFile);
@@ -103,7 +103,7 @@ public class Documentation extends MasterPage {
             // User asked a wrong documentation file, redirecting him to the doc
             // home
             Log.web().warn("A user tries to access documentation file " + docTarget + " but file is not available.");
-            session.notifyBad(Context.tr("Documentation entry {0} doesn't exist. Sending you to documentation home page", docTarget));
+            session.notifyBad(Context.tr("Documentation entry {0} doesn''t exist. Sending you to documentation home page", docTarget));
 
             DocumentationUrl redirectTo = new DocumentationUrl();
             redirectTo.setDocTarget(DEFAULT_DOC);
@@ -111,7 +111,6 @@ public class Documentation extends MasterPage {
         } catch (IOException e) {
             throw new FatalErrorException("An error occured while parsing the documentation file " + docTarget, e);
         }
-
     }
 
     @Override
