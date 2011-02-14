@@ -17,9 +17,9 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
 
-public class IdeaOfferListComponent extends HtmlDiv {
+public class DemandOfferListComponent extends HtmlDiv {
 
-    public IdeaOfferListComponent(final Demand demand) {
+    public DemandOfferListComponent(final Demand demand) {
         super();
         PageIterable<Offer> offers = new NullCollection<Offer>();
         try {

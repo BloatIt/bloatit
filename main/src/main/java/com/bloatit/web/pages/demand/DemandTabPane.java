@@ -79,7 +79,7 @@ public final class DemandTabPane extends HtmlPageComponent {
             tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", demand.getOffers().size()), "offers_tab") {
                 @Override
                 public HtmlNode generateBody() {
-                    return new IdeaOfferListComponent(demand);
+                    return new DemandOfferListComponent(demand);
                 }
             });
         } catch (final UnauthorizedOperationException e) {
@@ -90,7 +90,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         tabPane.addTab(new HtmlTab(Context.tr("Details"), "details_tab") {
             @Override
             public HtmlNode generateBody() {
-                return new IdeaOfferListComponent(demand);
+                return new DemandOfferListComponent(demand);
             }
         });
 
