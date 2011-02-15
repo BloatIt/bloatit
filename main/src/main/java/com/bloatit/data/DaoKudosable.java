@@ -67,8 +67,8 @@ public abstract class DaoKudosable extends DaoUserContent {
     @Enumerated
     private PopularityState state;
 
-//    @Basic(optional = false)
-//    private boolean isPopularityLocked;
+    @Basic(optional = false)
+    private boolean isPopularityLocked;
 
     /**
      * initial state is PENDING, and popularity is 0.
@@ -80,7 +80,7 @@ public abstract class DaoKudosable extends DaoUserContent {
         super(member);
         popularity = 0;
         setState(PopularityState.PENDING);
-//        isPopularityLocked = false;
+        isPopularityLocked = false;
     }
 
     /**
@@ -95,11 +95,11 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     public final void lockPopularity() {
-//        isPopularityLocked = true;
+        isPopularityLocked = true;
     }
 
     public final void unlockPopularity() {
-//        isPopularityLocked = false;
+        isPopularityLocked = false;
     }
 
     /**
@@ -118,8 +118,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     public boolean isPopularityLocked() {
-//        return isPopularityLocked;
-        return false;
+        return isPopularityLocked;
     }
 
     /**
