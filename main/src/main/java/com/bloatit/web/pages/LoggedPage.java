@@ -12,7 +12,6 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.pages.master.MasterPage;
@@ -28,7 +27,6 @@ import com.bloatit.web.url.LoginPageUrl;
  * <code>{@link #getRefusalReason()}</code>
  * </p>
  */
-@ParamContainer(value = "logged", isComponent = true)
 public abstract class LoggedPage extends MasterPage {
 
     /**
