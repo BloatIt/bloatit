@@ -202,6 +202,8 @@ public class DemandOfferListComponent extends HtmlDiv {
             }
             add(offerTopBlock);
 
+            //TODO: choose to display the title or not
+
             HtmlDiv offerBottomBlock = new HtmlDiv("offer_bottom_block");
             {
                 HtmlDiv offerLeftBottomColumn = new HtmlDiv("offer_left_bottom_column");
