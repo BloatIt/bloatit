@@ -22,6 +22,7 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
@@ -172,8 +173,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                     }
                     offerRightTopColumn.add(authorPara);
 
-                    HtmlParagraph progressPara = new HtmlParagraph();
-                    progressPara.setCssClass("offer_block_para");
+                    HtmlDiv progressPara = new HtmlDiv("offer_block_para");
                     {
                         HtmlSpan progressLabel = new HtmlSpan("offer_block_label");
                         progressLabel.addText(Context.tr("Funding: "));
@@ -232,7 +232,13 @@ public class DemandOfferListComponent extends HtmlDiv {
                         offerRightBottomColumn.add(datePara);
 
                         HtmlParagraph description = new HtmlParagraph();
-                        description.addText(lot.getDescription());
+                        {
+                            HtmlSpan descriptionLabel = new HtmlSpan("offer_block_label");
+                            descriptionLabel.addText(Context.tr("Offer's description: "));
+                            description.add(descriptionLabel);
+                            description.add(new HtmlTagText("<br />"));
+                            description.addText(lot.getDescription());
+                        }
                         offerRightBottomColumn.add(description);
                     } else {
                         int i = 0;

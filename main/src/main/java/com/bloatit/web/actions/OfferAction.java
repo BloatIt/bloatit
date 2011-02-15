@@ -72,7 +72,7 @@ public final class OfferAction extends LoggedAction {
     public Url doProcessRestricted() {
         try {
             targetIdea.authenticate(session.getAuthToken());
-            final Offer offer = new Offer(session.getAuthToken().getMember(), targetIdea, price, description, title, Locale.FRENCH,
+            final Offer offer = new Offer(session.getAuthToken().getMember(), targetIdea, price, title, description, Locale.FRENCH,
                     expiryDate.getJavaDate());
             targetIdea.addOffer(offer);
         } catch (final UnauthorizedOperationException e) {
