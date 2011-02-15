@@ -188,7 +188,7 @@ public final class DaoGroup extends DaoActor {
         if (gm == null) {
             return null;
         }
-        Set<UserGroupRight> rights = new HashSet<DaoGroupRight.UserGroupRight>();
+        Set<UserGroupRight> rights = new HashSet<UserGroupRight>();
         for (DaoGroupRight groupRight : gm.getRights()) {
             rights.add(groupRight.getUserStatus());
         }

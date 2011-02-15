@@ -148,9 +148,9 @@ public class DaoGroupMemberTest extends TestCase {
         DaoMember fred = DaoMember.getByLogin(this.fred.getLogin());
         DaoGroup b219 = DaoGroup.getByName(this.b219.getLogin());
         fred.addToGroup(b219);
-        fred.addGroupRight(b219, UserGroupRight.ADMIN);
-        fred.addGroupRight(b219, UserGroupRight.TREASURER);
-        if(!(fred.getGroupRights(b219).contains(UserGroupRight.ADMIN) &&  fred.getGroupRights(b219).contains(UserGroupRight.TREASURER)) ){
+        fred.addGroupRight(b219, UserGroupRight.CONSULT);
+        fred.addGroupRight(b219, UserGroupRight.TALK);
+        if(!(fred.getGroupRights(b219).contains(UserGroupRight.CONSULT) &&  fred.getGroupRights(b219).contains(UserGroupRight.TALK)) ){
             fail();
         }
         
@@ -164,11 +164,11 @@ public class DaoGroupMemberTest extends TestCase {
         DaoGroup b219 = DaoGroup.getByName(this.b219.getLogin());
         
         fred.addToGroup(b219);
-        fred.addGroupRight(b219, UserGroupRight.ADMIN);
-        fred.addGroupRight(b219, UserGroupRight.TREASURER);
+        fred.addGroupRight(b219, UserGroupRight.CONSULT);
+        fred.addGroupRight(b219, UserGroupRight.TALK);
         
-        fred.removeGroupRight(b219, UserGroupRight.ADMIN);
-        if(fred.getGroupRights(b219).contains(UserGroupRight.ADMIN) || !fred.getGroupRights(b219).contains(UserGroupRight.TREASURER)){
+        fred.removeGroupRight(b219, UserGroupRight.TALK);
+        if(fred.getGroupRights(b219).contains(UserGroupRight.TALK) || !fred.getGroupRights(b219).contains(UserGroupRight.CONSULT)){
             fail();
         }
         

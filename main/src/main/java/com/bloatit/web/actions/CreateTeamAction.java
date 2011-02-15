@@ -18,10 +18,10 @@ import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 @ParamContainer("team/docreate")
-public class CreateTeamAction extends LoggedAction{
+public class CreateTeamAction extends LoggedAction {
     public final static String PROTECTED = "PROTECTED";
     public final static String PUBLIC = "PUBLIC";
-    
+
     public static final String LOGIN_CODE = "bloatit_login";
     public static final String EMAIL_CODE = "bloatit_email";
     public static final String RIGHTS_CODE = "bloatit_team_rights";
@@ -35,13 +35,13 @@ public class CreateTeamAction extends LoggedAction{
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5"),//
     max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
     private final String email;
-    
+
     @RequestParam(name = RIGHTS_CODE, role = Role.POST, level = Level.ERROR)
     private final String right;
-    
+
     private CreateTeamActionUrl url;
-    
-    public CreateTeamAction(CreateTeamActionUrl url){
+
+    public CreateTeamAction(CreateTeamActionUrl url) {
         super(url);
         this.url = url;
         this.email = url.getEmail();
@@ -52,16 +52,16 @@ public class CreateTeamAction extends LoggedAction{
     @Override
     public Url doProcessRestricted() throws RedirectException {
         Right groupRight = Right.PUBLIC;
-        if(right.equals(PUBLIC)){
+        if (right.equals(PUBLIC)) {
             groupRight = Right.PUBLIC;
-        } else if(right.equals(PROTECTED) ){
+        } else if (right.equals(PROTECTED)) {
             groupRight = Right.PROTECTED;
         } else {
             // TODO save parameters
             throw new RedirectException(new CreateTeamPageUrl());
         }
         Group newGroup = new Group(login, email, groupRight, session.getAuthToken().getMember());
-        
+
         return new TeamPageUrl(newGroup);
     }
 
@@ -78,6 +78,6 @@ public class CreateTeamAction extends LoggedAction{
 
     @Override
     protected void transmitParameters() {
-        
+
     }
 }

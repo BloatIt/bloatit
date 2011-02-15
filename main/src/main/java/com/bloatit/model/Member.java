@@ -19,7 +19,6 @@ package com.bloatit.model;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
-import java.util.Set;
 
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
@@ -110,19 +109,23 @@ public final class Member extends Actor<DaoMember> {
      * Gives some new rights to a user in a groups
      * </p>
      * 
+     * @param the
+     *            role in which the new role will be set
+     * @param newRole
+     *            the new role of the user
      * @throws MemberNotInGroupException
      *             when <code>this</code> is not part of <code>group</code>
      * @throws UnauthorizedOperationException
      *             if the authenticated user is not <code>ADMIN</code> of
      *             <code>group</code>
      */
-    public void addGroupRight(final Group group, UserGroupRight newRight) throws UnauthorizedOperationException, MemberNotInGroupException {
+    public void setGroupRole(final Group group, TeamRole newRole) throws UnauthorizedOperationException, MemberNotInGroupException {
         if (!this.isInGroup(group)) {
             throw new MemberNotInGroupException();
         }
 
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
-        addGroupRightUnprotected(group, newRight);
+        setGroupRoleUnprotected(group, newRole);
     }
 
     /**
@@ -132,10 +135,12 @@ public final class Member extends Actor<DaoMember> {
      * @param group
      *            the group to add rights to the user
      * @param newRight
-     *            the new right to add
+     *            the new new role of the user
      */
-    protected void addGroupRightUnprotected(Group group, UserGroupRight newRight) {
-        getDao().addGroupRight(group.getDao(), newRight);
+    protected void setGroupRoleUnprotected(Group group, TeamRole newRole) {
+        for (UserGroupRight r : newRole.getRights()) {
+            getDao().addGroupRight(group.getDao(), r);
+        }
     }
 
     /**
@@ -364,8 +369,8 @@ public final class Member extends Actor<DaoMember> {
      *         Note the set can be empty if the member has no preset role
      *         (standard member).
      */
-    protected Set<UserGroupRight> getStatusUnprotected(final Group group) {
-        return group.getDao().getMemberStatus(getDao());
+    protected TeamRole getRoleUnprotected(final Group group) {
+        return new TeamRole(group.getDao().getMemberStatus(getDao()));
     }
 
     protected boolean isInGroupUnprotected(final Group group) {

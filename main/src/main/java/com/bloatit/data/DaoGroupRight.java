@@ -13,6 +13,10 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class DaoGroupRight extends DaoIdentifiable {
+    
+    public enum UserGroupRight {
+        CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK, 
+    }
 
     @ManyToOne(optional = false)
     private DaoGroupMembership membership;
@@ -20,10 +24,6 @@ public class DaoGroupRight extends DaoIdentifiable {
     @Basic(optional = false)
     @Enumerated
     private UserGroupRight userStatus;
-
-    public enum UserGroupRight {
-        ADMIN, LEADER, MEMBER, TREASURER, DEVELOPER,
-    }
 
     protected DaoGroupRight(DaoGroupMembership membership, UserGroupRight userStatus) {
         super();

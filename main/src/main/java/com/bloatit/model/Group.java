@@ -18,7 +18,6 @@ package com.bloatit.model;
 
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoGroup.Right;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MemberList;
 
@@ -45,7 +44,7 @@ public final class Group extends Actor<DaoGroup> {
     public Group(String login, String email, Right right, Member author) {
         super(DaoGroup.createAndPersiste(login, email, right));
         author.addToGroupUnprotected(this);
-        author.addGroupRightUnprotected(this, UserGroupRight.ADMIN);
+        author.setGroupRoleUnprotected(this, TeamRole.ADMIN);
     }
 
     private Group(final DaoGroup dao) {
