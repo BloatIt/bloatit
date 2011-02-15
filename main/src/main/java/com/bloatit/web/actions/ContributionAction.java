@@ -24,6 +24,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Demand;
+import com.bloatit.web.pages.demand.DemandTabPane;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
@@ -73,7 +74,7 @@ public final class ContributionAction extends LoggedAction {
             session.notifyGood(Context
                     .tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
             DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
-            demandPageUrl.getDemandTabPaneUrl().setActiveTabKey("participations_tab");
+            demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
             return demandPageUrl;
         } catch (final NotEnoughMoneyException e) {
             session.notifyBad(Context.tr("You need to charge your account before you can contribute."));

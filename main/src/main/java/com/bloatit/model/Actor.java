@@ -50,13 +50,13 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * @see DaoActor#getEmail()
+     * @see DaoActor#getContact()
      * @throws UnauthorizedOperationException if you don't have the <code>READ</code>
      * right on the <code>Email</code> property
      */
     public final String getEmail() throws UnauthorizedOperationException {
         new ActorRight.Email().tryAccess(calculateRole(getLoginUnprotected()), Action.READ);
-        return getDao().getEmail();
+        return getDao().getContact();
     }
 
     /**
@@ -66,7 +66,7 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     public final void setEmail(final String email) throws UnauthorizedOperationException {
         new ActorRight.Email().tryAccess(calculateRole(getLoginUnprotected()), Action.WRITE);
-        getDao().setEmail(email);
+        getDao().setContact(email);
     }
 
     protected final String getLoginUnprotected() {

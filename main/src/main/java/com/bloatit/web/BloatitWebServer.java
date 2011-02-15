@@ -12,6 +12,7 @@ import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.actions.CreateTeamAction;
 import com.bloatit.web.actions.IdeaCommentAction;
+import com.bloatit.web.actions.JoinTeamAction;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.actions.MemberActivationAction;
@@ -45,6 +46,7 @@ import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.demand.DemandPage;
 import com.bloatit.web.pages.team.CreateTeamPage;
+import com.bloatit.web.pages.team.JoinTeamPage;
 import com.bloatit.web.pages.team.TeamPage;
 import com.bloatit.web.pages.team.TeamsPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -67,6 +69,8 @@ import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
+import com.bloatit.web.url.JoinTeamActionUrl;
+import com.bloatit.web.url.JoinTeamPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
@@ -173,8 +177,10 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(CreateTeamPageUrl.getName())) {
             return new CreateTeamPage(new CreateTeamPageUrl(params, session.getParameters()));
         }
-        
-        
+        if (pageCode.equals(JoinTeamPageUrl.getName())) {
+            return new JoinTeamPage(new JoinTeamPageUrl(params, session.getParameters()));
+        }
+
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
             return new LoginAction(new LoginActionUrl(params, session.getParameters()));
@@ -229,6 +235,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(CreateTeamActionUrl.getName())) {
             return new CreateTeamAction(new CreateTeamActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(JoinTeamActionUrl.getName())) {
+            return new JoinTeamAction(new JoinTeamActionUrl(params, session.getParameters()));
         }
 
         // Resource page

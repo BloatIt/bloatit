@@ -2,15 +2,22 @@ package com.bloatit.web.pages.team;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlLink;
+import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Group;
+import com.bloatit.model.Member;
+import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.web.actions.JoinTeamAction;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -21,7 +28,7 @@ import com.bloatit.web.url.TeamPageUrl;
 @ParamContainer("team")
 public class TeamPage extends MasterPage {
     private TeamPageUrl url;
-    
+
     @RequestParam(level = Level.ERROR)
     private Group targetTeam;
 
@@ -35,14 +42,33 @@ public class TeamPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
-        
+
+        targetTeam.authenticate(session.getAuthToken());
+
         try {
             HtmlTitleBlock title = new HtmlTitleBlock(targetTeam.getLogin(), 1);
             master.add(title);
-            
-            // TODO
-            title.addText("email : " + targetTeam.getEmail());
-            
+
+            if (!session.getAuthToken().getMember().isInGroup(targetTeam)) {
+                if (targetTeam.isPublic()) {
+                    HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this group"));
+                    title.add(joinLink);
+                } else {
+                    title.addText("Send a request to join group");
+                }
+            }
+
+            if (targetTeam.canAccessEmail(Action.READ)) {
+                title.addText("email : " + targetTeam.getEmail());
+            }
+
+            HtmlList memberList = new HtmlList();
+            title.add(memberList);
+            PageIterable<Member> members = targetTeam.getMembers();
+            for (Member m : members) {
+                memberList.add("Member: " + m.getDisplayName());
+            }
+
         } catch (UnauthorizedOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

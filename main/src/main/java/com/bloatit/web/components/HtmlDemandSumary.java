@@ -29,6 +29,7 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
+import com.bloatit.web.pages.demand.DemandTabPane;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 
@@ -147,11 +148,11 @@ public final class HtmlDemandSumary extends HtmlDiv {
                         commentsDemandUrl.setAnchor("comments_block");
 
                         final DemandPageUrl offersDemandUrl = new DemandPageUrl(demand);
-                        offersDemandUrl.getDemandTabPaneUrl().setActiveTabKey("offers_tab");
+                        offersDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
                         offersDemandUrl.setAnchor("demand_tab_pane");
 
                         final DemandPageUrl contributionsDemandUrl = new DemandPageUrl(demand);
-                        contributionsDemandUrl.getDemandTabPaneUrl().setActiveTabKey("participations_tab");
+                        contributionsDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
                         contributionsDemandUrl.setAnchor("demand_tab_pane");
 
                         demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment", "{0} comments", commentsCount, new Integer(

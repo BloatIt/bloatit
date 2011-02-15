@@ -1,0 +1,216 @@
+@import "../include/colors";
+@import "../include/tools";
+
+.offers_block {
+
+    padding: 5px;
+    padding-top: 10px;
+
+}
+
+.offer_type_block {
+   .no_insets;
+}
+
+.offer_type_left_column {
+    display:table-cell;
+    .no_insets;
+    vertical-align: top;
+}
+
+.offer_type_right_column {
+    display:table-cell;
+    .no_insets;
+    width:100%;
+}
+
+.offer_unselected_description, .offer_selected_description {
+    .no_insets;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    border-right: 2px solid @border_color;
+    width: 150px;
+    font-size: 0.8em;
+    
+    p {
+        .no_insets;
+        margin-bottom: 10px;
+    }
+    
+    a {
+            display:block;
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+}
+
+
+.offer_selected_block {
+    .padding_box;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    background: @selected_background_color;
+}
+
+.offer_unselected_block {
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    background: @light_background_color;
+    .padding_box;
+}
+
+.offer_left_top_column{
+    .no_insets;
+    display:table-cell;
+    vertical-align: top;
+    
+}
+
+.offer_right_top_column{
+    .no_insets;
+    display:table-cell;
+     width:100%;
+}
+
+.offer_left_bottom_column{
+    .no_insets;
+    display:table-cell;
+    vertical-align: bottom;
+    width: 90px;
+    margin-right: 25px;
+}
+
+.offer_right_bottom_column{
+    .no_insets;
+    display:table-cell;
+     width:100%;
+}
+
+.offer_avatar {
+    width:50px;
+    margin-right:25px;
+}
+
+.offer_popularity {
+    width:50px;
+    margin-right:25px;
+}
+
+.offer_popularity_text {
+    .no_insets;
+    text-align: center;
+    font-size: 0.7em;
+}
+
+.offer_popularity_score {
+    .no_insets;
+display:table-cell;
+    width:100%;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 1.1em;
+    color: @title_color;
+}
+
+.offer_popularity_judge {
+    .no_insets;
+    display:table-cell;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.7em;
+    a {
+        .no_insets;
+        display:block;
+        vertical-align: middle;
+        text-align: center;
+        height:10px;
+    }
+    
+    .usefull {
+        color: @useful_color;
+    }
+    
+    .useless {
+        color: @useless_color;
+    }
+}
+
+.offer_popularity_judged {
+    .no_insets;
+    display:table-cell;
+    vertical-align: top;
+    text-align: center;
+    font-size: 0.6em;
+    
+    
+    p {
+        .no_insets;
+        margin-left: -10px;
+    }
+        
+    .usefull {
+        color: @useful_color;
+    }
+    
+    .useless {
+        color: @useless_color;
+    }
+}
+
+.offer_popularity_none {
+    .no_insets;
+    display:table-cell;
+    width: 10px;
+    height: 10px;
+}
+
+.offer_price_block {
+    float:right;
+    text-align: right;
+    margin: 10px;
+}
+
+.offer_block_price {
+    display: inline-block;
+    margin-left:8px;
+  
+    font-size: 1.5em;
+}
+
+.offer_block_label {
+    font-size: 0.8em;
+    color: @light_text_color;
+}
+
+.offer_block_author {
+    color: @project_color;
+    font-size: 1.3em;
+}
+
+
+.offer_block_para {
+
+    margin-top: 5px;
+    margin-bottom: 15px;
+
+    .offer_block_progress{
+       display: inline-block;
+       margin-left:8px;
+       font-size: 1.1em;
+    }
+ 
+    .progress_bar_block {
+        width: 200px;  
+        margin-left:10px;
+        margin-right:0px;
+    }
+}
+
+
+
+
