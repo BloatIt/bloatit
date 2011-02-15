@@ -1,10 +1,8 @@
 package com.bloatit.model;
 
-import com.bloatit.data.DaoGroup;
-import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.data.queries.DaoUserContentListFactory;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
+import com.bloatit.data.queries.DaoUserContentListFactory;
 import com.bloatit.framework.utils.PageIterable;
 
 public class UserContentAdministrationListFactory<T extends DaoUserContent> {

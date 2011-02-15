@@ -229,6 +229,5 @@ public class UrlParameter<T, U> extends UrlNode {
             }
             return new Messages();
         }
-
     }
 }

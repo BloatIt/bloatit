@@ -6,11 +6,9 @@ import java.util.List;
 
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.utils.SessionParameters;
-import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.framework.webserver.components.meta.HtmlText;
 
 public abstract class UrlComponent extends UrlNode {
+    private static final EmptyComponent EMPTY_COMPONENT = new EmptyComponent();
     private boolean isRegistered = false;
     private final List<UrlNode> nodes = new ArrayList<UrlNode>();
 
@@ -24,7 +22,7 @@ public abstract class UrlComponent extends UrlNode {
     }
 
     @Override
-    protected void constructUrl(final StringBuilder sb) {
+    protected final void constructUrl(final StringBuilder sb) {
         registerIfNotAlreadyDone();
         for (final UrlNode node : this) {
             node.constructUrl(sb);
@@ -53,8 +51,12 @@ public abstract class UrlComponent extends UrlNode {
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.bloatit.framework.webserver.url.UrlNode#parseSessionParameters(com.bloatit.framework.utils.SessionParameters)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.bloatit.framework.webserver.url.UrlNode#parseSessionParameters(com
+     * .bloatit.framework.utils.SessionParameters)
      */
     @Override
     protected void parseSessionParameters(SessionParameters params) {
@@ -67,7 +69,6 @@ public abstract class UrlComponent extends UrlNode {
         }
     }
 
-
     @Override
     @Deprecated
     public void addParameter(final String name, final String value) {
@@ -75,14 +76,6 @@ public abstract class UrlComponent extends UrlNode {
         for (final UrlNode node : nodes) {
             node.addParameter(name, value);
         }
-    }
-
-    public final HtmlLink getHtmlLink(final HtmlNode data) {
-        return new HtmlLink(urlString(), data);
-    }
-
-    public final HtmlLink getHtmlLink(final String text) {
-        return new HtmlLink(urlString(), new HtmlText(text));
     }
 
     @Override
@@ -99,6 +92,28 @@ public abstract class UrlComponent extends UrlNode {
             messages.addAll(node.getMessages());
         }
         return messages;
+    }
+
+    public static UrlComponent getEmptyComponent() {
+        return EMPTY_COMPONENT;
+    }
+
+    private static class EmptyComponent extends UrlComponent {
+
+        public EmptyComponent() {
+            // do nothing. the component is empty
+        }
+
+        @Override
+        protected void doRegister() {
+            // do nothing. the component is empty
+        }
+
+        @Override
+        public UrlComponent clone() {
+            // every empty component is the same. So return this
+            return this;
+        }
     }
 
 }
