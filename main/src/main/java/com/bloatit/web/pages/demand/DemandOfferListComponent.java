@@ -13,35 +13,328 @@ package com.bloatit.web.pages.demand;
 import com.bloatit.data.queries.NullCollection;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlImage;
+import com.bloatit.framework.webserver.components.HtmlLink;
+import com.bloatit.framework.webserver.components.HtmlParagraph;
+import com.bloatit.framework.webserver.components.HtmlSpan;
+import com.bloatit.framework.webserver.components.HtmlTitle;
+import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
+import com.bloatit.model.demand.DemandImplementation;
+import com.bloatit.web.HtmlTools;
+import com.bloatit.web.components.HtmlProgressBar;
+import com.bloatit.web.url.FileResourceUrl;
+import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.OfferPageUrl;
+import com.bloatit.web.url.PopularityVoteActionUrl;
 
 public class DemandOfferListComponent extends HtmlDiv {
 
+    private final Demand demand;
+
     public DemandOfferListComponent(final Demand demand) {
         super();
-        PageIterable<Offer> offers = new NullCollection<Offer>();
+        this.demand = demand;
         try {
-            offers = demand.getOffers();
-        } catch (final UnauthorizedOperationException e) {
-            // No right, no offers
-        }
-        final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
-        try {
-            final Offer currentOffer = demand.getSelectedOffer();
-            offersBlock.add(new IdeaOfferComponent(currentOffer, true));
-            for (final Offer offer : offers) {
-                if (!offer.equals(currentOffer)) {
-                    offersBlock.add(new IdeaOfferComponent(offer, false));
+            PageIterable<Offer> offers = new NullCollection<Offer>();
+            offers = demand.getOffers();
+            int unselectedOfferCount = offers.size();
+
+            final Offer selectedOffer = demand.getSelectedOffer();
+            if (selectedOffer != null) {
+                unselectedOfferCount--;
+            }
+
+            final HtmlDiv offersBlock = new HtmlDiv("offers_block");
+
+            if (selectedOffer != null) {
+                HtmlTitle selectedOfferTitle = new HtmlTitle(Context.tr("Selected offer"), 1);
+                offersBlock.add(selectedOfferTitle);
+                offersBlock.add(generateSelectedOfferTypeBlock(selectedOffer));
+            } else {
+                HtmlTitle selectedOfferTitle = new HtmlTitle(Context.tr("No selected offer"), 1);
+                offersBlock.add(selectedOfferTitle);
+            }
+
+            HtmlTitle unselectedOffersTitle = new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", unselectedOfferCount,
+                    unselectedOfferCount), 1);
+            offersBlock.add(unselectedOffersTitle);
+
+            for(Offer offer: offers) {
+                if(offer != selectedOffer) {
+                    offersBlock.add(generateUnselectedOfferTypeBlock(offer));
                 }
             }
+
+
+            add(offersBlock);
+
         } catch (final UnauthorizedOperationException e) {
             // No right no current offer.
         }
-
-        add(offersBlock);
     }
 
+    private HtmlNode generateSelectedOfferTypeBlock(Offer selectedOffer) throws UnauthorizedOperationException {
+        HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
+
+        HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
+        {
+            HtmlDiv offerSelectedDescription = new HtmlDiv("offer_selected_description");
+            {
+                offerSelectedDescription.add(new HtmlParagraph("The selected offer is the one with the more popularity."));
+                // TODO: real timing
+                offerSelectedDescription.add(new HtmlParagraph("This offer will go into development in about 6 hours."));
+            }
+            offerTypeBlock.add(offerSelectedDescription);
+        }
+        offerTypeBlock.add(offerTypeLeftColumn);
+
+        HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
+        {
+            offerTypeRightColumn.add(new OfferBlock(selectedOffer, true));
+
+        }
+        offerTypeBlock.add(offerTypeRightColumn);
+
+        return offerTypeBlock;
+    }
+
+    private HtmlNode generateUnselectedOfferTypeBlock(Offer selectedOffer) throws UnauthorizedOperationException {
+        HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
+
+        HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
+        {
+            HtmlDiv offerUnselectedDescription = new HtmlDiv("offer_unselected_description");
+            {
+                offerUnselectedDescription.add(new OfferPageUrl(demand).getHtmlLink(Context.tr("Faire une offre concurrente")));
+
+                offerUnselectedDescription.add(new HtmlParagraph("The concurent offers must be voted enought to become the selected offer."));
+            }
+            offerTypeBlock.add(offerUnselectedDescription);
+        }
+        offerTypeBlock.add(offerTypeLeftColumn);
+
+        HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
+        {
+            offerTypeRightColumn.add(new OfferBlock(selectedOffer, true));
+
+        }
+        offerTypeBlock.add(offerTypeRightColumn);
+
+        return offerTypeBlock;
+    }
+
+    private class OfferBlock extends HtmlDiv {
+
+        private final Offer offer;
+
+        public OfferBlock(Offer offer, boolean selected) throws UnauthorizedOperationException {
+            super((selected ? "offer_selected_block" : "offer_unselected_block"));
+            this.offer = offer;
+
+            HtmlDiv offerLeftColumn = new HtmlDiv("offer_left_column");
+            {
+                add(generateAvatarBlock());
+                add(generatePopularityBlock());
+            }
+            add(offerLeftColumn);
+
+            HtmlDiv offerRightColumn = new HtmlDiv("offer_right_column");
+            {
+                HtmlDiv offerPriceBlock = new HtmlDiv("offer_price_block");
+                {
+                    HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
+                    priceLabel.addText(Context.tr("Total price: "));
+                    offerPriceBlock.add(priceLabel);
+
+                    HtmlSpan price = new HtmlSpan("offer_block_price");
+                    priceLabel.addText(Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString());
+                    offerPriceBlock.add(price);
+                }
+                offerRightColumn.add(offerPriceBlock);
+
+                HtmlParagraph authorPara = new HtmlParagraph();
+                authorPara.setCssClass("offer_block_para");
+                {
+                    HtmlSpan authorLabel = new HtmlSpan("offer_block_label");
+                    authorLabel.addText(Context.tr("Author: "));
+                    authorPara.add(authorLabel);
+
+                    HtmlLink author = new MemberPageUrl(offer.getAuthor()).getHtmlLink(offer.getAuthor().getDisplayName());
+                    author.setCssClass("offer_block_author");
+                    authorPara.add(author);
+                }
+                offerRightColumn.add(authorPara);
+
+                HtmlParagraph progressPara = new HtmlParagraph();
+                progressPara.setCssClass("offer_block_para");
+                {
+                    HtmlSpan progressLabel = new HtmlSpan("offer_block_label");
+                    progressLabel.addText(Context.tr("Funding: "));
+                    progressPara.add(progressLabel);
+
+                    int progression = (int) Math.floor(offer.getProgression());
+                    HtmlSpan progress = new HtmlSpan("offer_block_progress");
+                    progress.addText(Context.tr("{0} %",String.valueOf(progression)));
+                    progressPara.add(progress);
+
+                    int cappedProgressValue = progression;
+                    if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
+                        cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
+                    }
+
+                    final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+
+                    progressPara.add(progressBar);
+
+
+                }
+                offerRightColumn.add(progressPara);
+
+                //Lots
+                PageIterable<Batch> lots = offer.getBatches();
+                if(lots.size() == 1) {
+                    Batch lot = lots.iterator().next();
+
+                    HtmlParagraph datePara = new HtmlParagraph();
+                    authorPara.setCssClass("offer_block_para");
+                    {
+                        HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
+                        dateLabel.addText(Context.tr("Delivery Date: "));
+                        datePara.add(dateLabel);
+
+                        //TODO: use scheduled release date
+                        HtmlSpan date = new HtmlSpan(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
+                        date.setCssClass("offer_block_date");
+                        datePara.add(date);
+                    }
+                    offerRightColumn.add(datePara);
+
+                    HtmlParagraph description = new HtmlParagraph();
+                    description.addText(lot.getDescription());
+                    offerRightColumn.add(description);
+                } else {
+                    int i = 0;
+                    for(Batch lot: lots) {
+                        i++;
+                        HtmlDiv lotBlock = new HtmlDiv("offer_lot_block");
+                        {
+                            HtmlDiv offerLotPriceBlock = new HtmlDiv("offer_price_block");
+                            {
+                                HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
+                                priceLabel.addText(Context.tr("Price: "));
+                                offerPriceBlock.add(priceLabel);
+
+                                HtmlSpan price = new HtmlSpan("offer_block_price_lot");
+                                priceLabel.addText(Context.getLocalizator().getCurrency(lot.getAmount()).getLocaleString());
+                                offerLotPriceBlock.add(price);
+                            }
+                            lotBlock.add(offerLotPriceBlock);
+
+                            HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0}", i), 2);
+                            lotBlock.add(lotTitle);
+
+                            HtmlParagraph datePara = new HtmlParagraph();
+                            authorPara.setCssClass("offer_block_para");
+                            {
+                                HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
+                                dateLabel.addText(Context.tr("Delivery Date: "));
+                                datePara.add(dateLabel);
+
+                                //TODO: use scheduled release date
+                                HtmlSpan date = new HtmlSpan(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
+                                date.setCssClass("offer_block_date");
+                                datePara.add(date);
+                            }
+                            lotBlock.add(datePara);
+
+                            HtmlParagraph description = new HtmlParagraph();
+                            description.addText(lot.getDescription());
+                            lotBlock.add(description);
+
+                        }
+                        offerRightColumn.add(lotBlock);
+                    }
+                }
+
+
+            }
+            add(offerRightColumn);
+        }
+
+        private HtmlNode generateAvatarBlock() {
+            final HtmlDiv avatarBlock = new HtmlDiv("offer_avatar");
+
+            // Add project image
+            try {
+                FileResourceUrl imageUrl = new FileResourceUrl(offer.getDemand().getProject().getImage());
+                // TODO: use avatar
+                final HtmlImage projectImage = new HtmlImage(imageUrl, "project_image");
+                avatarBlock.add(projectImage);
+            } catch (UnauthorizedOperationException e) {
+                // no right, no image
+            }
+
+            return avatarBlock;
+        }
+
+        private HtmlNode generatePopularityBlock() {
+
+            final HtmlDiv offerSummaryPopularity = new HtmlDiv("offer_popularity");
+            {
+                final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "offer_popularity_text");
+                final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(offer.getPopularity()), "offer_popularity_score");
+
+                offerSummaryPopularity.add(popularityText);
+                offerSummaryPopularity.add(popularityScore);
+
+                if (!offer.isOwnedByMe()) {
+                    int vote = offer.getUserVoteValue();
+                    if (vote == 0) {
+                        final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");
+                        {
+
+                            // Usefull
+                            final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(offer, true);
+                            final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
+                            usefullLink.setCssClass("usefull");
+
+                            // Useless
+                            final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(offer, false);
+                            final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
+                            uselessLink.setCssClass("useless");
+
+                            offerPopularityJudge.add(usefullLink);
+                            offerPopularityJudge.add(uselessLink);
+                        }
+                        offerSummaryPopularity.add(offerPopularityJudge);
+                    } else {
+                        // Already voted
+                        final HtmlDiv offerPopularityJudged = new HtmlDiv("offer_popularity_judged");
+                        {
+                            if (vote > 0) {
+                                offerPopularityJudged.add(new HtmlParagraph("+" + vote, "usefull"));
+                            } else {
+                                offerPopularityJudged.add(new HtmlParagraph("−" + Math.abs(vote), "useless"));
+                            }
+                        }
+                        offerSummaryPopularity.add(offerPopularityJudged);
+                    }
+                } else {
+                    final HtmlDiv offerPopularityNone = new HtmlDiv("offer_popularity_none");
+
+                    offerSummaryPopularity.add(offerPopularityNone);
+                }
+
+            }
+            return offerSummaryPopularity;
+        }
+
+    }
 }

@@ -25,9 +25,12 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.lists.BatchList;
+import com.bloatit.model.right.DemandRight;
+import com.bloatit.model.right.RightManager.Action;
 
 // TODO rightManagement
 
@@ -158,6 +161,24 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     public Date getExpirationDate() {
         return getDao().getExpirationDate();
+    }
+
+    /** The Constant PROGRESSION_PERCENT. */
+    public static final int PROGRESSION_PERCENT = 100;
+
+    /**
+     * Return the progression of the funding of this offer with the amount available on the demand
+     * @return
+     * @throws UnauthorizedOperationException
+     */
+    public float getProgression() throws UnauthorizedOperationException {
+
+        if (getAmount().floatValue() != 0) {
+            new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+
+            return (getDemand().getContribution().floatValue() * PROGRESSION_PERCENT) / getAmount().floatValue();
+        }
+        return Float.POSITIVE_INFINITY;
     }
 
     // ////////////////////////////////////////////////////////////////////////
