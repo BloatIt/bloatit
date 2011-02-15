@@ -1,0 +1,170 @@
+@import "../include/colors";
+@import "../include/tools";
+
+.offers_block {
+
+    padding: 5px;
+    padding-top: 10px;
+
+}
+
+.offer_type_block {
+   .no_insets;
+}
+
+.offer_type_left_column {
+    display:table-cell;
+    .no_insets;
+    vertical-align: top;
+}
+
+.offer_type_right_column {
+    display:table-cell;
+    .no_insets;
+    width:100%;
+}
+
+.offer_unselected_description {
+    .no_insets;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    border-right: 2px solid @border_color;
+    width: 150px;
+    font-size: 0.8em;
+    
+    a {
+        font-size: 1.1em;
+    }
+}
+
+.offer_selected_block {
+    .padding_box;
+    margin-left: 15px;
+    margin-right: 15px;
+    background: @selected_background_color;
+}
+
+.offer_unselected_block {
+    margin-left: 15px;
+    margin-right: 15px;
+    background: @light_background_color;
+    .padding_box;
+}
+
+.offer_left_top_column{
+    .no_insets;
+    display:table-cell;
+    vertical-align: top;
+    
+}
+
+.offer_right_top_column{
+    .no_insets;
+    display:table-cell;
+     width:100%;
+}
+
+.offer_left_bottom_column{
+    .no_insets;
+    display:table-cell;
+    vertical-align: bottom;
+    width: 90px;
+    margin-right: 15px;
+}
+
+.offer_right_bottom_column{
+    .no_insets;
+    display:table-cell;
+     width:100%;
+}
+
+.offer_avatar {
+    width:50px;
+    margin-right:15px;
+}
+
+.offer_popularity {
+
+    width:50px;
+    margin-right:15px;
+
+}
+
+
+
+.offer_popularity_text {
+    .no_insets;
+    text-align: center;
+    font-size: 0.7em;
+}
+
+
+
+.offer_popularity_score {
+    .no_insets;
+display:table-cell;
+    width:100%;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 1.1em;
+    color: @title_color;
+}
+
+.offer_popularity_judge {
+    .no_insets;
+    display:table-cell;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.7em;
+    a {
+        .no_insets;
+        display:block;
+        vertical-align: middle;
+        text-align: center;
+        height:10px;
+    }
+    
+    .usefull {
+        color: @useful_color;
+    }
+    
+    .useless {
+        color: @useless_color;
+    }
+}
+
+.offer_popularity_judged {
+    .no_insets;
+    display:table-cell;
+    vertical-align: top;
+    text-align: center;
+    font-size: 0.6em;
+    
+    
+    p {
+        .no_insets;
+        margin-left: -10px;
+    }
+        
+    .usefull {
+        color: @useful_color;
+    }
+    
+    .useless {
+        color: @useless_color;
+    }
+}
+
+.offer_popularity_none {
+    .no_insets;
+    display:table-cell;
+    width: 10px;
+    height: 10px;
+}
+
+
+
+

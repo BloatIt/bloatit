@@ -66,12 +66,11 @@ public class DemandOfferListComponent extends HtmlDiv {
                     unselectedOfferCount), 1);
             offersBlock.add(unselectedOffersTitle);
 
-            for(Offer offer: offers) {
-                if(offer != selectedOffer) {
+            for (Offer offer : offers) {
+                if (offer != selectedOffer) {
                     offersBlock.add(generateUnselectedOfferTypeBlock(offer));
                 }
             }
-
 
             add(offersBlock);
 
@@ -116,13 +115,13 @@ public class DemandOfferListComponent extends HtmlDiv {
 
                 offerUnselectedDescription.add(new HtmlParagraph("The concurent offers must be voted enought to become the selected offer."));
             }
-            offerTypeBlock.add(offerUnselectedDescription);
+            offerTypeLeftColumn.add(offerUnselectedDescription);
         }
         offerTypeBlock.add(offerTypeLeftColumn);
 
         HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
         {
-            offerTypeRightColumn.add(new OfferBlock(selectedOffer, true));
+            offerTypeRightColumn.add(new OfferBlock(selectedOffer, false));
 
         }
         offerTypeBlock.add(offerTypeRightColumn);
@@ -138,134 +137,151 @@ public class DemandOfferListComponent extends HtmlDiv {
             super((selected ? "offer_selected_block" : "offer_unselected_block"));
             this.offer = offer;
 
-            HtmlDiv offerLeftColumn = new HtmlDiv("offer_left_column");
+            HtmlDiv offerTopBlock = new HtmlDiv("offer_top_block");
             {
-                add(generateAvatarBlock());
-                add(generatePopularityBlock());
-            }
-            add(offerLeftColumn);
-
-            HtmlDiv offerRightColumn = new HtmlDiv("offer_right_column");
-            {
-                HtmlDiv offerPriceBlock = new HtmlDiv("offer_price_block");
+                HtmlDiv offerLeftTopColumn = new HtmlDiv("offer_left_top_column");
                 {
-                    HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
-                    priceLabel.addText(Context.tr("Total price: "));
-                    offerPriceBlock.add(priceLabel);
-
-                    HtmlSpan price = new HtmlSpan("offer_block_price");
-                    priceLabel.addText(Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString());
-                    offerPriceBlock.add(price);
+                    offerLeftTopColumn.add(generateAvatarBlock());
                 }
-                offerRightColumn.add(offerPriceBlock);
+                offerTopBlock.add(offerLeftTopColumn);
 
-                HtmlParagraph authorPara = new HtmlParagraph();
-                authorPara.setCssClass("offer_block_para");
+                HtmlDiv offerRightTopColumn = new HtmlDiv("offer_right_top_column");
                 {
-                    HtmlSpan authorLabel = new HtmlSpan("offer_block_label");
-                    authorLabel.addText(Context.tr("Author: "));
-                    authorPara.add(authorLabel);
+                    HtmlDiv offerPriceBlock = new HtmlDiv("offer_price_block");
+                    {
+                        HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
+                        priceLabel.addText(Context.tr("Total price: "));
+                        offerPriceBlock.add(priceLabel);
 
-                    HtmlLink author = new MemberPageUrl(offer.getAuthor()).getHtmlLink(offer.getAuthor().getDisplayName());
-                    author.setCssClass("offer_block_author");
-                    authorPara.add(author);
-                }
-                offerRightColumn.add(authorPara);
-
-                HtmlParagraph progressPara = new HtmlParagraph();
-                progressPara.setCssClass("offer_block_para");
-                {
-                    HtmlSpan progressLabel = new HtmlSpan("offer_block_label");
-                    progressLabel.addText(Context.tr("Funding: "));
-                    progressPara.add(progressLabel);
-
-                    int progression = (int) Math.floor(offer.getProgression());
-                    HtmlSpan progress = new HtmlSpan("offer_block_progress");
-                    progress.addText(Context.tr("{0} %",String.valueOf(progression)));
-                    progressPara.add(progress);
-
-                    int cappedProgressValue = progression;
-                    if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
-                        cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
+                        HtmlSpan price = new HtmlSpan("offer_block_price");
+                        priceLabel.addText(Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString());
+                        offerPriceBlock.add(price);
                     }
+                    offerRightTopColumn.add(offerPriceBlock);
 
-                    final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
-
-                    progressPara.add(progressBar);
-
-
-                }
-                offerRightColumn.add(progressPara);
-
-                //Lots
-                PageIterable<Batch> lots = offer.getBatches();
-                if(lots.size() == 1) {
-                    Batch lot = lots.iterator().next();
-
-                    HtmlParagraph datePara = new HtmlParagraph();
+                    HtmlParagraph authorPara = new HtmlParagraph();
                     authorPara.setCssClass("offer_block_para");
                     {
-                        HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
-                        dateLabel.addText(Context.tr("Delivery Date: "));
-                        datePara.add(dateLabel);
+                        HtmlSpan authorLabel = new HtmlSpan("offer_block_label");
+                        authorLabel.addText(Context.tr("Author: "));
+                        authorPara.add(authorLabel);
 
-                        //TODO: use scheduled release date
-                        HtmlSpan date = new HtmlSpan(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
-                        date.setCssClass("offer_block_date");
-                        datePara.add(date);
+                        HtmlLink author = new MemberPageUrl(offer.getAuthor()).getHtmlLink(offer.getAuthor().getDisplayName());
+                        author.setCssClass("offer_block_author");
+                        authorPara.add(author);
                     }
-                    offerRightColumn.add(datePara);
+                    offerRightTopColumn.add(authorPara);
 
-                    HtmlParagraph description = new HtmlParagraph();
-                    description.addText(lot.getDescription());
-                    offerRightColumn.add(description);
-                } else {
-                    int i = 0;
-                    for(Batch lot: lots) {
-                        i++;
-                        HtmlDiv lotBlock = new HtmlDiv("offer_lot_block");
-                        {
-                            HtmlDiv offerLotPriceBlock = new HtmlDiv("offer_price_block");
-                            {
-                                HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
-                                priceLabel.addText(Context.tr("Price: "));
-                                offerPriceBlock.add(priceLabel);
+                    HtmlParagraph progressPara = new HtmlParagraph();
+                    progressPara.setCssClass("offer_block_para");
+                    {
+                        HtmlSpan progressLabel = new HtmlSpan("offer_block_label");
+                        progressLabel.addText(Context.tr("Funding: "));
+                        progressPara.add(progressLabel);
 
-                                HtmlSpan price = new HtmlSpan("offer_block_price_lot");
-                                priceLabel.addText(Context.getLocalizator().getCurrency(lot.getAmount()).getLocaleString());
-                                offerLotPriceBlock.add(price);
-                            }
-                            lotBlock.add(offerLotPriceBlock);
+                        int progression = (int) Math.floor(offer.getProgression());
+                        HtmlSpan progress = new HtmlSpan("offer_block_progress");
+                        progress.addText(Context.tr("{0} %", String.valueOf(progression)));
+                        progressPara.add(progress);
 
-                            HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0}", i), 2);
-                            lotBlock.add(lotTitle);
-
-                            HtmlParagraph datePara = new HtmlParagraph();
-                            authorPara.setCssClass("offer_block_para");
-                            {
-                                HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
-                                dateLabel.addText(Context.tr("Delivery Date: "));
-                                datePara.add(dateLabel);
-
-                                //TODO: use scheduled release date
-                                HtmlSpan date = new HtmlSpan(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
-                                date.setCssClass("offer_block_date");
-                                datePara.add(date);
-                            }
-                            lotBlock.add(datePara);
-
-                            HtmlParagraph description = new HtmlParagraph();
-                            description.addText(lot.getDescription());
-                            lotBlock.add(description);
-
+                        int cappedProgressValue = progression;
+                        if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
+                            cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
                         }
-                        offerRightColumn.add(lotBlock);
-                    }
-                }
 
+                        final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+
+                        progressPara.add(progressBar);
+
+                    }
+                    offerRightTopColumn.add(progressPara);
+
+                }
+                offerTopBlock.add(offerRightTopColumn);
 
             }
-            add(offerRightColumn);
+            add(offerTopBlock);
+
+            HtmlDiv offerBottomBlock = new HtmlDiv("offer_bottom_block");
+            {
+                HtmlDiv offerLeftBottomColumn = new HtmlDiv("offer_left_bottom_column");
+                {
+                    offerLeftBottomColumn.add(generatePopularityBlock());
+                }
+                offerBottomBlock.add(offerLeftBottomColumn);
+
+                HtmlDiv offerRightBottomColumn = new HtmlDiv("offer_right_bottom_column");
+                {
+                    // Lots
+                    PageIterable<Batch> lots = offer.getBatches();
+                    if (lots.size() == 1) {
+                        Batch lot = lots.iterator().next();
+
+                        HtmlParagraph datePara = new HtmlParagraph();
+                        datePara.setCssClass("offer_block_para");
+                        {
+                            HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
+                            dateLabel.addText(Context.tr("Delivery Date: "));
+                            datePara.add(dateLabel);
+
+                            // TODO: use scheduled release date
+                            HtmlSpan date = new HtmlSpan("offer_block_date");
+                            date.addText(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
+                            datePara.add(date);
+                        }
+                        offerRightBottomColumn.add(datePara);
+
+                        HtmlParagraph description = new HtmlParagraph();
+                        description.addText(lot.getDescription());
+                        offerRightBottomColumn.add(description);
+                    } else {
+                        int i = 0;
+                        for (Batch lot : lots) {
+                            i++;
+                            HtmlDiv lotBlock = new HtmlDiv("offer_lot_block");
+                            {
+                                HtmlDiv offerLotPriceBlock = new HtmlDiv("offer_price_block");
+                                {
+                                    HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
+                                    priceLabel.addText(Context.tr("Price: "));
+                                    offerLotPriceBlock.add(priceLabel);
+
+                                    HtmlSpan price = new HtmlSpan("offer_block_price_lot");
+                                    priceLabel.addText(Context.getLocalizator().getCurrency(lot.getAmount()).getLocaleString());
+                                    offerLotPriceBlock.add(price);
+                                }
+                                lotBlock.add(offerLotPriceBlock);
+
+                                HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0}", i), 2);
+                                lotBlock.add(lotTitle);
+
+                                HtmlParagraph datePara = new HtmlParagraph();
+                                datePara.setCssClass("offer_block_para");
+                                {
+                                    HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
+                                    dateLabel.addText(Context.tr("Delivery Date: "));
+                                    datePara.add(dateLabel);
+
+                                    // TODO: use scheduled release date
+                                    HtmlSpan date = new HtmlSpan("offer_block_date");
+                                    date.addText(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
+                                    datePara.add(date);
+                                }
+                                lotBlock.add(datePara);
+
+                                HtmlParagraph description = new HtmlParagraph();
+                                description.addText(lot.getDescription());
+                                lotBlock.add(description);
+
+                            }
+                            offerRightBottomColumn.add(lotBlock);
+                        }
+                    }
+                }
+                offerBottomBlock.add(offerRightBottomColumn);
+            }
+            add(offerBottomBlock);
+
         }
 
         private HtmlNode generateAvatarBlock() {
@@ -275,7 +291,7 @@ public class DemandOfferListComponent extends HtmlDiv {
             try {
                 FileResourceUrl imageUrl = new FileResourceUrl(offer.getDemand().getProject().getImage());
                 // TODO: use avatar
-                final HtmlImage projectImage = new HtmlImage(imageUrl, "project_image");
+                final HtmlImage projectImage = new HtmlImage(imageUrl, "avatar_image");
                 avatarBlock.add(projectImage);
             } catch (UnauthorizedOperationException e) {
                 // no right, no image
