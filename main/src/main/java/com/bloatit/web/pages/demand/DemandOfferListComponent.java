@@ -66,11 +66,8 @@ public class DemandOfferListComponent extends HtmlDiv {
                     unselectedOfferCount), 1);
             offersBlock.add(unselectedOffersTitle);
 
-            for (Offer offer : offers) {
-                if (offer != selectedOffer) {
-                    offersBlock.add(generateUnselectedOfferTypeBlock(offer));
-                }
-            }
+            offersBlock.add(generateUnselectedOffersTypeBlock(offers, selectedOffer));
+
 
             add(offersBlock);
 
@@ -90,7 +87,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                 // TODO: real timing
                 offerSelectedDescription.add(new HtmlParagraph("This offer will go into development in about 6 hours."));
             }
-            offerTypeBlock.add(offerSelectedDescription);
+            offerTypeLeftColumn.add(offerSelectedDescription);
         }
         offerTypeBlock.add(offerTypeLeftColumn);
 
@@ -104,16 +101,16 @@ public class DemandOfferListComponent extends HtmlDiv {
         return offerTypeBlock;
     }
 
-    private HtmlNode generateUnselectedOfferTypeBlock(Offer selectedOffer) throws UnauthorizedOperationException {
+    private HtmlNode generateUnselectedOffersTypeBlock(PageIterable<Offer> offers, Offer selectedOffer) throws UnauthorizedOperationException {
         HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
 
         HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
         {
             HtmlDiv offerUnselectedDescription = new HtmlDiv("offer_unselected_description");
             {
-                offerUnselectedDescription.add(new OfferPageUrl(demand).getHtmlLink(Context.tr("Faire une offre concurrente")));
+                offerUnselectedDescription.add(new OfferPageUrl(demand).getHtmlLink(Context.tr("Make a concurrent offer")));
 
-                offerUnselectedDescription.add(new HtmlParagraph("The concurent offers must be voted enought to become the selected offer."));
+                offerUnselectedDescription.add(new HtmlParagraph("The concurrent offers must be voted enought to become the selected offer."));
             }
             offerTypeLeftColumn.add(offerUnselectedDescription);
         }
@@ -121,8 +118,11 @@ public class DemandOfferListComponent extends HtmlDiv {
 
         HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
         {
-            offerTypeRightColumn.add(new OfferBlock(selectedOffer, false));
-
+            for (Offer offer : offers) {
+                if (offer != selectedOffer) {
+                    offerTypeRightColumn.add(new OfferBlock(offer, false));
+                }
+            }
         }
         offerTypeBlock.add(offerTypeRightColumn);
 
@@ -154,7 +154,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                         offerPriceBlock.add(priceLabel);
 
                         HtmlSpan price = new HtmlSpan("offer_block_price");
-                        priceLabel.addText(Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString());
+                        price.addText(Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString());
                         offerPriceBlock.add(price);
                     }
                     offerRightTopColumn.add(offerPriceBlock);
@@ -247,7 +247,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                                     offerLotPriceBlock.add(priceLabel);
 
                                     HtmlSpan price = new HtmlSpan("offer_block_price_lot");
-                                    priceLabel.addText(Context.getLocalizator().getCurrency(lot.getAmount()).getLocaleString());
+                                    price.addText(Context.getLocalizator().getCurrency(lot.getAmount()).getLocaleString());
                                     offerLotPriceBlock.add(price);
                                 }
                                 lotBlock.add(offerLotPriceBlock);

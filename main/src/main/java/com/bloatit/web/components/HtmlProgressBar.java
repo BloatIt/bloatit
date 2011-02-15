@@ -12,8 +12,9 @@
 package com.bloatit.web.components;
 
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlSpan;
 
-public class HtmlProgressBar extends HtmlDiv {
+public class HtmlProgressBar extends HtmlSpan {
 
     public HtmlProgressBar(final float progress) {
         super("progress_bar_block");

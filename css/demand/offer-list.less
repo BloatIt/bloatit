@@ -24,7 +24,7 @@
     width:100%;
 }
 
-.offer_unselected_description {
+.offer_unselected_description, .offer_selected_description {
     .no_insets;
     margin-left: 5px;
     margin-right: 5px;
@@ -35,21 +35,31 @@
     width: 150px;
     font-size: 0.8em;
     
+    p {
+        .no_insets;
+        margin-bottom: 10px;
+    }
+    
     a {
+            display:block;
         font-size: 1.1em;
+        margin-bottom: 10px;
     }
 }
+
 
 .offer_selected_block {
     .padding_box;
     margin-left: 15px;
     margin-right: 15px;
+    margin-bottom: 15px;
     background: @selected_background_color;
 }
 
 .offer_unselected_block {
     margin-left: 15px;
     margin-right: 15px;
+    margin-bottom: 15px;
     background: @light_background_color;
     .padding_box;
 }
@@ -87,21 +97,15 @@
 }
 
 .offer_popularity {
-
     width:50px;
     margin-right:15px;
-
 }
-
-
 
 .offer_popularity_text {
     .no_insets;
     text-align: center;
     font-size: 0.7em;
 }
-
-
 
 .offer_popularity_score {
     .no_insets;
@@ -163,6 +167,48 @@ display:table-cell;
     display:table-cell;
     width: 10px;
     height: 10px;
+}
+
+.offer_price_block {
+    float:right;
+    text-align: right;
+    margin: 10px;
+}
+
+.offer_block_price {
+    display: inline-block;
+    margin-left:8px;
+  
+    font-size: 1.5em;
+}
+
+.offer_block_label {
+    font-size: 0.8em;
+    color: @light_text_color;
+}
+
+.offer_block_author {
+    color: @project_color;
+    font-size: 1.3em;
+}
+
+
+.offer_block_para {
+
+    margin-top: 5px;
+    margin-bottom: 15px;
+
+    .offer_block_progress{
+       display: inline-block;
+       margin-left:8px;
+       font-size: 1.1em;
+    }
+ 
+    .progress_bar_block {
+        width: 200px;  
+        margin-left:10px;
+        margin-right:5px;
+    }
 }
 
 
