@@ -168,7 +168,7 @@ public class DaoFileMetadata extends DaoUserContent {
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
-
+    
     protected DaoFileMetadata() {
         // for hibernate.
     }

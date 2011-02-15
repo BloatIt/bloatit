@@ -99,7 +99,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
      */
     public void accept() {
         if (state == State.PENDING) {
-            receiver.addToGroup(group, false);
+            receiver.addToGroup(group);
             this.state = State.ACCEPTED;
         }
     }

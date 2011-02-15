@@ -120,14 +120,14 @@ public abstract class DaoActor implements IdentifiableInterface {
     /**
      * @return the email of this actor.
      */
-    public abstract String getEmail();
+    public abstract String getContact();
 
     /**
      * No check is performed on the correctness of the new email.
      * 
      * @param email the new email.
      */
-    public abstract void setEmail(final String email);
+    public abstract void setContact(final String email);
 
     // ======================================================================
     // Getters.

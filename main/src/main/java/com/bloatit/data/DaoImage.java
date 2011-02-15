@@ -47,7 +47,7 @@ public final class DaoImage extends DaoIdentifiable {
     private DaoFileMetadata file;
 
     /**
-     * @see #DaoImage(int, int, String, DaoFileMetadata);
+     * @see #DaoImage(int, int, String, DaoFileMetadata)
      */
     public static DaoImage createAndPersist(int horizontalSize, int verticalSize, String compression, DaoFileMetadata file) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();

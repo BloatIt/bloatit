@@ -51,6 +51,7 @@
 		<mapping class="com.bloatit.data.DaoFileMetadata" />
 		<mapping class="com.bloatit.data.DaoImage" />
 		<mapping class="com.bloatit.data.DaoProject" />
+		<mapping class="com.bloatit.data.DaoGroupRight" />
 		
 		<!--<mapping class="com.bloatit.data.DaoUserContent" /> <mapping 
 			class="com.bloatit.data.DaoKudosable" /> <mapping class="com.bloatit.data.DaoIdentifiable" 

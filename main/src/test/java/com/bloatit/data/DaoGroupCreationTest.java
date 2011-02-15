@@ -31,7 +31,6 @@ public class DaoGroupCreationTest extends TestCase {
         DaoGroup.createAndPersiste("b217", "plop4@plop.com", DaoGroup.Right.PUBLIC);
         DaoGroup.createAndPersiste("b216", "plop5@plop.com", DaoGroup.Right.PUBLIC);
         SessionManager.endWorkUnitAndFlush();
-
     }
 
     public void testCreateGroupLimite() {
