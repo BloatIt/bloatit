@@ -35,7 +35,15 @@ import com.bloatit.web.url.MemberPageUrl;
 @ParamContainer(value = "demandTabPane", isComponent = true)
 public final class DemandTabPane extends HtmlPageComponent {
 
-    @RequestParam(name = "demand_tab_pane", defaultValue = "description_tab")
+    public static final String DETAILS_TAB = "details_tab";
+
+    public static final String OFFERS_TAB = "offers_tab";
+
+    public static final String PARTICIPATIONS_TAB = "participations_tab";
+
+    public static final String DESCRIPTION_TAB = "description_tab";
+
+    @RequestParam(name = "demand_tab_pane", defaultValue = DESCRIPTION_TAB)
     private String activeTabKey;
 
     /**
@@ -55,7 +63,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         final HtmlTabBlock tabPane = new HtmlTabBlock("demand_tab_pane", activeTabKey, demandUrl);
 
         // Create description tab
-        tabPane.addTab(new HtmlTab(Context.tr("Description"), "description_tab") {
+        tabPane.addTab(new HtmlTab(Context.tr("Description"), DESCRIPTION_TAB) {
             @Override
             public HtmlNode generateBody() {
                 return generateDescriptionTabContent(demand);
@@ -64,7 +72,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
         // Create participations tab
         try {
-            tabPane.addTab(new HtmlTab(Context.tr("Participations ({0})", demand.getContributions().size()), "participations_tab") {
+            tabPane.addTab(new HtmlTab(Context.tr("Participations ({0})", demand.getContributions().size()), PARTICIPATIONS_TAB) {
                 @Override
                 public HtmlNode generateBody() {
                     return new DemandContributorsComponent(url.getContributionUrl(), demand);
@@ -76,7 +84,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
         // Create Comments tab
         try {
-            tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", demand.getOffers().size()), "offers_tab") {
+            tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", demand.getOffers().size()), OFFERS_TAB) {
                 @Override
                 public HtmlNode generateBody() {
                     return new DemandOfferListComponent(demand);
@@ -87,7 +95,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         }
 
         // Create Details tab
-        tabPane.addTab(new HtmlTab(Context.tr("Details"), "details_tab") {
+        tabPane.addTab(new HtmlTab(Context.tr("Details"), DETAILS_TAB) {
             @Override
             public HtmlNode generateBody() {
                 return new DemandOfferListComponent(demand);
