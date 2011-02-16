@@ -7,6 +7,7 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.UserContentAdministrationListFactory;
 import com.bloatit.web.url.AdministrationPageUrl;
@@ -14,57 +15,51 @@ import com.bloatit.web.url.AdministrationPageUrl;
 @ParamContainer("administration")
 public class AdministrationPage extends LoggedPage {
 
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean orderByMemberAsc;
+    public enum FilterType implements HtmlRadioButtonGroup.Displayable {
+        NO_FILTER(tr("No filter")), //
+        WITH(tr("With filter")), //
+        WITHOUT(tr("Without filter"));
+
+        private String displayName;
+
+        @Override
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        private FilterType(String displayName) {
+            this.displayName = displayName;
+        }
+
+    }
 
     @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean orderByAsGroupAsc;
+    private String orderBy;
 
     @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean orderByMemberDesc;
+    private Boolean asc;
 
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean orderByAsGroupDesc;
+    @RequestParam(level = Level.ERROR, defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
+    private FilterType filterDeleted;
 
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean deletedOnly;
+    @RequestParam(level = Level.ERROR, defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
+    private FilterType filterFile;
 
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean nonDeletedOnly;
-
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean withoutFile;
-
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean withFile;
-
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean withAnyGroup;
-
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean withNoGroup;
-
-    // @RequestParam(level = Level.INFO, role = RequestParam.Role.POST)
-    // @ParamConstraint(optional = true)
-    // private Member fromMember;
-    // @RequestParam(level = Level.INFO, role = RequestParam.Role.POST)
-    // @ParamConstraint(optional = true)
-    // private Group fromGroup;
+    @RequestParam(level = Level.ERROR, defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
+    private FilterType filterGroup;
 
     public AdministrationPage(AdministrationPageUrl url) {
         super(url);
-        orderByMemberAsc = url.getOrderByMemberAsc();
-        orderByMemberDesc = url.getOrderByMemberDesc();
-        orderByAsGroupAsc = url.getOrderByAsGroupAsc();
-        orderByAsGroupDesc = url.getOrderByAsGroupDesc();
-        deletedOnly = url.getDeletedOnly();
-        nonDeletedOnly = url.getNonDeletedOnly();
-        withoutFile = url.getWithoutFile();
-        withFile = url.getWithFile();
-        withAnyGroup = url.getWithAnyGroup();
-        withNoGroup = url.getWithNoGroup();
-        // fromMember = url.getFromMember();
-        // fromGroup = url.getFromGroup();
+        orderBy = url.getOrderBy();
+        asc = url.getAsc();
+        filterDeleted = url.getFilterDeleted();
+        filterFile = url.getFilterFile();
+        filterGroup = url.getFilterGroup();
+        System.out.println(orderBy);
+        System.out.println(asc);
+        System.out.println(filterDeleted);
+        System.out.println(filterFile);
+        System.out.println(filterGroup);
     }
 
     @Override
@@ -82,24 +77,11 @@ public class AdministrationPage extends LoggedPage {
 
         AdministrationPageComponent<DaoUserContent> administrationPageComponent = new AdministrationPageComponent<DaoUserContent>(new AdministrationTableModel<DaoUserContent>(new UserContentAdministrationListFactory<DaoUserContent>()));
         administrationPageComponent.generateFilterForm();
-        administrationPageComponent.generateArray(orderByAsGroupAsc,
-                                                      orderByAsGroupDesc,
-                                                      orderByMemberAsc,
-                                                      orderByMemberDesc,
-                                                      deletedOnly,
-                                                      nonDeletedOnly,
-                                                      withoutFile,
-                                                      withFile,
-                                                      withAnyGroup,
-                                                      withNoGroup);
-
-        continueGeneration(administrationPageComponent);
+        administrationPageComponent.filter(orderBy, asc, filterDeleted, filterFile, filterGroup);
+        administrationPageComponent.generateTable();
+        administrationPageComponent.generateActionForm();
 
         return administrationPageComponent.getComponent();
-    }
-
-    protected void continueGeneration(AdministrationPageComponent<?> administrationPageComponent) {
-        // implement me in sub class
     }
 
     @Override

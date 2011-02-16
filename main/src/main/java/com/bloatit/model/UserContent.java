@@ -25,8 +25,8 @@ import com.bloatit.model.lists.FileMetadataList;
 /**
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.
  * 
- * @param <T> the generic type. Must be the concrete Dao version of the concrete subClass.
- * For example: Demand extends UserContent<DaoDemand>
+ * @param <T> the generic type. Must be the concrete Dao version of the concrete
+ *            subClass. For example: Demand extends UserContent<DaoDemand>
  */
 public abstract class UserContent<T extends DaoUserContent> extends Identifiable<T> implements UserContentInterface<T> {
 
@@ -69,7 +69,9 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     /*
      * (non-Javadoc)
      * 
-     * @see com.bloatit.model.UserContentInterface#setAsGroup(com.bloatit.model.Group)
+     * @see
+     * com.bloatit.model.UserContentInterface#setAsGroup(com.bloatit.model.Group
+     * )
      */
     @Override
     public final void setAsGroup(final Group asGroup) {
@@ -94,6 +96,16 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     @Override
     public PageIterable<FileMetadata> getFiles() {
         return new FileMetadataList(getDaoUserContent().getFiles());
+    }
+
+    // TODO right management
+    public void delete() {
+        this.getDao().setIsDeleted(true);
+    }
+
+    // TODO right management
+    public void restore() {
+        this.getDao().setIsDeleted(false);
     }
 
 }

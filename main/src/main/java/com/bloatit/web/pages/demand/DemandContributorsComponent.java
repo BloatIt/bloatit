@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.pages.demand;
 
@@ -27,6 +28,8 @@ import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Demand;
 import com.bloatit.web.url.ContributePageUrl;
@@ -66,14 +69,19 @@ public final class DemandContributorsComponent extends HtmlDiv {
                 // Display contribution stats
                 if (contributionCount > 0) {
                     final String contributionMeanValue = Context.getLocalizator()
-                            .getCurrency(demand.getContribution().divide(new BigDecimal(contributionCount), RoundingMode.HALF_EVEN) ).getDefaultString();
+                                                                .getCurrency(demand.getContribution().divide(new BigDecimal(contributionCount),
+                                                                                                             RoundingMode.HALF_EVEN))
+                                                                .getDefaultString();
                     final String contributionMinValue = Context.getLocalizator().getCurrency(demand.getContributionMin()).getDefaultString();
                     final String contributionMaxValue = Context.getLocalizator().getCurrency(demand.getContributionMax()).getDefaultString();
-                    final String contributionMedianValue = Context.getLocalizator().getCurrency(computeMedian(demand.getContributions()))
-                            .getDefaultString();
+                    final String contributionMedianValue = Context.getLocalizator()
+                                                                  .getCurrency(computeMedian(demand.getContributions()))
+                                                                  .getDefaultString();
 
-                    HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue, contributionMaxValue,
-                            contributionMeanValue, contributionMedianValue));
+                    HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
+                                                                                       contributionMaxValue,
+                                                                                       contributionMeanValue,
+                                                                                       contributionMedianValue));
                     contributorsBlock.add(statTable);
                 }
 
@@ -107,7 +115,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
             if (list.size() % 2 == 1) {
                 return list.get(middle);
             } else {
-                return list.get(middle-1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
+                return list.get(middle - 1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
             }
 
         } catch (UnauthorizedOperationException e) {
@@ -136,7 +144,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public String getHeader(int column) {
+        public HtmlNode getHeader(int column) {
             String value;
             switch (column) {
             case 0:
@@ -155,7 +163,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
                 value = "";
                 break;
             }
-            return value;
+            return new HtmlText(value);
         }
 
         @Override
@@ -171,17 +179,16 @@ public final class DemandContributorsComponent extends HtmlDiv {
             return false;
         }
 
-
         @Override
         public String getColumnCss(int column) {
-            if(column == 1) {
+            if (column == 1) {
                 return "money_cell";
             }
             return null;
         }
 
         @Override
-        public String getBody(int column) {
+        public HtmlNode getBody(int column) {
             String value = "";
             try {
                 switch (column) {
@@ -207,7 +214,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
             if (value == null) {
                 value = "";
             }
-            return value;
+            return new HtmlText(value);
         }
     }
 
@@ -220,8 +227,10 @@ public final class DemandContributorsComponent extends HtmlDiv {
         private final int lineCount = 1;
         private final String contributionMedianValue;
 
-        private ContributionStatTableModel(String contributionMinValue, String contributionMaxValue, String contributionMeanValue,
-                String contributionMedianValue) {
+        private ContributionStatTableModel(String contributionMinValue,
+                                           String contributionMaxValue,
+                                           String contributionMeanValue,
+                                           String contributionMedianValue) {
 
             this.contributionMinValue = contributionMinValue;
             this.contributionMaxValue = contributionMaxValue;
@@ -240,15 +249,13 @@ public final class DemandContributorsComponent extends HtmlDiv {
             return 4;
         }
 
-
-
         @Override
         public String getColumnCss(int column) {
             return "money_cell";
         }
 
         @Override
-        public String getHeader(int column) {
+        public HtmlNode getHeader(int column) {
             String value = "";
 
             switch (column) {
@@ -265,7 +272,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
                 value = Context.tr("Median");
                 break;
             }
-            return value;
+            return new HtmlText(value);
         }
 
         @Override
@@ -279,7 +286,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public String getBody(int column) {
+        public HtmlNode getBody(int column) {
             String value = "";
 
             switch (column) {
@@ -296,7 +303,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
                 value = contributionMedianValue;
                 break;
             }
-            return value;
+            return new HtmlText(value);
         }
     }
 

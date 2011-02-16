@@ -29,7 +29,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 public abstract class Identifiable<T extends IdentifiableInterface> extends Unlockable implements IdentifiableInterface {
 
     private final T dao;
-
+    
     protected Identifiable(final T dao) {
         if (dao == null) {
             throw new NonOptionalParameterException();

@@ -55,14 +55,14 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     public String getStringValue() {
-        if (!strValue.isEmpty()) {
+        if (strValue != null && !strValue.isEmpty()) {
             return strValue;
         }
         if (value != null && getRole() == Role.PRETTY) {
             return makeStringPretty(String.class.cast(value));
         }
         try {
-            return Loaders.toStr(value);
+            return toString(value);
         } catch (final ConversionErrorException e) {
             return "";
         }
@@ -85,9 +85,9 @@ public class UrlParameter<T, U> extends UrlNode {
     public final void setValue(final T value) {
         this.value = value;
         try {
-            this.strValue = Loaders.toStr(value);
+            strValue = toString(value);
         } catch (final ConversionErrorException e) {
-            Log.framework().warn("Conversion error",e);
+            Log.framework().warn("Conversion error", e);
             this.strValue = "";
         }
     }
@@ -97,14 +97,14 @@ public class UrlParameter<T, U> extends UrlNode {
         conversionError = false;
         strValue = httpParam.getSimpleValue();
         try {
-            if (this.value instanceof List<?>) {
+            if (this.value instanceof List) {
                 StringBuilder sb = new StringBuilder();
                 @SuppressWarnings("rawtypes")
                 List casted = List.class.cast(this.value);
                 for (String aValue : httpParam) {
                     // TODO make me works !
                     sb.append("&").append(getName()).append("=").append(aValue);
-                    casted.add(Loaders.fromStr(getValueClass(), aValue));
+                    casted.add(Loaders.fromStr(description.getConvertInto(), aValue));
                 }
                 strValue = sb.toString();
             } else {
@@ -153,6 +153,18 @@ public class UrlParameter<T, U> extends UrlNode {
                 sb.append("/").append(getName()).append("-").append(stringValue);
             }
         }
+    }
+
+    private String toString(T value) throws ConversionErrorException {
+        // If it is a list then it's a list of parameters.
+        if (value instanceof List) {
+            StringBuilder sb = new StringBuilder();
+            for (U elem : ((List<U>) value)) {
+                sb.append("&").append(getName()).append("=").append(Loaders.toStr(value));
+            }
+            return sb.toString();
+        }
+        return Loaders.toStr(value);
     }
 
     public String getDefaultValue() {
