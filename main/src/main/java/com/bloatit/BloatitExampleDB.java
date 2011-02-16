@@ -29,13 +29,13 @@ public class BloatitExampleDB {
 
         SessionManager.beginWorkUnit();
 
-        //Serious accounts
+        // Serious accounts
         Member fred = createMember("fred", "Frédéric Bertolus");
         Member thomas = createMember("thomas", "Thomas Guyard");
         Member yoann = createMember("yoann", "Yoann Plénet");
         Member admin = createMember("admin", "Administrator");
 
-        //Very not serious accounts
+        // Very not serious accounts
         Member chogall = createMember("chogall", "Cho'gall");
         Member cerbere = createMember("cerbere", "Cerbère");
         Member hydre = createMember("hydre", "Hydre");
@@ -43,8 +43,7 @@ public class BloatitExampleDB {
         Member celeste = createMember("celeste", "Céleste");
         Member rataxes = createMember("rataxes", "Rataxès");
 
-
-        //Add money
+        // Add money
         giveMoney(fred, 1000000);
         giveMoney(thomas, 2000000);
         giveMoney(yoann, 3000000);
@@ -53,81 +52,99 @@ public class BloatitExampleDB {
         giveMoney(hydre, 500);
         giveMoney(elephantman, 100000000);
 
-        //Add groups
+        // Add groups
         Group other = new Group("other", "plop@elveos.org", "An other group", Right.PROTECTED, yoann);
-        Group b219 = new Group("b219", "b219@elveos.org","The group for b219" ,Right.PROTECTED, fred);
-        Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org","The group for ubuntu users" , Right.PUBLIC, thomas);
+        Group b219 = new Group("b219", "b219@elveos.org", "The group for b219", Right.PROTECTED, fred);
+        Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", "The group for ubuntu users", Right.PUBLIC, thomas);
 
-        Project vlc = new Project("VLC", thomas, Locale.FRANCE, "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ", "http://www.videolan.org/vlc/",getImage(thomas, "vlc.png"));
+        // VLC project
 
-        String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n" +
-        		"\n" +
-        		"Afin de m'entrainer à parler anglais et néerlandais à la fois, je souhaite pouvoir afficher les sous-titre de ces deux langues en même temps dans VLC.\n" +
-        		"Parce que je suis très gentil, si on peut afficher deux sous-titre de n'importe quelle langue ça m'ira aussi (si le néerlandais font bien sûr partis des langues supportées).\n" +
-        		"\n" +
-        		"Les fichiers de sous titre lus doivent être séparés. Je ne veux pas avoir à utiliser un logiciel quelconque qui combinera les sous titres. Je veux juste pouvoir clicker sur le bouton \"sous-titre\", cocher une case \"afficher deux sous-titre simultanément\" (wording à revoir) et voilà (ndt : en anglais dans le texte).\n" +
-        		"\n" +
-        		"Notes :\n" +
-        		"- Les sous-titres pourront être dans des formats différents.\n" +
-        		"- Les sous-titres pourront ne pas être synchronisés exactement de la même manière (un sous-titre pourra changer alors que le précédent est encore affiché)\n" +
-        		"\n" +
-        		"J'aimerais que ce soit implémenté dans la semaine, je suis en-effet en train de me préparer à un concours extrèmement complexe (le concours de la bicéphalie) qui aura lieu dans 3 semaines, et j'ai besoin d'au moins deux semaines pour maitriser parfaitement ces deux langues (j'ai pu apprendre le Chinois et l'Arabe en 3 jours auparavant, mais le néerlandais est quand même très complexe).";
+        String vlcTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
+        String vlcDescription = "http://www.videolan.org/vlc/";
+        Project vlc = new Project("VLC", thomas, Locale.FRANCE, vlcTitle, vlcDescription, getImage(thomas, "vlc.png"));
+
+        // Perroquet project
+
+        String perroquetTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
+        String perroquetDescription = "http://www.videolan.org/vlc/";
+        Project perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription, getImage(fred, "perroquet.png"));
+
+        // LibreOffice project
+
+        String libreOfficeTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
+        String libreOfficeDescription = "http://www.videolan.org/vlc/";
+        Project libreOffice = new Project("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle, libreOfficeDescription, getImage(fred,
+                "libreoffice.png"));
+
+        // Mageia project
+
+        String mageiaTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
+        String mageiaDescription = "http://www.videolan.org/vlc/";
+        Project mageia = new Project("Mageia", thomas, Locale.FRANCE, mageiaTitle, mageiaDescription, getImage(yoann, "mageia.png"));
+
+        String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n"
+                + "\n"
+                + "Afin de m'entrainer à parler anglais et néerlandais à la fois, je souhaite pouvoir afficher les sous-titre de ces deux langues en même temps dans VLC.\n"
+                + "Parce que je suis très gentil, si on peut afficher deux sous-titre de n'importe quelle langue ça m'ira aussi (si le néerlandais font bien sûr partis des langues supportées).\n"
+                + "\n"
+                + "Les fichiers de sous titre lus doivent être séparés. Je ne veux pas avoir à utiliser un logiciel quelconque qui combinera les sous titres. Je veux juste pouvoir clicker sur le bouton \"sous-titre\", cocher une case \"afficher deux sous-titre simultanément\" (wording à revoir) et voilà (ndt : en anglais dans le texte).\n"
+                + "\n"
+                + "Notes :\n"
+                + "- Les sous-titres pourront être dans des formats différents.\n"
+                + "- Les sous-titres pourront ne pas être synchronisés exactement de la même manière (un sous-titre pourra changer alors que le précédent est encore affiché)\n"
+                + "\n"
+                + "J'aimerais que ce soit implémenté dans la semaine, je suis en-effet en train de me préparer à un concours extrèmement complexe (le concours de la bicéphalie) qui aura lieu dans 3 semaines, et j'ai besoin d'au moins deux semaines pour maitriser parfaitement ces deux langues (j'ai pu apprendre le Chinois et l'Arabe en 3 jours auparavant, mais le néerlandais est quand même très complexe).";
 
         String twoSubtitlesInVlcDemandTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
 
-        Demand twoSubtitlesInVlcDemand = DemandFactory.createDemand(chogall, chogall.getLocale(), twoSubtitlesInVlcDemandTitle, twoSubtitlesInVlcDemandDescription, vlc);
+        Demand twoSubtitlesInVlcDemand = DemandFactory.createDemand(chogall, chogall.getLocale(), twoSubtitlesInVlcDemandTitle,
+                twoSubtitlesInVlcDemandDescription, vlc);
 
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
-        Comment comment1 = twoSubtitlesInVlcDemand.addComment("Super idée !\n" +
-        		"J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
+        Comment comment1 = twoSubtitlesInVlcDemand
+                .addComment("Super idée !\n"
+                        + "J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
 
         comment1.authenticate(new AuthToken(hydre));
-        comment1.addChildComment("Je suis l'ami de Cerbère qui a posté ci-dessus et qui apprend des langues mortes. Je trouverais ça génial , mais il est indispensable de pouvoir réduire la taille du texte.\n" +
-        		"Je propose de forker cette demande pour inclure les demandes de changement (nombre de sous-titre non défini et taille des sous-titre définissable) ");
+        comment1.addChildComment("Je suis l'ami de Cerbère qui a posté ci-dessus et qui apprend des langues mortes. Je trouverais ça génial , mais il est indispensable de pouvoir réduire la taille du texte.\n"
+                + "Je propose de forker cette demande pour inclure les demandes de changement (nombre de sous-titre non défini et taille des sous-titre définissable) ");
 
         comment1.authenticate(new AuthToken(chogall));
         comment1.addChildComment("OK pour moi, j'aurais dû y penser dès le début, j'ai merdé, j'avais mon cerveau gauche qui avait bu trop de vodka. ");
 
-
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(elephantman));
-        Comment comment2 = twoSubtitlesInVlcDemand.addComment("Elle est naze votre idée, moi j'apprends une langue en 2.53 minutes (moyenne vérifiée sur un échantillon de 353 langues) du coup autant afficher un seul sous-titre à la fois");
+        Comment comment2 = twoSubtitlesInVlcDemand
+                .addComment("Elle est naze votre idée, moi j'apprends une langue en 2.53 minutes (moyenne vérifiée sur un échantillon de 353 langues) du coup autant afficher un seul sous-titre à la fois");
 
         comment2.authenticate(new AuthToken(chogall));
         comment2.addChildComment("On ne peut pas vaincre un éléphant ! Abandonnons cette demande !");
 
-
         String rataxesOfferDescription = "Je vais vous le faire vite et bien. Et tout ça pour vraiment pas cher !";
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(rataxes));
-        Offer rataxesOffer = twoSubtitlesInVlcDemand.addOffer(rataxes, new BigDecimal(2300), rataxesOfferDescription, rataxes.getLocale(), DateUtils.tomorrow(), 0);
-
-
+        Offer rataxesOffer = twoSubtitlesInVlcDemand.addOffer(rataxes, new BigDecimal(2300), rataxesOfferDescription, rataxes.getLocale(),
+                DateUtils.tomorrow(), 0);
 
         rataxesOffer.authenticate(new AuthToken(chogall));
         rataxesOffer.voteUp();
         rataxesOffer.authenticate(new AuthToken(hydre));
         rataxesOffer.voteUp();
 
-
-
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(celeste));
         Offer celesteOffer = twoSubtitlesInVlcDemand.addEmptyOffer(celeste);
-        String celesteBatch1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n" +
-        		"Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
+        String celesteBatch1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
+                + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
         celesteOffer.addBatch(new BigDecimal(2500), celesteBatch1Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(2), 0);
 
         String celesteBatch2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
-        celesteOffer.addBatch( new BigDecimal(1000), celesteBatch2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);
+        celesteOffer.addBatch(new BigDecimal(1000), celesteBatch2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);
 
         String celesteBatch3Description = "Pour finir, je vais faire le packaging en tar.gz, deb, rpm et exe de la version patché pour une utilisatation immédiate. Je vais aussi proposer le patch upstream et créer un petit jeu de test fonctionnels.";
-        celesteOffer.addBatch( new BigDecimal(700), celesteBatch3Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(4), 0);
-
+        celesteOffer.addBatch(new BigDecimal(700), celesteBatch3Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(4), 0);
 
         celesteOffer.authenticate(new AuthToken(cerbere));
         celesteOffer.voteUp();
 
-
-
-        //Contributions
+        // Contributions
 
         try {
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
@@ -135,7 +152,6 @@ public class BloatitExampleDB {
 
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
             twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
-
 
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));
             twoSubtitlesInVlcDemand.addContribution(new BigDecimal("300"), "");
@@ -145,8 +161,7 @@ public class BloatitExampleDB {
             e.printStackTrace();
         }
 
-
-        //Highlight demands
+        // Highlight demands
         new HighlightDemand(twoSubtitlesInVlcDemand, 1, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
         new HighlightDemand(twoSubtitlesInVlcDemand, 2, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
         new HighlightDemand(twoSubtitlesInVlcDemand, 3, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
