@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.ColumnGenerator;
@@ -73,17 +74,17 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
         addFormOrder(groupOrder);
 
         // delete ?
-        HtmlRadioButtonGroup groupDeleted = new HtmlRadioButtonGroup("deleted");
-        filterForm.add(new HtmlFormBlock("Deleted or not deleted").add(groupDeleted));
+        HtmlRadioButtonGroup groupDeleted = new HtmlRadioButtonGroup(url.getFilterDeletedParameter().formFieldData());
+        filterForm.add(new HtmlFormBlock("Only delete content").add(groupDeleted));
         groupDeleted.addRadioButton(EnumSet.allOf(FilterType.class));
 
         // Files
-        HtmlRadioButtonGroup groupFile = new HtmlRadioButtonGroup("files");
-        filterForm.add(new HtmlFormBlock("Files").add(groupFile));
+        HtmlRadioButtonGroup groupFile = new HtmlRadioButtonGroup(url.getFilterFileParameter().formFieldData());
+        filterForm.add(new HtmlFormBlock("Content with file").add(groupFile));
         groupFile.addRadioButton(EnumSet.allOf(FilterType.class));
 
-        HtmlRadioButtonGroup groupAsGroup = new HtmlRadioButtonGroup("AsGroup");
-        filterForm.add(new HtmlFormBlock("AsGroup/Member").add(groupAsGroup));
+        HtmlRadioButtonGroup groupAsGroup = new HtmlRadioButtonGroup(url.getFilterGroupParameter().formFieldData());
+        filterForm.add(new HtmlFormBlock("Content created as a group").add(groupAsGroup));
         groupAsGroup.addRadioButton(EnumSet.allOf(FilterType.class));
 
         // extends

@@ -63,12 +63,12 @@ public final class ContributePage extends LoggedPage {
         contribForm.setCssClass("padding_box");
 
         // Input field : choose amount
-        FormFieldData<BigDecimal> amountFieldData = formActionUrl.getAmountParameter().createFormFieldData();
+        FormFieldData<BigDecimal> amountFieldData = formActionUrl.getAmountParameter().formFieldData();
         final HtmlMoneyField contribField = new HtmlMoneyField(amountFieldData, tr("Choose amount: "));
         contribField.setComment(Context.tr("The minimun is 1€. Don't use cents."));
 
         // Input field : comment
-        FormFieldData<String> commentFieldData = formActionUrl.getCommentParameter().createFormFieldData();
+        FormFieldData<String> commentFieldData = formActionUrl.getCommentParameter().formFieldData();
         final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment: "), 10, 60);
         commentField.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list."));
 

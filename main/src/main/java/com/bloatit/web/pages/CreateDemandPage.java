@@ -81,13 +81,13 @@ public final class CreateDemandPage extends LoggedPage {
         createIdeaForm.add(new HtmlSubmit(tr("submit")));
 
         // Create the fields that will describe the description of the idea
-        FormFieldData<String> descriptionFieldData = doCreateUrl.getDescriptionParameter().createFormFieldData();
+        FormFieldData<String> descriptionFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
         final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData, tr("Title"));
         descriptionInput.setCssClass("input_long_400px");
         descriptionInput.setComment(tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
 
         // Create the fields that will describe the specification of the idea
-        FormFieldData<String> specificationFieldData = doCreateUrl.getSpecificationParameter().createFormFieldData();
+        FormFieldData<String> specificationFieldData = doCreateUrl.getSpecificationParameter().formFieldData();
         final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData, tr("Describe the idea"), SPECIF_INPUT_NB_LINES,
                 SPECIF_INPUT_NB_COLUMNS);
         specificationInput.setComment(tr("Enter a long description of the idea : list all features, describe them all "

@@ -314,6 +314,7 @@ public final class Member extends Actor<DaoMember> {
         getDao().setLocale(loacle);
     }
 
+    // TODO Right management
     public void setRole(Role role) {
         getDao().setRole(role);
     }

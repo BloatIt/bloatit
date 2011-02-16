@@ -66,15 +66,15 @@ public final class RegisterPage extends MasterPage {
         final HtmlForm form = new HtmlForm(registerActionUrl.urlString());
         container.add(form);
 
-        FormFieldData<String> loginFieldData = registerActionUrl.getLoginParameter().createFormFieldData();
+        FormFieldData<String> loginFieldData = registerActionUrl.getLoginParameter().formFieldData();
         final HtmlTextField loginInput = new HtmlTextField(loginFieldData, Context.trc("Login (noun)", "Login"));
         form.add(loginInput);
 
-        FormFieldData<String> passwordFieldData = registerActionUrl.getPasswordParameter().createFormFieldData();
+        FormFieldData<String> passwordFieldData = registerActionUrl.getPasswordParameter().formFieldData();
         final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData, Context.tr("Password"));
         form.add(passwordInput);
 
-        FormFieldData<String> emailFieldData = registerActionUrl.getEmailParameter().createFormFieldData();
+        FormFieldData<String> emailFieldData = registerActionUrl.getEmailParameter().formFieldData();
         final HtmlTextField emailInput = new HtmlTextField(emailFieldData, Context.tr("Email"));
         form.add(emailInput);
 
