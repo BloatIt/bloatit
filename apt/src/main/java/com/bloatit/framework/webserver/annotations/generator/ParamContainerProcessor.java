@@ -2,9 +2,11 @@ package com.bloatit.framework.webserver.annotations.generator;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -12,6 +14,8 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.SimpleTypeVisitor6;
 import javax.lang.model.util.TypeKindVisitor6;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
@@ -53,6 +57,8 @@ public class ParamContainerProcessor extends AbstractProcessor {
             generator = new UrlComponentClassGenerator(urlClassName, paramContainer.value());
         }
 
+        addParameterForSuperClass(element, generator);
+
         for (Element enclosed : element.getEnclosedElements()) {
             parseAnAttribute(generator, enclosed);
         }
@@ -81,6 +87,25 @@ public class ParamContainerProcessor extends AbstractProcessor {
             if (outUrl != null) {
                 outUrl.close();
             }
+        }
+    }
+
+    private void addParameterForSuperClass(Element element, JavaGenerator generator) {
+        SimpleTypeVisitor6<Element, ProcessingEnvironment> vs = new SimpleTypeVisitor6<Element, ProcessingEnvironment>() {
+            @Override
+            public Element visitDeclared(DeclaredType t, ProcessingEnvironment p) {
+                List<? extends TypeMirror> directSupertypes = p.getTypeUtils().directSupertypes(t);
+                if (directSupertypes.size() > 0) {
+                    return p.getTypeUtils().asElement(directSupertypes.get(0));
+                }
+                return null;
+            }
+        };
+        Element superElement = element.asType().accept(vs, this.processingEnv);
+        if (superElement != null && superElement.getAnnotation(ParamContainer.class) != null) {
+            System.out.println("PLOP: " + superElement.getSimpleName().toString());
+            generator.addComponentAndGetterSetter(getSecureType(superElement), superElement.getSimpleName().toString());
+            generator.registerComponent(superElement.getSimpleName().toString());
         }
     }
 
@@ -128,7 +153,6 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
             if (component != null) {
                 generator.addComponentAndGetterSetter(getSecureType(attribute), attribute.getSimpleName().toString());
-                System.out.println(getType(attribute) + " " + getSecureType(attribute));
                 generator.registerComponent(attribute.getSimpleName().toString());
             }
         }
