@@ -12,10 +12,13 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
+import com.bloatit.model.HighlightDemand;
+import com.bloatit.model.managers.HighlightDemandManager;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.CreateDemandPageUrl;
@@ -57,7 +60,27 @@ public final class IndexPage extends MasterPage {
 
         final HtmlDiv demandList = new HtmlDiv("demand_list");
         {
+
             int demandCount = 6;
+
+            PageIterable<HighlightDemand> hightlightDemandList = HighlightDemandManager.getHightlightDemand();
+
+            HighlightDemand[] hightlightDemandArray = new HighlightDemand[demandCount];
+
+            for(HighlightDemand highlightDemand : hightlightDemandList) {
+                int position = highlightDemand.getPosition() -1;
+                if(position < demandCount) {
+                    if(hightlightDemandArray[position] == null) {
+                        hightlightDemandArray[position] = highlightDemand;
+                    } else {
+                        if(hightlightDemandArray[position].getActivationDate().before(highlightDemand.getActivationDate())) {
+                            hightlightDemandArray[position] = highlightDemand;
+                        }
+                    }
+                }
+            }
+
+
 
             for(int i = 0; i < (demandCount+1)/2 ; i++) {
 
@@ -65,13 +88,17 @@ public final class IndexPage extends MasterPage {
                 {
                     final HtmlDiv demandListLeftCase = new HtmlDiv("demand_list_left_case");
                     {
-                        demandListLeftCase.add(new HtmlDemandSumary(null, true));
+                        if(hightlightDemandArray[i*2] != null) {
+                            demandListLeftCase.add(new HtmlDemandSumary(hightlightDemandArray[i*2].getDemand(), true));
+                        }
                     }
                     demandListRow.add(demandListLeftCase);
 
                     final HtmlDiv demandListRightCase= new HtmlDiv("demand_list_right_case");
                     {
-                        demandListRightCase.add(new HtmlDemandSumary(null, true));
+                        if(hightlightDemandArray[i*2+1] != null) {
+                            demandListRightCase.add(new HtmlDemandSumary(hightlightDemandArray[i*2+1].getDemand(), true));
+                        }
                     }
                     demandListRow.add(demandListRightCase);
 

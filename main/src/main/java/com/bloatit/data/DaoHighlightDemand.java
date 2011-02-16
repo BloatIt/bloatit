@@ -3,12 +3,14 @@ package com.bloatit.data;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.annotations.Entity;
 
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -27,8 +29,7 @@ public class DaoHighlightDemand extends DaoIdentifiable{
     @Basic(optional = true)
     private String reason;
 
-    @Column(updatable = false, nullable = false)
-    @Basic(optional = false)
+    @ManyToOne(cascade = {  CascadeType.ALL })
     private DaoDemand demand;
 
     @Column(updatable = false, nullable = false)
@@ -58,7 +59,7 @@ public class DaoHighlightDemand extends DaoIdentifiable{
             session.save(hightlightDemand);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return hightlightDemand;
