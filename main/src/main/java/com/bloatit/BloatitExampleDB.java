@@ -59,6 +59,9 @@ public class BloatitExampleDB {
 
         Project vlc = new Project("VLC", thomas, Locale.FRANCE, "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ", "http://www.videolan.org/vlc/",getImage(thomas, "vlc.png"));
 
+        Group other = new Group("other", "plop@elveos.org","A group description" , Right.PROTECTED, yo);
+        Group b219 = new Group("b219", "b219@elveos.org", "A group description" ,Right.PROTECTED, fred);
+        Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", "A group description" ,Right.PUBLIC, tom);
 
         String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n" +
         		"\n" +
