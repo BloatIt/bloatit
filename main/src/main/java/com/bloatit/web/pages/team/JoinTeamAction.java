@@ -1,13 +1,12 @@
 package com.bloatit.web.pages.team;
 
-import org.apache.commons.lang.NotImplementedException;
-
+import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
@@ -15,6 +14,11 @@ import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
+/**
+ * <p>
+ * A class used to join a public team.
+ * </p>
+ */
 @ParamContainer("team/dojoin")
 public class JoinTeamAction extends LoggedAction {
     @SuppressWarnings("unused")
@@ -23,13 +27,9 @@ public class JoinTeamAction extends LoggedAction {
     @RequestParam(level = Level.ERROR)
     private Group targetTeam;
 
-    @RequestParam(defaultValue = "")
-    private String justification;
-
     public JoinTeamAction(JoinTeamActionUrl url) {
         super(url);
         this.targetTeam = url.getTargetTeam();
-        // this.justification = url.ge
     }
 
     @Override
@@ -38,22 +38,31 @@ public class JoinTeamAction extends LoggedAction {
         Member me = session.getAuthToken().getMember();
         me.authenticate(session.getAuthToken());
 
-        try {
-            if (targetTeam.isPublic()) {
+        if (targetTeam.isPublic()) {
+            try {
                 me.addToPublicGroup(targetTeam);
-            } else {
-                // me.
+            } catch (UnauthorizedOperationException e) {
+                Log.web().fatal("User trie to join public group, but is not allowed to",e);
+                session.notifyBad("Oops we had an internal issue preventing you to join group, please try again later.");
+                return session.getLastVisitedPage();
             }
-            return new TeamPageUrl(targetTeam);
-        } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            throw new NotImplementedException();
+        } else {
+            try {
+                session.notifyBad("The team " + targetTeam.getLogin() + " is not public, you need an invitation to join it");
+            } catch (UnauthorizedOperationException e) {
+                Log.web().warn("Trying to display team name but not allowed to",e);
+            }
+            throw new RedirectException(session.getLastVisitedPage());
         }
+        return new TeamPageUrl(targetTeam);
     }
 
     @Override
     protected Url doProcessErrors() throws RedirectException {
-        throw new NotImplementedException();
+        if (targetTeam != null) {
+            return new TeamPageUrl(targetTeam);
+        }
+        return session.getLastVisitedPage();
     }
 
     @Override
@@ -63,6 +72,6 @@ public class JoinTeamAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-
+        // Nothing
     }
 }
