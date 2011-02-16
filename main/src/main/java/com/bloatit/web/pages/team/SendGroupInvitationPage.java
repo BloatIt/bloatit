@@ -54,14 +54,13 @@ public class SendGroupInvitationPage extends LoggedPage {
 
         try {
             if (group == null) {
-                HtmlDropDown<GroupElement> groupInput = new HtmlDropDown<GroupElement>(SendGroupInvitationAction.GROUP_JOIN_CODE,
-                        Context.tr("Select group"));
+                HtmlDropDown groupInput = new HtmlDropDown(SendGroupInvitationAction.GROUP_JOIN_CODE, Context.tr("Select group"));
                 form.add(groupInput);
                 PageIterable<Group> groups;
                 groups = me.getGroups();
                 for (Group g : groups) {
                     try {
-                        groupInput.add(new GroupElement(g));
+                        groupInput.addDropDownElement(g.getId().toString(), g.getLogin());
                     } catch (UnauthorizedOperationException e) {
                         e.printStackTrace();
                     }
@@ -71,14 +70,12 @@ public class SendGroupInvitationPage extends LoggedPage {
                 form.add(hiddenGroup);
             }
 
-            HtmlDropDown<MemberElement> receiverInput = new HtmlDropDown<MemberElement>(SendGroupInvitationAction.RECEIVER_CODE,
-                    Context.tr("Select user"));
+            HtmlDropDown receiverInput = new HtmlDropDown(SendGroupInvitationAction.RECEIVER_CODE, Context.tr("Select group"));
             form.add(receiverInput);
-            PageIterable<Member> members = MemberManager.getMembers();
-            for (Member m : members) {
+            for (Member m : MemberManager.getMembers()) {
                 try {
                     if (!m.equals(me)) {
-                        receiverInput.add(new MemberElement(m));
+                        receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
                     }
                 } catch (UnauthorizedOperationException e) {
                     throw new FatalErrorException(e);
@@ -107,49 +104,5 @@ public class SendGroupInvitationPage extends LoggedPage {
     @Override
     public boolean isStable() {
         return false;
-    }
-
-    /**
-     * Dropdown element to encapsulate members
-     */
-    private class MemberElement implements DropDownElement {
-        private String name;
-        private String code;
-
-        public MemberElement(Member m) throws UnauthorizedOperationException {
-            super();
-            this.name = m.getDisplayName();
-            this.code = m.getId().toString();
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getCode() {
-            return code;
-        }
-    }
-
-    /**
-     * Dropdown element to encapsulate groups
-     */
-    private class GroupElement implements DropDownElement {
-        private String name;
-        private String code;
-
-        public GroupElement(Group g) throws UnauthorizedOperationException {
-            super();
-            this.name = g.getLogin();
-            this.code = g.getId().toString();
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getCode() {
-            return code;
-        }
     }
 }

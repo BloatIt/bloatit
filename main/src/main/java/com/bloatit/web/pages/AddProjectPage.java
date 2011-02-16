@@ -73,19 +73,19 @@ public final class AddProjectPage extends LoggedPage {
         createIdeaTitle.add(addProjectForm);
 
         // Create the field for the name of the project
-        FormFieldData<String> createFormFieldData = doCreateUrl.getProjectNameParameter().createFormFieldData();
+        FormFieldData<String> createFormFieldData = doCreateUrl.getProjectNameParameter().formFieldData();
         final HtmlTextField projectNameInput = new HtmlTextField(createFormFieldData, Context.tr("Project name"));
         projectNameInput.setComment(Context.tr("The name of the existing project."));
         addProjectForm.add(projectNameInput);
 
         // Create the fields that will describe the descriptions of the project
-        FormFieldData<String> shortDescriptionFormFieldData = doCreateUrl.getShortDescriptionParameter().createFormFieldData();
+        FormFieldData<String> shortDescriptionFormFieldData = doCreateUrl.getShortDescriptionParameter().formFieldData();
         final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionFormFieldData, Context.tr("Describe briefly the project"),
                 SHORT_DESCRIPTION_INPUT_NB_LINES, SHORT_DESCRIPTION_INPUT_NB_COLUMNS);
         shortDescriptionInput.setComment(Context.tr("Enter a short description of the projet in 120 characters."));
         addProjectForm.add(shortDescriptionInput);
 
-        FormFieldData<String> descriptionFormFieldData = doCreateUrl.getDescriptionParameter().createFormFieldData();
+        FormFieldData<String> descriptionFormFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData, Context.tr("Describe the project"),
                 DESCRIPTION_INPUT_NB_LINES, DESCRIPTION_INPUT_NB_COLUMNS);
         descriptionInput.setComment(Context
@@ -93,7 +93,7 @@ public final class AddProjectPage extends LoggedPage {
         addProjectForm.add(descriptionInput);
 
         // Language
-        FormFieldData<String> languageFormFieldData = doCreateUrl.getLangParameter().createFormFieldData();
+        FormFieldData<String> languageFormFieldData = doCreateUrl.getLangParameter().formFieldData();
 
 //        final HtmlDropDown<LanguageElement> languageInput = new HtmlDropDown<LanguageElement>(languageFormFieldData, Context.tr("Language"));
 //        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {

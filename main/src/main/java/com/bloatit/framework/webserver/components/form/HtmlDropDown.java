@@ -1,108 +1,74 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.bloatit.framework.webserver.components.form;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
+import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup.Displayable;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.framework.webserver.components.meta.HtmlElement;
 
-/**
- * <p>
- * Class to handle Html drop down boxes (aka Html {@code<select>}).
- * </p>
- * <p>
- * Usage is : create the object, then use addText to add a new line
- * </p>
- */
-public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
-    private final Map<T, HtmlBranch> components = new HashMap<T, HtmlBranch>();
+public class HtmlDropDown extends HtmlFormField<String> {
 
-    /**
-     * Creates a new HtmlDropDown with a given attribute <code>name</code>
-     * 
-     * @param name
-     *            the value of the Html attribute <code>name</code>
-     */
+    private String checked = null;
+    private final Map<String, HtmlGenericElement> elements = new HashMap<String, HtmlGenericElement>();
+
+    public HtmlDropDown(final FormFieldData<?> data) {
+        this(data.getFieldName());
+        setDefaultOnConstruction(data);
+    }
+
+    public HtmlDropDown(final FormFieldData<?> data, String label) {
+        this(data.getFieldName(), label);
+        setDefaultOnConstruction(data);
+    }
+
+    private void setDefaultOnConstruction(final FormFieldData<?> data) {
+        checked = data.getFieldDefaultValueAsString();
+    }
+
     public HtmlDropDown(final String name) {
         super(new HtmlGenericElement("select"), name);
     }
 
-    /**
-     * Creates a new HtmlDropDown with a given attribute <code>name</code> and
-     * an html {@code label} to explain the usage of the drop down
-     * 
-     * @param name
-     *            the value of the Html attribute <code>name</code>
-     * @param label
-     *            the text displayed to explain the drop down
-     */
     public HtmlDropDown(final String name, final String label) {
         super(new HtmlGenericElement("select"), name, label);
     }
 
-    public HtmlDropDown(final FormFieldData<?> data, final String label) {
-        super(new HtmlGenericElement("select"), data.getFieldName(), label);
-        doSetDefaultValue(data.getFieldDefaultValueAsString());
-        addErrorMessages(data.getFieldMessages());
+    public void addDropDownElement(final String value, final String displayName) {
+        final HtmlGenericElement opt = new HtmlGenericElement("option");
+        opt.addText(displayName);
+        opt.addAttribute("value", value);
+
+        if (value.equals(checked)) {
+            opt.addAttribute("checked", "checked");
+        }
+        ((HtmlBranch) element).add(opt);
+        elements.put(value, opt);
     }
 
-    /**
-     * <p>
-     * Sets the default value of the drop down box
-     * </p>
-     * <p>
-     * <b>Do not use this method twice</b>
-     * </p>
-     * 
-     * @param value
-     *            the element to set as the default value
-     */
-    @Override
-    protected void doSetDefaultValue(final T value) {
-        components.get(value).addAttribute("selected", "selected");
-    }
-
-    /**
-     * Sets the default value based on a string value
-     */
-    @Override
-    protected void doSetDefaultValue(String defaultValueAsString) {
-        for (Entry<T, HtmlBranch> e : components.entrySet()) {
-            if (e.getKey().getCode().equals(defaultValueAsString)) {
-                e.getValue().addAttribute("selected", "selected");
-            }
+    public <T extends Enum<T> & Displayable> void addDropDownElements(EnumSet<T> elements) {
+        for (T enumValue : elements) {
+            addDropDownElement(enumValue.name(), enumValue.getDisplayName());
         }
     }
 
-    /**
-     * <p>
-     * Adds a new selectable value to the DropDown
-     * </p>
-     * 
-     * @param elem
-     *            the value to add
-     * @return itself
-     */
-    public HtmlElement add(final T elem) {
-        final HtmlGenericElement opt = new HtmlGenericElement("option");
-        opt.addText(elem.getName());
-        opt.addAttribute("value", elem.getCode());
-        ((HtmlBranch) element).add(opt);
-
-        components.put(elem, ((HtmlBranch) element));
-        return this;
+    @Override
+    protected void doSetDefaultValue(String value) {
+        HtmlGenericElement checkedElement = elements.get(value);
+        if (checkedElement != null) {
+            checkedElement.addAttribute("checked", "checked");
+        }
     }
 }

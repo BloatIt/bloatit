@@ -20,11 +20,21 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
 
     private final LabelPosition position;
     private final String name;
+    private String checked = null;
 
     public HtmlRadioButtonGroup(final String name) {
         super();
         this.name = name;
         this.position = LabelPosition.AFTER;
+    }
+
+    public <T extends Enum<T> & Displayable> HtmlRadioButtonGroup(final FormFieldData<T> data) {
+        this(data.getFieldName());
+        T fieldDefaultValue = data.getFieldDefaultValue();
+        if (fieldDefaultValue != null) {
+            System.err.println("value " + fieldDefaultValue);
+            checked = fieldDefaultValue.name();
+        }
     }
 
     public HtmlRadioButtonGroup(final String name, final LabelPosition position) {
@@ -35,6 +45,10 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
 
     public HtmlRadioButton addRadioButton(final String value, final String label) {
         final HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
+        if (value.equals(checked)) {
+            System.err.println("value " + value + " label " + label);
+            button.addAttribute("checked", "checked");
+        }
         add(button);
         return button;
     }
@@ -45,8 +59,7 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
 
     public <T extends Enum<T> & Displayable> void addRadioButton(EnumSet<T> buttons) {
         for (T enumValue : buttons) {
-            final HtmlRadioButton button = new HtmlRadioButton(name, enumValue.name(), enumValue.getDisplayName(), position);
-            add(button);
+            addRadioButton(enumValue.name(), enumValue.getDisplayName());
         }
     }
 }

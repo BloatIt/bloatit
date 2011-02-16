@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.data.DaoGroup.Right;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -34,6 +35,7 @@ public class BloatitExampleDB {
         Member thomas = createMember("thomas", "Thomas Guyard");
         Member yoann = createMember("yoann", "Yoann Plénet");
         Member admin = createMember("admin", "Administrator");
+        admin.setRole(Role.ADMIN);
 
         // Very not serious accounts
         Member chogall = createMember("chogall", "Cho'gall");

@@ -146,15 +146,12 @@ public final class Loaders {
 
         @Override
         public String toString(final Enum<T> data) {
-            System.out.println("name -> " + data.name());
-            System.out.println("tostr -> " + data.toString());
             return data.name();
         }
 
         @Override
         public Enum<T> fromString(final String data) throws ConversionErrorException {
             try {
-                System.out.println(data);
                 return Enum.valueOf(type, data);
             } catch (IllegalArgumentException e) {
                 throw new ConversionErrorException(e);
