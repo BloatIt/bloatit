@@ -273,5 +273,4 @@ public final class DaoContribution extends DaoUserContent {
         }
         return true;
     }
-
 }

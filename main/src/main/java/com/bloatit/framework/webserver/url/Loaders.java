@@ -23,6 +23,8 @@ import com.bloatit.model.KudosableInterface;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
+import com.bloatit.model.UserContent;
+import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.CommentManager;
@@ -32,6 +34,7 @@ import com.bloatit.model.managers.KudosableManager;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.model.managers.OfferManager;
 import com.bloatit.model.managers.ProjectManager;
+import com.bloatit.model.managers.UserContentManager;
 
 public final class Loaders {
 
@@ -59,12 +62,14 @@ public final class Loaders {
         return loader.fromString(value);
     }
 
-    @SuppressWarnings({ "unchecked", "synthetic-access" })
+    @SuppressWarnings({ "unchecked", "synthetic-access", "cast" })
     static <T> Loader<T> getLoader(final Class<T> theClass) throws ConversionErrorException {
         if (theClass.equals(Integer.class)) {
             return (Loader<T>) new ToInteger();
         } else if (theClass.equals(Byte.class)) {
             return (Loader<T>) new ToByte();
+        } else if (theClass.isEnum()) {
+            return (Loader<T>) new ToEnum(theClass);
         } else if (theClass.equals(Short.class)) {
             return (Loader<T>) new ToShort();
         } else if (theClass.equals(Long.class)) {
@@ -89,8 +94,6 @@ public final class Loaders {
             return (Loader<T>) new ToMember();
         } else if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
-        } else if (theClass.equals(KudosableInterface.class) || theClass.equals(Kudosable.class)) {
-            return (Loader<T>) new ToKudosable();
         } else if (theClass.equals(Comment.class)) {
             return (Loader<T>) new ToComment();
         } else if (theClass.equals(Project.class)) {
@@ -103,6 +106,10 @@ public final class Loaders {
             return (Loader<T>) new ToJoinGroupInvitation();
         } else if (theClass.equals(Offer.class)) {
             return (Loader<T>) new ToOffer();
+        } else if (theClass.equals(KudosableInterface.class) || theClass.equals(Kudosable.class)) {
+            return (Loader<T>) new ToKudosable();
+        } else if (theClass.equals(UserContentInterface.class) || theClass.equals(UserContent.class)) {
+            return (Loader<T>) new ToUserContent();
         }
         throw new NotImplementedException("Cannot find a convertion class for: " + theClass);
     }
@@ -124,6 +131,32 @@ public final class Loaders {
             try {
                 return Integer.decode(data);
             } catch (NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
+        }
+    }
+
+    private static class ToEnum<T extends Enum<T>> extends Loader<Enum<T>> {
+        private Class<T> type;
+
+        public ToEnum(Class<T> type) {
+            super();
+            this.type = type;
+        }
+
+        @Override
+        public String toString(final Enum<T> data) {
+            System.out.println("name -> " + data.name());
+            System.out.println("tostr -> " + data.toString());
+            return data.name();
+        }
+
+        @Override
+        public Enum<T> fromString(final String data) throws ConversionErrorException {
+            try {
+                System.out.println(data);
+                return Enum.valueOf(type, data);
+            } catch (IllegalArgumentException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -299,6 +332,13 @@ public final class Loaders {
         @Override
         public Identifiable<?> doFromString(int i) {
             return KudosableManager.getById(i);
+        }
+    }
+
+    private static class ToUserContent extends ToIdentifiable {
+        @Override
+        public Identifiable<?> doFromString(int i) {
+            return UserContentManager.getById(i);
         }
     }
 

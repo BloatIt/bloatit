@@ -61,7 +61,7 @@ public class CreateTeamAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        Right groupRight = Right.PUBLIC;
+        Right groupRight = Right.PUBLIC; 
         if (right.equals(PUBLIC)) {
             groupRight = Right.PUBLIC;
         } else if (right.equals(PROTECTED)) {

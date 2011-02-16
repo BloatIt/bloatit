@@ -1,6 +1,7 @@
 package com.bloatit.framework.webserver.components.advanced;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
+import com.bloatit.framework.webserver.components.meta.HtmlNode;
 
 public class HtmlTable extends HtmlGenericElement {
 
@@ -24,7 +25,7 @@ public class HtmlTable extends HtmlGenericElement {
 
             for (int i = 0; i < columnCount; i++) {
                 HtmlGenericElement td = new HtmlGenericElement("td");
-                td.addText(model.getBody(i));
+                td.add(model.getBody(i));
                 if (model.getColumnCss(i) != null) {
                     td.setCssClass(model.getColumnCss(i));
                 }
@@ -39,7 +40,7 @@ public class HtmlTable extends HtmlGenericElement {
 
         for (int i = 0; i < columnCount; i++) {
             HtmlGenericElement th = new HtmlGenericElement("th");
-            th.addText(model.getHeader(i));
+            th.add(model.getHeader(i));
             tr.add(th);
         }
         add(tr);
@@ -49,9 +50,9 @@ public class HtmlTable extends HtmlGenericElement {
 
         public abstract int getColumnCount();
 
-        public abstract String getHeader(int column);
+        public abstract HtmlNode getHeader(int column);
 
-        public abstract String getBody(int column);
+        public abstract HtmlNode getBody(int column);
 
         public abstract boolean next();
 

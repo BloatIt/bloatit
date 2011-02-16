@@ -7,7 +7,13 @@ import java.util.Iterator;
 import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.data.DaoUserContent;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
+import com.bloatit.framework.webserver.components.form.HtmlCheckbox;
+import com.bloatit.framework.webserver.components.form.HtmlFormField.LabelPosition;
+import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.UserContentAdministration;
 import com.bloatit.model.UserContentAdministrationListFactory;
 
@@ -28,52 +34,58 @@ class AdministrationTableModel<T extends DaoUserContent> extends HtmlTableModel 
     }
 
     @Override
-    public final String getHeader(int column) {
+    public final HtmlNode getHeader(int column) {
         switch (column) {
         case 0:
-            return tr("Creation date");
+            return new HtmlCheckbox("id_all", LabelPosition.BEFORE);
         case 1:
-            return tr("Type");
+            return new HtmlText(tr("Author"));
         case 2:
-            return tr("Deleted");
+            return new HtmlText(tr("asGroup"));
         case 3:
-            return tr("File number");
+            return new HtmlText(tr("Creation date"));
         case 4:
-            return tr("Author");
+            return new HtmlText(tr("Nb files"));
         case 5:
-            return tr("asGroup");
+            return new HtmlText(tr("Deleted"));
+        case 6:
+            return new HtmlText(tr("Type"));
         default:
             // Do not use getColumnCount. It could be redefined.
             return getSubHeader(column - NB_COLUMNS);
         }
     }
 
-    public String getSubHeader(int column) {
+    public HtmlNode getSubHeader(int column) {
         throw new NotImplementedException();
     }
 
     @Override
-    public String getBody(int column) {
+    public HtmlNode getBody(int column) {
         switch (column) {
         case 0:
-            return getContent().getCreationDate().toString();
+            HtmlCheckbox htmlCheckbox = new HtmlCheckbox("id", LabelPosition.BEFORE);
+            htmlCheckbox.addAttribute("value", getContent().getId().toString());
+            return htmlCheckbox;
         case 1:
-            return getContent().getType();
+            return new HtmlText(getContent().getAuthor());
         case 2:
-            return getContent().isDeleted().toString();
+            return new HtmlText(getContent().getAsGroup());
         case 3:
-            return String.valueOf(getContent().getFilesNumber());
+            return new HtmlText(Context.getLocalizator().getDate(getContent().getCreationDate()).toString(FormatStyle.MEDIUM));
         case 4:
-            return getContent().getAuthor();
+            return new HtmlText(String.valueOf(getContent().getFilesNumber()));
         case 5:
-            return getContent().getAsGroup();
+            return new HtmlText(getContent().isDeleted().toString());
+        case 6:
+            return new HtmlText(getContent().getType());
         default:
             // Do not use getColumnCount. It could be redefined.
             return getSubBody(column - NB_COLUMNS);
         }
     }
 
-    public String getSubBody(int column) {
+    public HtmlNode getSubBody(int column) {
         throw new NotImplementedException();
     }
 
@@ -100,5 +112,4 @@ class AdministrationTableModel<T extends DaoUserContent> extends HtmlTableModel 
     public UserContentAdministrationListFactory<T> getFactory() {
         return factory;
     }
-
 }
