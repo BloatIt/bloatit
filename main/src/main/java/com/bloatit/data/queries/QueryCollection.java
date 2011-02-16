@@ -20,6 +20,8 @@ import java.util.Iterator;
 
 import org.hibernate.Query;
 
+import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.data.DaoJoinGroupInvitation.State;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -59,6 +61,12 @@ public class QueryCollection<T> implements PageIterable<T> {
     public final QueryCollection<T> setEntity(final String name, final Object entity) {
         query.setEntity(name, entity);
         sizeQuery.setEntity(name, entity);
+        return this;
+    }
+
+    public QueryCollection<T> setParameter(final String name, final Object entity) {
+        query.setParameter(name, entity);
+        sizeQuery.setParameter(name, entity);
         return this;
     }
 

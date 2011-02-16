@@ -59,6 +59,7 @@ public final class Session {
      * The place to store session data
      */
     private final SessionParameters parameters = new SessionParameters();
+    private Url lastVisitedPage;
 
     Session() {
         this(UUID.randomUUID());
@@ -121,6 +122,15 @@ public final class Session {
         } else {
             return new IndexPageUrl();
         }
+    }
+
+    public Url getLastVisitedPage() {
+        // TODO
+        return lastVisitedPage;
+    }
+    
+    public void setLastVisitedPage(final Url lastVisitedPage){
+        this.lastVisitedPage = lastVisitedPage;
     }
 
     public final void setTargetPage(final Url targetPage) {

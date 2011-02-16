@@ -359,8 +359,9 @@ public final class DaoMember extends DaoActor {
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
-                "from com.bloatit.data.JoinGroupInvitation as j where j.reciever = :reciever and j.state = :state  ").setEntity("reciever", this)
-                .setEntity("state", state);
+                "from com.bloatit.data.DaoJoinGroupInvitation as j where j.receiver = :receiver and j.state = :state  ")
+                .setEntity("receiver", this)
+                .setParameter("state", state);
     }
 
     /**
@@ -369,8 +370,8 @@ public final class DaoMember extends DaoActor {
      */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
         return new QueryCollection<DaoJoinGroupInvitation>(
-                "from com.bloatit.data.JoinGroupInvitation as j where j.sender = :sender and j.state = :state").setEntity("sender", this).setEntity(
-                "state", state);
+                "from com.bloatit.data.DaoJoinGroupInvitation as j where j.sender = :sender and j.state = :state").setEntity("sender", this)
+                .setEntity("state", state);
     }
 
     /**
