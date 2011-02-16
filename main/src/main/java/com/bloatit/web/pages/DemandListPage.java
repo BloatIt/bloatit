@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.model.Demand;
 import com.bloatit.web.components.HtmlDemandSumary;
+import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.CreateDemandPageUrl;
@@ -260,12 +261,12 @@ public final class DemandListPage extends MasterPage {
         }
 
         private HtmlNode generateContent() {
-            return new HtmlDemandSumary(demand, false);
+            return new HtmlDemandSumary(demand, Compacity.NORMAL);
         }
     };
 
     private PageIterable<Demand> searchResult() {
-        
+
         DemandSearch search = new DemandSearch(searchString);
         if (!filter.equals(FILTER_ALL)) {
             if (filter.equals(FILTER_IN_PROGRESS)) {
