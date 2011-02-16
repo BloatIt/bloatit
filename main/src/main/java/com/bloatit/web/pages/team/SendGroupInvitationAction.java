@@ -6,14 +6,13 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
-import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.SendGroupInvitationActionUrl;
 
 /**
@@ -52,7 +51,7 @@ public class SendGroupInvitationAction extends LoggedAction {
         } catch (UnauthorizedOperationException e) {
             e.printStackTrace();
         }
-        return new MessageListPageUrl();
+        return session.getLastVisitedPage();
     }
 
     @Override
