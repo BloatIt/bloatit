@@ -199,7 +199,7 @@ public class UrlParameter<T, U> extends UrlNode {
         return description.getRole();
     }
 
-    public FormFieldData<T> createFormFieldData() {
+    public FormFieldData<T> formFieldData() {
         return new FieldDataFromUrl<T, U>(this);
     }
 

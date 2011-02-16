@@ -5,7 +5,6 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
@@ -35,15 +34,15 @@ public class CreateTeamPage extends MasterPage {
     protected void doCreate() throws RedirectException {
         HtmlDiv box = new HtmlDiv("padding_box");
         add(box);
-        HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Create a new team"), 1); 
+        HtmlTitleBlock master = new HtmlTitleBlock(Context.tr("Create a new team"), 1);
         box.add(master);
 
         CreateTeamActionUrl target = new CreateTeamActionUrl();
 
-        FormFieldData<String> name = target.getLoginParameter().createFormFieldData();
-        FormFieldData<String> contact = target.getContactParameter().createFormFieldData();
-        FormFieldData<String> right = target.getRightParameter().createFormFieldData();
-        FormFieldData<String> description = target.getDescriptionParameter().createFormFieldData();
+        FormFieldData<String> name = target.getLoginParameter().formFieldData();
+        FormFieldData<String> contact = target.getContactParameter().formFieldData();
+        FormFieldData<String> right = target.getRightParameter().formFieldData();
+        FormFieldData<String> description = target.getDescriptionParameter().formFieldData();
 
         HtmlForm form = new HtmlForm(target.urlString());
         master.add(form);
@@ -60,9 +59,9 @@ public class CreateTeamPage extends MasterPage {
         descriptionInput.setComment(Context.tr("Doesn't work yet. Between 5 and 5000 characters."));
         form.add(descriptionInput);
 
-        HtmlDropDown<ProjectTypeDDElement> rightInput = new HtmlDropDown<ProjectTypeDDElement>(right, Context.tr("Type of the group : "));
-        rightInput.add(new ProjectTypeDDElement(Context.tr("Public"), CreateTeamAction.PUBLIC));
-        rightInput.add(new ProjectTypeDDElement(Context.tr("Protected"), CreateTeamAction.PROTECTED));
+        HtmlDropDown rightInput = new HtmlDropDown(right, Context.tr("Type of the group : "));
+        rightInput.addDropDownElement(CreateTeamAction.PUBLIC, Context.tr("Public"));
+        rightInput.addDropDownElement(CreateTeamAction.PROTECTED, Context.tr("Protected"));
         rightInput.setComment(Context.tr("Public groups can be joined by anybody without an invitation."));
         form.add(rightInput);
 
@@ -77,29 +76,5 @@ public class CreateTeamPage extends MasterPage {
     @Override
     public boolean isStable() {
         return false;
-    }
-
-    /**
-     * Simple pair of strings
-     */
-    private class ProjectTypeDDElement implements DropDownElement {
-        private String name;
-        private String code;
-
-        public ProjectTypeDDElement(String name, String code) {
-            super();
-            this.name = name;
-            this.code = code;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String getCode() {
-            return code;
-        }
     }
 }

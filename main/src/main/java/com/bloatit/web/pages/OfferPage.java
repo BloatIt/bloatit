@@ -88,12 +88,12 @@ public final class OfferPage extends LoggedPage {
         offerForm.setCssClass("padding_box");
 
         // Title field
-        FormFieldData<String> titleFieldData = offerActionUrl.getTitleParameter().createFormFieldData();
+        FormFieldData<String> titleFieldData = offerActionUrl.getTitleParameter().formFieldData();
         final HtmlTextField titleField = new HtmlTextField(titleFieldData, Context.tr("Title to the offer"));
         offerForm.add(titleField);
 
         // Price field
-        FormFieldData<BigDecimal> priceFieldData = offerActionUrl.getPriceParameter().createFormFieldData();
+        FormFieldData<BigDecimal> priceFieldData = offerActionUrl.getPriceParameter().formFieldData();
         final HtmlMoneyField priceField = new HtmlMoneyField(priceFieldData, Context.tr("Offer price"));
         priceField.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
         if (price != null) {

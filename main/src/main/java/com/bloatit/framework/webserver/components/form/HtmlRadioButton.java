@@ -13,7 +13,7 @@ package com.bloatit.framework.webserver.components.form;
 
 import com.bloatit.framework.webserver.components.form.HtmlSimpleInput.InputType;
 
-public final class HtmlRadioButton extends HtmlFormField<Boolean> {
+final class HtmlRadioButton extends HtmlFormField<Boolean> {
 
     public HtmlRadioButton(final String name, final String value, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT)), name, position);

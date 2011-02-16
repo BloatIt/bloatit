@@ -4,6 +4,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -17,8 +18,8 @@ public class AdministrationPage extends LoggedPage {
 
     public enum FilterType implements HtmlRadioButtonGroup.Displayable {
         NO_FILTER(tr("No filter")), //
-        WITH(tr("With filter")), //
-        WITHOUT(tr("Without filter"));
+        WITH(tr("Yes")), //
+        WITHOUT(tr("No"));
 
         private String displayName;
 
@@ -55,11 +56,11 @@ public class AdministrationPage extends LoggedPage {
         filterDeleted = url.getFilterDeleted(); 
         filterFile = url.getFilterFile();
         filterGroup = url.getFilterGroup();
-        System.out.println(orderBy);
-        System.out.println(asc);
-        System.out.println(filterDeleted);
-        System.out.println(filterFile);
-        System.out.println(filterGroup);
+
+        // Save parameters
+        Context.getSession().addParameter(url.getFilterDeletedParameter());
+        Context.getSession().addParameter(url.getFilterFileParameter());
+        Context.getSession().addParameter(url.getFilterGroupParameter());
     }
 
     @Override
