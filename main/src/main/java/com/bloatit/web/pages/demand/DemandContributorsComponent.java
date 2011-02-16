@@ -11,6 +11,7 @@
 package com.bloatit.web.pages.demand;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -65,7 +66,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
                 // Display contribution stats
                 if (contributionCount > 0) {
                     final String contributionMeanValue = Context.getLocalizator()
-                            .getCurrency(demand.getContribution().divide(new BigDecimal(contributionCount))).getDefaultString();
+                            .getCurrency(demand.getContribution().divide(new BigDecimal(contributionCount), RoundingMode.HALF_EVEN) ).getDefaultString();
                     final String contributionMinValue = Context.getLocalizator().getCurrency(demand.getContributionMin()).getDefaultString();
                     final String contributionMaxValue = Context.getLocalizator().getCurrency(demand.getContributionMax()).getDefaultString();
                     final String contributionMedianValue = Context.getLocalizator().getCurrency(computeMedian(demand.getContributions()))
@@ -106,7 +107,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
             if (list.size() % 2 == 1) {
                 return list.get(middle);
             } else {
-                return list.get(middle-1).add(list.get(middle)).divide(new BigDecimal(2));
+                return list.get(middle-1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
             }
 
         } catch (UnauthorizedOperationException e) {
