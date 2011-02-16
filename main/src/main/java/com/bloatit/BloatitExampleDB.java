@@ -26,7 +26,7 @@ import com.bloatit.model.managers.FileMetadataManager;
 
 public class BloatitExampleDB {
 
-    public BloatitExampleDB() throws UnauthorizedOperationException {
+    public BloatitExampleDB() throws UnauthorizedOperationException, NotEnoughMoneyException {
 
         SessionManager.beginWorkUnit();
 
@@ -67,21 +67,23 @@ public class BloatitExampleDB {
 
         // Perroquet project
 
-        String perroquetTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
-        String perroquetDescription = "http://www.videolan.org/vlc/";
+        String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères";
+        String perroquetDescription = "Le principe de Perroquet est d'utiliser une vidéo ou un fichier audio et les sous-titres associés pour vous faire écouter et comprendre les dialogues ou paroles. Après lui avoir indiqué les fichiers à utiliser, Perroquet va lire un morceau de la vidéo et puis la mettre en pause. Il vous indiquera alors le nombre de mot à trouver et vous devrez les taper pour pouvoir continuer la lecture. Il est possible de réécouter une séquence autant de fois que nécessaire. Si vous ne comprenez pas tout, Perroquet présente plusieurs moyen de vous aider. \n"
+                + "http://perroquet.b219.org/";
         Project perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription, getImage(fred, "perroquet.png"));
 
         // LibreOffice project
 
-        String libreOfficeTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
-        String libreOfficeDescription = "http://www.videolan.org/vlc/";
+        String libreOfficeTitle = "LibreOffice (souvent abrégé en LibO) est une suite bureautique, dérivée directement de OpenOffice.org, créée par The Document Foundation. Cet embranchement a eu lieu le 28 septembre 2010, dans la continuité du rachat de Sun Microsystems par Oracle.";
+        String libreOfficeDescription = "LibreOffice is the free power-packed Open Source personal productivity suite for Windows, Macintosh and Linux, that gives you six feature-rich applications for all your document production and data processing needs: Writer, Calc, Impress, Draw, Math and Base. Support and documentation is free from our large, dedicated community of users, contributors and developers. You, too, can also get involved!"
+                + "\n" + "http://www.libreoffice.org/";
         Project libreOffice = new Project("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle, libreOfficeDescription, getImage(fred,
                 "libreoffice.png"));
 
         // Mageia project
 
-        String mageiaTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
-        String mageiaDescription = "http://www.videolan.org/vlc/";
+        String mageiaTitle = "Mageia est un fork de Mandriva Linux, reposant sur une association de type 1901 composée de contributeurs reconnus et élus pour leur travail.";
+        String mageiaDescription = "http://mageia.org/fr/";
         Project mageia = new Project("Mageia", thomas, Locale.FRANCE, mageiaTitle, mageiaDescription, getImage(yoann, "mageia.png"));
 
         String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n"
@@ -146,30 +148,51 @@ public class BloatitExampleDB {
         celesteOffer.authenticate(new AuthToken(cerbere));
         celesteOffer.voteUp();
 
+        // Mageia demand
+        String addPerroquetInMageiaDemandDescription = "Le logiciel perroquet (http://perroquet.b219.org) a des paquets pour Ubuntu et ArchLinux mais pas pour Mageia.\n"
+                + "\n"
+                + "Le but de cette demande est de créer un paquet pour perroquet et si possible l'intégrer dans les paquets officiels de Mageia.\n"
+                + "Le paquet devra avoir le même niveau d'intégration que celui pour Ubuntu : icones, handle sur les fichiers .perroquet, ...";
+
+        String addPerroquetInMageiaDemandtitle = "Make a packet for Mageia for the Perroquet software";
+
+        Demand addPerroquetInMageiaDemand = DemandFactory.createDemand(fred, fred.getLocale(), addPerroquetInMageiaDemandtitle,
+                addPerroquetInMageiaDemandDescription, mageia);
+
+        // LibreOffice demand
+        String colorPickerDemandDescription = "Actuellement dans LibreOffice, il y a un lot de couleur pré-tiré moche. Si l'on veut une jolie couleur, il faut passer dans tous les menus et on arrive enfin sur un outils anti-ergonomique.\n"
+                + "Il faudrait donc ajouter un color picker à un endroit accessible, par exemple dans le selecteur de couleur des styles.";
+
+        String colorPickerDemandTitle = "Permettre de choisir facilement n'importe quelle couleur";
+
+        Demand colorPickerDemand = DemandFactory.createDemand(yoann, yoann.getLocale(), colorPickerDemandTitle, colorPickerDemandDescription,
+                libreOffice);
+
         // Contributions
 
-        try {
-            twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
-            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("2000"), "On est prêts, non moi j'suis pas prêt !");
+        twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
+        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("2000"), "On est prêts, non moi j'suis pas prêt !");
 
-            twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
-            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
+        twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
+        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
 
-            twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));
-            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("300"), "");
+        twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));
+        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("300"), "");
 
-        } catch (NotEnoughMoneyException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        addPerroquetInMageiaDemand.authenticate(new AuthToken(hydre));
+        addPerroquetInMageiaDemand.addContribution(new BigDecimal("10"), "");
+
+        addPerroquetInMageiaDemand.authenticate(new AuthToken(fred));
+        addPerroquetInMageiaDemand.addContribution(new BigDecimal("230"), "");
 
         // Highlight demands
         new HighlightDemand(twoSubtitlesInVlcDemand, 1, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(twoSubtitlesInVlcDemand, 2, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(twoSubtitlesInVlcDemand, 3, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(colorPickerDemand, 2, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(addPerroquetInMageiaDemand, 3, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
         new HighlightDemand(twoSubtitlesInVlcDemand, 4, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
         new HighlightDemand(twoSubtitlesInVlcDemand, 5, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
-        new HighlightDemand(twoSubtitlesInVlcDemand, 6, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        // new HighlightDemand(twoSubtitlesInVlcDemand, 6,
+        // "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
 
         SessionManager.endWorkUnitAndFlush();
 
@@ -196,7 +219,7 @@ public class BloatitExampleDB {
         return FileMetadataManager.createFromLocalFile(author, path, name, "Beautiful image");
     }
 
-    public static void main(final String[] args) throws UnauthorizedOperationException {
+    public static void main(final String[] args) throws UnauthorizedOperationException, NotEnoughMoneyException {
         System.out.println("Begin database generation");
         new BloatitExampleDB();
         System.out.println("Database generation ended");
