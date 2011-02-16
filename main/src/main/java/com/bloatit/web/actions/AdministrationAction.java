@@ -25,7 +25,7 @@ public class AdministrationAction extends Action {
 
     public AdministrationAction(AdministrationActionUrl url) {
         super(url);
-        this.url = url;
+        this.url = url; 
         contents = url.getContents();
         action = url.getAction();
         System.err.println(action);

@@ -15,16 +15,15 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
+import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
-import com.bloatit.model.Contribution;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
-import com.bloatit.model.TeamRole;
 import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.JoinTeamActionUrl;
@@ -57,8 +56,14 @@ public class TeamPage extends MasterPage {
         add(master);
 
         targetTeam.authenticate(session.getAuthToken());
-        Member me = session.getAuthToken().getMember();
-        me.authenticate(session.getAuthToken());
+
+        Member me = null;
+        if (session.getAuthToken() != null) {
+            me = session.getAuthToken().getMember();
+            if (me != null) {
+                me.authenticate(session.getAuthToken());
+            }
+        }
 
         // Title and group type
         HtmlTitleBlock title;
@@ -71,7 +76,7 @@ public class TeamPage extends MasterPage {
         title.add(new HtmlParagraph().addText(Context.tr("({0} group)", targetTeam.isPublic() ? "Public" : "Private")));
 
         // Link to join if needed
-        if (!session.getAuthToken().getMember().isInGroup(targetTeam)) {
+        if (me != null && !me.isInGroup(targetTeam)) {
             if (targetTeam.isPublic()) {
                 HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this group"));
                 title.add(joinLink);
@@ -96,6 +101,7 @@ public class TeamPage extends MasterPage {
                 contacts.add(new HtmlParagraph().addText(targetTeam.getEmail()));
             } catch (UnauthorizedOperationException e) {
                 // Should not happen
+                Log.web().error("Cannot access to team email, I checked just before tho",e);
                 contacts.add(new HtmlParagraph().addText("No public contact information available"));
             }
         } else {
@@ -106,25 +112,14 @@ public class TeamPage extends MasterPage {
         HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members"), 2);
         title.add(memberTitle);
 
-        HtmlList memberList = new HtmlList();
-        memberTitle.add(memberList);
-
-        if (me.canInvite(targetTeam, Action.WRITE)) {
-            // First line is always "invite a member"
-            HtmlLink inviteMember = new HtmlLink(new SendGroupInvitationPageUrl().urlString(), Context.tr("Invite a member to this group"));
-            memberList.add(inviteMember);
+        if (me != null && me.isInGroup(targetTeam) && me.canInvite(targetTeam, Action.WRITE)) {
+            SendGroupInvitationPageUrl sendInvitePage = new SendGroupInvitationPageUrl();
+            sendInvitePage.setGroup(targetTeam);
+            HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
+            memberTitle.add(new HtmlParagraph().add(inviteMember));
         }
 
         PageIterable<Member> members = targetTeam.getMembers();
-        for (Member m : members) {
-            try {
-                HtmlLink memberLink = new HtmlLink(new MemberPageUrl(m).urlString(), m.getDisplayName());
-                memberList.add(memberLink);
-            } catch (UnauthorizedOperationException e) {
-                Log.web().warn("Not allowed to see a display name", e);
-            }
-        }
-
         HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
         memberTitle.add(membersTable);
 
@@ -156,41 +151,41 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public String getHeader(int column) {
+        public HtmlNode getHeader(int column) {
             if (column == 0) {
-                return Context.tr("Member name");
+                return new HtmlText(Context.tr("Member name"));
             }
             EnumSet<UserGroupRight> e = EnumSet.allOf(UserGroupRight.class);
             UserGroupRight ugr = (UserGroupRight) e.toArray()[column - 1];
             switch (ugr) {
             case CONSULT:
-                return Context.tr("Consult");
+                return new HtmlText(Context.tr("Consult"));
             case TALK:
-                return Context.tr("Talk");
+                return new HtmlText(Context.tr("Talk"));
             case MODIFY:
-                return Context.tr("Modify");
+                return new HtmlText(Context.tr("Modify"));
             case INVITE:
-                return Context.tr("Invite");                
+                return new HtmlText(Context.tr("Invite"));
             case PROMOTE:
-                return Context.tr("Promote");
+                return new HtmlText(Context.tr("Promote"));
             case BANK:
-                return Context.tr("Bank");
+                return new HtmlText(Context.tr("Bank"));
             default:
-                return "";
+                return new HtmlText("");
             }
         }
 
         @Override
-        public String getBody(int column) {
+        public HtmlNode getBody(int column) {
             if (column == 0) {
                 try {
-                    return member.getDisplayName();
+                    return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
                 } catch (UnauthorizedOperationException e) {
                     Log.web().warn("Not allowed to see a display name", e);
-                    return "";
+                    return new HtmlText("");
                 }
             }
-            return "";
+            return new HtmlText("");
         }
 
         @Override
