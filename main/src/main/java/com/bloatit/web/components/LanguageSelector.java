@@ -4,7 +4,6 @@ import java.util.Map.Entry;
 
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
-import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 
@@ -12,19 +11,19 @@ import com.bloatit.framework.webserver.components.form.HtmlDropDown;
  * A simple component that proposes the users a drop down menu allowing him to
  * select a language
  */
-public class LanguageSelector extends HtmlDropDown<LanguageDescriptor> {
+public class LanguageSelector extends HtmlDropDown {
 
     public LanguageSelector(String name, String label) {
         super(name, label);
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
-            add(langEntry.getValue());
+            addDropDownElement(langEntry.getValue().getCode(), langEntry.getValue().getName());
         }
     }
 
     public LanguageSelector(FormFieldData<?> languageFormFieldData, String label) {
         super(languageFormFieldData, label);
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
-            add(langEntry.getValue());
+            addDropDownElement(langEntry.getValue().getCode(), langEntry.getValue().getName());
         }
         doSetDefaultValue(languageFormFieldData.getFieldDefaultValueAsString());
     }

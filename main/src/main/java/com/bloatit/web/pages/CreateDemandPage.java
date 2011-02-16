@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.pages;
 
@@ -88,8 +89,10 @@ public final class CreateDemandPage extends LoggedPage {
 
         // Create the fields that will describe the specification of the idea
         FormFieldData<String> specificationFieldData = doCreateUrl.getSpecificationParameter().formFieldData();
-        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData, tr("Describe the idea"), SPECIF_INPUT_NB_LINES,
-                SPECIF_INPUT_NB_COLUMNS);
+        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData,
+                                                                 tr("Describe the idea"),
+                                                                 SPECIF_INPUT_NB_LINES,
+                                                                 SPECIF_INPUT_NB_COLUMNS);
         specificationInput.setComment(tr("Enter a long description of the idea : list all features, describe them all "
                 + "... Try to leave as little room for ambiguity as possible."));
         specifBlock.add(descriptionInput);
@@ -108,10 +111,10 @@ public final class CreateDemandPage extends LoggedPage {
         LanguageSelector languageInput = new LanguageSelector(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
         paramBlock.add(languageInput);
 
-        final HtmlDropDown<ProjectElement> projectInput = new HtmlDropDown<ProjectElement>(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
+        final HtmlDropDown projectInput = new HtmlDropDown(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
         for (Project project : ProjectManager.getProjects()) {
             try {
-                projectInput.add(new ProjectElement(project));
+                projectInput.addDropDownElement(String.valueOf(project.getId()), project.getName());
             } catch (UnauthorizedOperationException e) {
                 Log.web().warn(e);
                 // Not display private projects

@@ -10,12 +10,8 @@
  */
 package com.bloatit.web.pages;
 
-import java.util.Map.Entry;
-
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.i18n.Country;
-import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -78,9 +74,9 @@ public final class RegisterPage extends MasterPage {
         final HtmlTextField emailInput = new HtmlTextField(emailFieldData, Context.tr("Email"));
         form.add(emailInput);
 
-        final HtmlDropDown<Country> countryInput = new HtmlDropDown<Country>(RegisterAction.COUNTRY_CODE, Context.tr("Country"));
+        final HtmlDropDown countryInput = new HtmlDropDown(RegisterAction.COUNTRY_CODE, Context.tr("Country"));
         for (final Country entry : Country.getAvailableCountries()) {
-            countryInput.add(entry);
+            countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
         form.add(countryInput);
         

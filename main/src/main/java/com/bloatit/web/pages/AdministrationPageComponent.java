@@ -173,10 +173,10 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
         // add the action drop down
         HtmlRadioButtonGroup group = new HtmlRadioButtonGroup("UserContent_actions");
         actionForm.add(new HtmlFormBlock("UserContent_actions").add(group));
-        HtmlDropDown<SimpleDropDownElement> dropDown = new HtmlDropDown<SimpleDropDownElement>("action");
+        HtmlDropDown dropDown = new HtmlDropDown("action");
         group.add(dropDown);
         for (SimpleDropDownElement simpleDropDownElement : getActions()) {
-            dropDown.add(simpleDropDownElement);
+            dropDown.addDropDownElement(simpleDropDownElement.getCode(), simpleDropDownElement.getName());
         }
         addActions(dropDown);
 
@@ -197,7 +197,7 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
         // Implement me in sub classes
     }
 
-    protected void addActions(HtmlDropDown<SimpleDropDownElement> dropDown) {
+    protected void addActions(HtmlDropDown dropDown) {
         // Implement me in sub classes
     }
 
