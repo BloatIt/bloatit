@@ -128,6 +128,7 @@ public final class Member extends Actor<DaoMember> {
         new MemberRight.GroupList().tryAccess(calculateRole(this), Action.WRITE);
         setGroupRoleUnprotected(group, newRole);
     }
+    
 
     /**
      * Give some right to the user to a group without checking if the user can
