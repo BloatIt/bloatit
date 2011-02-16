@@ -78,7 +78,7 @@ Create file ~/.config/bloatit/web.properties
 Add inside the following content : 
 
 bloatit.documentation.dir=<PATH_TO_ELVEOS>/doc/websitedoc/
-
+bloatit.www.dir=<PATH_TO_ELVEOS>/www/
 
 ************************************
 *  Configure access right          *
