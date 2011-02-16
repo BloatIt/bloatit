@@ -30,6 +30,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.components.HtmlDemandSumary;
+import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 
@@ -79,7 +80,7 @@ public final class OfferPage extends LoggedPage {
     public HtmlElement createRestrictedContent() {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
-        offerPageContainer.add(new HtmlDemandSumary(targetIdea, false));
+        offerPageContainer.add(new HtmlDemandSumary(targetIdea, Compacity.NORMAL));
 
         // Create offer form
         final OfferActionUrl offerActionUrl = new OfferActionUrl(targetIdea);

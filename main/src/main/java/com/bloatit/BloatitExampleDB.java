@@ -18,6 +18,7 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.DemandFactory;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Group;
+import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
@@ -60,7 +61,6 @@ public class BloatitExampleDB {
         Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org","The group for ubuntu users" , Right.PUBLIC, thomas);
 
         Project vlc = new Project("VLC", thomas, Locale.FRANCE, "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ", "http://www.videolan.org/vlc/",getImage(thomas, "vlc.png"));
-
 
         String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n" +
         		"\n" +
@@ -133,10 +133,10 @@ public class BloatitExampleDB {
 
         try {
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
-            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("2000"), "");
+            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("2000"), "On est prêts, non moi j'suis pas prêt !");
 
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
-            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "");
+            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
 
 
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));
@@ -147,6 +147,14 @@ public class BloatitExampleDB {
             e.printStackTrace();
         }
 
+
+        //Highlight demands
+        new HighlightDemand(twoSubtitlesInVlcDemand, 1, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 2, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 3, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 4, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 5, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 6, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
 
         SessionManager.endWorkUnitAndFlush();
 

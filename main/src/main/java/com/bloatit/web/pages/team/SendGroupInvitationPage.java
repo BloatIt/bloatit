@@ -1,31 +1,44 @@
-package com.bloatit.web.pages.messages;
+package com.bloatit.web.pages.team;
 
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlHidden;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.pages.LoggedPage;
-import com.bloatit.web.pages.team.SendGroupInvitationAction;
 import com.bloatit.web.url.SendGroupInvitationActionUrl;
 import com.bloatit.web.url.SendGroupInvitationPageUrl;
 
+/**
+ * <p>
+ * A page to send invitations to groups
+ * </p>
+ */
 @ParamContainer("invitation/send")
 public class SendGroupInvitationPage extends LoggedPage {
+    @SuppressWarnings("unused")
     private SendGroupInvitationPageUrl url;
+
+    @RequestParam(level = Level.INFO)
+    private Group group;
 
     public SendGroupInvitationPage(SendGroupInvitationPageUrl url) {
         super(url);
         this.url = url;
+        this.group = url.getGroup();
     }
 
     @Override
@@ -39,15 +52,22 @@ public class SendGroupInvitationPage extends LoggedPage {
         Member me = session.getAuthToken().getMember();
         me.authenticate(session.getAuthToken());
 
-        HtmlDropDown groupInput = new HtmlDropDown(SendGroupInvitationAction.GROUP_JOIN_CODE, Context.tr("Select group"));
-        form.add(groupInput);
         try {
-            for (Group g : me.getGroups()) {
-                try {
-                    groupInput.addDropDownElement(g.getId().toString(), g.getLogin());
-                } catch (UnauthorizedOperationException e) {
-                    e.printStackTrace();
+            if (group == null) {
+                HtmlDropDown groupInput = new HtmlDropDown(SendGroupInvitationAction.GROUP_JOIN_CODE, Context.tr("Select group"));
+                form.add(groupInput);
+                PageIterable<Group> groups;
+                groups = me.getGroups();
+                for (Group g : groups) {
+                    try {
+                        groupInput.addDropDownElement(g.getId().toString(), g.getLogin());
+                    } catch (UnauthorizedOperationException e) {
+                        e.printStackTrace();
+                    }
                 }
+            } else {
+                HtmlHidden hiddenGroup = new HtmlHidden(SendGroupInvitationAction.GROUP_JOIN_CODE, group.getId().toString());
+                form.add(hiddenGroup);
             }
 
             HtmlDropDown receiverInput = new HtmlDropDown(SendGroupInvitationAction.RECEIVER_CODE, Context.tr("Select group"));

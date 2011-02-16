@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
 import com.bloatit.web.components.HtmlDemandSumary;
+import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 
@@ -80,7 +81,7 @@ public final class ContributePage extends LoggedPage {
         contribForm.add(submitButton);
 
         final HtmlTitleBlock contribTitle = new HtmlTitleBlock(tr("Contribute"), 1);
-        contribTitle.add(new HtmlDemandSumary(targetIdea, false));
+        contribTitle.add(new HtmlDemandSumary(targetIdea, Compacity.NORMAL));
         contribTitle.add(contribForm);
 
         final HtmlDiv group = new HtmlDiv();

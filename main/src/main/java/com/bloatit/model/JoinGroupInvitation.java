@@ -57,15 +57,22 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
     /**
      * @see DaoJoinGroupInvitation#accept()
      */
-    public void accept() {
+    protected void accept() {
         getDao().accept();
     }
 
     /**
      * @see DaoJoinGroupInvitation#refuse()
      */
-    public void refuse() {
+    protected void refuse() {
         getDao().refuse();
+    }
+    
+    /**
+     * @see DaoJoinGroupInvitation#discard()
+     */
+    protected void discard(){
+        getDao().discard();
     }
 
 }

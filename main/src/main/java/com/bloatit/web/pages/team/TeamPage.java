@@ -1,5 +1,11 @@
 package com.bloatit.web.pages.team;
 
+import java.util.EnumSet;
+import java.util.Iterator;
+
+import com.bloatit.common.Log;
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
@@ -9,13 +15,20 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlList;
+import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.advanced.HtmlTable;
+import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
+import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.JoinTeamActionUrl;
+import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.SendGroupInvitationPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
@@ -44,43 +57,148 @@ public class TeamPage extends MasterPage {
 
         targetTeam.authenticate(session.getAuthToken());
 
-        try {
-            HtmlTitleBlock title = new HtmlTitleBlock(targetTeam.getLogin(), 1);
-            master.add(title);
-
-            if (!session.getAuthToken().getMember().isInGroup(targetTeam)) {
-                if (targetTeam.isPublic()) {
-                    HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this group"));
-                    title.add(joinLink);
-                } else {
-                    title.addText("Send a request to join group");
-                }
+        Member me = null;
+        if (session.getAuthToken() != null) {
+            me = session.getAuthToken().getMember();
+            if (me != null) {
+                me.authenticate(session.getAuthToken());
             }
-
-            if (targetTeam.canAccessEmail(Action.READ)) {
-                title.addText("email : " + targetTeam.getEmail());
-            }
-
-            HtmlList memberList = new HtmlList();
-            title.add(memberList);
-            PageIterable<Member> members = targetTeam.getMembers();
-            for (Member m : members) {
-                memberList.add("Member: " + m.getDisplayName());
-            }
-
-        } catch (UnauthorizedOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
+
+        // Title and group type
+        HtmlTitleBlock title;
+        try {
+            title = new HtmlTitleBlock(Context.tr("Team: ") + targetTeam.getLogin(), 1);
+        } catch (UnauthorizedOperationException e) {
+            throw new FatalErrorException("Not allowed to see group name in group page, should not happen", e);
+        }
+        master.add(title);
+        title.add(new HtmlParagraph().addText(Context.tr("({0} group)", targetTeam.isPublic() ? "Public" : "Private")));
+
+        // Link to join if needed
+        if (me != null && !me.isInGroup(targetTeam)) {
+            if (targetTeam.isPublic()) {
+                HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this group"));
+                title.add(joinLink);
+            } else {
+                title.add(new HtmlParagraph().addText("Send a request to join group"));
+            }
+        }
+
+        // Description
+        // TODO add cache
+        HtmlTitleBlock description = new HtmlTitleBlock(Context.tr("Description"), 2);
+        title.add(description);
+        HtmlMarkdownRenderer hmr = new HtmlMarkdownRenderer(targetTeam.getDescription());
+        description.add(hmr);
+
+        // Contact
+        HtmlTitleBlock contacts = new HtmlTitleBlock(Context.tr("How to contact us"), 2);
+        title.add(contacts);
+
+        if (targetTeam.canAccessEmail(Action.READ)) {
+            try {
+                contacts.add(new HtmlParagraph().addText(targetTeam.getEmail()));
+            } catch (UnauthorizedOperationException e) {
+                // Should not happen
+                Log.web().error("Cannot access to team email, I checked just before tho",e);
+                contacts.add(new HtmlParagraph().addText("No public contact information available"));
+            }
+        } else {
+            contacts.add(new HtmlParagraph().addText("No public contact information available"));
+        }
+
+        // Members
+        HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members"), 2);
+        title.add(memberTitle);
+
+        if (me != null && me.isInGroup(targetTeam) && me.canInvite(targetTeam, Action.WRITE)) {
+            SendGroupInvitationPageUrl sendInvitePage = new SendGroupInvitationPageUrl();
+            sendInvitePage.setGroup(targetTeam);
+            HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
+            memberTitle.add(new HtmlParagraph().add(inviteMember));
+        }
+
+        PageIterable<Member> members = targetTeam.getMembers();
+        HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
+        memberTitle.add(membersTable);
+
     }
 
     @Override
     protected String getPageTitle() {
-        return Context.tr("Teams management page");
+        return Context.tr("Consult team information");
     }
 
     @Override
     public boolean isStable() {
         return true;
+    }
+
+    private class MyTableModel extends HtmlTableModel {
+        private PageIterable<Member> members;
+        private Member member;
+        private Iterator<Member> iterator;
+
+        public MyTableModel(PageIterable<Member> members) {
+            this.members = members;
+            iterator = members.iterator();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return UserGroupRight.values().length + 1;
+        }
+
+        @Override
+        public HtmlNode getHeader(int column) {
+            if (column == 0) {
+                return new HtmlText(Context.tr("Member name"));
+            }
+            EnumSet<UserGroupRight> e = EnumSet.allOf(UserGroupRight.class);
+            UserGroupRight ugr = (UserGroupRight) e.toArray()[column - 1];
+            switch (ugr) {
+            case CONSULT:
+                return new HtmlText(Context.tr("Consult"));
+            case TALK:
+                return new HtmlText(Context.tr("Talk"));
+            case MODIFY:
+                return new HtmlText(Context.tr("Modify"));
+            case INVITE:
+                return new HtmlText(Context.tr("Invite"));
+            case PROMOTE:
+                return new HtmlText(Context.tr("Promote"));
+            case BANK:
+                return new HtmlText(Context.tr("Bank"));
+            default:
+                return new HtmlText("");
+            }
+        }
+
+        @Override
+        public HtmlNode getBody(int column) {
+            if (column == 0) {
+                try {
+                    return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
+                } catch (UnauthorizedOperationException e) {
+                    Log.web().warn("Not allowed to see a display name", e);
+                    return new HtmlText("");
+                }
+            }
+            return new HtmlText("");
+        }
+
+        @Override
+        public boolean next() {
+            if (iterator == null) {
+                iterator = members.iterator();
+            }
+
+            if (iterator.hasNext()) {
+                member = iterator.next();
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -44,4 +44,14 @@ public class DateUtils {
         return calendar.getTime();
     }
 
+    public static Date now() {
+        return new Date();
+    }
+
+    public static Date flyingPigDate() {
+        return nowPlusSomeYears(1000);
+    }
+
+
+
 }

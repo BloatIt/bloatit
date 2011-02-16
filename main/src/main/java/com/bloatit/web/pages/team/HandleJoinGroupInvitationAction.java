@@ -10,6 +10,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
 import com.bloatit.model.JoinGroupInvitation;
+import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.HandleJoinGroupInvitationActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -39,11 +40,27 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
     @Override
     public Url doProcessRestricted() throws RedirectException {
         invite.authenticate(session.getAuthToken());
+        Member me = session.getAuthToken().getMember();
+        me.authenticate(session.getAuthToken());
         if (accept) {
-            invite.accept();
+            Group g = invite.getGroup();
+            g.authenticate(session.getAuthToken());
+
+            if (me.isInGroup(g)) {
+                session.notifyError(Context.tr("You cannot join a group you already belong in"));
+                throw new RedirectException(session.getLastVisitedPage());
+            }
+
             try {
-                Group g = invite.getGroup();
-                g.authenticate(session.getAuthToken());
+                me.acceptInvitation(invite);
+            } catch (UnauthorizedOperationException e1) {
+                // Should never happen
+                Log.web().fatal("User accepted a legitimate group invitation, but it failed", e1);
+                session.notifyBad(Context.tr("Oops looks like we had an issue with accepting this group invitation. Please try again later."));
+                throw new RedirectException(session.getLastVisitedPage());
+            }
+
+            try {
                 session.notifyGood(Context.tr("You are now a member of group ''" + g.getLogin() + "''"));
             } catch (UnauthorizedOperationException e) {
                 // Should never happen
@@ -51,7 +68,13 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
             }
             return new TeamPageUrl(invite.getGroup());
         }
-        invite.refuse();
+        try {
+            me.refuseInvitation(invite);
+        } catch (UnauthorizedOperationException e) {
+            Log.web().fatal("User accepted a legitimate group invitation, but it failed", e);
+            session.notifyBad(Context.tr("Oops looks like we had an issue with refusing this group invitation. Please try again later."));
+            throw new RedirectException(session.getLastVisitedPage());
+        }
         return session.getLastVisitedPage();
     }
 

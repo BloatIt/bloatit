@@ -53,7 +53,7 @@ public class AdministrationPage extends LoggedPage {
         super(url);
         orderBy = url.getOrderBy();
         asc = url.getAsc();
-        filterDeleted = url.getFilterDeleted();
+        filterDeleted = url.getFilterDeleted(); 
         filterFile = url.getFilterFile();
         filterGroup = url.getFilterGroup();
 
