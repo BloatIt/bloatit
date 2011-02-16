@@ -170,9 +170,9 @@ public class DaoMemberCreationTest extends TestCase {
     public void testExistMemberByLogin() {
         testCreateTreeMembers();
         SessionManager.beginWorkUnit();
-        assertTrue(DaoActor.exist("Fred"));
-        assertFalse(DaoActor.exist("Inexistant"));
-        assertFalse(DaoActor.exist(null));
+        assertTrue(DaoActor.loginExists("Fred"));
+        assertFalse(DaoActor.loginExists("Inexistant"));
+        assertFalse(DaoActor.loginExists(null));
         SessionManager.endWorkUnitAndFlush();
     }
 

@@ -83,10 +83,20 @@ public abstract class DaoActor implements IdentifiableInterface {
      * "exist" is useless. (In that case you'd better test if getByLogin != null, to
      * minimize the number of HQL request).
      */
-    public static boolean exist(final String login) {
+    public static boolean loginExists(final String login) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where login = :login");
         q.setString("login", login);
+        return ((Long) q.uniqueResult()) > 0;
+    }
+
+    /**
+     * This method use a HQL request.
+     */
+    public static boolean emailExists(final String email) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where email = :email");
+        q.setString("email", email);
         return ((Long) q.uniqueResult()) > 0;
     }
 
@@ -97,7 +107,7 @@ public abstract class DaoActor implements IdentifiableInterface {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     * 
+     *
      * @param login is the login or name of this actor. It must be non null, and unique.
      * @throws NonOptionalParameterException if login or mail is null.
      */
@@ -124,7 +134,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * No check is performed on the correctness of the new email.
-     * 
+     *
      * @param email the new email.
      */
     public abstract void setContact(final String email);
@@ -135,7 +145,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * Set the external account for this actor.
-     * 
+     *
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
@@ -194,7 +204,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -207,7 +217,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

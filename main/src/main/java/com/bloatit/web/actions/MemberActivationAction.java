@@ -18,10 +18,10 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.AuthToken;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.url.IndexPageUrl;
-import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
 
 /**
@@ -56,25 +56,27 @@ public final class MemberActivationAction extends Action {
 
         Member member = MemberManager.getMemberByLogin(login);
 
-        Url to = new LoginPageUrl();
+        Url to = new IndexPageUrl();
 
         if (member != null) {
 
             if (member.getActivationState() == ActivationState.VALIDATING) {
                 if (key.equals(member.getActivationKey())) {
                     member.activate();
-                    session.notifyGood(Context.tr("Activation sucess, you can now login."));
+
+                    //Auto login after activation
+                    session.setAuthToken(new AuthToken(member));
+                    session.notifyGood(Context.tr("Activation sucess, you are now logged."));
+
+
                 } else {
                     session.notifyBad(Context.tr("Wrong activation key for this member."));
-                    to = new IndexPageUrl();
                 }
             } else {
                 session.notifyBad(Context.tr("No activation is necessary for this member."));
-                to = new IndexPageUrl();
             }
         } else {
             session.notifyBad(Context.tr("Activation impossible on a no existing member."));
-            to = new IndexPageUrl();
         }
 
         return to;

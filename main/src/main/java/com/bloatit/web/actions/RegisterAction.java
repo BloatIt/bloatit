@@ -18,7 +18,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Member;
-import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
@@ -69,19 +69,25 @@ public class RegisterAction extends Action {
 
     @Override
     protected final Url doProcess() throws RedirectException {
+
+
+        if(MemberManager.loginExists(login)) {
+            session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
+            sendError();
+        }
+
+        if(MemberManager.emailExists(email)) {
+            session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
+            sendError();
+        }
+
         final String userEmail = email.trim();
         if (!MailUtils.isValidEmail(userEmail)) {
             session.notifyError(Context.tr("Invalid email address : " + userEmail));
-            session.addParameter(url.getEmailParameter());
-            session.addParameter(url.getLoginParameter());
-            session.addParameter(url.getPasswordParameter());
-            session.addParameter(url.getCountryParameter());
-            session.addParameter(url.getLangParameter());
-            throw new RedirectException(new RegisterPageUrl());
+            sendError();
         }
 
         final Locale locale = new Locale(lang, country);
-
         // TODO verify duplicate to avoid crashes
         final Member m = new Member(login, password, email, locale);
         String activationKey = m.getActivationKey();
@@ -100,9 +106,23 @@ public class RegisterAction extends Action {
         return session.pickPreferredPage();
     }
 
+    public void sendError() throws RedirectException {
+        session.addParameter(url.getEmailParameter());
+        session.addParameter(url.getLoginParameter());
+        session.addParameter(url.getPasswordParameter());
+        session.addParameter(url.getCountryParameter());
+        session.addParameter(url.getLangParameter());
+        throw new RedirectException(new RegisterPageUrl());
+    }
+
     @Override
     protected final Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
-        return new LoginPageUrl();
+        session.addParameter(url.getEmailParameter());
+        session.addParameter(url.getLoginParameter());
+        session.addParameter(url.getPasswordParameter());
+        session.addParameter(url.getCountryParameter());
+        session.addParameter(url.getLangParameter());
+        return new RegisterPageUrl();
     }
 }
