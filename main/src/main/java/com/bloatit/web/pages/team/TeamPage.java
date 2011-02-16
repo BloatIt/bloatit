@@ -130,7 +130,7 @@ public class TeamPage extends MasterPage {
                 financial.add(external);
                 HtmlList exAccountInfo = new HtmlList();
                 external.add(exAccountInfo);
-                
+
                 if (exAccount.canAccessAmount())
                     exAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(exAccount.getAmount())
                             .getDefaultString()));
@@ -141,8 +141,8 @@ public class TeamPage extends MasterPage {
                 Log.web().error("Cannot access to bank external accound, I checked just before tho", e);
             }
         }
-        
-     // Internal account
+
+        // Internal account
         if (targetTeam.canGetInternalAccount()) {
             try {
                 InternalAccount inAccount = targetTeam.getInternalAccount();
@@ -151,17 +151,15 @@ public class TeamPage extends MasterPage {
                 financial.add(internal);
                 HtmlList inAccountInfo = new HtmlList();
                 internal.add(inAccountInfo);
-                
+
                 if (inAccount.canAccessAmount())
                     inAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(inAccount.getAmount())
                             .getDefaultString()));
             } catch (UnauthorizedOperationException e) {
                 // Should never happen
-                Log.web().error("Cannot access to bank external accound, I checked just before tho", e);
+                Log.web().error("Cannot access to bank internal accound, I checked just before tho", e);
             }
         }
-        
-        
 
         // Members
         HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members"), 2);

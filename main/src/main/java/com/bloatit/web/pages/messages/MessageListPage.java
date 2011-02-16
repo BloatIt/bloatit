@@ -19,6 +19,9 @@ import com.bloatit.web.url.HandleJoinGroupInvitationActionUrl;
 import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.SendGroupInvitationPageUrl;
 
+/**
+ * A plain list of messages received by the user
+ */
 @ParamContainer("messages/list")
 public class MessageListPage extends LoggedPage {
     @SuppressWarnings("unused")

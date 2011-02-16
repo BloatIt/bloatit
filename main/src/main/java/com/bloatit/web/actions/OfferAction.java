@@ -24,6 +24,8 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Demand;
+import com.bloatit.model.Group;
+import com.bloatit.model.Offer;
 import com.bloatit.web.pages.demand.DemandTabPane;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
@@ -38,6 +40,7 @@ public final class OfferAction extends LoggedAction {
     public static final String EXPIRY_CODE = "offer_expiry";
     public static final String TITLE_CODE = "offer_title";
     public static final String DESCRIPTION_CODE = "offer_description";
+    public static final String ON_THE_BEHALF = "offer_behalf";
 
     @RequestParam(level = Level.ERROR, role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
     private Demand targetIdea = null;
@@ -54,6 +57,9 @@ public final class OfferAction extends LoggedAction {
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
     private final String description;
 
+    @RequestParam(name = ON_THE_BEHALF, role = Role.POST, level = Level.INFO)
+    private final Group group;
+
     private final OfferActionUrl url;
 
     public OfferAction(final OfferActionUrl url) {
@@ -65,6 +71,7 @@ public final class OfferAction extends LoggedAction {
         this.expiryDate = url.getExpiryDate();
         this.price = url.getPrice();
         this.targetIdea = url.getTargetIdea();
+        this.group = url.getGroup();
     }
 
     @Override
@@ -72,8 +79,13 @@ public final class OfferAction extends LoggedAction {
         try {
             targetIdea.authenticate(session.getAuthToken());
 
-            targetIdea.addOffer(session.getAuthToken().getMember(), price, description, Locale.FRENCH,
-                    expiryDate.getJavaDate(), 0);
+            Offer newOffer = targetIdea.addOffer(session.getAuthToken().getMember(), price, description, Locale.FRENCH, expiryDate.getJavaDate(), 0);
+            newOffer.authenticate(session.getAuthToken());
+            
+            if (group != null) {
+                newOffer.setAsGroup(group);
+            }
+
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
             return session.pickPreferredPage();
