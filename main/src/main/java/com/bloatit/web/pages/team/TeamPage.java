@@ -68,7 +68,7 @@ public class TeamPage extends MasterPage {
         // Title and group type
         HtmlTitleBlock title;
         try {
-            title = new HtmlTitleBlock(Context.tr("Team :") + targetTeam.getLogin(), 1);
+            title = new HtmlTitleBlock(Context.tr("Team: ") + targetTeam.getLogin(), 1);
         } catch (UnauthorizedOperationException e) {
             throw new FatalErrorException("Not allowed to see group name in group page, should not happen", e);
         }

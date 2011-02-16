@@ -131,10 +131,10 @@ public class BloatitExampleDB {
 
         try {
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
-            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("2000"), "");
+            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("2000"), "On est prêts, non moi j'suis pas prêt !");
 
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
-            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "");
+            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
 
 
             twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));

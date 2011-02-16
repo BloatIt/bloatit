@@ -5,7 +5,6 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 import com.bloatit.web.url.DocumentationUrl;
-import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 
