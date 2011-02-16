@@ -82,13 +82,13 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
      * 
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
-    private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
+    private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember receiver, final DaoGroup group) {
         super();
-        if (sender == null || reciever == null || group == null) {
+        if (sender == null || receiver == null || group == null) {
             throw new NonOptionalParameterException();
         }
         this.sender = sender;
-        this.receiver = reciever;
+        this.receiver = receiver;
         this.group = group;
         this.state = State.PENDING;
     }
