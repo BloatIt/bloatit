@@ -12,12 +12,8 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.util.Map.Entry;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -27,7 +23,6 @@ import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlFormBlock;
-import com.bloatit.framework.webserver.components.form.HtmlSimpleDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
@@ -36,6 +31,7 @@ import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.web.actions.CreateDemandAction;
+import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 
@@ -101,26 +97,30 @@ public final class CreateDemandPage extends LoggedPage {
 
         // Create the fields that will be used to describe the parameters of the
         // idea (project ...)
-        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
-        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
-            languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
-        }
+        // final HtmlSimpleDropDown languageInput = new
+        // HtmlSimpleDropDown(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
+        // for (final Entry<String, LanguageDescriptor> langEntry :
+        // Localizator.getAvailableLanguages().entrySet()) {
+        // languageInput.add(langEntry.getValue().name,
+        // langEntry.getValue().code);
+        // }
+
+        LanguageSelector languageInput = new LanguageSelector(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
         paramBlock.add(languageInput);
 
         final HtmlDropDown<ProjectElement> projectInput = new HtmlDropDown<ProjectElement>(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
         for (Project project : ProjectManager.getProjects()) {
             try {
-                projectInput.add(new  ProjectElement(project));
+                projectInput.add(new ProjectElement(project));
             } catch (UnauthorizedOperationException e) {
                 Log.web().warn(e);
                 // Not display private projects
             }
         }
-        //TODO: set the default value to "select a project"
+        // TODO: set the default value to "select a project"
         paramBlock.add(projectInput);
 
-        //TODO: add form to create a new project
-
+        // TODO: add form to create a new project
 
         final HtmlDiv group = new HtmlDiv();
         group.add(createIdeaTitle);
@@ -142,7 +142,6 @@ public final class CreateDemandPage extends LoggedPage {
      * Class use to display projects in a dropdown html element
      */
     class ProjectElement implements DropDownElement {
-
 
         private final String name;
         private final String code;
