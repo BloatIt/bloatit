@@ -12,7 +12,6 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.JoinGroupInvitation;
 import com.bloatit.model.Member;
 import com.bloatit.web.pages.LoggedPage;
@@ -22,7 +21,8 @@ import com.bloatit.web.url.SendGroupInvitationPageUrl;
 
 @ParamContainer("messages/list")
 public class MessageListPage extends LoggedPage {
-    private MessageListPageUrl url;
+    @SuppressWarnings("unused")
+    private MessageListPageUrl url; // kept for the sake of consistency
 
     public MessageListPage(MessageListPageUrl url) {
         super(url);

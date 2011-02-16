@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bloatit.framework.webserver.components.form.SimpleDropDownElement;
-import com.bloatit.web.pages.AdministrationActionManager.Action;
 
 public class AdministrationActionManager {
 
