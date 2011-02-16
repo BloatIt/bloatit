@@ -196,6 +196,17 @@ public final class Member extends Actor<DaoMember> {
     /**
      * @param state
      *            can be PENDING, ACCEPTED or REFUSED
+     * @param group
+     *            the group invited to join
+     * @return all the received invitation with the specified state and group
+     */
+    public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state, Group group) {
+        return new JoinGroupInvitationtList(getDao().getReceivedInvitation(state, group.getDao()));
+    }
+
+    /**
+     * @param state
+     *            can be PENDING, ACCEPTED or REFUSED
      * @return all the sent invitation with the specified state.
      */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
@@ -214,8 +225,16 @@ public final class Member extends Actor<DaoMember> {
         if (invitation.getReciever().getId() != getAuthToken().getMember().getId()) {
             throw new UnauthorizedOperationException(SpecialCode.INVITATION_RECIEVER_MISMATCH);
         }
-        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, invitation.getGroup()), Action.DELETE);
+        
+        Group g = invitation.getGroup();
+        
+        new MemberRight.InviteInGroup().tryAccess(calculateRole(this, g), Action.DELETE);
         invitation.accept();
+        
+        PageIterable<JoinGroupInvitation> receivedInvitation = this.getReceivedInvitation(State.PENDING, g);
+        for(JoinGroupInvitation invite : receivedInvitation){
+            invite.discard();
+        }
     }
 
     /**
