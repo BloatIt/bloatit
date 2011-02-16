@@ -18,16 +18,18 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlSimpleDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.actions.AddProjectAction;
+import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
 
@@ -97,10 +99,14 @@ public final class AddProjectPage extends LoggedPage {
 
         // Language
         FormFieldData<String> languageFormFieldData = doCreateUrl.getLangParameter().createFormFieldData();
-        final HtmlSimpleDropDown languageInput = new HtmlSimpleDropDown(languageFormFieldData, Context.tr("Language"));
-        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
-            languageInput.add(langEntry.getValue().name, langEntry.getValue().code);
-        }
+
+//        final HtmlDropDown<LanguageElement> languageInput = new HtmlDropDown<LanguageElement>(languageFormFieldData, Context.tr("Language"));
+//        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
+//            languageInput.add(new LanguageElement(langEntry.getValue().name, langEntry.getValue().code));
+//        }
+        
+        LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
+        
         languageInput.setComment(Context.tr("Language of the descriptions."));
         addProjectForm.add(languageInput);
 
@@ -125,5 +131,25 @@ public final class AddProjectPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to add a new project.");
+    }
+
+    private class LanguageElement implements DropDownElement {
+        private String name;
+        private String code;
+
+        public LanguageElement(String name, String code) {
+            super();
+            this.name = name;
+            this.code = code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
     }
 }

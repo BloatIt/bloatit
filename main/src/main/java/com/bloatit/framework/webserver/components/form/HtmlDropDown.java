@@ -13,8 +13,7 @@ package com.bloatit.framework.webserver.components.form;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.hibernate.cfg.NotYetImplementedException;
+import java.util.Map.Entry;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
@@ -54,9 +53,9 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
         super(new HtmlGenericElement("select"), name, label);
     }
 
-    public HtmlDropDown(final FormFieldData<T> data, final String label) {
+    public HtmlDropDown(final FormFieldData<?> data, final String label) {
         super(new HtmlGenericElement("select"), data.getFieldName(), label);
-        setDefaultValue(data);
+        doSetDefaultValue(data.getFieldDefaultValueAsString());
         addErrorMessages(data.getFieldMessages());
     }
 
@@ -78,12 +77,14 @@ public class HtmlDropDown<T extends DropDownElement> extends HtmlFormField<T> {
 
     /**
      * Sets the default value based on a string value
-     * @throws NotYetImplementedException everytime (not yet implemented)
      */
     @Override
     protected void doSetDefaultValue(String defaultValueAsString) {
-        // TODO: I don't even understand...
-        throw new NotYetImplementedException("The method doSetDefaultValue(string) is not yet implemented (Tom's fault)");
+        for (Entry<T, HtmlBranch> e : components.entrySet()) {
+            if (e.getKey().getCode().equals(defaultValueAsString)) {
+                e.getValue().addAttribute("selected", "selected");
+            }
+        }
     }
 
     /**
