@@ -318,6 +318,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                 offerSummaryPopularity.add(popularityText);
                 offerSummaryPopularity.add(popularityScore);
 
+                offer.authenticate(Context.getSession().getAuthToken());
                 if (!offer.isOwnedByMe()) {
                     int vote = offer.getUserVoteValue();
                     if (vote == 0) {

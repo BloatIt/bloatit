@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.utils.AsciiUtils;
 import com.bloatit.framework.utils.HttpParameter;
@@ -86,6 +87,7 @@ public class UrlParameter<T, U> extends UrlNode {
         try {
             this.strValue = Loaders.toStr(value);
         } catch (final ConversionErrorException e) {
+            Log.framework().warn("Conversion error",e);
             this.strValue = "";
         }
     }

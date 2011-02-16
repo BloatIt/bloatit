@@ -68,10 +68,11 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Create a new DemandImplementation. This method is not protected by any right
-     * management.
+     * Create a new DemandImplementation. This method is not protected by any
+     * right management.
      *
-     * @param dao the dao
+     * @param dao
+     *            the dao
      * @return null if the <code>dao</code> is null.
      */
     public static DemandImplementation create(final DaoDemand dao) {
@@ -87,25 +88,33 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     }
 
     /**
-     * Create a new demand. The right management for creating a demand is specific. (The
-     * Right management system is not working in this case). You have to use the
+     * Create a new demand. The right management for creating a demand is
+     * specific. (The Right management system is not working in this case). You
+     * have to use the
      *
-     * @param author the author
-     * @param locale the locale in which this demand is written
-     * @param title the title of the demand
-     * @param description the description of the demand
-     * @param project the project {@link DemandManager#canCreate(AuthToken)} to make sure
-     * you can create a new demand.
+     * @param author
+     *            the author
+     * @param locale
+     *            the locale in which this demand is written
+     * @param title
+     *            the title of the demand
+     * @param description
+     *            the description of the demand
+     * @param project
+     *            the project {@link DemandManager#canCreate(AuthToken)} to make
+     *            sure you can create a new demand.
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
     public DemandImplementation(final Member author, final Locale locale, final String title, final String description, final Project project) {
-        this(DaoDemand.createAndPersist(author.getDao(), DaoDescription.createAndPersist(author.getDao(), locale, title, description), project.getDao()));
+        this(DaoDemand.createAndPersist(author.getDao(), DaoDescription.createAndPersist(author.getDao(), locale, title, description),
+                project.getDao()));
     }
 
     /**
      * Use the {@link #create(DaoDemand)} method.
      *
-     * @param dao the dao
+     * @param dao
+     *            the dao
      */
     private DemandImplementation(final DaoDemand dao) {
         super(dao);
@@ -119,8 +128,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * (non-Javadoc)
      *
      * @see
-     * com.bloatit.model.demand.DemandInterface#canAccessComment(com.bloatit.model.right
-     * .RightManager.Action)
+     * com.bloatit.model.demand.DemandInterface#canAccessComment(com.bloatit
+     * .model.right .RightManager.Action)
      */
     @Override
     public boolean canAccessComment(final Action action) {
@@ -131,8 +140,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * (non-Javadoc)
      *
      * @see
-     * com.bloatit.model.demand.DemandInterface#canAccessContribution(com.bloatit.model
-     * .right.RightManager.Action)
+     * com.bloatit.model.demand.DemandInterface#canAccessContribution(com.bloatit
+     * .model .right.RightManager.Action)
      */
     @Override
     public boolean canAccessContribution(final Action action) {
@@ -143,8 +152,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * (non-Javadoc)
      *
      * @see
-     * com.bloatit.model.demand.DemandInterface#canAccessOffer(com.bloatit.model.right
-     * .RightManager.Action)
+     * com.bloatit.model.demand.DemandInterface#canAccessOffer(com.bloatit.model
+     * .right .RightManager.Action)
      */
     @Override
     public boolean canAccessOffer(final Action action) {
@@ -168,8 +177,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /*
      * (non-Javadoc)
      *
-     * @see com.bloatit.model.demand.DemandInterface#addContribution(java.math.BigDecimal,
-     * java.lang.String)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#addContribution(java.math.BigDecimal
+     * , java.lang.String)
      */
     @Override
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
@@ -181,7 +191,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /*
      * (non-Javadoc)
      *
-     * @see com.bloatit.model.demand.DemandInterface#addOffer(com.bloatit.model.Offer)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#addOffer(com.bloatit.model.Offer
+     * )
      */
     @Override
     public void addOffer(final Offer offer) throws UnauthorizedOperationException {
@@ -203,7 +215,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /*
      * (non-Javadoc)
      *
-     * @see com.bloatit.model.demand.DemandInterface#removeOffer(com.bloatit.model.Offer)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#removeOffer(com.bloatit.model
+     * .Offer)
      */
     @Override
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
@@ -236,7 +250,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         for (final Contribution contribution : getContributionsUnprotected()) {
             contribution.cancel();
         }
-        // Maybe I should make sure everything is canceled in every Offer/batches ?
+        // Maybe I should make sure everything is canceled in every
+        // Offer/batches ?
     }
 
     /*
@@ -254,7 +269,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         }
 
         setStateObject(getStateObject().eventBatchReleased());
-        // The offer really don't care to know if the current batch is under development
+        // The offer really don't care to know if the current batch is under
+        // development
         // or not.
     }
 
@@ -262,7 +278,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /*
      * (non-Javadoc)
      *
-     * @see com.bloatit.model.demand.DemandInterface#validateCurrentBatch(boolean)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#validateCurrentBatch(boolean)
      */
     @Override
     public boolean validateCurrentBatch(final boolean force) {
@@ -278,7 +295,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /*
      * (non-Javadoc)
      *
-     * @see com.bloatit.model.demand.DemandInterface#addComment(java.lang.String)
+     * @see
+     * com.bloatit.model.demand.DemandInterface#addComment(java.lang.String)
      */
     @Override
     public void addComment(final String text) throws UnauthorizedOperationException {
@@ -290,7 +308,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * (non-Javadoc)
      *
      * @see
-     * com.bloatit.model.demand.DemandInterface#unSelectOffer(com.bloatit.model.Offer)
+     * com.bloatit.model.demand.DemandInterface#unSelectOffer(com.bloatit.model
+     * .Offer)
      */
     @Override
     public void unSelectOffer(final Offer offer) {
@@ -351,17 +370,17 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     }
 
     /**
-     * Called by a {@link PlannedTask}. For now do nothing... A development TimeOut is
-     * called when the expiration date arrive
+     * Called by a {@link PlannedTask}. For now do nothing... A development
+     * TimeOut is called when the expiration date arrive
      */
     void developmentTimeOut() {
         setStateObject(getStateObject().eventDevelopmentTimeOut());
     }
 
     /**
-     * Called by a {@link PlannedTask}. A selectedOffer TimeOut is called when the
-     * selected offer can be set to developing. (We wait 1 day before passing into
-     * development to let other users make offer)
+     * Called by a {@link PlannedTask}. A selectedOffer TimeOut is called when
+     * the selected offer can be set to developing. (We wait 1 day before
+     * passing into development to let other users make offer)
      */
     void selectedOfferTimeOut() {
         setStateObject(getStateObject().eventSelectedOfferTimeOut(getDao().getContribution()));
@@ -404,7 +423,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /**
      * Sets the selected offer. Called internally and in demandState.
      *
-     * @param offer the new selected offer
+     * @param offer
+     *            the new selected offer
      */
     void setSelectedOffer(final Offer offer) {
         final Date validationDate = DateUtils.tomorrow();
@@ -418,47 +438,55 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Method called by Offer when the offer is kudosed. Update the selectedOffer using it
-     * popularity.
+     * Method called by Offer when the offer is kudosed. Update the
+     * selectedOffer using it popularity.
      *
-     * @param offer the offer that has been kudosed.
-     * @param positif true means kudos up, false kudos down.
+     * @param offer
+     *            the offer that has been kudosed.
+     * @param positif
+     *            true means kudos up, false kudos down.
      */
     public void notifyOfferKudos(final Offer offer, final boolean positif) {
-        final boolean isSelectedOffer = offer.equals(getSelectedOfferUnprotected());
+        Offer selectedOffer = getSelectedOfferUnprotected();
+        final boolean isSelectedOffer = offer.equals(selectedOffer);
         if (positif && !isSelectedOffer) {
-            if (offer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
+            if (selectedOffer == null || offer.getPopularity() > selectedOffer.getPopularity()) {
                 getDao().setSelectedOffer(offer.getDao());
             }
         }
         if (!positif && isSelectedOffer) {
-            for (final Offer thisOffer : getOffersUnprotected()) {
-                if (thisOffer.getPopularity() > getSelectedOfferUnprotected().getPopularity()) {
-                    getDao().computeSelectedOffer();
+            if (selectedOffer.getPopularity() < 0) {
+                getDao().computeSelectedOffer();
+            } else {
+                for (final Offer thisOffer : getOffersUnprotected()) {
+                    if (thisOffer.getPopularity() > selectedOffer.getPopularity()) {
+                        getDao().computeSelectedOffer();
+                        break;
+                    }
                 }
             }
         }
     }
 
     /**
-     * Tell that the current selected offer is validate. This method is called by
-     * {@link Offer} when needed.
+     * Tell that the current selected offer is validate. This method is called
+     * by {@link Offer} when needed.
      */
     public void setOfferIsValidated() {
         setStateObject(getStateObject().eventOfferIsValidated());
     }
 
     /**
-     * Tell that the current batch is validate. This method is called by {@link Offer}
-     * when needed.
+     * Tell that the current batch is validate. This method is called by
+     * {@link Offer} when needed.
      */
     public void setBatchIsValidated() {
         setStateObject(getStateObject().eventBatchIsValidated());
     }
 
     /**
-     * Tell that the current batch is rejected. This method is called by {@link Offer}
-     * when needed.
+     * Tell that the current batch is rejected. This method is called by
+     * {@link Offer} when needed.
      */
     public void setBatchIsRejected() {
         setStateObject(getStateObject().eventBatchIsRejected());
@@ -666,7 +694,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /**
      * Sets the state object.
      *
-     * @param stateObject the new state object
+     * @param stateObject
+     *            the new state object
      */
     private void setStateObject(final AbstractDemandState stateObject) {
         this.stateObject = stateObject;

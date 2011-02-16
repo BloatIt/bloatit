@@ -17,8 +17,10 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.KudosableInterface;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -32,6 +34,7 @@ public final class PopularityVoteAction extends LoggedAction {
     public static final String TARGET_KUDOSABLE = "targetKudosable";
     public static final String VOTE_UP = "voteUp";
 
+    @ParamConstraint(optionalErrorMsg=@tr("Nothing to vote on."))
     @RequestParam(name = TARGET_KUDOSABLE, level = Level.ERROR)
     private final KudosableInterface<?> targetKudosable;
 
