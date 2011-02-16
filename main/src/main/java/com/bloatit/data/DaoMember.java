@@ -363,6 +363,19 @@ public final class DaoMember extends DaoActor {
                 .setEntity("receiver", this)
                 .setParameter("state", state);
     }
+    
+    /**
+     * @param state the state of the invitation (ACCEPTED, PENDING, REFUSED)
+     * @param group the group for which the invitations have been sent
+     * @return All the received invitation to join a specific group, which are in a given state
+     */
+    public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state, DaoGroup group) {
+        return new QueryCollection<DaoJoinGroupInvitation>(
+                "from com.bloatit.data.DaoJoinGroupInvitation as j where j.receiver = :receiver and j.state = :state  and j.group = :group")
+                .setEntity("receiver", this)
+                .setParameter("state", state)
+                .setEntity("group", group);
+    }
 
     /**
      * @return All the sent invitation to join a group which are in a specified
