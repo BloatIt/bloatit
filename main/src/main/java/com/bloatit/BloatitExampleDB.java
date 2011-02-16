@@ -2,13 +2,16 @@ package com.bloatit;
 
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.UUID;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.data.SessionManager;
+import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.AuthToken;
+import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Demand;
 import com.bloatit.model.DemandFactory;
@@ -40,8 +43,14 @@ public class BloatitExampleDB {
         Member rataxes = createMember("rataxes", "Rataxès");
 
 
-        //Add dough
-
+        //Add money
+        giveMoney(fred, 1000000);
+        giveMoney(thomas, 2000000);
+        giveMoney(yoann, 3000000);
+        giveMoney(chogall, 2000);
+        giveMoney(cerbere, 1000);
+        giveMoney(hydre, 500);
+        giveMoney(elephantman, 100000000);
 
         //Add groups
         Group other = new Group("other", "plop@elveos.org", Right.PROTECTED, yoann);
@@ -121,10 +130,33 @@ public class BloatitExampleDB {
 
 
 
+        //Contributions
+
+        try {
+            twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
+            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("2000"), "");
+
+            twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
+            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "");
+
+
+            twoSubtitlesInVlcDemand.authenticate(new AuthToken(hydre));
+            twoSubtitlesInVlcDemand.addContribution(new BigDecimal("300"), "");
+
+        } catch (NotEnoughMoneyException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
 
         SessionManager.endWorkUnitAndFlush();
 
+    }
+
+    public void giveMoney(Member member, int amount) {
+        BankTransaction bankTransaction = new BankTransaction("money !!!", UUID.randomUUID().toString(), member, new BigDecimal(amount),  UUID.randomUUID().toString());
+        bankTransaction.setAuthorized();
+        bankTransaction.setValidated();
     }
 
     public Member createMember(String login, String name) throws UnauthorizedOperationException {
