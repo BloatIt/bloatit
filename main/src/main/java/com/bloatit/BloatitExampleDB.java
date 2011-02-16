@@ -2,9 +2,17 @@ package com.bloatit;
 
 import java.util.Locale;
 
+import com.bloatit.common.ConfigurationManager;
+import com.bloatit.data.DaoGroup.Right;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.model.AuthToken;
+import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.model.Project;
+import com.bloatit.model.managers.FileMetadataManager;
 
 public class BloatitExampleDB {
 
@@ -13,55 +21,53 @@ public class BloatitExampleDB {
         SessionManager.beginWorkUnit();
 
 
-        Member fred = new Member("fredb219", "plop", "fred.bertolus@gmail.com", Locale.FRANCE);
+        Member fred = new Member("fredb219", "plop", "fred@elveos.org", Locale.FRANCE);
+        fred.authenticate(new AuthToken(fred));
         fred.setFullname("Frédéric Bertolus");
         fred.activate();
 
 
-        /*
-        tom = DaoMember.createAndPersist("Thomas", "password", "tom@gmail.com", Locale.FRANCE);
+        Member tom = new Member("Thomas", "plop", "tom@elveos.org", Locale.FRANCE);
+        tom.authenticate(new AuthToken(tom));
         tom.setFullname("Thomas Guyard");
-        tom.setActivationState(ActivationState.ACTIVE);
-        fred = DaoMember.createAndPersist("fredb219", "plop", "fred.bertolus@gmail.com", Locale.FRANCE);
-        fred.setFullname("Frédéric Bertolus");
-        fred.setActivationState(ActivationState.ACTIVE);
-        yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
-        yo.setFullname("Yoann Plénet");
-        yo.setActivationState(ActivationState.ACTIVE);
+        tom.activate();
 
-        DaoMember admin = DaoMember.createAndPersist("admin", "admin", "admin@gmail.com", Locale.FRANCE);
+        Member yo = new Member("Yo", "plop", "yo@elveos.org", Locale.FRANCE);
+        yo.authenticate(new AuthToken(yo));
+        yo.setFullname("Yoann Plénet");
+        yo.activate();
+
+        Member admin = new Member("admin", "admin", "admin@elveos.org", Locale.FRANCE);
+        admin.authenticate(new AuthToken(admin));
         admin.setFullname("Administrator");
-        admin.setActivationState(ActivationState.ACTIVE);
+        admin.activate();
         admin.setRole(Role.ADMIN);
 
-        other = DaoGroup.createAndPersiste("other", "plop@plop.com", DaoGroup.Right.PROTECTED);
-        b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED);
-        ubuntuUsers = DaoGroup.createAndPersiste("ubuntuUsers", "plop3@plop.com", DaoGroup.Right.PUBLIC);
+        Group other = new Group("other", "plop@elveos.org", Right.PROTECTED, yo);
+        Group b219 = new Group("b219", "b219@elveos.org", Right.PROTECTED, fred);
+        Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", Right.PUBLIC, tom);
 
-        other.addMember(yo, true);
+
+        /*other.addMember(yo, true);
         b219.addMember(yo, false);
         b219.addMember(tom, true);
         b219.addMember(fred, false);
-        ubuntuUsers.addMember(fred, true);
+        ubuntuUsers.addMember(fred, true);*/
 
-        yo.setExternalAccount(DaoExternalAccount.createAndPersist(yo, AccountType.IBAN, "code"));
-        tom.setExternalAccount(DaoExternalAccount.createAndPersist(tom, AccountType.IBAN, "code"));
-        fred.setExternalAccount(DaoExternalAccount.createAndPersist(fred, AccountType.IBAN, "code"));
-        b219.setExternalAccount(DaoExternalAccount.createAndPersist(b219, AccountType.IBAN, "code"));
-        ubuntuUsers.setExternalAccount(DaoExternalAccount.createAndPersist(ubuntuUsers, AccountType.IBAN, "code"));
 
-        try {
+        /*try {
+
             DaoTransaction.createAndPersist(yo.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
             DaoTransaction.createAndPersist(tom.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
             DaoTransaction.createAndPersist(fred.getInternalAccount(), b219.getExternalAccount(), new BigDecimal("-1000"));
         } catch (final NotEnoughMoneyException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        project = DaoProject.createAndPersist("VLC",
-                                              DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"),
-                                              DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
+        Project vlc = new Project("VLC", tom, Locale.FRANCE, "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ", "http://www.videolan.org/vlc/",getImage(tom, "vlc.png"));
 
+
+        /*
         demand = DaoDemand.createAndPersist(yo,
                                             DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
                                             project);
@@ -117,6 +123,12 @@ public class BloatitExampleDB {
 
         SessionManager.endWorkUnitAndFlush();
 
+    }
+
+    private FileMetadata getImage(Member author, String name) {
+        String path = ConfigurationManager.loadProperties("web.properties").getProperty("bloatit.www.dir")+"/resources/img/"+name;
+
+        return FileMetadataManager.createFromLocalFile(author, path, name, "Beautiful image");
     }
 
     public static void main(final String[] args) throws UnauthorizedOperationException {
