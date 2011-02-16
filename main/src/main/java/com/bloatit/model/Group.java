@@ -25,7 +25,6 @@ import com.bloatit.model.lists.MemberList;
  * This is a group ... There are member in it.
  * 
  * @see DaoGroup
- * @author Thomas Guyard
  */
 public final class Group extends Actor<DaoGroup> {
 
@@ -41,8 +40,25 @@ public final class Group extends Actor<DaoGroup> {
         return null;
     }
 
-    public Group(String login, String email, Right right, Member author) {
-        super(DaoGroup.createAndPersiste(login, email, right));
+    /**
+     * <p>
+     * Creates a new group
+     * </p>
+     * 
+     * @param login
+     *            the displayed name of the group
+     * @param contact
+     *            a string with various means to contact the group
+     * @param description
+     *            a textual description of the group
+     * @param right
+     *            <ether the group is <code>PUBLIC</code> or
+     *            <code>PROTECTED</code>
+     * @param author
+     *            the creator of the group
+     */
+    public Group(String login, String contact, String description, Right right, Member author) {
+        super(DaoGroup.createAndPersiste(login, contact, description, right));
         author.addToGroupUnprotected(this);
         author.setGroupRoleUnprotected(this, TeamRole.ADMIN);
     }
@@ -51,20 +67,44 @@ public final class Group extends Actor<DaoGroup> {
         super(dao);
     }
 
+    /**
+     * @return the list of members that are part of this group
+     */
     public PageIterable<Member> getMembers() {
         return new MemberList(getDao().getMembers());
     }
 
+    /**
+     * @return the type of group: either <code>PROTECTED</code> or
+     *         <code>PUBLIC</code>
+     */
     public Right getRight() {
         return getDao().getRight();
     }
 
+    /**
+     * Sets the type of group: either <code>PROTECTED</code> or
+     * <code>PUBLIC</code>
+     */
     public void setRight(final Right right) {
         getDao().setRight(right);
     }
 
+    /**
+     * Indicates wheter the group is public or not
+     * 
+     * @return <code>true</code> if the group is public, <code>false</code>
+     *         otherwise
+     */
     public boolean isPublic() {
         return (getDao().getRight() == Right.PUBLIC);
+    }
+
+    /**
+     * @return the textual representation of this group
+     */
+    public String getDescription() {
+        return getDao().getDescription();
     }
 
 }

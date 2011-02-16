@@ -37,9 +37,9 @@ public class DaoGroupMemberTest extends TestCase {
         yo = DaoMember.createAndPersist("Yo", "plop", "yo@gmail.com", Locale.FRANCE);
         yo.setFullname("Yoann Plénet");
 
-        b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PUBLIC);
-        b216 = DaoGroup.createAndPersiste("b216", "plop3@plop.com", DaoGroup.Right.PUBLIC);
-        b217 = DaoGroup.createAndPersiste("b217", "plop4@plop.com", DaoGroup.Right.PUBLIC);
+        b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description" ,DaoGroup.Right.PUBLIC);
+        b216 = DaoGroup.createAndPersiste("b216", "plop3@plop.com", "A group description" ,DaoGroup.Right.PUBLIC);
+        b217 = DaoGroup.createAndPersiste("b217", "plop4@plop.com", "A group description" ,DaoGroup.Right.PUBLIC);
 
         SessionManager.endWorkUnitAndFlush();
 

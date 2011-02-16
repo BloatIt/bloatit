@@ -1,4 +1,4 @@
-package com.bloatit.web.actions;
+package com.bloatit.web.pages.team;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -11,11 +11,13 @@ import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 @ParamContainer("team/dojoin")
 public class JoinTeamAction extends LoggedAction {
+    @SuppressWarnings("unused")
     private JoinTeamActionUrl url;
 
     @RequestParam(level = Level.ERROR)
@@ -27,7 +29,7 @@ public class JoinTeamAction extends LoggedAction {
     public JoinTeamAction(JoinTeamActionUrl url) {
         super(url);
         this.targetTeam = url.getTargetTeam();
-        //this.justification = url.ge
+        // this.justification = url.ge
     }
 
     @Override
@@ -40,7 +42,7 @@ public class JoinTeamAction extends LoggedAction {
             if (targetTeam.isPublic()) {
                 me.addToPublicGroup(targetTeam);
             } else {
-                //me.
+                // me.
             }
             return new TeamPageUrl(targetTeam);
         } catch (UnauthorizedOperationException e) {

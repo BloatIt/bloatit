@@ -42,7 +42,7 @@ ln -s /home/fred/projets/bloatit/lighttpd/rewrite.lighttpd.conf
 Restart lighttpd config:
 service lighttpd restart
 
-Verify the loading in logs:
+Verify the loading in logs:hibernate.cfg.xml not found
 cat /var/log/lighttpd/error.log
 
 

@@ -1,4 +1,4 @@
-package com.bloatit.web.actions;
+package com.bloatit.web.pages.team;
 
 import org.apache.commons.lang.NotImplementedException;
 
@@ -12,9 +12,15 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.SendGroupInvitationActionUrl;
 
+/**
+ * <p>
+ * An action used to send group invitations
+ * </p>
+ */
 @ParamContainer("invitation/dosend")
 public class SendGroupInvitationAction extends LoggedAction {
     public final static String GROUP_JOIN_CODE = "bloatit_join_group";
@@ -46,13 +52,13 @@ public class SendGroupInvitationAction extends LoggedAction {
         } catch (UnauthorizedOperationException e) {
             e.printStackTrace();
         }
-
         return new MessageListPageUrl();
     }
 
     @Override
     protected Url doProcessErrors() throws RedirectException {
-        throw new NotImplementedException();
+        session.notifyList(url.getMessages());
+        return session.getLastVisitedPage();
     }
 
     @Override
@@ -64,5 +70,4 @@ public class SendGroupInvitationAction extends LoggedAction {
     protected void transmitParameters() {
         throw new NotImplementedException();
     }
-
 }
