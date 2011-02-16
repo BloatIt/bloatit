@@ -13,13 +13,12 @@ package com.bloatit.framework.webserver.components.advanced;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.framework.webserver.url.UrlComponent;
 
 public final class HtmlTabBlock extends HtmlDiv {
 
     private final String tabBlockKey;
     private final String activeTabKey;
-    private final UrlComponent tablinks;
+    private final Url tablinks;
     private final HtmlDiv tabBody;
     private final HtmlDiv tabHeader;
 

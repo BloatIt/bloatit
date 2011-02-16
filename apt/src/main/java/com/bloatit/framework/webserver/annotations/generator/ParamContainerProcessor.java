@@ -12,7 +12,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
-import javax.lang.model.util.Elements;
 import javax.lang.model.util.TypeKindVisitor6;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
@@ -49,28 +48,38 @@ public class ParamContainerProcessor extends AbstractProcessor {
         String urlClassName = element.getSimpleName().toString();
         JavaGenerator generator;
         if (paramContainer.isComponent()) {
-            generator = new UrlComponentClassGenerator(urlClassName);
+            generator = new UrlComponentClassGenerator(urlClassName, "");
         } else {
-            generator = new UrlClassGenerator(urlClassName, paramContainer.value(), element.asType().toString());
+            generator = new UrlComponentClassGenerator(urlClassName, paramContainer.value());
         }
 
-        this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "generating " + generator.getClassName());
         for (Element enclosed : element.getEnclosedElements()) {
             parseAnAttribute(generator, enclosed);
         }
 
         BufferedWriter out = null;
-        Elements elementUtils = this.processingEnv.getElementUtils();
+        BufferedWriter outUrl = null;
         try {
-            JavaFileObject classFile = this.processingEnv.getFiler()
-                    .createSourceFile(generator.getClassName(), elementUtils.getTypeElement("coucou"));
+            this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + generator.getClassName());
+            JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(generator.getClassName());
             out = new BufferedWriter(classFile.openWriter());
-            out.write(generator.generate());
+            out.write(generator.generateComponentUrlClass());
+
+            if (!paramContainer.isComponent()) {
+                this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + generator.getUrlClassName());
+                JavaFileObject urlClassFile = this.processingEnv.getFiler().createSourceFile(generator.getUrlClassName());
+                outUrl = new BufferedWriter(urlClassFile.openWriter());
+                outUrl.write(generator.generateUrlClass());
+            }
+
         } catch (Exception e) {
             this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
         } finally {
             if (out != null) {
                 out.close();
+            }
+            if (outUrl != null) {
+                outUrl.close();
             }
         }
     }
@@ -166,7 +175,8 @@ public class ParamContainerProcessor extends AbstractProcessor {
     // /* Adding method to the Class which is public static and returns
     // com.somclass.AnyXYZ.class */
     // String mehtodName = "myFirstMehtod";
-    // JMethod jmCreate = jc.method(JMod.PUBLIC | JMod.STATIC, com.somclass.AnyXYZ.class,
+    // JMethod jmCreate = jc.method(JMod.PUBLIC | JMod.STATIC,
+    // com.somclass.AnyXYZ.class,
     // "create" + mehtodName);
     //
     // /* Addign java doc for method */

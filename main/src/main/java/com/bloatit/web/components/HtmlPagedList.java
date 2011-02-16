@@ -21,7 +21,7 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlTagText;
-import com.bloatit.framework.webserver.url.UrlComponent;
+import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.HtmlPagedListUrl;
 
 @ParamContainer(value = "pagedList", isComponent = true)
@@ -34,7 +34,7 @@ public class HtmlPagedList<T> extends HtmlList {
     private static final String PAGE_SIZE_FIELD_NAME = "page_size";
 
     private final Integer pageCount;
-    private final UrlComponent currentUrl;
+    private final Url currentUrl;
     private final HtmlPagedListUrl url;
 
     @RequestParam(defaultValue = "1", name = CURRENT_PAGE_FIELD_NAME)
@@ -46,7 +46,7 @@ public class HtmlPagedList<T> extends HtmlList {
     /**
      * Do not forget to clone the Url !!!
      */
-    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final UrlComponent url2, final HtmlPagedListUrl url) {
+    public HtmlPagedList(final HtmlRenderer<T> itemRenderer, final PageIterable<T> itemList, final Url url2, final HtmlPagedListUrl url) {
         super();
         this.currentPage = url.getCurrentPage();
         this.pageSize = url.getPageSize();

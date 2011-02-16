@@ -25,6 +25,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
+import com.bloatit.web.pages.demand.DemandTabPane;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
@@ -71,14 +72,16 @@ public final class OfferAction extends LoggedAction {
     public Url doProcessRestricted() {
         try {
             targetIdea.authenticate(session.getAuthToken());
-            final Offer offer = new Offer(session.getAuthToken().getMember(), targetIdea, price, description, title, Locale.FRENCH,
+            final Offer offer = new Offer(session.getAuthToken().getMember(), targetIdea, price, title, description, Locale.FRENCH,
                     expiryDate.getJavaDate());
             targetIdea.addOffer(offer);
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
             return session.pickPreferredPage();
         }
-        return new DemandPageUrl(targetIdea);
+        DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
+        demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
+        return demandPageUrl;
     }
 
     @Override

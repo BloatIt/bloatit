@@ -142,7 +142,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     * 
+     *
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -176,7 +176,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     * 
+     *
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -200,7 +200,7 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Add a new offer for this demand.
+     * Add a new offer for this demand. If there is no selected offer, select this one.
      */
     public void addOffer(final DaoOffer offer) {
         offers.add(offer);
@@ -208,7 +208,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     * 
+     *
      * @param offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -251,7 +251,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Called by contribution when canceled.
-     * 
+     *
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -279,7 +279,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -288,6 +288,7 @@ public final class DaoDemand extends DaoKudosable {
                 "WHERE demand = :this " + //
                 "AND state <= :state " + // <= pending means also validated.
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
+                "AND popularity > 0 " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
             return (DaoOffer) SessionManager.createQuery(queryString)
@@ -374,7 +375,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -387,7 +388,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

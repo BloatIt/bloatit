@@ -21,7 +21,6 @@ import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.framework.webserver.url.UrlNode;
 
 /**
  * The mother of all actions
@@ -29,9 +28,9 @@ import com.bloatit.framework.webserver.url.UrlNode;
 public abstract class Action implements Linkable {
 
     protected final Session session;
-    private final UrlNode actionUrl;
+    private final Url actionUrl;
 
-    public Action(final UrlNode url) {
+    public Action(final Url url) {
         ModelManagerAccessor.open();
         this.actionUrl = url;
         session = Context.getSession();

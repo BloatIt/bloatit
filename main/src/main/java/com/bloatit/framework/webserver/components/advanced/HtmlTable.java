@@ -25,7 +25,7 @@ public class HtmlTable extends HtmlGenericElement {
             for (int i = 0; i < columnCount; i++) {
                 HtmlGenericElement td = new HtmlGenericElement("td");
                 td.addText(model.getBody(i));
-                if(model.getColumnCss(i) != null) {
+                if (model.getColumnCss(i) != null) {
                     td.setCssClass(model.getColumnCss(i));
                 }
                 tr.add(td);
@@ -47,8 +47,6 @@ public class HtmlTable extends HtmlGenericElement {
 
     public static abstract class HtmlTableModel {
 
-
-
         public abstract int getColumnCount();
 
         public abstract String getHeader(int column);
@@ -64,7 +62,6 @@ public class HtmlTable extends HtmlGenericElement {
         public String getColumnCss(int column) {
             return null;
         }
-
 
     }
 
