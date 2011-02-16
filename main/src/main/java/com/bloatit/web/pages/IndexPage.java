@@ -20,6 +20,7 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.managers.HighlightDemandManager;
 import com.bloatit.web.components.HtmlDemandSumary;
+import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.IndexPageUrl;
@@ -89,7 +90,7 @@ public final class IndexPage extends MasterPage {
                     final HtmlDiv demandListLeftCase = new HtmlDiv("demand_list_left_case");
                     {
                         if(hightlightDemandArray[i*2] != null) {
-                            demandListLeftCase.add(new HtmlDemandSumary(hightlightDemandArray[i*2].getDemand(), true));
+                            demandListLeftCase.add(new HtmlDemandSumary(hightlightDemandArray[i*2].getDemand(), Compacity.COMPACT));
                         }
                     }
                     demandListRow.add(demandListLeftCase);
@@ -97,7 +98,7 @@ public final class IndexPage extends MasterPage {
                     final HtmlDiv demandListRightCase= new HtmlDiv("demand_list_right_case");
                     {
                         if(hightlightDemandArray[i*2+1] != null) {
-                            demandListRightCase.add(new HtmlDemandSumary(hightlightDemandArray[i*2+1].getDemand(), true));
+                            demandListRightCase.add(new HtmlDemandSumary(hightlightDemandArray[i*2+1].getDemand(), Compacity.COMPACT));
                         }
                     }
                     demandListRow.add(demandListRightCase);

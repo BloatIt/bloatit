@@ -14,6 +14,8 @@ package com.bloatit.web.components;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
 import com.bloatit.framework.webserver.Context;
@@ -24,6 +26,7 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
@@ -36,148 +39,243 @@ import com.bloatit.web.url.FileResourceUrl;
 public final class HtmlDemandSumary extends HtmlDiv {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
+    private final Demand demand;
+    private Locale defaultLocale;
 
-    public HtmlDemandSumary(final Demand demand, boolean compact) {
-        super("demand_summary");
+    public enum Compacity {
+        NORMAL("demand_summary"), COMPACT("compact_demand_summary"), LINE("line_demand_summary");
 
+        private final String cssClass;
+
+
+        private Compacity(String cssClass) {
+            this.cssClass = cssClass;
+
+        }
+
+        public String getCssClass() {
+            return cssClass;
+        }
+
+    }
+
+    //"demand_summary"
+    public HtmlDemandSumary(final Demand demand, Compacity compacity) {
+        super(compacity.getCssClass());
+        this.demand = demand;
         if (demand == null) {
             addText("");
             return;
         }
-
         // Extract locales stuffs
-        final Locale defaultLocale = Context.getLocalizator().getLocale();
+        defaultLocale = Context.getLocalizator().getLocale();
 
-        // ////////////////////
-        // Div demand_summary_top
+
+        try {
+            switch (compacity) {
+            case NORMAL:
+                generateNormalStructure();
+                break;
+            case COMPACT:
+                generateCompactStructure();
+                break;
+            case LINE:
+                throw new NotImplementedException();
+            default:
+                break;
+            }
+
+
+        } catch (UnauthorizedOperationException e) {
+            addText("");
+            return;
+        }
+    }
+
+    /**
+     * @throws UnauthorizedOperationException
+     *
+     */
+    private void generateCompactStructure() throws UnauthorizedOperationException {
         final HtmlDiv demandSummaryTop = new HtmlDiv("demand_summary_top");
         {
-            // ////////////////////
-            // Div demand_summary_left
+            demandSummaryTop.add(generateTitle());
+        }
+        add(demandSummaryTop);
+
+
+
+
+        final HtmlDiv demandSummaryBottom = new HtmlDiv("demand_sumary_bottom");
+        {
+
+
+
             final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
             {
                 // Add project image
-                try {
-                    FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
-                    final HtmlImage projectImage = new HtmlImage(imageUrl, "project_image");
-                    demandSummaryLeft.add(projectImage);
-                } catch (UnauthorizedOperationException e) {
-                 // no right, no image
-                }
+                demandSummaryLeft.add(generateProjectImage());
+            }
+            demandSummaryBottom.add(demandSummaryLeft);
+
+            final HtmlDiv demandSummaryCenter = new HtmlDiv("demand_summary_center");
+            {
+
+                final HtmlDiv demandSummaryProgress = generateProgress();
+                demandSummaryProgress.add(generateDetails());
+                demandSummaryCenter.add(demandSummaryProgress);
+
+            }
+            demandSummaryBottom.add(demandSummaryCenter);
+
+
+
+
+        }
+        add(demandSummaryBottom);
+
+    }
+
+    /**
+     *
+     * @throws UnauthorizedOperationException
+     */
+    private void generateNormalStructure() throws UnauthorizedOperationException {
+        final HtmlDiv demandSummaryTop = new HtmlDiv("demand_summary_top");
+        {
+            final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
+            {
+                // Add project image
+                demandSummaryLeft.add(generateProjectImage());
             }
             demandSummaryTop.add(demandSummaryLeft);
 
-            // ////////////////////
-            // Div demand_summary_center
             final HtmlDiv demandSummaryCenter = new HtmlDiv("demand_summary_center");
             {
                 // Try to display the title
-                try {
-                    final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
-                    final HtmlSpan projectSpan = new HtmlSpan("demand_project_title");
-                    projectSpan.addText(demand.getProject().getName());
-                    final HtmlTitle title = new HtmlTitle(1);
-                    title.setCssClass("demand_title");
-                    title.add(projectSpan);
-                    title.addText(" – ");
-                    title.add(new DemandPageUrl(demand).getHtmlLink(translatedDescription.getTitle()));
-
-                    demandSummaryCenter.add(title);
-
-                } catch (final UnauthorizedOperationException e) {
-                    // no right no description and no title
-                }
-
+                demandSummaryCenter.add(generateTitle());
             }
             demandSummaryTop.add(demandSummaryCenter);
         }
         add(demandSummaryTop);
 
-        // ////////////////////
-        // Div demand_summary_bottom
         final HtmlDiv demandSummaryBottom = new HtmlDiv("demand_sumary_bottom");
         {
+            demandSummaryBottom.add(generatePopularityBlock());
 
-            // ////////////////////
-            // Div demand_summary_popularity
-            final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
-            {
-                final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "demand_popularity_text");
-                final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()), "demand_popularity_score");
-
-                demandSummaryPopularity.add(popularityText);
-                demandSummaryPopularity.add(popularityScore);
-            }
-            demandSummaryBottom.add(demandSummaryPopularity);
-
-            // ////////////////////
-            // Div demand_summary_progress
-            final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_progress");
-            {
-                float progressValue = 0;
-                // Progress bar
-                try {
-
-                    progressValue = (float) Math.floor(demand.getProgression());
-                    float cappedProgressValue = progressValue;
-                    if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
-                        cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
-                    }
-
-                    final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
-                    demandSummaryProgress.add(progressBar);
-
-                    // Progress text
-                    demandSummaryProgress.add(generateProgressText(demand, progressValue));
-
-                } catch (final UnauthorizedOperationException e) {
-                    // No right, no progress bar
-                }
-
-                // ////////////////////
-                // Div details
-                final HtmlDiv demandSummaryDetails = new HtmlDiv("demand_sumary_details");
-                {
-                    try {
-                        final int commentsCount = demand.getComments().size();
-                        final int offersCount = demand.getOffers().size();
-
-                        final int contributionsCount = demand.getContributions().size();
-
-                        final DemandPageUrl commentsDemandUrl = new DemandPageUrl(demand);
-                        commentsDemandUrl.setAnchor("comments_block");
-
-                        final DemandPageUrl offersDemandUrl = new DemandPageUrl(demand);
-                        offersDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
-                        offersDemandUrl.setAnchor("demand_tab_pane");
-
-                        final DemandPageUrl contributionsDemandUrl = new DemandPageUrl(demand);
-                        contributionsDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
-                        contributionsDemandUrl.setAnchor("demand_tab_pane");
-
-                        demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment", "{0} comments", commentsCount, new Integer(
-                                commentsCount))));
-                        demandSummaryDetails.addText(" – ");
-                        demandSummaryDetails.add(offersDemandUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(
-                                offersCount))));
-                        demandSummaryDetails.addText(" – ");
-                        demandSummaryDetails.add(contributionsDemandUrl.getHtmlLink(Context.trn("{0} contribution",
-                                                                                                "{0} contributions",
-                                                                                                contributionsCount,
-                                                                                                new Integer(contributionsCount))));
-
-                    } catch (final UnauthorizedOperationException e) {
-                        // No right to see demand details
-                    }
-
-                }
-                demandSummaryProgress.add(demandSummaryDetails);
-            }
+            final HtmlDiv demandSummaryProgress = generateProgress();
+            demandSummaryProgress.add(generateDetails());
             demandSummaryBottom.add(demandSummaryProgress);
-
         }
         add(demandSummaryBottom);
+    }
 
+    /**
+     *
+     * @return
+     * @throws UnauthorizedOperationException
+     */
+    private HtmlDiv generateProgress() throws UnauthorizedOperationException {
+        final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_progress");
+        {
+            float progressValue = 0;
+            // Progress bar
+
+            progressValue = (float) Math.floor(demand.getProgression());
+            float cappedProgressValue = progressValue;
+            if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
+                cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
+            }
+
+            final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+            demandSummaryProgress.add(progressBar);
+
+            // Progress text
+            demandSummaryProgress.add(generateProgressText(demand, progressValue));
+
+        }
+        return demandSummaryProgress;
+    }
+
+    /**
+     *
+     * @return
+     * @throws UnauthorizedOperationException
+     */
+    private HtmlDiv generateDetails() throws UnauthorizedOperationException {
+        final HtmlDiv demandSummaryDetails = new HtmlDiv("demand_sumary_details");
+        {
+
+            final int commentsCount = demand.getComments().size();
+            final int offersCount = demand.getOffers().size();
+
+            final int contributionsCount = demand.getContributions().size();
+
+            final DemandPageUrl commentsDemandUrl = new DemandPageUrl(demand);
+            commentsDemandUrl.setAnchor("comments_block");
+
+            final DemandPageUrl offersDemandUrl = new DemandPageUrl(demand);
+            offersDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
+            offersDemandUrl.setAnchor("demand_tab_pane");
+
+            final DemandPageUrl contributionsDemandUrl = new DemandPageUrl(demand);
+            contributionsDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
+            contributionsDemandUrl.setAnchor("demand_tab_pane");
+
+            demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment", "{0} comments", commentsCount, new Integer(
+                    commentsCount))));
+            demandSummaryDetails.addText(" – ");
+            demandSummaryDetails.add(offersDemandUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
+            demandSummaryDetails.addText(" – ");
+            demandSummaryDetails.add(contributionsDemandUrl.getHtmlLink(Context.trn("{0} contribution", "{0} contributions", contributionsCount,
+                    new Integer(contributionsCount))));
+
+        }
+        return demandSummaryDetails;
+    }
+
+    /**
+     *
+     * @return
+     */
+    private HtmlDiv generatePopularityBlock() {
+        final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
+        {
+            final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "demand_popularity_text");
+            final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()), "demand_popularity_score");
+
+            demandSummaryPopularity.add(popularityText);
+            demandSummaryPopularity.add(popularityScore);
+        }
+        return demandSummaryPopularity;
+    }
+
+    /**
+     *
+     * @return
+     * @throws UnauthorizedOperationException
+     */
+    private HtmlNode generateProjectImage() throws UnauthorizedOperationException {
+        FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
+        return new HtmlImage(imageUrl, "project_image");
+    }
+
+    /**
+     *
+     * @return
+     * @throws UnauthorizedOperationException
+     */
+    private HtmlNode generateTitle() throws UnauthorizedOperationException {
+        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
+        final HtmlSpan projectSpan = new HtmlSpan("demand_project_title");
+        projectSpan.addText(demand.getProject().getName());
+        final HtmlTitle title = new HtmlTitle(1);
+        title.setCssClass("demand_title");
+        title.add(projectSpan);
+        title.addText(" – ");
+        title.add(new DemandPageUrl(demand).getHtmlLink(translatedDescription.getTitle()));
+
+        return title;
     }
 
     private HtmlElement generateProgressText(final Demand demand, final float progressValue) {
