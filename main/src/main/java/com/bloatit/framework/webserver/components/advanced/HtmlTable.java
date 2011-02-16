@@ -3,6 +3,9 @@ package com.bloatit.framework.webserver.components.advanced;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 
+/**
+ * TODO : Fred has to comment this
+ */
 public class HtmlTable extends HtmlGenericElement {
 
     private final HtmlTableModel model;
@@ -47,13 +50,9 @@ public class HtmlTable extends HtmlGenericElement {
     }
 
     public static abstract class HtmlTableModel {
-
         public abstract int getColumnCount();
-
         public abstract HtmlNode getHeader(int column);
-
         public abstract HtmlNode getBody(int column);
-
         public abstract boolean next();
 
         public boolean hasHeader() {
@@ -63,7 +62,5 @@ public class HtmlTable extends HtmlGenericElement {
         public String getColumnCss(int column) {
             return null;
         }
-
     }
-
 }

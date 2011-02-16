@@ -137,7 +137,7 @@ public class Unlockable implements UnlockableInterface {
                 return roles;
             }
             roles.add(Role.IN_GROUP);
-            if (role.bank()) { // TODO : bank should be top right so it should work for now, but it's not a clean way to do it
+            if (role.bank()) { // TODO : bank should be maximum right so it should work for now, but it's not a clean way to do it
                 roles.add(Role.GROUP_ADMIN);
             }
         }

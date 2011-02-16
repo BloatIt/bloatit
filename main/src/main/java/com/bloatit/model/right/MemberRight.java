@@ -39,7 +39,8 @@ public class MemberRight extends RightManager {
         @Override
         protected final boolean can(final EnumSet<Role> role, final Action action) {
             boolean returnValue = false;
-            returnValue = role.contains(Role.IN_GROUP) && (action == Action.WRITE || action == Action.READ);
+//            returnValue = role.contains(Role.IN_GROUP) && (action == Action.WRITE || action == Action.READ);
+            returnValue = role.contains(Role.IN_GROUP) && (action == Action.WRITE );
             returnValue = returnValue || ownerCanRead(role, action) || ownerCanDelete(role, action);
             return returnValue;
         }

@@ -60,7 +60,6 @@ public class BloatitExampleDB {
 
         Project vlc = new Project("VLC", thomas, Locale.FRANCE, "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ", "http://www.videolan.org/vlc/",getImage(thomas, "vlc.png"));
 
-
         String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n" +
         		"\n" +
         		"Afin de m'entrainer à parler anglais et néerlandais à la fois, je souhaite pouvoir afficher les sous-titre de ces deux langues en même temps dans VLC.\n" +

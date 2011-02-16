@@ -49,7 +49,7 @@ public class CreateTeamPage extends MasterPage {
         master.add(form);
 
         HtmlTextField nameInput = new HtmlTextField(name, Context.tr("Name of the group: "));
-        nameInput.setComment(Context.tr("The public name of the group. Between 5 and 5000 characters."));
+        nameInput.setComment(Context.tr("The public name of the group. Between 5 and 50 characters."));
         form.add(nameInput);
 
         HtmlTextArea contactInput = new HtmlTextArea(contact, Context.tr("Contact of the group: "), 10, 80);

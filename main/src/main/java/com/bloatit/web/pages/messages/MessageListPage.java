@@ -39,10 +39,10 @@ public class MessageListPage extends LoggedPage {
         // Generating links to group invites
         HtmlTitleBlock groupInvites = new HtmlTitleBlock(Context.tr("Group invites"), 2);
         main.add(groupInvites);
-        
+
         HtmlLink inviteToGroup = new HtmlLink(new SendGroupInvitationPageUrl().urlString(), "Invite people to your group");
         groupInvites.add(new HtmlParagraph().add(inviteToGroup));
-        
+
         Member me = session.getAuthToken().getMember();
         me.authenticate(session.getAuthToken());
 
@@ -50,8 +50,9 @@ public class MessageListPage extends LoggedPage {
         for (JoinGroupInvitation invitation : invitations) {
             HtmlParagraph p = new HtmlParagraph();
             try {
-                p.addText("Received an invitation to group '" + invitation.getGroup().getLogin() + "' from: '" + invitation.getSender().getDisplayName() + "'");
-                
+                p.addText("Received an invitation to group '" + invitation.getGroup().getLogin() + "' from: '"
+                        + invitation.getSender().getDisplayName() + "'");
+
                 HtmlLink accept = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
                 HtmlLink refuse = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
                 HtmlGenericElement empty = new HtmlGenericElement();
@@ -61,7 +62,7 @@ public class MessageListPage extends LoggedPage {
                 empty.add(refuse);
                 empty.addText(")");
                 p.add(empty);
-                
+
             } catch (UnauthorizedOperationException e) {
                 p.addText("You have been invited to a group, but you can't see its name");
             }
