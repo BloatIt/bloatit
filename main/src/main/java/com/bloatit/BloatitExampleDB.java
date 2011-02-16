@@ -177,6 +177,7 @@ public class BloatitExampleDB {
         System.out.println("Begin database generation");
         new BloatitExampleDB();
         System.out.println("Database generation ended");
+        System.exit(0);
     }
 
 }
