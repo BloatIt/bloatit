@@ -197,7 +197,7 @@ public final class Payline extends Unlockable {
         if (reponse.getToken() != null && !reponse.getToken().isEmpty()) {
             final BankTransaction bankTransaction = new BankTransaction(reponse.getMessage(),//
                                                                         reponse.getToken(),//
-                                                                        getAuthTokenUnprotected().getMember().getDao(),//
+                                                                        getAuthTokenUnprotected().getMember(),//
                                                                         amount, //
                                                                         orderReference);
             bankTransaction.setProcessInformations(reponse.getCode());
@@ -239,7 +239,7 @@ public final class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     * 
+     *
      * @param member
      * @return
      */

@@ -13,8 +13,10 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.AuthToken;
@@ -31,9 +33,11 @@ public final class LoginAction extends Action {
     public static final String LOGIN_CODE = "bloatit_login";
     public static final String PASSWORD_CODE = "bloatit_password";
 
+    @ParamConstraint(optionalErrorMsg=@tr("You must enter a login."))
     @RequestParam(level = Level.ERROR, name = LOGIN_CODE, role = RequestParam.Role.POST)
     private final String login;
 
+    @ParamConstraint(optionalErrorMsg=@tr("You must enter a password."))
     @RequestParam(level = Level.ERROR, name = PASSWORD_CODE, role = RequestParam.Role.POST)
     private final String password;
     private final LoginActionUrl url;
@@ -58,6 +62,7 @@ public final class LoginAction extends Action {
             return session.pickPreferredPage();
         }
         session.setAuthToken(null);
+        session.addParameter(url.getLoginParameter());
         session.notifyBad(Context.tr("Login failed. Wrong login or password."));
         return new LoginPageUrl();
     }
@@ -65,6 +70,9 @@ public final class LoginAction extends Action {
     @Override
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
+
+        session.addParameter(url.getLoginParameter());
+
         return new LoginPageUrl();
     }
 }

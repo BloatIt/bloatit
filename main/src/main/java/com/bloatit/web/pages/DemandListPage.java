@@ -219,30 +219,20 @@ public final class DemandListPage extends MasterPage {
         }
         add(demandSearchBlock);
 
-
-
-
         // Demand list
-
         PageIterable<Demand> results = searchResult();
-
         if (results.size() > 0) {
-
             final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
-
             final DemandListPageUrl clonedUrl = url.clone();
             pagedDemandList = new HtmlPagedList<Demand>(demandItemRenderer, results, clonedUrl, clonedUrl.getPagedDemandListUrl());
-
             add(pagedDemandList);
         } else {
-
             final HtmlDiv noResultBlock = new HtmlDiv("no_result_block");
             {
                 noResultBlock.addText(Context.tr("No result"));
             }
             add(noResultBlock);
         }
-
     }
 
     @Override
@@ -261,13 +251,11 @@ public final class DemandListPage extends MasterPage {
     }
 
     static class IdeasListItem implements HtmlRenderer<Demand> {
-
         private Demand demand;
 
         @Override
         public HtmlNode generate(final Demand demand) {
             this.demand = demand;
-
             return generateContent();
         }
 
@@ -277,9 +265,8 @@ public final class DemandListPage extends MasterPage {
     };
 
     private PageIterable<Demand> searchResult() {
-
+        
         DemandSearch search = new DemandSearch(searchString);
-
         if (!filter.equals(FILTER_ALL)) {
             if (filter.equals(FILTER_IN_PROGRESS)) {
                 search.addDemandStateFilter(DemandState.FINISHED);

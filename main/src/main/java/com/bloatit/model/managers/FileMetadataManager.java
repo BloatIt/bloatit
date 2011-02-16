@@ -17,6 +17,10 @@
 package com.bloatit.model.managers;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
@@ -25,7 +29,6 @@ import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
-
 
 public final class FileMetadataManager {
 
@@ -43,10 +46,61 @@ public final class FileMetadataManager {
 
         createWipDirectory();
 
-        File tempFile = new  File(tempFileUrl);
+        File tempFile = new File(tempFileUrl);
+
+        File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
+        tempFile.renameTo(storedFile);
+
+        // TODO: improve mine type detection
+        FileType type = FileType.UNKNOWN;
+        if (storedFile.getName().endsWith(".txt")) {
+            type = FileType.TEXT;
+        } else if (storedFile.getName().endsWith(".html")) {
+            type = FileType.HTML;
+        } else if (storedFile.getName().endsWith(".tex")) {
+            type = FileType.TEX;
+        } else if (storedFile.getName().endsWith(".pdf")) {
+            type = FileType.PDF;
+        } else if (storedFile.getName().endsWith(".odt")) {
+            type = FileType.ODT;
+        } else if (storedFile.getName().endsWith(".doc")) {
+            type = FileType.DOC;
+        } else if (storedFile.getName().endsWith(".bmp")) {
+            type = FileType.BMP;
+        } else if (storedFile.getName().endsWith(".jpg")) {
+            type = FileType.JPG;
+        } else if (storedFile.getName().endsWith(".png")) {
+            type = FileType.PNG;
+        } else if (storedFile.getName().endsWith(".svg")) {
+            type = FileType.SVG;
+        }
+
+        FileMetadata file = new FileMetadata(author, filename, storedFile.getPath(), type, (int) storedFile.length());
+        file.setShortDescription(description);
+        return file;
+
+    }
+
+    /**
+     * Make sure there is a directory to store the files
+     */
+    private static final void createWipDirectory() {
+        final File stroreDir = new File(FILE_STORAGE_DIRECTORY);
+        if (!stroreDir.exists()) {
+            stroreDir.mkdirs();
+            Log.mail().info("Created directory " + FILE_STORAGE_DIRECTORY);
+        }
+    }
+
+    public static FileMetadata createFromLocalFile(Member author, String path, String name, String description) {
+        createWipDirectory();
+
+        File tempFile = new  File(path);
 
         File storedFile = new  File(FILE_STORAGE_DIRECTORY+"/"+tempFile.getName());
-        tempFile.renameTo(storedFile);
+        try {
+            copyFile(tempFile, storedFile);
+
 
         //TODO: improve mine type detection
         FileType type = FileType.UNKNOWN;
@@ -73,20 +127,29 @@ public final class FileMetadataManager {
         }
 
 
-        FileMetadata file = new FileMetadata(author, filename, storedFile.getPath(), type, (int) storedFile.length());
+        FileMetadata file = new FileMetadata(author, name, storedFile.getPath(), type, (int) storedFile.length());
         file.setShortDescription(description);
         return file;
 
+        } catch (IOException e) {
+            Log.model().error("Copy failed", e);
+            return null;
+        }
+
     }
 
-    /**
-     * Make sure there is a directory to store the files
-     */
-    private static final void createWipDirectory() {
-        final File stroreDir = new File(FILE_STORAGE_DIRECTORY);
-        if (!stroreDir.exists()) {
-            stroreDir.mkdirs();
-            Log.mail().info("Created directory " + FILE_STORAGE_DIRECTORY);
+    public static void copyFile(File in, File out) throws IOException {
+        FileChannel inChannel = new FileInputStream(in).getChannel();
+        FileChannel outChannel = new FileOutputStream(out).getChannel();
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
         }
     }
 

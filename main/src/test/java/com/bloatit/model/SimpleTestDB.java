@@ -54,9 +54,9 @@ public class SimpleTestDB {
         admin.setActivationState(ActivationState.ACTIVE);
         admin.setRole(Role.ADMIN);
 
-        other = DaoGroup.createAndPersiste("other", "plop@plop.com", DaoGroup.Right.PROTECTED);
-        b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", DaoGroup.Right.PROTECTED);
-        ubuntuUsers = DaoGroup.createAndPersiste("ubuntuUsers", "plop3@plop.com", DaoGroup.Right.PUBLIC);
+        other = DaoGroup.createAndPersiste("other", "plop@plop.com", "A group description", DaoGroup.Right.PROTECTED);
+        b219 = DaoGroup.createAndPersiste("b219", "plop2@plop.com", "A group description", DaoGroup.Right.PROTECTED);
+        ubuntuUsers = DaoGroup.createAndPersiste("ubuntuUsers", "plop3@plop.com", "A group description", DaoGroup.Right.PUBLIC);
 
         other.addMember(yo, true);
         b219.addMember(yo, false);
@@ -78,13 +78,11 @@ public class SimpleTestDB {
             e.printStackTrace();
         }
 
-        project = DaoProject.createAndPersist("VLC",
-                                              DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"),
-                                              DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
+        project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"),
+                DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
 
-        demand = DaoDemand.createAndPersist(yo,
-                                            DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
-                                            project);
+        demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
+                project);
         final DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
         final DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
         final DaoComment c21 = DaoComment.createAndPersist(tom, "plup");
@@ -111,7 +109,7 @@ public class SimpleTestDB {
                                                       demand,
                                                       new BigDecimal("200"),
                                                       DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
-                                                      DateUtils.tomorrow()));
+                                                      DateUtils.tomorrow(),0));
 
             demand.getOffers().iterator().next().setState(PopularityState.VALIDATED);
 
@@ -123,12 +121,10 @@ public class SimpleTestDB {
                 }
             }
 
-            final DaoDemand demand1 = DaoDemand.createAndPersist(fred, DaoDescription.createAndPersist(fred,
-                                                                                                       new Locale("en"),
-                                                                                                       "I try it in English",
-                                                                                                       "Hello world"), project);
-            demand1.getDescription().addTranslation(new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais",
-                    "Salut le monde"));
+            final DaoDemand demand1 = DaoDemand.createAndPersist(fred,
+                    DaoDescription.createAndPersist(fred, new Locale("en"), "I try it in English", "Hello world"), project);
+            demand1.getDescription().addTranslation(
+                    new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais", "Salut le monde"));
             demand1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");
             demand1.addContribution(fred, new BigDecimal("11"), "I'm so generous too");
         } catch (final NotEnoughMoneyException e1) {

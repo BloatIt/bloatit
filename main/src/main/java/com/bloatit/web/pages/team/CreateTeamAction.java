@@ -1,6 +1,4 @@
-package com.bloatit.web.actions;
-
-import org.apache.commons.lang.NotImplementedException;
+package com.bloatit.web.pages.team;
 
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.framework.exceptions.RedirectException;
@@ -13,28 +11,39 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
+/**
+ * <p>
+ * An action used to create a new team
+ * </p>
+ */
 @ParamContainer("team/docreate")
 public class CreateTeamAction extends LoggedAction {
     public final static String PROTECTED = "PROTECTED";
     public final static String PUBLIC = "PUBLIC";
 
     public static final String LOGIN_CODE = "bloatit_login";
-    public static final String EMAIL_CODE = "bloatit_email";
+    public static final String CONTACT_CODE = "bloatit_email";
     public static final String RIGHTS_CODE = "bloatit_team_rights";
+    public static final String DESCRIPTION_CODE = "bloatit_team_description";
 
     @RequestParam(name = LOGIN_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters team name has to be superior to 4"),//
     max = "30", maxErrorMsg = @tr("Number of characters for team has to be inferior to 30"))
     private final String login;
 
-    @RequestParam(name = EMAIL_CODE, role = Role.POST)
-    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5"),//
-    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
-    private final String email;
+    @RequestParam(name = CONTACT_CODE, role = Role.POST, defaultValue = "")
+    @ParamConstraint(max = "300", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 300"))
+    private final String contact;
+
+    @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
+    @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for description has to be superior to 5"),//
+    max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to 5000"))
+    private final String description;
 
     @RequestParam(name = RIGHTS_CODE, role = Role.POST, level = Level.ERROR)
     private final String right;
@@ -44,7 +53,8 @@ public class CreateTeamAction extends LoggedAction {
     public CreateTeamAction(CreateTeamActionUrl url) {
         super(url);
         this.url = url;
-        this.email = url.getEmail();
+        this.contact = url.getContact();
+        this.description = url.getDescription();
         this.login = url.getLogin();
         this.right = url.getRight();
     }
@@ -57,18 +67,19 @@ public class CreateTeamAction extends LoggedAction {
         } else if (right.equals(PROTECTED)) {
             groupRight = Right.PROTECTED;
         } else {
-            // TODO save parameters
+            session.notifyBad(Context.tr("A team can either be public or protected (and dude, stop playing with our post data)"));
+            transmitParameters();
             throw new RedirectException(new CreateTeamPageUrl());
         }
-        Group newGroup = new Group(login, email, groupRight, session.getAuthToken().getMember());
+        Group newGroup = new Group(login, contact, description, groupRight, session.getAuthToken().getMember());
 
         return new TeamPageUrl(newGroup);
     }
 
     @Override
     protected Url doProcessErrors() throws RedirectException {
-        // TODO
-        throw new NotImplementedException();
+        session.notifyList(url.getMessages());
+        return new CreateTeamPageUrl();
     }
 
     @Override
@@ -78,6 +89,9 @@ public class CreateTeamAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-
+        session.addParameter(url.getContactParameter());
+        session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getLoginParameter());
+        session.addParameter(url.getRightParameter());
     }
 }

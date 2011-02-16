@@ -17,6 +17,7 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Group;
 import com.bloatit.model.Identifiable;
+import com.bloatit.model.JoinGroupInvitation;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.KudosableInterface;
 import com.bloatit.model.Member;
@@ -98,9 +99,11 @@ public final class Loaders {
             return (Loader<T>) new ToFileMetadata();
         } else if (theClass.equals(Group.class)) {
             return (Loader<T>) new ToGroup();
+        } else if (theClass.equals(JoinGroupInvitation.class)) {
+            return (Loader<T>) new ToJoinGroupInvitation();
         } else if (theClass.equals(Offer.class)) {
-        return (Loader<T>) new ToOffer();
-    }
+            return (Loader<T>) new ToOffer();
+        }
         throw new NotImplementedException("Cannot find a convertion class for: " + theClass);
     }
 
@@ -310,6 +313,13 @@ public final class Loaders {
         @Override
         public Identifiable<?> doFromString(int i) {
             return GroupManager.getGroupById(i);
+        }
+    }
+    
+    private static class ToJoinGroupInvitation extends ToIdentifiable {
+        @Override
+        public Identifiable<?> doFromString(int id) {
+            return GroupManager.getInvitationById(id);
         }
     }
 }

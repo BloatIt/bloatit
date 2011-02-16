@@ -21,7 +21,6 @@ public abstract class GenericPage extends Page {
     protected final Url thisUrl;
     protected final Session session;
 
-
     public GenericPage(final Url url) {
         super();
         this.thisUrl = url;
@@ -31,7 +30,7 @@ public abstract class GenericPage extends Page {
 
     @Override
     public final void create() throws RedirectException {
-        Log.framework().trace("Writing page: "+ thisUrl.urlString());
+        Log.framework().trace("Writing page: " + thisUrl.urlString());
         super.add(new HtmlTagText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
         super.add(new HtmlTagText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
         final HtmlBranch html = new HtmlGenericElement("html");
@@ -45,17 +44,17 @@ public abstract class GenericPage extends Page {
         final HtmlGenericElement body = new HtmlGenericElement("body");
         html.add(body);
 
+        generateBody(body);
 
         // Set the last stable page into the session
         if (isStable()) {
             session.setTargetPage(null);
             session.setLastStablePage(thisUrl);
         }
-        generateBody(body);
+        session.setLastVisitedPage(thisUrl);
 
-     // Display waiting notifications
+        // Display waiting notifications
         addWaitingNotifications();
-
     }
 
     protected abstract void generateBody(HtmlGenericElement body) throws RedirectException;

@@ -16,6 +16,7 @@ import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
+import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.RegisterPageUrl;
 
 public class SessionBar extends HtmlDiv {
@@ -76,6 +77,10 @@ public class SessionBar extends HtmlDiv {
             } catch (final UnauthorizedOperationException e) {
                 // no right, no money displayed
             }
+
+            // Display link to private messages
+            final HtmlLink messagesLink = new MessageListPageUrl().getHtmlLink("Messages");
+            add(new HtmlSpan().setCssClass(SESSION_BAR_COMPONENT_CSS_CLASS).add(messagesLink));
 
             // Display logout link
             final HtmlLink logoutLink = new LogoutActionUrl().getHtmlLink(Context.tr("Logout"));

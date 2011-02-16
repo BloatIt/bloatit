@@ -38,8 +38,12 @@ public final class MemberManager {
         return Member.create(daoMember);
     }
 
-    public static boolean existsMember(final String login) {
-        return DaoActor.exist(login);
+    public static boolean loginExists(final String login) {
+        return DaoActor.loginExists(login);
+    }
+
+    public static boolean emailExists(final String email) {
+        return DaoActor.emailExists(email);
     }
 
     public static Member getMemberById(final Integer id) {
@@ -62,4 +66,6 @@ public final class MemberManager {
     public static int getMembersCount() {
         return DBRequests.count(DaoMember.class);
     }
+
+
 }

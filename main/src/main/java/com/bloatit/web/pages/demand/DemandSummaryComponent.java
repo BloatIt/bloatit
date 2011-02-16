@@ -120,16 +120,16 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                             {
 
                                 // Usefull
-                                final PopularityVoteActionUrl usefullUrl = new PopularityVoteActionUrl(demand, true);
-                                final HtmlLink usefullLink = usefullUrl.getHtmlLink("+");
-                                usefullLink.setCssClass("usefull");
+                                final PopularityVoteActionUrl usefulUrl = new PopularityVoteActionUrl(demand, true);
+                                final HtmlLink usefulLink = usefulUrl.getHtmlLink("+");
+                                usefulLink.setCssClass("useful");
 
                                 // Useless
                                 final PopularityVoteActionUrl uselessUrl = new PopularityVoteActionUrl(demand, false);
                                 final HtmlLink uselessLink = uselessUrl.getHtmlLink("−");
                                 uselessLink.setCssClass("useless");
 
-                                demandPopularityJudge.add(usefullLink);
+                                demandPopularityJudge.add(usefulLink);
                                 demandPopularityJudge.add(uselessLink);
                             }
                             demandSummaryPopularity.add(demandPopularityJudge);
@@ -138,7 +138,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                             final HtmlDiv demandPopularityJudged = new HtmlDiv("demand_popularity_judged");
                             {
                                 if (vote > 0) {
-                                    demandPopularityJudged.add(new HtmlParagraph("+" + vote, "usefull"));
+                                    demandPopularityJudged.add(new HtmlParagraph("+" + vote, "useful"));
                                 } else {
                                     demandPopularityJudged.add(new HtmlParagraph("−" + Math.abs(vote), "useless"));
                                 }

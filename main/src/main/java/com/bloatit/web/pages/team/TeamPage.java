@@ -4,18 +4,16 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.RightManager.Action;
-import com.bloatit.web.actions.JoinTeamAction;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -27,7 +25,8 @@ import com.bloatit.web.url.TeamPageUrl;
  */
 @ParamContainer("team")
 public class TeamPage extends MasterPage {
-    private TeamPageUrl url;
+    @SuppressWarnings("unused")
+    private TeamPageUrl url; // we keep it for consistency
 
     @RequestParam(level = Level.ERROR)
     private Group targetTeam;

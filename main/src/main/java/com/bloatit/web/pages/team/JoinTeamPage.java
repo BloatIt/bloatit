@@ -16,7 +16,7 @@ import com.bloatit.web.url.JoinTeamPageUrl;
 
 @ParamContainer("team/join")
 public class JoinTeamPage extends LoggedPage {
-
+    @SuppressWarnings("unused")
     private JoinTeamPageUrl url;
 
     @RequestParam(level = Level.ERROR)

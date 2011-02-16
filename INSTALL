@@ -42,7 +42,7 @@ ln -s /home/fred/projets/bloatit/lighttpd/rewrite.lighttpd.conf
 Restart lighttpd config:
 service lighttpd restart
 
-Verify the loading in logs:
+Verify the loading in logs:hibernate.cfg.xml not found
 cat /var/log/lighttpd/error.log
 
 
@@ -78,7 +78,7 @@ Create file ~/.config/bloatit/web.properties
 Add inside the following content : 
 
 bloatit.documentation.dir=<PATH_TO_ELVEOS>/doc/websitedoc/
-
+bloatit.www.dir=<PATH_TO_ELVEOS>/www/
 
 ************************************
 *  Configure access right          *

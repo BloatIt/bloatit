@@ -42,7 +42,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
 
     /**
      * Create a new FileMetadata.
-     * 
+     *
      * @see DaoFileMetadata#createAndPersist(com.bloatit.data.DaoMember, DaoUserContent,
      * String, String, FileType, int)
      */

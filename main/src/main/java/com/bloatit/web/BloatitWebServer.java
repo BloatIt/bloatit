@@ -10,9 +10,7 @@ import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
 import com.bloatit.web.actions.CreateDemandAction;
-import com.bloatit.web.actions.CreateTeamAction;
 import com.bloatit.web.actions.IdeaCommentAction;
-import com.bloatit.web.actions.JoinTeamAction;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.actions.MemberActivationAction;
@@ -45,8 +43,14 @@ import com.bloatit.web.pages.RegisterPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.demand.DemandPage;
+import com.bloatit.web.pages.messages.MessageListPage;
+import com.bloatit.web.pages.messages.SendGroupInvitationPage;
+import com.bloatit.web.pages.team.CreateTeamAction;
 import com.bloatit.web.pages.team.CreateTeamPage;
+import com.bloatit.web.pages.team.HandleJoinGroupInvitationAction;
+import com.bloatit.web.pages.team.JoinTeamAction;
 import com.bloatit.web.pages.team.JoinTeamPage;
+import com.bloatit.web.pages.team.SendGroupInvitationAction;
 import com.bloatit.web.pages.team.TeamPage;
 import com.bloatit.web.pages.team.TeamsPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
@@ -67,6 +71,7 @@ import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.DocumentationUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
+import com.bloatit.web.url.HandleJoinGroupInvitationActionUrl;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
@@ -77,6 +82,7 @@ import com.bloatit.web.url.LogoutActionUrl;
 import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
+import com.bloatit.web.url.MessageListPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
@@ -88,6 +94,8 @@ import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
+import com.bloatit.web.url.SendGroupInvitationActionUrl;
+import com.bloatit.web.url.SendGroupInvitationPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
@@ -180,6 +188,12 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(JoinTeamPageUrl.getName())) {
             return new JoinTeamPage(new JoinTeamPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(MessageListPageUrl.getName())) {
+            return new MessageListPage(new MessageListPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(SendGroupInvitationPageUrl.getName())) {
+            return new SendGroupInvitationPage(new SendGroupInvitationPageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -238,6 +252,12 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(JoinTeamActionUrl.getName())) {
             return new JoinTeamAction(new JoinTeamActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(SendGroupInvitationActionUrl.getName())) {
+            return new SendGroupInvitationAction(new SendGroupInvitationActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(HandleJoinGroupInvitationActionUrl.getName())) {
+            return new HandleJoinGroupInvitationAction(new HandleJoinGroupInvitationActionUrl(params, session.getParameters()));
         }
 
         // Resource page
