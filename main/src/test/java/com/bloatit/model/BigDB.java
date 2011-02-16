@@ -54,7 +54,7 @@ public class BigDB {
 
         // Create Some Groups
         for (int i = 0; i < nbUsers / 4; i += 4) {
-            final DaoGroup group = DaoGroup.createAndPersiste("group " + (i / 4), "plop" + i + "@plop.com", DaoGroup.Right.PUBLIC);
+            final DaoGroup group = DaoGroup.createAndPersiste("group " + (i / 4), "plop" + i + "@plop.com", "description", DaoGroup.Right.PUBLIC);
             group.addMember(members.get(i), true);
             group.addMember(members.get(i + 1), false);
             group.addMember(members.get(i + 2), false);
@@ -65,19 +65,15 @@ public class BigDB {
             }
         }
 
-        DaoGroup.createAndPersiste("b2 ", "plop" + "@plop.com", DaoGroup.Right.PUBLIC);
+        DaoGroup.createAndPersiste("b2 ", "plop" + "@plop.com", "description", DaoGroup.Right.PUBLIC);
 
-        DaoProject project = DaoProject.createAndPersist("VLC",
-                                                         DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"),
-                                                         DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
-
+        DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"),
+                DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
 
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
-                                                                                                                new Locale("fr"),
-                                                                                                                fortune(140),
-                                                                                                                fortune(1000) + fortune(1000)
-                                                                                                                        + fortune(1000)), project);
+            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i),
+                    DaoDescription.createAndPersist(members.get(i), new Locale("fr"), fortune(140), fortune(1000) + fortune(1000) + fortune(1000)),
+                    project);
 
             final int commentCount = (int) (Math.random() * 5);
 

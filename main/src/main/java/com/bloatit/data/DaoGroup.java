@@ -58,8 +58,12 @@ public final class DaoGroup extends DaoActor {
     private Right right;
 
     @Basic(optional = false)
-    @Column(unique = true)
+    @Column(unique = false)
     private String contact;
+
+    @Basic(optional = false)
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
     @OneToMany(mappedBy = "bloatitGroup")
     @Cascade(value = { CascadeType.ALL })
@@ -82,15 +86,19 @@ public final class DaoGroup extends DaoActor {
 
     /**
      * Create a group and add it into the db.
-     * @param login it the unique and non updatable name of the group.
-     * @param email is the email to contact this group (Unique).
-     * @param right is the type of group we are creating (Public or Private).
+     * 
+     * @param login
+     *            it the unique and non updatable name of the group.
+     * @param email
+     *            is the email to contact this group (Unique).
+     * @param right
+     *            is the type of group we are creating (Public or Private).
      * @return the newly created group.
      * @throws HibernateException
      */
-    public static DaoGroup createAndPersiste(final String login, final String contact, final Right right) {
+    public static DaoGroup createAndPersiste(final String login, final String contact, final String description, final Right right) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoGroup group = new DaoGroup(login, contact, right);
+        final DaoGroup group = new DaoGroup(login, contact, description, right);
         try {
             session.save(group);
         } catch (final HibernateException e) {
@@ -110,13 +118,14 @@ public final class DaoGroup extends DaoActor {
      * @param right
      *            is the default right value for this group.
      */
-    private DaoGroup(final String login, final String contact, final Right right) {
+    private DaoGroup(final String login, final String contact, final String description, final Right right) {
         super(login);
-        if (right == null || contact == null || contact.isEmpty()) {
+        if (right == null || contact == null || contact.isEmpty() || description == null) {
             throw new NonOptionalParameterException();
         }
         this.right = right;
         this.contact = contact;
+        this.description = description;
     }
 
     public void setRight(final Right right) {
@@ -193,6 +202,14 @@ public final class DaoGroup extends DaoActor {
             rights.add(groupRight.getUserStatus());
         }
         return rights;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

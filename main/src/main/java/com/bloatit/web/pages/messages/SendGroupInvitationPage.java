@@ -17,8 +17,8 @@ import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.GroupManager;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.web.actions.SendGroupInvitationAction;
 import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.pages.team.SendGroupInvitationAction;
 import com.bloatit.web.url.SendGroupInvitationActionUrl;
 import com.bloatit.web.url.SendGroupInvitationPageUrl;
 

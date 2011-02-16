@@ -53,7 +53,7 @@ public class TeamsPage extends MasterPage {
 
     @Override
     protected String getPageTitle() {
-        return Context.tr("Teams management page");
+        return Context.tr("Team listing page");
     }
 
     @Override

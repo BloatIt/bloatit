@@ -50,12 +50,12 @@ public class MessageListPage extends LoggedPage {
         for (JoinGroupInvitation invitation : invitations) {
             HtmlParagraph p = new HtmlParagraph();
             try {
-                p.addText("Received an invitation to group " + invitation.getGroup().getLogin() + " from : " + invitation.getSender().getDisplayName());
+                p.addText("Received an invitation to group '" + invitation.getGroup().getLogin() + "' from: '" + invitation.getSender().getDisplayName() + "'");
                 
                 HtmlLink accept = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
                 HtmlLink refuse = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
                 HtmlGenericElement empty = new HtmlGenericElement();
-                empty.addText("(");
+                empty.addText(" (");
                 empty.add(accept);
                 empty.addText(") - (");
                 empty.add(refuse);

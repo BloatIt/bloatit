@@ -53,9 +53,9 @@ public class BloatitExampleDB {
         giveMoney(elephantman, 100000000);
 
         //Add groups
-        Group other = new Group("other", "plop@elveos.org", Right.PROTECTED, yoann);
-        Group b219 = new Group("b219", "b219@elveos.org", Right.PROTECTED, fred);
-        Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org", Right.PUBLIC, thomas);
+        Group other = new Group("other", "plop@elveos.org", "An other group", Right.PROTECTED, yoann);
+        Group b219 = new Group("b219", "b219@elveos.org","The group for b219" ,Right.PROTECTED, fred);
+        Group ubuntuUsers = new Group("ubuntuUsers", "ubuntu.users@elveos.org","The group for ubuntu users" , Right.PUBLIC, thomas);
 
         Project vlc = new Project("VLC", thomas, Locale.FRANCE, "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ", "http://www.videolan.org/vlc/",getImage(thomas, "vlc.png"));
 
@@ -76,9 +76,6 @@ public class BloatitExampleDB {
         String twoSubtitlesInVlcDemandTitle = "Afficher en même temps un sous-titre en anglais et un sous-titre en néerlandais";
 
         Demand twoSubtitlesInVlcDemand = DemandFactory.createDemand(chogall, chogall.getLocale(), twoSubtitlesInVlcDemandTitle, twoSubtitlesInVlcDemandDescription, vlc);
-
-
-
 
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
         Comment comment1 = twoSubtitlesInVlcDemand.addComment("Super idée !\n" +
@@ -154,13 +151,14 @@ public class BloatitExampleDB {
     }
 
     public void giveMoney(Member member, int amount) {
-        BankTransaction bankTransaction = new BankTransaction("money !!!", UUID.randomUUID().toString(), member, new BigDecimal(amount),  UUID.randomUUID().toString());
+        BankTransaction bankTransaction = new BankTransaction("money !!!", UUID.randomUUID().toString(), member, new BigDecimal(amount), UUID
+                .randomUUID().toString());
         bankTransaction.setAuthorized();
         bankTransaction.setValidated();
     }
 
     public Member createMember(String login, String name) throws UnauthorizedOperationException {
-        Member member = new Member(login, "plop", login+"@elveos.org", Locale.FRANCE);
+        Member member = new Member(login, "plop", login + "@elveos.org", Locale.FRANCE);
         member.authenticate(new AuthToken(member));
         member.setFullname(name);
         member.activate();
@@ -168,7 +166,7 @@ public class BloatitExampleDB {
     }
 
     private FileMetadata getImage(Member author, String name) {
-        String path = ConfigurationManager.loadProperties("web.properties").getProperty("bloatit.www.dir")+"/resources/img/"+name;
+        String path = ConfigurationManager.loadProperties("web.properties").getProperty("bloatit.www.dir") + "/resources/img/" + name;
 
         return FileMetadataManager.createFromLocalFile(author, path, name, "Beautiful image");
     }

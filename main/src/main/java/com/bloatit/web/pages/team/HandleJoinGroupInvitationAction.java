@@ -1,6 +1,4 @@
-package com.bloatit.web.actions;
-
-import org.apache.commons.lang.NotImplementedException;
+package com.bloatit.web.pages.team;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
@@ -12,18 +10,24 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
 import com.bloatit.model.JoinGroupInvitation;
+import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.HandleJoinGroupInvitationActionUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
+/**
+ * <p>
+ * Action used to accept or refuse group invitations
+ * </p>
+ */
 @ParamContainer("group/dojoin")
 public class HandleJoinGroupInvitationAction extends LoggedAction {
-    private final HandleJoinGroupInvitationActionUrl url;
-
     @RequestParam(level = Level.ERROR)
     private JoinGroupInvitation invite;
 
     @RequestParam(level = Level.ERROR)
     private Boolean accept;
+
+    private final HandleJoinGroupInvitationActionUrl url;
 
     public HandleJoinGroupInvitationAction(HandleJoinGroupInvitationActionUrl url) {
         super(url);
@@ -40,7 +44,7 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
             try {
                 Group g = invite.getGroup();
                 g.authenticate(session.getAuthToken());
-                session.notifyGood(Context.tr("You are now a member of group " + g.getLogin()));
+                session.notifyGood(Context.tr("You are now a member of group ''" + g.getLogin() + "''"));
             } catch (UnauthorizedOperationException e) {
                 // Should never happen
                 Log.web().error("Couldn't display a group name, while user should be part of it", e);
@@ -48,12 +52,13 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
             return new TeamPageUrl(invite.getGroup());
         }
         invite.refuse();
-        return session.pickPreferredPage();
+        return session.getLastVisitedPage();
     }
 
     @Override
     protected Url doProcessErrors() throws RedirectException {
-        throw new NotImplementedException();
+        session.notifyList(url.getMessages());
+        return session.getLastVisitedPage();
     }
 
     @Override
@@ -63,6 +68,6 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
 
     @Override
     protected void transmitParameters() {
-
+        // Nothing to transmit
     }
 }
