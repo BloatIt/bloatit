@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.web.actions.RegisterAction;
+import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
@@ -82,11 +83,8 @@ public final class RegisterPage extends MasterPage {
             countryInput.add(entry);
         }
         form.add(countryInput);
-
-        final HtmlDropDown<LanguageDescriptor> langInput = new HtmlDropDown<LanguageDescriptor>(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
-        for (final Entry<String, LanguageDescriptor> entry : Localizator.getAvailableLanguages().entrySet()) {
-            langInput.add(entry.getValue());
-        }
+        
+        LanguageSelector langInput = new LanguageSelector(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
         form.add(langInput);
 
         final HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));
