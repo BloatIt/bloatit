@@ -344,7 +344,11 @@ public abstract class JavaGenerator {
         urlClass.append("import com.bloatit.framework.webserver.url.UrlParameter;\n");
         urlClass.append("import com.bloatit.framework.webserver.url.Messages;\n");
 
-        urlClass.append("public class ").append(className).append(" extends Url implements Cloneable {\n");
+        if (urlSuperClass != null) {
+            urlClass.append("public class ").append(className).append(" extends ").append(urlSuperClass).append(" implements Cloneable {\n");
+        } else {
+            urlClass.append("public class ").append(className).append(" extends Url implements Cloneable {\n");
+        }
 
         // Attribute
         urlClass.append("    private final ").append(componentClassName).append(" component;\n");
@@ -366,7 +370,11 @@ public abstract class JavaGenerator {
         urlClass.append("    }\n");
 
         urlClass.append("    protected ").append(className).append("(String name, Parameters params, SessionParameters session) {\n");
-        urlClass.append("        super(name);\n");
+        if (urlSuperClass != null) {
+            urlClass.append("        super(name, params, session);\n");
+        } else {
+            urlClass.append("        super(name);\n");
+        }
         urlClass.append("        component = new ").append(componentClassName).append("(params, session);\n");
         urlClass.append("    }\n");
 
@@ -382,23 +390,34 @@ public abstract class JavaGenerator {
         urlClass.append("    @Override\n");
         urlClass.append("     protected void doConstructUrl(StringBuilder sb) {\n");
         urlClass.append("        component.constructUrl(sb);\n");
+        if (urlSuperClass != null) {
+            urlClass.append("        super.doConstructUrl(sb);\n");
+        }
         urlClass.append("    }\n");
 
         urlClass.append("    @Override\n");
         urlClass.append("    public void addParameter(String key, String value) {\n");
         urlClass.append("        component.addParameter(key, value);\n");
+        if (urlSuperClass != null) {
+            urlClass.append("        super.addParameter(key, value);\n");
+        }
         urlClass.append("    }\n");
 
         urlClass.append("    @Override\n");
         urlClass.append("    public Messages getMessages() {\n");
-        urlClass.append("        return this.component.getMessages();\n");
+        if (urlSuperClass != null) {
+            urlClass.append("         Messages messages = this.component.getMessages();\n");
+            urlClass.append("         messages.addAll(super.getMessages());\n");
+            urlClass.append("         return messages;\n");
+        } else {
+            urlClass.append("        return this.component.getMessages();\n");
+        }
         urlClass.append("    }\n");
-        
+
         urlClass.append("    @Override\n");
         urlClass.append("    public ").append(className).append(" clone() {\n");
         urlClass.append("        return new ").append(className).append(" (this);\n");
         urlClass.append("    }\n");
-
 
         urlClass.append(_urlGetters);
 

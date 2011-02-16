@@ -103,7 +103,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         };
         Element superElement = element.asType().accept(vs, this.processingEnv);
         if (superElement != null && superElement.getAnnotation(ParamContainer.class) != null) {
-            generator.setUrlSuperClass(getSecureType(superElement));
+            generator.setUrlSuperClass(getSecureType(superElement) + "Url");
         }
     }
 
