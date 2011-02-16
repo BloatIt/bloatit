@@ -5,6 +5,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
@@ -18,6 +20,7 @@ import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.KudosableInterface;
 import com.bloatit.model.Member;
+import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.demand.DemandManager;
@@ -26,6 +29,7 @@ import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.GroupManager;
 import com.bloatit.model.managers.KudosableManager;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.managers.OfferManager;
 import com.bloatit.model.managers.ProjectManager;
 
 public final class Loaders {
@@ -94,8 +98,10 @@ public final class Loaders {
             return (Loader<T>) new ToFileMetadata();
         } else if (theClass.equals(Group.class)) {
             return (Loader<T>) new ToGroup();
-        }
-        throw new ConversionErrorException("Cannot find a convertion class for: " + theClass);
+        } else if (theClass.equals(Offer.class)) {
+        return (Loader<T>) new ToOffer();
+    }
+        throw new NotImplementedException("Cannot find a convertion class for: " + theClass);
     }
 
     /**
@@ -272,6 +278,13 @@ public final class Loaders {
         }
     }
 
+    private static class ToOffer extends ToIdentifiable {
+        @Override
+        public Identifiable<?> doFromString(int i) {
+            return OfferManager.getOfferById(i);
+        }
+    }
+
     private static class ToFileMetadata extends ToIdentifiable {
         @Override
         public Identifiable<?> doFromString(int i) {
@@ -292,7 +305,7 @@ public final class Loaders {
             return CommentManager.getCommentById(i);
         }
     }
-    
+
     private static class ToGroup extends ToIdentifiable {
         @Override
         public Identifiable<?> doFromString(int i) {

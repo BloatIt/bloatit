@@ -24,7 +24,7 @@ import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.SessionManager;
 
-class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserContentListFactory<T> {
+public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserContentListFactory<T> {
 
     private static final String KUDOS = "kudos";
     private static final String STATE = "state";
