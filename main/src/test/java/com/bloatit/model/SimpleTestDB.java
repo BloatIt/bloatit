@@ -111,7 +111,7 @@ public class SimpleTestDB {
                                                       demand,
                                                       new BigDecimal("200"),
                                                       DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
-                                                      DateUtils.tomorrow()));
+                                                      DateUtils.tomorrow(),0));
 
             demand.getOffers().iterator().next().setState(PopularityState.VALIDATED);
 

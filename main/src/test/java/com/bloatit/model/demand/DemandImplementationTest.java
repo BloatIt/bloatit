@@ -239,9 +239,8 @@ public class DemandImplementationTest extends ModelTestUnit {
 
         try {
             demand.authenticate(fredAuthToken);
-            final Offer offer = new Offer(fredAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
-                    DateUtils.tomorrow());
-            demand.addOffer(offer);
+            demand.addOffer(fredAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH,
+                    DateUtils.tomorrow(), 0);
         } catch (final UnauthorizedOperationException e) {
             fail();
         }
@@ -272,9 +271,8 @@ public class DemandImplementationTest extends ModelTestUnit {
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(tomAuthToken);
-        final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
-                DateUtils.tomorrow());
-        demand.addOffer(offer);
+        demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH,
+                DateUtils.tomorrow(), 0);
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         demand.authenticate(yoAuthToken);
@@ -298,10 +296,9 @@ public class DemandImplementationTest extends ModelTestUnit {
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(tomAuthToken);
-        final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
-                DateUtils.tomorrow());
-        System.out.println(offer);
-        demand.addOffer(offer);
+
+        System.out.println(demand.addOffer(tomAuthToken.getMember(), new BigDecimal("120"), "description", Locale.FRENCH,
+                DateUtils.tomorrow(), 0));
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
         assertNotNull(demand.getSelectedOffer());
@@ -364,9 +361,9 @@ public class DemandImplementationTest extends ModelTestUnit {
         assertEquals(DemandState.PENDING, demand.getDemandState());
 
         demand.authenticate(tomAuthToken);
-        final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("120"), "description", "title", Locale.FRENCH,
-                DateUtils.tomorrow());
-        demand.addOffer(offer);
+
+        demand.addOffer(tomAuthToken.getMember(),  new BigDecimal("120"), "description",  Locale.FRENCH,
+                DateUtils.tomorrow(), 0);
 
         assertEquals(DemandState.PREPARING, demand.getDemandState());
 
@@ -407,16 +404,17 @@ public class DemandImplementationTest extends ModelTestUnit {
 
     public void testOfferWithALotOfBatch() throws UnauthorizedOperationException, NotEnoughMoneyException {
         Demand demand = createDemandByThomas();
-        final Offer offer = new Offer(tomAuthToken.getMember(), demand, new BigDecimal("10"), "description", "title", Locale.FRENCH,
-                DateUtils.tomorrow());
 
-        offer.addBatch(DateUtils.tomorrow(), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(DateUtils.nowPlusSomeDays(2), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(DateUtils.nowPlusSomeDays(4), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
-        offer.addBatch(DateUtils.nowPlusSomeDays(9), BigDecimal.TEN, "title", "title", DateUtils.SECOND_PER_WEEK);
 
         demand.authenticate(tomAuthToken);
-        demand.addOffer(offer);
+        final Offer offer = demand.addEmptyOffer(tomAuthToken.getMember());
+
+        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);
+        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.nowPlusSomeDays(8), DateUtils.SECOND_PER_WEEK);
+
 
         demand.authenticate(yoAuthToken);
         demand.addContribution(new BigDecimal("12"), null);
@@ -499,7 +497,7 @@ public class DemandImplementationTest extends ModelTestUnit {
         ModelManagerAccessor.close();
         ModelManagerAccessor.open();
 
-        return (Demand) DemandManager.getDemandById(demand.getId());
+        return DemandManager.getDemandById(demand.getId());
 
     }
 }

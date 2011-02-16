@@ -27,7 +27,6 @@ import com.bloatit.data.DaoDescription;
 import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.exceptions.WrongStateException;
@@ -188,18 +187,12 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         setStateObject(getStateObject().eventAddContribution());
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.bloatit.model.demand.DemandInterface#addOffer(com.bloatit.model.Offer
-     * )
-     */
+
     @Override
-    public void addOffer(final Offer offer) throws UnauthorizedOperationException {
-        if (offer == null) {
-            throw new NonOptionalParameterException();
-        }
+    public Offer addOffer(Member member, BigDecimal amount, String description, Locale local, Date dateExpire, int secondsBeforeValidation) throws UnauthorizedOperationException {
+
+        Offer offer = new Offer(member, this, amount, description, local, dateExpire, secondsBeforeValidation);
+
         if (!offer.getDemand().equals(this)) {
             throw new IllegalArgumentException();
         }
@@ -210,6 +203,27 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         }
         setStateObject(getStateObject().eventAddOffer(offer));
         getDao().addOffer(offer.getDao());
+
+        return offer;
+    }
+
+    @Override
+    public Offer addEmptyOffer(Member member) throws UnauthorizedOperationException {
+
+        Offer offer = new Offer(member, this);
+
+        if (!offer.getDemand().equals(this)) {
+            throw new IllegalArgumentException();
+        }
+
+        new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
+        if (!offer.getAuthor().equals(getAuthToken().getMember())) {
+            throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
+        }
+        setStateObject(getStateObject().eventAddOffer(offer));
+        getDao().addOffer(offer.getDao());
+
+        return offer;
     }
 
     /*
@@ -299,9 +313,11 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * com.bloatit.model.demand.DemandInterface#addComment(java.lang.String)
      */
     @Override
-    public void addComment(final String text) throws UnauthorizedOperationException {
+    public Comment addComment(final String text) throws UnauthorizedOperationException {
         new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
-        getDao().addComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
+        DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
+        getDao().addComment(comment);
+        return Comment.create(comment);
     }
 
     /*
