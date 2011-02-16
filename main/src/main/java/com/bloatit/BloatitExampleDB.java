@@ -17,6 +17,7 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.DemandFactory;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Group;
+import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
@@ -144,6 +145,14 @@ public class BloatitExampleDB {
             e.printStackTrace();
         }
 
+
+        //Highlight demands
+        new HighlightDemand(twoSubtitlesInVlcDemand, 1, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 2, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 3, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 4, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 5, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
+        new HighlightDemand(twoSubtitlesInVlcDemand, 6, "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
 
         SessionManager.endWorkUnitAndFlush();
 
