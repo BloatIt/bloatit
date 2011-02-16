@@ -25,6 +25,7 @@ public abstract class JavaGenerator {
     protected StringBuilder _constructorNames = new StringBuilder();
 
     protected StringBuilder _urlClassConstructor = new StringBuilder();
+    private String urlSuperClass;
 
     protected JavaGenerator(String name, String pageName) {
         this.pageName = pageName;
@@ -102,7 +103,7 @@ public abstract class JavaGenerator {
     public void addGetterSetter(String type, String conversionType, String name) {
 
         _urlGetters.append(createSimpleGetterFirstLine(type, name));
-        _urlGetters.append("    return this.getComponent().").append(getGetterName(name)).append("();\n");
+        _urlGetters.append("    return this.component.").append(getGetterName(name)).append("();\n");
         _urlGetters.append("}\n\n");
 
         _gettersSetters.append(createSimpleGetterFirstLine(type, name));
@@ -114,7 +115,7 @@ public abstract class JavaGenerator {
         _gettersSetters.append("}\n\n");
 
         _urlGetters.append(createParameterGetterFirstLine(type, conversionType, name));
-        _urlGetters.append("    return this.getComponent().").append(getGetterName(name)).append("Parameter();\n");
+        _urlGetters.append("    return this.component.").append(getGetterName(name)).append("Parameter();\n");
         _urlGetters.append("}\n\n");
 
         _gettersSetters.append("public void ").append(getSetterName(name)).append("(").append(type).append(" arg){ \n");
@@ -122,7 +123,7 @@ public abstract class JavaGenerator {
         _gettersSetters.append("}\n\n");
 
         _urlGetters.append("public void ").append(getSetterName(name)).append("(").append(type).append(" arg){ \n");
-        _urlGetters.append("    this.getComponent().").append(getSetterName(name)).append("(arg);\n");
+        _urlGetters.append("    this.component.").append(getSetterName(name)).append("(arg);\n");
         _urlGetters.append("}\n\n");
     }
 
@@ -153,7 +154,7 @@ public abstract class JavaGenerator {
         _gettersSetters.append("}\n\n");
 
         _urlGetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
-        _urlGetters.append("    return this.getComponent().").append(getGetterName(name)).append("();\n");
+        _urlGetters.append("    return this.component.").append(getGetterName(name)).append("();\n");
         _urlGetters.append("}\n\n");
     }
 
@@ -284,11 +285,11 @@ public abstract class JavaGenerator {
         _gettersSetters.append("}\n\n");
 
         _urlGetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
-        _urlGetters.append("    return getComponent().").append(getGetterName(name)).append("();\n");
+        _urlGetters.append("    return component.").append(getGetterName(name)).append("();\n");
         _urlGetters.append("}\n\n");
 
         _urlGetters.append("public void ").append(getSetterName(name)).append("(").append(type).append(" arg){ \n");
-        _urlGetters.append("    getComponent().").append(getSetterName(name)).append("(arg);\n");
+        _urlGetters.append("    component.").append(getSetterName(name)).append("(arg);\n");
         _urlGetters.append("}\n\n");
 
     }
@@ -341,30 +342,66 @@ public abstract class JavaGenerator {
         urlClass.append("import com.bloatit.framework.webserver.url.Url;\n");
         urlClass.append("import com.bloatit.framework.webserver.url.UrlComponent;\n");
         urlClass.append("import com.bloatit.framework.webserver.url.UrlParameter;\n");
+        urlClass.append("import com.bloatit.framework.webserver.url.Messages;\n");
 
-        urlClass.append("public final class ").append(className).append(" extends Url implements Cloneable {\n");
+        urlClass.append("public class ").append(className).append(" extends Url implements Cloneable {\n");
+
+        // Attribute
+        urlClass.append("    private final ").append(componentClassName).append(" component;\n");
+
+        // static getName
+
         urlClass.append("    public static String getName() {\n");
         urlClass.append("        return \"").append(pageName).append("\";\n");
         urlClass.append("    }\n");
 
+        // Constructors ...
+
         urlClass.append("    public ").append(className).append("(Parameters params, SessionParameters session) {\n");
-        urlClass.append("        super(getName(), new ").append(componentClassName).append("(params, session));\n");
+        urlClass.append("        this(getName(), params, session);\n");
+        urlClass.append("    }\n");
+
+        urlClass.append("    public ").append(className).append("() {\n");
+        urlClass.append("        this(getName(), null, null);\n");
+        urlClass.append("    }\n");
+
+        urlClass.append("    protected ").append(className).append("(String name, Parameters params, SessionParameters session) {\n");
+        urlClass.append("        super(name);\n");
+        urlClass.append("        component = new ").append(componentClassName).append("(params, session);\n");
+        urlClass.append("    }\n");
+
+        urlClass.append("    public ").append(className).append("(").append(className).append(" other){\n");
+        urlClass.append("        super(other);\n");
+        urlClass.append("        component = other.component;\n");
         urlClass.append("    }\n");
 
         urlClass.append(_urlClassConstructor);
-        urlClass.append(_urlGetters);
 
+        // Overridden methods
+
+        urlClass.append("    @Override\n");
+        urlClass.append("     protected void doConstructUrl(StringBuilder sb) {\n");
+        urlClass.append("        component.constructUrl(sb);\n");
+        urlClass.append("    }\n");
+
+        urlClass.append("    @Override\n");
+        urlClass.append("    public void addParameter(String key, String value) {\n");
+        urlClass.append("        component.addParameter(key, value);\n");
+        urlClass.append("    }\n");
+
+        urlClass.append("    @Override\n");
+        urlClass.append("    public Messages getMessages() {\n");
+        urlClass.append("        return this.component.getMessages();\n");
+        urlClass.append("    }\n");
+        
         urlClass.append("    @Override\n");
         urlClass.append("    public ").append(className).append(" clone() {\n");
-        urlClass.append("        ").append(className).append(" other = new ").append(className).append("();\n");
-        urlClass.append("        other.setComponent(getComponent().clone());\n");
-        urlClass.append("        return other;\n");
+        urlClass.append("        return new ").append(className).append(" (this);\n");
         urlClass.append("    }\n");
 
-        urlClass.append("    @Override\n");
-        urlClass.append("    public ").append(componentClassName).append(" getComponent(){\n");
-        urlClass.append("        return (").append(componentClassName).append(") super.getComponent();\n");
-        urlClass.append("    }\n");
+
+        urlClass.append(_urlGetters);
+
         urlClass.append("}\n");
         return urlClass.toString();
     }
@@ -379,5 +416,9 @@ public abstract class JavaGenerator {
 
     public void registerAttribute(String attributeName) {
         _doRegister.append("    register(").append(attributeName).append(");\n");
+    }
+
+    public void setUrlSuperClass(String urlSuperClass) {
+        this.urlSuperClass = urlSuperClass;
     }
 }

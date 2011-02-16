@@ -1,8 +1,9 @@
-package com.bloatit.model;
+package com.bloatit.model.admin;
 
 import java.util.Date;
 
 import com.bloatit.data.DaoUserContent;
+import com.bloatit.model.Identifiable;
 
 public class UserContentAdministration<T extends DaoUserContent> extends Identifiable<T> {
 

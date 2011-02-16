@@ -1,4 +1,4 @@
-package com.bloatit.web.pages;
+package com.bloatit.web.pages.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -10,16 +10,18 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.UserContentAdministrationListFactory;
-import com.bloatit.web.url.AdministrationPageUrl;
+import com.bloatit.web.pages.LoggedPage;
+import com.bloatit.web.url.UserContentAdminPageUrl;
 
-@ParamContainer("administration")
-public class AdministrationPage extends LoggedPage {
+@ParamContainer("admin/usercontent")
+public class UserContentAdminPage extends LoggedPage {
 
-    public enum FilterType implements HtmlRadioButtonGroup.Displayable {
-        NO_FILTER(tr("No filter")), //
-        WITH(tr("Yes")), //
-        WITHOUT(tr("No"));
+    public enum UserContentOrderBy implements HtmlRadioButtonGroup.Displayable {
+        NOTHING(tr("No order")), //
+        MEMBER(tr("Member")), //
+        GROUP(tr("Group")), //
+        DATE(tr("Creation date")), //
+        TYPE(tr("Type"));
 
         private String displayName;
 
@@ -28,19 +30,18 @@ public class AdministrationPage extends LoggedPage {
             return displayName;
         }
 
-        private FilterType(String displayName) {
+        private UserContentOrderBy(String displayName) {
             this.displayName = displayName;
         }
-
     }
 
-    @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
-    private String orderBy;
+    @RequestParam(level = Level.ERROR, defaultValue = "DATE", role = RequestParam.Role.POST)
+    private UserContentOrderBy orderBy;
 
     @RequestParam(level = Level.ERROR, defaultValue = "false", role = RequestParam.Role.POST)
     private Boolean asc;
 
-    @RequestParam(level = Level.ERROR, defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
+    @RequestParam(level = Level.ERROR, defaultValue = "WITHOUT", role = RequestParam.Role.POST)
     private FilterType filterDeleted;
 
     @RequestParam(level = Level.ERROR, defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
@@ -49,11 +50,11 @@ public class AdministrationPage extends LoggedPage {
     @RequestParam(level = Level.ERROR, defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
     private FilterType filterGroup;
 
-    public AdministrationPage(AdministrationPageUrl url) {
+    public UserContentAdminPage(UserContentAdminPageUrl url) {
         super(url);
         orderBy = url.getOrderBy();
         asc = url.getAsc();
-        filterDeleted = url.getFilterDeleted(); 
+        filterDeleted = url.getFilterDeleted();
         filterFile = url.getFilterFile();
         filterGroup = url.getFilterGroup();
 
@@ -76,13 +77,13 @@ public class AdministrationPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
 
-        AdministrationPageComponent<DaoUserContent> administrationPageComponent = new AdministrationPageComponent<DaoUserContent>(new AdministrationTableModel<DaoUserContent>(new UserContentAdministrationListFactory<DaoUserContent>()));
-        administrationPageComponent.generateFilterForm();
-        administrationPageComponent.filter(orderBy, asc, filterDeleted, filterFile, filterGroup);
-        administrationPageComponent.generateTable();
-        administrationPageComponent.generateActionForm();
+        UserContentAdminPageComponent<DaoUserContent> component = new UserContentAdminPageComponent<DaoUserContent>();
+        component.generateFilterForm();
+        component.filter(orderBy, asc, filterDeleted, filterFile, filterGroup);
+        component.generateTable();
+        component.generateActionForm();
 
-        return administrationPageComponent.getComponent();
+        return component.getComponent();
     }
 
     @Override

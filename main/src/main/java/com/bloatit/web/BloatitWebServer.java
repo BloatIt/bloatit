@@ -23,7 +23,6 @@ import com.bloatit.web.actions.RegisterAction;
 import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
-import com.bloatit.web.pages.AdministrationPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateDemandPage;
@@ -42,6 +41,7 @@ import com.bloatit.web.pages.ProjectPage;
 import com.bloatit.web.pages.RegisterPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
+import com.bloatit.web.pages.admin.UserContentAdminPage;
 import com.bloatit.web.pages.demand.DemandPage;
 import com.bloatit.web.pages.messages.MessageListPage;
 import com.bloatit.web.pages.team.CreateTeamAction;
@@ -57,7 +57,6 @@ import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
-import com.bloatit.web.url.AdministrationPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -101,6 +100,7 @@ import com.bloatit.web.url.TeamPageUrl;
 import com.bloatit.web.url.TeamsPageUrl;
 import com.bloatit.web.url.TestPageUrl;
 import com.bloatit.web.url.UploadFileActionUrl;
+import com.bloatit.web.url.UserContentAdminPageUrl;
 
 public class BloatitWebServer extends WebServer {
 
@@ -170,8 +170,8 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ProjectListPageUrl.getName())) {
             return new ProjectListPage(new ProjectListPageUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(AdministrationPageUrl.getName())) {
-            return new AdministrationPage(new AdministrationPageUrl(params, session.getParameters()));
+        if (pageCode.equals(UserContentAdminPageUrl.getName())) {
+            return new UserContentAdminPage(new UserContentAdminPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(DocumentationUrl.getName())) {
             return new Documentation(new DocumentationUrl(params, session.getParameters()));

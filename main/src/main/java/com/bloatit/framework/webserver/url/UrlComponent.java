@@ -22,7 +22,7 @@ public abstract class UrlComponent extends UrlNode {
     }
 
     @Override
-    protected final void constructUrl(final StringBuilder sb) {
+    public final void constructUrl(final StringBuilder sb) {
         registerIfNotAlreadyDone();
         for (final UrlNode node : this) {
             node.constructUrl(sb);

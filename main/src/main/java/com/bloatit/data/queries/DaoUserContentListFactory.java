@@ -28,6 +28,7 @@ import com.bloatit.data.SessionManager;
 
 public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiableListFactory<T> {
 
+    private static final String CREATION_DATE = "creationDate";
     private static final String MEMBER = "member";
     private static final String FILES = "files";
     private static final String IS_DELETED = "isDeleted";
@@ -65,6 +66,14 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         }
     }
 
+    public void orderByCreationDate(OrderType order) {
+        if (order == OrderType.ASC) {
+            addOrder(Order.asc(CREATION_DATE));
+        } else {
+            addOrder(Order.desc(CREATION_DATE));
+        }
+    }
+
     public void deletedOnly() {
         add(Restrictions.eq(IS_DELETED, true));
     }
@@ -96,4 +105,5 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
     public void fromGroup(DaoGroup group) {
         add(Restrictions.eq(AS_GROUP, group));
     }
+
 }

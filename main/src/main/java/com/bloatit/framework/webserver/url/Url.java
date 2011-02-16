@@ -1,7 +1,5 @@
 package com.bloatit.framework.webserver.url;
 
-import java.util.Iterator;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlLink;
@@ -13,22 +11,32 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
  * Represent a web Url. A Url is a kind of {@link UrlComponent}, with a page
  * name. It also can have a ahchor part.
  */
-public abstract class Url {
+public abstract class Url implements Cloneable{
 
     private final String name;
-    private UrlComponent component;
     private String anchor = null;
 
     /**
      * Create a Url using its name.
      */
-    protected Url(final String name, UrlComponent component) {
+    protected Url(final String name) {
         super();
         this.name = name;
-        this.setComponent(component);
     }
 
-    // public abstract Linkable createPage();
+    protected Url(Url other) {
+        this.name = other.name;
+        this.anchor = other.anchor;
+    }
+
+    protected abstract void doConstructUrl(StringBuilder sb);
+
+    public abstract void addParameter(String key, String value);
+    
+    public abstract Messages getMessages();
+    
+    @Override
+    public abstract Url clone();
 
     public String getAnchor() {
         return anchor;
@@ -44,7 +52,7 @@ public abstract class Url {
             sb.append("/").append(Context.getLocalizator().getCode());
         }
         sb.append("/").append(name);
-        getComponent().constructUrl(sb);
+        doConstructUrl(sb);
         if (anchor != null) {
             sb.append("#").append(anchor);
         }
@@ -62,9 +70,6 @@ public abstract class Url {
         return "http://" + header.getHttpHost() + urlString();
     }
 
-    @Override
-    public abstract Url clone();
-
     public final HtmlLink getHtmlLink(final HtmlNode data) {
         return new HtmlLink(urlString(), data);
     }
@@ -73,23 +78,4 @@ public abstract class Url {
         return new HtmlLink(urlString(), new HtmlText(text));
     }
 
-    public final Iterator<UrlNode> iterator() {
-        return getComponent().iterator();
-    }
-
-    public final Messages getMessages() {
-        return getComponent().getMessages();
-    }
-
-    public UrlComponent getComponent() {
-        return component;
-    }
-
-    protected void setComponent(UrlComponent component) {
-        this.component = component;
-    }
-
-    public void addParameter(String key, String value) {
-        this.component.addParameter(key, value);
-    }
 }

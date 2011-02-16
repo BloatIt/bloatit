@@ -14,12 +14,27 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
     }
 
     public PageNotFoundUrl() {
-        super(getName(), UrlComponent.getEmptyComponent());
+        super(getName());
     }
 
     @Override
     public PageNotFoundUrl clone() {
-        final PageNotFoundUrl other = new PageNotFoundUrl();
-        return other;
+        // this is imutable so ...
+        return this;
+    }
+
+    @Override
+    protected void doConstructUrl(StringBuilder sb) {
+        // nothing to do here. All the work is done in Url.
+    }
+
+    @Override
+    public void addParameter(String key, String value) {
+        // nothing to do here. There is no parameters in PageNotFound
+    }
+
+    @Override
+    public Messages getMessages() {
+        return new Messages();
     }
 }

@@ -103,9 +103,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         };
         Element superElement = element.asType().accept(vs, this.processingEnv);
         if (superElement != null && superElement.getAnnotation(ParamContainer.class) != null) {
-            System.out.println("PLOP: " + superElement.getSimpleName().toString());
-            generator.addComponentAndGetterSetter(getSecureType(superElement), superElement.getSimpleName().toString());
-            generator.registerComponent(superElement.getSimpleName().toString());
+            generator.setUrlSuperClass(getSecureType(superElement));
         }
     }
 

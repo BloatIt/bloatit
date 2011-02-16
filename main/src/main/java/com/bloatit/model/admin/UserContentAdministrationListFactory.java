@@ -1,9 +1,11 @@
-package com.bloatit.model;
+package com.bloatit.model.admin;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.data.queries.DaoUserContentListFactory;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Group;
+import com.bloatit.model.Member;
 
 public class UserContentAdministrationListFactory<T extends DaoUserContent> {
     private DaoUserContentListFactory<T> factory;
@@ -30,6 +32,10 @@ public class UserContentAdministrationListFactory<T extends DaoUserContent> {
 
     public void orderByAsGroup(OrderType order) {
         factory.orderByAsGroup(order);
+    }
+    
+    public void orderByCreationDate(OrderType orderType) {
+        factory.orderByCreationDate(orderType);
     }
 
     public void deletedOnly() {
@@ -67,4 +73,6 @@ public class UserContentAdministrationListFactory<T extends DaoUserContent> {
     public PageIterable<UserContentAdministration<T>> ListUserContents() {
         return new UserContentAdministrationList<T>(factory.createCollection());
     }
+
+
 }

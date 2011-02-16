@@ -18,10 +18,6 @@ public class UrlComponentClassGenerator extends JavaGenerator {
         _classHeader.append("    parseParameters(params);\n");
         _classHeader.append("}\n");
 
-        _urlClassConstructor.append("public ").append(className).append("(").append(_constructorParameters).append("){\n");
-        _urlClassConstructor.append("     super(getName(), new ").append(componentClassName).append("(").append(_constructorNames).append("));\n");
-        _urlClassConstructor.append("}\n");
-
         // Constructor with required parameters
         if (_constructorParameters.length() > 0) {
             _classHeader.append("public ").append(componentClassName).append("(").append(_constructorParameters).append(") {\n");
@@ -29,8 +25,9 @@ public class UrlComponentClassGenerator extends JavaGenerator {
             _classHeader.append(_constructorAssign);
             _classHeader.append("}\n");
 
-            _urlClassConstructor.append("private ").append(className).append("(){\n");
-            _urlClassConstructor.append("    super(getName(), UrlComponent.getEmptyComponent());\n");
+            _urlClassConstructor.append("public ").append(className).append("(").append(_constructorParameters).append("){\n");
+            _urlClassConstructor.append("     super(getName());\n");
+            _urlClassConstructor.append("     component =  new ").append(componentClassName).append("(").append(_constructorNames).append(");\n");
             _urlClassConstructor.append("}\n");
         }
 

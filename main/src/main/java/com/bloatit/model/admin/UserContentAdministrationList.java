@@ -1,4 +1,4 @@
-package com.bloatit.model;
+package com.bloatit.model.admin;
 
 import java.util.Iterator;
 

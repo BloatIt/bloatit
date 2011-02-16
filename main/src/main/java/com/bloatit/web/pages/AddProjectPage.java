@@ -94,12 +94,6 @@ public final class AddProjectPage extends LoggedPage {
 
         // Language
         FormFieldData<String> languageFormFieldData = doCreateUrl.getLangParameter().formFieldData();
-
-//        final HtmlDropDown<LanguageElement> languageInput = new HtmlDropDown<LanguageElement>(languageFormFieldData, Context.tr("Language"));
-//        for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
-//            languageInput.add(new LanguageElement(langEntry.getValue().name, langEntry.getValue().code));
-//        }
-        
         LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
         
         languageInput.setComment(Context.tr("Language of the descriptions."));

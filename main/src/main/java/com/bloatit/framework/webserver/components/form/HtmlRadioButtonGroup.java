@@ -32,7 +32,6 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
         this(data.getFieldName());
         T fieldDefaultValue = data.getFieldDefaultValue();
         if (fieldDefaultValue != null) {
-            System.err.println("value " + fieldDefaultValue);
             checked = fieldDefaultValue.name();
         }
     }
@@ -46,7 +45,6 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
     public HtmlRadioButton addRadioButton(final String value, final String label) {
         final HtmlRadioButton button = new HtmlRadioButton(name, value, label, position);
         if (value.equals(checked)) {
-            System.err.println("value " + value + " label " + label);
             button.addAttribute("checked", "checked");
         }
         add(button);

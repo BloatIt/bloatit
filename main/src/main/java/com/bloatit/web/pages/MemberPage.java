@@ -100,7 +100,7 @@ public final class MemberPage extends MasterPage {
             memberTitle.add(memberGroups);
             final PageIterable<Group> teamList = member.getGroups();
             final HtmlRenderer<Group> teamRenderer = new TeamListRenderer();
-            final MemberPageUrl clonedUrl = url.clone();
+            final MemberPageUrl clonedUrl = new MemberPageUrl(url);
             pagedTeamList = new HtmlPagedList<Group>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
             memberGroups.add(pagedTeamList);
             

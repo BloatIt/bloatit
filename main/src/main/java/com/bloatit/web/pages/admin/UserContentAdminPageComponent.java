@@ -1,12 +1,12 @@
-package com.bloatit.web.pages;
+package com.bloatit.web.pages.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
-import java.util.List;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
@@ -20,16 +20,15 @@ import com.bloatit.framework.webserver.components.form.HtmlFormBlock;
 import com.bloatit.framework.webserver.components.form.HtmlFormField.LabelPosition;
 import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
-import com.bloatit.framework.webserver.components.form.SimpleDropDownElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
-import com.bloatit.model.UserContentAdministration;
-import com.bloatit.model.UserContentAdministrationListFactory;
-import com.bloatit.web.pages.AdministrationPage.FilterType;
+import com.bloatit.model.admin.UserContentAdministration;
+import com.bloatit.model.admin.UserContentAdministrationListFactory;
+import com.bloatit.web.pages.admin.UserContentAdminPage.UserContentOrderBy;
 import com.bloatit.web.url.AdministrationActionUrl;
-import com.bloatit.web.url.AdministrationPageUrl;
+import com.bloatit.web.url.UserContentAdminPageUrl;
 
-public class AdministrationPageComponent<T extends DaoUserContent> {
+public class UserContentAdminPageComponent<T extends DaoUserContent> {
 
     private UserContentAdministrationListFactory<T> factory;
 
@@ -37,13 +36,17 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
     private HtmlForm filterForm;
     private HtmlForm actionForm;
 
-    public AdministrationPageComponent(AdministrationTableModel<T> tableModel1) {
+    public UserContentAdminPageComponent() {
+        this(new UserContentAdministrationListFactory<T>());
+    }
+
+    protected UserContentAdminPageComponent(UserContentAdministrationListFactory<T> factory) {
         super();
-        factory = tableModel1.getFactory();
+        this.factory = factory;
         everything = new PlaceHolderElement();
 
         // Filter form
-        AdministrationPageUrl url = new AdministrationPageUrl();
+        UserContentAdminPageUrl url = new UserContentAdminPageUrl();
         filterForm = new HtmlForm(url.urlString());
         everything.add(filterForm);
 
@@ -55,23 +58,12 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
     }
 
     public final void generateFilterForm() {
-        AdministrationPageUrl url = new AdministrationPageUrl();
+        UserContentAdminPageUrl url = new UserContentAdminPageUrl();
         // order by
-        HtmlRadioButtonGroup groupOrder = new HtmlRadioButtonGroup("order");
-        filterForm.add(new HtmlFormBlock("Order by").add(groupOrder));
-        // groupOrder.add(new
-        // HtmlRadioButton(url.getOrderByMemberAscParameter().createFormFieldData(),
-        // tr("member asc"), LabelPosition.BEFORE));
-        // groupOrder.add(new
-        // HtmlRadioButton(url.getOrderByMemberDescParameter().createFormFieldData(),
-        // tr("member desc"), LabelPosition.BEFORE));
-        // groupOrder.add(new
-        // HtmlRadioButton(url.getOrderByAsGroupAscParameter().createFormFieldData(),
-        // tr("group asc"), LabelPosition.BEFORE));
-        // groupOrder.add(new
-        // HtmlRadioButton(url.getOrderByAsGroupDescParameter().createFormFieldData(),
-        // tr("group desc"), LabelPosition.BEFORE));
-        addFormOrder(groupOrder);
+        HtmlDropDown order = new HtmlDropDown(url.getOrderByParameter().formFieldData());
+        filterForm.add(new HtmlFormBlock("Order by").add(order));
+        order.addDropDownElements(EnumSet.allOf(UserContentOrderBy.class));
+        addFormOrder(order);
 
         // delete ?
         HtmlRadioButtonGroup groupDeleted = new HtmlRadioButtonGroup(url.getFilterDeletedParameter().formFieldData());
@@ -94,11 +86,22 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
         filterForm.add(new HtmlSubmit(tr("Filter")));
     }
 
-    public final void filter(String orderBy, boolean asc, FilterType filterDeleted, FilterType filterFile, FilterType filterGroup) {
-        if (orderBy.equals("group")) {
+    public final void filter(UserContentOrderBy orderBy, boolean asc, FilterType filterDeleted, FilterType filterFile, FilterType filterGroup) {
+        
+        switch (orderBy) {
+        case DATE:
+            factory.orderByCreationDate(asc ? OrderType.ASC : OrderType.DESC);
+            break;
+        case GROUP:
             factory.orderByAsGroup(asc ? OrderType.ASC : OrderType.DESC);
-        } else if (orderBy.equals("member")) {
+            break;
+        case MEMBER:
             factory.orderByMember(asc ? OrderType.ASC : OrderType.DESC);
+            break;
+        case NOTHING:
+            break;
+        default:
+            break;
         }
 
         if (filterDeleted == FilterType.WITH) {
@@ -144,6 +147,13 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
             }
         });
 
+        tableModel.addColumn(tr("Creation date"), new StringColumnGenerator<UserContentAdministration<T>>() {
+            @Override
+            public String getStringBody(UserContentAdministration<T> element) {
+                return Context.getLocalizator().getDate(element.getCreationDate()).toString(FormatStyle.MEDIUM);
+            }
+        });
+
         tableModel.addColumn(tr("Nb files"), new StringColumnGenerator<UserContentAdministration<T>>() {
             @Override
             public String getStringBody(UserContentAdministration<T> element) {
@@ -175,9 +185,6 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
         actionForm.add(new HtmlFormBlock("UserContent_actions").add(group));
         HtmlDropDown dropDown = new HtmlDropDown("action");
         group.add(dropDown);
-        for (SimpleDropDownElement simpleDropDownElement : getActions()) {
-            dropDown.addDropDownElement(simpleDropDownElement.getCode(), simpleDropDownElement.getName());
-        }
         addActions(dropDown);
 
         // add the submit button
@@ -188,20 +195,16 @@ public class AdministrationPageComponent<T extends DaoUserContent> {
         return everything;
     }
 
-    protected List<SimpleDropDownElement> getActions() {
-        // redefine me in subclasses.
-        return AdministrationActionManager.userContentActions();
-    }
-
     protected void addColumns(HtmlGenericTableModel<UserContentAdministration<T>> tableModel) {
         // Implement me in sub classes
     }
 
     protected void addActions(HtmlDropDown dropDown) {
-        // Implement me in sub classes
+        // redefine me in subclasses.
+        dropDown.addDropDownElements(new AdminActionManager().userContentActions());
     }
 
-    protected void addFormOrder(HtmlRadioButtonGroup group) {
+    protected void addFormOrder(HtmlDropDown order) {
         // Implement me in sub classes
     }
 
