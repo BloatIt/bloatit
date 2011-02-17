@@ -41,7 +41,9 @@ import com.bloatit.web.pages.ProjectPage;
 import com.bloatit.web.pages.RegisterPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
-import com.bloatit.web.pages.admin.UserContentAdminPage;
+import com.bloatit.web.pages.admin.DemandAdminPage;
+import com.bloatit.web.pages.admin.KudosableAdminPageImplementation;
+import com.bloatit.web.pages.admin.UserContentAdminPageImplementation;
 import com.bloatit.web.pages.demand.DemandPage;
 import com.bloatit.web.pages.messages.MessageListPage;
 import com.bloatit.web.pages.team.CreateTeamAction;
@@ -65,6 +67,7 @@ import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
+import com.bloatit.web.url.DemandAdminPageUrl;
 import com.bloatit.web.url.DemandListPageUrl;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.DocumentationUrl;
@@ -75,6 +78,7 @@ import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.JoinTeamPageUrl;
+import com.bloatit.web.url.KudosableAdminPageUrl;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
@@ -171,7 +175,7 @@ public class BloatitWebServer extends WebServer {
             return new ProjectListPage(new ProjectListPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(UserContentAdminPageUrl.getName())) {
-            return new UserContentAdminPage(new UserContentAdminPageUrl(params, session.getParameters()));
+            return new UserContentAdminPageImplementation(new UserContentAdminPageUrl(params, session.getParameters()));
         }
         if (pageCode.equals(DocumentationUrl.getName())) {
             return new Documentation(new DocumentationUrl(params, session.getParameters()));
@@ -193,6 +197,12 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(SendGroupInvitationPageUrl.getName())) {
             return new SendGroupInvitationPage(new SendGroupInvitationPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(KudosableAdminPageUrl.getName())) {
+            return new KudosableAdminPageImplementation(new KudosableAdminPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(DemandAdminPageUrl.getName())) {
+            return new DemandAdminPage(new DemandAdminPageUrl(params, session.getParameters()));
         }
 
         // Actions

@@ -7,11 +7,15 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 
-public class UserContentAdministrationListFactory<T extends DaoUserContent> {
-    private DaoUserContentListFactory<T> factory;
+public class UserContentAdminListFactory<T extends DaoUserContent, U extends UserContentAdmin<T>> {
+    private final DaoUserContentListFactory<T> factory;
 
-    public UserContentAdministrationListFactory() {
+    public UserContentAdminListFactory() {
         factory = new DaoUserContentListFactory<T>();
+    }
+    
+    public UserContentAdminListFactory(DaoUserContentListFactory<T> factory) {
+        this.factory = factory;
     }
 
     public void idEquals(Integer id) {
@@ -36,6 +40,10 @@ public class UserContentAdministrationListFactory<T extends DaoUserContent> {
     
     public void orderByCreationDate(OrderType orderType) {
         factory.orderByCreationDate(orderType);
+    }
+    
+    public void orderBy(String column, OrderType orderType) {
+        factory.orderBy(column, orderType);
     }
 
     public void deletedOnly() {
@@ -70,9 +78,12 @@ public class UserContentAdministrationListFactory<T extends DaoUserContent> {
         factory.fromGroup(group.getDao());
     }
 
-    public PageIterable<UserContentAdministration<T>> ListUserContents() {
-        return new UserContentAdministrationList<T>(factory.createCollection());
+    @SuppressWarnings("unchecked")
+    public PageIterable<U> list() {
+        return (PageIterable<U>) new AdminList.UserContentAdminList((PageIterable<DaoUserContent>) factory.createCollection());
     }
-
-
+    
+    protected DaoUserContentListFactory<T> getfactory(){
+        return factory;
+    }
 }

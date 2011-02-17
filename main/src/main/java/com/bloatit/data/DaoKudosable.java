@@ -103,6 +103,13 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     /**
+     * The state must be update from the framework layer.
+     */
+    public final void setState(final PopularityState state) {
+        this.state = state;
+    }
+
+    /**
      * Use a HQL query to find if a member as already kudosed this kudosable.
      * 
      * @param member The member that could have kudosed this kudosable. (Don't
@@ -110,8 +117,10 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return true if member has kudosed, false otherwise.
      */
     public final boolean hasKudosed(final DaoMember member) {
-        final Query q = SessionManager.getSessionFactory().getCurrentSession()
-                .createQuery("select count(k) from " + this.getClass().getName() + " as a join a.kudos as k where k.member = :member and a = :this");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select count(k) from " + this.getClass().getName()
+                                              + " as a join a.kudos as k where k.member = :member and a = :this");
         q.setEntity("member", member);
         q.setEntity("this", this);
         return (Long) q.uniqueResult() > 0;
@@ -129,8 +138,10 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return true if member has kudosed, false otherwise.
      */
     public final int getVote(final DaoMember member) {
-        final Query q = SessionManager.getSessionFactory().getCurrentSession()
-                .createQuery("select k.value from " + this.getClass().getName() + " as a join a.kudos as k where k.member = :member and a = :this");
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select k.value from " + this.getClass().getName()
+                                              + " as a join a.kudos as k where k.member = :member and a = :this");
         q.setEntity("member", member);
         q.setEntity("this", this);
         // return 0 if no vote
@@ -147,13 +158,6 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     public final int getPopularity() {
         return popularity;
-    }
-
-    /**
-     * The state must be update from the framework layer.
-     */
-    public final void setState(final PopularityState state) {
-        this.state = state;
     }
 
     // ======================================================================

@@ -230,6 +230,16 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         Log.model().info("Kudosable: " + getId() + " change from state: " + this.getState() + ", to: " + newState);
         getDao().setState(newState);
     }
+    
+    // TODO right management
+    public void lockPopularity(){
+        getDao().lockPopularity();
+    }
+    
+    // TODO right management
+    public void unlockPopularity(){
+        getDao().unlockPopularity();
+    }
 
     /**
      * You can redefine me if you want to customize the state calculation

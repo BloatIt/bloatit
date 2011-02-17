@@ -4,10 +4,10 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
 
-public enum FilterType implements HtmlRadioButtonGroup.Displayable {
+public enum DisplayableFilterType implements HtmlRadioButtonGroup.Displayable {
     NO_FILTER(tr("No filter")), //
-    WITH(tr("Yes")), //
-    WITHOUT(tr("No"));
+    WITH(tr("With")), //
+    WITHOUT(tr("Without"));
 
     private String displayName;
 
@@ -16,7 +16,7 @@ public enum FilterType implements HtmlRadioButtonGroup.Displayable {
         return displayName;
     }
 
-    private FilterType(String displayName) {
+    private DisplayableFilterType(String displayName) {
         this.displayName = displayName;
     }
 }

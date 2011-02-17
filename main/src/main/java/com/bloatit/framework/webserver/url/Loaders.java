@@ -7,6 +7,10 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.data.DaoKudosable;
+import com.bloatit.data.DaoUserContent;
+import com.bloatit.data.queries.DaoKudosableListFactory;
+import com.bloatit.data.queries.DaoUserContentListFactory;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
@@ -25,6 +29,8 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.admin.KudosableAdmin;
+import com.bloatit.model.admin.UserContentAdmin;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.CommentManager;
@@ -352,7 +358,7 @@ public final class Loaders {
             return GroupManager.getGroupById(i);
         }
     }
-    
+
     private static class ToJoinGroupInvitation extends ToIdentifiable {
         @Override
         public Identifiable<?> doFromString(int id) {

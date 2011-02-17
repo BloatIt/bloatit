@@ -1,0 +1,33 @@
+package com.bloatit.web.pages.admin;
+
+import static com.bloatit.framework.webserver.Context.tr;
+
+import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
+import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
+
+public enum DisplayableComparator implements HtmlRadioButtonGroup.Displayable {
+    EQUAL(tr("Equal")), //
+    LESS(tr("Less than")), //
+    GREATER(tr("Greter than")), //
+    LESS_EQUAL(tr("Less or equal")), //
+    GREATER_EQUAL(tr("Greater or equal"));
+
+    private String displayName;
+
+    @Override
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    private DisplayableComparator(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public static DisplayableComparator getComparator(Comparator cmp) {
+        return Enum.valueOf(DisplayableComparator.class, cmp.name());
+    }
+
+    public static Comparator getComparator(DisplayableComparator cmp) {
+        return Enum.valueOf(Comparator.class, cmp.name());
+    }
+}

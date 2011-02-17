@@ -5,15 +5,24 @@ import java.util.Date;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.model.Identifiable;
 
-public class UserContentAdministration<T extends DaoUserContent> extends Identifiable<T> {
+public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> {
 
-    protected UserContentAdministration(final T dao) {
+    protected UserContentAdmin(final T dao) {
         super(dao);
     }
 
-    public static UserContentAdministration create(final DaoUserContent dao) {
+    public static UserContentAdmin<DaoUserContent> create(final DaoUserContent dao) {
         if (dao != null) {
-            return new UserContentAdministration(dao);
+            return new UserContentAdmin<DaoUserContent>(dao);
+        }
+        return null;
+    }
+
+    public static UserContentAdmin<DaoUserContent> createUserContent(Integer id) {
+        UserContentAdminListFactory<DaoUserContent, UserContentAdmin<DaoUserContent>> factory = new UserContentAdminListFactory<DaoUserContent, UserContentAdmin<DaoUserContent>>();
+        factory.idEquals(id);
+        if (factory.list().iterator().hasNext()){
+            return factory.list().iterator().next();
         }
         return null;
     }

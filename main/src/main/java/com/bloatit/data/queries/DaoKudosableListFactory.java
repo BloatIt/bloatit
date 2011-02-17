@@ -26,6 +26,7 @@ import com.bloatit.data.SessionManager;
 
 public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserContentListFactory<T> {
 
+    private static final String IS_POPULARITY_LOCKED = "isPopularityLocked";
     private static final String KUDOS = "kudos";
     private static final String STATE = "state";
     private static final String POPULARITY = "popularity";
@@ -56,6 +57,14 @@ public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserCont
 
     public void kudosSize(Comparator cmp, int number) {
         add(createNbCriterion(cmp, KUDOS, number));
+    }
+
+    public void lokedOnly() {
+        add(Restrictions.eq(IS_POPULARITY_LOCKED, true));
+    }
+
+    public void nonLokedOnly() {
+        add(Restrictions.eq(IS_POPULARITY_LOCKED, false));
     }
 
 }

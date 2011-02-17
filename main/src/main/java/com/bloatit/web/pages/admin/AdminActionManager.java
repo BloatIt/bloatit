@@ -10,7 +10,14 @@ public class AdminActionManager {
 
     public enum Action implements Displayable {
         DELETE(tr("delete")), //
-        RESTORE(tr("restore"));
+        RESTORE(tr("restore")), //
+        LOCK(tr("lock votes")), //
+        UNLOCK(tr("unlock votes")), //
+        SETSTATE(tr("Change the state")), //
+        COMPUTE_SELECTED_OFFER(tr("Re calculate the selected offer")), //
+        SET_VALIDATION_DATE(tr("Update the validation Date")), //
+        SET_DEMAND_STATE(tr("Change the demand state")), //
+        ;
 
         private final String displayName;
 
@@ -26,6 +33,12 @@ public class AdminActionManager {
 
     public EnumSet<Action> userContentActions() {
         return EnumSet.range(Action.DELETE, Action.RESTORE);
+    }
+    public EnumSet<Action> kudosableActions() {
+        return EnumSet.range(Action.LOCK, Action.SETSTATE);
+    }
+    public EnumSet<Action> demandActions() {
+        return EnumSet.range(Action.COMPUTE_SELECTED_OFFER, Action.SET_DEMAND_STATE);
     }
 
 }

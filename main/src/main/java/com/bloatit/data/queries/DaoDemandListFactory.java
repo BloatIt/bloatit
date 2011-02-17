@@ -134,7 +134,7 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
      * Add a WHERE close ensuring that there is a selected offer on each returned
      * daoDemand.
      */
-    public void selectedOfferIsNotNull() {
+    public void withSelectedOffer() {
         add(Restrictions.isNotNull(SELECTED_OFFER));
     }
 
@@ -142,21 +142,21 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
      * Add a WHERE close ensuring that there isn't a selected offer on each returned
      * daoDemand.
      */
-    public void selectedOfferIsNull() {
+    public void withoutSelectedOffer() {
         add(Restrictions.isNull(SELECTED_OFFER));
     }
 
     /**
      * Add a WHERE close ensuring that the demands have at least one offer.
      */
-    public void hasOffers() {
+    public void withOffer() {
         add(Restrictions.isNotEmpty(OFFERS));
     }
 
     /**
      * Add a WHERE close ensuring that the demands have no offer.
      */
-    public void hasNoOffer() {
+    public void withoutOffer() {
         add(Restrictions.isEmpty(OFFERS));
     }
 

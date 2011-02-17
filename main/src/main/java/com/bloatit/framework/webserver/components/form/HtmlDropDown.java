@@ -52,7 +52,7 @@ public class HtmlDropDown extends HtmlFormField<String> {
         opt.addAttribute("value", value);
 
         if (value.equals(checked)) {
-            opt.addAttribute("checked", "checked");
+            opt.addAttribute("selected", "selected");
         }
         ((HtmlBranch) element).add(opt);
         elements.put(value, opt);
