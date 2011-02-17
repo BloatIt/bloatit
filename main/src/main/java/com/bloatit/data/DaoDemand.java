@@ -63,7 +63,7 @@ public final class DaoDemand extends DaoKudosable {
      * important !
      */
     public enum DemandState {
-        PENDING, PREPARING, DEVELOPPING, INCOME, DISCARDED, FINISHED
+        PENDING, PREPARING, DEVELOPPING, UAT, DISCARDED, FINISHED
     }
 
     /**

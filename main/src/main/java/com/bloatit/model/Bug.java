@@ -28,14 +28,14 @@ import com.bloatit.model.lists.CommentList;
 /**
  * This is a bug report. A bug report is associated with a batch. it is quite similar to
  * the bug report in a classical bugTracker.
- * 
+ *
  * @author Thomas Guyard
  */
 public class Bug extends Identifiable<DaoBug> {
 
     /**
      * Find a bug in the cache or create an new one.
-     * 
+     *
      * @param dao
      * @return if dao is null return null. Else return the new Bug.
      */
@@ -57,15 +57,16 @@ public class Bug extends Identifiable<DaoBug> {
 
     /**
      * Create a new Bug.
-     * 
+     *
      * @param member is the author of the bug.
      * @param batch is the batch on which this bug has been set.
+     * @param title is the title of the bug.
      * @param description is a complete description of the bug.
      * @param locale is the language in which this description has been written.
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
-    Bug(final Member member, final Batch batch, final String description, final Locale locale, final Level errorLevel) {
-        super(new DaoBug(member.getDao(), batch.getDao(), description, locale, errorLevel));
+    Bug(final Member member, final Batch batch, final String title, final String description, final Locale locale, final Level errorLevel) {
+        super(new DaoBug(member.getDao(), batch.getDao(), title, description, locale, errorLevel));
     }
 
     /**

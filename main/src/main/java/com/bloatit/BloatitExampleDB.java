@@ -5,6 +5,8 @@ import java.util.Locale;
 import java.util.UUID;
 
 import com.bloatit.common.ConfigurationManager;
+import com.bloatit.data.DaoBug.Level;
+import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.SessionManager;
@@ -13,6 +15,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.AuthToken;
 import com.bloatit.model.BankTransaction;
+import com.bloatit.model.Batch;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Demand;
 import com.bloatit.model.DemandFactory;
@@ -22,6 +25,7 @@ import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
+import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 
 public class BloatitExampleDB {
@@ -159,6 +163,11 @@ public class BloatitExampleDB {
         Demand addPerroquetInMageiaDemand = DemandFactory.createDemand(fred, fred.getLocale(), addPerroquetInMageiaDemandtitle,
                 addPerroquetInMageiaDemandDescription, mageia);
 
+        String hydrePerroquetOfferDescription = "Je le fais et j'ajoute le paquet pour la première release.";
+        addPerroquetInMageiaDemand.authenticate(new AuthToken(hydre));
+        Offer hydrePerroquetOffer = addPerroquetInMageiaDemand.addOffer(hydre, new BigDecimal(200), hydrePerroquetOfferDescription, hydre.getLocale(),
+                DateUtils.tomorrow(), 0);
+
         // LibreOffice demand
         String colorPickerDemandDescription = "Actuellement dans LibreOffice, il y a un lot de couleur pré-tiré moche. Si l'on veut une jolie couleur, il faut passer dans tous les menus et on arrive enfin sur un outils anti-ergonomique.\n"
                 + "Il faudrait donc ajouter un color picker à un endroit accessible, par exemple dans le selecteur de couleur des styles.";
@@ -171,7 +180,7 @@ public class BloatitExampleDB {
         // Contributions
 
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(chogall));
-        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("2000"), "On est prêts, non moi j'suis pas prêt !");
+        twoSubtitlesInVlcDemand.addContribution(new BigDecimal("800"), "On est prêts, non moi j'suis pas prêt !");
 
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(cerbere));
         twoSubtitlesInVlcDemand.addContribution(new BigDecimal("500"), "Grrrrrr");
@@ -194,8 +203,25 @@ public class BloatitExampleDB {
         // new HighlightDemand(twoSubtitlesInVlcDemand, 6,
         // "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
 
+
+        //Add bugs
+        setDemandInValidationState(addPerroquetInMageiaDemand);
+        Batch firstBatch = addPerroquetInMageiaDemand.getSelectedOffer().getBatches().iterator().next();
+        firstBatch.addBug(fred, "Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
+        firstBatch.addBug(elephantman, "Faible qualité graphique pour les éléphants", "L'icone est en vertoriel, c'est pas mal à 2 dimension mais je la trouve un peu pixélisé sur mon écran à 5 dimensions, c'est pas très très beau", elephantman.getLocale(), Level.MINOR);
+        firstBatch.addBug(yoann, "Fichier de conf système manquant", "Le fichier de conf /etc/perroquet système n'est pas placé. Il faudrait le corriger", yoann.getLocale(), Level.MAJOR);
+
         SessionManager.endWorkUnitAndFlush();
 
+    }
+
+    private void setDemandInValidationState(Demand demand) {
+        DemandImplementation demandImpl = (DemandImplementation) demand;
+        demandImpl.getDao().setDemandState(DemandState.UAT);
+    }
+    private void setDemandInDevelopmentState(Demand demand) {
+        DemandImplementation demandImpl = (DemandImplementation) demand;
+        demandImpl.getDao().setDemandState(DemandState.DEVELOPPING);
     }
 
     public void giveMoney(Member member, int amount) {

@@ -57,6 +57,9 @@ public final class DaoBug extends DaoUserContent {
     }
 
     @Basic(optional = false)
+    private String title;
+
+    @Basic(optional = false)
     private String description;
 
     /**
@@ -81,12 +84,13 @@ public final class DaoBug extends DaoUserContent {
     @Enumerated
     private State state;
 
-    public DaoBug(final DaoMember member, final DaoBatch batch, final String description, final Locale locale, final Level errorLevel) {
+    public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level errorLevel) {
         super(member);
-        if (description == null || batch == null || locale == null || errorLevel == null || description.isEmpty()) {
+        if (title == null || description == null || batch == null || locale == null || errorLevel == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.batch = batch;
+        this.title = title;
         this.description = description;
         this.locale = locale;
         this.errorLevel = errorLevel;
@@ -104,11 +108,18 @@ public final class DaoBug extends DaoUserContent {
     /**
      * The person assigned to a bug is the developer (the member that has created the
      * offer).
-     * 
+     *
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {
         return getBatch().getOffer().getAuthor();
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
     }
 
     /**
@@ -171,7 +182,7 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -185,7 +196,7 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

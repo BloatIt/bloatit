@@ -398,7 +398,7 @@ public class DemandImplementationTest extends ModelTestUnit {
         demand.authenticate(tomAuthToken);
         demand.releaseCurrentBatch();
 
-        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertEquals(DemandState.UAT, demand.getDemandState());
         assertEquals(120, demand.getContribution().intValue());
     }
 
@@ -432,27 +432,27 @@ public class DemandImplementationTest extends ModelTestUnit {
         demand.authenticate(tomAuthToken);
         demand.releaseCurrentBatch();
 
-        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertEquals(DemandState.UAT, demand.getDemandState());
         assertTrue(demand.validateCurrentBatch(true));
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
         demand.releaseCurrentBatch();
-        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertEquals(DemandState.UAT, demand.getDemandState());
         assertTrue(demand.validateCurrentBatch(true));
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
         demand.releaseCurrentBatch();
-        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertEquals(DemandState.UAT, demand.getDemandState());
         assertTrue(demand.validateCurrentBatch(true));
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
         demand.releaseCurrentBatch();
-        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertEquals(DemandState.UAT, demand.getDemandState());
         assertTrue(demand.validateCurrentBatch(true));
         assertEquals(DemandState.DEVELOPPING, demand.getDemandState());
 
         demand.releaseCurrentBatch();
-        assertEquals(DemandState.INCOME, demand.getDemandState());
+        assertEquals(DemandState.UAT, demand.getDemandState());
         assertTrue(demand.validateCurrentBatch(true));
         assertEquals(DemandState.FINISHED, demand.getDemandState());
 

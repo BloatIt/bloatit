@@ -300,7 +300,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         if (getSelectedOfferUnprotected().isFinished()) {
             throw new FatalErrorException("There is no batch left for this Offer !");
         }
-        if (getDemandState() != DemandState.INCOME) {
+        if (getDemandState() != DemandState.UAT) {
             throw new WrongStateException();
         }
         return getSelectedOfferUnprotected().validateCurrentBatch(force);
@@ -366,7 +366,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * Slot called when this demand state change to {@link IncomeState}.
      */
     void inIncomeState() {
-        getDao().setDemandState(DemandState.INCOME);
+        getDao().setDemandState(DemandState.UAT);
 
     }
 
@@ -744,7 +744,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
                 setStateObject(new FinishedState(this));
             }
             break;
-        case INCOME:
+        case UAT:
             if (stateObject == null || !stateObject.getClass().equals(IncomeState.class)) {
                 setStateObject(new IncomeState(this));
             }
