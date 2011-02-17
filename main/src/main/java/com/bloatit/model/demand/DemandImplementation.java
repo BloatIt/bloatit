@@ -810,9 +810,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     }
 
     @Override
-    public int getOpenBugsCount() {
-        //TODO: implements
-        return 25;
+    public int countOpenBugs() {
+        return getDao().countOpenBugs();
     }
 
 }

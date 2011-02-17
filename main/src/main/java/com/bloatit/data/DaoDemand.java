@@ -30,6 +30,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -411,6 +412,15 @@ public final class DaoDemand extends DaoKudosable {
             return false;
         }
         return true;
+    }
+
+    public int countOpenBugs() {
+
+        String q = "select count(*) from com.bloatit.data.DaoOffer o join o.batches as bs join bs.bugs as b where o = :selectedOffer and b.state != :close ";
+        Query query = SessionManager.getSessionFactory().getCurrentSession().createQuery(q);
+        query.setParameter("selectedOffer", selectedOffer);
+        query.setParameter("close", DaoBug.State.RESOLVED);
+        return ((Long) query.uniqueResult()).intValue();
     }
 
 }
