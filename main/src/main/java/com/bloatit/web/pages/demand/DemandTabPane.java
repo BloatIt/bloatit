@@ -12,6 +12,7 @@ package com.bloatit.web.pages.demand;
 
 import java.util.Locale;
 
+import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -34,6 +35,8 @@ import com.bloatit.web.url.MemberPageUrl;
 
 @ParamContainer(value = "demandTabPane", isComponent = true)
 public final class DemandTabPane extends HtmlPageComponent {
+
+    public static final String BUGS_TAB = "bugs_tab";
 
     public static final String DETAILS_TAB = "details_tab";
 
@@ -101,6 +104,17 @@ public final class DemandTabPane extends HtmlPageComponent {
                 return new DemandOfferListComponent(demand);
             }
         });
+
+        // Create Bugtracker tab only after preparation
+        if(demand.getDemandState() != DemandState.PENDING && demand.getDemandState() != DemandState.PREPARING) {
+
+            tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", demand.getOpenBugsCount()), BUGS_TAB) {
+                @Override
+                public HtmlNode generateBody() {
+                    return new DemandBugListComponent(demand);
+                }
+            });
+        }
 
         add(tabPane);
 

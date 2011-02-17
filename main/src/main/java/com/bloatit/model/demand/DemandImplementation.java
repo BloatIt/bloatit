@@ -809,4 +809,10 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         return KudosableConfiguration.getDemandTurnHidden();
     }
 
+    @Override
+    public int getOpenBugsCount() {
+        //TODO: implements
+        return 25;
+    }
+
 }
