@@ -20,14 +20,12 @@ import java.util.Iterator;
 
 import org.hibernate.Query;
 
-import com.bloatit.data.DaoJoinGroupInvitation;
-import com.bloatit.data.DaoJoinGroupInvitation.State;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * This is the implementation of the {@link PageIterable} interface using a Hibernate HQL
- * query.
+ * This is the implementation of the {@link PageIterable} interface using a
+ * Hibernate HQL query.
  */
 public class QueryCollection<T> implements PageIterable<T> {
 
@@ -42,6 +40,10 @@ public class QueryCollection<T> implements PageIterable<T> {
      */
     public QueryCollection(final String queryStr) {
         this(SessionManager.createQuery(queryStr));
+    }
+
+    public QueryCollection(final String queryStr, final String sizeQuery) {
+        this(SessionManager.createQuery(queryStr), SessionManager.createQuery(sizeQuery));
     }
 
     /**
