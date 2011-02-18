@@ -13,7 +13,6 @@ package com.bloatit.web.pages.demand;
 import java.util.Iterator;
 
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitle;
@@ -29,18 +28,22 @@ public class DemandBugListComponent extends HtmlDiv {
     private final Demand demand;
 
     public DemandBugListComponent(final Demand demand) {
-        super();
+        super("padding");
         this.demand = demand;
 
-
+        //Open bugs
         PageIterable<Bug> openBugs = demand.getOpenBugs();
-
-
         HtmlTitle openBugsTitle = new HtmlTitle(Context.tr("Open bugs ({0})", openBugs.size()), 1);
         add(openBugsTitle);
-
         HtmlTable openBugsTable = new HtmlTable(new HtmlBugsTableModel(openBugs));
         add(openBugsTable);
+
+        //Closed bugs
+        PageIterable<Bug> closedBugs = demand.getClosedBugs();
+        HtmlTitle closedBugsTitle = new HtmlTitle(Context.tr("Closed bugs ({0})", closedBugs.size()), 1);
+        add(closedBugsTitle);
+        HtmlTable closedBugsTable = new HtmlTable(new HtmlBugsTableModel(closedBugs));
+        add(closedBugsTable);
     }
 
 
@@ -95,15 +98,14 @@ public class DemandBugListComponent extends HtmlDiv {
                 text = new HtmlText(bug.getErrorLevel().toString());
                 break;
             case 2:
-                //TODO find batch count
-                text = new HtmlText(String.valueOf(2));
+                text = new HtmlText(String.valueOf(bug.getBatch().getPosition()));
                 break;
             case 3:
                 text = new HtmlText(bug.getTitle());
                 break;
 
             case 4:
-                text = new HtmlText(Context.getLocalizator().getDate(bug.getLastUpdateDate()).toString(FormatStyle.SHORT));
+                text = new HtmlText(Context.getLocalizator().getDate(bug.getLastUpdateDate()).toString());
                 break;
             default:
 

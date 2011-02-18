@@ -440,7 +440,7 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     public PageIterable<DaoBug> getOpenBugs() {
-
+    
         String q = "SELECT b" + //
                 " FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
@@ -456,12 +456,28 @@ public final class DaoDemand extends DaoKudosable {
                 "AND b.state != :close ";//
 
         org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        return new QueryCollection<DaoBug>( currentSession.createQuery(q),currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer).setParameter("close", DaoBug.State.RESOLVED);
+    }
 
-        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
-                                                                                                                        selectedOffer)
-                                                                                                             .setParameter("close",
-                                                                                                                           DaoBug.State.RESOLVED);
+    public PageIterable<DaoBug> getClosedBugs() {
+        String q = "SELECT b" + //
+        " FROM com.bloatit.data.DaoOffer o " + //
+        "JOIN o.batches as bs " + //
+        "JOIN bs.bugs as b " + //
+        "WHERE o = :selectedOffer " + //
+        "AND o.demand = :this " + //
+        "AND b.state = :close ";//
 
+        String qCount = "SELECT count(b)" + //
+        " FROM com.bloatit.data.DaoOffer o " + //
+        "JOIN o.batches as bs " + //
+        "JOIN bs.bugs as b " + //
+        "WHERE o = :selectedOffer " + //
+        "AND o.demand = :this " + //
+        "AND b.state = :close ";//
+
+        org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        return new QueryCollection<DaoBug>( currentSession.createQuery(q),currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer).setParameter("close", DaoBug.State.RESOLVED).setEntity("this", this);
     }
 
 }

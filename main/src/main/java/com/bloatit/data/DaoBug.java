@@ -162,8 +162,23 @@ public final class DaoBug extends DaoUserContent {
      */
     public PageIterable<DaoComment> getComments() {
         final Query allComments = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "");
-        final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "selecte count(*)");
+        final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)");
         return new QueryCollection<DaoComment>(allComments, allCommentsSize);
+    }
+
+    /**
+     * @return the last comment
+     */
+    public DaoComment getLastComment() {
+
+        final Query allComments = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "ORDER BY creationDate DESC");
+        final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)");
+        QueryCollection<DaoComment> queryCollection = new QueryCollection<DaoComment>(allComments, allCommentsSize);
+        if(queryCollection.size() == 0){
+            return null;
+        }
+
+        return queryCollection.iterator().next();
     }
 
     // ======================================================================
