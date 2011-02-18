@@ -58,9 +58,9 @@ public class DaoTranslationTest extends DataTestUnit {
         final DaoDescription description = DaoDescription.createAndPersist(yo, Locale.ENGLISH, "English title", "English body");
 
         description.addTranslation(new DaoTranslation(fred, description, Locale.FRANCE, "plop", "plip"));
-        description.addTranslation(new DaoTranslation(yo, description, Locale.FRANCE, "plup", "plyp"));
-
         try {
+            description.addTranslation(new DaoTranslation(yo, description, Locale.FRANCE, "plup", "plyp"));
+
             SessionManager.flush();
             fail();
         } catch (final Exception e) {

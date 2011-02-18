@@ -39,11 +39,6 @@ public final class KudosableAdminPageImplementation extends
     }
 
     @Override
-    protected void doAddFormOrder(HtmlDropDown order) {
-        // Everything done in super class
-    }
-
-    @Override
     protected void doAddFormFilters(HtmlForm form) {
         // Everything done in super class
     }

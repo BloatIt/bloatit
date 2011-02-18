@@ -100,6 +100,7 @@ public abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
     }
 
     protected Criteria addOrder(Order order) {
+        System.out.println("add order: " + order);
         return criteria.addOrder(order);
     }
 

@@ -32,8 +32,6 @@ import org.hibernate.search.annotations.Indexed;
  * column in your table. There is no DaoIdentifiable Table.
  */
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Indexed
 public abstract class DaoIdentifiable implements IdentifiableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

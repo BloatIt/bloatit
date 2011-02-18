@@ -29,7 +29,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 @Entity
-public class DaoFileMetadata extends DaoUserContent {
+public final class DaoFileMetadata extends DaoUserContent {
 
     public enum FileType {
         TEXT, HTML, TEX, PDF, ODT, DOC, BMP, JPG, PNG, SVG, UNKNOWN

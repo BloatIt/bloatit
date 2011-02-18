@@ -5,15 +5,12 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.EnumSet;
 
 import com.bloatit.data.DaoDemand;
-import com.bloatit.data.DaoDemand.DemandState;
-import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.admin.DemandAdmin;
 import com.bloatit.model.admin.DemandAdminListFactory;
@@ -94,11 +91,6 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, DemandA
     }
 
     @Override
-    protected void doAddFormOrder(HtmlDropDown order) {
-        // Everything done in super class
-    }
-
-    @Override
     protected void doAddFormFilters(HtmlForm form) {
         HtmlDropDown state = new HtmlDropDown(url.getFilterByStateParameter().formFieldData());
         state.addDropDownElements(EnumSet.allOf(DisplayableDemandState.class));
@@ -124,18 +116,24 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, DemandA
 
     @Override
     protected void doAddColumns(HtmlGenericTableModel<DemandAdmin> tableModel) {
-        tableModel.addColumn(tr("Demand state"), new StringColumnGenerator<DemandAdmin>() {
+        DemandAdminPageUrl clonedUrl = url.clone();
+        
+        clonedUrl.setOrderByStr("demandState");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Demand state")), new StringColumnGenerator<DemandAdmin>() {
             @Override
             public String getStringBody(DemandAdmin element) {
                 return String.valueOf(element.getDemandState());
             }
         });
-        tableModel.addColumn(tr("contribution"), new StringColumnGenerator<DemandAdmin>() {
+        
+        clonedUrl.setOrderByStr("contribution");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("contribution")), new StringColumnGenerator<DemandAdmin>() {
             @Override
             public String getStringBody(DemandAdmin element) {
                 return String.valueOf(element.getContribution());
             }
         });
+        
         tableModel.addColumn(tr("project"), new StringColumnGenerator<DemandAdmin>() {
             @Override
             public String getStringBody(DemandAdmin element) {

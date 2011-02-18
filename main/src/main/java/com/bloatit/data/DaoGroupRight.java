@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
  * </p>
  */
 @Entity
-public class DaoGroupRight extends DaoIdentifiable {
+public final class DaoGroupRight extends DaoIdentifiable {
     
     public enum UserGroupRight {
         CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK, 

@@ -4,11 +4,14 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
+import sun.tools.tree.OrExpression;
+
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
@@ -56,32 +59,33 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     }
 
     @RequestParam(defaultValue = "creationDate")
+    @ParamConstraint(optional = true)
     private String orderByStr;
-    
-    @RequestParam(defaultValue = "DATE", role = RequestParam.Role.POST)
-    private OrderByUserContent orderBy;
-    
-    @RequestParam(defaultValue = "false", role = RequestParam.Role.POST)
+
+    @RequestParam(defaultValue = "false")
+    @ParamConstraint(optional = true)
     private Boolean asc;
-    
-    @RequestParam(defaultValue = "WITHOUT", role = RequestParam.Role.POST)
+
+    @RequestParam(defaultValue = "WITHOUT")
+    @ParamConstraint(optional = true)
     private DisplayableFilterType filterDeleted;
-    
-    @RequestParam(defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
+
+    @RequestParam(defaultValue = "NO_FILTER")
+    @ParamConstraint(optional = true)
     private DisplayableFilterType filterFile;
-    
-    @RequestParam(defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
+
+    @RequestParam(defaultValue = "NO_FILTER")
+    @ParamConstraint(optional = true)
     private DisplayableFilterType filterGroup;
-    
+
     private T factory;
     private final UserContentAdminPageUrl url;
 
-    protected UserContentAdminPage(UserContentAdminPageUrl url,  T factory) {
+    protected UserContentAdminPage(UserContentAdminPageUrl url, T factory) {
         super(url);
         this.url = url;
         this.factory = factory;
         orderByStr = url.getOrderByStr();
-        orderBy = url.getOrderBy();
         asc = url.getAsc();
         filterDeleted = url.getFilterDeleted();
         filterFile = url.getFilterFile();
@@ -89,13 +93,12 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
         // Save parameters
         Context.getSession().addParameter(url.getOrderByStrParameter());
-        Context.getSession().addParameter(url.getOrderByParameter());
         Context.getSession().addParameter(url.getAscParameter());
         Context.getSession().addParameter(url.getFilterDeletedParameter());
         Context.getSession().addParameter(url.getFilterFileParameter());
         Context.getSession().addParameter(url.getFilterGroupParameter());
     }
-    
+
     @Override
     public final HtmlElement createRestrictedContent() throws RedirectException {
         PlaceHolderElement everything = new PlaceHolderElement();
@@ -106,7 +109,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         generateFilterForm(filterForm);
 
         // Apply filters
-        filter(orderBy, asc, filterDeleted, filterFile, filterGroup);
+        filter(asc, filterDeleted, filterFile, filterGroup);
 
         // Action form
         AdministrationActionUrl actionUrl = new AdministrationActionUrl();
@@ -126,11 +129,8 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     public final void generateFilterForm(HtmlForm filterForm) {
         UserContentAdminPageUrl url = new UserContentAdminPageUrl();
         // order by
-        HtmlDropDown order = new HtmlDropDown(url.getOrderByParameter().formFieldData());
         HtmlFormBlock blockOrder = new HtmlFormBlock("Order by");
-        filterForm.add(blockOrder.add(order));
-        order.addDropDownElements(EnumSet.allOf(OrderByUserContent.class));
-        addFormOrder(order);
+        filterForm.add(blockOrder);
         blockOrder.add(new HtmlCheckbox(url.getAscParameter().formFieldData(), tr("Asc"), LabelPosition.BEFORE));
 
         // delete ?
@@ -144,7 +144,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         groupFile.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupFile.setLabel(tr("Filter by Content with file"));
         filterForm.add(groupFile);
-        
+
         HtmlDropDown groupAsGroup = new HtmlDropDown(url.getFilterGroupParameter().formFieldData());
         groupAsGroup.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupAsGroup.setLabel(tr("Filter by Content created as a group"));
@@ -157,24 +157,10 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         filterForm.add(new HtmlSubmit(tr("Filter")));
     }
 
-    public final void filter(OrderByUserContent orderBy, boolean asc, DisplayableFilterType filterDeleted, DisplayableFilterType filterFile, DisplayableFilterType filterGroup) {
-
-        switch (orderBy) {
-        case DATE:
-            factory.orderByCreationDate(asc ? OrderType.ASC : OrderType.DESC);
-            break;
-        case GROUP:
-            factory.orderByAsGroup(asc ? OrderType.ASC : OrderType.DESC);
-            break;
-        case MEMBER:
-            factory.orderByMember(asc ? OrderType.ASC : OrderType.DESC);
-            break;
-        case NOTHING:
-            break;
-        default:
-            break;
+    public final void filter(boolean asc, DisplayableFilterType filterDeleted, DisplayableFilterType filterFile, DisplayableFilterType filterGroup) {
+        if (orderByStr != null && !orderByStr.isEmpty()) {
+            factory.orderBy(orderByStr, asc ? OrderType.ASC : OrderType.DESC);
         }
-
         if (filterDeleted == DisplayableFilterType.WITH) {
             factory.deletedOnly();
         } else if (filterDeleted == DisplayableFilterType.WITHOUT) {
@@ -204,24 +190,25 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
             }
         });
 
-        url.setOrderByStr("member");
-        tableModel.addColumn(url.getHtmlLink(tr("Author")), new StringColumnGenerator<V>() {
+        UserContentAdminPageUrl clonedUrl = url.clone();
+        clonedUrl.setOrderByStr("m.login");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Author")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(V element) {
                 return element.getAuthor();
             }
         });
 
-        url.setOrderByStr("asGroup");
-        tableModel.addColumn(url.getHtmlLink(tr("asGroup")), new StringColumnGenerator<V>() {
+        clonedUrl.setOrderByStr("asGroup");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("asGroup")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(V element) {
                 return element.getAsGroup();
             }
         });
 
-        url.setOrderByStr("creationDate");
-        tableModel.addColumn(url.getHtmlLink(tr("Creation date")), new StringColumnGenerator<V>() {
+        clonedUrl.setOrderByStr("creationDate");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Creation date")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(V element) {
                 return Context.getLocalizator().getDate(element.getCreationDate()).toString(FormatStyle.MEDIUM);
@@ -235,8 +222,8 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
             }
         });
 
-        url.setOrderByStr("isDeleted");
-        tableModel.addColumn(url.getHtmlLink(tr("Deleted")), new StringColumnGenerator<V>() {
+        clonedUrl.setOrderByStr("isDeleted");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Deleted")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(V element) {
                 return String.valueOf(element.isDeleted());
@@ -273,8 +260,6 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     }
 
     protected abstract void addColumns(HtmlGenericTableModel<V> tableModel);
-
-    protected abstract void addFormOrder(HtmlDropDown order);
 
     protected abstract void addFormFilters(HtmlForm form);
 

@@ -171,7 +171,6 @@ public class DaoDemandTest extends DataTestUnit {
 
         demand.computeSelectedOffer();
         assertEquals(demand.getSelectedOffer(), offer);
-
     }
 
     public void testSearchDemand() {

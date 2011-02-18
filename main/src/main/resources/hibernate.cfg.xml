@@ -53,6 +53,8 @@
 		<mapping class="com.bloatit.data.DaoProject" />
 		<mapping class="com.bloatit.data.DaoGroupRight" />
 		<mapping class="com.bloatit.data.DaoHighlightDemand" />
+		<mapping class="com.bloatit.data.DaoUserContent" />
+		<mapping class="com.bloatit.data.DaoKudosable" />
 
 		<!--<mapping class="com.bloatit.data.DaoUserContent" /> <mapping 
 			class="com.bloatit.data.DaoKudosable" /> <mapping class="com.bloatit.data.DaoIdentifiable" 

@@ -21,7 +21,7 @@ import com.bloatit.framework.utils.PageIterable;
  * date
  */
 @Entity
-public class DaoHighlightDemand extends DaoIdentifiable{
+public final class DaoHighlightDemand extends DaoIdentifiable{
 
     @Basic(optional = false)
     private int position;

@@ -75,19 +75,26 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
 
     @Override
     protected final void addColumns(HtmlGenericTableModel<U> tableModel) {
-        tableModel.addColumn(tr("Popularity"), new StringColumnGenerator<U>() {
+        KudosableAdminPageUrl clonedUrl = url.clone();
+        
+        clonedUrl.setOrderByStr("popularity");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Popularity")), new StringColumnGenerator<U>() {
             @Override
             public String getStringBody(U element) {
                 return String.valueOf(element.getPopularity());
             }
         });
-        tableModel.addColumn(tr("State"), new StringColumnGenerator<U>() {
+        
+        clonedUrl.setOrderByStr("popularityState");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("State")), new StringColumnGenerator<U>() {
             @Override
             public String getStringBody(U element) {
                 return String.valueOf(element.getState());
             }
         });
-        tableModel.addColumn(tr("Is locked"), new StringColumnGenerator<U>() {
+        
+        clonedUrl.setOrderByStr("isLocked");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Is locked")), new StringColumnGenerator<U>() {
             @Override
             public String getStringBody(U element) {
                 return String.valueOf(element.isPopularityLocked());
@@ -104,12 +111,6 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
         stateSetter.addDropDownElements(EnumSet.allOf(DisplayableState.class));
         group.add(stateSetter);
         doAddActions(dropDown, group);
-    }
-
-    @Override
-    protected final void addFormOrder(HtmlDropDown order) {
-        order.addDropDownElement(url.getOrderByPopularityParameter().getName(), tr("Order by popularity"));
-        doAddFormOrder(order);
     }
 
     @Override
@@ -134,8 +135,6 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     protected abstract void doAddColumns(HtmlGenericTableModel<U> tableModel);
 
     protected abstract void doAddActions(HtmlDropDown dropDown, HtmlBranch block);
-
-    protected abstract void doAddFormOrder(HtmlDropDown order);
 
     protected abstract void doAddFormFilters(HtmlForm form);
 }

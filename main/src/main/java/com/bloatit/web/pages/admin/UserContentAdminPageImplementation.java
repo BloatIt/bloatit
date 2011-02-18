@@ -4,7 +4,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
-import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.model.admin.UserContentAdmin;
 import com.bloatit.model.admin.UserContentAdminListFactory;
@@ -30,12 +29,6 @@ public class UserContentAdminPageImplementation
 
     @Override
     protected void addColumns(HtmlGenericTableModel<UserContentAdmin<DaoUserContent>> tableModel) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void addFormOrder(HtmlDropDown order) {
         // TODO Auto-generated method stub
 
     }

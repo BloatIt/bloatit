@@ -155,6 +155,7 @@ public class UrlParameter<T, U> extends UrlNode {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private String toString(T value) throws ConversionErrorException {
         // If it is a list then it's a list of parameters.
         if (value instanceof List) {

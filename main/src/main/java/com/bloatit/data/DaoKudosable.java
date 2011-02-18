@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 import org.hibernate.Query;
@@ -35,8 +35,7 @@ import org.hibernate.search.annotations.Store;
  * This represent a content that is Kudosable. There is no table DaoKudosable.
  * Each attribute is mapped by children classes.
  */
-@MappedSuperclass
-@Indexed
+@Entity
 public abstract class DaoKudosable extends DaoUserContent {
 
     /**

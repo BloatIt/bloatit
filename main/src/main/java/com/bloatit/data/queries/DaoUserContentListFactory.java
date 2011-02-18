@@ -30,16 +30,19 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
 
     private static final String CREATION_DATE = "creationDate";
     private static final String MEMBER = "member";
+    private static final String MEMBER_LOGIN = "m.member";
     private static final String FILES = "files";
     private static final String IS_DELETED = "isDeleted";
     private static final String AS_GROUP = "asGroup";
 
     protected DaoUserContentListFactory(Criteria criteria) {
         super(criteria);
+        criteria.createAlias("member", "m");
+        criteria.setReadOnly(true);
     }
 
     public DaoUserContentListFactory() {
-        super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoUserContent.class));
+        this(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoUserContent.class));
     }
 
     public void groupByMember() {
@@ -52,9 +55,9 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
 
     public void orderByMember(DaoAbstractListFactory.OrderType order) {
         if (order == OrderType.ASC) {
-            addOrder(Order.asc(MEMBER));
+            addOrder(Order.asc(MEMBER_LOGIN));
         } else {
-            addOrder(Order.desc(MEMBER));
+            addOrder(Order.desc(MEMBER_LOGIN));
         }
     }
 

@@ -1,5 +1,7 @@
 package com.bloatit.framework;
 
+import java.net.BindException;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.webserver.ModelManagerAccessor;
@@ -35,6 +37,9 @@ public class Framework {
             mailServer.init();
             scgiServer.init();
             ModelManagerAccessor.init(model);
+        } catch (final BindException e) {
+            Log.framework().fatal("Are you sure you have killed previous instance? ", e);
+            return false;
         } catch (final RuntimeException e) {
             Log.framework().fatal("Unknown RuntimeException", e);
             return false;
