@@ -25,7 +25,6 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 import org.hibernate.Query;
 import org.hibernate.annotations.Cascade;
@@ -74,7 +73,6 @@ public final class DaoBug extends DaoUserContent {
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
-    @OrderBy("creationDate ASC")
     private final Set<DaoComment> comments = new HashSet<DaoComment>();
 
     @ManyToOne(optional = false)

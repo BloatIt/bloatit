@@ -29,14 +29,12 @@ public class UserContentAdminPageImplementation
 
     @Override
     protected void addColumns(HtmlGenericTableModel<UserContentAdmin<DaoUserContent>> tableModel) {
-        // TODO Auto-generated method stub
-
+        // Nothing to do here.
     }
 
     @Override
     protected void addFormFilters(HtmlForm form) {
-        // TODO Auto-generated method stub
-
+        // Nothing to do here.
     }
 
 }

@@ -25,7 +25,6 @@ import javax.persistence.OneToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 @Entity

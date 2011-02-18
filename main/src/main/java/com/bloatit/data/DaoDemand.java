@@ -34,7 +34,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.OrderBy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.Indexed;
@@ -95,7 +94,6 @@ public final class DaoDemand extends DaoKudosable {
     private final Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
     @OneToMany(mappedBy = "demand")
-    @OrderBy(clause = "creationDate DESC")
     @Cascade(value = { CascadeType.ALL })
     private final Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
 
