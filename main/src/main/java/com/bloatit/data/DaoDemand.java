@@ -424,9 +424,34 @@ public final class DaoDemand extends DaoKudosable {
                 "WHERE o = :selectedOffer " + //
                 "AND b.state != :close ";//
         Query query = SessionManager.getSessionFactory().getCurrentSession().createQuery(q);
-        query.setParameter("selectedOffer", selectedOffer);
+        query.setEntity("selectedOffer", selectedOffer);
         query.setParameter("close", DaoBug.State.RESOLVED);
         return ((Long) query.uniqueResult()).intValue();
+    }
+
+    public PageIterable<DaoBug> getOpenBugs() {
+
+
+        String q = "SELECT b" + //
+		" FROM com.bloatit.data.DaoOffer o " + //
+        "JOIN o.batches as bs " + //
+        "JOIN bs.bugs as b " + //
+        "WHERE o = :selectedOffer " + //
+        "AND b.state != :close ";//
+
+        String qCount = "SELECT count(b)" + //
+        " FROM com.bloatit.data.DaoOffer o " + //
+        "JOIN o.batches as bs " + //
+        "JOIN bs.bugs as b " + //
+        "WHERE o = :selectedOffer " + //
+        "AND b.state != :close ";//
+
+        org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+
+        return new QueryCollection<DaoBug>( currentSession.createQuery(q),currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer).setParameter("close", DaoBug.State.RESOLVED);
+
+
+
     }
 
 }

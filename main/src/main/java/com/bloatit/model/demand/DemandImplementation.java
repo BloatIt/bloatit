@@ -33,6 +33,7 @@ import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.AuthToken;
+import com.bloatit.model.Bug;
 import com.bloatit.model.CacheManager;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
@@ -45,6 +46,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
 import com.bloatit.model.Project;
+import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
@@ -812,6 +814,11 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     @Override
     public int countOpenBugs() {
         return getDao().countOpenBugs();
+    }
+
+    @Override
+    public PageIterable<Bug> getOpenBugs() {
+        return new BugList(getDao().getOpenBugs());
     }
 
 }

@@ -16,12 +16,14 @@
 //
 package com.bloatit.model;
 
+import java.util.Date;
 import java.util.Locale;
 
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.State;
 import com.bloatit.data.DaoComment;
+import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 
@@ -31,7 +33,7 @@ import com.bloatit.model.lists.CommentList;
  *
  * @author Thomas Guyard
  */
-public class Bug extends Identifiable<DaoBug> {
+public class Bug extends UserContent<DaoBug> {
 
     /**
      * Find a bug in the cache or create an new one.
@@ -153,5 +155,19 @@ public class Bug extends Identifiable<DaoBug> {
      */
     public final PageIterable<Comment> getComments() {
         return new CommentList(getDao().getComments());
+    }
+
+    @Override
+    protected DaoUserContent getDaoUserContent() {
+        return getDao();
+    }
+
+    public Date getLastUpdateDate() {
+        //TODO implement
+        return new Date();
+    }
+
+    public String getTitle() {
+        return getDao().getTitle();
     }
 }
