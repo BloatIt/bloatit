@@ -20,9 +20,11 @@ import com.bloatit.web.actions.PaylineNotifyAction;
 import com.bloatit.web.actions.PaylineReturnAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.RegisterAction;
+import com.bloatit.web.actions.ReportBugAction;
 import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
+import com.bloatit.web.pages.BugPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateDemandPage;
@@ -39,6 +41,7 @@ import com.bloatit.web.pages.PaylinePage;
 import com.bloatit.web.pages.ProjectListPage;
 import com.bloatit.web.pages.ProjectPage;
 import com.bloatit.web.pages.RegisterPage;
+import com.bloatit.web.pages.ReportBugPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.admin.DemandAdminPage;
@@ -59,6 +62,7 @@ import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
+import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -97,6 +101,8 @@ import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
+import com.bloatit.web.url.ReportBugActionUrl;
+import com.bloatit.web.url.ReportBugPageUrl;
 import com.bloatit.web.url.SendGroupInvitationActionUrl;
 import com.bloatit.web.url.SendGroupInvitationPageUrl;
 import com.bloatit.web.url.SpecialsPageUrl;
@@ -204,6 +210,12 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(DemandAdminPageUrl.getName())) {
             return new DemandAdminPage(new DemandAdminPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(BugPageUrl.getName())) {
+            return new BugPage(new BugPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ReportBugPageUrl.getName())) {
+            return new ReportBugPage(new ReportBugPageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -268,6 +280,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(HandleJoinGroupInvitationActionUrl.getName())) {
             return new HandleJoinGroupInvitationAction(new HandleJoinGroupInvitationActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ReportBugActionUrl.getName())) {
+            return new ReportBugAction(new ReportBugActionUrl(params, session.getParameters()));
         }
 
         // Resource page

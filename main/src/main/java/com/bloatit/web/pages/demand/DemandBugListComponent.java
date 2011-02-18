@@ -22,6 +22,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Demand;
+import com.bloatit.web.url.BugPageUrl;
 
 public class DemandBugListComponent extends HtmlDiv {
 
@@ -89,7 +90,7 @@ public class DemandBugListComponent extends HtmlDiv {
 
         @Override
         public XmlNode getBody(int column) {
-            HtmlText text = null;
+            XmlNode text = null;
             switch (column) {
             case 0:
                 text = new HtmlText(bug.getState().toString());
@@ -101,7 +102,7 @@ public class DemandBugListComponent extends HtmlDiv {
                 text = new HtmlText(String.valueOf(bug.getBatch().getPosition()));
                 break;
             case 3:
-                text = new HtmlText(bug.getTitle());
+                text = new BugPageUrl(bug).getHtmlLink(bug.getTitle());
                 break;
 
             case 4:
