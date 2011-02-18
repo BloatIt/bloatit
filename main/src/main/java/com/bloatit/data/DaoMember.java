@@ -146,7 +146,7 @@ public final class DaoMember extends DaoActor {
             session.save(theMember);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return theMember;

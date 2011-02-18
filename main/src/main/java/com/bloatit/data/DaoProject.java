@@ -67,7 +67,7 @@ public final class DaoProject extends DaoIdentifiable {
             session.save(project);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return project;

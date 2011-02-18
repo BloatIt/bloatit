@@ -67,7 +67,7 @@ public class DaoDemandTest extends DataTestUnit {
         assertEquals(0, yo.getInternalAccount().getAmount().compareTo(new BigDecimal("82")));
     }
 
-    public void testAddOffer() throws Throwable {
+    public void testAddOffer() {
         DaoDemand demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",

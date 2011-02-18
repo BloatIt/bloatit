@@ -178,7 +178,7 @@ public final class SessionManager {
         try {
             session.setAuthToken(new AuthToken(memberId));
         } catch (final NotFoundException e) {
-            Log.framework().error(e);
+            Log.framework().error("Session not found", e);
         }
         activeSessions.put(uuidKey, session);
     }

@@ -66,8 +66,7 @@ public final class DaoFileMetadata extends DaoUserContent {
             session.save(file);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            Log.data().error(e);
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return file;

@@ -51,7 +51,7 @@ public final class DaoTransaction extends DaoIdentifiable {
             session.save(transaction);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return transaction;

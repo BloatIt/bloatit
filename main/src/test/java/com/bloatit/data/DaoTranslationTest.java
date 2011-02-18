@@ -61,10 +61,11 @@ public class DaoTranslationTest extends DataTestUnit {
         try {
             description.addTranslation(new DaoTranslation(yo, description, Locale.FRANCE, "plup", "plyp"));
 
-            SessionManager.flush();
+            SessionManager.endWorkUnitAndFlush();
             fail();
         } catch (final Exception e) {
             assertTrue(true);
+            SessionManager.beginWorkUnit();
         }
     }
 }

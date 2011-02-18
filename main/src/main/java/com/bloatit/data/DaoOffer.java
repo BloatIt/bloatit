@@ -91,8 +91,7 @@ public final class DaoOffer extends DaoKudosable {
             offer.addBatch(DaoBatch.createAndPersist(dateExpire, amount, description, offer, secondsBeforeValidation));
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            Log.data().error(e);
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return offer;
@@ -105,8 +104,7 @@ public final class DaoOffer extends DaoKudosable {
             session.save(offer);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            Log.data().error(e);
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return offer;

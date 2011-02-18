@@ -125,8 +125,7 @@ public final class DaoBatch extends DaoIdentifiable {
             session.save(batch);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            Log.data().error(e);
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return batch;

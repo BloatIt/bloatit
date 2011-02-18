@@ -91,7 +91,6 @@ public final class DaoDemand extends DaoKudosable {
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
-    @OrderBy(clause = "popularity desc")
     @IndexedEmbedded
     private final Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
 
@@ -137,7 +136,7 @@ public final class DaoDemand extends DaoKudosable {
             session.save(demand);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return demand;
@@ -248,7 +247,7 @@ public final class DaoDemand extends DaoKudosable {
                     contribution.validate(selectedOffer, percent);
                 }
             } catch (final NotEnoughMoneyException e) {
-                Log.data().fatal(e);
+                Log.data().fatal("Cannot validate contribution, not enought money.", e);
             }
         }
     }
@@ -278,7 +277,7 @@ public final class DaoDemand extends DaoKudosable {
      * Use a HQL query to get the offers as a PageIterable collection
      */
     public PageIterable<DaoOffer> getOffersFromQuery() {
-        return new QueryCollection<DaoOffer>("from DaoOffer as f where f.demand = :this").setEntity("this", this);
+        return new QueryCollection<DaoOffer>("from DaoOffer as f where f.demand = :this order by f.popularity asc").setEntity("this", this);
     }
 
     /**
@@ -291,9 +290,9 @@ public final class DaoDemand extends DaoKudosable {
         // If there is no validated offer then we try to find a pending offer
         final String queryString = "FROM DaoOffer " + //
                 "WHERE demand = :this " + //
-                "AND state <= :state " + // <= pending means also validated.
+                "AND state <= :state " + // <= PENDING and VALIDATED.
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
-                "AND popularity > 0 " + //
+                "AND popularity >= 0 " + //
                 "ORDER BY amount ASC, creationDate DESC";
         try {
             return (DaoOffer) SessionManager.createQuery(queryString).setEntity("this", this)
@@ -324,7 +323,7 @@ public final class DaoDemand extends DaoKudosable {
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
         return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession()
-                .createFilter(comments, "order by creationDate asc"), SessionManager.getSessionFactory().getCurrentSession()
+                .createFilter(comments, "order by creationDate asc, id"), SessionManager.getSessionFactory().getCurrentSession()
                 .createFilter(comments, "select count(*)"));
     }
 

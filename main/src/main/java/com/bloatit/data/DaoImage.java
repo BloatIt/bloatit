@@ -56,7 +56,7 @@ public final class DaoImage extends DaoIdentifiable {
             session.save(file);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return image;

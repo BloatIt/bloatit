@@ -56,7 +56,6 @@ public final class DaoComment extends DaoKudosable {
      */
     @OneToMany(mappedBy = "father")
     @Cascade(value = { CascadeType.ALL })
-    @OrderBy("creationDate desc")
     @IndexedEmbedded(depth = 1)
     private final Set<DaoComment> children = new HashSet<DaoComment>(0);
 
@@ -67,8 +66,7 @@ public final class DaoComment extends DaoKudosable {
             session.save(comment);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            Log.data().error(e);
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return comment;
@@ -117,7 +115,7 @@ public final class DaoComment extends DaoKudosable {
      * child.
      */
     public PageIterable<DaoComment> getChildren() {
-        return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by c.creationDate asc").setEntity("this", this);
+        return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by c.creationDate asc, id").setEntity("this", this);
     }
 
     /**

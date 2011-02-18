@@ -24,7 +24,7 @@ public class TeamListRenderer implements HtmlRenderer<Group> {
 
             return new HtmlListItem(htmlLink);
         } catch (final UnauthorizedOperationException e) {
-            Log.web().warn(e);
+            Log.web().warn("Right error on Team list renderer", e);
         }
         return new PlaceHolderElement();
     }

@@ -141,7 +141,6 @@ public final class DaoContribution extends DaoUserContent {
             // If it fails then there is a bug in our code. Set the state to
             // canceled and throw a fatalError.
             this.state = State.CANCELED;
-            Log.data().fatal(e);
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
         }
         try {
@@ -157,7 +156,6 @@ public final class DaoContribution extends DaoUserContent {
             }
         } catch (final NotEnoughMoneyException e) {
             this.state = State.CANCELED;
-            Log.data().fatal(e);
             throw e;
         }
     }
@@ -184,7 +182,6 @@ public final class DaoContribution extends DaoUserContent {
             getAuthor().getInternalAccount().unBlock(moneyToCancel);
             demand.cancelContribution(moneyToCancel);
         } catch (final NotEnoughMoneyException e) {
-            Log.data().fatal(e);
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
         }
         this.state = State.CANCELED;

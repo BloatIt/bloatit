@@ -45,7 +45,7 @@ public final class DaoKudos extends DaoUserContent {
             session.save(kudos);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return kudos;

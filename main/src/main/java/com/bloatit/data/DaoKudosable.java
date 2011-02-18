@@ -28,7 +28,6 @@ import org.hibernate.Query;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 
 /**
@@ -43,7 +42,10 @@ public abstract class DaoKudosable extends DaoUserContent {
      * enough kudos to take a decision. VALIDATE means that the popularity is
      * high enough to validate this content. REFUSED means that the popularity
      * is low enough to delete/reject this content. HIDDEN is a state between
-     * pending and rejected. Do not change the order !
+     * pending and rejected.
+     * <p>
+     * <b>Do not change the order !</b>
+     * </p>
      */
     public enum PopularityState {
         VALIDATED, PENDING, HIDDEN, REJECTED,

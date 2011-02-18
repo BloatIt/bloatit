@@ -60,7 +60,7 @@ public final class DaoDescription extends DaoIdentifiable {
             session.save(descr);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
-            session.beginTransaction();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
         return descr;
