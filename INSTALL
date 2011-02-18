@@ -91,6 +91,10 @@ change the right:
 chmod 777 ~/.local
 chmod 777 ~/.local/share
 
+
+Create directory /var/local/lucene/indexes and give write right to it.
+
+
 ************************************
 *  Install and run                 *
 ************************************

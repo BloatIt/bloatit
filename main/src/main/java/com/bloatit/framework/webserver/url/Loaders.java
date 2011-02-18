@@ -7,15 +7,13 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.bloatit.data.DaoKudosable;
-import com.bloatit.data.DaoUserContent;
-import com.bloatit.data.queries.DaoKudosableListFactory;
-import com.bloatit.data.queries.DaoUserContentListFactory;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
+import com.bloatit.model.Batch;
+import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Demand;
 import com.bloatit.model.FileMetadata;
@@ -29,10 +27,10 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
 import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
-import com.bloatit.model.admin.KudosableAdmin;
-import com.bloatit.model.admin.UserContentAdmin;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.managers.BatchManager;
+import com.bloatit.model.managers.BugManager;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.GroupManager;
@@ -108,6 +106,10 @@ public final class Loaders {
             return (Loader<T>) new ToFileMetadata();
         } else if (theClass.equals(Group.class)) {
             return (Loader<T>) new ToGroup();
+        } else if (theClass.equals(Bug.class)) {
+            return (Loader<T>) new ToBug();
+        } else if (theClass.equals(Batch.class)) {
+            return (Loader<T>) new ToBatch();
         } else if (theClass.equals(JoinGroupInvitation.class)) {
             return (Loader<T>) new ToJoinGroupInvitation();
         } else if (theClass.equals(Offer.class)) {
@@ -143,7 +145,7 @@ public final class Loaders {
     }
 
     private static class ToEnum<T extends Enum<T>> extends Loader<Enum<T>> {
-        private Class<T> type;
+        private final Class<T> type;
 
         public ToEnum(Class<T> type) {
             super();
@@ -356,6 +358,20 @@ public final class Loaders {
         @Override
         public Identifiable<?> doFromString(int i) {
             return GroupManager.getGroupById(i);
+        }
+    }
+
+    private static class ToBug extends ToIdentifiable {
+        @Override
+        public Identifiable<?> doFromString(int i) {
+            return BugManager.getById(i);
+        }
+    }
+
+    private static class ToBatch extends ToIdentifiable {
+        @Override
+        public Identifiable<?> doFromString(int i) {
+            return BatchManager.getById(i);
         }
     }
 

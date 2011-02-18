@@ -19,6 +19,7 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.Locale;
 
 import com.bloatit.data.DaoBatch;
@@ -70,8 +71,10 @@ public class Batch extends Identifiable<DaoBatch> {
         getDao().updateMajorFatalPercent(fatalPercent, majorPercent);
     }
 
-    public void addBug(final Member member, final String title, final String description, final Locale locale, final Level errorLevel) {
-        getDao().addBug(new Bug(member, this, title, description, locale, errorLevel).getDao());
+    public Bug addBug(final Member member, final String title, final String description, final Locale locale, final Level errorLevel) {
+        Bug bug = new Bug(member, this, title, description, locale, errorLevel);
+        getDao().addBug(bug.getDao());
+        return bug;
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -206,5 +209,17 @@ public class Batch extends Identifiable<DaoBatch> {
     @Override
     protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
         return Offer.create(this.getDao().getOffer()).calculateMyGroupRights(member);
+    }
+    
+    public int getPosition() {
+        Iterator<DaoBatch> iterator = getDao().getOffer().getBatches().iterator();
+
+        int order = 1;
+        while(iterator.hasNext()) {
+            if(iterator.next().getId() == getDao().getId()) {
+                return order;
+            }
+        }
+        return -1;
     }
 }

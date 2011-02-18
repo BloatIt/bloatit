@@ -821,4 +821,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         return new BugList(getDao().getOpenBugs());
     }
 
+    @Override
+    public PageIterable<Bug> getClosedBugs() {
+        return new BugList(getDao().getClosedBugs());
+    }
+
 }

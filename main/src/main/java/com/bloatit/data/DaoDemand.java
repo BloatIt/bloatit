@@ -64,7 +64,12 @@ public final class DaoDemand extends DaoKudosable {
      * order is important !
      */
     public enum DemandState {
-        PENDING, PREPARING, DEVELOPPING, UAT, DISCARDED, FINISHED
+        PENDING, //No offers, waiting for money and offer
+        PREPARING, // One or more offer, waiting for money
+        DEVELOPPING, // Development in progress
+        UAT, // User acceptance testing
+        DISCARDED, // Something went wrong, the demand is canceled
+        FINISHED // All is good, the developer is paid and the users are happy
     }
 
     /**
@@ -142,7 +147,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     * 
+     *
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -176,7 +181,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     * 
+     *
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -209,7 +214,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     * 
+     *
      * @param offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -252,7 +257,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Called by contribution when canceled.
-     * 
+     *
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -288,7 +293,7 @@ public final class DaoDemand extends DaoKudosable {
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -387,7 +392,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -400,7 +405,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -456,12 +461,28 @@ public final class DaoDemand extends DaoKudosable {
                 "AND b.state != :close ";//
 
         org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        return new QueryCollection<DaoBug>( currentSession.createQuery(q),currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer).setParameter("close", DaoBug.State.RESOLVED);
+    }
 
-        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
-                                                                                                                        selectedOffer)
-                                                                                                             .setParameter("close",
-                                                                                                                           DaoBug.State.RESOLVED);
+    public PageIterable<DaoBug> getClosedBugs() {
+        String q = "SELECT b" + //
+        " FROM com.bloatit.data.DaoOffer o " + //
+        "JOIN o.batches as bs " + //
+        "JOIN bs.bugs as b " + //
+        "WHERE o = :selectedOffer " + //
+        "AND o.demand = :this " + //
+        "AND b.state = :close ";//
 
+        String qCount = "SELECT count(b)" + //
+        " FROM com.bloatit.data.DaoOffer o " + //
+        "JOIN o.batches as bs " + //
+        "JOIN bs.bugs as b " + //
+        "WHERE o = :selectedOffer " + //
+        "AND o.demand = :this " + //
+        "AND b.state = :close ";//
+
+        org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        return new QueryCollection<DaoBug>( currentSession.createQuery(q),currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer).setParameter("close", DaoBug.State.RESOLVED).setEntity("this", this);
     }
 
 }

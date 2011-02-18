@@ -223,4 +223,8 @@ public final class Offer extends Kudosable<DaoOffer> {
         return KudosableConfiguration.getOfferTurnHidden();
     }
 
+    public Batch getCurrentBatch() {
+        return Batch.create(getDao().getCurrentBatch());
+    }
+
 }

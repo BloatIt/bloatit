@@ -163,8 +163,11 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     public Date getLastUpdateDate() {
-        //TODO implement
-        return new Date();
+        DaoComment lastComment = getDao().getLastComment();
+        if(lastComment == null)  {
+            return getCreationDate();
+        }
+        return lastComment.getCreationDate();
     }
 
     public String getTitle() {
