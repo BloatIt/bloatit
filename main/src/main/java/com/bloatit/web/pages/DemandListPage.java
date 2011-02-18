@@ -274,7 +274,7 @@ public final class DemandListPage extends MasterPage {
                 search.addDemandStateFilter(DemandState.DISCARDED);
             } else if (filter.equals(FILTER_FINISHED)) {
                 search.addDemandStateFilter(DemandState.DEVELOPPING);
-                search.addDemandStateFilter(DemandState.INCOME);
+                search.addDemandStateFilter(DemandState.UAT);
                 search.addDemandStateFilter(DemandState.PENDING);
                 search.addDemandStateFilter(DemandState.PREPARING);
             }

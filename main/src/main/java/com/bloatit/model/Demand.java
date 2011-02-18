@@ -249,4 +249,8 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     DemandState getDemandState();
 
+    int countOpenBugs();
+
+    PageIterable<Bug> getOpenBugs();
+
 }

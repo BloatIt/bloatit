@@ -15,14 +15,19 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
+import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
+import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
+import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.Group;
+import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
 import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.web.pages.master.MasterPage;
@@ -101,11 +106,59 @@ public class TeamPage extends MasterPage {
                 contacts.add(new HtmlParagraph().addText(targetTeam.getEmail()));
             } catch (UnauthorizedOperationException e) {
                 // Should not happen
-                Log.web().error("Cannot access to team email, I checked just before tho",e);
+                Log.web().error("Cannot access to team email, I checked just before tho", e);
                 contacts.add(new HtmlParagraph().addText("No public contact information available"));
             }
         } else {
             contacts.add(new HtmlParagraph().addText("No public contact information available"));
+        }
+
+        HtmlBranch financial;
+        if (targetTeam.canGetInternalAccount() && targetTeam.canGetInternalAccount()) {
+            financial = new HtmlTitleBlock(Context.tr("Group financial information"), 2);
+        } else {
+            financial = new PlaceHolderElement();
+        }
+        title.add(financial);
+
+        // External account
+        if (targetTeam.canGetExternalAccount()) {
+            try {
+                ExternalAccount exAccount = targetTeam.getExternalAccount();
+                exAccount.authenticate(session.getAuthToken());
+                HtmlTitleBlock external = new HtmlTitleBlock(Context.tr("Team's external account"), 3);
+                financial.add(external);
+                HtmlList exAccountInfo = new HtmlList();
+                external.add(exAccountInfo);
+
+                if (exAccount.canAccessAmount())
+                    exAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(exAccount.getAmount())
+                            .getDefaultString()));
+                if (exAccount.canAccessBankCode())
+                    exAccountInfo.add(Context.tr("Bank code: {0}", exAccount.getBankCode()));
+            } catch (UnauthorizedOperationException e) {
+                // Should never happen
+                Log.web().error("Cannot access to bank external accound, I checked just before tho", e);
+            }
+        }
+
+        // Internal account
+        if (targetTeam.canGetInternalAccount()) {
+            try {
+                InternalAccount inAccount = targetTeam.getInternalAccount();
+                inAccount.authenticate(session.getAuthToken());
+                HtmlTitleBlock internal = new HtmlTitleBlock(Context.tr("Team's internal account"), 3);
+                financial.add(internal);
+                HtmlList inAccountInfo = new HtmlList();
+                internal.add(inAccountInfo);
+
+                if (inAccount.canAccessAmount())
+                    inAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(inAccount.getAmount())
+                            .getDefaultString()));
+            } catch (UnauthorizedOperationException e) {
+                // Should never happen
+                Log.web().error("Cannot access to bank internal accound, I checked just before tho", e);
+            }
         }
 
         // Members

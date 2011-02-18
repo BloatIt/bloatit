@@ -12,6 +12,9 @@ package com.bloatit.web.pages;
 
 import java.math.BigDecimal;
 
+import com.bloatit.common.Log;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
@@ -21,6 +24,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDateField;
+import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -28,6 +32,9 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
+import com.bloatit.model.Group;
+import com.bloatit.model.Member;
+import com.bloatit.model.right.RightManager.Action;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
@@ -46,8 +53,9 @@ public final class OfferPage extends LoggedPage {
     @RequestParam(name = OfferAction.EXPIRY_CODE, level = Level.INFO, role = Role.SESSION)
     private final DateLocale expiryDate;
 
+    @SuppressWarnings("unused")
     @RequestParam(name = OfferAction.TITLE_CODE, level = Level.INFO, role = Role.SESSION)
-    private final String title;
+    private final String title; // Keeping it for now, most likely useless
 
     @RequestParam(name = OfferAction.DESCRIPTION_CODE, level = Level.INFO, role = Role.SESSION)
     private final String description;
@@ -91,6 +99,25 @@ public final class OfferPage extends LoggedPage {
         FormFieldData<String> titleFieldData = offerActionUrl.getTitleParameter().formFieldData();
         final HtmlTextField titleField = new HtmlTextField(titleFieldData, Context.tr("Title to the offer"));
         offerForm.add(titleField);
+
+        // Offering on the behalf of
+        Member me = session.getAuthToken().getMember();
+        me.authenticate(session.getAuthToken());
+        if (me.canAccessGroups(Action.READ)) {
+            try {
+                PageIterable<Group> groups = me.getGroups();
+                HtmlDropDown groupDropDown = new HtmlDropDown(OfferAction.ON_THE_BEHALF, Context.tr("On the behalf of"));
+                groupDropDown.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
+                groupDropDown.addDropDownElement("-1", Context.tr("Myself"));
+                for(Group group : groups){
+                    groupDropDown.addDropDownElement(group.getId().toString(), group.getLogin());
+                }
+                offerForm.add(groupDropDown);
+            } catch (UnauthorizedOperationException e) {
+                // Shouldn't happen
+                Log.web().error("Can't access current user groups (I check before tho)", e);
+            }
+        }
 
         // Price field
         FormFieldData<BigDecimal> priceFieldData = offerActionUrl.getPriceParameter().formFieldData();

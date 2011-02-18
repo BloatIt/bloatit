@@ -33,6 +33,7 @@ import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.AuthToken;
+import com.bloatit.model.Bug;
 import com.bloatit.model.CacheManager;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
@@ -45,6 +46,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
 import com.bloatit.model.Project;
+import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
@@ -300,7 +302,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         if (getSelectedOfferUnprotected().isFinished()) {
             throw new FatalErrorException("There is no batch left for this Offer !");
         }
-        if (getDemandState() != DemandState.INCOME) {
+        if (getDemandState() != DemandState.UAT) {
             throw new WrongStateException();
         }
         return getSelectedOfferUnprotected().validateCurrentBatch(force);
@@ -366,7 +368,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * Slot called when this demand state change to {@link IncomeState}.
      */
     void inIncomeState() {
-        getDao().setDemandState(DemandState.INCOME);
+        getDao().setDemandState(DemandState.UAT);
 
     }
 
@@ -744,7 +746,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
                 setStateObject(new FinishedState(this));
             }
             break;
-        case INCOME:
+        case UAT:
             if (stateObject == null || !stateObject.getClass().equals(IncomeState.class)) {
                 setStateObject(new IncomeState(this));
             }
@@ -807,6 +809,16 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     @Override
     protected int turnHidden() {
         return KudosableConfiguration.getDemandTurnHidden();
+    }
+
+    @Override
+    public int countOpenBugs() {
+        return getDao().countOpenBugs();
+    }
+
+    @Override
+    public PageIterable<Bug> getOpenBugs() {
+        return new BugList(getDao().getOpenBugs());
     }
 
 }

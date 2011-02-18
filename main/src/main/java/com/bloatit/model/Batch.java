@@ -29,9 +29,9 @@ import com.bloatit.model.lists.BugList;
 
 /**
  * A batch is a part of an offer. Simple offers are only composed of one batch.
- * 
+ *
  * @author Thomas Guyard
- * 
+ *
  */
 public class Batch extends Identifiable<DaoBatch> {
 
@@ -68,8 +68,8 @@ public class Batch extends Identifiable<DaoBatch> {
         getDao().updateMajorFatalPercent(fatalPercent, majorPercent);
     }
 
-    public void addBug(final Member member, final Batch batch, final String description, final Locale locale, final Level errorLevel) {
-        getDao().addBug(new Bug(member, batch, description, locale, errorLevel).getDao());
+    public void addBug(final Member member, final String title, final String description, final Locale locale, final Level errorLevel) {
+        getDao().addBug(new Bug(member, this, title, description, locale, errorLevel).getDao());
     }
 
     // ////////////////////////////////////////////////////////////////////////
