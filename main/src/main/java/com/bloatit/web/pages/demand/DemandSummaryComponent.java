@@ -36,13 +36,16 @@ import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ProjectPageUrl;
+import com.bloatit.web.url.ReportBugPageUrl;
 
 public final class DemandSummaryComponent extends HtmlPageComponent {
 
     private static final String IMPORTANT_CSS_CLASS = "important";
+    private final Demand demand;
 
     public DemandSummaryComponent(final Demand demand) {
         super();
+        this.demand = demand;
 
         // Extract locales stuffs
         final Locale defaultLocale = Context.getLocalizator().getLocale();
@@ -154,71 +157,13 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 }
                 demandSummaryBottom.add(demandSummaryPopularity);
 
-                // ////////////////////
-                // Div demand_summary_progress
-                final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_progress");
-                {
-                    float progressValue = 0;
-                    // Progress bar
-                    try {
-
-                        progressValue = (float) Math.floor(demand.getProgression());
-                        float cappedProgressValue = progressValue;
-                        if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
-                            cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
-                        }
-
-                        final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
-                        demandSummaryProgress.add(progressBar);
-
-                        // Progress text
-                        demandSummaryProgress.add(generateProgressText(demand, progressValue));
-
-                    } catch (final UnauthorizedOperationException e) {
-                        // No right, no progress bar
-                    }
-
-                    // ////////////////////
-                    // Div demand_summary_actions
-                    final HtmlDiv demandSummaryActions = new HtmlDiv("demand_summary_actions");
-                    {
-                        final HtmlDiv demandSummaryActionsButtons = new HtmlDiv("demand_summary_actions_buttons");
-                        {
-                            // Contribute block
-                            final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
-                            {
-
-                                final HtmlParagraph contributeText = new HtmlParagraph(
-                                        Context.tr("You share this need and you want participate financially?"));
-                                contributeBlock.add(contributeText);
-
-                                final HtmlLink link = new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute"));
-                                link.setCssClass("button");
-                                contributeBlock.add(link);
-
-                            }
-                            demandSummaryActionsButtons.add(contributeBlock);
-
-                            // Make an offer block
-                            final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
-                            {
-                                final HtmlParagraph makeOfferText = new HtmlParagraph(
-                                        Context.tr("You are a developer and want to be paid to achieve this request?"));
-                                makeOfferBlock.add(makeOfferText);
-
-                                final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
-                                link.setCssClass("button");
-                                makeOfferBlock.add(link);
-
-                            }
-                            demandSummaryActionsButtons.add(makeOfferBlock);
-                        }
-                        demandSummaryActions.add(demandSummaryActionsButtons);
-                    }
-                    demandSummaryProgress.add(demandSummaryActions);
-
+                HtmlDiv demandSummaryProgress;
+                try {
+                    demandSummaryProgress = generateProgressBlock(demand);
+                    demandSummaryBottom.add(demandSummaryProgress);
+                } catch (UnauthorizedOperationException e) {
+                    // display nothing
                 }
-                demandSummaryBottom.add(demandSummaryProgress);
 
                 // ////////////////////
                 // Div demand_summary_share
@@ -243,6 +188,130 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
         }
 
         add(demandSummary);
+    }
+
+    public HtmlDiv generateProgressBlock(final Demand demand) throws UnauthorizedOperationException {
+        // ////////////////////
+        // Div demand_summary_progress
+        final HtmlDiv demandSummaryProgress = new HtmlDiv("demand_summary_progress");
+        {
+            float progressValue = 0;
+            // Progress bar
+            try {
+
+                progressValue = (float) Math.floor(demand.getProgression());
+                float cappedProgressValue = progressValue;
+                if (cappedProgressValue > DemandImplementation.PROGRESSION_PERCENT) {
+                    cappedProgressValue = DemandImplementation.PROGRESSION_PERCENT;
+                }
+
+                final HtmlProgressBar progressBar = new HtmlProgressBar(cappedProgressValue);
+                demandSummaryProgress.add(progressBar);
+
+                // Progress text
+                demandSummaryProgress.add(generateProgressText(demand, progressValue));
+
+            } catch (final UnauthorizedOperationException e) {
+                // No right, no progress bar
+            }
+
+            // ////////////////////
+            // Div demand_summary_actions
+            final HtmlDiv demandSummaryActions = new HtmlDiv("demand_summary_actions");
+            {
+                switch (demand.getDemandState()) {
+                case PENDING:
+                    demandSummaryActions.add(generatePendingStateActions());
+                    break;
+                case PREPARING:
+                    demandSummaryActions.add(generatePendingStateActions());
+                    break;
+                case DEVELOPPING:
+                    demandSummaryActions.add(generatePendingStateActions());
+                    break;
+                case UAT:
+                    demandSummaryActions.add(generateUATStateActions());
+                    break;
+                case FINISHED:
+                    demandSummaryActions.add(generatePendingStateActions());
+                    break;
+                case DISCARDED:
+                    demandSummaryActions.add(generatePendingStateActions());
+                    break;
+                default:
+                    break;
+                }
+            }
+            demandSummaryProgress.add(demandSummaryActions);
+
+        }
+        return demandSummaryProgress;
+    }
+
+    public HtmlDiv generatePendingStateActions() {
+        final HtmlDiv demandSummaryActionsButtons = new HtmlDiv("demand_summary_actions_buttons");
+        {
+            // Contribute block
+            final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
+            {
+
+                final HtmlParagraph contributeText = new HtmlParagraph(Context.tr("You share this need and you want participate financially?"));
+                contributeBlock.add(contributeText);
+
+                final HtmlLink link = new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute"));
+                link.setCssClass("button");
+                contributeBlock.add(link);
+
+            }
+            demandSummaryActionsButtons.add(contributeBlock);
+
+            // Make an offer block
+            final HtmlDiv makeOfferBlock = new HtmlDiv("make_offer_block");
+            {
+                final HtmlParagraph makeOfferText = new HtmlParagraph(Context.tr("You are a developer and want to be paid to achieve this request?"));
+                makeOfferBlock.add(makeOfferText);
+
+                final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
+                link.setCssClass("button");
+                makeOfferBlock.add(link);
+
+            }
+            demandSummaryActionsButtons.add(makeOfferBlock);
+        }
+        return demandSummaryActionsButtons;
+    }
+
+    public HtmlDiv generateUATStateActions() throws UnauthorizedOperationException {
+        final HtmlDiv demandSummaryActionsButtons = new HtmlDiv("demand_summary_actions_buttons");
+        {
+            // Contribute block
+            final HtmlDiv contributeBlock = new HtmlDiv("contribute_block");
+            {
+
+                final HtmlParagraph contributeText = new HtmlParagraph(Context.tr("You share this need and you want participate financially?"));
+                contributeBlock.add(contributeText);
+
+                final HtmlLink link = new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute"));
+                link.setCssClass("button");
+                contributeBlock.add(link);
+
+            }
+            demandSummaryActionsButtons.add(contributeBlock);
+
+            // Report a bug
+            final HtmlDiv reportBugBlock = new HtmlDiv("report_bug_block");
+            {
+                final HtmlParagraph reportBugText = new HtmlParagraph(Context.tr("This feature is implemented and need to be tested to find bugs"));
+                reportBugBlock.add(reportBugText);
+
+                final HtmlLink link = new ReportBugPageUrl(demand.getSelectedOffer()).getHtmlLink(Context.tr("Report a bug"));
+                link.setCssClass("button");
+                reportBugBlock.add(link);
+
+            }
+            demandSummaryActionsButtons.add(reportBugBlock);
+        }
+        return demandSummaryActionsButtons;
     }
 
     private HtmlElement generateProgressText(final Demand demand, final float progressValue) {

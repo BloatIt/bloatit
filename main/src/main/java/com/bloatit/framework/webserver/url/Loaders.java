@@ -12,6 +12,7 @@ import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
+import com.bloatit.model.Batch;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Demand;
@@ -28,6 +29,7 @@ import com.bloatit.model.UserContent;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.managers.BatchManager;
 import com.bloatit.model.managers.BugManager;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.model.managers.FileMetadataManager;
@@ -106,6 +108,8 @@ public final class Loaders {
             return (Loader<T>) new ToGroup();
         } else if (theClass.equals(Bug.class)) {
             return (Loader<T>) new ToBug();
+        } else if (theClass.equals(Batch.class)) {
+            return (Loader<T>) new ToBatch();
         } else if (theClass.equals(JoinGroupInvitation.class)) {
             return (Loader<T>) new ToJoinGroupInvitation();
         } else if (theClass.equals(Offer.class)) {
@@ -361,6 +365,13 @@ public final class Loaders {
         @Override
         public Identifiable<?> doFromString(int i) {
             return BugManager.getById(i);
+        }
+    }
+
+    private static class ToBatch extends ToIdentifiable {
+        @Override
+        public Identifiable<?> doFromString(int i) {
+            return BatchManager.getById(i);
         }
     }
 

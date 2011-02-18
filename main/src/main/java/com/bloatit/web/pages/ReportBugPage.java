@@ -11,7 +11,10 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
+import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
@@ -20,6 +23,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.model.Offer;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.ReportBugActionUrl;
@@ -34,10 +38,15 @@ public final class ReportBugPage extends LoggedPage {
     private static final int BUG_DESCRIPTION_INPUT_NB_LINES = 10;
     private static final int BUG_DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
+    public static final String BUG_BATCH = "bug_offer";
+
+    @RequestParam(name = BUG_BATCH, role = Role.GET, level = Level.ERROR)
+    private final Offer offer;
 
 
     public ReportBugPage(final ReportBugPageUrl reportBugPageUrl) {
         super(reportBugPageUrl);
+        offer = reportBugPageUrl.getOffer();
     }
 
     @Override
@@ -61,6 +70,7 @@ public final class ReportBugPage extends LoggedPage {
     private HtmlElement generateReportBugForm() {
         final HtmlTitleBlock formTitle = new HtmlTitleBlock(Context.tr("Report a bug"), 1);
         final ReportBugActionUrl doReportUrl = new ReportBugActionUrl();
+        doReportUrl.setBatch(offer.getCurrentBatch());
 
         // Create the form stub
         final HtmlForm reportBugForm = new HtmlForm(doReportUrl.urlString());
@@ -86,9 +96,9 @@ public final class ReportBugPage extends LoggedPage {
         // Language
         FormFieldData<String> languageFormFieldData = doReportUrl.getLangParameter().formFieldData();
         LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
-
         languageInput.setComment(Context.tr("Language of the description."));
         reportBugForm.add(languageInput);
+
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
