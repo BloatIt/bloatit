@@ -4,11 +4,8 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
-import sun.tools.tree.OrExpression;
-
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -31,13 +28,12 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.model.admin.UserContentAdmin;
 import com.bloatit.model.admin.UserContentAdminListFactory;
-import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin/usercontent")
 public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentAdmin<U>, T extends UserContentAdminListFactory<U, V>>
-        extends LoggedPage {
+        extends AdminPage {
 
     public enum OrderByUserContent implements HtmlRadioButtonGroup.Displayable {
         NOTHING(tr("No order")), //
@@ -60,25 +56,25 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
     @RequestParam(defaultValue = "creationDate")
     @ParamConstraint(optional = true)
-    private String orderByStr;
+    private final String orderByStr;
 
     @RequestParam(defaultValue = "false")
     @ParamConstraint(optional = true)
-    private Boolean asc;
+    private final Boolean asc;
 
     @RequestParam(defaultValue = "WITHOUT")
     @ParamConstraint(optional = true)
-    private DisplayableFilterType filterDeleted;
+    private final DisplayableFilterType filterDeleted;
 
     @RequestParam(defaultValue = "NO_FILTER")
     @ParamConstraint(optional = true)
-    private DisplayableFilterType filterFile;
+    private final DisplayableFilterType filterFile;
 
     @RequestParam(defaultValue = "NO_FILTER")
     @ParamConstraint(optional = true)
-    private DisplayableFilterType filterGroup;
+    private final DisplayableFilterType filterGroup;
 
-    private T factory;
+    private final T factory;
     private final UserContentAdminPageUrl url;
 
     protected UserContentAdminPage(UserContentAdminPageUrl url, T factory) {
@@ -100,7 +96,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     }
 
     @Override
-    public final HtmlElement createRestrictedContent() throws RedirectException {
+    public final HtmlElement createAdminContent() {
         PlaceHolderElement everything = new PlaceHolderElement();
 
         // Filter form private HtmlForm filterForm;
@@ -109,7 +105,24 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         generateFilterForm(filterForm);
 
         // Apply filters
-        filter(asc, filterDeleted, filterFile, filterGroup);
+        if (orderByStr != null && !orderByStr.isEmpty()) {
+            factory.orderBy(orderByStr, asc ? OrderType.ASC : OrderType.DESC);
+        }
+        if (filterDeleted == DisplayableFilterType.WITH) {
+            factory.deletedOnly();
+        } else if (filterDeleted == DisplayableFilterType.WITHOUT) {
+            factory.nonDeletedOnly();
+        }
+        if (filterFile == DisplayableFilterType.WITH) {
+            factory.withoutFile();
+        } else if (filterFile == DisplayableFilterType.WITHOUT) {
+            factory.withFile();
+        }
+        if (filterGroup == DisplayableFilterType.WITH) {
+            factory.withAnyGroup();
+        } else if (filterGroup == DisplayableFilterType.WITHOUT) {
+            factory.withNoGroup();
+        }
 
         // Action form
         AdministrationActionUrl actionUrl = new AdministrationActionUrl();
@@ -119,11 +132,6 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         generateTable(actionForm);
 
         return everything;
-    }
-
-    @Override
-    public final String getRefusalReason() {
-        return tr("You have to be the administrator to access this page.");
     }
 
     public final void generateFilterForm(HtmlForm filterForm) {
@@ -155,27 +163,6 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
         // submit
         filterForm.add(new HtmlSubmit(tr("Filter")));
-    }
-
-    public final void filter(boolean asc, DisplayableFilterType filterDeleted, DisplayableFilterType filterFile, DisplayableFilterType filterGroup) {
-        if (orderByStr != null && !orderByStr.isEmpty()) {
-            factory.orderBy(orderByStr, asc ? OrderType.ASC : OrderType.DESC);
-        }
-        if (filterDeleted == DisplayableFilterType.WITH) {
-            factory.deletedOnly();
-        } else if (filterDeleted == DisplayableFilterType.WITHOUT) {
-            factory.nonDeletedOnly();
-        }
-        if (filterFile == DisplayableFilterType.WITH) {
-            factory.withoutFile();
-        } else if (filterFile == DisplayableFilterType.WITHOUT) {
-            factory.withFile();
-        }
-        if (filterGroup == DisplayableFilterType.WITH) {
-            factory.withAnyGroup();
-        } else if (filterGroup == DisplayableFilterType.WITHOUT) {
-            factory.withNoGroup();
-        }
     }
 
     public final void generateTable(HtmlForm actionForm) {

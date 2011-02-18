@@ -2,7 +2,6 @@ package com.bloatit.web.actions;
 
 import java.util.List;
 
-import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;

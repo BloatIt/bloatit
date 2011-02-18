@@ -6,7 +6,7 @@ import com.bloatit.model.demand.DemandManager;
 public class KudosableTest extends ModelTestUnit {
 
     public void testCanKudos() throws UnauthorizedOperationException {
-        final Demand demand = (Demand) DemandManager.getDemandById(db.getDemand().getId());
+        final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
 
         demand.authenticate(fredAuthToken);
         assertTrue(demand.canVoteUp().isEmpty());
@@ -25,7 +25,7 @@ public class KudosableTest extends ModelTestUnit {
     }
 
     public void testUnkudos() {
-        final Demand demand = (Demand) DemandManager.getDemandById(db.getDemand().getId());
+        final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
 
         assertEquals(0, demand.getPopularity());
         demand.authenticate(yoAuthToken);
@@ -34,7 +34,7 @@ public class KudosableTest extends ModelTestUnit {
     }
 
     public void testKudos() throws UnauthorizedOperationException {
-        final Demand demand = (Demand) DemandManager.getDemandById(db.getDemand().getId());
+        final Demand demand = DemandManager.getDemandById(db.getDemand().getId());
 
         demand.authenticate(yoAuthToken);
         demand.voteUp();
