@@ -133,10 +133,6 @@ public final class XcgiServer {
             final HttpHeader header = new HttpHeader(env);
             final HttpPost post = new HttpPost(parser.getPostStream(), header.getContentLength(), header.getContentType());
 
-            // for(Entry<String, String> entry: env.entrySet()) {
-            // System.err.println(entry.getKey() + " -> "+ entry.getValue());
-            // }
-
             // FIXME: use timer ?
             SessionManager.clearExpiredSessions();
 
@@ -164,7 +160,6 @@ public final class XcgiServer {
             // You can also use scgi parser
             return new FCGIParser(is, os);
         }
-
     }
 
     public void stop() {

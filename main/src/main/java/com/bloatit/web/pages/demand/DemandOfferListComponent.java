@@ -21,8 +21,8 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlTagText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
@@ -33,6 +33,7 @@ import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
+import com.bloatit.web.url.TeamPageUrl;
 
 public class DemandOfferListComponent extends HtmlDiv {
 
@@ -69,7 +70,6 @@ public class DemandOfferListComponent extends HtmlDiv {
 
             offersBlock.add(generateUnselectedOffersTypeBlock(offers, selectedOffer));
 
-
             add(offersBlock);
 
         } catch (final UnauthorizedOperationException e) {
@@ -77,7 +77,7 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
     }
 
-    private HtmlNode generateSelectedOfferTypeBlock(Offer selectedOffer) throws UnauthorizedOperationException {
+    private XmlNode generateSelectedOfferTypeBlock(Offer selectedOffer) throws UnauthorizedOperationException {
         HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
 
         HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
@@ -102,7 +102,7 @@ public class DemandOfferListComponent extends HtmlDiv {
         return offerTypeBlock;
     }
 
-    private HtmlNode generateUnselectedOffersTypeBlock(PageIterable<Offer> offers, Offer selectedOffer) throws UnauthorizedOperationException {
+    private XmlNode generateUnselectedOffersTypeBlock(PageIterable<Offer> offers, Offer selectedOffer) throws UnauthorizedOperationException {
         HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
 
         HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
@@ -170,6 +170,10 @@ public class DemandOfferListComponent extends HtmlDiv {
                         HtmlLink author = new MemberPageUrl(offer.getAuthor()).getHtmlLink(offer.getAuthor().getDisplayName());
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
+                        if (offer.getAsGroup() != null) {
+                            authorPara.addText(Context.tr(" on the behalf of "));
+                            authorPara.add(new TeamPageUrl(offer.getAsGroup()).getHtmlLink(offer.getAsGroup().getLogin()));
+                        }
                     }
                     offerRightTopColumn.add(authorPara);
 
@@ -202,7 +206,7 @@ public class DemandOfferListComponent extends HtmlDiv {
             }
             add(offerTopBlock);
 
-            //TODO: choose to display the title or not
+            // TODO: choose to display the title or not
 
             HtmlDiv offerBottomBlock = new HtmlDiv("offer_bottom_block");
             {
@@ -292,7 +296,7 @@ public class DemandOfferListComponent extends HtmlDiv {
 
         }
 
-        private HtmlNode generateAvatarBlock() {
+        private XmlNode generateAvatarBlock() {
             final HtmlDiv avatarBlock = new HtmlDiv("offer_avatar");
 
             // Add project image
@@ -308,7 +312,7 @@ public class DemandOfferListComponent extends HtmlDiv {
             return avatarBlock;
         }
 
-        private HtmlNode generatePopularityBlock() {
+        private XmlNode generatePopularityBlock() {
 
             final HtmlDiv offerSummaryPopularity = new HtmlDiv("offer_popularity");
             {

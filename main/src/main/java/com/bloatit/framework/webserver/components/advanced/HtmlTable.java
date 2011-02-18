@@ -1,7 +1,7 @@
 package com.bloatit.framework.webserver.components.advanced;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 
 /**
  * TODO : Fred has to comment this
@@ -51,8 +51,8 @@ public class HtmlTable extends HtmlGenericElement {
 
     public static abstract class HtmlTableModel {
         public abstract int getColumnCount();
-        public abstract HtmlNode getHeader(int column);
-        public abstract HtmlNode getBody(int column);
+        public abstract XmlNode getHeader(int column);
+        public abstract XmlNode getBody(int column);
         public abstract boolean next();
 
         public boolean hasHeader() {

@@ -22,7 +22,7 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.advanced.HtmlTabBlock;
 import com.bloatit.framework.webserver.components.advanced.HtmlTabBlock.HtmlTab;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.model.Demand;
@@ -68,7 +68,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         // Create description tab
         tabPane.addTab(new HtmlTab(Context.tr("Description"), DESCRIPTION_TAB) {
             @Override
-            public HtmlNode generateBody() {
+            public XmlNode generateBody() {
                 return generateDescriptionTabContent(demand);
             }
         });
@@ -77,7 +77,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         try {
             tabPane.addTab(new HtmlTab(Context.tr("Participations ({0})", demand.getContributions().size()), PARTICIPATIONS_TAB) {
                 @Override
-                public HtmlNode generateBody() {
+                public XmlNode generateBody() {
                     return new DemandContributorsComponent(url.getContributionUrl(), demand);
                 }
             });
@@ -89,7 +89,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         try {
             tabPane.addTab(new HtmlTab(Context.tr("Offers ({0})", demand.getOffers().size()), OFFERS_TAB) {
                 @Override
-                public HtmlNode generateBody() {
+                public XmlNode generateBody() {
                     return new DemandOfferListComponent(demand);
                 }
             });
@@ -100,7 +100,7 @@ public final class DemandTabPane extends HtmlPageComponent {
         // Create Details tab
         tabPane.addTab(new HtmlTab(Context.tr("Details"), DETAILS_TAB) {
             @Override
-            public HtmlNode generateBody() {
+            public XmlNode generateBody() {
                 return new DemandOfferListComponent(demand);
             }
         });
@@ -110,7 +110,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
             tabPane.addTab(new HtmlTab(Context.tr("Bugs ({0})", demand.countOpenBugs()), BUGS_TAB) {
                 @Override
-                public HtmlNode generateBody() {
+                public XmlNode generateBody() {
                     return new DemandBugListComponent(demand);
                 }
             });
@@ -120,7 +120,7 @@ public final class DemandTabPane extends HtmlPageComponent {
 
     }
 
-    private HtmlNode generateDescriptionTabContent(final Demand demand) {
+    private XmlNode generateDescriptionTabContent(final Demand demand) {
 
         final HtmlDiv descriptionBlock = new HtmlDiv("description_block");
         {

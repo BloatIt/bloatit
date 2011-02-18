@@ -98,16 +98,6 @@ public final class CreateDemandPage extends LoggedPage {
         specifBlock.add(descriptionInput);
         specifBlock.add(specificationInput);
 
-        // Create the fields that will be used to describe the parameters of the
-        // idea (project ...)
-        // final HtmlSimpleDropDown languageInput = new
-        // HtmlSimpleDropDown(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
-        // for (final Entry<String, LanguageDescriptor> langEntry :
-        // Localizator.getAvailableLanguages().entrySet()) {
-        // languageInput.add(langEntry.getValue().name,
-        // langEntry.getValue().code);
-        // }
-
         LanguageSelector languageInput = new LanguageSelector(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
         paramBlock.add(languageInput);
 
@@ -124,7 +114,6 @@ public final class CreateDemandPage extends LoggedPage {
         paramBlock.add(projectInput);
 
         // TODO: add form to create a new project
-
         final HtmlDiv group = new HtmlDiv();
         group.add(createIdeaTitle);
         return group;

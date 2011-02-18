@@ -26,7 +26,7 @@ import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
@@ -255,7 +255,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
      * @return
      * @throws UnauthorizedOperationException
      */
-    private HtmlNode generateProjectImage() throws UnauthorizedOperationException {
+    private XmlNode generateProjectImage() throws UnauthorizedOperationException {
         FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
         return new HtmlImage(imageUrl, "project_image");
     }
@@ -265,7 +265,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
      * @return
      * @throws UnauthorizedOperationException
      */
-    private HtmlNode generateTitle() throws UnauthorizedOperationException {
+    private XmlNode generateTitle() throws UnauthorizedOperationException {
         final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
         final HtmlSpan projectSpan = new HtmlSpan("demand_project_title");
         projectSpan.addText(demand.getProject().getName());

@@ -19,8 +19,8 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Demand;
 
@@ -59,7 +59,7 @@ public class DemandBugListComponent extends HtmlDiv {
         }
 
         @Override
-        public HtmlNode getHeader(int column) {
+        public XmlNode getHeader(int column) {
             HtmlText text = null;
             switch (column) {
             case 0:
@@ -85,7 +85,7 @@ public class DemandBugListComponent extends HtmlDiv {
         }
 
         @Override
-        public HtmlNode getBody(int column) {
+        public XmlNode getBody(int column) {
             HtmlText text = null;
             switch (column) {
             case 0:

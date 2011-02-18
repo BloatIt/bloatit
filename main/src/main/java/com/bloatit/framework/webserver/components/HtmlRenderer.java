@@ -11,9 +11,9 @@
 
 package com.bloatit.framework.webserver.components;
 
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 
 public interface HtmlRenderer<T> {
 
-    HtmlNode generate(T item);
+    XmlNode generate(T item);
 }

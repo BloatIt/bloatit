@@ -22,7 +22,7 @@ import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
@@ -77,7 +77,7 @@ public final class MembersListPage extends MasterPage {
         }
 
         @Override
-        public HtmlNode generate(final Member member) {
+        public XmlNode generate(final Member member) {
             final MemberPageUrl memberUrl = new MemberPageUrl(member);
             try {
                 HtmlLink htmlLink;

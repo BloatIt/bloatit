@@ -26,7 +26,7 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlForm.Method;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Demand;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
@@ -255,12 +255,12 @@ public final class DemandListPage extends MasterPage {
         private Demand demand;
 
         @Override
-        public HtmlNode generate(final Demand demand) {
+        public XmlNode generate(final Demand demand) {
             this.demand = demand;
             return generateContent();
         }
 
-        private HtmlNode generateContent() {
+        private XmlNode generateContent() {
             return new HtmlDemandSumary(demand, Compacity.NORMAL);
         }
     };

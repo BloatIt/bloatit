@@ -19,8 +19,8 @@ import com.bloatit.framework.webserver.components.HtmlList;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlTagText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.HtmlPagedListUrl;
 
@@ -105,12 +105,12 @@ public class HtmlPagedList<T> extends HtmlList {
         return span;
     }
 
-    private HtmlNode generateLink(final int i) {
+    private XmlNode generateLink(final int i) {
         final String iString = Integer.valueOf(i).toString();
         return generateLink(i, iString);
     }
 
-    private HtmlNode generateLink(final int i, final String text) {
+    private XmlNode generateLink(final int i, final String text) {
         final String iString = Integer.valueOf(i).toString();
         if (i != currentPage) {
 

@@ -3,7 +3,7 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
-		<param name="Threshold" value="warn" />
+		<param name="Threshold" value="trace" />
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{ABSOLUTE} [%t] %-5p %c{1} - %m%n" />
@@ -30,13 +30,16 @@
 	<logger name="com.bloatit.model">
 		<level value="trace" />
 	</logger>
-	<logger name="com.bloatit.webr">
+	<logger name="com.bloatit.web">
 		<level value="trace" />
 	</logger>
 	<logger name="com.bloatit.framework">
 		<level value="trace" />
 	</logger>
 	<logger name="com.bloatit.mail">
+		<level value="trace" />
+	</logger>
+	<logger name="com.bloatit.rest">
 		<level value="trace" />
 	</logger>
 

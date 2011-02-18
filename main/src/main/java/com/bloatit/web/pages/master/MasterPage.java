@@ -8,8 +8,8 @@ import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.masters.GenericPage;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.url.IndexPageUrl;
@@ -71,7 +71,7 @@ public abstract class MasterPage extends GenericPage {
     }
 
     @Override
-    public final HtmlElement add(final HtmlNode html) {
+    public final HtmlElement add(final XmlNode html) {
         content.add(html);
         return this;
     }

@@ -3,8 +3,8 @@ package com.bloatit.framework.webserver.url;
 import com.bloatit.common.Log;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
@@ -70,7 +70,7 @@ public abstract class Url implements Cloneable{
         return "http://" + header.getHttpHost() + urlString();
     }
 
-    public final HtmlLink getHtmlLink(final HtmlNode data) {
+    public final HtmlLink getHtmlLink(final XmlNode data) {
         return new HtmlLink(urlString(), data);
     }
 

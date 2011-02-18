@@ -12,8 +12,8 @@
 package com.bloatit.framework.webserver.components;
 
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 
 /**
  * Class to create htmllinks (<a href="...">plop</a>)
@@ -28,7 +28,7 @@ public final class HtmlLink extends HtmlBranch {
      * <a href="url">displayed</a>
      * </pre>
      */
-    public HtmlLink(final String url, final HtmlNode displayed) {
+    public HtmlLink(final String url, final XmlNode displayed) {
         super("a");
         addAttribute("href", url);
         add(displayed);

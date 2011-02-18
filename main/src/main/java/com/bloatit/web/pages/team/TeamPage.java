@@ -22,8 +22,8 @@ import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.Group;
@@ -204,7 +204,7 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public HtmlNode getHeader(int column) {
+        public XmlNode getHeader(int column) {
             if (column == 0) {
                 return new HtmlText(Context.tr("Member name"));
             }
@@ -229,7 +229,7 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public HtmlNode getBody(int column) {
+        public XmlNode getBody(int column) {
             if (column == 0) {
                 try {
                     return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
