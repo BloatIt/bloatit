@@ -18,13 +18,14 @@
 package com.bloatit.model;
 
 import java.util.EnumSet;
-import java.util.Set;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
-import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
-import com.bloatit.model.right.RightManager.Role;
+import com.bloatit.model.right.Accessor;
+import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.RightManager.OwningState;
 
 /**
  * An Unlockable class is a class that you can unlock with an {@link AuthToken}.
@@ -34,12 +35,20 @@ import com.bloatit.model.right.RightManager.Role;
  * user that try to access an attribute.</li> <li>The argument of the
  * calculateRole method represent the author of the attribute.</li>
  */
-public class Unlockable implements UnlockableInterface {
+public abstract class Unlockable implements UnlockableInterface, WithRights {
 
     private AuthToken token = null;
+    private OwningState owningState;
+    private EnumSet<UserGroupRight> groupRights;
+
+    public Unlockable() {
+        owningState = OwningState.NOBODY;
+        groupRights = EnumSet.noneOf(UserGroupRight.class);
+    }
 
     /*
      * (non-Javadoc)
+     * 
      * @see
      * com.bloatit.model.UnlockableInterface#authenticate(com.bloatit.model.
      * AuthToken)
@@ -47,6 +56,66 @@ public class Unlockable implements UnlockableInterface {
     @Override
     public final void authenticate(final AuthToken authToken) {
         this.token = authToken;
+        if (token == null) {
+            Log.model().debug("Try to authanticate with a null token.");
+            return;
+        }
+        if (token.getMember() == null) {
+            Log.model().fatal("Null member on an AuthToken");
+            return;
+        }
+
+        Member member = token.getMember();
+        if (isMine(member)) {
+            owningState = OwningState.OWNER;
+        } else {
+            owningState = OwningState.AUTHENTICATED;
+        }
+
+        groupRights = calculateMyGroupRights(member);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.WithRights#getOwningState()
+     */
+    @Override
+    public OwningState getOwningState() {
+        return owningState;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.WithRights#getGroupRights()
+     */
+    @Override
+    public EnumSet<UserGroupRight> getGroupRights() {
+        return groupRights;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.WithRights#getRole()
+     */
+    @Override
+    public com.bloatit.data.DaoMember.Role getRole() {
+        return token.getMember().getRole();
+    }
+
+    /**
+     * Return true if this content is mine (I am the author).
+     * 
+     * @param member is the person that wish to know if the content is his.
+     * @return true if <code>member</code> is the author of <code>this</code>,
+     *         false otherwise.
+     */
+    protected abstract boolean isMine(Member member);
+
+    protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
+        return EnumSet.noneOf(UserGroupRight.class);
     }
 
     protected final AuthToken getAuthToken() throws UnauthorizedOperationException {
@@ -60,99 +129,12 @@ public class Unlockable implements UnlockableInterface {
         return token;
     }
 
-    /**
-     * Calculate the role using the login of the author. Sometimes you do not
-     * have a complete Member object to describe the author of a "content". You
-     * can use this method (the login is unique). This method cannot set some
-     * Group roles, you have to use the
-     * {@link Unlockable#calculateRole(Member, Group)} method.
-     * 
-     * @return An EnumSet with the roles of the member authenticate by the
-     *         {@link AuthToken}.
-     */
-    protected final EnumSet<Role> calculateRole(final String login) {
-        if (token == null) {
-            return EnumSet.of(Role.NOBODY);
-        }
-        final EnumSet<Role> enums = EnumSet.noneOf(Role.class);
-
-        if (token.getMember().getLoginUnprotected().equals(login)) {
-            enums.add(Role.OWNER);
-        }
-
-        switch (token.getMember().getRole()) {
-        case NORMAL:
-            enums.add(Role.AUTHENTICATED);
-        case PRIVILEGED:
-            enums.addAll(EnumSet.range(Role.AUTHENTICATED, Role.PRIVILEGED));
-        case REVIEWER:
-            enums.addAll(EnumSet.range(Role.AUTHENTICATED, Role.REVIEWER));
-        case MODERATOR:
-            enums.addAll(EnumSet.range(Role.AUTHENTICATED, Role.MODERATOR));
-        case ADMIN:
-            enums.addAll(EnumSet.range(Role.AUTHENTICATED, Role.ADMIN));
-        }
-        return enums;
+    protected final boolean canAccess(Accessor accessor, Action action) {
+        return accessor.canAccess(this, action);
     }
 
-    /**
-     * Helper function. Call the {@link Unlockable#calculateRole(Member)}
-     * method.
-     */
-    protected final EnumSet<Role> calculateRole(final UserContentInterface<?> userContent) {
-        if (userContent == null || userContent.getAuthor() == null) {
-            // This should never happen.
-            throw new NonOptionalParameterException();
-        }
-        return calculateRole(userContent.getAuthor());
+    protected final void tryAccess(Accessor accessor, Action action) throws UnauthorizedOperationException {
+        accessor.tryAccess(this, action);
     }
 
-    /**
-     * Helper function. Call the {@link Unlockable#calculateRole(Member, Group)}
-     * method. (Group is null).
-     */
-    protected final EnumSet<Role> calculateRole(final Member member) {
-        return calculateRole(member, null);
-    }
-
-    /**
-     * Calculate the role {@link AuthToken} user, on a content created by
-     * "member as group".
-     * 
-     * @param member
-     *            The creator of the content.
-     * @param group
-     *            the creator uses "group" to create the content.
-     * @return all the role that correspond to the {@link AuthToken}.
-     */
-    protected final EnumSet<Role> calculateRole(final Member member, final Group group) {
-        if (token == null) {
-            return EnumSet.of(Role.NOBODY);
-        }
-        final EnumSet<Role> roles = calculateRole(member.getLoginUnprotected());
-        
-        if (group != null) {
-            final TeamRole role = token.getMember().getRoleUnprotected(group);
-            if (role == null) {
-                return roles;
-            }
-            roles.add(Role.IN_GROUP);
-            if (role.bank()) { // TODO : bank should be maximum right so it should work for now, but it's not a clean way to do it
-                roles.add(Role.GROUP_ADMIN);
-            }
-        }
-        return roles;
-    }
-
-    /**
-     * Helper function.
-     * 
-     * @return Role.NOBODY or Role.AUTHENTICATED
-     */
-    protected final EnumSet<Role> calculateNoOwnerRole() {
-        if (getAuthTokenUnprotected() == null) {
-            return EnumSet.of(Role.NOBODY);
-        }
-        return EnumSet.of(Role.AUTHENTICATED);
-    }
 }

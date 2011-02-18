@@ -16,8 +16,11 @@
 //
 package com.bloatit.model;
 
+import java.util.EnumSet;
+
 import com.bloatit.data.DaoGroup;
 import com.bloatit.data.DaoGroup.Right;
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MemberList;
 
@@ -106,5 +109,10 @@ public final class Group extends Actor<DaoGroup> {
     public String getDescription() {
         return getDao().getDescription();
     }
+
+    public EnumSet<UserGroupRight> getMemberStatus(Member member) {
+        return getDao().getMemberStatus(member.getDao());
+    }
+
 
 }

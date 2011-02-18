@@ -16,45 +16,45 @@
 //
 package com.bloatit.model.right;
 
-import java.util.EnumSet;
+import com.bloatit.model.WithRights;
 
 public class DemandRight extends RightManager {
 
     public static class Description extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
 
     public static class Offer extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
 
     public static class Specification extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
 
     public static class Contribute extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
 
-    public static class DemandContent extends PublicModerable {
+    public static class DemandContent extends Public {
         // nothing this is just a rename.
     }
 
     public static class Comment extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }

@@ -17,7 +17,9 @@
 package com.bloatit.model;
 
 import java.util.Date;
+import java.util.EnumSet;
 
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.FileMetadataList;
@@ -106,6 +108,20 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     // TODO right management
     public void restore() {
         this.getDao().setIsDeleted(false);
+    }
+    
+    @Override
+    protected boolean isMine(Member member){
+        return member.isMine(member);
+    }
+    
+    @Override
+    protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
+        
+        if (getAsGroup() != null && member.isInGroup(getAsGroup())){
+            return getAsGroup().getMemberStatus(member);
+        }
+        return EnumSet.noneOf(UserGroupRight.class);
     }
 
 }

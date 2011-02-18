@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.Locale;
 
 import com.bloatit.common.Log;
@@ -28,7 +27,6 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.RightManager.Action;
-import com.bloatit.model.right.RightManager.Role;
 import com.experian.payline.ws.impl.DoWebPaymentRequest;
 import com.experian.payline.ws.impl.DoWebPaymentResponse;
 import com.experian.payline.ws.impl.GetWebPaymentDetailsRequest;
@@ -45,7 +43,8 @@ public final class Payline extends Unlockable {
      * 978 : euros 840 : dollars US
      */
     private static final String CURRENCY = "978";
-    // Numero de contrat de vente à distance (VAD) found on payline administration page.
+    // Numero de contrat de vente à distance (VAD) found on payline
+    // administration page.
     private static final String CONTRACT_NUMBER = "42";
     // immediate payment: Action = 101; mode "CPT"
     private static final String MODE = "CPT";
@@ -129,10 +128,12 @@ public final class Payline extends Unlockable {
         }
     }
 
-    // public void getTransactionDetails(final String token) throws TokenNotfoundException
+    // public void getTransactionDetails(final String token) throws
+    // TokenNotfoundException
     // {
     // final WebPaymentAPI_Service paylineApi = new WebPaymentAPI_Service();
-    // final GetWebPaymentDetailsRequest request = createWebPaymementRequest(token);
+    // final GetWebPaymentDetailsRequest request =
+    // createWebPaymementRequest(token);
     // Transaction transaction =
     // paylineApi.getWebPaymentAPI().getWebPaymentDetails(request).getTransaction();
     //
@@ -168,7 +169,7 @@ public final class Payline extends Unlockable {
         paymentRequest.setNotificationURL(notificationUrl);
 
         if (getAuthToken() == null) {
-            throw new UnauthorizedOperationException(EnumSet.of(Role.NOBODY), Action.READ);
+            throw new UnauthorizedOperationException(this, Action.READ);
         }
         if (amount.scale() > 2) {
             throw new FatalErrorException("The amount cannot have more than 2 digit after the '.'.");
@@ -239,7 +240,7 @@ public final class Payline extends Unlockable {
 
     /**
      * Return a unique ref.
-     *
+     * 
      * @param member
      * @return
      */
@@ -273,6 +274,11 @@ public final class Payline extends Unlockable {
         } else {
             throw new TokenNotfoundException("Token is not found in DB: " + token);
         }
+    }
+
+    @Override
+    protected boolean isMine(Member member) {
+        return false;
     }
 
 }

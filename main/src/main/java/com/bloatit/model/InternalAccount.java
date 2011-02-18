@@ -55,7 +55,7 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
      * @see #authenticate(AuthToken)
      */
     public boolean canAccessBlocked() {
-        return new InternalAccountRight.Blocked().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        return canAccess(new InternalAccountRight.Blocked(), Action.READ);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
      * <code>Bloked</code> property.
      */
     public BigDecimal getBlocked() throws UnauthorizedOperationException {
-        new InternalAccountRight.Blocked().tryAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        tryAccess(new InternalAccountRight.Blocked(), Action.READ);
         return getDao().getBlocked();
     }
 }

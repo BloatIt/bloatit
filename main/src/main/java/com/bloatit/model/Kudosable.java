@@ -101,7 +101,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         final EnumSet<SpecialCode> errors = EnumSet.noneOf(SpecialCode.class);
 
         // See if we can kudos.
-        if (!new KudosableRight.Kudos().canAccess(calculateRole(this), Action.WRITE)) {
+        if (!canAccess(new KudosableRight.Kudos(), Action.WRITE)) {
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
 

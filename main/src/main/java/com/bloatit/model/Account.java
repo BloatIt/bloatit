@@ -30,11 +30,12 @@ import com.bloatit.model.right.AccountRight;
 import com.bloatit.model.right.RightManager.Action;
 
 /**
- * An account represent a way to store money. To transfer money from an account to an
- * other you have to use {@link Transaction}. When you create a transaction, the two
- * accounts are update. There are two types of accounts : the internals and externals. The
- * {@link InternalAccount} account is for the money we store for a user, the
- * {@link ExternalAccount} is an account in a bank.
+ * An account represent a way to store money. To transfer money from an account
+ * to an other you have to use {@link Transaction}. When you create a
+ * transaction, the two accounts are update. There are two types of accounts :
+ * the internals and externals. The {@link InternalAccount} account is for the
+ * money we store for a user, the {@link ExternalAccount} is an account in a
+ * bank.
  */
 public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
 
@@ -43,115 +44,117 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     }
 
     /**
-     * @return true if the authenticated user can access the <code>Transaction</code>
-     * property (It is a read only property).
+     * @return true if the authenticated user can access the
+     *         <code>Transaction</code> property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessTransaction() {
-        return new AccountRight.Transaction().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        return canAccess(new AccountRight.Transaction(), Action.READ);
     }
 
     /**
-     * @return true if the authenticated user can access the <code>Amount</code> property
-     * (It is a read only property).
+     * @return true if the authenticated user can access the <code>Amount</code>
+     *         property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessAmount() {
-        return new AccountRight.Amount().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
-    }
-
-    /**
-     * @return true if the authenticated user can access the <code>Comment</code> property
-     * (It is a read only property).
-     * @see #authenticate(AuthToken)
-     */
-    public final boolean canAccessComment() {
-        return new AccountRight.Comment().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
-    }
-
-    /**
-     * @return true if the authenticated user can access the <code>Actor</code> property
-     * (It is a read only property).
-     * @see #authenticate(AuthToken)
-     */
-    public final boolean canAccessActor() {
-        return new AccountRight.Actor().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
-    }
-
-    /**
-     * @return true if the authenticated user can access the <code>CreationDate</code>
-     * property (It is a read only property).
-     * @see #authenticate(AuthToken)
-     */
-    public final boolean canAccessCreationDate() {
-        return new AccountRight.CreationDate().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        return canAccess(new AccountRight.Amount(), Action.READ);
     }
 
     /**
      * @return true if the authenticated user can access the
-     * <code>LastModificationDate</code> property (It is a read only property).
+     *         <code>Comment</code> property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
-    public final boolean canAccessLastModificationDate() {
-        return new AccountRight.LastModificationDate().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+    public final boolean canAccessComment() {
+        return canAccess(new AccountRight.Comment(), Action.READ);
     }
 
     /**
-     * Every time a new transaction is done the modification date is update. This can be
-     * used for security purpose.
+     * @return true if the authenticated user can access the <code>Actor</code>
+     *         property (It is a read only property).
+     * @see #authenticate(AuthToken)
+     */
+    public final boolean canAccessActor() {
+        return canAccess(new AccountRight.Actor(), Action.READ);
+    }
+
+    /**
+     * @return true if the authenticated user can access the
+     *         <code>CreationDate</code> property (It is a read only property).
+     * @see #authenticate(AuthToken)
+     */
+    public final boolean canAccessCreationDate() {
+        return canAccess(new AccountRight.CreationDate(), Action.READ);
+    }
+
+    /**
+     * @return true if the authenticated user can access the
+     *         <code>LastModificationDate</code> property (It is a read only
+     *         property).
+     * @see #authenticate(AuthToken)
+     */
+    public final boolean canAccessLastModificationDate() {
+        return canAccess(new AccountRight.LastModificationDate(), Action.READ);
+    }
+
+    /**
+     * Every time a new transaction is done the modification date is update.
+     * This can be used for security purpose.
      * 
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>LastModificationDate</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>LastModificationDate</code> property in this
+     *             class.
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
-        new AccountRight.LastModificationDate().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        tryAccess(new AccountRight.LastModificationDate(), Action.READ);
         return getDao().getLastModificationDate();
     }
 
     /**
      * @return the quantity of money available on this account.
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>Amount</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>Amount</code> property in this class.
      */
     public final BigDecimal getAmount() throws UnauthorizedOperationException {
-        new AccountRight.Amount().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        tryAccess(new AccountRight.Amount(), Action.READ);
         return getDao().getAmount();
     }
 
     /**
      * @return All the transactions involving this account.
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>Transaction</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>Transaction</code> property in this class.
      */
     public final PageIterable<Transaction> getTransactions() throws UnauthorizedOperationException {
-        new AccountRight.Transaction().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        tryAccess(new AccountRight.Transaction(), Action.READ);
         return new TransactionList(getDao().getTransactions());
     }
 
     /**
      * The actor is the person that possess this account.
      * 
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>Actor</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>Actor</code> property in this class.
      */
     public final Actor<?> getActor() throws UnauthorizedOperationException {
-        new AccountRight.Actor().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        tryAccess(new AccountRight.Actor(), Action.READ);
         return getActorUnprotected();
     }
 
     /**
      * @return The date of creation of this account (Amazing !)
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>CreationDate</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>CreationDate</code> property in this class.
      */
     public final Date getCreationDate() throws UnauthorizedOperationException {
-        new AccountRight.CreationDate().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        tryAccess(new AccountRight.CreationDate(), Action.READ);
         return getDao().getCreationDate();
     }
 
     /**
-     * This method is used only in the authentication process. You should never used it
-     * anywhere else.
+     * This method is used only in the authentication process. You should never
+     * used it anywhere else.
      * 
      * @see #getActor()
      */
@@ -162,6 +165,11 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
             return Group.create((DaoGroup) getDao().getActor());
         }
         throw new FatalErrorException("Cannot find the right Actor child class.", null);
+    }
+
+    @Override
+    protected boolean isMine(Member member) {
+        return getActorUnprotected().isMine(member);
     }
 
 }

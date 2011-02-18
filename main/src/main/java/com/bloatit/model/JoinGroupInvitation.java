@@ -75,4 +75,9 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
         getDao().discard();
     }
 
+    @Override
+    protected boolean isMine(Member member) {
+        return member.equals(getSender()) || member.equals(getReciever());
+    }
+
 }

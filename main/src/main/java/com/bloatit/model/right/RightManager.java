@@ -18,16 +18,16 @@ package com.bloatit.model.right;
 
 import java.util.EnumSet;
 
-import com.bloatit.model.Unlockable;
+import com.bloatit.model.WithRights;
 
 /**
- * The RightManager class contains some useful methods to create the Accessor classes. The
- * Role and Action are here to have an extended unix like right system. Role represent the
- * group / other / owner and Action is the like RWX. You have to create an
- * {@link Accessor} sub class to set the right of an attribute. The Accessor sub classes
- * are really small classes. To store them correctly I use classes has namespace. For
- * example the {@link MemberRight} class is used to store every Accessor for the Member
- * class.
+ * The RightManager class contains some useful methods to create the Accessor
+ * classes. The Role and Action are here to have an extended unix like right
+ * system. Role represent the group / other / owner and Action is the like RWX.
+ * You have to create an {@link Accessor} sub class to set the right of an
+ * attribute. The Accessor sub classes are really small classes. To store them
+ * correctly I use classes has namespace. For example the {@link MemberRight}
+ * class is used to store every Accessor for the Member class.
  * 
  * @see Accessor
  */
@@ -37,16 +37,8 @@ public abstract class RightManager {
         // nothing
     }
 
-    /**
-     * REMEMBER: The order is important: first the group related roles, then the other
-     * roles, from the less privileged to the more. You can calculate the role of a user
-     * using the {@link Unlockable} object (and calculateRole.) For now some of the roles
-     * are not used.
-     * 
-     * @see Unlockable
-     */
-    public enum Role {
-        GROUP_ADMIN, IN_GROUP, NOBODY, AUTHENTICATED, OWNER, PRIVILEGED, REVIEWER, MODERATOR, ADMIN
+    public enum OwningState {
+        NOBODY, AUTHENTICATED, OWNER
     }
 
     /**
@@ -60,96 +52,72 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanRead(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.OWNER) && Action.READ == action;
+    protected static boolean ownerCanRead(final WithRights role, final Action action) {
+        return role.getOwningState() == OwningState.OWNER && Action.READ == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanWrite(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.OWNER) && Action.WRITE == action;
+    protected static boolean ownerCanWrite(final WithRights role, final Action action) {
+        return role.getOwningState() == OwningState.OWNER && Action.WRITE == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanDelete(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.OWNER) && Action.DELETE == action;
+    protected static boolean ownerCanDelete(final WithRights role, final Action action) {
+        return role.getOwningState() == OwningState.OWNER && Action.DELETE == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanRead(final EnumSet<Role> role, final Action action) {
-        return !role.contains(Role.NOBODY) && Action.READ == action;
+    protected static boolean authentifiedCanRead(final WithRights role, final Action action) {
+        return role.getOwningState() != OwningState.NOBODY && Action.READ == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanWrite(final EnumSet<Role> role, final Action action) {
-        return !role.contains(Role.NOBODY) && Action.WRITE == action;
+    protected static boolean authentifiedCanWrite(final WithRights role, final Action action) {
+        return role.getOwningState() != OwningState.NOBODY && Action.WRITE == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanDelete(final EnumSet<Role> role, final Action action) {
-        return !role.contains(Role.NOBODY) && Action.DELETE == action;
+    protected static boolean authentifiedCanDelete(final WithRights role, final Action action) {
+        return role.getOwningState() != OwningState.NOBODY && Action.DELETE == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean otherCanRead(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.AUTHENTICATED) && Action.READ == action;
+    protected static boolean otherCanRead(final WithRights role, final Action action) {
+        return role.getOwningState() == OwningState.AUTHENTICATED && Action.READ == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean otherCanWrite(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.AUTHENTICATED) && Action.WRITE == action;
+    protected static boolean otherCanWrite(final WithRights role, final Action action) {
+        return role.getOwningState() == OwningState.AUTHENTICATED && Action.WRITE == action;
     }
 
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean otherCanDelete(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.AUTHENTICATED) && Action.DELETE == action;
-    }
-
-    /**
-     * Helper function, use it in the overloading of the
-     * {@link Accessor#can(EnumSet, Action)} method
-     */
-    protected static boolean modoCanRead(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.MODERATOR) && Action.READ == action;
-    }
-
-    /**
-     * Helper function, use it in the overloading of the
-     * {@link Accessor#can(EnumSet, Action)} method
-     */
-    protected static boolean modoCanWrite(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.MODERATOR) && Action.WRITE == action;
-    }
-
-    /**
-     * Helper function, use it in the overloading of the
-     * {@link Accessor#can(EnumSet, Action)} method
-     */
-    protected static boolean modoCanDelete(final EnumSet<Role> role, final Action action) {
-        return role.contains(Role.MODERATOR) && Action.DELETE == action;
+    protected static boolean otherCanDelete(final WithRights role, final Action action) {
+        return role.getOwningState() == OwningState.AUTHENTICATED && Action.DELETE == action;
     }
 
     /**
@@ -177,32 +145,34 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all attribute.
+     * Already overloaded Accessor. Use it when you have a readable by all
+     * attribute.
      */
     protected static class ReadOnly extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return Action.READ == action;
         }
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a r/w by owner attribute.
+     * Already overloaded Accessor. Use it when you have a r/w by owner
+     * attribute.
      */
     protected static class Private extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return ownerCanRead(role, action) || ownerCanWrite(role, action);
         }
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all and writable by
-     * owner attribute.
+     * Already overloaded Accessor. Use it when you have a readable by all and
+     * writable by owner attribute.
      */
     protected static class Public extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return canRead(action) || ownerCanWrite(role, action);
         }
     }
@@ -212,19 +182,8 @@ public abstract class RightManager {
      */
     protected static class PublicReadOnly extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return canRead(action);
-        }
-    }
-
-    /**
-     * Already overloaded Accessor. Use it when you have a readable by all and writable by
-     * owner attribute
-     */
-    protected static class PublicModerable extends Accessor {
-        @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
-            return canRead(action) || ownerCanWrite(role, action) || modoCanDelete(role, action) || modoCanWrite(role, action);
         }
     }
 
@@ -233,7 +192,7 @@ public abstract class RightManager {
      */
     protected static class PrivateReadOnly extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             return ownerCanRead(role, action);
         }
     }

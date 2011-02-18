@@ -16,6 +16,7 @@
 //
 package com.bloatit.data;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -87,12 +88,9 @@ public final class DaoGroup extends DaoActor {
     /**
      * Create a group and add it into the db.
      * 
-     * @param login
-     *            it the unique and non updatable name of the group.
-     * @param email
-     *            is the email to contact this group (Unique).
-     * @param right
-     *            is the type of group we are creating (Public or Private).
+     * @param login it the unique and non updatable name of the group.
+     * @param email is the email to contact this group (Unique).
+     * @param right is the type of group we are creating (Public or Private).
      * @return the newly created group.
      * @throws HibernateException
      */
@@ -111,12 +109,9 @@ public final class DaoGroup extends DaoActor {
     /**
      * Create a DaoGroup
      * 
-     * @param login
-     *            is the name of the group. It must be unique.
-     * @param contact
-     *            ...
-     * @param right
-     *            is the default right value for this group.
+     * @param login is the name of the group. It must be unique.
+     * @param contact ...
+     * @param right is the default right value for this group.
      */
     private DaoGroup(final String login, final String contact, final String description, final Right right) {
         super(login);
@@ -140,11 +135,9 @@ public final class DaoGroup extends DaoActor {
     /**
      * Add a member in this group.
      * 
-     * @param member
-     *            The member to add
-     * @param isAdmin
-     *            true if the member need to have the right to administer this
-     *            group. (This may change if the number of role change !)
+     * @param member The member to add
+     * @param isAdmin true if the member need to have the right to administer
+     *            this group. (This may change if the number of role change !)
      */
     public void addMember(final DaoMember member, final boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(member, this));
@@ -185,19 +178,17 @@ public final class DaoGroup extends DaoActor {
      *         otherwise. <br />
      *         Note, the returned set can be empty if the user is only a Member
      */
-    public Set<UserGroupRight> getMemberStatus(final DaoMember member) {
-        final Query q = SessionManager
-                .getSessionFactory()
-                .getCurrentSession()
-                .createQuery(
-                        "select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
+    public EnumSet<UserGroupRight> getMemberStatus(final DaoMember member) {
+        final Query q = SessionManager.getSessionFactory()
+                                      .getCurrentSession()
+                                      .createQuery("select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
         q.setEntity("member", member);
         q.setEntity("group", this);
         final DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
         if (gm == null) {
             return null;
         }
-        Set<UserGroupRight> rights = new HashSet<UserGroupRight>();
+        EnumSet<UserGroupRight> rights = EnumSet.noneOf(UserGroupRight.class);
         for (DaoGroupRight groupRight : gm.getRights()) {
             rights.add(groupRight.getUserStatus());
         }

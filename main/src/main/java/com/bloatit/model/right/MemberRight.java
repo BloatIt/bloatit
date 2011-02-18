@@ -16,19 +16,18 @@
 //
 package com.bloatit.model.right;
 
-import java.util.EnumSet;
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.model.WithRights;
 
 public class MemberRight extends RightManager {
 
     public static class GroupList extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             boolean can = false;
             can = can || canRead(action);
             can = can || ownerCanWrite(role, action);
             can = can || ownerCanDelete(role, action);
-            can = can || modoCanWrite(role, action);
-            can = can || modoCanDelete(role, action);
             return can;
         }
     }
@@ -37,10 +36,9 @@ public class MemberRight extends RightManager {
     // write to create a new
     public static class InviteInGroup extends Accessor {
         @Override
-        protected final boolean can(final EnumSet<Role> role, final Action action) {
+        protected final boolean can(final WithRights role, final Action action) {
             boolean returnValue = false;
-//            returnValue = role.contains(Role.IN_GROUP) && (action == Action.WRITE || action == Action.READ);
-            returnValue = role.contains(Role.IN_GROUP) && (action == Action.WRITE );
+            returnValue = role.getGroupRights().contains(UserGroupRight.INVITE) && (action == Action.WRITE);
             returnValue = returnValue || ownerCanRead(role, action) || ownerCanDelete(role, action);
             return returnValue;
         }
@@ -61,5 +59,4 @@ public class MemberRight extends RightManager {
     public static class Name extends Public {
         // nothing this is just a rename.
     }
-
 }

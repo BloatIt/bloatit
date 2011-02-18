@@ -180,7 +180,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     public float getProgression() throws UnauthorizedOperationException {
 
         if (getAmount().floatValue() != 0) {
-            new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+            tryAccess(new DemandRight.Contribute(), Action.READ);
 
             return (getDemand().getContribution().floatValue() * PROGRESSION_PERCENT) / getAmount().floatValue();
         }

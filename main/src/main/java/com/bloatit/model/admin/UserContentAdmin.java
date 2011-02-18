@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.model.Identifiable;
+import com.bloatit.model.Member;
 
 public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> {
 
@@ -19,9 +20,9 @@ public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> 
     }
 
     public static UserContentAdmin<DaoUserContent> createUserContent(Integer id) {
-        UserContentAdminListFactory<DaoUserContent, UserContentAdmin<DaoUserContent>> factory = new UserContentAdminListFactory<DaoUserContent, UserContentAdmin<DaoUserContent>>();
+        UserContentAdminListFactory.DefaultFactory factory = new UserContentAdminListFactory.DefaultFactory();
         factory.idEquals(id);
-        if (factory.list().iterator().hasNext()){
+        if (factory.list().iterator().hasNext()) {
             return factory.list().iterator().next();
         }
         return null;
@@ -64,5 +65,10 @@ public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> 
 
     public void restore() {
         getDao().setIsDeleted(false);
+    }
+
+    @Override
+    protected boolean isMine(Member member) {
+        return false;
     }
 }

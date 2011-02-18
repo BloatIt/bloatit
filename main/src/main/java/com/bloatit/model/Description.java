@@ -46,7 +46,7 @@ public final class Description extends Identifiable<DaoDescription> {
 
     /**
      * Create a Description. If you are looking for a way to create a new description see
-     * {@link Demand#addOffer(java.math.BigDecimal, Locale, String, String, java.util.Date)}
+     * {@link Demand#addOffer(Member, java.math.BigDecimal, String, Locale, java.util.Date, int)}
      * 
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
@@ -98,5 +98,10 @@ public final class Description extends Identifiable<DaoDescription> {
 
     public Locale getDefaultLocale() {
         return getDao().getDefaultLocale();
+    }
+
+    @Override
+    protected boolean isMine(Member member) {
+        return false;
     }
 }

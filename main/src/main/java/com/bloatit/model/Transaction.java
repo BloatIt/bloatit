@@ -18,7 +18,6 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.EnumSet;
 
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoInternalAccount;
@@ -28,7 +27,6 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.AccountRight;
 import com.bloatit.model.right.RightManager.Action;
-import com.bloatit.model.right.RightManager.Role;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 
@@ -53,16 +51,19 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     }
 
     public boolean canAccessSomething() {
-        return new AccountRight.Transaction().canAccess(calculateRole(), Action.READ);
+        return canAccess(new AccountRight.Transaction(), Action.READ);
     }
 
     public InternalAccount getFrom() throws UnauthorizedOperationException {
-        new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
+        tryAccess(new AccountRight.Transaction(), Action.READ);
+        return getFromUnprotected();
+    }
+
+    private InternalAccount getFromUnprotected() {
         return InternalAccount.create(getDao().getFrom());
     }
 
-    public Account<?> getTo() throws UnauthorizedOperationException {
-        new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
+    private Account<?> getToUnprotected() {
         if (getDao().getTo().getClass() == DaoInternalAccount.class) {
             return InternalAccount.create((DaoInternalAccount) getDao().getTo());
         } else if (getDao().getTo().getClass() == DaoExternalAccount.class) {
@@ -71,26 +72,23 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         throw new FatalErrorException("Cannot find the right Account child class.", null);
     }
 
+    public Account<?> getTo() throws UnauthorizedOperationException {
+        tryAccess(new AccountRight.Transaction(), Action.READ);
+        return getToUnprotected();
+    }
+
     public BigDecimal getAmount() throws UnauthorizedOperationException {
-        new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
+        tryAccess(new AccountRight.Transaction(), Action.READ);
         return getDao().getAmount();
     }
 
     public Date getCreationDate() throws UnauthorizedOperationException {
-        new AccountRight.Transaction().tryAccess(calculateRole(), Action.READ);
+        tryAccess(new AccountRight.Transaction(), Action.READ);
         return getDao().getCreationDate();
     }
 
-    protected EnumSet<Role> calculateRole() {
-        if (getAuthTokenUnprotected() == null) {
-            return EnumSet.of(Role.NOBODY);
-        }
-        if (getAuthTokenUnprotected().getMember().getLoginUnprotected().equals(getDao().getFrom().getActor().getLogin())) {
-            return calculateRole(getDao().getFrom().getActor().getLogin());
-        } else if (getAuthTokenUnprotected().getMember().getLoginUnprotected().equals(getDao().getTo().getActor().getLogin())) {
-            return calculateRole(getDao().getTo().getActor().getLogin());
-        } else {
-            return EnumSet.of(Role.AUTHENTICATED);
-        }
+    @Override
+    protected boolean isMine(Member member) {
+        return getFromUnprotected().isMine(member) || getToUnprotected().isMine(member);
     }
 }

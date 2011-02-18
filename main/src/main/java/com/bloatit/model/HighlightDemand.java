@@ -41,5 +41,11 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
         return DemandImplementation.create(getDao().getDemand());
     }
 
+    @Override
+    protected boolean isMine(Member member) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 
 }

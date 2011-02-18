@@ -130,4 +130,9 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     public String getProcessInformations() {
         return getDao().getProcessInformations();
     }
+
+    @Override
+    protected boolean isMine(Member member) {
+        return getDao().getAuthor().getLogin().equals(member.getLoginUnprotected());
+    }
 }

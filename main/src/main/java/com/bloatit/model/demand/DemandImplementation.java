@@ -134,7 +134,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public boolean canAccessComment(final Action action) {
-        return new DemandRight.Comment().canAccess(calculateRole(this), action);
+        return canAccess(new DemandRight.Comment(), action);
     }
 
     /*
@@ -146,7 +146,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public boolean canAccessContribution(final Action action) {
-        return new DemandRight.Contribute().canAccess(calculateRole(this), action);
+        return canAccess(new DemandRight.Contribute(), action);
     }
 
     /*
@@ -158,7 +158,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public boolean canAccessOffer(final Action action) {
-        return new DemandRight.Offer().canAccess(calculateRole(this), action);
+        return canAccess(new DemandRight.Offer(), action);
     }
 
     /*
@@ -168,7 +168,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public boolean canAccessDescription() {
-        return new DemandRight.Specification().canAccess(calculateRole(this), Action.READ);
+        return canAccess(new DemandRight.Specification(), Action.READ);
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -184,7 +184,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
-        new DemandRight.Contribute().tryAccess(calculateRole(this), Action.WRITE);
+        tryAccess(new DemandRight.Contribute(), Action.WRITE);
         getDao().addContribution(getAuthToken().getMember().getDao(), amount, comment);
         setStateObject(getStateObject().eventAddContribution());
     }
@@ -199,7 +199,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
             throw new IllegalArgumentException();
         }
 
-        new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
+        tryAccess(new DemandRight.Offer(), Action.WRITE);
         if (!offer.getAuthor().equals(getAuthToken().getMember())) {
             throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
         }
@@ -218,7 +218,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
             throw new IllegalArgumentException();
         }
 
-        new DemandRight.Offer().tryAccess(calculateRole(this), Action.WRITE);
+        tryAccess(new DemandRight.Offer(), Action.WRITE);
         if (!offer.getAuthor().equals(getAuthToken().getMember())) {
             throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
         }
@@ -237,7 +237,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
-        new DemandRight.Offer().tryAccess(calculateRole(this), Action.DELETE);
+        tryAccess(new DemandRight.Offer(), Action.DELETE);
         if (getDao().getSelectedOffer().getId() == offer.getId()) {
             getDao().computeSelectedOffer();
         }
@@ -316,7 +316,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public Comment addComment(final String text) throws UnauthorizedOperationException {
-        new DemandRight.Comment().tryAccess(calculateRole(this), Action.WRITE);
+        tryAccess(new DemandRight.Comment(), Action.WRITE);
         DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
         getDao().addComment(comment);
         return Comment.create(comment);
@@ -531,7 +531,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public PageIterable<Comment> getComments() throws UnauthorizedOperationException {
-        new DemandRight.Comment().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Comment(), Action.READ);
         return new CommentList(getDao().getCommentsFromQuery());
     }
 
@@ -542,7 +542,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public PageIterable<Contribution> getContributions() throws UnauthorizedOperationException {
-        new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Contribute(), Action.READ);
         return getContributionsUnprotected();
     }
 
@@ -572,7 +572,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public float getProgression() throws UnauthorizedOperationException {
-        new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Contribute(), Action.READ);
         final Offer currentOffer = getSelectedOffer();
         if (currentOffer == null) {
             return PROGRESSION_COEF * (1 - 1 / (1 + getDao().getContribution().floatValue() / PROGRESSION_CONTRIBUTION_DIVISOR));
@@ -587,7 +587,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public BigDecimal getContribution() throws UnauthorizedOperationException {
-        new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Contribute(), Action.READ);
         return getDao().getContribution();
     }
 
@@ -598,7 +598,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public BigDecimal getContributionMax() throws UnauthorizedOperationException {
-        new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Contribute(), Action.READ);
         return getDao().getContributionMax();
     }
 
@@ -609,7 +609,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public BigDecimal getContributionMin() throws UnauthorizedOperationException {
-        new DemandRight.Contribute().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Contribute(), Action.READ);
         return getDao().getContributionMin();
     }
 
@@ -620,7 +620,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public Description getDescription() throws UnauthorizedOperationException {
-        new DemandRight.Description().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Description(), Action.READ);
         return Description.create(getDao().getDescription());
     }
 
@@ -642,7 +642,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public PageIterable<Offer> getOffers() throws UnauthorizedOperationException {
-        new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Offer(), Action.READ);
         return getOffersUnprotected();
     }
 
@@ -662,7 +662,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public Offer getSelectedOffer() throws UnauthorizedOperationException {
-        new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Offer(), Action.READ);
         return getSelectedOfferUnprotected();
     }
 
@@ -673,7 +673,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     public Offer getValidatedOffer() throws UnauthorizedOperationException {
-        new DemandRight.Offer().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new DemandRight.Offer(), Action.READ);
         if (getDao().getSelectedOffer() != null && getValidationDate().before(new Date())) {
             return getSelectedOfferUnprotected();
         }

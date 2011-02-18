@@ -9,12 +9,11 @@ import com.bloatit.model.admin.UserContentAdmin;
 import com.bloatit.model.admin.UserContentAdminListFactory;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
-public class UserContentAdminPageImplementation
-        extends
-        UserContentAdminPage<DaoUserContent, UserContentAdmin<DaoUserContent>, UserContentAdminListFactory<DaoUserContent, UserContentAdmin<DaoUserContent>>> {
+public class UserContentAdminPageImplementation extends
+        UserContentAdminPage<DaoUserContent, UserContentAdmin<DaoUserContent>, UserContentAdminListFactory.DefaultFactory> {
 
     public UserContentAdminPageImplementation(UserContentAdminPageUrl url) {
-        super(url, new UserContentAdminListFactory<DaoUserContent, UserContentAdmin<DaoUserContent>>());
+        super(url, new UserContentAdminListFactory.DefaultFactory());
     }
 
     @Override

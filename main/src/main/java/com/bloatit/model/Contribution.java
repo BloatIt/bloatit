@@ -52,21 +52,22 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
-     * CALLED by demand. You have to call {@link #accept(Offer)} when an offer is
-     * accepted. This will create the {@link Transaction} needed so that the developer of
-     * the offer become rich.
+     * CALLED by demand. You have to call {@link #accept(Offer)} when an offer
+     * is accepted. This will create the {@link Transaction} needed so that the
+     * developer of the offer become rich.
      * 
      * @param offer the validated offer.
-     * @throws NotEnoughMoneyException if there is a bug and then a person does not have
-     * enough money.
+     * @throws NotEnoughMoneyException if there is a bug and then a person does
+     *             not have enough money.
      */
     public void accept(final Offer offer) throws NotEnoughMoneyException {
         getDao().validate(offer.getDao(), 100);
     }
 
     /**
-     * CALLED by demand. You have to call {@link #cancel()} when the demand on which this
-     * Contribution is made is canceled. It allows the user to take back its money.
+     * CALLED by demand. You have to call {@link #cancel()} when the demand on
+     * which this Contribution is made is canceled. It allows the user to take
+     * back its money.
      */
     public void cancel() {
         getDao().cancel();
@@ -79,17 +80,17 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessAmount() {
-        return new ContributionRight.Amount().canAccess(calculateRole(this), Action.READ);
+        return canAccess(new ContributionRight.Amount(), Action.READ);
     }
 
     /**
      * @return the amount.
-     * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>Amount</code> property.
+     * @throws UnauthorizedOperationException if you do not have the right to
+     *             access the <code>Amount</code> property.
      * @see Contribution#authenticate(AuthToken)
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
-        new ContributionRight.Amount().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new ContributionRight.Amount(), Action.READ);
         return getDao().getAmount();
     }
 
@@ -100,16 +101,16 @@ public final class Contribution extends UserContent<DaoContribution> {
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessComment() {
-        return new ContributionRight.Comment().canAccess(calculateRole(this), Action.READ);
+        return canAccess(new ContributionRight.Comment(), Action.READ);
     }
 
     /**
      * @return the comment.
-     * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>Comment</code> property.
+     * @throws UnauthorizedOperationException if you do not have the right to
+     *             access the <code>Comment</code> property.
      */
     public String getComment() throws UnauthorizedOperationException {
-        new ContributionRight.Comment().tryAccess(calculateRole(this), Action.READ);
+        tryAccess(new ContributionRight.Comment(), Action.READ);
         return getDao().getComment();
     }
 

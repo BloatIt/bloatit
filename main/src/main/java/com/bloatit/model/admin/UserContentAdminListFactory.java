@@ -10,10 +10,14 @@ import com.bloatit.model.Member;
 public class UserContentAdminListFactory<T extends DaoUserContent, U extends UserContentAdmin<T>> {
     private final DaoUserContentListFactory<T> factory;
 
+    public static class DefaultFactory extends UserContentAdminListFactory<DaoUserContent, UserContentAdmin<DaoUserContent>> {
+        // Just a rename
+    }
+
     public UserContentAdminListFactory() {
         factory = new DaoUserContentListFactory<T>();
     }
-    
+
     public UserContentAdminListFactory(DaoUserContentListFactory<T> factory) {
         this.factory = factory;
     }
@@ -37,11 +41,11 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
     public void orderByAsGroup(OrderType order) {
         factory.orderByAsGroup(order);
     }
-    
+
     public void orderByCreationDate(OrderType orderType) {
         factory.orderByCreationDate(orderType);
     }
-    
+
     public void orderBy(String column, OrderType orderType) {
         factory.orderBy(column, orderType);
     }
@@ -82,8 +86,8 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
     public PageIterable<U> list() {
         return (PageIterable<U>) new AdminList.UserContentAdminList((PageIterable<DaoUserContent>) factory.createCollection());
     }
-    
-    protected DaoUserContentListFactory<T> getfactory(){
+
+    protected DaoUserContentListFactory<T> getfactory() {
         return factory;
     }
 }

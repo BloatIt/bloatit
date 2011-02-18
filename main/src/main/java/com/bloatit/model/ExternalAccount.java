@@ -51,32 +51,31 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
      * @return true if you can access the <code>BankCode</code> property.
      */
     public boolean canAccessBankCode() {
-        return new ExternalAccountRight.BankCode().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        return canAccess(new ExternalAccountRight.BankCode(), Action.READ);
     }
 
     /**
      * @return true if you can access the <code>Type</code> property.
      */
     public boolean canAccessType() {
-        return new ExternalAccountRight.Type().canAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        return canAccess(new ExternalAccountRight.Type(), Action.READ);
     }
 
     /**
-     * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>BankCode</code> property.
+     * @throws UnauthorizedOperationException if you do not have the right to
+     *             access the <code>BankCode</code> property.
      */
     public String getBankCode() throws UnauthorizedOperationException {
-        new ExternalAccountRight.BankCode().tryAccess(calculateRole(getActorUnprotected().getLoginUnprotected()), Action.READ);
+        tryAccess(new ExternalAccountRight.BankCode(), Action.READ);
         return getDao().getBankCode();
     }
 
     /**
-     * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>Type</code> property.
+     * @throws UnauthorizedOperationException if you do not have the right to
+     *             access the <code>Type</code> property.
      */
     public AccountType getType() throws UnauthorizedOperationException {
-        new ExternalAccountRight.Type().tryAccess(calculateRole(getActorUnprotected().getLogin()), Action.READ);
+        tryAccess(new ExternalAccountRight.Type(), Action.READ);
         return getDao().getType();
     }
-
 }

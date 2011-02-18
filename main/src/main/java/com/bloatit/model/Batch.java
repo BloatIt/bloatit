@@ -18,12 +18,14 @@ package com.bloatit.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Locale;
 
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.State;
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 
@@ -194,5 +196,15 @@ public class Batch extends Identifiable<DaoBatch> {
 
     public String getDescription() {
         return getDao().getDescription().getDefaultTranslation().getText();
+    }
+
+    @Override
+    protected boolean isMine(Member member) {
+        return Offer.create(this.getDao().getOffer()).isMine(member);
+    }
+
+    @Override
+    protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
+        return Offer.create(this.getDao().getOffer()).calculateMyGroupRights(member);
     }
 }

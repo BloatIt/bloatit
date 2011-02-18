@@ -46,10 +46,10 @@ public class Project extends Identifiable<DaoProject> {
     }
 
     /**
-     * Create a new project. The right management for creating a demand is specific. (The
-     * Right management system is not working in this case). You have to use the
-     * {@link DemandManager#canCreate(AuthToken)} to make sure you can create a new
-     * demand.
+     * Create a new project. The right management for creating a demand is
+     * specific. (The Right management system is not working in this case). You
+     * have to use the {@link DemandManager#canCreate(AuthToken)} to make sure
+     * you can create a new demand.
      * 
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
@@ -62,7 +62,7 @@ public class Project extends Identifiable<DaoProject> {
      * @see com.bloatit.data.DaoProject#getName()
      */
     public String getName() throws UnauthorizedOperationException {
-        new ProjectRight.Name().tryAccess(calculateNoOwnerRole(), Action.READ);
+        tryAccess(new ProjectRight.Name(), Action.READ);
         return getDao().getName();
     }
 
@@ -72,7 +72,7 @@ public class Project extends Identifiable<DaoProject> {
      * @see com.bloatit.data.DaoProject#getDescription()
      */
     public final Description getDescription() throws UnauthorizedOperationException {
-        new ProjectRight.Name().tryAccess(calculateNoOwnerRole(), Action.READ);
+        tryAccess(new ProjectRight.Name(), Action.READ);
         return Description.create(getDao().getDescription());
     }
 
@@ -82,7 +82,7 @@ public class Project extends Identifiable<DaoProject> {
      * @see com.bloatit.data.DaoProject#getImage()
      */
     public final FileMetadata getImage() throws UnauthorizedOperationException {
-        new ProjectRight.Name().tryAccess(calculateNoOwnerRole(), Action.READ);
+        tryAccess(new ProjectRight.Name(), Action.READ);
         return FileMetadata.create(getDao().getImage());
     }
 
@@ -92,9 +92,14 @@ public class Project extends Identifiable<DaoProject> {
      * @see com.bloatit.data.DaoProject#getDemands()
      */
     public final DemandList getDemands() throws UnauthorizedOperationException {
-        new ProjectRight.Name().tryAccess(calculateNoOwnerRole(), Action.READ);
+        tryAccess(new ProjectRight.Name(), Action.READ);
         // TODO: implement
         return null;
+    }
+
+    @Override
+    protected boolean isMine(Member member) {
+        return false;
     }
 
 }
