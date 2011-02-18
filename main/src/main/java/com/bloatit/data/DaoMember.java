@@ -223,7 +223,7 @@ public final class DaoMember extends DaoActor {
     }
 
     public Set<UserGroupRight> getGroupRights(final DaoGroup aGroup) {
-        return aGroup.getMemberStatus(this);
+        return aGroup.getUserGroupRight(this);
     }
 
     public void removeGroupRight(final DaoGroup aGroup, final UserGroupRight removeRight) {

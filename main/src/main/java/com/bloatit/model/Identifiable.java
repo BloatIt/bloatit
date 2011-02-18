@@ -26,7 +26,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * 
  * @param <T> is the dao being mapped.
  */
-public abstract class Identifiable<T extends IdentifiableInterface> extends Unlockable implements IdentifiableInterface {
+public abstract class Identifiable<T extends IdentifiableInterface> extends Restricted implements IdentifiableInterface {
 
     private final T dao;
     

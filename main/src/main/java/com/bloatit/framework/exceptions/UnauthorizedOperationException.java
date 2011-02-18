@@ -1,8 +1,8 @@
 package com.bloatit.framework.exceptions;
 
 import com.bloatit.model.JoinGroupInvitation;
-import com.bloatit.model.Unlockable;
-import com.bloatit.model.WithRights;
+import com.bloatit.model.Restricted;
+import com.bloatit.model.Restricted;
 import com.bloatit.model.right.RightManager.Action;
 
 /**
@@ -95,18 +95,18 @@ public class UnauthorizedOperationException extends Exception {
 
     }
 
-    private final WithRights rights;
+    private final Restricted rights;
     private final Action action;
     private final SpecialCode code;
 
-    public UnauthorizedOperationException(final WithRights rights, final Action action, final SpecialCode code) {
+    public UnauthorizedOperationException(final Restricted rights, final Action action, final SpecialCode code) {
         super();
         this.rights = rights;
         this.action = action;
         this.code = code;
     }
 
-    public UnauthorizedOperationException(final WithRights rights, final Action action) {
+    public UnauthorizedOperationException(final Restricted rights, final Action action) {
         this(rights, action, SpecialCode.NOTHING_SPECIAL);
     }
 
@@ -125,7 +125,7 @@ public class UnauthorizedOperationException extends Exception {
         return code;
     }
 
-    public WithRights getRights() {
+    public Restricted getRights() {
         return rights;
     }
 

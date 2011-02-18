@@ -20,16 +20,17 @@ import java.util.Date;
 
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.IdentifiableInterface;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * The Interface UserContentInterface. A User content is a content created by a user. The
- * {@link Member} that has created the content can say he has done so in the name of a
- * group.
+ * The Interface UserContentInterface. A User content is a content created by a
+ * user. The {@link Member} that has created the content can say he has done so
+ * in the name of a group.
  * 
  * @param <T> the Dao class corresponding to this UserContent.
  */
-public interface UserContentInterface<T extends DaoUserContent> extends IdentifiableInterface, UnlockableInterface {
+public interface UserContentInterface<T extends DaoUserContent> extends IdentifiableInterface, RestrictedInterface {
 
     /**
      * Gets the author.
@@ -45,17 +46,20 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
      */
     Date getCreationDate();
 
-    /**
-     * Sets the as group. The author is saying that he is creating this content in the
-     * name of the group <code>asGroup</code>.
-     * 
-     * @param asGroup the new as group
-     */
-    void setAsGroup(final Group asGroup);
+    public abstract boolean canAccessAsGroup();
 
     /**
-     * Gets the as group. Can (may) be null. See {@link #setAsGroup(Group)} for more
-     * information on this property.
+     * Sets the as group. The author is saying that he is creating this content
+     * in the name of the group <code>asGroup</code>.
+     * 
+     * @param asGroup the new as group
+     * @throws UnauthorizedOperationException
+     */
+    void setAsGroup(final Group asGroup) throws UnauthorizedOperationException;
+
+    /**
+     * Gets the as group. Can (may) be null. See {@link #setAsGroup(Group)} for
+     * more information on this property.
      * 
      * @return the as group
      */

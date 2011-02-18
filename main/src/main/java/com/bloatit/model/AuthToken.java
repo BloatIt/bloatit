@@ -30,7 +30,7 @@ import com.bloatit.model.managers.MemberManager;
 
 /**
  * An AuthToken is a token representing an authenticated user. You can use it to tell a
- * {@link Unlockable} class which user is using it.
+ * {@link Restricted} class which user is using it.
  */
 public final class AuthToken {
     private final Member member;

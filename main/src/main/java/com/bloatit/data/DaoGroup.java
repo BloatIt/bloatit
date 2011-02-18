@@ -178,7 +178,7 @@ public final class DaoGroup extends DaoActor {
      *         otherwise. <br />
      *         Note, the returned set can be empty if the user is only a Member
      */
-    public EnumSet<UserGroupRight> getMemberStatus(final DaoMember member) {
+    public EnumSet<UserGroupRight> getUserGroupRight(final DaoMember member) {
         final Query q = SessionManager.getSessionFactory()
                                       .getCurrentSession()
                                       .createQuery("select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");

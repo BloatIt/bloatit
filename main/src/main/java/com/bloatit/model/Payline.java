@@ -35,7 +35,7 @@ import com.experian.payline.ws.obj.Order;
 import com.experian.payline.ws.obj.Payment;
 import com.experian.payline.ws.obj.Result;
 
-public final class Payline extends Unlockable {
+public final class Payline extends Restricted {
 
     private static final String ACCEPTED_CODE = "00000";
     private static final String ORDER_ORIGINE = "payline";

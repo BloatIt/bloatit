@@ -21,8 +21,11 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoUserContent;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.FileMetadataList;
+import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.UserContentRight;
 
 /**
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.
@@ -67,6 +70,11 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     public final Date getCreationDate() {
         return getDaoUserContent().getCreationDate();
     }
+    
+    @Override
+    public final boolean canAccessAsGroup(){
+        return canAccess(new UserContentRight.AsGroup(), Action.WRITE);
+    }
 
     /*
      * (non-Javadoc)
@@ -76,7 +84,8 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
      * )
      */
     @Override
-    public final void setAsGroup(final Group asGroup) {
+    public final void setAsGroup(final Group asGroup) throws UnauthorizedOperationException {
+        tryAccess(new UserContentRight.AsGroup(), Action.WRITE);
         getDaoUserContent().setAsGroup(asGroup.getDao());
     }
 
@@ -119,7 +128,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
         
         if (getAsGroup() != null && member.isInGroup(getAsGroup())){
-            return getAsGroup().getMemberStatus(member);
+            return getAsGroup().getUserGroupRight(member);
         }
         return EnumSet.noneOf(UserGroupRight.class);
     }

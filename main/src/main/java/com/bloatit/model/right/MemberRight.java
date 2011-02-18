@@ -17,28 +17,28 @@
 package com.bloatit.model.right;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
-import com.bloatit.model.WithRights;
+import com.bloatit.model.Restricted;
 
 public class MemberRight extends RightManager {
 
     public static class GroupList extends Accessor {
         @Override
-        protected final boolean can(final WithRights role, final Action action) {
+        protected final boolean can(final Restricted role, final Action action) {
             boolean can = false;
             can = can || canRead(action);
-            can = can || ownerCanWrite(role, action);
-            can = can || ownerCanDelete(role, action);
+            can = can || role.hasGroupPrivilege(UserGroupRight.PROMOTE) && ownerCanWrite(role, action);
+            can = can || role.hasGroupPrivilege(UserGroupRight.PROMOTE) && ownerCanDelete(role, action);
             return can;
         }
     }
 
     // Delete for accept/refuse
     // write to create a new
-    public static class InviteInGroup extends Accessor {
+    public static class SendInvitation extends Accessor {
         @Override
-        protected final boolean can(final WithRights role, final Action action) {
+        protected final boolean can(final Restricted role, final Action action) {
             boolean returnValue = false;
-            returnValue = role.getGroupRights().contains(UserGroupRight.INVITE) && (action == Action.WRITE);
+            returnValue = role.hasGroupPrivilege(UserGroupRight.INVITE) && (action == Action.WRITE);
             returnValue = returnValue || ownerCanRead(role, action) || ownerCanDelete(role, action);
             return returnValue;
         }

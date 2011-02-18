@@ -46,7 +46,7 @@ public class SendGroupInvitationAction extends LoggedAction {
         me.authenticate(session.getAuthToken());
 
         try {
-            me.invite(receiver, group);
+            me.sendInvitation(receiver, group);
             session.notifyGood("Invitation sent to " + receiver.getDisplayName() + " for group " + group.getLogin());
         } catch (UnauthorizedOperationException e) {
             e.printStackTrace();

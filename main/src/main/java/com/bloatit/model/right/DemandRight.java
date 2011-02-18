@@ -16,34 +16,34 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.WithRights;
+import com.bloatit.model.Restricted;
 
 public class DemandRight extends RightManager {
 
     public static class Description extends Accessor {
         @Override
-        protected final boolean can(final WithRights role, final Action action) {
+        protected final boolean can(final Restricted role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
 
     public static class Offer extends Accessor {
         @Override
-        protected final boolean can(final WithRights role, final Action action) {
+        protected final boolean can(final Restricted role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
 
     public static class Specification extends Accessor {
         @Override
-        protected final boolean can(final WithRights role, final Action action) {
+        protected final boolean can(final Restricted role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
 
     public static class Contribute extends Accessor {
         @Override
-        protected final boolean can(final WithRights role, final Action action) {
+        protected final boolean can(final Restricted role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }
@@ -54,7 +54,7 @@ public class DemandRight extends RightManager {
 
     public static class Comment extends Accessor {
         @Override
-        protected final boolean can(final WithRights role, final Action action) {
+        protected final boolean can(final Restricted role, final Action action) {
             return canRead(action) || authentifiedCanWrite(role, action);
         }
     }

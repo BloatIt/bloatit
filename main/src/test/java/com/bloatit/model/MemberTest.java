@@ -49,7 +49,7 @@ public class MemberTest extends ModelTestUnit {
         final Member fred = MemberManager.getMemberByLogin("Fred");
 
         yo.authenticate(yoAuthToken);
-        yo.invite(fred, GroupManager.getByName("other"));
+        yo.sendInvitation(fred, GroupManager.getByName("other"));
         assertFalse(fred.isInGroup(GroupManager.getByName("other")));
 
         fred.authenticate(fredAuthToken);
@@ -62,7 +62,7 @@ public class MemberTest extends ModelTestUnit {
         final Member fred = MemberManager.getMemberByLogin("Fred");
 
         yo.authenticate(yoAuthToken);
-        yo.invite(fred, GroupManager.getByName("other"));
+        yo.sendInvitation(fred, GroupManager.getByName("other"));
         assertFalse(fred.isInGroup(GroupManager.getByName("other")));
 
         fred.authenticate(fredAuthToken);

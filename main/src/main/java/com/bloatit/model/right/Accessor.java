@@ -17,10 +17,10 @@
 package com.bloatit.model.right;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.model.WithRights;
+import com.bloatit.model.Restricted;
 import com.bloatit.model.right.RightManager.Action;
-import com.bloatit.model.right.RightManager.OwningState;
 
 /**
  * The class Accessor is class that test if a member as the right to access some
@@ -47,17 +47,17 @@ import com.bloatit.model.right.RightManager.OwningState;
  */
 public abstract class Accessor {
 
-    protected abstract boolean can(WithRights rights, Action action);
+    protected abstract boolean can(Restricted rights, Action action);
 
-    public final boolean canAccess(final WithRights rights, final Action action) {
-        if (rights.getOwningState() != OwningState.NOBODY && rights.getRole() == com.bloatit.data.DaoMember.Role.ADMIN) {
+    public final boolean canAccess(final Restricted rights, final Action action) {
+        if (rights.hasUserPrivilege(Role.ADMIN)) {
             Log.model().trace("Admin access");
             return true;
         }
         return can(rights, action);
     }
 
-    public final void tryAccess(final WithRights rights, final Action action) throws UnauthorizedOperationException {
+    public final void tryAccess(final Restricted rights, final Action action) throws UnauthorizedOperationException {
         if (!canAccess(rights, action)) {
             throw new UnauthorizedOperationException(rights, action);
         }

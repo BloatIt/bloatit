@@ -110,8 +110,8 @@ public final class Group extends Actor<DaoGroup> {
         return getDao().getDescription();
     }
 
-    public EnumSet<UserGroupRight> getMemberStatus(Member member) {
-        return getDao().getMemberStatus(member.getDao());
+    public EnumSet<UserGroupRight> getUserGroupRight(Member member) {
+        return getDao().getUserGroupRight(member.getDao());
     }
 
 

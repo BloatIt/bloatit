@@ -21,6 +21,7 @@ import java.util.EnumSet;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.Accessor;
@@ -35,13 +36,13 @@ import com.bloatit.model.right.RightManager.OwningState;
  * user that try to access an attribute.</li> <li>The argument of the
  * calculateRole method represent the author of the attribute.</li>
  */
-public abstract class Unlockable implements UnlockableInterface, WithRights {
+public abstract class Restricted implements RestrictedInterface {
 
     private AuthToken token = null;
     private OwningState owningState;
     private EnumSet<UserGroupRight> groupRights;
 
-    public Unlockable() {
+    public Restricted() {
         owningState = OwningState.NOBODY;
         groupRights = EnumSet.noneOf(UserGroupRight.class);
     }
@@ -75,34 +76,26 @@ public abstract class Unlockable implements UnlockableInterface, WithRights {
         groupRights = calculateMyGroupRights(member);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.WithRights#getOwningState()
-     */
-    @Override
-    public OwningState getOwningState() {
-        return owningState;
+    public final boolean hasGroupPrivilege(UserGroupRight right) {
+        return groupRights.contains(right);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.WithRights#getGroupRights()
-     */
-    @Override
-    public EnumSet<UserGroupRight> getGroupRights() {
-        return groupRights;
+    public final boolean hasUserPrivilege(Role role) {
+        // We have to test if we are authenticated
+        // to make sure the token is != null
+        return isAuthenticated() && token.getMember().getRole() == role;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.WithRights#getRole()
-     */
-    @Override
-    public com.bloatit.data.DaoMember.Role getRole() {
-        return token.getMember().getRole();
+    public final boolean isAuthenticated() {
+        return owningState != OwningState.NOBODY;
+    }
+
+    public final boolean isOwner() {
+        return owningState == OwningState.OWNER;
+    }
+
+    public final boolean isNobody() {
+        return owningState == OwningState.NOBODY;
     }
 
     /**
