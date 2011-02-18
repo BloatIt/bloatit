@@ -11,8 +11,8 @@
 package com.bloatit.framework.webserver.components;
 
 import com.bloatit.framework.webserver.components.meta.HtmlLeaf;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 
 /**
  * Handles Html list, both numbered and not numbered
@@ -44,7 +44,7 @@ public class HtmlList extends HtmlLeaf {
     }
 
     @Override
-    public final HtmlList add(final HtmlNode element) {
+    public final HtmlList add(final XmlNode element) {
         super.add(new HtmlListItem(element));
         return this;
     }

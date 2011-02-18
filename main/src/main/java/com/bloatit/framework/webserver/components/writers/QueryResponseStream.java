@@ -14,7 +14,7 @@ import com.bloatit.framework.xcgiserver.XcgiRequestAbordedException;
  * indentation and line return.
  * </p>
  */
-public abstract class HtmlStream {
+public abstract class QueryResponseStream {
 
     private final OutputStream out;
 
@@ -25,7 +25,7 @@ public abstract class HtmlStream {
      *            the underlying stream. Should usually be a socket to a web
      *            server (or an encapsulation of a socket to a web server)
      */
-    public HtmlStream(final OutputStream out) {
+    public QueryResponseStream(final OutputStream out) {
         super();
         this.out = out;
     }

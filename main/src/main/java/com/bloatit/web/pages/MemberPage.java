@@ -31,8 +31,8 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.GroupManager;
@@ -128,7 +128,7 @@ public final class MemberPage extends MasterPage {
     
     private class GroupListRenderer implements HtmlRenderer<Group> {
         @Override
-        public HtmlNode generate(Group team) {
+        public XmlNode generate(Group team) {
             final TeamPageUrl teamUrl = new TeamPageUrl(team);
             try {
                 HtmlLink htmlLink;

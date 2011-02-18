@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import com.bloatit.common.Log;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
+import com.bloatit.rest.RestResource;
 
 public final class HttpResponse {
 
@@ -48,20 +49,31 @@ public final class HttpResponse {
         writeCookies();
         output.write("Content-Type: text/html\r\n".getBytes());
 
-         closeHeaders();
+        closeHeaders();
 
         page.write(htmlText);
     }
 
     public void writeResource(String path, long size, String fileName) throws IOException {
+        String sendString1 = "Content-Disposition: inline; filename=" + fileName + "\r\n";
 
-        String sendString1 = "Content-Disposition: inline; filename="+fileName+"\r\n";
-
-        String sendString2 = "X-Sendfile2: "+path+" 0-"+size+"\r\n";
+        String sendString2 = "X-Sendfile2: " + path + " 0-" + size + "\r\n";
         output.write(sendString1.getBytes());
         output.write(sendString2.getBytes());
 
         closeHeaders();
+    }
+
+    /**
+     * Writes a rest resource into an HttpResponse
+     * 
+     * @param resource
+     *            the resource to write
+     * @throws IOException
+     *             whenever an IO error occurs on the underlying stream
+     */
+    public void writeRestResource(RestResource resource) throws IOException {
+        
     }
 
     private void closeHeaders() throws IOException {
@@ -73,7 +85,4 @@ public final class HttpResponse {
         output.write(Context.getSession().getKey().toString().getBytes());
         output.write("; path=/; Max-Age=1296000; Version=1 \r\n".getBytes());
     }
-
-
-
 }

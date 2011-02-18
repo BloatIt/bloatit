@@ -28,8 +28,8 @@ import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable.HtmlTableModel;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.Demand;
 import com.bloatit.web.url.ContributePageUrl;
@@ -144,7 +144,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public HtmlNode getHeader(int column) {
+        public XmlNode getHeader(int column) {
             String value;
             switch (column) {
             case 0:
@@ -188,7 +188,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public HtmlNode getBody(int column) {
+        public XmlNode getBody(int column) {
             String value = "";
             try {
                 switch (column) {
@@ -255,7 +255,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public HtmlNode getHeader(int column) {
+        public XmlNode getHeader(int column) {
             String value = "";
 
             switch (column) {
@@ -286,7 +286,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public HtmlNode getBody(int column) {
+        public XmlNode getBody(int column) {
             String value = "";
 
             switch (column) {

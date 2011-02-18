@@ -11,6 +11,7 @@
 
 package com.bloatit.framework.webserver.components.meta;
 
+
 /**
  * <p>
  * An HtmlBranch is a DOM Component that can get children
@@ -27,7 +28,7 @@ public abstract class HtmlBranch extends HtmlElement {
     }
 
     @Override
-    public final HtmlBranch add(final HtmlNode html) {
+    public final HtmlBranch add(final XmlNode html) {
         super.add(html);
         return this;
     }

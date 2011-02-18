@@ -170,6 +170,7 @@ public class HttpHeader {
     public HttpHeader(final Map<String, String> env) {
         super();
         this.env = env;
+        System.out.println(env);
         queryString = new Query(env.get("QUERY_STRING"));
     }
 

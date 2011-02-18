@@ -4,8 +4,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
-import sun.tools.tree.OrExpression;
-
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.framework.exceptions.RedirectException;
@@ -28,7 +26,7 @@ import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.admin.UserContentAdmin;
 import com.bloatit.model.admin.UserContentAdminListFactory;
 import com.bloatit.web.pages.LoggedPage;
@@ -183,7 +181,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
         tableModel.addColumn(new HtmlCheckbox("id_all", LabelPosition.BEFORE), new ColumnGenerator<V>() {
             @Override
-            public HtmlNode getBody(V element) {
+            public XmlNode getBody(V element) {
                 HtmlCheckbox htmlCheckbox = new HtmlCheckbox("id", LabelPosition.BEFORE);
                 htmlCheckbox.addAttribute("value", element.getId().toString());
                 return htmlCheckbox;
@@ -247,7 +245,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         HtmlFormBlock block = new HtmlFormBlock("UserContent_actions");
         actionForm.add(block.add(group));
         HtmlDropDown dropDown = new HtmlDropDown("action");
-        group.add(dropDown);
+        actionForm.add(dropDown);
         addActions(dropDown, block);
 
         // add the submit button

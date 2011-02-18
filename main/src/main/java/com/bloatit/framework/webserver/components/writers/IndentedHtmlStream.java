@@ -4,13 +4,13 @@ import java.io.OutputStream;
 
 /**
  * <p>
- * An implementation of {@link HtmlStream} that use indentation.
+ * An implementation of {@link QueryResponseStream} that use indentation.
  * </p>
  * <p>
  * Should be used in debug and build environments
  * </p>
  */
-public final class IndentedHtmlStream extends HtmlStream {
+public final class IndentedHtmlStream extends QueryResponseStream {
     private int indentCount;
     private final String indentSeparator;
     private final String lineSeparator;

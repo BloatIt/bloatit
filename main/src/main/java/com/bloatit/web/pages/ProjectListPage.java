@@ -22,7 +22,7 @@ import com.bloatit.framework.webserver.components.HtmlListItem;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
-import com.bloatit.framework.webserver.components.meta.HtmlNode;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Project;
 import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.web.components.HtmlPagedList;
@@ -51,7 +51,7 @@ public final class ProjectListPage extends MasterPage {
         final PageIterable<Project> projectList = ProjectManager.getProjects();
         final HtmlRenderer<Project> projectItemRenderer = new HtmlRenderer<Project>() {
             @Override
-            public HtmlNode generate(final Project project) {
+            public XmlNode generate(final Project project) {
                 final ProjectPageUrl memberUrl = new ProjectPageUrl(project);
                 try {
                     HtmlLink htmlLink;
