@@ -22,16 +22,33 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Project;
 import com.bloatit.model.lists.ProjectList;
 
+/**
+ * The Class ProjectManager is an utility class containing static methods.
+ */
 public final class ProjectManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private ProjectManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets the project by id.
+     * 
+     * @param id the id
+     * @return the project or null if not found.
+     */
     public static Project getProjectById(final Integer id) {
         return Project.create(DBRequests.getById(DaoProject.class, id));
     }
 
+    /**
+     * Gets all the projects.
+     * 
+     * @return all the projects
+     */
     public static PageIterable<Project> getProjects() {
         return new ProjectList(DBRequests.getAll(DaoProject.class));
     }

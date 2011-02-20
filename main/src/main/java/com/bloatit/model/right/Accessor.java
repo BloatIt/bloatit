@@ -62,7 +62,7 @@ public abstract class Accessor {
     protected abstract boolean can(RestrictedInterface object, Action action);
 
     /**
-     * CanAccess call the abstract {@link #can(RestrictedObject, Action)} method to know
+     * CanAccess call the abstract {@link #can(RestrictedInterface, Action)} method to know
      * if the user has the right to access the <code>object</code>.
      * 
      * @param object is the object on which we want to do the <code>action</code>
@@ -79,7 +79,7 @@ public abstract class Accessor {
 
     /**
      * Throws an {@link UnauthorizedOperationException} if the
-     * {@link #can(RestrictedObject, Action)} return false.
+     * {@link #can(RestrictedInterface, Action)} return false.
      * 
      * @param object is the object on which we want to do the <code>action</code>
      * @param action is the action.

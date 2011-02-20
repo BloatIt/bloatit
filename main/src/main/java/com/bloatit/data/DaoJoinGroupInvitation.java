@@ -34,14 +34,13 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * <p>
-     * The state of an invitation track its time line. (First PENDING, then
-     * REFUSED or ACCEPTED)
+     * The state of an invitation track its time line. (First PENDING, then REFUSED or
+     * ACCEPTED)
      * </p>
      * <p>
-     * The state DISCARDED means the invitation have been refused cause the user
-     * accepted another invitation for the same group, cancelling all other
-     * invitations for this group. It is therefore an alternative to REFUSED or
-     * ACCEPTED
+     * The state DISCARDED means the invitation have been refused cause the user accepted
+     * another invitation for the same group, cancelling all other invitations for this
+     * group. It is therefore an alternative to REFUSED or ACCEPTED
      * </p>
      */
     public enum State {
@@ -62,9 +61,19 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     // Static HQL requests
     // ======================================================================
 
+    /**
+     * Gets the invitation to join a group.
+     * 
+     * @param group the group this invitation is on.
+     * @param member the member this invitation was sent to.
+     * @return the invitation, are null if there is no invitation on that
+     * <code>group</code> sent to this <code>member</code>.
+     */
     public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
         return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
-                .setEntity("group", group).setEntity("member", member).uniqueResult();
+                                                      .setEntity("group", group)
+                                                      .setEntity("member", member)
+                                                      .uniqueResult();
     }
 
     // ======================================================================
@@ -86,8 +95,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     /**
      * Create a new invitation. Set the state to PENDING.
      * 
-     * @throws NonOptionalParameterException
-     *             if any of the parameters are null.
+     * @throws NonOptionalParameterException if any of the parameters are null.
      */
     private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember receiver, final DaoGroup group) {
         super();
@@ -101,8 +109,8 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
 
     /**
-     * Set the state to accepted and add the receiver into the list of members
-     * of this.group. If the state is not PENDING then do nothing.
+     * Set the state to accepted and add the receiver into the list of members of
+     * this.group. If the state is not PENDING then do nothing.
      */
     public void accept() {
         if (state == State.PENDING) {
@@ -121,11 +129,15 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
 
     /**
-     * <p>Sets the state to DISCARDED.</p>
-     * <p>If the current state is not PENDING, nothing happens</p>
+     * <p>
+     * Sets the state to DISCARDED.
+     * </p>
+     * <p>
+     * If the current state is not PENDING, nothing happens
+     * </p>
      */
     public void discard() {
-        if(state == State.PENDING){
+        if (state == State.PENDING) {
             this.state = State.DISCARDED;
         }
     }
@@ -164,6 +176,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -178,6 +191,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

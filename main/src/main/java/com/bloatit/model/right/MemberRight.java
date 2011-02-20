@@ -17,10 +17,25 @@
 package com.bloatit.model.right;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.model.Member;
 
+/**
+ * The Class MemberRight store the properties accessor for the {@link Member} class.
+ */
 public class MemberRight extends RightManager {
 
+    /**
+     * The Class GroupList is an accessor for the GroupList property.
+     */
     public static class GroupList extends Accessor {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
+         * , com.bloatit.model.right.Action)
+         */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
             boolean can = false;
@@ -33,7 +48,18 @@ public class MemberRight extends RightManager {
 
     // Delete for accept/refuse
     // write to create a new
+    /**
+     * The Class SendInvitation is an accessor for the SendInvitation property.
+     */
     public static class SendInvitation extends Accessor {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
+         * , com.bloatit.model.right.Action)
+         */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
             boolean returnValue = false;
@@ -43,18 +69,30 @@ public class MemberRight extends RightManager {
         }
     }
 
+    /**
+     * The Class Karma is a {@link Public} accessor for the Karma property.
+     */
     public static class Karma extends Public {
         // nothing this is just a rename.
     }
 
+    /**
+     * The Class Password is a {@link Private} accessor for the Password property.
+     */
     public static class Password extends Private {
         // nothing this is just a rename.
     }
 
+    /**
+     * The Class Locale is a {@link Private} accessor for the Locale property.
+     */
     public static class Locale extends Private {
         // nothing this is just a rename.
     }
 
+    /**
+     * The Class Name is a {@link Public} accessor for the Name property.
+     */
     public static class Name extends Public {
         // nothing this is just a rename.
     }

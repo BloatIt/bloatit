@@ -20,12 +20,24 @@ import com.bloatit.data.DaoBatch;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Batch;
 
+/**
+ * The Class BatchManager. Utility class containing static methods to get {@link Batch}s from the DB.
+ */
 public final class BatchManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private BatchManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets the a batch by Id.
+     * 
+     * @param id the batch id.
+     * @return the batch or null if not found.
+     */
     public static Batch getById(final Integer id) {
         return Batch.create(DBRequests.getById(DaoBatch.class, id));
     }

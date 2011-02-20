@@ -27,12 +27,25 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.demand.DemandImplementation;
 
+/**
+ * The Class KudosableManager is an utility class containing static methods for
+ * {@link Kudosable} loading etc.
+ */
 public final class KudosableManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private KudosableManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets a kudosable by id.
+     * 
+     * @param id the id
+     * @return the {@link Kudosable} or <code>null</code> if not found.
+     */
     public static Kudosable<?> getById(final Integer id) {
 
         // Try with comment
@@ -60,7 +73,6 @@ public final class KudosableManager {
         }
 
         return null;
-
     }
 
 }

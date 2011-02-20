@@ -16,8 +16,16 @@
 //
 package com.bloatit.model.right;
 
+import com.bloatit.model.Offer;
+
+/**
+ * The Class OfferRight store the properties accessor for the {@link Offer} class.
+ */
 public class OfferRight extends RightManager {
 
+    /**
+     * The Class DateExpire is a {@link Public} accessor for the DateExpire property.
+     */
     public static class DateExpire extends Public {
         // nothing this is just a rename.
     }

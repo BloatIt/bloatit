@@ -17,10 +17,26 @@
 package com.bloatit.model.right;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.model.UserContent;
 
+/**
+ * The Class UserContentRight store the properties accessor for the {@link UserContent}
+ * class.
+ */
 public class UserContentRight extends RightManager {
 
+    /**
+     * The Class AsGroup is an accessor for the AsGroup property.
+     */
     public static class AsGroup extends Accessor {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
+         * , com.bloatit.model.right.Action)
+         */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
             return canRead(action) || (role.hasGroupPrivilege(UserGroupRight.TALK) && canWrite(action));

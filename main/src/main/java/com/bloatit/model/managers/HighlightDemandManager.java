@@ -22,16 +22,34 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.lists.HighlightDemandList;
 
+/**
+ * The Class HighlightDemandManager is an utility class containing static methods for
+ * {@link HighlightDemand} loading etc.
+ */
 public final class HighlightDemandManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private HighlightDemandManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets a {@link HighlightDemand} by its id.
+     * 
+     * @param id the id
+     * @return the {@link HighlightDemand} or null if not found.
+     */
     public static HighlightDemand getById(final Integer id) {
         return HighlightDemand.create(DBRequests.getById(DaoHighlightDemand.class, id));
     }
 
+    /**
+     * Gets the all th {@link HighlightDemand}s.
+     * 
+     * @return the {@link HighlightDemand} demands.
+     */
     public static PageIterable<HighlightDemand> getHightlightDemand() {
         return new HighlightDemandList(DBRequests.getAll(DaoHighlightDemand.class));
     }

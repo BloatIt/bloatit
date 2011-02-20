@@ -23,12 +23,24 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Member;
 import com.bloatit.model.lists.MemberList;
 
+/**
+ * The Class MemberManager is an utility class containing static methods.
+ */
 public final class MemberManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private MemberManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets the member by login.
+     * 
+     * @param login the login
+     * @return the member or <code>null</code> if not found.
+     */
     public static Member getMemberByLogin(final String login) {
         final DaoMember daoMember = DaoMember.getByLogin(login);
         if (daoMember == null) {
@@ -38,22 +50,53 @@ public final class MemberManager {
         return Member.create(daoMember);
     }
 
+    /**
+     * Tells if a Login exists.
+     * 
+     * @param login the login
+     * @return <code>true</code>, if it exists, <code>false</code> otherwise.
+     */
     public static boolean loginExists(final String login) {
         return DaoActor.loginExists(login);
     }
 
+    /**
+     * Tells if Email exists.
+     * 
+     * @param email the email
+     * @return <code>true</code>, if it exists, <code>false</code> otherwise.
+     */
+    // TODO make sure i am working.
     public static boolean emailExists(final String email) {
         return DaoActor.emailExists(email);
     }
 
+    /**
+     * Gets the member by id.
+     * 
+     * @param id the id
+     * @return the member or <code>null</code> if not found.
+     */
     public static Member getMemberById(final Integer id) {
         return Member.create(DBRequests.getById(DaoMember.class, id));
     }
 
+    /**
+     * Gets all the members.
+     * 
+     * @return the all the members in the DB.
+     */
     public static PageIterable<Member> getMembers() {
         return new MemberList(DBRequests.getAll(DaoMember.class));
     }
 
+    /**
+     * Gets a member using its login/password.
+     * 
+     * @param login the login
+     * @param password the password
+     * @return the member or null if the login/password does not match any user.
+     */
     public static Member getByLoginAndPassword(final String login, final String password) {
         final DaoMember daoMember = DaoMember.getByLoginAndPassword(login, password);
         if (daoMember == null) {
@@ -63,9 +106,13 @@ public final class MemberManager {
         return Member.create(daoMember);
     }
 
+    /**
+     * Gets the number of members.
+     * 
+     * @return the members count
+     */
     public static int getMembersCount() {
         return DBRequests.count(DaoMember.class);
     }
-
 
 }

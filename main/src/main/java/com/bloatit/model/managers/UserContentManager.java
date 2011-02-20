@@ -26,12 +26,24 @@ import com.bloatit.model.Kudos;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.UserContent;
 
+/**
+ * The Class UserContentManager is an utility class containing static methods.
+ */
 public final class UserContentManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private UserContentManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets a {@link UserContent} by id.
+     * 
+     * @param id the id
+     * @return the {@link UserContent} or <code>null</code> if not found.
+     */
     public static UserContent<?> getById(final Integer id) {
         Kudosable<?> kudosable = KudosableManager.getById(id);
         if (kudosable != null) {
@@ -42,12 +54,12 @@ public final class UserContentManager {
         if (created != null) {
             return created;
         }
-        
+
         created = FileMetadata.create(DBRequests.getById(DaoFileMetadata.class, id));
         if (created != null) {
             return created;
         }
-        
+
         created = Kudos.create(DBRequests.getById(DaoKudos.class, id));
         if (created != null) {
             return created;

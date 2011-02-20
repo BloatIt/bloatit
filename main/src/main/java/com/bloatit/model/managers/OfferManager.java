@@ -20,12 +20,24 @@ import com.bloatit.data.DaoOffer;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Offer;
 
+/**
+ * The Class OfferManager is an utility class containing static methods.
+ */
 public final class OfferManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private OfferManager() {
         // Desactivate default constructor (sometimes named ctor)
     }
 
+    /**
+     * Gets the offer by id.
+     * 
+     * @param id the id
+     * @return the offer or <code>null</code> if not found.
+     */
     public static Offer getOfferById(final Integer id) {
         return Offer.create(DBRequests.getById(DaoOffer.class, id));
     }

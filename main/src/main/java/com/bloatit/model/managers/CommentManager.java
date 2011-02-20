@@ -20,12 +20,24 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Comment;
 
+/**
+ * The Class CommentManager. Utility class containing static methods to get {@link Comment}s from the DB.
+ */
 public final class CommentManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private CommentManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets a Comment by id.
+     * 
+     * @param id the {@link Comment} id
+     * @return the Comment or null if not found.
+     */
     public static Comment getCommentById(final Integer id) {
         return Comment.create(DBRequests.getById(DaoComment.class, id));
     }

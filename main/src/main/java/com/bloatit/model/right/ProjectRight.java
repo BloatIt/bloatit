@@ -16,10 +16,25 @@
 //
 package com.bloatit.model.right;
 
+import com.bloatit.model.Project;
 
+/**
+ * The Class ProjectRight store the properties accessor for the {@link Project} class.
+ */
 public class ProjectRight extends RightManager {
 
+    /**
+     * The Class GroupList is an accessor for the GroupList property.
+     */
     public static class GroupList extends Accessor {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
+         * , com.bloatit.model.right.Action)
+         */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
             boolean can = false;
@@ -30,18 +45,9 @@ public class ProjectRight extends RightManager {
         }
     }
 
-    // Delete for accept/refuse
-    // write to create a new
-//    public static class InviteInGroup extends Accessor {
-//        @Override
-//        protected final boolean can(final WithRights role, final Action action) {
-//            boolean returnValue = false;
-//            returnValue = role.getGroupRights().contains(UserGroupRight.INVITE) && (action == Action.WRITE);
-//            returnValue = returnValue || ownerCanRead(role, action) || ownerCanDelete(role, action);
-//            return returnValue;
-//        }
-//    }
-
+    /**
+     * The Class Name is a {@link Public} accessor for the Name property.
+     */
     public static class Name extends Public {
         // nothing this is just a rename.
     }

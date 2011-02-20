@@ -20,12 +20,24 @@ import com.bloatit.data.DaoBug;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Bug;
 
+/**
+ * The Class BugManager. Utility class containing static methods to get {@link Bug}s from the DB.
+ */
 public final class BugManager {
 
+    /**
+     * Desactivated constructor on utility class.
+     */
     private BugManager() {
         // Desactivate default ctor
     }
 
+    /**
+     * Gets a Bug by id.
+     * 
+     * @param id the {@link Bug} id
+     * @return the bug or null if not found.
+     */
     public static Bug getById(final Integer id) {
         return Bug.create(DBRequests.getById(DaoBug.class, id));
     }
