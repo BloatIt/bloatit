@@ -24,16 +24,19 @@ import com.bloatit.data.DaoUserContent;
 
 public class FileMetadata extends UserContent<DaoFileMetadata> {
 
-    public static FileMetadata create(final DaoFileMetadata dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoFileMetadata> created = CacheManager.get(dao);
-            if (created == null) {
-                return new FileMetadata(dao);
-            }
-            return (FileMetadata) created;
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoFileMetadata, FileMetadata> {
+        @Override
+        public FileMetadata doCreate(DaoFileMetadata dao) {
+            return new FileMetadata(dao);
         }
-        return null;
+    }
+
+    public static FileMetadata create(final DaoFileMetadata dao) {
+        return new MyCreator().create(dao);
     }
 
     private FileMetadata(final DaoFileMetadata dao) {
@@ -48,11 +51,6 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      */
     public FileMetadata(final Member author, String filename, String url, FileType type, int size) {
         this(DaoFileMetadata.createAndPersist(author.getDao(), null, filename, url, type, size));
-    }
-
-    @Override
-    protected DaoUserContent getDaoUserContent() {
-        return getDao();
     }
 
     /**

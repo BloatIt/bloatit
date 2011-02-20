@@ -29,11 +29,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoGroupRight.UserGroupRight;
-import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
-import com.bloatit.model.right.AuthToken;
 
 /**
  * A DaoBankTransaction represent a transaction with a real bank. It keep some
@@ -262,6 +259,15 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     public String getProcessInformations() {
         return processInformations;
+    }
+
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
     // ======================================================================

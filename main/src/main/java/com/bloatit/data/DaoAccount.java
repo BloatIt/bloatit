@@ -21,9 +21,6 @@ import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -42,15 +39,7 @@ import com.bloatit.model.InternalAccount;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class DaoAccount implements IdentifiableInterface {
-
-    /**
-     * Because of the different inheritance strategy we cannot inherit from identifiable.
-     * So we have to have an id.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+public abstract class DaoAccount extends DaoIdentifiable {
 
     /**
      * The DaoActor is the person that own this account.
@@ -175,11 +164,6 @@ public abstract class DaoAccount implements IdentifiableInterface {
 
     public final BigDecimal getAmount() {
         return amount;
-    }
-
-    @Override
-    public final Integer getId() {
-        return id;
     }
 
     public final DaoActor getActor() {

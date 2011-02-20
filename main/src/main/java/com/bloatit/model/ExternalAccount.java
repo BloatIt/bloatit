@@ -27,25 +27,32 @@ import com.bloatit.model.right.ExternalAccountRight;
  */
 public final class ExternalAccount extends Account<DaoExternalAccount> {
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
     public ExternalAccount(final Actor<?> actor, final AccountType type, final String bankCode) {
         super(DaoExternalAccount.createAndPersist(actor.getDao(), type, bankCode));
     }
 
-    public static ExternalAccount create(final DaoExternalAccount dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoExternalAccount> created = CacheManager.get(dao);
-            if (created == null) {
-                return new ExternalAccount(dao);
-            }
-            return (ExternalAccount) created;
+    private static final class MyCreator extends Creator<DaoExternalAccount, ExternalAccount> {
+        @Override
+        public ExternalAccount doCreate(DaoExternalAccount dao) {
+            return new ExternalAccount(dao);
         }
-        return null;
     }
 
-    private ExternalAccount(final DaoExternalAccount dao) {
+    public static ExternalAccount create(final DaoExternalAccount dao) {
+        return new MyCreator().create(dao);
+    }
+
+    ExternalAccount(final DaoExternalAccount dao) {
         super(dao);
     }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Accessors
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @return true if you can access the <code>BankCode</code> property.

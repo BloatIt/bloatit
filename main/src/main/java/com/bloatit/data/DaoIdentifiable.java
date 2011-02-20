@@ -19,12 +19,9 @@ package com.bloatit.data;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Indexed;
 
 /**
  * Base class to use with Hibernate. (A persistent class do not need to inherit from
@@ -42,6 +39,8 @@ public abstract class DaoIdentifiable implements IdentifiableInterface {
     public final Integer getId() {
         return id;
     }
+
+    public abstract <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor);
 
     // ======================================================================
     // For hibernate mapping

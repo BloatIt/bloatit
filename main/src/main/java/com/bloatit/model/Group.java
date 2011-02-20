@@ -31,16 +31,19 @@ import com.bloatit.model.lists.MemberList;
  */
 public final class Group extends Actor<DaoGroup> {
 
-    public static Group create(final DaoGroup dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoGroup> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Group(dao);
-            }
-            return (Group) created;
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoGroup, Group> {
+        @Override
+        public Group doCreate(DaoGroup dao) {
+            return new Group(dao);
         }
-        return null;
+    }
+
+    public static Group create(final DaoGroup dao) {
+        return new MyCreator().create(dao);
     }
 
     /**
@@ -65,6 +68,17 @@ public final class Group extends Actor<DaoGroup> {
     }
 
     /**
+     * Sets the type of group: either <code>PROTECTED</code> or <code>PUBLIC</code>
+     */
+    public void setRight(final Right right) {
+        getDao().setRight(right);
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Accessors
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
      * @return the list of members that are part of this group
      */
     public PageIterable<Member> getMembers() {
@@ -76,13 +90,6 @@ public final class Group extends Actor<DaoGroup> {
      */
     public Right getRight() {
         return getDao().getRight();
-    }
-
-    /**
-     * Sets the type of group: either <code>PROTECTED</code> or <code>PUBLIC</code>
-     */
-    public void setRight(final Right right) {
-        getDao().setRight(right);
     }
 
     /**

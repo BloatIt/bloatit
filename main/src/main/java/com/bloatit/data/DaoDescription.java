@@ -131,6 +131,15 @@ public final class DaoDescription extends DaoIdentifiable {
     }
 
     // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
+
+    // ======================================================================
     // For hibernate mapping
     // ======================================================================
 

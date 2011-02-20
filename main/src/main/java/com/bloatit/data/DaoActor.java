@@ -21,9 +21,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -45,15 +42,7 @@ import com.bloatit.framework.utils.PageIterable;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class DaoActor implements IdentifiableInterface {
-
-    /**
-     * Because of the different inheritance strategy we cannot inherit from identifiable.
-     * So we have to have an id.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * The login represent the user login and the group name. It must be unique (means
@@ -107,7 +96,7 @@ public abstract class DaoActor implements IdentifiableInterface {
     /**
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
-     *
+     * 
      * @param login is the login or name of this actor. It must be non null, and unique.
      * @throws NonOptionalParameterException if login or mail is null.
      */
@@ -134,7 +123,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * No check is performed on the correctness of the new email.
-     *
+     * 
      * @param email the new email.
      */
     public abstract void setContact(final String email);
@@ -145,7 +134,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /**
      * Set the external account for this actor.
-     *
+     * 
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
@@ -182,11 +171,6 @@ public abstract class DaoActor implements IdentifiableInterface {
                                                                                                                                                                this);
     }
 
-    @Override
-    public final Integer getId() {
-        return id;
-    }
-
     // ======================================================================
     // For hibernate mapping
     // ======================================================================
@@ -204,7 +188,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -217,7 +201,7 @@ public abstract class DaoActor implements IdentifiableInterface {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

@@ -32,16 +32,19 @@ import com.bloatit.model.lists.TranslationList;
  */
 public final class Description extends Identifiable<DaoDescription> {
 
-    public static Description create(final DaoDescription dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoDescription> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Description(dao);
-            }
-            return (Description) created;
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoDescription, Description> {
+        @Override
+        public Description doCreate(DaoDescription dao) {
+            return new Description(dao);
         }
-        return null;
+    }
+
+    public static Description create(final DaoDescription dao) {
+        return new MyCreator().create(dao);
     }
 
     /**

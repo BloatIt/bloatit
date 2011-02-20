@@ -34,6 +34,17 @@ import com.bloatit.model.lists.CommentList;
  * @author Thomas Guyard
  */
 public class Bug extends UserContent<DaoBug> {
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoBug, Bug> {
+        @Override
+        public Bug doCreate(DaoBug dao) {
+            return new Bug(dao);
+        }
+    }
 
     /**
      * Find a bug in the cache or create an new one.
@@ -42,15 +53,7 @@ public class Bug extends UserContent<DaoBug> {
      * @return if dao is null return null. Else return the new Bug.
      */
     public static Bug create(final DaoBug dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoBug> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Bug(dao);
-            }
-            return (Bug) created;
-        }
-        return null;
+        return new MyCreator().create(dao);
     }
 
     private Bug(final DaoBug dao) {
@@ -155,11 +158,6 @@ public class Bug extends UserContent<DaoBug> {
      */
     public final PageIterable<Comment> getComments() {
         return new CommentList(getDao().getComments());
-    }
-
-    @Override
-    protected DaoUserContent getDaoUserContent() {
-        return getDao();
     }
 
     public Date getLastUpdateDate() {

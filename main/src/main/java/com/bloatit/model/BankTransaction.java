@@ -30,21 +30,24 @@ import com.bloatit.data.DaoBankTransaction.State;
 @Entity
 public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoBankTransaction, BankTransaction> {
+        @Override
+        public BankTransaction doCreate(DaoBankTransaction dao) {
+            return new BankTransaction(dao);
+        }
+    }
+
     /**
      * Check the cache, if a corresponding BankTransaction exist return it, otherwise
      * create a BankTransaction using its dao representation. If the dao == null return
      * null;
      */
     public static BankTransaction create(final DaoBankTransaction dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoBankTransaction> created = CacheManager.get(dao);
-            if (created == null) {
-                return new BankTransaction(dao);
-            }
-            return (BankTransaction) created;
-        }
-        return null;
+        return new MyCreator().create(dao);
     }
 
     /**
@@ -73,6 +76,10 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     private BankTransaction(final DaoBankTransaction dao) {
         super(dao);
     }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Getters / setters
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @see DaoBankTransaction#setAuthorized()
@@ -93,6 +100,10 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      */
     public boolean setValidated() {
         return getDao().setValidated();
+    }
+
+    public void setProcessInformations(final String processInformations) {
+        getDao().setProcessInformations(processInformations);
     }
 
     public String getMessage() {
@@ -121,10 +132,6 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     public String getToken() {
         return getDao().getToken();
-    }
-
-    public void setProcessInformations(final String processInformations) {
-        getDao().setProcessInformations(processInformations);
     }
 
     public String getProcessInformations() {

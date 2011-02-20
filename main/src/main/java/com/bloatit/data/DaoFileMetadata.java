@@ -164,9 +164,18 @@ public final class DaoFileMetadata extends DaoUserContent {
     }
 
     // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
+
+    // ======================================================================
     // For hibernate mapping
     // ======================================================================
-    
+
     protected DaoFileMetadata() {
         // for hibernate.
     }

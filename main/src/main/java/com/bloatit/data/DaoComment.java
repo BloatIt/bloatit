@@ -116,6 +116,15 @@ public final class DaoComment extends DaoKudosable {
         return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by c.creationDate asc, id").setEntity("this", this);
     }
 
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
+
     /**
      * You should never use this attribute. It is for hibernate only.
      */

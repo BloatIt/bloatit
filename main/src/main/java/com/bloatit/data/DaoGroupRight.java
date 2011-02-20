@@ -13,9 +13,9 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public final class DaoGroupRight extends DaoIdentifiable {
-    
+
     public enum UserGroupRight {
-        CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK, 
+        CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK,
     }
 
     @ManyToOne(optional = false)
@@ -37,6 +37,15 @@ public final class DaoGroupRight extends DaoIdentifiable {
 
     protected UserGroupRight getUserStatus() {
         return userStatus;
+    }
+
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return null;
     }
 
     // ======================================================================
@@ -62,20 +71,26 @@ public final class DaoGroupRight extends DaoIdentifiable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoGroupRight other = (DaoGroupRight) obj;
+        }
+        final DaoGroupRight other = (DaoGroupRight) obj;
         if (membership == null) {
-            if (other.membership != null)
+            if (other.membership != null) {
                 return false;
-        } else if (!membership.equals(other.membership))
+            }
+        } else if (!membership.equals(other.membership)) {
             return false;
-        if (userStatus != other.userStatus)
+        }
+        if (userStatus != other.userStatus) {
             return false;
+        }
         return true;
     }
 }

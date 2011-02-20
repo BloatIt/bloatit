@@ -31,18 +31,17 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
 /**
- * This represent a content that is Kudosable. There is no table DaoKudosable.
- * Each attribute is mapped by children classes.
+ * This represent a content that is Kudosable. There is no table DaoKudosable. Each
+ * attribute is mapped by children classes.
  */
 @Entity
 public abstract class DaoKudosable extends DaoUserContent {
 
     /**
-     * This is the state of a Kudosable content. PENDING means that there is not
-     * enough kudos to take a decision. VALIDATE means that the popularity is
-     * high enough to validate this content. REFUSED means that the popularity
-     * is low enough to delete/reject this content. HIDDEN is a state between
-     * pending and rejected.
+     * This is the state of a Kudosable content. PENDING means that there is not enough
+     * kudos to take a decision. VALIDATE means that the popularity is high enough to
+     * validate this content. REFUSED means that the popularity is low enough to
+     * delete/reject this content. HIDDEN is a state between pending and rejected.
      * <p>
      * <b>Do not change the order !</b>
      * </p>
@@ -52,8 +51,8 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     /**
-     * The popularity is the sum of each value attached to each kudos that
-     * applies on this kudosable. it is a cached value (It could be calculated)
+     * The popularity is the sum of each value attached to each kudos that applies on this
+     * kudosable. it is a cached value (It could be calculated)
      */
     @Basic(optional = false)
     @Field(store = Store.NO)
@@ -113,8 +112,8 @@ public abstract class DaoKudosable extends DaoUserContent {
     /**
      * Use a HQL query to find if a member as already kudosed this kudosable.
      * 
-     * @param member The member that could have kudosed this kudosable. (Don't
-     *            even think of passing a null member)
+     * @param member The member that could have kudosed this kudosable. (Don't even think
+     * of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
     public final boolean hasKudosed(final DaoMember member) {
@@ -134,8 +133,8 @@ public abstract class DaoKudosable extends DaoUserContent {
     /**
      * Use a HQL query to find if a member as already kudosed this kudosable.
      * 
-     * @param member The member that could have kudosed this kudosable. (Don't
-     *            even think of passing a null member)
+     * @param member The member that could have kudosed this kudosable. (Don't even think
+     * of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
     public final int getVote(final DaoMember member) {

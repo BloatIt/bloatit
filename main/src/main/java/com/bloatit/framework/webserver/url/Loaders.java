@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
@@ -33,6 +34,7 @@ import com.bloatit.model.managers.BatchManager;
 import com.bloatit.model.managers.BugManager;
 import com.bloatit.model.managers.CommentManager;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.managers.GenericManager;
 import com.bloatit.model.managers.GroupManager;
 import com.bloatit.model.managers.KudosableManager;
 import com.bloatit.model.managers.MemberManager;
@@ -66,7 +68,7 @@ public final class Loaders {
         return loader.fromString(value);
     }
 
-    @SuppressWarnings({ "unchecked", "synthetic-access", "cast" })
+    @SuppressWarnings({ "unchecked", "synthetic-access", "cast", "rawtypes" })
     static <T> Loader<T> getLoader(final Class<T> theClass) throws ConversionErrorException {
         if (theClass.equals(Integer.class)) {
             return (Loader<T>) new ToInteger();
@@ -92,32 +94,10 @@ public final class Loaders {
             return (Loader<T>) new ToString();
         } else if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
-        } else if (theClass.equals(DemandImplementation.class) || theClass.equals(Demand.class)) {
-            return (Loader<T>) new ToDemand();
-        } else if (theClass.equals(Member.class)) {
-            return (Loader<T>) new ToMember();
+        } else if (IdentifiableInterface.class.isAssignableFrom(theClass)) {
+            return (Loader<T>) new ToIdentifiable();
         } else if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
-        } else if (theClass.equals(Comment.class)) {
-            return (Loader<T>) new ToComment();
-        } else if (theClass.equals(Project.class)) {
-            return (Loader<T>) new ToProject();
-        } else if (theClass.equals(FileMetadata.class)) {
-            return (Loader<T>) new ToFileMetadata();
-        } else if (theClass.equals(Group.class)) {
-            return (Loader<T>) new ToGroup();
-        } else if (theClass.equals(Bug.class)) {
-            return (Loader<T>) new ToBug();
-        } else if (theClass.equals(Batch.class)) {
-            return (Loader<T>) new ToBatch();
-        } else if (theClass.equals(JoinGroupInvitation.class)) {
-            return (Loader<T>) new ToJoinGroupInvitation();
-        } else if (theClass.equals(Offer.class)) {
-            return (Loader<T>) new ToOffer();
-        } else if (theClass.equals(KudosableInterface.class) || theClass.equals(Kudosable.class)) {
-            return (Loader<T>) new ToKudosable();
-        } else if (theClass.equals(UserContentInterface.class) || theClass.equals(UserContent.class)) {
-            return (Loader<T>) new ToUserContent();
         }
         throw new NotImplementedException("Cannot find a convertion class for: " + theClass);
     }
@@ -276,7 +256,7 @@ public final class Loaders {
         }
     }
 
-    private abstract static class ToIdentifiable extends Loader<Identifiable<?>> {
+    private static class ToIdentifiable extends Loader<Identifiable<?>> {
         @Override
         public final String toString(final Identifiable<?> id) {
             return String.valueOf(id.getId());
@@ -285,7 +265,7 @@ public final class Loaders {
         @Override
         public final Identifiable<?> fromString(final String data) throws ConversionErrorException {
             try {
-                Identifiable<?> fromStr = doFromString(Integer.valueOf(data));
+                Identifiable<?> fromStr = GenericManager.getById(Integer.valueOf(data));
                 if (fromStr == null) {
                     throw new ConversionErrorException("Identifiable not found for Id: " + data);
                 }
@@ -293,92 +273,6 @@ public final class Loaders {
             } catch (NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
-        }
-
-        public abstract Identifiable<?> doFromString(int i);
-    }
-
-    private static class ToDemand extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return (Identifiable<?>) DemandManager.getDemandById(i);
-        }
-    }
-
-    private static class ToMember extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return MemberManager.getMemberById(i);
-        }
-    }
-
-    private static class ToProject extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return ProjectManager.getProjectById(i);
-        }
-    }
-
-    private static class ToOffer extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return OfferManager.getOfferById(i);
-        }
-    }
-
-    private static class ToFileMetadata extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return FileMetadataManager.getFileMetadataById(i);
-        }
-    }
-
-    private static class ToKudosable extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return KudosableManager.getById(i);
-        }
-    }
-
-    private static class ToUserContent extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return UserContentManager.getById(i);
-        }
-    }
-
-    private static class ToComment extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return CommentManager.getCommentById(i);
-        }
-    }
-
-    private static class ToGroup extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return GroupManager.getGroupById(i);
-        }
-    }
-
-    private static class ToBug extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return BugManager.getById(i);
-        }
-    }
-
-    private static class ToBatch extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int i) {
-            return BatchManager.getById(i);
-        }
-    }
-
-    private static class ToJoinGroupInvitation extends ToIdentifiable {
-        @Override
-        public Identifiable<?> doFromString(int id) {
-            return GroupManager.getInvitationById(id);
         }
     }
 }

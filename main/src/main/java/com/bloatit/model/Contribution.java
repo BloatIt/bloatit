@@ -33,6 +33,17 @@ import com.bloatit.model.right.ContributionRight;
  */
 public final class Contribution extends UserContent<DaoContribution> {
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoContribution, Contribution> {
+        @Override
+        public Contribution doCreate(DaoContribution dao) {
+            return new Contribution(dao);
+        }
+    }
+
     /**
      * Create a <code>Contribution</code> or return null (if dao is null)
      */
@@ -84,6 +95,16 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
+     * return true if you can access the <code>Comment</code> property.
+     * 
+     * @see #getComment()()
+     * @see Contribution#authenticate(AuthToken)
+     */
+    public boolean canAccessComment() {
+        return canAccess(new ContributionRight.Comment(), Action.READ);
+    }
+
+    /**
      * @return the amount.
      * @throws UnauthorizedOperationException if you do not have the right to access the
      * <code>Amount</code> property.
@@ -95,16 +116,6 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
-     * return true if you can access the <code>Comment</code> property.
-     * 
-     * @see #getComment()()
-     * @see Contribution#authenticate(AuthToken)
-     */
-    public boolean canAccessComment() {
-        return canAccess(new ContributionRight.Comment(), Action.READ);
-    }
-
-    /**
      * @return the comment.
      * @throws UnauthorizedOperationException if you do not have the right to access the
      * <code>Comment</code> property.
@@ -112,10 +123,5 @@ public final class Contribution extends UserContent<DaoContribution> {
     public String getComment() throws UnauthorizedOperationException {
         tryAccess(new ContributionRight.Comment(), Action.READ);
         return getDao().getComment();
-    }
-
-    @Override
-    protected DaoUserContent getDaoUserContent() {
-        return getDao();
     }
 }

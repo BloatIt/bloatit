@@ -30,16 +30,19 @@ import com.bloatit.model.right.ProjectRight;
 
 public class Project extends Identifiable<DaoProject> {
 
-    public static Project create(final DaoProject dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoProject> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Project(dao);
-            }
-            return (Project) created;
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoProject, Project> {
+        @Override
+        public Project doCreate(DaoProject dao) {
+            return new Project(dao);
         }
-        return null;
+    }
+
+    public static Project create(final DaoProject dao) {
+        return new MyCreator().create(dao);
     }
 
     private Project(DaoProject id) {
@@ -57,6 +60,10 @@ public class Project extends Identifiable<DaoProject> {
     public Project(String name, final Member author, final Locale locale, final String title, final String description, FileMetadata image) {
         this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description), image.getDao()));
     }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Getters
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @return
@@ -97,6 +104,10 @@ public class Project extends Identifiable<DaoProject> {
         // TODO: implement
         return null;
     }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // RightManagement
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     protected boolean isMine(Member member) {

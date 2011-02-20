@@ -49,10 +49,9 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A DaoDemand is a kudosable content. It has a translatable description, and
- * can have a specification and some offers. The state of the demand is managed
- * by its super class DaoKudosable. On a demand we can add some comment and some
- * contriutions.
+ * A DaoDemand is a kudosable content. It has a translatable description, and can have a
+ * specification and some offers. The state of the demand is managed by its super class
+ * DaoKudosable. On a demand we can add some comment and some contriutions.
  */
 @Entity
 @Indexed
@@ -60,21 +59,21 @@ import com.bloatit.framework.utils.PageIterable;
 public final class DaoDemand extends DaoKudosable {
 
     /**
-     * This is the state of the demand. It's used in the workflow modeling. The
-     * order is important !
+     * This is the state of the demand. It's used in the workflow modeling. The order is
+     * important !
      */
     public enum DemandState {
-        PENDING, //No offers, waiting for money and offer
+        PENDING, // No offers, waiting for money and offer
         PREPARING, // One or more offer, waiting for money
         DEVELOPPING, // Development in progress
         UAT, // User acceptance testing
         DISCARDED, // Something went wrong, the demand is canceled
-        FINISHED // All is good, the developer is paid and the users are happy
+        FINISHED
+        // All is good, the developer is paid and the users are happy
     }
 
     /**
-     * This is a calculated value with the sum of the value of all
-     * contributions.
+     * This is a calculated value with the sum of the value of all contributions.
      */
     @Basic(optional = false)
     @Field(store = Store.NO)
@@ -108,9 +107,9 @@ public final class DaoDemand extends DaoKudosable {
     private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
-     * The selected offer is the offer that is most likely to be validated and
-     * used. If an offer is selected and has enough money and has a elapse time
-     * done then this offer go into dev.
+     * The selected offer is the offer that is most likely to be validated and used. If an
+     * offer is selected and has enough money and has a elapse time done then this offer
+     * go into dev.
      */
     @ManyToOne(optional = true)
     @Cascade(value = { CascadeType.ALL })
@@ -147,7 +146,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     *
+     * 
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -167,8 +166,8 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Delete this DaoDemand from the database. "this" will remain, but
-     * unmapped. (You shoudn't use it then)
+     * Delete this DaoDemand from the database. "this" will remain, but unmapped. (You
+     * shoudn't use it then)
      */
     public void delete() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -181,7 +180,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Add a contribution to a demand.
-     *
+     * 
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -205,8 +204,7 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Add a new offer for this demand. If there is no selected offer, select
-     * this one.
+     * Add a new offer for this demand. If there is no selected offer, select this one.
      */
     public void addOffer(final DaoOffer offer) {
         offers.add(offer);
@@ -214,7 +212,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     *
+     * 
      * @param offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -257,7 +255,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /**
      * Called by contribution when canceled.
-     *
+     * 
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -280,20 +278,19 @@ public final class DaoDemand extends DaoKudosable {
      * Use a HQL query to get the offers as a PageIterable collection
      */
     public PageIterable<DaoOffer> getOffersFromQuery() {
-        String queryStr = "SELECT o from DaoOffer o, DaoKudosable k " + //
+        final String queryStr = "SELECT o from DaoOffer o, DaoKudosable k " + //
                 "WHERE o.demand = :this " + //
                 "AND k.id = o.id " + //
                 "ORDER BY k.popularity asc";
 
-        String sizeStr = "SELECT count(o) from DaoOffer o " + //
+        final String sizeStr = "SELECT count(o) from DaoOffer o " + //
                 "WHERE o.demand = :this "; //
         return new QueryCollection<DaoOffer>(queryStr, sizeStr).setEntity("this", this);
     }
 
     /**
-     * The current offer is the offer with the max popularity then the min
-     * amount.
-     *
+     * The current offer is the offer with the max popularity then the min amount.
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
@@ -331,13 +328,10 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Use a HQL query to get the first level comments as a PageIterable
-     * collection
+     * Use a HQL query to get the first level comments as a PageIterable collection
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory()
-                                                             .getCurrentSession()
-                                                             .createFilter(comments, "order by creationDate asc, id"),
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "order by creationDate asc, id"),
                                                SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
     }
 
@@ -379,6 +373,15 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
+
+    // ======================================================================
     // For hibernate mapping
     // ======================================================================
 
@@ -392,7 +395,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -405,7 +408,7 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -432,13 +435,13 @@ public final class DaoDemand extends DaoKudosable {
 
     public int countOpenBugs() {
 
-        String q = "SELECT count(*) " + //
+        final String q = "SELECT count(*) " + //
                 "FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
                 "JOIN bs.bugs as b " + //
                 "WHERE o = :selectedOffer " + //
                 "AND b.state != :close ";//
-        Query query = SessionManager.getSessionFactory().getCurrentSession().createQuery(q);
+        final Query query = SessionManager.getSessionFactory().getCurrentSession().createQuery(q);
         query.setEntity("selectedOffer", selectedOffer);
         query.setParameter("close", DaoBug.State.RESOLVED);
         return ((Long) query.uniqueResult()).intValue();
@@ -446,43 +449,46 @@ public final class DaoDemand extends DaoKudosable {
 
     public PageIterable<DaoBug> getOpenBugs() {
 
-        String q = "SELECT b" + //
+        final String q = "SELECT b" + //
                 " FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
                 "JOIN bs.bugs as b " + //
                 "WHERE o = :selectedOffer " + //
                 "AND b.state != :close ";//
 
-        String qCount = "SELECT count(b)" + //
+        final String qCount = "SELECT count(b)" + //
                 " FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
                 "JOIN bs.bugs as b " + //
                 "WHERE o = :selectedOffer " + //
                 "AND b.state != :close ";//
 
-        org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        return new QueryCollection<DaoBug>( currentSession.createQuery(q),currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer).setParameter("close", DaoBug.State.RESOLVED);
+        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer)
+                                                                                                             .setParameter("close", DaoBug.State.RESOLVED);
     }
 
     public PageIterable<DaoBug> getClosedBugs() {
-        String q = "SELECT b" + //
-        " FROM com.bloatit.data.DaoOffer o " + //
-        "JOIN o.batches as bs " + //
-        "JOIN bs.bugs as b " + //
-        "WHERE o = :selectedOffer " + //
-        "AND o.demand = :this " + //
-        "AND b.state = :close ";//
+        final String q = "SELECT b" + //
+                " FROM com.bloatit.data.DaoOffer o " + //
+                "JOIN o.batches as bs " + //
+                "JOIN bs.bugs as b " + //
+                "WHERE o = :selectedOffer " + //
+                "AND o.demand = :this " + //
+                "AND b.state = :close ";//
 
-        String qCount = "SELECT count(b)" + //
-        " FROM com.bloatit.data.DaoOffer o " + //
-        "JOIN o.batches as bs " + //
-        "JOIN bs.bugs as b " + //
-        "WHERE o = :selectedOffer " + //
-        "AND o.demand = :this " + //
-        "AND b.state = :close ";//
+        final String qCount = "SELECT count(b)" + //
+                " FROM com.bloatit.data.DaoOffer o " + //
+                "JOIN o.batches as bs " + //
+                "JOIN bs.bugs as b " + //
+                "WHERE o = :selectedOffer " + //
+                "AND o.demand = :this " + //
+                "AND b.state = :close ";//
 
-        org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        return new QueryCollection<DaoBug>( currentSession.createQuery(q),currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer).setParameter("close", DaoBug.State.RESOLVED).setEntity("this", this);
+        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer)
+                                                                                                             .setParameter("close", DaoBug.State.RESOLVED)
+                                                                                                             .setEntity("this", this);
     }
 
 }

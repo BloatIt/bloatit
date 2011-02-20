@@ -23,6 +23,17 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 
 public final class Translation extends Kudosable<DaoTranslation> {
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoTranslation, Translation> {
+        @Override
+        public Translation doCreate(DaoTranslation dao) {
+            return new Translation(dao);
+        }
+    }
+
     public static Translation create(final DaoTranslation dao) {
         if (dao != null) {
             @SuppressWarnings("unchecked")

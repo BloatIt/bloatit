@@ -9,16 +9,19 @@ import com.bloatit.model.demand.DemandImplementation;
 
 public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
 
-    public static HighlightDemand create(final DaoHighlightDemand dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoHighlightDemand> created = CacheManager.get(dao);
-            if (created == null) {
-                return new HighlightDemand(dao);
-            }
-            return (HighlightDemand) created;
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoHighlightDemand, HighlightDemand> {
+        @Override
+        public HighlightDemand doCreate(DaoHighlightDemand dao) {
+            return new HighlightDemand(dao);
         }
-        return null;
+    }
+
+    public static HighlightDemand create(final DaoHighlightDemand dao) {
+        return new MyCreator().create(dao);
     }
 
     public HighlightDemand(Demand demand, int position, String reason, Date activationDate, Date desactivationDate) {

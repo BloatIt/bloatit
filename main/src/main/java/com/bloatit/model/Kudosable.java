@@ -63,6 +63,52 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return canVote(-1);
     }
 
+    private final EnumSet<SpecialCode> canVote(int sign) {
+        final EnumSet<SpecialCode> errors = EnumSet.noneOf(SpecialCode.class);
+    
+        // See if we can kudos.
+        if (!canAccess(new KudosableRight.Kudos(), Action.WRITE)) {
+            errors.add(SpecialCode.NOTHING_SPECIAL);
+        }
+    
+        if (getDao().isPopularityLocked()) {
+            errors.add(SpecialCode.KUDOSABLE_LOCKED);
+        }
+    
+        if (getAuthTokenUnprotected() == null) {
+            errors.add(SpecialCode.AUTHENTICATION_NEEDED);
+            // Stop tests here: the other tests need an AuthToken
+            return errors;
+        }
+    
+        if (getAuthTokenUnprotected().getMember().getRole() == Role.ADMIN) {
+            // Stop here. The member is an admin. He must be able to kudos
+            // everything.
+            return errors;
+        }
+    
+        // I cannot kudos my own content.
+        if (isOwnedByMe()) {
+            errors.add(SpecialCode.OWNED_BY_ME);
+        }
+    
+        // Only one kudos per person
+        if (getDao().hasKudosed(getAuthTokenUnprotected().getMember().getDao())) {
+            errors.add(SpecialCode.ALREADY_VOTED);
+        }
+    
+        // Make sure we are in the right position
+        final Member member = getAuthTokenUnprotected().getMember();
+        final int influence = member.calculateInfluence();
+        if (sign == -1 && influence < MIN_INFLUENCE_TO_UNKUDOS) {
+            errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN);
+        }
+        if (sign == 1 && influence < MIN_INFLUENCE_TO_KUDOS) {
+            errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP);
+        }
+        return errors;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -75,17 +121,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return vote;
     }
 
-    @Override
-    public int getUserVoteValue() {
-        final AuthToken authToken = getAuthTokenUnprotected();
-
-        if (getAuthTokenUnprotected() == null) {
-            return 0;
-        }
-
-        return getDao().getVote(authToken.getMember().getDao());
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -96,52 +131,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         final int vote = vote(1);
         notifyKudos(true);
         return vote;
-    }
-
-    private final EnumSet<SpecialCode> canVote(int sign) {
-        final EnumSet<SpecialCode> errors = EnumSet.noneOf(SpecialCode.class);
-
-        // See if we can kudos.
-        if (!canAccess(new KudosableRight.Kudos(), Action.WRITE)) {
-            errors.add(SpecialCode.NOTHING_SPECIAL);
-        }
-
-        if (getDao().isPopularityLocked()) {
-            errors.add(SpecialCode.KUDOSABLE_LOCKED);
-        }
-
-        if (getAuthTokenUnprotected() == null) {
-            errors.add(SpecialCode.AUTHENTICATION_NEEDED);
-            // Stop tests here: the other tests need an AuthToken
-            return errors;
-        }
-
-        if (getAuthTokenUnprotected().getMember().getRole() == Role.ADMIN) {
-            // Stop here. The member is an admin. He must be able to kudos
-            // everything.
-            return errors;
-        }
-
-        // I cannot kudos my own content.
-        if (isOwnedByMe()) {
-            errors.add(SpecialCode.OWNED_BY_ME);
-        }
-
-        // Only one kudos per person
-        if (getDao().hasKudosed(getAuthTokenUnprotected().getMember().getDao())) {
-            errors.add(SpecialCode.ALREADY_VOTED);
-        }
-
-        // Make sure we are in the right position
-        final Member member = getAuthTokenUnprotected().getMember();
-        final int influence = member.calculateInfluence();
-        if (sign == -1 && influence < MIN_INFLUENCE_TO_UNKUDOS) {
-            errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN);
-        }
-        if (sign == 1 && influence < MIN_INFLUENCE_TO_KUDOS) {
-            errors.add(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP);
-        }
-        return errors;
     }
 
     @Override
@@ -160,11 +149,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     @Override
     public final PopularityState getState() {
         return getDao().getState();
-    }
-
-    @Override
-    protected final DaoUserContent getDaoUserContent() {
-        return getDao();
     }
 
     private int vote(final int sign) throws UnauthorizedOperationException {
@@ -240,6 +224,27 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     // TODO right management
     public void unlockPopularity() {
         getDao().unlockPopularity();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.KudosableInterface#getPopularity()
+     */
+    @Override
+    public final int getPopularity() {
+        return getDao().getPopularity();
+    }
+
+    @Override
+    public int getUserVoteValue() {
+        final AuthToken authToken = getAuthTokenUnprotected();
+    
+        if (getAuthTokenUnprotected() == null) {
+            return 0;
+        }
+    
+        return getDao().getVote(authToken.getMember().getDao());
     }
 
     /**
@@ -321,16 +326,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      */
     protected void notifyHidden() {
         // Implement me if you wish
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.KudosableInterface#getPopularity()
-     */
-    @Override
-    public final int getPopularity() {
-        return getDao().getPopularity();
     }
 
 }

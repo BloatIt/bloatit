@@ -21,16 +21,19 @@ import com.bloatit.data.DaoUserContent;
 
 public final class Kudos extends UserContent<DaoKudos> {
 
-    public static Kudos create(final DaoKudos dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoKudos> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Kudos(dao);
-            }
-            return (Kudos) created;
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoKudos, Kudos> {
+        @Override
+        public Kudos doCreate(DaoKudos dao) {
+            return new Kudos(dao);
         }
-        return null;
+    }
+
+    public static Kudos create(final DaoKudos dao) {
+        return new MyCreator().create(dao);
     }
 
     private Kudos(final DaoKudos dao) {
@@ -39,11 +42,6 @@ public final class Kudos extends UserContent<DaoKudos> {
 
     public int getValue() {
         return getDao().getValue();
-    }
-
-    @Override
-    protected DaoUserContent getDaoUserContent() {
-        return getDao();
     }
 
 }

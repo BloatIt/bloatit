@@ -26,32 +26,26 @@ import com.bloatit.model.lists.CommentList;
  */
 public final class Comment extends Kudosable<DaoComment> {
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoComment, Comment> {
+        @Override
+        public Comment doCreate(DaoComment dao) {
+            return new Comment(dao);
+        }
+    }
+
     /**
      * Create a new comment and return it. It return null if the <code>dao</code> is null.
      */
     public static Comment create(final DaoComment dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoComment> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Comment(dao);
-            }
-            return (Comment) created;
-        }
-        return null;
+        return new MyCreator().create(dao);
     }
 
     private Comment(final DaoComment dao) {
         super(dao);
-    }
-
-    /**
-     * Return all the children comment of this comment.
-     * 
-     * @see DaoComment#getChildren()
-     */
-    public PageIterable<Comment> getChildren() {
-        return new CommentList(getDao().getChildren());
     }
 
     /**
@@ -65,19 +59,28 @@ public final class Comment extends Kudosable<DaoComment> {
     }
 
     /**
-     * @return the text of this comment.
-     */
-    public String getText() {
-        return getDao().getText();
-    }
-
-    /**
      * Add a comment to the list of children of this comment.
      * 
      * @see #addChildComment(String)
      */
     public void addChildComment(final Comment comment) {
         getDao().addChildComment(comment.getDao());
+    }
+
+    /**
+     * Return all the children comment of this comment.
+     * 
+     * @see DaoComment#getChildren()
+     */
+    public PageIterable<Comment> getChildren() {
+        return new CommentList(getDao().getChildren());
+    }
+
+    /**
+     * @return the text of this comment.
+     */
+    public String getText() {
+        return getDao().getText();
     }
 
     /**

@@ -35,21 +35,28 @@ import com.bloatit.model.right.InternalAccountRight;
  */
 public final class InternalAccount extends Account<DaoInternalAccount> {
 
-    public static InternalAccount create(final DaoInternalAccount dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoInternalAccount> created = CacheManager.get(dao);
-            if (created == null) {
-                return new InternalAccount(dao);
-            }
-            return (InternalAccount) created;
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoInternalAccount, InternalAccount> {
+        @Override
+        public InternalAccount doCreate(DaoInternalAccount dao) {
+            return new InternalAccount(dao);
         }
-        return null;
+    }
+
+    public static InternalAccount create(final DaoInternalAccount dao) {
+        return new MyCreator().create(dao);
     }
 
     private InternalAccount(final DaoInternalAccount dao) {
         super(dao);
     }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Accessors
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @return true if you can access the <code>Blocked</code> property.

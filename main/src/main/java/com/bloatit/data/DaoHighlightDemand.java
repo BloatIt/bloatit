@@ -17,11 +17,10 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * List of hightlighted demands with the reason, the position and the hightlight
- * date
+ * List of hightlighted demands with the reason, the position and the hightlight date
  */
 @Entity
-public final class DaoHighlightDemand extends DaoIdentifiable{
+public final class DaoHighlightDemand extends DaoIdentifiable {
 
     @Basic(optional = false)
     private int position;
@@ -29,7 +28,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable{
     @Basic(optional = true)
     private String reason;
 
-    @ManyToOne(cascade = {  CascadeType.ALL })
+    @ManyToOne(cascade = { CascadeType.ALL })
     private DaoDemand demand;
 
     @Column(updatable = false, nullable = false)
@@ -44,7 +43,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable{
 
     /**
      * Create a DaoHighlightDemand and add it into the db.
-     *
+     * 
      * @param demand
      * @param position
      * @param reason
@@ -67,7 +66,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable{
 
     /**
      * Create a DaoHighlightDemand
-     *
+     * 
      * @param demand
      * @param position
      * @param reason
@@ -96,13 +95,13 @@ public final class DaoHighlightDemand extends DaoIdentifiable{
     public PageIterable<DaoHighlightDemand> getActiveHightlightDemands() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
 
-        Query query = session.createQuery("from DaoHighlightDemand " + //
-                        "where activationDate < :now " + //
-                        "and desactivationDate > :now");//
+        final Query query = session.createQuery("from DaoHighlightDemand " + //
+                "where activationDate < :now " + //
+                "and desactivationDate > :now");//
 
         query.setDate("now", new Date());
 
-        QueryCollection<DaoHighlightDemand> queryCollection = new QueryCollection<DaoHighlightDemand>(query);
+        final QueryCollection<DaoHighlightDemand> queryCollection = new QueryCollection<DaoHighlightDemand>(query);
         return queryCollection;
     }
 
@@ -152,37 +151,59 @@ public final class DaoHighlightDemand extends DaoIdentifiable{
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        DaoHighlightDemand other = (DaoHighlightDemand) obj;
+        }
+        final DaoHighlightDemand other = (DaoHighlightDemand) obj;
         if (activationDate == null) {
-            if (other.activationDate != null)
+            if (other.activationDate != null) {
                 return false;
-        } else if (!activationDate.equals(other.activationDate))
+            }
+        } else if (!activationDate.equals(other.activationDate)) {
             return false;
+        }
         if (demand == null) {
-            if (other.demand != null)
+            if (other.demand != null) {
                 return false;
-        } else if (!demand.equals(other.demand))
+            }
+        } else if (!demand.equals(other.demand)) {
             return false;
+        }
         if (desactivationDate == null) {
-            if (other.desactivationDate != null)
+            if (other.desactivationDate != null) {
                 return false;
-        } else if (!desactivationDate.equals(other.desactivationDate))
+            }
+        } else if (!desactivationDate.equals(other.desactivationDate)) {
             return false;
-        if (position != other.position)
+        }
+        if (position != other.position) {
             return false;
+        }
         if (reason == null) {
-            if (other.reason != null)
+            if (other.reason != null) {
                 return false;
-        } else if (!reason.equals(other.reason))
+            }
+        } else if (!reason.equals(other.reason)) {
             return false;
+        }
         return true;
     }
+
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
+
     // ======================================================================
     // For hibernate mapping
     // ======================================================================

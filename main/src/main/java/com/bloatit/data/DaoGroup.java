@@ -43,9 +43,8 @@ import com.bloatit.framework.utils.PageIterable;
 public final class DaoGroup extends DaoActor {
 
     /**
-     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go
-     * in. The PROTECTED that everybody can see, but require an invitation to go
-     * in.
+     * There is 2 kinds of groups : The PUBLIC that everybody can see and and go in. The
+     * PROTECTED that everybody can see, but require an invitation to go in.
      */
     public enum Right {
         PUBLIC, PROTECTED;
@@ -136,8 +135,8 @@ public final class DaoGroup extends DaoActor {
      * Add a member in this group.
      * 
      * @param member The member to add
-     * @param isAdmin true if the member need to have the right to administer
-     *            this group. (This may change if the number of role change !)
+     * @param isAdmin true if the member need to have the right to administer this group.
+     * (This may change if the number of role change !)
      */
     public void addMember(final DaoMember member, final boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(member, this));
@@ -151,6 +150,15 @@ public final class DaoGroup extends DaoActor {
         groupMembership.remove(link);
         member.getGroupMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
+    }
+
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
     // ======================================================================
@@ -174,9 +182,8 @@ public final class DaoGroup extends DaoActor {
     /**
      * Finds if a member is in this group, and which is its status.
      * 
-     * @return {@code null} if the member is not in this group, or a set
-     *         otherwise. <br />
-     *         Note, the returned set can be empty if the user is only a Member
+     * @return {@code null} if the member is not in this group, or a set otherwise. <br />
+     * Note, the returned set can be empty if the user is only a Member
      */
     public EnumSet<UserGroupRight> getUserGroupRight(final DaoMember member) {
         final Query q = SessionManager.getSessionFactory()
@@ -188,8 +195,8 @@ public final class DaoGroup extends DaoActor {
         if (gm == null) {
             return null;
         }
-        EnumSet<UserGroupRight> rights = EnumSet.noneOf(UserGroupRight.class);
-        for (DaoGroupRight groupRight : gm.getRights()) {
+        final EnumSet<UserGroupRight> rights = EnumSet.noneOf(UserGroupRight.class);
+        for (final DaoGroupRight groupRight : gm.getRights()) {
             rights.add(groupRight.getUserStatus());
         }
         return rights;

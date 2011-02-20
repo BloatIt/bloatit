@@ -40,6 +40,13 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Construction
     // ////////////////////////////////////////////////////////////////////////
 
+    private static final class MyCreator extends Creator<DaoOffer, Offer> {
+        @Override
+        public Offer doCreate(DaoOffer dao) {
+            return new Offer(dao);
+        }
+    }
+
     public static Offer create(final DaoOffer dao) {
         if (dao != null) {
             @SuppressWarnings("unchecked")

@@ -44,13 +44,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
         super(dao);
     }
 
-    /**
-     * Gets the dao user content. This should only be used by subClasses.
-     * 
-     * @return the dao user content
-     */
-    protected abstract DaoUserContent getDaoUserContent();
-
     /*
      * (non-Javadoc)
      * 
@@ -58,7 +51,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
      */
     @Override
     public final Member getAuthor() {
-        return Member.create(getDaoUserContent().getAuthor());
+        return Member.create(getDao().getAuthor());
     }
 
     /*
@@ -68,7 +61,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
      */
     @Override
     public final Date getCreationDate() {
-        return getDaoUserContent().getCreationDate();
+        return getDao().getCreationDate();
     }
 
     @Override
@@ -84,7 +77,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     @Override
     public final void setAsGroup(final Group asGroup) throws UnauthorizedOperationException {
         tryAccess(new UserContentRight.AsGroup(), Action.WRITE);
-        getDaoUserContent().setAsGroup(asGroup.getDao());
+        getDao().setAsGroup(asGroup.getDao());
     }
 
     /*
@@ -94,7 +87,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
      */
     @Override
     public final Group getAsGroup() {
-        return Group.create(getDaoUserContent().getAsGroup());
+        return Group.create(getDao().getAsGroup());
     }
 
     /*
@@ -104,7 +97,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
      */
     @Override
     public PageIterable<FileMetadata> getFiles() {
-        return new FileMetadataList(getDaoUserContent().getFiles());
+        return new FileMetadataList(getDao().getFiles());
     }
 
     // TODO right management

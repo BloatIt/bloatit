@@ -24,7 +24,6 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -33,12 +32,11 @@ import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Bug;
-import com.bloatit.model.CacheManager;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.Creator;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Description;
-import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.KudosableConfiguration;
 import com.bloatit.model.Member;
@@ -67,6 +65,13 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    private static final class MyCreator extends Creator<DaoDemand, DemandImplementation> {
+        @Override
+        public DemandImplementation doCreate(DaoDemand dao) {
+            return new DemandImplementation(dao);
+        }
+    }
 
     /**
      * Create a new DemandImplementation. This method is not protected by any right
@@ -76,15 +81,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * @return null if the <code>dao</code> is null.
      */
     public static DemandImplementation create(final DaoDemand dao) {
-        if (dao == null || !SessionManager.getSessionFactory().getCurrentSession().contains(dao)) {
-            return null;
-        }
-        @SuppressWarnings("unchecked")
-        Identifiable<DaoDemand> created = CacheManager.get(dao);
-        if (created == null) {
-            return new DemandImplementation(dao);
-        }
-        return (DemandImplementation) created;
+        return new MyCreator().create(dao);
     }
 
     /**

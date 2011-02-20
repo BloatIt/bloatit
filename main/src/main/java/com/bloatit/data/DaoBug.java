@@ -106,7 +106,7 @@ public final class DaoBug extends DaoUserContent {
     /**
      * The person assigned to a bug is the developer (the member that has created the
      * offer).
-     *
+     * 
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {
@@ -173,12 +173,21 @@ public final class DaoBug extends DaoUserContent {
 
         final Query allComments = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "ORDER BY creationDate DESC");
         final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)");
-        QueryCollection<DaoComment> queryCollection = new QueryCollection<DaoComment>(allComments, allCommentsSize);
-        if(queryCollection.size() == 0){
+        final QueryCollection<DaoComment> queryCollection = new QueryCollection<DaoComment>(allComments, allCommentsSize);
+        if (queryCollection.size() == 0) {
             return null;
         }
 
         return queryCollection.iterator().next();
+    }
+
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
     // ======================================================================
@@ -195,7 +204,7 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -209,7 +218,7 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

@@ -26,20 +26,23 @@ import com.bloatit.data.DaoJoinGroupInvitation;
  */
 public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitation> {
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoJoinGroupInvitation, JoinGroupInvitation> {
+        @Override
+        public JoinGroupInvitation doCreate(DaoJoinGroupInvitation dao) {
+            return new JoinGroupInvitation(dao);
+        }
+    }
+
     private JoinGroupInvitation(final DaoJoinGroupInvitation dao) {
         super(dao);
     }
 
     public static JoinGroupInvitation create(final DaoJoinGroupInvitation dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoJoinGroupInvitation> created = CacheManager.get(dao);
-            if (created == null) {
-                return new JoinGroupInvitation(dao);
-            }
-            return (JoinGroupInvitation) created;
-        }
-        return null;
+        return new MyCreator().create(dao);
     }
 
     public Member getSender() {

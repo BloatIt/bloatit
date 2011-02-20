@@ -67,6 +67,15 @@ public final class DaoKudos extends DaoUserContent {
     }
 
     // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
+
+    // ======================================================================
     // For hibernate mapping
     // ======================================================================
 

@@ -48,6 +48,17 @@ import com.bloatit.model.right.MemberRight;
 
 public final class Member extends Actor<DaoMember> {
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoMember, Member> {
+        @Override
+        public Member doCreate(DaoMember dao) {
+            return new Member(dao);
+        }
+    }
+
     /**
      * Create a new member using its Dao version.
      * 
@@ -55,15 +66,7 @@ public final class Member extends Actor<DaoMember> {
      * @return the new member or null if dao is null.
      */
     public static Member create(final DaoMember dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoMember> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Member(dao);
-            }
-            return (Member) created;
-        }
-        return null;
+        return new MyCreator().create(dao);
     }
 
     public Member(final String login, final String password, final String email, final Locale locale) {
@@ -73,6 +76,10 @@ public final class Member extends Actor<DaoMember> {
     private Member(final DaoMember dao) {
         super(dao);
     }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Accessors
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Tells if a user can access the group property. You have to unlock this Member using
@@ -87,21 +94,36 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * To add a user into a public group, you have to make sure you can access the groups
-     * with the {@link Action#WRITE} action.
+     * Tells if a user can access the property "invite".
      * 
-     * @param group must be a public group.
-     * @throws UnauthorizedOperationException if the authenticated member do not have the
-     * right to use this methods.
-     * @see Member#canAccessGroups(Action)
+     * @param group the group in which you want to invite somebody
+     * @param action WRITE for create a new invitation, DELETED to accept/refuse it, READ
+     * to list the invitations you have recieved.
+     * @return true if you can invite/accept/refuse.
      */
-    public void addToPublicGroup(final Group group) throws UnauthorizedOperationException {
-        if (group.getRight() != Right.PUBLIC) {
-            throw new UnauthorizedOperationException(SpecialCode.GROUP_NOT_PUBLIC);
-        }
-        tryAccess(new MemberRight.GroupList(), Action.WRITE);
-        getDao().addToGroup(group.getDao());
+    public boolean canSendInvitation(final Group group, final Action action) {
+        return canAccess(new MemberRight.SendInvitation(), action);
     }
+
+    public boolean canGetKarma() {
+        return canAccess(new MemberRight.Karma(), Action.READ);
+    }
+
+    public boolean canAccessName(final Action action) {
+        return canAccess(new MemberRight.Name(), action);
+    }
+
+    public boolean canSetPassword() {
+        return canAccess(new MemberRight.Password(), Action.WRITE);
+    }
+
+    public boolean canAccessLocale(final Action action) {
+        return canAccess(new MemberRight.Locale(), action);
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Setter / modification
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * <p>
@@ -147,18 +169,6 @@ public final class Member extends Actor<DaoMember> {
     }
 
     /**
-     * Tells if a user can access the property "invite".
-     * 
-     * @param group the group in which you want to invite somebody
-     * @param action WRITE for create a new invitation, DELETED to accept/refuse it, READ
-     * to list the invitations you have recieved.
-     * @return true if you can invite/accept/refuse.
-     */
-    public boolean canSendInvitation(final Group group, final Action action) {
-        return canAccess(new MemberRight.SendInvitation(), action);
-    }
-
-    /**
      * To invite a member into a group you have to have the WRITE right on the "invite"
      * property.
      * 
@@ -169,31 +179,6 @@ public final class Member extends Actor<DaoMember> {
     public void sendInvitation(final Member member, final Group group) throws UnauthorizedOperationException {
         tryAccess(new MemberRight.SendInvitation(), Action.WRITE);
         DaoJoinGroupInvitation.createAndPersist(getDao(), member.getDao(), group.getDao());
-    }
-
-    /**
-     * @param state can be PENDING, ACCEPTED or REFUSED
-     * @return all the received invitation with the specified state.
-     */
-    public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state) {
-        return new JoinGroupInvitationtList(getDao().getReceivedInvitation(state));
-    }
-
-    /**
-     * @param state can be PENDING, ACCEPTED or REFUSED
-     * @param group the group invited to join
-     * @return all the received invitation with the specified state and group
-     */
-    public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state, Group group) {
-        return new JoinGroupInvitationtList(getDao().getReceivedInvitation(state, group.getDao()));
-    }
-
-    /**
-     * @param state can be PENDING, ACCEPTED or REFUSED
-     * @return all the sent invitation with the specified state.
-     */
-    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
-        return getDao().getSentInvitation(state);
     }
 
     /**
@@ -248,6 +233,88 @@ public final class Member extends Actor<DaoMember> {
         getDao().removeFromGroup(group.getDao());
     }
 
+    public void setPassword(final String password) throws UnauthorizedOperationException {
+        tryAccess(new MemberRight.Password(), Action.WRITE);
+        getDao().setPassword(password);
+    }
+
+    public void setLocal(final Locale loacle) throws UnauthorizedOperationException {
+        tryAccess(new MemberRight.Locale(), Action.WRITE);
+        getDao().setLocale(loacle);
+    }
+
+    // TODO Right management
+    public void setRole(Role role) {
+        getDao().setRole(role);
+    }
+
+    public static String sha1(final String digest) {
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("SHA-1");
+        } catch (final NoSuchAlgorithmException ex) {
+            throw new FatalErrorException("Algorithm Sha1 not available", ex);
+        }
+        md.update(digest.getBytes());
+        final byte byteData[] = md.digest();
+
+        final StringBuilder sb = new StringBuilder();
+        for (final byte element : byteData) {
+            sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
+    }
+
+    public void activate() {
+        getDao().setActivationState(ActivationState.ACTIVE);
+    }
+
+    /**
+     * To add a user into a public group, you have to make sure you can access the groups
+     * with the {@link Action#WRITE} action.
+     * 
+     * @param group must be a public group.
+     * @throws UnauthorizedOperationException if the authenticated member do not have the
+     * right to use this methods.
+     * @see Member#canAccessGroups(Action)
+     */
+    public void addToPublicGroup(final Group group) throws UnauthorizedOperationException {
+        if (group.getRight() != Right.PUBLIC) {
+            throw new UnauthorizedOperationException(SpecialCode.GROUP_NOT_PUBLIC);
+        }
+        tryAccess(new MemberRight.GroupList(), Action.WRITE);
+        getDao().addToGroup(group.getDao());
+    }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Getters
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @param state can be PENDING, ACCEPTED or REFUSED
+     * @return all the received invitation with the specified state.
+     */
+    public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state) {
+        return new JoinGroupInvitationtList(getDao().getReceivedInvitation(state));
+    }
+
+    /**
+     * @param state can be PENDING, ACCEPTED or REFUSED
+     * @param group the group invited to join
+     * @return all the received invitation with the specified state and group
+     */
+    public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state, Group group) {
+        return new JoinGroupInvitationtList(getDao().getReceivedInvitation(state, group.getDao()));
+    }
+
+    /**
+     * @param state can be PENDING, ACCEPTED or REFUSED
+     * @return all the sent invitation with the specified state.
+     */
+    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
+        return getDao().getSentInvitation(state);
+    }
+
     /**
      * To get the groups you have the have the READ right on the "group" property.
      * 
@@ -257,10 +324,6 @@ public final class Member extends Actor<DaoMember> {
     public PageIterable<Group> getGroups() throws UnauthorizedOperationException {
         tryAccess(new MemberRight.GroupList(), Action.READ);
         return new GroupList(getDao().getGroups());
-    }
-
-    public boolean canGetKarma() {
-        return canAccess(new MemberRight.Karma(), Action.READ);
     }
 
     public int getKarma() throws UnauthorizedOperationException {
@@ -282,10 +345,6 @@ public final class Member extends Actor<DaoMember> {
         return 0;
     }
 
-    public boolean canAccessName(final Action action) {
-        return canAccess(new MemberRight.Name(), action);
-    }
-
     public String getDisplayName() throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Name(), Action.READ);
         if (getDao().getFullname() != null && getDao().getFullname().isEmpty()) {
@@ -304,19 +363,6 @@ public final class Member extends Actor<DaoMember> {
         getDao().setFullname(fullname);
     }
 
-    public boolean canSetPassword() {
-        return canAccess(new MemberRight.Password(), Action.WRITE);
-    }
-
-    public void setPassword(final String password) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Password(), Action.WRITE);
-        getDao().setPassword(password);
-    }
-
-    public boolean canAccessLocale(final Action action) {
-        return canAccess(new MemberRight.Locale(), action);
-    }
-
     public Locale getLocaleUnprotected() {
         return getDao().getLocale();
     }
@@ -324,16 +370,6 @@ public final class Member extends Actor<DaoMember> {
     public Locale getLocale() throws UnauthorizedOperationException {
         tryAccess(new MemberRight.Locale(), Action.READ);
         return getDao().getLocale();
-    }
-
-    public void setLocal(final Locale loacle) throws UnauthorizedOperationException {
-        tryAccess(new MemberRight.Locale(), Action.WRITE);
-        getDao().setLocale(loacle);
-    }
-
-    // TODO Right management
-    public void setRole(Role role) {
-        getDao().setRole(role);
     }
 
     public PageIterable<Demand> getDemands() {
@@ -413,28 +449,6 @@ public final class Member extends Actor<DaoMember> {
     public Image getAvatar() {
         // TODO : Do it properly
         return new Image("none.png", Image.ImageType.LOCAL);
-    }
-
-    public static String sha1(final String digest) {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("SHA-1");
-        } catch (final NoSuchAlgorithmException ex) {
-            throw new FatalErrorException("Algorithm Sha1 not available", ex);
-        }
-        md.update(digest.getBytes());
-        final byte byteData[] = md.digest();
-
-        final StringBuilder sb = new StringBuilder();
-        for (final byte element : byteData) {
-            sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(1));
-        }
-        return sb.toString();
-    }
-
-    public void activate() {
-        getDao().setActivationState(ActivationState.ACTIVE);
-
     }
 
 }

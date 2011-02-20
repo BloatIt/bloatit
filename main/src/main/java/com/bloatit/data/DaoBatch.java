@@ -39,7 +39,6 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.State;
 import com.bloatit.data.queries.QueryCollection;
@@ -345,6 +344,15 @@ public final class DaoBatch extends DaoIdentifiable {
      */
     public int getMinorBugsPercent() {
         return 100 - (majorBugsPercent + fatalBugsPercent);
+    }
+
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
     // ======================================================================

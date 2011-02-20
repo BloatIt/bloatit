@@ -143,6 +143,15 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
 
     // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
+
+    // ======================================================================
     // Getters
     // ======================================================================
 

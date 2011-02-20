@@ -30,16 +30,19 @@ import com.bloatit.model.right.Action;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 
-    public static Transaction create(final DaoTransaction dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoTransaction> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Transaction(dao);
-            }
-            return (Transaction) created;
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // CONSTRUCTION
+    // /////////////////////////////////////////////////////////////////////////////////////////
+
+    private static final class MyCreator extends Creator<DaoTransaction, Transaction> {
+        @Override
+        public Transaction doCreate(DaoTransaction dao) {
+            return new Transaction(dao);
         }
-        return null;
+    }
+
+    public static Transaction create(final DaoTransaction dao) {
+        return new MyCreator().create(dao);
     }
 
     private Transaction(final DaoTransaction dao) {
@@ -49,6 +52,10 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     Transaction(final InternalAccount from, final Account<?> to, final BigDecimal amount) throws NotEnoughMoneyException {
         super(DaoTransaction.createAndPersist(from.getDao(), to.getDao(), amount));
     }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Accessor
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean canAccessSomething() {
         return canAccess(new AccountRight.Transaction(), Action.READ);
@@ -86,6 +93,10 @@ public final class Transaction extends Identifiable<DaoTransaction> {
         tryAccess(new AccountRight.Transaction(), Action.READ);
         return getDao().getCreationDate();
     }
+
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Role
+    // /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     protected boolean isMine(Member member) {

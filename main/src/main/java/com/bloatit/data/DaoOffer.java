@@ -36,7 +36,6 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
-import com.bloatit.common.Log;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -70,8 +69,8 @@ public final class DaoOffer extends DaoKudosable {
     private int currentBatch;
 
     /**
-     * The amount represents the money the member want to have to make his
-     * offer. This is a calculated field used for performance speedup.
+     * The amount represents the money the member want to have to make his offer. This is
+     * a calculated field used for performance speedup.
      * <code>(= foreach batches; amount += baches.getAmount)</code>
      */
     @Basic(optional = false)
@@ -81,8 +80,12 @@ public final class DaoOffer extends DaoKudosable {
     // Construction
     // ======================================================================
 
-    public static DaoOffer createAndPersist(final DaoMember member, final DaoDemand demand, final BigDecimal amount,
-            final DaoDescription description, final Date dateExpire, final int secondsBeforeValidation) {
+    public static DaoOffer createAndPersist(final DaoMember member,
+                                            final DaoDemand demand,
+                                            final BigDecimal amount,
+                                            final DaoDescription description,
+                                            final Date dateExpire,
+                                            final int secondsBeforeValidation) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoOffer offer = new DaoOffer(member, demand);
         try {
@@ -112,13 +115,11 @@ public final class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     *
+     * 
      * @param member is the author of the offer. Must be non null.
-     * @param demand is the demand on which this offer is made. Must be non
-     *        null.
+     * @param demand is the demand on which this offer is made. Must be non null.
      * @throws NonOptionalParameterException if a parameter is null.
-     * @throws FatalErrorException if the amount is < 0 or if the Date is in the
-     *         future.
+     * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
      */
     private DaoOffer(final DaoMember member, final DaoDemand demand) {
         super(member);
@@ -163,8 +164,8 @@ public final class DaoOffer extends DaoKudosable {
         final String query = "from DaoBatch where offer = :this order by expirationDate";
         final String queryCount = "select count(*) from DaoBatch where offer = :this";
         return new QueryCollection<DaoBatch>( //
-                SessionManager.createQuery(query).setEntity("this", this),//
-                SessionManager.createQuery(queryCount).setEntity("this", this));//
+                                             SessionManager.createQuery(query).setEntity("this", this),//
+                                             SessionManager.createQuery(queryCount).setEntity("this", this));//
     }
 
     public DaoBatch getCurrentBatch() {
@@ -180,6 +181,15 @@ public final class DaoOffer extends DaoKudosable {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
+    @Override
+    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
     // ======================================================================
@@ -200,7 +210,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -215,7 +225,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

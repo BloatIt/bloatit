@@ -42,20 +42,19 @@ public class Batch extends Identifiable<DaoBatch> {
     // Construction
     // ////////////////////////////////////////////////////////////////////////
 
+    private static final class MyCreator extends Creator<DaoBatch, Batch> {
+        @Override
+        public Batch doCreate(DaoBatch dao) {
+            return new Batch(dao);
+        }
+    }
+
     /**
      * Check the cache, if a corresponding Batch exist return it, otherwise create a new
      * one using its dao representation. If the dao == null return null;
      */
     public static Batch create(final DaoBatch dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoBatch> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Batch(dao);
-            }
-            return (Batch) created;
-        }
-        return null;
+        return new MyCreator().create(dao);
     }
 
     private Batch(final DaoBatch dao) {
