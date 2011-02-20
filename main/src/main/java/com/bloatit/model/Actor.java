@@ -26,11 +26,20 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.ActorRight;
 import com.bloatit.model.right.AuthToken;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Actor.
+ * 
+ * @param <T> the Dao version of this model layer object.
  * @see DaoActor
  */
 public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
+    /**
+     * Instantiates a new actor.
+     * 
+     * @param id the id
+     */
     protected Actor(final T id) {
         super(id);
     }
@@ -51,9 +60,12 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * @see DaoActor#getContact()
+     * Gets the email.
+     * 
+     * @return the email
      * @throws UnauthorizedOperationException if you don't have the <code>READ</code>
      * right on the <code>Email</code> property
+     * @see DaoActor#getContact()
      */
     public final String getEmail() throws UnauthorizedOperationException {
         tryAccess(new ActorRight.Email(), Action.READ);
@@ -61,6 +73,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
+     * Sets the email.
+     * 
+     * @param email the new email
      * @throws UnauthorizedOperationException if you don't have the <code>WRITE</code>
      * right on the <code>Email</code> property
      */
@@ -69,11 +84,18 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         getDao().setContact(email);
     }
 
+    /**
+     * Gets the login with no right protection.
+     * 
+     * @return the login
+     */
     protected final String getLoginUnprotected() {
         return getDao().getLogin();
     }
 
     /**
+     * Can access login.
+     * 
      * @return true if you have the <code>READ</code> right on the Login property.
      * @see Actor#getEmail()
      * @see Actor#authenticate(AuthToken)
@@ -83,9 +105,12 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * @see DaoActor#getLogin()
+     * Gets the login.
+     * 
+     * @return the login
      * @throws UnauthorizedOperationException if you don't have the <code>READ</code>
      * right on the <code>Login</code> property
+     * @see DaoActor#getLogin()
      */
     public final String getLogin() throws UnauthorizedOperationException {
         tryAccess(new ActorRight.Login(), Action.READ);
@@ -93,6 +118,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
+     * Tells if the authenticated user can access date creation.
+     * 
      * @return true if you can access the DateCreation property.
      * @see Actor#getDateCreation()
      */
@@ -101,9 +128,12 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * @see DaoActor#getDateCreation()
+     * Gets the creation date of this {@link Actor}.
+     * 
+     * @return the creation date
      * @throws UnauthorizedOperationException if you don't have the right to access the
      * DateCreation property.
+     * @see DaoActor#getDateCreation()
      */
     public final Date getDateCreation() throws UnauthorizedOperationException {
         tryAccess(new ActorRight.DateCreation(), Action.READ);
@@ -111,6 +141,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
+     * Tells if the authenticated user can get internal account.
+     * 
      * @return true if you can access the <code>InternalAccount</code> property.
      * @see Actor#getInternalAccount()
      * @see Actor#authenticate(AuthToken)
@@ -123,6 +155,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * The internal account is the account we manage internally. Users can add/get money
      * to/from it, and can use this money to contribute on projects.
      * 
+     * @return the internal account
+     * @throws UnauthorizedOperationException the unauthorized operation exception
      * @throw UnauthorizedOperationException if you do not have the right to access the
      * <code>InternalAccount</code> property.
      */
@@ -132,6 +166,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
+     * Tells if the authenticated user can get external account.
+     * 
      * @return true if you can access the <code>ExternalAccount</code> property.
      */
     public final boolean canGetExternalAccount() {
@@ -139,6 +175,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
+     * Gets the external account.
+     * 
+     * @return the external account
      * @throws UnauthorizedOperationException if you haven't the right to access the
      * <code>ExtenralAccount</code> property.
      */
@@ -148,7 +187,9 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * @return true if you can access the <code>ExternalAccount</code> property.
+     * Tells if the authenticated user can access bank transaction.
+     * 
+     * @return true if you can access the <code>BankTransaction</code> property.
      * @see #getBankTransactions()
      */
     public final boolean canAccessBankTransaction() {
@@ -156,6 +197,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
+     * Gets the bank transactions.
+     * 
      * @return all the bank transactions this actor has done.
      * @throws UnauthorizedOperationException if you haven't the right to access the
      * <code>ExtenralAccount</code> property.
@@ -166,6 +209,11 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
         return new BankTransactionList(getDao().getBankTransactions());
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
+     */
     @Override
     protected boolean isMine(Member member) {
         return member.getLoginUnprotected().equals(getLoginUnprotected());

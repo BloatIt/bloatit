@@ -23,7 +23,6 @@ import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.State;
 import com.bloatit.data.DaoComment;
-import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 
@@ -39,7 +38,15 @@ public class Bug extends UserContent<DaoBug> {
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * This class implements the method pattern, implementing the doCreate method. See the
+     * base class for more informations: {@link Creator}.
+     */
     private static final class MyCreator extends Creator<DaoBug, Bug> {
+        
+        /* (non-Javadoc)
+         * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
+         */
         @Override
         public Bug doCreate(DaoBug dao) {
             return new Bug(dao);
@@ -49,13 +56,18 @@ public class Bug extends UserContent<DaoBug> {
     /**
      * Find a bug in the cache or create an new one.
      * 
-     * @param dao
-     * @return if dao is null return null. Else return the new Bug.
+     * @param dao the dao
+     * @return null if dao is null. Else return the new Bug.
      */
     public static Bug create(final DaoBug dao) {
         return new MyCreator().create(dao);
     }
 
+    /**
+     * Instantiates a new bug.
+     * 
+     * @param dao the dao
+     */
     private Bug(final DaoBug dao) {
         super(dao);
     }
@@ -75,7 +87,9 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @param comment
+     * Adds the comment.
+     * 
+     * @param comment the comment
      * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
      */
     public void addComment(final DaoComment comment) {
@@ -83,7 +97,9 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @param level
+     * Sets the error level.
+     * 
+     * @param level the new error level
      * @see com.bloatit.data.DaoBug#setErrorLevel(com.bloatit.data.DaoBug.Level)
      */
     public void setErrorLevel(final Level level) {
@@ -91,7 +107,9 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @return
+     * Gets the member assigned to this bug. It is always the offer author.
+     * 
+     * @return the assigned to
      * @see com.bloatit.data.DaoBug#getAssignedTo()
      */
     public Member getAssignedTo() {
@@ -99,7 +117,9 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @return
+     * Gets this bug description.
+     * 
+     * @return the description
      * @see com.bloatit.data.DaoBug#getDescription()
      */
     public final String getDescription() {
@@ -107,7 +127,9 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @return
+     * Gets the locale in which this bug is written.
+     * 
+     * @return the locale
      * @see com.bloatit.data.DaoBug#getLocale()
      */
     public final Locale getLocale() {
@@ -115,7 +137,9 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @return
+     * Gets the error level.
+     * 
+     * @return the error level
      * @see com.bloatit.data.DaoBug#getErrorLevel()
      */
     public final Level getErrorLevel() {
@@ -123,7 +147,9 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @return
+     * Gets the batch on which this bug has been added.
+     * 
+     * @return the batch
      * @see com.bloatit.data.DaoBug#getBatch()
      */
     public Batch getBatch() {
@@ -131,7 +157,9 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @return
+     * Gets the state.
+     * 
+     * @return the state
      * @see com.bloatit.data.DaoBug#getState()
      */
     public State getState() {
@@ -139,6 +167,8 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
+     * Sets the bug to resolved.
+     * 
      * @see com.bloatit.data.DaoBug#setResolved()
      */
     public void setResolved() {
@@ -146,6 +176,8 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
+     * Sets the bug to developing.
+     * 
      * @see com.bloatit.data.DaoBug#setDeveloping()
      */
     public void setDeveloping() {
@@ -153,13 +185,20 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * @return
+     * Gets the comments on that bug.
+     * 
+     * @return the comments
      * @see com.bloatit.data.DaoBug#getComments()
      */
     public final PageIterable<Comment> getComments() {
         return new CommentList(getDao().getComments());
     }
 
+    /**
+     * Gets the last update date.
+     * 
+     * @return the last update date
+     */
     public Date getLastUpdateDate() {
         final DaoComment lastComment = getDao().getLastComment();
         if (lastComment == null) {
@@ -168,6 +207,11 @@ public class Bug extends UserContent<DaoBug> {
         return lastComment.getCreationDate();
     }
 
+    /**
+     * Gets the title.
+     * 
+     * @return the title
+     */
     public String getTitle() {
         return getDao().getTitle();
     }

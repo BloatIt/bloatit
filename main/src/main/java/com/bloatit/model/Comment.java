@@ -20,8 +20,11 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
+import com.bloatit.model.right.AuthToken;
 
 /**
+ * The Class Comment.
+ * 
  * @see DaoComment
  */
 public final class Comment extends Kudosable<DaoComment> {
@@ -30,7 +33,17 @@ public final class Comment extends Kudosable<DaoComment> {
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * This class implements the method pattern, implementing the doCreate method. See the
+     * base class for more informations: {@link Creator}.
+     */
     private static final class MyCreator extends Creator<DaoComment, Comment> {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
+         */
         @Override
         public Comment doCreate(DaoComment dao) {
             return new Comment(dao);
@@ -39,20 +52,32 @@ public final class Comment extends Kudosable<DaoComment> {
 
     /**
      * Create a new comment and return it. It return null if the <code>dao</code> is null.
+     * 
+     * @param dao the dao
+     * @return the comment or null.
      */
     public static Comment create(final DaoComment dao) {
         return new MyCreator().create(dao);
     }
 
+    /**
+     * Instantiates a new comment.
+     * 
+     * @param dao the dao
+     */
     private Comment(final DaoComment dao) {
         super(dao);
     }
 
     /**
+     * Adds a child comment to this comment. The author is found using the
+     * {@link AuthToken}.
+     * 
      * @param text is the comment text.
      * @throws UnauthorizedOperationException if the user does not have the WRITE right on
-     * the Comment property
+     *         the Comment property
      * @see #addChildComment(Comment) TODO: Make the authentication system.
+     * @see #authenticate(AuthToken)
      */
     public void addChildComment(final String text) throws UnauthorizedOperationException {
         getDao().addChildComment(DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text));
@@ -61,6 +86,7 @@ public final class Comment extends Kudosable<DaoComment> {
     /**
      * Add a comment to the list of children of this comment.
      * 
+     * @param comment the comment
      * @see #addChildComment(String)
      */
     public void addChildComment(final Comment comment) {
@@ -70,6 +96,7 @@ public final class Comment extends Kudosable<DaoComment> {
     /**
      * Return all the children comment of this comment.
      * 
+     * @return the children
      * @see DaoComment#getChildren()
      */
     public PageIterable<Comment> getChildren() {
@@ -77,6 +104,8 @@ public final class Comment extends Kudosable<DaoComment> {
     }
 
     /**
+     * Gets the text.
+     * 
      * @return the text of this comment.
      */
     public String getText() {
@@ -84,6 +113,9 @@ public final class Comment extends Kudosable<DaoComment> {
     }
 
     /**
+     * Turn pending.
+     * 
+     * @return the int
      * @see com.bloatit.model.Kudosable#turnPending()
      */
     @Override
@@ -92,6 +124,9 @@ public final class Comment extends Kudosable<DaoComment> {
     }
 
     /**
+     * Turn valid.
+     * 
+     * @return the int
      * @see com.bloatit.model.Kudosable#turnValid()
      */
     @Override
@@ -100,6 +135,9 @@ public final class Comment extends Kudosable<DaoComment> {
     }
 
     /**
+     * Turn rejected.
+     * 
+     * @return the int
      * @see com.bloatit.model.Kudosable#turnRejected()
      */
     @Override
@@ -108,6 +146,9 @@ public final class Comment extends Kudosable<DaoComment> {
     }
 
     /**
+     * Turn hidden.
+     * 
+     * @return the int
      * @see com.bloatit.model.Kudosable#turnHidden()
      */
     @Override

@@ -25,6 +25,8 @@ import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBankTransaction.State;
 
 /**
+ * The Class BankTransaction.
+ * 
  * @see DaoBankTransaction
  */
 @Entity
@@ -34,7 +36,16 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * The Class MyCreator.
+     */
     private static final class MyCreator extends Creator<DaoBankTransaction, BankTransaction> {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
+         */
         @Override
         public BankTransaction doCreate(DaoBankTransaction dao) {
             return new BankTransaction(dao);
@@ -45,12 +56,19 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Check the cache, if a corresponding BankTransaction exist return it, otherwise
      * create a BankTransaction using its dao representation. If the dao == null return
      * null;
+     * 
+     * @param dao the dao
+     * @return the bank transaction
      */
     public static BankTransaction create(final DaoBankTransaction dao) {
         return new MyCreator().create(dao);
     }
 
     /**
+     * Gets the by token.
+     * 
+     * @param token the token
+     * @return the by token
      * @see DaoBankTransaction#getByToken(String)
      */
     public static BankTransaction getByToken(final String token) {
@@ -61,11 +79,11 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * Create a new BankTransaction.
      * 
      * @param message is the message from the bank. May be a Ok message or an error
-     * message.
+     *        message.
      * @param token is a token to authenticate this transaction. The online bank service
-     * should give it during the transaction.
+     *        should give it during the transaction.
      * @param author it the person implied in this transaction (the one filling is
-     * account)
+     *        account)
      * @param value is the quantity of money transfered.
      * @param orderReference is a reference we have to create and should be unique.
      */
@@ -73,15 +91,22 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
         super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, orderReference));
     }
 
+    /**
+     * Instantiates a new bank transaction.
+     * 
+     * @param dao the dao
+     */
     private BankTransaction(final DaoBankTransaction dao) {
         super(dao);
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Getters / setters
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
+     * Sets authorized.
+     * 
      * @see DaoBankTransaction#setAuthorized()
      */
     public void setAuthorized() {
@@ -89,6 +114,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
+     * Sets refused.
+     * 
      * @see DaoBankTransaction#setRefused()
      */
     public void setRefused() {
@@ -96,48 +123,106 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
+     * Sets the validated.
+     * 
+     * @return true, if successful
      * @see DaoBankTransaction#setValidated()
      */
     public boolean setValidated() {
         return getDao().setValidated();
     }
 
+    /**
+     * Sets the process informations. The process informations are every kind of
+     * information you might have during the process of making a bank transaction. For
+     * example you can put here specific error messages.
+     * 
+     * @param processInformations the new process informations
+     */
     public void setProcessInformations(final String processInformations) {
         getDao().setProcessInformations(processInformations);
     }
 
+    /**
+     * Gets the message. The message is the error (or not) message sent by the bank during
+     * a transaction.
+     * 
+     * @return the message
+     */
     public String getMessage() {
         return getDao().getMessage();
     }
 
+    /**
+     * Gets the value.
+     * 
+     * @return the value
+     */
     public BigDecimal getValue() {
         return getDao().getValue();
     }
 
+    /**
+     * Gets the state.
+     * 
+     * @return the state
+     */
     public State getState() {
         return getDao().getState();
     }
 
+    /**
+     * Gets the creation date.
+     * 
+     * @return the creation date
+     */
     public Date getCreationDate() {
         return getDao().getCreationDate();
     }
 
+    /**
+     * Gets the modification date.
+     * 
+     * @return the modification date
+     */
     public Date getModificationDate() {
         return getDao().getModificationDate();
     }
 
+    /**
+     * Gets the reference. This is the generated purchase reference.
+     * 
+     * @return the reference
+     */
     public String getReference() {
         return getDao().getReference();
     }
 
+    /**
+     * Gets the token. The token is a unique string identifying this transaction.
+     * 
+     * @return the token
+     */
     public String getToken() {
         return getDao().getToken();
     }
 
+    /**
+     * Gets the process informations. The process informations are every kind of
+     * information you might have during the process of making a bank transaction. For
+     * example you can put here error messages.
+     * 
+     * @return the process informations
+     */
     public String getProcessInformations() {
         return getDao().getProcessInformations();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
+     */
     @Override
     protected boolean isMine(Member member) {
         return getDao().getAuthor().getLogin().equals(member.getLoginUnprotected());

@@ -19,7 +19,6 @@ package com.bloatit.model;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoContribution;
-import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
@@ -37,7 +36,17 @@ public final class Contribution extends UserContent<DaoContribution> {
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * This class implements the method pattern, implementing the doCreate method. See the
+     * base class for more informations: {@link Creator}.
+     */
     private static final class MyCreator extends Creator<DaoContribution, Contribution> {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
+         */
         @Override
         public Contribution doCreate(DaoContribution dao) {
             return new Contribution(dao);
@@ -45,20 +54,20 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
-     * Create a <code>Contribution</code> or return null (if dao is null)
+     * Create a <code>Contribution</code> or return null (if dao is null).
+     * 
+     * @param dao the dao
+     * @return the contribution
      */
     public static Contribution create(final DaoContribution dao) {
-        if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoContribution> created = CacheManager.get(dao);
-            if (created == null) {
-                return new Contribution(dao);
-            }
-            return (Contribution) created;
-        }
-        return null;
+        return new MyCreator().create(dao);
     }
 
+    /**
+     * Instantiates a new contribution.
+     * 
+     * @param dao the dao
+     */
     private Contribution(final DaoContribution dao) {
         super(dao);
     }
@@ -70,7 +79,7 @@ public final class Contribution extends UserContent<DaoContribution> {
      * 
      * @param offer the validated offer.
      * @throws NotEnoughMoneyException if there is a bug and then a person does not have
-     * enough money.
+     *         enough money.
      */
     public void accept(final Offer offer) throws NotEnoughMoneyException {
         getDao().validate(offer.getDao(), 100);
@@ -87,7 +96,8 @@ public final class Contribution extends UserContent<DaoContribution> {
     /**
      * return true if you can access the <code>Amount</code> property.
      * 
-     * @see #getAmount()()
+     * @return true, if successful
+     * @see #getAmount()
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessAmount() {
@@ -97,7 +107,8 @@ public final class Contribution extends UserContent<DaoContribution> {
     /**
      * return true if you can access the <code>Comment</code> property.
      * 
-     * @see #getComment()()
+     * @return true, if successful
+     * @see #getComment()
      * @see Contribution#authenticate(AuthToken)
      */
     public boolean canAccessComment() {
@@ -105,9 +116,11 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
+     * Gets the amount.
+     * 
      * @return the amount.
      * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>Amount</code> property.
+     *         <code>Amount</code> property.
      * @see Contribution#authenticate(AuthToken)
      */
     public BigDecimal getAmount() throws UnauthorizedOperationException {
@@ -116,9 +129,11 @@ public final class Contribution extends UserContent<DaoContribution> {
     }
 
     /**
+     * Gets the comment.
+     * 
      * @return the comment.
      * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>Comment</code> property.
+     *         <code>Comment</code> property.
      */
     public String getComment() throws UnauthorizedOperationException {
         tryAccess(new ContributionRight.Comment(), Action.READ);
