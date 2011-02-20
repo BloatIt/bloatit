@@ -14,7 +14,6 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
@@ -122,21 +121,5 @@ public final class AddProjectPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to add a new project.");
-    }
-
-    private class LanguageElement implements DropDownElement {
-        private final String name;
-        private final String code;
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String getCode() {
-            return code;
-        }
-
     }
 }
