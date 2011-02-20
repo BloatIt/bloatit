@@ -33,7 +33,7 @@ import com.bloatit.model.lists.CommentList;
  * @author Thomas Guyard
  */
 public class Bug extends UserContent<DaoBug> {
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -43,12 +43,14 @@ public class Bug extends UserContent<DaoBug> {
      * base class for more informations: {@link Creator}.
      */
     private static final class MyCreator extends Creator<DaoBug, Bug> {
-        
-        /* (non-Javadoc)
+
+        /*
+         * (non-Javadoc)
+         * 
          * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
-        public Bug doCreate(DaoBug dao) {
+        public Bug doCreate(final DaoBug dao) {
             return new Bug(dao);
         }
     }

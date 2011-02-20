@@ -36,7 +36,7 @@ public final class Transaction extends Identifiable<DaoTransaction> {
 
     private static final class MyCreator extends Creator<DaoTransaction, Transaction> {
         @Override
-        public Transaction doCreate(DaoTransaction dao) {
+        public Transaction doCreate(final DaoTransaction dao) {
             return new Transaction(dao);
         }
     }
@@ -99,7 +99,7 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return getFromUnprotected().isMine(member) || getToUnprotected().isMine(member);
     }
 }

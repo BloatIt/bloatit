@@ -32,8 +32,8 @@ import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin/usercontent")
-public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentAdmin<U>, T extends UserContentAdminListFactory<U, V>>
-        extends AdminPage {
+public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentAdmin<U>, T extends UserContentAdminListFactory<U, V>> extends
+        AdminPage {
 
     public enum OrderByUserContent implements HtmlRadioButtonGroup.Displayable {
         NOTHING(tr("No order")), //
@@ -49,7 +49,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
             return displayName;
         }
 
-        private OrderByUserContent(String displayName) {
+        private OrderByUserContent(final String displayName) {
             this.displayName = displayName;
         }
     }
@@ -77,7 +77,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     private final T factory;
     private final UserContentAdminPageUrl url;
 
-    protected UserContentAdminPage(UserContentAdminPageUrl url, T factory) {
+    protected UserContentAdminPage(final UserContentAdminPageUrl url, final T factory) {
         super(url);
         this.url = url;
         this.factory = factory;
@@ -97,10 +97,10 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
     @Override
     public final HtmlElement createAdminContent() {
-        PlaceHolderElement everything = new PlaceHolderElement();
+        final PlaceHolderElement everything = new PlaceHolderElement();
 
         // Filter form private HtmlForm filterForm;
-        HtmlForm filterForm = new HtmlForm(url.urlString());
+        final HtmlForm filterForm = new HtmlForm(url.urlString());
         everything.add(filterForm);
         generateFilterForm(filterForm);
 
@@ -125,8 +125,8 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         }
 
         // Action form
-        AdministrationActionUrl actionUrl = new AdministrationActionUrl();
-        HtmlForm actionForm = new HtmlForm(actionUrl.urlString());
+        final AdministrationActionUrl actionUrl = new AdministrationActionUrl();
+        final HtmlForm actionForm = new HtmlForm(actionUrl.urlString());
         everything.add(actionForm);
         generateActionForm(actionForm);
         generateTable(actionForm);
@@ -134,26 +134,26 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         return everything;
     }
 
-    public final void generateFilterForm(HtmlForm filterForm) {
-        UserContentAdminPageUrl url = new UserContentAdminPageUrl();
+    public final void generateFilterForm(final HtmlForm filterForm) {
+        final UserContentAdminPageUrl url = new UserContentAdminPageUrl();
         // order by
-        HtmlFormBlock blockOrder = new HtmlFormBlock("Order by");
+        final HtmlFormBlock blockOrder = new HtmlFormBlock("Order by");
         filterForm.add(blockOrder);
         blockOrder.add(new HtmlCheckbox(url.getAscParameter().formFieldData(), tr("Asc"), LabelPosition.BEFORE));
 
         // delete ?
-        HtmlDropDown groupDeleted = new HtmlDropDown(url.getFilterDeletedParameter().formFieldData());
+        final HtmlDropDown groupDeleted = new HtmlDropDown(url.getFilterDeletedParameter().formFieldData());
         groupDeleted.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupDeleted.setLabel(tr("Filter by deleted content"));
         filterForm.add(groupDeleted);
 
         // Files
-        HtmlDropDown groupFile = new HtmlDropDown(url.getFilterFileParameter().formFieldData());
+        final HtmlDropDown groupFile = new HtmlDropDown(url.getFilterFileParameter().formFieldData());
         groupFile.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupFile.setLabel(tr("Filter by Content with file"));
         filterForm.add(groupFile);
 
-        HtmlDropDown groupAsGroup = new HtmlDropDown(url.getFilterGroupParameter().formFieldData());
+        final HtmlDropDown groupAsGroup = new HtmlDropDown(url.getFilterGroupParameter().formFieldData());
         groupAsGroup.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupAsGroup.setLabel(tr("Filter by Content created as a group"));
         filterForm.add(groupAsGroup);
@@ -165,23 +165,23 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         filterForm.add(new HtmlSubmit(tr("Filter")));
     }
 
-    public final void generateTable(HtmlForm actionForm) {
-        HtmlGenericTableModel<V> tableModel = new HtmlGenericTableModel<V>(factory.list());
+    public final void generateTable(final HtmlForm actionForm) {
+        final HtmlGenericTableModel<V> tableModel = new HtmlGenericTableModel<V>(factory.list());
 
         tableModel.addColumn(new HtmlCheckbox("id_all", LabelPosition.BEFORE), new ColumnGenerator<V>() {
             @Override
-            public XmlNode getBody(V element) {
-                HtmlCheckbox htmlCheckbox = new HtmlCheckbox("id", LabelPosition.BEFORE);
+            public XmlNode getBody(final V element) {
+                final HtmlCheckbox htmlCheckbox = new HtmlCheckbox("id", LabelPosition.BEFORE);
                 htmlCheckbox.addAttribute("value", element.getId().toString());
                 return htmlCheckbox;
             }
         });
 
-        UserContentAdminPageUrl clonedUrl = url.clone();
+        final UserContentAdminPageUrl clonedUrl = url.clone();
         clonedUrl.setOrderByStr("m.login");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Author")), new StringColumnGenerator<V>() {
             @Override
-            public String getStringBody(V element) {
+            public String getStringBody(final V element) {
                 return element.getAuthor();
             }
         });
@@ -189,7 +189,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         clonedUrl.setOrderByStr("asGroup");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("asGroup")), new StringColumnGenerator<V>() {
             @Override
-            public String getStringBody(V element) {
+            public String getStringBody(final V element) {
                 return element.getAsGroup();
             }
         });
@@ -197,14 +197,14 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         clonedUrl.setOrderByStr("creationDate");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Creation date")), new StringColumnGenerator<V>() {
             @Override
-            public String getStringBody(V element) {
+            public String getStringBody(final V element) {
                 return Context.getLocalizator().getDate(element.getCreationDate()).toString(FormatStyle.MEDIUM);
             }
         });
 
         tableModel.addColumn(tr("Nb files"), new StringColumnGenerator<V>() {
             @Override
-            public String getStringBody(V element) {
+            public String getStringBody(final V element) {
                 return String.valueOf(element.getFilesNumber());
             }
         });
@@ -212,14 +212,14 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         clonedUrl.setOrderByStr("isDeleted");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Deleted")), new StringColumnGenerator<V>() {
             @Override
-            public String getStringBody(V element) {
+            public String getStringBody(final V element) {
                 return String.valueOf(element.isDeleted());
             }
         });
 
         tableModel.addColumn(tr("Type"), new StringColumnGenerator<V>() {
             @Override
-            public String getStringBody(V element) {
+            public String getStringBody(final V element) {
                 return element.getType();
             }
         });
@@ -228,12 +228,12 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         actionForm.add(new HtmlTable(tableModel));
     }
 
-    public final void generateActionForm(HtmlForm actionForm) {
+    public final void generateActionForm(final HtmlForm actionForm) {
         // add the action drop down
-        HtmlRadioButtonGroup group = new HtmlRadioButtonGroup("UserContent_actions");
-        HtmlFormBlock block = new HtmlFormBlock("UserContent_actions");
+        final HtmlRadioButtonGroup group = new HtmlRadioButtonGroup("UserContent_actions");
+        final HtmlFormBlock block = new HtmlFormBlock("UserContent_actions");
         actionForm.add(block.add(group));
-        HtmlDropDown dropDown = new HtmlDropDown("action");
+        final HtmlDropDown dropDown = new HtmlDropDown("action");
         actionForm.add(dropDown);
         addActions(dropDown, block);
 
@@ -241,7 +241,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         actionForm.add(new HtmlSubmit(tr("Validate")));
     }
 
-    protected void addActions(HtmlDropDown dropDown, HtmlBranch actionGroup) {
+    protected void addActions(final HtmlDropDown dropDown, final HtmlBranch actionGroup) {
         // redefine me in subclasses.
         dropDown.addDropDownElements(new AdminActionManager().userContentActions());
     }

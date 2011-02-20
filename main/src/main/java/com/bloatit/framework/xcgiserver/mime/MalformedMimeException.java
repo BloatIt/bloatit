@@ -8,11 +8,11 @@ import java.io.EOFException;
 public class MalformedMimeException extends Exception {
     private static final long serialVersionUID = -6697390269907534568L;
 
-    public MalformedMimeException(String cause) {
+    public MalformedMimeException(final String cause) {
         super(cause);
     }
 
-    public MalformedMimeException(String cause, EOFException e) {
+    public MalformedMimeException(final String cause, final EOFException e) {
         super(cause, e);
     }
 }

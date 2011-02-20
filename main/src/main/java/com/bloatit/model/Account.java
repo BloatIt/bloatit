@@ -36,8 +36,8 @@ import com.bloatit.model.right.AuthToken;
  * accounts are update. There are two types of accounts : the internals and externals. The
  * 
  * @param <T> is the Dao object corresponding to this model layer object.
- * {@link InternalAccount} account is for the money we store for a user, the
- * {@link ExternalAccount} is an account in a bank.
+ *        {@link InternalAccount} account is for the money we store for a user, the
+ *        {@link ExternalAccount} is an account in a bank.
  */
 public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
 
@@ -54,7 +54,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Can access transaction.
      * 
      * @return true if the authenticated user can access the <code>Transaction</code>
-     * property (It is a read only property).
+     *         property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessTransaction() {
@@ -65,7 +65,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Can access amount.
      * 
      * @return true if the authenticated user can access the <code>Amount</code> property
-     * (It is a read only property).
+     *         (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessAmount() {
@@ -76,7 +76,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Can access comment.
      * 
      * @return true if the authenticated user can access the <code>Comment</code> property
-     * (It is a read only property).
+     *         (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessComment() {
@@ -87,7 +87,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Can access actor.
      * 
      * @return true if the authenticated user can access the <code>Actor</code> property
-     * (It is a read only property).
+     *         (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessActor() {
@@ -98,7 +98,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Can access creation date.
      * 
      * @return true if the authenticated user can access the <code>CreationDate</code>
-     * property (It is a read only property).
+     *         property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessCreationDate() {
@@ -109,7 +109,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Can access last modification date.
      * 
      * @return true if the authenticated user can access the
-     * <code>LastModificationDate</code> property (It is a read only property).
+     *         <code>LastModificationDate</code> property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessLastModificationDate() {
@@ -123,7 +123,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @return the last modification date.
      * 
      * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>LastModificationDate</code> property in this class.
+     *         <code>LastModificationDate</code> property in this class.
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.LastModificationDate(), Action.READ);
@@ -135,7 +135,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * 
      * @return the quantity of money available on this account.
      * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>Amount</code> property in this class.
+     *         <code>Amount</code> property in this class.
      */
     public final BigDecimal getAmount() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.Amount(), Action.READ);
@@ -147,7 +147,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * 
      * @return All the transactions involving this account.
      * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>Transaction</code> property in this class.
+     *         <code>Transaction</code> property in this class.
      */
     public final PageIterable<Transaction> getTransactions() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.Transaction(), Action.READ);
@@ -159,7 +159,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * 
      * @return the actor
      * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>Actor</code> property in this class.
+     *         <code>Actor</code> property in this class.
      */
     public final Actor<?> getActor() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.Actor(), Action.READ);
@@ -171,7 +171,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * 
      * @return The date of creation of this account (Amazing !)
      * @throws UnauthorizedOperationException if you have not the right to access the
-     * <code>CreationDate</code> property in this class.
+     *         <code>CreationDate</code> property in this class.
      */
     public final Date getCreationDate() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.CreationDate(), Action.READ);
@@ -200,7 +200,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
      */
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return getActorUnprotected().isMine(member);
     }
 

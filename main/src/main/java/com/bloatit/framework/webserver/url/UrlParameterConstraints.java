@@ -42,17 +42,17 @@ public class UrlParameterConstraints<U> {
     }
 
     public UrlParameterConstraints(final Integer min,
-                                   final boolean isMinExclusive,
-                                   final Integer max,
-                                   final boolean isMaxExclusive,
-                                   final boolean optional,
-                                   final int precision,
-                                   final int length,
-                                   final String minErrorMsg,
-                                   final String maxErrorMsg,
-                                   final String optErrorMsg,
-                                   final String precisionErrorMsg,
-                                   final String lenghtErrorMsg) {
+            final boolean isMinExclusive,
+            final Integer max,
+            final boolean isMaxExclusive,
+            final boolean optional,
+            final int precision,
+            final int length,
+            final String minErrorMsg,
+            final String maxErrorMsg,
+            final String optErrorMsg,
+            final String precisionErrorMsg,
+            final String lenghtErrorMsg) {
         super();
         this.isMinExclusive = isMinExclusive;
         this.isMaxExclusive = isMaxExclusive;
@@ -94,11 +94,7 @@ public class UrlParameterConstraints<U> {
         updateMessages(computeConstraint.getConstraintErrors(value), messages, level, name, strValue);
     }
 
-    private void updateMessages(final EnumSet<ConstraintError> enumSet,
-                                final Messages messages,
-                                final Level level,
-                                final String name,
-                                final String strValue) {
+    private void updateMessages(final EnumSet<ConstraintError> enumSet, final Messages messages, final Level level, final String name, final String strValue) {
         if (enumSet.contains(ConstraintError.MIN_ERROR)) {
             messages.add(new Message(min.getError(), level, What.MIN_ERROR, name, strValue));
         }

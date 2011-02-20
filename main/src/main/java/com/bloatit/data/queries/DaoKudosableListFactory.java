@@ -31,7 +31,7 @@ public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserCont
     private static final String STATE = "state";
     private static final String POPULARITY = "popularity";
 
-    protected DaoKudosableListFactory(Criteria criteria) {
+    protected DaoKudosableListFactory(final Criteria criteria) {
         super(criteria);
     }
 
@@ -39,7 +39,7 @@ public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserCont
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoKudosable.class));
     }
 
-    public void orderByPopularity(DaoAbstractListFactory.OrderType order) {
+    public void orderByPopularity(final DaoAbstractListFactory.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(POPULARITY));
         } else {
@@ -47,15 +47,15 @@ public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserCont
         }
     }
 
-    public void popularity(Comparator cmp, int value) {
+    public void popularity(final Comparator cmp, final int value) {
         add(createNbCriterion(cmp, POPULARITY, value));
     }
 
-    public void stateEquals(PopularityState state) {
+    public void stateEquals(final PopularityState state) {
         add(Restrictions.eq(STATE, state));
     }
 
-    public void kudosSize(Comparator cmp, int number) {
+    public void kudosSize(final Comparator cmp, final int number) {
         add(createNbCriterion(cmp, KUDOS, number));
     }
 

@@ -40,11 +40,11 @@ public final class LoginPage extends MasterPage {
 
         final HtmlDiv box = new HtmlDiv("padding_box");
         {
-            LoginActionUrl loginActionUrl = new LoginActionUrl();
+            final LoginActionUrl loginActionUrl = new LoginActionUrl();
             final HtmlForm loginForm = new HtmlForm(loginActionUrl.urlString());
 
             // Login field
-            FormFieldData<String> loginData = loginActionUrl.getLoginParameter().formFieldData();
+            final FormFieldData<String> loginData = loginActionUrl.getLoginParameter().formFieldData();
             final HtmlTextField loginField = new HtmlTextField(loginData, Context.trc("Login (noun)", "Login"));
             // passwordField
             final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));

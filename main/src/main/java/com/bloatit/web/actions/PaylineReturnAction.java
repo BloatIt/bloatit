@@ -23,7 +23,7 @@ public class PaylineReturnAction extends Action {
     @RequestParam(name = "ack")
     private final String ack;
 
-    public PaylineReturnAction(PaylineReturnActionUrl url) {
+    public PaylineReturnAction(final PaylineReturnActionUrl url) {
         super(url);
         token = url.getToken();
         ack = url.getAck();

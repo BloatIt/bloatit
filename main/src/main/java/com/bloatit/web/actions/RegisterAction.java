@@ -37,17 +37,20 @@ public class RegisterAction extends Action {
 
     @RequestParam(name = RegisterAction.LOGIN_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4"),//
-    max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
+                     max = "15",
+                     maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
     private final String login;
 
     @RequestParam(name = RegisterAction.PASSWORD_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4"),//
-    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
+                     max = "15",
+                     maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
     private final String password;
 
     @RequestParam(name = RegisterAction.EMAIL_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5"),//
-    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
+                     max = "30",
+                     maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
     private final String email;
 
     @RequestParam(name = RegisterAction.COUNTRY_CODE, role = Role.POST)
@@ -70,13 +73,12 @@ public class RegisterAction extends Action {
     @Override
     protected final Url doProcess() throws RedirectException {
 
-
-        if(MemberManager.loginExists(login)) {
+        if (MemberManager.loginExists(login)) {
             session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
             sendError();
         }
 
-        if(MemberManager.emailExists(email)) {
+        if (MemberManager.emailExists(email)) {
             session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
             sendError();
         }
@@ -90,14 +92,14 @@ public class RegisterAction extends Action {
         final Locale locale = new Locale(lang, country);
         // TODO verify duplicate to avoid crashes
         final Member m = new Member(login, password, email, locale);
-        String activationKey = m.getActivationKey();
-        MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
+        final String activationKey = m.getActivationKey();
+        final MemberActivationActionUrl url = new MemberActivationActionUrl(login, activationKey);
 
-        String content = Context.tr(
-                "Your Elveos.org account ''{0}'' was created. Please click on the following link to activate your account: \n\n {1}", login,
-                url.externalUrlString(Context.getHeader()));
+        final String content = Context.tr("Your Elveos.org account ''{0}'' was created. Please click on the following link to activate your account: \n\n {1}",
+                                          login,
+                                          url.externalUrlString(Context.getHeader()));
 
-        Mail activationMail = new Mail(email, Context.tr("Elveos.org account activation"), content, "member-docreate");
+        final Mail activationMail = new Mail(email, Context.tr("Elveos.org account activation"), content, "member-docreate");
 
         MailServer.getInstance().send(activationMail);
 

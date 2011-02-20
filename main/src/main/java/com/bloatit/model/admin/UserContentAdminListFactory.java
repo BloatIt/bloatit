@@ -18,11 +18,11 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
         factory = new DaoUserContentListFactory<T>();
     }
 
-    public UserContentAdminListFactory(DaoUserContentListFactory<T> factory) {
+    public UserContentAdminListFactory(final DaoUserContentListFactory<T> factory) {
         this.factory = factory;
     }
 
-    public void idEquals(Integer id) {
+    public void idEquals(final Integer id) {
         factory.idEquals(id);
     }
 
@@ -34,19 +34,19 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
         factory.groupByAsGroup();
     }
 
-    public void orderByMember(OrderType order) {
+    public void orderByMember(final OrderType order) {
         factory.orderByMember(order);
     }
 
-    public void orderByAsGroup(OrderType order) {
+    public void orderByAsGroup(final OrderType order) {
         factory.orderByAsGroup(order);
     }
 
-    public void orderByCreationDate(OrderType orderType) {
+    public void orderByCreationDate(final OrderType orderType) {
         factory.orderByCreationDate(orderType);
     }
 
-    public void orderBy(String column, OrderType orderType) {
+    public void orderBy(final String column, final OrderType orderType) {
         factory.orderBy(column, orderType);
     }
 
@@ -74,11 +74,11 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
         factory.withNoGroup();
     }
 
-    public void fromMember(Member member) {
+    public void fromMember(final Member member) {
         factory.fromMember(member.getDao());
     }
 
-    public void fromGroup(Group group) {
+    public void fromGroup(final Group group) {
         factory.fromGroup(group.getDao());
     }
 

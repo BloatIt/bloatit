@@ -1,12 +1,10 @@
 package com.bloatit.model.admin;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
-import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoProject;
 
 public class DemandAdmin extends KudosableAdmin<DaoDemand> {
@@ -22,8 +20,8 @@ public class DemandAdmin extends KudosableAdmin<DaoDemand> {
         return null;
     }
 
-    public static DemandAdmin createDemand(Integer id) {
-        DemandAdminListFactory factory = new DemandAdminListFactory();
+    public static DemandAdmin createDemand(final Integer id) {
+        final DemandAdminListFactory factory = new DemandAdminListFactory();
         factory.idEquals(id);
         if (factory.list().iterator().hasNext()) {
             return factory.list().iterator().next();
@@ -55,7 +53,7 @@ public class DemandAdmin extends KudosableAdmin<DaoDemand> {
         getDao().computeSelectedOffer();
     }
 
-    public void setDemandState(DemandState demandState) {
+    public void setDemandState(final DemandState demandState) {
         getDao().setDemandState(demandState);
     }
 

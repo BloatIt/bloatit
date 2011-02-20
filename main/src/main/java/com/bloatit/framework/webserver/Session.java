@@ -1,13 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
- * software: you can redistribute it and/or modify it under the terms of the GNU
- * Affero General Public License as published by the Free Software Foundation,
- * either version 3 of the License, or (at your option) any later version.
- * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- * details. You should have received a copy of the GNU Affero General Public
- * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.bloatit.framework.webserver;
@@ -29,16 +28,15 @@ import com.bloatit.web.url.IndexPageUrl;
  * A class to handle the user session on the web server
  * </p>
  * <p>
- * A session starts when the user arrives on the server (first GET request).
- * When the user login, his sessions continues (he'll therefore keep all his
- * session informations), but he simply gets a new authtoken that says he's
- * logged
+ * A session starts when the user arrives on the server (first GET request). When the user
+ * login, his sessions continues (he'll therefore keep all his session informations), but
+ * he simply gets a new authtoken that says he's logged
  * </p>
  * <p>
  * Session is used for various purposes :
  * <li>Store some parameters {@link Session#addParameter(String, String)}</li>
- * <li>Store pages that the user wishes to consult, but he couldn't because he
- * didn't meet the requirements</li>
+ * <li>Store pages that the user wishes to consult, but he couldn't because he didn't meet
+ * the requirements</li>
  * </p>
  */
 public final class Session {
@@ -194,7 +192,7 @@ public final class Session {
     }
 
     @SuppressWarnings("unchecked")
-    public <T, U> UrlParameter<T, U> pickParameter(UrlParameter<T, U> param) {
+    public <T, U> UrlParameter<T, U> pickParameter(final UrlParameter<T, U> param) {
         return (UrlParameter<T, U>) parameters.pick(param.getName());
     }
 

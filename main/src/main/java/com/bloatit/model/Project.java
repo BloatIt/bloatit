@@ -36,7 +36,7 @@ public class Project extends Identifiable<DaoProject> {
 
     private static final class MyCreator extends Creator<DaoProject, Project> {
         @Override
-        public Project doCreate(DaoProject dao) {
+        public Project doCreate(final DaoProject dao) {
             return new Project(dao);
         }
     }
@@ -45,7 +45,7 @@ public class Project extends Identifiable<DaoProject> {
         return new MyCreator().create(dao);
     }
 
-    private Project(DaoProject id) {
+    private Project(final DaoProject id) {
         super(id);
     }
 
@@ -57,7 +57,7 @@ public class Project extends Identifiable<DaoProject> {
      * 
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
-    public Project(String name, final Member author, final Locale locale, final String title, final String description, FileMetadata image) {
+    public Project(final String name, final Member author, final Locale locale, final String title, final String description, final FileMetadata image) {
         this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description), image.getDao()));
     }
 
@@ -110,7 +110,7 @@ public class Project extends Identifiable<DaoProject> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return false;
     }
 

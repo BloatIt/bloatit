@@ -121,7 +121,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * @return the <code>DaoBankTransaction</code> with this <code>token</code>. Return
-     * null if not found.
+     *         null if not found.
      */
     public static DaoBankTransaction getByToken(final String token) {
         return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token").setString("token", token).uniqueResult();
@@ -266,7 +266,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

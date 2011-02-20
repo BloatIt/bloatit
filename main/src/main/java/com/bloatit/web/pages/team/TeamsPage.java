@@ -24,16 +24,16 @@ import com.bloatit.web.url.TeamsPageUrl;
 public class TeamsPage extends MasterPage {
     // Keep me here ! I am needed for the Url generation !
     private HtmlPagedList<Group> pagedTeamList;
-    private TeamsPageUrl url;
+    private final TeamsPageUrl url;
 
-    public TeamsPage(TeamsPageUrl url) {
+    public TeamsPage(final TeamsPageUrl url) {
         super(url);
         this.url = url;
     }
 
     @Override
     protected void doCreate() throws RedirectException {
-        HtmlDiv master = new HtmlDiv("padding_box");
+        final HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
         master.add(new HtmlLink(new CreateTeamPageUrl().urlString(), Context.tr("Create a new team")));
 

@@ -8,10 +8,10 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
- * Represent a web Url. A Url is a kind of {@link UrlComponent}, with a page
- * name. It also can have a ahchor part.
+ * Represent a web Url. A Url is a kind of {@link UrlComponent}, with a page name. It also
+ * can have a ahchor part.
  */
-public abstract class Url implements Cloneable{
+public abstract class Url implements Cloneable {
 
     private final String name;
     private String anchor = null;
@@ -24,7 +24,7 @@ public abstract class Url implements Cloneable{
         this.name = name;
     }
 
-    protected Url(Url other) {
+    protected Url(final Url other) {
         this.name = other.name;
         this.anchor = other.anchor;
     }
@@ -32,9 +32,9 @@ public abstract class Url implements Cloneable{
     protected abstract void doConstructUrl(StringBuilder sb);
 
     public abstract void addParameter(String key, String value);
-    
+
     public abstract Messages getMessages();
-    
+
     @Override
     public abstract Url clone();
 
@@ -47,7 +47,7 @@ public abstract class Url implements Cloneable{
     }
 
     public String urlString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         if (Context.getSession() != null) {
             sb.append("/").append(Context.getLocalizator().getCode());
         }
@@ -59,7 +59,7 @@ public abstract class Url implements Cloneable{
         return sb.toString();
     }
 
-    public final String externalUrlString(HttpHeader header) {
+    public final String externalUrlString(final HttpHeader header) {
         if (header.getServerProtocol().startsWith("HTTPS")) {
             return "https://" + header.getHttpHost() + urlString();
         }

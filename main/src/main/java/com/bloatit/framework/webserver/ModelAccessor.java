@@ -4,7 +4,6 @@ import java.util.concurrent.Semaphore;
 
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.model.AbstractModel;
-import com.bloatit.model.right.AuthToken;
 
 /**
  * Thread safe class. It calls to the model initialization and open close methods.
@@ -21,7 +20,7 @@ public class ModelAccessor {
      */
     private static AbstractModel model = null;
 
-    private static void setModelManager(AbstractModel manager) {
+    private static void setModelManager(final AbstractModel manager) {
         if (model == null) {
             model = manager;
         } else {
@@ -32,15 +31,15 @@ public class ModelAccessor {
     /**
      * This method is the init method. Call it only once, in a non MultiThreaded
      * environment.
-     *
+     * 
      * @see com.bloatit.model.AbstractModel#init()
      */
-    public static void init(AbstractModel manager) {
+    public static void init(final AbstractModel manager) {
         try {
             mutex.acquire();
             setModelManager(manager);
             model.init();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new FatalErrorException(e);
         } finally {
             mutex.release();
@@ -51,11 +50,11 @@ public class ModelAccessor {
      * @see com.bloatit.model.AbstractModel#shutdown()
      */
     public static void shutdown() {
-        if(model != null) {
+        if (model != null) {
             try {
                 mutex.acquire();
                 model.shutdown();
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 throw new FatalErrorException(e);
             } finally {
                 mutex.release();
@@ -70,7 +69,7 @@ public class ModelAccessor {
         try {
             mutex.acquire();
             model.setReadOnly();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new FatalErrorException(e);
         } finally {
             mutex.release();
@@ -84,13 +83,13 @@ public class ModelAccessor {
         try {
             mutex.acquire();
             model.open();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new FatalErrorException(e);
         } finally {
             mutex.release();
         }
     }
-    
+
     /**
      * @see com.bloatit.model.AbstractModel#close()
      */
@@ -98,7 +97,7 @@ public class ModelAccessor {
         try {
             mutex.acquire();
             model.close();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new FatalErrorException(e);
         } finally {
             mutex.release();

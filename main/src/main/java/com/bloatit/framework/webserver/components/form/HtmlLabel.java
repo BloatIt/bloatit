@@ -14,15 +14,14 @@ package com.bloatit.framework.webserver.components.form;
 import com.bloatit.framework.webserver.components.meta.HtmlLeaf;
 
 /**
- * Internal class used to represend text displayed next to a form field (legend
- * of the form field)
+ * Internal class used to represend text displayed next to a form field (legend of the
+ * form field)
  */
 public final class HtmlLabel extends HtmlLeaf {
     /**
      * Creates a label with displayed text
      * 
-     * @param content
-     *            the displayed text
+     * @param content the displayed text
      */
     protected HtmlLabel(final String content) {
         super("label");
@@ -32,8 +31,7 @@ public final class HtmlLabel extends HtmlLeaf {
     /**
      * Links a label with a formfield
      * 
-     * @param forId
-     *            the Id of the formfield
+     * @param forId the Id of the formfield
      */
     protected void setFor(final String forId) {
         addAttribute("for", forId);

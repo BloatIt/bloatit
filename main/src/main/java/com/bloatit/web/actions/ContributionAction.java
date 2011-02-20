@@ -45,13 +45,16 @@ public final class ContributionAction extends LoggedAction {
 
     @RequestParam(name = COMMENT_CODE, role = Role.POST)
     @ParamConstraint(optional = true, //
-                     max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
+                     max = "140",
+                     maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
     private final String comment;
 
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)
     @ParamConstraint(min = "0", minIsExclusive = true, minErrorMsg = @tr("Amount must be superior to 0."),//
-                     max = "1000000000", maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
-                     precision = 0, precisionErrorMsg = @tr("Please do not use Cents."))
+                     max = "1000000000",
+                     maxErrorMsg = @tr("We cannot accept such a generous offer!"),//
+                     precision = 0,
+                     precisionErrorMsg = @tr("Please do not use Cents."))
     private final BigDecimal amount;
 
     private final ContributionActionUrl url;
@@ -68,9 +71,8 @@ public final class ContributionAction extends LoggedAction {
     public Url doProcessRestricted() throws RedirectException {
         try {
             targetIdea.addContribution(amount, comment);
-            session.notifyGood(Context
-                    .tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
-            DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
+            session.notifyGood(Context.tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
+            final DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
             demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
             return demandPageUrl;
         } catch (final NotEnoughMoneyException e) {

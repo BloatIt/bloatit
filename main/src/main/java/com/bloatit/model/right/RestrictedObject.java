@@ -75,7 +75,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * .AuthToken)
      */
     @Override
-    public void authenticate(AuthToken token) {
+    public void authenticate(final AuthToken token) {
         if (Context.getSession() != null && Context.getSession().getAuthToken() != null) {
             this.token = token;
             updateRights();
@@ -96,7 +96,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
             return;
         }
 
-        Member member = token.getNonPersistantMember();
+        final Member member = token.getNonPersistantMember();
         if (isMine(member)) {
             owningState = OwningState.OWNER;
         } else {
@@ -114,7 +114,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * DaoGroupRight.UserGroupRight)
      */
     @Override
-    public final boolean hasGroupPrivilege(UserGroupRight right) {
+    public final boolean hasGroupPrivilege(final UserGroupRight right) {
         automaticAuthentication();
         return groupRights.contains(right);
     }
@@ -127,7 +127,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * .Role)
      */
     @Override
-    public final boolean hasUserPrivilege(Role role) {
+    public final boolean hasUserPrivilege(final Role role) {
         automaticAuthentication();
         // We have to test if we are authenticated
         // to make sure the token is != null
@@ -172,7 +172,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * 
      * @param member is the person that wish to know if the content is his.
      * @return true if <code>member</code> is the author of <code>this</code>, false
-     * otherwise.
+     *         otherwise.
      */
     protected abstract boolean isMine(Member member);
 
@@ -182,7 +182,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * @param member the member
      * @return the enum set
      */
-    protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
+    protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
         return EnumSet.noneOf(UserGroupRight.class);
     }
 
@@ -215,7 +215,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * @param action the action
      * @return true, if successful
      */
-    protected final boolean canAccess(Accessor accessor, Action action) {
+    protected final boolean canAccess(final Accessor accessor, final Action action) {
         return accessor.canAccess(this, action);
     }
 
@@ -226,7 +226,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * @param action the action
      * @throws UnauthorizedOperationException the unauthorized operation exception
      */
-    protected final void tryAccess(Accessor accessor, Action action) throws UnauthorizedOperationException {
+    protected final void tryAccess(final Accessor accessor, final Action action) throws UnauthorizedOperationException {
         accessor.tryAccess(this, action);
     }
 }

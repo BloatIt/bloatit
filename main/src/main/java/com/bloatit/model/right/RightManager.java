@@ -18,7 +18,6 @@ package com.bloatit.model.right;
 
 import java.util.EnumSet;
 
-
 /**
  * <p>
  * The RightManager class contains some useful methods to create the {@link Accessor}
@@ -33,7 +32,6 @@ public abstract class RightManager {
         // nothing
     }
 
-    
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method

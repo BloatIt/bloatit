@@ -110,7 +110,7 @@ public final class DaoComment extends DaoKudosable {
      * PageIterable. Order by creation date, older first.
      * 
      * @return the list of this comment children. return an empty list if there is no
-     * child.
+     *         child.
      */
     public PageIterable<DaoComment> getChildren() {
         return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by c.creationDate asc, id").setEntity("this", this);
@@ -121,7 +121,7 @@ public final class DaoComment extends DaoKudosable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

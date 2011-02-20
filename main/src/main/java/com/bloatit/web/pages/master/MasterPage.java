@@ -30,7 +30,7 @@ public abstract class MasterPage extends GenericPage {
     protected abstract void doCreate() throws RedirectException;
 
     @Override
-    protected final void generateBody(HtmlGenericElement body) throws RedirectException {
+    protected final void generateBody(final HtmlGenericElement body) throws RedirectException {
 
         final HtmlBranch header = new HtmlDiv("header").setId("header");
         body.add(header);
@@ -52,14 +52,13 @@ public abstract class MasterPage extends GenericPage {
 
         body.add(new Footer());
 
-
         doCreate();
 
     }
 
     @Override
     protected final String getTitle() {
-        return "Linkeos – "+ getPageTitle();
+        return "Linkeos – " + getPageTitle();
     }
 
     protected abstract String getPageTitle();
@@ -91,7 +90,6 @@ public abstract class MasterPage extends GenericPage {
         notifications.add(note);
     }
 
-
     private HtmlElement generateLogo() {
         Context.getSession();
 
@@ -104,6 +102,5 @@ public abstract class MasterPage extends GenericPage {
 
         return logoDiv;
     }
-
 
 }

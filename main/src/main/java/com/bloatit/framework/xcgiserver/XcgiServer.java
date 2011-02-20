@@ -1,20 +1,18 @@
 /*
  * Copyright (C) 2011 Linkeos.
- *
+ * 
  * This file is part of BloatIt.
- *
- * BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details.
- *
- * You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * BloatIt is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * 
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with
+ * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.xcgiserver;
 
@@ -46,7 +44,7 @@ public final class XcgiServer {
         // Nothing ?
     }
 
-    public void addProcessor(XcgiProcessor processor) {
+    public void addProcessor(final XcgiProcessor processor) {
         this.processors.add(processor);
     }
 
@@ -64,14 +62,14 @@ public final class XcgiServer {
     }
 
     public void start() {
-        for (XcgiThread thread : threads) {
+        for (final XcgiThread thread : threads) {
             thread.start();
         }
 
-        for (XcgiThread thread : threads) {
+        for (final XcgiThread thread : threads) {
             try {
                 thread.join();
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -84,7 +82,7 @@ public final class XcgiServer {
         private final ServerSocket provider;
         private final Timer timer;
 
-        public XcgiThread(int port) throws IOException {
+        public XcgiThread(final int port) throws IOException {
             super();
             provider = new ServerSocket(port);
             timer = new Timer();
@@ -96,7 +94,7 @@ public final class XcgiServer {
             while (true) {
                 try {
                     generateAndSendReponse();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     nbError++;
                     if (nbError > NB_MAX_SOCKET_ERROR) {
                         throw new FatalErrorException("Too much errors on this socket.", e);
@@ -110,7 +108,7 @@ public final class XcgiServer {
             if (socket != null && !socket.isClosed()) {
                 try {
                     socket.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -127,7 +125,7 @@ public final class XcgiServer {
 
             // Parse the header and the post data.
             final BufferedInputStream bis = new BufferedInputStream(socket.getInputStream(), 4096);
-            XcgiParser parser = getXCGIParser(bis, socket.getOutputStream());
+            final XcgiParser parser = getXCGIParser(bis, socket.getOutputStream());
 
             final Map<String, String> env = parser.getEnv();
             final HttpHeader header = new HttpHeader(env);
@@ -137,7 +135,7 @@ public final class XcgiServer {
             SessionManager.clearExpiredSessions();
 
             try {
-                for (XcgiProcessor processor : getProcessors()) {
+                for (final XcgiProcessor processor : getProcessors()) {
                     if (processor.process(header, post, new HttpResponse(parser.getResponseStream()))) {
                         break;
                     }
@@ -156,7 +154,7 @@ public final class XcgiServer {
             Log.framework().debug("Page generated in " + timer.elapsed() + " ms");
         }
 
-        private XcgiParser getXCGIParser(InputStream is, OutputStream os) throws IOException {
+        private XcgiParser getXCGIParser(final InputStream is, final OutputStream os) throws IOException {
             // You can also use scgi parser
             return new FCGIParser(is, os);
         }
@@ -164,7 +162,7 @@ public final class XcgiServer {
 
     public void stop() {
         // TODO: lock to wait transaction end
-        for (XcgiThread thread : threads) {
+        for (final XcgiThread thread : threads) {
             if (thread.isAlive()) {
                 thread.kill();
             }

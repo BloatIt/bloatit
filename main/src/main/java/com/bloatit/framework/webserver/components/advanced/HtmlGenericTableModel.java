@@ -24,7 +24,7 @@ public final class HtmlGenericTableModel<U> extends HtmlTable.HtmlTableModel {
 
     public static abstract class StringColumnGenerator<U> extends ColumnGenerator<U> {
         @Override
-        public XmlNode getBody(U element) {
+        public XmlNode getBody(final U element) {
             return new HtmlText(getStringBody(element));
         }
 

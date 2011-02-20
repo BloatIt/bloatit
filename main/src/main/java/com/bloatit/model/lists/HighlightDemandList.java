@@ -23,13 +23,14 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.HighlightDemand;
 
 /**
- * The Class HighlightDemandList transforms PageIterable<DaoHighlightDemand> to PageIterable<HighlightDemand>.
+ * The Class HighlightDemandList transforms PageIterable<DaoHighlightDemand> to
+ * PageIterable<HighlightDemand>.
  */
 public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHighlightDemand> {
 
     /**
      * Instantiates a new project list.
-     *
+     * 
      * @param daoCollection the dao collection
      */
     public HighlightDemandList(final PageIterable<DaoHighlightDemand> daoCollection) {
@@ -38,7 +39,7 @@ public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHi
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
      */
     @Override
@@ -53,7 +54,7 @@ public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHi
 
         /**
          * Instantiates a new project iterator.
-         *
+         * 
          * @param daoIterator the dao iterator
          */
         public HighlightDemandIterator(final Iterable<DaoHighlightDemand> daoIterator) {
@@ -62,7 +63,7 @@ public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHi
 
         /**
          * Instantiates a new project iterator.
-         *
+         * 
          * @param daoIterator the dao iterator
          */
         public HighlightDemandIterator(final Iterator<DaoHighlightDemand> daoIterator) {
@@ -71,7 +72,7 @@ public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHi
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
          */
         @Override

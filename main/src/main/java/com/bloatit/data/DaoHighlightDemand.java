@@ -51,7 +51,11 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
      * @param desactivationDate
      * @return
      */
-    public static DaoHighlightDemand createAndPersist(final DaoDemand demand, int position, String reason, Date activationDate, Date desactivationDate) {
+    public static DaoHighlightDemand createAndPersist(final DaoDemand demand,
+                                                      final int position,
+                                                      final String reason,
+                                                      final Date activationDate,
+                                                      final Date desactivationDate) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoHighlightDemand hightlightDemand = new DaoHighlightDemand(demand, position, reason, activationDate, desactivationDate);
         try {
@@ -73,7 +77,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
      * @param activationDate
      * @param desactivationDate
      */
-    public DaoHighlightDemand(DaoDemand demand, int position, String reason, Date activationDate, Date desactivationDate) {
+    public DaoHighlightDemand(final DaoDemand demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
         if (demand == null || activationDate == null || desactivationDate == null) {
             throw new NonOptionalParameterException();
         }
@@ -109,7 +113,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(final int position) {
         this.position = position;
     }
 
@@ -117,7 +121,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
         return activationDate;
     }
 
-    public void setActivationDate(Date activationDate) {
+    public void setActivationDate(final Date activationDate) {
         this.activationDate = activationDate;
     }
 
@@ -125,7 +129,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
         return desactivationDate;
     }
 
-    public void setDesactivationDate(Date desactivationDate) {
+    public void setDesactivationDate(final Date desactivationDate) {
         this.desactivationDate = desactivationDate;
     }
 
@@ -150,7 +154,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -200,7 +204,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

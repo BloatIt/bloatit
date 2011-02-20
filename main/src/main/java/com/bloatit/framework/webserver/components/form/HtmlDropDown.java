@@ -1,13 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
- * software: you can redistribute it and/or modify it under the terms of the GNU
- * Affero General Public License as published by the Free Software Foundation,
- * either version 3 of the License, or (at your option) any later version.
- * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- * details. You should have received a copy of the GNU Affero General Public
- * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.webserver.components.form;
 
@@ -29,7 +28,7 @@ public class HtmlDropDown extends HtmlFormField<String> {
         setDefaultOnConstruction(data);
     }
 
-    public HtmlDropDown(final FormFieldData<?> data, String label) {
+    public HtmlDropDown(final FormFieldData<?> data, final String label) {
         this(data.getFieldName(), label);
         setDefaultOnConstruction(data);
     }
@@ -58,15 +57,15 @@ public class HtmlDropDown extends HtmlFormField<String> {
         elements.put(value, opt);
     }
 
-    public <T extends Enum<T> & Displayable> void addDropDownElements(EnumSet<T> elements) {
-        for (T enumValue : elements) {
+    public <T extends Enum<T> & Displayable> void addDropDownElements(final EnumSet<T> elements) {
+        for (final T enumValue : elements) {
             addDropDownElement(enumValue.name(), enumValue.getDisplayName());
         }
     }
 
     @Override
-    protected void doSetDefaultValue(String value) {
-        HtmlGenericElement checkedElement = elements.get(value);
+    protected void doSetDefaultValue(final String value) {
+        final HtmlGenericElement checkedElement = elements.get(value);
         if (checkedElement != null) {
             checkedElement.addAttribute("checked", "checked");
         }

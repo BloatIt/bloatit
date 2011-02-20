@@ -1,20 +1,18 @@
 /*
  * Copyright (C) 2011 Linkeos.
- *
+ * 
  * This file is part of BloatIt.
- *
- * BloatIt is free software: you can redistribute it and/or modify it under the
- * terms of the GNU Affero General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option)
- * any later version.
- *
- * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for
- * more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * BloatIt is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * 
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with
+ * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.xcgiserver.fcgi;
 
@@ -40,34 +38,33 @@ import com.bloatit.framework.xcgiserver.XcgiParser;
  * ://www.fastcgi.com/devkit/doc/fcgi-spec.html}
  * </p>
  * <p>
- * The fastcgi protocol use 2 stream, 1 input stream and 1 output stream,
- * composed by records. The input stream contains the request and the
- * outputstream contains the response.
+ * The fastcgi protocol use 2 stream, 1 input stream and 1 output stream, composed by
+ * records. The input stream contains the request and the outputstream contains the
+ * response.
  * </p>
  * <p>
- * In the input stream, 2 virtuals stream are composed by 2 type of record: the
- * params records and the stdin record.
+ * In the input stream, 2 virtuals stream are composed by 2 type of record: the params
+ * records and the stdin record.
  * </p>
- *
+ * 
  */
 public class FCGIParser implements XcgiParser {
 
     /**
      * <p>
-     * The response is encapsuled in FCGI_STDOUT record. The size of the content
-     * of a record is coded with 2 bytes so the size can not exceed 65536 bytes.
-     * The {@link FCGIOutputStream} charged to generete the output records is
-     * not protected so a buffedOutputStream is use to cut the response in small
-     * blocks.
+     * The response is encapsuled in FCGI_STDOUT record. The size of the content of a
+     * record is coded with 2 bytes so the size can not exceed 65536 bytes. The
+     * {@link FCGIOutputStream} charged to generete the output records is not protected so
+     * a buffedOutputStream is use to cut the response in small blocks.
      * </p>
      * The output record size mustn't be more than 65000 (max size of a record).
      * <p>
-     * If the output record size is too small, the overhead weigth due to FCGI
-     * record's header will be heavy.
+     * If the output record size is too small, the overhead weigth due to FCGI record's
+     * header will be heavy.
      * </p>
      * <p>
-     * If the output record size is too big, the global latency of the response
-     * will increase.
+     * If the output record size is too big, the global latency of the response will
+     * increase.
      * </p>
      */
     private static final int DEFAULT_OUTPUT_RECORD_SIZE = 8192;
@@ -111,20 +108,19 @@ public class FCGIParser implements XcgiParser {
     DataInputStream dataInput;
 
     /**
-     * Status of param input stream.
-     * The param input stream is closed when a empty FCGI_PARAMS record is received.
+     * Status of param input stream. The param input stream is closed when a empty
+     * FCGI_PARAMS record is received.
      */
     boolean paramStreamOpen = true;
 
     /**
-     * Status of post input stream.
-     * The post input stream is closed when a empty FCGI_STDIN record is received.
+     * Status of post input stream. The post input stream is closed when a empty
+     * FCGI_STDIN record is received.
      */
     boolean postStreamOpen = true;
 
     /**
-     * Http header params.
-     * This map is full with param input stream record's content.
+     * Http header params. This map is full with param input stream record's content.
      */
     private final Map<String, String> env;
 
@@ -140,13 +136,16 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Create a fcgi parser with the 2 stream of the web server's socket.
+     * 
      * @param input stream containing data from the web server
      * @param output stream where to write the response to the web server
      * @throws IOException
      */
-    public FCGIParser(final InputStream input, OutputStream output) throws IOException {
-        // The FCGIOutputStream has a BufferedOutputStream before and a BufferedOutputStream after.
-        // The first avoid to give too small or too big packet to put in on record and the second avoid to
+    public FCGIParser(final InputStream input, final OutputStream output) throws IOException {
+        // The FCGIOutputStream has a BufferedOutputStream before and a
+        // BufferedOutputStream after.
+        // The first avoid to give too small or too big packet to put in on record and the
+        // second avoid to
         responseStream = new BufferedOutputStream(new FCGIOutputStream(this, new BufferedOutputStream(output, 8192)), DEFAULT_OUTPUT_RECORD_SIZE);
 
         postStream = new FCGIPostStream(this);
@@ -183,8 +182,9 @@ public class FCGIParser implements XcgiParser {
     public void fetchPostRecord() throws IOException {
 
         // TODO: comment that
-        while (postStreamOpen && !(parseRecord() == FCGI_STDIN))
+        while (postStreamOpen && !(parseRecord() == FCGI_STDIN)) {
             ;
+        }
     }
 
     public void fetchAll() throws IOException {
@@ -194,11 +194,11 @@ public class FCGIParser implements XcgiParser {
     }
 
     private byte parseRecord() throws IOException {
-        byte version = dataInput.readByte();
-        byte type = dataInput.readByte();
-        int requestId = dataInput.readUnsignedShort();
-        int contentLength = dataInput.readUnsignedShort();
-        int paddingLength = dataInput.readUnsignedByte();
+        final byte version = dataInput.readByte();
+        final byte type = dataInput.readByte();
+        final int requestId = dataInput.readUnsignedShort();
+        final int contentLength = dataInput.readUnsignedShort();
+        final int paddingLength = dataInput.readUnsignedByte();
         // Reserved byte
         dataInput.skip(1);
 
@@ -238,12 +238,12 @@ public class FCGIParser implements XcgiParser {
         return type;
     }
 
-    private void parseBeginRequestRecord(int contentLenght) throws IOException {
+    private void parseBeginRequestRecord(final int contentLenght) throws IOException {
         if (contentLenght != 8) {
             throw new FCGIException("Bad lenght for begin request record. Found '" + contentLenght + "' but '8' excepted.");
         }
-        short role = dataInput.readShort();
-        byte flags = dataInput.readByte();
+        final short role = dataInput.readShort();
+        final byte flags = dataInput.readByte();
         // Skip 5 reserved bytes
         dataInput.skipBytes(5);
 
@@ -257,7 +257,7 @@ public class FCGIParser implements XcgiParser {
 
     }
 
-    private void parseParamsRecord(int contentLength) throws IOException {
+    private void parseParamsRecord(final int contentLength) throws IOException {
         if (contentLength == 0) {
             // End of param stream
             paramStreamOpen = false;
@@ -267,7 +267,7 @@ public class FCGIParser implements XcgiParser {
         int remainingLength = contentLength;
 
         while (remainingLength > 0) {
-            int usedLength = parseNameValuePair();
+            final int usedLength = parseNameValuePair();
             if (usedLength > remainingLength) {
                 throw new FCGIException("Bad format un params record");
             }
@@ -278,11 +278,11 @@ public class FCGIParser implements XcgiParser {
     private int parseNameValuePair() throws IOException {
         int usedLength = 0;
         long nameLength = 0;
-        int firstNameLengthByte = dataInput.readUnsignedByte();
+        final int firstNameLengthByte = dataInput.readUnsignedByte();
         usedLength++;
 
         if ((firstNameLengthByte & 0x80) != 0) {// 10000000
-            int[] lengthArray = new int[4];
+            final int[] lengthArray = new int[4];
             lengthArray[3] = firstNameLengthByte;
             lengthArray[2] = dataInput.readUnsignedByte();
             lengthArray[1] = dataInput.readUnsignedByte();
@@ -296,11 +296,11 @@ public class FCGIParser implements XcgiParser {
 
         long valueLength = 0;
 
-        int firstValueLengthByte = dataInput.readUnsignedByte();
+        final int firstValueLengthByte = dataInput.readUnsignedByte();
         usedLength++;
 
         if ((firstValueLengthByte >> 7) == 1) { // 10000000
-            int[] lengthArray = new int[4];
+            final int[] lengthArray = new int[4];
             lengthArray[3] = firstValueLengthByte;
             lengthArray[2] = dataInput.readUnsignedByte();
             lengthArray[1] = dataInput.readUnsignedByte();
@@ -312,34 +312,34 @@ public class FCGIParser implements XcgiParser {
             valueLength = firstValueLengthByte;
         }
 
-        byte[] nameArray = new byte[(int) nameLength];
+        final byte[] nameArray = new byte[(int) nameLength];
         dataInput.read(nameArray);
         usedLength += nameLength;
-        String name = new String(nameArray);
+        final String name = new String(nameArray);
 
-        byte[] valueArray = new byte[(int) valueLength];
+        final byte[] valueArray = new byte[(int) valueLength];
         dataInput.read(valueArray);
         usedLength += valueLength;
-        String value = new String(valueArray);
+        final String value = new String(valueArray);
 
         env.put(name, value);
 
         return usedLength;
     }
 
-    private void parseStdinRecord(int contentLength) throws IOException {
+    private void parseStdinRecord(final int contentLength) throws IOException {
         if (contentLength == 0) {
             // End of stdin stream
             postStreamOpen = false;
             return;
         }
 
-        byte[] data = new byte[contentLength];
+        final byte[] data = new byte[contentLength];
 
         int readLength = 0;
 
         while (readLength < contentLength) {
-            int size = dataInput.read(data, readLength, contentLength - readLength);
+            final int size = dataInput.read(data, readLength, contentLength - readLength);
             if (size == -1) {
                 throw new EOFException();
             }
@@ -350,12 +350,11 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Converts a 4 byte array of unsigned bytes to an long
-     *
-     * @param b
-     *            an array of 4 unsigned bytes
+     * 
+     * @param b an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */
-    public static final long unsignedIntToLong(int[] b) {
+    public static final long unsignedIntToLong(final int[] b) {
         long l = 0;
 
         l += b[0];

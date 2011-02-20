@@ -72,8 +72,7 @@ public final class TestPage extends MasterPage {
         anotherDiv.add(htb);
         htb.add(new HtmlTitle("nested title", 5));
         htb.add(new HtmlText(tr("some text without paragraph")));
-        htb.add(new HtmlParagraph(new HtmlText(
-                "and some with a span <span style=\"font-size: 16pt ; color: fuchsia ; background-color: #FFFFFF ;\">plop</span>")));
+        htb.add(new HtmlParagraph(new HtmlText("and some with a span <span style=\"font-size: 16pt ; color: fuchsia ; background-color: #FFFFFF ;\">plop</span>")));
 
         return div;
     }

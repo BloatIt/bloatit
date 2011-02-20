@@ -44,7 +44,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
      * Instantiates a new task development time out.
      * 
      * @param demandId the demand id on which we will have to perform a
-     * "development time out".
+     *        "development time out".
      * @param time the date when this task will be run.
      */
     public TaskDevelopmentTimeOut(final int demandId, final Date time) {
@@ -60,7 +60,7 @@ public class TaskDevelopmentTimeOut extends PlannedTask {
     @Override
     public void doRun() {
         try {
-            DemandImplementation demand = DemandManager.getDemandImplementationById(demandId);
+            final DemandImplementation demand = DemandManager.getDemandImplementationById(demandId);
             if (demand != null) {
                 demand.developmentTimeOut();
             } else {

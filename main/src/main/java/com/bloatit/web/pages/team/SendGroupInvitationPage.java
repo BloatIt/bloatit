@@ -9,7 +9,6 @@ import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlHidden;
@@ -30,12 +29,12 @@ import com.bloatit.web.url.SendGroupInvitationPageUrl;
 @ParamContainer("invitation/send")
 public class SendGroupInvitationPage extends LoggedPage {
     @SuppressWarnings("unused")
-    private SendGroupInvitationPageUrl url;
+    private final SendGroupInvitationPageUrl url;
 
     @RequestParam(level = Level.INFO)
-    private Group group;
+    private final Group group;
 
-    public SendGroupInvitationPage(SendGroupInvitationPageUrl url) {
+    public SendGroupInvitationPage(final SendGroupInvitationPageUrl url) {
         super(url);
         this.url = url;
         this.group = url.getGroup();
@@ -43,41 +42,41 @@ public class SendGroupInvitationPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
-        HtmlDiv master = new HtmlDiv("padding_box");
+        final HtmlDiv master = new HtmlDiv("padding_box");
 
-        SendGroupInvitationActionUrl target = new SendGroupInvitationActionUrl();
-        HtmlForm form = new HtmlForm(target.urlString());
+        final SendGroupInvitationActionUrl target = new SendGroupInvitationActionUrl();
+        final HtmlForm form = new HtmlForm(target.urlString());
         master.add(form);
 
-        Member me = session.getAuthToken().getMember();
+        final Member me = session.getAuthToken().getMember();
         me.authenticate(session.getAuthToken());
 
         try {
             if (group == null) {
-                HtmlDropDown groupInput = new HtmlDropDown(SendGroupInvitationAction.GROUP_JOIN_CODE, Context.tr("Select group"));
+                final HtmlDropDown groupInput = new HtmlDropDown(SendGroupInvitationAction.GROUP_JOIN_CODE, Context.tr("Select group"));
                 form.add(groupInput);
                 PageIterable<Group> groups;
                 groups = me.getGroups();
-                for (Group g : groups) {
+                for (final Group g : groups) {
                     try {
                         groupInput.addDropDownElement(g.getId().toString(), g.getLogin());
-                    } catch (UnauthorizedOperationException e) {
+                    } catch (final UnauthorizedOperationException e) {
                         e.printStackTrace();
                     }
                 }
             } else {
-                HtmlHidden hiddenGroup = new HtmlHidden(SendGroupInvitationAction.GROUP_JOIN_CODE, group.getId().toString());
+                final HtmlHidden hiddenGroup = new HtmlHidden(SendGroupInvitationAction.GROUP_JOIN_CODE, group.getId().toString());
                 form.add(hiddenGroup);
             }
 
-            HtmlDropDown receiverInput = new HtmlDropDown(SendGroupInvitationAction.RECEIVER_CODE, Context.tr("Select group"));
+            final HtmlDropDown receiverInput = new HtmlDropDown(SendGroupInvitationAction.RECEIVER_CODE, Context.tr("Select group"));
             form.add(receiverInput);
-            for (Member m : MemberManager.getMembers()) {
+            for (final Member m : MemberManager.getMembers()) {
                 try {
                     if (!m.equals(me)) {
                         receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
                     }
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     throw new FatalErrorException(e);
                 }
             }
@@ -86,7 +85,7 @@ public class SendGroupInvitationPage extends LoggedPage {
 
             return master;
 
-        } catch (UnauthorizedOperationException e1) {
+        } catch (final UnauthorizedOperationException e1) {
             throw new FatalErrorException(e1);
         }
     }

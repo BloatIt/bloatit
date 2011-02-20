@@ -12,7 +12,7 @@ import com.bloatit.web.url.UserContentAdminPageUrl;
 public class UserContentAdminPageImplementation extends
         UserContentAdminPage<DaoUserContent, UserContentAdmin<DaoUserContent>, UserContentAdminListFactory.DefaultFactory> {
 
-    public UserContentAdminPageImplementation(UserContentAdminPageUrl url) {
+    public UserContentAdminPageImplementation(final UserContentAdminPageUrl url) {
         super(url, new UserContentAdminListFactory.DefaultFactory());
     }
 
@@ -27,12 +27,12 @@ public class UserContentAdminPageImplementation extends
     }
 
     @Override
-    protected void addColumns(HtmlGenericTableModel<UserContentAdmin<DaoUserContent>> tableModel) {
+    protected void addColumns(final HtmlGenericTableModel<UserContentAdmin<DaoUserContent>> tableModel) {
         // Nothing to do here.
     }
 
     @Override
-    protected void addFormFilters(HtmlForm form) {
+    protected void addFormFilters(final HtmlForm form) {
         // Nothing to do here.
     }
 

@@ -49,7 +49,7 @@ public final class DaoImage extends DaoIdentifiable {
     /**
      * @see #DaoImage(int, int, String, DaoFileMetadata)
      */
-    public static DaoImage createAndPersist(int horizontalSize, int verticalSize, String compression, DaoFileMetadata file) {
+    public static DaoImage createAndPersist(final int horizontalSize, final int verticalSize, final String compression, final DaoFileMetadata file) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoImage image = new DaoImage(horizontalSize, verticalSize, compression, file);
         try {
@@ -68,10 +68,10 @@ public final class DaoImage extends DaoIdentifiable {
      * @param horizontalSize is the number of pixels for the X coordinate.
      * @param verticalSize is the number of pixels for the Y coordinate.
      * @param compression is a string describing the type of compression. This parameter
-     * is optional (it can be null, or empty).
+     *        is optional (it can be null, or empty).
      * @param file is the file where this image is stored.
      */
-    private DaoImage(int horizontalSize, int verticalSize, String compression, DaoFileMetadata file) {
+    private DaoImage(final int horizontalSize, final int verticalSize, final String compression, final DaoFileMetadata file) {
         super();
         if (file == null) {
             throw new NonOptionalParameterException();
@@ -86,7 +86,7 @@ public final class DaoImage extends DaoIdentifiable {
     /**
      * @param compression the compression to set
      */
-    public final void setCompression(String compression) {
+    public final void setCompression(final String compression) {
         this.compression = compression;
     }
 
@@ -123,7 +123,7 @@ public final class DaoImage extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -158,7 +158,7 @@ public final class DaoImage extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

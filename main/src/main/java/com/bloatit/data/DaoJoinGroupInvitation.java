@@ -67,7 +67,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
      * @param group the group this invitation is on.
      * @param member the member this invitation was sent to.
      * @return the invitation, are null if there is no invitation on that
-     * <code>group</code> sent to this <code>member</code>.
+     *         <code>group</code> sent to this <code>member</code>.
      */
     public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
         return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
@@ -147,7 +147,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

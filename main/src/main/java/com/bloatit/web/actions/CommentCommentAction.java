@@ -52,7 +52,7 @@ public class CommentCommentAction extends LoggedAction {
 
         try {
             targetComment.addChildComment(comment);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             // TODO do some stuff here.
         }
 

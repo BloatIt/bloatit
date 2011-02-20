@@ -26,14 +26,14 @@ public class SendGroupInvitationAction extends LoggedAction {
     public final static String RECEIVER_CODE = "bloatit_join_receiver";
 
     @RequestParam(level = Level.ERROR, name = GROUP_JOIN_CODE, role = Role.POST)
-    private Group group;
+    private final Group group;
 
     @RequestParam(level = Level.ERROR, name = RECEIVER_CODE, role = Role.POST)
-    private Member receiver;
+    private final Member receiver;
 
-    private SendGroupInvitationActionUrl url;
+    private final SendGroupInvitationActionUrl url;
 
-    public SendGroupInvitationAction(SendGroupInvitationActionUrl url) {
+    public SendGroupInvitationAction(final SendGroupInvitationActionUrl url) {
         super(url);
         this.url = url;
         this.group = url.getGroup();
@@ -42,12 +42,12 @@ public class SendGroupInvitationAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        Member me = session.getAuthToken().getMember();
+        final Member me = session.getAuthToken().getMember();
 
         try {
             me.sendInvitation(receiver, group);
             session.notifyGood("Invitation sent to " + receiver.getDisplayName() + " for group " + group.getLogin());
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             e.printStackTrace();
         }
         return session.getLastVisitedPage();

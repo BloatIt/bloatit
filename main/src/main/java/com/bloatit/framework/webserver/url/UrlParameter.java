@@ -35,7 +35,7 @@ public class UrlParameter<T, U> extends UrlNode {
 
     @Override
     protected final void parseParameters(final Parameters params) {
-        HttpParameter aValue = params.look(getName());
+        final HttpParameter aValue = params.look(getName());
         if (aValue != null) {
             setValueFromHttpParameter(aValue);
         }
@@ -43,8 +43,8 @@ public class UrlParameter<T, U> extends UrlNode {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void parseSessionParameters(SessionParameters params) {
-        UrlParameter<?, ?> pick = params.look(getName());
+    protected void parseSessionParameters(final SessionParameters params) {
+        final UrlParameter<?, ?> pick = params.look(getName());
         if (pick != null) {
             value = (T) pick.value;
             strValue = pick.strValue;
@@ -98,10 +98,10 @@ public class UrlParameter<T, U> extends UrlNode {
         strValue = httpParam.getSimpleValue();
         try {
             if (this.value instanceof List) {
-                StringBuilder sb = new StringBuilder();
+                final StringBuilder sb = new StringBuilder();
                 @SuppressWarnings("rawtypes")
-                List casted = List.class.cast(this.value);
-                for (String aValue : httpParam) {
+                final List casted = List.class.cast(this.value);
+                for (final String aValue : httpParam) {
                     // TODO make me works !
                     sb.append("&").append(getName()).append("=").append(aValue);
                     casted.add(Loaders.fromStr(description.getConvertInto(), aValue));
@@ -156,11 +156,11 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     @SuppressWarnings("unchecked")
-    private String toString(T value) throws ConversionErrorException {
+    private String toString(final T value) throws ConversionErrorException {
         // If it is a list then it's a list of parameters.
         if (value instanceof List) {
-            StringBuilder sb = new StringBuilder();
-            for (U elem : ((List<U>) value)) {
+            final StringBuilder sb = new StringBuilder();
+            for (final U elem : ((List<U>) value)) {
                 sb.append("&").append(getName()).append("=").append(Loaders.toStr(value));
             }
             return sb.toString();
@@ -209,7 +209,7 @@ public class UrlParameter<T, U> extends UrlNode {
         private final UrlParameter<T, U> parameterFromSession;
         private final String name;
 
-        public FieldDataFromUrl(UrlParameter<T, U> parameter) {
+        public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
             super();
             name = parameter.getName();
             this.parameterFromSession = Context.getSession().pickParameter(parameter);

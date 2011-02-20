@@ -36,7 +36,7 @@ public class PageNotFound extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
 
-        HtmlDiv box = new HtmlDiv("padding_box");
+        final HtmlDiv box = new HtmlDiv("padding_box");
 
         final HtmlTitle errorTitle = new HtmlTitle(Context.tr("Page not found"), 2);
         box.add(errorTitle);

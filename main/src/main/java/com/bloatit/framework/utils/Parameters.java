@@ -23,18 +23,18 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
 
     /**
      * Add a parameter to the list
-     *
+     * 
      * @param name the name of the parameter to add
      * @param value the value of the paramter to add
      * @return itself
      */
     @Override
     public final void add(final String name, final String value) {
-        HttpParameter httpParameter = getElements().get(name);
+        final HttpParameter httpParameter = getElements().get(name);
         if (httpParameter != null) {
             httpParameter.add(value);
         } else {
-            HttpParameter newHttpParameter = new HttpParameter(value);
+            final HttpParameter newHttpParameter = new HttpParameter(value);
             getElements().put(name, newHttpParameter);
         }
     }

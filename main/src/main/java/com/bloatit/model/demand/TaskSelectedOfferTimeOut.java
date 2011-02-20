@@ -60,7 +60,7 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
     public void doRun() {
         try {
 
-            DemandImplementation demand = DemandManager.getDemandImplementationById(id);
+            final DemandImplementation demand = DemandManager.getDemandImplementationById(id);
             if (demand != null) {
                 demand.selectedOfferTimeOut();
             } else {

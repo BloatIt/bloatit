@@ -32,8 +32,8 @@ import com.bloatit.framework.webserver.components.meta.HtmlBranch;
  * 
  * </p>
  * <p>
- * Every form should include a <code>HtmlSubmit</code> otherwise it won't be
- * possible to validate form input.<br />
+ * Every form should include a <code>HtmlSubmit</code> otherwise it won't be possible to
+ * validate form input.<br />
  * Note, submit can be done via javascript, but should be avoided ...
  * </p>
  */
@@ -52,19 +52,16 @@ public class HtmlForm extends HtmlBranch {
 
     /**
      * <p>
-     * Convenience method to create a form without specifying the send method.
-     * The used send method is <code>POST</code>
+     * Convenience method to create a form without specifying the send method. The used
+     * send method is <code>POST</code>
      * </p>
      * <p>
      * Similar to <code>new HtmlForm(target, Method.POST);</code>
      * </p>
      * 
-     * @param target
-     *            the target of the form (used in the <code>action</code>
-     *            attribute)
-     * @param method
-     *            the method used to send data, either <code>GET</code> or
-     *            <code>POST</code> (<code>POST</code> advised)
+     * @param target the target of the form (used in the <code>action</code> attribute)
+     * @param method the method used to send data, either <code>GET</code> or
+     *        <code>POST</code> (<code>POST</code> advised)
      * @see HtmlForm#HtmlForm(String, Method)
      */
     public HtmlForm(final String target) {
@@ -76,12 +73,9 @@ public class HtmlForm extends HtmlBranch {
      * Creates a form with a given target and a given send method
      * </p>
      * 
-     * @param target
-     *            the target of the form (used in the <code>action</code>
-     *            attribute)
-     * @param method
-     *            the method used to send data, either <code>GET</code> or
-     *            <code>POST</code> (<code>POST</code> advised)
+     * @param target the target of the form (used in the <code>action</code> attribute)
+     * @param method the method used to send data, either <code>GET</code> or
+     *        <code>POST</code> (<code>POST</code> advised)
      */
     public HtmlForm(final String target, final Method method) {
         super("form");
@@ -94,15 +88,14 @@ public class HtmlForm extends HtmlBranch {
      * Allows file upload to happen from this form
      * </p>
      * <p>
-     * This method will change the encoding used to send the data. It is not
-     * advised to use this when not needed as it can be a strain on performances
-     * (data is way heavier to parse when it is activated).
+     * This method will change the encoding used to send the data. It is not advised to
+     * use this when not needed as it can be a strain on performances (data is way heavier
+     * to parse when it is activated).
      * </p>
      * <p>
-     * If an {@link HtmlFileInput} is included in a form where
-     * {@link #enableFileUpload()} has <b>not</b> been called, the form will
-     * simply return the file url instead of the file content, which shouldn't
-     * be very helpful
+     * If an {@link HtmlFileInput} is included in a form where {@link #enableFileUpload()}
+     * has <b>not</b> been called, the form will simply return the file url instead of the
+     * file content, which shouldn't be very helpful
      * </p>
      * 
      * @see HtmlFileInput

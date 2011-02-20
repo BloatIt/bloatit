@@ -54,12 +54,11 @@ public abstract class UrlComponent extends UrlNode {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * com.bloatit.framework.webserver.url.UrlNode#parseSessionParameters(com
+     * @see com.bloatit.framework.webserver.url.UrlNode#parseSessionParameters(com
      * .bloatit.framework.utils.SessionParameters)
      */
     @Override
-    protected void parseSessionParameters(SessionParameters params) {
+    protected void parseSessionParameters(final SessionParameters params) {
         if (params == null) {
             return;
         }

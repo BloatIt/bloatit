@@ -51,8 +51,8 @@ public final class CheckBoxGroup extends HtmlLeaf {
 
     /**
      * <p>
-     * Creates a new empty CheckBoxGroup with position of the labels
-     * <code>AFTER</code> the checkbox
+     * Creates a new empty CheckBoxGroup with position of the labels <code>AFTER</code>
+     * the checkbox
      * </p>
      * <p>
      * Example (after adding a field): <br />
@@ -69,8 +69,8 @@ public final class CheckBoxGroup extends HtmlLeaf {
 
     /**
      * <p>
-     * Creates an empty group of checkbox with a given position of labels
-     * relative to the check box
+     * Creates an empty group of checkbox with a given position of labels relative to the
+     * check box
      * </p>
      * <p>
      * Example (after adding a field) of <code>LabelPosition.BEFORE</code> :<br />
@@ -81,8 +81,7 @@ public final class CheckBoxGroup extends HtmlLeaf {
      * {@code <input type="checkbox" name="nothin" id="anId3" /><label form="anId3">I like nothing</label>}
      * </p>
      * 
-     * @param position
-     *            the relative position of the Labels compared to the checkBoxes
+     * @param position the relative position of the Labels compared to the checkBoxes
      */
     public CheckBoxGroup(final LabelPosition position) {
         super();
@@ -92,11 +91,8 @@ public final class CheckBoxGroup extends HtmlLeaf {
     /**
      * Adds a new checkbox to the group
      * 
-     * @param name
-     *            the name of the checkbox (html attribute name)
-     * @param label
-     *            the html {@code <label>} value that will be linked with the
-     *            checkbox
+     * @param name the name of the checkbox (html attribute name)
+     * @param label the html {@code <label>} value that will be linked with the checkbox
      * @return the CheckBox added
      */
     public HtmlCheckbox addCheckBox(final String name, final String label) {

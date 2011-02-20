@@ -45,7 +45,7 @@ public final class UserContentManager {
      * @return the {@link UserContent} or <code>null</code> if not found.
      */
     public static UserContent<?> getById(final Integer id) {
-        Kudosable<?> kudosable = KudosableManager.getById(id);
+        final Kudosable<?> kudosable = KudosableManager.getById(id);
         if (kudosable != null) {
             return kudosable;
         }

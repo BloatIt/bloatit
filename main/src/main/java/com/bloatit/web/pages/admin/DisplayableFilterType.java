@@ -16,7 +16,7 @@ public enum DisplayableFilterType implements HtmlRadioButtonGroup.Displayable {
         return displayName;
     }
 
-    private DisplayableFilterType(String displayName) {
+    private DisplayableFilterType(final String displayName) {
         this.displayName = displayName;
     }
 }

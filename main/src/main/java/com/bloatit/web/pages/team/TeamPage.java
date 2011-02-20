@@ -44,12 +44,12 @@ import com.bloatit.web.url.TeamPageUrl;
 @ParamContainer("team")
 public class TeamPage extends MasterPage {
     @SuppressWarnings("unused")
-    private TeamPageUrl url; // we keep it for consistency
+    private final TeamPageUrl url; // we keep it for consistency
 
     @RequestParam(level = Level.ERROR)
-    private Group targetTeam;
+    private final Group targetTeam;
 
-    public TeamPage(TeamPageUrl url) {
+    public TeamPage(final TeamPageUrl url) {
         super(url);
         this.url = url;
         this.targetTeam = url.getTargetTeam();
@@ -57,7 +57,7 @@ public class TeamPage extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        HtmlDiv master = new HtmlDiv("padding_box");
+        final HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
 
         targetTeam.authenticate(session.getAuthToken());
@@ -74,7 +74,7 @@ public class TeamPage extends MasterPage {
         HtmlTitleBlock title;
         try {
             title = new HtmlTitleBlock(Context.tr("Team: ") + targetTeam.getLogin(), 1);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new FatalErrorException("Not allowed to see group name in group page, should not happen", e);
         }
         master.add(title);
@@ -83,7 +83,7 @@ public class TeamPage extends MasterPage {
         // Link to join if needed
         if (me != null && !me.isInGroup(targetTeam)) {
             if (targetTeam.isPublic()) {
-                HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this group"));
+                final HtmlLink joinLink = new HtmlLink(new JoinTeamActionUrl(targetTeam).urlString(), Context.tr("Join this group"));
                 title.add(joinLink);
             } else {
                 title.add(new HtmlParagraph().addText("Send a request to join group"));
@@ -92,19 +92,19 @@ public class TeamPage extends MasterPage {
 
         // Description
         // TODO add cache
-        HtmlTitleBlock description = new HtmlTitleBlock(Context.tr("Description"), 2);
+        final HtmlTitleBlock description = new HtmlTitleBlock(Context.tr("Description"), 2);
         title.add(description);
-        HtmlMarkdownRenderer hmr = new HtmlMarkdownRenderer(targetTeam.getDescription());
+        final HtmlMarkdownRenderer hmr = new HtmlMarkdownRenderer(targetTeam.getDescription());
         description.add(hmr);
 
         // Contact
-        HtmlTitleBlock contacts = new HtmlTitleBlock(Context.tr("How to contact us"), 2);
+        final HtmlTitleBlock contacts = new HtmlTitleBlock(Context.tr("How to contact us"), 2);
         title.add(contacts);
 
         if (targetTeam.canAccessEmail(Action.READ)) {
             try {
                 contacts.add(new HtmlParagraph().addText(targetTeam.getEmail()));
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // Should not happen
                 Log.web().error("Cannot access to team email, I checked just before tho", e);
                 contacts.add(new HtmlParagraph().addText("No public contact information available"));
@@ -124,19 +124,20 @@ public class TeamPage extends MasterPage {
         // External account
         if (targetTeam.canGetExternalAccount()) {
             try {
-                ExternalAccount exAccount = targetTeam.getExternalAccount();
+                final ExternalAccount exAccount = targetTeam.getExternalAccount();
                 exAccount.authenticate(session.getAuthToken());
-                HtmlTitleBlock external = new HtmlTitleBlock(Context.tr("Team's external account"), 3);
+                final HtmlTitleBlock external = new HtmlTitleBlock(Context.tr("Team's external account"), 3);
                 financial.add(external);
-                HtmlList exAccountInfo = new HtmlList();
+                final HtmlList exAccountInfo = new HtmlList();
                 external.add(exAccountInfo);
 
-                if (exAccount.canAccessAmount())
-                    exAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(exAccount.getAmount())
-                            .getDefaultString()));
-                if (exAccount.canAccessBankCode())
+                if (exAccount.canAccessAmount()) {
+                    exAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(exAccount.getAmount()).getDefaultString()));
+                }
+                if (exAccount.canAccessBankCode()) {
                     exAccountInfo.add(Context.tr("Bank code: {0}", exAccount.getBankCode()));
-            } catch (UnauthorizedOperationException e) {
+                }
+            } catch (final UnauthorizedOperationException e) {
                 // Should never happen
                 Log.web().error("Cannot access to bank external accound, I checked just before tho", e);
             }
@@ -145,35 +146,35 @@ public class TeamPage extends MasterPage {
         // Internal account
         if (targetTeam.canGetInternalAccount()) {
             try {
-                InternalAccount inAccount = targetTeam.getInternalAccount();
+                final InternalAccount inAccount = targetTeam.getInternalAccount();
                 inAccount.authenticate(session.getAuthToken());
-                HtmlTitleBlock internal = new HtmlTitleBlock(Context.tr("Team's internal account"), 3);
+                final HtmlTitleBlock internal = new HtmlTitleBlock(Context.tr("Team's internal account"), 3);
                 financial.add(internal);
-                HtmlList inAccountInfo = new HtmlList();
+                final HtmlList inAccountInfo = new HtmlList();
                 internal.add(inAccountInfo);
 
-                if (inAccount.canAccessAmount())
-                    inAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(inAccount.getAmount())
-                            .getDefaultString()));
-            } catch (UnauthorizedOperationException e) {
+                if (inAccount.canAccessAmount()) {
+                    inAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(inAccount.getAmount()).getDefaultString()));
+                }
+            } catch (final UnauthorizedOperationException e) {
                 // Should never happen
                 Log.web().error("Cannot access to bank internal accound, I checked just before tho", e);
             }
         }
 
         // Members
-        HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members"), 2);
+        final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Members"), 2);
         title.add(memberTitle);
 
         if (me != null && me.isInGroup(targetTeam) && me.canSendInvitation(targetTeam, Action.WRITE)) {
-            SendGroupInvitationPageUrl sendInvitePage = new SendGroupInvitationPageUrl();
+            final SendGroupInvitationPageUrl sendInvitePage = new SendGroupInvitationPageUrl();
             sendInvitePage.setGroup(targetTeam);
-            HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
+            final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
         }
 
-        PageIterable<Member> members = targetTeam.getMembers();
-        HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
+        final PageIterable<Member> members = targetTeam.getMembers();
+        final HtmlTable membersTable = new HtmlTable(new MyTableModel(members));
         memberTitle.add(membersTable);
 
     }
@@ -189,11 +190,11 @@ public class TeamPage extends MasterPage {
     }
 
     private class MyTableModel extends HtmlTableModel {
-        private PageIterable<Member> members;
+        private final PageIterable<Member> members;
         private Member member;
         private Iterator<Member> iterator;
 
-        public MyTableModel(PageIterable<Member> members) {
+        public MyTableModel(final PageIterable<Member> members) {
             this.members = members;
             iterator = members.iterator();
         }
@@ -204,12 +205,12 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public XmlNode getHeader(int column) {
+        public XmlNode getHeader(final int column) {
             if (column == 0) {
                 return new HtmlText(Context.tr("Member name"));
             }
-            EnumSet<UserGroupRight> e = EnumSet.allOf(UserGroupRight.class);
-            UserGroupRight ugr = (UserGroupRight) e.toArray()[column - 1];
+            final EnumSet<UserGroupRight> e = EnumSet.allOf(UserGroupRight.class);
+            final UserGroupRight ugr = (UserGroupRight) e.toArray()[column - 1];
             switch (ugr) {
             case CONSULT:
                 return new HtmlText(Context.tr("Consult"));
@@ -229,11 +230,11 @@ public class TeamPage extends MasterPage {
         }
 
         @Override
-        public XmlNode getBody(int column) {
+        public XmlNode getBody(final int column) {
             if (column == 0) {
                 try {
                     return new HtmlLink(new MemberPageUrl(member).urlString(), member.getDisplayName());
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     Log.web().warn("Not allowed to see a display name", e);
                     return new HtmlText("");
                 }

@@ -25,8 +25,7 @@ public abstract class XmlElement extends XmlNode {
      * Add an attribute to an element
      * </p>
      * <p>
-     * Special treatment will happen if the attribute <code>name</code> is
-     * <code>id<code>
+     * Special treatment will happen if the attribute <code>name</code> is <code>id<code>
      * </p>
      * <p>
      * Example :
@@ -40,10 +39,8 @@ public abstract class XmlElement extends XmlNode {
      * will be used to create : {@code <img src="example.com/plop.png />}
      * </p>
      * 
-     * @param name
-     *            the name of the attribute to add
-     * @param value
-     *            the value of the attribute to add
+     * @param name the name of the attribute to add
+     * @param value the value of the attribute to add
      * @return itself
      */
     public XmlElement addAttribute(final String name, final String value) {
@@ -54,8 +51,7 @@ public abstract class XmlElement extends XmlNode {
     /**
      * Add a son to this HtmlElement
      * 
-     * @param html
-     *            the htmlNode son to add
+     * @param html the htmlNode son to add
      * @return itself
      */
     protected XmlElement add(final XmlNode html) {
@@ -66,8 +62,7 @@ public abstract class XmlElement extends XmlNode {
     /**
      * Adds some raw text to this HtmlElement
      * 
-     * @param text
-     *            the text to add
+     * @param text the text to add
      * @return itself
      */
     protected XmlElement addText(final String text) {
@@ -84,7 +79,7 @@ public abstract class XmlElement extends XmlNode {
     public final boolean hasChild() {
         return iterator().hasNext();
     }
-    
+
     @Override
     public final Iterator<XmlNode> iterator() {
         return children.iterator();

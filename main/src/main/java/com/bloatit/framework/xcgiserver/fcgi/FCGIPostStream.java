@@ -1,20 +1,18 @@
 /*
  * Copyright (C) 2011 Linkeos.
- *
+ * 
  * This file is part of BloatIt.
- *
- * BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details.
- *
- * You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * BloatIt is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * 
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with
+ * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.xcgiserver.fcgi;
 
@@ -29,7 +27,7 @@ public class FCGIPostStream extends InputStream {
     PipedOutputStream pipeOut;
     private final FCGIParser fcgiParser;
 
-    public FCGIPostStream(FCGIParser fcgiParser) throws IOException {
+    public FCGIPostStream(final FCGIParser fcgiParser) throws IOException {
         this.fcgiParser = fcgiParser;
         pipeIn = new PipedInputStream(66000);
         pipeOut = new PipedOutputStream(pipeIn);
@@ -37,10 +35,10 @@ public class FCGIPostStream extends InputStream {
 
     @Override
     public int read() throws IOException {
-        byte[] b = new byte[1];
+        final byte[] b = new byte[1];
         if (read(b) == 1) {
-            int plop =  (0x000000FF & (b[0]));
-            if(plop == -1) {
+            final int plop = (0x000000FF & (b[0]));
+            if (plop == -1) {
                 System.err.println("blabla");
             }
             return plop;
@@ -49,7 +47,7 @@ public class FCGIPostStream extends InputStream {
     }
 
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public int read(final byte[] b, final int off, final int len) throws IOException {
         if (len == 0) {
             return 0;
         }
@@ -63,19 +61,19 @@ public class FCGIPostStream extends InputStream {
                 return -1;
             }
         }
-        int plop = pipeIn.read(b, off, len);
-        if(plop == -1){
+        final int plop = pipeIn.read(b, off, len);
+        if (plop == -1) {
             System.out.println("PLOP");
         }
         return plop;
     }
 
     @Override
-    public int read(byte[] b) throws IOException {
+    public int read(final byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
 
-    public void pushData(byte[] data) throws IOException {
+    public void pushData(final byte[] data) throws IOException {
         pipeOut.write(data);
     }
 }

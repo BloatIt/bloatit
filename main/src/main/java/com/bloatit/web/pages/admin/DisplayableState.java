@@ -19,11 +19,11 @@ public enum DisplayableState implements HtmlRadioButtonGroup.Displayable {
         return displayName;
     }
 
-    private DisplayableState(String displayName) {
+    private DisplayableState(final String displayName) {
         this.displayName = displayName;
     }
 
-    public static PopularityState getState(DisplayableState cmp) {
+    public static PopularityState getState(final DisplayableState cmp) {
         return Enum.valueOf(PopularityState.class, cmp.name());
     }
 }

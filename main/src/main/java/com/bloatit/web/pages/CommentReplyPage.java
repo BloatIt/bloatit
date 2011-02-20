@@ -52,11 +52,11 @@ public final class CommentReplyPage extends LoggedPage {
 
         final HtmlTitleBlock htb = new HtmlTitleBlock(Context.tr("Reply to a comment"), 1);
 
-        CommentCommentActionUrl commentCommentActionUrl = new CommentCommentActionUrl(targetComment);
+        final CommentCommentActionUrl commentCommentActionUrl = new CommentCommentActionUrl(targetComment);
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
         htb.add(form);
 
-        FormFieldData<String> createFormFieldData = commentCommentActionUrl.getCommentParameter().formFieldData();
+        final FormFieldData<String> createFormFieldData = commentCommentActionUrl.getCommentParameter().formFieldData();
         final HtmlTextArea commentInput = new HtmlTextArea(createFormFieldData, Context.tr("Content"), NB_LINES, NB_COLUMNS);
         form.add(commentInput);
 

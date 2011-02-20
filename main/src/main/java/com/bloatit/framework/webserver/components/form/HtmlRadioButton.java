@@ -39,7 +39,7 @@ final class HtmlRadioButton extends HtmlFormField<Boolean> {
     }
 
     @Override
-    protected void doSetDefaultValue(String defaultValueAsString) {
+    protected void doSetDefaultValue(final String defaultValueAsString) {
         if (Boolean.parseBoolean(defaultValueAsString)) {
             addAttribute("checked", "checked");
         }

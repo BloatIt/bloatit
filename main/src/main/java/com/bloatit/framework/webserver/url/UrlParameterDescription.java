@@ -14,11 +14,11 @@ public final class UrlParameterDescription<U> {
     private final Message.Level level;
 
     public UrlParameterDescription(final String name,
-                                   final Class<U> convertInto,
-                                   final Role role,
-                                   final String defaultValue,
-                                   final String conversionErrorMsg,
-                                   final Level level) {
+            final Class<U> convertInto,
+            final Role role,
+            final String defaultValue,
+            final String conversionErrorMsg,
+            final Level level) {
         super();
         this.name = name;
         this.convertInto = convertInto;

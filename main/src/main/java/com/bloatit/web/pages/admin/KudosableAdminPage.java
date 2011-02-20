@@ -25,23 +25,23 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
         UserContentAdminPage<T, U, V> {
 
     @RequestParam(defaultValue = "false", role = RequestParam.Role.POST)
-    private Boolean orderByPopularity;
+    private final Boolean orderByPopularity;
 
     @RequestParam(role = RequestParam.Role.POST)
-    private Integer popularity;
+    private final Integer popularity;
 
     @RequestParam(role = RequestParam.Role.POST)
-    private DisplayableComparator popularityComparator;
+    private final DisplayableComparator popularityComparator;
 
     @RequestParam(defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
-    private DisplayableFilterType filterLoked;
+    private final DisplayableFilterType filterLoked;
 
     @RequestParam(role = RequestParam.Role.POST)
-    private DisplayableState popularityState;
+    private final DisplayableState popularityState;
 
-    private KudosableAdminPageUrl url;
+    private final KudosableAdminPageUrl url;
 
-    public KudosableAdminPage(KudosableAdminPageUrl url, V factory) {
+    public KudosableAdminPage(final KudosableAdminPageUrl url, final V factory) {
         super(url, factory);
         this.url = url;
         filterLoked = url.getFilterLoked();
@@ -74,29 +74,29 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     }
 
     @Override
-    protected final void addColumns(HtmlGenericTableModel<U> tableModel) {
-        KudosableAdminPageUrl clonedUrl = url.clone();
-        
+    protected final void addColumns(final HtmlGenericTableModel<U> tableModel) {
+        final KudosableAdminPageUrl clonedUrl = url.clone();
+
         clonedUrl.setOrderByStr("popularity");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Popularity")), new StringColumnGenerator<U>() {
             @Override
-            public String getStringBody(U element) {
+            public String getStringBody(final U element) {
                 return String.valueOf(element.getPopularity());
             }
         });
-        
+
         clonedUrl.setOrderByStr("popularityState");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("State")), new StringColumnGenerator<U>() {
             @Override
-            public String getStringBody(U element) {
+            public String getStringBody(final U element) {
                 return String.valueOf(element.getState());
             }
         });
-        
+
         clonedUrl.setOrderByStr("isLocked");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Is locked")), new StringColumnGenerator<U>() {
             @Override
-            public String getStringBody(U element) {
+            public String getStringBody(final U element) {
                 return String.valueOf(element.isPopularityLocked());
             }
         });
@@ -104,24 +104,24 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     }
 
     @Override
-    protected final void addActions(HtmlDropDown dropDown, HtmlBranch group) {
+    protected final void addActions(final HtmlDropDown dropDown, final HtmlBranch group) {
         super.addActions(dropDown, group);
         dropDown.addDropDownElements(new AdminActionManager().kudosableActions());
-        HtmlDropDown stateSetter = new HtmlDropDown(AdministrationAction.POPULARITY_STATE_CODE, tr("Set the state"));
+        final HtmlDropDown stateSetter = new HtmlDropDown(AdministrationAction.POPULARITY_STATE_CODE, tr("Set the state"));
         stateSetter.addDropDownElements(EnumSet.allOf(DisplayableState.class));
         group.add(stateSetter);
         doAddActions(dropDown, group);
     }
 
     @Override
-    protected final void addFormFilters(HtmlForm form) {
-        HtmlTextField popularity = new HtmlTextField(url.getPopularityParameter().getName(), tr("popularity"));
+    protected final void addFormFilters(final HtmlForm form) {
+        final HtmlTextField popularity = new HtmlTextField(url.getPopularityParameter().getName(), tr("popularity"));
         popularity.setDefaultValue(url.getPopularityParameter().getStringValue());
 
-        HtmlDropDown comparator = new HtmlDropDown(url.getPopularityComparatorParameter().formFieldData());
+        final HtmlDropDown comparator = new HtmlDropDown(url.getPopularityComparatorParameter().formFieldData());
         comparator.addDropDownElements(EnumSet.allOf(DisplayableComparator.class));
 
-        HtmlDropDown state = new HtmlDropDown(url.getPopularityStateParameter().formFieldData());
+        final HtmlDropDown state = new HtmlDropDown(url.getPopularityStateParameter().formFieldData());
         state.addDropDownElements(EnumSet.allOf(DisplayableState.class));
         state.setLabel(tr("Filter by Popularity State"));
 

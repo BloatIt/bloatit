@@ -13,7 +13,7 @@ public class KudosableAdminListFactory<T extends DaoKudosable, U extends Kudosab
         super(new DaoKudosableListFactory<T>());
     }
 
-    protected KudosableAdminListFactory(DaoKudosableListFactory<T> factory) {
+    protected KudosableAdminListFactory(final DaoKudosableListFactory<T> factory) {
         super(factory);
     }
 
@@ -22,19 +22,19 @@ public class KudosableAdminListFactory<T extends DaoKudosable, U extends Kudosab
         return (DaoKudosableListFactory<T>) super.getfactory();
     }
 
-    public void orderByPopularity(OrderType order) {
+    public void orderByPopularity(final OrderType order) {
         getfactory().orderByPopularity(order);
     }
 
-    public void popularity(Comparator cmp, int value) {
+    public void popularity(final Comparator cmp, final int value) {
         getfactory().popularity(cmp, value);
     }
 
-    public void stateEquals(PopularityState state) {
+    public void stateEquals(final PopularityState state) {
         getfactory().stateEquals(state);
     }
 
-    public void kudosSize(Comparator cmp, int number) {
+    public void kudosSize(final Comparator cmp, final int number) {
         getfactory().kudosSize(cmp, number);
     }
 

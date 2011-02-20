@@ -43,7 +43,6 @@ public final class ReportBugPage extends LoggedPage {
     @RequestParam(name = BUG_BATCH, role = Role.GET, level = Level.ERROR)
     private final Offer offer;
 
-
     public ReportBugPage(final ReportBugPageUrl reportBugPageUrl) {
         super(reportBugPageUrl);
         offer = reportBugPageUrl.getOffer();
@@ -79,26 +78,26 @@ public final class ReportBugPage extends LoggedPage {
         formTitle.add(reportBugForm);
 
         // Create the field for the title of the bug
-        FormFieldData<String> createFormFieldData = doReportUrl.getTitleParameter().formFieldData();
+        final FormFieldData<String> createFormFieldData = doReportUrl.getTitleParameter().formFieldData();
         final HtmlTextField bugTitleInput = new HtmlTextField(createFormFieldData, Context.tr("Bug title"));
         bugTitleInput.setComment(Context.tr("A short title of the bug."));
         reportBugForm.add(bugTitleInput);
 
         // Create the fields that will describe the descriptions of the project
 
-        FormFieldData<String> descriptionFormFieldData = doReportUrl.getDescriptionParameter().formFieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData, Context.tr("Describe the bug"),
-                BUG_DESCRIPTION_INPUT_NB_LINES, BUG_DESCRIPTION_INPUT_NB_COLUMNS);
-        descriptionInput.setComment(Context
-                .tr("Mininum 10 character. You can enter a long description of the bug."));
+        final FormFieldData<String> descriptionFormFieldData = doReportUrl.getDescriptionParameter().formFieldData();
+        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
+                                                               Context.tr("Describe the bug"),
+                                                               BUG_DESCRIPTION_INPUT_NB_LINES,
+                                                               BUG_DESCRIPTION_INPUT_NB_COLUMNS);
+        descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the bug."));
         reportBugForm.add(descriptionInput);
 
         // Language
-        FormFieldData<String> languageFormFieldData = doReportUrl.getLangParameter().formFieldData();
-        LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
+        final FormFieldData<String> languageFormFieldData = doReportUrl.getLangParameter().formFieldData();
+        final LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
         languageInput.setComment(Context.tr("Language of the description."));
         reportBugForm.add(languageInput);
-
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 

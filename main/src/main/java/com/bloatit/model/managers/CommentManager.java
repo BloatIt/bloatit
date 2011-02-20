@@ -21,7 +21,8 @@ import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Comment;
 
 /**
- * The Class CommentManager. Utility class containing static methods to get {@link Comment}s from the DB.
+ * The Class CommentManager. Utility class containing static methods to get
+ * {@link Comment}s from the DB.
  */
 public final class CommentManager {
 

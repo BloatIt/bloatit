@@ -16,13 +16,13 @@ public abstract class GenericParameters<T, U> {
 
     /**
      * Add a parameter to the list
-     *
+     * 
      * @param name the name of the parameter to add
      * @param value the value of the parameter to add
      */
     public abstract void add(final String name, final U value);
 
-    protected Map<String, T> getElements(){
+    protected Map<String, T> getElements() {
         return elements;
     }
 
@@ -40,12 +40,12 @@ public abstract class GenericParameters<T, U> {
      * <p>
      * Finds a parameter into the list and removes it.
      * </p>
-     *
+     * 
      * @param name the name of the parameter to find
      * @return the string value of the parameter
      */
     public final T pick(final String name) {
-        T element = elements.get(name);
+        final T element = elements.get(name);
         if (element == null) {
             return null;
         }
@@ -57,19 +57,19 @@ public abstract class GenericParameters<T, U> {
      * <p>
      * Finds a parameter into the list without removing it.
      * </p>
-     *
+     * 
      * @param name the name of the parameter to find
      * @return the string value of the parameter
      */
     public final T look(final String name) {
-        T element = elements.get(name);
+        final T element = elements.get(name);
         if (element == null) {
             return null;
         }
         return element;
     }
 
-    public void putAll(GenericParameters<T, U> parameters) {
+    public void putAll(final GenericParameters<T, U> parameters) {
         elements.putAll(parameters.elements);
     }
 }

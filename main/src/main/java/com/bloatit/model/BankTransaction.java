@@ -47,7 +47,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
          * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
-        public BankTransaction doCreate(DaoBankTransaction dao) {
+        public BankTransaction doCreate(final DaoBankTransaction dao) {
             return new BankTransaction(dao);
         }
     }
@@ -224,7 +224,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
      * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
      */
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return getDao().getAuthor().getLogin().equals(member.getLoginUnprotected());
     }
 }

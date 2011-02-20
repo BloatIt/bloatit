@@ -2,10 +2,10 @@ package com.bloatit.framework.webserver.components.form;
 
 public class SimpleDropDownElement implements DropDownElement {
 
-    private String name;
-    private String code;
+    private final String name;
+    private final String code;
 
-    public SimpleDropDownElement(String name, String code) {
+    public SimpleDropDownElement(final String name, final String code) {
         super();
         this.name = name;
         this.code = code;

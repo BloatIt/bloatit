@@ -7,8 +7,7 @@ import com.bloatit.framework.xcgiserver.mime.decoders.MimeDecoder;
 
 /**
  * <p>
- * An output stream that will decode text (using MimeDecoder) before it is
- * written.
+ * An output stream that will decode text (using MimeDecoder) before it is written.
  * </p>
  */
 public class DecodingOuputStream extends OutputStream {
@@ -16,7 +15,7 @@ public class DecodingOuputStream extends OutputStream {
     private final MimeDecoder codec;
     private final OutputStream output;
     private final int bufferSize;
-    private byte[] buffer;
+    private final byte[] buffer;
     private int bufferIndex;
 
     /**
@@ -24,12 +23,10 @@ public class DecodingOuputStream extends OutputStream {
      * Creates a new DecodingOutputStream with a default buffer size.
      * </p>
      * 
-     * @param output
-     *            The stream used to write the decoded text
-     * @param codec
-     *            The codec used to decode the text
+     * @param output The stream used to write the decoded text
+     * @param codec The codec used to decode the text
      */
-    public DecodingOuputStream(OutputStream output, MimeDecoder codec) {
+    public DecodingOuputStream(final OutputStream output, final MimeDecoder codec) {
         this(output, codec, DEFAULT_BUFFER_MULTIPLY);
     }
 
@@ -38,17 +35,13 @@ public class DecodingOuputStream extends OutputStream {
      * Creates a new DecodingOutputStream with a given buffer size.
      * </p>
      * 
-     * @param output
-     *            The stream used to write the decoded text
-     * @param codec
-     *            The codec used to decode the text
-     * @param bufferMultiply
-     *            The multiplicator used to compute the buffer size. To find the
-     *            real bufferSize, you need to do
-     *            <code> {@link MimeDecoder#decodeStep()}</code>*
-     *            <code>bufferMultiply</code>
+     * @param output The stream used to write the decoded text
+     * @param codec The codec used to decode the text
+     * @param bufferMultiply The multiplicator used to compute the buffer size. To find
+     *        the real bufferSize, you need to do
+     *        <code> {@link MimeDecoder#decodeStep()}</code>* <code>bufferMultiply</code>
      */
-    public DecodingOuputStream(OutputStream output, MimeDecoder codec, int bufferMultiply) {
+    public DecodingOuputStream(final OutputStream output, final MimeDecoder codec, final int bufferMultiply) {
         super();
         this.output = output;
         this.codec = codec;
@@ -70,20 +63,20 @@ public class DecodingOuputStream extends OutputStream {
     }
 
     @Override
-    public void write(byte[] b, int off, int len) throws IOException {
+    public void write(final byte[] b, final int off, final int len) throws IOException {
         for (int i = off; i < len; i++) {
             write(b[i]);
         }
     }
 
     @Override
-    public void write(byte[] b) throws IOException {
+    public void write(final byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
     @Override
-    public void write(int b) throws IOException {
-        write((byte)b);
+    public void write(final int b) throws IOException {
+        write((byte) b);
     }
 
     /**
@@ -91,17 +84,14 @@ public class DecodingOuputStream extends OutputStream {
      * Writes one byte to the stream.
      * </p>
      * <p>
-     * This method has the same result as calling the {@link #write(int)}
-     * method, except it will result in VERY slightly less overehead so should
-     * be prefered ...
+     * This method has the same result as calling the {@link #write(int)} method, except
+     * it will result in VERY slightly less overehead so should be prefered ...
      * </p>
      * 
-     * @param b
-     *            the byte to write
-     * @throws IOException
-     *             when an IO error occurs
+     * @param b the byte to write
+     * @throws IOException when an IO error occurs
      */
-    public void write(byte b) throws IOException {
+    public void write(final byte b) throws IOException {
         if (bufferIndex >= bufferSize) {
             output.write(codec.decode(buffer, 0, bufferIndex));
             bufferIndex = 0;

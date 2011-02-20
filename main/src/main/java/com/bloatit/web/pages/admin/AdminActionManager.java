@@ -21,7 +21,7 @@ public class AdminActionManager {
 
         private final String displayName;
 
-        Action(String displayName) {
+        Action(final String displayName) {
             this.displayName = displayName;
         }
 
@@ -34,9 +34,11 @@ public class AdminActionManager {
     public EnumSet<Action> userContentActions() {
         return EnumSet.range(Action.DELETE, Action.RESTORE);
     }
+
     public EnumSet<Action> kudosableActions() {
         return EnumSet.range(Action.LOCK, Action.SETSTATE);
     }
+
     public EnumSet<Action> demandActions() {
         return EnumSet.range(Action.COMPUTE_SELECTED_OFFER, Action.SET_DEMAND_STATE);
     }

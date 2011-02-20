@@ -74,9 +74,9 @@ public final class DaoFileMetadata extends DaoUserContent {
     /**
      * @param member is the author (the one who uploaded the file)
      * @param relatedContent can be null. It is the content with which this file has been
-     * uploaded.
+     *        uploaded.
      * @param filename is the name of the file (with its extension, but without its whole
-     * folder path)
+     *        folder path)
      * @param directory is the path of the directory where the file is.
      * @param type is the type of the file (found using its extension or mimetype)
      * @param size is the size of the file.
@@ -118,7 +118,7 @@ public final class DaoFileMetadata extends DaoUserContent {
      * 
      * @param image the image to set.
      */
-    void setImage(DaoImage image) {
+    void setImage(final DaoImage image) {
         this.image = image;
     }
 
@@ -168,7 +168,7 @@ public final class DaoFileMetadata extends DaoUserContent {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

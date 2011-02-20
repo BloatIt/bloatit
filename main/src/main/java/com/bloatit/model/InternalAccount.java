@@ -41,7 +41,7 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
 
     private static final class MyCreator extends Creator<DaoInternalAccount, InternalAccount> {
         @Override
-        public InternalAccount doCreate(DaoInternalAccount dao) {
+        public InternalAccount doCreate(final DaoInternalAccount dao) {
             return new InternalAccount(dao);
         }
     }
@@ -71,7 +71,7 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
      * 
      * @return a positive {@link BigDecimal}.
      * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>Bloked</code> property.
+     *         <code>Bloked</code> property.
      */
     public BigDecimal getBlocked() throws UnauthorizedOperationException {
         tryAccess(new InternalAccountRight.Blocked(), Action.READ);

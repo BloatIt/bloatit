@@ -16,8 +16,7 @@ public final class SimpleHtmlStream extends QueryResponseStream {
     /**
      * Creates a new SimpleHtmlStream
      * 
-     * @param out
-     *            the underlying stream
+     * @param out the underlying stream
      */
     public SimpleHtmlStream(final OutputStream out) {
         super(out);

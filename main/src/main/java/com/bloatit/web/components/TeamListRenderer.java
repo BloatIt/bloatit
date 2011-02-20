@@ -11,12 +11,12 @@ import com.bloatit.model.Group;
 import com.bloatit.web.url.TeamPageUrl;
 
 /**
- * A simple renderer for teams that display only their name on one line, plus a
- * link to their page
+ * A simple renderer for teams that display only their name on one line, plus a link to
+ * their page
  */
 public class TeamListRenderer implements HtmlRenderer<Group> {
     @Override
-    public XmlNode generate(Group team) {
+    public XmlNode generate(final Group team) {
         final TeamPageUrl teamUrl = new TeamPageUrl(team);
         try {
             HtmlLink htmlLink;

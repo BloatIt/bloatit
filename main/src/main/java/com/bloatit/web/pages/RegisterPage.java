@@ -58,19 +58,19 @@ public final class RegisterPage extends MasterPage {
         add(master);
 
         final HtmlTitleBlock container = new HtmlTitleBlock(Context.tr("Register"), 1);
-        RegisterActionUrl registerActionUrl = new RegisterActionUrl();
+        final RegisterActionUrl registerActionUrl = new RegisterActionUrl();
         final HtmlForm form = new HtmlForm(registerActionUrl.urlString());
         container.add(form);
 
-        FormFieldData<String> loginFieldData = registerActionUrl.getLoginParameter().formFieldData();
+        final FormFieldData<String> loginFieldData = registerActionUrl.getLoginParameter().formFieldData();
         final HtmlTextField loginInput = new HtmlTextField(loginFieldData, Context.trc("Login (noun)", "Login"));
         form.add(loginInput);
 
-        FormFieldData<String> passwordFieldData = registerActionUrl.getPasswordParameter().formFieldData();
+        final FormFieldData<String> passwordFieldData = registerActionUrl.getPasswordParameter().formFieldData();
         final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData, Context.tr("Password"));
         form.add(passwordInput);
 
-        FormFieldData<String> emailFieldData = registerActionUrl.getEmailParameter().formFieldData();
+        final FormFieldData<String> emailFieldData = registerActionUrl.getEmailParameter().formFieldData();
         final HtmlTextField emailInput = new HtmlTextField(emailFieldData, Context.tr("Email"));
         form.add(emailInput);
 
@@ -79,8 +79,8 @@ public final class RegisterPage extends MasterPage {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
         form.add(countryInput);
-        
-        LanguageSelector langInput = new LanguageSelector(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
+
+        final LanguageSelector langInput = new LanguageSelector(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
         form.add(langInput);
 
         final HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));

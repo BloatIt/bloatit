@@ -30,7 +30,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
 
     private static final class MyCreator extends Creator<DaoFileMetadata, FileMetadata> {
         @Override
-        public FileMetadata doCreate(DaoFileMetadata dao) {
+        public FileMetadata doCreate(final DaoFileMetadata dao) {
             return new FileMetadata(dao);
         }
     }
@@ -47,9 +47,9 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      * Create a new FileMetadata.
      * 
      * @see DaoFileMetadata#createAndPersist(com.bloatit.data.DaoMember, DaoUserContent,
-     * String, String, FileType, int)
+     *      String, String, FileType, int)
      */
-    public FileMetadata(final Member author, String filename, String url, FileType type, int size) {
+    public FileMetadata(final Member author, final String filename, final String url, final FileType type, final int size) {
         this(DaoFileMetadata.createAndPersist(author.getDao(), null, filename, url, type, size));
     }
 

@@ -39,7 +39,7 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
     }
 
     @Override
-    protected void doSetDefaultValue(String defaultValueAsString) {
+    protected void doSetDefaultValue(final String defaultValueAsString) {
         addAttribute("value", defaultValueAsString);
     }
 }

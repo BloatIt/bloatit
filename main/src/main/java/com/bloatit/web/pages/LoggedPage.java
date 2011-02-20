@@ -34,8 +34,8 @@ public abstract class LoggedPage extends MasterPage {
      * The URL of this page
      * </p>
      * <p>
-     * Note it is private as not usable by children classes that need to get a
-     * subclass of URL.
+     * Note it is private as not usable by children classes that need to get a subclass of
+     * URL.
      * </p>
      */
     private final Url meUrl;
@@ -46,11 +46,10 @@ public abstract class LoggedPage extends MasterPage {
     }
 
     /**
-     * Override the doCreate methods and makes sure the user is logged. If the
-     * user is logged, createRestrictedContent is called, otherwise redirects to
-     * the <code>LoginPage</code> and use
-     * <code>{@link #createRestrictedContent()}</code> to display a warning to
-     * the user
+     * Override the doCreate methods and makes sure the user is logged. If the user is
+     * logged, createRestrictedContent is called, otherwise redirects to the
+     * <code>LoginPage</code> and use <code>{@link #createRestrictedContent()}</code> to
+     * display a warning to the user
      */
     @Override
     protected final void doCreate() throws RedirectException {
@@ -68,15 +67,14 @@ public abstract class LoggedPage extends MasterPage {
      * Creates the content of the page
      * </p>
      * <p>
-     * This method is called only when the user is correctly logged. When user
-     * is not logged, a redirection to <code>LoginPage</code> will happen, and
-     * user will be warned with <code>{@link #getRefusalReason()}</code>
+     * This method is called only when the user is correctly logged. When user is not
+     * logged, a redirection to <code>LoginPage</code> will happen, and user will be
+     * warned with <code>{@link #getRefusalReason()}</code>
      * </p>
      * 
      * @return the root HtmlElement for the page
-     * @throws RedirectException
-     *             when an error occurs that need to interrupt content
-     *             generation and redirect to another page
+     * @throws RedirectException when an error occurs that need to interrupt content
+     *         generation and redirect to another page
      */
     public abstract HtmlElement createRestrictedContent() throws RedirectException;
 

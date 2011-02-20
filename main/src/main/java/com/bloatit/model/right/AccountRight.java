@@ -24,7 +24,8 @@ import com.bloatit.model.Account;
 public class AccountRight extends RightManager {
 
     /**
-     * The Class Transaction is a {@link PrivateReadOnly} accessor for the Transaction property.
+     * The Class Transaction is a {@link PrivateReadOnly} accessor for the Transaction
+     * property.
      */
     public static class Transaction extends PrivateReadOnly {
         // nothing this is just a rename.

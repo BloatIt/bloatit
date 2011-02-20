@@ -19,7 +19,8 @@ package com.bloatit.model.right;
 import com.bloatit.model.Contribution;
 
 /**
- * The Class ContributionRight store the properties accessor for the {@link Contribution} class.
+ * The Class ContributionRight store the properties accessor for the {@link Contribution}
+ * class.
  */
 public class ContributionRight extends RightManager {
 

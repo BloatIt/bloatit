@@ -17,10 +17,10 @@ public class KudosableAdmin<T extends DaoKudosable> extends UserContentAdmin<T> 
         return null;
     }
 
-    public static KudosableAdmin<DaoKudosable> createKudosable(Integer id) {
-        KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>> factory = new KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>>();
+    public static KudosableAdmin<DaoKudosable> createKudosable(final Integer id) {
+        final KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>> factory = new KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>>();
         factory.idEquals(id);
-        if (factory.list().iterator().hasNext()){
+        if (factory.list().iterator().hasNext()) {
             return factory.list().iterator().next();
         }
         return null;
@@ -54,7 +54,7 @@ public class KudosableAdmin<T extends DaoKudosable> extends UserContentAdmin<T> 
         getDao().setState(state);
     }
 
-    public void addKudos(Member member, int value) {
+    public void addKudos(final Member member, final int value) {
         getDao().addKudos(member.getDao(), value);
     }
 }

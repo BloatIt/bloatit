@@ -7,7 +7,7 @@ import java.util.List;
 public class HttpParameter implements Iterable<String> {
     private final List<String> values = new LinkedList<String>();
 
-    public HttpParameter(String value) {
+    public HttpParameter(final String value) {
         super();
         values.add(value);
     }
@@ -25,7 +25,7 @@ public class HttpParameter implements Iterable<String> {
         return values.iterator();
     }
 
-    public void add(String value) {
+    public void add(final String value) {
         values.add(value);
     }
 }

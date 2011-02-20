@@ -65,10 +65,10 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     private static final class MyCreator extends Creator<DaoDemand, DemandImplementation> {
         @Override
-        public DemandImplementation doCreate(DaoDemand dao) {
+        public DemandImplementation doCreate(final DaoDemand dao) {
             return new DemandImplementation(dao);
         }
     }
@@ -86,14 +86,15 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Create a new demand. The right management for creating a demand is specific. (The
-     * Right management system is not working in this case). You have to use the {@link DemandManager}.
+     * Right management system is not working in this case). You have to use the
+     * {@link DemandManager}.
      * 
      * @param author the author
      * @param locale the locale in which this demand is written
      * @param title the title of the demand
      * @param description the description of the demand
      * @param project the project {@link DemandManager#canCreate(AuthToken)} to make sure
-     * you can create a new demand.
+     *        you can create a new demand.
      * @see DaoDemand
      */
     public DemandImplementation(final Member author, final Locale locale, final String title, final String description, final Project project) {
@@ -174,10 +175,14 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     }
 
     @Override
-    public Offer
-            addOffer(Member member, BigDecimal amount, String description, Locale local, Date dateExpire, int secondsBeforeValidation) throws UnauthorizedOperationException {
+    public Offer addOffer(final Member member,
+                          final BigDecimal amount,
+                          final String description,
+                          final Locale local,
+                          final Date dateExpire,
+                          final int secondsBeforeValidation) throws UnauthorizedOperationException {
 
-        Offer offer = new Offer(member, this, amount, description, local, dateExpire, secondsBeforeValidation);
+        final Offer offer = new Offer(member, this, amount, description, local, dateExpire, secondsBeforeValidation);
 
         if (!offer.getDemand().equals(this)) {
             throw new IllegalArgumentException();
@@ -194,9 +199,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     }
 
     @Override
-    public Offer addEmptyOffer(Member member) throws UnauthorizedOperationException {
+    public Offer addEmptyOffer(final Member member) throws UnauthorizedOperationException {
 
-        Offer offer = new Offer(member, this);
+        final Offer offer = new Offer(member, this);
 
         if (!offer.getDemand().equals(this)) {
             throw new IllegalArgumentException();
@@ -297,7 +302,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     @Override
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new DemandRight.Comment(), Action.WRITE);
-        DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
+        final DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
         getDao().addComment(comment);
         return Comment.create(comment);
     }
@@ -326,7 +331,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     void inDevelopmentState() {
         getDao().setDemandState(DemandState.DEVELOPPING);
-        new TaskDevelopmentTimeOut(this.getId(), getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
+        new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
     }
 
     /**
@@ -424,9 +429,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     void setSelectedOffer(final Offer offer) {
         final Date validationDate = DateUtils.tomorrow();
-        new TaskSelectedOfferTimeOut(this.getId(), validationDate);
-        this.getDao().setValidationDate(validationDate);
-        this.getDao().setSelectedOffer(offer.getDao());
+        new TaskSelectedOfferTimeOut(getId(), validationDate);
+        getDao().setValidationDate(validationDate);
+        getDao().setSelectedOffer(offer.getDao());
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -441,7 +446,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * @param positif true means kudos up, false kudos down.
      */
     public void notifyOfferKudos(final Offer offer, final boolean positif) {
-        Offer selectedOffer = getSelectedOfferUnprotected();
+        final Offer selectedOffer = getSelectedOfferUnprotected();
         final boolean isSelectedOffer = offer.equals(selectedOffer);
         if (positif && !isSelectedOffer) {
             if (selectedOffer == null || offer.getPopularity() > selectedOffer.getPopularity()) {

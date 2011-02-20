@@ -35,7 +35,7 @@ public interface KudosableInterface<T extends DaoKudosable> extends UserContentI
      * vote up and a negative vote for a kudos down.
      * 
      * @return the influence value that the authenticated user has added to this
-     * kudosable.
+     *         kudosable.
      */
     int getUserVoteValue();
 

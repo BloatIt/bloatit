@@ -265,7 +265,7 @@ public final class Payline extends RestrictedObject {
         return ref.toString();
     }
 
-    public void cancelPayement(String token) throws TokenNotfoundException {
+    public void cancelPayement(final String token) throws TokenNotfoundException {
         final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction != null) {
             transaction.setRefused();
@@ -275,7 +275,7 @@ public final class Payline extends RestrictedObject {
     }
 
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return false;
     }
 

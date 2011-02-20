@@ -34,7 +34,7 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, DemandA
 
     private final DemandAdminPageUrl url;
 
-    public DemandAdminPage(DemandAdminPageUrl url) {
+    public DemandAdminPage(final DemandAdminPageUrl url) {
         super(url, new DemandAdminListFactory());
         this.url = url;
         filterByState = url.getFilterByState();
@@ -79,35 +79,35 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, DemandA
     }
 
     @Override
-    protected void doAddActions(HtmlDropDown dropDown, HtmlBranch block) {
+    protected void doAddActions(final HtmlDropDown dropDown, final HtmlBranch block) {
         // Add actions into the drop down
         dropDown.addDropDownElements(new AdminActionManager().demandActions());
-        
+
         // add a demand state selector
-        HtmlDropDown demandState = new HtmlDropDown(AdministrationAction.DEMAND_STATE_CODE);
+        final HtmlDropDown demandState = new HtmlDropDown(AdministrationAction.DEMAND_STATE_CODE);
         demandState.addDropDownElements(EnumSet.allOf(DisplayableDemandState.class));
         demandState.setLabel(tr("Change the demand state"));
         block.add(demandState);
     }
 
     @Override
-    protected void doAddFormFilters(HtmlForm form) {
-        HtmlDropDown state = new HtmlDropDown(url.getFilterByStateParameter().formFieldData());
+    protected void doAddFormFilters(final HtmlForm form) {
+        final HtmlDropDown state = new HtmlDropDown(url.getFilterByStateParameter().formFieldData());
         state.addDropDownElements(EnumSet.allOf(DisplayableDemandState.class));
         state.setLabel(tr("Filter by demand state"));
-        
-        HtmlDropDown hasSelectedOffer = new HtmlDropDown(url.getFilterSelectedOfferParameter().formFieldData());
+
+        final HtmlDropDown hasSelectedOffer = new HtmlDropDown(url.getFilterSelectedOfferParameter().formFieldData());
         hasSelectedOffer.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasSelectedOffer.setLabel(tr("Filter by selected offer"));
-        
-        HtmlDropDown hasOffer = new HtmlDropDown(url.getFilterHasOfferParameter().formFieldData());
+
+        final HtmlDropDown hasOffer = new HtmlDropDown(url.getFilterHasOfferParameter().formFieldData());
         hasOffer.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasOffer.setLabel(tr("Filter by offer"));
-        
-        HtmlDropDown hasContribution = new HtmlDropDown(url.getFilterHasContributionParameter().formFieldData());
+
+        final HtmlDropDown hasContribution = new HtmlDropDown(url.getFilterHasContributionParameter().formFieldData());
         hasContribution.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasContribution.setLabel(tr("Filter by contribution"));
-        
+
         form.add(state);
         form.add(hasSelectedOffer);
         form.add(hasOffer);
@@ -115,28 +115,28 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, DemandA
     }
 
     @Override
-    protected void doAddColumns(HtmlGenericTableModel<DemandAdmin> tableModel) {
-        DemandAdminPageUrl clonedUrl = url.clone();
-        
+    protected void doAddColumns(final HtmlGenericTableModel<DemandAdmin> tableModel) {
+        final DemandAdminPageUrl clonedUrl = url.clone();
+
         clonedUrl.setOrderByStr("demandState");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Demand state")), new StringColumnGenerator<DemandAdmin>() {
             @Override
-            public String getStringBody(DemandAdmin element) {
+            public String getStringBody(final DemandAdmin element) {
                 return String.valueOf(element.getDemandState());
             }
         });
-        
+
         clonedUrl.setOrderByStr("contribution");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("contribution")), new StringColumnGenerator<DemandAdmin>() {
             @Override
-            public String getStringBody(DemandAdmin element) {
+            public String getStringBody(final DemandAdmin element) {
                 return String.valueOf(element.getContribution());
             }
         });
-        
+
         tableModel.addColumn(tr("project"), new StringColumnGenerator<DemandAdmin>() {
             @Override
-            public String getStringBody(DemandAdmin element) {
+            public String getStringBody(final DemandAdmin element) {
                 return element.getProject().getName();
             }
         });

@@ -39,16 +39,16 @@ public abstract class AdminList<T extends DaoUserContent, U extends UserContentA
     }
 
     public static class UserContentAdminList extends AdminList<DaoUserContent, UserContentAdmin<DaoUserContent>> {
-        public UserContentAdminList(PageIterable<DaoUserContent> daoCollection) {
+        public UserContentAdminList(final PageIterable<DaoUserContent> daoCollection) {
             super(daoCollection);
         }
 
         @Override
-        protected Iterator<UserContentAdmin<DaoUserContent>> createFromDaoIterator(Iterator<DaoUserContent> dao) {
+        protected Iterator<UserContentAdmin<DaoUserContent>> createFromDaoIterator(final Iterator<DaoUserContent> dao) {
             return new AdminIterator<DaoUserContent, UserContentAdmin<DaoUserContent>>(dao) {
                 @SuppressWarnings("unchecked")
                 @Override
-                protected UserContentAdmin<DaoUserContent> createFromDao(DaoUserContent dao) {
+                protected UserContentAdmin<DaoUserContent> createFromDao(final DaoUserContent dao) {
                     return UserContentAdmin.create(dao);
                 }
             };
@@ -56,16 +56,16 @@ public abstract class AdminList<T extends DaoUserContent, U extends UserContentA
     }
 
     public static class KudosableAdminList extends AdminList<DaoKudosable, KudosableAdmin<DaoKudosable>> {
-        public KudosableAdminList(PageIterable<DaoKudosable> daoCollection) {
+        public KudosableAdminList(final PageIterable<DaoKudosable> daoCollection) {
             super(daoCollection);
         }
 
         @Override
-        protected Iterator<KudosableAdmin<DaoKudosable>> createFromDaoIterator(Iterator<DaoKudosable> dao) {
+        protected Iterator<KudosableAdmin<DaoKudosable>> createFromDaoIterator(final Iterator<DaoKudosable> dao) {
             return new AdminIterator<DaoKudosable, KudosableAdmin<DaoKudosable>>(dao) {
                 @SuppressWarnings("unchecked")
                 @Override
-                protected KudosableAdmin<DaoKudosable> createFromDao(DaoKudosable dao) {
+                protected KudosableAdmin<DaoKudosable> createFromDao(final DaoKudosable dao) {
                     return KudosableAdmin.create(dao);
                 }
             };
@@ -73,16 +73,16 @@ public abstract class AdminList<T extends DaoUserContent, U extends UserContentA
     }
 
     public static class DemandAdminList extends AdminList<DaoDemand, DemandAdmin> {
-        public DemandAdminList(PageIterable<DaoDemand> daoCollection) {
+        public DemandAdminList(final PageIterable<DaoDemand> daoCollection) {
             super(daoCollection);
         }
 
         @Override
-        protected Iterator<DemandAdmin> createFromDaoIterator(Iterator<DaoDemand> dao) {
+        protected Iterator<DemandAdmin> createFromDaoIterator(final Iterator<DaoDemand> dao) {
             return new AdminIterator<DaoDemand, DemandAdmin>(dao) {
                 @SuppressWarnings("unchecked")
                 @Override
-                protected DemandAdmin createFromDao(DaoDemand dao) {
+                protected DemandAdmin createFromDao(final DaoDemand dao) {
                     return DemandAdmin.create(dao);
                 }
             };

@@ -5,11 +5,11 @@ import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 
-public class BloatitRestServer extends WebServer{
+public class BloatitRestServer extends WebServer {
     @Override
-    protected Linkable constructLinkable(String pageCode, Parameters params, Session session) {
-        if(pageCode.equals("plop")){
-            
+    protected Linkable constructLinkable(final String pageCode, final Parameters params, final Session session) {
+        if (pageCode.equals("plop")) {
+
         }
         return null;
     }

@@ -15,7 +15,7 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
 
     private static final class MyCreator extends Creator<DaoHighlightDemand, HighlightDemand> {
         @Override
-        public HighlightDemand doCreate(DaoHighlightDemand dao) {
+        public HighlightDemand doCreate(final DaoHighlightDemand dao) {
             return new HighlightDemand(dao);
         }
     }
@@ -24,11 +24,11 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
         return new MyCreator().create(dao);
     }
 
-    public HighlightDemand(Demand demand, int position, String reason, Date activationDate, Date desactivationDate) {
+    public HighlightDemand(final Demand demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
         super(DaoHighlightDemand.createAndPersist(DBRequests.getById(DaoDemand.class, demand.getId()), position, reason, activationDate, desactivationDate));
     }
 
-    private HighlightDemand(DaoHighlightDemand dao) {
+    private HighlightDemand(final DaoHighlightDemand dao) {
         super(dao);
     }
 
@@ -45,7 +45,7 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
     }
 
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         // TODO Auto-generated method stub
         return false;
     }

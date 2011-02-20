@@ -17,7 +17,6 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoKudos;
-import com.bloatit.data.DaoUserContent;
 
 public final class Kudos extends UserContent<DaoKudos> {
 
@@ -27,7 +26,7 @@ public final class Kudos extends UserContent<DaoKudos> {
 
     private static final class MyCreator extends Creator<DaoKudos, Kudos> {
         @Override
-        public Kudos doCreate(DaoKudos dao) {
+        public Kudos doCreate(final DaoKudos dao) {
             return new Kudos(dao);
         }
     }

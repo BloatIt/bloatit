@@ -113,7 +113,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         return isDeleted;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
+    public void setIsDeleted(final Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 

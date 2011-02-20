@@ -1,13 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
- * software: you can redistribute it and/or modify it under the terms of the GNU
- * Affero General Public License as published by the Free Software Foundation,
- * either version 3 of the License, or (at your option) any later version.
- * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- * details. You should have received a copy of the GNU Affero General Public
- * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.pages;
 
@@ -82,13 +81,13 @@ public final class CreateDemandPage extends LoggedPage {
         createIdeaForm.add(new HtmlSubmit(tr("submit")));
 
         // Create the fields that will describe the description of the idea
-        FormFieldData<String> descriptionFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
+        final FormFieldData<String> descriptionFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
         final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData, tr("Title"));
         descriptionInput.setCssClass("input_long_400px");
         descriptionInput.setComment(tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
 
         // Create the fields that will describe the specification of the idea
-        FormFieldData<String> specificationFieldData = doCreateUrl.getSpecificationParameter().formFieldData();
+        final FormFieldData<String> specificationFieldData = doCreateUrl.getSpecificationParameter().formFieldData();
         final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData,
                                                                  tr("Describe the idea"),
                                                                  SPECIF_INPUT_NB_LINES,
@@ -98,14 +97,14 @@ public final class CreateDemandPage extends LoggedPage {
         specifBlock.add(descriptionInput);
         specifBlock.add(specificationInput);
 
-        LanguageSelector languageInput = new LanguageSelector(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
+        final LanguageSelector languageInput = new LanguageSelector(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
         paramBlock.add(languageInput);
 
         final HtmlDropDown projectInput = new HtmlDropDown(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
-        for (Project project : ProjectManager.getProjects()) {
+        for (final Project project : ProjectManager.getProjects()) {
             try {
                 projectInput.addDropDownElement(String.valueOf(project.getId()), project.getName());
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 Log.web().warn(e);
                 // Not display private projects
             }
@@ -138,7 +137,7 @@ public final class CreateDemandPage extends LoggedPage {
         private final String name;
         private final String code;
 
-        public ProjectElement(Project project) throws UnauthorizedOperationException {
+        public ProjectElement(final Project project) throws UnauthorizedOperationException {
             name = project.getName();
             code = String.valueOf(project.getId());
         }

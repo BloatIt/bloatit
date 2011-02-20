@@ -163,7 +163,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /**
      * @return all the <code>DaoBankTransaction</code> created by <code>this</code>, order
-     * by <code>creationDate</code>, most recent first.
+     *         by <code>creationDate</code>, most recent first.
      */
     public final PageIterable<DaoBankTransaction> getBankTransactions() {
         return new QueryCollection<DaoBankTransaction>(SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),

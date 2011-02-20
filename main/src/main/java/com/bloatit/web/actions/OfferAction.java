@@ -77,7 +77,7 @@ public final class OfferAction extends LoggedAction {
     @Override
     public Url doProcessRestricted() {
         try {
-            Offer newOffer = targetIdea.addOffer(session.getAuthToken().getMember(), price, description, Locale.FRENCH, expiryDate.getJavaDate(), 0);
+            final Offer newOffer = targetIdea.addOffer(session.getAuthToken().getMember(), price, description, Locale.FRENCH, expiryDate.getJavaDate(), 0);
             if (group != null) {
                 newOffer.setAsGroup(group);
             }
@@ -86,7 +86,7 @@ public final class OfferAction extends LoggedAction {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
             return session.pickPreferredPage();
         }
-        DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
+        final DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
         demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
         return demandPageUrl;
     }

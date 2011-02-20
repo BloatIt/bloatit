@@ -46,7 +46,7 @@ public class SimplePostParser extends PostParameterParser {
             return null;
         }
         Log.framework().trace("Reading simple POST data n°" + i);
-        String param = postData[i];
+        final String param = postData[i];
         while (i < postData.length) {
             try {
                 final String[] pair = param.split("=");

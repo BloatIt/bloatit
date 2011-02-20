@@ -51,7 +51,7 @@ public final class DaoProject extends DaoIdentifiable {
     // Static HQL requests
     // ======================================================================
 
-    public static DaoProject getByName(String name) {
+    public static DaoProject getByName(final String name) {
         final Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
         return (DaoProject) query.uniqueResult();
     }
@@ -60,7 +60,7 @@ public final class DaoProject extends DaoIdentifiable {
     // Construction
     // ======================================================================
 
-    public static DaoProject createAndPersist(String name, DaoDescription description, DaoFileMetadata image) {
+    public static DaoProject createAndPersist(final String name, final DaoDescription description, final DaoFileMetadata image) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoProject project = new DaoProject(name, description, image);
         try {
@@ -73,7 +73,7 @@ public final class DaoProject extends DaoIdentifiable {
         return project;
     }
 
-    private DaoProject(String name, DaoDescription description, DaoFileMetadata image) {
+    private DaoProject(final String name, final DaoDescription description, final DaoFileMetadata image) {
         super();
         if (name == null || name.isEmpty() || description == null || image == null) {
             throw new NonOptionalParameterException();
@@ -83,7 +83,7 @@ public final class DaoProject extends DaoIdentifiable {
         this.image = image;
     }
 
-    protected void addDemand(DaoDemand demand) {
+    protected void addDemand(final DaoDemand demand) {
         demands.add(demand);
     }
 
@@ -124,7 +124,7 @@ public final class DaoProject extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -159,7 +159,7 @@ public final class DaoProject extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

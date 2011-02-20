@@ -26,34 +26,29 @@ import com.bloatit.web.url.BugPageUrl;
 
 public class DemandBugListComponent extends HtmlDiv {
 
-    private final Demand demand;
-
     public DemandBugListComponent(final Demand demand) {
         super("padding");
-        this.demand = demand;
-
-        //Open bugs
-        PageIterable<Bug> openBugs = demand.getOpenBugs();
-        HtmlTitle openBugsTitle = new HtmlTitle(Context.tr("Open bugs ({0})", openBugs.size()), 1);
+        // Open bugs
+        final PageIterable<Bug> openBugs = demand.getOpenBugs();
+        final HtmlTitle openBugsTitle = new HtmlTitle(Context.tr("Open bugs ({0})", openBugs.size()), 1);
         add(openBugsTitle);
-        HtmlTable openBugsTable = new HtmlTable(new HtmlBugsTableModel(openBugs));
+        final HtmlTable openBugsTable = new HtmlTable(new HtmlBugsTableModel(openBugs));
         add(openBugsTable);
 
-        //Closed bugs
-        PageIterable<Bug> closedBugs = demand.getClosedBugs();
-        HtmlTitle closedBugsTitle = new HtmlTitle(Context.tr("Closed bugs ({0})", closedBugs.size()), 1);
+        // Closed bugs
+        final PageIterable<Bug> closedBugs = demand.getClosedBugs();
+        final HtmlTitle closedBugsTitle = new HtmlTitle(Context.tr("Closed bugs ({0})", closedBugs.size()), 1);
         add(closedBugsTitle);
-        HtmlTable closedBugsTable = new HtmlTable(new HtmlBugsTableModel(closedBugs));
+        final HtmlTable closedBugsTable = new HtmlTable(new HtmlBugsTableModel(closedBugs));
         add(closedBugsTable);
     }
-
 
     private class HtmlBugsTableModel extends HtmlTableModel {
 
         private final Iterator<Bug> iterator;
         private Bug bug;
 
-        public HtmlBugsTableModel(PageIterable<Bug> openBugs) {
+        public HtmlBugsTableModel(final PageIterable<Bug> openBugs) {
             iterator = openBugs.iterator();
         }
 
@@ -63,7 +58,7 @@ public class DemandBugListComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getHeader(int column) {
+        public XmlNode getHeader(final int column) {
             HtmlText text = null;
             switch (column) {
             case 0:
@@ -89,7 +84,7 @@ public class DemandBugListComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getBody(int column) {
+        public XmlNode getBody(final int column) {
             XmlNode text = null;
             switch (column) {
             case 0:
@@ -117,7 +112,7 @@ public class DemandBugListComponent extends HtmlDiv {
 
         @Override
         public boolean next() {
-            if(iterator.hasNext()) {
+            if (iterator.hasNext()) {
                 bug = iterator.next();
                 return true;
             }

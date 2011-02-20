@@ -25,20 +25,19 @@ public class ConfigurationManager {
 
     /**
      * <p>
-     * Loads the content of a properties file in the default configuration file
-     * directory for bloatit. Returns it as a Properties list, aka a map
-     * containing the key->value pairs
+     * Loads the content of a properties file in the default configuration file directory
+     * for bloatit. Returns it as a Properties list, aka a map containing the key->value
+     * pairs
      * </p>
      * <p>
-     * The <code>name</code> of the property file is the name of the file, or
-     * the path from the root of the configuration directory.
+     * The <code>name</code> of the property file is the name of the file, or the path
+     * from the root of the configuration directory.
      * </p>
      * 
-     * @param name
-     *            the name of the property file
+     * @param name the name of the property file
      * @return a map key -> value
      */
-    public static PropertiesRetriever loadProperties(String name) {
+    public static PropertiesRetriever loadProperties(final String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("null input: name");
         }
@@ -53,8 +52,8 @@ public class ConfigurationManager {
         if (!f.exists()) {
             f = new File(FALLBACK_ETC_DIR + newName);
             if (!f.exists()) {
-                throw new FatalErrorException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or "
-                        + FALLBACK_ETC_DIR + newName);
+                throw new FatalErrorException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or " + FALLBACK_ETC_DIR
+                        + newName);
             }
         }
 
@@ -75,7 +74,7 @@ public class ConfigurationManager {
     public static class PropertiesRetriever {
         private final Properties prop;
 
-        public PropertiesRetriever(Properties props) {
+        public PropertiesRetriever(final Properties props) {
             prop = props;
         }
 
@@ -83,13 +82,13 @@ public class ConfigurationManager {
             return prop;
         }
 
-        private <T> T getSome(String key, T defaultValue, Class<T> clazz) {
-            String property = prop.getProperty(key);
+        private <T> T getSome(final String key, final T defaultValue, final Class<T> clazz) {
+            final String property = prop.getProperty(key);
             Log.framework().trace("Loading property: " + key + ", value: " + property);
             if (prop.getProperty(key) != null) {
                 try {
                     return Loaders.fromStr(clazz, property);
-                } catch (ConversionErrorException e) {
+                } catch (final ConversionErrorException e) {
                     Log.framework().error("Conversion error in loading the property: " + key, e);
                 }
             }
@@ -97,48 +96,48 @@ public class ConfigurationManager {
             return defaultValue;
         }
 
-        public int getInt(String key, int defaultValue) {
+        public int getInt(final String key, final int defaultValue) {
             return getSome(key, defaultValue, Integer.class);
         }
 
-        public Long getLong(String key, Long defaultValue) {
+        public Long getLong(final String key, final Long defaultValue) {
             return getSome(key, defaultValue, Long.class);
         }
 
-        public Short getShort(String key, Short defaultValue) {
+        public Short getShort(final String key, final Short defaultValue) {
             return getSome(key, defaultValue, Short.class);
         }
 
-        public Byte getByte(String key, Byte defaultValue) {
+        public Byte getByte(final String key, final Byte defaultValue) {
             return getSome(key, defaultValue, Byte.class);
         }
 
-        public Boolean getBoolean(String key, Boolean defaultValue) {
+        public Boolean getBoolean(final String key, final Boolean defaultValue) {
             return getSome(key, defaultValue, Boolean.class);
         }
 
-        public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
+        public BigDecimal getBigDecimal(final String key, final BigDecimal defaultValue) {
             return getSome(key, defaultValue, BigDecimal.class);
         }
 
-        public Character getCharacter(String key, Character defaultValue) {
+        public Character getCharacter(final String key, final Character defaultValue) {
             return getSome(key, defaultValue, Character.class);
         }
 
-        public Date getDate(String key, Date defaultValue) {
+        public Date getDate(final String key, final Date defaultValue) {
             return getSome(key, defaultValue, Date.class);
         }
 
-        public Double getDouble(String key, Double defaultValue) {
+        public Double getDouble(final String key, final Double defaultValue) {
             return getSome(key, defaultValue, Double.class);
         }
 
-        public Float getFloat(String key, Float defaultValue) {
+        public Float getFloat(final String key, final Float defaultValue) {
             return getSome(key, defaultValue, Float.class);
         }
 
-        public String getString(String key, String defaultValue) {
-            String property = prop.getProperty(key);
+        public String getString(final String key, final String defaultValue) {
+            final String property = prop.getProperty(key);
             if (property != null) {
                 return property;
             }
@@ -150,10 +149,9 @@ public class ConfigurationManager {
          * @param key
          * @param defaultValue
          * @return
-         * @see java.util.Properties#getProperty(java.lang.String,
-         *      java.lang.String)
+         * @see java.util.Properties#getProperty(java.lang.String, java.lang.String)
          */
-        public String getProperty(String key, String defaultValue) {
+        public String getProperty(final String key, final String defaultValue) {
             return prop.getProperty(key, defaultValue);
         }
 
@@ -162,7 +160,7 @@ public class ConfigurationManager {
          * @return
          * @see java.util.Properties#getProperty(java.lang.String)
          */
-        public String getProperty(String key) {
+        public String getProperty(final String key) {
             return prop.getProperty(key);
         }
     }

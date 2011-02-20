@@ -108,8 +108,8 @@ abstract class AbstractDemandState {
      * 
      * @return the state object representing the demandState, after receiving this event
      * @throws WrongStateException if this event occurs whereas the demand was not in the
-     * right state (For example you cannot Finish a development if you are not in
-     * development state).
+     *         right state (For example you cannot Finish a development if you are not in
+     *         development state).
      */
     public AbstractDemandState eventDeveloperCanceled() {
         // Implement me if you wish.
@@ -121,8 +121,8 @@ abstract class AbstractDemandState {
      * 
      * @return the state object representing the demandState, after receiving this event
      * @throws WrongStateException if this event occurs whereas the demand was not in the
-     * right state (For example you cannot Finish a development if you are not in
-     * development state).
+     *         right state (For example you cannot Finish a development if you are not in
+     *         development state).
      */
     public AbstractDemandState eventDemandRejected() {
         // Implement me if you wish.
@@ -134,8 +134,8 @@ abstract class AbstractDemandState {
      * 
      * @return the state object representing the demandState, after recieving this event
      * @throws WrongStateException if this event occurs whereas the demand was not in the
-     * right state (For example you cannot Finish a development if you are not in
-     * development state).
+     *         right state (For example you cannot Finish a development if you are not in
+     *         development state).
      */
     public AbstractDemandState eventPopularityPending() {
         // Implement me if you wish.
@@ -147,8 +147,8 @@ abstract class AbstractDemandState {
      * 
      * @return the state object representing the demandState, after recieving this event
      * @throws WrongStateException if this event occurs whereas the demand was not in the
-     * right state (For example you cannot Finish a development if you are not in
-     * development state).
+     *         right state (For example you cannot Finish a development if you are not in
+     *         development state).
      */
     public AbstractDemandState popularityValidated() {
         // Implement me if you wish.
@@ -160,8 +160,8 @@ abstract class AbstractDemandState {
      * 
      * @return the state object representing the demandState, after recieving this event
      * @throws WrongStateException if this event occurs whereas the demand was not in the
-     * right state (For example you cannot Finish a development if you are not in
-     * development state).
+     *         right state (For example you cannot Finish a development if you are not in
+     *         development state).
      */
     public AbstractDemandState eventBatchReleased() {
         // Implement me if you wish.
@@ -173,8 +173,8 @@ abstract class AbstractDemandState {
      * 
      * @return the state object representing the demandState, after recieving this event
      * @throws WrongStateException if this event occurs whereas the demand was not in the
-     * right state (For example you cannot Finish a development if you are not in
-     * development state).
+     *         right state (For example you cannot Finish a development if you are not in
+     *         development state).
      */
     public AbstractDemandState eventBatchIsRejected() {
         // Implement me if you wish.
@@ -186,8 +186,8 @@ abstract class AbstractDemandState {
      * 
      * @return the state object representing the demandState, after recieving this event
      * @throws WrongStateException if this event occurs whereas the demand was not in the
-     * right state (For example you cannot Finish a development if you are not in
-     * development state).
+     *         right state (For example you cannot Finish a development if you are not in
+     *         development state).
      */
     public AbstractDemandState eventBatchIsValidated() {
         // Implement me if you wish.
@@ -199,8 +199,8 @@ abstract class AbstractDemandState {
      * 
      * @return the state object representing the demandState, after recieving this event
      * @throws WrongStateException if this event occurs whereas the demand was not in the
-     * right state (For example you cannot Finish a development if you are not in
-     * development state).
+     *         right state (For example you cannot Finish a development if you are not in
+     *         development state).
      */
     public AbstractDemandState eventOfferIsValidated() {
         // Implement me if you wish.

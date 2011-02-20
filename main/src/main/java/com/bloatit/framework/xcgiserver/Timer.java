@@ -14,7 +14,7 @@ final class Timer {
 
     public long elapsed() {
         try {
-            long endTime = System.currentTimeMillis();
+            final long endTime = System.currentTimeMillis();
             return endTime - startTime;
         } finally {
             reset();

@@ -64,7 +64,7 @@ public final class DaoTransaction extends DaoIdentifiable {
      * @param to is the account where the money goes
      * @param amount is the quantity of money transfered.
      * @throws NotEnoughMoneyException if there is not enough money to make the
-     * transaction
+     *         transaction
      * @throws FatalErrorException if to == from
      * @throws NullPointerException if any of the parameters = null
      */
@@ -105,7 +105,7 @@ public final class DaoTransaction extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

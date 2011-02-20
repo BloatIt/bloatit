@@ -21,22 +21,20 @@ import com.bloatit.web.url.FileResourceUrl;
 
 /**
  * A file resource is a resource representing a file
+ * 
  * @author fred
- *
+ * 
  */
 @ParamContainer("resource")
 public final class FileResource extends Resource {
 
     public static final String FILE_FIELD_NAME = "id";
 
-    @ParamConstraint(optionalErrorMsg=@tr("The id of the resource is incorrect or missing"))
+    @ParamConstraint(optionalErrorMsg = @tr("The id of the resource is incorrect or missing"))
     @RequestParam(name = FILE_FIELD_NAME, level = Level.ERROR)
     private final FileMetadata file;
 
-    private final FileResourceUrl url;
-
     public FileResource(final FileResourceUrl url) {
-        this.url = url;
         this.file = url.getFile();
     }
 

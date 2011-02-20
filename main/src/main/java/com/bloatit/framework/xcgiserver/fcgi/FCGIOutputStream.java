@@ -1,20 +1,18 @@
 /*
  * Copyright (C) 2011 Linkeos.
- *
+ * 
  * This file is part of BloatIt.
- *
- * BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version.
- *
- * BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details.
- *
- * You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * BloatIt is free software: you can redistribute it and/or modify it under the terms of
+ * the GNU Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * 
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE. See the GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License along with
+ * BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.xcgiserver.fcgi;
 
@@ -32,26 +30,26 @@ public class FCGIOutputStream extends OutputStream {
     private final DataOutputStream outputStream;
     private final FCGIParser fcgiParser;
 
-    public FCGIOutputStream(FCGIParser fcgiParser, OutputStream outputStream) {
+    public FCGIOutputStream(final FCGIParser fcgiParser, final OutputStream outputStream) {
         this.fcgiParser = fcgiParser;
         this.outputStream = new DataOutputStream(outputStream);
 
     }
 
     @Override
-    public void write(int b) throws IOException {
-        byte[] bArray = new byte[1];
+    public void write(final int b) throws IOException {
+        final byte[] bArray = new byte[1];
         bArray[0] = (byte) b;
         sendStdoutRecord(bArray, 0, 1);
     }
 
     @Override
-    public void write(byte[] b, int off, int len) throws IOException {
+    public void write(final byte[] b, final int off, final int len) throws IOException {
         sendStdoutRecord(b, off, len);
     }
 
     @Override
-    public void write(byte[] b) throws IOException {
+    public void write(final byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
@@ -59,7 +57,7 @@ public class FCGIOutputStream extends OutputStream {
     public void close() throws IOException {
         // Close stdout stream
         fcgiParser.fetchAll();
-        byte[] b = new byte[0];
+        final byte[] b = new byte[0];
         sendStdoutRecord(b, 0, 0);
         sendEndRecord();
         outputStream.close();
@@ -81,13 +79,13 @@ public class FCGIOutputStream extends OutputStream {
 
     }
 
-    private void sendStdoutRecord(byte[] b, int off, int len) throws IOException {
+    private void sendStdoutRecord(final byte[] b, final int off, final int len) throws IOException {
         sendRecordHeader(FCGIParser.FCGI_STDOUT, len);
 
         outputStream.write(b, off, len);
     }
 
-    private void sendRecordHeader(byte fcgiType, int length) throws IOException {
+    private void sendRecordHeader(final byte fcgiType, final int length) throws IOException {
         // FCGI version
         outputStream.writeByte(FCGIParser.FCGI_VERSION_1);
         // FCGI record type

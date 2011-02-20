@@ -90,9 +90,9 @@ public final class DaoContribution extends DaoUserContent {
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.
      * @throws NonOptionalParameterException if any of the parameter is null except
-     * comment.
+     *         comment.
      * @throws NotEnoughMoneyException if the account of "member" has not enough money in
-     * it.
+     *         it.
      */
     public DaoContribution(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         super(member);
@@ -119,12 +119,12 @@ public final class DaoContribution extends DaoUserContent {
      * 
      * @param offer the offer that is accepted.
      * @param percent integer ]0,100]. It is the percent of the total amount and not a
-     * percent of what is remaining. It is the percent of the total amount to transfer.
-     * There is a "round" done here, but we assure that when 100% is reached then
-     * everything is transfered. For example : 90% then 10% is ok and everything is
-     * transfered. 60% then 60% will throw an exception.
+     *        percent of what is remaining. It is the percent of the total amount to
+     *        transfer. There is a "round" done here, but we assure that when 100% is
+     *        reached then everything is transfered. For example : 90% then 10% is ok and
+     *        everything is transfered. 60% then 60% will throw an exception.
      * @throws NotEnoughMoneyException if there is not enough money to create the
-     * transaction.
+     *         transaction.
      */
     public void validate(final DaoOffer offer, final int percent) throws NotEnoughMoneyException {
         if (state != State.PENDING) {
@@ -204,7 +204,7 @@ public final class DaoContribution extends DaoUserContent {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

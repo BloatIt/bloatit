@@ -4,8 +4,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 
 /**
  * <p>
- * The mother classes of all renderers that can be used to have special text
- * rendering
+ * The mother classes of all renderers that can be used to have special text rendering
  * </p>
  */
 public abstract class HtmlTextRenderer extends HtmlTagText {
@@ -23,8 +22,7 @@ public abstract class HtmlTextRenderer extends HtmlTagText {
     /**
      * This method does the rendering
      * 
-     * @param text
-     *            the string to render
+     * @param text the string to render
      * @return the rendered string
      */
     protected abstract String doRender(String text);

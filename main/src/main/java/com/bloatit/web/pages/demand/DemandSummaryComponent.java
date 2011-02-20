@@ -64,10 +64,10 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 {
                     // Add project image
                     try {
-                        FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
+                        final FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
                         final HtmlImage projectImage = new HtmlImage(imageUrl, "project_image");
                         demandSummaryLeft.add(projectImage);
-                    } catch (UnauthorizedOperationException e) {
+                    } catch (final UnauthorizedOperationException e) {
                         // no right, no image
                     }
 
@@ -110,14 +110,13 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 final HtmlDiv demandSummaryPopularity = new HtmlDiv("demand_summary_popularity");
                 {
                     final HtmlParagraph popularityText = new HtmlParagraph(Context.tr("Popularity"), "demand_popularity_text");
-                    final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()),
-                            "demand_popularity_score");
+                    final HtmlParagraph popularityScore = new HtmlParagraph(HtmlTools.compressKarma(demand.getPopularity()), "demand_popularity_score");
 
                     demandSummaryPopularity.add(popularityText);
                     demandSummaryPopularity.add(popularityScore);
 
                     if (!demand.isOwnedByMe()) {
-                        int vote = demand.getUserVoteValue();
+                        final int vote = demand.getUserVoteValue();
                         if (vote == 0) {
                             final HtmlDiv demandPopularityJudge = new HtmlDiv("demand_popularity_judge");
                             {
@@ -161,7 +160,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 try {
                     demandSummaryProgress = generateProgressBlock(demand);
                     demandSummaryBottom.add(demandSummaryProgress);
-                } catch (UnauthorizedOperationException e) {
+                } catch (final UnauthorizedOperationException e) {
                     // display nothing
                 }
 

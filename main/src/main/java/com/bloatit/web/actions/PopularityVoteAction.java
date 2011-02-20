@@ -34,7 +34,7 @@ public final class PopularityVoteAction extends LoggedAction {
     public static final String TARGET_KUDOSABLE = "targetKudosable";
     public static final String VOTE_UP = "voteUp";
 
-    @ParamConstraint(optionalErrorMsg=@tr("Nothing to vote on."))
+    @ParamConstraint(optionalErrorMsg = @tr("Nothing to vote on."))
     @RequestParam(name = TARGET_KUDOSABLE, level = Level.ERROR)
     private final KudosableInterface<?> targetKudosable;
 
@@ -54,20 +54,20 @@ public final class PopularityVoteAction extends LoggedAction {
     @Override
     public Url doProcessRestricted() throws RedirectException {
         try {
-            if(voteUp) {
-                EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();
+            if (voteUp) {
+                final EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();
 
-                if(canVote.isEmpty()) {
-                    int weight = targetKudosable.voteUp();
+                if (canVote.isEmpty()) {
+                    final int weight = targetKudosable.voteUp();
                     session.notifyGood(Context.tr("Vote up applied: {0}", weight));
                 } else {
                     analyseErrors(canVote);
                 }
             } else {
-                EnumSet<SpecialCode> canVote = targetKudosable.canVoteDown();
+                final EnumSet<SpecialCode> canVote = targetKudosable.canVoteDown();
 
-                if(canVote.isEmpty()) {
-                    int weight = targetKudosable.voteDown();
+                if (canVote.isEmpty()) {
+                    final int weight = targetKudosable.voteDown();
                     session.notifyGood(Context.tr("Vote down applied: {0}", weight));
                 } else {
                     analyseErrors(canVote);
@@ -80,17 +80,17 @@ public final class PopularityVoteAction extends LoggedAction {
         return session.pickPreferredPage();
     }
 
-    public void analyseErrors(EnumSet<SpecialCode> canVote) {
-        if(canVote.contains(SpecialCode.ALREADY_VOTED)) {
+    public void analyseErrors(final EnumSet<SpecialCode> canVote) {
+        if (canVote.contains(SpecialCode.ALREADY_VOTED)) {
             session.notifyBad(Context.tr("You already voted on that."));
         }
-        if(canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP)) {
+        if (canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_UP)) {
             session.notifyBad(Context.tr("You have a too low reputation to vote up that."));
         }
-        if(canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN)) {
+        if (canVote.contains(SpecialCode.INFLUENCE_LOW_ON_VOTE_DOWN)) {
             session.notifyBad(Context.tr("You have a too low reputation to vote down that."));
         }
-        if(canVote.contains(SpecialCode.OWNED_BY_ME)) {
+        if (canVote.contains(SpecialCode.OWNED_BY_ME)) {
             session.notifyBad(Context.tr("You can't vote for yourself!."));
         }
     }

@@ -47,8 +47,8 @@ import com.bloatit.web.url.TeamPageUrl;
  * A page used to display member information.
  * </p>
  * <p>
- * If the consulted member is the same as the logged member, then this page will
- * propose to edit account parameters
+ * If the consulted member is the same as the logged member, then this page will propose
+ * to edit account parameters
  * </p>
  */
 @ParamContainer("member")
@@ -75,32 +75,32 @@ public final class MemberPage extends MasterPage {
         if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }
-        
+
         final HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
-        
+
         try {
-            HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Member: ") + member.getDisplayName(), 1);
+            final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Member: ") + member.getDisplayName(), 1);
             master.add(memberTitle);
-            HtmlList memberInfo = new HtmlList();
+            final HtmlList memberInfo = new HtmlList();
             memberTitle.add(memberInfo);
-            
+
             memberInfo.add((tr("Full name: ") + member.getFullname()));
             memberInfo.add(tr("Login: ") + member.getLogin());
             if (member.canAccessEmail(Action.READ)) {
                 memberInfo.add(new HtmlText(tr("Email: ") + member.getEmail()));
             }
             memberInfo.add(new HtmlText(tr("Karma: ") + member.getKarma()));
-            
+
             // A list of all users group
-            HtmlTitleBlock memberGroups = new HtmlTitleBlock(Context.tr("List of groups"), 2);
+            final HtmlTitleBlock memberGroups = new HtmlTitleBlock(Context.tr("List of groups"), 2);
             memberTitle.add(memberGroups);
             final PageIterable<Group> teamList = member.getGroups();
             final HtmlRenderer<Group> teamRenderer = new TeamListRenderer();
             final MemberPageUrl clonedUrl = new MemberPageUrl(url);
             pagedTeamList = new HtmlPagedList<Group>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
             memberGroups.add(pagedTeamList);
-            
+
         } catch (final UnauthorizedOperationException e) {
             add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this member.")));
         }
@@ -122,10 +122,10 @@ public final class MemberPage extends MasterPage {
     public boolean isStable() {
         return true;
     }
-    
+
     private class GroupListRenderer implements HtmlRenderer<Group> {
         @Override
-        public XmlNode generate(Group team) {
+        public XmlNode generate(final Group team) {
             final TeamPageUrl teamUrl = new TeamPageUrl(team);
             try {
                 HtmlLink htmlLink;

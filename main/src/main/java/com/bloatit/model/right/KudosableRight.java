@@ -36,7 +36,7 @@ public class KudosableRight extends RightManager {
          * , com.bloatit.model.right.Action)
          */
         @Override
-        protected final boolean can(final RestrictedInterface role, Action action) {
+        protected final boolean can(final RestrictedInterface role, final Action action) {
             return authentifiedCanWrite(role, action);
         }
     }

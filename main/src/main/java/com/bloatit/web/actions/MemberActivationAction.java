@@ -54,9 +54,9 @@ public final class MemberActivationAction extends Action {
     protected Url doProcess() throws RedirectException {
         session.notifyList(url.getMessages());
 
-        Member member = MemberManager.getMemberByLogin(login);
+        final Member member = MemberManager.getMemberByLogin(login);
 
-        Url to = new IndexPageUrl();
+        final Url to = new IndexPageUrl();
 
         if (member != null) {
 
@@ -64,10 +64,9 @@ public final class MemberActivationAction extends Action {
                 if (key.equals(member.getActivationKey())) {
                     member.activate();
 
-                    //Auto login after activation
+                    // Auto login after activation
                     session.setAuthToken(new AuthToken(member));
                     session.notifyGood(Context.tr("Activation sucess, you are now logged."));
-
 
                 } else {
                     session.notifyBad(Context.tr("Wrong activation key for this member."));

@@ -22,7 +22,6 @@ import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.DaoMember.Role;
-import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.model.right.Action;
@@ -63,40 +62,40 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         return canVote(-1);
     }
 
-    private final EnumSet<SpecialCode> canVote(int sign) {
+    private final EnumSet<SpecialCode> canVote(final int sign) {
         final EnumSet<SpecialCode> errors = EnumSet.noneOf(SpecialCode.class);
-    
+
         // See if we can kudos.
         if (!canAccess(new KudosableRight.Kudos(), Action.WRITE)) {
             errors.add(SpecialCode.NOTHING_SPECIAL);
         }
-    
+
         if (getDao().isPopularityLocked()) {
             errors.add(SpecialCode.KUDOSABLE_LOCKED);
         }
-    
+
         if (getAuthTokenUnprotected() == null) {
             errors.add(SpecialCode.AUTHENTICATION_NEEDED);
             // Stop tests here: the other tests need an AuthToken
             return errors;
         }
-    
+
         if (getAuthTokenUnprotected().getMember().getRole() == Role.ADMIN) {
             // Stop here. The member is an admin. He must be able to kudos
             // everything.
             return errors;
         }
-    
+
         // I cannot kudos my own content.
         if (isOwnedByMe()) {
             errors.add(SpecialCode.OWNED_BY_ME);
         }
-    
+
         // Only one kudos per person
         if (getDao().hasKudosed(getAuthTokenUnprotected().getMember().getDao())) {
             errors.add(SpecialCode.ALREADY_VOTED);
         }
-    
+
         // Make sure we are in the right position
         final Member member = getAuthTokenUnprotected().getMember();
         final int influence = member.calculateInfluence();
@@ -239,11 +238,11 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     @Override
     public int getUserVoteValue() {
         final AuthToken authToken = getAuthTokenUnprotected();
-    
+
         if (getAuthTokenUnprotected() == null) {
             return 0;
         }
-    
+
         return getDao().getVote(authToken.getMember().getDao());
     }
 
@@ -252,7 +251,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * value is {@value #TURN_PENDING}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     * {@link PopularityState#PENDING} state.
+     *         {@link PopularityState#PENDING} state.
      */
     protected int turnPending() {
         return TURN_PENDING;
@@ -263,7 +262,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * value is {@value #TURN_VALID}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     * {@link PopularityState#VALIDATED} state.
+     *         {@link PopularityState#VALIDATED} state.
      */
     protected int turnValid() {
         return TURN_VALID;
@@ -274,7 +273,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * value is {@value #TURN_REJECTED}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     * {@link PopularityState#REJECTED} state.
+     *         {@link PopularityState#REJECTED} state.
      */
     protected int turnRejected() {
         return TURN_REJECTED;
@@ -285,7 +284,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
      * value is {@value #TURN_HIDDEN}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     * {@link PopularityState#HIDDEN} state.
+     *         {@link PopularityState#HIDDEN} state.
      */
     protected int turnHidden() {
         return TURN_HIDDEN;

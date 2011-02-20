@@ -52,8 +52,7 @@ public final class PaylinePage extends MasterPage {
     }
 
     @Override
-    protected void doCreate() throws RedirectException {
-    }
+    protected void doCreate() throws RedirectException {}
 
     @Override
     protected String getPageTitle() {

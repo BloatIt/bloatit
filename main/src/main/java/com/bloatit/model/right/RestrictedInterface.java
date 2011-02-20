@@ -30,7 +30,7 @@ public interface RestrictedInterface {
      * Authenticate this content using an {@link AuthToken}.
      * 
      * @param token the token representing the user wanting to be authenticated on this
-     * content.
+     *        content.
      */
     public abstract void authenticate(AuthToken token);
 

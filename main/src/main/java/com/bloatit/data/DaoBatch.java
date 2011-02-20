@@ -136,7 +136,7 @@ public final class DaoBatch extends DaoIdentifiable {
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must be non
-     * null, and in the future.
+     *        null, and in the future.
      * @param secondBeforeValidation TODO
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
@@ -172,9 +172,9 @@ public final class DaoBatch extends DaoIdentifiable {
      * is calculated from it (see {@link #getMinorBugsPercent()}).
      * 
      * @param fatalPercent is the percent of the money the developer will get when all the
-     * {@link Level#FATAL} bugs are closed. It must be > 0 and <= 100.
+     *        {@link Level#FATAL} bugs are closed. It must be > 0 and <= 100.
      * @param majorPercent is the percent of the money the developer will get when all the
-     * {@link Level#MAJOR} bugs are closed. It must be > 0 and <= 100.
+     *        {@link Level#MAJOR} bugs are closed. It must be > 0 and <= 100.
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
         if (fatalPercent < 0 || majorPercent < 0) {
@@ -203,7 +203,7 @@ public final class DaoBatch extends DaoIdentifiable {
      * account these previous restrictions.
      * 
      * @param force force the validation of this batch. Do not take care of the bugs and
-     * the timeOuts.
+     *        the timeOuts.
      * @return true if all the batch is validated.
      */
     public boolean validate(final boolean force) {
@@ -351,7 +351,7 @@ public final class DaoBatch extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

@@ -22,7 +22,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 
 /**
  * The class Accessor is class that test if a member as the right to access a
- * <code>property</code>. 
+ * <code>property</code>.
  * <p>
  * It implements two methods : <code>canAccess</code> that return a boolean if you can
  * access the feature and <code>tryAccess</code> that throw an
@@ -30,7 +30,8 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
  * </p>
  * <p>
  * This class implement the template method pattern so that child classes just have to
- * implement the can method. You have to create an {@link Accessor} child class for each feature.
+ * implement the can method. You have to create an {@link Accessor} child class for each
+ * feature.
  * </p>
  * For example you could create an {@link Accessor} on the Fullname property like this:
  * 
@@ -62,8 +63,8 @@ public abstract class Accessor {
     protected abstract boolean can(RestrictedInterface object, Action action);
 
     /**
-     * CanAccess call the abstract {@link #can(RestrictedInterface, Action)} method to know
-     * if the user has the right to access the <code>object</code>.
+     * CanAccess call the abstract {@link #can(RestrictedInterface, Action)} method to
+     * know if the user has the right to access the <code>object</code>.
      * 
      * @param object is the object on which we want to do the <code>action</code>
      * @param action is the action.

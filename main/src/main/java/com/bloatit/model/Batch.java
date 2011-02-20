@@ -54,7 +54,7 @@ public class Batch extends Identifiable<DaoBatch> {
          * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
-        public Batch doCreate(DaoBatch dao) {
+        public Batch doCreate(final DaoBatch dao) {
             return new Batch(dao);
         }
     }
@@ -284,7 +284,7 @@ public class Batch extends Identifiable<DaoBatch> {
      */
     public int getPosition() {
         final Iterator<DaoBatch> iterator = getDao().getOffer().getBatches().iterator();
-    
+
         final int order = 1;
         while (iterator.hasNext()) {
             if (iterator.next().getId() == getDao().getId()) {
@@ -300,7 +300,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
      */
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return Offer.create(getDao().getOffer()).isMine(member);
     }
 
@@ -312,7 +312,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * .Member)
      */
     @Override
-    protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
+    protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
         return Offer.create(getDao().getOffer()).calculateMyGroupRights(member);
     }
 }

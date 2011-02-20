@@ -39,7 +39,7 @@ public abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
         EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL
     }
 
-    public DaoAbstractListFactory(Criteria criteria) {
+    public DaoAbstractListFactory(final Criteria criteria) {
         super();
         this.criteria = criteria;
     }
@@ -61,7 +61,7 @@ public abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
         }
     }
 
-    protected Criterion createSizeCriterion(Comparator cmp, String element, int nb) {
+    protected Criterion createSizeCriterion(final Comparator cmp, final String element, final int nb) {
         switch (cmp) {
         case EQUAL:
             return Restrictions.sizeEq(element, nb);
@@ -78,7 +78,7 @@ public abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
         }
     }
 
-    protected Criterion createNbCriterion(Comparator cmp, String element, Object nb) {
+    protected Criterion createNbCriterion(final Comparator cmp, final String element, final Object nb) {
         switch (cmp) {
         case EQUAL:
             return Restrictions.eq(element, nb);
@@ -95,20 +95,20 @@ public abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
         }
     }
 
-    protected Criteria add(Criterion criterion) {
+    protected Criteria add(final Criterion criterion) {
         return criteria.add(criterion);
     }
 
-    protected Criteria addOrder(Order order) {
+    protected Criteria addOrder(final Order order) {
         System.out.println("add order: " + order);
         return criteria.addOrder(order);
     }
 
-    protected ProjectionList add(Projection proj) {
+    protected ProjectionList add(final Projection proj) {
         return projections.add(proj);
     }
 
-    protected ProjectionList add(Projection projection, String alias) {
+    protected ProjectionList add(final Projection projection, final String alias) {
         return projections.add(projection, alias);
     }
 

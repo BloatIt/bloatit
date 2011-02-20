@@ -17,19 +17,20 @@ public class DemandSearch extends Search<DaoDemand> {
         SORT_BY_RELEVANCE, SORT_BY_CONTRIBUTION, SORT_BY_PROGRESS, SORT_BY_POPULARITY, SORT_BY_CREATION_DATE, SORT_BY_EXPIRATION_DATE
     }
 
-    public DemandSearch(String searchText) {
+    public DemandSearch(final String searchText) {
         super();
         sortMethod = SortMethod.SORT_BY_RELEVANCE;
-        configure(DaoDemand.class, new String[] { "description.translations.title", "description.translations.text",
-                "offers.description.translations.title" }, searchText);
+        configure(DaoDemand.class,
+                  new String[] { "description.translations.title", "description.translations.text", "offers.description.translations.title" },
+                  searchText);
     }
 
     /**
      * The demands with state as DemandState will not be in the search results
-     *
+     * 
      * @param state
      */
-    public void addDemandStateFilter(DemandState state) {
+    public void addDemandStateFilter(final DemandState state) {
         addFilterTerm("demandState", state.toString());
     }
 
@@ -37,7 +38,7 @@ public class DemandSearch extends Search<DaoDemand> {
     protected void prepareSearch() {
         enableFilter("searchFilter");
 
-        Sort sort = new Sort();
+        final Sort sort = new Sort();
 
         switch (sortMethod) {
         case SORT_BY_CONTRIBUTION:
@@ -67,7 +68,7 @@ public class DemandSearch extends Search<DaoDemand> {
         return new DemandList(doSearch());
     }
 
-    public void setSortMethod(SortMethod sortMethod) {
+    public void setSortMethod(final SortMethod sortMethod) {
         this.sortMethod = sortMethod;
     }
 

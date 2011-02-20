@@ -51,7 +51,7 @@ public final class DaoInternalAccount extends DaoAccount {
      * 
      * @param blocked the amount we want to block
      * @throws NotEnoughMoneyException if there is not enough money to block. (nothing is
-     * done, modification date is unchanged)
+     *         done, modification date is unchanged)
      */
     protected void block(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(getAmount()) > 0) {
@@ -68,7 +68,7 @@ public final class DaoInternalAccount extends DaoAccount {
      * 
      * @param blocked the amount of money we want to unblock.
      * @throws NotEnoughMoneyException if there is not enough money already bloken.
-     * (nothing is done, modification date is unchanged)
+     *         (nothing is done, modification date is unchanged)
      */
     protected void unBlock(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(this.blocked) > 0) {
@@ -90,7 +90,7 @@ public final class DaoInternalAccount extends DaoAccount {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

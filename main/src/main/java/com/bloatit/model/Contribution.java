@@ -48,7 +48,7 @@ public final class Contribution extends UserContent<DaoContribution> {
          * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
-        public Contribution doCreate(DaoContribution dao) {
+        public Contribution doCreate(final DaoContribution dao) {
             return new Contribution(dao);
         }
     }

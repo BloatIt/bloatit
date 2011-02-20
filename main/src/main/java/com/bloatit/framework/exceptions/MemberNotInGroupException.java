@@ -7,15 +7,15 @@ public class MemberNotInGroupException extends Exception {
         super();
     }
 
-    public MemberNotInGroupException(String message, Throwable cause) {
+    public MemberNotInGroupException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public MemberNotInGroupException(String message) {
+    public MemberNotInGroupException(final String message) {
         super(message);
     }
 
-    public MemberNotInGroupException(Throwable cause) {
+    public MemberNotInGroupException(final Throwable cause) {
         super(cause);
     }
 }

@@ -16,8 +16,7 @@ public class XmlText extends XmlNode {
     /**
      * Creates a component to add raw Html to a page
      * 
-     * @param content
-     *            the Html string to add
+     * @param content the Html string to add
      */
     public XmlText(final String content) {
         super();
@@ -34,8 +33,7 @@ public class XmlText extends XmlNode {
     }
 
     /**
-     * Do not use Only present as a quick hack to write a tad cleaner html
-     * content
+     * Do not use Only present as a quick hack to write a tad cleaner html content
      */
     public String _getContent() {
         return content;

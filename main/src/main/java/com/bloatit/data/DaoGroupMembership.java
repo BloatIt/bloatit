@@ -77,7 +77,7 @@ class DaoGroupMembership extends DaoIdentifiable {
         return memberRight;
     }
 
-    protected final void addUserRight(UserGroupRight newRight) {
+    protected final void addUserRight(final UserGroupRight newRight) {
         this.memberRight.add(new DaoGroupRight(this, newRight));
     }
 
@@ -86,7 +86,7 @@ class DaoGroupMembership extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return null;
     }
 

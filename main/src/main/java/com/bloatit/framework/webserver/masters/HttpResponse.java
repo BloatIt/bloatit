@@ -54,10 +54,10 @@ public final class HttpResponse {
         page.write(htmlText);
     }
 
-    public void writeResource(String path, long size, String fileName) throws IOException {
-        String sendString1 = "Content-Disposition: inline; filename=" + fileName + "\r\n";
+    public void writeResource(final String path, final long size, final String fileName) throws IOException {
+        final String sendString1 = "Content-Disposition: inline; filename=" + fileName + "\r\n";
 
-        String sendString2 = "X-Sendfile2: " + path + " 0-" + size + "\r\n";
+        final String sendString2 = "X-Sendfile2: " + path + " 0-" + size + "\r\n";
         output.write(sendString1.getBytes());
         output.write(sendString2.getBytes());
 
@@ -67,13 +67,11 @@ public final class HttpResponse {
     /**
      * Writes a rest resource into an HttpResponse
      * 
-     * @param resource
-     *            the resource to write
-     * @throws IOException
-     *             whenever an IO error occurs on the underlying stream
+     * @param resource the resource to write
+     * @throws IOException whenever an IO error occurs on the underlying stream
      */
-    public void writeRestResource(RestResource resource) throws IOException {
-        
+    public void writeRestResource(final RestResource resource) throws IOException {
+
     }
 
     private void closeHeaders() throws IOException {

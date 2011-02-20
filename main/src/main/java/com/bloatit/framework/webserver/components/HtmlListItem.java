@@ -7,7 +7,6 @@ package com.bloatit.framework.webserver.components;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 
-
 public class HtmlListItem extends HtmlBranch {
 
     public HtmlListItem(final XmlNode node) {

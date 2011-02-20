@@ -60,7 +60,7 @@ public final class SessionManager {
 
     public static synchronized Session getByKey(final String key) {
         try {
-            Session session = activeSessions.get(UUID.fromString(key));
+            final Session session = activeSessions.get(UUID.fromString(key));
             return session;
         } catch (final IllegalArgumentException e) {
             return null;

@@ -2,7 +2,6 @@ package com.bloatit.model.admin;
 
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
-import com.bloatit.data.DaoProject;
 import com.bloatit.data.queries.DaoDemandListFactory;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -22,7 +21,7 @@ public class DemandAdminListFactory extends KudosableAdminListFactory<DaoDemand,
         return new AdminList.DemandAdminList(getfactory().createCollection());
     }
 
-    public void stateEquals(DemandState state) {
+    public void stateEquals(final DemandState state) {
         getfactory().stateEquals(state);
     }
 

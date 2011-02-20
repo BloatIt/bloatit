@@ -32,7 +32,7 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
 
     private static final class MyCreator extends Creator<DaoJoinGroupInvitation, JoinGroupInvitation> {
         @Override
-        public JoinGroupInvitation doCreate(DaoJoinGroupInvitation dao) {
+        public JoinGroupInvitation doCreate(final DaoJoinGroupInvitation dao) {
             return new JoinGroupInvitation(dao);
         }
     }
@@ -79,7 +79,7 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
     }
 
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return member.equals(getSender()) || member.equals(getReciever());
     }
 

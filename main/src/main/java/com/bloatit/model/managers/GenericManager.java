@@ -44,8 +44,8 @@ public final class GenericManager {
      * @param id the id
      * @return the {@link Identifiable}, or <code>null</code> if not found.
      */
-    public static Identifiable<?> getById(Integer id) {
-        Criteria criteria = SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoIdentifiable.class);
+    public static Identifiable<?> getById(final Integer id) {
+        final Criteria criteria = SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoIdentifiable.class);
         criteria.add(Restrictions.eq("id", id));
         return ((DaoIdentifiable) criteria.uniqueResult()).accept(new ConstructorVisitor());
     }

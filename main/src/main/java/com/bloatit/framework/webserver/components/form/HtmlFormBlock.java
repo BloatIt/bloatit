@@ -19,9 +19,8 @@ import com.bloatit.framework.webserver.components.meta.HtmlBranch;
  * Creates display blocks in a form
  * </p>
  * <p>
- * Form blocks should be used to separate various sections of a form. For
- * example personnal user data could be in one formblock and website preferences
- * in another one.
+ * Form blocks should be used to separate various sections of a form. For example
+ * personnal user data could be in one formblock and website preferences in another one.
  * </p>
  * 
  * <pre>
@@ -39,8 +38,7 @@ public final class HtmlFormBlock extends HtmlBranch {
      * Create a new displayed form block, with a displayed legend
      * </p>
      * 
-     * @param legend
-     *            The text displayed to explain content of the form block
+     * @param legend The text displayed to explain content of the form block
      */
     public HtmlFormBlock(final String legend) {
         super("fieldset");

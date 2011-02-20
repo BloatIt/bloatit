@@ -73,35 +73,37 @@ public final class AddProjectPage extends LoggedPage {
         createIdeaTitle.add(addProjectForm);
 
         // Create the field for the name of the project
-        FormFieldData<String> createFormFieldData = doCreateUrl.getProjectNameParameter().formFieldData();
+        final FormFieldData<String> createFormFieldData = doCreateUrl.getProjectNameParameter().formFieldData();
         final HtmlTextField projectNameInput = new HtmlTextField(createFormFieldData, Context.tr("Project name"));
         projectNameInput.setComment(Context.tr("The name of the existing project."));
         addProjectForm.add(projectNameInput);
 
         // Create the fields that will describe the descriptions of the project
-        FormFieldData<String> shortDescriptionFormFieldData = doCreateUrl.getShortDescriptionParameter().formFieldData();
-        final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionFormFieldData, Context.tr("Describe briefly the project"),
-                SHORT_DESCRIPTION_INPUT_NB_LINES, SHORT_DESCRIPTION_INPUT_NB_COLUMNS);
+        final FormFieldData<String> shortDescriptionFormFieldData = doCreateUrl.getShortDescriptionParameter().formFieldData();
+        final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionFormFieldData,
+                                                                    Context.tr("Describe briefly the project"),
+                                                                    SHORT_DESCRIPTION_INPUT_NB_LINES,
+                                                                    SHORT_DESCRIPTION_INPUT_NB_COLUMNS);
         shortDescriptionInput.setComment(Context.tr("Enter a short description of the projet in 120 characters."));
         addProjectForm.add(shortDescriptionInput);
 
-        FormFieldData<String> descriptionFormFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
-        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData, Context.tr("Describe the project"),
-                DESCRIPTION_INPUT_NB_LINES, DESCRIPTION_INPUT_NB_COLUMNS);
-        descriptionInput.setComment(Context
-                .tr("Mininum 10 character. You can enter a long description of the projet : list all features, add siteweb links, etc."));
+        final FormFieldData<String> descriptionFormFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
+        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
+                                                               Context.tr("Describe the project"),
+                                                               DESCRIPTION_INPUT_NB_LINES,
+                                                               DESCRIPTION_INPUT_NB_COLUMNS);
+        descriptionInput.setComment(Context.tr("Mininum 10 character. You can enter a long description of the projet : list all features, add siteweb links, etc."));
         addProjectForm.add(descriptionInput);
 
         // Language
-        FormFieldData<String> languageFormFieldData = doCreateUrl.getLangParameter().formFieldData();
-        LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
-        
+        final FormFieldData<String> languageFormFieldData = doCreateUrl.getLangParameter().formFieldData();
+        final LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
+
         languageInput.setComment(Context.tr("Language of the descriptions."));
         addProjectForm.add(languageInput);
 
         final HtmlFileInput projectImageInput = new HtmlFileInput(AddProjectAction.IMAGE_CODE, Context.tr("Project logo"));
-        projectImageInput
-                .setComment("Optional. The logo must be an image on a usable licence, in png with transparency for the background. The size must be 50px × 50px.");
+        projectImageInput.setComment("Optional. The logo must be an image on a usable licence, in png with transparency for the background. The size must be 50px × 50px.");
         addProjectForm.add(projectImageInput);
 
         addProjectForm.add(new HtmlSubmit(Context.tr("submit")));
@@ -123,19 +125,15 @@ public final class AddProjectPage extends LoggedPage {
     }
 
     private class LanguageElement implements DropDownElement {
-        private String name;
-        private String code;
+        private final String name;
+        private final String code;
 
-        public LanguageElement(String name, String code) {
-            super();
-            this.name = name;
-            this.code = code;
-        }
-
+        @Override
         public String getName() {
             return name;
         }
 
+        @Override
         public String getCode() {
             return code;
         }

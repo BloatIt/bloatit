@@ -45,7 +45,7 @@ public final class Comment extends Kudosable<DaoComment> {
          * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
-        public Comment doCreate(DaoComment dao) {
+        public Comment doCreate(final DaoComment dao) {
             return new Comment(dao);
         }
     }

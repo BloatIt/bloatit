@@ -41,7 +41,7 @@ public class HtmlTools {
      * <p>
      * Logo should be placed into a container that will specify its font size
      * </p>
-     *
+     * 
      * @return the HtmlElement to be placed into a page
      */
     public static HtmlElement generateLogo() {
@@ -76,7 +76,7 @@ public class HtmlTools {
      * <li>100 000 000 000 = 100T</li>
      * <li>1 000 000 000 000 = ∞</li>
      * </p>
-     *
+     * 
      * @param karma the karma value to compress
      * @return the compressed String to display
      */
@@ -134,7 +134,7 @@ public class HtmlTools {
      * Note, this method will completly ignore <i>any</i> time information, and display
      * only the date. To display time, use {@link #formatDateTime(DateLocale)}.
      * </p>
-     *
+     * 
      * @param date the localized date to render
      * @return the rendered date
      */
@@ -170,7 +170,7 @@ public class HtmlTools {
      * Note, this method will always display date & time. To display only the date, use
      * {@link #formatDate(DateLocale)}
      * </p>
-     *
+     * 
      * @param date the localized date to render
      * @return the rendered date
      */

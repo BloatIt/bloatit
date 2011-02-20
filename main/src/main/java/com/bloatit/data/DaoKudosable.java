@@ -113,7 +113,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * Use a HQL query to find if a member as already kudosed this kudosable.
      * 
      * @param member The member that could have kudosed this kudosable. (Don't even think
-     * of passing a null member)
+     *        of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
     public final boolean hasKudosed(final DaoMember member) {
@@ -134,7 +134,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * Use a HQL query to find if a member as already kudosed this kudosable.
      * 
      * @param member The member that could have kudosed this kudosable. (Don't even think
-     * of passing a null member)
+     *        of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
     public final int getVote(final DaoMember member) {

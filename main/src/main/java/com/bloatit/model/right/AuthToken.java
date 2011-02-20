@@ -39,7 +39,7 @@ public final class AuthToken {
 
     /**
      * Create an authoToken using the login and password of a person.
-     *
+     * 
      * @throws NotFoundException if the login is not found or if the password is wrong.
      */
     public AuthToken(final String login, final String password) throws NotFoundException {
@@ -62,7 +62,7 @@ public final class AuthToken {
     /**
      * NEVER Use this method. It is used by the SessionManager to persist the login
      * session of a user even in case of a server restart.
-     *
+     * 
      * @param memberId
      * @throws NotFoundException
      */
@@ -75,7 +75,7 @@ public final class AuthToken {
         key = UUID.randomUUID();
     }
 
-    public AuthToken(Member member) {
+    public AuthToken(final Member member) {
         this.member = member;
         key = UUID.randomUUID();
     }
@@ -89,7 +89,7 @@ public final class AuthToken {
 
     /**
      * If a transaction is active, make sure the member has an internal persistent dao.
-     *
+     * 
      * @return the member that is authenticated by this token.
      */
     public Member getMember() {
@@ -100,8 +100,8 @@ public final class AuthToken {
         final Member memberById = MemberManager.getMemberById(member.getId());
         return memberById;
     }
-    
-    public Member getNonPersistantMember(){
+
+    public Member getNonPersistantMember() {
         return member;
     }
 

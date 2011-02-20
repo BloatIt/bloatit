@@ -15,7 +15,7 @@ public class TeamRole {
     public final static TeamRole DEVELOPER = new TeamRole(EnumSet.range(UserGroupRight.CONSULT, UserGroupRight.TALK));
     public final static TeamRole ADMIN = new TeamRole(EnumSet.allOf(UserGroupRight.class));
 
-    public TeamRole(Set<UserGroupRight> rights) {
+    public TeamRole(final Set<UserGroupRight> rights) {
         this.rights = rights;
     }
 
@@ -23,7 +23,7 @@ public class TeamRole {
      * Indicates whether the user with the role can consult group information
      * 
      * @return <code>true</code> if the user can consult group information,
-     * <code>false</code> otherwise
+     *         <code>false</code> otherwise
      */
     public boolean consult() {
         return rights.contains(UserGroupRight.CONSULT);
@@ -33,7 +33,7 @@ public class TeamRole {
      * Indicates whether the user with the role can talk for the group
      * 
      * @return <code>true</code> if the user can talk for the group, <code>false</code>
-     * otherwise
+     *         otherwise
      */
     public boolean talk() {
         return rights.contains(UserGroupRight.TALK);
@@ -43,7 +43,7 @@ public class TeamRole {
      * Indicates whether the user with the role can invite people into the group
      * 
      * @return <code>true</code> if the user can invite people into the group,
-     * <code>false</code> otherwise
+     *         <code>false</code> otherwise
      */
     public boolean invite() {
         return rights.contains(UserGroupRight.INVITE);
@@ -53,7 +53,7 @@ public class TeamRole {
      * Indicates whether the user with the role can modify group information
      * 
      * @return <code>true</code> if the user can modify group information,
-     * <code>false</code> otherwise
+     *         <code>false</code> otherwise
      */
     public boolean modify() {
         return rights.contains(UserGroupRight.MODIFY);
@@ -66,7 +66,7 @@ public class TeamRole {
      * </p>
      * 
      * @return <code>true</code> if the user can change the role of people,
-     * <code>false</code> otherwise
+     *         <code>false</code> otherwise
      */
     public boolean promote() {
         return rights.contains(UserGroupRight.PROMOTE);
@@ -77,7 +77,7 @@ public class TeamRole {
      * money ...)
      * 
      * @return <code>true</code> if the user can access bank information,
-     * <code>false</code> otherwise
+     *         <code>false</code> otherwise
      */
     public boolean bank() {
         return rights.contains(UserGroupRight.BANK);

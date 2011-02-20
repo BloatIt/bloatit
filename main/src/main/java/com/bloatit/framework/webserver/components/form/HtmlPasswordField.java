@@ -36,8 +36,7 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
      * If a label is added, it will will be positioned BEFORE the element
      * </p>
      * 
-     * @param name
-     *            the name of the element
+     * @param name the name of the element
      */
     public HtmlPasswordField(final String name) {
         super(new HtmlSimpleInput("password"), name);
@@ -45,17 +44,14 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
 
     /**
      * <p>
-     * Creates a form field for a given element, with a given name and a given
-     * label.
+     * Creates a form field for a given element, with a given name and a given label.
      * </p>
      * <p>
      * The Label will be positioned BEFORE the element
      * </p>
      * 
-     * @param name
-     *            the name of the element
-     * @param label
-     *            the label of the element
+     * @param name the name of the element
+     * @param label the label of the element
      */
     public HtmlPasswordField(final String name, final String label) {
         super(new HtmlSimpleInput("password"), name, label);

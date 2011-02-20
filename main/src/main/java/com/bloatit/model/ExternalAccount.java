@@ -37,7 +37,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
 
     private static final class MyCreator extends Creator<DaoExternalAccount, ExternalAccount> {
         @Override
-        public ExternalAccount doCreate(DaoExternalAccount dao) {
+        public ExternalAccount doCreate(final DaoExternalAccount dao) {
             return new ExternalAccount(dao);
         }
     }
@@ -49,7 +49,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
     ExternalAccount(final DaoExternalAccount dao) {
         super(dao);
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Accessors
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
 
     /**
      * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>BankCode</code> property.
+     *         <code>BankCode</code> property.
      */
     public String getBankCode() throws UnauthorizedOperationException {
         tryAccess(new ExternalAccountRight.BankCode(), Action.READ);
@@ -79,7 +79,7 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
 
     /**
      * @throws UnauthorizedOperationException if you do not have the right to access the
-     * <code>Type</code> property.
+     *         <code>Type</code> property.
      */
     public AccountType getType() throws UnauthorizedOperationException {
         tryAccess(new ExternalAccountRight.Type(), Action.READ);

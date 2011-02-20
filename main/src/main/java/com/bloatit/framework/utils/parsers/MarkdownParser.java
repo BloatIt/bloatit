@@ -25,28 +25,28 @@ public class MarkdownParser implements Parser {
      * Creates a markdown parser
      */
     public MarkdownParser() {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine jsEngine = manager.getEngineByName("js");
+        final ScriptEngineManager manager = new ScriptEngineManager();
+        final ScriptEngine jsEngine = manager.getEngineByName("js");
 
         try {
-            InputStream in = getClass().getClassLoader().getResourceAsStream(SHOWDOWN_CLASSPATH);
-            Reader read = new InputStreamReader(in);
-            Reader showdownSrc = new BufferedReader(read);
+            final InputStream in = getClass().getClassLoader().getResourceAsStream(SHOWDOWN_CLASSPATH);
+            final Reader read = new InputStreamReader(in);
+            final Reader showdownSrc = new BufferedReader(read);
             jsEngine.eval(showdownSrc);
             showdownConverter = jsEngine.eval("new Showdown.converter()");
             engine = (Invocable) jsEngine;
-        } catch (ScriptException e) {
+        } catch (final ScriptException e) {
             throw new FatalErrorException("Javascript is not available as a language on your system. Please do something ...", e);
         }
     }
 
     @Override
-    public String parse(String toParse) throws ParsingException {
+    public String parse(final String toParse) throws ParsingException {
         try {
             return engine.invokeMethod(showdownConverter, "makeHtml", toParse) + "";
-        } catch (ScriptException e) {
+        } catch (final ScriptException e) {
             throw new ParsingException("An error happened during the script execution", e);
-        } catch (NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             throw new ParsingException("The parsing method does not exist", e);
         }
     }

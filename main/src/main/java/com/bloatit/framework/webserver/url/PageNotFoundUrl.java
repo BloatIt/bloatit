@@ -24,12 +24,12 @@ public final class PageNotFoundUrl extends Url implements Cloneable {
     }
 
     @Override
-    protected void doConstructUrl(StringBuilder sb) {
+    protected void doConstructUrl(final StringBuilder sb) {
         // nothing to do here. All the work is done in Url.
     }
 
     @Override
-    public void addParameter(String key, String value) {
+    public void addParameter(final String key, final String value) {
         // nothing to do here. There is no parameters in PageNotFound
     }
 

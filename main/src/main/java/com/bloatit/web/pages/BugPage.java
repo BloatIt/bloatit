@@ -51,7 +51,7 @@ public final class BugPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        HtmlDiv box = new HtmlDiv("padding_box");
+        final HtmlDiv box = new HtmlDiv("padding_box");
 
         HtmlTitle bugTitle;
         bugTitle = new HtmlTitle(bug.getTitle(), 1);

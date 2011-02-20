@@ -52,7 +52,7 @@ public final class DemandManager {
      * @param hasSelectedOffer true if you want demands with a selected offer.
      * @return the demands
      */
-    public static PageIterable<Demand> getDemands(DemandState state, boolean hasSelectedOffer) {
+    public static PageIterable<Demand> getDemands(final DemandState state, final boolean hasSelectedOffer) {
         // return new DemandList(DBRequests.getDemands(state, null, null, null, null,
         // null, null, null, hasSelectedOffer, null, null, null, null, null,//
         // null,

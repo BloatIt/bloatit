@@ -104,8 +104,8 @@ public final class DaoMember extends DaoActor {
      * 
      * @param login the member login.
      * @param password the password of the member "login". It is a string corresponding to
-     * the string in the database. This method does not perform any sha1 or md5
-     * transformation.
+     *        the string in the database. This method does not perform any sha1 or md5
+     *        transformation.
      * @return null if not found. (or if login == null or password == null)
      */
     public static DaoMember getByLoginAndPassword(final String login, final String password) {
@@ -128,8 +128,8 @@ public final class DaoMember extends DaoActor {
      * @param locale the locale of the user.
      * @return The newly created DaoMember
      * @throws HibernateException If there is any problem connecting to the db. Or if the
-     * member as a non unique login. If an exception is thrown then the transaction is
-     * rolled back and reopened.
+     *         member as a non unique login. If an exception is thrown then the
+     *         transaction is rolled back and reopened.
      */
     public static DaoMember createAndPersist(final String login, final String password, final String email, final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -354,9 +354,9 @@ public final class DaoMember extends DaoActor {
      * @param state the state of the invitation (ACCEPTED, PENDING, REFUSED)
      * @param group the group for which the invitations have been sent
      * @return All the received invitation to join a specific group, which are in a given
-     * state
+     *         state
      */
-    public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state, DaoGroup group) {
+    public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state, final DaoGroup group) {
         return new QueryCollection<DaoJoinGroupInvitation>("from com.bloatit.data.DaoJoinGroupInvitation as j where j.receiver = :receiver and j.state = :state  and j.group = :group").setEntity("receiver",
                                                                                                                                                                                                   this)
                                                                                                                                                                                        .setParameter("state",
@@ -416,7 +416,7 @@ public final class DaoMember extends DaoActor {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

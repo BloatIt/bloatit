@@ -31,7 +31,7 @@ import com.bloatit.model.right.UserContentRight;
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.
  * 
  * @param <T> the generic type. Must be the concrete Dao version of the concrete subClass.
- * For example: Demand extends UserContent<DaoDemand>
+ *        For example: Demand extends UserContent<DaoDemand>
  */
 public abstract class UserContent<T extends DaoUserContent> extends Identifiable<T> implements UserContentInterface<T> {
 
@@ -111,12 +111,12 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     }
 
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return member.isMine(member);
     }
 
     @Override
-    protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
+    protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
 
         if (getAsGroup() != null && member.isInGroup(getAsGroup())) {
             return getAsGroup().getUserGroupRight(member);

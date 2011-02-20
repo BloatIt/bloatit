@@ -22,7 +22,7 @@ package com.bloatit.model.lists;
  * 
  * @param <E> the Model representation of a Dao element.
  * @param <DAO> the Dao Element. (If <code>E</code> id Demand then <code>DAO</code> must
- * be DaoDemand.
+ *        be DaoDemand.
  */
 public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
 

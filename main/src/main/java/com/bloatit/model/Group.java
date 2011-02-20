@@ -37,7 +37,7 @@ public final class Group extends Actor<DaoGroup> {
 
     private static final class MyCreator extends Creator<DaoGroup, Group> {
         @Override
-        public Group doCreate(DaoGroup dao) {
+        public Group doCreate(final DaoGroup dao) {
             return new Group(dao);
         }
     }
@@ -57,7 +57,7 @@ public final class Group extends Actor<DaoGroup> {
      * @param right <ether the group is <code>PUBLIC</code> or <code>PROTECTED</code>
      * @param author the creator of the group
      */
-    public Group(String login, String contact, String description, Right right, Member author) {
+    public Group(final String login, final String contact, final String description, final Right right, final Member author) {
         super(DaoGroup.createAndPersiste(login, contact, description, right));
         author.addToGroupUnprotected(this);
         author.setGroupRoleUnprotected(this, TeamRole.ADMIN);
@@ -108,7 +108,7 @@ public final class Group extends Actor<DaoGroup> {
         return getDao().getDescription();
     }
 
-    public EnumSet<UserGroupRight> getUserGroupRight(Member member) {
+    public EnumSet<UserGroupRight> getUserGroupRight(final Member member) {
         return getDao().getUserGroupRight(member.getDao());
     }
 

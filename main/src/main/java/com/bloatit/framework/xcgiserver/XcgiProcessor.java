@@ -8,7 +8,7 @@ public interface XcgiProcessor {
 
     /**
      * Take a request and use the {@link HttpResponse} object to create a result.
-     *
+     * 
      * @param header Is the header part of the HTTP request.
      * @param postData is the Post data from the HTTP request.
      * @param response is where you will have to put the response to this request.

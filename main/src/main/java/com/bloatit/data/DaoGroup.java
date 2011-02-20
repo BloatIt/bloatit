@@ -136,7 +136,7 @@ public final class DaoGroup extends DaoActor {
      * 
      * @param member The member to add
      * @param isAdmin true if the member need to have the right to administer this group.
-     * (This may change if the number of role change !)
+     *        (This may change if the number of role change !)
      */
     public void addMember(final DaoMember member, final boolean isAdmin) {
         groupMembership.add(new DaoGroupMembership(member, this));
@@ -157,7 +157,7 @@ public final class DaoGroup extends DaoActor {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -183,7 +183,7 @@ public final class DaoGroup extends DaoActor {
      * Finds if a member is in this group, and which is its status.
      * 
      * @return {@code null} if the member is not in this group, or a set otherwise. <br />
-     * Note, the returned set can be empty if the user is only a Member
+     *         Note, the returned set can be empty if the user is only a Member
      */
     public EnumSet<UserGroupRight> getUserGroupRight(final DaoMember member) {
         final Query q = SessionManager.getSessionFactory()
@@ -206,7 +206,7 @@ public final class DaoGroup extends DaoActor {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 

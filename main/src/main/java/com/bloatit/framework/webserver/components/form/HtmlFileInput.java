@@ -15,9 +15,8 @@ package com.bloatit.framework.webserver.components.form;
  * Class used to create a file uploading box
  * </p>
  * <p>
- * <b>NOTE</b>: When using a <code>HtmlFileInput</code> it is usually wise to
- * use the {@link HtmlForm#enableFileUpload()}, otherwise the file will not be
- * uploaded.
+ * <b>NOTE</b>: When using a <code>HtmlFileInput</code> it is usually wise to use the
+ * {@link HtmlForm#enableFileUpload()}, otherwise the file will not be uploaded.
  * </p>
  * 
  * @see HtmlForm#enableFileUpload()
@@ -27,8 +26,7 @@ public final class HtmlFileInput extends HtmlFormField<String> {
     /**
      * Creates a file input with a given name
      * 
-     * @param name
-     *            the name used in the html attribute <code>name</code>
+     * @param name the name used in the html attribute <code>name</code>
      */
     public HtmlFileInput(final String name) {
         super(new HtmlSimpleInput("file"), name);
@@ -37,10 +35,8 @@ public final class HtmlFileInput extends HtmlFormField<String> {
     /**
      * Creates a file input with a given name and some displayed text
      * 
-     * @param name
-     *            the name used in the html attribute <code>name</code>
-     * @param label
-     *            the text displayed inside the {@code <label>} markup
+     * @param name the name used in the html attribute <code>name</code>
+     * @param label the text displayed inside the {@code <label>} markup
      */
     public HtmlFileInput(final String name, final String label) {
         super(new HtmlSimpleInput("file"), name, label);
@@ -49,10 +45,8 @@ public final class HtmlFileInput extends HtmlFormField<String> {
     /**
      * Creates a file input based on some form field data
      * 
-     * @param data
-     *            the data used to generate the field
-     * @param label
-     *            the text displayed inside the {@code <label>} markup
+     * @param data the data used to generate the field
+     * @param label the text displayed inside the {@code <label>} markup
      */
     public HtmlFileInput(final FormFieldData<String> data, final String label) {
         super(new HtmlSimpleInput("file"), data.getFieldName(), label);

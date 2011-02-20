@@ -10,15 +10,15 @@ public class MalformedPostException extends Exception {
         super();
     }
 
-    public MalformedPostException(String message, Throwable cause) {
+    public MalformedPostException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public MalformedPostException(String message) {
+    public MalformedPostException(final String message) {
         super(message);
     }
 
-    public MalformedPostException(Throwable cause) {
+    public MalformedPostException(final Throwable cause) {
         super(cause);
     }
 }

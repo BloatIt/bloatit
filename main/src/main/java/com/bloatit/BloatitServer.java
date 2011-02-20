@@ -6,8 +6,8 @@ import com.bloatit.web.BloatitWebServer;
 
 public class BloatitServer {
 
-    public static void main(String[] args) {
-        Framework framework = new Framework(new Model());
+    public static void main(final String[] args) {
+        final Framework framework = new Framework(new Model());
         framework.addProcessor(new BloatitWebServer());
 
         try {

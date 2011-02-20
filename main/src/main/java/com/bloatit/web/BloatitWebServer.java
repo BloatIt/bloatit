@@ -120,7 +120,7 @@ public class BloatitWebServer extends WebServer {
 
     @SuppressWarnings("deprecation")
     @Override
-    protected Linkable constructLinkable(String pageCode, Parameters params, Session session) {
+    protected Linkable constructLinkable(final String pageCode, final Parameters params, final Session session) {
 
         // Pages
         if (pageCode.equals(IndexPageUrl.getName())) {

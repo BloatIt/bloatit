@@ -25,30 +25,30 @@ public class JoinTeamAction extends LoggedAction {
     private JoinTeamActionUrl url;
 
     @RequestParam(level = Level.ERROR)
-    private Group targetTeam;
+    private final Group targetTeam;
 
-    public JoinTeamAction(JoinTeamActionUrl url) {
+    public JoinTeamAction(final JoinTeamActionUrl url) {
         super(url);
         this.targetTeam = url.getTargetTeam();
     }
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        Member me = session.getAuthToken().getMember();
+        final Member me = session.getAuthToken().getMember();
 
         if (targetTeam.isPublic()) {
             try {
                 me.addToPublicGroup(targetTeam);
-            } catch (UnauthorizedOperationException e) {
-                Log.web().fatal("User trie to join public group, but is not allowed to",e);
+            } catch (final UnauthorizedOperationException e) {
+                Log.web().fatal("User trie to join public group, but is not allowed to", e);
                 session.notifyBad("Oops we had an internal issue preventing you to join group, please try again later.");
                 return session.getLastVisitedPage();
             }
         } else {
             try {
                 session.notifyBad("The team " + targetTeam.getLogin() + " is not public, you need an invitation to join it");
-            } catch (UnauthorizedOperationException e) {
-                Log.web().warn("Trying to display team name but not allowed to",e);
+            } catch (final UnauthorizedOperationException e) {
+                Log.web().warn("Trying to display team name but not allowed to", e);
             }
             throw new RedirectException(session.getLastVisitedPage());
         }

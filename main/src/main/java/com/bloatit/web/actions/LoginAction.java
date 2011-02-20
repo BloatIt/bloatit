@@ -33,11 +33,11 @@ public final class LoginAction extends Action {
     public static final String LOGIN_CODE = "bloatit_login";
     public static final String PASSWORD_CODE = "bloatit_password";
 
-    @ParamConstraint(optionalErrorMsg=@tr("You must enter a login."))
+    @ParamConstraint(optionalErrorMsg = @tr("You must enter a login."))
     @RequestParam(level = Level.ERROR, name = LOGIN_CODE, role = RequestParam.Role.POST)
     private final String login;
 
-    @ParamConstraint(optionalErrorMsg=@tr("You must enter a password."))
+    @ParamConstraint(optionalErrorMsg = @tr("You must enter a password."))
     @RequestParam(level = Level.ERROR, name = PASSWORD_CODE, role = RequestParam.Role.POST)
     private final String password;
     private final LoginActionUrl url;

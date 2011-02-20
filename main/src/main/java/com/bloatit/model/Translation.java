@@ -29,7 +29,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
 
     private static final class MyCreator extends Creator<DaoTranslation, Translation> {
         @Override
-        public Translation doCreate(DaoTranslation dao) {
+        public Translation doCreate(final DaoTranslation dao) {
             return new Translation(dao);
         }
     }
@@ -68,7 +68,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
      * @param sizeMax is the maximum size the returned text can be.
      * @param variance is how far we are looking for the punctuation mark to cut the text.
      * @return a cut version of the text, find a point or a punctuation mark to cut it at
-     * the best position possible.
+     *         the best position possible.
      */
     public String getShortText(final int sizeMax, final int variance) {
         if (variance < 0) {

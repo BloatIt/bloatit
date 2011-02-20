@@ -13,34 +13,8 @@ import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
-import com.bloatit.model.Batch;
-import com.bloatit.model.Bug;
-import com.bloatit.model.Comment;
-import com.bloatit.model.Demand;
-import com.bloatit.model.FileMetadata;
-import com.bloatit.model.Group;
 import com.bloatit.model.Identifiable;
-import com.bloatit.model.JoinGroupInvitation;
-import com.bloatit.model.Kudosable;
-import com.bloatit.model.KudosableInterface;
-import com.bloatit.model.Member;
-import com.bloatit.model.Offer;
-import com.bloatit.model.Project;
-import com.bloatit.model.UserContent;
-import com.bloatit.model.UserContentInterface;
-import com.bloatit.model.demand.DemandImplementation;
-import com.bloatit.model.demand.DemandManager;
-import com.bloatit.model.managers.BatchManager;
-import com.bloatit.model.managers.BugManager;
-import com.bloatit.model.managers.CommentManager;
-import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.managers.GenericManager;
-import com.bloatit.model.managers.GroupManager;
-import com.bloatit.model.managers.KudosableManager;
-import com.bloatit.model.managers.MemberManager;
-import com.bloatit.model.managers.OfferManager;
-import com.bloatit.model.managers.ProjectManager;
-import com.bloatit.model.managers.UserContentManager;
 
 public final class Loaders {
 
@@ -118,7 +92,7 @@ public final class Loaders {
         public Integer fromString(final String data) throws ConversionErrorException {
             try {
                 return Integer.decode(data);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -127,7 +101,7 @@ public final class Loaders {
     private static class ToEnum<T extends Enum<T>> extends Loader<Enum<T>> {
         private final Class<T> type;
 
-        public ToEnum(Class<T> type) {
+        public ToEnum(final Class<T> type) {
             super();
             this.type = type;
         }
@@ -141,7 +115,7 @@ public final class Loaders {
         public Enum<T> fromString(final String data) throws ConversionErrorException {
             try {
                 return Enum.valueOf(type, data);
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -152,7 +126,7 @@ public final class Loaders {
         public Float fromString(final String data) throws ConversionErrorException {
             try {
                 return Float.valueOf(data);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -163,7 +137,7 @@ public final class Loaders {
         public BigDecimal fromString(final String data) throws ConversionErrorException {
             try {
                 return new BigDecimal(data);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -174,7 +148,7 @@ public final class Loaders {
         public Byte fromString(final String data) throws ConversionErrorException {
             try {
                 return Byte.valueOf(data);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -185,7 +159,7 @@ public final class Loaders {
         public Short fromString(final String data) throws ConversionErrorException {
             try {
                 return Short.valueOf(data);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -196,7 +170,7 @@ public final class Loaders {
         public Long fromString(final String data) throws ConversionErrorException {
             try {
                 return Long.valueOf(data);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -207,7 +181,7 @@ public final class Loaders {
         public Double fromString(final String data) throws ConversionErrorException {
             try {
                 return Double.valueOf(data);
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
         }
@@ -265,12 +239,12 @@ public final class Loaders {
         @Override
         public final Identifiable<?> fromString(final String data) throws ConversionErrorException {
             try {
-                Identifiable<?> fromStr = GenericManager.getById(Integer.valueOf(data));
+                final Identifiable<?> fromStr = GenericManager.getById(Integer.valueOf(data));
                 if (fromStr == null) {
                     throw new ConversionErrorException("Identifiable not found for Id: " + data);
                 }
                 return fromStr;
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             }
         }

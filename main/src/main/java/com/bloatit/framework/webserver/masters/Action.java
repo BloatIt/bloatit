@@ -37,7 +37,7 @@ public abstract class Action implements Linkable {
     @Override
     public final void writeToHttp(final HttpResponse response) throws RedirectException, IOException {
         Log.framework().trace("Processing action: " + actionUrl.urlString());
-        Url url = process();
+        final Url url = process();
         if (url != null) {
             response.writeRedirect(url.urlString());
         } else {

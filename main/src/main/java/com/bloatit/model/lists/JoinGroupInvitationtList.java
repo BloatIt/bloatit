@@ -23,7 +23,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.JoinGroupInvitation;
 
 /**
- * The Class JoinGroupInvitationList transforms PageIterable<DaoJoinGroupInvitation> to PageIterable<JoinGroupInvitation>.
+ * The Class JoinGroupInvitationList transforms PageIterable<DaoJoinGroupInvitation> to
+ * PageIterable<JoinGroupInvitation>.
  */
 public final class JoinGroupInvitationtList extends ListBinder<JoinGroupInvitation, DaoJoinGroupInvitation> {
 

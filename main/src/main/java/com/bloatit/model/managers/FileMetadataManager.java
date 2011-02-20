@@ -63,17 +63,17 @@ public final class FileMetadataManager {
      * @param author the author of the new {@link FileMetadata}
      * @param tempFileUrl the url to the temporary file.
      * @param filename the filename the file name to display in the web site (may be
-     * different from the real file name).
+     *        different from the real file name).
      * @param description a short description coming with the new {@link FileMetadata}.
      * @return the newly created {@link FileMetadata}
      */
-    public static FileMetadata createFromTempFile(final Member author, String tempFileUrl, String filename, String description) {
+    public static FileMetadata createFromTempFile(final Member author, final String tempFileUrl, final String filename, final String description) {
 
         createWipDirectory();
 
-        File tempFile = new File(tempFileUrl);
+        final File tempFile = new File(tempFileUrl);
 
-        File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
+        final File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
         tempFile.renameTo(storedFile);
 
         return createFileMetadata(author, filename, description, storedFile);
@@ -98,22 +98,22 @@ public final class FileMetadataManager {
      * @param author the author of the new {@link FileMetadata}
      * @param path the url to the local file.
      * @param name the filename the file name to display in the web site (may be different
-     * from the real file name).
+     *        from the real file name).
      * @param description a short description coming with the new {@link FileMetadata}.
      * @return the newly created {@link FileMetadata}
      */
-    public static FileMetadata createFromLocalFile(Member author, String path, String name, String description) {
+    public static FileMetadata createFromLocalFile(final Member author, final String path, final String name, final String description) {
         createWipDirectory();
 
-        File tempFile = new File(path);
+        final File tempFile = new File(path);
 
-        File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
+        final File storedFile = new File(FILE_STORAGE_DIRECTORY + "/" + tempFile.getName());
         try {
             copyFile(tempFile, storedFile);
 
             return createFileMetadata(author, name, description, storedFile);
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Log.model().error("Copy failed", e);
             return null;
         }
@@ -129,7 +129,7 @@ public final class FileMetadataManager {
      * @param storedFile
      * @return
      */
-    private static FileMetadata createFileMetadata(Member author, String name, String description, File storedFile) {
+    private static FileMetadata createFileMetadata(final Member author, final String name, final String description, final File storedFile) {
         // TODO: improve mine type detection
         FileType type = FileType.UNKNOWN;
         if (storedFile.getName().endsWith(".txt")) {
@@ -154,7 +154,7 @@ public final class FileMetadataManager {
             type = FileType.SVG;
         }
 
-        FileMetadata file = new FileMetadata(author, name, storedFile.getPath(), type, (int) storedFile.length());
+        final FileMetadata file = new FileMetadata(author, name, storedFile.getPath(), type, (int) storedFile.length());
         file.setShortDescription(description);
         return file;
     }
@@ -166,18 +166,20 @@ public final class FileMetadataManager {
      * @param out the file to where to copy <code>in</code>.
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public static void copyFile(File in, File out) throws IOException {
-        FileChannel inChannel = new FileInputStream(in).getChannel();
-        FileChannel outChannel = new FileOutputStream(out).getChannel();
+    public static void copyFile(final File in, final File out) throws IOException {
+        final FileChannel inChannel = new FileInputStream(in).getChannel();
+        final FileChannel outChannel = new FileOutputStream(out).getChannel();
         try {
             inChannel.transferTo(0, inChannel.size(), outChannel);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw e;
         } finally {
-            if (inChannel != null)
+            if (inChannel != null) {
                 inChannel.close();
-            if (outChannel != null)
+            }
+            if (outChannel != null) {
                 outChannel.close();
+            }
         }
     }
 

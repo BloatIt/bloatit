@@ -25,7 +25,7 @@ public final class DaoGroupRight extends DaoIdentifiable {
     @Enumerated
     private UserGroupRight userStatus;
 
-    protected DaoGroupRight(DaoGroupMembership membership, UserGroupRight userStatus) {
+    protected DaoGroupRight(final DaoGroupMembership membership, final UserGroupRight userStatus) {
         super();
         this.membership = membership;
         this.userStatus = userStatus;
@@ -44,7 +44,7 @@ public final class DaoGroupRight extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return null;
     }
 
@@ -70,7 +70,7 @@ public final class DaoGroupRight extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

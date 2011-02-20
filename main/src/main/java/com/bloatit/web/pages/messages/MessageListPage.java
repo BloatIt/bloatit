@@ -25,38 +25,37 @@ import com.bloatit.web.url.SendGroupInvitationPageUrl;
 @ParamContainer("messages/list")
 public class MessageListPage extends LoggedPage {
     @SuppressWarnings("unused")
-    private MessageListPageUrl url; // kept for the sake of consistency
+    private final MessageListPageUrl url; // kept for the sake of consistency
 
-    public MessageListPage(MessageListPageUrl url) {
+    public MessageListPage(final MessageListPageUrl url) {
         super(url);
         this.url = url;
     }
 
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
-        HtmlDiv master = new HtmlDiv("padding_box");
+        final HtmlDiv master = new HtmlDiv("padding_box");
 
-        HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Bloatit private messages"), 1);
+        final HtmlTitleBlock main = new HtmlTitleBlock(Context.tr("Bloatit private messages"), 1);
         master.add(main);
 
         // Generating links to group invites
-        HtmlTitleBlock groupInvites = new HtmlTitleBlock(Context.tr("Group invites"), 2);
+        final HtmlTitleBlock groupInvites = new HtmlTitleBlock(Context.tr("Group invites"), 2);
         main.add(groupInvites);
 
-        HtmlLink inviteToGroup = new HtmlLink(new SendGroupInvitationPageUrl().urlString(), "Invite people to your group");
+        final HtmlLink inviteToGroup = new HtmlLink(new SendGroupInvitationPageUrl().urlString(), "Invite people to your group");
         groupInvites.add(new HtmlParagraph().add(inviteToGroup));
 
-        Member me = session.getAuthToken().getMember();
-        PageIterable<JoinGroupInvitation> invitations = me.getReceivedInvitation(State.PENDING);
-        for (JoinGroupInvitation invitation : invitations) {
-            HtmlParagraph p = new HtmlParagraph();
+        final Member me = session.getAuthToken().getMember();
+        final PageIterable<JoinGroupInvitation> invitations = me.getReceivedInvitation(State.PENDING);
+        for (final JoinGroupInvitation invitation : invitations) {
+            final HtmlParagraph p = new HtmlParagraph();
             try {
-                p.addText("Received an invitation to group '" + invitation.getGroup().getLogin() + "' from: '"
-                        + invitation.getSender().getDisplayName() + "'");
+                p.addText("Received an invitation to group '" + invitation.getGroup().getLogin() + "' from: '" + invitation.getSender().getDisplayName() + "'");
 
-                HtmlLink accept = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
-                HtmlLink refuse = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
-                HtmlGenericElement empty = new HtmlGenericElement();
+                final HtmlLink accept = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, true).urlString(), Context.tr("accept"));
+                final HtmlLink refuse = new HtmlLink(new HandleJoinGroupInvitationActionUrl(invitation, false).urlString(), Context.tr("refuse"));
+                final HtmlGenericElement empty = new HtmlGenericElement();
                 empty.addText(" (");
                 empty.add(accept);
                 empty.addText(") - (");
@@ -64,7 +63,7 @@ public class MessageListPage extends LoggedPage {
                 empty.addText(")");
                 p.add(empty);
 
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 p.addText("You have been invited to a group, but you can't see its name");
             }
             groupInvites.add(p);

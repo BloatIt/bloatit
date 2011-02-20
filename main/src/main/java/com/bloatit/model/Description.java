@@ -38,7 +38,7 @@ public final class Description extends Identifiable<DaoDescription> {
 
     private static final class MyCreator extends Creator<DaoDescription, Description> {
         @Override
-        public Description doCreate(DaoDescription dao) {
+        public Description doCreate(final DaoDescription dao) {
             return new Description(dao);
         }
     }
@@ -104,7 +104,7 @@ public final class Description extends Identifiable<DaoDescription> {
     }
 
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return false;
     }
 }

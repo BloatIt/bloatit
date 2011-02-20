@@ -20,8 +20,7 @@ public abstract class HtmlLeaf extends HtmlElement {
     /**
      * Creates a new Leaf
      * 
-     * @param tag
-     *            the <code>String</code> representation of the tag
+     * @param tag the <code>String</code> representation of the tag
      */
     public HtmlLeaf(final String tag) {
         super(tag);

@@ -8,8 +8,8 @@ package com.bloatit.framework.xcgiserver.scgi;
  * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
  * AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY
  * DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
- * CONTRACT, NEGLIGENCE OR AUTHENTICATED TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE
- * USE OR PERFORMANCE OF THIS SOFTWARE.
+ * CONTRACT, NEGLIGENCE OR AUTHENTICATED TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION
+ * WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -25,16 +25,15 @@ import com.bloatit.framework.xcgiserver.XcgiParser;
 /**
  * SCGIUtils connector.<br>
  * Version: 1.0<br>
- * Home page: http://gist.github.com/38425 See also: http://en.wikipedia.org/wiki/SCGIUtils
+ * Home page: http://gist.github.com/38425 See also:
+ * http://en.wikipedia.org/wiki/SCGIUtils
  */
 public class SCGIParser implements XcgiParser {
 
     /** Used to decode the headers. */
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
 
-
     private final InputStream input;
-
 
     private final OutputStream ouput;
 
@@ -52,12 +51,12 @@ public class SCGIParser implements XcgiParser {
         }
     }
 
-
-
     /**
-     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGIUtils</a> request headers.<br>
-     * After the headers had been loaded, you can read the body of the request manually from the same {@code input} stream:
-     *
+     * Read the <a href="http://python.ca/scgi/protocol.txt">SCGIUtils</a> request
+     * headers.<br>
+     * After the headers had been loaded, you can read the body of the request manually
+     * from the same {@code input} stream:
+     * 
      * <pre>
      * // Load the SCGIUtils headers.
      * Socket clientSocket = socket.accept();
@@ -66,8 +65,9 @@ public class SCGIParser implements XcgiParser {
      * // Read the body of the request.
      * bis.read(new byte[Integer.parseInt(env.get(&quot;CONTENT_LENGTH&quot;))]);
      * </pre>
-     *
-     *            an efficient (buffered) input stream.
+     * 
+     * an efficient (buffered) input stream.
+     * 
      * @return strings passed via the SCGIUtils request.
      */
     @Override

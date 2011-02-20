@@ -1,13 +1,12 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
- * software: you can redistribute it and/or modify it under the terms of the GNU
- * Affero General Public License as published by the Free Software Foundation,
- * either version 3 of the License, or (at your option) any later version.
- * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- * details. You should have received a copy of the GNU Affero General Public
- * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU Affero General Public
+ * License as published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version. BloatIt is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details. You should have received a copy of the GNU Affero General
+ * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.pages.demand;
 
@@ -52,7 +51,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
 
     }
 
-    protected HtmlElement produce(DemandContributorsComponentUrl url) {
+    protected HtmlElement produce(final DemandContributorsComponentUrl url) {
         final HtmlDiv contributorsBlock = new HtmlDiv("contribution_block");
         {
 
@@ -74,43 +73,40 @@ public final class DemandContributorsComponent extends HtmlDiv {
                                                                 .getDefaultString();
                     final String contributionMinValue = Context.getLocalizator().getCurrency(demand.getContributionMin()).getDefaultString();
                     final String contributionMaxValue = Context.getLocalizator().getCurrency(demand.getContributionMax()).getDefaultString();
-                    final String contributionMedianValue = Context.getLocalizator()
-                                                                  .getCurrency(computeMedian(demand.getContributions()))
-                                                                  .getDefaultString();
+                    final String contributionMedianValue = Context.getLocalizator().getCurrency(computeMedian(demand.getContributions())).getDefaultString();
 
-                    HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
-                                                                                       contributionMaxValue,
-                                                                                       contributionMeanValue,
-                                                                                       contributionMedianValue));
+                    final HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
+                                                                                             contributionMaxValue,
+                                                                                             contributionMeanValue,
+                                                                                             contributionMedianValue));
                     contributorsBlock.add(statTable);
                 }
 
-                HtmlTable table = new HtmlTable(new ContributionTableModel(demand.getContributions()));
+                final HtmlTable table = new HtmlTable(new ContributionTableModel(demand.getContributions()));
                 contributorsBlock.add(table);
 
                 contributorsBlock.add(new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute")));
 
-            } catch (UnauthorizedOperationException e) {
-            }
+            } catch (final UnauthorizedOperationException e) {}
 
         }
         return contributorsBlock;
     }
 
-    private BigDecimal computeMedian(PageIterable<Contribution> contributions) {
+    private BigDecimal computeMedian(final PageIterable<Contribution> contributions) {
 
         try {
 
-            Iterator<Contribution> it = contributions.iterator();
+            final Iterator<Contribution> it = contributions.iterator();
 
-            List<BigDecimal> list = new ArrayList<BigDecimal>();
+            final List<BigDecimal> list = new ArrayList<BigDecimal>();
 
             while (it.hasNext()) {
                 list.add(it.next().getAmount());
             }
             Collections.sort(list);
 
-            int middle = list.size() / 2;
+            final int middle = list.size() / 2;
 
             if (list.size() % 2 == 1) {
                 return list.get(middle);
@@ -118,7 +114,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
                 return list.get(middle - 1).add(list.get(middle)).divide(new BigDecimal(2), RoundingMode.HALF_EVEN);
             }
 
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             return new BigDecimal(-1);
         }
 
@@ -133,7 +129,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         private Contribution contribution;
         private final PageIterable<Contribution> contributions;
 
-        public ContributionTableModel(PageIterable<Contribution> contributions) {
+        public ContributionTableModel(final PageIterable<Contribution> contributions) {
             this.contributions = contributions;
 
         }
@@ -144,7 +140,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getHeader(int column) {
+        public XmlNode getHeader(final int column) {
             String value;
             switch (column) {
             case 0:
@@ -180,7 +176,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public String getColumnCss(int column) {
+        public String getColumnCss(final int column) {
             if (column == 1) {
                 return "money_cell";
             }
@@ -188,7 +184,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getBody(int column) {
+        public XmlNode getBody(final int column) {
             String value = "";
             try {
                 switch (column) {
@@ -207,7 +203,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
                     break;
                 }
 
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // Display nothing
             }
 
@@ -227,10 +223,10 @@ public final class DemandContributorsComponent extends HtmlDiv {
         private final int lineCount = 1;
         private final String contributionMedianValue;
 
-        private ContributionStatTableModel(String contributionMinValue,
-                                           String contributionMaxValue,
-                                           String contributionMeanValue,
-                                           String contributionMedianValue) {
+        private ContributionStatTableModel(final String contributionMinValue,
+                final String contributionMaxValue,
+                final String contributionMeanValue,
+                final String contributionMedianValue) {
 
             this.contributionMinValue = contributionMinValue;
             this.contributionMaxValue = contributionMaxValue;
@@ -250,12 +246,12 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public String getColumnCss(int column) {
+        public String getColumnCss(final int column) {
             return "money_cell";
         }
 
         @Override
-        public XmlNode getHeader(int column) {
+        public XmlNode getHeader(final int column) {
             String value = "";
 
             switch (column) {
@@ -286,7 +282,7 @@ public final class DemandContributorsComponent extends HtmlDiv {
         }
 
         @Override
-        public XmlNode getBody(int column) {
+        public XmlNode getBody(final int column) {
             String value = "";
 
             switch (column) {

@@ -64,7 +64,7 @@ public final class GroupManager {
      * @param group the group this invitation is on.
      * @param member the member this invitation was sent to.
      * @return the invitation, are null if there is no invitation on that
-     * <code>group</code> sent to this <code>member</code>.
+     *         <code>group</code> sent to this <code>member</code>.
      */
     public static JoinGroupInvitation getInvitation(final Group group, final Member member) {
         return JoinGroupInvitation.create(DaoJoinGroupInvitation.getInvitation(group.getDao(), member.getDao()));
@@ -86,7 +86,7 @@ public final class GroupManager {
      * @param id the id
      * @return the group or null if not found
      */
-    public static Group getGroupById(int id) {
+    public static Group getGroupById(final int id) {
         return Group.create(DBRequests.getById(DaoGroup.class, id));
     }
 

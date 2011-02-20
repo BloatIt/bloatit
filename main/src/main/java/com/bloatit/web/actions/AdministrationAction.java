@@ -35,12 +35,11 @@ public class AdministrationAction extends Action {
 
     @RequestParam(name = DEMAND_STATE_CODE, role = Role.POST)
     @ParamConstraint(optional = true)
-    private DisplayableDemandState demandState;
-    
+    private final DisplayableDemandState demandState;
+
     private final AdministrationActionUrl url;
 
-
-    public AdministrationAction(AdministrationActionUrl url) {
+    public AdministrationAction(final AdministrationActionUrl url) {
         super(url);
         this.url = url;
         contents = url.getContents();
@@ -51,7 +50,7 @@ public class AdministrationAction extends Action {
 
     @Override
     protected Url doProcess() throws RedirectException {
-        for (Integer content : contents) {
+        for (final Integer content : contents) {
 
             switch (action) {
             case DELETE:

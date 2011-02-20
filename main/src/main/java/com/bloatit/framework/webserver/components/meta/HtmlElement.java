@@ -5,8 +5,8 @@ import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
 
 /**
  * <p>
- * An <code>HtmlElement</code> represents any HtmlNode which is not raw text,
- * hence it should be the mother class of all HtmlTags that are created.
+ * An <code>HtmlElement</code> represents any HtmlNode which is not raw text, hence it
+ * should be the mother class of all HtmlTags that are created.
  * </p>
  */
 public abstract class HtmlElement extends XmlElement {
@@ -31,8 +31,7 @@ public abstract class HtmlElement extends XmlElement {
      * Shortcut to element.addAttribute("id",value)
      * </p>
      * 
-     * @param id
-     *            the value of the id
+     * @param id the value of the id
      * @return the element
      */
     public HtmlElement setId(final String id) {
@@ -55,7 +54,7 @@ public abstract class HtmlElement extends XmlElement {
         }
         return null;
     }
-    
+
     /**
      * Sets the css class of the element
      * <p>
@@ -71,9 +70,11 @@ public abstract class HtmlElement extends XmlElement {
     }
 
     /**
-     * <p>Indicates whether the tag can be self closed or not</p>
      * <p>
-     * All inheriting classes 
+     * Indicates whether the tag can be self closed or not
+     * </p>
+     * <p>
+     * All inheriting classes
      */
     public abstract boolean selfClosable();
 

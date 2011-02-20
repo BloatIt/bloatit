@@ -104,7 +104,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * </p>
      * 
      * @param value the quantity of money to add to the amount of this account. (May be a
-     * negative value)
+     *        negative value)
      */
     final void addToAmountValue(final BigDecimal value) {
         resetModificationDate();
@@ -120,7 +120,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * protected to be used by transaction only ! </p>
      * 
      * @param value the quantity of money to subtract to the amount of this account. (May
-     * be a negative value)
+     *        be a negative value)
      */
     protected final void substractToAmountValue(final BigDecimal value) {
         resetModificationDate();

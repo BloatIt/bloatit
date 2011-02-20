@@ -11,7 +11,7 @@ public class HtmlTable extends HtmlGenericElement {
     private final HtmlTableModel model;
     private final int columnCount;
 
-    public HtmlTable(HtmlTableModel model) {
+    public HtmlTable(final HtmlTableModel model) {
         super("table");
         this.model = model;
 
@@ -24,10 +24,10 @@ public class HtmlTable extends HtmlGenericElement {
 
     private void generateBody() {
         while (model.next()) {
-            HtmlGenericElement tr = new HtmlGenericElement("tr");
+            final HtmlGenericElement tr = new HtmlGenericElement("tr");
 
             for (int i = 0; i < columnCount; i++) {
-                HtmlGenericElement td = new HtmlGenericElement("td");
+                final HtmlGenericElement td = new HtmlGenericElement("td");
                 td.add(model.getBody(i));
                 if (model.getColumnCss(i) != null) {
                     td.setCssClass(model.getColumnCss(i));
@@ -39,10 +39,10 @@ public class HtmlTable extends HtmlGenericElement {
     }
 
     private void generateHeader() {
-        HtmlGenericElement tr = new HtmlGenericElement("tr");
+        final HtmlGenericElement tr = new HtmlGenericElement("tr");
 
         for (int i = 0; i < columnCount; i++) {
-            HtmlGenericElement th = new HtmlGenericElement("th");
+            final HtmlGenericElement th = new HtmlGenericElement("th");
             th.add(model.getHeader(i));
             tr.add(th);
         }
@@ -51,15 +51,18 @@ public class HtmlTable extends HtmlGenericElement {
 
     public static abstract class HtmlTableModel {
         public abstract int getColumnCount();
+
         public abstract XmlNode getHeader(int column);
+
         public abstract XmlNode getBody(int column);
+
         public abstract boolean next();
 
         public boolean hasHeader() {
             return true;
         }
 
-        public String getColumnCss(int column) {
+        public String getColumnCss(final int column) {
             return null;
         }
     }

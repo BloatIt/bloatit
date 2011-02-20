@@ -23,14 +23,14 @@ import com.bloatit.web.url.TeamPageUrl;
 @ParamContainer("group/dojoin")
 public class HandleJoinGroupInvitationAction extends LoggedAction {
     @RequestParam(level = Level.ERROR)
-    private JoinGroupInvitation invite;
+    private final JoinGroupInvitation invite;
 
     @RequestParam(level = Level.ERROR)
-    private Boolean accept;
+    private final Boolean accept;
 
     private final HandleJoinGroupInvitationActionUrl url;
 
-    public HandleJoinGroupInvitationAction(HandleJoinGroupInvitationActionUrl url) {
+    public HandleJoinGroupInvitationAction(final HandleJoinGroupInvitationActionUrl url) {
         super(url);
         this.url = url;
         this.accept = url.getAccept();
@@ -39,9 +39,9 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        Member me = session.getAuthToken().getMember();
+        final Member me = session.getAuthToken().getMember();
         if (accept) {
-            Group g = invite.getGroup();
+            final Group g = invite.getGroup();
 
             if (me.isInGroup(g)) {
                 session.notifyError(Context.tr("You cannot join a group you already belong in"));
@@ -50,7 +50,7 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
 
             try {
                 me.acceptInvitation(invite);
-            } catch (UnauthorizedOperationException e1) {
+            } catch (final UnauthorizedOperationException e1) {
                 // Should never happen
                 Log.web().fatal("User accepted a legitimate group invitation, but it failed", e1);
                 session.notifyBad(Context.tr("Oops looks like we had an issue with accepting this group invitation. Please try again later."));
@@ -59,7 +59,7 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
 
             try {
                 session.notifyGood(Context.tr("You are now a member of group ''" + g.getLogin() + "''"));
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // Should never happen
                 Log.web().error("Couldn't display a group name, while user should be part of it", e);
             }
@@ -67,7 +67,7 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
         }
         try {
             me.refuseInvitation(invite);
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             Log.web().fatal("User accepted a legitimate group invitation, but it failed", e);
             session.notifyBad(Context.tr("Oops looks like we had an issue with refusing this group invitation. Please try again later."));
             throw new RedirectException(session.getLastVisitedPage());

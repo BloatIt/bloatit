@@ -39,7 +39,7 @@ public final class ProjectPage extends MasterPage {
 
     public static final String PROJECT_FIELD_NAME = "id";
 
-    @ParamConstraint(optionalErrorMsg=@tr("The id of the project is incorrect or missing"))
+    @ParamConstraint(optionalErrorMsg = @tr("The id of the project is incorrect or missing"))
     @RequestParam(name = PROJECT_FIELD_NAME, level = Level.ERROR)
     private final Project project;
 
@@ -60,7 +60,7 @@ public final class ProjectPage extends MasterPage {
 
         try {
 
-            HtmlDiv box = new HtmlDiv("padding_box");
+            final HtmlDiv box = new HtmlDiv("padding_box");
 
             HtmlTitle projectName;
             projectName = new HtmlTitle(project.getName(), 1);
@@ -76,7 +76,6 @@ public final class ProjectPage extends MasterPage {
 
             box.add(shortDescription);
             box.add(description);
-
 
             add(box);
         } catch (final UnauthorizedOperationException e) {

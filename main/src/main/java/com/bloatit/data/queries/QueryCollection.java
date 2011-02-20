@@ -24,8 +24,8 @@ import com.bloatit.data.SessionManager;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * This is the implementation of the {@link PageIterable} interface using a
- * Hibernate HQL query.
+ * This is the implementation of the {@link PageIterable} interface using a Hibernate HQL
+ * query.
  */
 public class QueryCollection<T> implements PageIterable<T> {
 

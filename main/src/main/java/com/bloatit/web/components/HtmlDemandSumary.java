@@ -47,8 +47,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
         private final String cssClass;
 
-
-        private Compacity(String cssClass) {
+        private Compacity(final String cssClass) {
             this.cssClass = cssClass;
 
         }
@@ -59,8 +58,8 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
     }
 
-    //"demand_summary"
-    public HtmlDemandSumary(final Demand demand, Compacity compacity) {
+    // "demand_summary"
+    public HtmlDemandSumary(final Demand demand, final Compacity compacity) {
         super(compacity.getCssClass());
         this.demand = demand;
         if (demand == null) {
@@ -69,7 +68,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
         }
         // Extract locales stuffs
         defaultLocale = Context.getLocalizator().getLocale();
-
 
         try {
             switch (compacity) {
@@ -85,8 +83,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
                 break;
             }
 
-
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             addText("");
             return;
         }
@@ -94,7 +91,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
     /**
      * @throws UnauthorizedOperationException
-     *
+     * 
      */
     private void generateCompactStructure() throws UnauthorizedOperationException {
         final HtmlDiv demandSummaryTop = new HtmlDiv("demand_summary_top");
@@ -103,13 +100,8 @@ public final class HtmlDemandSumary extends HtmlDiv {
         }
         add(demandSummaryTop);
 
-
-
-
         final HtmlDiv demandSummaryBottom = new HtmlDiv("demand_sumary_bottom");
         {
-
-
 
             final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
             {
@@ -128,16 +120,13 @@ public final class HtmlDemandSumary extends HtmlDiv {
             }
             demandSummaryBottom.add(demandSummaryCenter);
 
-
-
-
         }
         add(demandSummaryBottom);
 
     }
 
     /**
-     *
+     * 
      * @throws UnauthorizedOperationException
      */
     private void generateNormalStructure() throws UnauthorizedOperationException {
@@ -171,7 +160,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     *
+     * 
      * @return
      * @throws UnauthorizedOperationException
      */
@@ -198,7 +187,7 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     *
+     * 
      * @return
      * @throws UnauthorizedOperationException
      */
@@ -222,20 +211,21 @@ public final class HtmlDemandSumary extends HtmlDiv {
             contributionsDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
             contributionsDemandUrl.setAnchor("demand_tab_pane");
 
-            demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment", "{0} comments", commentsCount, new Integer(
-                    commentsCount))));
+            demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment", "{0} comments", commentsCount, new Integer(commentsCount))));
             demandSummaryDetails.addText(" – ");
             demandSummaryDetails.add(offersDemandUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
             demandSummaryDetails.addText(" – ");
-            demandSummaryDetails.add(contributionsDemandUrl.getHtmlLink(Context.trn("{0} contribution", "{0} contributions", contributionsCount,
-                    new Integer(contributionsCount))));
+            demandSummaryDetails.add(contributionsDemandUrl.getHtmlLink(Context.trn("{0} contribution",
+                                                                                    "{0} contributions",
+                                                                                    contributionsCount,
+                                                                                    new Integer(contributionsCount))));
 
         }
         return demandSummaryDetails;
     }
 
     /**
-     *
+     * 
      * @return
      */
     private HtmlDiv generatePopularityBlock() {
@@ -251,17 +241,17 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     *
+     * 
      * @return
      * @throws UnauthorizedOperationException
      */
     private XmlNode generateProjectImage() throws UnauthorizedOperationException {
-        FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
+        final FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
         return new HtmlImage(imageUrl, "project_image");
     }
 
     /**
-     *
+     * 
      * @return
      * @throws UnauthorizedOperationException
      */

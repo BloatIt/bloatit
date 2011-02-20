@@ -12,7 +12,7 @@ import com.bloatit.model.AbstractModel;
 
 /**
  * This class represent the whole framework.
- *
+ * 
  * @author Thomas Guyard
  */
 public class Framework {
@@ -21,13 +21,13 @@ public class Framework {
     private final XcgiServer scgiServer;
     private final MailServer mailServer;
 
-    public Framework(AbstractModel model) {
+    public Framework(final AbstractModel model) {
         this.model = model;
         this.scgiServer = new XcgiServer();
         this.mailServer = MailServer.getInstance();
     }
 
-    public void addProcessor(XcgiProcessor processor) {
+    public void addProcessor(final XcgiProcessor processor) {
         scgiServer.addProcessor(processor);
     }
 
@@ -79,7 +79,7 @@ public class Framework {
     private static final class ShutdownHook extends Thread {
         private final Framework framework;
 
-        public ShutdownHook(Framework framework) {
+        public ShutdownHook(final Framework framework) {
             super();
             this.framework = framework;
         }

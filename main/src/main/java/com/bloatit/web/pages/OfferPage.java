@@ -96,30 +96,30 @@ public final class OfferPage extends LoggedPage {
         offerForm.setCssClass("padding_box");
 
         // Title field
-        FormFieldData<String> titleFieldData = offerActionUrl.getTitleParameter().formFieldData();
+        final FormFieldData<String> titleFieldData = offerActionUrl.getTitleParameter().formFieldData();
         final HtmlTextField titleField = new HtmlTextField(titleFieldData, Context.tr("Title to the offer"));
         offerForm.add(titleField);
 
         // Offering on the behalf of
-        Member me = session.getAuthToken().getMember();
+        final Member me = session.getAuthToken().getMember();
         if (me.canAccessGroups(Action.READ)) {
             try {
-                PageIterable<Group> groups = me.getGroups();
-                HtmlDropDown groupDropDown = new HtmlDropDown(OfferAction.ON_THE_BEHALF, Context.tr("On the behalf of"));
+                final PageIterable<Group> groups = me.getGroups();
+                final HtmlDropDown groupDropDown = new HtmlDropDown(OfferAction.ON_THE_BEHALF, Context.tr("On the behalf of"));
                 groupDropDown.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
                 groupDropDown.addDropDownElement("-1", Context.tr("Myself"));
-                for(Group group : groups){
+                for (final Group group : groups) {
                     groupDropDown.addDropDownElement(group.getId().toString(), group.getLogin());
                 }
                 offerForm.add(groupDropDown);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // Shouldn't happen
                 Log.web().error("Can't access current user groups (I check before tho)", e);
             }
         }
 
         // Price field
-        FormFieldData<BigDecimal> priceFieldData = offerActionUrl.getPriceParameter().formFieldData();
+        final FormFieldData<BigDecimal> priceFieldData = offerActionUrl.getPriceParameter().formFieldData();
         final HtmlMoneyField priceField = new HtmlMoneyField(priceFieldData, Context.tr("Offer price"));
         priceField.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
         if (price != null) {

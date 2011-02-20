@@ -22,20 +22,20 @@ public class JoinTeamPage extends LoggedPage {
     @RequestParam(level = Level.ERROR)
     private Group targetTeam;
 
-    public JoinTeamPage(JoinTeamPageUrl url) {
+    public JoinTeamPage(final JoinTeamPageUrl url) {
         super(url);
     }
 
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
-        HtmlDiv master = new HtmlDiv("padding_box");
-        
-        HtmlForm form = new HtmlForm(new JoinTeamActionUrl(targetTeam).urlString());
+        final HtmlDiv master = new HtmlDiv("padding_box");
+
+        final HtmlForm form = new HtmlForm(new JoinTeamActionUrl(targetTeam).urlString());
         master.add(form);
-        
+
         form.add(new HtmlSubmit(Context.tr("send")));
-        //HtmlTextArea justification = new HtmlTextArea("", rows, cols)
-        
+        // HtmlTextArea justification = new HtmlTextArea("", rows, cols)
+
         return master;
     }
 

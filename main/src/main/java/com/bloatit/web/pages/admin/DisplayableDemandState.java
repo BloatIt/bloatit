@@ -22,15 +22,15 @@ public enum DisplayableDemandState implements HtmlRadioButtonGroup.Displayable {
         return displayName;
     }
 
-    private DisplayableDemandState(String displayName) {
+    private DisplayableDemandState(final String displayName) {
         this.displayName = displayName;
     }
 
-    public static DemandState getDemandState(DisplayableDemandState cmp) {
+    public static DemandState getDemandState(final DisplayableDemandState cmp) {
         return Enum.valueOf(DemandState.class, cmp.name());
     }
 
-    public static DisplayableDemandState getDemandState(DemandState cmp) {
+    public static DisplayableDemandState getDemandState(final DemandState cmp) {
         return Enum.valueOf(DisplayableDemandState.class, cmp.name());
     }
 }

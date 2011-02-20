@@ -19,15 +19,15 @@ public enum DisplayableComparator implements HtmlRadioButtonGroup.Displayable {
         return displayName;
     }
 
-    private DisplayableComparator(String displayName) {
+    private DisplayableComparator(final String displayName) {
         this.displayName = displayName;
     }
 
-    public static DisplayableComparator getComparator(Comparator cmp) {
+    public static DisplayableComparator getComparator(final Comparator cmp) {
         return Enum.valueOf(DisplayableComparator.class, cmp.name());
     }
 
-    public static Comparator getComparator(DisplayableComparator cmp) {
+    public static Comparator getComparator(final DisplayableComparator cmp) {
         return Enum.valueOf(Comparator.class, cmp.name());
     }
 }

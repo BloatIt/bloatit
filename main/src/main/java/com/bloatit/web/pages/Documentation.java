@@ -27,10 +27,9 @@ import com.bloatit.web.url.DocumentationUrl;
  * A holding class for documentation
  * </p>
  * <p>
- * Documentation system is based on markdown files hosted on the server. This
- * page is a container used to view these markdown documents. <br />
- * Document to display is chosen via the GET parameter Documenvalue
- * tation#DOC_TARGET.
+ * Documentation system is based on markdown files hosted on the server. This page is a
+ * container used to view these markdown documents. <br />
+ * Document to display is chosen via the GET parameter Documenvalue tation#DOC_TARGET.
  * </p>
  */
 @ParamContainer("documentation")
@@ -43,13 +42,12 @@ public class Documentation extends MasterPage {
      * Store the html documents (after they've been converted from markdown)
      * </p>
      */
-    private static Map<MarkdownDocumentationMarker, MarkdownDocumentationContent> cache = Collections
-            .synchronizedMap((new HashMap<MarkdownDocumentationMarker, MarkdownDocumentationContent>()));
+    private static Map<MarkdownDocumentationMarker, MarkdownDocumentationContent> cache = Collections.synchronizedMap((new HashMap<MarkdownDocumentationMarker, MarkdownDocumentationContent>()));
 
     @RequestParam(name = DOC_TARGET, level = Level.ERROR, defaultValue = DEFAULT_DOC)
     private final String docTarget;
 
-    public Documentation(DocumentationUrl url) {
+    public Documentation(final DocumentationUrl url) {
         super(url);
         docTarget = url.getDocTarget();
     }
@@ -61,16 +59,16 @@ public class Documentation extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        String dir = ConfigurationManager.loadProperties("web.properties").getProperty("bloatit.documentation.dir");
+        final String dir = ConfigurationManager.loadProperties("web.properties").getProperty("bloatit.documentation.dir");
         if (dir == null) {
             throw new FatalErrorException("Please configure your documentation dir : create " + ConfigurationManager.ETC_DIR
                     + "/web.properties and add inside the property 'bloatit.documentation.dir=<value>'");
         }
-        HtmlDiv master = new HtmlDiv("padding_box");
+        final HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
 
         FileInputStream fis;
-        String language = Context.getLocalizator().getLanguageCode();
+        final String language = Context.getLocalizator().getLanguageCode();
         try {
             File targetFile = new File(dir + "/" + docTarget + "_" + language);
 
@@ -81,17 +79,17 @@ public class Documentation extends MasterPage {
             }
             fis = new FileInputStream(targetFile);
 
-            MarkdownDocumentationMarker mdm = new MarkdownDocumentationMarker(docTarget, language);
-            MarkdownDocumentationContent mdc = cache.get(mdm);
+            final MarkdownDocumentationMarker mdm = new MarkdownDocumentationMarker(docTarget, language);
+            final MarkdownDocumentationContent mdc = cache.get(mdm);
 
             if (mdc == null || mdc.savedDate.before(new Date(targetFile.lastModified()))) {
                 // No content, or content has been saved before the file was
                 // last modified
                 Log.web().trace("Reading from the markdown documentation file " + docTarget);
-                byte[] b = new byte[fis.available()];
+                final byte[] b = new byte[fis.available()];
                 fis.read(b);
-                String markDownContent = new String(b);
-                HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(markDownContent);
+                final String markDownContent = new String(b);
+                final HtmlMarkdownRenderer content = new HtmlMarkdownRenderer(markDownContent);
                 cache.put(mdm, new MarkdownDocumentationContent(new Date(), content.getRendereredContent()));
                 master.add(content);
             } else {
@@ -99,16 +97,16 @@ public class Documentation extends MasterPage {
                 master.add(new HtmlMarkdownRenderer(mdc.htmlString, true));
             }
 
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             // User asked a wrong documentation file, redirecting him to the doc
             // home
             Log.web().warn("A user tries to access documentation file " + docTarget + " but file is not available.");
             session.notifyBad(Context.tr("Documentation entry {0} doesn''t exist. Sending you to documentation home page", docTarget));
 
-            DocumentationUrl redirectTo = new DocumentationUrl();
+            final DocumentationUrl redirectTo = new DocumentationUrl();
             redirectTo.setDocTarget(DEFAULT_DOC);
             throw new RedirectException(redirectTo);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new FatalErrorException("An error occured while parsing the documentation file " + docTarget, e);
         }
     }
@@ -135,28 +133,35 @@ public class Documentation extends MasterPage {
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
+        public boolean equals(final Object obj) {
+            if (this == obj) {
                 return true;
-            if (obj == null)
+            }
+            if (obj == null) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
-            MarkdownDocumentationMarker other = (MarkdownDocumentationMarker) obj;
+            }
+            final MarkdownDocumentationMarker other = (MarkdownDocumentationMarker) obj;
             if (lang == null) {
-                if (other.lang != null)
+                if (other.lang != null) {
                     return false;
-            } else if (!lang.equals(other.lang))
+                }
+            } else if (!lang.equals(other.lang)) {
                 return false;
+            }
             if (name == null) {
-                if (other.name != null)
+                if (other.name != null) {
                     return false;
-            } else if (!name.equals(other.name))
+                }
+            } else if (!name.equals(other.name)) {
                 return false;
+            }
             return true;
         }
 
-        public MarkdownDocumentationMarker(String name, String lang) {
+        public MarkdownDocumentationMarker(final String name, final String lang) {
             super();
             this.name = name;
             this.lang = lang;
@@ -170,7 +175,7 @@ public class Documentation extends MasterPage {
         public Date savedDate;
         public String htmlString;
 
-        public MarkdownDocumentationContent(Date savedDate, String htmlString) {
+        public MarkdownDocumentationContent(final Date savedDate, final String htmlString) {
             super();
             this.savedDate = savedDate;
             this.htmlString = htmlString;

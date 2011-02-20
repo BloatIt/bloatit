@@ -35,7 +35,7 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
     private static final String IS_DELETED = "isDeleted";
     private static final String AS_GROUP = "asGroup";
 
-    protected DaoUserContentListFactory(Criteria criteria) {
+    protected DaoUserContentListFactory(final Criteria criteria) {
         super(criteria);
         criteria.createAlias("member", "m");
         criteria.setReadOnly(true);
@@ -53,7 +53,7 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         add(Projections.groupProperty(AS_GROUP));
     }
 
-    public void orderByMember(DaoAbstractListFactory.OrderType order) {
+    public void orderByMember(final DaoAbstractListFactory.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(MEMBER_LOGIN));
         } else {
@@ -61,7 +61,7 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         }
     }
 
-    public void orderByAsGroup(DaoAbstractListFactory.OrderType order) {
+    public void orderByAsGroup(final DaoAbstractListFactory.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(AS_GROUP));
         } else {
@@ -69,15 +69,15 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         }
     }
 
-    public void orderBy(String column, OrderType order){
+    public void orderBy(final String column, final OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(column));
         } else {
             addOrder(Order.desc(column));
         }
     }
-    
-    public void orderByCreationDate(OrderType order) {
+
+    public void orderByCreationDate(final OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(CREATION_DATE));
         } else {
@@ -109,11 +109,11 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         add(Restrictions.isNull(AS_GROUP));
     }
 
-    public void fromMember(DaoMember member) {
+    public void fromMember(final DaoMember member) {
         add(Restrictions.eq(MEMBER, member));
     }
 
-    public void fromGroup(DaoGroup group) {
+    public void fromGroup(final DaoGroup group) {
         add(Restrictions.eq(AS_GROUP, group));
     }
 

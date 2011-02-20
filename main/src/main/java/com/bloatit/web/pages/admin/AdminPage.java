@@ -13,7 +13,7 @@ import com.bloatit.web.url.LoginPageUrl;
 
 public abstract class AdminPage extends LoggedPage {
 
-    protected AdminPage(Url url) {
+    protected AdminPage(final Url url) {
         super(url);
     }
 
@@ -22,7 +22,7 @@ public abstract class AdminPage extends LoggedPage {
         if (session.getAuthToken().getMember().getRole() == Role.ADMIN) {
             try {
                 return createAdminContent();
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 session.notifyError(tr("Are you sure you are admin ? "));
                 Log.web().fatal("Admin content got a UnauthorizedOperationException", e);
             }

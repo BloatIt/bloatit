@@ -14,7 +14,7 @@ import com.bloatit.web.url.KudosableAdminPageUrl;
 public final class KudosableAdminPageImplementation extends
         KudosableAdminPage<DaoKudosable, KudosableAdmin<DaoKudosable>, KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>>> {
 
-    public KudosableAdminPageImplementation(KudosableAdminPageUrl url) {
+    public KudosableAdminPageImplementation(final KudosableAdminPageUrl url) {
         super(url, new KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>>());
     }
 
@@ -29,17 +29,17 @@ public final class KudosableAdminPageImplementation extends
     }
 
     @Override
-    protected void doAddColumns(HtmlGenericTableModel<KudosableAdmin<DaoKudosable>> tableModel) {
+    protected void doAddColumns(final HtmlGenericTableModel<KudosableAdmin<DaoKudosable>> tableModel) {
         // Everything done in super class
     }
 
     @Override
-    protected void doAddActions(HtmlDropDown dropDown, HtmlBranch block) {
+    protected void doAddActions(final HtmlDropDown dropDown, final HtmlBranch block) {
         // Everything done in super class
     }
 
     @Override
-    protected void doAddFormFilters(HtmlForm form) {
+    protected void doAddFormFilters(final HtmlForm form) {
         // Everything done in super class
     }
 

@@ -43,9 +43,9 @@ public final class ReportBugAction extends Action {
     public static final String LANGUAGE_CODE = "bug_description_language";
 
     @RequestParam(name = BUG_TITLE, role = Role.POST)
-    @ParamConstraint(max = "120",
-                     maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-                     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."),
+    @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
+                     min = "10",
+                     minErrorMsg = @tr("The short description must have at least 10 chars."),
                      optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String title;
 
@@ -84,7 +84,6 @@ public final class ReportBugAction extends Action {
             return new LoginPageUrl();
         }
         final Locale langLocale = new Locale(lang);
-
 
         final Bug bug = batch.addBug(session.getAuthToken().getMember(), title, description, langLocale, level);
         final BugPageUrl to = new BugPageUrl(bug);

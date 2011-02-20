@@ -70,7 +70,6 @@ public final class DemandListPage extends MasterPage {
         this.sort = url.getSort();
     }
 
-
     @Override
     protected void doCreate() throws RedirectException {
         // Search block
@@ -80,8 +79,7 @@ public final class DemandListPage extends MasterPage {
         final HtmlDiv demandSearchBlock = new HtmlDiv("demand_search_block");
         {
 
-
-            DemandListPageUrl formUrl = url.clone();
+            final DemandListPageUrl formUrl = url.clone();
             formUrl.setSearchString("");
             final HtmlForm searchForm = new HtmlForm(formUrl.urlString(), Method.GET);
             {
@@ -208,12 +206,12 @@ public final class DemandListPage extends MasterPage {
             // }
             // demandSearchBlock.add(demandAdvancedSearch);
 
-            //Create a demand
+            // Create a demand
             final HtmlDiv createDemandBlock = new HtmlDiv("demand_create_block");
             {
                 createDemandBlock.addText(Context.tr("If you have an idea or a need about a free software, you can "));
-                HtmlLink creatDemandLink = new CreateDemandPageUrl().getHtmlLink(Context.tr("submit a new feature"));
-                //creatDemandLink.setCssClass("button");
+                final HtmlLink creatDemandLink = new CreateDemandPageUrl().getHtmlLink(Context.tr("submit a new feature"));
+                // creatDemandLink.setCssClass("button");
                 createDemandBlock.add(creatDemandLink);
             }
             demandSearchBlock.add(createDemandBlock);
@@ -221,7 +219,7 @@ public final class DemandListPage extends MasterPage {
         add(demandSearchBlock);
 
         // Demand list
-        PageIterable<Demand> results = searchResult();
+        final PageIterable<Demand> results = searchResult();
         if (results.size() > 0) {
             final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
             final DemandListPageUrl clonedUrl = url.clone();
@@ -267,7 +265,7 @@ public final class DemandListPage extends MasterPage {
 
     private PageIterable<Demand> searchResult() {
 
-        DemandSearch search = new DemandSearch(searchString);
+        final DemandSearch search = new DemandSearch(searchString);
         if (!filter.equals(FILTER_ALL)) {
             if (filter.equals(FILTER_IN_PROGRESS)) {
                 search.addDemandStateFilter(DemandState.FINISHED);

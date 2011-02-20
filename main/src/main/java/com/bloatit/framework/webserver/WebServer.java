@@ -24,8 +24,7 @@ import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
 public abstract class WebServer implements XcgiProcessor {
 
-    public WebServer() {
-    }
+    public WebServer() {}
 
     @Override
     public final boolean process(final HttpHeader header, final HttpPost post, final HttpResponse response) throws IOException {
@@ -46,12 +45,12 @@ public abstract class WebServer implements XcgiProcessor {
                 ModelAccessor.open();
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response);
-            } catch (PageNotFoundException e) {
+            } catch (final PageNotFoundException e) {
                 Log.framework().info("Page not found", e);
                 final Linkable linkable = constructLinkable(PageNotFoundUrl.getName(), parameters, session);
                 try {
                     linkable.writeToHttp(response);
-                } catch (RedirectException e1) {
+                } catch (final RedirectException e1) {
                     Log.framework().info("Redirect to " + e.getUrl(), e);
                     response.writeRedirect(e.getUrl().urlString());
                 }
@@ -62,7 +61,7 @@ public abstract class WebServer implements XcgiProcessor {
                 ModelAccessor.close();
             }
 
-        } catch (RuntimeException e) {
+        } catch (final RuntimeException e) {
             response.writeException(e);
             throw e;
         }
@@ -73,7 +72,7 @@ public abstract class WebServer implements XcgiProcessor {
 
     /**
      * Return the session for the user. Either an existing session or a new session.
-     *
+     * 
      * @param header
      * @return the session matching the user
      */

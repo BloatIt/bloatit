@@ -19,8 +19,8 @@ public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> 
         return null;
     }
 
-    public static UserContentAdmin<DaoUserContent> createUserContent(Integer id) {
-        UserContentAdminListFactory.DefaultFactory factory = new UserContentAdminListFactory.DefaultFactory();
+    public static UserContentAdmin<DaoUserContent> createUserContent(final Integer id) {
+        final UserContentAdminListFactory.DefaultFactory factory = new UserContentAdminListFactory.DefaultFactory();
         factory.idEquals(id);
         if (factory.list().iterator().hasNext()) {
             return factory.list().iterator().next();
@@ -68,7 +68,7 @@ public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> 
     }
 
     @Override
-    protected boolean isMine(Member member) {
+    protected boolean isMine(final Member member) {
         return false;
     }
 }

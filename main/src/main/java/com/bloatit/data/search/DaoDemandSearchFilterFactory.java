@@ -12,27 +12,25 @@ import com.bloatit.data.search.Search.Pair;
 
 public class DaoDemandSearchFilterFactory {
 
-    private List<Pair<String,String>> filteredTerms = null;
+    private List<Pair<String, String>> filteredTerms = null;
 
-    public void setFilteredTerms(List<Pair<String,String>> filteredTerms) {
+    public void setFilteredTerms(final List<Pair<String, String>> filteredTerms) {
         this.filteredTerms = filteredTerms;
     }
 
     @Key
     public FilterKey getKey() {
-        StandardFilterKey key = new StandardFilterKey();
-        key.addParameter( filteredTerms );
+        final StandardFilterKey key = new StandardFilterKey();
+        key.addParameter(filteredTerms);
         return key;
     }
 
-
     @Factory
     public Filter getFilter() {
-        DaoDemandSearchFilter searchFilter = new DaoDemandSearchFilter();
+        final DaoDemandSearchFilter searchFilter = new DaoDemandSearchFilter();
         searchFilter.setFilteredTerms(filteredTerms);
         filteredTerms = null;
         return searchFilter;
     }
-
 
 }

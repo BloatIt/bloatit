@@ -35,7 +35,7 @@ class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractL
      * 
      * @param criteria the criteria
      */
-    protected DaoIdentifiableListFactory(Criteria criteria) {
+    protected DaoIdentifiableListFactory(final Criteria criteria) {
         super(criteria);
     }
 
@@ -51,7 +51,7 @@ class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractL
      * 
      * @param id the id
      */
-    public void idEquals(Integer id) {
+    public void idEquals(final Integer id) {
         add(Restrictions.eq("id", id));
     }
 }

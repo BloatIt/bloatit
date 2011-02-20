@@ -82,9 +82,10 @@ public final class MembersListPage extends MasterPage {
             try {
                 HtmlLink htmlLink;
                 htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
-                HtmlSpan karma = new HtmlSpan("karma");
+                final HtmlSpan karma = new HtmlSpan("karma");
                 karma.addText(HtmlTools.compressKarma(member.getKarma()));
-//                final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">" + HtmlTools.compressKarma(member.getKarma()) + "</span>");
+                // final HtmlTagText htmlKarma = new HtmlTagText("<span class=\"karma\">"
+                // + HtmlTools.compressKarma(member.getKarma()) + "</span>");
                 return new HtmlListItem(htmlLink).add(karma);
             } catch (final UnauthorizedOperationException e) {
                 Log.web().warn(e);

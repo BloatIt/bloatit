@@ -21,8 +21,8 @@ import com.bloatit.framework.webserver.components.meta.HtmlLeaf;
  * Class used to create Html buttons
  * </p>
  * <p>
- * Html buttons are <b>NOT</b> to be mistaken with html submits. If you want to
- * submit a form, use {@link HtmlSubmit}
+ * Html buttons are <b>NOT</b> to be mistaken with html submits. If you want to submit a
+ * form, use {@link HtmlSubmit}
  * </p>
  * 
  * @see HtmlSubmit
@@ -36,8 +36,7 @@ public final class HtmlButton extends HtmlLeaf {
      * Creates a HtmlButton
      * </p>
      * 
-     * @param label
-     *            the text that will be shown on the button
+     * @param label the text that will be shown on the button
      */
     public HtmlButton(final String value) {
         super();

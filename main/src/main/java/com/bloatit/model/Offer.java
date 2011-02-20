@@ -42,7 +42,7 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     private static final class MyCreator extends Creator<DaoOffer, Offer> {
         @Override
-        public Offer doCreate(DaoOffer dao) {
+        public Offer doCreate(final DaoOffer dao) {
             return new Offer(dao);
         }
     }
@@ -62,11 +62,11 @@ public final class Offer extends Kudosable<DaoOffer> {
     /**
      * @param amount must be positive (can be ZERO) non null.
      * @param locale must be non null. Is the locale in which the title and the text are
-     * written.
+     *        written.
      * @param title is the title of the offer. Must be non null.
      * @param text is the description of the offer. Must be non null.
      * @param dateExpir is the date when this offer should be finished. Must be non null.
-     * Must be in the future.
+     *        Must be in the future.
      */
     public Offer(final Member member,
             final Demand demand,
@@ -74,7 +74,7 @@ public final class Offer extends Kudosable<DaoOffer> {
             final String description,
             final Locale local,
             final Date dateExpire,
-            int secondsBeforeValidation) {
+            final int secondsBeforeValidation) {
         super(DaoOffer.createAndPersist(member.getDao(),
                                         DBRequests.getById(DaoDemand.class, demand.getId()),
                                         amount,

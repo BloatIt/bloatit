@@ -26,7 +26,6 @@ import com.bloatit.web.url.UploadFileActionUrl;
 @ParamContainer("file/doupload")
 public final class UploadFileAction extends Action {
 
-
     @RequestParam(name = "wow", role = Role.POST)
     private final String wow;
 
@@ -48,7 +47,7 @@ public final class UploadFileAction extends Action {
     protected Url doProcess() throws RedirectException {
 
         System.err.println("wow" + wow);
-        System.err.println("fichier "+fichier);
+        System.err.println("fichier " + fichier);
         FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(), fichier, fichier, "Test upload");
 
         return new IndexPageUrl();

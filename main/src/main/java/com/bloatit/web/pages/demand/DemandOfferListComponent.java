@@ -56,16 +56,18 @@ public class DemandOfferListComponent extends HtmlDiv {
             final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
             if (selectedOffer != null) {
-                HtmlTitle selectedOfferTitle = new HtmlTitle(Context.tr("Selected offer"), 1);
+                final HtmlTitle selectedOfferTitle = new HtmlTitle(Context.tr("Selected offer"), 1);
                 offersBlock.add(selectedOfferTitle);
                 offersBlock.add(generateSelectedOfferTypeBlock(selectedOffer));
             } else {
-                HtmlTitle selectedOfferTitle = new HtmlTitle(Context.tr("No selected offer"), 1);
+                final HtmlTitle selectedOfferTitle = new HtmlTitle(Context.tr("No selected offer"), 1);
                 offersBlock.add(selectedOfferTitle);
             }
 
-            HtmlTitle unselectedOffersTitle = new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", unselectedOfferCount,
-                    unselectedOfferCount), 1);
+            final HtmlTitle unselectedOffersTitle = new HtmlTitle(Context.trn("Unselected offer ({0})",
+                                                                              "Unselected offers ({0})",
+                                                                              unselectedOfferCount,
+                                                                              unselectedOfferCount), 1);
             offersBlock.add(unselectedOffersTitle);
 
             offersBlock.add(generateUnselectedOffersTypeBlock(offers, selectedOffer));
@@ -77,12 +79,12 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
     }
 
-    private XmlNode generateSelectedOfferTypeBlock(Offer selectedOffer) throws UnauthorizedOperationException {
-        HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
+    private XmlNode generateSelectedOfferTypeBlock(final Offer selectedOffer) throws UnauthorizedOperationException {
+        final HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
 
-        HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
+        final HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
         {
-            HtmlDiv offerSelectedDescription = new HtmlDiv("offer_selected_description");
+            final HtmlDiv offerSelectedDescription = new HtmlDiv("offer_selected_description");
             {
                 offerSelectedDescription.add(new HtmlParagraph("The selected offer is the one with the more popularity."));
                 // TODO: real timing
@@ -92,7 +94,7 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
         offerTypeBlock.add(offerTypeLeftColumn);
 
-        HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
+        final HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
         {
             offerTypeRightColumn.add(new OfferBlock(selectedOffer, true));
 
@@ -102,12 +104,12 @@ public class DemandOfferListComponent extends HtmlDiv {
         return offerTypeBlock;
     }
 
-    private XmlNode generateUnselectedOffersTypeBlock(PageIterable<Offer> offers, Offer selectedOffer) throws UnauthorizedOperationException {
-        HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
+    private XmlNode generateUnselectedOffersTypeBlock(final PageIterable<Offer> offers, final Offer selectedOffer) throws UnauthorizedOperationException {
+        final HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
 
-        HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
+        final HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
         {
-            HtmlDiv offerUnselectedDescription = new HtmlDiv("offer_unselected_description");
+            final HtmlDiv offerUnselectedDescription = new HtmlDiv("offer_unselected_description");
             {
                 offerUnselectedDescription.add(new OfferPageUrl(demand).getHtmlLink(Context.tr("Make a concurrent offer")));
 
@@ -117,9 +119,9 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
         offerTypeBlock.add(offerTypeLeftColumn);
 
-        HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
+        final HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
         {
-            for (Offer offer : offers) {
+            for (final Offer offer : offers) {
                 if (offer != selectedOffer) {
                     offerTypeRightColumn.add(new OfferBlock(offer, false));
                 }
@@ -134,40 +136,40 @@ public class DemandOfferListComponent extends HtmlDiv {
 
         private final Offer offer;
 
-        public OfferBlock(Offer offer, boolean selected) throws UnauthorizedOperationException {
+        public OfferBlock(final Offer offer, final boolean selected) throws UnauthorizedOperationException {
             super((selected ? "offer_selected_block" : "offer_unselected_block"));
             this.offer = offer;
 
-            HtmlDiv offerTopBlock = new HtmlDiv("offer_top_block");
+            final HtmlDiv offerTopBlock = new HtmlDiv("offer_top_block");
             {
-                HtmlDiv offerLeftTopColumn = new HtmlDiv("offer_left_top_column");
+                final HtmlDiv offerLeftTopColumn = new HtmlDiv("offer_left_top_column");
                 {
                     offerLeftTopColumn.add(generateAvatarBlock());
                 }
                 offerTopBlock.add(offerLeftTopColumn);
 
-                HtmlDiv offerRightTopColumn = new HtmlDiv("offer_right_top_column");
+                final HtmlDiv offerRightTopColumn = new HtmlDiv("offer_right_top_column");
                 {
-                    HtmlDiv offerPriceBlock = new HtmlDiv("offer_price_block");
+                    final HtmlDiv offerPriceBlock = new HtmlDiv("offer_price_block");
                     {
-                        HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
+                        final HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
                         priceLabel.addText(Context.tr("Total price: "));
                         offerPriceBlock.add(priceLabel);
 
-                        HtmlSpan price = new HtmlSpan("offer_block_price");
+                        final HtmlSpan price = new HtmlSpan("offer_block_price");
                         price.addText(Context.getLocalizator().getCurrency(offer.getAmount()).getLocaleString());
                         offerPriceBlock.add(price);
                     }
                     offerRightTopColumn.add(offerPriceBlock);
 
-                    HtmlParagraph authorPara = new HtmlParagraph();
+                    final HtmlParagraph authorPara = new HtmlParagraph();
                     authorPara.setCssClass("offer_block_para");
                     {
-                        HtmlSpan authorLabel = new HtmlSpan("offer_block_label");
+                        final HtmlSpan authorLabel = new HtmlSpan("offer_block_label");
                         authorLabel.addText(Context.tr("Author: "));
                         authorPara.add(authorLabel);
 
-                        HtmlLink author = new MemberPageUrl(offer.getAuthor()).getHtmlLink(offer.getAuthor().getDisplayName());
+                        final HtmlLink author = new MemberPageUrl(offer.getAuthor()).getHtmlLink(offer.getAuthor().getDisplayName());
                         author.setCssClass("offer_block_author");
                         authorPara.add(author);
                         if (offer.getAsGroup() != null) {
@@ -177,14 +179,14 @@ public class DemandOfferListComponent extends HtmlDiv {
                     }
                     offerRightTopColumn.add(authorPara);
 
-                    HtmlDiv progressPara = new HtmlDiv("offer_block_para");
+                    final HtmlDiv progressPara = new HtmlDiv("offer_block_para");
                     {
-                        HtmlSpan progressLabel = new HtmlSpan("offer_block_label");
+                        final HtmlSpan progressLabel = new HtmlSpan("offer_block_label");
                         progressLabel.addText(Context.tr("Funding: "));
                         progressPara.add(progressLabel);
 
-                        int progression = (int) Math.floor(offer.getProgression());
-                        HtmlSpan progress = new HtmlSpan("offer_block_progress");
+                        final int progression = (int) Math.floor(offer.getProgression());
+                        final HtmlSpan progress = new HtmlSpan("offer_block_progress");
                         progress.addText(Context.tr("{0} %", String.valueOf(progression)));
                         progressPara.add(progress);
 
@@ -208,38 +210,38 @@ public class DemandOfferListComponent extends HtmlDiv {
 
             // TODO: choose to display the title or not
 
-            HtmlDiv offerBottomBlock = new HtmlDiv("offer_bottom_block");
+            final HtmlDiv offerBottomBlock = new HtmlDiv("offer_bottom_block");
             {
-                HtmlDiv offerLeftBottomColumn = new HtmlDiv("offer_left_bottom_column");
+                final HtmlDiv offerLeftBottomColumn = new HtmlDiv("offer_left_bottom_column");
                 {
                     offerLeftBottomColumn.add(generatePopularityBlock());
                 }
                 offerBottomBlock.add(offerLeftBottomColumn);
 
-                HtmlDiv offerRightBottomColumn = new HtmlDiv("offer_right_bottom_column");
+                final HtmlDiv offerRightBottomColumn = new HtmlDiv("offer_right_bottom_column");
                 {
                     // Lots
-                    PageIterable<Batch> lots = offer.getBatches();
+                    final PageIterable<Batch> lots = offer.getBatches();
                     if (lots.size() == 1) {
-                        Batch lot = lots.iterator().next();
+                        final Batch lot = lots.iterator().next();
 
-                        HtmlParagraph datePara = new HtmlParagraph();
+                        final HtmlParagraph datePara = new HtmlParagraph();
                         datePara.setCssClass("offer_block_para");
                         {
-                            HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
+                            final HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
                             dateLabel.addText(Context.tr("Delivery Date: "));
                             datePara.add(dateLabel);
 
                             // TODO: use scheduled release date
-                            HtmlSpan date = new HtmlSpan("offer_block_date");
+                            final HtmlSpan date = new HtmlSpan("offer_block_date");
                             date.addText(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
                             datePara.add(date);
                         }
                         offerRightBottomColumn.add(datePara);
 
-                        HtmlParagraph description = new HtmlParagraph();
+                        final HtmlParagraph description = new HtmlParagraph();
                         {
-                            HtmlSpan descriptionLabel = new HtmlSpan("offer_block_label");
+                            final HtmlSpan descriptionLabel = new HtmlSpan("offer_block_label");
                             descriptionLabel.addText(Context.tr("Offer's description: "));
                             description.add(descriptionLabel);
                             description.add(new HtmlTagText("<br />"));
@@ -248,40 +250,40 @@ public class DemandOfferListComponent extends HtmlDiv {
                         offerRightBottomColumn.add(description);
                     } else {
                         int i = 0;
-                        for (Batch lot : lots) {
+                        for (final Batch lot : lots) {
                             i++;
-                            HtmlDiv lotBlock = new HtmlDiv("offer_lot_block");
+                            final HtmlDiv lotBlock = new HtmlDiv("offer_lot_block");
                             {
-                                HtmlDiv offerLotPriceBlock = new HtmlDiv("offer_price_block");
+                                final HtmlDiv offerLotPriceBlock = new HtmlDiv("offer_price_block");
                                 {
-                                    HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
+                                    final HtmlSpan priceLabel = new HtmlSpan("offer_block_label");
                                     priceLabel.addText(Context.tr("Price: "));
                                     offerLotPriceBlock.add(priceLabel);
 
-                                    HtmlSpan price = new HtmlSpan("offer_block_price_lot");
+                                    final HtmlSpan price = new HtmlSpan("offer_block_price_lot");
                                     price.addText(Context.getLocalizator().getCurrency(lot.getAmount()).getLocaleString());
                                     offerLotPriceBlock.add(price);
                                 }
                                 lotBlock.add(offerLotPriceBlock);
 
-                                HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0}", i), 2);
+                                final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0}", i), 2);
                                 lotBlock.add(lotTitle);
 
-                                HtmlParagraph datePara = new HtmlParagraph();
+                                final HtmlParagraph datePara = new HtmlParagraph();
                                 datePara.setCssClass("offer_block_para");
                                 {
-                                    HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
+                                    final HtmlSpan dateLabel = new HtmlSpan("offer_block_label");
                                     dateLabel.addText(Context.tr("Delivery Date: "));
                                     datePara.add(dateLabel);
 
                                     // TODO: use scheduled release date
-                                    HtmlSpan date = new HtmlSpan("offer_block_date");
+                                    final HtmlSpan date = new HtmlSpan("offer_block_date");
                                     date.addText(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
                                     datePara.add(date);
                                 }
                                 lotBlock.add(datePara);
 
-                                HtmlParagraph description = new HtmlParagraph();
+                                final HtmlParagraph description = new HtmlParagraph();
                                 description.addText(lot.getDescription());
                                 lotBlock.add(description);
 
@@ -301,11 +303,11 @@ public class DemandOfferListComponent extends HtmlDiv {
 
             // Add project image
             try {
-                FileResourceUrl imageUrl = new FileResourceUrl(offer.getDemand().getProject().getImage());
+                final FileResourceUrl imageUrl = new FileResourceUrl(offer.getDemand().getProject().getImage());
                 // TODO: use avatar
                 final HtmlImage projectImage = new HtmlImage(imageUrl, "avatar_image");
                 avatarBlock.add(projectImage);
-            } catch (UnauthorizedOperationException e) {
+            } catch (final UnauthorizedOperationException e) {
                 // no right, no image
             }
 
@@ -323,7 +325,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                 offerSummaryPopularity.add(popularityScore);
 
                 if (!offer.isOwnedByMe()) {
-                    int vote = offer.getUserVoteValue();
+                    final int vote = offer.getUserVoteValue();
                     if (vote == 0) {
                         final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");
                         {

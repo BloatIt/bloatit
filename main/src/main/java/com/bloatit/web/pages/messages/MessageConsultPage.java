@@ -9,11 +9,8 @@ import com.bloatit.web.url.MessageConsultPageUrl;
 
 @ParamContainer("messages/consult")
 public class MessageConsultPage extends LoggedPage {
-    private MessageConsultPageUrl url;
-
-    public MessageConsultPage(MessageConsultPageUrl url) {
+    public MessageConsultPage(final MessageConsultPageUrl url) {
         super(url);
-        this.url = url;
     }
 
     @Override
