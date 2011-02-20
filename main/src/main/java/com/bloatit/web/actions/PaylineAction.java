@@ -42,7 +42,6 @@ public final class PaylineAction extends LoggedAction {
 
         // Make the payment request.
         final Payline payline = new Payline();
-        payline.authenticate(Context.getSession().getAuthToken());
         if (payline.canMakePayment()) {
             Reponse reponse;
             try {

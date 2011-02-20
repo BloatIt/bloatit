@@ -58,8 +58,6 @@ public final class ProjectPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        project.authenticate(session.getAuthToken());
-
         try {
 
             HtmlDiv box = new HtmlDiv("padding_box");

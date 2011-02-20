@@ -16,13 +16,12 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Restricted;
 
 public class KudosableRight extends RightManager {
 
     public static class Kudos extends Accessor {
         @Override
-        protected final boolean can(final Restricted role, Action action) {
+        protected final boolean can(final RestrictedInterface role, Action action) {
             return authentifiedCanWrite(role, action);
         }
     }

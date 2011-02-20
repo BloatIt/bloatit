@@ -30,14 +30,14 @@ import com.bloatit.model.lists.CommentList;
 /**
  * This is a bug report. A bug report is associated with a batch. it is quite similar to
  * the bug report in a classical bugTracker.
- *
+ * 
  * @author Thomas Guyard
  */
 public class Bug extends UserContent<DaoBug> {
 
     /**
      * Find a bug in the cache or create an new one.
-     *
+     * 
      * @param dao
      * @return if dao is null return null. Else return the new Bug.
      */
@@ -59,7 +59,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Create a new Bug.
-     *
+     * 
      * @param member is the author of the bug.
      * @param batch is the batch on which this bug has been set.
      * @param title is the title of the bug.
@@ -163,8 +163,8 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     public Date getLastUpdateDate() {
-        DaoComment lastComment = getDao().getLastComment();
-        if(lastComment == null)  {
+        final DaoComment lastComment = getDao().getLastComment();
+        if (lastComment == null) {
             return getCreationDate();
         }
         return lastComment.getCreationDate();

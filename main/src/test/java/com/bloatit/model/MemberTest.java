@@ -5,6 +5,7 @@ import javassist.NotFoundException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.managers.GroupManager;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.model.right.AuthToken;
 
 public class MemberTest extends ModelTestUnit {
 

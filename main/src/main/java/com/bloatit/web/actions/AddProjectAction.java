@@ -106,8 +106,6 @@ public final class AddProjectAction extends Action {
 
         final Project p = new Project(projectName, session.getAuthToken().getMember(), langLocale, shortDescription, description, fileImage);
 
-        p.authenticate(session.getAuthToken());
-
         final ProjectPageUrl to = new ProjectPageUrl(p);
 
         return to;

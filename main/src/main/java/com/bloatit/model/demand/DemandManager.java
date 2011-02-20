@@ -20,8 +20,8 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.AuthToken;
 import com.bloatit.model.Demand;
+import com.bloatit.model.right.AuthToken;
 
 /**
  * The Class DemandManager is a class with only static member. Use it to do some requests

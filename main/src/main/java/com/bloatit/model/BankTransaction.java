@@ -56,7 +56,7 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Create a new BankTransaction.
-     *
+     * 
      * @param message is the message from the bank. May be a Ok message or an error
      * message.
      * @param token is a token to authenticate this transaction. The online bank service

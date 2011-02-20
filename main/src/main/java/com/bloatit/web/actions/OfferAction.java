@@ -77,11 +77,7 @@ public final class OfferAction extends LoggedAction {
     @Override
     public Url doProcessRestricted() {
         try {
-            targetIdea.authenticate(session.getAuthToken());
-
             Offer newOffer = targetIdea.addOffer(session.getAuthToken().getMember(), price, description, Locale.FRENCH, expiryDate.getJavaDate(), 0);
-            newOffer.authenticate(session.getAuthToken());
-            
             if (group != null) {
                 newOffer.setAsGroup(group);
             }

@@ -47,8 +47,6 @@ public class MessageListPage extends LoggedPage {
         groupInvites.add(new HtmlParagraph().add(inviteToGroup));
 
         Member me = session.getAuthToken().getMember();
-        me.authenticate(session.getAuthToken());
-
         PageIterable<JoinGroupInvitation> invitations = me.getReceivedInvitation(State.PENDING);
         for (JoinGroupInvitation invitation : invitations) {
             HtmlParagraph p = new HtmlParagraph();

@@ -66,9 +66,6 @@ public final class ContributionAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        // Authentication
-        targetIdea.authenticate(session.getAuthToken());
-
         try {
             targetIdea.addContribution(amount, comment);
             session.notifyGood(Context

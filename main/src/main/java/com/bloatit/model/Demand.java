@@ -27,7 +27,8 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 
 public interface Demand extends KudosableInterface<DaoDemand> {
 
@@ -69,7 +70,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * Add a contribution on this demand.
-     *
+     * 
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char long.
      * @throws NotEnoughMoneyException if the person logged does not have enough money to
@@ -80,28 +81,28 @@ public interface Demand extends KudosableInterface<DaoDemand> {
      */
     void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException;
 
-
     /**
-    * Add a new Offer on this Demand. You can do this operation when you are in the
-    * {@link DemandState#PENDING} or {@link DemandState#PREPARING} DemandState. When you
-    * add the first Offer, the state pass from {@link DemandState#PENDING} to
-    * {@link DemandState#PREPARING}; and this offer is selected (see
-    * {@link DaoDemand#setSelectedOffer(DaoOffer)}). The parameters of this function are
-    * used to create the first (non optional) batch in this offer.
-    *
-    * @throws UnauthorizedOperationException if the user does not has the
-    * {@link Action#WRITE} right on the <code>Offer</code> property.
-    * @throws WrongStateException if the state is != from {@link DemandState#PENDING} or
-    * {@link DemandState#PREPARING}.
-    * @see #authenticate(AuthToken)
-    */
-    Offer addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation) throws UnauthorizedOperationException;
+     * Add a new Offer on this Demand. You can do this operation when you are in the
+     * {@link DemandState#PENDING} or {@link DemandState#PREPARING} DemandState. When you
+     * add the first Offer, the state pass from {@link DemandState#PENDING} to
+     * {@link DemandState#PREPARING}; and this offer is selected (see
+     * {@link DaoDemand#setSelectedOffer(DaoOffer)}). The parameters of this function are
+     * used to create the first (non optional) batch in this offer.
+     * 
+     * @throws UnauthorizedOperationException if the user does not has the
+     * {@link Action#WRITE} right on the <code>Offer</code> property.
+     * @throws WrongStateException if the state is != from {@link DemandState#PENDING} or
+     * {@link DemandState#PREPARING}.
+     * @see #authenticate(AuthToken)
+     */
+            Offer
+            addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation) throws UnauthorizedOperationException;
 
     Offer addEmptyOffer(Member author) throws UnauthorizedOperationException;
 
     /**
      * For now only the admin can delete an offer.
-     *
+     * 
      * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
      * <code>DELETED</code> right on the <code>Offer</code> property.
@@ -111,7 +112,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * Works only in development state.
-     *
+     * 
      * @throws UnauthorizedOperationException If this is not the current developer thats
      * try to cancel the dev.
      */
@@ -124,7 +125,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * Add a comment at the end of the comment list.
-     *
+     * 
      * @param text is the text of the comment.
      * @throws UnauthorizedOperationException if you do not have the {@link Action#WRITE}
      * right on the <code>Comment</code> property.
@@ -134,7 +135,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * Used by Offer class. You should never have to use it
-     *
+     * 
      * @param offer the offer to unselect. Nothing is done if the offer is not selected.
      */
     void unSelectOffer(final Offer offer);
@@ -160,7 +161,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     /**
      * Return the progression in percent. It compare the amount of contribution to the
      * amount of the current offer.
-     *
+     * 
      * @return a percentage. It can be > 100 if the amount of contributions is greater
      * than the amount for the current offer. If the offer amount is 0 then it return
      * Float.POSITIVE_INFINITY.
@@ -220,7 +221,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * The current offer is the offer with the max popularity then the min amount.
-     *
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      * @throws UnauthorizedOperationException if the user does not has the
      * <code>READ</code> right on the <code>Offer</code> property.
@@ -232,7 +233,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
      * A validated offer is an offer selected for more than one day. (If you are in
      * {@link DemandState#DEVELOPPING} state then there should be always a validated
      * offer.
-     *
+     * 
      * @return the validated offer or null if there is no valid offer.
      * @throws UnauthorizedOperationException if you do not have the <code>READ</code>
      * right on the offer property

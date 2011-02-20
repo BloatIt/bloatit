@@ -48,17 +48,11 @@ public final class Group extends Actor<DaoGroup> {
      * Creates a new group
      * </p>
      * 
-     * @param login
-     *            the displayed name of the group
-     * @param contact
-     *            a string with various means to contact the group
-     * @param description
-     *            a textual description of the group
-     * @param right
-     *            <ether the group is <code>PUBLIC</code> or
-     *            <code>PROTECTED</code>
-     * @param author
-     *            the creator of the group
+     * @param login the displayed name of the group
+     * @param contact a string with various means to contact the group
+     * @param description a textual description of the group
+     * @param right <ether the group is <code>PUBLIC</code> or <code>PROTECTED</code>
+     * @param author the creator of the group
      */
     public Group(String login, String contact, String description, Right right, Member author) {
         super(DaoGroup.createAndPersiste(login, contact, description, right));
@@ -78,16 +72,14 @@ public final class Group extends Actor<DaoGroup> {
     }
 
     /**
-     * @return the type of group: either <code>PROTECTED</code> or
-     *         <code>PUBLIC</code>
+     * @return the type of group: either <code>PROTECTED</code> or <code>PUBLIC</code>
      */
     public Right getRight() {
         return getDao().getRight();
     }
 
     /**
-     * Sets the type of group: either <code>PROTECTED</code> or
-     * <code>PUBLIC</code>
+     * Sets the type of group: either <code>PROTECTED</code> or <code>PUBLIC</code>
      */
     public void setRight(final Right right) {
         getDao().setRight(right);
@@ -96,8 +88,7 @@ public final class Group extends Actor<DaoGroup> {
     /**
      * Indicates wheter the group is public or not
      * 
-     * @return <code>true</code> if the group is public, <code>false</code>
-     *         otherwise
+     * @return <code>true</code> if the group is public, <code>false</code> otherwise
      */
     public boolean isPublic() {
         return (getDao().getRight() == Right.PUBLIC);
@@ -113,6 +104,5 @@ public final class Group extends Actor<DaoGroup> {
     public EnumSet<UserGroupRight> getUserGroupRight(Member member) {
         return getDao().getUserGroupRight(member.getDao());
     }
-
 
 }

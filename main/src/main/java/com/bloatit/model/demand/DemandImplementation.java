@@ -32,7 +32,6 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCo
 import com.bloatit.framework.exceptions.WrongStateException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.AuthToken;
 import com.bloatit.model.Bug;
 import com.bloatit.model.CacheManager;
 import com.bloatit.model.Comment;
@@ -50,8 +49,9 @@ import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.OfferList;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.DemandRight;
-import com.bloatit.model.right.RightManager.Action;
 
 // TODO : delete comment.
 //

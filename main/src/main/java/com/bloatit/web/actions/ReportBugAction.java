@@ -87,9 +87,6 @@ public final class ReportBugAction extends Action {
 
 
         final Bug bug = batch.addBug(session.getAuthToken().getMember(), title, description, langLocale, level);
-
-        bug.authenticate(session.getAuthToken());
-
         final BugPageUrl to = new BugPageUrl(bug);
 
         return to;

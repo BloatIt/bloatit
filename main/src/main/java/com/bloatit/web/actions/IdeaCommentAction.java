@@ -49,8 +49,6 @@ public final class IdeaCommentAction extends LoggedAction {
     public Url doProcessRestricted() throws RedirectException {
         session.notifyList(url.getMessages());
         session.notifyGood(Context.tr("Your comment has been added."));
-
-        targetIdea.authenticate(session.getAuthToken());
         try {
             targetIdea.addComment(comment);
         } catch (final UnauthorizedOperationException e) {

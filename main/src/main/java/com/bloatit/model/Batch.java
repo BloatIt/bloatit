@@ -32,9 +32,9 @@ import com.bloatit.model.lists.BugList;
 
 /**
  * A batch is a part of an offer. Simple offers are only composed of one batch.
- *
+ * 
  * @author Thomas Guyard
- *
+ * 
  */
 public class Batch extends Identifiable<DaoBatch> {
 
@@ -72,7 +72,7 @@ public class Batch extends Identifiable<DaoBatch> {
     }
 
     public Bug addBug(final Member member, final String title, final String description, final Locale locale, final Level errorLevel) {
-        Bug bug = new Bug(member, this, title, description, locale, errorLevel);
+        final Bug bug = new Bug(member, this, title, description, locale, errorLevel);
         getDao().addBug(bug.getDao());
         return bug;
     }
@@ -203,20 +203,20 @@ public class Batch extends Identifiable<DaoBatch> {
 
     @Override
     protected boolean isMine(Member member) {
-        return Offer.create(this.getDao().getOffer()).isMine(member);
+        return Offer.create(getDao().getOffer()).isMine(member);
     }
 
     @Override
     protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
-        return Offer.create(this.getDao().getOffer()).calculateMyGroupRights(member);
+        return Offer.create(getDao().getOffer()).calculateMyGroupRights(member);
     }
-    
-    public int getPosition() {
-        Iterator<DaoBatch> iterator = getDao().getOffer().getBatches().iterator();
 
-        int order = 1;
-        while(iterator.hasNext()) {
-            if(iterator.next().getId() == getDao().getId()) {
+    public int getPosition() {
+        final Iterator<DaoBatch> iterator = getDao().getOffer().getBatches().iterator();
+
+        final int order = 1;
+        while (iterator.hasNext()) {
+            if (iterator.next().getId() == getDao().getId()) {
                 return order;
             }
         }

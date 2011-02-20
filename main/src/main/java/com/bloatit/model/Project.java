@@ -24,8 +24,9 @@ import com.bloatit.data.DaoProject;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.demand.DemandList;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.ProjectRight;
-import com.bloatit.model.right.RightManager.Action;
 
 public class Project extends Identifiable<DaoProject> {
 
@@ -46,10 +47,10 @@ public class Project extends Identifiable<DaoProject> {
     }
 
     /**
-     * Create a new project. The right management for creating a demand is
-     * specific. (The Right management system is not working in this case). You
-     * have to use the {@link DemandManager#canCreate(AuthToken)} to make sure
-     * you can create a new demand.
+     * Create a new project. The right management for creating a demand is specific. (The
+     * Right management system is not working in this case). You have to use the
+     * {@link DemandManager#canCreate(AuthToken)} to make sure you can create a new
+     * demand.
      * 
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */

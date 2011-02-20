@@ -34,9 +34,7 @@ public class JoinTeamAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        targetTeam.authenticate(session.getAuthToken());
         Member me = session.getAuthToken().getMember();
-        me.authenticate(session.getAuthToken());
 
         if (targetTeam.isPublic()) {
             try {

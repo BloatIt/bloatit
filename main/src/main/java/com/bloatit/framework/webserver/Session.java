@@ -21,7 +21,7 @@ import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlParameter;
-import com.bloatit.model.AuthToken;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.IndexPageUrl;
 
 /**

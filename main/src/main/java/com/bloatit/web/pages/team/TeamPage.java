@@ -29,7 +29,7 @@ import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.Group;
 import com.bloatit.model.InternalAccount;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.Action;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.MemberPageUrl;

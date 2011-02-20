@@ -28,7 +28,7 @@ import javassist.NotFoundException;
 import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.DateUtils;
-import com.bloatit.model.AuthToken;
+import com.bloatit.model.right.AuthToken;
 
 /**
  * This class is thread safe (synchronized).

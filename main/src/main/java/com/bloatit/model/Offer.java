@@ -29,8 +29,8 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.lists.BatchList;
+import com.bloatit.model.right.Action;
 import com.bloatit.model.right.DemandRight;
-import com.bloatit.model.right.RightManager.Action;
 
 // TODO rightManagement
 
@@ -76,11 +76,8 @@ public final class Offer extends Kudosable<DaoOffer> {
                                         secondsBeforeValidation));
     }
 
-    public Offer(final Member member,
-            final Demand demand) {
-        super(DaoOffer.createAndPersist(member.getDao(),
-                                        DBRequests.getById(DaoDemand.class, demand.getId())
-                                        ));
+    public Offer(final Member member, final Demand demand) {
+        super(DaoOffer.createAndPersist(member.getDao(), DBRequests.getById(DaoDemand.class, demand.getId())));
     }
 
     private Offer(final DaoOffer dao) {
@@ -173,7 +170,9 @@ public final class Offer extends Kudosable<DaoOffer> {
     public static final int PROGRESSION_PERCENT = 100;
 
     /**
-     * Return the progression of the funding of this offer with the amount available on the demand
+     * Return the progression of the funding of this offer with the amount available on
+     * the demand
+     * 
      * @return
      * @throws UnauthorizedOperationException
      */

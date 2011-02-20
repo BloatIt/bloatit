@@ -80,8 +80,6 @@ public final class DemandPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        demand.authenticate(session.getAuthToken());
-
         if (url.getMessages().hasMessage(Level.ERROR)) {
             throw new PageNotFoundException();
         }

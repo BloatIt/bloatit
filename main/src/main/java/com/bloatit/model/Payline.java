@@ -26,7 +26,8 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.RestrictedObject;
 import com.experian.payline.ws.impl.DoWebPaymentRequest;
 import com.experian.payline.ws.impl.DoWebPaymentResponse;
 import com.experian.payline.ws.impl.GetWebPaymentDetailsRequest;
@@ -35,7 +36,7 @@ import com.experian.payline.ws.obj.Order;
 import com.experian.payline.ws.obj.Payment;
 import com.experian.payline.ws.obj.Result;
 
-public final class Payline extends Restricted {
+public final class Payline extends RestrictedObject {
 
     private static final String ACCEPTED_CODE = "00000";
     private static final String ORDER_ORIGINE = "payline";
@@ -119,7 +120,6 @@ public final class Payline extends Restricted {
     public void validatePayment(final String token) throws TokenNotfoundException {
         final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction != null) {
-            transaction.authenticate(getAuthTokenUnprotected());
             if (!transaction.setValidated()) {
                 throw new TokenNotfoundException("Cannot validate the BankTransaction.");
             }
@@ -169,7 +169,7 @@ public final class Payline extends Restricted {
         paymentRequest.setNotificationURL(notificationUrl);
 
         if (getAuthToken() == null) {
-            throw new UnauthorizedOperationException(this, Action.READ);
+            throw new UnauthorizedOperationException(Action.READ);
         }
         if (amount.scale() > 2) {
             throw new FatalErrorException("The amount cannot have more than 2 digit after the '.'.");
@@ -214,7 +214,6 @@ public final class Payline extends Restricted {
         // Order details
         final Order order = new Order();
         final Member member = getAuthTokenUnprotected().getMember();
-        member.authenticate(getAuthTokenUnprotected());
         final String orderReference = createOrderRef(member);
         order.setRef(orderReference);
         order.setOrigin(ORDER_ORIGINE);
@@ -269,7 +268,6 @@ public final class Payline extends Restricted {
     public void cancelPayement(String token) throws TokenNotfoundException {
         final BankTransaction transaction = BankTransaction.getByToken(token);
         if (transaction != null) {
-            transaction.authenticate(getAuthTokenUnprotected());
             transaction.setRefused();
         } else {
             throw new TokenNotfoundException("Token is not found in DB: " + token);

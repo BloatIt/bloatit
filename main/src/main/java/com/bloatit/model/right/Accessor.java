@@ -19,20 +19,23 @@ package com.bloatit.model.right;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
-import com.bloatit.model.Restricted;
-import com.bloatit.model.right.RightManager.Action;
 
 /**
- * The class Accessor is class that test if a member as the right to access some
- * feature. It implements two methods : canAccess that return a boolean if you
- * can access the feature and tryAccess that throw an
- * {@link UnauthorizedOperationException} if you cannot. This class implement
- * the template method pattern so that child classes just have to implement the
- * can method. You have to create an Accessor child class for each feature. For
- * example you could have:
+ * The class Accessor is class that test if a member as the right to access a
+ * <code>property</code>. 
+ * <p>
+ * It implements two methods : <code>canAccess</code> that return a boolean if you can
+ * access the feature and <code>tryAccess</code> that throw an
+ * {@link UnauthorizedOperationException} if you cannot.
+ * </p>
+ * <p>
+ * This class implement the template method pattern so that child classes just have to
+ * implement the can method. You have to create an {@link Accessor} child class for each feature.
+ * </p>
+ * For example you could create an {@link Accessor} on the Fullname property like this:
  * 
  * <pre>
- * class MemberCanAccessFullname extends Accessor {
+ * class MemberCanAccessFullname extends {@link Accessor} {
  *     &#064;Override
  *     protected boolean can(EnumSet&lt;Role&gt; role, Action action) {
  *         return role == OWNER || (action == READ);
@@ -40,26 +43,51 @@ import com.bloatit.model.right.RightManager.Action;
  * }
  * </pre>
  * 
- * There are some useful functions and code organization to manage the creation
- * of Accessor classes see {@link RightManager}.
+ * There are some useful functions and code organization to manage the creation of
+ * Accessor classes see {@link RightManager}.
  * 
- * @see RighManager
+ * @see RightManager
  */
 public abstract class Accessor {
 
-    protected abstract boolean can(Restricted rights, Action action);
+    /**
+     * Can is the method you have to implement in the template method pattern. It is used
+     * in the {@link #canAccess(RestrictedObject, Action)} and
+     * {@link #tryAccess(RestrictedObject, Action)} methods
+     * 
+     * @param object is the object on which we want to do the <code>action</code>
+     * @param action is the action.
+     * @return true, if we have the right to access the RestrictedObject, false otherwise.
+     */
+    protected abstract boolean can(RestrictedInterface object, Action action);
 
-    public final boolean canAccess(final Restricted rights, final Action action) {
-        if (rights.hasUserPrivilege(Role.ADMIN)) {
+    /**
+     * CanAccess call the abstract {@link #can(RestrictedObject, Action)} method to know
+     * if the user has the right to access the <code>object</code>.
+     * 
+     * @param object is the object on which we want to do the <code>action</code>
+     * @param action is the action.
+     * @return true, if we have the right to access the RestrictedObject, false otherwise.
+     */
+    public final boolean canAccess(final RestrictedInterface object, final Action action) {
+        if (object.hasUserPrivilege(Role.ADMIN)) {
             Log.model().trace("Admin access");
             return true;
         }
-        return can(rights, action);
+        return can(object, action);
     }
 
-    public final void tryAccess(final Restricted rights, final Action action) throws UnauthorizedOperationException {
-        if (!canAccess(rights, action)) {
-            throw new UnauthorizedOperationException(rights, action);
+    /**
+     * Throws an {@link UnauthorizedOperationException} if the
+     * {@link #can(RestrictedObject, Action)} return false.
+     * 
+     * @param object is the object on which we want to do the <code>action</code>
+     * @param action is the action.
+     * @throws UnauthorizedOperationException the unauthorized operation exception
+     */
+    public final void tryAccess(final RestrictedInterface object, final Action action) throws UnauthorizedOperationException {
+        if (!canAccess(object, action)) {
+            throw new UnauthorizedOperationException(action);
         }
     }
 }

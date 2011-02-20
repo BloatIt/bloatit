@@ -16,6 +16,8 @@
 //
 package com.bloatit.model;
 
+import com.bloatit.model.right.AuthToken;
+
 /**
  * You have to implement a model manager in the model layer. The model manager allows you
  * to plug your model into the web framework.

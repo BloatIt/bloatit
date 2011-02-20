@@ -20,13 +20,13 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
-import com.bloatit.framework.webserver.ModelManagerAccessor;
-import com.bloatit.model.AuthToken;
+import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.model.Demand;
 import com.bloatit.model.ModelTestUnit;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 
 public class DemandImplementationTest extends ModelTestUnit {
 
@@ -480,8 +480,8 @@ public class DemandImplementationTest extends ModelTestUnit {
     // So you have to reload from the db the demand. (So it return it ...)
     private Demand passeIntoDev(final Demand demand) {
 
-        ModelManagerAccessor.close();
-        ModelManagerAccessor.open();
+        ModelAccessor.close();
+        ModelAccessor.open();
 
         Mockit.setUpMock(DaoDemand.class, new MockDemandValidationTimeOut());
 
@@ -494,8 +494,8 @@ public class DemandImplementationTest extends ModelTestUnit {
         Mockit.tearDownMocks();
 
         // Some times has been spent. Model must have been closed and reopened.
-        ModelManagerAccessor.close();
-        ModelManagerAccessor.open();
+        ModelAccessor.close();
+        ModelAccessor.open();
 
         return DemandManager.getDemandById(demand.getId());
 

@@ -54,11 +54,9 @@ public class SessionBar extends HtmlDiv {
             euroMoney.setCssClass("euro_money");
 
             final Member member = session.getAuthToken().getMember();
-            member.authenticate(session.getAuthToken());
             InternalAccount internalAccount;
             try {
                 internalAccount = member.getInternalAccount();
-                internalAccount.authenticate(session.getAuthToken());
                 final CurrencyLocale cl = Context.getLocalizator().getCurrency(internalAccount.getAmount());
                 euroMoney.add(new HtmlText(cl.getDefaultString()));
 

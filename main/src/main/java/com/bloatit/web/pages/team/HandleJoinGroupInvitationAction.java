@@ -39,12 +39,9 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        invite.authenticate(session.getAuthToken());
         Member me = session.getAuthToken().getMember();
-        me.authenticate(session.getAuthToken());
         if (accept) {
             Group g = invite.getGroup();
-            g.authenticate(session.getAuthToken());
 
             if (me.isInGroup(g)) {
                 session.notifyError(Context.tr("You cannot join a group you already belong in"));

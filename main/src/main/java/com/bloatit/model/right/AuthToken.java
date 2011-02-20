@@ -15,7 +15,7 @@
 // with Elveos.org. If not, see http://www.gnu.org/licenses/.
 //
 
-package com.bloatit.model;
+package com.bloatit.model.right;
 
 import java.util.UUID;
 
@@ -26,11 +26,12 @@ import org.hibernate.classic.Session;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoMember.ActivationState;
 import com.bloatit.data.SessionManager;
+import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 
 /**
  * An AuthToken is a token representing an authenticated user. You can use it to tell a
- * {@link Restricted} class which user is using it.
+ * {@link RestrictedObject} class which user is using it.
  */
 public final class AuthToken {
     private final Member member;
@@ -98,6 +99,10 @@ public final class AuthToken {
         }
         final Member memberById = MemberManager.getMemberById(member.getId());
         return memberById;
+    }
+    
+    public Member getNonPersistantMember(){
+        return member;
     }
 
 }

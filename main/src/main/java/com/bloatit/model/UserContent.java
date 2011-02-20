@@ -24,14 +24,14 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.FileMetadataList;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.Action;
 import com.bloatit.model.right.UserContentRight;
 
 /**
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.
  * 
- * @param <T> the generic type. Must be the concrete Dao version of the concrete
- *            subClass. For example: Demand extends UserContent<DaoDemand>
+ * @param <T> the generic type. Must be the concrete Dao version of the concrete subClass.
+ * For example: Demand extends UserContent<DaoDemand>
  */
 public abstract class UserContent<T extends DaoUserContent> extends Identifiable<T> implements UserContentInterface<T> {
 
@@ -70,18 +70,16 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     public final Date getCreationDate() {
         return getDaoUserContent().getCreationDate();
     }
-    
+
     @Override
-    public final boolean canAccessAsGroup(){
+    public final boolean canAccessAsGroup() {
         return canAccess(new UserContentRight.AsGroup(), Action.WRITE);
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * com.bloatit.model.UserContentInterface#setAsGroup(com.bloatit.model.Group
-     * )
+     * @see com.bloatit.model.UserContentInterface#setAsGroup(com.bloatit.model.Group )
      */
     @Override
     public final void setAsGroup(final Group asGroup) throws UnauthorizedOperationException {
@@ -111,23 +109,23 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     // TODO right management
     public void delete() {
-        this.getDao().setIsDeleted(true);
+        getDao().setIsDeleted(true);
     }
 
     // TODO right management
     public void restore() {
-        this.getDao().setIsDeleted(false);
+        getDao().setIsDeleted(false);
     }
-    
+
     @Override
-    protected boolean isMine(Member member){
+    protected boolean isMine(Member member) {
         return member.isMine(member);
     }
-    
+
     @Override
     protected EnumSet<UserGroupRight> calculateMyGroupRights(Member member) {
-        
-        if (getAsGroup() != null && member.isInGroup(getAsGroup())){
+
+        if (getAsGroup() != null && member.isInGroup(getAsGroup())) {
             return getAsGroup().getUserGroupRight(member);
         }
         return EnumSet.noneOf(UserGroupRight.class);

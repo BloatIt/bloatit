@@ -19,8 +19,8 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.AuthToken;
 import com.bloatit.model.managers.LoginManager;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.web.url.LoginActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 

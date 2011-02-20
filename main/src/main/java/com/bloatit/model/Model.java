@@ -18,6 +18,7 @@ package com.bloatit.model;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
+import com.bloatit.model.right.AuthToken;
 
 public class Model implements AbstractModel {
     public Model() {

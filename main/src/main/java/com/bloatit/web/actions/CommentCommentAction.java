@@ -50,7 +50,6 @@ public class CommentCommentAction extends LoggedAction {
         session.notifyList(url.getMessages());
         session.notifyGood(Context.tr("Your comment has been added."));
 
-        targetComment.authenticate(session.getAuthToken());
         try {
             targetComment.addChildComment(comment);
         } catch (UnauthorizedOperationException e) {

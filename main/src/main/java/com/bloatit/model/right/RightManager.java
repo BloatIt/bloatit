@@ -18,16 +18,12 @@ package com.bloatit.model.right;
 
 import java.util.EnumSet;
 
-import com.bloatit.model.Restricted;
 
 /**
- * The RightManager class contains some useful methods to create the Accessor
- * classes. The Role and Action are here to have an extended unix like right
- * system. Role represent the group / other / owner and Action is the like RWX.
- * You have to create an {@link Accessor} sub class to set the right of an
- * attribute. The Accessor sub classes are really small classes. To store them
- * correctly I use classes has namespace. For example the {@link MemberRight}
- * class is used to store every Accessor for the Member class.
+ * <p>
+ * The RightManager class contains some useful methods to create the {@link Accessor}
+ * classes.
+ * </p>
  * 
  * @see Accessor
  */
@@ -37,22 +33,12 @@ public abstract class RightManager {
         // nothing
     }
 
-    public enum OwningState {
-        NOBODY, AUTHENTICATED, OWNER
-    }
-
-    /**
-     * This is the action you want to do on an attribute.
-     */
-    public enum Action {
-        READ, WRITE, DELETE
-    }
-
+    
     /**
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanRead(final Restricted role, final Action action) {
+    protected static boolean ownerCanRead(final RestrictedInterface role, final Action action) {
         return role.isOwner() && Action.READ == action;
     }
 
@@ -60,7 +46,7 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanWrite(final Restricted role, final Action action) {
+    protected static boolean ownerCanWrite(final RestrictedInterface role, final Action action) {
         return role.isOwner() && Action.WRITE == action;
     }
 
@@ -68,7 +54,7 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean ownerCanDelete(final Restricted role, final Action action) {
+    protected static boolean ownerCanDelete(final RestrictedInterface role, final Action action) {
         return role.isOwner() && Action.DELETE == action;
     }
 
@@ -76,7 +62,7 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanRead(final Restricted role, final Action action) {
+    protected static boolean authentifiedCanRead(final RestrictedInterface role, final Action action) {
         return role.isAuthenticated() && Action.READ == action;
     }
 
@@ -84,7 +70,7 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanWrite(final Restricted role, final Action action) {
+    protected static boolean authentifiedCanWrite(final RestrictedInterface role, final Action action) {
         return role.isAuthenticated() && Action.WRITE == action;
     }
 
@@ -92,7 +78,7 @@ public abstract class RightManager {
      * Helper function, use it in the overloading of the
      * {@link Accessor#can(EnumSet, Action)} method
      */
-    protected static boolean authentifiedCanDelete(final Restricted role, final Action action) {
+    protected static boolean authentifiedCanDelete(final RestrictedInterface role, final Action action) {
         return role.isAuthenticated() && Action.DELETE == action;
     }
 
@@ -121,34 +107,32 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all
-     * attribute.
+     * Already overloaded Accessor. Use it when you have a readable by all attribute.
      */
     protected static class ReadOnly extends Accessor {
         @Override
-        protected final boolean can(final Restricted role, final Action action) {
+        protected final boolean can(final RestrictedInterface role, final Action action) {
             return Action.READ == action;
         }
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a r/w by owner
-     * attribute.
+     * Already overloaded Accessor. Use it when you have a r/w by owner attribute.
      */
     protected static class Private extends Accessor {
         @Override
-        protected final boolean can(final Restricted role, final Action action) {
+        protected final boolean can(final RestrictedInterface role, final Action action) {
             return ownerCanRead(role, action) || ownerCanWrite(role, action);
         }
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all and
-     * writable by owner attribute.
+     * Already overloaded Accessor. Use it when you have a readable by all and writable by
+     * owner attribute.
      */
     protected static class Public extends Accessor {
         @Override
-        protected final boolean can(final Restricted role, final Action action) {
+        protected final boolean can(final RestrictedInterface role, final Action action) {
             return canRead(action) || ownerCanWrite(role, action);
         }
     }
@@ -158,7 +142,7 @@ public abstract class RightManager {
      */
     protected static class PublicReadOnly extends Accessor {
         @Override
-        protected final boolean can(final Restricted role, final Action action) {
+        protected final boolean can(final RestrictedInterface role, final Action action) {
             return canRead(action);
         }
     }
@@ -168,7 +152,7 @@ public abstract class RightManager {
      */
     protected static class PrivateReadOnly extends Accessor {
         @Override
-        protected final boolean can(final Restricted role, final Action action) {
+        protected final boolean can(final RestrictedInterface role, final Action action) {
             return ownerCanRead(role, action);
         }
     }

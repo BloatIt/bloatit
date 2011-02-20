@@ -26,7 +26,7 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.AccountRight;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.Action;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 

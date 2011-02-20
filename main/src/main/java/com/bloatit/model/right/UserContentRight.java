@@ -17,13 +17,12 @@
 package com.bloatit.model.right;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
-import com.bloatit.model.Restricted;
 
 public class UserContentRight extends RightManager {
 
     public static class AsGroup extends Accessor {
         @Override
-        protected final boolean can(final Restricted role, final Action action) {
+        protected final boolean can(final RestrictedInterface role, final Action action) {
             return canRead(action) || (role.hasGroupPrivilege(UserGroupRight.TALK) && canWrite(action));
         }
     }

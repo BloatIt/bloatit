@@ -18,6 +18,7 @@ package com.bloatit.model;
 
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.model.right.RestrictedObject;
 
 /**
  * An identifiable is the base class for each class that map a dao class.
@@ -26,10 +27,10 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * 
  * @param <T> is the dao being mapped.
  */
-public abstract class Identifiable<T extends IdentifiableInterface> extends Restricted implements IdentifiableInterface {
+public abstract class Identifiable<T extends IdentifiableInterface> extends RestrictedObject implements IdentifiableInterface {
 
     private final T dao;
-    
+
     protected Identifiable(final T dao) {
         if (dao == null) {
             throw new NonOptionalParameterException();

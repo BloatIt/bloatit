@@ -20,8 +20,9 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.InternalAccountRight;
-import com.bloatit.model.right.RightManager.Action;
 
 /**
  * An internal account is an account containing the money we store for a user. There is

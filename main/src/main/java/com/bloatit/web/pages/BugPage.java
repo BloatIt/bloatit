@@ -32,7 +32,7 @@ public final class BugPage extends MasterPage {
 
     public static final String BUG_FIELD_NAME = "id";
 
-    @ParamConstraint(optionalErrorMsg=@tr("The id of the project is incorrect or missing"))
+    @ParamConstraint(optionalErrorMsg = @tr("The id of the project is incorrect or missing"))
     @RequestParam(name = BUG_FIELD_NAME, level = Level.ERROR)
     private final Bug bug;
 
@@ -51,27 +51,23 @@ public final class BugPage extends MasterPage {
             throw new PageNotFoundException();
         }
 
-        bug.authenticate(session.getAuthToken());
+        HtmlDiv box = new HtmlDiv("padding_box");
 
+        HtmlTitle bugTitle;
+        bugTitle = new HtmlTitle(bug.getTitle(), 1);
+        box.add(bugTitle);
 
-            HtmlDiv box = new HtmlDiv("padding_box");
+        final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
 
-            HtmlTitle bugTitle;
-            bugTitle = new HtmlTitle(bug.getTitle(), 1);
-            box.add(bugTitle);
+        box.add(description);
 
-            final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
-
-            box.add(description);
-
-
-            add(box);
+        add(box);
     }
 
     @Override
     protected String getPageTitle() {
         if (bug != null) {
-                return tr("Bug - ") + bug.getTitle();
+            return tr("Bug - ") + bug.getTitle();
         }
         return tr("Bug - No bug");
     }

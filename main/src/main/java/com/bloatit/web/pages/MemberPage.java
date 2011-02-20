@@ -35,14 +35,12 @@ import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
-import com.bloatit.model.managers.GroupManager;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
-import com.bloatit.web.url.TeamsPageUrl;
 
 /**
  * <p>
@@ -81,7 +79,6 @@ public final class MemberPage extends MasterPage {
         final HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
         
-        member.authenticate(session.getAuthToken());
         try {
             HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Member: ") + member.getDisplayName(), 1);
             master.add(memberTitle);

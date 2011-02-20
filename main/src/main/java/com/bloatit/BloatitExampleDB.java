@@ -13,7 +13,6 @@ import com.bloatit.data.SessionManager;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
-import com.bloatit.model.AuthToken;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Comment;
@@ -27,6 +26,7 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
+import com.bloatit.model.right.AuthToken;
 
 public class BloatitExampleDB {
 

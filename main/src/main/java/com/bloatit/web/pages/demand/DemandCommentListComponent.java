@@ -63,7 +63,6 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
             commentsBlock.add(new HtmlTitleBlock(Context.tr("Comments ({0})", comments.size()), 2).setCssClass("comments_title"));
 
             for (final Comment comment : comments) {
-                comment.authenticate(Context.getSession().getAuthToken());
                 commentsBlock.add(generateComment(comment, false));
             }
             commentsBlock.add(generateNewCommentComponent(targetDemand));
@@ -147,9 +146,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
 
             // Display child elements
             for (final Comment childComment : comment.getChildren()) {
-                childComment.authenticate(Context.getSession().getAuthToken());
                 commentBlock.add(generateComment(childComment, true));
-
             }
 
             if (!child) {

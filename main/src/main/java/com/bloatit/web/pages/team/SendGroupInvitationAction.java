@@ -43,7 +43,6 @@ public class SendGroupInvitationAction extends LoggedAction {
     @Override
     public Url doProcessRestricted() throws RedirectException {
         Member me = session.getAuthToken().getMember();
-        me.authenticate(session.getAuthToken());
 
         try {
             me.sendInvitation(receiver, group);

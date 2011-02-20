@@ -47,5 +47,4 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
         return false;
     }
 
-
 }

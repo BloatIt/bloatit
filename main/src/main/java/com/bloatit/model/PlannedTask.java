@@ -23,7 +23,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.bloatit.framework.webserver.ModelManagerAccessor;
+import com.bloatit.framework.webserver.ModelAccessor;
 
 /**
  * <p>
@@ -73,13 +73,13 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     @Override
     public void run() {
         try {
-            ModelManagerAccessor.open();
+            ModelAccessor.open();
             doRun();
         } catch (final RuntimeException ex) {
             throw ex;
         } finally {
             remove(this);
-            ModelManagerAccessor.close();
+            ModelAccessor.close();
         }
     }
 

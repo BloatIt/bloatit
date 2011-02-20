@@ -80,8 +80,6 @@ public final class CreateDemandAction extends Action {
         final Locale langLocale = new Locale(lang);
         final Demand d = DemandFactory.createDemand(session.getAuthToken().getMember(), langLocale, description, specification, project);
 
-        d.authenticate(session.getAuthToken());
-
         final DemandPageUrl to = new DemandPageUrl(d);
 
         return to;

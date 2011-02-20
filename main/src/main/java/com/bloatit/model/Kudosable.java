@@ -25,8 +25,9 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
+import com.bloatit.model.right.Action;
+import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.KudosableRight;
-import com.bloatit.model.right.RightManager.Action;
 
 public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface<T> {
 
@@ -230,56 +231,56 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         Log.model().info("Kudosable: " + getId() + " change from state: " + this.getState() + ", to: " + newState);
         getDao().setState(newState);
     }
-    
+
     // TODO right management
-    public void lockPopularity(){
+    public void lockPopularity() {
         getDao().lockPopularity();
     }
-    
+
     // TODO right management
-    public void unlockPopularity(){
+    public void unlockPopularity() {
         getDao().unlockPopularity();
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation
-     * limits. Default value is {@value #TURN_PENDING}.
+     * You can redefine me if you want to customize the state calculation limits. Default
+     * value is {@value #TURN_PENDING}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     *         {@link PopularityState#PENDING} state.
+     * {@link PopularityState#PENDING} state.
      */
     protected int turnPending() {
         return TURN_PENDING;
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation
-     * limits. Default value is {@value #TURN_VALID}.
+     * You can redefine me if you want to customize the state calculation limits. Default
+     * value is {@value #TURN_VALID}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     *         {@link PopularityState#VALIDATED} state.
+     * {@link PopularityState#VALIDATED} state.
      */
     protected int turnValid() {
         return TURN_VALID;
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation
-     * limits. Default value is {@value #TURN_REJECTED}.
+     * You can redefine me if you want to customize the state calculation limits. Default
+     * value is {@value #TURN_REJECTED}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     *         {@link PopularityState#REJECTED} state.
+     * {@link PopularityState#REJECTED} state.
      */
     protected int turnRejected() {
         return TURN_REJECTED;
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation
-     * limits. Default value is {@value #TURN_HIDDEN}.
+     * You can redefine me if you want to customize the state calculation limits. Default
+     * value is {@value #TURN_HIDDEN}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
-     *         {@link PopularityState#HIDDEN} state.
+     * {@link PopularityState#HIDDEN} state.
      */
     protected int turnHidden() {
         return TURN_HIDDEN;
@@ -302,24 +303,21 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     /**
-     * This method is called each time this Kudosable change its state to
-     * pending.
+     * This method is called each time this Kudosable change its state to pending.
      */
     protected void notifyPending() {
         // Implement me if you wish
     }
 
     /**
-     * This method is called each time this Kudosable change its state to
-     * rejected.
+     * This method is called each time this Kudosable change its state to rejected.
      */
     protected void notifyRejected() {
         // Implement me if you wish
     }
 
     /**
-     * This method is called each time this Kudosable change its state to
-     * Hidden.
+     * This method is called each time this Kudosable change its state to Hidden.
      */
     protected void notifyHidden() {
         // Implement me if you wish

@@ -34,7 +34,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
-import com.bloatit.model.right.RightManager.Action;
+import com.bloatit.model.right.Action;
 import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
@@ -102,7 +102,6 @@ public final class OfferPage extends LoggedPage {
 
         // Offering on the behalf of
         Member me = session.getAuthToken().getMember();
-        me.authenticate(session.getAuthToken());
         if (me.canAccessGroups(Action.READ)) {
             try {
                 PageIterable<Group> groups = me.getGroups();

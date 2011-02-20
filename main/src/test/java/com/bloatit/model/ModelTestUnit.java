@@ -3,7 +3,8 @@ package com.bloatit.model;
 import junit.framework.TestCase;
 
 import com.bloatit.data.SessionManager;
-import com.bloatit.framework.webserver.ModelManagerAccessor;
+import com.bloatit.framework.webserver.ModelAccessor;
+import com.bloatit.model.right.AuthToken;
 
 public class ModelTestUnit extends TestCase {
     protected AuthToken yoAuthToken;
@@ -14,7 +15,7 @@ public class ModelTestUnit extends TestCase {
     public static int init = init();
 
     private static int init() {
-        ModelManagerAccessor.init(new Model());
+        ModelAccessor.init(new Model());
         SessionManager.generateTestSessionFactory();
         return 0;
     }
@@ -24,21 +25,21 @@ public class ModelTestUnit extends TestCase {
         super.setUp();
         SessionManager.generateTestSessionFactory();
         db = new SimpleTestDB();
-        ModelManagerAccessor.open();
+        ModelAccessor.open();
         try {
             yoAuthToken = new AuthToken("Yo", "plop");
             tomAuthToken = new AuthToken("Thomas", "password");
             fredAuthToken = new AuthToken("Fred", "other");
         } finally {
-            ModelManagerAccessor.close();
+            ModelAccessor.close();
         }
-        ModelManagerAccessor.open();
+        ModelAccessor.open();
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        ModelManagerAccessor.close();
+        ModelAccessor.close();
         if (SessionManager.getSessionFactory().getCurrentSession().getTransaction().isActive()) {
             SessionManager.endWorkUnitAndFlush();
         }

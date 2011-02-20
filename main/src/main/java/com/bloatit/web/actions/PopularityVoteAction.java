@@ -53,9 +53,6 @@ public final class PopularityVoteAction extends LoggedAction {
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
-        // Authentication
-        targetKudosable.authenticate(session.getAuthToken());
-
         try {
             if(voteUp) {
                 EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();

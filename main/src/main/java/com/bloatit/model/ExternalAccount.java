@@ -19,8 +19,8 @@ package com.bloatit.model;
 import com.bloatit.data.DaoExternalAccount;
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.model.right.Action;
 import com.bloatit.model.right.ExternalAccountRight;
-import com.bloatit.model.right.RightManager.Action;
 
 /**
  * @see DaoExternalAccount
@@ -62,8 +62,8 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
     }
 
     /**
-     * @throws UnauthorizedOperationException if you do not have the right to
-     *             access the <code>BankCode</code> property.
+     * @throws UnauthorizedOperationException if you do not have the right to access the
+     * <code>BankCode</code> property.
      */
     public String getBankCode() throws UnauthorizedOperationException {
         tryAccess(new ExternalAccountRight.BankCode(), Action.READ);
@@ -71,8 +71,8 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
     }
 
     /**
-     * @throws UnauthorizedOperationException if you do not have the right to
-     *             access the <code>Type</code> property.
+     * @throws UnauthorizedOperationException if you do not have the right to access the
+     * <code>Type</code> property.
      */
     public AccountType getType() throws UnauthorizedOperationException {
         tryAccess(new ExternalAccountRight.Type(), Action.READ);

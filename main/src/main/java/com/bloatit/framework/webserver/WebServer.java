@@ -43,7 +43,7 @@ public abstract class WebServer implements XcgiProcessor {
             parameters.putAll(post.getParameters());
 
             try {
-                ModelManagerAccessor.open();
+                ModelAccessor.open();
                 final Linkable linkable = constructLinkable(pageCode, parameters, session);
                 linkable.writeToHttp(response);
             } catch (PageNotFoundException e) {
@@ -59,7 +59,7 @@ public abstract class WebServer implements XcgiProcessor {
                 Log.framework().info("Redirect to " + e.getUrl(), e);
                 response.writeRedirect(e.getUrl().urlString());
             } finally {
-                ModelManagerAccessor.close();
+                ModelAccessor.close();
             }
 
         } catch (RuntimeException e) {

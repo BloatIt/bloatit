@@ -16,13 +16,12 @@
 //
 package com.bloatit.model.right;
 
-import com.bloatit.model.Restricted;
 
 public class ProjectRight extends RightManager {
 
     public static class GroupList extends Accessor {
         @Override
-        protected final boolean can(final Restricted role, final Action action) {
+        protected final boolean can(final RestrictedInterface role, final Action action) {
             boolean can = false;
             can = can || canRead(action);
             can = can || ownerCanWrite(role, action);

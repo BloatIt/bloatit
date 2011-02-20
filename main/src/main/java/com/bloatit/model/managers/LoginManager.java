@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import javassist.NotFoundException;
 
-import com.bloatit.model.AuthToken;
+import com.bloatit.model.right.AuthToken;
 
 public final class LoginManager {
 
