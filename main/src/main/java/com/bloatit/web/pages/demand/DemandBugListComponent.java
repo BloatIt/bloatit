@@ -11,8 +11,11 @@
  */
 package com.bloatit.web.pages.demand;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.Iterator;
 
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -24,6 +27,7 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Bug;
 import com.bloatit.model.Demand;
 import com.bloatit.web.url.BugPageUrl;
+import com.bloatit.web.url.ReportBugPageUrl;
 
 public class DemandBugListComponent extends HtmlDiv {
 
@@ -33,6 +37,11 @@ public class DemandBugListComponent extends HtmlDiv {
         final PageIterable<Bug> openBugs = demand.getOpenBugs();
         final HtmlTitle openBugsTitle = new HtmlTitle(Context.tr("Open bugs ({0})", openBugs.size()), 1);
         add(openBugsTitle);
+        try {
+            add(new ReportBugPageUrl(demand.getSelectedOffer()).getHtmlLink(tr("Report a new bug")));
+        } catch (UnauthorizedOperationException e) {
+        }
+
         final HtmlTable openBugsTable = new HtmlTable(new HtmlBugsTableModel(openBugs));
         add(openBugsTable);
 

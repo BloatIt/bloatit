@@ -29,7 +29,9 @@ import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Bug;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
@@ -46,6 +48,10 @@ public final class ReportBugAction extends Action {
     public static final String BUG_LEVEL = "bug_level";
     public static final String BUG_BATCH = "bug_batch";
     public static final String LANGUAGE_CODE = "bug_description_language";
+    public static final String ATTACHEMENT_CODE = "attachement";
+    public static final String ATTACHEMENT_NAME_CODE = "attachement/filename";
+    public static final String ATTACHEMENT_CONTENT_TYPE_CODE = "attachement/contenttype";
+    public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachement_description";
 
     @RequestParam(name = BUG_TITLE, role = Role.POST)
     @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
@@ -69,6 +75,22 @@ public final class ReportBugAction extends Action {
     @RequestParam(name = BUG_BATCH, role = Role.GET)
     private final Batch batch;
 
+    @ParamConstraint(optional=true)
+    @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
+    private final String attachement;
+
+    @ParamConstraint(optional=true)
+    @RequestParam(name = ATTACHEMENT_NAME_CODE, role = Role.POST)
+    private final String attachementFileName;
+
+    @ParamConstraint(optional=true)
+    @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
+    private final String attachementDescription;
+
+    @ParamConstraint(optional=true)
+    @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
+    private final String attachementContentType;
+
     public ReportBugAction(final ReportBugActionUrl url) {
         super(url);
         this.url = url;
@@ -78,6 +100,10 @@ public final class ReportBugAction extends Action {
         this.lang = url.getLang();
         this.level = url.getLevel();
         this.batch = url.getBatch();
+        this.attachement = url.getAttachement();
+        this.attachementFileName = url.getAttachementFileName();
+        this.attachementContentType = url.getAttachementContentType();
+        this.attachementDescription = url.getAttachementDescription();
 
     }
 
@@ -89,9 +115,23 @@ public final class ReportBugAction extends Action {
             session.notifyError(Context.tr("You must be logged in to report a bug."));
             return new LoginPageUrl();
         }
+
+        if(attachement != null && (attachementDescription == null || attachementDescription.isEmpty())) {
+            session.notifyError(Context.tr("You must enter a description of the attachement if you add an attachement."));
+            return redirectWithError();
+        }
+
         final Locale langLocale = new Locale(lang);
 
         final Bug bug = batch.addBug(session.getAuthToken().getMember(), title, description, langLocale, level.getLevel());
+
+        final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
+                                                                              attachement,
+                                                                              attachementFileName,
+                                                                              attachementDescription);
+
+        bug.addFile(attachementFileMedatata);
+
         final BugPageUrl to = new BugPageUrl(bug);
 
         return to;
@@ -102,16 +142,21 @@ public final class ReportBugAction extends Action {
         session.notifyList(url.getMessages());
 
         if (batch != null) {
-            session.addParameter(url.getTitleParameter());
-            session.addParameter(url.getDescriptionParameter());
-            session.addParameter(url.getBatchParameter());
-            session.addParameter(url.getLevelParameter());
-            session.addParameter(url.getLangParameter());
-            return new ReportBugPageUrl(batch.getOffer());
+            return redirectWithError();
         } else {
             return new PageNotFoundUrl();
         }
 
+    }
+
+    public Url redirectWithError() {
+        session.addParameter(url.getTitleParameter());
+        session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getBatchParameter());
+        session.addParameter(url.getLevelParameter());
+        session.addParameter(url.getLangParameter());
+        session.addParameter(url.getAttachementDescriptionParameter());
+        return new ReportBugPageUrl(batch.getOffer());
     }
 
     public enum BindedLevel implements Displayable {
