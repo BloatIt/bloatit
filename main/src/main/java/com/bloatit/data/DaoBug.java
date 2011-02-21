@@ -27,12 +27,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -41,7 +39,7 @@ import com.bloatit.framework.utils.PageIterable;
  * bugtracker.
  */
 @Entity
-public final class DaoBug extends DaoUserContent {
+public final class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Criticality of the bug. A {@link Level#FATAL} error is a very important
@@ -117,6 +115,7 @@ public final class DaoBug extends DaoUserContent {
         return bug;
     }
 
+    @Override
     public void addComment(final DaoComment comment) {
         comments.add(comment);
     }
@@ -183,25 +182,17 @@ public final class DaoBug extends DaoUserContent {
     /**
      * @return the comments
      */
+    @Override
     public PageIterable<DaoComment> getComments() {
-        final Query allComments = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "");
-        final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)");
-        return new QueryCollection<DaoComment>(allComments, allCommentsSize);
+        return CommentManager.getComments(comments);
     }
 
     /**
      * @return the last comment
      */
+    @Override
     public DaoComment getLastComment() {
-
-        final Query allComments = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "ORDER BY creationDate DESC");
-        final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)");
-        final QueryCollection<DaoComment> queryCollection = new QueryCollection<DaoComment>(allComments, allCommentsSize);
-        if (queryCollection.size() == 0) {
-            return null;
-        }
-
-        return queryCollection.iterator().next();
+        return CommentManager.getLastComment(comments);
     }
 
     // ======================================================================

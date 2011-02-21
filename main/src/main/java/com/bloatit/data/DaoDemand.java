@@ -57,7 +57,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Indexed
 @FullTextFilterDef(name = "searchFilter", impl = DaoDemandSearchFilterFactory.class)
-public final class DaoDemand extends DaoKudosable {
+public final class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * This is the state of the demand. It's used in the workflow modeling. The
@@ -176,6 +176,7 @@ public final class DaoDemand extends DaoKudosable {
         session.delete(this);
     }
 
+    @Override
     public void addComment(final DaoComment comment) {
         comments.add(comment);
     }
@@ -331,15 +332,17 @@ public final class DaoDemand extends DaoKudosable {
         return new QueryCollection<DaoContribution>("from DaoContribution as f where f.demand = :this").setEntity("this", this);
     }
 
-    /**
-     * Use a HQL query to get the first level comments as a PageIterable
-     * collection
+    /* (non-Javadoc)
+     * @see com.bloatit.data.DaoCommentable#getCommentsFromQuery()
      */
-    public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory()
-                                                             .getCurrentSession()
-                                                             .createFilter(comments, "order by creationDate asc, id"),
-                                               SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
+    @Override
+    public PageIterable<DaoComment> getComments() {
+        return CommentManager.getComments(comments);
+    }
+    
+    @Override
+    public DaoComment getLastComment() {
+        return CommentManager.getLastComment(comments);
     }
 
     public DaoOffer getSelectedOffer() {

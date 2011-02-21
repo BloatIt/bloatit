@@ -96,7 +96,7 @@ public class DaoDemandTest extends DataTestUnit {
         SessionManager.beginWorkUnit();
         demand = DBRequests.getById(DaoDemand.class, demand.getId());
 
-        assertEquals(4, demand.getCommentsFromQuery().size());
+        assertEquals(4, demand.getComments().size());
     }
 
     public void testAcceptContributions() throws Throwable {
@@ -195,7 +195,7 @@ public class DaoDemandTest extends DataTestUnit {
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
         demand.addComment(DaoComment.createAndPersist(yo, "plop"));
-        assertNotNull(demand.getCommentsFromQuery().iterator().next());
+        assertNotNull(demand.getComments().iterator().next());
     }
 
 }

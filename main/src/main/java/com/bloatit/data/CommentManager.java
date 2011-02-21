@@ -7,30 +7,27 @@ import org.hibernate.Query;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.utils.PageIterable;
 
-public class CommentManager {
+public final class CommentManager {
 
-    private final Set<DaoComment> comments;
-
-    CommentManager(Set<DaoComment> persistentSetOfComments) {
-        super();
-        this.comments = persistentSetOfComments;
+    private CommentManager() {
+        // disactivate CTOR
     }
 
     /**
      * @return the comments
      */
-    public PageIterable<DaoComment> getComments() {
-        final Query allComments = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "");
-        final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)");
+    public static PageIterable<DaoComment> getComments(final Set<DaoComment> persistentSetOfComments) {
+        final Query allComments = createFilter(persistentSetOfComments, "");
+        final Query allCommentsSize = createFilter(persistentSetOfComments, "select count(*)");
         return new QueryCollection<DaoComment>(allComments, allCommentsSize);
     }
 
     /**
      * @return the last comment
      */
-    public DaoComment getLastComment() {
-        final Query allComments = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "ORDER BY creationDate DESC");
-        final Query allCommentsSize = SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)");
+    public static DaoComment getLastComment(final Set<DaoComment> persistentSetOfComments) {
+        final Query allComments = createFilter(persistentSetOfComments, "ORDER BY creationDate DESC");
+        final Query allCommentsSize = createFilter(persistentSetOfComments, "select count(*)");
         final QueryCollection<DaoComment> queryCollection = new QueryCollection<DaoComment>(allComments, allCommentsSize);
         if (queryCollection.size() == 0) {
             return null;
@@ -38,8 +35,8 @@ public class CommentManager {
         return queryCollection.iterator().next();
     }
 
-    public void addComment(final DaoComment comment) {
-        comments.add(comment);
+    private static Query createFilter(final Set<DaoComment> persistentSetOfComments, String filter) {
+        return SessionManager.getSessionFactory().getCurrentSession().createFilter(persistentSetOfComments, filter);
     }
 
 }

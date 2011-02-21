@@ -508,7 +508,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     @Override
     public PageIterable<Comment> getComments() throws UnauthorizedOperationException {
         tryAccess(new DemandRight.Comment(), Action.READ);
-        return new CommentList(getDao().getCommentsFromQuery());
+        return new CommentList(getDao().getComments());
     }
 
     /*

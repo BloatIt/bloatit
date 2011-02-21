@@ -42,7 +42,7 @@ import com.bloatit.framework.utils.PageIterable;
  * A comment is a Kudosable content. It cannot be translated.
  */
 @Entity
-public final class DaoComment extends DaoKudosable {
+public final class DaoComment extends DaoKudosable implements DaoCommentable {
 
     // WARNING "TEXT" is not a standard SQL type.
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -115,6 +115,21 @@ public final class DaoComment extends DaoKudosable {
      */
     public PageIterable<DaoComment> getChildren() {
         return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by c.creationDate asc, id").setEntity("this", this);
+    }
+    
+    @Override
+    public PageIterable<DaoComment> getComments() {
+        return CommentManager.getComments(children);
+    }
+
+    @Override
+    public DaoComment getLastComment() {
+        return CommentManager.getLastComment(children);
+    }
+
+    @Override
+    public void addComment(DaoComment comment) {
+        addChildComment(comment);
     }
 
     // ======================================================================

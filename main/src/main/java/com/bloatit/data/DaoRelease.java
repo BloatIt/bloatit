@@ -34,7 +34,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 @Entity
-public final class DaoRelease extends DaoUserContent {
+public final class DaoRelease extends DaoUserContent implements DaoCommentable {
     @Basic(optional = false)
     private String description;
 
@@ -74,8 +74,9 @@ public final class DaoRelease extends DaoUserContent {
         return release;
     }
 
+    @Override
     public void addComment(final DaoComment comment) {
-        new CommentManager(comments).addComment(comment);
+        comments.add(comment);
     }
 
     /**
@@ -99,15 +100,17 @@ public final class DaoRelease extends DaoUserContent {
     /**
      * @return the comments
      */
+    @Override
     public PageIterable<DaoComment> getComments() {
-        return new CommentManager(comments).getComments();
+        return CommentManager.getComments(comments);
     }
 
     /**
      * @return the last comment
      */
+    @Override
     public DaoComment getLastComment() {
-        return new CommentManager(comments).getLastComment();
+        return CommentManager.getLastComment(comments);
     }
 
     // ======================================================================
@@ -155,5 +158,4 @@ public final class DaoRelease extends DaoUserContent {
             return false;
         return true;
     }
-
 }
