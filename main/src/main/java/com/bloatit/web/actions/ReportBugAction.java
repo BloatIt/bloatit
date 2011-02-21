@@ -101,7 +101,7 @@ public final class ReportBugAction extends Action {
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
 
-        if(batch != null) {
+        if (batch != null) {
             session.addParameter(url.getTitleParameter());
             session.addParameter(url.getDescriptionParameter());
             session.addParameter(url.getBatchParameter());
@@ -111,7 +111,6 @@ public final class ReportBugAction extends Action {
         } else {
             return new PageNotFoundUrl();
         }
-
 
     }
 

@@ -161,7 +161,7 @@ public class MultipartMimeParser {
      * <p>
      * <b>note</b>: The contentType header is not part of this
      * </p>
-     * 
+     *
      * @return the String representing the header of the multipart. String can
      *         be empty if no header is left to read (either because it's
      *         already been read or because no header have ever been included in
@@ -191,7 +191,7 @@ public class MultipartMimeParser {
      * <p>
      * Reads the preamble of the multipart. Preamble is usually ignored.
      * </p>
-     * 
+     *
      * @return the String representing the preamble of the multipart. String can
      *         be empty if no preamble is left to read (either because it's
      *         already been read or because no header have ever been included in
@@ -242,7 +242,7 @@ public class MultipartMimeParser {
      * When no more data is available (CRLF--boundary--) has been found, the
      * next call to this method will return null.
      * </p>
-     * 
+     *
      * @return a <code>MimeElement</code> representing the content of this mime,
      *         or <code>null</code> if end has been reached.
      * @throws IOException Whenever the multipartStream is not available
@@ -305,8 +305,8 @@ public class MultipartMimeParser {
                                 me.addContent(completeBoundary[j]);
                             }
                         }
-                        if(b == completeBoundary[0]) {
-                            i=1;
+                        if (b == completeBoundary[0]) {
+                            i = 1;
                         } else {
                             i = 0;
                             me.addContent(b);

@@ -86,12 +86,7 @@ public final class DaoBug extends DaoUserContent {
     @Enumerated
     private State state;
 
-    public DaoBug(final DaoMember member,
-                  final DaoBatch batch,
-                  final String title,
-                  final String description,
-                  final Locale locale,
-                  final Level level) {
+    public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
         super(member);
         if (title == null || description == null || batch == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -104,7 +99,12 @@ public final class DaoBug extends DaoUserContent {
         this.state = State.PENDING;
     }
 
-    public static DaoBug createAndPersist(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
+    public static DaoBug createAndPersist(final DaoMember member,
+                                          final DaoBatch batch,
+                                          final String title,
+                                          final String description,
+                                          final Locale locale,
+                                          final Level level) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoBug bug = new DaoBug(member, batch, title, description, locale, level);
         try {
@@ -126,11 +126,9 @@ public final class DaoBug extends DaoUserContent {
     }
 
     /**
-     * The person assigned to a bug is the developer (the member that has created the
-     * offer).
-     *
      * The person assigned to a bug is the developer (the member that has
-     * created the offer).
+     * created the offer). The person assigned to a bug is the developer (the
+     * member that has created the offer).
      * 
      * @return the member assigned to this bug.
      */

@@ -57,12 +57,12 @@ public class ErrorResource extends RestResource {
             if (exception.getCause() != null) {
                 result += exception.getCause();
             }
-            result+="\n";
+            result += "\n";
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             exception.printStackTrace(pw);
             result += sw.toString();
-            
+
             error.addText(result);
         }
 

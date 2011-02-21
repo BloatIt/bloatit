@@ -123,8 +123,9 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * This can be used for security purpose.
      * 
      * @return the last modification date.
-     * @throws UnauthorizedOperationException if you have not the right to access
-     *             the <code>LastModificationDate</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>LastModificationDate</code> property in this
+     *             class.
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.LastModificationDate(), Action.READ);

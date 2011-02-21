@@ -110,7 +110,6 @@ public final class ReportBugPage extends LoggedPage {
         levelInput.setComment(Context.tr("Level of the bug."));
         reportBugForm.add(levelInput);
 
-
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
         final HtmlDiv group = new HtmlDiv();
@@ -131,14 +130,12 @@ public final class ReportBugPage extends LoggedPage {
 
     static public class LevelSelector extends HtmlDropDown {
 
-
-
         public LevelSelector(FormFieldData<BindedLevel> levelFormFieldData, String label) {
             super(levelFormFieldData, label);
 
             addDropDownElements(EnumSet.allOf(BindedLevel.class));
 
-            //That doesn't works. Make it work
+            // That doesn't works. Make it work
             doSetDefaultValue(levelFormFieldData.getFieldDefaultValueAsString());
 
         }
