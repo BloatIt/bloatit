@@ -184,16 +184,13 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     public String getSuggestedValue() {
-        System.err.println("1 coucou");
         if (strValue != null && !strValue.isEmpty()) {
             return strValue;
         }
         String suggestedValue = description.getSuggestedValue();
-        System.err.println("1 " + suggestedValue);
         if (suggestedValue == null) {
             return getDefaultValue();
         }
-        System.err.println(suggestedValue);
         return suggestedValue;
     }
 
@@ -227,17 +224,24 @@ public class UrlParameter<T, U> extends UrlNode {
 
     static class FieldDataFromUrl<T, U> implements FormFieldData<T> {
 
-        private final UrlParameter<T, U> parameterFromSession;
+        private final UrlParameter<T, U> param;
         private final String name;
 
+        /**
+         * Try to locate <code>parameter</code> in the session. If found use
+         * this one, else use the parameter passed in the constructor.
+         * 
+         * @param parameter a parameter to find or use.
+         */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
             super();
             name = parameter.getName();
-            UrlParameter<T, U> pickedParameter = Context.getSession().pickParameter(parameter);
-            if (pickedParameter == null) {
-                this.parameterFromSession = parameter;
+
+            UrlParameter<T, U> sessionParam = Context.getSession().pickParameter(parameter);
+            if (sessionParam == null) {
+                this.param = parameter;
             } else {
-                this.parameterFromSession = pickedParameter;
+                this.param = sessionParam;
             }
         }
 
@@ -248,16 +252,16 @@ public class UrlParameter<T, U> extends UrlNode {
 
         @Override
         public String getSuggestedValue() {
-            if (parameterFromSession != null) {
-                return parameterFromSession.getSuggestedValue();
+            if (param != null) {
+                return param.getSuggestedValue();
             }
             return null;
         }
 
         @Override
         public Messages getErrorMessages() {
-            if (parameterFromSession != null) {
-                return parameterFromSession.getMessages();
+            if (param != null) {
+                return param.getMessages();
             }
             return new Messages();
         }
