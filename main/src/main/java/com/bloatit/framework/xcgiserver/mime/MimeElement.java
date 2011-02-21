@@ -63,7 +63,7 @@ public class MimeElement {
 
     /**
      * Creates a new empty mime element
-     * 
+     *
      * @param fileSavingDirectory
      */
     protected MimeElement(final FileNamingGenerator nameGen, final String fileSavingDirectory) {
@@ -81,7 +81,7 @@ public class MimeElement {
      * <p>
      * Return a Stream allowing to read the content of the mime
      * </p>
-     * 
+     *
      * @return the stream to read the content
      * @throws FileNotFoundException if the content is a file, and the file
      *             where it's stored is not accessible
@@ -100,7 +100,7 @@ public class MimeElement {
      * <p>
      * Gets the map containing the header
      * </p>
-     * 
+     *
      * @return a map containing <code>key->value</code> for each header element
      */
     public Map<String, String> getHeader() {
@@ -109,7 +109,7 @@ public class MimeElement {
 
     /**
      * Finds the string content type for the mime
-     * 
+     *
      * @return
      */
     public String getContentType() {
@@ -121,7 +121,7 @@ public class MimeElement {
 
     /**
      * Finds a given header for the the mime
-     * 
+     *
      * @param key the name of the header field
      * @return the value of the header field
      */
@@ -131,7 +131,7 @@ public class MimeElement {
 
     /**
      * Finds the name of the element or null if no name has been set
-     * 
+     *
      * @return the name of the element or null if no name has been set
      */
     public String getName() {
@@ -141,7 +141,7 @@ public class MimeElement {
     /**
      * Finds the absolute pathname of the file in which the uploaded file has
      * been stored
-     * 
+     *
      * @return the absolute filepath or <code>null</code> if it's not a file
      */
     public File getDestination() {
@@ -153,7 +153,7 @@ public class MimeElement {
 
     /**
      * Finds the original filename for the file
-     * 
+     *
      * @return the original filename or <code>null</code> if MimeElement is not
      *         a file
      */
@@ -166,11 +166,13 @@ public class MimeElement {
 
     /**
      * Indicates wether the mime is used to store a file or not
-     * 
+     *
      * @return <code>true</code> if the mime is used to store a file
      *         <code>false</code> otherwise
      */
     public boolean isFile() {
+        // return header.containsKey(FILE_NAME) && header.get(FILE_NAME) != null
+        // && !header.get(FILE_NAME).isEmpty();
         return header.containsKey(FILE_NAME);
     }
 
@@ -178,7 +180,7 @@ public class MimeElement {
      * <p>
      * Closes the Underlying stream of the MimeElement
      * </p>
-     * 
+     *
      * @throws IOException If the stream cannot be closed
      */
     public void close() throws IOException {
@@ -193,7 +195,7 @@ public class MimeElement {
     /**
      * Finds the current encoding of the MimeElement. If no encoding was
      * explicitely defined, the default encoding is used
-     * 
+     *
      * @return the way content has been encoded.
      * @throws InvalidMimeEncodingException
      */
@@ -240,7 +242,7 @@ public class MimeElement {
      * dump content into it. If content had previoulsy been added, it will be
      * beforehand pushed into the new file
      * </p>
-     * 
+     *
      * @param key the name of the header
      * @param value the value of the header
      * @throws IOException when the header indicates a file is contained in the
@@ -261,7 +263,7 @@ public class MimeElement {
 
     /**
      * adds a new byte of content to the mime
-     * 
+     *
      * @throws MalformedMimeException
      * @throws InvalidMimeEncodingException
      */
@@ -274,7 +276,7 @@ public class MimeElement {
 
     /**
      * Initializes the MimeElemend to get ready to write
-     * 
+     *
      * @throws IOException If an IO error occurs when creating the stream that
      *             will be used to save content
      */
@@ -288,15 +290,20 @@ public class MimeElement {
             }
         }
         if (isFile()) {
-            final File uploadedFileDir = new File(fileSavingDirectory);
-            uploadedFileDir.mkdirs();
-            destination = new File(fileSavingDirectory + nameGen.generateName(getHeaderField(FILE_NAME)));
-            try {
-                final FileOutputStream fos = new FileOutputStream(destination);
-                contentOutput = new DecodingOuputStream(fos, decoder);
-            } catch (final FileNotFoundException e) {
-                Log.web().fatal("Couldn't create the output file to store uploaded file: " + destination.getAbsolutePath(), e);
-                throw new FileNotFoundException("Couldn't create the output file to store uploaded file: " + destination.getAbsolutePath());
+            if (getFilename().isEmpty()) {
+                nonFileInput = new ByteArrayOutputStream();
+                contentOutput = new DecodingOuputStream(nonFileInput, decoder);
+            } else {
+                final File uploadedFileDir = new File(fileSavingDirectory);
+                uploadedFileDir.mkdirs();
+                destination = new File(fileSavingDirectory + nameGen.generateName(getHeaderField(FILE_NAME)));
+                try {
+                    final FileOutputStream fos = new FileOutputStream(destination);
+                    contentOutput = new DecodingOuputStream(fos, decoder);
+                } catch (final FileNotFoundException e) {
+                    Log.web().fatal("Couldn't create the output file to store uploaded file: " + destination.getAbsolutePath(), e);
+                    throw new FileNotFoundException("Couldn't create the output file to store uploaded file: " + destination.getAbsolutePath());
+                }
             }
         } else {
             nonFileInput = new ByteArrayOutputStream();
@@ -306,7 +313,7 @@ public class MimeElement {
 
     /**
      * Finds the current decoder to use with this file
-     * 
+     *
      * @return the decoder to used with the mime
      * @throws InvalidMimeEncodingException When no decoder available can decode
      *             this content

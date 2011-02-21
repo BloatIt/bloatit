@@ -24,8 +24,10 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Bug;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.BugPageUrl;
+import com.bloatit.web.url.FileResourceUrl;
 
 @ParamContainer("demand/bug")
 public final class BugPage extends MasterPage {
@@ -58,10 +60,20 @@ public final class BugPage extends MasterPage {
         box.add(bugTitle);
 
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
-
         box.add(description);
 
+
+        //Attachements
+        for(FileMetadata attachement: bug.getFiles()) {
+            final HtmlParagraph attachementPara = new HtmlParagraph();
+            attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
+            attachementPara.addText(tr(": ")+attachement.getShortDescription());
+            box.add(attachementPara);
+        }
+
         add(box);
+
+
     }
 
     @Override
