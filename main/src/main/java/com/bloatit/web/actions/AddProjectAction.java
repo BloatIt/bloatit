@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.actions;
 
@@ -46,9 +47,7 @@ public final class AddProjectAction extends Action {
 
     @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
     @ParamConstraint(max = "120", maxErrorMsg = @tr("The short description must be 120 chars length max."), //
-                     min = "10",
-                     minErrorMsg = @tr("The short description must have at least 10 chars."),
-                     optionalErrorMsg = @tr("You forgot to write a short description"))
+    min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String shortDescription;
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
@@ -57,9 +56,7 @@ public final class AddProjectAction extends Action {
 
     @RequestParam(name = PROJECT_NAME_CODE, role = Role.POST)
     @ParamConstraint(max = "100", maxErrorMsg = @tr("The project name must be 1OO chars length max."), //
-                     min = "3",
-                     minErrorMsg = @tr("The project name must have at least 3 chars."),
-                     optionalErrorMsg = @tr("The project name is requiered."))
+    min = "3", minErrorMsg = @tr("The project name must have at least 3 chars."), optionalErrorMsg = @tr("The project name is requiered."))
     private final String projectName;
 
     @RequestParam(name = IMAGE_CODE, role = Role.POST)

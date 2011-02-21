@@ -31,14 +31,14 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 public class ParamContainerProcessor extends AbstractProcessor {
 
     @Override
-    public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
+    public boolean process(final Set<? extends TypeElement> typeElements, final RoundEnvironment env) {
         this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Annotation processing...");
 
-        for (TypeElement typeElement : typeElements) {
-            for (Element element : env.getElementsAnnotatedWith(typeElement)) {
+        for (final TypeElement typeElement : typeElements) {
+            for (final Element element : env.getElementsAnnotatedWith(typeElement)) {
                 try {
                     parseAParamContainer(element);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -46,10 +46,10 @@ public class ParamContainerProcessor extends AbstractProcessor {
         return false;
     }
 
-    private void parseAParamContainer(Element element) throws IOException {
-        ParamContainer paramContainer = element.getAnnotation(ParamContainer.class);
+    private void parseAParamContainer(final Element element) throws IOException {
+        final ParamContainer paramContainer = element.getAnnotation(ParamContainer.class);
 
-        String urlClassName = element.getSimpleName().toString();
+        final String urlClassName = element.getSimpleName().toString();
         JavaGenerator generator;
         if (paramContainer.isComponent()) {
             generator = new UrlComponentClassGenerator(urlClassName, "");
@@ -59,7 +59,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
 
         addParameterForSuperClass(element, generator);
 
-        for (Element enclosed : element.getEnclosedElements()) {
+        for (final Element enclosed : element.getEnclosedElements()) {
             parseAnAttribute(generator, enclosed);
         }
 
@@ -67,18 +67,18 @@ public class ParamContainerProcessor extends AbstractProcessor {
         BufferedWriter outUrl = null;
         try {
             this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + generator.getClassName());
-            JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(generator.getClassName());
+            final JavaFileObject classFile = this.processingEnv.getFiler().createSourceFile(generator.getClassName());
             out = new BufferedWriter(classFile.openWriter());
             out.write(generator.generateComponentUrlClass());
 
             if (!paramContainer.isComponent()) {
                 this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "writing " + generator.getUrlClassName());
-                JavaFileObject urlClassFile = this.processingEnv.getFiler().createSourceFile(generator.getUrlClassName());
+                final JavaFileObject urlClassFile = this.processingEnv.getFiler().createSourceFile(generator.getUrlClassName());
                 outUrl = new BufferedWriter(urlClassFile.openWriter());
                 outUrl.write(generator.generateUrlClass());
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
         } finally {
             if (out != null) {
@@ -90,31 +90,31 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
     }
 
-    private void addParameterForSuperClass(Element element, JavaGenerator generator) {
-        SimpleTypeVisitor6<Element, ProcessingEnvironment> vs = new SimpleTypeVisitor6<Element, ProcessingEnvironment>() {
+    private void addParameterForSuperClass(final Element element, final JavaGenerator generator) {
+        final SimpleTypeVisitor6<Element, ProcessingEnvironment> vs = new SimpleTypeVisitor6<Element, ProcessingEnvironment>() {
             @Override
-            public Element visitDeclared(DeclaredType t, ProcessingEnvironment p) {
-                List<? extends TypeMirror> directSupertypes = p.getTypeUtils().directSupertypes(t);
+            public Element visitDeclared(final DeclaredType t, final ProcessingEnvironment p) {
+                final List<? extends TypeMirror> directSupertypes = p.getTypeUtils().directSupertypes(t);
                 if (directSupertypes.size() > 0) {
                     return p.getTypeUtils().asElement(directSupertypes.get(0));
                 }
                 return null;
             }
         };
-        Element superElement = element.asType().accept(vs, this.processingEnv);
+        final Element superElement = element.asType().accept(vs, this.processingEnv);
         if (superElement != null && superElement.getAnnotation(ParamContainer.class) != null) {
             generator.setUrlSuperClass(getSecureType(superElement) + "Url");
         }
     }
 
-    private void parseAnAttribute(JavaGenerator generator, Element attribute) {
+    private void parseAnAttribute(final JavaGenerator generator, final Element attribute) {
 
-        RequestParam parm = attribute.getAnnotation(RequestParam.class);
+        final RequestParam parm = attribute.getAnnotation(RequestParam.class);
 
         // Its a simple param
         if (parm != null) {
-            String attributeName = attribute.getSimpleName().toString();
-            String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
+            final String attributeName = attribute.getSimpleName().toString();
+            final String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
 
             if (parm.generatedFrom().isEmpty()) {
                 generator.addAttribute(getType(attribute), //
@@ -141,13 +141,13 @@ public class ParamContainerProcessor extends AbstractProcessor {
         } else {
 
             // Find if the type of the attribute has a ParamContainer annotation
-            TypeKindVisitor6<ParamContainer, Integer> vs = new TypeKindVisitor6<ParamContainer, Integer>() {
+            final TypeKindVisitor6<ParamContainer, Integer> vs = new TypeKindVisitor6<ParamContainer, Integer>() {
                 @Override
-                public ParamContainer visitDeclared(DeclaredType t, Integer p) {
+                public ParamContainer visitDeclared(final DeclaredType t, final Integer p) {
                     return t.asElement().getAnnotation(ParamContainer.class);
                 }
             };
-            ParamContainer component = attribute.asType().accept(vs, 0);
+            final ParamContainer component = attribute.asType().accept(vs, 0);
 
             if (component != null) {
                 generator.addComponentAndGetterSetter(getSecureType(attribute), attribute.getSimpleName().toString());
@@ -156,20 +156,20 @@ public class ParamContainerProcessor extends AbstractProcessor {
         }
     }
 
-    private String getSecureType(Element attribute) {
+    private String getSecureType(final Element attribute) {
         return attribute.asType().toString().replaceAll("\\<.*\\>", "").replaceAll(".*\\.", "").replace(">", "");
     }
 
-    private String getType(Element attribute) {
+    private String getType(final Element attribute) {
         return attribute.asType().toString().replaceAll("\\<.*\\>", "");
     }
 
-    private String getConversionType(Element attribute) {
+    private String getConversionType(final Element attribute) {
         String string = attribute.asType().toString().replaceAll("\\<.*\\>", "");
         if (string.endsWith("List")) {
             string = attribute.asType().toString();
-            int start = string.indexOf("<") + 1;
-            int stop = string.lastIndexOf(">");
+            final int start = string.indexOf("<") + 1;
+            final int stop = string.lastIndexOf(">");
             return string.substring(start, stop);
         }
         return getType(attribute);

@@ -17,8 +17,8 @@
 package com.bloatit.model.demand;
 
 /**
- * The Class FinishedState. It is the final state. You cannot change of state here (no
- * event method implemented).
+ * The Class FinishedState. It is the final state. You cannot change of state
+ * here (no event method implemented).
  */
 public class FinishedState extends AbstractDemandState {
 

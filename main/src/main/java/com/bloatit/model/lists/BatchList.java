@@ -38,8 +38,9 @@ public final class BatchList extends ListBinder<Batch, DaoBatch> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Batch> createFromDaoIterator(final Iterator<DaoBatch> dao) {
@@ -47,7 +48,8 @@ public final class BatchList extends ListBinder<Batch, DaoBatch> {
     }
 
     /**
-     * The Class BatchIterator takes an iterator on a DaoBatch and return one on a Batch.
+     * The Class BatchIterator takes an iterator on a DaoBatch and return one on
+     * a Batch.
      */
     static final class BatchIterator extends com.bloatit.model.lists.IteratorBinder<Batch, DaoBatch> {
 
@@ -71,8 +73,9 @@ public final class BatchList extends ListBinder<Batch, DaoBatch> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Batch createFromDao(final DaoBatch dao) {

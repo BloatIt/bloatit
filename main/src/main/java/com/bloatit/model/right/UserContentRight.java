@@ -20,8 +20,8 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.model.UserContent;
 
 /**
- * The Class UserContentRight store the properties accessor for the {@link UserContent}
- * class.
+ * The Class UserContentRight store the properties accessor for the
+ * {@link UserContent} class.
  */
 public class UserContentRight extends RightManager {
 
@@ -32,10 +32,8 @@ public class UserContentRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {

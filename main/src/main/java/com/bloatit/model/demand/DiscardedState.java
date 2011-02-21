@@ -33,8 +33,8 @@ public class DiscardedState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.demand.AbstractDemandState#eventPopularityPending()
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventPopularityPending()
      */
     @Override
     public AbstractDemandState eventPopularityPending() {
@@ -43,7 +43,6 @@ public class DiscardedState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.demand.AbstractDemandState#popularityValidated()
      */
     @Override

@@ -17,12 +17,13 @@
 package com.bloatit.model.lists;
 
 /**
- * The Class IteratorBinder is the base class of the iterator used in the List classes.
- * The List classes transform PageIterable<Dao...> to PageIterable<...>.
+ * The Class IteratorBinder is the base class of the iterator used in the List
+ * classes. The List classes transform PageIterable<Dao...> to
+ * PageIterable<...>.
  * 
  * @param <E> the Model representation of a Dao element.
- * @param <DAO> the Dao Element. (If <code>E</code> id Demand then <code>DAO</code> must
- *        be DaoDemand.
+ * @param <DAO> the Dao Element. (If <code>E</code> id Demand then
+ *            <code>DAO</code> must be DaoDemand.
  */
 public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
 
@@ -51,7 +52,6 @@ public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.util.Iterator#hasNext()
      */
     @Override
@@ -61,7 +61,6 @@ public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.util.Iterator#next()
      */
     @Override
@@ -71,7 +70,6 @@ public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.util.Iterator#remove()
      */
     @Override

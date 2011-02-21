@@ -24,7 +24,8 @@ public class DateUtils {
     }
 
     /**
-     * Return the date in <code>n</code> days. for example tomorrow = nowPlusSomeDays(1).
+     * Return the date in <code>n</code> days. for example tomorrow =
+     * nowPlusSomeDays(1).
      */
     public static Date nowPlusSomeDays(final int n) {
         final Calendar calendar = Calendar.getInstance();

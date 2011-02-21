@@ -115,7 +115,6 @@ public final class DaoTranslation extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -130,7 +129,6 @@ public final class DaoTranslation extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

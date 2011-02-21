@@ -53,33 +53,33 @@ public class AdministrationAction extends Action {
         for (final Integer content : contents) {
 
             switch (action) {
-            case DELETE:
-                UserContentAdmin.createUserContent(content).delete();
-                break;
-            case RESTORE:
-                UserContentAdmin.createUserContent(content).restore();
-                break;
-            case LOCK:
-                KudosableAdmin.createKudosable(content).lockPopularity();
-                break;
-            case UNLOCK:
-                KudosableAdmin.createKudosable(content).unlockPopularity();
-                break;
-            case SETSTATE:
-                if (stateToSet != null && stateToSet != DisplayableState.NO_FILTER) {
-                    KudosableAdmin.createKudosable(content).setState(DisplayableState.getState(stateToSet));
-                }
-                break;
-            case COMPUTE_SELECTED_OFFER:
-                DemandAdmin.createDemand(content).computeSelectedOffer();
-                break;
-            case SET_DEMAND_STATE:
-                if (demandState != null && demandState != DisplayableDemandState.NO_FILTER) {
-                    DemandAdmin.createDemand(content).setDemandState(DisplayableDemandState.getDemandState(demandState));
-                }
-                break;
-            default:
-                break;
+                case DELETE:
+                    UserContentAdmin.createUserContent(content).delete();
+                    break;
+                case RESTORE:
+                    UserContentAdmin.createUserContent(content).restore();
+                    break;
+                case LOCK:
+                    KudosableAdmin.createKudosable(content).lockPopularity();
+                    break;
+                case UNLOCK:
+                    KudosableAdmin.createKudosable(content).unlockPopularity();
+                    break;
+                case SETSTATE:
+                    if (stateToSet != null && stateToSet != DisplayableState.NO_FILTER) {
+                        KudosableAdmin.createKudosable(content).setState(DisplayableState.getState(stateToSet));
+                    }
+                    break;
+                case COMPUTE_SELECTED_OFFER:
+                    DemandAdmin.createDemand(content).computeSelectedOffer();
+                    break;
+                case SET_DEMAND_STATE:
+                    if (demandState != null && demandState != DisplayableDemandState.NO_FILTER) {
+                        DemandAdmin.createDemand(content).setDemandState(DisplayableDemandState.getDemandState(demandState));
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         return session.getLastStablePage();

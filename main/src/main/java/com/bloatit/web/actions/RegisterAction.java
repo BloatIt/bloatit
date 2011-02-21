@@ -37,20 +37,17 @@ public class RegisterAction extends Action {
 
     @RequestParam(name = RegisterAction.LOGIN_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for login has to be superior to 4"),//
-                     max = "15",
-                     maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
+    max = "15", maxErrorMsg = @tr("Number of characters for login has to be inferior to 15"))
     private final String login;
 
     @RequestParam(name = RegisterAction.PASSWORD_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for password has to be superior to 4"),//
-                     max = "15",
-                     maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
+    max = "15", maxErrorMsg = @tr("Number of characters for password has to be inferior to 15"))
     private final String password;
 
     @RequestParam(name = RegisterAction.EMAIL_CODE, role = Role.POST)
     @ParamConstraint(min = "4", minErrorMsg = @tr("Number of characters for email has to be superior to 5"),//
-                     max = "30",
-                     maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
+    max = "30", maxErrorMsg = @tr("Number of characters for email address has to be inferior to 30"))
     private final String email;
 
     @RequestParam(name = RegisterAction.COUNTRY_CODE, role = Role.POST)

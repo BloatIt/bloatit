@@ -23,9 +23,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 /**
- * A kudos is a positive or negative appreciation of a Kudosable content. [ Yes there is a
- * 's' at the end of kudos even when there is only one. ] The kudos is an internal storing
- * class. You should never have to use it in other package.
+ * A kudos is a positive or negative appreciation of a Kudosable content. [ Yes
+ * there is a 's' at the end of kudos even when there is only one. ] The kudos
+ * is an internal storing class. You should never have to use it in other
+ * package.
  * 
  * @see DaoKudosable#addKudos(DaoMember, int)
  */
@@ -33,7 +34,8 @@ import org.hibernate.Session;
 public final class DaoKudos extends DaoUserContent {
 
     /**
-     * The value can be positive or negative. The value should never be equals zero.
+     * The value can be positive or negative. The value should never be equals
+     * zero.
      */
     @Basic(optional = false)
     private int value;
@@ -89,7 +91,6 @@ public final class DaoKudos extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -102,7 +103,6 @@ public final class DaoKudos extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

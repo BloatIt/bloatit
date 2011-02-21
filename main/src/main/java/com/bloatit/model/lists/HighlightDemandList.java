@@ -39,8 +39,9 @@ public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHi
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<HighlightDemand> createFromDaoIterator(final Iterator<DaoHighlightDemand> dao) {
@@ -72,8 +73,9 @@ public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHi
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected HighlightDemand createFromDao(final DaoHighlightDemand dao) {

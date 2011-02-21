@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web;
 
@@ -36,7 +37,8 @@ public class HtmlTools {
 
     /**
      * <p>
-     * Creates an HtmlElement that can be directly used to display the website logo
+     * Creates an HtmlElement that can be directly used to display the website
+     * logo
      * </p>
      * <p>
      * Logo should be placed into a container that will specify its font size
@@ -127,12 +129,14 @@ public class HtmlTools {
      * <p>
      * Date is rendered :
      * <li> <code>now</code> if it's been posted less than one second ago</li>
-     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago</li>
+     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago
+     * </li>
      * <li> <code>Jan 12, 1952</code> otherwise</li>
      * </p>
      * <p>
-     * Note, this method will completly ignore <i>any</i> time information, and display
-     * only the date. To display time, use {@link #formatDateTime(DateLocale)}.
+     * Note, this method will completly ignore <i>any</i> time information, and
+     * display only the date. To display time, use
+     * {@link #formatDateTime(DateLocale)}.
      * </p>
      * 
      * @param date the localized date to render
@@ -163,12 +167,13 @@ public class HtmlTools {
      * <p>
      * DateTime is rendered :
      * <li> <code>now</code> if it's been posted less than one second ago</li>
-     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago</li>
+     * <li> <code>x seconds ago</code> if it's been posted less than 1 minute ago
+     * </li>
      * <li> <code>Jan 12, 1952  3:30pm</code> otherwise</li>
      * </p>
      * <p>
-     * Note, this method will always display date & time. To display only the date, use
-     * {@link #formatDate(DateLocale)}
+     * Note, this method will always display date & time. To display only the
+     * date, use {@link #formatDate(DateLocale)}
      * </p>
      * 
      * @param date the localized date to render
@@ -197,12 +202,13 @@ public class HtmlTools {
      * <code>&quot;bread&quot; &amp; &quot;butter&quot;</code> .
      * </p>
      * <p>
-     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does not
-     * support DTDs or external entities.
+     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does
+     * not support DTDs or external entities.
      * </p>
      * <p>
-     * Note that unicode characters greater than 0x7f are currently escaped to their
-     * numerical \\u equivalent. This may change with future releases of the library used
+     * Note that unicode characters greater than 0x7f are currently escaped to
+     * their numerical \\u equivalent. This may change with future releases of
+     * the library used
      * </p>
      */
     public static String escape(final String str) {
@@ -211,16 +217,17 @@ public class HtmlTools {
 
     /**
      * <p>
-     * Unescapes a string containing XML entity escapes to a string containing the actual
-     * Unicode characters corresponding to the escapes.
+     * Unescapes a string containing XML entity escapes to a string containing
+     * the actual Unicode characters corresponding to the escapes.
      * </p>
      * <p>
-     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does not
-     * support DTDs or external entities.
+     * Supports only the five basic XML entities (gt, lt, quot, amp, apos). Does
+     * not support DTDs or external entities.
      * </p>
      * <p>
-     * Note that numerical \\u unicode codes are unescaped to their respective unicode
-     * characters. This may change in future releases of the underlying library
+     * Note that numerical \\u unicode codes are unescaped to their respective
+     * unicode characters. This may change in future releases of the underlying
+     * library
      * </p>
      */
     public static String unescape(final String str) {

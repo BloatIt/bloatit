@@ -1,8 +1,8 @@
 package com.bloatit.framework.xcgiserver.mime.filenaming;
 
 /**
- * A simple interface to describe file name generators that will be used to save uploaded
- * files
+ * A simple interface to describe file name generators that will be used to save
+ * uploaded files
  */
 public interface FileNamingGenerator {
     /**

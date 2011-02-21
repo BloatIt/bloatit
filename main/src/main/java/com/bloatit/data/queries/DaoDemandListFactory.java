@@ -131,16 +131,16 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
     }
 
     /**
-     * Add a WHERE close ensuring that there is a selected offer on each returned
-     * daoDemand.
+     * Add a WHERE close ensuring that there is a selected offer on each
+     * returned daoDemand.
      */
     public void withSelectedOffer() {
         add(Restrictions.isNotNull(SELECTED_OFFER));
     }
 
     /**
-     * Add a WHERE close ensuring that there isn't a selected offer on each returned
-     * daoDemand.
+     * Add a WHERE close ensuring that there isn't a selected offer on each
+     * returned daoDemand.
      */
     public void withoutSelectedOffer() {
         add(Restrictions.isNull(SELECTED_OFFER));
@@ -161,7 +161,8 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
     }
 
     /**
-     * Add a WHERE close ensuring that the demands have at least one contribution.
+     * Add a WHERE close ensuring that the demands have at least one
+     * contribution.
      */
     public void hasContributions() {
         add(Restrictions.isNotEmpty(CONTRIBUTION));
@@ -175,9 +176,9 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
     }
 
     /**
-     * Add a WHERE close restricting the total contribution value of the returning
-     * demands. For example if you want your query to return only the demands that have
-     * less than 42 €, you can call:
+     * Add a WHERE close restricting the total contribution value of the
+     * returning demands. For example if you want your query to return only the
+     * demands that have less than 42 €, you can call:
      * 
      * <pre>
      * DaoDemandListFactory factory = new DaoDemandListfactory();

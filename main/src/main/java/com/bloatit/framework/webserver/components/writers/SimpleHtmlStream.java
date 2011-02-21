@@ -4,8 +4,8 @@ import java.io.OutputStream;
 
 /**
  * <p>
- * An implementation of an {@link QueryResponseStream} that just display raw text (no
- * indentation, no line breaks ...)
+ * An implementation of an {@link QueryResponseStream} that just display raw
+ * text (no indentation, no line breaks ...)
  * </p>
  * <p>
  * Should be used in production environments

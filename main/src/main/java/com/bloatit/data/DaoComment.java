@@ -71,8 +71,9 @@ public final class DaoComment extends DaoKudosable {
     }
 
     /**
-     * Create a comment. This constructor is protected because you should use the
-     * createAndPersist method (to make sure your comment really goes into the db.
+     * Create a comment. This constructor is protected because you should use
+     * the createAndPersist method (to make sure your comment really goes into
+     * the db.
      * 
      * @param member is the author.
      * @param text is the content.
@@ -106,11 +107,11 @@ public final class DaoComment extends DaoKudosable {
     }
 
     /**
-     * Use a HQL query to return the children of this comment. It allows the use of
-     * PageIterable. Order by creation date, older first.
+     * Use a HQL query to return the children of this comment. It allows the use
+     * of PageIterable. Order by creation date, older first.
      * 
-     * @return the list of this comment children. return an empty list if there is no
-     *         child.
+     * @return the list of this comment children. return an empty list if there
+     *         is no child.
      */
     public PageIterable<DaoComment> getChildren() {
         return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by c.creationDate asc, id").setEntity("this", this);
@@ -145,7 +146,6 @@ public final class DaoComment extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -158,7 +158,6 @@ public final class DaoComment extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

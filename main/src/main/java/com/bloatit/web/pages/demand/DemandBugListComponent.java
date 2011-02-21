@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.pages.demand;
 
@@ -61,24 +62,24 @@ public class DemandBugListComponent extends HtmlDiv {
         public XmlNode getHeader(final int column) {
             HtmlText text = null;
             switch (column) {
-            case 0:
-                text = new HtmlText(Context.tr("State"));
-                break;
-            case 1:
-                text = new HtmlText(Context.tr("Level"));
-                break;
-            case 2:
-                text = new HtmlText(Context.tr("Lot"));
-                break;
-            case 3:
-                text = new HtmlText(Context.tr("Title"));
-                break;
-            case 4:
-                text = new HtmlText(Context.tr("Last update"));
-                break;
-            default:
+                case 0:
+                    text = new HtmlText(Context.tr("State"));
+                    break;
+                case 1:
+                    text = new HtmlText(Context.tr("Level"));
+                    break;
+                case 2:
+                    text = new HtmlText(Context.tr("Lot"));
+                    break;
+                case 3:
+                    text = new HtmlText(Context.tr("Title"));
+                    break;
+                case 4:
+                    text = new HtmlText(Context.tr("Last update"));
+                    break;
+                default:
 
-                break;
+                    break;
             }
             return text;
         }
@@ -87,25 +88,25 @@ public class DemandBugListComponent extends HtmlDiv {
         public XmlNode getBody(final int column) {
             XmlNode text = null;
             switch (column) {
-            case 0:
-                text = new HtmlText(bug.getState().toString());
-                break;
-            case 1:
-                text = new HtmlText(bug.getErrorLevel().toString());
-                break;
-            case 2:
-                text = new HtmlText(String.valueOf(bug.getBatch().getPosition()));
-                break;
-            case 3:
-                text = new BugPageUrl(bug).getHtmlLink(bug.getTitle());
-                break;
+                case 0:
+                    text = new HtmlText(bug.getState().toString());
+                    break;
+                case 1:
+                    text = new HtmlText(bug.getErrorLevel().toString());
+                    break;
+                case 2:
+                    text = new HtmlText(String.valueOf(bug.getBatch().getPosition()));
+                    break;
+                case 3:
+                    text = new BugPageUrl(bug).getHtmlLink(bug.getTitle());
+                    break;
 
-            case 4:
-                text = new HtmlText(Context.getLocalizator().getDate(bug.getLastUpdateDate()).toString());
-                break;
-            default:
+                case 4:
+                    text = new HtmlText(Context.getLocalizator().getDate(bug.getLastUpdateDate()).toString());
+                    break;
+                default:
 
-                break;
+                    break;
             }
             return text;
         }

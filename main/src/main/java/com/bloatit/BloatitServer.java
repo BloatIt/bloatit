@@ -2,12 +2,14 @@ package com.bloatit;
 
 import com.bloatit.framework.Framework;
 import com.bloatit.model.Model;
+import com.bloatit.rest.BloatitRestServer;
 import com.bloatit.web.BloatitWebServer;
 
 public class BloatitServer {
 
     public static void main(final String[] args) {
         final Framework framework = new Framework(new Model());
+        framework.addProcessor(new BloatitRestServer());
         framework.addProcessor(new BloatitWebServer());
 
         try {

@@ -54,7 +54,8 @@ public final class Group extends Actor<DaoGroup> {
      * @param login the displayed name of the group
      * @param contact a string with various means to contact the group
      * @param description a textual description of the group
-     * @param right <ether the group is <code>PUBLIC</code> or <code>PROTECTED</code>
+     * @param right <ether the group is <code>PUBLIC</code> or
+     *            <code>PROTECTED</code>
      * @param author the creator of the group
      */
     public Group(final String login, final String contact, final String description, final Right right, final Member author) {
@@ -68,7 +69,8 @@ public final class Group extends Actor<DaoGroup> {
     }
 
     /**
-     * Sets the type of group: either <code>PROTECTED</code> or <code>PUBLIC</code>
+     * Sets the type of group: either <code>PROTECTED</code> or
+     * <code>PUBLIC</code>
      */
     public void setRight(final Right right) {
         getDao().setRight(right);
@@ -86,7 +88,8 @@ public final class Group extends Actor<DaoGroup> {
     }
 
     /**
-     * @return the type of group: either <code>PROTECTED</code> or <code>PUBLIC</code>
+     * @return the type of group: either <code>PROTECTED</code> or
+     *         <code>PUBLIC</code>
      */
     public Right getRight() {
         return getDao().getRight();
@@ -95,7 +98,8 @@ public final class Group extends Actor<DaoGroup> {
     /**
      * Indicates wheter the group is public or not
      * 
-     * @return <code>true</code> if the group is public, <code>false</code> otherwise
+     * @return <code>true</code> if the group is public, <code>false</code>
+     *         otherwise
      */
     public boolean isPublic() {
         return (getDao().getRight() == Right.PUBLIC);

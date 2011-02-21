@@ -32,7 +32,8 @@ public class MultipartPostParser extends PostParameterParser {
      * 
      * @param contentType the contentType of the mime, including its boundary
      * @param postStream the stream from which the post is read
-     * @param fileSavingDirectory the directory where uploaded files will be saved
+     * @param fileSavingDirectory the directory where uploaded files will be
+     *            saved
      * @throws InvalidParameterException if any parameter is null
      */
     public MultipartPostParser(final String contentType, final InputStream postStream, final String fileSavingDirectory) {
@@ -45,16 +46,16 @@ public class MultipartPostParser extends PostParameterParser {
      * Reads the next element of a multipart mime post.
      * </p>
      * <p>
-     * If element is not a file, returns a <code>PageParameter</code> containing the whole
-     * content of the element. If element is a file, the <code>PageParameter</code>
-     * contains only the location of the file
+     * If element is not a file, returns a <code>PageParameter</code> containing
+     * the whole content of the element. If element is a file, the
+     * <code>PageParameter</code> contains only the location of the file
      * 
-     * @return a <code>MimeElement</code> representing the content of this mime, or
-     *         <code>null</code> if end has been reached.
+     * @return a <code>MimeElement</code> representing the content of this mime,
+     *         or <code>null</code> if end has been reached.
      * @throws MalformedMimeException if the format is incorrect
      * @throws InvalidMimeEncodingException if the encoding is not handled
-     * @throws IOException if an IO error occurs while reading the stream or saving to the
-     *         file
+     * @throws IOException if an IO error occurs while reading the stream or
+     *             saving to the file
      */
     @Override
     public PostParameter readNext() throws IOException, InvalidMimeEncodingException, MalformedMimeException {

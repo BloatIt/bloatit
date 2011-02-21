@@ -34,13 +34,14 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * <p>
-     * The state of an invitation track its time line. (First PENDING, then REFUSED or
-     * ACCEPTED)
+     * The state of an invitation track its time line. (First PENDING, then
+     * REFUSED or ACCEPTED)
      * </p>
      * <p>
-     * The state DISCARDED means the invitation have been refused cause the user accepted
-     * another invitation for the same group, cancelling all other invitations for this
-     * group. It is therefore an alternative to REFUSED or ACCEPTED
+     * The state DISCARDED means the invitation have been refused cause the user
+     * accepted another invitation for the same group, cancelling all other
+     * invitations for this group. It is therefore an alternative to REFUSED or
+     * ACCEPTED
      * </p>
      */
     public enum State {
@@ -109,8 +110,8 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
 
     /**
-     * Set the state to accepted and add the receiver into the list of members of
-     * this.group. If the state is not PENDING then do nothing.
+     * Set the state to accepted and add the receiver into the list of members
+     * of this.group. If the state is not PENDING then do nothing.
      */
     public void accept() {
         if (state == State.PENDING) {
@@ -185,7 +186,6 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -200,7 +200,6 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

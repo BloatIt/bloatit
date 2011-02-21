@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.utils.i18n;
 
@@ -51,14 +52,17 @@ public final class CurrencyLocale {
      * Creates a new <code>CurrencyLocale</code>
      * </p>
      * <p>
-     * Uses java <code>Locale</code>s to find the appropriate <code>target</code>
-     * currency. Conversion rate is obtained from an external source.
+     * Uses java <code>Locale</code>s to find the appropriate
+     * <code>target</code> currency. Conversion rate is obtained from an
+     * external source.
      * </p>
      * 
-     * @param euroAmount the amount of money in the default application currency (euro)
-     * @param targetLocale the <code>Locale</code> that represents the currency of the
-     * @throws CurrencyNotAvailableException whenever <code>targetLocale</code> currency
-     *         is not in the list of available currencies
+     * @param euroAmount the amount of money in the default application currency
+     *            (euro)
+     * @param targetLocale the <code>Locale</code> that represents the currency
+     *            of the
+     * @throws CurrencyNotAvailableException whenever <code>targetLocale</code>
+     *             currency is not in the list of available currencies
      */
     public CurrencyLocale(final BigDecimal euroAmount, final Locale targetLocale) throws CurrencyNotAvailableException {
         this.euroAmount = euroAmount;
@@ -85,9 +89,10 @@ public final class CurrencyLocale {
      * Converts the euro amount to the locale amount
      * </p>
      * <p>
-     * Conversion will be done with a 7 digits precision and rounding HALF_ELVEN (meaning
-     * it will round to the closest neighbor unless both are equidistant in which case it
-     * will round to the closest even number) which is the IEEE 754R default
+     * Conversion will be done with a 7 digits precision and rounding HALF_ELVEN
+     * (meaning it will round to the closest neighbor unless both are
+     * equidistant in which case it will round to the closest even number) which
+     * is the IEEE 754R default
      * </p>
      * 
      * @return the locale amount
@@ -106,8 +111,8 @@ public final class CurrencyLocale {
     }
 
     /**
-     * Returns the localized version of the amount, i.e. : converted to the locale money,
-     * and with the locale symbol
+     * Returns the localized version of the amount, i.e. : converted to the
+     * locale money, and with the locale symbol
      * 
      * @return the localized string
      */
@@ -116,19 +121,19 @@ public final class CurrencyLocale {
     }
 
     /**
-     * Returns the displayed amount within the default currency of the application
-     * (currently euro)
+     * Returns the displayed amount within the default currency of the
+     * application (currently euro)
      * 
-     * @return a String representing the <code>amount</code> of money in the application
-     *         default currency
+     * @return a String representing the <code>amount</code> of money in the
+     *         application default currency
      */
     public String getDefaultString() {
         return this.euroAmount.setScale(DISPLAY_PRECISION, ROUNDING_MODE).toPlainString() + " " + DEFAULT_CURRENCY_SYMBOL;
     }
 
     /**
-     * Returns the localized version of the amount, i.e. : converted to the locale money,
-     * and with the locale symbol
+     * Returns the localized version of the amount, i.e. : converted to the
+     * locale money, and with the locale symbol
      * 
      * @return the localized string
      */
@@ -178,8 +183,8 @@ public final class CurrencyLocale {
      * Parses the rate file and initializes the currency array
      * </p>
      * <p>
-     * This parsing will occur only if file has been modified since last parse or if no
-     * parse ever occured
+     * This parsing will occur only if file has been modified since last parse
+     * or if no parse ever occured
      * </p>
      */
     private static void parseRate() {

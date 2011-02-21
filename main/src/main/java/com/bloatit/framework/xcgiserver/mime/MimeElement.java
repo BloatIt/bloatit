@@ -83,8 +83,8 @@ public class MimeElement {
      * </p>
      * 
      * @return the stream to read the content
-     * @throws FileNotFoundException if the content is a file, and the file where it's
-     *         stored is not accessible
+     * @throws FileNotFoundException if the content is a file, and the file
+     *             where it's stored is not accessible
      */
     public InputStream getContent() throws FileNotFoundException {
         if (destination == null) {
@@ -139,7 +139,8 @@ public class MimeElement {
     }
 
     /**
-     * Finds the absolute pathname of the file in which the uploaded file has been stored
+     * Finds the absolute pathname of the file in which the uploaded file has
+     * been stored
      * 
      * @return the absolute filepath or <code>null</code> if it's not a file
      */
@@ -153,7 +154,8 @@ public class MimeElement {
     /**
      * Finds the original filename for the file
      * 
-     * @return the original filename or <code>null</code> if MimeElement is not a file
+     * @return the original filename or <code>null</code> if MimeElement is not
+     *         a file
      */
     public String getFilename() {
         if (isFile()) {
@@ -165,8 +167,8 @@ public class MimeElement {
     /**
      * Indicates wether the mime is used to store a file or not
      * 
-     * @return <code>true</code> if the mime is used to store a file <code>false</code>
-     *         otherwise
+     * @return <code>true</code> if the mime is used to store a file
+     *         <code>false</code> otherwise
      */
     public boolean isFile() {
         return header.containsKey(FILE_NAME);
@@ -189,8 +191,8 @@ public class MimeElement {
     }
 
     /**
-     * Finds the current encoding of the MimeElement. If no encoding was explicitely
-     * defined, the default encoding is used
+     * Finds the current encoding of the MimeElement. If no encoding was
+     * explicitely defined, the default encoding is used
      * 
      * @return the way content has been encoded.
      * @throws InvalidMimeEncodingException
@@ -234,15 +236,16 @@ public class MimeElement {
      * A a new header to the element
      * </p>
      * <p>
-     * If the header indicates the content is a file, a new file is created to dump
-     * content into it. If content had previoulsy been added, it will be beforehand pushed
-     * into the new file
+     * If the header indicates the content is a file, a new file is created to
+     * dump content into it. If content had previoulsy been added, it will be
+     * beforehand pushed into the new file
      * </p>
      * 
      * @param key the name of the header
      * @param value the value of the header
-     * @throws IOException when the header indicates a file is contained in the mime, and
-     *         the file where this content will be written can't be created/Accessed
+     * @throws IOException when the header indicates a file is contained in the
+     *             mime, and the file where this content will be written can't
+     *             be created/Accessed
      * @throws InvalidMimeEncodingException
      * @throws MalformedMimeException
      */
@@ -272,8 +275,8 @@ public class MimeElement {
     /**
      * Initializes the MimeElemend to get ready to write
      * 
-     * @throws IOException If an IO error occurs when creating the stream that will be
-     *         used to save content
+     * @throws IOException If an IO error occurs when creating the stream that
+     *             will be used to save content
      */
     private void initializeWriter() throws IOException {
         if (decoder == null) {
@@ -305,8 +308,8 @@ public class MimeElement {
      * Finds the current decoder to use with this file
      * 
      * @return the decoder to used with the mime
-     * @throws InvalidMimeEncodingException When no decoder available can decode this
-     *         content
+     * @throws InvalidMimeEncodingException When no decoder available can decode
+     *             this content
      */
     private MimeDecoder getDecoder() throws InvalidMimeEncodingException {
         return availableEncodings.get(getEncoding());

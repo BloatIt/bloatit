@@ -35,9 +35,10 @@ import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A description is a localized text with a title. In fact a the data are stored in
- * daoTranslation. The description is a way of accessing different translation. You can
- * see a DaoTranslation as a version of a description is a specific locale.
+ * A description is a localized text with a title. In fact a the data are stored
+ * in daoTranslation. The description is a way of accessing different
+ * translation. You can see a DaoTranslation as a version of a description is a
+ * specific locale.
  */
 @Entity
 public final class DaoDescription extends DaoIdentifiable {
@@ -72,7 +73,8 @@ public final class DaoDescription extends DaoIdentifiable {
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
-     * @param description is the main text of the description (the actual description)
+     * @param description is the main text of the description (the actual
+     *            description)
      */
     private DaoDescription(final DaoMember member, final Locale locale, final String title, final String description) {
         super();
@@ -99,15 +101,16 @@ public final class DaoDescription extends DaoIdentifiable {
     // ======================================================================
 
     /**
-     * @return the default translation for this description (using default locale)
+     * @return the default translation for this description (using default
+     *         locale)
      */
     public DaoTranslation getDefaultTranslation() {
         return getTranslation(getDefaultLocale());
     }
 
     /**
-     * Use a HQL query to get the Translations of this description in a PageIterable This
-     * will return every translation EVEN this description.
+     * Use a HQL query to get the Translations of this description in a
+     * PageIterable This will return every translation EVEN this description.
      */
     public PageIterable<DaoTranslation> getTranslations() {
         return new QueryCollection<DaoTranslation>("from DaoTransaltion as t where t.description = :this").setEntity("this", this);
@@ -153,7 +156,6 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -167,7 +169,6 @@ public final class DaoDescription extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

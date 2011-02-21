@@ -33,7 +33,6 @@ public class DevelopingState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventBatchReleased()
      */
     @Override
@@ -43,8 +42,8 @@ public class DevelopingState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
      */
     @Override
     public AbstractDemandState eventDeveloperCanceled() {
@@ -53,8 +52,8 @@ public class DevelopingState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.demand.AbstractDemandState#eventDevelopmentTimeOut()
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventDevelopmentTimeOut()
      */
     @Override
     public AbstractDemandState eventDevelopmentTimeOut() {

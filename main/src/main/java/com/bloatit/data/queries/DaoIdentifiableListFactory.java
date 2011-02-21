@@ -23,8 +23,8 @@ import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.SessionManager;
 
 /**
- * A factory for creating DaoIdentifiable Lists objects (PageIterable) using hibernate
- * Criteria query.
+ * A factory for creating DaoIdentifiable Lists objects (PageIterable) using
+ * hibernate Criteria query.
  * 
  * @param <T> the generic type
  */
@@ -47,7 +47,8 @@ class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractL
     }
 
     /**
-     * Add a WHERE close to have only the identifiable with the id <code>id</code>
+     * Add a WHERE close to have only the identifiable with the id
+     * <code>id</code>
      * 
      * @param id the id
      */

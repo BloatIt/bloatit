@@ -37,21 +37,23 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * Represent a bug on a Released part of a batch. It is like a bug in a bugtracker.
+ * Represent a bug on a Released part of a batch. It is like a bug in a
+ * bugtracker.
  */
 @Entity
 public final class DaoBug extends DaoUserContent {
 
     /**
-     * Criticality of the bug. A {@link Level#FATAL} error is a very important error etc.
+     * Criticality of the bug. A {@link Level#FATAL} error is a very important
+     * error etc.
      */
     public enum Level {
         FATAL, MAJOR, MINOR
     }
 
     /**
-     * It is the state of the bug ... The developer change it during the process of fixing
-     * it.
+     * It is the state of the bug ... The developer change it during the process
+     * of fixing it.
      */
     public enum State {
         PENDING, DEVELOPING, RESOLVED
@@ -84,7 +86,12 @@ public final class DaoBug extends DaoUserContent {
     @Enumerated
     private State state;
 
-    public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
+    public DaoBug(final DaoMember member,
+                  final DaoBatch batch,
+                  final String title,
+                  final String description,
+                  final Locale locale,
+                  final Level level) {
         super(member);
         if (title == null || description == null || batch == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -122,6 +129,9 @@ public final class DaoBug extends DaoUserContent {
      * The person assigned to a bug is the developer (the member that has created the
      * offer).
      *
+     * The person assigned to a bug is the developer (the member that has
+     * created the offer).
+     * 
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {
@@ -219,7 +229,6 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -233,7 +242,6 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

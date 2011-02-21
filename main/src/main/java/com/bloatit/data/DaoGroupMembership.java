@@ -100,7 +100,6 @@ class DaoGroupMembership extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -114,7 +113,6 @@ class DaoGroupMembership extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

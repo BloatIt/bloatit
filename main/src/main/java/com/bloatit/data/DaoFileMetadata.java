@@ -73,20 +73,21 @@ public final class DaoFileMetadata extends DaoUserContent {
 
     /**
      * @param member is the author (the one who uploaded the file)
-     * @param relatedContent can be null. It is the content with which this file has been
-     *        uploaded.
-     * @param filename is the name of the file (with its extension, but without its whole
-     *        folder path)
+     * @param relatedContent can be null. It is the content with which this file
+     *            has been uploaded.
+     * @param filename is the name of the file (with its extension, but without
+     *            its whole folder path)
      * @param directory is the path of the directory where the file is.
-     * @param type is the type of the file (found using its extension or mimetype)
+     * @param type is the type of the file (found using its extension or
+     *            mimetype)
      * @param size is the size of the file.
      */
     private DaoFileMetadata(final DaoMember member,
-            final DaoUserContent relatedContent,
-            final String filename,
-            final String url,
-            final FileType type,
-            final int size) {
+                            final DaoUserContent relatedContent,
+                            final String filename,
+                            final String url,
+                            final FileType type,
+                            final int size) {
         super(member);
         if (filename == null || url == null || type == null || filename.isEmpty() || url.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -186,7 +187,6 @@ public final class DaoFileMetadata extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -200,7 +200,6 @@ public final class DaoFileMetadata extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

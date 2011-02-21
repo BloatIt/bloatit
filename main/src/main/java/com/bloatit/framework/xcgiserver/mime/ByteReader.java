@@ -10,8 +10,8 @@ import java.io.InputStream;
  * A class allowing to read an input stream as line of bytes.
  * </p>
  * <p>
- * A line of byte end whenever the bytes representing the characters CRLF (\r\n) are
- * found.
+ * A line of byte end whenever the bytes representing the characters CRLF (\r\n)
+ * are found.
  * </p>
  */
 public class ByteReader {
@@ -28,10 +28,10 @@ public class ByteReader {
      * Reads the next byte of data from the input stream.
      * </p>
      * <p>
-     * The value byte is returned as a byte. If no byte is available because the end of
-     * the stream has been reached, the value -1 is returned. This method blocks until
-     * input data is available, the end of the stream is detected, or an exception is
-     * thrown.
+     * The value byte is returned as a byte. If no byte is available because the
+     * end of the stream has been reached, the value -1 is returned. This method
+     * blocks until input data is available, the end of the stream is detected,
+     * or an exception is thrown.
      * </p>
      * 
      * @return
@@ -47,13 +47,14 @@ public class ByteReader {
 
     /**
      * <p>
-     * Reads a line. Any single <code>'\n'</code> or <code>'\r'</code> will be ignored
-     * (they won't even be shown in the byte array returned)
+     * Reads a line. Any single <code>'\n'</code> or <code>'\r'</code> will be
+     * ignored (they won't even be shown in the byte array returned)
      * </p>
      * <p>
-     * If end of stream is reached before a line end is reached, the content will be
-     * returned, and considered as a normal line. Next call to readLine will then throw an
-     * EOFException indicating the end of the stream has been reached.
+     * If end of stream is reached before a line end is reached, the content
+     * will be returned, and considered as a normal line. Next call to readLine
+     * will then throw an EOFException indicating the end of the stream has been
+     * reached.
      * </p>
      * 
      * @return
@@ -93,13 +94,15 @@ public class ByteReader {
 
     /**
      * <p>
-     * Reads a line (i.e: reads to the next CRLF sequence) and converts data to a string
+     * Reads a line (i.e: reads to the next CRLF sequence) and converts data to
+     * a string
      * </p>
      * *
      * <p>
-     * If end of stream is reached before a line end is reached, the content will be
-     * returned, and considered as a normal line. Next call to readString or readLine will
-     * then throw an EOFException indicating the end of the stream has been reached.
+     * If end of stream is reached before a line end is reached, the content
+     * will be returned, and considered as a normal line. Next call to
+     * readString or readLine will then throw an EOFException indicating the end
+     * of the stream has been reached.
      * </p>
      * 
      * @return the string representation of the line
@@ -112,16 +115,16 @@ public class ByteReader {
 
     /**
      * <p>
-     * Returns an estimate of the number of bytes that can be read (or skipped over) from
-     * this input stream without blocking by the next invocation of a method for this
-     * input stream. The next invocation might be the same thread or another thread. A
-     * single read or skip of this many bytes will not block, but may read or skip fewer
-     * bytes.
+     * Returns an estimate of the number of bytes that can be read (or skipped
+     * over) from this input stream without blocking by the next invocation of a
+     * method for this input stream. The next invocation might be the same
+     * thread or another thread. A single read or skip of this many bytes will
+     * not block, but may read or skip fewer bytes.
      * </p>
      * 
-     * @return an estimate of the number of bytes that can be read (or skipped over) from
-     *         this input stream without blocking or 0 when it reaches the end of the
-     *         input stream.
+     * @return an estimate of the number of bytes that can be read (or skipped
+     *         over) from this input stream without blocking or 0 when it
+     *         reaches the end of the input stream.
      * @throws IOException - if an I/O error occurs.
      */
     public int available() throws IOException {
@@ -129,8 +132,8 @@ public class ByteReader {
     }
 
     /**
-     * Closes this input stream and releases any system resources associated with the
-     * stream. The close method of InputStream does nothing.
+     * Closes this input stream and releases any system resources associated
+     * with the stream. The close method of InputStream does nothing.
      * 
      * @throws IOException if an IO error occurs
      */

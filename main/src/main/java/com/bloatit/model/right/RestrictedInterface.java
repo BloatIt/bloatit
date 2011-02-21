@@ -20,17 +20,17 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoMember.Role;
 
 /**
- * The Interface RestrictedInterface represent a Restricted by some right management
- * class. Each class that implements this interface can be integrated with the static
- * right system.
+ * The Interface RestrictedInterface represent a Restricted by some right
+ * management class. Each class that implements this interface can be integrated
+ * with the static right system.
  */
 public interface RestrictedInterface {
 
     /**
      * Authenticate this content using an {@link AuthToken}.
      * 
-     * @param token the token representing the user wanting to be authenticated on this
-     *        content.
+     * @param token the token representing the user wanting to be authenticated
+     *            on this content.
      */
     public abstract void authenticate(AuthToken token);
 

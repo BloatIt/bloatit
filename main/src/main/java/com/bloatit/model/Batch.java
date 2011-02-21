@@ -34,7 +34,6 @@ import com.bloatit.model.lists.BugList;
  * A batch is a part of an offer. Simple offers are only composed of one batch.
  *
  * @author Thomas Guyard
- *
  */
 public class Batch extends Identifiable<DaoBatch> {
 
@@ -43,15 +42,15 @@ public class Batch extends Identifiable<DaoBatch> {
     // ////////////////////////////////////////////////////////////////////////
 
     /**
-     * This class implements the method pattern, implementing the doCreate method. See the
-     * base class for more informations: {@link Creator}.
+     * This class implements the method pattern, implementing the doCreate
+     * method. See the base class for more informations: {@link Creator}.
      */
     private static final class MyCreator extends Creator<DaoBatch, Batch> {
 
         /*
          * (non-Javadoc)
-         *
-         * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
+         * @see
+         * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
         public Batch doCreate(final DaoBatch dao) {
@@ -60,9 +59,10 @@ public class Batch extends Identifiable<DaoBatch> {
     }
 
     /**
-     * Check the cache, if a corresponding Batch exist return it, otherwise create a new
-     * one using its dao representation. If the dao == null return null;
-     *
+     * Check the cache, if a corresponding Batch exist return it, otherwise
+     * create a new one using its dao representation. If the dao == null return
+     * null;
+     * 
      * @param dao the dao
      * @return the batch or null if the dao == null
      * @see Creator
@@ -131,8 +131,9 @@ public class Batch extends Identifiable<DaoBatch> {
     }
 
     /**
-     * Force validate the batch after it has been released even if there are bugs left.
-     *
+     * Force validate the batch after it has been released even if there are
+     * bugs left.
+     * 
      * @return true, if successful
      * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
@@ -296,8 +297,8 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /*
      * (non-Javadoc)
-     *
-     * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
+     * @see
+     * com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
      */
     @Override
     protected boolean isMine(final Member member) {
@@ -306,10 +307,9 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /*
      * (non-Javadoc)
-     *
      * @see
-     * com.bloatit.model.right.RestrictedObject#calculateMyGroupRights(com.bloatit.model
-     * .Member)
+     * com.bloatit.model.right.RestrictedObject#calculateMyGroupRights(com.bloatit
+     * .model .Member)
      */
     @Override
     protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {

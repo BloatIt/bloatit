@@ -3,22 +3,25 @@
  * 
  * This file is part of BloatIt.
  * 
- * BloatIt is free software: you can redistribute it and/or modify it under the terms of
- * the GNU Affero General Public License as published by the Free Software Foundation,
- * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  * 
- * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU Affero General Public License for more details.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Affero General Public License along with
- * BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.xcgiserver;
 
 import java.util.List;
 import java.util.Map;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.xcgiserver.LazyLoaders.LazyInt;
 import com.bloatit.framework.xcgiserver.LazyLoaders.LazyMap;
 import com.bloatit.framework.xcgiserver.LazyLoaders.LazyString;
@@ -32,8 +35,8 @@ public class HttpHeader {
     private final LazyStringList httpAcceptLanguage = new LazyStringList("HTTP_ACCEPT_LANGUAGE", ",");
 
     /**
-     * example : Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.14pre) Gecko/20110107
-     * Ubuntu/10.04 (lucid) Namoroka/3.6.14pre
+     * example : Mozilla/5.0 (X11; U; Linux i686; fr; rv:1.9.2.14pre)
+     * Gecko/20110107 Ubuntu/10.04 (lucid) Namoroka/3.6.14pre
      */
     private final LazyString httpUserAgent = new LazyString("HTTP_USER_AGENT");
 
@@ -43,7 +46,8 @@ public class HttpHeader {
     private final LazyString httpCacheControl = new LazyString("HTTP_CACHE_CONTROL");
 
     /**
-     * example : text/html,application/xhtml+xml,application/xml;q=0.9,* /*;q=0.8
+     * example : text/html,application/xhtml+xml,application/xml;q=0.9,*
+     * /*;q=0.8
      */
     private final LazyStringList httpAccept = new LazyStringList("HTTP_ACCEPT", ",");
 
@@ -77,8 +81,10 @@ public class HttpHeader {
      */
     private final LazyString scriptFilename = new LazyString("SCRIPT_FILENAME");
     /**
-     * example : SESS87038d7e49409b9d700737bd60ea56e8=b78427f651202b9466f2e01545458902;
-     * session_key =b30e0cca4d46fe4194f891358ff5d8d48343de0013cd228e4daedae21415030d
+     * example :
+     * SESS87038d7e49409b9d700737bd60ea56e8=b78427f651202b9466f2e01545458902;
+     * session_key
+     * =b30e0cca4d46fe4194f891358ff5d8d48343de0013cd228e4daedae21415030d
      */
     private final LazyMap httpCookie = new LazyMap("HTTP_COOKIE");
     /**
@@ -149,7 +155,8 @@ public class HttpHeader {
      */
     private final LazyInt contentLength = new LazyInt("CONTENT_LENGTH");
     /**
-     * example : /fr/payline/result-cancel?token=EuuqQRn7AiPNrfqT7D0w1294355479323
+     * example :
+     * /fr/payline/result-cancel?token=EuuqQRn7AiPNrfqT7D0w1294355479323
      */
     private final LazyString requestUri = new LazyString("REQUEST_URI");
     /**
@@ -168,7 +175,7 @@ public class HttpHeader {
     public HttpHeader(final Map<String, String> env) {
         super();
         this.env = env;
-        System.out.println(env);
+        Log.framework().info(env);
         queryString = new Query(env.get("QUERY_STRING"));
     }
 

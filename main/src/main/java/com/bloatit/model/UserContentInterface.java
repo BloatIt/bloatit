@@ -25,9 +25,9 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.RestrictedInterface;
 
 /**
- * The Interface UserContentInterface. A User content is a content created by a user. The
- * {@link Member} that has created the content can say he has done so in the name of a
- * group.
+ * The Interface UserContentInterface. A User content is a content created by a
+ * user. The {@link Member} that has created the content can say he has done so
+ * in the name of a group.
  * 
  * @param <T> the Dao class corresponding to this UserContent.
  */
@@ -50,8 +50,8 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
     public abstract boolean canAccessAsGroup();
 
     /**
-     * Sets the as group. The author is saying that he is creating this content in the
-     * name of the group <code>asGroup</code>.
+     * Sets the as group. The author is saying that he is creating this content
+     * in the name of the group <code>asGroup</code>.
      * 
      * @param asGroup the new as group
      * @throws UnauthorizedOperationException
@@ -59,8 +59,8 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
     void setAsGroup(final Group asGroup) throws UnauthorizedOperationException;
 
     /**
-     * Gets the as group. Can (may) be null. See {@link #setAsGroup(Group)} for more
-     * information on this property.
+     * Gets the as group. Can (may) be null. See {@link #setAsGroup(Group)} for
+     * more information on this property.
      * 
      * @return the as group
      */

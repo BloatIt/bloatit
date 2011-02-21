@@ -21,11 +21,12 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.RestrictedObject;
 
 /**
- * This exception is thrown when you try to access a property without the having right.
+ * This exception is thrown when you try to access a property without the having
+ * right.
  * <p>
- * An {@link UnauthorizedOperationException} should give you some informations about why
- * you failed to access a property. To do so, tree different informations can be
- * available:
+ * An {@link UnauthorizedOperationException} should give you some informations
+ * about why you failed to access a property. To do so, tree different
+ * informations can be available:
  * <li>The role in which the user was when trying to access the property.</li>
  * <li>The action the user try to do.</li>
  * <li>A special code for every possible special access error.</li>
@@ -38,13 +39,12 @@ public class UnauthorizedOperationException extends Exception {
 
     /**
      * A specialCode is the return code describing the.
-     * 
      * {@link UnauthorizedOperationException}.
      */
     public enum SpecialCode {
         /**
-         * You try to access a method that require authentication without authenticating
-         * the object.
+         * You try to access a method that require authentication without
+         * authenticating the object.
          * 
          * @see RestrictedObject#authenticate(com.bloatit.model.AuthToken)
          */
@@ -56,7 +56,8 @@ public class UnauthorizedOperationException extends Exception {
         NOTHING_SPECIAL,
 
         /**
-         * You try to (un)kudos a kudosable that has already been (un)kudosed by you.
+         * You try to (un)kudos a kudosable that has already been (un)kudosed by
+         * you.
          */
         ALREADY_VOTED,
 
@@ -72,8 +73,9 @@ public class UnauthorizedOperationException extends Exception {
         INFLUENCE_LOW_ON_VOTE_UP,
 
         /**
-         * You try to add somebody in a group, but this group is not public. You have to
-         * use {@link JoinGroupInvitation} object to join a non public group.
+         * You try to add somebody in a group, but this group is not public. You
+         * have to use {@link JoinGroupInvitation} object to join a non public
+         * group.
          */
         GROUP_NOT_PUBLIC,
 
@@ -93,8 +95,8 @@ public class UnauthorizedOperationException extends Exception {
         NON_DEVELOPER_FINISHED_DEMAND,
 
         /**
-         * You create an object and insert it with different person. For example Tom
-         * create an Offer and Yo insert it in the demand.
+         * You create an object and insert it with different person. For example
+         * Tom create an Offer and Yo insert it in the demand.
          */
         CREATOR_INSERTOR_MISMATCH,
 

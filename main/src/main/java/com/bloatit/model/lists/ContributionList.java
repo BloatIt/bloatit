@@ -39,8 +39,9 @@ public final class ContributionList extends ListBinder<Contribution, DaoContribu
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Contribution> createFromDaoIterator(final Iterator<DaoContribution> dao) {
@@ -72,8 +73,9 @@ public final class ContributionList extends ListBinder<Contribution, DaoContribu
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Contribution createFromDao(final DaoContribution dao) {

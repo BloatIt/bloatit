@@ -25,7 +25,11 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
     }
 
     public HighlightDemand(final Demand demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
-        super(DaoHighlightDemand.createAndPersist(DBRequests.getById(DaoDemand.class, demand.getId()), position, reason, activationDate, desactivationDate));
+        super(DaoHighlightDemand.createAndPersist(DBRequests.getById(DaoDemand.class, demand.getId()),
+                                                  position,
+                                                  reason,
+                                                  activationDate,
+                                                  desactivationDate));
     }
 
     private HighlightDemand(final DaoHighlightDemand dao) {

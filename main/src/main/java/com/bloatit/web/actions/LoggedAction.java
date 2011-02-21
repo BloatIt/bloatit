@@ -11,15 +11,16 @@ import com.bloatit.web.url.LoginPageUrl;
  * </p>
  * <p>
  * All implementing classes need to implement
- * <li>doProcessRestricted: The standard (expected) behavior of the action : user is
- * logged and no error have been detected in the <code>RequestParam</code></li>
- * <li>doProcessErrors: called whenever one of the <code>mandatory</code> request param
- * contains a null value, or whenever a request param (either optional or mandatory)
- * contains a non valid value</li>
- * <li>getRefusalReason: Used to inform the user while he has to be logged to do the
- * action</li>
- * <li>transmitParameters: called when user is not logged. In this method, children
- * classes should most likely save all parameters into the session</li>
+ * <li>doProcessRestricted: The standard (expected) behavior of the action :
+ * user is logged and no error have been detected in the
+ * <code>RequestParam</code></li>
+ * <li>doProcessErrors: called whenever one of the <code>mandatory</code>
+ * request param contains a null value, or whenever a request param (either
+ * optional or mandatory) contains a non valid value</li>
+ * <li>getRefusalReason: Used to inform the user while he has to be logged to do
+ * the action</li>
+ * <li>transmitParameters: called when user is not logged. In this method,
+ * children classes should most likely save all parameters into the session</li>
  * </p>
  */
 public abstract class LoggedAction extends Action {
@@ -55,8 +56,8 @@ public abstract class LoggedAction extends Action {
     /**
      * <b>Do not forget to localize</p>
      * 
-     * @return the error message to dislay to the user, informing him while he couldn't
-     *         access the page
+     * @return the error message to dislay to the user, informing him while he
+     *         couldn't access the page
      */
     protected abstract String getRefusalReason();
 

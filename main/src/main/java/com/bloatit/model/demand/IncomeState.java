@@ -33,8 +33,8 @@ public class IncomeState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
+     * @see
+     * com.bloatit.model.demand.AbstractDemandState#eventDeveloperCanceled()
      */
     @Override
     public AbstractDemandState eventDeveloperCanceled() {
@@ -43,7 +43,6 @@ public class IncomeState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventBatchIsRejected()
      */
     @Override
@@ -53,7 +52,6 @@ public class IncomeState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventBatchIsValidated()
      */
     @Override
@@ -63,7 +61,6 @@ public class IncomeState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventOfferIsValidated()
      */
     @Override

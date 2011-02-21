@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.bloatit.framework.webserver.components;
@@ -15,8 +16,8 @@ import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 
 /**
  * <p>
- * Can be used to create any Html element by just passing the name of the markup in the
- * constructor
+ * Can be used to create any Html element by just passing the name of the markup
+ * in the constructor
  * </p>
  * <p>
  * The following example will create a blank textarea :

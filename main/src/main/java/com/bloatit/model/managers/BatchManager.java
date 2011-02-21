@@ -21,8 +21,8 @@ import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Batch;
 
 /**
- * The Class BatchManager. Utility class containing static methods to get {@link Batch}s
- * from the DB.
+ * The Class BatchManager. Utility class containing static methods to get
+ * {@link Batch}s from the DB.
  */
 public final class BatchManager {
 

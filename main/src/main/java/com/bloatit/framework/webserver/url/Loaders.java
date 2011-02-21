@@ -29,8 +29,7 @@ public final class Loaders {
         if (obj == null) {
             return "";
         }
-        @SuppressWarnings("unchecked")
-        final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
+        @SuppressWarnings("unchecked") final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
         return loader.toString(obj);
     }
 

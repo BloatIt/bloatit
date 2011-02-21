@@ -40,15 +40,16 @@ import com.bloatit.data.DataClassVisitor;
 import com.bloatit.model.demand.DemandImplementation;
 
 /**
- * The Class ConstructorVisitor is a visitor that visit the Dao layer and construct the
- * right Model layer object.
+ * The Class ConstructorVisitor is a visitor that visit the Dao layer and
+ * construct the right Model layer object.
  */
 public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoExternalAccount)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoExternalAccount
+     * )
      */
     @Override
     public Identifiable<?> visit(final DaoExternalAccount dao) {
@@ -57,8 +58,9 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoInternalAccount)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoInternalAccount
+     * )
      */
     @Override
     public Identifiable<?> visit(final DaoInternalAccount dao) {
@@ -67,7 +69,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoMember)
      */
     @Override
@@ -77,8 +78,9 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoBankTransaction)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoBankTransaction
+     * )
      */
     @Override
     public Identifiable<?> visit(final DaoBankTransaction dao) {
@@ -87,7 +89,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoBatch)
      */
     @Override
@@ -97,8 +98,8 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoDescription)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoDescription)
      */
     @Override
     public Identifiable<?> visit(final DaoDescription dao) {
@@ -107,7 +108,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoGroup)
      */
     @Override
@@ -117,8 +117,9 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoHighlightDemand)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoHighlightDemand
+     * )
      */
     @Override
     public Identifiable<?> visit(final DaoHighlightDemand dao) {
@@ -127,7 +128,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoImage)
      */
     @Override
@@ -137,9 +137,8 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoJoinGroupInvitation)
+     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.
+     * DaoJoinGroupInvitation)
      */
     @Override
     public Identifiable<?> visit(final DaoJoinGroupInvitation dao) {
@@ -148,7 +147,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoProject)
      */
     @Override
@@ -158,8 +156,8 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoTransaction)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoTransaction)
      */
     @Override
     public Identifiable<?> visit(final DaoTransaction dao) {
@@ -168,7 +166,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoBug)
      */
     @Override
@@ -178,8 +175,8 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoContribution)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoContribution)
      */
     @Override
     public Identifiable<?> visit(final DaoContribution dao) {
@@ -188,8 +185,8 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoFileMetadata)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoFileMetadata)
      */
     @Override
     public Identifiable<?> visit(final DaoFileMetadata dao) {
@@ -198,7 +195,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoKudos)
      */
     @Override
@@ -208,7 +204,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoComment)
      */
     @Override
@@ -218,7 +213,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoDemand)
      */
     @Override
@@ -228,7 +222,6 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoOffer)
      */
     @Override
@@ -238,8 +231,8 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoTranslation)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoTranslation)
      */
     @Override
     public Identifiable<?> visit(final DaoTranslation dao) {

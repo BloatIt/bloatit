@@ -69,8 +69,8 @@ public final class DaoOffer extends DaoKudosable {
     private int currentBatch;
 
     /**
-     * The amount represents the money the member want to have to make his offer. This is
-     * a calculated field used for performance speedup.
+     * The amount represents the money the member want to have to make his
+     * offer. This is a calculated field used for performance speedup.
      * <code>(= foreach batches; amount += baches.getAmount)</code>
      */
     @Basic(optional = false)
@@ -117,9 +117,11 @@ public final class DaoOffer extends DaoKudosable {
      * Create a DaoOffer.
      * 
      * @param member is the author of the offer. Must be non null.
-     * @param demand is the demand on which this offer is made. Must be non null.
+     * @param demand is the demand on which this offer is made. Must be non
+     *            null.
      * @throws NonOptionalParameterException if a parameter is null.
-     * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
+     * @throws FatalErrorException if the amount is < 0 or if the Date is in the
+     *             future.
      */
     private DaoOffer(final DaoMember member, final DaoDemand demand) {
         super(member);
@@ -210,7 +212,6 @@ public final class DaoOffer extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -225,7 +226,6 @@ public final class DaoOffer extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

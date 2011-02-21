@@ -1,8 +1,8 @@
 package com.bloatit.framework.exceptions;
 
 /**
- * Throw this exception when a method received a null or empty argument and was expecting
- * a value.
+ * Throw this exception when a method received a null or empty argument and was
+ * expecting a value.
  */
 public class NonOptionalParameterException extends IllegalArgumentException {
     private static final long serialVersionUID = 684365471928810874L;

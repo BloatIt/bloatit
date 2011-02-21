@@ -4,7 +4,8 @@ import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 
 /**
  * <p>
- * The mother classes of all renderers that can be used to have special text rendering
+ * The mother classes of all renderers that can be used to have special text
+ * rendering
  * </p>
  */
 public abstract class HtmlTextRenderer extends HtmlTagText {

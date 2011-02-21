@@ -132,7 +132,9 @@ public class TeamPage extends MasterPage {
                 external.add(exAccountInfo);
 
                 if (exAccount.canAccessAmount()) {
-                    exAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(exAccount.getAmount()).getDefaultString()));
+                    exAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator()
+                                                                                 .getCurrency(exAccount.getAmount())
+                                                                                 .getDefaultString()));
                 }
                 if (exAccount.canAccessBankCode()) {
                     exAccountInfo.add(Context.tr("Bank code: {0}", exAccount.getBankCode()));
@@ -154,7 +156,9 @@ public class TeamPage extends MasterPage {
                 internal.add(inAccountInfo);
 
                 if (inAccount.canAccessAmount()) {
-                    inAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator().getCurrency(inAccount.getAmount()).getDefaultString()));
+                    inAccountInfo.add(Context.tr("Money available: {0} ", Context.getLocalizator()
+                                                                                 .getCurrency(inAccount.getAmount())
+                                                                                 .getDefaultString()));
                 }
             } catch (final UnauthorizedOperationException e) {
                 // Should never happen
@@ -212,20 +216,20 @@ public class TeamPage extends MasterPage {
             final EnumSet<UserGroupRight> e = EnumSet.allOf(UserGroupRight.class);
             final UserGroupRight ugr = (UserGroupRight) e.toArray()[column - 1];
             switch (ugr) {
-            case CONSULT:
-                return new HtmlText(Context.tr("Consult"));
-            case TALK:
-                return new HtmlText(Context.tr("Talk"));
-            case MODIFY:
-                return new HtmlText(Context.tr("Modify"));
-            case INVITE:
-                return new HtmlText(Context.tr("Invite"));
-            case PROMOTE:
-                return new HtmlText(Context.tr("Promote"));
-            case BANK:
-                return new HtmlText(Context.tr("Bank"));
-            default:
-                return new HtmlText("");
+                case CONSULT:
+                    return new HtmlText(Context.tr("Consult"));
+                case TALK:
+                    return new HtmlText(Context.tr("Talk"));
+                case MODIFY:
+                    return new HtmlText(Context.tr("Modify"));
+                case INVITE:
+                    return new HtmlText(Context.tr("Invite"));
+                case PROMOTE:
+                    return new HtmlText(Context.tr("Promote"));
+                case BANK:
+                    return new HtmlText(Context.tr("Bank"));
+                default:
+                    return new HtmlText("");
             }
         }
 

@@ -23,7 +23,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Member;
 
 /**
- * The Class MemberList transforms PageIterable<DaoMember> to PageIterable<Member>.
+ * The Class MemberList transforms PageIterable<DaoMember> to
+ * PageIterable<Member>.
  */
 public final class MemberList extends ListBinder<Member, DaoMember> {
 
@@ -38,8 +39,9 @@ public final class MemberList extends ListBinder<Member, DaoMember> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Member> createFromDaoIterator(final Iterator<DaoMember> dao) {
@@ -71,8 +73,9 @@ public final class MemberList extends ListBinder<Member, DaoMember> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Member createFromDao(final DaoMember dao) {

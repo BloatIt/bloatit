@@ -142,7 +142,6 @@ public final class DaoProject extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -155,7 +154,6 @@ public final class DaoProject extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

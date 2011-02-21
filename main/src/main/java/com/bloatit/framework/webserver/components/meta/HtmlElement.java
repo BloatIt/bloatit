@@ -5,8 +5,8 @@ import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
 
 /**
  * <p>
- * An <code>HtmlElement</code> represents any HtmlNode which is not raw text, hence it
- * should be the mother class of all HtmlTags that are created.
+ * An <code>HtmlElement</code> represents any HtmlNode which is not raw text,
+ * hence it should be the mother class of all HtmlTags that are created.
  * </p>
  */
 public abstract class HtmlElement extends XmlElement {
@@ -80,7 +80,6 @@ public abstract class HtmlElement extends XmlElement {
 
     @Override
     protected final void writeTagAndOffspring(final QueryResponseStream txt) {
-        Log.web().trace(tag.getOpenTag());
         if (selfClosable() && !hasChild()) {
             txt.writeNewLineChar();
             txt.writeIndentation();

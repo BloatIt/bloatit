@@ -21,8 +21,9 @@ import java.util.Iterator;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * The Class ListBinder is the base class of all the binder lists. A Binder list transform
- * a PageIterable<Dao...> to a PageIterable<...> (the same but without the Dao)
+ * The Class ListBinder is the base class of all the binder lists. A Binder list
+ * transform a PageIterable<Dao...> to a PageIterable<...> (the same but without
+ * the Dao)
  * 
  * @param <E> the Model level representation of a Dao class
  * @param <DAO> the Dao class corresponding to <code>E</code>
@@ -44,7 +45,6 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Iterable#iterator()
      */
     @Override
@@ -54,7 +54,6 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.framework.utils.PageIterable#setPage(int)
      */
     @Override
@@ -64,7 +63,6 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.framework.utils.PageIterable#setPageSize(int)
      */
     @Override
@@ -74,7 +72,6 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.framework.utils.PageIterable#getPageSize()
      */
     @Override
@@ -84,7 +81,6 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.framework.utils.PageIterable#size()
      */
     @Override
@@ -94,7 +90,6 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.framework.utils.PageIterable#pageNumber()
      */
     @Override
@@ -104,7 +99,6 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.framework.utils.PageIterable#getCurrentPage()
      */
     @Override

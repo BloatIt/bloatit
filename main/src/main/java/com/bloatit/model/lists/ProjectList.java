@@ -23,7 +23,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Project;
 
 /**
- * The Class ProjectList transforms PageIterable<DaoProject> to PageIterable<Project>.
+ * The Class ProjectList transforms PageIterable<DaoProject> to
+ * PageIterable<Project>.
  */
 public final class ProjectList extends ListBinder<Project, DaoProject> {
 
@@ -38,8 +39,9 @@ public final class ProjectList extends ListBinder<Project, DaoProject> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Project> createFromDaoIterator(final Iterator<DaoProject> dao) {
@@ -71,8 +73,9 @@ public final class ProjectList extends ListBinder<Project, DaoProject> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Project createFromDao(final DaoProject dao) {

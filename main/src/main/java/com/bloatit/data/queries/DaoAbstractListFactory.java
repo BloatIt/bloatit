@@ -63,35 +63,35 @@ public abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
 
     protected Criterion createSizeCriterion(final Comparator cmp, final String element, final int nb) {
         switch (cmp) {
-        case EQUAL:
-            return Restrictions.sizeEq(element, nb);
-        case LESS:
-            return Restrictions.sizeLt(element, nb);
-        case LESS_EQUAL:
-            return Restrictions.sizeLe(element, nb);
-        case GREATER:
-            return Restrictions.sizeGt(element, nb);
-        case GREATER_EQUAL:
-            return Restrictions.sizeGe(element, nb);
-        default:
-            return Restrictions.sizeEq(element, nb);
+            case EQUAL:
+                return Restrictions.sizeEq(element, nb);
+            case LESS:
+                return Restrictions.sizeLt(element, nb);
+            case LESS_EQUAL:
+                return Restrictions.sizeLe(element, nb);
+            case GREATER:
+                return Restrictions.sizeGt(element, nb);
+            case GREATER_EQUAL:
+                return Restrictions.sizeGe(element, nb);
+            default:
+                return Restrictions.sizeEq(element, nb);
         }
     }
 
     protected Criterion createNbCriterion(final Comparator cmp, final String element, final Object nb) {
         switch (cmp) {
-        case EQUAL:
-            return Restrictions.eq(element, nb);
-        case LESS:
-            return Restrictions.lt(element, nb);
-        case LESS_EQUAL:
-            return Restrictions.le(element, nb);
-        case GREATER:
-            return Restrictions.gt(element, nb);
-        case GREATER_EQUAL:
-            return Restrictions.ge(element, nb);
-        default:
-            return Restrictions.eq(element, nb);
+            case EQUAL:
+                return Restrictions.eq(element, nb);
+            case LESS:
+                return Restrictions.lt(element, nb);
+            case LESS_EQUAL:
+                return Restrictions.le(element, nb);
+            case GREATER:
+                return Restrictions.gt(element, nb);
+            case GREATER_EQUAL:
+                return Restrictions.ge(element, nb);
+            default:
+                return Restrictions.eq(element, nb);
         }
     }
 

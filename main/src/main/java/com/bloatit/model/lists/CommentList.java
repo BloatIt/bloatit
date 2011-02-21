@@ -23,7 +23,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Comment;
 
 /**
- * The Class CommentList transforms PageIterable<DaoComment> to PageIterable<Comment>.
+ * The Class CommentList transforms PageIterable<DaoComment> to
+ * PageIterable<Comment>.
  */
 public final class CommentList extends ListBinder<Comment, DaoComment> {
 
@@ -38,8 +39,9 @@ public final class CommentList extends ListBinder<Comment, DaoComment> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Comment> createFromDaoIterator(final Iterator<DaoComment> dao) {
@@ -71,8 +73,9 @@ public final class CommentList extends ListBinder<Comment, DaoComment> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Comment createFromDao(final DaoComment dao) {

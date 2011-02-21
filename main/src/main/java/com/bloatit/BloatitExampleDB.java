@@ -74,15 +74,20 @@ public class BloatitExampleDB {
         final String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères";
         final String perroquetDescription = "Le principe de Perroquet est d'utiliser une vidéo ou un fichier audio et les sous-titres associés pour vous faire écouter et comprendre les dialogues ou paroles. Après lui avoir indiqué les fichiers à utiliser, Perroquet va lire un morceau de la vidéo et puis la mettre en pause. Il vous indiquera alors le nombre de mot à trouver et vous devrez les taper pour pouvoir continuer la lecture. Il est possible de réécouter une séquence autant de fois que nécessaire. Si vous ne comprenez pas tout, Perroquet présente plusieurs moyen de vous aider. \n"
                 + "http://perroquet.b219.org/";
-        final Project perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription, getImage(fred, "perroquet.png"));
+        final Project perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription, getImage(fred,
+                                                                                                                                 "perroquet.png"));
 
         // LibreOffice project
 
         final String libreOfficeTitle = "LibreOffice (souvent abrégé en LibO) est une suite bureautique, dérivée directement de OpenOffice.org, créée par The Document Foundation. Cet embranchement a eu lieu le 28 septembre 2010, dans la continuité du rachat de Sun Microsystems par Oracle.";
         final String libreOfficeDescription = "LibreOffice is the free power-packed Open Source personal productivity suite for Windows, Macintosh and Linux, that gives you six feature-rich applications for all your document production and data processing needs: Writer, Calc, Impress, Draw, Math and Base. Support and documentation is free from our large, dedicated community of users, contributors and developers. You, too, can also get involved!"
                 + "\n" + "http://www.libreoffice.org/";
-        final Project libreOffice = new Project("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle, libreOfficeDescription, getImage(fred,
-                                                                                                                                         "libreoffice.png"));
+        final Project libreOffice = new Project("LibreOffice",
+                                                thomas,
+                                                Locale.FRANCE,
+                                                libreOfficeTitle,
+                                                libreOfficeDescription,
+                                                getImage(fred, "libreoffice.png"));
 
         // Mageia project
 
@@ -186,7 +191,11 @@ public class BloatitExampleDB {
 
         final String colorPickerDemandTitle = "Permettre de choisir facilement n'importe quelle couleur";
 
-        final Demand colorPickerDemand = DemandFactory.createDemand(yoann, yoann.getLocale(), colorPickerDemandTitle, colorPickerDemandDescription, libreOffice);
+        final Demand colorPickerDemand = DemandFactory.createDemand(yoann,
+                                                                    yoann.getLocale(),
+                                                                    colorPickerDemandTitle,
+                                                                    colorPickerDemandDescription,
+                                                                    libreOffice);
 
         // Contributions
 

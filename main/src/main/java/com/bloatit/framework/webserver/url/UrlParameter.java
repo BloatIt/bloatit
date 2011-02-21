@@ -99,8 +99,7 @@ public class UrlParameter<T, U> extends UrlNode {
         try {
             if (this.value instanceof List) {
                 final StringBuilder sb = new StringBuilder();
-                @SuppressWarnings("rawtypes")
-                final List casted = List.class.cast(this.value);
+                @SuppressWarnings("rawtypes") final List casted = List.class.cast(this.value);
                 for (final String aValue : httpParam) {
                     // TODO make me works !
                     sb.append("&").append(getName()).append("=").append(aValue);

@@ -25,7 +25,8 @@ import com.bloatit.model.ExternalAccount;
 public class ExternalAccountRight extends RightManager {
 
     /**
-     * The Class BankCode is a {@link Private} accessor for the BankCode property.
+     * The Class BankCode is a {@link Private} accessor for the BankCode
+     * property.
      */
     public static class BankCode extends Private {
         // nothing this is just a rename.

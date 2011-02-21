@@ -7,8 +7,8 @@ import org.hibernate.search.FullTextQuery;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * This is the {@link PageIterable} implementation using the Hibernate Search querying
- * interface.
+ * This is the {@link PageIterable} implementation using the Hibernate Search
+ * querying interface.
  */
 public class SearchCollection<T> implements PageIterable<T> {
 

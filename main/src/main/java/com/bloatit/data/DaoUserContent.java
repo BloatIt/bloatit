@@ -39,9 +39,10 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A user content is a content created by a user. There is no table DaoUserContent (the
- * attributes are copied in the sub classes) A user content as an Author, and can be
- * posted in the name of a group. It also has a creation date.
+ * A user content is a content created by a user. There is no table
+ * DaoUserContent (the attributes are copied in the sub classes) A user content
+ * as an Author, and can be posted in the name of a group. It also has a
+ * creation date.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -54,8 +55,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     private DaoMember member;
 
     /**
-     * Most of the time this is null. But when a user create a content in the name of a
-     * group, asGroup point on it.
+     * Most of the time this is null. But when a user create a content in the
+     * name of a group, asGroup point on it.
      */
     @ManyToOne(optional = true)
     private DaoGroup asGroup;
@@ -118,7 +119,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     }
 
     /**
-     * null is the default value and means that the content has a member as author.
+     * null is the default value and means that the content has a member as
+     * author.
      */
     public final void setAsGroup(final DaoGroup asGroup) {
         this.asGroup = asGroup;
@@ -142,7 +144,6 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -157,7 +158,6 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

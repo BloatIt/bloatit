@@ -28,8 +28,8 @@ import org.hibernate.Session;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 /**
- * Represent an image. If you only need the file associated with this image, use the
- * DaoFileMetadata object.
+ * Represent an image. If you only need the file associated with this image, use
+ * the DaoFileMetadata object.
  */
 @Entity
 public final class DaoImage extends DaoIdentifiable {
@@ -67,8 +67,8 @@ public final class DaoImage extends DaoIdentifiable {
      * 
      * @param horizontalSize is the number of pixels for the X coordinate.
      * @param verticalSize is the number of pixels for the Y coordinate.
-     * @param compression is a string describing the type of compression. This parameter
-     *        is optional (it can be null, or empty).
+     * @param compression is a string describing the type of compression. This
+     *            parameter is optional (it can be null, or empty).
      * @param file is the file where this image is stored.
      */
     private DaoImage(final int horizontalSize, final int verticalSize, final String compression, final DaoFileMetadata file) {
@@ -141,7 +141,6 @@ public final class DaoImage extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -154,7 +153,6 @@ public final class DaoImage extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

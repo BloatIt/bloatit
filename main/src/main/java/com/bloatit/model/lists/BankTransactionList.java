@@ -39,8 +39,9 @@ public final class BankTransactionList extends ListBinder<BankTransaction, DaoBa
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<BankTransaction> createFromDaoIterator(final Iterator<DaoBankTransaction> dao) {
@@ -48,8 +49,8 @@ public final class BankTransactionList extends ListBinder<BankTransaction, DaoBa
     }
 
     /**
-     * The Class BankTransactionIterator take an Iterator on a DaoBankTransaction and
-     * return one on a BankTransaction.
+     * The Class BankTransactionIterator take an Iterator on a
+     * DaoBankTransaction and return one on a BankTransaction.
      */
     static final class BankTransactionIterator extends IteratorBinder<BankTransaction, DaoBankTransaction> {
 
@@ -73,8 +74,9 @@ public final class BankTransactionList extends ListBinder<BankTransaction, DaoBa
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected BankTransaction createFromDao(final DaoBankTransaction dao) {

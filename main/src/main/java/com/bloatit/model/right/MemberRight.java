@@ -20,7 +20,8 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.model.Member;
 
 /**
- * The Class MemberRight store the properties accessor for the {@link Member} class.
+ * The Class MemberRight store the properties accessor for the {@link Member}
+ * class.
  */
 public class MemberRight extends RightManager {
 
@@ -31,10 +32,8 @@ public class MemberRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
@@ -55,10 +54,8 @@ public class MemberRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
@@ -77,7 +74,8 @@ public class MemberRight extends RightManager {
     }
 
     /**
-     * The Class Password is a {@link Private} accessor for the Password property.
+     * The Class Password is a {@link Private} accessor for the Password
+     * property.
      */
     public static class Password extends Private {
         // nothing this is just a rename.

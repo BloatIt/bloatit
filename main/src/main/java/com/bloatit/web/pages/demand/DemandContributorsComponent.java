@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.web.pages.demand;
 
@@ -73,7 +74,9 @@ public final class DemandContributorsComponent extends HtmlDiv {
                                                                 .getDefaultString();
                     final String contributionMinValue = Context.getLocalizator().getCurrency(demand.getContributionMin()).getDefaultString();
                     final String contributionMaxValue = Context.getLocalizator().getCurrency(demand.getContributionMax()).getDefaultString();
-                    final String contributionMedianValue = Context.getLocalizator().getCurrency(computeMedian(demand.getContributions())).getDefaultString();
+                    final String contributionMedianValue = Context.getLocalizator()
+                                                                  .getCurrency(computeMedian(demand.getContributions()))
+                                                                  .getDefaultString();
 
                     final HtmlTable statTable = new HtmlTable(new ContributionStatTableModel(contributionMinValue,
                                                                                              contributionMaxValue,
@@ -87,7 +90,8 @@ public final class DemandContributorsComponent extends HtmlDiv {
 
                 contributorsBlock.add(new ContributePageUrl(demand).getHtmlLink(Context.tr("Contribute")));
 
-            } catch (final UnauthorizedOperationException e) {}
+            } catch (final UnauthorizedOperationException e) {
+            }
 
         }
         return contributorsBlock;
@@ -143,21 +147,21 @@ public final class DemandContributorsComponent extends HtmlDiv {
         public XmlNode getHeader(final int column) {
             String value;
             switch (column) {
-            case 0:
-                value = Context.tr("Author");
-                break;
-            case 1:
-                value = Context.tr("Amount");
-                break;
-            case 2:
-                value = Context.tr("Date");
-                break;
-            case 3:
-                value = Context.tr("Comment");
-                break;
-            default:
-                value = "";
-                break;
+                case 0:
+                    value = Context.tr("Author");
+                    break;
+                case 1:
+                    value = Context.tr("Amount");
+                    break;
+                case 2:
+                    value = Context.tr("Date");
+                    break;
+                case 3:
+                    value = Context.tr("Comment");
+                    break;
+                default:
+                    value = "";
+                    break;
             }
             return new HtmlText(value);
         }
@@ -188,19 +192,19 @@ public final class DemandContributorsComponent extends HtmlDiv {
             String value = "";
             try {
                 switch (column) {
-                case 0:
-                    value = contribution.getAuthor().getDisplayName();
-                    break;
-                case 1:
-                    // TODO: align money at right in CSS
-                    value = Context.getLocalizator().getCurrency(contribution.getAmount()).getDefaultString();
-                    break;
-                case 2:
-                    value = Context.getLocalizator().getDate(contribution.getCreationDate()).toString(FormatStyle.MEDIUM);
-                    break;
-                case 3:
-                    value = contribution.getComment();
-                    break;
+                    case 0:
+                        value = contribution.getAuthor().getDisplayName();
+                        break;
+                    case 1:
+                        // TODO: align money at right in CSS
+                        value = Context.getLocalizator().getCurrency(contribution.getAmount()).getDefaultString();
+                        break;
+                    case 2:
+                        value = Context.getLocalizator().getDate(contribution.getCreationDate()).toString(FormatStyle.MEDIUM);
+                        break;
+                    case 3:
+                        value = contribution.getComment();
+                        break;
                 }
 
             } catch (final UnauthorizedOperationException e) {
@@ -224,9 +228,9 @@ public final class DemandContributorsComponent extends HtmlDiv {
         private final String contributionMedianValue;
 
         private ContributionStatTableModel(final String contributionMinValue,
-                final String contributionMaxValue,
-                final String contributionMeanValue,
-                final String contributionMedianValue) {
+                                           final String contributionMaxValue,
+                                           final String contributionMeanValue,
+                                           final String contributionMedianValue) {
 
             this.contributionMinValue = contributionMinValue;
             this.contributionMaxValue = contributionMaxValue;
@@ -255,18 +259,18 @@ public final class DemandContributorsComponent extends HtmlDiv {
             String value = "";
 
             switch (column) {
-            case 0:
-                value = Context.tr("Minimun");
-                break;
-            case 1:
-                value = Context.tr("Maximum");
-                break;
-            case 2:
-                value = Context.tr("Mean");
-                break;
-            case 3:
-                value = Context.tr("Median");
-                break;
+                case 0:
+                    value = Context.tr("Minimun");
+                    break;
+                case 1:
+                    value = Context.tr("Maximum");
+                    break;
+                case 2:
+                    value = Context.tr("Mean");
+                    break;
+                case 3:
+                    value = Context.tr("Median");
+                    break;
             }
             return new HtmlText(value);
         }
@@ -286,18 +290,18 @@ public final class DemandContributorsComponent extends HtmlDiv {
             String value = "";
 
             switch (column) {
-            case 0:
-                value = contributionMinValue;
-                break;
-            case 1:
-                value = contributionMaxValue;
-                break;
-            case 2:
-                value = contributionMeanValue;
-                break;
-            case 3:
-                value = contributionMedianValue;
-                break;
+                case 0:
+                    value = contributionMinValue;
+                    break;
+                case 1:
+                    value = contributionMaxValue;
+                    break;
+                case 2:
+                    value = contributionMeanValue;
+                    break;
+                case 3:
+                    value = contributionMedianValue;
+                    break;
             }
             return new HtmlText(value);
         }

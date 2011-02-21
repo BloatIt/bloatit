@@ -44,7 +44,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.KudosableInterface#canKudos()
      */
     @Override
@@ -54,7 +53,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.KudosableInterface#canUnkudos()
      */
     @Override
@@ -110,7 +108,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.KudosableInterface#unkudos()
      */
     @Override
@@ -122,7 +119,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.KudosableInterface#kudos()
      */
     @Override
@@ -142,7 +138,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.KudosableInterface#getState()
      */
     @Override
@@ -170,43 +165,43 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     private void calculateNewState(final int newPop) {
         switch (getState()) {
-        case PENDING:
-            if (newPop >= turnValid()) {
-                setState(PopularityState.VALIDATED);
-                notifyValid();
-            } else if (newPop <= turnHidden() && newPop > turnRejected()) {
-                setState(PopularityState.HIDDEN);
-                notifyHidden();
-            } else if (newPop <= turnRejected()) {
-                setState(PopularityState.REJECTED);
-                notifyRejected();
-            }
-            // NO BREAK IT IS OK !!
-        case VALIDATED:
-            if (newPop <= turnPending()) {
-                setState(PopularityState.PENDING);
-                notifyPending();
-            }
-            break;
-        case HIDDEN:
-        case REJECTED:
-            if (newPop >= turnPending() && newPop < turnValid()) {
-                setState(PopularityState.PENDING);
-                notifyPending();
-            } else if (newPop >= turnValid()) {
-                setState(PopularityState.VALIDATED);
-                notifyValid();
-            } else if (newPop <= turnHidden() && newPop > turnRejected()) {
-                setState(PopularityState.VALIDATED);
-                notifyValid();
-            } else if (newPop <= turnRejected()) {
-                setState(PopularityState.REJECTED);
-                notifyRejected();
-            }
-            break;
-        default:
-            assert false;
-            break;
+            case PENDING:
+                if (newPop >= turnValid()) {
+                    setState(PopularityState.VALIDATED);
+                    notifyValid();
+                } else if (newPop <= turnHidden() && newPop > turnRejected()) {
+                    setState(PopularityState.HIDDEN);
+                    notifyHidden();
+                } else if (newPop <= turnRejected()) {
+                    setState(PopularityState.REJECTED);
+                    notifyRejected();
+                }
+                // NO BREAK IT IS OK !!
+            case VALIDATED:
+                if (newPop <= turnPending()) {
+                    setState(PopularityState.PENDING);
+                    notifyPending();
+                }
+                break;
+            case HIDDEN:
+            case REJECTED:
+                if (newPop >= turnPending() && newPop < turnValid()) {
+                    setState(PopularityState.PENDING);
+                    notifyPending();
+                } else if (newPop >= turnValid()) {
+                    setState(PopularityState.VALIDATED);
+                    notifyValid();
+                } else if (newPop <= turnHidden() && newPop > turnRejected()) {
+                    setState(PopularityState.VALIDATED);
+                    notifyValid();
+                } else if (newPop <= turnRejected()) {
+                    setState(PopularityState.REJECTED);
+                    notifyRejected();
+                }
+                break;
+            default:
+                assert false;
+                break;
         }
     }
 
@@ -227,7 +222,6 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.KudosableInterface#getPopularity()
      */
     @Override
@@ -247,8 +241,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation limits. Default
-     * value is {@value #TURN_PENDING}.
+     * You can redefine me if you want to customize the state calculation
+     * limits. Default value is {@value #TURN_PENDING}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#PENDING} state.
@@ -258,8 +252,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation limits. Default
-     * value is {@value #TURN_VALID}.
+     * You can redefine me if you want to customize the state calculation
+     * limits. Default value is {@value #TURN_VALID}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#VALIDATED} state.
@@ -269,8 +263,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation limits. Default
-     * value is {@value #TURN_REJECTED}.
+     * You can redefine me if you want to customize the state calculation
+     * limits. Default value is {@value #TURN_REJECTED}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#REJECTED} state.
@@ -280,8 +274,8 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     /**
-     * You can redefine me if you want to customize the state calculation limits. Default
-     * value is {@value #TURN_HIDDEN}.
+     * You can redefine me if you want to customize the state calculation
+     * limits. Default value is {@value #TURN_HIDDEN}.
      * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#HIDDEN} state.
@@ -307,21 +301,24 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     }
 
     /**
-     * This method is called each time this Kudosable change its state to pending.
+     * This method is called each time this Kudosable change its state to
+     * pending.
      */
     protected void notifyPending() {
         // Implement me if you wish
     }
 
     /**
-     * This method is called each time this Kudosable change its state to rejected.
+     * This method is called each time this Kudosable change its state to
+     * rejected.
      */
     protected void notifyRejected() {
         // Implement me if you wish
     }
 
     /**
-     * This method is called each time this Kudosable change its state to Hidden.
+     * This method is called each time this Kudosable change its state to
+     * Hidden.
      */
     protected void notifyHidden() {
         // Implement me if you wish

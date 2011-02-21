@@ -38,8 +38,9 @@ public final class KudosList extends ListBinder<Kudos, DaoKudos> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Kudos> createFromDaoIterator(final Iterator<DaoKudos> dao) {
@@ -71,8 +72,9 @@ public final class KudosList extends ListBinder<Kudos, DaoKudos> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Kudos createFromDao(final DaoKudos dao) {

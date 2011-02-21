@@ -8,8 +8,8 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
  * <p>
- * A class that stores <b>all</b> the information about the current request.. The data are
- * local to a thread.
+ * A class that stores <b>all</b> the information about the current request..
+ * The data are local to a thread.
  * </p>
  */
 public class Context {

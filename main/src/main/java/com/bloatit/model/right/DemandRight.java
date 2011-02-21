@@ -19,7 +19,8 @@ package com.bloatit.model.right;
 import com.bloatit.model.Demand;
 
 /**
- * The Class DemandRight store the properties accessor for the {@link Demand} class.
+ * The Class DemandRight store the properties accessor for the {@link Demand}
+ * class.
  */
 public class DemandRight extends RightManager {
 
@@ -30,10 +31,8 @@ public class DemandRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
@@ -48,10 +47,8 @@ public class DemandRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
@@ -66,10 +63,8 @@ public class DemandRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
@@ -84,10 +79,8 @@ public class DemandRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
@@ -109,10 +102,8 @@ public class DemandRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {

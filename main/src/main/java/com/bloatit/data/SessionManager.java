@@ -26,7 +26,8 @@ import org.hibernate.search.Search;
 import com.bloatit.common.Log;
 
 /**
- * These are some simple static utils to manage Hibernate sessions (and hibernate Search)
+ * These are some simple static utils to manage Hibernate sessions (and
+ * hibernate Search)
  */
 public final class SessionManager {
 

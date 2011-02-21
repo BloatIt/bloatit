@@ -23,13 +23,13 @@ public class Message {
         this.what = what;
     }
 
-    public Message(final String message, final Level level){
+    public Message(final String message, final Level level) {
         this.level = level;
         this.message = message;
         this.what = What.UNKNOWN;
     }
 
-    private String extractErrorMessage(String aMessage, String name, String value) {
+    private String extractErrorMessage(final String aMessage, final String name, final String value) {
         String errorMsg = aMessage.replaceAll("%param", name);
         if (!value.isEmpty()) {
             errorMsg = errorMsg.replaceAll("%value", value);

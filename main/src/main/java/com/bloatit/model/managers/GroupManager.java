@@ -26,8 +26,8 @@ import com.bloatit.model.Member;
 import com.bloatit.model.lists.GroupList;
 
 /**
- * The Class GroupManager is an utility class containing static methods for {@link Group}
- * loading etc.
+ * The Class GroupManager is an utility class containing static methods for
+ * {@link Group} loading etc.
  */
 public final class GroupManager {
 

@@ -35,9 +35,9 @@ public class PendingState extends CanContributeMetaState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit.model.Offer)
+     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit
+     * .model.Offer)
      */
     @Override
     public AbstractDemandState eventAddOffer(final Offer offer) {
@@ -47,8 +47,8 @@ public class PendingState extends CanContributeMetaState {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
+     * @see
+     * com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
      */
     @Override
     protected AbstractDemandState notifyAddContribution() {

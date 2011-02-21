@@ -17,7 +17,8 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * List of hightlighted demands with the reason, the position and the hightlight date
+ * List of hightlighted demands with the reason, the position and the hightlight
+ * date
  */
 @Entity
 public final class DaoHighlightDemand extends DaoIdentifiable {
@@ -44,12 +45,12 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
     /**
      * Create a DaoHighlightDemand and add it into the db.
      * 
-     * @param demand
-     * @param position
-     * @param reason
-     * @param activationDate
-     * @param desactivationDate
-     * @return
+     * @param demand the demand
+     * @param position the position
+     * @param reason the reason
+     * @param activationDate the activation date
+     * @param desactivationDate the desactivation date
+     * @return the dao highlight demand
      */
     public static DaoHighlightDemand createAndPersist(final DaoDemand demand,
                                                       final int position,

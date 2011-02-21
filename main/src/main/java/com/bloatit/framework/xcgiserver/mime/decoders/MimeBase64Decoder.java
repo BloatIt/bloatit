@@ -1,24 +1,25 @@
 /*
- * Copyright 2003-2010 Christian d'Heureuse, Inventec Informatik AG, Zurich, Switzerland
- * www.source-code.biz, www.inventec.ch/chdh
+ * Copyright 2003-2010 Christian d'Heureuse, Inventec Informatik AG, Zurich,
+ * Switzerland www.source-code.biz, www.inventec.ch/chdh
  * 
- * This module is multi-licensed and may be used under the terms of any of the following
- * licenses:
+ * This module is multi-licensed and may be used under the terms of any of the
+ * following licenses:
  * 
- * EPL, Eclipse Public License, V1.0 or later, http://www.eclipse.org/legal LGPL, GNU
- * Lesser General Public License, V2.1 or later, http://www.gnu.org/licenses/lgpl.html
- * GPL, GNU General Public License, V2 or later, http://www.gnu.org/licenses/gpl.html AL,
- * Apache License, V2.0 or later, http://www.apache.org/licenses BSD, BSD License,
+ * EPL, Eclipse Public License, V1.0 or later, http://www.eclipse.org/legal
+ * LGPL, GNU Lesser General Public License, V2.1 or later,
+ * http://www.gnu.org/licenses/lgpl.html GPL, GNU General Public License, V2 or
+ * later, http://www.gnu.org/licenses/gpl.html AL, Apache License, V2.0 or
+ * later, http://www.apache.org/licenses BSD, BSD License,
  * http://www.opensource.org/licenses/bsd-license.php
  * 
- * Please contact the author if you need another license. This module is provided "as is",
- * without warranties of any kind.
+ * Please contact the author if you need another license. This module is
+ * provided "as is", without warranties of any kind.
  */
 package com.bloatit.framework.xcgiserver.mime.decoders;
 
 /**
- * Decoder that takes data encoded in base64 and returns the data in non base64 binary
- * form
+ * Decoder that takes data encoded in base64 and returns the data in non base64
+ * binary form
  */
 public class MimeBase64Decoder implements MimeDecoder {
 
@@ -60,33 +61,36 @@ public class MimeBase64Decoder implements MimeDecoder {
      * </p>
      * <p>
      * Any bytes not included in the range <code>off</code> -> <code>off</code>+
-     * <code>length</code> are not included. Therefore the array has exactly the <b>size
-     * of its useful content</b>
+     * <code>length</code> are not included. Therefore the array has exactly the
+     * <b>size of its useful content</b>
      * </p>
      * <p>
-     * <b> Note :</b> the size of the result array will most likely not be equal to the
-     * size of the input array
+     * <b> Note :</b> the size of the result array will most likely not be equal
+     * to the size of the input array
      * </p>
      * <p>
-     * When using this method, one should provide a multiple of exactly 4 bytes of data,
-     * or an exception will be thrown.
+     * When using this method, one should provide a multiple of exactly 4 bytes
+     * of data, or an exception will be thrown.
      * </p>
      * <p>
-     * Based on the algorithm from <a href="http://www.source-code.biz/base64coder/java/"
+     * Based on the algorithm from <a
+     * href="http://www.source-code.biz/base64coder/java/"
      * >http://www.source-code.biz/base64coder/java/</a>
      * </p>
      * 
      * @param b the array of bytes to decode
-     * @param offset the first byte to decode, bytes before offset will be ignored
+     * @param offset the first byte to decode, bytes before offset will be
+     *            ignored
      * @param length the number of byte to decode, bytes after <code>off</code>+
-     *        <code>length</code> will be ignored
+     *            <code>length</code> will be ignored
      * @return the array of decoded bytes.
      * @throws IndexOutOfBoundsException If <code>off</code> is negative, or
-     *         <code>length</code> is negative, or <code>off</code>+<code>length</code> is
-     *         greater than the length of the array <code>b</code>
+     *             <code>length</code> is negative, or <code>off</code>+
+     *             <code>length</code> is greater than the length of the array
+     *             <code>b</code>
      * @throws NullPointerException If <code>b</code> is null
-     * @throws IllegalArgumentException If some of the data in <code>b</code> shouldn't be
-     *         provided for the implemented decoding algorithm
+     * @throws IllegalArgumentException If some of the data in <code>b</code>
+     *             shouldn't be provided for the implemented decoding algorithm
      */
     @Override
     public byte[] decode(final byte[] input, final int offset, int length) {

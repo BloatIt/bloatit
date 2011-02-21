@@ -26,8 +26,8 @@ public class Mail {
      * @param to the email addresse of the receiver of the mail
      * @param title the title of the email
      * @param content the text content of the email
-     * @param mailSenderID a unique identifier to the mail (recommended : the permanent id
-     *        of the sender)
+     * @param mailSenderID a unique identifier to the mail (recommended : the
+     *            permanent id of the sender)
      */
     public Mail(final String to, final String title, final String content, final String mailSenderID) {
         this.to = to;

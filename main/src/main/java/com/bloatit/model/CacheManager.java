@@ -23,11 +23,10 @@ import com.bloatit.common.Log;
 import com.bloatit.data.IdentifiableInterface;
 
 /**
- * The cache manager is the class responsible of the model level cache. There is a cache
- * different on each thread.
+ * The cache manager is the class responsible of the model level cache. There is
+ * a cache different on each thread.
  * 
  * @author Thomas Guyard
- * 
  */
 public final class CacheManager {
 

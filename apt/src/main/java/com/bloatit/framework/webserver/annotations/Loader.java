@@ -1,6 +1,5 @@
 package com.bloatit.framework.webserver.annotations;
 
-
 public abstract class Loader<T> {
 
     public abstract T fromString(String data) throws ConversionErrorException;

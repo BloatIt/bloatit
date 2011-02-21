@@ -30,8 +30,8 @@ import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 
 /**
- * An AuthToken is a token representing an authenticated user. You can use it to tell a
- * {@link RestrictedObject} class which user is using it.
+ * An AuthToken is a token representing an authenticated user. You can use it to
+ * tell a {@link RestrictedObject} class which user is using it.
  */
 public final class AuthToken {
     private final Member member;
@@ -40,7 +40,8 @@ public final class AuthToken {
     /**
      * Create an authoToken using the login and password of a person.
      * 
-     * @throws NotFoundException if the login is not found or if the password is wrong.
+     * @throws NotFoundException if the login is not found or if the password is
+     *             wrong.
      */
     public AuthToken(final String login, final String password) throws NotFoundException {
         final Member tmp = MemberManager.getByLoginAndPassword(login, password);
@@ -60,8 +61,8 @@ public final class AuthToken {
     }
 
     /**
-     * NEVER Use this method. It is used by the SessionManager to persist the login
-     * session of a user even in case of a server restart.
+     * NEVER Use this method. It is used by the SessionManager to persist the
+     * login session of a user even in case of a server restart.
      * 
      * @param memberId
      * @throws NotFoundException
@@ -88,7 +89,8 @@ public final class AuthToken {
     }
 
     /**
-     * If a transaction is active, make sure the member has an internal persistent dao.
+     * If a transaction is active, make sure the member has an internal
+     * persistent dao.
      * 
      * @return the member that is authenticated by this token.
      */
