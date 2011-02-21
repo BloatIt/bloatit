@@ -16,7 +16,6 @@ import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.search.DemandSearch;
 import com.bloatit.data.search.DemandSearch.SortMethod;
 import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -30,6 +29,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Demand;
+import com.bloatit.model.demand.DemandList;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
@@ -62,7 +62,7 @@ public final class DemandListPage extends MasterPage {
 
     public static final String SEARCH_STRING_CODE = "search_string";
     @RequestParam(name = SEARCH_STRING_CODE)
-    @Optional
+    @Optional("")
     private final String searchString;
 
     private HtmlPagedList<Demand> pagedDemandList;
@@ -225,7 +225,7 @@ public final class DemandListPage extends MasterPage {
         add(demandSearchBlock);
 
         // Demand list
-        final PageIterable<Demand> results = searchResult();
+        final DemandList results = searchResult();
         if (results.size() > 0) {
             final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
             final DemandListPageUrl clonedUrl = url.clone();
@@ -269,7 +269,7 @@ public final class DemandListPage extends MasterPage {
         }
     };
 
-    private PageIterable<Demand> searchResult() {
+    private DemandList searchResult() {
 
         final DemandSearch search = new DemandSearch(searchString);
         if (!filter.equals(FILTER_ALL)) {
@@ -298,6 +298,6 @@ public final class DemandListPage extends MasterPage {
             search.setSortMethod(SortMethod.SORT_BY_EXPIRATION_DATE);
         }
 
-        return search.search();
+        return new DemandList(search.doSearch());
     }
 }

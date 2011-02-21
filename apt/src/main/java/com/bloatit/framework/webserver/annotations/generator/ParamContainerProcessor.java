@@ -112,7 +112,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         final RequestParam parm = attribute.getAnnotation(RequestParam.class);
         final Optional optional = attribute.getAnnotation(Optional.class);
         String defaultValue = optional != null ? optional.value() : null;
-        if (defaultValue == Optional.DEFAULT_DEFAULT_VALUE) {
+        if (Optional.DEFAULT_DEFAULT_VALUE.equals(defaultValue)) {
             defaultValue = null;
         }
 
@@ -120,7 +120,7 @@ public class ParamContainerProcessor extends AbstractProcessor {
         if (parm != null) {
             final String attributeName = attribute.getSimpleName().toString();
             final String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
-            final String suggestedValue = parm.suggestedValue() == RequestParam.DEFAULT_SUGGESTED_VALUE ? null : parm.suggestedValue();
+            final String suggestedValue = RequestParam.DEFAULT_SUGGESTED_VALUE.equals(parm.suggestedValue()) ? null : parm.suggestedValue();
 
             if (parm.generatedFrom().isEmpty()) {
                 generator.addAttribute(getType(attribute), //
