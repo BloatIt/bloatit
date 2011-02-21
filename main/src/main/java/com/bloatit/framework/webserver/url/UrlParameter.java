@@ -184,16 +184,19 @@ public class UrlParameter<T, U> extends UrlNode {
     }
 
     public String getSuggestedValue() {
-        if (strValue != null && !strValue.isEmpty()){
+        System.err.println("1 coucou");
+        if (strValue != null && !strValue.isEmpty()) {
             return strValue;
         }
         String suggestedValue = description.getSuggestedValue();
+        System.err.println("1 " + suggestedValue);
         if (suggestedValue == null) {
             return getDefaultValue();
         }
+        System.err.println(suggestedValue);
         return suggestedValue;
     }
-    
+
     @Override
     @Deprecated
     public void addParameter(final String aName, final String aValue) {
@@ -230,7 +233,12 @@ public class UrlParameter<T, U> extends UrlNode {
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
             super();
             name = parameter.getName();
-            this.parameterFromSession = Context.getSession().pickParameter(parameter);
+            UrlParameter<T, U> pickedParameter = Context.getSession().pickParameter(parameter);
+            if (pickedParameter == null) {
+                this.parameterFromSession = parameter;
+            } else {
+                this.parameterFromSession = pickedParameter;
+            }
         }
 
         @Override

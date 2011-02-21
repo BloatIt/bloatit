@@ -110,7 +110,8 @@ public final class ReportBugPage extends LoggedPage {
 
         // Level
         final FormFieldData<BindedLevel> levelFormFieldData = doReportUrl.getLevelParameter().formFieldData();
-        final LevelSelector levelInput = new LevelSelector(levelFormFieldData, Context.tr("Level"));
+        final HtmlDropDown levelInput = new HtmlDropDown(levelFormFieldData, Context.tr("Level"));
+        levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
         levelInput.setComment(Context.tr("Level of the bug."));
         reportBugForm.add(levelInput);
 
@@ -144,20 +145,6 @@ public final class ReportBugPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to report a new bug.");
-    }
-
-    static public class LevelSelector extends HtmlDropDown {
-
-        public LevelSelector(FormFieldData<BindedLevel> levelFormFieldData, String label) {
-            super(levelFormFieldData, label);
-
-            addDropDownElements(EnumSet.allOf(BindedLevel.class));
-
-            // That doesn't works. Make it work
-            doSetDefaultValue(levelFormFieldData.getSuggestedValue());
-
-        }
-
     }
 
 }
