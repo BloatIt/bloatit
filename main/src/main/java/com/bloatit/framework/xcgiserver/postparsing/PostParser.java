@@ -40,14 +40,19 @@ public class PostParser {
 
     /**
      * <p>
-     * Creates a new Parser that can be used to get all the elements contained in a post
+     * Creates a new Parser that can be used to get all the elements contained
+     * in a post
      * </p>
      * 
-     * @param postStream the stream from which the <code>POST</code> will be read
-     * @param length the length of the <code>POST</code> (the number of data left to read)
-     * @param contentType the type of the post, including its <code>boundary</code> in the
-     *        case of a multipart <code>POST</code>
-     * @param fileSavingDirectory the directory in which the uploaded files will be saved
+     * @param postStream the stream from which the <code>POST</code> will be
+     *            read
+     * @param length the length of the <code>POST</code> (the number of data
+     *            left to read)
+     * @param contentType the type of the post, including its
+     *            <code>boundary</code> in the case of a multipart
+     *            <code>POST</code>
+     * @param fileSavingDirectory the directory in which the uploaded files will
+     *            be saved
      */
     public PostParser(final InputStream postStream, final int length, final String contentType, final String fileSavingDirectory) {
         this.postStream = postStream;
@@ -62,11 +67,13 @@ public class PostParser {
      * Reads the next parameter of the post
      * </p>
      * 
-     * @return the next parameter of the post, or null if no parameter is available
+     * @return the next parameter of the post, or null if no parameter is
+     *         available
      * @throws MalformedPostException whenever there is an exception in the
-     *         <code>POST</code> format. It is usually advised to keep on analyzing the
-     *         <code>POST</code> (using readNext) till it returns <code>null</code> as
-     *         some parameters may be valid after this.
+     *             <code>POST</code> format. It is usually advised to keep on
+     *             analyzing the <code>POST</code> (using readNext) till it
+     *             returns <code>null</code> as some parameters may be valid
+     *             after this.
      */
     public PostParameter readNext() throws MalformedPostException, EOFException {
         try {
@@ -89,7 +96,8 @@ public class PostParser {
     }
 
     /**
-     * @return a set containing all the parsers that can be used to Handle Post data
+     * @return a set containing all the parsers that can be used to Handle Post
+     *         data
      */
     public Set<String> getAvailableParsers() {
         return availableParsers;

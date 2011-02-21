@@ -38,9 +38,9 @@ public class PreparingState extends CanContributeMetaState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit.model.Offer)
+     * com.bloatit.model.demand.AbstractDemandState#eventAddOffer(com.bloatit
+     * .model.Offer)
      */
     @Override
     public AbstractDemandState eventAddOffer(final Offer offer) {
@@ -49,10 +49,9 @@ public class PreparingState extends CanContributeMetaState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventRemoveOffer(com.bloatit.model
-     * .Offer)
+     * com.bloatit.model.demand.AbstractDemandState#eventRemoveOffer(com.bloatit
+     * .model .Offer)
      */
     @Override
     public AbstractDemandState eventRemoveOffer(final Offer offer) {
@@ -64,10 +63,9 @@ public class PreparingState extends CanContributeMetaState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
-     * com.bloatit.model.demand.AbstractDemandState#eventSelectedOfferTimeOut(java.math
-     * .BigDecimal)
+     * com.bloatit.model.demand.AbstractDemandState#eventSelectedOfferTimeOut
+     * (java.math .BigDecimal)
      */
     @Override
     public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
@@ -76,8 +74,8 @@ public class PreparingState extends CanContributeMetaState {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
+     * @see
+     * com.bloatit.model.demand.CanContributeMetaState#notifyAddContribution()
      */
     @Override
     public AbstractDemandState notifyAddContribution() {

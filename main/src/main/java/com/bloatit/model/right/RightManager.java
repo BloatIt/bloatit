@@ -20,8 +20,8 @@ import java.util.EnumSet;
 
 /**
  * <p>
- * The RightManager class contains some useful methods to create the {@link Accessor}
- * classes.
+ * The RightManager class contains some useful methods to create the
+ * {@link Accessor} classes.
  * </p>
  * 
  * @see Accessor
@@ -105,7 +105,8 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all attribute.
+     * Already overloaded Accessor. Use it when you have a readable by all
+     * attribute.
      */
     protected static class ReadOnly extends Accessor {
         @Override
@@ -115,7 +116,8 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a r/w by owner attribute.
+     * Already overloaded Accessor. Use it when you have a r/w by owner
+     * attribute.
      */
     protected static class Private extends Accessor {
         @Override
@@ -125,8 +127,8 @@ public abstract class RightManager {
     }
 
     /**
-     * Already overloaded Accessor. Use it when you have a readable by all and writable by
-     * owner attribute.
+     * Already overloaded Accessor. Use it when you have a readable by all and
+     * writable by owner attribute.
      */
     protected static class Public extends Accessor {
         @Override

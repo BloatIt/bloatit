@@ -31,13 +31,14 @@ import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 
 /**
- * An account represent a way to store money. To transfer money from an account to an
- * other you have to use {@link Transaction}. When you create a transaction, the two
- * accounts are update. There are two types of accounts : the internals and externals. The
+ * An account represent a way to store money. To transfer money from an account
+ * to an other you have to use {@link Transaction}. When you create a
+ * transaction, the two accounts are update. There are two types of accounts :
+ * the internals and externals. The
  * 
  * @param <T> is the Dao object corresponding to this model layer object.
- *        {@link InternalAccount} account is for the money we store for a user, the
- *        {@link ExternalAccount} is an account in a bank.
+ *            {@link InternalAccount} account is for the money we store for a
+ *            user, the {@link ExternalAccount} is an account in a bank.
  */
 public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
 
@@ -53,8 +54,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     /**
      * Can access transaction.
      * 
-     * @return true if the authenticated user can access the <code>Transaction</code>
-     *         property (It is a read only property).
+     * @return true if the authenticated user can access the
+     *         <code>Transaction</code> property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessTransaction() {
@@ -64,8 +65,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     /**
      * Can access amount.
      * 
-     * @return true if the authenticated user can access the <code>Amount</code> property
-     *         (It is a read only property).
+     * @return true if the authenticated user can access the <code>Amount</code>
+     *         property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessAmount() {
@@ -75,8 +76,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     /**
      * Can access comment.
      * 
-     * @return true if the authenticated user can access the <code>Comment</code> property
-     *         (It is a read only property).
+     * @return true if the authenticated user can access the
+     *         <code>Comment</code> property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessComment() {
@@ -86,8 +87,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     /**
      * Can access actor.
      * 
-     * @return true if the authenticated user can access the <code>Actor</code> property
-     *         (It is a read only property).
+     * @return true if the authenticated user can access the <code>Actor</code>
+     *         property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessActor() {
@@ -97,8 +98,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     /**
      * Can access creation date.
      * 
-     * @return true if the authenticated user can access the <code>CreationDate</code>
-     *         property (It is a read only property).
+     * @return true if the authenticated user can access the
+     *         <code>CreationDate</code> property (It is a read only property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessCreationDate() {
@@ -109,7 +110,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Can access last modification date.
      * 
      * @return true if the authenticated user can access the
-     *         <code>LastModificationDate</code> property (It is a read only property).
+     *         <code>LastModificationDate</code> property (It is a read only
+     *         property).
      * @see #authenticate(AuthToken)
      */
     public final boolean canAccessLastModificationDate() {
@@ -117,13 +119,12 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     }
 
     /**
-     * Every time a new transaction is done the modification date is update. This can be
-     * used for security purpose.
+     * Every time a new transaction is done the modification date is update.
+     * This can be used for security purpose.
      * 
      * @return the last modification date.
-     * 
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     *         <code>LastModificationDate</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to access
+     *             the <code>LastModificationDate</code> property in this class.
      */
     public final Date getLastModificationDate() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.LastModificationDate(), Action.READ);
@@ -134,8 +135,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Gets the amount.
      * 
      * @return the quantity of money available on this account.
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     *         <code>Amount</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>Amount</code> property in this class.
      */
     public final BigDecimal getAmount() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.Amount(), Action.READ);
@@ -146,8 +147,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Gets the transactions.
      * 
      * @return All the transactions involving this account.
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     *         <code>Transaction</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>Transaction</code> property in this class.
      */
     public final PageIterable<Transaction> getTransactions() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.Transaction(), Action.READ);
@@ -158,8 +159,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * The actor is the person that possess this account.
      * 
      * @return the actor
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     *         <code>Actor</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>Actor</code> property in this class.
      */
     public final Actor<?> getActor() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.Actor(), Action.READ);
@@ -170,8 +171,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * Gets the creation date.
      * 
      * @return The date of creation of this account (Amazing !)
-     * @throws UnauthorizedOperationException if you have not the right to access the
-     *         <code>CreationDate</code> property in this class.
+     * @throws UnauthorizedOperationException if you have not the right to
+     *             access the <code>CreationDate</code> property in this class.
      */
     public final Date getCreationDate() throws UnauthorizedOperationException {
         tryAccess(new AccountRight.CreationDate(), Action.READ);
@@ -179,8 +180,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
     }
 
     /**
-     * This method is used only in the authentication process. You should never used it
-     * anywhere else.
+     * This method is used only in the authentication process. You should never
+     * used it anywhere else.
      * 
      * @return the actor unprotected
      * @see #getActor()
@@ -196,8 +197,8 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
+     * @see
+     * com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
      */
     @Override
     protected boolean isMine(final Member member) {

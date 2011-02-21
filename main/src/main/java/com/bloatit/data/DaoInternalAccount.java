@@ -27,15 +27,16 @@ import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 
 /**
- * This is an internal account that store the amount of money a member have given us.
+ * This is an internal account that store the amount of money a member have
+ * given us.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public final class DaoInternalAccount extends DaoAccount {
 
     /**
-     * This is the amount that is currently used by contributions. (amount - blocked) is
-     * the money directly available in this account.
+     * This is the amount that is currently used by contributions. (amount -
+     * blocked) is the money directly available in this account.
      */
     @Basic(optional = false)
     private BigDecimal blocked;
@@ -50,8 +51,8 @@ public final class DaoInternalAccount extends DaoAccount {
      * bloc an amount of money, and reset the modification date.
      * 
      * @param blocked the amount we want to block
-     * @throws NotEnoughMoneyException if there is not enough money to block. (nothing is
-     *         done, modification date is unchanged)
+     * @throws NotEnoughMoneyException if there is not enough money to block.
+     *             (nothing is done, modification date is unchanged)
      */
     protected void block(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(getAmount()) > 0) {
@@ -67,8 +68,8 @@ public final class DaoInternalAccount extends DaoAccount {
      * unbloc an amount of money, and reset the modification date.
      * 
      * @param blocked the amount of money we want to unblock.
-     * @throws NotEnoughMoneyException if there is not enough money already bloken.
-     *         (nothing is done, modification date is unchanged)
+     * @throws NotEnoughMoneyException if there is not enough money already
+     *             bloken. (nothing is done, modification date is unchanged)
      */
     protected void unBlock(final BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(this.blocked) > 0) {

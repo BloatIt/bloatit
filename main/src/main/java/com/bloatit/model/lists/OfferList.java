@@ -38,8 +38,9 @@ public final class OfferList extends ListBinder<Offer, DaoOffer> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Offer> createFromDaoIterator(final Iterator<DaoOffer> dao) {
@@ -71,8 +72,9 @@ public final class OfferList extends ListBinder<Offer, DaoOffer> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Offer createFromDao(final DaoOffer dao) {

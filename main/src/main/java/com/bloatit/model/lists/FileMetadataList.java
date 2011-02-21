@@ -39,8 +39,9 @@ public final class FileMetadataList extends ListBinder<FileMetadata, DaoFileMeta
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<FileMetadata> createFromDaoIterator(final Iterator<DaoFileMetadata> dao) {
@@ -72,8 +73,9 @@ public final class FileMetadataList extends ListBinder<FileMetadata, DaoFileMeta
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected FileMetadata createFromDao(final DaoFileMetadata dao) {

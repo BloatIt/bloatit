@@ -23,8 +23,8 @@ import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.lists.HighlightDemandList;
 
 /**
- * The Class HighlightDemandManager is an utility class containing static methods for
- * {@link HighlightDemand} loading etc.
+ * The Class HighlightDemandManager is an utility class containing static
+ * methods for {@link HighlightDemand} loading etc.
  */
 public final class HighlightDemandManager {
 

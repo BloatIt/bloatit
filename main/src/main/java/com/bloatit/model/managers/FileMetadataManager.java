@@ -31,8 +31,8 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 
 /**
- * The Class FileMetadataManager is an utility class containing static methods for
- * {@link FileMetadata} loading etc.
+ * The Class FileMetadataManager is an utility class containing static methods
+ * for {@link FileMetadata} loading etc.
  */
 public final class FileMetadataManager {
 
@@ -57,14 +57,15 @@ public final class FileMetadataManager {
     }
 
     /**
-     * Creates a new {@link FileMetadata} using a temporary file. This file will move the
-     * temporary file to the definitive storage folder.
+     * Creates a new {@link FileMetadata} using a temporary file. This file will
+     * move the temporary file to the definitive storage folder.
      * 
      * @param author the author of the new {@link FileMetadata}
      * @param tempFileUrl the url to the temporary file.
-     * @param filename the filename the file name to display in the web site (may be
-     *        different from the real file name).
-     * @param description a short description coming with the new {@link FileMetadata}.
+     * @param filename the filename the file name to display in the web site
+     *            (may be different from the real file name).
+     * @param description a short description coming with the new
+     *            {@link FileMetadata}.
      * @return the newly created {@link FileMetadata}
      */
     public static FileMetadata createFromTempFile(final Member author, final String tempFileUrl, final String filename, final String description) {
@@ -92,14 +93,15 @@ public final class FileMetadataManager {
     }
 
     /**
-     * Same as {@link #createFromTempFile(Member, String, String, String)} but with a
-     * copy.
+     * Same as {@link #createFromTempFile(Member, String, String, String)} but
+     * with a copy.
      * 
      * @param author the author of the new {@link FileMetadata}
      * @param path the url to the local file.
-     * @param name the filename the file name to display in the web site (may be different
-     *        from the real file name).
-     * @param description a short description coming with the new {@link FileMetadata}.
+     * @param name the filename the file name to display in the web site (may be
+     *            different from the real file name).
+     * @param description a short description coming with the new
+     *            {@link FileMetadata}.
      * @return the newly created {@link FileMetadata}
      */
     public static FileMetadata createFromLocalFile(final Member author, final String path, final String name, final String description) {

@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.webserver.components.form;
 
@@ -25,8 +26,8 @@ import com.bloatit.framework.webserver.url.Messages;
  * Basic class to describe elements that can be added to a form
  * </p>
  * <p>
- * All elements inheriting from this class can have an additional label and a default
- * value
+ * All elements inheriting from this class can have an additional label and a
+ * default value
  * </p>
  */
 public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implements HtmlNamedNode {
@@ -35,26 +36,27 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     /**
      * <p>
-     * Describes the relative position of the label, compared to the element it describes.
+     * Describes the relative position of the label, compared to the element it
+     * describes.
      * </p>
      * <p>
-     * Generic usage is : - Checkbox & Radio buttons should used <code>AFTER</code>- All
-     * other fields should use <code>BEFORE</code>
+     * Generic usage is : - Checkbox & Radio buttons should used
+     * <code>AFTER</code>- All other fields should use <code>BEFORE</code>
      * </p>
      */
     public enum LabelPosition {
 
         /**
-         * <b>BEFORE</b> means the label is positioned before the aforementioned element.
-         * Example :
+         * <b>BEFORE</b> means the label is positioned before the aforementioned
+         * element. Example :
          * <p>
          * {@code<label> ... </label><element />}
          * </p>
          */
         BEFORE,
         /**
-         * <b>AFTER</b> means the label is positioned after the aforementioned element.
-         * Example :
+         * <b>AFTER</b> means the label is positioned after the aforementioned
+         * element. Example :
          * <p>
          * {@code<element /><label> ... </label>}
          * </p>
@@ -88,7 +90,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     /**
      * <p>
-     * Creates a form field for a given element, with a given name and a given label.
+     * Creates a form field for a given element, with a given name and a given
+     * label.
      * </p>
      * <p>
      * The Label will be positioned BEFORE the element
@@ -104,11 +107,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     /**
      * <p>
-     * Creates a form field for a given element, with a given name and a given label.
+     * Creates a form field for a given element, with a given name and a given
+     * label.
      * </p>
      * <p>
-     * If a label is added later, it will be added before or after the element, depending
-     * on the value of the parameter <code>position</code>
+     * If a label is added later, it will be added before or after the element,
+     * depending on the value of the parameter <code>position</code>
      * <p>
      * 
      * @param element the element to add
@@ -125,10 +129,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     /**
      * <p>
-     * Creates a form field for a given element, with a given name and a given label.
+     * Creates a form field for a given element, with a given name and a given
+     * label.
      * </p>
      * <p>
-     * The label position depends on the value of the parameter <code>position</code>
+     * The label position depends on the value of the parameter
+     * <code>position</code>
      * </p>
      * 
      * @param element the element to add
@@ -150,8 +156,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Sets the label for the object
      * </p>
      * <p>
-     * <b>CONTRACT :</b> Any class overriding this method have to be careful and not
-     * modify any other parameters than redefining the placeholder
+     * <b>CONTRACT :</b> Any class overriding this method have to be careful and
+     * not modify any other parameters than redefining the placeholder
      * </p>
      * 
      * @param label the label for the element
@@ -167,11 +173,13 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     /**
      * <p>
-     * Adds some text that explains the meaning of this <code>HtmlFormField</code>
+     * Adds some text that explains the meaning of this
+     * <code>HtmlFormField</code>
      * </p>
      * <p>
-     * Comment text will be added close to the form field, with a position depending on
-     * the kind of field. CSS can then be used to render it properly.
+     * Comment text will be added close to the form field, with a position
+     * depending on the kind of field. CSS can then be used to render it
+     * properly.
      * </p>
      * 
      * @param comment The text describing the goal of the form field
@@ -187,8 +195,9 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Add a message indicating to the user that his input is not correct
      * </p>
      * <p>
-     * Error message will be added close to the form field, with a position depending on
-     * the kind of field. CSS can then be used to render it properly.
+     * Error message will be added close to the form field, with a position
+     * depending on the kind of field. CSS can then be used to render it
+     * properly.
      * </p>
      * 
      * @param messages The list of messages to display
@@ -271,8 +280,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Method to implement to add a default value to the elements of the class
      * </p>
      * <p>
-     * Default value of an element is the value displayed to the user when the page loads,
-     * before he even started adding data.
+     * Default value of an element is the value displayed to the user when the
+     * page loads, before he even started adding data.
      * </p>
      * 
      * @param value the default value
@@ -284,8 +293,8 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Method to implement to add a default value to the elements of the class
      * </p>
      * <p>
-     * Default value of an element is the value displayed to the user when the page loads,
-     * before he even started adding data.
+     * Default value of an element is the value displayed to the user when the
+     * page loads, before he even started adding data.
      * 
      * @param defaultValueAsString the default value
      * @see #doSetDefaultValue(Object)
@@ -298,15 +307,15 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
     private void init() {
 
         switch (position) {
-        case AFTER:
-            this.container.add(input);
-            this.container.add(ph);
-            break;
-        case BEFORE:
-        default:
-            this.container.add(ph);
-            this.container.add(input);
-            break;
+            case AFTER:
+                this.container.add(input);
+                this.container.add(ph);
+                break;
+            case BEFORE:
+            default:
+                this.container.add(ph);
+                this.container.add(input);
+                break;
         }
         this.input.setCssClass("input");
         this.input.add(element);

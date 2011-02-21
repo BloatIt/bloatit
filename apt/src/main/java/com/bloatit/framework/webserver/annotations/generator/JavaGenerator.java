@@ -27,7 +27,7 @@ public abstract class JavaGenerator {
     protected StringBuilder _urlClassConstructor = new StringBuilder();
     private String urlSuperClass;
 
-    protected JavaGenerator(String name, String pageName) {
+    protected JavaGenerator(String name, final String pageName) {
         this.pageName = pageName;
         name = name.substring(0, 1).toLowerCase() + name.substring(1);
         if (pageName.isEmpty()) {
@@ -52,32 +52,39 @@ public abstract class JavaGenerator {
 
     protected abstract void generateConstructor();
 
-    private String toCamelAttributeName(String name) {
+    private String toCamelAttributeName(final String name) {
         return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 
-    public final void addAttribute(String type,
-                                   String conversionType,
-                                   String nameString,
-                                   String defaultValue,
+    public final void addAttribute(final String type,
+                                   final String conversionType,
+                                   final String nameString,
+                                   final String defaultValue,
                                    String name,
-                                   Role role,
-                                   Level level,
-                                   String malFormedMsg,
-                                   ParamConstraint constraints) {
+                                   final Role role,
+                                   final Level level,
+                                   final String malFormedMsg,
+                                   final ParamConstraint constraints) {
         name = toCamelAttributeName(name);
 
-        String createParameter = createParameter("\"" + nameString + "\"", defaultValue, type, conversionType, role, level, malFormedMsg, constraints);
+        final String createParameter = createParameter("\"" + nameString + "\"",
+                                                       defaultValue,
+                                                       type,
+                                                       conversionType,
+                                                       role,
+                                                       level,
+                                                       malFormedMsg,
+                                                       constraints);
         _attributes.append("private");
         declareUrlParameter(_attributes, type, conversionType).append(name).append(" = ").append(createParameter);
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
     }
 
-    private StringBuilder declareUrlParameter(StringBuilder sb, String type, String conversionType) {
+    private StringBuilder declareUrlParameter(final StringBuilder sb, final String type, final String conversionType) {
         return sb.append(" UrlParameter<").append(type).append(", ").append(conversionType).append("> ");
     }
 
-    public final void addConstructorParameter(String type, String attributeName) {
+    public final void addConstructorParameter(final String type, String attributeName) {
         attributeName = toCamelAttributeName(attributeName);
         if (_constructorParameters.length() > 0) {
             _constructorParameters.append(", ");
@@ -88,7 +95,7 @@ public abstract class JavaGenerator {
         _constructorAssign.append("        this.").append(attributeName).append(".setValue(").append(attributeName).append(");\n");
     }
 
-    public final void addDefaultParameter(String attributeName, String className, String defaultValue) {
+    public final void addDefaultParameter(String attributeName, final String className, final String defaultValue) {
         attributeName = toCamelAttributeName(attributeName);
         _constructorDefaults.append("        this.")
                             .append(attributeName)
@@ -100,7 +107,7 @@ public abstract class JavaGenerator {
                             .append("\"));\n");
     }
 
-    public void addGetterSetter(String type, String conversionType, String name) {
+    public void addGetterSetter(final String type, final String conversionType, final String name) {
 
         _urlGetters.append(createSimpleGetterFirstLine(type, name));
         _urlGetters.append("    return this.component.").append(getGetterName(name)).append("();\n");
@@ -127,7 +134,7 @@ public abstract class JavaGenerator {
         _urlGetters.append("}\n\n");
     }
 
-    private StringBuilder createParameterGetterFirstLine(String type, String conversionType, String name) {
+    private StringBuilder createParameterGetterFirstLine(final String type, final String conversionType, final String name) {
         return new StringBuilder().append("public UrlParameter<")
                                   .append(type)
                                   .append(", ")
@@ -137,11 +144,11 @@ public abstract class JavaGenerator {
                                   .append("Parameter(){ \n");
     }
 
-    private StringBuilder createSimpleGetterFirstLine(String type, String name) {
+    private StringBuilder createSimpleGetterFirstLine(final String type, final String name) {
         return new StringBuilder().append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
     }
 
-    public void addAutoGeneratingGetter(String type, String name, String generateFrom) {
+    public void addAutoGeneratingGetter(final String type, final String name, final String generateFrom) {
         _gettersSetters.append("public ").append(type).append(" ").append(getGetterName(name)).append("(){ \n");
         _gettersSetters.append("    if (").append(generateFrom).append(".getValue() != null) {\n");
         _gettersSetters.append("    try{\n");
@@ -159,16 +166,16 @@ public abstract class JavaGenerator {
     }
 
     // nameString must be already escaped.
-    public final String createParameter(String nameString,
-                                        String defaultValue,
-                                        String type,
-                                        String conversionType,
-                                        Role role,
-                                        Level level,
-                                        String malFormedMsg,
-                                        ParamConstraint constraints) {
+    public final String createParameter(final String nameString,
+                                        final String defaultValue,
+                                        final String type,
+                                        final String conversionType,
+                                        final Role role,
+                                        final Level level,
+                                        final String malFormedMsg,
+                                        final ParamConstraint constraints) {
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append(" new UrlParameter<").append(type).append(", ").append(conversionType).append(">(");
         if (type.equals(conversionType)) {
             sb.append("null, ");
@@ -213,59 +220,59 @@ public abstract class JavaGenerator {
         return sb.toString();
     }
 
-    private StringBuilder appendErrorMsg(String msg, StringBuilder sb) {
+    private StringBuilder appendErrorMsg(final String msg, final StringBuilder sb) {
         if (msg.equals(ParamConstraint.DEFAULT_ERROR_MSG)) {
             return sb.append("ParamConstraint.DEFAULT_ERROR_MSG");
         }
         return sb.append("\"").append(msg.replaceAll("[\\\"]", "\\\\\"")).append("\"");
     }
 
-    private void addLevel(Level level, StringBuilder sb) {
+    private void addLevel(final Level level, final StringBuilder sb) {
         switch (level) {
-        case ERROR:
-            sb.append("Level.ERROR");
-            break;
-        case INFO:
-            sb.append("Level.INFO");
-            break;
-        case WARNING:
-            sb.append("Level.WARNING");
-            break;
-        default:
-            assert false;
-            break;
+            case ERROR:
+                sb.append("Level.ERROR");
+                break;
+            case INFO:
+                sb.append("Level.INFO");
+                break;
+            case WARNING:
+                sb.append("Level.WARNING");
+                break;
+            default:
+                assert false;
+                break;
         }
     }
 
-    private void addRole(Role role, StringBuilder sb) {
+    private void addRole(final Role role, final StringBuilder sb) {
         switch (role) {
-        case GET:
-            sb.append("Role.GET");
-            break;
-        case POST:
-            sb.append("Role.POST");
-            break;
-        case SESSION:
-            sb.append("Role.SESSION");
-            break;
-        case PRETTY:
-            sb.append("Role.PRETTY");
-            break;
-        default:
-            assert false;
-            break;
+            case GET:
+                sb.append("Role.GET");
+                break;
+            case POST:
+                sb.append("Role.POST");
+                break;
+            case SESSION:
+                sb.append("Role.SESSION");
+                break;
+            case PRETTY:
+                sb.append("Role.PRETTY");
+                break;
+            default:
+                assert false;
+                break;
         }
     }
 
-    private String getGetterName(String name) {
+    private String getGetterName(final String name) {
         return "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
-    private String getSetterName(String name) {
+    private String getSetterName(final String name) {
         return "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
-    public final void registerComponent(String name) {
+    public final void registerComponent(final String name) {
         _doRegister.append("    register(").append(getComponentName(name)).append(");\n");
     }
 
@@ -294,11 +301,11 @@ public abstract class JavaGenerator {
 
     }
 
-    private final String getComponentName(String name) {
+    private final String getComponentName(final String name) {
         return name.substring(0, 1).toLowerCase() + name.substring(1) + "Url";
     }
 
-    private final String getComponentType(String name) {
+    private final String getComponentType(final String name) {
         return name.substring(0, 1).toUpperCase() + name.substring(1) + "Url";
     }
 
@@ -306,7 +313,7 @@ public abstract class JavaGenerator {
 
         generateConstructor();
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append("package com.bloatit.web.url;\n");
         sb.append("\n");
         sb.append(_import);
@@ -335,7 +342,7 @@ public abstract class JavaGenerator {
     }
 
     public final String generateUrlClass() {
-        StringBuilder urlClass = new StringBuilder();
+        final StringBuilder urlClass = new StringBuilder();
         urlClass.append("package com.bloatit.web.url;\n");
         urlClass.append("import com.bloatit.framework.utils.Parameters;\n");
         urlClass.append("import com.bloatit.framework.utils.SessionParameters;\n");
@@ -433,11 +440,11 @@ public abstract class JavaGenerator {
         return className;
     }
 
-    public void registerAttribute(String attributeName) {
+    public void registerAttribute(final String attributeName) {
         _doRegister.append("    register(").append(attributeName).append(");\n");
     }
 
-    public void setUrlSuperClass(String urlSuperClass) {
+    public void setUrlSuperClass(final String urlSuperClass) {
         this.urlSuperClass = urlSuperClass;
     }
 }

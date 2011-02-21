@@ -45,11 +45,11 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * Tells if a user can access the <code>Email</code> property. You have to unlock this
-     * Actor using the {@link Actor#authenticate(AuthToken)} method.
+     * Tells if a user can access the <code>Email</code> property. You have to
+     * unlock this Actor using the {@link Actor#authenticate(AuthToken)} method.
      * 
-     * @param action can be read/write/delete. for example use <code>READ</code> to know
-     *        if you can use {@link Member#getGroups()}.
+     * @param action can be read/write/delete. for example use <code>READ</code>
+     *            to know if you can use {@link Member#getGroups()}.
      * @return true if you can access the parameter <code>Email</code>.
      * @see Actor#getEmail()
      * @see Actor#setEmail(String)
@@ -63,8 +63,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * Gets the email.
      * 
      * @return the email
-     * @throws UnauthorizedOperationException if you don't have the <code>READ</code>
-     *         right on the <code>Email</code> property
+     * @throws UnauthorizedOperationException if you don't have the
+     *             <code>READ</code> right on the <code>Email</code> property
      * @see DaoActor#getContact()
      */
     public final String getEmail() throws UnauthorizedOperationException {
@@ -76,8 +76,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * Sets the email.
      * 
      * @param email the new email
-     * @throws UnauthorizedOperationException if you don't have the <code>WRITE</code>
-     *         right on the <code>Email</code> property
+     * @throws UnauthorizedOperationException if you don't have the
+     *             <code>WRITE</code> right on the <code>Email</code> property
      */
     public final void setEmail(final String email) throws UnauthorizedOperationException {
         tryAccess(new ActorRight.Email(), Action.WRITE);
@@ -96,7 +96,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     /**
      * Can access login.
      * 
-     * @return true if you have the <code>READ</code> right on the Login property.
+     * @return true if you have the <code>READ</code> right on the Login
+     *         property.
      * @see Actor#getEmail()
      * @see Actor#authenticate(AuthToken)
      */
@@ -108,8 +109,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * Gets the login.
      * 
      * @return the login
-     * @throws UnauthorizedOperationException if you don't have the <code>READ</code>
-     *         right on the <code>Login</code> property
+     * @throws UnauthorizedOperationException if you don't have the
+     *             <code>READ</code> right on the <code>Login</code> property
      * @see DaoActor#getLogin()
      */
     public final String getLogin() throws UnauthorizedOperationException {
@@ -131,8 +132,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * Gets the creation date of this {@link Actor}.
      * 
      * @return the creation date
-     * @throws UnauthorizedOperationException if you don't have the right to access the
-     *         DateCreation property.
+     * @throws UnauthorizedOperationException if you don't have the right to
+     *             access the DateCreation property.
      * @see DaoActor#getDateCreation()
      */
     public final Date getDateCreation() throws UnauthorizedOperationException {
@@ -152,13 +153,15 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
     }
 
     /**
-     * The internal account is the account we manage internally. Users can add/get money
-     * to/from it, and can use this money to contribute on projects.
+     * The internal account is the account we manage internally. Users can
+     * add/get money to/from it, and can use this money to contribute on
+     * projects.
      * 
      * @return the internal account
-     * @throws UnauthorizedOperationException the unauthorized operation exception
-     * @throw UnauthorizedOperationException if you do not have the right to access the
-     *        <code>InternalAccount</code> property.
+     * @throws UnauthorizedOperationException the unauthorized operation
+     *             exception
+     * @throw UnauthorizedOperationException if you do not have the right to
+     *        access the <code>InternalAccount</code> property.
      */
     public final InternalAccount getInternalAccount() throws UnauthorizedOperationException {
         tryAccess(new ActorRight.InternalAccount(), Action.READ);
@@ -178,8 +181,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * Gets the external account.
      * 
      * @return the external account
-     * @throws UnauthorizedOperationException if you haven't the right to access the
-     *         <code>ExtenralAccount</code> property.
+     * @throws UnauthorizedOperationException if you haven't the right to access
+     *             the <code>ExtenralAccount</code> property.
      */
     public final ExternalAccount getExternalAccount() throws UnauthorizedOperationException {
         tryAccess(new ActorRight.ExternalAccount(), Action.READ);
@@ -200,8 +203,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      * Gets the bank transactions.
      * 
      * @return all the bank transactions this actor has done.
-     * @throws UnauthorizedOperationException if you haven't the right to access the
-     *         <code>ExtenralAccount</code> property.
+     * @throws UnauthorizedOperationException if you haven't the right to access
+     *             the <code>ExtenralAccount</code> property.
      * @see DaoActor#getBankTransactions()
      */
     public final PageIterable<BankTransaction> getBankTransactions() throws UnauthorizedOperationException {
@@ -211,8 +214,8 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
+     * @see
+     * com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
      */
     @Override
     protected boolean isMine(final Member member) {

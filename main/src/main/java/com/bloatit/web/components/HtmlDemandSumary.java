@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.bloatit.web.components;
@@ -71,16 +72,16 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
         try {
             switch (compacity) {
-            case NORMAL:
-                generateNormalStructure();
-                break;
-            case COMPACT:
-                generateCompactStructure();
-                break;
-            case LINE:
-                throw new NotImplementedException();
-            default:
-                break;
+                case NORMAL:
+                    generateNormalStructure();
+                    break;
+                case COMPACT:
+                    generateCompactStructure();
+                    break;
+                case LINE:
+                    throw new NotImplementedException();
+                default:
+                    break;
             }
 
         } catch (final UnauthorizedOperationException e) {
@@ -91,7 +92,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
 
     /**
      * @throws UnauthorizedOperationException
-     * 
      */
     private void generateCompactStructure() throws UnauthorizedOperationException {
         final HtmlDiv demandSummaryTop = new HtmlDiv("demand_summary_top");
@@ -126,7 +126,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     * 
      * @throws UnauthorizedOperationException
      */
     private void generateNormalStructure() throws UnauthorizedOperationException {
@@ -160,7 +159,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     * 
      * @return
      * @throws UnauthorizedOperationException
      */
@@ -187,7 +185,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     * 
      * @return
      * @throws UnauthorizedOperationException
      */
@@ -211,7 +208,10 @@ public final class HtmlDemandSumary extends HtmlDiv {
             contributionsDemandUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.PARTICIPATIONS_TAB);
             contributionsDemandUrl.setAnchor("demand_tab_pane");
 
-            demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment", "{0} comments", commentsCount, new Integer(commentsCount))));
+            demandSummaryDetails.add(commentsDemandUrl.getHtmlLink(Context.trn("{0} comment",
+                                                                               "{0} comments",
+                                                                               commentsCount,
+                                                                               new Integer(commentsCount))));
             demandSummaryDetails.addText(" – ");
             demandSummaryDetails.add(offersDemandUrl.getHtmlLink(Context.trn("{0} offer", "{0} offers", offersCount, new Integer(offersCount))));
             demandSummaryDetails.addText(" – ");
@@ -225,7 +225,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     * 
      * @return
      */
     private HtmlDiv generatePopularityBlock() {
@@ -241,7 +240,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     * 
      * @return
      * @throws UnauthorizedOperationException
      */
@@ -251,7 +249,6 @@ public final class HtmlDemandSumary extends HtmlDiv {
     }
 
     /**
-     * 
      * @return
      * @throws UnauthorizedOperationException
      */

@@ -19,8 +19,8 @@ package com.bloatit.model;
 import com.bloatit.data.DaoJoinGroupInvitation;
 
 /**
- * This is an invitation to join a group. Some groups are not public, and you have to have
- * an invitation to join it.
+ * This is an invitation to join a group. Some groups are not public, and you
+ * have to have an invitation to join it.
  * 
  * @author Thomas Guyard
  */

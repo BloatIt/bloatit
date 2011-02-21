@@ -69,8 +69,8 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
     }
 
     /**
-     * @throws UnauthorizedOperationException if you do not have the right to access the
-     *         <code>BankCode</code> property.
+     * @throws UnauthorizedOperationException if you do not have the right to
+     *             access the <code>BankCode</code> property.
      */
     public String getBankCode() throws UnauthorizedOperationException {
         tryAccess(new ExternalAccountRight.BankCode(), Action.READ);
@@ -78,8 +78,8 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
     }
 
     /**
-     * @throws UnauthorizedOperationException if you do not have the right to access the
-     *         <code>Type</code> property.
+     * @throws UnauthorizedOperationException if you do not have the right to
+     *             access the <code>Type</code> property.
      */
     public AccountType getType() throws UnauthorizedOperationException {
         tryAccess(new ExternalAccountRight.Type(), Action.READ);

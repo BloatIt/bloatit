@@ -23,8 +23,8 @@ import org.hibernate.Criteria;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * This is the implementation of the {@link PageIterable} interface using a Hibernate
- * criteria.
+ * This is the implementation of the {@link PageIterable} interface using a
+ * Hibernate criteria.
  */
 public class CriteriaCollection<T> implements PageIterable<T> {
 

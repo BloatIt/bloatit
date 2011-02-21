@@ -49,9 +49,10 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A DaoDemand is a kudosable content. It has a translatable description, and can have a
- * specification and some offers. The state of the demand is managed by its super class
- * DaoKudosable. On a demand we can add some comment and some contriutions.
+ * A DaoDemand is a kudosable content. It has a translatable description, and
+ * can have a specification and some offers. The state of the demand is managed
+ * by its super class DaoKudosable. On a demand we can add some comment and some
+ * contriutions.
  */
 @Entity
 @Indexed
@@ -59,8 +60,8 @@ import com.bloatit.framework.utils.PageIterable;
 public final class DaoDemand extends DaoKudosable {
 
     /**
-     * This is the state of the demand. It's used in the workflow modeling. The order is
-     * important !
+     * This is the state of the demand. It's used in the workflow modeling. The
+     * order is important !
      */
     public enum DemandState {
         PENDING, // No offers, waiting for money and offer
@@ -73,7 +74,8 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * This is a calculated value with the sum of the value of all contributions.
+     * This is a calculated value with the sum of the value of all
+     * contributions.
      */
     @Basic(optional = false)
     @Field(store = Store.NO)
@@ -107,9 +109,9 @@ public final class DaoDemand extends DaoKudosable {
     private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
-     * The selected offer is the offer that is most likely to be validated and used. If an
-     * offer is selected and has enough money and has a elapse time done then this offer
-     * go into dev.
+     * The selected offer is the offer that is most likely to be validated and
+     * used. If an offer is selected and has enough money and has a elapse time
+     * done then this offer go into dev.
      */
     @ManyToOne(optional = true)
     @Cascade(value = { CascadeType.ALL })
@@ -166,8 +168,8 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Delete this DaoDemand from the database. "this" will remain, but unmapped. (You
-     * shoudn't use it then)
+     * Delete this DaoDemand from the database. "this" will remain, but
+     * unmapped. (You shoudn't use it then)
      */
     public void delete() {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -204,7 +206,8 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Add a new offer for this demand. If there is no selected offer, select this one.
+     * Add a new offer for this demand. If there is no selected offer, select
+     * this one.
      */
     public void addOffer(final DaoOffer offer) {
         offers.add(offer);
@@ -289,7 +292,8 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * The current offer is the offer with the max popularity then the min amount.
+     * The current offer is the offer with the max popularity then the min
+     * amount.
      * 
      * @return the current offer for this demand, or null if there is no offer.
      */
@@ -328,10 +332,13 @@ public final class DaoDemand extends DaoKudosable {
     }
 
     /**
-     * Use a HQL query to get the first level comments as a PageIterable collection
+     * Use a HQL query to get the first level comments as a PageIterable
+     * collection
      */
     public PageIterable<DaoComment> getCommentsFromQuery() {
-        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "order by creationDate asc, id"),
+        return new QueryCollection<DaoComment>(SessionManager.getSessionFactory()
+                                                             .getCurrentSession()
+                                                             .createFilter(comments, "order by creationDate asc, id"),
                                                SessionManager.getSessionFactory().getCurrentSession().createFilter(comments, "select count(*)"));
     }
 
@@ -395,7 +402,6 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -408,7 +414,6 @@ public final class DaoDemand extends DaoKudosable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -464,8 +469,10 @@ public final class DaoDemand extends DaoKudosable {
                 "AND b.state != :close ";//
 
         final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer)
-                                                                                                             .setParameter("close", DaoBug.State.RESOLVED);
+        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
+                                                                                                                        selectedOffer)
+                                                                                                             .setParameter("close",
+                                                                                                                           DaoBug.State.RESOLVED);
     }
 
     public PageIterable<DaoBug> getClosedBugs() {
@@ -486,8 +493,10 @@ public final class DaoDemand extends DaoKudosable {
                 "AND b.state = :close ";//
 
         final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer", selectedOffer)
-                                                                                                             .setParameter("close", DaoBug.State.RESOLVED)
+        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
+                                                                                                                        selectedOffer)
+                                                                                                             .setParameter("close",
+                                                                                                                           DaoBug.State.RESOLVED)
                                                                                                              .setEntity("this", this);
     }
 

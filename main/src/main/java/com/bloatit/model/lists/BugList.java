@@ -38,8 +38,9 @@ public final class BugList extends ListBinder<Bug, DaoBug> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Bug> createFromDaoIterator(final Iterator<DaoBug> dao) {
@@ -71,8 +72,9 @@ public final class BugList extends ListBinder<Bug, DaoBug> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Bug createFromDao(final DaoBug dao) {

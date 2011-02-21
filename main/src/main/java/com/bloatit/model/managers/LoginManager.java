@@ -45,8 +45,8 @@ public final class LoginManager {
      * 
      * @param login the login
      * @param password the password
-     * @return the new {@link AuthToken} or <code>null</code> if the login/password does
-     *         not match any user.
+     * @return the new {@link AuthToken} or <code>null</code> if the
+     *         login/password does not match any user.
      */
     public static AuthToken loginByPassword(final String login, final String password) {
         try {

@@ -25,13 +25,13 @@ public class ConfigurationManager {
 
     /**
      * <p>
-     * Loads the content of a properties file in the default configuration file directory
-     * for bloatit. Returns it as a Properties list, aka a map containing the key->value
-     * pairs
+     * Loads the content of a properties file in the default configuration file
+     * directory for bloatit. Returns it as a Properties list, aka a map
+     * containing the key->value pairs
      * </p>
      * <p>
-     * The <code>name</code> of the property file is the name of the file, or the path
-     * from the root of the configuration directory.
+     * The <code>name</code> of the property file is the name of the file, or
+     * the path from the root of the configuration directory.
      * </p>
      * 
      * @param name the name of the property file
@@ -52,8 +52,8 @@ public class ConfigurationManager {
         if (!f.exists()) {
             f = new File(FALLBACK_ETC_DIR + newName);
             if (!f.exists()) {
-                throw new FatalErrorException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or " + FALLBACK_ETC_DIR
-                        + newName);
+                throw new FatalErrorException("Cannot locate a configuration file. Please create either " + ETC_DIR + newName + " or "
+                        + FALLBACK_ETC_DIR + newName);
             }
         }
 
@@ -149,7 +149,8 @@ public class ConfigurationManager {
          * @param key
          * @param defaultValue
          * @return
-         * @see java.util.Properties#getProperty(java.lang.String, java.lang.String)
+         * @see java.util.Properties#getProperty(java.lang.String,
+         *      java.lang.String)
          */
         public String getProperty(final String key, final String defaultValue) {
             return prop.getProperty(key, defaultValue);

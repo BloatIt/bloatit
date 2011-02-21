@@ -6,12 +6,13 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.model.AbstractModel;
 
 /**
- * Thread safe class. It calls to the model initialization and open close methods.
+ * Thread safe class. It calls to the model initialization and open close
+ * methods.
  */
 public class ModelAccessor {
     /**
-     * Mutex that protect this class. Every public method is callable in a multi-threaded
-     * environment.
+     * Mutex that protect this class. Every public method is callable in a
+     * multi-threaded environment.
      */
     private static Semaphore mutex = new Semaphore(1);
 

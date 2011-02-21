@@ -8,8 +8,8 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
- * Represent a web Url. A Url is a kind of {@link UrlComponent}, with a page name. It also
- * can have a ahchor part.
+ * Represent a web Url. A Url is a kind of {@link UrlComponent}, with a page
+ * name. It also can have a ahchor part.
  */
 public abstract class Url implements Cloneable {
 

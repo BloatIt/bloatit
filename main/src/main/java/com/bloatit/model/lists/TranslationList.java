@@ -39,8 +39,9 @@ public final class TranslationList extends ListBinder<Translation, DaoTranslatio
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<Translation> createFromDaoIterator(final Iterator<DaoTranslation> dao) {
@@ -72,8 +73,9 @@ public final class TranslationList extends ListBinder<Translation, DaoTranslatio
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected Translation createFromDao(final DaoTranslation dao) {

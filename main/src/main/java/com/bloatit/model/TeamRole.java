@@ -32,8 +32,8 @@ public class TeamRole {
     /**
      * Indicates whether the user with the role can talk for the group
      * 
-     * @return <code>true</code> if the user can talk for the group, <code>false</code>
-     *         otherwise
+     * @return <code>true</code> if the user can talk for the group,
+     *         <code>false</code> otherwise
      */
     public boolean talk() {
         return rights.contains(UserGroupRight.TALK);
@@ -60,7 +60,8 @@ public class TeamRole {
     }
 
     /**
-     * Indicates whether the user with the role can change the role of people in the group
+     * Indicates whether the user with the role can change the role of people in
+     * the group
      * <p>
      * Note : giving promoting rights means the user can also demote
      * </p>
@@ -73,8 +74,8 @@ public class TeamRole {
     }
 
     /**
-     * Indicates whether the user with the role have access to bank information (withdraw
-     * money ...)
+     * Indicates whether the user with the role have access to bank information
+     * (withdraw money ...)
      * 
      * @return <code>true</code> if the user can access bank information,
      *         <code>false</code> otherwise

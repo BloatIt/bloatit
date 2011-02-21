@@ -26,7 +26,6 @@ public class Model implements AbstractModel {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.AbstractModelManager#launch()
      */
     @Override
@@ -36,7 +35,6 @@ public class Model implements AbstractModel {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.AbstractModelManager#shutdown()
      */
     @Override
@@ -47,7 +45,6 @@ public class Model implements AbstractModel {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.AbstractModelManager#openReadOnly()
      */
     @Override
@@ -58,7 +55,6 @@ public class Model implements AbstractModel {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.AbstractModelManager#open()
      */
     @Override
@@ -69,7 +65,6 @@ public class Model implements AbstractModel {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.AbstractModelManager#close()
      */
     @Override

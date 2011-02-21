@@ -27,9 +27,10 @@ import com.bloatit.web.url.DocumentationUrl;
  * A holding class for documentation
  * </p>
  * <p>
- * Documentation system is based on markdown files hosted on the server. This page is a
- * container used to view these markdown documents. <br />
- * Document to display is chosen via the GET parameter Documenvalue tation#DOC_TARGET.
+ * Documentation system is based on markdown files hosted on the server. This
+ * page is a container used to view these markdown documents. <br />
+ * Document to display is chosen via the GET parameter Documenvalue
+ * tation#DOC_TARGET.
  * </p>
  */
 @ParamContainer("documentation")

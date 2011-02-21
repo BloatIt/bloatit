@@ -45,26 +45,27 @@ public final class DaoBankTransaction extends DaoIdentifiable {
      */
     public enum State {
         /**
-         * A <code>PENDING</code> BankTransaction is in an not known yet state. We are
-         * waiting for more informations to know in which state it will be.
+         * A <code>PENDING</code> BankTransaction is in an not known yet state.
+         * We are waiting for more informations to know in which state it will
+         * be.
          */
         PENDING,
 
         /**
-         * A transaction is <code>AUTHORIZED</code> when you give the right card code and
-         * the bank says that you can do the transaction.
+         * A transaction is <code>AUTHORIZED</code> when you give the right card
+         * code and the bank says that you can do the transaction.
          */
         AUTHORIZED,
 
         /**
-         * A refused transaction is a transaction that went wrong (error in the CB code,
-         * bug, not money in the account.
+         * A refused transaction is a transaction that went wrong (error in the
+         * CB code, bug, not money in the account.
          */
         REFUSED,
 
         /**
-         * When the transaction is actually performed it pass in <code>VALIDATE</code>
-         * state.
+         * When the transaction is actually performed it pass in
+         * <code>VALIDATE</code> state.
          */
         VALIDATED
     }
@@ -72,17 +73,17 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     private static final int DEFAULT_STRING_LENGTH = 64;
 
     /**
-     * When doing automatic transaction with a bank, we can received a message (mostly
-     * error messages). Use this property to store them.
+     * When doing automatic transaction with a bank, we can received a message
+     * (mostly error messages). Use this property to store them.
      */
     @Column(columnDefinition = "TEXT", nullable = false)
     private String message;
 
     /**
      * A token is used to identify a BankTransaction. It is unique for each
-     * DaoBankTransaction. Most of the time the token is created by the Bank, and the bank
-     * will ask for it during the process, to identify the different requests. (
-     * {@value #DEFAULT_STRING_LENGTH} length)
+     * DaoBankTransaction. Most of the time the token is created by the Bank,
+     * and the bank will ask for it during the process, to identify the
+     * different requests. ( {@value #DEFAULT_STRING_LENGTH} length)
      */
     @Basic(optional = false)
     @Column(unique = true, updatable = false, length = DEFAULT_STRING_LENGTH)
@@ -109,8 +110,8 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     @Column(nullable = false)
     private State state;
     /**
-     * This is the order reference. It must be unique and it is often used by the bank to
-     * make sure an order is not taken twice.
+     * This is the order reference. It must be unique and it is often used by
+     * the bank to make sure an order is not taken twice.
      */
     @Column(nullable = false, updatable = false, unique = true)
     private String reference;
@@ -120,11 +121,13 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     // ======================================================================
 
     /**
-     * @return the <code>DaoBankTransaction</code> with this <code>token</code>. Return
-     *         null if not found.
+     * @return the <code>DaoBankTransaction</code> with this <code>token</code>.
+     *         Return null if not found.
      */
     public static DaoBankTransaction getByToken(final String token) {
-        return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token").setString("token", token).uniqueResult();
+        return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token")
+                                                  .setString("token", token)
+                                                  .uniqueResult();
     }
 
     // ======================================================================
@@ -149,8 +152,8 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     }
 
     /**
-     * throw a {@link NonOptionalParameterException} if any of the parameters is null (or
-     * string isEmpty).
+     * throw a {@link NonOptionalParameterException} if any of the parameters is
+     * null (or string isEmpty).
      */
     private DaoBankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final String orderReference) {
         super();
@@ -182,8 +185,8 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     }
 
     /**
-     * Set the state to validated and create a {@link DaoTransaction} from the external to
-     * the internal account.
+     * Set the state to validated and create a {@link DaoTransaction} from the
+     * external to the internal account.
      * 
      * @return true if performed, false otherwise.
      */
@@ -284,7 +287,6 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -299,7 +301,6 @@ public final class DaoBankTransaction extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

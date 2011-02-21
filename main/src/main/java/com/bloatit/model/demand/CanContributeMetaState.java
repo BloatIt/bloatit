@@ -22,8 +22,8 @@ import java.util.Date;
 import com.bloatit.data.DaoOffer;
 
 /**
- * The Class CanContributeMetaState is not a real state. Every state that allows to
- * contribute should inherit from it.
+ * The Class CanContributeMetaState is not a real state. Every state that allows
+ * to contribute should inherit from it.
  */
 public abstract class CanContributeMetaState extends AbstractDemandState {
 
@@ -37,8 +37,8 @@ public abstract class CanContributeMetaState extends AbstractDemandState {
     }
 
     /**
-     * Notify that a new contribution arrived. This method is called each time a new
-     * contribution is done on the demand.
+     * Notify that a new contribution arrived. This method is called each time a
+     * new contribution is done on the demand.
      * 
      * @return the abstract demand state
      */
@@ -46,7 +46,6 @@ public abstract class CanContributeMetaState extends AbstractDemandState {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.demand.AbstractDemandState#eventAddContribution()
      */
     @Override
@@ -56,8 +55,8 @@ public abstract class CanContributeMetaState extends AbstractDemandState {
 
     /**
      * Test if the current demand should pass in DevelopingState. To pass in
-     * {@link DevelopingState} state we have to have a selected offer, enough contribution
-     * and the validation period spent.
+     * {@link DevelopingState} state we have to have a selected offer, enough
+     * contribution and the validation period spent.
      * 
      * @return the abstract demand state (Developing or this.)
      */
@@ -65,7 +64,8 @@ public abstract class CanContributeMetaState extends AbstractDemandState {
         final BigDecimal contribution = demand.getDao().getContribution();
         final DaoOffer selectedOffer = demand.getDao().getSelectedOffer();
         final Date validationDate = demand.getDao().getValidationDate();
-        if (selectedOffer != null && validationDate != null && contribution.compareTo(selectedOffer.getAmount()) >= 0 && new Date().after(validationDate)) {
+        if (selectedOffer != null && validationDate != null && contribution.compareTo(selectedOffer.getAmount()) >= 0
+                && new Date().after(validationDate)) {
             return new DevelopingState(demand);
         }
         return this;

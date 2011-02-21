@@ -10,8 +10,8 @@ import com.bloatit.framework.xcgiserver.XcgiRequestAbordedException;
  * An encapsulation of an outputStream used to input HtmlTags.
  * </p>
  * <p>
- * Each class implementing the text interface has its own way to manage indentation and
- * line return.
+ * Each class implementing the text interface has its own way to manage
+ * indentation and line return.
  * </p>
  */
 public abstract class QueryResponseStream {
@@ -21,8 +21,8 @@ public abstract class QueryResponseStream {
     /**
      * Creates an HtmlStream based on a given outputStream
      * 
-     * @param out the underlying stream. Should usually be a socket to a web server (or an
-     *        encapsulation of a socket to a web server)
+     * @param out the underlying stream. Should usually be a socket to a web
+     *            server (or an encapsulation of a socket to a web server)
      */
     public QueryResponseStream(final OutputStream out) {
         super();
@@ -49,12 +49,14 @@ public abstract class QueryResponseStream {
     public abstract void writeNewLineChar();
 
     /**
-     * Write some space to indent the output. Some implementations may do noting here.
+     * Write some space to indent the output. Some implementations may do noting
+     * here.
      */
     public abstract void writeIndentation();
 
     /**
-     * Add one to the number of indentation to add on the next {@link #writeIndentation()}
+     * Add one to the number of indentation to add on the next
+     * {@link #writeIndentation()}
      */
     public abstract void indent();
 

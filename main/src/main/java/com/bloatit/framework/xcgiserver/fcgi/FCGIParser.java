@@ -3,16 +3,18 @@
  * 
  * This file is part of BloatIt.
  * 
- * BloatIt is free software: you can redistribute it and/or modify it under the terms of
- * the GNU Affero General Public License as published by the Free Software Foundation,
- * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  * 
- * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. See the GNU Affero General Public License for more details.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
  * 
- * You should have received a copy of the GNU Affero General Public License along with
- * BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.framework.xcgiserver.fcgi;
 
@@ -38,33 +40,33 @@ import com.bloatit.framework.xcgiserver.XcgiParser;
  * ://www.fastcgi.com/devkit/doc/fcgi-spec.html}
  * </p>
  * <p>
- * The fastcgi protocol use 2 stream, 1 input stream and 1 output stream, composed by
- * records. The input stream contains the request and the outputstream contains the
- * response.
+ * The fastcgi protocol use 2 stream, 1 input stream and 1 output stream,
+ * composed by records. The input stream contains the request and the
+ * outputstream contains the response.
  * </p>
  * <p>
- * In the input stream, 2 virtuals stream are composed by 2 type of record: the params
- * records and the stdin record.
+ * In the input stream, 2 virtuals stream are composed by 2 type of record: the
+ * params records and the stdin record.
  * </p>
- * 
  */
 public class FCGIParser implements XcgiParser {
 
     /**
      * <p>
-     * The response is encapsuled in FCGI_STDOUT record. The size of the content of a
-     * record is coded with 2 bytes so the size can not exceed 65536 bytes. The
-     * {@link FCGIOutputStream} charged to generete the output records is not protected so
-     * a buffedOutputStream is use to cut the response in small blocks.
+     * The response is encapsuled in FCGI_STDOUT record. The size of the content
+     * of a record is coded with 2 bytes so the size can not exceed 65536 bytes.
+     * The {@link FCGIOutputStream} charged to generete the output records is
+     * not protected so a buffedOutputStream is use to cut the response in small
+     * blocks.
      * </p>
      * The output record size mustn't be more than 65000 (max size of a record).
      * <p>
-     * If the output record size is too small, the overhead weigth due to FCGI record's
-     * header will be heavy.
+     * If the output record size is too small, the overhead weigth due to FCGI
+     * record's header will be heavy.
      * </p>
      * <p>
-     * If the output record size is too big, the global latency of the response will
-     * increase.
+     * If the output record size is too big, the global latency of the response
+     * will increase.
      * </p>
      */
     private static final int DEFAULT_OUTPUT_RECORD_SIZE = 8192;
@@ -108,8 +110,8 @@ public class FCGIParser implements XcgiParser {
     DataInputStream dataInput;
 
     /**
-     * Status of param input stream. The param input stream is closed when a empty
-     * FCGI_PARAMS record is received.
+     * Status of param input stream. The param input stream is closed when a
+     * empty FCGI_PARAMS record is received.
      */
     boolean paramStreamOpen = true;
 
@@ -120,7 +122,8 @@ public class FCGIParser implements XcgiParser {
     boolean postStreamOpen = true;
 
     /**
-     * Http header params. This map is full with param input stream record's content.
+     * Http header params. This map is full with param input stream record's
+     * content.
      */
     private final Map<String, String> env;
 
@@ -144,7 +147,8 @@ public class FCGIParser implements XcgiParser {
     public FCGIParser(final InputStream input, final OutputStream output) throws IOException {
         // The FCGIOutputStream has a BufferedOutputStream before and a
         // BufferedOutputStream after.
-        // The first avoid to give too small or too big packet to put in on record and the
+        // The first avoid to give too small or too big packet to put in on
+        // record and the
         // second avoid to
         responseStream = new BufferedOutputStream(new FCGIOutputStream(this, new BufferedOutputStream(output, 8192)), DEFAULT_OUTPUT_RECORD_SIZE);
 
@@ -211,26 +215,26 @@ public class FCGIParser implements XcgiParser {
         }
 
         switch (type) {
-        case FCGI_BEGIN_REQUEST:
-            parseBeginRequestRecord(contentLength);
-            break;
-        case FCGI_ABORT_REQUEST:
-            throw new NotImplementedException("TODO type: " + type);
-            // break;
-        case FCGI_PARAMS:
-            parseParamsRecord(contentLength);
-            break;
-        case FCGI_STDIN:
-            parseStdinRecord(contentLength);
-            break;
-        case FCGI_DATA:
-            throw new NotImplementedException("TODO type: " + type);
-            // break;
-        case FCGI_GET_VALUES:
-            throw new NotImplementedException("TODO type: " + type);
-            // break;
-        default:
-            throw new FCGIException("Invalid type code for a record: " + type);
+            case FCGI_BEGIN_REQUEST:
+                parseBeginRequestRecord(contentLength);
+                break;
+            case FCGI_ABORT_REQUEST:
+                throw new NotImplementedException("TODO type: " + type);
+                // break;
+            case FCGI_PARAMS:
+                parseParamsRecord(contentLength);
+                break;
+            case FCGI_STDIN:
+                parseStdinRecord(contentLength);
+                break;
+            case FCGI_DATA:
+                throw new NotImplementedException("TODO type: " + type);
+                // break;
+            case FCGI_GET_VALUES:
+                throw new NotImplementedException("TODO type: " + type);
+                // break;
+            default:
+                throw new FCGIException("Invalid type code for a record: " + type);
         }
 
         // Skip padding

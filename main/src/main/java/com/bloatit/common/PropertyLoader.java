@@ -1,12 +1,13 @@
 /*
- * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free software: you
- * can redistribute it and/or modify it under the terms of the GNU Affero General Public
- * License as published by the Free Software Foundation, either version 3 of the License,
- * or (at your option) any later version. BloatIt is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
- * License for more details. You should have received a copy of the GNU Affero General
- * Public License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ * Copyright (C) 2010 BloatIt. This file is part of BloatIt. BloatIt is free
+ * software: you can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details. You should have received a copy of the GNU Affero General Public
+ * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
 package com.bloatit.common;
 
@@ -30,18 +31,20 @@ public class PropertyLoader {
      * Loads a properties file from the classpath
      * </p>
      * <p>
-     * Will parse a properties file found in the classpath. The file must respect standard
-     * properties conventions :
+     * Will parse a properties file found in the classpath. The file must
+     * respect standard properties conventions :
      * <li>Name must end with .properties</li>
-     * <li>File content should be lines containing pair of key = value e.g : foo.bar = 42</li>
+     * <li>File content should be lines containing pair of key = value e.g :
+     * foo.bar = 42</li>
      * </p>
      * <p>
-     * For ease of use, the loader is flexible with the <i>name</i> of the properties
-     * file, and therefore :
-     * <li><i>name</i> can be described using <b>.</b> or <b>/</b> as separators</li>
+     * For ease of use, the loader is flexible with the <i>name</i> of the
+     * properties file, and therefore :
+     * <li><i>name</i> can be described using <b>.</b> or <b>/</b> as separators
+     * </li>
      * <li><i>name</i> can optionally end with <b>.properties</b></ki>
-     * <li>leading <b>/</b> in <i>name</i> will be ignored Therefore all the following
-     * <i>names</i> are the same :
+     * <li>leading <b>/</b> in <i>name</i> will be ignored Therefore all the
+     * following <i>names</i> are the same :
      * 
      * <pre>
      * foo.bar
@@ -56,7 +59,8 @@ public class PropertyLoader {
      * 
      * @param name classpath resource name
      * @return resource converted to java.util.Properties
-     * @throws IOException when <i>name</i> doesn't describe a valid properties file
+     * @throws IOException when <i>name</i> doesn't describe a valid properties
+     *             file
      * @throws IllegalArgumentException when <i>name</i> is null
      */
     public static Properties loadProperties(final String inname) throws IOException {

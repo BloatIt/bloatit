@@ -1,9 +1,8 @@
 package com.bloatit.framework.webserver.annotations.generator;
 
-
 public class UrlComponentClassGenerator extends JavaGenerator {
 
-    public UrlComponentClassGenerator(String name, String pageName) {
+    public UrlComponentClassGenerator(final String name, final String pageName) {
         super(name, pageName);
         _classHeader.append("@SuppressWarnings(\"unused\")\n");
         _classHeader.append("public final class ").append(componentClassName).append(" extends UrlComponent {\n");

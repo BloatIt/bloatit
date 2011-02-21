@@ -24,9 +24,9 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.search.annotations.DocumentId;
 
 /**
- * Base class to use with Hibernate. (A persistent class do not need to inherit from
- * DaoIdentifiable) When using DaoIdentifiable as a superClass, you ensure to have a id
- * column in your table. There is no DaoIdentifiable Table.
+ * Base class to use with Hibernate. (A persistent class do not need to inherit
+ * from DaoIdentifiable) When using DaoIdentifiable as a superClass, you ensure
+ * to have a id column in your table. There is no DaoIdentifiable Table.
  */
 @MappedSuperclass
 public abstract class DaoIdentifiable implements IdentifiableInterface {

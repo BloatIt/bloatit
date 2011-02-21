@@ -32,10 +32,10 @@ import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.InternalAccount;
 
 /**
- * A DaoAccount generalize the idea of bank account for our system. This class is mapped
- * as a joined table. So there is a table for DaoAccount, and a table for each of its
- * children. Each time you want to access a DaoAccount, there is a SQL join done, between
- * the daoAccount and its child.
+ * A DaoAccount generalize the idea of bank account for our system. This class
+ * is mapped as a joined table. So there is a table for DaoAccount, and a table
+ * for each of its children. Each time you want to access a DaoAccount, there is
+ * a SQL join done, between the daoAccount and its child.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -54,8 +54,8 @@ public abstract class DaoAccount extends DaoIdentifiable {
     private Date lastModificationDate;
 
     /**
-     * The amount is the quantity of money you has in your account. WARNING: For now there
-     * is no ?devise? ($,€, ...)
+     * The amount is the quantity of money you has in your account. WARNING: For
+     * now there is no ?devise? ($,€, ...)
      */
     @Basic(optional = false)
     private BigDecimal amount;
@@ -78,8 +78,8 @@ public abstract class DaoAccount extends DaoIdentifiable {
 
     /**
      * Tells if you can take <code>amount</code> money in the account. On
-     * {@link InternalAccount} the money has to exist. The {@link ExternalAccount} can
-     * have negative amount of money.
+     * {@link InternalAccount} the money has to exist. The
+     * {@link ExternalAccount} can have negative amount of money.
      * 
      * @param amount The quantity of money you want to get. Should be > 0.
      * @return true if this operation is allowed.
@@ -87,8 +87,8 @@ public abstract class DaoAccount extends DaoIdentifiable {
     protected abstract boolean hasEnoughMoney(BigDecimal amount);
 
     /**
-     * Used internally or by subclasses to every time the Amount is changed. It reset the
-     * modification date to now.
+     * Used internally or by subclasses to every time the Amount is changed. It
+     * reset the modification date to now.
      */
     protected final void resetModificationDate() {
         lastModificationDate = new Date();
@@ -99,12 +99,12 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * Add <code>value</code> into the account.
      * </p>
      * <p>
-     * To modify the value of the amount, you have to create a transaction. This method is
-     * protected to be used by transaction only !
+     * To modify the value of the amount, you have to create a transaction. This
+     * method is protected to be used by transaction only !
      * </p>
      * 
-     * @param value the quantity of money to add to the amount of this account. (May be a
-     *        negative value)
+     * @param value the quantity of money to add to the amount of this account.
+     *            (May be a negative value)
      */
     final void addToAmountValue(final BigDecimal value) {
         resetModificationDate();
@@ -116,11 +116,11 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * <p>
      * Substract <code>value</code> from the account.
      * </p>
-     * To modify the value of the amount, you have to create a transaction. This method is
-     * protected to be used by transaction only ! </p>
+     * To modify the value of the amount, you have to create a transaction. This
+     * method is protected to be used by transaction only ! </p>
      * 
-     * @param value the quantity of money to subtract to the amount of this account. (May
-     *        be a negative value)
+     * @param value the quantity of money to subtract to the amount of this
+     *            account. (May be a negative value)
      */
     protected final void substractToAmountValue(final BigDecimal value) {
         resetModificationDate();
@@ -129,8 +129,9 @@ public abstract class DaoAccount extends DaoIdentifiable {
     }
 
     /**
-     * This is for hibernate only. The amount must be modified by some higher level
-     * methods. For test purpose it is protected, but it should be private.
+     * This is for hibernate only. The amount must be modified by some higher
+     * level methods. For test purpose it is protected, but it should be
+     * private.
      * 
      * @see DaoTransaction
      * @param amount the new amount to set.
@@ -148,8 +149,8 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * Find all the transaction made from or to this account.
      * </p>
      * <p>
-     * WARNING: the order is not specified yet. Maybe it will be ordered by date (if
-     * needed)
+     * WARNING: the order is not specified yet. Maybe it will be ordered by date
+     * (if needed)
      * </p>
      * 
      * @return all the transactions that are from/to this account.
@@ -191,7 +192,6 @@ public abstract class DaoAccount extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -205,7 +205,6 @@ public abstract class DaoAccount extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

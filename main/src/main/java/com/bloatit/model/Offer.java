@@ -49,8 +49,7 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     public static Offer create(final DaoOffer dao) {
         if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoOffer> created = CacheManager.get(dao);
+            @SuppressWarnings("unchecked") final Identifiable<DaoOffer> created = CacheManager.get(dao);
             if (created == null) {
                 return new Offer(dao);
             }
@@ -61,20 +60,20 @@ public final class Offer extends Kudosable<DaoOffer> {
 
     /**
      * @param amount must be positive (can be ZERO) non null.
-     * @param locale must be non null. Is the locale in which the title and the text are
-     *        written.
+     * @param locale must be non null. Is the locale in which the title and the
+     *            text are written.
      * @param title is the title of the offer. Must be non null.
      * @param text is the description of the offer. Must be non null.
-     * @param dateExpir is the date when this offer should be finished. Must be non null.
-     *        Must be in the future.
+     * @param dateExpir is the date when this offer should be finished. Must be
+     *            non null. Must be in the future.
      */
     public Offer(final Member member,
-            final Demand demand,
-            final BigDecimal amount,
-            final String description,
-            final Locale local,
-            final Date dateExpire,
-            final int secondsBeforeValidation) {
+                 final Demand demand,
+                 final BigDecimal amount,
+                 final String description,
+                 final Locale local,
+                 final Date dateExpire,
+                 final int secondsBeforeValidation) {
         super(DaoOffer.createAndPersist(member.getDao(),
                                         DBRequests.getById(DaoDemand.class, demand.getId()),
                                         amount,
@@ -91,7 +90,11 @@ public final class Offer extends Kudosable<DaoOffer> {
         super(dao);
     }
 
-    public void addBatch(final BigDecimal amount, final String description, final Locale local, final Date dateExpire, final int secondBeforeValidation) {
+    public void addBatch(final BigDecimal amount,
+                         final String description,
+                         final Locale local,
+                         final Date dateExpire,
+                         final int secondBeforeValidation) {
         getDao().addBatch(DaoBatch.createAndPersist(dateExpire,
                                                     amount,
                                                     DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
@@ -108,7 +111,8 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
     public boolean validateCurrentBatch(final boolean force) {
-        // If the validation is not complete, there is nothing to do in the demand
+        // If the validation is not complete, there is nothing to do in the
+        // demand
         final boolean isAllValidated = findCurrentDaoBatch().validate(force);
         if (isAllValidated) {
             if (getDao().hasBatchesLeft()) {
@@ -177,8 +181,8 @@ public final class Offer extends Kudosable<DaoOffer> {
     public static final int PROGRESSION_PERCENT = 100;
 
     /**
-     * Return the progression of the funding of this offer with the amount available on
-     * the demand
+     * Return the progression of the funding of this offer with the amount
+     * available on the demand
      * 
      * @return
      * @throws UnauthorizedOperationException

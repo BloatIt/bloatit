@@ -23,8 +23,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.JoinGroupInvitation;
 
 /**
- * The Class JoinGroupInvitationList transforms PageIterable<DaoJoinGroupInvitation> to
- * PageIterable<JoinGroupInvitation>.
+ * The Class JoinGroupInvitationList transforms
+ * PageIterable<DaoJoinGroupInvitation> to PageIterable<JoinGroupInvitation>.
  */
 public final class JoinGroupInvitationtList extends ListBinder<JoinGroupInvitation, DaoJoinGroupInvitation> {
 
@@ -39,8 +39,9 @@ public final class JoinGroupInvitationtList extends ListBinder<JoinGroupInvitati
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator)
+     * @see
+     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
+     * )
      */
     @Override
     protected Iterator<JoinGroupInvitation> createFromDaoIterator(final Iterator<DaoJoinGroupInvitation> dao) {
@@ -72,8 +73,9 @@ public final class JoinGroupInvitationtList extends ListBinder<JoinGroupInvitati
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object)
+         * @see
+         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
+         * )
          */
         @Override
         protected JoinGroupInvitation createFromDao(final DaoJoinGroupInvitation dao) {

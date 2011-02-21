@@ -33,7 +33,8 @@ public class XmlText extends XmlNode {
     }
 
     /**
-     * Do not use Only present as a quick hack to write a tad cleaner html content
+     * Do not use Only present as a quick hack to write a tad cleaner html
+     * content
      */
     public String _getContent() {
         return content;

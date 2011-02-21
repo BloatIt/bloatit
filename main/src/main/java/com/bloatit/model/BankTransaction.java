@@ -43,8 +43,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
+         * @see
+         * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
         public BankTransaction doCreate(final DaoBankTransaction dao) {
@@ -53,9 +53,9 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
-     * Check the cache, if a corresponding BankTransaction exist return it, otherwise
-     * create a BankTransaction using its dao representation. If the dao == null return
-     * null;
+     * Check the cache, if a corresponding BankTransaction exist return it,
+     * otherwise create a BankTransaction using its dao representation. If the
+     * dao == null return null;
      * 
      * @param dao the dao
      * @return the bank transaction
@@ -78,14 +78,15 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     /**
      * Create a new BankTransaction.
      * 
-     * @param message is the message from the bank. May be a Ok message or an error
-     *        message.
-     * @param token is a token to authenticate this transaction. The online bank service
-     *        should give it during the transaction.
-     * @param author it the person implied in this transaction (the one filling is
-     *        account)
+     * @param message is the message from the bank. May be a Ok message or an
+     *            error message.
+     * @param token is a token to authenticate this transaction. The online bank
+     *            service should give it during the transaction.
+     * @param author it the person implied in this transaction (the one filling
+     *            is account)
      * @param value is the quantity of money transfered.
-     * @param orderReference is a reference we have to create and should be unique.
+     * @param orderReference is a reference we have to create and should be
+     *            unique.
      */
     public BankTransaction(final String message, final String token, final Actor<?> author, final BigDecimal value, final String orderReference) {
         super(DaoBankTransaction.createAndPersist(message, token, author.getDao(), value, orderReference));
@@ -134,8 +135,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Sets the process informations. The process informations are every kind of
-     * information you might have during the process of making a bank transaction. For
-     * example you can put here specific error messages.
+     * information you might have during the process of making a bank
+     * transaction. For example you can put here specific error messages.
      * 
      * @param processInformations the new process informations
      */
@@ -144,8 +145,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
-     * Gets the message. The message is the error (or not) message sent by the bank during
-     * a transaction.
+     * Gets the message. The message is the error (or not) message sent by the
+     * bank during a transaction.
      * 
      * @return the message
      */
@@ -199,7 +200,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     }
 
     /**
-     * Gets the token. The token is a unique string identifying this transaction.
+     * Gets the token. The token is a unique string identifying this
+     * transaction.
      * 
      * @return the token
      */
@@ -209,8 +211,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /**
      * Gets the process informations. The process informations are every kind of
-     * information you might have during the process of making a bank transaction. For
-     * example you can put here error messages.
+     * information you might have during the process of making a bank
+     * transaction. For example you can put here error messages.
      * 
      * @return the process informations
      */
@@ -220,8 +222,8 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
+     * @see
+     * com.bloatit.model.right.RestrictedObject#isMine(com.bloatit.model.Member)
      */
     @Override
     protected boolean isMine(final Member member) {

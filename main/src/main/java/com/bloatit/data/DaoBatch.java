@@ -81,7 +81,8 @@ public final class DaoBatch extends DaoIdentifiable {
     private Level levelToValidate;
 
     /**
-     * The amount represents the money the member want to have to make his offer.
+     * The amount represents the money the member want to have to make his
+     * offer.
      */
     @Basic(optional = false)
     @Column(updatable = false)
@@ -135,13 +136,18 @@ public final class DaoBatch extends DaoIdentifiable {
      * 
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
-     * @param expirationDate is the date when this offer should be finish. Must be non
-     *        null, and in the future.
+     * @param expirationDate is the date when this offer should be finish. Must
+     *            be non null, and in the future.
      * @param secondBeforeValidation TODO
      * @throws NonOptionalParameterException if a parameter is null.
-     * @throws FatalErrorException if the amount is < 0 or if the Date is in the future.
+     * @throws FatalErrorException if the amount is < 0 or if the Date is in the
+     *             future.
      */
-    private DaoBatch(final Date dateExpire, final BigDecimal amount, final DaoDescription description, final DaoOffer offer, final int secondBeforeValidation) {
+    private DaoBatch(final Date dateExpire,
+                     final BigDecimal amount,
+                     final DaoDescription description,
+                     final DaoOffer offer,
+                     final int secondBeforeValidation) {
         super();
         if (dateExpire == null || amount == null || description == null || offer == null) {
             throw new NonOptionalParameterException();
@@ -167,14 +173,17 @@ public final class DaoBatch extends DaoIdentifiable {
     }
 
     /**
-     * Set the percent of money the developer will received when all bugs of one level are
-     * closed. This method take parameters for the Fatal and Major level. The Minor level
-     * is calculated from it (see {@link #getMinorBugsPercent()}).
+     * Set the percent of money the developer will received when all bugs of one
+     * level are closed. This method take parameters for the Fatal and Major
+     * level. The Minor level is calculated from it (see
+     * {@link #getMinorBugsPercent()}).
      * 
-     * @param fatalPercent is the percent of the money the developer will get when all the
-     *        {@link Level#FATAL} bugs are closed. It must be > 0 and <= 100.
-     * @param majorPercent is the percent of the money the developer will get when all the
-     *        {@link Level#MAJOR} bugs are closed. It must be > 0 and <= 100.
+     * @param fatalPercent is the percent of the money the developer will get
+     *            when all the {@link Level#FATAL} bugs are closed. It must be >
+     *            0 and <= 100.
+     * @param majorPercent is the percent of the money the developer will get
+     *            when all the {@link Level#MAJOR} bugs are closed. It must be >
+     *            0 and <= 100.
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
         if (fatalPercent < 0 || majorPercent < 0) {
@@ -195,15 +204,16 @@ public final class DaoBatch extends DaoIdentifiable {
     }
 
     /**
-     * Tells that the Income state of this batch is finished, and everything is OK. The
-     * validation can be partial (when some major or minor bugs are open). The validate
-     * method may also validate nothing if some FATAL bugs are open, or if the validation
-     * period is not open. You can change this behavior using the <code>force</code>
-     * parameter. The force parameter allows to validate the batch without taking into
-     * account these previous restrictions.
+     * Tells that the Income state of this batch is finished, and everything is
+     * OK. The validation can be partial (when some major or minor bugs are
+     * open). The validate method may also validate nothing if some FATAL bugs
+     * are open, or if the validation period is not open. You can change this
+     * behavior using the <code>force</code> parameter. The force parameter
+     * allows to validate the batch without taking into account these previous
+     * restrictions.
      * 
-     * @param force force the validation of this batch. Do not take care of the bugs and
-     *        the timeOuts.
+     * @param force force the validation of this batch. Do not take care of the
+     *            bugs and the timeOuts.
      * @return true if all the batch is validated.
      */
     public boolean validate(final boolean force) {
@@ -231,9 +241,11 @@ public final class DaoBatch extends DaoIdentifiable {
     }
 
     /**
-     * You can validate a batch after its release and when the bugs requirement are done.
+     * You can validate a batch after its release and when the bugs requirement
+     * are done.
      * 
-     * @return true if an admin should validate this Batch part. False otherwise.
+     * @return true if an admin should validate this Batch part. False
+     *         otherwise.
      */
     public boolean shouldValidatePart(final Level level) {
         if (validationPeriodFinished() && getNonResolvedBugs(level).size() == 0) {
@@ -340,7 +352,8 @@ public final class DaoBatch extends DaoIdentifiable {
     }
 
     /**
-     * @return the getMinorBugsPercent (= 100 - (majorBugsPercent + fatalBugsPercent)).
+     * @return the getMinorBugsPercent (= 100 - (majorBugsPercent +
+     *         fatalBugsPercent)).
      */
     public int getMinorBugsPercent() {
         return 100 - (majorBugsPercent + fatalBugsPercent);
@@ -369,7 +382,6 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -388,7 +400,6 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

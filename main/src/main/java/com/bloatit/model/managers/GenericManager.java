@@ -25,8 +25,8 @@ import com.bloatit.model.ConstructorVisitor;
 import com.bloatit.model.Identifiable;
 
 /**
- * The Class GenericManager is a utility class with static method to load data from the
- * DB. It is generic because the methods are not specific for a class.
+ * The Class GenericManager is a utility class with static method to load data
+ * from the DB. It is generic because the methods are not specific for a class.
  */
 public final class GenericManager {
 
@@ -38,8 +38,9 @@ public final class GenericManager {
     }
 
     /**
-     * Create an identifiable using its Id. If the identifiable is found in the cache then
-     * no new object is created (It will return the one from the cache).
+     * Create an identifiable using its Id. If the identifiable is found in the
+     * cache then no new object is created (It will return the one from the
+     * cache).
      * 
      * @param id the id
      * @return the {@link Identifiable}, or <code>null</code> if not found.

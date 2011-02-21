@@ -32,8 +32,8 @@ import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin/usercontent")
-public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentAdmin<U>, T extends UserContentAdminListFactory<U, V>> extends
-        AdminPage {
+public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentAdmin<U>, T extends UserContentAdminListFactory<U, V>>
+        extends AdminPage {
 
     public enum OrderByUserContent implements HtmlRadioButtonGroup.Displayable {
         NOTHING(tr("No order")), //

@@ -24,12 +24,12 @@ import com.bloatit.model.PlannedTask;
 
 /**
  * <p>
- * This is a planned task. It cannot store object from the Model layer (it would introduce
- * multithred bugs)
+ * This is a planned task. It cannot store object from the Model layer (it would
+ * introduce multithred bugs)
  * </p>
  * <p>
- * Tells that the selected offer of a specified demand is validated (and may begin the
- * Development)
+ * Tells that the selected offer of a specified demand is validated (and may
+ * begin the Development)
  * </p>
  */
 public class TaskSelectedOfferTimeOut extends PlannedTask {
@@ -53,7 +53,6 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.PlannedTask#doRun()
      */
     @Override

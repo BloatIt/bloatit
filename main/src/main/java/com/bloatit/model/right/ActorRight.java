@@ -19,7 +19,8 @@ package com.bloatit.model.right;
 import com.bloatit.model.Actor;
 
 /**
- * The Class ActorRight store the properties accessor for the {@link Actor} class.
+ * The Class ActorRight store the properties accessor for the {@link Actor}
+ * class.
  */
 public class ActorRight extends RightManager {
 
@@ -31,24 +32,24 @@ public class ActorRight extends RightManager {
     }
 
     /**
-     * The Class ExternalAccount is a {@link Private} accessor for the ExternalAccount
-     * property.
+     * The Class ExternalAccount is a {@link Private} accessor for the
+     * ExternalAccount property.
      */
     public static class ExternalAccount extends Private {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class InternalAccount is a {@link Private} accessor for the InternalAccount
-     * property.
+     * The Class InternalAccount is a {@link Private} accessor for the
+     * InternalAccount property.
      */
     public static class InternalAccount extends Private {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class BankTransaction is a {@link Private} accessor for the BankTransaction
-     * property.
+     * The Class BankTransaction is a {@link Private} accessor for the
+     * BankTransaction property.
      */
     public static class BankTransaction extends Private {
         // nothing this is just a rename.
@@ -62,7 +63,8 @@ public class ActorRight extends RightManager {
     }
 
     /**
-     * The Class DateCreation is a {@link Private} accessor for the DateCreation property.
+     * The Class DateCreation is a {@link Private} accessor for the DateCreation
+     * property.
      */
     public static class DateCreation extends Private {
         // nothing this is just a rename.

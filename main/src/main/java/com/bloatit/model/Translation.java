@@ -36,8 +36,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
 
     public static Translation create(final DaoTranslation dao) {
         if (dao != null) {
-            @SuppressWarnings("unchecked")
-            final Identifiable<DaoTranslation> created = CacheManager.get(dao);
+            @SuppressWarnings("unchecked") final Identifiable<DaoTranslation> created = CacheManager.get(dao);
             if (created == null) {
                 return new Translation(dao);
             }
@@ -66,9 +65,10 @@ public final class Translation extends Kudosable<DaoTranslation> {
      * Smart cut the text, add a "…" char, and return it.
      * 
      * @param sizeMax is the maximum size the returned text can be.
-     * @param variance is how far we are looking for the punctuation mark to cut the text.
-     * @return a cut version of the text, find a point or a punctuation mark to cut it at
-     *         the best position possible.
+     * @param variance is how far we are looking for the punctuation mark to cut
+     *            the text.
+     * @return a cut version of the text, find a point or a punctuation mark to
+     *         cut it at the best position possible.
      */
     public String getShortText(final int sizeMax, final int variance) {
         if (variance < 0) {
@@ -82,28 +82,28 @@ public final class Translation extends Kudosable<DaoTranslation> {
         // Try the common punctuation marks.
         for (int i = sizeMax; i > sizeMax - variance; --i) {
             switch (wholeText.charAt(i - 1)) {
-            case ',':
-            case ';':
-            case '!':
-            case '?':
-            case ':':
-                return performTheCutAndAddPoints(sizeMax, wholeText, i);
-            default:
-                // Do nothing.
-                break;
+                case ',':
+                case ';':
+                case '!':
+                case '?':
+                case ':':
+                    return performTheCutAndAddPoints(sizeMax, wholeText, i);
+                default:
+                    // Do nothing.
+                    break;
             }
         }
 
         // Try with a space or line return.
         for (int i = sizeMax; i > sizeMax - variance; --i) {
             switch (wholeText.charAt(i - 1)) {
-            case ' ':
-            case '\n':
-            case '\r':
-                return performTheCutAndAddPoints(sizeMax, wholeText, i);
-            default:
-                // Do nothing.
-                break;
+                case ' ':
+                case '\n':
+                case '\r':
+                    return performTheCutAndAddPoints(sizeMax, wholeText, i);
+                default:
+                    // Do nothing.
+                    break;
             }
         }
 

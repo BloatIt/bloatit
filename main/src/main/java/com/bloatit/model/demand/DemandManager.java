@@ -24,8 +24,8 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.right.AuthToken;
 
 /**
- * The Class DemandManager is a class with only static member. Use it to do some requests
- * on the DB returning demands.
+ * The Class DemandManager is a class with only static member. Use it to do some
+ * requests on the DB returning demands.
  */
 public final class DemandManager {
 
@@ -46,14 +46,16 @@ public final class DemandManager {
     }
 
     /**
-     * Gets the demands with a specified state and with on offer selected or not.
+     * Gets the demands with a specified state and with on offer selected or
+     * not.
      * 
      * @param state the state of the demands to return
      * @param hasSelectedOffer true if you want demands with a selected offer.
      * @return the demands
      */
     public static PageIterable<Demand> getDemands(final DemandState state, final boolean hasSelectedOffer) {
-        // return new DemandList(DBRequests.getDemands(state, null, null, null, null,
+        // return new DemandList(DBRequests.getDemands(state, null, null, null,
+        // null,
         // null, null, null, hasSelectedOffer, null, null, null, null, null,//
         // null,
         // null,
@@ -95,7 +97,8 @@ public final class DemandManager {
     /**
      * Tells if a user can create a demand.
      * 
-     * @param authToken the auth token representing the user wanting to create a demand.
+     * @param authToken the auth token representing the user wanting to create a
+     *            demand.
      * @return true, if successful
      */
     public static boolean canCreate(final AuthToken authToken) {

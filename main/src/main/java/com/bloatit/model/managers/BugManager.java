@@ -21,8 +21,8 @@ import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Bug;
 
 /**
- * The Class BugManager. Utility class containing static methods to get {@link Bug}s from
- * the DB.
+ * The Class BugManager. Utility class containing static methods to get
+ * {@link Bug}s from the DB.
  */
 public final class BugManager {
 

@@ -10,8 +10,9 @@ import com.bloatit.framework.xcgiserver.mime.filenaming.FileNamingGenerator;
 
 /**
  * <p>
- * MultipartMime fields are used to describe complex data in textual form. They are used
- * for mails or as a way to send results from form data (when input contains a file).
+ * MultipartMime fields are used to describe complex data in textual form. They
+ * are used for mails or as a way to send results from form data (when input
+ * contains a file).
  * </p>
  * <p>
  * An example of a multipart mime :
@@ -36,8 +37,9 @@ import com.bloatit.framework.xcgiserver.mime.filenaming.FileNamingGenerator;
  * 
  * </p>
  * <p>
- * <code>MultipartMimeParser</code> handles reading the input stream, parsing the content,
- * decoding if needed (mostly shouldn't be needed), and saving files to the disk.
+ * <code>MultipartMimeParser</code> handles reading the input stream, parsing
+ * the content, decoding if needed (mostly shouldn't be needed), and saving
+ * files to the disk.
  * </p>
  * <p>
  * Example of use :
@@ -68,20 +70,20 @@ public class MultipartMimeParser {
      * </p>
      * <p>
      * Chronological order is :
-     * <li><code>MULTIPART_HEADER</code>: Nothing parsed yet, the whole header is yet to
-     * be parsed</li>
-     * <li><code>MULTIPART_PREAMBLE</code>: Header parsed, preamble may be available (note
-     * preamble is to be ignored)</li>
-     * <li><code>CONTENT_HEADER</code>: Header & Preamble read, now is the turn of
-     * content. Note, this state is used many time.</li>
-     * <li><code>CONTENT_CONTENT</code>: Right after we finished reading content header,
-     * we can find the real content</li>
+     * <li><code>MULTIPART_HEADER</code>: Nothing parsed yet, the whole header
+     * is yet to be parsed</li>
+     * <li><code>MULTIPART_PREAMBLE</code>: Header parsed, preamble may be
+     * available (note preamble is to be ignored)</li>
+     * <li><code>CONTENT_HEADER</code>: Header & Preamble read, now is the turn
+     * of content. Note, this state is used many time.</li>
+     * <li><code>CONTENT_CONTENT</code>: Right after we finished reading content
+     * header, we can find the real content</li>
      * <li><code>END</code>: When we reach the end of file (--boundary--)</li>
      * </p>
      * <p>
-     * <code>CONTENT_HEADER</code> and <code>CONTENT_CONTENT</code> are used many time
-     * during parsing. If the mime contains 3 elements, each of the two previous states
-     * will be used 3 times.
+     * <code>CONTENT_HEADER</code> and <code>CONTENT_CONTENT</code> are used
+     * many time during parsing. If the mime contains 3 elements, each of the
+     * two previous states will be used 3 times.
      * </p>
      */
     private enum State {
@@ -100,8 +102,8 @@ public class MultipartMimeParser {
      * Creates a multipart mime element based on the given bytes and contentType
      * </p>
      * <p>
-     * The content of the <code>multiPartStream</code> will be parsed using the boundary
-     * contained in <code>contentType</code>
+     * The content of the <code>multiPartStream</code> will be parsed using the
+     * boundary contained in <code>contentType</code>
      * </p>
      * <p>
      * Example contentType:
@@ -112,19 +114,23 @@ public class MultipartMimeParser {
      * 
      * </p>
      * <p>
-     * <code>nameGen</code> and <code>fileSavingDirectory</code> are used to parameter the
-     * place where uploaded files will be saved.
+     * <code>nameGen</code> and <code>fileSavingDirectory</code> are used to
+     * parameter the place where uploaded files will be saved.
      * </p>
      * 
      * @param multiPartStream the stream from which the post will be parsed
-     * @param contentType The contentType of the mimeElement, including it's boundary
-     * @param nameGen The name generator used to generate names of the files used to store
-     *        uploaded files
-     * @param fileSavingDirectory The name of the directory used to store files used to
-     *        store uploaded files
+     * @param contentType The contentType of the mimeElement, including it's
+     *            boundary
+     * @param nameGen The name generator used to generate names of the files
+     *            used to store uploaded files
+     * @param fileSavingDirectory The name of the directory used to store files
+     *            used to store uploaded files
      * @throws NonOptionalParameterException if any parameter is null
      */
-    public MultipartMimeParser(final InputStream multiPartStream, final String contentType, final FileNamingGenerator nameGen, final String fileSavingDirectory) {
+    public MultipartMimeParser(final InputStream multiPartStream,
+                               final String contentType,
+                               final FileNamingGenerator nameGen,
+                               final String fileSavingDirectory) {
         if (multiPartStream == null || contentType == null || nameGen == null || fileSavingDirectory == null) {
             throw new NonOptionalParameterException();
         }
@@ -156,9 +162,10 @@ public class MultipartMimeParser {
      * <b>note</b>: The contentType header is not part of this
      * </p>
      * 
-     * @return the String representing the header of the multipart. String can be empty if
-     *         no header is left to read (either because it's already been read or because
-     *         no header have ever been included in this mime)
+     * @return the String representing the header of the multipart. String can
+     *         be empty if no header is left to read (either because it's
+     *         already been read or because no header have ever been included in
+     *         this mime)
      * @throws IOException When the <code>multipartStream</code> can't be read
      */
     public String getHeader() throws IOException {
@@ -185,9 +192,10 @@ public class MultipartMimeParser {
      * Reads the preamble of the multipart. Preamble is usually ignored.
      * </p>
      * 
-     * @return the String representing the preamble of the multipart. String can be empty
-     *         if no preamble is left to read (either because it's already been read or
-     *         because no header have ever been included in this mime)
+     * @return the String representing the preamble of the multipart. String can
+     *         be empty if no preamble is left to read (either because it's
+     *         already been read or because no header have ever been included in
+     *         this mime)
      * @throws IOException When the <code>multipartStream</code> can't be read
      */
     public String getPreamble() throws IOException {
@@ -221,27 +229,28 @@ public class MultipartMimeParser {
      * Reads one content of the multipart
      * </p>
      * <p>
-     * Core function of the parser, this function reads the next available content of the
-     * multipart mime. Content is in fact 2 parts, first its header (describing the kind
-     * of content) then the real content.
+     * Core function of the parser, this function reads the next available
+     * content of the multipart mime. Content is in fact 2 parts, first its
+     * header (describing the kind of content) then the real content.
      * </p>
      * <p>
-     * Method takes care of decoding the characters (based on the encoding indicated in
-     * the content header) and saves files received to
+     * Method takes care of decoding the characters (based on the encoding
+     * indicated in the content header) and saves files received to
      * <code>fileSavingDirectory+nameGen.generateName()</code>.
      * </p>
      * <p>
-     * When no more data is available (CRLF--boundary--) has been found, the next call to
-     * this method will return null.
+     * When no more data is available (CRLF--boundary--) has been found, the
+     * next call to this method will return null.
      * </p>
      * 
-     * @return a <code>MimeElement</code> representing the content of this mime, or
-     *         <code>null</code> if end has been reached.
+     * @return a <code>MimeElement</code> representing the content of this mime,
+     *         or <code>null</code> if end has been reached.
      * @throws IOException Whenever the multipartStream is not available
-     * @throws InvalidMimeEncodingException When the mime encoding used is not handled
-     * @throws MalformedMimeException When the mime is ill-formed, for example is we reach
-     *         EOF while expecting more data, or if a header happens to be after a
-     *         content.
+     * @throws InvalidMimeEncodingException When the mime encoding used is not
+     *             handled
+     * @throws MalformedMimeException When the mime is ill-formed, for example
+     *             is we reach EOF while expecting more data, or if a header
+     *             happens to be after a content.
      */
     public MimeElement readContent() throws IOException, InvalidMimeEncodingException, MalformedMimeException {
         if (currentState == State.MULTIPART_HEADER || currentState == State.MULTIPART_PREAMBLE) {
@@ -312,7 +321,8 @@ public class MultipartMimeParser {
         } else if (b0 == HYPHEN && b1 == HYPHEN) {
             currentState = State.END;
             try {
-                // Consume epilogue (any text till an empty line or EOF, whichever comes
+                // Consume epilogue (any text till an empty line or EOF,
+                // whichever comes
                 // first)
                 String line = null;
                 while (line == null || !line.isEmpty()) {
@@ -336,14 +346,15 @@ public class MultipartMimeParser {
      * Indicates if any data is left to read
      * </p>
      * <p>
-     * Note, even if <code>available</code> returns <code>true</code> there may be no more
-     * data to read. Calling this method without using {@link #readContent()} first will
-     * result in useless data (as the parser doesn't know yet if some data is available).
-     * <br />
-     * After using {@link #readContent()} once the results of this method can be trusted.
-     * <br />
-     * It is still better to check if the content returned by {@link #readContent()} is
-     * null or not (and it is a more fiable indicator of end of mime than this).
+     * Note, even if <code>available</code> returns <code>true</code> there may
+     * be no more data to read. Calling this method without using
+     * {@link #readContent()} first will result in useless data (as the parser
+     * doesn't know yet if some data is available). <br />
+     * After using {@link #readContent()} once the results of this method can be
+     * trusted. <br />
+     * It is still better to check if the content returned by
+     * {@link #readContent()} is null or not (and it is a more fiable indicator
+     * of end of mime than this).
      * </p>
      * 
      * @return <code>true</code> if some data is still available in the stream

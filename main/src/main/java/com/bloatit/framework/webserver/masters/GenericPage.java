@@ -81,18 +81,18 @@ public abstract class GenericPage extends Page {
     protected final void addNotifications(final Messages messages) {
         for (final Message message : messages) {
             switch (message.getLevel()) {
-            case INFO:
-                addNotification(new HtmlNotification(Level.INFO, message.getMessage()));
-                break;
-            case WARNING:
-                addNotification(new HtmlNotification(Level.WARNING, message.getMessage()));
-                break;
-            case ERROR:
-                addNotification(new HtmlNotification(Level.ERROR, message.getMessage()));
-                break;
-            default:
-                // do nothing
-                break;
+                case INFO:
+                    addNotification(new HtmlNotification(Level.INFO, message.getMessage()));
+                    break;
+                case WARNING:
+                    addNotification(new HtmlNotification(Level.WARNING, message.getMessage()));
+                    break;
+                case ERROR:
+                    addNotification(new HtmlNotification(Level.ERROR, message.getMessage()));
+                    break;
+                default:
+                    // do nothing
+                    break;
             }
         }
     }
@@ -101,18 +101,18 @@ public abstract class GenericPage extends Page {
 
         for (final Message notification : session.getNotifications()) {
             switch (notification.getLevel()) {
-            case ERROR:
-                addNotification(new HtmlNotification(Level.ERROR, notification.getMessage()));
-                break;
-            case WARNING:
-                addNotification(new HtmlNotification(Level.WARNING, notification.getMessage()));
-                break;
-            case INFO:
-                addNotification(new HtmlNotification(Level.INFO, notification.getMessage()));
-                break;
-            default:
-                // do nothing, it should never append.
-                break;
+                case ERROR:
+                    addNotification(new HtmlNotification(Level.ERROR, notification.getMessage()));
+                    break;
+                case WARNING:
+                    addNotification(new HtmlNotification(Level.WARNING, notification.getMessage()));
+                    break;
+                case INFO:
+                    addNotification(new HtmlNotification(Level.INFO, notification.getMessage()));
+                    break;
+                default:
+                    // do nothing, it should never append.
+                    break;
             }
         }
 

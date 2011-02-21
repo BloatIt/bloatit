@@ -30,8 +30,8 @@ import com.bloatit.model.right.UserContentRight;
 /**
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.
  * 
- * @param <T> the generic type. Must be the concrete Dao version of the concrete subClass.
- *        For example: Demand extends UserContent<DaoDemand>
+ * @param <T> the generic type. Must be the concrete Dao version of the concrete
+ *            subClass. For example: Demand extends UserContent<DaoDemand>
  */
 public abstract class UserContent<T extends DaoUserContent> extends Identifiable<T> implements UserContentInterface<T> {
 
@@ -46,7 +46,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.UserContentInterface#getAuthor()
      */
     @Override
@@ -56,7 +55,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.UserContentInterface#getCreationDate()
      */
     @Override
@@ -71,8 +69,9 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     /*
      * (non-Javadoc)
-     * 
-     * @see com.bloatit.model.UserContentInterface#setAsGroup(com.bloatit.model.Group )
+     * @see
+     * com.bloatit.model.UserContentInterface#setAsGroup(com.bloatit.model.Group
+     * )
      */
     @Override
     public final void setAsGroup(final Group asGroup) throws UnauthorizedOperationException {
@@ -82,7 +81,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.UserContentInterface#getAsGroup()
      */
     @Override
@@ -92,7 +90,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.UserContentInterface#getFiles()
      */
     @Override

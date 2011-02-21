@@ -35,15 +35,16 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 /**
- * A contribution is a financial participation on a demand. Each contribution can have a
- * little comment/description text on it (144 char max like twitter)
+ * A contribution is a financial participation on a demand. Each contribution
+ * can have a little comment/description text on it (144 char max like twitter)
  */
 @Entity
 public final class DaoContribution extends DaoUserContent {
     protected static final int COMMENT_MAX_LENGTH = 144;
 
     /**
-     * The state of a contribution should follow the state of the associated demand.
+     * The state of a contribution should follow the state of the associated
+     * demand.
      */
     public enum State {
         PENDING, VALIDATED, CANCELED
@@ -67,10 +68,10 @@ public final class DaoContribution extends DaoUserContent {
     private String comment;
 
     /**
-     * If the demand is validated then the contribution is also validated and then we
-     * create a transaction. So there should be a non null transaction on each validated
-     * contribution and only on those. (Except when a user add on offer on his own offer
-     * -> no transaction)
+     * If the demand is validated then the contribution is also validated and
+     * then we create a transaction. So there should be a non null transaction
+     * on each validated contribution and only on those. (Except when a user add
+     * on offer on his own offer -> no transaction)
      */
     @OneToMany(orphanRemoval = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private final Set<DaoTransaction> transaction = new HashSet<DaoTransaction>();
@@ -82,17 +83,17 @@ public final class DaoContribution extends DaoUserContent {
     private BigDecimal alreadyGivenMoney;
 
     /**
-     * Create a new contribution. Update the internal account of the member (block the
-     * value that is reserved to this contribution)
+     * Create a new contribution. Update the internal account of the member
+     * (block the value that is reserved to this contribution)
      * 
      * @param member the person making the contribution.
      * @param demand the demand on which we add a contribution.
      * @param amount the amount of the contribution.
      * @param comment the comment can be null.
-     * @throws NonOptionalParameterException if any of the parameter is null except
-     *         comment.
-     * @throws NotEnoughMoneyException if the account of "member" has not enough money in
-     *         it.
+     * @throws NonOptionalParameterException if any of the parameter is null
+     *             except comment.
+     * @throws NotEnoughMoneyException if the account of "member" has not enough
+     *             money in it.
      */
     public DaoContribution(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         super(member);
@@ -113,18 +114,20 @@ public final class DaoContribution extends DaoUserContent {
     }
 
     /**
-     * Create a transaction from the contributor to the developer. If there is not enough
-     * money then throw and set the state to canceled. After that if all the money is
-     * transfered, the state of this contribution is become VALIDATED.
+     * Create a transaction from the contributor to the developer. If there is
+     * not enough money then throw and set the state to canceled. After that if
+     * all the money is transfered, the state of this contribution is become
+     * VALIDATED.
      * 
      * @param offer the offer that is accepted.
-     * @param percent integer ]0,100]. It is the percent of the total amount and not a
-     *        percent of what is remaining. It is the percent of the total amount to
-     *        transfer. There is a "round" done here, but we assure that when 100% is
-     *        reached then everything is transfered. For example : 90% then 10% is ok and
-     *        everything is transfered. 60% then 60% will throw an exception.
-     * @throws NotEnoughMoneyException if there is not enough money to create the
-     *         transaction.
+     * @param percent integer ]0,100]. It is the percent of the total amount and
+     *            not a percent of what is remaining. It is the percent of the
+     *            total amount to transfer. There is a "round" done here, but we
+     *            assure that when 100% is reached then everything is
+     *            transfered. For example : 90% then 10% is ok and everything is
+     *            transfered. 60% then 60% will throw an exception.
+     * @throws NotEnoughMoneyException if there is not enough money to create
+     *             the transaction.
      */
     public void validate(final DaoOffer offer, final int percent) throws NotEnoughMoneyException {
         if (state != State.PENDING) {
@@ -146,7 +149,9 @@ public final class DaoContribution extends DaoUserContent {
         try {
             // If we succeeded the unblock then we create a transaction.
             if (getAuthor() != offer.getAuthor()) {
-                this.transaction.add(DaoTransaction.createAndPersist(getAuthor().getInternalAccount(), offer.getAuthor().getInternalAccount(), moneyToGive));
+                this.transaction.add(DaoTransaction.createAndPersist(getAuthor().getInternalAccount(),
+                                                                     offer.getAuthor().getInternalAccount(),
+                                                                     moneyToGive));
             }
             // if the transaction is ok then we set the state to VALIDATED.
             this.percentDone += percent;
@@ -226,7 +231,6 @@ public final class DaoContribution extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -241,7 +245,6 @@ public final class DaoContribution extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

@@ -19,7 +19,8 @@ package com.bloatit.model.right;
 import com.bloatit.model.Kudosable;
 
 /**
- * The Class KudosableRight store the properties accessor for the {@link Kudosable} class.
+ * The Class KudosableRight store the properties accessor for the
+ * {@link Kudosable} class.
  */
 public class KudosableRight extends RightManager {
 
@@ -30,10 +31,8 @@ public class KudosableRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {

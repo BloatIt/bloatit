@@ -26,10 +26,11 @@ import com.bloatit.data.SessionManager;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * These are some static DB requests on generic DAO type. Most of the time, the names are
- * quite easy to understand. There are some common rules: <li>If a method return a simple
- * object then the return value can be null (If the object is not found.)</li> <li>If a
- * method return a collection then the collection is always != null (but can be empty)</li>
+ * These are some static DB requests on generic DAO type. Most of the time, the
+ * names are quite easy to understand. There are some common rules: <li>If a
+ * method return a simple object then the return value can be null (If the
+ * object is not found.)</li> <li>If a method return a collection then the
+ * collection is always != null (but can be empty)</li>
  */
 public final class DBRequests {
 
@@ -68,7 +69,8 @@ public final class DBRequests {
     // Date validationDate,
     // Comparator validationDateCmp) {
     //
-    // final Session session = SessionManager.getSessionFactory().getCurrentSession();
+    // final Session session =
+    // SessionManager.getSessionFactory().getCurrentSession();
     // Criteria criteria = session.createCriteria(DaoDemand.class);
     //
     // if (dState != null) {
@@ -76,7 +78,8 @@ public final class DBRequests {
     // }
     //
     // if (creationDate != null) {
-    // criteria.add(createNbCriterion(creationDateCmp, "creationDate", creationDate));
+    // criteria.add(createNbCriterion(creationDateCmp, "creationDate",
+    // creationDate));
     // }
     //
     // if (member != null) {
@@ -112,7 +115,8 @@ public final class DBRequests {
     // }
     //
     // if (contribution != null) {
-    // criteria.add(createNbCriterion(contributionCmp, "contribution", contribution));
+    // criteria.add(createNbCriterion(contributionCmp, "contribution",
+    // contribution));
     // }
     //
     // if (nbComments != null) {
@@ -143,8 +147,8 @@ public final class DBRequests {
      * @param <T>
      * @param persistant
      * @param id
-     * @return the persistent object that has a id equals to <code>id</code>, or null if
-     *         non existing.
+     * @return the persistent object that has a id equals to <code>id</code>, or
+     *         null if non existing.
      */
     @SuppressWarnings("unchecked")
     public static <T> T getById(final Class<T> persistant, final Integer id) {
@@ -164,7 +168,10 @@ public final class DBRequests {
 
     public static <T> int count(final Class<T> persistent) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
-        return ((Long) SessionManager.getSessionFactory().getCurrentSession().createQuery("select count(*) from " + meta.getEntityName()).uniqueResult()).intValue();
+        return ((Long) SessionManager.getSessionFactory()
+                                     .getCurrentSession()
+                                     .createQuery("select count(*) from " + meta.getEntityName())
+                                     .uniqueResult()).intValue();
     }
 
     public static PageIterable<DaoDemand> demandsOrderByPopularity() {

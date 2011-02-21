@@ -8,8 +8,8 @@ import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 
 /**
- * A simple component that proposes the users a drop down menu allowing him to select a
- * language
+ * A simple component that proposes the users a drop down menu allowing him to
+ * select a language
  */
 public class LanguageSelector extends HtmlDropDown {
 

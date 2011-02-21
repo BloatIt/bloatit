@@ -22,8 +22,8 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
 
     /**
      * <p>
-     * Creates a money field with a given <code>name</code> and some text used to explain
-     * the usage of the field
+     * Creates a money field with a given <code>name</code> and some text used
+     * to explain the usage of the field
      * </p>
      * 
      * @param name the value of the html attribute <code>name</code>
@@ -35,8 +35,8 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
 
     /**
      * <p>
-     * Creates a money field based on some form data along some text used to explain the
-     * usage of the field
+     * Creates a money field based on some form data along some text used to
+     * explain the usage of the field
      * </p>
      * 
      * @param data the form data to base the field on

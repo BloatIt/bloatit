@@ -19,50 +19,54 @@ package com.bloatit.model.right;
 import com.bloatit.model.Account;
 
 /**
- * The Class AccountRight store the properties accessor for the {@link Account} class.
+ * The Class AccountRight store the properties accessor for the {@link Account}
+ * class.
  */
 public class AccountRight extends RightManager {
 
     /**
-     * The Class Transaction is a {@link PrivateReadOnly} accessor for the Transaction
-     * property.
+     * The Class Transaction is a {@link PrivateReadOnly} accessor for the
+     * Transaction property.
      */
     public static class Transaction extends PrivateReadOnly {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Amount is a {@link PublicReadOnly} accessor for the Amount property.
+     * The Class Amount is a {@link PublicReadOnly} accessor for the Amount
+     * property.
      */
     public static class Amount extends PublicReadOnly {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Comment is a {@link PublicReadOnly} accessor for the Comment property.
+     * The Class Comment is a {@link PublicReadOnly} accessor for the Comment
+     * property.
      */
     public static class Comment extends PublicReadOnly {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class LastModificationDate is a {@link PrivateReadOnly} accessor for the
-     * LastModificationDate property.
+     * The Class LastModificationDate is a {@link PrivateReadOnly} accessor for
+     * the LastModificationDate property.
      */
     public static class LastModificationDate extends PrivateReadOnly {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class CreationDate is a {@link PublicReadOnly} accessor for the CreationDate
-     * property.
+     * The Class CreationDate is a {@link PublicReadOnly} accessor for the
+     * CreationDate property.
      */
     public static class CreationDate extends PublicReadOnly {
         // nothing this is just a rename.
     }
 
     /**
-     * The Class Actor is a {@link PublicReadOnly} accessor for the Actor property.
+     * The Class Actor is a {@link PublicReadOnly} accessor for the Actor
+     * property.
      */
     public static class Actor extends PublicReadOnly {
         // nothing this is just a rename.

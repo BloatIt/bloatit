@@ -8,8 +8,8 @@ package com.bloatit.framework.utils;
  * Parameters are described as pairs Key->value
  * </p>
  * <p>
- * Whenever a parameter is read, it is deleted. A convenience method is provided to read
- * without deletion, but should be used unless for checking
+ * Whenever a parameter is read, it is deleted. A convenience method is provided
+ * to read without deletion, but should be used unless for checking
  * </p>
  */
 public class Parameters extends GenericParameters<HttpParameter, String> {

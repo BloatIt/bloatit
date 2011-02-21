@@ -19,21 +19,27 @@ public @interface ParamConstraint {
     public static final boolean DEFAULT_OPTIONAL = false;
     public static final int DEFAULT_LENGTH = Integer.MAX_VALUE;
 
-
     boolean minIsExclusive() default false;
+
     String min() default DEFAULT_MIN_STR;
+
     tr minErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
     boolean maxIsExclusive() default false;
+
     String max() default DEFAULT_MAX_STR;
+
     tr maxErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
     boolean optional() default DEFAULT_OPTIONAL;
+
     tr optionalErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
     int precision() default DEFAULT_PRECISION;
+
     tr precisionErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
     int length() default Integer.MAX_VALUE;
+
     tr LengthErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 }

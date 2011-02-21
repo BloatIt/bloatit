@@ -19,7 +19,8 @@ package com.bloatit.model.right;
 import com.bloatit.model.Project;
 
 /**
- * The Class ProjectRight store the properties accessor for the {@link Project} class.
+ * The Class ProjectRight store the properties accessor for the {@link Project}
+ * class.
  */
 public class ProjectRight extends RightManager {
 
@@ -30,10 +31,8 @@ public class ProjectRight extends RightManager {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see
-         * com.bloatit.model.right.Accessor#can(com.bloatit.model.right.RestrictedInterface
-         * , com.bloatit.model.right.Action)
+         * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
+         * RestrictedInterface , com.bloatit.model.right.Action)
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {

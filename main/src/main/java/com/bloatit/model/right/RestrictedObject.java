@@ -28,8 +28,8 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.model.Member;
 
 /**
- * A restricted object is an object that contains some properties which accesses are
- * restricted to some users.
+ * A restricted object is an object that contains some properties which accesses
+ * are restricted to some users.
  */
 public abstract class RestrictedObject implements RestrictedInterface {
 
@@ -42,11 +42,14 @@ public abstract class RestrictedObject implements RestrictedInterface {
         /** NOBODY means the user is not authenticated. */
         NOBODY,
         /**
-         * AUTHENTICATED means the user is authenticated but he is not the author of this
-         * content
+         * AUTHENTICATED means the user is authenticated but he is not the
+         * author of this content
          */
         AUTHENTICATED,
-        /** OWNER means the user is authenticated and is the author of this content */
+        /**
+         * OWNER means the user is authenticated and is the author of this
+         * content
+         */
         OWNER
     }
 
@@ -69,10 +72,9 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
-     * com.bloatit.model.right.RestrictedInterface#authenticate(com.bloatit.model.right
-     * .AuthToken)
+     * com.bloatit.model.right.RestrictedInterface#authenticate(com.bloatit.
+     * model.right .AuthToken)
      */
     @Override
     public void authenticate(final AuthToken token) {
@@ -108,10 +110,9 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
-     * com.bloatit.model.right.RestrictedInterface#hasGroupPrivilege(com.bloatit.data.
-     * DaoGroupRight.UserGroupRight)
+     * com.bloatit.model.right.RestrictedInterface#hasGroupPrivilege(com.bloatit
+     * .data. DaoGroupRight.UserGroupRight)
      */
     @Override
     public final boolean hasGroupPrivilege(final UserGroupRight right) {
@@ -121,10 +122,9 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
-     * com.bloatit.model.right.RestrictedInterface#hasUserPrivilege(com.bloatit.data.DaoMember
-     * .Role)
+     * com.bloatit.model.right.RestrictedInterface#hasUserPrivilege(com.bloatit
+     * .data.DaoMember .Role)
      */
     @Override
     public final boolean hasUserPrivilege(final Role role) {
@@ -136,7 +136,6 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.right.RestrictedInterface#isAuthenticated()
      */
     @Override
@@ -147,7 +146,6 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.right.RestrictedInterface#isOwner()
      */
     @Override
@@ -158,7 +156,6 @@ public abstract class RestrictedObject implements RestrictedInterface {
 
     /*
      * (non-Javadoc)
-     * 
      * @see com.bloatit.model.right.RestrictedInterface#isNobody()
      */
     @Override
@@ -171,8 +168,8 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * Return true if this content is mine (I am the author).
      * 
      * @param member is the person that wish to know if the content is his.
-     * @return true if <code>member</code> is the author of <code>this</code>, false
-     *         otherwise.
+     * @return true if <code>member</code> is the author of <code>this</code>,
+     *         false otherwise.
      */
     protected abstract boolean isMine(Member member);
 
@@ -190,7 +187,8 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * Gets the auth token.
      * 
      * @return the auth token
-     * @throws UnauthorizedOperationException the unauthorized operation exception
+     * @throws UnauthorizedOperationException the unauthorized operation
+     *             exception
      */
     protected final AuthToken getAuthToken() throws UnauthorizedOperationException {
         if (token != null) {
@@ -224,7 +222,8 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * 
      * @param accessor the accessor
      * @param action the action
-     * @throws UnauthorizedOperationException the unauthorized operation exception
+     * @throws UnauthorizedOperationException the unauthorized operation
+     *             exception
      */
     protected final void tryAccess(final Accessor accessor, final Action action) throws UnauthorizedOperationException {
         accessor.tryAccess(this, action);

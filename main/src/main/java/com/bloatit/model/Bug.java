@@ -27,8 +27,8 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 
 /**
- * This is a bug report. A bug report is associated with a batch. it is quite similar to
- * the bug report in a classical bugTracker.
+ * This is a bug report. A bug report is associated with a batch. it is quite
+ * similar to the bug report in a classical bugTracker.
  * 
  * @author Thomas Guyard
  */
@@ -39,15 +39,15 @@ public class Bug extends UserContent<DaoBug> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * This class implements the method pattern, implementing the doCreate method. See the
-     * base class for more informations: {@link Creator}.
+     * This class implements the method pattern, implementing the doCreate
+     * method. See the base class for more informations: {@link Creator}.
      */
     private static final class MyCreator extends Creator<DaoBug, Bug> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
+         * @see
+         * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
         public Bug doCreate(final DaoBug dao) {

@@ -34,15 +34,15 @@ public final class Comment extends Kudosable<DaoComment> {
     // /////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * This class implements the method pattern, implementing the doCreate method. See the
-     * base class for more informations: {@link Creator}.
+     * This class implements the method pattern, implementing the doCreate
+     * method. See the base class for more informations: {@link Creator}.
      */
     private static final class MyCreator extends Creator<DaoComment, Comment> {
 
         /*
          * (non-Javadoc)
-         * 
-         * @see com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
+         * @see
+         * com.bloatit.model.Creator#doCreate(com.bloatit.data.DaoIdentifiable)
          */
         @Override
         public Comment doCreate(final DaoComment dao) {
@@ -51,7 +51,8 @@ public final class Comment extends Kudosable<DaoComment> {
     }
 
     /**
-     * Create a new comment and return it. It return null if the <code>dao</code> is null.
+     * Create a new comment and return it. It return null if the
+     * <code>dao</code> is null.
      * 
      * @param dao the dao
      * @return the comment or null.
@@ -74,8 +75,8 @@ public final class Comment extends Kudosable<DaoComment> {
      * {@link AuthToken}.
      * 
      * @param text is the comment text.
-     * @throws UnauthorizedOperationException if the user does not have the WRITE right on
-     *         the Comment property
+     * @throws UnauthorizedOperationException if the user does not have the
+     *             WRITE right on the Comment property
      * @see #addChildComment(Comment) TODO: Make the authentication system.
      * @see #authenticate(AuthToken)
      */

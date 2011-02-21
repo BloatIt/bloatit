@@ -27,12 +27,12 @@ import com.bloatit.framework.webserver.ModelAccessor;
 
 /**
  * <p>
- * Extends this task, implement the doRun method, and you have a custom planned task to
- * run when you want.
+ * Extends this task, implement the doRun method, and you have a custom planned
+ * task to run when you want.
  * </p>
  * <p>
- * This class is thread safe. If you only implement the doRun method, there should be no
- * thread safety problem with your sub classes.
+ * This class is thread safe. If you only implement the doRun method, there
+ * should be no thread safety problem with your sub classes.
  * </p>
  */
 public abstract class PlannedTask extends TimerTask implements Serializable {
@@ -105,7 +105,6 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
         /*
          * (non-Javadoc)
-         * 
          * @see java.lang.Object#hashCode()
          */
         @Override
@@ -119,7 +118,6 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
 
         /*
          * (non-Javadoc)
-         * 
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override

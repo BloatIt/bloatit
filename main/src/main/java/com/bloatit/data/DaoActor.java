@@ -37,16 +37,16 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * DaoActor is the base class of any user that can make money transaction. Each actor has
- * a unique name, an email, and an internalAccount.
+ * DaoActor is the base class of any user that can make money transaction. Each
+ * actor has a unique name, an email, and an internalAccount.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DaoActor extends DaoIdentifiable {
 
     /**
-     * The login represent the user login and the group name. It must be unique (means
-     * that a group cannot have the same name as a user)
+     * The login represent the user login and the group name. It must be unique
+     * (means that a group cannot have the same name as a user)
      */
     @Basic(optional = false)
     @Column(unique = true, updatable = false)
@@ -68,9 +68,9 @@ public abstract class DaoActor extends DaoIdentifiable {
     // ======================================================================
 
     /**
-     * This method use a HQL request. If you intend to use "getByLogin" or "getByName",
-     * "exist" is useless. (In that case you'd better test if getByLogin != null, to
-     * minimize the number of HQL request).
+     * This method use a HQL request. If you intend to use "getByLogin" or
+     * "getByName", "exist" is useless. (In that case you'd better test if
+     * getByLogin != null, to minimize the number of HQL request).
      */
     public static boolean loginExists(final String login) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -97,7 +97,8 @@ public abstract class DaoActor extends DaoIdentifiable {
      * Create a new DaoActor. Initialize the creation date to now. Create a new
      * {@link DaoInternalAccount} and a new {@link DaoExternalAccount}.
      * 
-     * @param login is the login or name of this actor. It must be non null, and unique.
+     * @param login is the login or name of this actor. It must be non null, and
+     *            unique.
      * @throws NonOptionalParameterException if login or mail is null.
      */
     protected DaoActor(final String login) {
@@ -162,8 +163,9 @@ public abstract class DaoActor extends DaoIdentifiable {
     }
 
     /**
-     * @return all the <code>DaoBankTransaction</code> created by <code>this</code>, order
-     *         by <code>creationDate</code>, most recent first.
+     * @return all the <code>DaoBankTransaction</code> created by
+     *         <code>this</code>, order by <code>creationDate</code>, most
+     *         recent first.
      */
     public final PageIterable<DaoBankTransaction> getBankTransactions() {
         return new QueryCollection<DaoBankTransaction>(SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
@@ -188,7 +190,6 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -201,7 +202,6 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

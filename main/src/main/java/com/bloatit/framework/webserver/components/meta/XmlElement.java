@@ -25,7 +25,8 @@ public abstract class XmlElement extends XmlNode {
      * Add an attribute to an element
      * </p>
      * <p>
-     * Special treatment will happen if the attribute <code>name</code> is <code>id<code>
+     * Special treatment will happen if the attribute <code>name</code> is
+     * <code>id<code>
      * </p>
      * <p>
      * Example :

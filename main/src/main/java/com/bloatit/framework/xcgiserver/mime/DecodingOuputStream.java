@@ -7,7 +7,8 @@ import com.bloatit.framework.xcgiserver.mime.decoders.MimeDecoder;
 
 /**
  * <p>
- * An output stream that will decode text (using MimeDecoder) before it is written.
+ * An output stream that will decode text (using MimeDecoder) before it is
+ * written.
  * </p>
  */
 public class DecodingOuputStream extends OutputStream {
@@ -37,9 +38,10 @@ public class DecodingOuputStream extends OutputStream {
      * 
      * @param output The stream used to write the decoded text
      * @param codec The codec used to decode the text
-     * @param bufferMultiply The multiplicator used to compute the buffer size. To find
-     *        the real bufferSize, you need to do
-     *        <code> {@link MimeDecoder#decodeStep()}</code>* <code>bufferMultiply</code>
+     * @param bufferMultiply The multiplicator used to compute the buffer size.
+     *            To find the real bufferSize, you need to do
+     *            <code> {@link MimeDecoder#decodeStep()}</code>*
+     *            <code>bufferMultiply</code>
      */
     public DecodingOuputStream(final OutputStream output, final MimeDecoder codec, final int bufferMultiply) {
         super();
@@ -84,8 +86,9 @@ public class DecodingOuputStream extends OutputStream {
      * Writes one byte to the stream.
      * </p>
      * <p>
-     * This method has the same result as calling the {@link #write(int)} method, except
-     * it will result in VERY slightly less overehead so should be prefered ...
+     * This method has the same result as calling the {@link #write(int)}
+     * method, except it will result in VERY slightly less overehead so should
+     * be prefered ...
      * </p>
      * 
      * @param b the byte to write
