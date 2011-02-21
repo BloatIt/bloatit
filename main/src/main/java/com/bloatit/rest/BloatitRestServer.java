@@ -10,22 +10,17 @@ import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 
 public class BloatitRestServer extends RestServer {
     RequestMethod requestMethod;
-    
+
     @Override
     protected RestResource constructRestResource(String pageCode, RequestMethod requestMethod, Parameters params, Session session) {
         this.requestMethod = requestMethod;
-        
-        if(pageCode.equals("rest/plop")){
+
+        if (pageCode.equals("rest/plop")) {
             Log.rest().trace("Found resource rest/plop");
             return new TestResource(requestMethod);
         }
-        
+
         return null;
-    }
-    
-    @Override
-    protected RestResource generateErrorResource(StatusCode statusCode) {
-        return new ResourceNotFound(requestMethod);
     }
 
     @Override
@@ -33,5 +28,15 @@ public class BloatitRestServer extends RestServer {
         HashSet<String> directories = new HashSet<String>();
         directories.add("rest");
         return directories;
+    }
+
+    @Override
+    protected RestResource generateErrorResource(StatusCode status, String message) {
+        return new ErrorResource(requestMethod, status, message);
+    }
+
+    @Override
+    protected RestResource generateErrorResource(RestException exception) {
+        return new ErrorResource(requestMethod, exception);
     }
 }

@@ -1,6 +1,7 @@
 package com.bloatit.rest;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,19 +75,19 @@ public abstract class RestResource {
 
     public final void writeToHttp(final HttpResponse response) throws RestException, IOException {
         switch (requestMethod) {
-        case POST:
-            doPost();
-            break;
-        case PUT:
-            doPut();
-            break;
-        case DELETE:
-            doDelete();
-            break;
-        case GET:
-        default:
-            doGet();
-            break;
+            case POST:
+                doPost();
+                break;
+            case PUT:
+                doPut();
+                break;
+            case DELETE:
+                doDelete();
+                break;
+            case GET:
+            default:
+                doGet();
+                break;
         }
         response.writeRestResource(this);
     }
@@ -96,16 +97,14 @@ public abstract class RestResource {
      * Adds a new node to the resource
      * </p>
      * 
-     * @param node
-     *            the node to add
+     * @param node the node to add
      */
     public void add(XmlNode node) {
         nodes.add(node);
     }
 
     /**
-     * @param outputStream
-     *            the stream used to output the text
+     * @param outputStream the stream used to output the text
      */
     public void write(QueryResponseStream outputStream) {
         for (XmlNode node : nodes) {
@@ -127,15 +126,13 @@ public abstract class RestResource {
      * the collection's members.</li>
      * </p>
      * 
-     * @throws RestException
-     *             when this method is not available for this rest resource
-     *             (other methods may be implemented)
-     * @throws InvalidRightException
-     *             when the rest client doens't have sufficient rights to access
-     *             this resource
+     * @throws RestException when this method is not available for this rest
+     *             resource (other methods may be implemented)
+     * @throws InvalidRightException when the rest client doens't have
+     *             sufficient rights to access this resource
      */
     protected void doGet() throws RestException {
-        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "GET doesn't exist for this ReST resource");
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "GET doesn't exist for this ReST resource. Available for this resource: " + getAvailable() );
     }
 
     /**
@@ -152,15 +149,13 @@ public abstract class RestResource {
      * operation.</li>
      * </p>
      * 
-     * @throws RestException
-     *             when this method is not available for this rest resource
-     *             (other methods may be implemented)
-     * @throws InvalidRightException
-     *             when the rest client doens't have sufficient rights to access
-     *             this resource
+     * @throws RestException when this method is not available for this rest
+     *             resource (other methods may be implemented)
+     * @throws InvalidRightException when the rest client doens't have
+     *             sufficient rights to access this resource
      */
     protected void doPost() throws RestException {
-        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "POST doesn't exist for this ReST resource");
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "POST doesn't exist for this ReST resource. Available for this resource: :" + getAvailable());
     }
 
     /**
@@ -176,15 +171,13 @@ public abstract class RestResource {
      * collection.</li>
      * </p>
      * 
-     * @throws RestException
-     *             when this method is not available for this rest resource
-     *             (other methods may be implemented)
-     * @throws InvalidRightException
-     *             when the rest client doens't have sufficient rights to access
-     *             this resource
+     * @throws RestException when this method is not available for this rest
+     *             resource (other methods may be implemented)
+     * @throws InvalidRightException when the rest client doens't have
+     *             sufficient rights to access this resource
      */
     protected void doPut() throws RestException {
-        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "PUT doesn't exist for this ReST resource");
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "PUT doesn't exist for this ReST resource. Available for this resource: :" + getAvailable());
     }
 
     /**
@@ -198,14 +191,25 @@ public abstract class RestResource {
      * <li>With a resource id to : Delete the entire collection.</li>
      * </p>
      * 
-     * @throws RestException
-     *             when this method is not available for this rest resource
-     *             (other methods may be implemented)
-     * @throws InvalidRightException
-     *             when the rest client doens't have sufficient rights to access
-     *             this resource
+     * @throws RestException when this method is not available for this rest
+     *             resource (other methods may be implemented)
+     * @throws InvalidRightException when the rest client doens't have
+     *             sufficient rights to access this resource
      */
     protected void doDelete() throws RestException {
-        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "DELETE doesn't exist for this ReST resource");
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "DELETE doesn't exist for this ReST resource. Available for this resource: :" + getAvailable());
+    }
+
+    private String getAvailable() {
+        Class<?> clazz = this.getClass();
+        String result = "";
+        for (Method method : clazz.getDeclaredMethods()) {
+            String name = method.getName();
+            if (name.equals("doGet") || name.equals("doPost") || name.equals("doPut") || name.equals("doDelete")) {
+                result += name;
+            }
+        }
+        
+        return result;
     }
 }

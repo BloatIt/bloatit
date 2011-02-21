@@ -9,7 +9,6 @@ public class BloatitServer {
 
     public static void main(final String[] args) {
         final Framework framework = new Framework(new Model());
-        Framework framework = new Framework(new Model());
         framework.addProcessor(new BloatitRestServer());
         framework.addProcessor(new BloatitWebServer());
 
