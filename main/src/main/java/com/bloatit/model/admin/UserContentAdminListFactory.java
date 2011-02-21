@@ -82,9 +82,9 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
         factory.fromGroup(group.getDao());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public PageIterable<U> list() {
-        return (PageIterable<U>) new AdminList.UserContentAdminList((PageIterable<DaoUserContent>) factory.createCollection());
+        return (PageIterable) new AdminList.UserContentAdminList((PageIterable<DaoUserContent>) factory.createCollection());
     }
 
     protected DaoUserContentListFactory<T> getfactory() {
