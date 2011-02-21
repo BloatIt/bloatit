@@ -3,7 +3,7 @@ package com.bloatit.web.pages.team;
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -36,8 +36,9 @@ public class CreateTeamAction extends LoggedAction {
     max = "50", maxErrorMsg = @tr("Number of characters for team name has to be inferior to 50"))
     private final String login;
 
-    @RequestParam(name = CONTACT_CODE, role = Role.POST, defaultValue = "")
+    @RequestParam(name = CONTACT_CODE, role = Role.POST)
     @ParamConstraint(max = "300", maxErrorMsg = @tr("Number of characters for contact has to be inferior to 300"))
+    @Optional
     private final String contact;
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
@@ -45,7 +46,7 @@ public class CreateTeamAction extends LoggedAction {
     max = "5000", maxErrorMsg = @tr("Number of characters for description has to be inferior to 5000"))
     private final String description;
 
-    @RequestParam(name = RIGHTS_CODE, role = Role.POST, level = Level.ERROR)
+    @RequestParam(name = RIGHTS_CODE, role = Role.POST)
     private final String right;
 
     private final CreateTeamActionUrl url;

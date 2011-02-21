@@ -18,7 +18,6 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.Session;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
 
@@ -47,7 +46,7 @@ public abstract class Action implements Linkable {
     }
 
     public final Url process() throws RedirectException {
-        if (actionUrl.getMessages().hasMessage(Level.ERROR)) {
+        if (!actionUrl.getMessages().isEmpty()) {
             return doProcessErrors();
         }
         return doProcess();

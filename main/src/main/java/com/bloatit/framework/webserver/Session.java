@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.bloatit.framework.utils.SessionParameters;
+import com.bloatit.framework.webserver.ErrorMessage.Level;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlParameter;
@@ -49,7 +50,7 @@ public final class Session {
                                                                // seconds
 
     private final UUID key;
-    private final Deque<Message> notificationList;
+    private final Deque<ErrorMessage> notificationList;
 
     // TODO: use string reference to avoid to keep reference on Member object
     private AuthToken authToken;
@@ -72,7 +73,7 @@ public final class Session {
     Session(final UUID id) {
         this.key = id;
         authToken = null;
-        notificationList = new ArrayDeque<Message>();
+        notificationList = new ArrayDeque<ErrorMessage>();
         resetExpirationTime();
     }
 
@@ -142,15 +143,15 @@ public final class Session {
     }
 
     public final void notifyGood(final String message) {
-        notificationList.add(new Message(message, Message.Level.INFO));
+        notificationList.add(new ErrorMessage(Level.INFO, message));
     }
 
     public final void notifyBad(final String message) {
-        notificationList.add(new Message(message, Message.Level.WARNING));
+        notificationList.add(new ErrorMessage(Level.WARNING, message));
     }
 
     public final void notifyError(final String message) {
-        notificationList.add(new Message(message, Message.Level.ERROR));
+        notificationList.add(new ErrorMessage(Level.FATAL, message));
     }
 
     /**
@@ -158,19 +159,7 @@ public final class Session {
      */
     public final void notifyList(final List<Message> errors) {
         for (final Message error : errors) {
-            switch (error.getLevel()) {
-                case ERROR:
-                    notifyError(error.getMessage());
-                    break;
-                case WARNING:
-                    notifyBad(error.getMessage());
-                    break;
-                case INFO:
-                    notifyGood(error.getMessage());
-                    break;
-                default:
-                    break;
-            }
+            notifyError(error.getMessage());
         }
     }
 
@@ -178,7 +167,7 @@ public final class Session {
         notificationList.clear();
     }
 
-    public Deque<Message> getNotifications() {
+    public Deque<ErrorMessage> getNotifications() {
         return notificationList;
     }
 

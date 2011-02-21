@@ -34,7 +34,7 @@ public class HtmlDropDown extends HtmlFormField<String> {
     }
 
     private void setDefaultOnConstruction(final FormFieldData<?> data) {
-        checked = data.getFieldDefaultValueAsString();
+        checked = data.getSuggestedValue();
     }
 
     public HtmlDropDown(final String name) {

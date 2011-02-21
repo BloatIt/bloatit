@@ -15,12 +15,7 @@ public final class Messages extends ArrayList<Message> {
         super();
     }
 
-    public boolean hasMessage(final Message.Level level) {
-        for (final Message error : this) {
-            if (error.getLevel() == level) {
-                return true;
-            }
-        }
-        return false;
+    public boolean hasMessage() {
+        return !isEmpty();
     }
 }

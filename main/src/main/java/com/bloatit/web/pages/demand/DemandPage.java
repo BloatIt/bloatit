@@ -16,7 +16,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.PageNotFoundException;
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -29,11 +29,12 @@ public final class DemandPage extends MasterPage {
 
     public static final String IDEA_FIELD_NAME = "id";
 
-    @RequestParam(name = IDEA_FIELD_NAME, level = Level.ERROR)
+    @RequestParam(name = IDEA_FIELD_NAME)
     private final Demand demand;
 
     @SuppressWarnings("unused")
-    @RequestParam(role = Role.PRETTY, defaultValue = "Title", generatedFrom = "demand")
+    @RequestParam(role = Role.PRETTY, generatedFrom = "demand")
+    @Optional("Title")
     private final String title;
 
     private final DemandPageUrl url;
@@ -77,11 +78,7 @@ public final class DemandPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         addNotifications(url.getMessages());
-        if (url.getMessages().hasMessage(Level.ERROR)) {
-            throw new PageNotFoundException();
-        }
-
-        if (url.getMessages().hasMessage(Level.ERROR)) {
+        if (!url.getMessages().isEmpty()) {
             throw new PageNotFoundException();
         }
 

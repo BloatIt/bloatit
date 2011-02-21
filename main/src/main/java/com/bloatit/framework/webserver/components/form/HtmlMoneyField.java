@@ -45,7 +45,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
     public HtmlMoneyField(final FormFieldData<BigDecimal> data, final String label) {
         super(new HtmlSimpleInput("text"), data.getFieldName(), label);
         setDefaultValue(data);
-        addErrorMessages(data.getFieldMessages());
+        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

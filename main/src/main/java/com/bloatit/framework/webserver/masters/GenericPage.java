@@ -5,6 +5,8 @@ import java.util.Locale;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.ErrorMessage;
+import com.bloatit.framework.webserver.ErrorMessage.Level;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -14,7 +16,6 @@ import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.url.Messages;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.web.pages.master.HtmlNotification;
-import com.bloatit.web.pages.master.HtmlNotification.Level;
 
 public abstract class GenericPage extends Page {
 
@@ -80,29 +81,16 @@ public abstract class GenericPage extends Page {
 
     protected final void addNotifications(final Messages messages) {
         for (final Message message : messages) {
-            switch (message.getLevel()) {
-                case INFO:
-                    addNotification(new HtmlNotification(Level.INFO, message.getMessage()));
-                    break;
-                case WARNING:
-                    addNotification(new HtmlNotification(Level.WARNING, message.getMessage()));
-                    break;
-                case ERROR:
-                    addNotification(new HtmlNotification(Level.ERROR, message.getMessage()));
-                    break;
-                default:
-                    // do nothing
-                    break;
-            }
+            addNotification(new HtmlNotification(Level.FATAL, message.getMessage()));
         }
     }
 
     private void addWaitingNotifications() {
 
-        for (final Message notification : session.getNotifications()) {
+        for (final ErrorMessage notification : session.getNotifications()) {
             switch (notification.getLevel()) {
-                case ERROR:
-                    addNotification(new HtmlNotification(Level.ERROR, notification.getMessage()));
+                case FATAL:
+                    addNotification(new HtmlNotification(Level.FATAL, notification.getMessage()));
                     break;
                 case WARNING:
                     addNotification(new HtmlNotification(Level.WARNING, notification.getMessage()));

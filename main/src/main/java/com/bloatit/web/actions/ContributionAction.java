@@ -17,7 +17,6 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -41,7 +40,7 @@ public final class ContributionAction extends LoggedAction {
     public static final String COMMENT_CODE = "comment";
     public static final String TARGET_IDEA = "targetIdea";
 
-    @RequestParam(name = TARGET_IDEA, level = Level.ERROR)
+    @RequestParam(name = TARGET_IDEA)
     private final Demand targetIdea;
 
     @RequestParam(name = COMMENT_CODE, role = Role.POST)

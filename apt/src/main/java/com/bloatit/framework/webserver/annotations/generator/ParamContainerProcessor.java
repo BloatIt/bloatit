@@ -20,7 +20,7 @@ import javax.lang.model.util.TypeKindVisitor6;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -110,26 +110,31 @@ public class ParamContainerProcessor extends AbstractProcessor {
     private void parseAnAttribute(final JavaGenerator generator, final Element attribute) {
 
         final RequestParam parm = attribute.getAnnotation(RequestParam.class);
+        final Optional optional = attribute.getAnnotation(Optional.class);
+        String defaultValue = optional != null ? optional.value() : null;
+        if (defaultValue == Optional.DEFAULT_DEFAULT_VALUE) {
+            defaultValue = null;
+        }
 
         // Its a simple param
         if (parm != null) {
             final String attributeName = attribute.getSimpleName().toString();
             final String attributeUrlString = parm.name().isEmpty() ? attribute.getSimpleName().toString() : parm.name();
+            final String suggestedValue = parm.suggestedValue() == RequestParam.DEFAULT_SUGGESTED_VALUE ? null : parm.suggestedValue();
 
             if (parm.generatedFrom().isEmpty()) {
                 generator.addAttribute(getType(attribute), //
                                        getConversionType(attribute), //
                                        attributeUrlString, //
-                                       parm.defaultValue(), //
+                                       defaultValue, //
+                                       suggestedValue, //
                                        attributeName, //
                                        parm.role(), //
-                                       parm.level(), //
                                        parm.conversionErrorMsg().value(), //
-                                       attribute.getAnnotation(ParamConstraint.class));
+                                       attribute.getAnnotation(ParamConstraint.class),
+                                       optional != null);
                 generator.addGetterSetter(getType(attribute), getConversionType(attribute), attributeName);
-                if (!parm.defaultValue().equals(RequestParam.DEFAULT_DEFAULT_VALUE)) {
-                    generator.addDefaultParameter(attributeName, getType(attribute), parm.defaultValue());
-                } else if (parm.level() == Level.ERROR && (parm.role() == Role.GET || parm.role() == Role.PRETTY)) {
+                if (optional == null && (parm.role() == Role.GET)) {
                     generator.addConstructorParameter(getType(attribute), attributeName);
                 }
                 generator.registerAttribute(attributeName);

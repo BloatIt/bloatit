@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
@@ -24,7 +23,7 @@ public final class PaylineAction extends LoggedAction {
 
     public static final String CHARGE_AMOUNT_CODE = "amount";
 
-    @RequestParam(level = Level.ERROR, name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
+    @RequestParam(name = CHARGE_AMOUNT_CODE, role = RequestParam.Role.POST)
     private final BigDecimal amount;
 
     public PaylineAction(final PaylineActionUrl url) {

@@ -18,7 +18,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -45,20 +45,24 @@ import com.bloatit.web.url.OfferPageUrl;
 @ParamContainer("offer")
 public final class OfferPage extends LoggedPage {
 
-    @RequestParam(level = Level.ERROR)
+    @RequestParam()
     private Demand targetIdea = null;
 
-    @RequestParam(name = OfferAction.PRICE_CODE, level = Level.INFO, role = Role.SESSION)
+    @RequestParam(name = OfferAction.PRICE_CODE, role = Role.SESSION)
+    @Optional
     private final BigDecimal price;
 
-    @RequestParam(name = OfferAction.EXPIRY_CODE, level = Level.INFO, role = Role.SESSION)
+    @RequestParam(name = OfferAction.EXPIRY_CODE, role = Role.SESSION)
+    @Optional
     private final DateLocale expiryDate;
 
     @SuppressWarnings("unused")
-    @RequestParam(name = OfferAction.TITLE_CODE, level = Level.INFO, role = Role.SESSION)
+    @RequestParam(name = OfferAction.TITLE_CODE, role = Role.SESSION)
+    @Optional
     private final String title; // Keeping it for now, most likely useless
 
-    @RequestParam(name = OfferAction.DESCRIPTION_CODE, level = Level.INFO, role = Role.SESSION)
+    @RequestParam(name = OfferAction.DESCRIPTION_CODE, role = Role.SESSION)
+    @Optional
     private final String description;
 
     public OfferPage(final OfferPageUrl url) {

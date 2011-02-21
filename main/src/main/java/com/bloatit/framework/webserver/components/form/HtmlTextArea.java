@@ -41,7 +41,7 @@ public final class HtmlTextArea extends HtmlFormField<String> {
     public HtmlTextArea(final FormFieldData<String> data, final String label, final int rows, final int cols) {
         super(new HtmlSimpleTextArea(rows, cols), data.getFieldName(), label);
         setDefaultValue(data);
-        addErrorMessages(data.getFieldMessages());
+        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

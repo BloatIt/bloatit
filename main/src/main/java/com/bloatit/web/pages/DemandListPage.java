@@ -18,6 +18,7 @@ import com.bloatit.data.search.DemandSearch.SortMethod;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -43,7 +44,9 @@ public final class DemandListPage extends MasterPage {
     public static final String FILTER_IN_PROGRESS = "in progress";
     public static final String FILTER_FINISHED = "finished";
     public static final String FILTER_CODE = "filter";
-    @RequestParam(defaultValue = FILTER_IN_PROGRESS, name = FILTER_CODE)
+    
+    @RequestParam(name = FILTER_CODE)
+    @Optional(FILTER_IN_PROGRESS)
     private final String filter;
 
     public static final String SORT_BY_RELEVANCE = "relevance";
@@ -53,11 +56,13 @@ public final class DemandListPage extends MasterPage {
     public static final String SORT_BY_CREATION_DATE = "creation date";
     public static final String SORT_BY_EXPIRATION_DATE = "expiration date";
     public static final String SORT_CODE = "sort";
-    @RequestParam(defaultValue = SORT_BY_POPULARITY, name = SORT_CODE)
+    @RequestParam(name = SORT_CODE)
+    @Optional(SORT_BY_POPULARITY)
     private final String sort;
 
     public static final String SEARCH_STRING_CODE = "search_string";
-    @RequestParam(defaultValue = "", name = SEARCH_STRING_CODE)
+    @RequestParam(name = SEARCH_STRING_CODE)
+    @Optional
     private final String searchString;
 
     private HtmlPagedList<Demand> pagedDemandList;

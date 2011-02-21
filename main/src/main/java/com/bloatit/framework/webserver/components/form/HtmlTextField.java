@@ -27,7 +27,7 @@ public final class HtmlTextField extends HtmlFormField<String> {
     public HtmlTextField(final FormFieldData<String> data, final String label) {
         super(new HtmlSimpleInput("text"), data.getFieldName(), label);
         setDefaultValue(data);
-        addErrorMessages(data.getFieldMessages());
+        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

@@ -15,7 +15,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.PageNotFoundException;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -36,7 +35,7 @@ public final class BugPage extends MasterPage {
     public static final String BUG_FIELD_NAME = "id";
 
     @ParamConstraint(optionalErrorMsg = @tr("The id of the project is incorrect or missing"))
-    @RequestParam(name = BUG_FIELD_NAME, level = Level.ERROR)
+    @RequestParam(name = BUG_FIELD_NAME)
     private final Bug bug;
 
     private final BugPageUrl url;
@@ -50,7 +49,7 @@ public final class BugPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         session.notifyList(url.getMessages());
-        if (url.getMessages().hasMessage(Level.ERROR)) {
+        if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
         }
 

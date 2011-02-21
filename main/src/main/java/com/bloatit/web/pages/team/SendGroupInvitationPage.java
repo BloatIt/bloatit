@@ -5,7 +5,6 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -31,7 +30,7 @@ public class SendGroupInvitationPage extends LoggedPage {
     @SuppressWarnings("unused")
     private final SendGroupInvitationPageUrl url;
 
-    @RequestParam(level = Level.INFO)
+    @RequestParam()
     private final Group group;
 
     public SendGroupInvitationPage(final SendGroupInvitationPageUrl url) {

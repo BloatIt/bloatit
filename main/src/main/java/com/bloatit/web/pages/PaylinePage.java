@@ -5,7 +5,7 @@ import org.hibernate.CacheMode;
 import com.bloatit.common.Log;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
@@ -17,7 +17,8 @@ import com.bloatit.web.url.PaylinePageUrl;
 @ParamContainer("payline/result")
 public final class PaylinePage extends MasterPage {
 
-    @RequestParam(name = "token", level = Level.INFO)
+    @RequestParam(name = "token")
+    @Optional
     private final String token;
 
     @RequestParam(name = "ack")

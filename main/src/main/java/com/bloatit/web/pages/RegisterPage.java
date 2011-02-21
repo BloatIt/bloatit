@@ -14,6 +14,7 @@ package com.bloatit.web.pages;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.i18n.Country;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -40,11 +41,13 @@ import com.bloatit.web.url.RegisterPageUrl;
 public final class RegisterPage extends MasterPage {
 
     @SuppressWarnings("unused")
-    @RequestParam(name = RegisterAction.COUNTRY_CODE, defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = RegisterAction.COUNTRY_CODE, role = Role.SESSION)
+    @Optional("")
     private final String country;
 
     @SuppressWarnings("unused")
-    @RequestParam(name = RegisterAction.LANGUAGE_CODE, defaultValue = "", role = Role.SESSION)
+    @RequestParam(name = RegisterAction.LANGUAGE_CODE, role = Role.SESSION)
+    @Optional("")
     private final String lang;
 
     public RegisterPage(final RegisterPageUrl url) {

@@ -99,7 +99,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
     public HtmlCheckbox(final FormFieldData<Boolean> data, final String label, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), data.getFieldName(), label, position);
         setDefaultValue(data);
-        addErrorMessages(data.getFieldMessages());
+        addErrorMessages(data.getErrorMessages());
     }
 
     @Override
