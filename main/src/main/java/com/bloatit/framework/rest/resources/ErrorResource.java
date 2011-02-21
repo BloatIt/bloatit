@@ -1,11 +1,13 @@
-package com.bloatit.rest;
+package com.bloatit.framework.rest.resources;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import com.bloatit.framework.rest.RestResource;
+import com.bloatit.framework.rest.RestServer.RequestMethod;
+import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.components.rest.RestElement;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
-import com.bloatit.rest.RestServer.RequestMethod;
 
 public class ErrorResource extends RestResource {
     private RestException exception;

@@ -1,10 +1,11 @@
-package com.bloatit.rest;
+package com.bloatit.framework.rest;
 
 import java.io.IOException;
 import java.util.Set;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.SessionManager;
@@ -30,7 +31,7 @@ import com.bloatit.framework.xcgiserver.XcgiProcessor;
  */
 public abstract class RestServer implements XcgiProcessor {
 
-    protected enum RequestMethod {
+    public enum RequestMethod {
         GET, POST, PUT, DELETE;
     }
 

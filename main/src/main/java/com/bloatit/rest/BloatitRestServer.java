@@ -4,9 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.rest.RestResource;
+import com.bloatit.framework.rest.RestServer;
+import com.bloatit.framework.rest.exception.RestException;
+import com.bloatit.framework.rest.resources.ErrorResource;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
+import com.bloatit.rest.resources.TestResource;
 
 public class BloatitRestServer extends RestServer {
     RequestMethod requestMethod;

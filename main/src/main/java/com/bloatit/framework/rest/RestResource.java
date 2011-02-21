@@ -1,15 +1,16 @@
-package com.bloatit.rest;
+package com.bloatit.framework.rest;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bloatit.framework.rest.RestServer.RequestMethod;
+import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
-import com.bloatit.rest.RestServer.RequestMethod;
 
 /**
  * <p>

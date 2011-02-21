@@ -1,7 +1,9 @@
-package com.bloatit.rest;
+package com.bloatit.rest.resources;
 
+import com.bloatit.framework.rest.RestResource;
+import com.bloatit.framework.rest.RestServer.RequestMethod;
+import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.components.rest.RestElement;
-import com.bloatit.rest.RestServer.RequestMethod;
 
 public class TestResource extends RestResource {
     public TestResource(RequestMethod requestMethod) {

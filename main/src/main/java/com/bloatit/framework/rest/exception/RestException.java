@@ -1,4 +1,4 @@
-package com.bloatit.rest;
+package com.bloatit.framework.rest.exception;
 
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 

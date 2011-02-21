@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.rest.RestResource;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
-import com.bloatit.rest.RestResource;
 
 public final class HttpResponse {
     public enum StatusCode {
