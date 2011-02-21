@@ -68,7 +68,7 @@ public final class ReportBugAction extends Action {
     private final ReportBugActionUrl url;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
-    @RequestParam(name = BUG_LEVEL, defaultValue = "MINOR", role = Role.POST)
+    @RequestParam(name = BUG_LEVEL, suggestedValue = "MINOR", role = Role.POST)
     private final BindedLevel level;
 
     @ParamConstraint(optionalErrorMsg = @tr("A new bug must be linked to a milestone"))
