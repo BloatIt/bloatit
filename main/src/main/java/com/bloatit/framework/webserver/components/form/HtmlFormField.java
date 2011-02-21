@@ -256,12 +256,10 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * @param data the default value
      */
     protected final void setDefaultValue(final FormFieldData<T> data) {
-        final String defaultValueAsString = data.getFieldDefaultValueAsString();
-        if (data.getFieldDefaultValue() == null && defaultValueAsString != null) {
-            this.doSetDefaultValue(defaultValueAsString);
-        } else {
-            this.setDefaultValue(data.getFieldDefaultValue());
-        }
+        final String suggestedValue = data.getSuggestedValue();
+        if (suggestedValue != null) {
+            this.doSetDefaultValue(suggestedValue);
+        } 
     }
 
     /**

@@ -2,7 +2,7 @@ package com.bloatit.web.actions;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.masters.Action;
@@ -16,7 +16,8 @@ import com.bloatit.web.url.PaylineNotifyActionUrl;
 @ParamContainer("payline/donotify")
 public final class PaylineNotifyAction extends Action {
 
-    @RequestParam(name = "token", level = Level.INFO)
+    @RequestParam(name = "token")
+    @Optional
     private final String token;
 
     public PaylineNotifyAction(final PaylineNotifyActionUrl url) {

@@ -30,9 +30,9 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
 
     public <T extends Enum<T> & Displayable> HtmlRadioButtonGroup(final FormFieldData<T> data) {
         this(data.getFieldName());
-        final T fieldDefaultValue = data.getFieldDefaultValue();
+        final String fieldDefaultValue = data.getSuggestedValue();
         if (fieldDefaultValue != null) {
-            checked = fieldDefaultValue.name();
+            checked = fieldDefaultValue;
         }
     }
 

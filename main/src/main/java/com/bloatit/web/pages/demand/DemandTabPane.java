@@ -16,6 +16,7 @@ import java.util.Locale;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -47,7 +48,8 @@ public final class DemandTabPane extends HtmlPageComponent {
 
     public static final String DESCRIPTION_TAB = "description_tab";
 
-    @RequestParam(name = "demand_tab_pane", defaultValue = DESCRIPTION_TAB)
+    @RequestParam(name = "demand_tab_pane")
+    @Optional(DESCRIPTION_TAB)
     private String activeTabKey;
 
     /**

@@ -8,6 +8,7 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -54,24 +55,29 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         }
     }
 
-    @RequestParam(defaultValue = "creationDate")
+    @RequestParam
     @ParamConstraint(optional = true)
+    @Optional("creationDate")
     private final String orderByStr;
 
-    @RequestParam(defaultValue = "false")
+    @RequestParam
     @ParamConstraint(optional = true)
+    @Optional("false")
     private final Boolean asc;
 
-    @RequestParam(defaultValue = "WITHOUT")
+    @RequestParam
     @ParamConstraint(optional = true)
+    @Optional("WITHOUT")
     private final DisplayableFilterType filterDeleted;
 
-    @RequestParam(defaultValue = "NO_FILTER")
+    @RequestParam
     @ParamConstraint(optional = true)
+    @Optional("NO_FILTER")
     private final DisplayableFilterType filterFile;
 
-    @RequestParam(defaultValue = "NO_FILTER")
+    @RequestParam
     @ParamConstraint(optional = true)
+    @Optional("NO_FILTER")
     private final DisplayableFilterType filterGroup;
 
     private final T factory;

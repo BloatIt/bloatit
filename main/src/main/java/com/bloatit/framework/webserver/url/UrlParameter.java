@@ -13,7 +13,6 @@ import com.bloatit.framework.utils.SessionParameters;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Message;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.Message.What;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
@@ -31,6 +30,19 @@ public class UrlParameter<T, U> extends UrlNode {
         this.description = description;
         this.constraints = constraints;
         this.conversionError = false;
+        if (description.getDefaultValue() != null) {
+            setValueFromString(description.getDefaultValue());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setValueFromString(final String strValue) {
+        try {
+            this.value = (T) Loaders.fromStr(getValueClass(), strValue);
+            this.strValue = strValue;
+        } catch (final ConversionErrorException e) {
+            Log.framework().fatal("conversion error ! Make sure the default value is correct.", e);
+        }
     }
 
     @Override
@@ -136,10 +148,10 @@ public class UrlParameter<T, U> extends UrlNode {
     public Messages getMessages() {
         final Messages messages = new Messages();
         if (conversionError) {
-            final Message message = new Message(getConversionErrorMsg(), getLevel(), What.CONVERSION_ERROR, getName(), getStringValue());
+            final Message message = new Message(getConversionErrorMsg(), What.CONVERSION_ERROR, getName(), getStringValue());
             messages.add(message);
         } else if (constraints != null) {
-            constraints.computeConstraints((U) getValue(), getValueClass(), messages, getLevel(), getName(), getStringValue());
+            constraints.computeConstraints((U) getValue(), getValueClass(), messages, getName(), getStringValue());
         }
         return messages;
     }
@@ -171,6 +183,17 @@ public class UrlParameter<T, U> extends UrlNode {
         return description.getDefaultValue();
     }
 
+    public String getSuggestedValue() {
+        if (strValue != null && !strValue.isEmpty()){
+            return strValue;
+        }
+        String suggestedValue = description.getSuggestedValue();
+        if (suggestedValue == null) {
+            return getDefaultValue();
+        }
+        return suggestedValue;
+    }
+    
     @Override
     @Deprecated
     public void addParameter(final String aName, final String aValue) {
@@ -185,10 +208,6 @@ public class UrlParameter<T, U> extends UrlNode {
 
     private String getConversionErrorMsg() {
         return description.getConversionErrorMsg();
-    }
-
-    public final Level getLevel() {
-        return description.getLevel();
     }
 
     public final String getName() {
@@ -220,24 +239,15 @@ public class UrlParameter<T, U> extends UrlNode {
         }
 
         @Override
-        public T getFieldDefaultValue() {
+        public String getSuggestedValue() {
             if (parameterFromSession != null) {
-                return parameterFromSession.getValue();
-            }
-            return null;
-
-        }
-
-        @Override
-        public String getFieldDefaultValueAsString() {
-            if (parameterFromSession != null) {
-                return parameterFromSession.getStringValue();
+                return parameterFromSession.getSuggestedValue();
             }
             return null;
         }
 
         @Override
-        public Messages getFieldMessages() {
+        public Messages getErrorMessages() {
             if (parameterFromSession != null) {
                 return parameterFromSession.getMessages();
             }

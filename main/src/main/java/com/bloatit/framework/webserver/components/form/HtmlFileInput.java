@@ -54,7 +54,7 @@ public final class HtmlFileInput extends HtmlFormField<String> {
         super(new HtmlSimpleInput("file"), data.getFieldName(), label);
         setDefaultValue(data);
 
-        addErrorMessages(data.getFieldMessages());
+        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

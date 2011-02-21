@@ -1,6 +1,5 @@
 package com.bloatit.framework.webserver.annotations.generator;
 
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -38,7 +37,6 @@ public abstract class JavaGenerator {
             componentClassName = className + "Component";
         }
 
-        _import.append("import com.bloatit.framework.webserver.annotations.Message.Level;\n");
         _import.append("import com.bloatit.framework.webserver.annotations.RequestParam.Role;\n");
         _import.append("import com.bloatit.framework.webserver.annotations.RequestParam;\n");
         _import.append("import com.bloatit.framework.webserver.annotations.ParamConstraint;\n");
@@ -60,21 +58,23 @@ public abstract class JavaGenerator {
                                    final String conversionType,
                                    final String nameString,
                                    final String defaultValue,
+                                   final String suggestedValue,
                                    String name,
                                    final Role role,
-                                   final Level level,
                                    final String malFormedMsg,
-                                   final ParamConstraint constraints) {
+                                   final ParamConstraint constraints,
+                                   boolean optional) {
         name = toCamelAttributeName(name);
 
         final String createParameter = createParameter("\"" + nameString + "\"",
                                                        defaultValue,
+                                                       suggestedValue,
                                                        type,
                                                        conversionType,
                                                        role,
-                                                       level,
                                                        malFormedMsg,
-                                                       constraints);
+                                                       constraints,
+                                                       optional);
         _attributes.append("private");
         declareUrlParameter(_attributes, type, conversionType).append(name).append(" = ").append(createParameter);
         _clone.append("    other.").append(name).append(" = ").append("this.").append(name).append(".clone();\n");
@@ -93,18 +93,6 @@ public abstract class JavaGenerator {
         _constructorParameters.append(type).append(" ").append(attributeName);
         _constructorNames.append(attributeName);
         _constructorAssign.append("        this.").append(attributeName).append(".setValue(").append(attributeName).append(");\n");
-    }
-
-    public final void addDefaultParameter(String attributeName, final String className, final String defaultValue) {
-        attributeName = toCamelAttributeName(attributeName);
-        _constructorDefaults.append("        this.")
-                            .append(attributeName)
-                            .append(".setValue(")
-                            .append("Loaders.fromStr(")
-                            .append(className)
-                            .append(".class, \"")
-                            .append(defaultValue)
-                            .append("\"));\n");
     }
 
     public void addGetterSetter(final String type, final String conversionType, final String name) {
@@ -168,12 +156,13 @@ public abstract class JavaGenerator {
     // nameString must be already escaped.
     public final String createParameter(final String nameString,
                                         final String defaultValue,
+                                        final String suggestedValue,
                                         final String type,
                                         final String conversionType,
                                         final Role role,
-                                        final Level level,
                                         final String malFormedMsg,
-                                        final ParamConstraint constraints) {
+                                        final ParamConstraint constraints,
+                                        final boolean isOptional) {
 
         final StringBuilder sb = new StringBuilder();
         sb.append(" new UrlParameter<").append(type).append(", ").append(conversionType).append(">(");
@@ -186,17 +175,22 @@ public abstract class JavaGenerator {
         sb.append("new UrlParameterDescription<").append(conversionType).append(">(");
         sb.append(nameString).append(", ").append(conversionType).append(".class, ");
         addRole(role, sb);
-        if (defaultValue.equals(RequestParam.DEFAULT_DEFAULT_VALUE)) {
-            sb.append(", ").append("RequestParam.DEFAULT_DEFAULT_VALUE").append(", ");
-        } else {
+        if (defaultValue != null){
             sb.append(", \"").append(defaultValue).append("\", ");
+        }else{
+            sb.append(", null, ");
+        }
+        if (suggestedValue != null){
+            sb.append("\"").append(suggestedValue).append("\", ");
+        }else{
+            sb.append("null, ");
         }
         if (malFormedMsg.equals(RequestParam.DEFAULT_ERROR_MSG)) {
             sb.append("RequestParam.DEFAULT_ERROR_MSG").append(", ");
         } else {
             sb.append("\"").append(malFormedMsg.replaceAll("[\\\"]", "\\\\\"")).append("\", ");
         }
-        addLevel(level, sb);
+        sb.append(isOptional);
         sb.append("), ");
 
         sb.append("new UrlParameterConstraints<").append(conversionType).append(">(");
@@ -225,23 +219,6 @@ public abstract class JavaGenerator {
             return sb.append("ParamConstraint.DEFAULT_ERROR_MSG");
         }
         return sb.append("\"").append(msg.replaceAll("[\\\"]", "\\\\\"")).append("\"");
-    }
-
-    private void addLevel(final Level level, final StringBuilder sb) {
-        switch (level) {
-            case ERROR:
-                sb.append("Level.ERROR");
-                break;
-            case INFO:
-                sb.append("Level.INFO");
-                break;
-            case WARNING:
-                sb.append("Level.WARNING");
-                break;
-            default:
-                assert false;
-                break;
-        }
     }
 
     private void addRole(final Role role, final StringBuilder sb) {
@@ -373,7 +350,7 @@ public abstract class JavaGenerator {
         urlClass.append("    }\n");
 
         urlClass.append("    public ").append(className).append("() {\n");
-        urlClass.append("        this(getName(), null, null);\n");
+        urlClass.append("        this(getName(), new Parameters(), null);\n");
         urlClass.append("    }\n");
 
         urlClass.append("    protected ").append(className).append("(String name, Parameters params, SessionParameters session) {\n");

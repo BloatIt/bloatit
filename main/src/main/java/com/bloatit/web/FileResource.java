@@ -11,7 +11,6 @@
  */
 package com.bloatit.web;
 
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -31,7 +30,7 @@ public final class FileResource extends Resource {
     public static final String FILE_FIELD_NAME = "id";
 
     @ParamConstraint(optionalErrorMsg = @tr("The id of the resource is incorrect or missing"))
-    @RequestParam(name = FILE_FIELD_NAME, level = Level.ERROR)
+    @RequestParam(name = FILE_FIELD_NAME)
     private final FileMetadata file;
 
     public FileResource(final FileResourceUrl url) {

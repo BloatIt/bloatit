@@ -31,7 +31,7 @@ public final class HtmlDateField extends HtmlFormField<DateLocale> {
     public HtmlDateField(final FormFieldData<DateLocale> data, final String label) {
         super(new HtmlSimpleInput("text"), data.getFieldName(), label);
         setDefaultValue(data);
-        addErrorMessages(data.getFieldMessages());
+        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

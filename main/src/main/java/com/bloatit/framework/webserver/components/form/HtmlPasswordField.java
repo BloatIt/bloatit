@@ -62,7 +62,7 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
     public HtmlPasswordField(final FormFieldData<String> data, final String label) {
         super(new HtmlSimpleInput("password"), data.getFieldName(), label);
         setDefaultValue(data);
-        addErrorMessages(data.getFieldMessages());
+        addErrorMessages(data.getErrorMessages());
     }
 
     @Override

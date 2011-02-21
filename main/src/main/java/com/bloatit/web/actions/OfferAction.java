@@ -18,7 +18,7 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -43,7 +43,7 @@ public final class OfferAction extends LoggedAction {
     public static final String DESCRIPTION_CODE = "offer_description";
     public static final String ON_THE_BEHALF = "offer_behalf";
 
-    @RequestParam(level = Level.ERROR, role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
+    @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
     private Demand targetIdea = null;
 
     @RequestParam(name = PRICE_CODE, role = Role.POST, conversionErrorMsg = @tr("Invalid or missing value for price field."))
@@ -58,7 +58,8 @@ public final class OfferAction extends LoggedAction {
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
     private final String description;
 
-    @RequestParam(name = ON_THE_BEHALF, role = Role.POST, level = Level.INFO)
+    @RequestParam(name = ON_THE_BEHALF, role = Role.POST)
+    @Optional
     private final Group group;
 
     private final OfferActionUrl url;

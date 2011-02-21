@@ -26,13 +26,11 @@ public interface FormFieldData<T> {
      * 
      * @return the error messages on the field.
      */
-    Messages getFieldMessages();
+    Messages getErrorMessages();
 
     /**
-     * @return the default value to put into the field, or an empty string if
-     *         there is no empty field.
+     * @return the suggested value to put into the field, or a null if there is
+     *         no suggested value
      */
-    T getFieldDefaultValue();
-
-    String getFieldDefaultValueAsString();
+    String getSuggestedValue();
 }

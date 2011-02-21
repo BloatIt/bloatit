@@ -5,7 +5,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.masters.Action;
@@ -17,7 +17,8 @@ import com.bloatit.web.url.PaylineReturnActionUrl;
 @ParamContainer("payline/doreturn")
 public class PaylineReturnAction extends Action {
 
-    @RequestParam(name = "token", level = Level.INFO)
+    @RequestParam(name = "token")
+    @Optional
     private final String token;
 
     @RequestParam(name = "ack")

@@ -12,7 +12,6 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -41,7 +40,7 @@ public final class ReportBugPage extends LoggedPage {
 
     public static final String BUG_BATCH = "bug_offer";
 
-    @RequestParam(name = BUG_BATCH, role = Role.GET, level = Level.ERROR)
+    @RequestParam(name = BUG_BATCH, role = Role.GET)
     private final Offer offer;
 
     public ReportBugPage(final ReportBugPageUrl reportBugPageUrl) {

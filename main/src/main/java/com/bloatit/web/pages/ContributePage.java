@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -40,7 +39,7 @@ import com.bloatit.web.url.ContributionActionUrl;
 @ParamContainer("contribute")
 public final class ContributePage extends LoggedPage {
 
-    @RequestParam(level = Level.ERROR)
+    @RequestParam()
     private final Demand targetIdea;
 
     private final ContributePageUrl url;
@@ -54,7 +53,7 @@ public final class ContributePage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() throws RedirectException {
         addNotifications(url.getMessages());
-        if (url.getMessages().hasMessage(Level.ERROR)) {
+        if (url.getMessages().hasMessage()) {
             session.notifyList(url.getMessages());
             throw new RedirectException(Context.getSession().getLastStablePage());
         }

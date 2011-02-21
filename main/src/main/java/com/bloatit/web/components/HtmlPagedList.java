@@ -14,6 +14,7 @@ package com.bloatit.web.components;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlList;
@@ -38,9 +39,11 @@ public class HtmlPagedList<T> extends HtmlList {
     private final Url currentUrl;
     private final HtmlPagedListUrl url;
 
-    @RequestParam(defaultValue = "1", name = CURRENT_PAGE_FIELD_NAME)
+    @RequestParam(name = CURRENT_PAGE_FIELD_NAME)
+    @Optional("1")
     private final Integer currentPage;
-    @RequestParam(defaultValue = "10", name = PAGE_SIZE_FIELD_NAME)
+    @RequestParam(name = PAGE_SIZE_FIELD_NAME)
+    @Optional("10")
     private final Integer pageSize;
 
     // Explain contract for URL and PageListUrl
