@@ -10,6 +10,8 @@
  */
 package com.bloatit.web.pages;
 
+import java.util.EnumSet;
+
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -18,6 +20,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
@@ -25,6 +28,7 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Offer;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.web.actions.ReportBugAction.BindedLevel;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
@@ -99,6 +103,13 @@ public final class ReportBugPage extends LoggedPage {
         languageInput.setComment(Context.tr("Language of the description."));
         reportBugForm.add(languageInput);
 
+        // Level
+        final FormFieldData<BindedLevel> levelFormFieldData = doReportUrl.getLevelParameter().formFieldData();
+        final LevelSelector levelInput = new LevelSelector(levelFormFieldData, Context.tr("Level"));
+        levelInput.setComment(Context.tr("Level of the bug."));
+        reportBugForm.add(levelInput);
+
+
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 
         final HtmlDiv group = new HtmlDiv();
@@ -115,6 +126,22 @@ public final class ReportBugPage extends LoggedPage {
     @Override
     public String getRefusalReason() {
         return Context.tr("You must be logged to report a new bug.");
+    }
+
+    static public class LevelSelector extends HtmlDropDown {
+
+
+
+        public LevelSelector(FormFieldData<BindedLevel> levelFormFieldData, String label) {
+            super(levelFormFieldData, label);
+
+            addDropDownElements(EnumSet.allOf(BindedLevel.class));
+
+            //That doesn't works. Make it work
+            doSetDefaultValue(levelFormFieldData.getFieldDefaultValueAsString());
+
+        }
+
     }
 
 }

@@ -16,6 +16,7 @@ import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.ColumnGenerator;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel.StringColumnGenerator;
 import com.bloatit.framework.webserver.components.advanced.HtmlTable;
+import com.bloatit.framework.webserver.components.form.Displayable;
 import com.bloatit.framework.webserver.components.form.HtmlCheckbox;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
@@ -35,7 +36,7 @@ import com.bloatit.web.url.UserContentAdminPageUrl;
 public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentAdmin<U>, T extends UserContentAdminListFactory<U, V>> extends
         AdminPage {
 
-    public enum OrderByUserContent implements HtmlRadioButtonGroup.Displayable {
+    public enum OrderByUserContent implements Displayable {
         NOTHING(tr("No order")), //
         MEMBER(tr("Member")), //
         GROUP(tr("Group")), //

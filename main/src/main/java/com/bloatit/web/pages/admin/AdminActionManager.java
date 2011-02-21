@@ -4,7 +4,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
-import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup.Displayable;
+import com.bloatit.framework.webserver.components.form.Displayable;
 
 public class AdminActionManager {
 

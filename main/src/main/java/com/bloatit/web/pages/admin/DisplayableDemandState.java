@@ -3,9 +3,9 @@ package com.bloatit.web.pages.admin;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoDemand.DemandState;
-import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
+import com.bloatit.framework.webserver.components.form.Displayable;
 
-public enum DisplayableDemandState implements HtmlRadioButtonGroup.Displayable {
+public enum DisplayableDemandState implements Displayable {
     NO_FILTER(tr("No filter")), //
     PENDING(tr("Validate")), //
     PREPARING(tr("Pending")), //

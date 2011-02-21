@@ -50,10 +50,6 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
         return button;
     }
 
-    public static interface Displayable {
-        String getDisplayName();
-    }
-
     public <T extends Enum<T> & Displayable> void addRadioButton(final EnumSet<T> buttons) {
         for (final T enumValue : buttons) {
             addRadioButton(enumValue.name(), enumValue.getDisplayName());

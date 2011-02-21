@@ -26,7 +26,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -82,17 +84,30 @@ public final class DaoBug extends DaoUserContent {
     @Enumerated
     private State state;
 
-    public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level errorLevel) {
+    public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
         super(member);
-        if (title == null || description == null || batch == null || locale == null || errorLevel == null || description.isEmpty()) {
+        if (title == null || description == null || batch == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.batch = batch;
         this.title = title;
         this.description = description;
         this.locale = locale;
-        this.errorLevel = errorLevel;
+        this.errorLevel = level;
         this.state = State.PENDING;
+    }
+
+    public static DaoBug createAndPersist(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoBug bug = new DaoBug(member, batch, title, description, locale, level);
+        try {
+            session.save(bug);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+            throw e;
+        }
+        return bug;
     }
 
     public void addComment(final DaoComment comment) {
@@ -106,7 +121,7 @@ public final class DaoBug extends DaoUserContent {
     /**
      * The person assigned to a bug is the developer (the member that has created the
      * offer).
-     * 
+     *
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {
@@ -204,7 +219,7 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -218,7 +233,7 @@ public final class DaoBug extends DaoUserContent {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

@@ -2,9 +2,9 @@ package com.bloatit.web.pages.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
+import com.bloatit.framework.webserver.components.form.Displayable;
 
-public enum DisplayableFilterType implements HtmlRadioButtonGroup.Displayable {
+public enum DisplayableFilterType implements Displayable {
     NO_FILTER(tr("No filter")), //
     WITH(tr("With")), //
     WITHOUT(tr("Without"));
