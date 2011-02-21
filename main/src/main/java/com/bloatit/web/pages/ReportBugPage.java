@@ -135,7 +135,7 @@ public final class ReportBugPage extends LoggedPage {
             addDropDownElements(EnumSet.allOf(BindedLevel.class));
 
             // That doesn't works. Make it work
-            doSetDefaultValue(levelFormFieldData.getFieldDefaultValueAsString());
+            doSetDefaultValue(levelFormFieldData.getSuggestedValue());
 
         }
 

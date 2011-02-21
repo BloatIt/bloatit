@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoComment;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Comment;
@@ -27,61 +25,7 @@ import com.bloatit.model.Comment;
  * PageIterable<Comment>.
  */
 public final class CommentList extends ListBinder<Comment, DaoComment> {
-
-    /**
-     * Instantiates a new comment list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public CommentList(final PageIterable<DaoComment> daoCollection) {
+    public CommentList(PageIterable<DaoComment> daoCollection) {
         super(daoCollection);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<Comment> createFromDaoIterator(final Iterator<DaoComment> dao) {
-        return new CommentIterator(dao);
-    }
-
-    /**
-     * The Class CommentIterator.
-     */
-    static final class CommentIterator extends com.bloatit.model.lists.IteratorBinder<Comment, DaoComment> {
-
-        /**
-         * Instantiates a new comment iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public CommentIterator(final Iterable<DaoComment> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new comment iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public CommentIterator(final Iterator<DaoComment> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected Comment createFromDao(final DaoComment dao) {
-            return Comment.create(dao);
-        }
-
-    }
-
 }

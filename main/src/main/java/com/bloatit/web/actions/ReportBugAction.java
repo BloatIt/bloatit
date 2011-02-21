@@ -62,7 +62,7 @@ public final class ReportBugAction extends Action {
     private final ReportBugActionUrl url;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
-    @RequestParam(name = BUG_LEVEL, defaultValue = "MINOR", role = Role.POST)
+    @RequestParam(name = BUG_LEVEL, role = Role.POST)
     private final BindedLevel level;
 
     @ParamConstraint(optionalErrorMsg = @tr("A new bug must be linked to a milestone"))
@@ -108,10 +108,8 @@ public final class ReportBugAction extends Action {
             session.addParameter(url.getLevelParameter());
             session.addParameter(url.getLangParameter());
             return new ReportBugPageUrl(batch.getOffer());
-        } else {
-            return new PageNotFoundUrl();
         }
-
+        return new PageNotFoundUrl();
     }
 
     public enum BindedLevel implements Displayable {

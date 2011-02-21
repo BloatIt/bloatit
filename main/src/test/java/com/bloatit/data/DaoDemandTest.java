@@ -186,7 +186,7 @@ public class DaoDemandTest extends DataTestUnit {
 
         DemandSearch search = new DemandSearch("super");
 
-        assertTrue(search.search().size() > 0);
+        assertTrue(search.doSearch().size() > 0);
     }
 
     public void testGetComment() {

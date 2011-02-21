@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoKudos;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Kudos;
@@ -26,61 +24,7 @@ import com.bloatit.model.Kudos;
  * The Class KudosList transforms PageIterable<DaoKudos> to PageIterable<Kudos>.
  */
 public final class KudosList extends ListBinder<Kudos, DaoKudos> {
-
-    /**
-     * Instantiates a new kudos list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public KudosList(final PageIterable<DaoKudos> daoCollection) {
+    public KudosList(PageIterable<DaoKudos> daoCollection) {
         super(daoCollection);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<Kudos> createFromDaoIterator(final Iterator<DaoKudos> dao) {
-        return new KudosIterator(dao);
-    }
-
-    /**
-     * The Class KudosIterator.
-     */
-    static final class KudosIterator extends com.bloatit.model.lists.IteratorBinder<Kudos, DaoKudos> {
-
-        /**
-         * Instantiates a new kudos iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public KudosIterator(final Iterable<DaoKudos> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new kudos iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public KudosIterator(final Iterator<DaoKudos> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected Kudos createFromDao(final DaoKudos dao) {
-            return Kudos.create(dao);
-        }
-
-    }
-
 }

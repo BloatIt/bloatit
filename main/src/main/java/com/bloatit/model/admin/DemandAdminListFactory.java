@@ -18,7 +18,7 @@ public class DemandAdminListFactory extends KudosableAdminListFactory<DaoDemand,
 
     @Override
     public PageIterable<DemandAdmin> list() {
-        return new AdminList.DemandAdminList(getfactory().createCollection());
+        return new AdminList<DaoDemand, DemandAdmin>(getfactory().createCollection());
     }
 
     public void stateEquals(final DemandState state) {

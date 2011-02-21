@@ -18,7 +18,9 @@ package com.bloatit.model.lists;
 
 import java.util.Iterator;
 
+import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Identifiable;
 
 /**
  * The Class ListBinder is the base class of all the binder lists. A Binder list
@@ -28,7 +30,7 @@ import com.bloatit.framework.utils.PageIterable;
  * @param <E> the Model level representation of a Dao class
  * @param <DAO> the Dao class corresponding to <code>E</code>
  */
-public abstract class ListBinder<E, DAO> implements PageIterable<E> {
+public class ListBinder<E extends Identifiable<DAO>, DAO extends DaoIdentifiable> implements PageIterable<E> {
 
     /** The dao collection. */
     private final PageIterable<DAO> daoCollection;
@@ -112,6 +114,8 @@ public abstract class ListBinder<E, DAO> implements PageIterable<E> {
      * @param dao the dao
      * @return the iterator
      */
-    protected abstract Iterator<E> createFromDaoIterator(Iterator<DAO> dao);
+    protected Iterator<E> createFromDaoIterator(Iterator<DAO> dao){
+        return new IteratorBinder<E, DAO>(dao);
+    }
 
 }

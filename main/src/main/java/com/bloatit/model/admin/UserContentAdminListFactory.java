@@ -84,7 +84,7 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public PageIterable<U> list() {
-        return (PageIterable) new AdminList.UserContentAdminList((PageIterable<DaoUserContent>) factory.createCollection());
+        return (PageIterable) new AdminList<DaoUserContent, UserContentAdmin<DaoUserContent>>((PageIterable<DaoUserContent>) factory.createCollection());
     }
 
     protected DaoUserContentListFactory<T> getfactory() {

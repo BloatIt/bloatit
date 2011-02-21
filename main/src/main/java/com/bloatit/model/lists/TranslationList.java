@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Translation;
@@ -27,61 +25,7 @@ import com.bloatit.model.Translation;
  * PageIterable<Translation>.
  */
 public final class TranslationList extends ListBinder<Translation, DaoTranslation> {
-
-    /**
-     * Instantiates a new translation list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public TranslationList(final PageIterable<DaoTranslation> daoCollection) {
+    public TranslationList(PageIterable<DaoTranslation> daoCollection) {
         super(daoCollection);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<Translation> createFromDaoIterator(final Iterator<DaoTranslation> dao) {
-        return new TranslationIterator(dao);
-    }
-
-    /**
-     * The Class TranslationIterator.
-     */
-    static final class TranslationIterator extends com.bloatit.model.lists.IteratorBinder<Translation, DaoTranslation> {
-
-        /**
-         * Instantiates a new translation iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public TranslationIterator(final Iterable<DaoTranslation> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new translation iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public TranslationIterator(final Iterator<DaoTranslation> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected Translation createFromDao(final DaoTranslation dao) {
-            return Translation.create(dao);
-        }
-
-    }
-
 }

@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoMember;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Member;
@@ -27,61 +25,7 @@ import com.bloatit.model.Member;
  * PageIterable<Member>.
  */
 public final class MemberList extends ListBinder<Member, DaoMember> {
-
-    /**
-     * Instantiates a new member list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public MemberList(final PageIterable<DaoMember> daoCollection) {
+    public MemberList(PageIterable<DaoMember> daoCollection) {
         super(daoCollection);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<Member> createFromDaoIterator(final Iterator<DaoMember> dao) {
-        return new MemberIterator(dao);
-    }
-
-    /**
-     * The Class MemberIterator.
-     */
-    static final class MemberIterator extends IteratorBinder<Member, DaoMember> {
-
-        /**
-         * Instantiates a new member iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public MemberIterator(final Iterable<DaoMember> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new member iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public MemberIterator(final Iterator<DaoMember> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected Member createFromDao(final DaoMember dao) {
-            return Member.create(dao);
-        }
-
-    }
-
 }
