@@ -16,5 +16,5 @@ public abstract class XmlNode implements Iterable<XmlNode> {
      * @param txt the <code>Text</code> that will be used to display the Html
      *            tags
      */
-    protected abstract void write(QueryResponseStream txt);
+    public abstract void write(QueryResponseStream txt);
 }

@@ -9,9 +9,32 @@ import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
 import com.bloatit.rest.RestResource;
 
 public final class HttpResponse {
+    public enum StatusCode {
+        OK_200("200"), //
+        ERROR_301_MOVED_PERMANENTLY("301"), //
+        ERROR_302_FOUND("302"), //
+        ERROR_401_UNAUTHORIZED("401"), //
+        ERROR_403_FORBIDDEN("403"), //
+        ERROR_404_NOT_FOUND("404"), //
+        ERROR_405_METHOD_NOT_ALLOWED("405"), //
+        ERROR_500_INTERNAL_SERVER_ERROR("500"), //
+        ERROR_501_NOT_IMPLEMENTED("501"), //
+        ERROR_503_SERVICE_UNAVAILABLE("503");//
+
+        private String code;
+
+        StatusCode(String code) {
+            this.code = code;
+        }
+
+        public String getCode() {
+            return code;
+        }
+    }
 
     private final OutputStream output;
     private final IndentedHtmlStream htmlText;
+    private StatusCode status = StatusCode.OK_200;
 
     public HttpResponse(final OutputStream output) {
         this.output = output;
@@ -45,7 +68,8 @@ public final class HttpResponse {
         closeHeaders();
     }
 
-    public void writePage(final com.bloatit.framework.webserver.masters.Page page) throws IOException {
+    public void writePage(final Page page) throws IOException {
+        output.write(("Status: " + status.getCode() + " Not Found\r\n").getBytes());
         writeCookies();
         output.write("Content-Type: text/html\r\n".getBytes());
 
@@ -71,7 +95,26 @@ public final class HttpResponse {
      * @throws IOException whenever an IO error occurs on the underlying stream
      */
     public void writeRestResource(final RestResource resource) throws IOException {
-
+        output.write("Content-Type: text/xml\r\n".getBytes());
+        closeHeaders();
+        htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+        if (!(status == StatusCode.OK_200)) {
+            htmlText.writeLine("<rest result=\"fail\">");
+            htmlText.indent();
+            htmlText.writeLine(("<error code=\"" + status.getCode() + "\" reason=\" " + status.toString() + "\" />"));
+            htmlText.unindent();
+            htmlText.writeLine("</rest>");
+        }else {
+            htmlText.writeLine("<rest result=\"ok\">");
+            htmlText.indent();
+            resource.write(htmlText);
+            htmlText.unindent();
+            htmlText.writeLine("</rest>");
+        }
+    }
+    
+    public void setStatus(StatusCode status) {
+        this.status = status;
     }
 
     private void closeHeaders() throws IOException {

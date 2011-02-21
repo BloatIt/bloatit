@@ -1,11 +1,14 @@
 package com.bloatit.rest;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
+import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
 import com.bloatit.framework.webserver.masters.HttpResponse;
-import com.bloatit.framework.webserver.masters.Linkable;
+import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
+import com.bloatit.rest.RestServer.RequestMethod;
 
 /**
  * <p>
@@ -17,14 +20,37 @@ import com.bloatit.framework.webserver.masters.Linkable;
  * Representational State Transfer was introduced and defined in 2000 by Roy
  * Fielding in his doctoral dissertation. Fielding is one of the principal
  * authors of the Hypertext Transfer Protocol (HTTP) specification versions 1.0
- * and 1.1.
+ * and 1.1. (source: wikipedia)
+ * </p>
+ * <p>
+ * Any rest resource must extend this class. They can then implement their
+ * choices of methods from :
+ * <li>{@link #doGet()}</li>
+ * <li>{@link #doPost()}</li>
+ * <li>{@link #doPut()}</li>
+ * <li>{@link #doDelete()}</li> Any method not implemented will throw a
+ * <code>NotAvailableRestMethodException</code>. The server will in turn inform
+ * the client that this method is not available for this resource.<br />
+ * <b>NOTE</b>: The <code>NotAvailableRestMethodException</code> means the
+ * method is not available for this resource. It doesn't mean the client can't
+ * access the method with its current rights.
+ * </p>
+ * <p>
+ * Children classes need to use the {@link #add(XmlNode)} method to add xml
+ * content to the RestResource. The generated Xml will be sent to the client
+ * (with a header).
  * </p>
  */
-public abstract class RestResource implements Linkable {
-    enum RequestMethod {
-        GET, POST, PUT, DELETE;
-    }
+public abstract class RestResource {
 
+    /**
+     * The list of nodes for this resource
+     */
+    private List<XmlNode> nodes;
+
+    /**
+     * The method used in the Request (<code>GET, POST, PUT, DELETE</code>)
+     */
     protected RequestMethod requestMethod;
 
     /**
@@ -40,46 +66,51 @@ public abstract class RestResource implements Linkable {
      * @see #doPut()
      * @see #doDelete()
      */
-    public RestResource(final String requestMethod) {
+    public RestResource(RequestMethod requestMethod) {
         super();
-        try {
-            this.requestMethod = RequestMethod.valueOf(requestMethod);
-        } catch (final IllegalArgumentException e) {
-            throw new FatalErrorException(requestMethod + "is not a valid Request Method. Must be GET, POST, PUT or DELETE", e);
-        }
+        this.requestMethod = requestMethod;
+        nodes = new ArrayList<XmlNode>();
     }
 
-    @Override
-    public final void writeToHttp(final HttpResponse response) throws IOException {
-        try {
-            switch (requestMethod) {
-                case POST:
-                    doPost();
-                    break;
-                case PUT:
-                    doPut();
-                    break;
-                case DELETE:
-                    doDelete();
-                    break;
-                case GET:
-                default:
-                    doGet();
-                    break;
-            }
-            response.writeRestResource(this);
-        } catch (final NotAvailableRestMethodException e) {
-            Log.rest().error("Not available method " + requestMethod.toString() + " for this resource " + getClass(), e);
-            // TODO write here 404 error
-        } catch (final InvalidRightException e) {
-            Log.rest().warn("User has unsifficient rights to use this method", e);
-            // TODO write here insufficient right error
+    public final void writeToHttp(final HttpResponse response) throws RestException, IOException {
+        switch (requestMethod) {
+        case POST:
+            doPost();
+            break;
+        case PUT:
+            doPut();
+            break;
+        case DELETE:
+            doDelete();
+            break;
+        case GET:
+        default:
+            doGet();
+            break;
         }
+        response.writeRestResource(this);
     }
 
-    public RestResource add() {
+    /**
+     * <p>
+     * Adds a new node to the resource
+     * </p>
+     * 
+     * @param node
+     *            the node to add
+     */
+    public void add(XmlNode node) {
+        nodes.add(node);
+    }
 
-        return this;
+    /**
+     * @param outputStream
+     *            the stream used to output the text
+     */
+    public void write(QueryResponseStream outputStream) {
+        for (XmlNode node : nodes) {
+            node.write(outputStream);
+        }
     }
 
     /**
@@ -96,12 +127,16 @@ public abstract class RestResource implements Linkable {
      * the collection's members.</li>
      * </p>
      * 
-     * @throws NotAvailableRestMethodException when this method is not available
-     *             for this rest resource (other methods may be implemented)
-     * @throws InvalidRightException when the rest client doens't have
-     *             sufficient rights to access this resource
+     * @throws RestException
+     *             when this method is not available for this rest resource
+     *             (other methods may be implemented)
+     * @throws InvalidRightException
+     *             when the rest client doens't have sufficient rights to access
+     *             this resource
      */
-    protected abstract void doGet() throws NotAvailableRestMethodException, InvalidRightException;
+    protected void doGet() throws RestException {
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "GET doesn't exist for this ReST resource");
+    }
 
     /**
      * <p>
@@ -117,12 +152,16 @@ public abstract class RestResource implements Linkable {
      * operation.</li>
      * </p>
      * 
-     * @throws NotAvailableRestMethodException when this method is not available
-     *             for this rest resource (other methods may be implemented)
-     * @throws InvalidRightException when the rest client doens't have
-     *             sufficient rights to access this resource
+     * @throws RestException
+     *             when this method is not available for this rest resource
+     *             (other methods may be implemented)
+     * @throws InvalidRightException
+     *             when the rest client doens't have sufficient rights to access
+     *             this resource
      */
-    protected abstract void doPost() throws NotAvailableRestMethodException, InvalidRightException;
+    protected void doPost() throws RestException {
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "POST doesn't exist for this ReST resource");
+    }
 
     /**
      * <p>
@@ -137,12 +176,16 @@ public abstract class RestResource implements Linkable {
      * collection.</li>
      * </p>
      * 
-     * @throws NotAvailableRestMethodException when this method is not available
-     *             for this rest resource (other methods may be implemented)
-     * @throws InvalidRightException when the rest client doens't have
-     *             sufficient rights to access this resource
+     * @throws RestException
+     *             when this method is not available for this rest resource
+     *             (other methods may be implemented)
+     * @throws InvalidRightException
+     *             when the rest client doens't have sufficient rights to access
+     *             this resource
      */
-    protected abstract void doPut() throws NotAvailableRestMethodException, InvalidRightException;
+    protected void doPut() throws RestException {
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "PUT doesn't exist for this ReST resource");
+    }
 
     /**
      * <p>
@@ -155,10 +198,14 @@ public abstract class RestResource implements Linkable {
      * <li>With a resource id to : Delete the entire collection.</li>
      * </p>
      * 
-     * @throws NotAvailableRestMethodException when this method is not available
-     *             for this rest resource (other methods may be implemented)
-     * @throws InvalidRightException when the rest client doens't have
-     *             sufficient rights to access this resource
+     * @throws RestException
+     *             when this method is not available for this rest resource
+     *             (other methods may be implemented)
+     * @throws InvalidRightException
+     *             when the rest client doens't have sufficient rights to access
+     *             this resource
      */
-    protected abstract void doDelete() throws NotAvailableRestMethodException, InvalidRightException;
+    protected void doDelete() throws RestException {
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "DELETE doesn't exist for this ReST resource");
+    }
 }
