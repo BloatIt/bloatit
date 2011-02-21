@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
-import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup.Displayable;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 
 public class HtmlDropDown extends HtmlFormField<String> {

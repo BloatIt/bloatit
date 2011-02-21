@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.actions;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.Locale;
 
 import com.bloatit.data.DaoBug.Level;
@@ -21,15 +23,17 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
+import com.bloatit.framework.webserver.components.form.Displayable;
 import com.bloatit.framework.webserver.masters.Action;
+import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Bug;
 import com.bloatit.model.demand.DemandManager;
-import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.LoginPageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
+import com.bloatit.web.url.ReportBugPageUrl;
 
 /**
  * A response to a form used to create a new idea
@@ -48,18 +52,21 @@ public final class ReportBugAction extends Action {
     min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
     private final String title;
 
+    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug description"))
     @RequestParam(name = BUG_DESCRIPTION, role = Role.POST)
-    @ParamConstraint(optional = true)
     private final String description;
 
+    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a description language"))
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
     private final ReportBugActionUrl url;
 
-    @RequestParam(name = BUG_LEVEL, role = Role.POST)
-    private final Level level;
+    @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
+    @RequestParam(name = BUG_LEVEL, defaultValue = "MINOR", role = Role.POST)
+    private final BindedLevel level;
 
-    @RequestParam(name = BUG_BATCH, role = Role.POST)
+    @ParamConstraint(optionalErrorMsg = @tr("A new bug must be linked to a milestone"))
+    @RequestParam(name = BUG_BATCH, role = Role.GET)
     private final Batch batch;
 
     public ReportBugAction(final ReportBugActionUrl url) {
@@ -84,7 +91,7 @@ public final class ReportBugAction extends Action {
         }
         final Locale langLocale = new Locale(lang);
 
-        final Bug bug = batch.addBug(session.getAuthToken().getMember(), title, description, langLocale, level);
+        final Bug bug = batch.addBug(session.getAuthToken().getMember(), title, description, langLocale, level.getLevel());
         final BugPageUrl to = new BugPageUrl(bug);
 
         return to;
@@ -94,12 +101,39 @@ public final class ReportBugAction extends Action {
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
 
-        session.addParameter(url.getTitleParameter());
-        session.addParameter(url.getDescriptionParameter());
-        session.addParameter(url.getBatchParameter());
-        session.addParameter(url.getLevelParameter());
-        session.addParameter(url.getLangParameter());
+        if (batch != null) {
+            session.addParameter(url.getTitleParameter());
+            session.addParameter(url.getDescriptionParameter());
+            session.addParameter(url.getBatchParameter());
+            session.addParameter(url.getLevelParameter());
+            session.addParameter(url.getLangParameter());
+            return new ReportBugPageUrl(batch.getOffer());
+        } else {
+            return new PageNotFoundUrl();
+        }
 
-        return new AddProjectPageUrl();
     }
+
+    public enum BindedLevel implements Displayable {
+        FATAL(Level.FATAL, tr("FATAL")), MAJOR(Level.MAJOR, tr("MAJOR")), MINOR(Level.MINOR, tr("MINOR"));
+
+        private final String label;
+        private final Level level;
+
+        private BindedLevel(Level level, String label) {
+            this.level = level;
+            this.label = label;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return label;
+        }
+
+        public Level getLevel() {
+            return level;
+        }
+
+    }
+
 }

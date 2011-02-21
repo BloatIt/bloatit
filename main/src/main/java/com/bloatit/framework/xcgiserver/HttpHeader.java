@@ -21,6 +21,7 @@ package com.bloatit.framework.xcgiserver;
 import java.util.List;
 import java.util.Map;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.xcgiserver.LazyLoaders.LazyInt;
 import com.bloatit.framework.xcgiserver.LazyLoaders.LazyMap;
 import com.bloatit.framework.xcgiserver.LazyLoaders.LazyString;
@@ -174,7 +175,7 @@ public class HttpHeader {
     public HttpHeader(final Map<String, String> env) {
         super();
         this.env = env;
-        System.out.println(env);
+        Log.framework().info(env);
         queryString = new Query(env.get("QUERY_STRING"));
     }
 

@@ -85,7 +85,7 @@ public class Bug extends UserContent<DaoBug> {
      * @param errorLevel is the estimated level of the bug. see {@link Level}.
      */
     Bug(final Member member, final Batch batch, final String title, final String description, final Locale locale, final Level errorLevel) {
-        super(new DaoBug(member.getDao(), batch.getDao(), title, description, locale, errorLevel));
+        super(DaoBug.createAndPersist(member.getDao(), batch.getDao(), title, description, locale, errorLevel));
     }
 
     /**

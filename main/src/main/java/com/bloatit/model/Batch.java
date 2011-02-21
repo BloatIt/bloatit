@@ -315,4 +315,8 @@ public class Batch extends Identifiable<DaoBatch> {
     protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
         return Offer.create(getDao().getOffer()).calculateMyGroupRights(member);
     }
+
+    public Offer getOffer() {
+        return Offer.create(getDao().getOffer());
+    }
 }

@@ -80,7 +80,6 @@ public abstract class HtmlElement extends XmlElement {
 
     @Override
     protected final void writeTagAndOffspring(final QueryResponseStream txt) {
-        Log.web().trace(tag.getOpenTag());
         if (selfClosable() && !hasChild()) {
             txt.writeNewLineChar();
             txt.writeIndentation();
