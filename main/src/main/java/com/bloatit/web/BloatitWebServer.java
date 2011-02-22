@@ -287,9 +287,6 @@ public class BloatitWebServer extends WebServer {
             return new AddAttachementAction(new AddAttachementActionUrl(params, session.getParameters()));
         }
 
-
-
-
         // Resource page
         if (pageCode.equals(FileResourceUrl.getName())) {
             return new FileResource(new FileResourceUrl(params, session.getParameters()));

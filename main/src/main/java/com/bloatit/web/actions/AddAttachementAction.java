@@ -12,6 +12,7 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -42,19 +43,21 @@ public final class AddAttachementAction extends Action {
     @RequestParam(name = USER_CONTENT, role = Role.GET)
     private final UserContent userContent;
 
-    @ParamConstraint(optional = false)
+    @ParamConstraint
     @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
     private final String attachement;
 
-    @ParamConstraint(optional = true)
+    @ParamConstraint
     @RequestParam(name = ATTACHEMENT_NAME_CODE, role = Role.POST)
+    @Optional
     private final String attachementFileName;
 
-    @ParamConstraint(optional = false)
+    @ParamConstraint
     @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
     private final String attachementDescription;
 
-    @ParamConstraint(optional = true)
+    @Optional
+    @ParamConstraint
     @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
     private final String attachementContentType;
     private final AddAttachementActionUrl url;

@@ -2,6 +2,7 @@ package com.bloatit.web.actions;
 
 import java.util.List;
 
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -29,11 +30,13 @@ public class AdministrationAction extends Action {
     private final AdminActionManager.Action action;
 
     @RequestParam(name = POPULARITY_STATE_CODE, role = Role.POST)
-    @ParamConstraint(optional = true)
+    @ParamConstraint
+    @Optional
     private final DisplayableState stateToSet;
 
     @RequestParam(name = DEMAND_STATE_CODE, role = Role.POST)
-    @ParamConstraint(optional = true)
+    @ParamConstraint
+    @Optional
     private final DisplayableDemandState demandState;
 
     private final AdministrationActionUrl url;

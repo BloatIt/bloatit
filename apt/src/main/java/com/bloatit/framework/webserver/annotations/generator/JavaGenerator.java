@@ -199,7 +199,7 @@ public abstract class JavaGenerator {
             sb.append(constraints.minIsExclusive()).append(", ");
             sb.append(constraints.max().equals(ParamConstraint.DEFAULT_MAX_STR) ? ParamConstraint.DEFAULT_MAX : constraints.max()).append(", ");
             sb.append(constraints.maxIsExclusive()).append(", ");
-            sb.append(constraints.optional()).append(", ");
+            sb.append(isOptional).append(", ");
             sb.append(constraints.precision()).append(", ");
             sb.append(constraints.length()).append(", ");
             appendErrorMsg(constraints.minErrorMsg().value(), sb).append(", ");

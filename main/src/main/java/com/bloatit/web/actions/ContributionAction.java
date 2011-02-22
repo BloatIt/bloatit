@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -44,8 +45,8 @@ public final class ContributionAction extends LoggedAction {
     private final Demand targetIdea;
 
     @RequestParam(name = COMMENT_CODE, role = Role.POST)
-    @ParamConstraint(optional = true, //
-    max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
+    @ParamConstraint(max = "140", maxErrorMsg = @tr("Your comment is too long. It must be less than 140 char long."))
+    @Optional
     private final String comment;
 
     @RequestParam(name = AMOUNT_CODE, role = Role.POST)

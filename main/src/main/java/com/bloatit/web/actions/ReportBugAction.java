@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -74,19 +75,19 @@ public final class ReportBugAction extends Action {
     @RequestParam(name = BUG_BATCH, role = Role.GET)
     private final Batch batch;
 
-    @ParamConstraint(optional = true)
+    @Optional
     @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
     private final String attachement;
 
-    @ParamConstraint(optional = true)
+    @Optional
     @RequestParam(name = ATTACHEMENT_NAME_CODE, role = Role.POST)
     private final String attachementFileName;
 
-    @ParamConstraint(optional = true)
+    @Optional
     @RequestParam(name = ATTACHEMENT_DESCRIPTION_CODE, role = Role.POST)
     private final String attachementDescription;
 
-    @ParamConstraint(optional = true)
+    @Optional
     @RequestParam(name = ATTACHEMENT_CONTENT_TYPE_CODE, role = Role.POST)
     private final String attachementContentType;
 

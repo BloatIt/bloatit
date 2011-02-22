@@ -31,8 +31,6 @@ public @interface ParamConstraint {
 
     tr maxErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
-    boolean optional() default DEFAULT_OPTIONAL;
-
     tr optionalErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
     int precision() default DEFAULT_PRECISION;

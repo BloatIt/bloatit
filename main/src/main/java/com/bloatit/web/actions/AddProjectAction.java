@@ -14,6 +14,7 @@ package com.bloatit.web.actions;
 import java.util.Locale;
 
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -50,7 +51,8 @@ public final class AddProjectAction extends Action {
     private final String shortDescription;
 
     @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(optional = true)
+    @ParamConstraint
+    @Optional
     private final String description;
 
     @RequestParam(name = PROJECT_NAME_CODE, role = Role.POST)
