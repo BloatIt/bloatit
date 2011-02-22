@@ -2,7 +2,6 @@ package com.bloatit.web.actions;
 
 import java.util.List;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -49,7 +48,7 @@ public class AdministrationAction extends Action {
     }
 
     @Override
-    protected Url doProcess() throws RedirectException {
+    protected Url doProcess() {
         for (final Integer content : contents) {
 
             switch (action) {
@@ -86,7 +85,7 @@ public class AdministrationAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyError("Ça marche pas");
         session.notifyList(url.getMessages());
         return session.getLastStablePage();

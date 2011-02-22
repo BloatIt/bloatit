@@ -23,6 +23,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.bloatit.common.Log;
 import com.bloatit.framework.webserver.ModelAccessor;
 
 /**
@@ -59,10 +60,10 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
             plannedTask.cancel();
         }
         PlannedTask.tasks.put(new Id(id, getClass()), this);
+        Log.model().info("Scheduling a " + getClass().getSimpleName());
     }
 
     /**
-     * @param task
      * @param time
      * @see java.util.Timer#schedule(java.util.TimerTask, java.util.Date)
      */
@@ -74,6 +75,7 @@ public abstract class PlannedTask extends TimerTask implements Serializable {
     public void run() {
         try {
             ModelAccessor.open();
+            Log.model().info("Launching a " + getClass().getSimpleName());
             doRun();
         } catch (final RuntimeException ex) {
             throw ex;

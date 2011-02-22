@@ -58,7 +58,6 @@ public class TaskUpdateDevelopingState extends PlannedTask {
     @Override
     public void doRun() {
         try {
-
             final DemandImplementation demand = DemandManager.getDemandImplementationById(id);
             if (demand != null) {
                 demand.updateDevelopmentState();

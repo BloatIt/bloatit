@@ -3,7 +3,6 @@ package com.bloatit.web.actions;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -31,7 +30,7 @@ public class PaylineReturnAction extends Action {
     }
 
     @Override
-    protected Url doProcess() throws RedirectException {
+    protected Url doProcess() {
         final Payline payline = new Payline();
         if (ack.equals("ok")) {
             Context.getSession().notifyGood(tr("Your account has been credited."));
@@ -52,7 +51,7 @@ public class PaylineReturnAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         Context.getSession().notifyError(tr("Error in filling up your account."));
         return Context.getSession().pickPreferredPage();
     }

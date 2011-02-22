@@ -4,7 +4,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.math.BigDecimal;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -12,6 +11,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.framework.webserver.url.UrlStringBinder;
 import com.bloatit.framework.xcgiserver.HttpHeader;
+import com.bloatit.model.Member;
 import com.bloatit.model.Payline;
 import com.bloatit.model.Payline.Reponse;
 import com.bloatit.web.url.PaylineActionUrl;
@@ -32,7 +32,7 @@ public final class PaylineAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         // Constructing the urls.
         final HttpHeader header = Context.getHeader().getHttpHeader();
         final String returnUrl = new PaylineReturnActionUrl("ok").externalUrlString(header);
@@ -58,7 +58,7 @@ public final class PaylineAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         return Context.getSession().pickPreferredPage();
     }
 

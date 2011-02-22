@@ -12,10 +12,10 @@
 
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.Member;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.LogoutActionUrl;
 
@@ -32,7 +32,7 @@ public final class LogoutAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         session.setAuthToken(null);
         session.notifyGood(Context.tr("Logout success."));
         return session.pickPreferredPage();

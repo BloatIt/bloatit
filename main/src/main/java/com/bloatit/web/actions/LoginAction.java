@@ -11,7 +11,6 @@
  */
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -51,7 +50,7 @@ public final class LoginAction extends Action {
     }
 
     @Override
-    public Url doProcess() throws RedirectException {
+    public Url doProcess() {
         AuthToken token = null;
         token = LoginManager.loginByPassword(login, password);
 
@@ -68,7 +67,7 @@ public final class LoginAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
 
         session.addParameter(url.getLoginParameter());

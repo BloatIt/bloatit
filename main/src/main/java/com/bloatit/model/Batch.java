@@ -122,8 +122,17 @@ public class Batch extends Identifiable<DaoBatch> {
      * (done by {@link Offer#validateCurrentBatch(boolean)}).
      * </p>
      */
-    public void addRelease(Release release) {
+    public void addRelease(final String description, final Locale locale, FileMetadata file) {
+        Release release = new Release(getOffer().getAuthor(), this, description, locale);
+        if (file != null) {
+            release.addFile(file);
+        }
+        // TODO as group ?
+        // if (getOffer().getAsGroup() != null){
+        // release.setAsGroup(getOffer().getAsGroup());
+        // }
         getDao().addRelease(release.getDao());
+
     }
 
     public void setDeveloping() {

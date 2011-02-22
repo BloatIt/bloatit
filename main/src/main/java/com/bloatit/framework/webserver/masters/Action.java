@@ -45,15 +45,15 @@ public abstract class Action implements Linkable {
         }
     }
 
-    public final Url process() throws RedirectException {
+    public final Url process() {
         if (!actionUrl.getMessages().isEmpty()) {
             return doProcessErrors();
         }
         return doProcess();
     }
 
-    protected abstract Url doProcess() throws RedirectException;
+    protected abstract Url doProcess();
 
-    protected abstract Url doProcessErrors() throws RedirectException;
+    protected abstract Url doProcessErrors();
 
 }

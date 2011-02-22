@@ -2,7 +2,6 @@ package com.bloatit.web.pages.team;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -40,7 +39,7 @@ public class SendGroupInvitationAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         final Member me = session.getAuthToken().getMember();
 
         try {
@@ -53,7 +52,7 @@ public class SendGroupInvitationAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
         return session.getLastVisitedPage();
     }

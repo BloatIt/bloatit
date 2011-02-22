@@ -5,7 +5,6 @@ package com.bloatit.web.actions;
 
 import java.util.Locale;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.mailsender.Mail;
 import com.bloatit.framework.mailsender.MailServer;
 import com.bloatit.framework.utils.MailUtils;
@@ -68,22 +67,22 @@ public class RegisterAction extends Action {
     }
 
     @Override
-    protected final Url doProcess() throws RedirectException {
+    protected final Url doProcess() {
 
         if (MemberManager.loginExists(login)) {
             session.notifyError(Context.tr("Login ''{0}''already used. Find another login", login));
-            sendError();
+            return sendError();
         }
 
         if (MemberManager.emailExists(email)) {
             session.notifyError(Context.tr("Email ''{0}''already used. Find another email or use your old account !", email));
-            sendError();
+            return sendError();
         }
 
         final String userEmail = email.trim();
         if (!MailUtils.isValidEmail(userEmail)) {
             session.notifyError(Context.tr("Invalid email address : " + userEmail));
-            sendError();
+            return sendError();
         }
 
         final Locale locale = new Locale(lang, country);
@@ -105,17 +104,17 @@ public class RegisterAction extends Action {
         return session.pickPreferredPage();
     }
 
-    public void sendError() throws RedirectException {
+    public RegisterPageUrl sendError() {
         session.addParameter(url.getEmailParameter());
         session.addParameter(url.getLoginParameter());
         session.addParameter(url.getPasswordParameter());
         session.addParameter(url.getCountryParameter());
         session.addParameter(url.getLangParameter());
-        throw new RedirectException(new RegisterPageUrl());
+        return new RegisterPageUrl();
     }
 
     @Override
-    protected final Url doProcessErrors() throws RedirectException {
+    protected final Url doProcessErrors() {
         session.notifyList(url.getMessages());
         session.addParameter(url.getEmailParameter());
         session.addParameter(url.getLoginParameter());

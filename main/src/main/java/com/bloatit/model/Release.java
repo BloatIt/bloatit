@@ -28,6 +28,10 @@ public class Release extends UserContent<DaoRelease> {
         super(dao);
     }
 
+    Release(final Member member, final Batch batch, final String description, final Locale locale) {
+        this(DaoRelease.createAndPersist(member.getDao(), batch.getDao(), description, locale));
+    }
+
     public void addComment(DaoComment comment) {
         getDao().addComment(comment);
     }
@@ -40,7 +44,7 @@ public class Release extends UserContent<DaoRelease> {
         return getDao().getDescription();
     }
 
-    public Locale getLocale() {
+    public Locale locale() {
         return getDao().getLocale();
     }
 

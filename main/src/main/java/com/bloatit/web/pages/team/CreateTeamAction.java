@@ -1,7 +1,6 @@
 package com.bloatit.web.pages.team;
 
 import com.bloatit.data.DaoGroup.Right;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -11,6 +10,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Group;
+import com.bloatit.model.Member;
 import com.bloatit.web.actions.LoggedAction;
 import com.bloatit.web.url.CreateTeamActionUrl;
 import com.bloatit.web.url.CreateTeamPageUrl;
@@ -61,7 +61,7 @@ public class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         Right groupRight = Right.PUBLIC;
         if (right.equals(PUBLIC)) {
             groupRight = Right.PUBLIC;
@@ -70,7 +70,7 @@ public class CreateTeamAction extends LoggedAction {
         } else {
             session.notifyBad(Context.tr("A team can either be public or protected (and dude, stop playing with our post data)"));
             transmitParameters();
-            throw new RedirectException(new CreateTeamPageUrl());
+            return new CreateTeamPageUrl();
         }
         final Group newGroup = new Group(login, contact, description, groupRight, session.getAuthToken().getMember());
 
@@ -78,7 +78,7 @@ public class CreateTeamAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
         return new CreateTeamPageUrl();
     }

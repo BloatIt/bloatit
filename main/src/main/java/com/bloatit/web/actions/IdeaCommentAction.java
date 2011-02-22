@@ -11,7 +11,6 @@
  */
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -19,6 +18,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Demand;
+import com.bloatit.model.Member;
 import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.LoginPageUrl;
 
@@ -46,7 +46,7 @@ public final class IdeaCommentAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         session.notifyList(url.getMessages());
         session.notifyGood(Context.tr("Your comment has been added."));
         try {
@@ -60,7 +60,7 @@ public final class IdeaCommentAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
         return new LoginPageUrl();
     }

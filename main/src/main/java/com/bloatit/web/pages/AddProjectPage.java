@@ -22,7 +22,6 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.model.demand.DemandManager;
 import com.bloatit.web.actions.AddProjectAction;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.AddProjectActionUrl;
@@ -56,10 +55,7 @@ public final class AddProjectPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
-        if (DemandManager.canCreate(session.getAuthToken())) {
-            return new HtmlDiv("padding_box").add(generateIdeaCreationForm());
-        }
-        return generateBadRightError();
+        return new HtmlDiv("padding_box").add(generateIdeaCreationForm());
     }
 
     private HtmlElement generateIdeaCreationForm() {
@@ -110,12 +106,6 @@ public final class AddProjectPage extends LoggedPage {
 
         final HtmlDiv group = new HtmlDiv();
         group.add(createIdeaTitle);
-        return group;
-    }
-
-    private HtmlElement generateBadRightError() {
-        final HtmlDiv group = new HtmlDiv();
-
         return group;
     }
 

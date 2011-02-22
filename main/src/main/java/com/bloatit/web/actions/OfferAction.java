@@ -14,7 +14,6 @@ package com.bloatit.web.actions;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
@@ -26,6 +25,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Group;
+import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.web.pages.demand.DemandTabPane;
 import com.bloatit.web.url.DemandPageUrl;
@@ -77,7 +77,7 @@ public final class OfferAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() {
+    public Url doProcessRestricted(Member authenticatedMember) {
         try {
             final Offer newOffer = targetIdea.addOffer(session.getAuthToken().getMember(),
                                                        price,
@@ -99,7 +99,7 @@ public final class OfferAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
 
         if (targetIdea != null) {

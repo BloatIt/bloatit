@@ -14,6 +14,7 @@ package com.bloatit.web.pages.demand;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.queries.NullCollection;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
@@ -282,6 +283,11 @@ public class DemandOfferListComponent extends HtmlDiv {
                                 final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0} - ", i) + getLotState(lot), 2);
                                 lotBlock.add(lotTitle);
 
+                                if (isDeveloper() && demand.getDemandState() == DemandState.DEVELOPPING
+                                        && demand.getSelectedOffer().getCurrentBatch().equals(lot)) {
+                                    new HtmlLink("plop", tr("add a release"));
+                                }
+
                                 final HtmlParagraph datePara = new HtmlParagraph();
                                 datePara.setCssClass("offer_block_para");
                                 {
@@ -309,6 +315,10 @@ public class DemandOfferListComponent extends HtmlDiv {
             }
             add(offerBottomBlock);
 
+        }
+
+        private boolean isDeveloper() throws UnauthorizedOperationException {
+            return Context.getSession().isLogged() && Context.getSession().getAuthToken().getMember().equals(demand.getSelectedOffer().getAuthor());
         }
 
         private String getLotState(Batch lot) {

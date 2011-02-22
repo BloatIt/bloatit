@@ -13,7 +13,6 @@ package com.bloatit.web.actions;
 
 import java.util.EnumSet;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webserver.Context;
@@ -23,6 +22,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.KudosableInterface;
+import com.bloatit.model.Member;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 
 /**
@@ -53,7 +53,7 @@ public final class PopularityVoteAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         try {
             if (voteUp) {
                 final EnumSet<SpecialCode> canVote = targetKudosable.canVoteUp();
@@ -97,7 +97,7 @@ public final class PopularityVoteAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
         return session.pickPreferredPage();
     }

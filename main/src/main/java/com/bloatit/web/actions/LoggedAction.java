@@ -1,8 +1,8 @@
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.Member;
 import com.bloatit.web.url.LoginPageUrl;
 
 /**
@@ -32,9 +32,9 @@ public abstract class LoggedAction extends Action {
     }
 
     @Override
-    protected final Url doProcess() throws RedirectException {
+    protected final Url doProcess() {
         if (session.isLogged()) {
-            return doProcessRestricted();
+            return doProcessRestricted(session.getAuthToken().getMember());
         }
         session.notifyBad(getRefusalReason());
         session.setTargetPage(meUrl);
@@ -44,14 +44,15 @@ public abstract class LoggedAction extends Action {
 
     /**
      * Called when user is correctly authentified
+     * @param authenticatedMember TODO
      */
-    public abstract Url doProcessRestricted() throws RedirectException;
+    public abstract Url doProcessRestricted(Member authenticatedMember);
 
     /**
      * Called when some RequestParams contain erroneous parameters.
      */
     @Override
-    protected abstract Url doProcessErrors() throws RedirectException;
+    protected abstract Url doProcessErrors();
 
     /**
      * <b>Do not forget to localize</p>

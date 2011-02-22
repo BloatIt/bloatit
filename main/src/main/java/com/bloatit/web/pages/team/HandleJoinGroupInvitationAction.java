@@ -1,7 +1,6 @@
 package com.bloatit.web.pages.team;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -37,14 +36,14 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         final Member me = session.getAuthToken().getMember();
         if (accept) {
             final Group g = invite.getGroup();
 
             if (me.isInGroup(g)) {
                 session.notifyError(Context.tr("You cannot join a group you already belong in"));
-                throw new RedirectException(session.getLastVisitedPage());
+                return session.getLastVisitedPage();
             }
 
             try {
@@ -53,7 +52,7 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
                 // Should never happen
                 Log.web().fatal("User accepted a legitimate group invitation, but it failed", e1);
                 session.notifyBad(Context.tr("Oops looks like we had an issue with accepting this group invitation. Please try again later."));
-                throw new RedirectException(session.getLastVisitedPage());
+                return session.getLastVisitedPage();
             }
 
             try {
@@ -69,13 +68,13 @@ public class HandleJoinGroupInvitationAction extends LoggedAction {
         } catch (final UnauthorizedOperationException e) {
             Log.web().fatal("User accepted a legitimate group invitation, but it failed", e);
             session.notifyBad(Context.tr("Oops looks like we had an issue with refusing this group invitation. Please try again later."));
-            throw new RedirectException(session.getLastVisitedPage());
+            return session.getLastVisitedPage();
         }
         return session.getLastVisitedPage();
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
         return session.getLastVisitedPage();
     }

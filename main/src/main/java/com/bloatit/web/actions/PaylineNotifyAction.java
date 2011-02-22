@@ -1,7 +1,6 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -26,7 +25,7 @@ public final class PaylineNotifyAction extends Action {
     }
 
     @Override
-    public Url doProcess() throws RedirectException {
+    public Url doProcess() {
         Log.web().info("Get a payline notification: " + token);
         final Payline payline = new Payline();
         try {
@@ -44,7 +43,7 @@ public final class PaylineNotifyAction extends Action {
     }
 
     @Override
-    public Url doProcessErrors() throws RedirectException {
+    public Url doProcessErrors() {
         Log.web().error("Payline notification with parameter errors ! ");
         return new IndexPageUrl();
     }

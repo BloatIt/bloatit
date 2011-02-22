@@ -16,7 +16,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.Locale;
 
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -108,7 +107,7 @@ public final class ReportBugAction extends Action {
     }
 
     @Override
-    protected Url doProcess() throws RedirectException {
+    protected Url doProcess() {
         session.notifyList(url.getMessages());
         if (!DemandManager.canCreate(session.getAuthToken())) {
             // TODO: use BugManager and not DemandManager here
@@ -138,7 +137,7 @@ public final class ReportBugAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
 
         if (batch != null) {

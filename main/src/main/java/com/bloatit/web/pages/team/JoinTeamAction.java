@@ -1,7 +1,6 @@
 package com.bloatit.web.pages.team;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -32,7 +31,7 @@ public class JoinTeamAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         final Member me = session.getAuthToken().getMember();
 
         if (targetTeam.isPublic()) {
@@ -49,13 +48,13 @@ public class JoinTeamAction extends LoggedAction {
             } catch (final UnauthorizedOperationException e) {
                 Log.web().warn("Trying to display team name but not allowed to", e);
             }
-            throw new RedirectException(session.getLastVisitedPage());
+            return session.getLastVisitedPage();
         }
         return new TeamPageUrl(targetTeam);
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         if (targetTeam != null) {
             return new TeamPageUrl(targetTeam);
         }

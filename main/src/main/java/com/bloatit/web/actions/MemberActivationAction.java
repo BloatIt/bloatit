@@ -12,7 +12,6 @@
 package com.bloatit.web.actions;
 
 import com.bloatit.data.DaoMember.ActivationState;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -52,7 +51,7 @@ public final class MemberActivationAction extends Action {
     }
 
     @Override
-    protected Url doProcess() throws RedirectException {
+    protected Url doProcess() {
         session.notifyList(url.getMessages());
 
         final Member member = MemberManager.getMemberByLogin(login);
@@ -83,7 +82,7 @@ public final class MemberActivationAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
 
         return new IndexPageUrl();

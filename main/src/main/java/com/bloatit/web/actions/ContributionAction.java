@@ -14,7 +14,6 @@ package com.bloatit.web.actions;
 import java.math.BigDecimal;
 
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -24,6 +23,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Demand;
+import com.bloatit.model.Member;
 import com.bloatit.web.pages.demand.DemandTabPane;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -65,7 +65,7 @@ public final class ContributionAction extends LoggedAction {
     }
 
     @Override
-    public Url doProcessRestricted() throws RedirectException {
+    public Url doProcessRestricted(Member authenticatedMember) {
         try {
             targetIdea.addContribution(amount, comment);
             session.notifyGood(Context.tr("Thanks you for crediting {0} on this idea", Context.getLocalizator().getCurrency(amount).getLocaleString()));
@@ -86,7 +86,7 @@ public final class ContributionAction extends LoggedAction {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
         session.addParameter(url.getCommentParameter());
         session.addParameter(url.getAmountParameter());

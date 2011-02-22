@@ -11,7 +11,6 @@
  */
 package com.bloatit.web.actions;
 
-import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -45,7 +44,7 @@ public final class UploadFileAction extends Action {
     }
 
     @Override
-    protected Url doProcess() throws RedirectException {
+    protected Url doProcess() {
 
         System.err.println("wow" + wow);
         System.err.println("fichier " + fichier);
@@ -55,7 +54,7 @@ public final class UploadFileAction extends Action {
     }
 
     @Override
-    protected Url doProcessErrors() throws RedirectException {
+    protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
 
         return new IndexPageUrl();
