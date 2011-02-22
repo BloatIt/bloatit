@@ -356,7 +356,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                 offerSummaryPopularity.add(popularityText);
                 offerSummaryPopularity.add(popularityScore);
 
-                if (!offer.isOwnedByMe()) {
+                if (!offer.isOwner()) {
                     final int vote = offer.getUserVoteValue();
                     if (vote == 0) {
                         final HtmlDiv offerPopularityJudge = new HtmlDiv("offer_popularity_judge");

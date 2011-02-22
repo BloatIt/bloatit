@@ -206,6 +206,7 @@ public abstract class RestrictedObject implements RestrictedInterface {
      * @return the auth token unprotected
      */
     protected final AuthToken getAuthTokenUnprotected() {
+        automaticAuthentication();
         return token;
     }
 

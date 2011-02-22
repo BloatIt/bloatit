@@ -72,12 +72,11 @@ public final class BugPage extends MasterPage {
             box.add(attachementPara);
         }
 
+        box.add(CommentTools.generateCommentList(bug.getComments()));
+        box.add(CommentTools.generateNewCommentComponent(bug));
+
         add(box);
 
-        final HtmlDiv commentBox = new HtmlDiv("padding_box");
-        commentBox.add(CommentTools.generateCommentList(bug.getComments()));
-        commentBox.add(CommentTools.generateNewCommentComponent(bug));
-        add(commentBox);
 
     }
 

@@ -71,7 +71,7 @@ public class CommentTools {
 
                 commentPopularity.addText(Context.tr("Popularity: {0}", HtmlTools.compressKarma(comment.getPopularity())));
 
-                if (!comment.isOwnedByMe()) {
+                if (!comment.isOwner()) {
                     final int vote = comment.getUserVoteValue();
                     if (vote == 0) {
                         commentPopularity.addText(" (");
