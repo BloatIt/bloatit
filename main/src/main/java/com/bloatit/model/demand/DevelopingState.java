@@ -37,7 +37,7 @@ public class DevelopingState extends AbstractDemandState {
      */
     @Override
     public AbstractDemandState eventBatchReleased() {
-        return new IncomeState(demand);
+        return this;
     }
 
     /*

@@ -25,7 +25,6 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
-import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.exceptions.WrongStateException;
@@ -43,7 +42,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
 import com.bloatit.model.Project;
-import com.bloatit.model.Release;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
@@ -119,9 +117,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /*
      * (non-Javadoc)
-     * @see
-     * com.bloatit.model.Demand#canAccessComment(com.bloatit
-     * .model.right .RightManager.Action)
+     * @see com.bloatit.model.Demand#canAccessComment(com.bloatit .model.right
+     * .RightManager.Action)
      */
     @Override
     public boolean canAccessComment(final Action action) {
@@ -130,9 +127,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /*
      * (non-Javadoc)
-     * @see
-     * com.bloatit.model.Demand#canAccessContribution(com.bloatit
-     * .model .right.RightManager.Action)
+     * @see com.bloatit.model.Demand#canAccessContribution(com.bloatit .model
+     * .right.RightManager.Action)
      */
     @Override
     public boolean canAccessContribution(final Action action) {
@@ -141,9 +137,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /*
      * (non-Javadoc)
-     * @see
-     * com.bloatit.model.Demand#canAccessOffer(com.bloatit.model
-     * .right .RightManager.Action)
+     * @see com.bloatit.model.Demand#canAccessOffer(com.bloatit.model .right
+     * .RightManager.Action)
      */
     @Override
     public boolean canAccessOffer(final Action action) {
@@ -165,9 +160,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /*
      * (non-Javadoc)
-     * @see
-     * com.bloatit.model.Demand#addContribution(java.math.BigDecimal
-     * , java.lang.String)
+     * @see com.bloatit.model.Demand#addContribution(java.math.BigDecimal ,
+     * java.lang.String)
      */
     @Override
     public void addContribution(final BigDecimal amount, final String comment) throws NotEnoughMoneyException, UnauthorizedOperationException {
@@ -204,15 +198,12 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         }
         setStateObject(getStateObject().eventAddOffer(offer));
         getDao().addOffer(offer.getDao());
-
         return offer;
     }
 
     /*
      * (non-Javadoc)
-     * @see
-     * com.bloatit.model.Demand#removeOffer(com.bloatit.model
-     * .Offer)
+     * @see com.bloatit.model.Demand#removeOffer(com.bloatit.model .Offer)
      */
     @Override
     public void removeOffer(final Offer offer) throws UnauthorizedOperationException {
@@ -226,81 +217,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /*
      * (non-Javadoc)
-     * @see com.bloatit.model.Demand#cancelDevelopment()
-     */
-    @Override
-    public void cancelDevelopment() throws UnauthorizedOperationException {
-        if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
-            throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_DEMAND);
-        }
-        cancel();
-        setStateObject(getStateObject().eventDeveloperCanceled());
-    }
-
-    /**
-     * Cancel all the contribution on this demand.
-     */
-    private void cancel() {
-        for (final Contribution contribution : getContributionsUnprotected()) {
-            contribution.cancel();
-        }
-        // Maybe I should make sure everything is canceled in every
-        // Offer/batches ?
-    }
-    
-    public void addRelease(Release release) throws UnauthorizedOperationException{
-        if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
-            throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_FINISHED_DEMAND);
-        }
-        Offer validatedOffer = getValidatedOffer();
-        if (validatedOffer.isFinished()) {
-            throw new FatalErrorException("There is no batch left for this Offer !");
-        }
-        
-        validatedOffer.getCurrentBatch().addRelease(release);
-        setStateObject(getStateObject().eventBatchReleased());
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.bloatit.model.Demand#releaseCurrentBatch()
-     */
-    @Override
-    public void releaseCurrentBatch() throws UnauthorizedOperationException {
-        if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
-            throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_FINISHED_DEMAND);
-        }
-        if (getValidatedOffer().isFinished()) {
-            throw new FatalErrorException("There is no batch left for this Offer !");
-        }
-
-        setStateObject(getStateObject().eventBatchReleased());
-        // The offer really don't care to know if the current batch is under
-        // development
-        // or not.
-    }
-
-    // TODO authorization
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.Demand#validateCurrentBatch(boolean)
-     */
-    @Override
-    public boolean validateCurrentBatch(final boolean force) {
-        if (getSelectedOfferUnprotected().isFinished()) {
-            throw new FatalErrorException("There is no batch left for this Offer !");
-        }
-        if (getDemandState() != DemandState.UAT) {
-            throw new WrongStateException();
-        }
-        return getSelectedOfferUnprotected().validateCurrentBatch(force);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.Demand#addComment(java.lang.String)
+     * @see com.bloatit.model.Demand#addComment(java.lang.String)
      */
     @Override
     public Comment addComment(final String text) throws UnauthorizedOperationException {
@@ -312,9 +229,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /*
      * (non-Javadoc)
-     * @see
-     * com.bloatit.model.Demand#unSelectOffer(com.bloatit.model
-     * .Offer)
+     * @see com.bloatit.model.Demand#unSelectOffer(com.bloatit.model .Offer)
      */
     @Override
     public void unSelectOffer(final Offer offer) {
@@ -322,6 +237,29 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
             setSelectedOffer(null);
             getDao().computeSelectedOffer();
         }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.model.Demand#validateCurrentBatch(boolean)
+     */
+    @Override
+    public boolean validateCurrentBatch(final boolean force) {
+        throwWrongStateExceptionOnNondevelopingState();
+        return getSelectedOfferUnprotected().validateCurrentBatch(force);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.bloatit.model.Demand#cancelDevelopment()
+     */
+    @Override
+    public void cancelDevelopment() throws UnauthorizedOperationException {
+        if (!getAuthToken().getMember().equals(getSelectedOffer().getAuthor())) {
+            throw new UnauthorizedOperationException(SpecialCode.NON_DEVELOPER_CANCEL_DEMAND);
+        }
+        setStateObject(getStateObject().eventDeveloperCanceled());
+        // Work is done in the slot system.
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -333,6 +271,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     void inDevelopmentState() {
         getDao().setDemandState(DemandState.DEVELOPPING);
+        getSelectedOfferUnprotected().getCurrentBatch().setDeveloping();
         new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
     }
 
@@ -341,6 +280,11 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     void inDiscardedState() {
         getDao().setDemandState(DemandState.DISCARDED);
+
+        for (final Contribution contribution : getContributionsUnprotected()) {
+            contribution.cancel();
+        }
+        getSelectedOfferUnprotected().cancelEverythingLeft();
     }
 
     /**
@@ -348,14 +292,6 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     void inFinishedState() {
         getDao().setDemandState(DemandState.FINISHED);
-    }
-
-    /**
-     * Slot called when this demand state change to {@link IncomeState}.
-     */
-    void inIncomeState() {
-        getDao().setDemandState(DemandState.UAT);
-
     }
 
     /**
@@ -382,11 +318,15 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     }
 
     /**
-     * Called by a {@link PlannedTask}. A selectedOffer TimeOut is called when
-     * the selected offer can be set to developing. (We wait 1 day before
-     * passing into development to let other users make offer)
+     * <p>
+     * Test if the current demand should passe into {@link DevelopingState}.
+     * </p>
+     * <p>
+     * Called by a {@link PlannedTask}.
+     * </p>
      */
-    void selectedOfferTimeOut() {
+    @Override
+    public void updateDevelopmentState() {
         setStateObject(getStateObject().eventSelectedOfferTimeOut(getDao().getContribution()));
     }
 
@@ -428,9 +368,13 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     void setSelectedOffer(final Offer offer) {
         final Date validationDate = DateUtils.tomorrow();
-        new TaskSelectedOfferTimeOut(getId(), validationDate);
+        new TaskUpdateDevelopingState(getId(), validationDate);
         getDao().setValidationDate(validationDate);
         getDao().setSelectedOffer(offer.getDao());
+    }
+
+    public void updateDevelopmentStatus() {
+        updateDevelopmentState();
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -493,6 +437,23 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Get something
     // /////////////////////////////////////////////////////////////////////////////////////////
+
+    public boolean isDeveloping() {
+        boolean isDeveloping = getDemandState() == DemandState.DEVELOPPING;
+        if (isDeveloping) {
+            assert getSelectedOfferUnprotected() != null;
+            assert getValidatedOfferUnprotected() != null;
+            assert getSelectedOfferUnprotected().equals(getValidatedOfferUnprotected());
+            assert getValidatedOfferUnprotected().isFinished() == false;
+        }
+        return isDeveloping;
+    }
+
+    private void throwWrongStateExceptionOnNondevelopingState() {
+        if (!isDeveloping()) {
+            throw new WrongStateException("Demand should be in Developing state.");
+        }
+    }
 
     /*
      * (non-Javadoc)
@@ -642,6 +603,10 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     @Override
     public Offer getValidatedOffer() throws UnauthorizedOperationException {
         tryAccess(new DemandRight.Offer(), Action.READ);
+        return getValidatedOfferUnprotected();
+    }
+
+    private Offer getValidatedOfferUnprotected() {
         if (getDao().getSelectedOffer() != null && getValidationDate().before(new Date())) {
             return getSelectedOfferUnprotected();
         }
@@ -709,11 +674,6 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
             case FINISHED:
                 if (stateObject == null || !stateObject.getClass().equals(FinishedState.class)) {
                     setStateObject(new FinishedState(this));
-                }
-                break;
-            case UAT:
-                if (stateObject == null || !stateObject.getClass().equals(IncomeState.class)) {
-                    setStateObject(new IncomeState(this));
                 }
                 break;
             case PREPARING:

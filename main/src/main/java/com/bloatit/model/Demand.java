@@ -123,8 +123,6 @@ public interface Demand extends KudosableInterface<DaoDemand> {
      */
     void cancelDevelopment() throws UnauthorizedOperationException;
 
-    void releaseCurrentBatch() throws UnauthorizedOperationException;
-
     // TODO authorization
     boolean validateCurrentBatch(final boolean force);
 
@@ -271,5 +269,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     PageIterable<Bug> getOpenBugs();
 
     PageIterable<Bug> getClosedBugs();
+
+    void updateDevelopmentState();
 
 }

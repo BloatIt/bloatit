@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Locale;
 
 import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoBatch.BatchState;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.State;
@@ -125,6 +126,14 @@ public class Batch extends Identifiable<DaoBatch> {
         getDao().addRelease(release.getDao());
     }
 
+    public void setDeveloping() {
+        getDao().setDeveloping();
+    }
+
+    public void cancelBatch() {
+        getDao().cancelBatch();
+    }
+
     /**
      * Validate the batch after it has been relreased.
      * 
@@ -211,10 +220,10 @@ public class Batch extends Identifiable<DaoBatch> {
      * Gets the release date.
      * 
      * @return the release date
-     * @see com.bloatit.data.DaoBatch#getReleaseDate()
+     * @see com.bloatit.data.DaoBatch#getReleasedDate()
      */
     public final Date getReleaseDate() {
-        return getDao().getReleaseDate();
+        return getDao().getReleasedDate();
     }
 
     /**
@@ -323,5 +332,9 @@ public class Batch extends Identifiable<DaoBatch> {
 
     public Offer getOffer() {
         return Offer.create(getDao().getOffer());
+    }
+
+    public BatchState getBatchState() {
+        return getDao().getBatchState();
     }
 }

@@ -64,13 +64,20 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
      * order is important !
      */
     public enum DemandState {
-        PENDING, // No offers, waiting for money and offer
-        PREPARING, // One or more offer, waiting for money
-        DEVELOPPING, // Development in progress
-        UAT, // User acceptance testing
-        DISCARDED, // Something went wrong, the demand is canceled
+        /** No offers, waiting for money and offer */
+        PENDING,
+
+        /** One or more offer, waiting for money */
+        PREPARING,
+
+        /** Development in progress */
+        DEVELOPPING,
+
+        /** Something went wrong, the demand is canceled */
+        DISCARDED,
+
+        /** All is good, the developer is paid and the users are happy */
         FINISHED
-        // All is good, the developer is paid and the users are happy
     }
 
     /**
@@ -332,14 +339,15 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
         return new QueryCollection<DaoContribution>("from DaoContribution as f where f.demand = :this").setEntity("this", this);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see com.bloatit.data.DaoCommentable#getCommentsFromQuery()
      */
     @Override
     public PageIterable<DaoComment> getComments() {
         return CommentManager.getComments(comments);
     }
-    
+
     @Override
     public DaoComment getLastComment() {
         return CommentManager.getLastComment(comments);

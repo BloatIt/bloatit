@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -54,6 +55,10 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 public final class DaoBatch extends DaoIdentifiable {
 
+    public enum BatchState {
+        PENDING, DEVELOPING, UAT, VALIDATED, CANCELED
+    }
+
     /**
      * After this date, the Batch should be done.
      */
@@ -62,8 +67,6 @@ public final class DaoBatch extends DaoIdentifiable {
     @DateBridge(resolution = Resolution.DAY)
     @Column(updatable = false)
     private Date expirationDate;
-
-    private Date releasedDate;
 
     @Basic(optional = false)
     @Column(updatable = false)
@@ -77,9 +80,6 @@ public final class DaoBatch extends DaoIdentifiable {
     @Column(updatable = false)
     private int majorBugsPercent;
 
-    // nullable.
-    private Level levelToValidate;
-
     /**
      * The amount represents the money the member want to have to make his
      * offer.
@@ -88,6 +88,13 @@ public final class DaoBatch extends DaoIdentifiable {
     @Column(updatable = false)
     // @Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
     private BigDecimal amount;
+
+    // nullable.
+    @Enumerated
+    private Level levelToValidate;
+
+    @Basic(optional = false)
+    private BatchState batchState;
 
     /**
      * Remember a description is a title with some content. (Translatable)
@@ -170,15 +177,7 @@ public final class DaoBatch extends DaoIdentifiable {
         this.levelToValidate = Level.FATAL;
         this.fatalBugsPercent = 100;
         this.majorBugsPercent = 0;
-    }
-
-    public void addBug(final DaoBug bug) {
-        bugs.add(bug);
-    }
-
-    public void addRelease(final DaoRelease release) {
-        releases.add(release);
-        releasedDate = new Date();
+        this.batchState = BatchState.PENDING;
     }
 
     /**
@@ -205,6 +204,22 @@ public final class DaoBatch extends DaoIdentifiable {
         this.majorBugsPercent = majorPercent;
     }
 
+    public void setDeveloping() {
+        batchState = BatchState.DEVELOPING;
+    }
+
+    public void addRelease(final DaoRelease release) {
+        releases.add(release);
+        if (batchState == BatchState.DEVELOPING){
+            batchState = BatchState.UAT;
+        }
+        getOffer().batchHasARelease(this);
+    }
+
+    public void addBug(final DaoBug bug) {
+        bugs.add(bug);
+    }
+
     /**
      * Tells that the Income state of this batch is finished, and everything is
      * OK. The validation can be partial (when some major or minor bugs are
@@ -216,7 +231,7 @@ public final class DaoBatch extends DaoIdentifiable {
      * 
      * @param force force the validation of this batch. Do not take care of the
      *            bugs and the timeOuts.
-     * @return true if all the batch is validated.
+     * @return true if all parts of this batch is validated.
      */
     public boolean validate(final boolean force) {
         if (levelToValidate == Level.FATAL && (force || shouldValidatePart(Level.FATAL))) {
@@ -236,6 +251,7 @@ public final class DaoBatch extends DaoIdentifiable {
             offer.getDemand().validateContributions(getMinorBugsPercent());
         }
         if (levelToValidate == null) {
+            batchState = BatchState.VALIDATED;
             offer.passToNextBatch();
             return true;
         }
@@ -257,10 +273,15 @@ public final class DaoBatch extends DaoIdentifiable {
     }
 
     private boolean validationPeriodFinished() {
+        Date releasedDate = getReleasedDate();
         if (releasedDate == null) {
             return false;
         }
         return new Date(releasedDate.getTime() + ((long) secondBeforeValidation) * 1000).before(new Date());
+    }
+
+    public void cancelBatch() {
+        batchState = BatchState.CANCELED;
     }
 
     // ======================================================================
@@ -306,6 +327,10 @@ public final class DaoBatch extends DaoIdentifiable {
         return (Date) expirationDate.clone();
     }
 
+    public BatchState getBatchState() {
+        return batchState;
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -321,8 +346,9 @@ public final class DaoBatch extends DaoIdentifiable {
     /**
      * @return the releaseDate
      */
-    public Date getReleaseDate() {
-        return releasedDate;
+    public Date getReleasedDate() {
+        Query query = SessionManager.createFilter(releases, "select max(creationDate)");
+        return (Date) query.uniqueResult();
     }
 
     /**

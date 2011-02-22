@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class DateUtils {
 
+    static final int SECOND_PER_MINUTE = 60;
     public static final int SECOND_PER_HOUR = 3600;
     public static final int SECOND_PER_DAY = SECOND_PER_HOUR * 24;
     public static final int SECOND_PER_WEEK = SECOND_PER_DAY * 7;
@@ -53,4 +54,12 @@ public class DateUtils {
         return nowPlusSomeYears(1000);
     }
 
+    public static long elapsedMilliseconds(Date from, Date to) {
+        return to.getTime() - from.getTime();
+    }
+    
+    public static boolean isInTheFuture(Date date){
+        return date.after(now());
+    }
+  
 }

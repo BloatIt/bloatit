@@ -18,6 +18,10 @@ package com.bloatit.model;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DataManager;
+import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.demand.DemandList;
+import com.bloatit.model.demand.TaskUpdateDevelopingState;
 
 public class Model implements AbstractModel {
     public Model() {
@@ -31,6 +35,20 @@ public class Model implements AbstractModel {
     @Override
     public void init() {
         Log.model().trace("Launching the Model.");
+        
+        // Find the demand with selected offer that should pass into validated.
+        PageIterable<Demand> demandsToValidate = new DemandList(DBRequests.demandsThatShouldBeValidated());
+        for (Demand demand : demandsToValidate) {
+            demand.updateDevelopmentState();
+        }
+        
+        // Find the demand with selected offer that should pass into validated.
+        PageIterable<Demand> demandsToValidateInTheFuture = new DemandList(DBRequests.demandsThatShouldBeValidatedInTheFuture());
+        for (Demand demand : demandsToValidateInTheFuture) {
+            new TaskUpdateDevelopingState(demand.getId(), demand.getValidationDate());
+        }
+        
+        
     }
 
     /*
