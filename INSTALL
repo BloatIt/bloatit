@@ -25,7 +25,7 @@ fastcgi.server = (
          "disable-time" => 0,
          "allow-x-send-file" => "enable",
         )
-    ))
+    ),
     
     "/rest" =>
     (
@@ -37,7 +37,7 @@ fastcgi.server = (
          "allow-x-send-file" => "enable",
         )
     )
-
+)
 
 
 Create a symbolic link of '10-fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
