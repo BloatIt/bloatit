@@ -36,6 +36,7 @@ public class Model implements AbstractModel {
     public void init() {
         Log.model().trace("Launching the Model.");
         
+        open();
         // Find the demand with selected offer that should pass into validated.
         PageIterable<Demand> demandsToValidate = new DemandList(DBRequests.demandsThatShouldBeValidated());
         for (Demand demand : demandsToValidate) {
@@ -47,8 +48,7 @@ public class Model implements AbstractModel {
         for (Demand demand : demandsToValidateInTheFuture) {
             new TaskUpdateDevelopingState(demand.getId(), demand.getValidationDate());
         }
-        
-        
+        close();
     }
 
     /*
