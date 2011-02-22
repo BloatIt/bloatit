@@ -15,15 +15,18 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Comment;
-import com.bloatit.model.UserContent;
+import com.bloatit.model.Commentable;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.actions.userContentCommentAction;
+import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.url.CommentReplyPageUrl;
+import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.UserContentCommentActionUrl;
 
 public class CommentTools {
+
+    private static final int NB_COLUMNS = 80;
+    private static final int NB_ROWS = 10;
 
     public static XmlNode generateCommentList(PageIterable<Comment> comments) {
         PlaceHolderElement ph = new PlaceHolderElement();
@@ -123,14 +126,14 @@ public class CommentTools {
     }
 
 
-    private HtmlElement generateNewCommentComponent(final UserContent<?> userContent) {
-        final UserContentCommentActionUrl url = new UserContentCommentActionUrl(userContent);
+    public static HtmlElement generateNewCommentComponent(final Commentable commentable) {
+        final CreateCommentActionUrl url = new CreateCommentActionUrl(commentable);
         final HtmlDiv commentBlock = new HtmlDiv("new_comment_block");
 
         final HtmlForm form = new HtmlForm(url.urlString());
         commentBlock.add(form);
 
-        final HtmlTextArea commentInput = new HtmlTextArea(userContentCommentAction.COMMENT_CONTENT_CODE, Context.tr("New comment : "), NB_ROWS, NB_COLUMNS);
+        final HtmlTextArea commentInput = new HtmlTextArea(CreateCommentAction.COMMENT_CONTENT_CODE, Context.tr("New comment : "), NB_ROWS, NB_COLUMNS);
         form.add(commentInput);
         commentInput.setComment(Context.tr("Use this field to comment the demand. If you want to reply to a previous comment, use the reply link."));
 

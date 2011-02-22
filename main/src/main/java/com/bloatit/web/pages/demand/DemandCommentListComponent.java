@@ -26,8 +26,7 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
 
     private PageIterable<Comment> comments;
     private final Demand targetDemand;
-    private static final int NB_COLUMNS = 80;
-    private static final int NB_ROWS = 10;
+
 
     public DemandCommentListComponent(final Demand demand) {
         super();
