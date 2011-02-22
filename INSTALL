@@ -16,7 +16,7 @@ template:
 
 server.modules   += ( "mod_fastcgi" )
 fastcgi.server = (
-    "bloatit" =>
+    "/web" =>
     (
         (
          "host" => "127.0.0.1",
@@ -26,6 +26,18 @@ fastcgi.server = (
          "allow-x-send-file" => "enable",
         )
     ))
+    
+    "/rest" =>
+    (
+        (
+         "host" => "127.0.0.1",
+         "port" => 4000,
+         "check-local" => "disable",
+         "disable-time" => 0,
+         "allow-x-send-file" => "enable",
+        )
+    )
+
 
 
 Create a symbolic link of '10-fastcgi.conf' in '/etc/lighttpd/conf-enabled/':
