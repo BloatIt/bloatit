@@ -48,9 +48,9 @@ public final class CreateCommentAction extends LoggedAction {
     @Override
     public Url doProcessRestricted() throws RedirectException {
         session.notifyList(url.getMessages());
-        session.notifyGood(Context.tr("Your comment has been added."));
         try {
             commentable.addComment(comment);
+            session.notifyGood(Context.tr("Your comment has been added."));
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add a comment on this idea."));
             return session.pickPreferredPage();
