@@ -29,18 +29,19 @@ public abstract class WebServer implements XcgiProcessor {
     }
 
     @Override
-    public final boolean process(final HttpHeader header, final HttpPost post, final HttpResponse response) throws IOException {
-        final Session session = findSession(header);
+    public final boolean process(final HttpHeader httpHeader, final HttpPost post, final HttpResponse response) throws IOException {
+        final Session session = findSession(httpHeader);
 
         try {
+            WebHeader header= new WebHeader(httpHeader);
             Context.reInitializeContext(header, session);
 
-            final String pageCode = header.getQueryString().getPageName();
+            final String pageCode = header.getPageName();
 
             // Merge post and get parameters.
             final Parameters parameters = new Parameters();
-            parameters.putAll(header.getQueryString().getParameters());
-            parameters.putAll(header.getQueryString().getGetParameters());
+            parameters.putAll(header.getParameters());
+            parameters.putAll(header.getGetParameters());
             parameters.putAll(post.getParameters());
 
             try {
@@ -75,7 +76,7 @@ public abstract class WebServer implements XcgiProcessor {
     /**
      * Return the session for the user. Either an existing session or a new
      * session.
-     * 
+     *
      * @param header
      * @return the session matching the user
      */

@@ -34,7 +34,7 @@ public final class PaylineAction extends LoggedAction {
     @Override
     public Url doProcessRestricted() throws RedirectException {
         // Constructing the urls.
-        final HttpHeader header = Context.getHeader();
+        final HttpHeader header = Context.getHeader().getHttpHeader();
         final String returnUrl = new PaylineReturnActionUrl("ok").externalUrlString(header);
         final String cancelUrl = new PaylineReturnActionUrl("cancel").externalUrlString(header);
         final String notificationUrl = new PaylineNotifyActionUrl().externalUrlString(header);

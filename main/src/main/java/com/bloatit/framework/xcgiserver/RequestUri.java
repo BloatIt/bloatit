@@ -6,7 +6,7 @@ import java.net.URLDecoder;
 import com.bloatit.common.Log;
 import com.bloatit.framework.utils.Parameters;
 
-public class Query {
+public class RequestUri {
 
     private static final String UTF_8 = "UTF-8";
     private static final String PARAMETERS = "param";
@@ -18,7 +18,7 @@ public class Query {
     private final Parameters parameters = new Parameters();
     private final Parameters getParameters = new Parameters();
 
-    Query(final String queryString) {
+    RequestUri(final String queryString) {
         try {
             String parametersString = null;
             for (final String param : queryString.split("&")) {
