@@ -41,5 +41,7 @@ public interface DataClassVisitor<ReturnType> {
     ReturnType visit(DaoOffer dao);
 
     ReturnType visit(DaoTranslation dao);
+    
+    ReturnType visit(DaoRelease dao);
 
 }

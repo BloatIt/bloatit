@@ -46,10 +46,10 @@ public class KudosableAdminListFactory<T extends DaoKudosable, U extends Kudosab
         getfactory().nonLokedOnly();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public PageIterable<U> list() {
-        return (PageIterable<U>) new AdminList.KudosableAdminList((PageIterable<DaoKudosable>) getfactory().createCollection());
+        return (PageIterable) new AdminList<DaoKudosable, KudosableAdmin<DaoKudosable>>((PageIterable<DaoKudosable>) getfactory().createCollection());
     }
 
 }

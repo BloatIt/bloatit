@@ -29,7 +29,7 @@ public class MultipartPostParser extends PostParameterParser {
      * <p>
      * Creates a new MultipartPostParser
      * </p>
-     * 
+     *
      * @param contentType the contentType of the mime, including its boundary
      * @param postStream the stream from which the post is read
      * @param fileSavingDirectory the directory where uploaded files will be
@@ -49,7 +49,7 @@ public class MultipartPostParser extends PostParameterParser {
      * If element is not a file, returns a <code>PageParameter</code> containing
      * the whole content of the element. If element is a file, the
      * <code>PageParameter</code> contains only the location of the file
-     * 
+     *
      * @return a <code>MimeElement</code> representing the content of this mime,
      *         or <code>null</code> if end has been reached.
      * @throws MalformedMimeException if the format is incorrect
@@ -69,9 +69,13 @@ public class MultipartPostParser extends PostParameterParser {
         }
 
         if (next.isFile()) {
-            buffer.add(new PostParameter(next.getName() + MULTIPART_ORIGINAL_FILENAME, next.getFilename()));
-            buffer.add(new PostParameter(next.getName() + MULTIPART_CONTENTYPE, next.getContentType()));
-            return new PostParameter(next.getName() + MULTIPART_SAVED_URL, next.getDestination().getAbsolutePath());
+            if (next.getDestination() == null) {
+                return readNext();
+            } else {
+                buffer.add(new PostParameter(next.getName() + MULTIPART_ORIGINAL_FILENAME, next.getFilename()));
+                buffer.add(new PostParameter(next.getName() + MULTIPART_CONTENTYPE, next.getContentType()));
+                return new PostParameter(next.getName() + MULTIPART_SAVED_URL, next.getDestination().getAbsolutePath());
+            }
         }
 
         final InputStream is = next.getContent();

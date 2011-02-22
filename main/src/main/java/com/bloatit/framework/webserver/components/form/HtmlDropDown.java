@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
-import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup.Displayable;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 
 public class HtmlDropDown extends HtmlFormField<String> {
@@ -34,16 +33,16 @@ public class HtmlDropDown extends HtmlFormField<String> {
         setDefaultOnConstruction(data);
     }
 
-    private void setDefaultOnConstruction(final FormFieldData<?> data) {
-        checked = data.getFieldDefaultValueAsString();
-    }
-
     public HtmlDropDown(final String name) {
         super(new HtmlGenericElement("select"), name);
     }
 
     public HtmlDropDown(final String name, final String label) {
         super(new HtmlGenericElement("select"), name, label);
+    }
+
+    private void setDefaultOnConstruction(final FormFieldData<?> data) {
+        checked = data.getSuggestedValue();
     }
 
     public void addDropDownElement(final String value, final String displayName) {
@@ -68,7 +67,7 @@ public class HtmlDropDown extends HtmlFormField<String> {
     protected void doSetDefaultValue(final String value) {
         final HtmlGenericElement checkedElement = elements.get(value);
         if (checkedElement != null) {
-            checkedElement.addAttribute("checked", "checked");
+            checkedElement.addAttribute("selected", "selected");
         }
     }
 }

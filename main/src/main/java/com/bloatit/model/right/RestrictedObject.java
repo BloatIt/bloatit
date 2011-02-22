@@ -25,6 +25,7 @@ import com.bloatit.data.DaoMember.Role;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.Session;
 import com.bloatit.model.Member;
 
 /**
@@ -78,14 +79,15 @@ public abstract class RestrictedObject implements RestrictedInterface {
      */
     @Override
     public void authenticate(final AuthToken token) {
-        if (Context.getSession() != null && Context.getSession().getAuthToken() != null) {
-            this.token = token;
-            updateRights();
-        }
+        this.token = token;
+        updateRights();
     }
 
     private void automaticAuthentication() {
-        authenticate(Context.getSession().getAuthToken());
+        Session session = Context.getSession();
+        if (token == null && session != null && session.getAuthToken() != null) {
+            authenticate(session.getAuthToken());
+        }
     }
 
     private void updateRights() {

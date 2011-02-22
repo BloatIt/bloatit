@@ -1,7 +1,5 @@
 package com.bloatit.framework.webserver.url;
 
-import com.bloatit.framework.webserver.annotations.Message;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 
 public final class UrlParameterDescription<U> {
@@ -10,22 +8,25 @@ public final class UrlParameterDescription<U> {
     private final Class<U> convertInto;
     private final Role role;
     private final String defaultValue;
+    private final String suggestedValue;
     private final String conversionErrorMsg;
-    private final Message.Level level;
+    private final boolean isOptional;
 
     public UrlParameterDescription(final String name,
                                    final Class<U> convertInto,
                                    final Role role,
                                    final String defaultValue,
+                                   final String suggestedValue,
                                    final String conversionErrorMsg,
-                                   final Level level) {
+                                   final boolean isOptional) {
         super();
         this.name = name;
         this.convertInto = convertInto;
         this.role = role;
         this.defaultValue = defaultValue;
+        this.suggestedValue = suggestedValue;
         this.conversionErrorMsg = conversionErrorMsg;
-        this.level = level;
+        this.isOptional = isOptional;
     }
 
     public final String getName() {
@@ -43,13 +44,17 @@ public final class UrlParameterDescription<U> {
     public final String getDefaultValue() {
         return defaultValue;
     }
+    
+    public final String getSuggestedValue(){
+        return suggestedValue;
+    }
 
     public final String getConversionErrorMsg() {
         return conversionErrorMsg;
     }
 
-    public final Message.Level getLevel() {
-        return level;
+    public boolean isOptional() {
+        return isOptional;
     }
 
 }

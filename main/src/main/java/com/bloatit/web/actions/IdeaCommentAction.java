@@ -14,7 +14,6 @@ package com.bloatit.web.actions;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -31,10 +30,10 @@ public final class IdeaCommentAction extends LoggedAction {
     public static final String COMMENT_CONTENT_CODE = "bloatit_comment_content";
     public static final String COMMENT_TARGET = "target";
 
-    @RequestParam(name = COMMENT_TARGET, level = Level.ERROR)
+    @RequestParam(name = COMMENT_TARGET)
     private final Demand targetIdea;
 
-    @RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST, level = Level.ERROR)
+    @RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST)
     private final String comment;
 
     private final IdeaCommentActionUrl url;

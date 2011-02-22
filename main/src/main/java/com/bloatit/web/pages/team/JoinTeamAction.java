@@ -4,7 +4,6 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.url.Url;
@@ -24,7 +23,7 @@ public class JoinTeamAction extends LoggedAction {
     @SuppressWarnings("unused")
     private JoinTeamActionUrl url;
 
-    @RequestParam(level = Level.ERROR)
+    @RequestParam()
     private final Group targetTeam;
 
     public JoinTeamAction(final JoinTeamActionUrl url) {

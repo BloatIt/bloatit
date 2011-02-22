@@ -32,7 +32,7 @@ import com.bloatit.model.PlannedTask;
  * begin the Development)
  * </p>
  */
-public class TaskSelectedOfferTimeOut extends PlannedTask {
+public class TaskUpdateDevelopingState extends PlannedTask {
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 5639581628713974313L;
@@ -46,7 +46,7 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
      * @param id the id
      * @param time the date when to run this task.
      */
-    public TaskSelectedOfferTimeOut(final int id, final Date time) {
+    public TaskUpdateDevelopingState(final int id, final Date time) {
         super(time, id);
         this.id = id;
     }
@@ -61,7 +61,7 @@ public class TaskSelectedOfferTimeOut extends PlannedTask {
 
             final DemandImplementation demand = DemandManager.getDemandImplementationById(id);
             if (demand != null) {
-                demand.selectedOfferTimeOut();
+                demand.updateDevelopmentState();
             } else {
                 Log.framework().fatal("Cannot perform the selectedOfferTimeOut. DemandImplementation not found: " + id);
             }

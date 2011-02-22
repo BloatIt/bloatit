@@ -11,21 +11,29 @@
  */
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
+import java.util.EnumSet;
+
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.HtmlDropDown;
+import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlFormBlock;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Offer;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.web.actions.ReportBugAction;
+import com.bloatit.web.actions.ReportBugAction.BindedLevel;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
@@ -41,7 +49,7 @@ public final class ReportBugPage extends LoggedPage {
 
     public static final String BUG_BATCH = "bug_offer";
 
-    @RequestParam(name = BUG_BATCH, role = Role.GET, level = Level.ERROR)
+    @RequestParam(name = BUG_BATCH, role = Role.GET)
     private final Offer offer;
 
     public ReportBugPage(final ReportBugPageUrl reportBugPageUrl) {
@@ -99,6 +107,27 @@ public final class ReportBugPage extends LoggedPage {
         final LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
         languageInput.setComment(Context.tr("Language of the description."));
         reportBugForm.add(languageInput);
+
+        // Level
+        final FormFieldData<BindedLevel> levelFormFieldData = doReportUrl.getLevelParameter().formFieldData();
+        final HtmlDropDown levelInput = new HtmlDropDown(levelFormFieldData, Context.tr("Level"));
+        levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
+        levelInput.setComment(Context.tr("Level of the bug."));
+        reportBugForm.add(levelInput);
+
+        //File
+        final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
+        reportBugForm.add(attachementBlock);
+
+        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
+        attachementBlock.add(attachementInput);
+
+        final FormFieldData<String> attachementDescriptionFormFieldData = doReportUrl.getAttachementDescriptionParameter().formFieldData();
+        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
+        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
+        attachementBlock.add(attachementDescriptionInput);
+
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 

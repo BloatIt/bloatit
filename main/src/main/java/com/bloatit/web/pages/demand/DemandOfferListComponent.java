@@ -11,9 +11,14 @@
  */
 package com.bloatit.web.pages.demand;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
+import com.bloatit.common.Log;
 import com.bloatit.data.queries.NullCollection;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.framework.utils.TimeRenderer;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -87,9 +92,15 @@ public class DemandOfferListComponent extends HtmlDiv {
         {
             final HtmlDiv offerSelectedDescription = new HtmlDiv("offer_selected_description");
             {
-                offerSelectedDescription.add(new HtmlParagraph("The selected offer is the one with the more popularity."));
-                // TODO: real timing
-                offerSelectedDescription.add(new HtmlParagraph("This offer will go into development in about 6 hours."));
+                offerSelectedDescription.add(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
+
+                if (DateUtils.isInTheFuture(demand.getValidationDate())) {
+                    TimeRenderer renderer = new TimeRenderer(DateUtils.elapsedMilliseconds(DateUtils.now(), demand.getValidationDate()));
+                    offerSelectedDescription.add(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString()
+                            + "."));
+                } else {
+                    offerSelectedDescription.add(new HtmlParagraph(tr("This offer is in development.")));
+                }
             }
             offerTypeLeftColumn.add(offerSelectedDescription);
         }
@@ -268,7 +279,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                                 }
                                 lotBlock.add(offerLotPriceBlock);
 
-                                final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0}", i), 2);
+                                final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0} - ", i) + getLotState(lot), 2);
                                 lotBlock.add(lotTitle);
 
                                 final HtmlParagraph datePara = new HtmlParagraph();
@@ -298,6 +309,25 @@ public class DemandOfferListComponent extends HtmlDiv {
             }
             add(offerBottomBlock);
 
+        }
+
+        private String getLotState(Batch lot) {
+            switch (lot.getBatchState()) {
+                case PENDING:
+                    return "";
+                case DEVELOPING:
+                    return tr("Developing");
+                case UAT:
+                    return tr("Released");
+                case VALIDATED:
+                    return tr("Validated");
+                case CANCELED:
+                    return tr("Canceled");
+                default:
+                    break;
+            }
+            Log.web().fatal("Lot not found in getLotState ! this is an implementation bug");
+            return "";
         }
 
         private XmlNode generateAvatarBlock() {

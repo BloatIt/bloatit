@@ -130,7 +130,6 @@ public final class Member extends Actor<DaoMember> {
      * Gives some new rights to a user in a groups
      * </p>
      * 
-     * @param the role in which the new role will be set
      * @param newRole the new role of the user
      * @throws MemberNotInGroupException when <code>this</code> is not part of
      *             <code>group</code>

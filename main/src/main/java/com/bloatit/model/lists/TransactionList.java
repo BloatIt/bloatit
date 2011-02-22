@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Transaction;
@@ -27,59 +25,7 @@ import com.bloatit.model.Transaction;
  * PageIterable<Transaction>.
  */
 public final class TransactionList extends ListBinder<Transaction, DaoTransaction> {
-
-    /**
-     * Instantiates a new transaction list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public TransactionList(final PageIterable<DaoTransaction> daoCollection) {
+    public TransactionList(PageIterable<DaoTransaction> daoCollection) {
         super(daoCollection);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<Transaction> createFromDaoIterator(final Iterator<DaoTransaction> dao) {
-        return new TransactionIterator(dao);
-    }
-
-    /**
-     * The Class TransactionIterator.
-     */
-    static final class TransactionIterator extends com.bloatit.model.lists.IteratorBinder<Transaction, DaoTransaction> {
-
-        /**
-         * Instantiates a new transaction iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public TransactionIterator(final Iterable<DaoTransaction> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new transaction iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public TransactionIterator(final Iterator<DaoTransaction> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected Transaction createFromDao(final DaoTransaction dao) {
-            return Transaction.create(dao);
-        }
     }
 }

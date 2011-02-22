@@ -224,7 +224,6 @@ public class BloatitExampleDB {
         // "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
 
         // Add bugs
-        setDemandInValidationState(addPerroquetInMageiaDemand);
         final Batch firstBatch = addPerroquetInMageiaDemand.getSelectedOffer().getBatches().iterator().next();
         firstBatch.addBug(fred, "Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
         firstBatch.addBug(elephantman,
@@ -240,11 +239,6 @@ public class BloatitExampleDB {
 
         SessionManager.endWorkUnitAndFlush();
 
-    }
-
-    private void setDemandInValidationState(final Demand demand) {
-        final DemandImplementation demandImpl = (DemandImplementation) demand;
-        demandImpl.getDao().setDemandState(DemandState.UAT);
     }
 
     private void setDemandInDevelopmentState(final Demand demand) {

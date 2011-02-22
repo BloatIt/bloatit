@@ -34,6 +34,7 @@ import com.bloatit.data.DaoKudos;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoProject;
+import com.bloatit.data.DaoRelease;
 import com.bloatit.data.DaoTransaction;
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.data.DataClassVisitor;
@@ -237,6 +238,16 @@ public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
     @Override
     public Identifiable<?> visit(final DaoTranslation dao) {
         return Translation.create(dao);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.bloatit.data.DataClassVisitor#visit(com.bloatit.data.DaoTranslation)
+     */
+    @Override
+    public Identifiable<?> visit(DaoRelease dao) {
+        return Release.create(dao);
     }
 
 }

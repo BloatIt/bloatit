@@ -36,6 +36,7 @@ public final class HttpResponse {
     private final IndentedHtmlStream htmlText;
     private StatusCode status = StatusCode.OK_200;
 
+    // TODO: use write line in all file
     public HttpResponse(final OutputStream output) {
         this.output = output;
         this.htmlText = new IndentedHtmlStream(output);
@@ -79,13 +80,28 @@ public final class HttpResponse {
     }
 
     public void writeResource(final String path, final long size, final String fileName) throws IOException {
-        final String sendString1 = "Content-Disposition: inline; filename=" + fileName + "\r\n";
 
-        final String sendString2 = "X-Sendfile2: " + path + " 0-" + size + "\r\n";
-        output.write(sendString1.getBytes());
-        output.write(sendString2.getBytes());
+        // writeLine("Vary: Accept-Encoding");
+        // writeLine("Content-Encoding: gzip");
+
+        // writeLine("ETag: \"3164227128\"");
+        // Content-Type: image/png
+        // writeLine("Content-Type: text/css");
+        // writeLine("Content-Type: image/png");
+        // writeLine("Accept-Ranges: bytes");
+        // writeLine("Last-Modified: Wed, 16 Feb 2011 22:29:37 GMT");
+
+        // TODO: add all meta info as date, etc...
+
+        writeLine("Content-Disposition: inline; filename=" + fileName);
+        writeLine("X-Sendfile2: " + path + " 0-" + (size - 1));
 
         closeHeaders();
+    }
+
+    private void writeLine(String string) throws IOException {
+        String line = string + "\r\n";
+        output.write(line.getBytes());
     }
 
     /**
@@ -106,7 +122,7 @@ public final class HttpResponse {
      * goes haywire, think to set a correct status using the method
      * {@link #setStatus(StatusCode)}
      * </p>
-     * 
+     *
      * @param resource the resource to write
      * @throws IOException whenever an IO error occurs on the underlying stream
      * @see #setStatus(StatusCode)

@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2011 Linkeos.
- * 
+ *
  * This file is part of BloatIt.
- * 
+ *
  * BloatIt is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Affero General Public License as published by the Free
  * Software Foundation, either version 3 of the License, or (at your option) any
  * later version.
- * 
+ *
  * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -145,7 +145,7 @@ public class HttpHeader {
      * example : lang=fr&page=payline&param=result-cancel/token-
      * EuuqQRn7AiPNrfqT7D0w1294355479323
      */
-    private Query queryString = null;
+    private final LazyString queryString = new LazyString("QUERY_STRING");
     /**
      * example : CGI/1.1
      */
@@ -159,6 +159,7 @@ public class HttpHeader {
      * /fr/payline/result-cancel?token=EuuqQRn7AiPNrfqT7D0w1294355479323
      */
     private final LazyString requestUri = new LazyString("REQUEST_URI");
+
     /**
      * example : 1
      */
@@ -176,7 +177,6 @@ public class HttpHeader {
         super();
         this.env = env;
         Log.framework().info(env);
-        queryString = new Query(env.get("QUERY_STRING"));
     }
 
     public final String getPathInfo() {
@@ -279,8 +279,8 @@ public class HttpHeader {
         return scgi.getValue(env);
     }
 
-    public final Query getQueryString() {
-        return queryString;
+    public final String getQueryString() {
+        return queryString.getValue(env);
     }
 
     public final String getGatewayInterface() {

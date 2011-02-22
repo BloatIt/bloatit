@@ -27,62 +27,47 @@ import com.bloatit.model.lists.ListBinder;
  * The Class DemandList. It is a ListBinder to transform PageIterable<DaoDemand>
  * to PageIterable<Demand>
  */
-public final class DemandList extends ListBinder<Demand, DaoDemand> {
+public final class DemandList implements PageIterable<Demand> {
+    private final ListBinder<DemandImplementation, DaoDemand> listBinder;
 
-    /**
-     * Instantiates a new demand list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public DemandList(final PageIterable<DaoDemand> daoCollection) {
-        super(daoCollection);
+    public DemandList(PageIterable<DaoDemand> daoList) {
+        listBinder = new ListBinder<DemandImplementation, DaoDemand>(daoList);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    protected Iterator<Demand> createFromDaoIterator(final Iterator<DaoDemand> dao) {
-        return new DemandIterator(dao);
+    public final Iterator<Demand> iterator() {
+        return (Iterator) listBinder.iterator();
     }
 
-    /**
-     * The Class DemandIterator is an iterator on DaoDemand that return Demands.
-     */
-    static final class DemandIterator extends com.bloatit.model.lists.IteratorBinder<Demand, DaoDemand> {
+    @Override
+    public final void setPage(int page) {
+        listBinder.setPage(page);
+    }
 
-        /**
-         * Instantiates a new demand iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public DemandIterator(final Iterable<DaoDemand> daoIterator) {
-            super(daoIterator);
-        }
+    @Override
+    public final void setPageSize(int pageSize) {
+        listBinder.setPageSize(pageSize);
+    }
 
-        /**
-         * Instantiates a new demand iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public DemandIterator(final Iterator<DaoDemand> daoIterator) {
-            super(daoIterator);
-        }
+    @Override
+    public final int getPageSize() {
+        return listBinder.getPageSize();
+    }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected Demand createFromDao(final DaoDemand dao) {
-            return DemandImplementation.create(dao);
-        }
+    @Override
+    public final int size() {
+        return listBinder.size();
+    }
 
+    @Override
+    public final int pageNumber() {
+        return listBinder.pageNumber();
+    }
+
+    @Override
+    public final int getCurrentPage() {
+        return listBinder.getCurrentPage();
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
@@ -29,16 +30,26 @@ public final class Loaders {
         if (obj == null) {
             return "";
         }
-        @SuppressWarnings("unchecked") final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
-        return loader.toString(obj);
+        try {
+            @SuppressWarnings("unchecked") final Loader<T> loader = (Loader<T>) getLoader(obj.getClass());
+            return loader.toString(obj);
+        } catch (ConversionErrorException e) {
+            Log.framework().debug("Conversion error in toStr.", e);
+            throw e;
+        }
     }
 
     public static <T> T fromStr(final Class<T> toClass, final String value) throws ConversionErrorException {
         if (value.equals("null")) {
             return null;
         }
-        final Loader<T> loader = getLoader(toClass);
-        return loader.fromString(value);
+        try {
+            final Loader<T> loader = getLoader(toClass);
+            return loader.fromString(value);
+        } catch (ConversionErrorException e) {
+            Log.framework().debug("Conversion error in fromStr.", e);
+            throw e;
+        }
     }
 
     @SuppressWarnings({ "unchecked", "synthetic-access", "cast", "rawtypes" })
@@ -68,7 +79,7 @@ public final class Loaders {
         } else if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
         } else if (IdentifiableInterface.class.isAssignableFrom(theClass)) {
-            return (Loader<T>) new ToIdentifiable();
+            return (Loader<T>) new ToIdentifiable(theClass);
         } else if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
         }
@@ -229,21 +240,30 @@ public final class Loaders {
         }
     }
 
-    private static class ToIdentifiable extends Loader<Identifiable<?>> {
+    private static class ToIdentifiable<T extends Identifiable<?>> extends Loader<T> {
+
+        private final Class<T> theClass;
+
+        public ToIdentifiable(Class<T> theClass) {
+            this.theClass = theClass;
+        }
+
         @Override
-        public final String toString(final Identifiable<?> id) {
+        public final String toString(final T id) {
             return String.valueOf(id.getId());
         }
 
         @Override
-        public final Identifiable<?> fromString(final String data) throws ConversionErrorException {
+        public final T fromString(final String data) throws ConversionErrorException {
             try {
-                final Identifiable<?> fromStr = GenericManager.getById(Integer.valueOf(data));
+                final T fromStr = theClass.cast(GenericManager.getById(Integer.valueOf(data)));
                 if (fromStr == null) {
                     throw new ConversionErrorException("Identifiable not found for Id: " + data);
                 }
                 return fromStr;
             } catch (final NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            } catch (ClassCastException e) {
                 throw new ConversionErrorException(e);
             }
         }

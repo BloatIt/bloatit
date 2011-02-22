@@ -20,8 +20,8 @@ public class BloatitRestServer extends RestServer {
     protected RestResource constructRestResource(String pageCode, RequestMethod requestMethod, Parameters params, Session session) {
         this.requestMethod = requestMethod;
 
-        if (pageCode.equals("rest/plop")) {
-            Log.rest().trace("Found resource rest/plop");
+        if (pageCode.equals("plop")) {
+            Log.rest().trace("Found resource plop");
             return new TestResource(requestMethod);
         }
 

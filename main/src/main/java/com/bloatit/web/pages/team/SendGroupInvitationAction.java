@@ -5,7 +5,6 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
@@ -25,10 +24,10 @@ public class SendGroupInvitationAction extends LoggedAction {
     public final static String GROUP_JOIN_CODE = "bloatit_join_group";
     public final static String RECEIVER_CODE = "bloatit_join_receiver";
 
-    @RequestParam(level = Level.ERROR, name = GROUP_JOIN_CODE, role = Role.POST)
+    @RequestParam(name = GROUP_JOIN_CODE, role = Role.POST)
     private final Group group;
 
-    @RequestParam(level = Level.ERROR, name = RECEIVER_CODE, role = Role.POST)
+    @RequestParam(name = RECEIVER_CODE, role = Role.POST)
     private final Member receiver;
 
     private final SendGroupInvitationActionUrl url;

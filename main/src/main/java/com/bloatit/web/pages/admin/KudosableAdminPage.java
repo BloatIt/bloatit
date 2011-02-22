@@ -7,6 +7,7 @@ import java.util.EnumSet;
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
@@ -24,7 +25,8 @@ import com.bloatit.web.url.KudosableAdminPageUrl;
 public abstract class KudosableAdminPage<T extends DaoKudosable, U extends KudosableAdmin<T>, V extends KudosableAdminListFactory<T, U>> extends
         UserContentAdminPage<T, U, V> {
 
-    @RequestParam(defaultValue = "false", role = RequestParam.Role.POST)
+    @RequestParam(role = RequestParam.Role.POST)
+    @Optional("false")
     private final Boolean orderByPopularity;
 
     @RequestParam(role = RequestParam.Role.POST)
@@ -33,7 +35,8 @@ public abstract class KudosableAdminPage<T extends DaoKudosable, U extends Kudos
     @RequestParam(role = RequestParam.Role.POST)
     private final DisplayableComparator popularityComparator;
 
-    @RequestParam(defaultValue = "NO_FILTER", role = RequestParam.Role.POST)
+    @RequestParam(role = RequestParam.Role.POST)
+    @Optional("NO_FILTER")
     private final DisplayableFilterType filterLoked;
 
     @RequestParam(role = RequestParam.Role.POST)

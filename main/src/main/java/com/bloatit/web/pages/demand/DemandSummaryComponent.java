@@ -230,9 +230,6 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                     case DEVELOPPING:
                         demandSummaryActions.add(generatePendingStateActions());
                         break;
-                    case UAT:
-                        demandSummaryActions.add(generateUATStateActions());
-                        break;
                     case FINISHED:
                         demandSummaryActions.add(generatePendingStateActions());
                         break;

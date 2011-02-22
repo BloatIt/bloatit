@@ -133,7 +133,8 @@ public abstract class RestResource {
      *             sufficient rights to access this resource
      */
     protected void doGet() throws RestException {
-        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "GET doesn't exist for this ReST resource. Available for this resource: " + getAvailable() );
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "GET doesn't exist for this ReST resource. Available for this resource: "
+                + getAvailable());
     }
 
     /**
@@ -156,7 +157,8 @@ public abstract class RestResource {
      *             sufficient rights to access this resource
      */
     protected void doPost() throws RestException {
-        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "POST doesn't exist for this ReST resource. Available for this resource: :" + getAvailable());
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "POST doesn't exist for this ReST resource. Available for this resource: :"
+                + getAvailable());
     }
 
     /**
@@ -178,7 +180,8 @@ public abstract class RestResource {
      *             sufficient rights to access this resource
      */
     protected void doPut() throws RestException {
-        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "PUT doesn't exist for this ReST resource. Available for this resource: :" + getAvailable());
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "PUT doesn't exist for this ReST resource. Available for this resource: :"
+                + getAvailable());
     }
 
     /**
@@ -198,7 +201,8 @@ public abstract class RestResource {
      *             sufficient rights to access this resource
      */
     protected void doDelete() throws RestException {
-        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "DELETE doesn't exist for this ReST resource. Available for this resource: :" + getAvailable());
+        throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+                                "DELETE doesn't exist for this ReST resource. Available for this resource: :" + getAvailable());
     }
 
     private String getAvailable() {
@@ -210,7 +214,7 @@ public abstract class RestResource {
                 result += name;
             }
         }
-        
+
         return result;
     }
 }

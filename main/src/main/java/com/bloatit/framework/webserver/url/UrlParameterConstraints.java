@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.EnumSet;
 
 import com.bloatit.framework.webserver.annotations.Message;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.Message.What;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 
@@ -74,12 +73,7 @@ public class UrlParameterConstraints<U> {
     }
 
     @SuppressWarnings("unchecked")
-    public void computeConstraints(final U value,
-                                   final Class<U> valueClass,
-                                   final Messages messages,
-                                   final Level level,
-                                   final String name,
-                                   final String strValue) {
+    public void computeConstraints(final U value, final Class<U> valueClass, final Messages messages, final String name, final String strValue) {
         @SuppressWarnings("rawtypes") ComputeConstraint computeConstraint;
         if (valueClass.equals(Integer.class)) {
             computeConstraint = new ComputeIntegerConstraint<Integer>((UrlParameterConstraints<Integer>) this);
@@ -90,28 +84,24 @@ public class UrlParameterConstraints<U> {
         } else {
             computeConstraint = new ComputeEverythingConstraint((UrlParameterConstraints<Object>) this);
         }
-        updateMessages(computeConstraint.getConstraintErrors(value), messages, level, name, strValue);
+        updateMessages(computeConstraint.getConstraintErrors(value), messages, name, strValue);
     }
 
-    private void updateMessages(final EnumSet<ConstraintError> enumSet,
-                                final Messages messages,
-                                final Level level,
-                                final String name,
-                                final String strValue) {
+    private void updateMessages(final EnumSet<ConstraintError> enumSet, final Messages messages, final String name, final String strValue) {
         if (enumSet.contains(ConstraintError.MIN_ERROR)) {
-            messages.add(new Message(min.getError(), level, What.MIN_ERROR, name, strValue));
+            messages.add(new Message(min.getError(), What.MIN_ERROR, name, strValue));
         }
         if (enumSet.contains(ConstraintError.MAX_ERROR)) {
-            messages.add(new Message(max.getError(), level, What.MAX_ERROR, name, strValue));
+            messages.add(new Message(max.getError(), What.MAX_ERROR, name, strValue));
         }
         if (enumSet.contains(ConstraintError.LENGTH_ERROR)) {
-            messages.add(new Message(length.getError(), level, What.LENGTH_ERROR, name, strValue));
+            messages.add(new Message(length.getError(), What.LENGTH_ERROR, name, strValue));
         }
         if (enumSet.contains(ConstraintError.OPTIONAL_ERROR)) {
-            messages.add(new Message(optional.getError(), level, What.OPTIONAL_ERROR, name, strValue));
+            messages.add(new Message(optional.getError(), What.OPTIONAL_ERROR, name, strValue));
         }
         if (enumSet.contains(ConstraintError.PRECISION_ERROR)) {
-            messages.add(new Message(precision.getError(), level, What.PRECISION_ERROR, name, strValue));
+            messages.add(new Message(precision.getError(), What.PRECISION_ERROR, name, strValue));
         }
     }
 

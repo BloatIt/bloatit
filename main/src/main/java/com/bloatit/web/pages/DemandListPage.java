@@ -16,8 +16,8 @@ import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.search.DemandSearch;
 import com.bloatit.data.search.DemandSearch.SortMethod;
 import com.bloatit.framework.exceptions.RedirectException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Demand;
+import com.bloatit.model.demand.DemandList;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.components.HtmlPagedList;
@@ -43,7 +44,9 @@ public final class DemandListPage extends MasterPage {
     public static final String FILTER_IN_PROGRESS = "in progress";
     public static final String FILTER_FINISHED = "finished";
     public static final String FILTER_CODE = "filter";
-    @RequestParam(defaultValue = FILTER_IN_PROGRESS, name = FILTER_CODE)
+    
+    @RequestParam(name = FILTER_CODE)
+    @Optional(FILTER_IN_PROGRESS)
     private final String filter;
 
     public static final String SORT_BY_RELEVANCE = "relevance";
@@ -53,11 +56,13 @@ public final class DemandListPage extends MasterPage {
     public static final String SORT_BY_CREATION_DATE = "creation date";
     public static final String SORT_BY_EXPIRATION_DATE = "expiration date";
     public static final String SORT_CODE = "sort";
-    @RequestParam(defaultValue = SORT_BY_POPULARITY, name = SORT_CODE)
+    @RequestParam(name = SORT_CODE)
+    @Optional(SORT_BY_POPULARITY)
     private final String sort;
 
     public static final String SEARCH_STRING_CODE = "search_string";
-    @RequestParam(defaultValue = "", name = SEARCH_STRING_CODE)
+    @RequestParam(name = SEARCH_STRING_CODE)
+    @Optional("")
     private final String searchString;
 
     private HtmlPagedList<Demand> pagedDemandList;
@@ -220,7 +225,7 @@ public final class DemandListPage extends MasterPage {
         add(demandSearchBlock);
 
         // Demand list
-        final PageIterable<Demand> results = searchResult();
+        final DemandList results = searchResult();
         if (results.size() > 0) {
             final HtmlRenderer<Demand> demandItemRenderer = new IdeasListItem();
             final DemandListPageUrl clonedUrl = url.clone();
@@ -264,7 +269,7 @@ public final class DemandListPage extends MasterPage {
         }
     };
 
-    private PageIterable<Demand> searchResult() {
+    private DemandList searchResult() {
 
         final DemandSearch search = new DemandSearch(searchString);
         if (!filter.equals(FILTER_ALL)) {
@@ -273,7 +278,6 @@ public final class DemandListPage extends MasterPage {
                 search.addDemandStateFilter(DemandState.DISCARDED);
             } else if (filter.equals(FILTER_FINISHED)) {
                 search.addDemandStateFilter(DemandState.DEVELOPPING);
-                search.addDemandStateFilter(DemandState.UAT);
                 search.addDemandStateFilter(DemandState.PENDING);
                 search.addDemandStateFilter(DemandState.PREPARING);
             }
@@ -293,6 +297,6 @@ public final class DemandListPage extends MasterPage {
             search.setSortMethod(SortMethod.SORT_BY_EXPIRATION_DATE);
         }
 
-        return search.search();
+        return new DemandList(search.doSearch());
     }
 }

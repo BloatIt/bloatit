@@ -42,15 +42,15 @@ public abstract class Search<T> {
     protected void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
         this.persistent = persistent;
         this.fields = fields;
-        this.searchStr = searchStr;
+        this.searchStr = searchStr != null ? searchStr : "";
     }
 
-    protected final PageIterable<T> doSearch() {
+    public final PageIterable<T> doSearch() {
         prepareSearch();
 
         final org.apache.lucene.search.Query query;
 
-        if (searchStr.equals("")) {
+        if ("".equals(searchStr)) {
             query = new MatchAllDocsQuery();
         } else {
             final MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));

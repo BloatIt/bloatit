@@ -11,25 +11,25 @@
 		<property name="hibernate.connection.username">bloatit</property>
 		<property name="hibernate.connection.password">passe</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-		
-		<!-- JDBC connection pool (use the built-in) --> 
+
+		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">1</property>
-		<!-- Enable Hibernate's automatic session context management--> 
+		<!-- Enable Hibernate's automatic session context management -->
 		<property name="current_session_context_class">thread</property>
-		
+
 		<!-- Echo all executed SQL to stdout -->
 		<property name="hibernate.show_sql">false</property>
 		<!-- Drop and re-create the database schema on startup -->
 		<!-- <property name="hbm2ddl.auto">update</property> -->
 		<property name="hibernate.jdbc.batch_size">25</property>
-		
-		
+
+
 		<property name="hibernate.id.new_generator_mappings">true</property>
 
-		 
+
 		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
 		<property name="hibernate.search.default.indexBase">/var/local/lucene/indexes</property>
-	
+
 		<mapping class="com.bloatit.data.DaoAccount" />
 		<mapping class="com.bloatit.data.DaoInternalAccount" />
 		<mapping class="com.bloatit.data.DaoExternalAccount" />
@@ -55,12 +55,13 @@
 		<mapping class="com.bloatit.data.DaoHighlightDemand" />
 		<mapping class="com.bloatit.data.DaoUserContent" />
 		<mapping class="com.bloatit.data.DaoKudosable" />
+		<mapping class="com.bloatit.data.DaoRelease" />
 
-		<!--<mapping class="com.bloatit.data.DaoUserContent" /> <mapping 
-			class="com.bloatit.data.DaoKudosable" /> <mapping class="com.bloatit.data.DaoIdentifiable" 
-			/> -->
+
+		<!--<mapping class="com.bloatit.data.DaoUserContent" /> <mapping class="com.bloatit.data.DaoKudosable" 
+			/> <mapping class="com.bloatit.data.DaoIdentifiable" /> -->
 	</session-factory>
-	
+
 
 
 </hibernate-configuration>

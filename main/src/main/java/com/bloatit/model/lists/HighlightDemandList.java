@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoHighlightDemand;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.HighlightDemand;
@@ -27,61 +25,7 @@ import com.bloatit.model.HighlightDemand;
  * PageIterable<HighlightDemand>.
  */
 public final class HighlightDemandList extends ListBinder<HighlightDemand, DaoHighlightDemand> {
-
-    /**
-     * Instantiates a new project list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public HighlightDemandList(final PageIterable<DaoHighlightDemand> daoCollection) {
+    public HighlightDemandList(PageIterable<DaoHighlightDemand> daoCollection) {
         super(daoCollection);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<HighlightDemand> createFromDaoIterator(final Iterator<DaoHighlightDemand> dao) {
-        return new HighlightDemandIterator(dao);
-    }
-
-    /**
-     * The Class ProjectIterator.
-     */
-    static final class HighlightDemandIterator extends IteratorBinder<HighlightDemand, DaoHighlightDemand> {
-
-        /**
-         * Instantiates a new project iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public HighlightDemandIterator(final Iterable<DaoHighlightDemand> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new project iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public HighlightDemandIterator(final Iterator<DaoHighlightDemand> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected HighlightDemand createFromDao(final DaoHighlightDemand dao) {
-            return HighlightDemand.create(dao);
-        }
-
-    }
-
 }

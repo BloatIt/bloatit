@@ -10,13 +10,13 @@ public class TestResource extends RestResource {
         super(requestMethod);
     }
 
-    protected void doGet(){
+    protected void doGet() {
         add(new RestElement("plop"));
     }
-    
+
     @Override
     protected void doPost() throws RestException {
         super.doPost();
     }
-    
+
 }

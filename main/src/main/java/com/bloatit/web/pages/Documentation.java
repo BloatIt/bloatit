@@ -14,7 +14,7 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
-import com.bloatit.framework.webserver.annotations.Message.Level;
+import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
@@ -45,7 +45,8 @@ public class Documentation extends MasterPage {
      */
     private static Map<MarkdownDocumentationMarker, MarkdownDocumentationContent> cache = Collections.synchronizedMap((new HashMap<MarkdownDocumentationMarker, MarkdownDocumentationContent>()));
 
-    @RequestParam(name = DOC_TARGET, level = Level.ERROR, defaultValue = DEFAULT_DOC)
+    @RequestParam(name = DOC_TARGET)
+    @Optional(DEFAULT_DOC)
     private final String docTarget;
 
     public Documentation(final DocumentationUrl url) {

@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoJoinGroupInvitation;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.JoinGroupInvitation;
@@ -28,60 +26,8 @@ import com.bloatit.model.JoinGroupInvitation;
  */
 public final class JoinGroupInvitationtList extends ListBinder<JoinGroupInvitation, DaoJoinGroupInvitation> {
 
-    /**
-     * Instantiates a new comment list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public JoinGroupInvitationtList(final PageIterable<DaoJoinGroupInvitation> daoCollection) {
+    public JoinGroupInvitationtList(PageIterable<DaoJoinGroupInvitation> daoCollection) {
         super(daoCollection);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<JoinGroupInvitation> createFromDaoIterator(final Iterator<DaoJoinGroupInvitation> dao) {
-        return new JoinGroupInvitationIterator(dao);
-    }
-
-    /**
-     * The Class JoinGroupInvitationIterator.
-     */
-    static final class JoinGroupInvitationIterator extends com.bloatit.model.lists.IteratorBinder<JoinGroupInvitation, DaoJoinGroupInvitation> {
-
-        /**
-         * Instantiates a new comment iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public JoinGroupInvitationIterator(final Iterable<DaoJoinGroupInvitation> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new comment iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public JoinGroupInvitationIterator(final Iterator<DaoJoinGroupInvitation> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected JoinGroupInvitation createFromDao(final DaoJoinGroupInvitation dao) {
-            return JoinGroupInvitation.create(dao);
-        }
-
     }
 
 }

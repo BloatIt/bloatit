@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface RequestParam {
 
-    static public final String DEFAULT_DEFAULT_VALUE = "42!$%*/;19901481602plqsdjcjuh$*ù^88a71599aABCD";
+    static public final String DEFAULT_SUGGESTED_VALUE = "42!$%*/;19901481602plqsdjcjuh$*ù^88a71599aABCD";
     static public final String DEFAULT_ERROR_MSG = "Error: invalid value (%value) for parameter %param";
 
     public enum Role {
@@ -20,9 +20,7 @@ public @interface RequestParam {
 
     tr conversionErrorMsg() default @tr(DEFAULT_ERROR_MSG);
 
-    Message.Level level() default Message.Level.ERROR;
-
-    String defaultValue() default DEFAULT_DEFAULT_VALUE;
+    String suggestedValue() default DEFAULT_SUGGESTED_VALUE;
 
     Role role() default Role.GET;
 

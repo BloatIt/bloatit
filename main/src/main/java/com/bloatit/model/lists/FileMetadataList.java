@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
@@ -27,61 +25,7 @@ import com.bloatit.model.FileMetadata;
  * PageIterable<FileMetadata>.
  */
 public final class FileMetadataList extends ListBinder<FileMetadata, DaoFileMetadata> {
-
-    /**
-     * Instantiates a new file metadata list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public FileMetadataList(final PageIterable<DaoFileMetadata> daoCollection) {
+    public FileMetadataList(PageIterable<DaoFileMetadata> daoCollection) {
         super(daoCollection);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<FileMetadata> createFromDaoIterator(final Iterator<DaoFileMetadata> dao) {
-        return new FileMetadataIterator(dao);
-    }
-
-    /**
-     * The Class FileMetadataIterator.
-     */
-    static final class FileMetadataIterator extends com.bloatit.model.lists.IteratorBinder<FileMetadata, DaoFileMetadata> {
-
-        /**
-         * Instantiates a new file metadata iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public FileMetadataIterator(final Iterable<DaoFileMetadata> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new file metadata iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public FileMetadataIterator(final Iterator<DaoFileMetadata> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected FileMetadata createFromDao(final DaoFileMetadata dao) {
-            return FileMetadata.create(dao);
-        }
-
-    }
-
 }

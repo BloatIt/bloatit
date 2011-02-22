@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoBatch;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Batch;
@@ -26,62 +24,7 @@ import com.bloatit.model.Batch;
  * The Class BatchList transforms PageIterable<DaoBatch> to PageIterable<Batch>.
  */
 public final class BatchList extends ListBinder<Batch, DaoBatch> {
-
-    /**
-     * Instantiates a new batch list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public BatchList(final PageIterable<DaoBatch> daoCollection) {
+    public BatchList(PageIterable<DaoBatch> daoCollection) {
         super(daoCollection);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<Batch> createFromDaoIterator(final Iterator<DaoBatch> dao) {
-        return new BatchIterator(dao);
-    }
-
-    /**
-     * The Class BatchIterator takes an iterator on a DaoBatch and return one on
-     * a Batch.
-     */
-    static final class BatchIterator extends com.bloatit.model.lists.IteratorBinder<Batch, DaoBatch> {
-
-        /**
-         * Instantiates a new batch iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public BatchIterator(final Iterable<DaoBatch> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new batch iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public BatchIterator(final Iterator<DaoBatch> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected Batch createFromDao(final DaoBatch dao) {
-            return Batch.create(dao);
-        }
-
-    }
-
 }

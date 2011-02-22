@@ -15,7 +15,6 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.PageNotFoundException;
-import com.bloatit.framework.webserver.annotations.Message.Level;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -25,8 +24,10 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Bug;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.BugPageUrl;
+import com.bloatit.web.url.FileResourceUrl;
 
 @ParamContainer("demand/bug")
 public final class BugPage extends MasterPage {
@@ -34,7 +35,7 @@ public final class BugPage extends MasterPage {
     public static final String BUG_FIELD_NAME = "id";
 
     @ParamConstraint(optionalErrorMsg = @tr("The id of the project is incorrect or missing"))
-    @RequestParam(name = BUG_FIELD_NAME, level = Level.ERROR)
+    @RequestParam(name = BUG_FIELD_NAME)
     private final Bug bug;
 
     private final BugPageUrl url;
@@ -48,7 +49,7 @@ public final class BugPage extends MasterPage {
     @Override
     protected void doCreate() throws RedirectException {
         session.notifyList(url.getMessages());
-        if (url.getMessages().hasMessage(Level.ERROR)) {
+        if (url.getMessages().hasMessage()) {
             throw new PageNotFoundException();
         }
 
@@ -59,10 +60,20 @@ public final class BugPage extends MasterPage {
         box.add(bugTitle);
 
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
-
         box.add(description);
 
+
+        //Attachements
+        for(FileMetadata attachement: bug.getFiles()) {
+            final HtmlParagraph attachementPara = new HtmlParagraph();
+            attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
+            attachementPara.addText(tr(": ")+attachement.getShortDescription());
+            box.add(attachementPara);
+        }
+
         add(box);
+
+
     }
 
     @Override

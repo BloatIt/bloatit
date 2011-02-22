@@ -16,8 +16,6 @@
 //
 package com.bloatit.model.lists;
 
-import java.util.Iterator;
-
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.BankTransaction;
@@ -27,62 +25,7 @@ import com.bloatit.model.BankTransaction;
  * PageIterable<BankTransaction>.
  */
 public final class BankTransactionList extends ListBinder<BankTransaction, DaoBankTransaction> {
-
-    /**
-     * Instantiates a new bank transaction list.
-     * 
-     * @param daoCollection the dao collection
-     */
-    public BankTransactionList(final PageIterable<DaoBankTransaction> daoCollection) {
+    public BankTransactionList(PageIterable<DaoBankTransaction> daoCollection) {
         super(daoCollection);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.bloatit.model.lists.ListBinder#createFromDaoIterator(java.util.Iterator
-     * )
-     */
-    @Override
-    protected Iterator<BankTransaction> createFromDaoIterator(final Iterator<DaoBankTransaction> dao) {
-        return new BankTransactionIterator(dao);
-    }
-
-    /**
-     * The Class BankTransactionIterator take an Iterator on a
-     * DaoBankTransaction and return one on a BankTransaction.
-     */
-    static final class BankTransactionIterator extends IteratorBinder<BankTransaction, DaoBankTransaction> {
-
-        /**
-         * Instantiates a new bank transaction iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public BankTransactionIterator(final Iterable<DaoBankTransaction> daoIterator) {
-            super(daoIterator);
-        }
-
-        /**
-         * Instantiates a new bank transaction iterator.
-         * 
-         * @param daoIterator the dao iterator
-         */
-        public BankTransactionIterator(final Iterator<DaoBankTransaction> daoIterator) {
-            super(daoIterator);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see
-         * com.bloatit.model.lists.IteratorBinder#createFromDao(java.lang.Object
-         * )
-         */
-        @Override
-        protected BankTransaction createFromDao(final DaoBankTransaction dao) {
-            return BankTransaction.create(dao);
-        }
-
-    }
-
 }

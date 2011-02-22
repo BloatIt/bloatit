@@ -16,6 +16,10 @@
 //
 package com.bloatit.model.lists;
 
+import com.bloatit.data.DaoIdentifiable;
+import com.bloatit.model.ConstructorVisitor;
+import com.bloatit.model.Identifiable;
+
 /**
  * The Class IteratorBinder is the base class of the iterator used in the List
  * classes. The List classes transform PageIterable<Dao...> to
@@ -25,7 +29,7 @@ package com.bloatit.model.lists;
  * @param <DAO> the Dao Element. (If <code>E</code> id Demand then
  *            <code>DAO</code> must be DaoDemand.
  */
-public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
+public class IteratorBinder<E extends Identifiable<DAO>, DAO extends DaoIdentifiable> implements java.util.Iterator<E> {
 
     /** The dao iterator. */
     private final java.util.Iterator<DAO> daoIterator;
@@ -63,9 +67,10 @@ public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
      * (non-Javadoc)
      * @see java.util.Iterator#next()
      */
+    @SuppressWarnings("unchecked")
     @Override
     public final E next() {
-        return createFromDao(daoIterator.next());
+        return (E) daoIterator.next().accept(new ConstructorVisitor());
     }
 
     /*
@@ -76,13 +81,4 @@ public abstract class IteratorBinder<E, DAO> implements java.util.Iterator<E> {
     public final void remove() {
         daoIterator.remove();
     }
-
-    /**
-     * Creates the from dao.
-     * 
-     * @param dao the dao
-     * @return the e
-     */
-    protected abstract E createFromDao(DAO dao);
-
 }

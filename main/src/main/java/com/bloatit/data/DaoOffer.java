@@ -135,6 +135,9 @@ public final class DaoOffer extends DaoKudosable {
     }
 
     public void cancelEverythingLeft() {
+        for (int i = currentBatch; i < batches.size(); ++i) {
+            batches.get(i).cancelBatch();
+        }
         currentBatch = batches.size();
     }
 
@@ -153,6 +156,18 @@ public final class DaoOffer extends DaoKudosable {
 
     void passToNextBatch() {
         currentBatch++;
+    }
+
+    void batchHasARelease(DaoBatch batch) {
+        // Find next batch. Passe it into developing state.
+        for (int i = 0; i < batches.size(); ++i) {
+            if (batches.get(i).equals(batch)) {
+                if (batches.size() < (i + 1)) {
+                    batches.get(i + 1).setDeveloping();
+                }
+                break;
+            }
+        }
     }
 
     // ======================================================================
