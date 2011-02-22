@@ -16,6 +16,7 @@ public class ErrorResource extends RestResource {
 
     public ErrorResource(RequestMethod requestMethod, StatusCode status, String message) {
         super(requestMethod);
+        this.status = status;
         this.message = message;
     }
 

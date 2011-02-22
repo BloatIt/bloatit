@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.bloatit.framework.utils.i18n.Localizator;
-import com.bloatit.framework.xcgiserver.HttpHeader;
 
 /**
  * <p>
@@ -18,7 +17,7 @@ public class Context {
     static class ContextData {
         public Session session = null;
         public Localizator localizator = null;
-        public HttpHeader header = null;
+        public WebHeader header = null;
     }
 
     static class UniqueThreadContext {
@@ -87,7 +86,7 @@ public class Context {
         return UniqueThreadContext.getContext().localizator;
     }
 
-    public static HttpHeader getHeader() {
+    public static WebHeader getHeader() {
         return UniqueThreadContext.getContext().header;
     }
 
@@ -95,11 +94,11 @@ public class Context {
         return Context.requestTime.get();
     }
 
-    static void reInitializeContext(final HttpHeader header, final Session session) {
+    static void reInitializeContext(final WebHeader header, final Session session) {
         updateTime();
         setHeader(header);
         setSession(session);
-        setLocalizator(new Localizator(header.getQueryString().getLanguage(), header.getHttpAcceptLanguage()));
+        setLocalizator(new Localizator(header.getLanguage(), header.getHttpHeader().getHttpAcceptLanguage()));
     }
 
     private static void updateTime() {
@@ -110,7 +109,7 @@ public class Context {
         return new Date().getTime() / MILLISECOND_DIV;
     }
 
-    private static void setHeader(final HttpHeader header) {
+    private static void setHeader(final WebHeader header) {
         UniqueThreadContext.getContext().header = header;
     }
 
