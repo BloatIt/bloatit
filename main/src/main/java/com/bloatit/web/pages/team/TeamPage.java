@@ -170,8 +170,7 @@ public class TeamPage extends MasterPage {
         title.add(memberTitle);
 
         if (me != null && me.isInGroup(targetTeam) && me.canSendInvitation(targetTeam, Action.WRITE)) {
-            final SendGroupInvitationPageUrl sendInvitePage = new SendGroupInvitationPageUrl();
-            sendInvitePage.setGroup(targetTeam);
+            final SendGroupInvitationPageUrl sendInvitePage = new SendGroupInvitationPageUrl(targetTeam);
             final HtmlLink inviteMember = new HtmlLink(sendInvitePage.urlString(), Context.tr("Invite a member to this team"));
             memberTitle.add(new HtmlParagraph().add(inviteMember));
         }

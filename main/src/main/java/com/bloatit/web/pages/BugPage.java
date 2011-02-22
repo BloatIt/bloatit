@@ -72,17 +72,15 @@ public final class BugPage extends MasterPage {
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
         box.add(description);
 
-
-        //Attachements
-
-        if(bug.isOwner()) {
+        // Attachements
+        if (bug.isOwner()) {
             box.add(generateNewAttachementForm());
         }
 
-        for(FileMetadata attachement: bug.getFiles()) {
+        for (FileMetadata attachement : bug.getFiles()) {
             final HtmlParagraph attachementPara = new HtmlParagraph();
             attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
-            attachementPara.addText(tr(": ")+attachement.getShortDescription());
+            attachementPara.addText(tr(": ") + attachement.getShortDescription());
             box.add(attachementPara);
         }
 
@@ -90,34 +88,26 @@ public final class BugPage extends MasterPage {
         box.add(CommentTools.generateNewCommentComponent(bug));
 
         add(box);
-
-
     }
 
     private XmlNode generateNewAttachementForm() {
-
-        final AddAttachementActionUrl addAttachementActionUrl = new AddAttachementActionUrl();
-        addAttachementActionUrl.setUserContent(bug);
-
+        final AddAttachementActionUrl addAttachementActionUrl = new AddAttachementActionUrl(bug);
 
         final HtmlForm addAttachementForm = new HtmlForm(addAttachementActionUrl.urlString());
         addAttachementForm.enableFileUpload();
 
-
-        //File
-
+        // File
         final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
         attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
         addAttachementForm.add(attachementInput);
 
-        final FormFieldData<String> attachementDescriptionFormFieldData = addAttachementActionUrl.getAttachementDescriptionParameter().formFieldData();
+        final FormFieldData<String> attachementDescriptionFormFieldData = addAttachementActionUrl.getAttachementDescriptionParameter()
+                                                                                                 .formFieldData();
         final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
         addAttachementForm.add(attachementDescriptionInput);
 
-
         addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachement")));
-
 
         return addAttachementForm;
     }

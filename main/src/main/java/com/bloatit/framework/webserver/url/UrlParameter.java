@@ -225,13 +225,14 @@ public class UrlParameter<T, U> extends UrlNode {
 
     static class FieldDataFromUrl<T, U> implements FormFieldData<T> {
 
-        private final UrlParameter<T, U> param;
         private final String name;
+        private final String suggestedValue;
+        private final Messages messages;
 
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         *
+         * 
          * @param parameter a parameter to find or use.
          */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
@@ -239,10 +240,12 @@ public class UrlParameter<T, U> extends UrlNode {
             name = parameter.getName();
 
             UrlParameter<T, U> sessionParam = Context.getSession().pickParameter(parameter);
-            if (sessionParam == null) {
-                this.param = parameter;
+            if (sessionParam != null) {
+                suggestedValue = sessionParam.getSuggestedValue();
+                messages = sessionParam.getMessages();
             } else {
-                this.param = sessionParam;
+                suggestedValue = null;
+                messages = new Messages();
             }
         }
 
@@ -253,18 +256,12 @@ public class UrlParameter<T, U> extends UrlNode {
 
         @Override
         public String getSuggestedValue() {
-            if (param != null) {
-                return param.getSuggestedValue();
-            }
-            return null;
+            return suggestedValue;
         }
 
         @Override
         public Messages getErrorMessages() {
-            if (param != null) {
-                return param.getMessages();
-            }
-            return new Messages();
+            return messages;
         }
     }
 }

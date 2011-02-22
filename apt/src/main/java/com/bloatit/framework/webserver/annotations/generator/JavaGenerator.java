@@ -24,7 +24,7 @@ public abstract class JavaGenerator {
     protected StringBuilder _constructorNames = new StringBuilder();
 
     protected StringBuilder _urlClassConstructor = new StringBuilder();
-    private String urlSuperClass;
+    protected String urlSuperClass;
 
     protected JavaGenerator(String name, final String pageName) {
         this.pageName = pageName;
@@ -347,10 +347,6 @@ public abstract class JavaGenerator {
 
         urlClass.append("    public ").append(className).append("(Parameters params, SessionParameters session) {\n");
         urlClass.append("        this(getName(), params, session);\n");
-        urlClass.append("    }\n");
-
-        urlClass.append("    public ").append(className).append("() {\n");
-        urlClass.append("        this(getName(), new Parameters(), null);\n");
         urlClass.append("    }\n");
 
         urlClass.append("    protected ").append(className).append("(String name, Parameters params, SessionParameters session) {\n");

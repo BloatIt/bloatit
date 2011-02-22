@@ -7,6 +7,7 @@ import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddProjectAction;
+import com.bloatit.web.actions.AddReleaseAction;
 import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
@@ -25,6 +26,7 @@ import com.bloatit.web.actions.ReportBugAction;
 import com.bloatit.web.actions.UploadFileAction;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
+import com.bloatit.web.pages.AddReleasePage;
 import com.bloatit.web.pages.BugPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
@@ -63,6 +65,8 @@ import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
+import com.bloatit.web.url.AddReleaseActionUrl;
+import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
@@ -218,6 +222,9 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ReportBugPageUrl.getName())) {
             return new ReportBugPage(new ReportBugPageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(AddReleasePageUrl.getName())) {
+            return new AddReleasePage(new AddReleasePageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -285,6 +292,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(AddAttachementActionUrl.getName())) {
             return new AddAttachementAction(new AddAttachementActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(AddReleaseActionUrl.getName())) {
+            return new AddReleaseAction(new AddReleaseActionUrl(params, session.getParameters()));
         }
 
         // Resource page

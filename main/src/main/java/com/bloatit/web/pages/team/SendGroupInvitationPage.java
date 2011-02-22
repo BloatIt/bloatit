@@ -30,7 +30,7 @@ public class SendGroupInvitationPage extends LoggedPage {
     @SuppressWarnings("unused")
     private final SendGroupInvitationPageUrl url;
 
-    @RequestParam()
+    @RequestParam
     private final Group group;
 
     public SendGroupInvitationPage(final SendGroupInvitationPageUrl url) {

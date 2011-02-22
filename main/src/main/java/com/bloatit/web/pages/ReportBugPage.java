@@ -77,8 +77,7 @@ public final class ReportBugPage extends LoggedPage {
 
     private HtmlElement generateReportBugForm() {
         final HtmlTitleBlock formTitle = new HtmlTitleBlock(Context.tr("Report a bug"), 1);
-        final ReportBugActionUrl doReportUrl = new ReportBugActionUrl();
-        doReportUrl.setBatch(offer.getCurrentBatch());
+        final ReportBugActionUrl doReportUrl = new ReportBugActionUrl(offer.getCurrentBatch());
 
         // Create the form stub
         final HtmlForm reportBugForm = new HtmlForm(doReportUrl.urlString());

@@ -12,6 +12,7 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.model.Group;
 import com.bloatit.model.JoinGroupInvitation;
 import com.bloatit.model.Member;
 import com.bloatit.web.pages.LoggedPage;
@@ -43,7 +44,7 @@ public class MessageListPage extends LoggedPage {
         final HtmlTitleBlock groupInvites = new HtmlTitleBlock(Context.tr("Group invites"), 2);
         main.add(groupInvites);
 
-        final HtmlLink inviteToGroup = new HtmlLink(new SendGroupInvitationPageUrl().urlString(), "Invite people to your group");
+        final HtmlLink inviteToGroup = new HtmlLink(new SendGroupInvitationPageUrl((Group)null).urlString(), "Invite people to your group");
         groupInvites.add(new HtmlParagraph().add(inviteToGroup));
 
         final Member me = session.getAuthToken().getMember();

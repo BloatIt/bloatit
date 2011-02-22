@@ -40,7 +40,7 @@ public final class AddAttachementAction extends Action {
     public static final String ATTACHEMENT_DESCRIPTION_CODE = "attachement_description";
 
     @ParamConstraint(optionalErrorMsg = @tr("An attachement must be linked to a content"))
-    @RequestParam(name = USER_CONTENT, role = Role.GET)
+    @RequestParam(name = USER_CONTENT)
     private final UserContent userContent;
 
     @ParamConstraint
