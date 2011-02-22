@@ -10,6 +10,11 @@ import com.bloatit.data.DaoIdentifiable;
  * @param <DAO> is the Dao version of <code>T</code>.
  */
 public abstract class Creator<DAO extends DaoIdentifiable, T extends Identifiable<DAO>> {
+    
+    public Creator() {
+        // nothing to do.
+    }
+    
     /**
      * Create a Identifiable using its dao representation. If a correspondig
      * object is found in the cache, then there is no creation and the cached

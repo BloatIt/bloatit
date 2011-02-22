@@ -20,7 +20,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.DaoBatch;
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoOffer;
@@ -113,7 +115,12 @@ public final class Offer extends Kudosable<DaoOffer> {
     public boolean validateCurrentBatch(final boolean force) {
         // If the validation is not complete, there is nothing to do in the
         // demand
-        final boolean isAllValidated = findCurrentDaoBatch().validate(force);
+        DaoBatch currentBatch = findCurrentDaoBatch();
+        if (currentBatch == null) {
+            Log.framework().error("You tried to validate a batch, but no batch to validate found.");
+            return false;
+        }
+        final boolean isAllValidated = currentBatch.validate(force);
         if (isAllValidated) {
             if (getDao().hasBatchesLeft()) {
                 getDemandImplementation().setBatchIsValidated();
@@ -122,6 +129,14 @@ public final class Offer extends Kudosable<DaoOffer> {
             }
         }
         return isAllValidated;
+    }
+
+    public boolean shouldValidateCurrentBatchPart(Level level) {
+        DaoBatch currentBatch = findCurrentDaoBatch();
+        if (currentBatch == null) {
+            return false;
+        }
+        return currentBatch.shouldValidatePart(level);
     }
 
     public void cancelEverythingLeft() {

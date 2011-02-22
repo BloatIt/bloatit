@@ -112,12 +112,17 @@ public class Batch extends Identifiable<DaoBatch> {
     // ////////////////////////////////////////////////////////////////////////
 
     /**
-     * Release this batch.
-     * 
-     * @see com.bloatit.data.DaoBatch#release()
+     * <p>
+     * Add a release on the current batch. A batch can have multiple release.
+     * Each release reset the releasedDate of this batch.
+     * </p>
+     * <p>
+     * To finish the dev state of this batch you have to validate this batch
+     * (done by {@link Offer#validateCurrentBatch(boolean)}).
+     * </p>
      */
-    public void release() {
-        getDao().release();
+    public void addRelease(Release release) {
+        getDao().addRelease(release.getDao());
     }
 
     /**
@@ -126,7 +131,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @return true, if successful
      * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
-    public boolean validate() {
+    boolean validate() {
         return getDao().validate(false);
     }
 
@@ -137,7 +142,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @return true, if successful
      * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
-    public boolean forceValidate() {
+    boolean forceValidate() {
         return getDao().validate(true);
     }
 
@@ -148,7 +153,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @return true, if we should do it, false otherwise.
      * @see com.bloatit.data.DaoBatch#shouldValidatePart(com.bloatit.data.DaoBug.Level)
      */
-    public boolean shouldValidatePart(final Level level) {
+    boolean shouldValidatePart(final Level level) {
         return getDao().shouldValidatePart(level);
     }
 

@@ -9,7 +9,6 @@ import com.bloatit.model.lists.ListBinder;
 
 public class Release extends UserContent<DaoRelease> {
 
-    
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -24,13 +23,17 @@ public class Release extends UserContent<DaoRelease> {
     public static Release create(final DaoRelease dao) {
         return new MyCreator().create(dao);
     }
-    
+
     private Release(DaoRelease dao) {
         super(dao);
     }
 
     public void addComment(DaoComment comment) {
         getDao().addComment(comment);
+    }
+
+    public Batch getBatch() {
+        return Batch.create(getDao().getBatch());
     }
 
     public String getDescription() {
@@ -41,13 +44,12 @@ public class Release extends UserContent<DaoRelease> {
         return getDao().getLocale();
     }
 
-    public DaoComment getLastComment() {
-        return getDao().getLastComment();
+    public Comment getLastComment() {
+        return Comment.create(getDao().getLastComment());
     }
-    
+
     public PageIterable<Comment> getComments() {
         return new ListBinder<Comment, DaoComment>(getDao().getComments());
     }
-    
-    
+
 }
