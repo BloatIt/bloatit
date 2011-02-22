@@ -14,6 +14,7 @@ package com.bloatit.web.pages;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.webserver.annotations.ParamContainer;
+import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
@@ -22,6 +23,7 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.model.Batch;
 import com.bloatit.web.actions.AddProjectAction;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.AddReleaseActionUrl;
@@ -35,9 +37,13 @@ public final class AddReleasePage extends LoggedPage {
 
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
+    
+    @RequestParam(name = "batch")
+    Batch batch;
 
     public AddReleasePage(final AddReleasePageUrl url) {
         super(url);
+        batch = url.getBatch();
     }
 
     @Override
@@ -58,7 +64,7 @@ public final class AddReleasePage extends LoggedPage {
     private HtmlElement generateReleaseCreationForm() {
         final HtmlTitleBlock createReleaseTitle = new HtmlTitleBlock(tr("Add a new Release"), 1);
 
-        final AddReleaseActionUrl doCreateUrl = new AddReleaseActionUrl();
+        final AddReleaseActionUrl doCreateUrl = new AddReleaseActionUrl(batch);
 
         // Create the form stub
         final HtmlForm form = new HtmlForm(doCreateUrl.urlString());

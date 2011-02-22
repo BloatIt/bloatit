@@ -56,7 +56,7 @@ public final class AddReleaseAction extends LoggedAction {
     @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
     private final String lang;
 
-    @RequestParam(name = LANGUAGE_CODE, role = Role.GET)
+    @RequestParam(name = LANGUAGE_CODE)
     private final Batch batch;
 
     private final AddReleaseActionUrl url;

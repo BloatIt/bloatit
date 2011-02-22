@@ -36,6 +36,7 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
+import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.OfferPageUrl;
@@ -285,7 +286,7 @@ public class DemandOfferListComponent extends HtmlDiv {
 
                                 if (isDeveloper() && demand.getDemandState() == DemandState.DEVELOPPING
                                         && demand.getSelectedOffer().getCurrentBatch().equals(lot)) {
-                                    new HtmlLink("plop", tr("add a release"));
+                                    new HtmlLink(new AddReleaseActionUrl(lot).urlString(), tr("add a release"));
                                 }
 
                                 final HtmlParagraph datePara = new HtmlParagraph();
