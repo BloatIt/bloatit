@@ -24,36 +24,42 @@ public class WebHeader {
 
         this.httpHeader = httpHeader;
         try {
-            // Extract language
-            String scriptName = httpHeader.getScriptName();
-            if (scriptName.startsWith("/") && scriptName.length() > 1) {
-                language = URLDecoder.decode(scriptName.substring(1), UTF_8);
-            }
 
+            boolean languageFound = false;
             // Extract params and page name
             String[] splitPath = httpHeader.getPathInfo().split("/");
             for (String part : splitPath) {
-                // Page name is the list of part before a part with a "-"
-                if (!part.contains("-")) {
-                    // Part of the params
-                    final String[] pair = part.split("-");
-                    if (pair.length == 2) {
-                        parameters.add(pair[0], pair[1]);
+
+                if (!part.isEmpty()) {
+                    if (!languageFound) {
+                        language = part;
+                        languageFound = true;
                     } else {
-                        Log.framework().error("Malformed parameter " + part + " in '" + httpHeader.getPathInfo() + "'");
-                    }
-                } else {
-                    // Part of the page name
-                    if (!part.isEmpty()) {
-                        if (!pageName.isEmpty()) {
-                            pageName += "/";
+
+                        // Page name is the list of part before a part with a
+                        // "-"
+                        if (part.contains("-")) {
+                            // Part of the params
+                            final String[] pair = part.split("-");
+                            if (pair.length == 2) {
+                                parameters.add(pair[0], pair[1]);
+                            } else {
+                                Log.framework().error("Malformed parameter " + part + " in '" + httpHeader.getPathInfo() + "'");
+                            }
+                        } else {
+                            // Part of the page name
+
+                            if (!pageName.isEmpty()) {
+                                pageName += "/";
+                            }
+                            pageName += URLDecoder.decode(part, UTF_8);
+
                         }
-                        pageName += URLDecoder.decode(part, UTF_8);
                     }
                 }
             }
 
-            //Extract get params
+            // Extract get params
             for (final String param : httpHeader.getQueryString().split("&")) {
                 final String[] pair = param.split("=");
                 if (pair.length >= 2) {
@@ -65,8 +71,6 @@ public class WebHeader {
             Log.framework().error("Cannot parse url", ex);
             pageName = "404";
         }
-
-
 
     }
 
@@ -89,7 +93,5 @@ public class WebHeader {
     public HttpHeader getHttpHeader() {
         return httpHeader;
     }
-
-
 
 }

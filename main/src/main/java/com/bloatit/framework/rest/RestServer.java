@@ -1,6 +1,7 @@
 package com.bloatit.framework.rest;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Set;
 
 import com.bloatit.common.Log;
@@ -57,7 +58,11 @@ public abstract class RestServer implements XcgiProcessor {
     @Override
     public final boolean process(HttpHeader httpHeader, HttpPost post, HttpResponse response) throws IOException {
         //TODO: blinder dans le cas ou même pas de slash
-        final String scriptName = httpHeader.getScriptName().substring(1);
+
+        String scriptName  = "";
+        if (httpHeader.getScriptName().startsWith("/") && httpHeader.getScriptName().length() > 1) {
+            scriptName = URLDecoder.decode(httpHeader.getScriptName().substring(1), UTF_8);
+        }
 
         boolean found = false;
         for (String directory : getResourcesDirectories()) {
