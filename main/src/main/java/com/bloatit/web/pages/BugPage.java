@@ -75,7 +75,9 @@ public final class BugPage extends MasterPage {
 
         //Attachements
 
-        box.add(generateNewAttachementForm());
+        if(bug.isOwner()) {
+            box.add(generateNewAttachementForm());
+        }
 
         for(FileMetadata attachement: bug.getFiles()) {
             final HtmlParagraph attachementPara = new HtmlParagraph();
