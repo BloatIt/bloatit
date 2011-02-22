@@ -109,7 +109,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     @Override
     protected boolean isMine(final Member member) {
-        return member.isMine(member);
+        return getAuthor().isMine(member);
     }
 
     @Override

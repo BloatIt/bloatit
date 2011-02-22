@@ -219,6 +219,6 @@ public abstract class Actor<T extends DaoActor> extends Identifiable<T> {
      */
     @Override
     protected boolean isMine(final Member member) {
-        return member.getLoginUnprotected().equals(getLoginUnprotected());
+        return this.equals(member);
     }
 }
