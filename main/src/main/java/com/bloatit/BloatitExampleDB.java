@@ -224,6 +224,8 @@ public class BloatitExampleDB {
         // "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
 
         // Add bugs
+        setDemandInDevelopmentState(addPerroquetInMageiaDemand);
+
         final Batch firstBatch = addPerroquetInMageiaDemand.getSelectedOffer().getBatches().iterator().next();
         firstBatch.addBug(fred, "Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
         firstBatch.addBug(elephantman,

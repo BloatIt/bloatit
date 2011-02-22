@@ -26,6 +26,7 @@ import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 
@@ -73,6 +74,10 @@ public final class BugPage extends MasterPage {
 
         add(box);
 
+        final HtmlDiv commentBox = new HtmlDiv("padding_box");
+        commentBox.add(CommentTools.generateCommentList(bug.getComments()));
+        commentBox.add(CommentTools.generateNewCommentComponent(bug));
+        add(commentBox);
 
     }
 

@@ -30,7 +30,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 
-public interface Demand extends KudosableInterface<DaoDemand> {
+public interface Demand extends KudosableInterface<DaoDemand> , Commentable {
 
     /**
      * @param action is the type of action you can do on the property. (READ for
@@ -70,7 +70,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * Add a contribution on this demand.
-     * 
+     *
      * @param amount must be a positive non null value.
      * @param comment can be null or empty and should be less than 140 char
      *            long.
@@ -91,7 +91,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
      * offer is selected (see {@link DaoDemand#setSelectedOffer(DaoOffer)}). The
      * parameters of this function are used to create the first (non optional)
      * batch in this offer.
-     * 
+     *
      * @throws UnauthorizedOperationException if the user does not has the
      *             {@link Action#WRITE} right on the <code>Offer</code>
      *             property.
@@ -106,7 +106,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * For now only the admin can delete an offer.
-     * 
+     *
      * @param offer is the offer to delete.
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>DELETED</code> right on the <code>Offer</code>
@@ -117,7 +117,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
 
     /**
      * Works only in development state.
-     * 
+     *
      * @throws UnauthorizedOperationException If this is not the current
      *             developer thats try to cancel the dev.
      */
@@ -126,20 +126,11 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     // TODO authorization
     boolean validateCurrentBatch(final boolean force);
 
-    /**
-     * Add a comment at the end of the comment list.
-     * 
-     * @param text is the text of the comment.
-     * @throws UnauthorizedOperationException if you do not have the
-     *             {@link Action#WRITE} right on the <code>Comment</code>
-     *             property.
-     * @see #authenticate(AuthToken)
-     */
-    Comment addComment(final String text) throws UnauthorizedOperationException;
+
 
     /**
      * Used by Offer class. You should never have to use it
-     * 
+     *
      * @param offer the offer to unselect. Nothing is done if the offer is not
      *            selected.
      */
@@ -168,7 +159,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     /**
      * Return the progression in percent. It compare the amount of contribution
      * to the amount of the current offer.
-     * 
+     *
      * @return a percentage. It can be > 100 if the amount of contributions is
      *         greater than the amount for the current offer. If the offer
      *         amount is 0 then it return Float.POSITIVE_INFINITY.
@@ -234,7 +225,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
-     * 
+     *
      * @return the current offer for this demand, or null if there is no offer.
      * @throws UnauthorizedOperationException if the user does not has the
      *             <code>READ</code> right on the <code>Offer</code> property.
@@ -246,7 +237,7 @@ public interface Demand extends KudosableInterface<DaoDemand> {
      * A validated offer is an offer selected for more than one day. (If you are
      * in {@link DemandState#DEVELOPPING} state then there should be always a
      * validated offer.
-     * 
+     *
      * @return the validated offer or null if there is no valid offer.
      * @throws UnauthorizedOperationException if you do not have the
      *             <code>READ</code> right on the offer property

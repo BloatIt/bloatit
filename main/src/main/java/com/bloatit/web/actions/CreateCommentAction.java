@@ -18,41 +18,40 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.Demand;
-import com.bloatit.web.url.IdeaCommentActionUrl;
-import com.bloatit.web.url.LoginPageUrl;
+import com.bloatit.model.Commentable;
+import com.bloatit.web.url.CreateCommentActionUrl;
 
 /**
- * A response to a form used to create a comment to an idea
+ * A response to a form used to create a comment to a content
  */
-@ParamContainer("idea/docomment")
-public final class IdeaCommentAction extends LoggedAction {
+@ParamContainer("comment/docomment")
+public final class CreateCommentAction extends LoggedAction {
     public static final String COMMENT_CONTENT_CODE = "bloatit_comment_content";
     public static final String COMMENT_TARGET = "target";
 
     @RequestParam(name = COMMENT_TARGET)
-    private final Demand targetIdea;
+    private final Commentable commentable;
 
     @RequestParam(name = COMMENT_CONTENT_CODE, role = Role.POST)
     private final String comment;
 
-    private final IdeaCommentActionUrl url;
+    private final CreateCommentActionUrl url;
 
-    public IdeaCommentAction(final IdeaCommentActionUrl url) {
+    public CreateCommentAction(final CreateCommentActionUrl url) {
         super(url);
         this.url = url;
-        this.targetIdea = url.getTargetIdea();
+        this.commentable = url.getCommentable();
         this.comment = url.getComment();
     }
 
     @Override
     public Url doProcessRestricted() throws RedirectException {
         session.notifyList(url.getMessages());
-        session.notifyGood(Context.tr("Your comment has been added."));
         try {
-            targetIdea.addComment(comment);
+            commentable.addComment(comment);
+            session.notifyGood(Context.tr("Your comment has been added."));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add a comment on this idea."));
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add a comment on this that."));
             return session.pickPreferredPage();
         }
 
@@ -62,7 +61,7 @@ public final class IdeaCommentAction extends LoggedAction {
     @Override
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
-        return new LoginPageUrl();
+        return Context.getSession().getLastVisitedPage();
     }
 
     @Override
