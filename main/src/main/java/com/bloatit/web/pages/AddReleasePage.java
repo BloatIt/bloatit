@@ -24,8 +24,8 @@ import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.web.actions.AddProjectAction;
 import com.bloatit.web.components.LanguageSelector;
-import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.AddReleaseActionUrl;
+import com.bloatit.web.url.AddReleasePageUrl;
 
 /**
  * Page that hosts the form to create a new Idea
@@ -36,8 +36,8 @@ public final class AddReleasePage extends LoggedPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    public AddReleasePage(final AddProjectPageUrl addProjectPageUrl) {
-        super(addProjectPageUrl);
+    public AddReleasePage(final AddReleasePageUrl url) {
+        super(url);
     }
 
     @Override
