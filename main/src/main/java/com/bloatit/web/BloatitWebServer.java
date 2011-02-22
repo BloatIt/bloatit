@@ -5,6 +5,7 @@ import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddProjectAction;
 import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.actions.CommentCommentAction;
@@ -59,6 +60,7 @@ import com.bloatit.web.pages.team.SendGroupInvitationPage;
 import com.bloatit.web.pages.team.TeamPage;
 import com.bloatit.web.pages.team.TeamsPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
@@ -281,6 +283,12 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ReportBugActionUrl.getName())) {
             return new ReportBugAction(new ReportBugActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(AddAttachementActionUrl.getName())) {
+            return new AddAttachementAction(new AddAttachementActionUrl(params, session.getParameters()));
+        }
+
+
+
 
         // Resource page
         if (pageCode.equals(FileResourceUrl.getName())) {

@@ -14,6 +14,7 @@ package com.bloatit.web.pages;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.PageNotFoundException;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -22,11 +23,19 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.HtmlFileInput;
+import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlSubmit;
+import com.bloatit.framework.webserver.components.form.HtmlTextField;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.web.actions.ReportBugAction;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.tools.CommentTools;
+import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 
@@ -65,6 +74,9 @@ public final class BugPage extends MasterPage {
 
 
         //Attachements
+
+        box.add(generateNewAttachementForm());
+
         for(FileMetadata attachement: bug.getFiles()) {
             final HtmlParagraph attachementPara = new HtmlParagraph();
             attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
@@ -78,6 +90,34 @@ public final class BugPage extends MasterPage {
         add(box);
 
 
+    }
+
+    private XmlNode generateNewAttachementForm() {
+
+        final AddAttachementActionUrl addAttachementActionUrl = new AddAttachementActionUrl();
+        addAttachementActionUrl.setUserContent(bug);
+
+
+        final HtmlForm addAttachementForm = new HtmlForm(addAttachementActionUrl.urlString());
+        addAttachementForm.enableFileUpload();
+
+
+        //File
+
+        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
+        addAttachementForm.add(attachementInput);
+
+        final FormFieldData<String> attachementDescriptionFormFieldData = addAttachementActionUrl.getAttachementDescriptionParameter().formFieldData();
+        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
+        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
+        addAttachementForm.add(attachementDescriptionInput);
+
+
+        addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachement")));
+
+
+        return addAttachementForm;
     }
 
     @Override

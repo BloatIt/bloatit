@@ -124,7 +124,8 @@ public class UrlParameter<T, U> extends UrlNode {
                 if (value == null || getValueClass().equals(value.getClass())) {
                     setValue((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
                 } else {
-                    throw new FatalErrorException("Type mismatch. You are trying to convert a parameter using the wrong loader class.");
+                    throw new FatalErrorException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
+                            + " You are trying to convert a parameter using the wrong loader class.");
                 }
             }
         } catch (final ConversionErrorException e) {
@@ -230,7 +231,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         * 
+         *
          * @param parameter a parameter to find or use.
          */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
