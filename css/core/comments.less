@@ -1,0 +1,82 @@
+@import "../include/tools";
+
+.main_comment_block {
+    .rounded_corners(4px);
+    background-color: @very_light_background_color;
+    border: 1px solid @border_color;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding: 15px;
+    padding-bottom: 2px;
+    font-size: 0.9em;
+    
+    p {
+        .no_insets;
+        margin-bottom: 5px;
+    }
+}
+
+
+.comment_separator {
+    width: 200px;
+    height:1px;
+    border-top: 1px solid @border_color;
+        
+}
+
+.comment_info {
+    margin-top:2px;
+    margin-bottom:2px;
+    font-size: 0.9em;
+    font-style:italic;
+    color: @light_text_color;
+    
+}
+
+.comment_populatity {
+    font-size: 0.9em;
+    
+    .usefull {
+        color: @useful_color;
+    }
+    
+    .useless {
+        color: @useless_color;
+    }
+}
+
+.comment_voted {
+    vertical-align: super;
+    font-size: 0.9em;
+}
+
+.child_comment_block {
+    border: 1px solid @border_color;
+    padding: 15px;
+    padding-bottom: 2px;
+    padding-top: 7px;    
+    margin-left:20px;
+    margin-top:20px;
+}
+
+.comment_reply {
+    margin-left:22px;
+    margin-top:6px;
+    margin-bottom:4px;
+    font-style:italic;
+ 
+}
+
+.new_comment_block {
+    .rounded_corners(4px);
+    background-color: @very_light_background_color;
+    border: 1px solid @border_color;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding: 15px;
+    padding-bottom: 2px;
+}
+
+.contribution_block {
+    padding:15px;
+}

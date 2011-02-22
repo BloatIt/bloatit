@@ -121,17 +121,17 @@ public class BloatitExampleDB {
                 + "J'ai exactement le même besoin mais avec 3 langues. Du coup pour être un peu générique, je propose d'avoir la possibilité de sélectionner n langues. Je connais un ami qui apprend en-effet l'araméen, le latin, le grec, l'hébreu, le le haut-sindarin et l'égyptien et qui serait sans doute preneur aussi.");
 
         comment1.authenticate(new AuthToken(hydre));
-        comment1.addChildComment("Je suis l'ami de Cerbère qui a posté ci-dessus et qui apprend des langues mortes. Je trouverais ça génial , mais il est indispensable de pouvoir réduire la taille du texte.\n"
+        comment1.addComment("Je suis l'ami de Cerbère qui a posté ci-dessus et qui apprend des langues mortes. Je trouverais ça génial , mais il est indispensable de pouvoir réduire la taille du texte.\n"
                 + "Je propose de forker cette demande pour inclure les demandes de changement (nombre de sous-titre non défini et taille des sous-titre définissable) ");
 
         comment1.authenticate(new AuthToken(chogall));
-        comment1.addChildComment("OK pour moi, j'aurais dû y penser dès le début, j'ai merdé, j'avais mon cerveau gauche qui avait bu trop de vodka. ");
+        comment1.addComment("OK pour moi, j'aurais dû y penser dès le début, j'ai merdé, j'avais mon cerveau gauche qui avait bu trop de vodka. ");
 
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(elephantman));
         final Comment comment2 = twoSubtitlesInVlcDemand.addComment("Elle est naze votre idée, moi j'apprends une langue en 2.53 minutes (moyenne vérifiée sur un échantillon de 353 langues) du coup autant afficher un seul sous-titre à la fois");
 
         comment2.authenticate(new AuthToken(chogall));
-        comment2.addChildComment("On ne peut pas vaincre un éléphant ! Abandonnons cette demande !");
+        comment2.addComment("On ne peut pas vaincre un éléphant ! Abandonnons cette demande !");
 
         final String rataxesOfferDescription = "Je vais vous le faire vite et bien. Et tout ça pour vraiment pas cher !";
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(rataxes));
@@ -224,6 +224,8 @@ public class BloatitExampleDB {
         // "This is the only one", DateUtils.now(), DateUtils.flyingPigDate());
 
         // Add bugs
+        setDemandInDevelopmentState(addPerroquetInMageiaDemand);
+
         final Batch firstBatch = addPerroquetInMageiaDemand.getSelectedOffer().getBatches().iterator().next();
         firstBatch.addBug(fred, "Ça marche pas!", "Rien ne se passe quand on click sur l'icone", fred.getLocale(), Level.FATAL);
         firstBatch.addBug(elephantman,

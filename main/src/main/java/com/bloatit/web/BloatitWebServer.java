@@ -5,12 +5,13 @@ import com.bloatit.framework.webserver.Session;
 import com.bloatit.framework.webserver.WebServer;
 import com.bloatit.framework.webserver.masters.Linkable;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
+import com.bloatit.web.actions.AddAttachementAction;
 import com.bloatit.web.actions.AddProjectAction;
 import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.actions.CommentCommentAction;
 import com.bloatit.web.actions.ContributionAction;
+import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.actions.CreateDemandAction;
-import com.bloatit.web.actions.IdeaCommentAction;
 import com.bloatit.web.actions.LoginAction;
 import com.bloatit.web.actions.LogoutAction;
 import com.bloatit.web.actions.MemberActivationAction;
@@ -59,6 +60,7 @@ import com.bloatit.web.pages.team.SendGroupInvitationPage;
 import com.bloatit.web.pages.team.TeamPage;
 import com.bloatit.web.pages.team.TeamsPage;
 import com.bloatit.web.url.AccountChargingPageUrl;
+import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.AddProjectActionUrl;
 import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
@@ -67,6 +69,7 @@ import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
+import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 import com.bloatit.web.url.CreateTeamActionUrl;
@@ -78,7 +81,6 @@ import com.bloatit.web.url.DocumentationUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.FileUploadPageUrl;
 import com.bloatit.web.url.HandleJoinGroupInvitationActionUrl;
-import com.bloatit.web.url.IdeaCommentActionUrl;
 import com.bloatit.web.url.IndexPageUrl;
 import com.bloatit.web.url.JoinTeamActionUrl;
 import com.bloatit.web.url.JoinTeamPageUrl;
@@ -239,17 +241,14 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(PopularityVoteActionUrl.getName())) {
             return new PopularityVoteAction(new PopularityVoteActionUrl(params, session.getParameters()));
         }
-        if (pageCode.equals(IdeaCommentActionUrl.getName())) {
-            return new IdeaCommentAction(new IdeaCommentActionUrl(params, session.getParameters()));
+        if (pageCode.equals(CreateCommentActionUrl.getName())) {
+            return new CreateCommentAction(new CreateCommentActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylineActionUrl.getName())) {
             return new PaylineAction(new PaylineActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(PaylineNotifyActionUrl.getName())) {
             return new PaylineNotifyAction(new PaylineNotifyActionUrl(params, session.getParameters()));
-        }
-        if (pageCode.equals(IdeaCommentActionUrl.getName())) {
-            return new IdeaCommentAction(new IdeaCommentActionUrl(params, session.getParameters()));
         }
         if (pageCode.equals(CommentCommentActionUrl.getName())) {
             return new CommentCommentAction(new CommentCommentActionUrl(params, session.getParameters()));
@@ -284,6 +283,12 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(ReportBugActionUrl.getName())) {
             return new ReportBugAction(new ReportBugActionUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(AddAttachementActionUrl.getName())) {
+            return new AddAttachementAction(new AddAttachementActionUrl(params, session.getParameters()));
+        }
+
+
+
 
         // Resource page
         if (pageCode.equals(FileResourceUrl.getName())) {

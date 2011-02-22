@@ -23,16 +23,17 @@ import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.State;
 import com.bloatit.data.DaoComment;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
 
 /**
  * This is a bug report. A bug report is associated with a batch. it is quite
  * similar to the bug report in a classical bugTracker.
- * 
+ *
  * @author Thomas Guyard
  */
-public class Bug extends UserContent<DaoBug> {
+public class Bug extends UserContent<DaoBug> implements Commentable {
 
     // /////////////////////////////////////////////////////////////////////////////////////////
     // CONSTRUCTION
@@ -57,7 +58,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Find a bug in the cache or create an new one.
-     * 
+     *
      * @param dao the dao
      * @return null if dao is null. Else return the new Bug.
      */
@@ -67,7 +68,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Instantiates a new bug.
-     * 
+     *
      * @param dao the dao
      */
     private Bug(final DaoBug dao) {
@@ -76,7 +77,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Create a new Bug.
-     * 
+     *
      * @param member is the author of the bug.
      * @param batch is the batch on which this bug has been set.
      * @param title is the title of the bug.
@@ -89,18 +90,8 @@ public class Bug extends UserContent<DaoBug> {
     }
 
     /**
-     * Adds the comment.
-     * 
-     * @param comment the comment
-     * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
-     */
-    public void addComment(final DaoComment comment) {
-        getDao().addComment(comment);
-    }
-
-    /**
      * Sets the error level.
-     * 
+     *
      * @param level the new error level
      * @see com.bloatit.data.DaoBug#setErrorLevel(com.bloatit.data.DaoBug.Level)
      */
@@ -110,7 +101,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets the member assigned to this bug. It is always the offer author.
-     * 
+     *
      * @return the assigned to
      * @see com.bloatit.data.DaoBug#getAssignedTo()
      */
@@ -120,7 +111,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets this bug description.
-     * 
+     *
      * @return the description
      * @see com.bloatit.data.DaoBug#getDescription()
      */
@@ -130,7 +121,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets the locale in which this bug is written.
-     * 
+     *
      * @return the locale
      * @see com.bloatit.data.DaoBug#getLocale()
      */
@@ -140,7 +131,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets the error level.
-     * 
+     *
      * @return the error level
      * @see com.bloatit.data.DaoBug#getErrorLevel()
      */
@@ -150,7 +141,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets the batch on which this bug has been added.
-     * 
+     *
      * @return the batch
      * @see com.bloatit.data.DaoBug#getBatch()
      */
@@ -160,7 +151,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets the state.
-     * 
+     *
      * @return the state
      * @see com.bloatit.data.DaoBug#getState()
      */
@@ -170,7 +161,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Sets the bug to resolved.
-     * 
+     *
      * @see com.bloatit.data.DaoBug#setResolved()
      */
     public void setResolved() {
@@ -179,7 +170,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Sets the bug to developing.
-     * 
+     *
      * @see com.bloatit.data.DaoBug#setDeveloping()
      */
     public void setDeveloping() {
@@ -188,7 +179,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets the comments on that bug.
-     * 
+     *
      * @return the comments
      * @see com.bloatit.data.DaoBug#getComments()
      */
@@ -198,7 +189,7 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets the last update date.
-     * 
+     *
      * @return the last update date
      */
     public Date getLastUpdateDate() {
@@ -211,10 +202,25 @@ public class Bug extends UserContent<DaoBug> {
 
     /**
      * Gets the title.
-     * 
+     *
      * @return the title
      */
     public String getTitle() {
         return getDao().getTitle();
     }
+
+    /**
+     * Adds the comment.
+     *
+     * @see com.bloatit.data.DaoBug#addComment(com.bloatit.data.DaoComment)
+     */
+    @Override
+    public Comment addComment(String text) throws UnauthorizedOperationException {
+        //TODO: access right
+        //tryAccess(new BugRight.Comment(), Action.WRITE);
+        final DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
+        getDao().addComment(comment);
+        return Comment.create(comment);
+    }
+
 }
