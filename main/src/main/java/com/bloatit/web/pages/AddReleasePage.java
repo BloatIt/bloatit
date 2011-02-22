@@ -30,7 +30,7 @@ import com.bloatit.web.url.AddReleaseActionUrl;
 /**
  * Page that hosts the form to create a new Idea
  */
-@ParamContainer("project/add")
+@ParamContainer("release/add")
 public final class AddReleasePage extends LoggedPage {
 
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
