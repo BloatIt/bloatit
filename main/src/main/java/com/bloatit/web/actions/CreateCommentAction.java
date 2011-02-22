@@ -20,7 +20,6 @@ import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Commentable;
 import com.bloatit.web.url.CreateCommentActionUrl;
-import com.bloatit.web.url.LoginPageUrl;
 
 /**
  * A response to a form used to create a comment to a content
@@ -52,7 +51,7 @@ public final class CreateCommentAction extends LoggedAction {
             commentable.addComment(comment);
             session.notifyGood(Context.tr("Your comment has been added."));
         } catch (final UnauthorizedOperationException e) {
-            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add a comment on this idea."));
+            session.notifyBad(Context.tr("For obscure reasons, you are not allowed to add a comment on this that."));
             return session.pickPreferredPage();
         }
 
@@ -62,7 +61,7 @@ public final class CreateCommentAction extends LoggedAction {
     @Override
     protected Url doProcessErrors() throws RedirectException {
         session.notifyList(url.getMessages());
-        return new LoginPageUrl();
+        return Context.getSession().getLastVisitedPage();
     }
 
     @Override
