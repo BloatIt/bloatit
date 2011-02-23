@@ -1,13 +1,12 @@
 package com.bloatit.rest;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
@@ -15,10 +14,10 @@ import com.bloatit.framework.rest.annotations.REST;
 @XmlRootElement
 public class Member {
     private String name;
-    private Date age;
+    private Calendar birth;
     private int id;
 
-    private final List<String> messages = new ArrayList<String>() {
+    private final MarshableList<String> messages = new MarshableList<String>() {
         private static final long serialVersionUID = -2913090876724284523L;
         {
             add("message 1");
@@ -28,14 +27,14 @@ public class Member {
         }
     };
 
-    protected Member() {
+    protected Member() { 
         // Default constructor for XML generation
     }
 
-    public Member(int id, String name, Date age) {
+    public Member(int id, String name, Calendar birth) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.birth = birth;
     }
 
     @XmlAttribute
@@ -44,8 +43,8 @@ public class Member {
     }
 
     @XmlAttribute
-    public Date getAge() {
-        return age;
+    public Calendar getBirth() {
+        return birth;
     }
 
     @XmlAttribute
@@ -57,33 +56,28 @@ public class Member {
         this.name = name;
     }
 
-    public void setAge(Date age) {
-        this.age = age;
+    public void setBirth(Calendar birth) {
+        this.birth = birth;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    @REST(name = "messages", method = RequestMethod.GET, params = "plop")
-    public List<String> getMessages(String plop) {
-        return messages;
-    }
-
+    @XmlElementWrapper(name = "messages")
     @REST(name = "messages", method = RequestMethod.GET)
-    @XmlElement
-    public List<String> getMessages() {
+    @XmlElement(name = "message")
+    public MarshableList<String> getMessages() {
         return messages;
     }
 
-    @SuppressWarnings("deprecation")
     private static Members members = new Members() {
         private static final long serialVersionUID = 1L;
         {
-            add(new Member(1, "Yoann", new Date(1984, 12, 19)));
-            add(new Member(2, "Plop", new Date(1983, 1, 7)));
-            add(new Member(3, "Fred", new Date(1980, 7, 13)));
-            add(new Member(4, "Tom", new Date(1983, 11, 5)));
+            add(new Member(1, "Yoann", new GregorianCalendar(1984, 12, 19)));
+            add(new Member(2, "Plop", new GregorianCalendar(1983, 1, 7)));
+            add(new Member(3, "Fred", new GregorianCalendar(1980, 7, 13)));
+            add(new Member(4, "Tom", new GregorianCalendar(1983, 11, 5)));
         }
     };
 
@@ -122,19 +116,4 @@ public class Member {
         return null;
     }
 
-}
-
-@XmlRootElement
-@XmlSeeAlso({ Member.class })
-class Members extends ArrayList<Member> {
-    private static final long serialVersionUID = -6854206394315558823L;
-
-    public Members() {
-        super();
-    }
-
-    @XmlElement
-    public List<Member> getMembers() {
-        return this;
-    }
 }

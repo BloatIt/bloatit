@@ -1,14 +1,12 @@
 package com.bloatit.rest.resources;
 
-import com.bloatit.rest.RestElement;
-import com.bloatit.model.Transaction;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import com.bloatit.rest.utils.RestList;
+
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
+import com.bloatit.model.Transaction;
+import com.bloatit.rest.RestElement;
+import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
 public class RestTransaction extends RestElement{ 
