@@ -7,6 +7,8 @@ import java.io.StringWriter;
 
 import javax.xml.bind.JAXBException;
 
+import org.springframework.web.util.HtmlUtils;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.rest.RestResource;
 import com.bloatit.framework.rest.exception.RestException;
@@ -192,10 +194,11 @@ public final class HttpResponse {
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         String stackTrace = sw.toString();
+        
 
         if (stackTrace != null && !stackTrace.isEmpty()) {
             htmlText.writeLine("<error code=\"" + status.toString() + "\" reason=\"" + message + "\" >");
-            htmlText.writeLine(stackTrace);
+            htmlText.writeLine(HtmlUtils.htmlEscape(stackTrace));
             htmlText.writeLine("</error>");
         } else {
             htmlText.writeLine("<error reason=\"" + status.toString() + "\" />");
