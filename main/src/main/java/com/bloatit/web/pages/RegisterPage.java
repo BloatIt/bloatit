@@ -50,8 +50,11 @@ public final class RegisterPage extends MasterPage {
     @Optional("")
     private final String lang;
 
+    private final RegisterPageUrl url;
+
     public RegisterPage(final RegisterPageUrl url) {
         super(url);
+        this.url = url;
         this.country = url.getCountry();
         this.lang = url.getLang();
     }
@@ -82,9 +85,11 @@ public final class RegisterPage extends MasterPage {
         for (final Country entry : Country.getAvailableCountries()) {
             countryInput.addDropDownElement(entry.getCode(), entry.getName());
         }
+        countryInput.setDefaultValue(url.getCountryParameter().getStringValue());
         form.add(countryInput);
 
         final LanguageSelector langInput = new LanguageSelector(RegisterAction.LANGUAGE_CODE, Context.tr("Language"));
+        langInput.setDefaultValue(url.getLangParameter().getStringValue());
         form.add(langInput);
 
         final HtmlSubmit button = new HtmlSubmit(Context.tr("Submit"));
