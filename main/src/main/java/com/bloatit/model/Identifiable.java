@@ -16,9 +16,11 @@
 //
 package com.bloatit.model;
 
+import com.bloatit.data.DataClassVisitor;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.model.right.RestrictedObject;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * An identifiable is the base class for each class that map a dao class.
@@ -86,4 +88,5 @@ public abstract class Identifiable<T extends IdentifiableInterface> extends Rest
         return dao;
     }
 
+    public abstract <ReturnType> ReturnType accept(ModelClassVisitor<ReturnType> visitor);
 }

@@ -31,6 +31,7 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
+import com.bloatit.rest.resources.ModelClassVisitor;
 import com.bloatit.model.lists.ListBinder;
 
 /**
@@ -353,4 +354,12 @@ public class Batch extends Identifiable<DaoBatch> {
         return Offer.create(getDao().getOffer()).calculateMyGroupRights(member);
     }
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
 }

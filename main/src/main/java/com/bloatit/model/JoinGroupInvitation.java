@@ -17,6 +17,7 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * This is an invitation to join a group. Some groups are not public, and you
@@ -83,4 +84,12 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
         return member.equals(getSender()) || member.equals(getReciever());
     }
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
 }

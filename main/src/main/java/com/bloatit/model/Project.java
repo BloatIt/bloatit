@@ -27,6 +27,7 @@ import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.ProjectRight;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 public class Project extends Identifiable<DaoProject> {
 
@@ -112,6 +113,15 @@ public class Project extends Identifiable<DaoProject> {
     @Override
     protected boolean isMine(final Member member) {
         return false;
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
     public void setImage(FileMetadata fileImage) {

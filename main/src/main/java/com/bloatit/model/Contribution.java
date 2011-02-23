@@ -24,6 +24,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.ContributionRight;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * This is a financial contribution.
@@ -139,5 +140,14 @@ public final class Contribution extends UserContent<DaoContribution> {
     public String getComment() throws UnauthorizedOperationException {
         tryAccess(new ContributionRight.Comment(), Action.READ);
         return getDao().getComment();
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 }

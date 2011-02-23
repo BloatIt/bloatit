@@ -1,6 +1,5 @@
-package com.bloatit.rest.utils;
+package com.bloatit.rest.resources;
 
-import com.bloatit.framework.utils.Image;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Bug;
@@ -39,8 +38,6 @@ public interface ModelClassVisitor <ReturnType> {
     ReturnType visit(Group model);
 
     ReturnType visit(HighlightDemand model);
-
-    ReturnType visit(Image model);
 
     ReturnType visit(JoinGroupInvitation model);
 

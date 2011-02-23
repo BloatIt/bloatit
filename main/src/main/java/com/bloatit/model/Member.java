@@ -45,6 +45,7 @@ import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.MemberRight;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 public final class Member extends Actor<DaoMember> {
 
@@ -455,4 +456,8 @@ public final class Member extends Actor<DaoMember> {
         return new Image("none.png", Image.ImageType.LOCAL);
     }
 
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
 }
