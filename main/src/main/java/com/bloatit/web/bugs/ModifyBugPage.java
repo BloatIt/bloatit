@@ -99,7 +99,7 @@ public final class ModifyBugPage extends LoggedPage {
                                                                Context.tr("Reason"),
                                                                BUG_CHANGE_COMMENT_INPUT_NB_LINES,
                                                                BUG_CHANGE_COMMENT_INPUT_NB_COLUMNS);
-        descriptionInput.setComment(Context.tr("Mininum 10 character. Enter the reason of the bug."));
+        descriptionInput.setComment(Context.tr("Optional. Enter the reason of the bug."));
         modifyBugForm.add(descriptionInput);
 
         modifyBugForm.add(new HtmlSubmit(Context.tr("Modify the bug")));
