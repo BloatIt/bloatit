@@ -13,6 +13,7 @@ public class RestResource {
     private final Object underlying;
     private final Class<?>[] classes;
     private final String request;
+    private static JAXBContext context;// JAXBContext IS THREAD SAFE
 
     /**
      * Creates a rest resource
@@ -36,8 +37,11 @@ public class RestResource {
      * @throws JAXBException when an error occurs during conversion
      */
     public final String getXmlString() throws JAXBException {
-        JAXBContext jc = JAXBContext.newInstance(classes);
-        Marshaller m = jc.createMarshaller();
+        if (context == null) {
+            context = JAXBContext.newInstance(classes);
+        }
+     // Marshaller is not thread-safe, and creating one can be expensive. If needed add pooling.
+        Marshaller m = context.createMarshaller();  
         m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         m.setProperty("com.sun.xml.bind.xmlDeclaration", false);

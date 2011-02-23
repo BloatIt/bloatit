@@ -16,7 +16,7 @@ public class BloatitRestServer extends RestServer {
         }
     };
 
-    private Class<?>[] classes = new Class<?>[] { Member.class, Members.class };
+    private Class<?>[] classes = new Class<?>[] { Member.class, Members.class, MarshableList.class };
 
     @Override
     protected Set<String> getResourcesDirectories() {
