@@ -67,6 +67,7 @@ public final class HtmlTabBlock extends HtmlDiv {
         div.addText(tab.getTitle());
 
         tablinks.addParameter(tabBlockKey, tab.getTabKey());
+        tablinks.setAnchor(tabBlockKey);
 
         if (active) {
             tabTitle.add(div);
