@@ -4,7 +4,6 @@ import java.net.BindException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.mailsender.MailServer;
-import com.bloatit.framework.utils.FrameworkConfiguration;
 import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
