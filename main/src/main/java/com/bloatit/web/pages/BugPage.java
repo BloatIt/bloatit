@@ -73,9 +73,6 @@ public final class BugPage extends MasterPage {
         box.add(description);
 
         // Attachements
-        if (bug.isOwner()) {
-            box.add(generateNewAttachementForm());
-        }
 
         for (FileMetadata attachement : bug.getFiles()) {
             final HtmlParagraph attachementPara = new HtmlParagraph();
@@ -84,32 +81,14 @@ public final class BugPage extends MasterPage {
             box.add(attachementPara);
         }
 
+        if (bug.isOwner()) {
+            box.add(generateNewAttachementForm());
+        }
+
         box.add(CommentTools.generateCommentList(bug.getComments()));
         box.add(CommentTools.generateNewCommentComponent(bug));
 
         add(box);
-    }
-
-    private XmlNode generateNewAttachementForm() {
-        final AddAttachementActionUrl addAttachementActionUrl = new AddAttachementActionUrl(bug);
-
-        final HtmlForm addAttachementForm = new HtmlForm(addAttachementActionUrl.urlString());
-        addAttachementForm.enableFileUpload();
-
-        // File
-        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
-        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
-        addAttachementForm.add(attachementInput);
-
-        final FormFieldData<String> attachementDescriptionFormFieldData = addAttachementActionUrl.getAttachementDescriptionParameter()
-                                                                                                 .formFieldData();
-        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
-        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
-        addAttachementForm.add(attachementDescriptionInput);
-
-        addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachement")));
-
-        return addAttachementForm;
     }
 
     @Override
@@ -124,4 +103,25 @@ public final class BugPage extends MasterPage {
     public boolean isStable() {
         return true;
     }
+
+    private XmlNode generateNewAttachementForm() {
+        final AddAttachementActionUrl addAttachementActionUrl = new AddAttachementActionUrl(bug);
+        final HtmlForm addAttachementForm = new HtmlForm(addAttachementActionUrl.urlString());
+        addAttachementForm.enableFileUpload();
+
+        // File
+        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
+        addAttachementForm.add(attachementInput);
+
+        final FormFieldData<String> attachementDescriptionFormFieldData = addAttachementActionUrl.getAttachementDescriptionParameter()
+                                                                                                 .formFieldData();
+        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
+        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
+        addAttachementForm.add(attachementDescriptionInput);
+        addAttachementForm.add(new HtmlSubmit(Context.tr("Add attachement")));
+
+        return addAttachementForm;
+    }
+
 }
