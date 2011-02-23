@@ -3,6 +3,8 @@ package com.bloatit.rest.resources;
 import com.bloatit.rest.RestElement;
 import com.bloatit.model.JoinGroupInvitation;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlID;
 import com.bloatit.rest.list.RestJoinGroupInvitationList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
@@ -30,4 +32,11 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation>{
     JoinGroupInvitation getModel(){
         return model;
     }
+
+    @XmlAttribute
+    @XmlID
+    public String getId(){
+        return model.getId().toString();
+    }
+
 }

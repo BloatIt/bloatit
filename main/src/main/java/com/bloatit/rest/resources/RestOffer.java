@@ -1,33 +1,43 @@
 package com.bloatit.rest.resources;
 
-import com.bloatit.rest.RestElement;
-import com.bloatit.model.Offer;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
-import com.bloatit.rest.list.RestOfferList;
+
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
+import com.bloatit.model.Offer;
+import com.bloatit.rest.RestElement;
+import com.bloatit.rest.list.RestOfferList;
 
 @XmlRootElement
-public class RestOffer extends RestElement<Offer>{ 
-    private Offer model;
+public class RestOffer extends RestElement<Offer> {
+    private final Offer model;
 
-    protected RestOffer(Offer model){
-        this.model=model;
+    protected RestOffer(final Offer model) {
+        this.model = model;
     }
 
     @REST(name = "offers", method = RequestMethod.GET)
-    public static RestOffer getById(int id){
-        //TODO auto generated code
+    public static RestOffer getById(final int id) {
+        // TODO auto generated code
         return null;
     }
 
     @REST(name = "offers", method = RequestMethod.GET)
-    public static RestOfferList getAll(){
-        //TODO auto generated code
+    public static RestOfferList getAll() {
+        // TODO auto generated code
         return null;
     }
 
-    Offer getModel(){
+    Offer getModel() {
         return model;
     }
+
+    @XmlAttribute
+    @XmlID
+    public String getId() {
+        return model.getId().toString();
+    }
+
 }
