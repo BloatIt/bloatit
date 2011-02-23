@@ -1,0 +1,34 @@
+package com.bloatit.rest.resources;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.bloatit.framework.rest.RestServer.RequestMethod;
+import com.bloatit.framework.rest.annotations.REST;
+import com.bloatit.model.Description;
+import com.bloatit.rest.RestElement;
+import com.bloatit.rest.utils.RestList;
+
+@XmlRootElement
+public class RestDescription extends RestElement{ 
+    private Description model;
+
+    protected RestDescription(Description model){
+        this.model=model;
+    }
+
+    @REST(name = "descriptions", method = RequestMethod.GET)
+    public static RestDescription getById(int id){
+        //TODO auto generated code
+        return null;
+    }
+
+    @REST(name = "descriptions", method = RequestMethod.GET)
+    public static RestList<RestDescription> getAll(){
+        //TODO auto generated code
+        return null;
+    }
+
+    Description getModel(){
+        return model;
+    }
+}

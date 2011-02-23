@@ -22,12 +22,15 @@ import com.bloatit.web.actions.PaylineNotifyAction;
 import com.bloatit.web.actions.PaylineReturnAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.RegisterAction;
-import com.bloatit.web.actions.ReportBugAction;
 import com.bloatit.web.actions.UploadFileAction;
+import com.bloatit.web.bugs.BugPage;
+import com.bloatit.web.bugs.ModifyBugAction;
+import com.bloatit.web.bugs.ModifyBugPage;
+import com.bloatit.web.bugs.ReportBugAction;
+import com.bloatit.web.bugs.ReportBugPage;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
 import com.bloatit.web.pages.AddReleasePage;
-import com.bloatit.web.pages.BugPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateDemandPage;
@@ -44,7 +47,6 @@ import com.bloatit.web.pages.PaylinePage;
 import com.bloatit.web.pages.ProjectListPage;
 import com.bloatit.web.pages.ProjectPage;
 import com.bloatit.web.pages.RegisterPage;
-import com.bloatit.web.pages.ReportBugPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.admin.DemandAdminPage;
@@ -96,6 +98,8 @@ import com.bloatit.web.url.MemberActivationActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
 import com.bloatit.web.url.MessageListPageUrl;
+import com.bloatit.web.url.ModifyBugActionUrl;
+import com.bloatit.web.url.ModifyBugPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PaylineActionUrl;
@@ -225,6 +229,9 @@ public class BloatitWebServer extends WebServer {
         if (pageCode.equals(AddReleasePageUrl.getName())) {
             return new AddReleasePage(new AddReleasePageUrl(params, session.getParameters()));
         }
+        if (pageCode.equals(ModifyBugPageUrl.getName())) {
+            return new ModifyBugPage(new ModifyBugPageUrl(params, session.getParameters()));
+        }
 
         // Actions
         if (pageCode.equals(LoginActionUrl.getName())) {
@@ -295,6 +302,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(AddReleaseActionUrl.getName())) {
             return new AddReleaseAction(new AddReleaseActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ModifyBugActionUrl.getName())) {
+            return new ModifyBugAction(new ModifyBugActionUrl(params, session.getParameters()));
         }
 
         // Resource page

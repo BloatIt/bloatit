@@ -29,6 +29,7 @@ import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Demand;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.demand.DemandImplementation;
@@ -244,8 +245,9 @@ public final class HtmlDemandSumary extends HtmlDiv {
      * @throws UnauthorizedOperationException
      */
     private XmlNode generateProjectImage() throws UnauthorizedOperationException {
-        final FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
-        return new HtmlImage(imageUrl, "project_image");
+        FileMetadata image = demand.getProject().getImage();
+        final FileResourceUrl imageUrl = new FileResourceUrl(image);
+        return new HtmlImage(imageUrl, image.getShortDescription(), "project_image");
     }
 
     /**

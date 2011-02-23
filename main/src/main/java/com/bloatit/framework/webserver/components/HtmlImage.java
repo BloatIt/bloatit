@@ -22,7 +22,7 @@ import com.bloatit.framework.webserver.url.Url;
 public class HtmlImage extends HtmlLeaf {
     private static final String IMAGE_DIRECTORY = "/resources/img";
 
-    public HtmlImage(final Image image) {
+    public HtmlImage(final Image image, String alt) {
         super("img");
         String uri = "";
         if (image.isLocal()) {
@@ -31,20 +31,22 @@ public class HtmlImage extends HtmlLeaf {
             uri = image.getIdentifier();
         }
         addAttribute("src", uri);
+        addAttribute("alt", alt);
     }
 
-    public HtmlImage(final Image image, final String cssClass) {
-        this(image);
+    public HtmlImage(final Image image, String alt, final String cssClass) {
+        this(image, alt);
         addAttribute("class", cssClass);
     }
 
-    public HtmlImage(final Url imageUrl) {
+    public HtmlImage(final Url imageUrl, String alt) {
         super("img");
         addAttribute("src", imageUrl.urlString());
+        addAttribute("alt", alt);
     }
 
-    public HtmlImage(final Url imageUrl, final String cssClass) {
-        this(imageUrl);
+    public HtmlImage(final Url imageUrl, String alt, final String cssClass) {
+        this(imageUrl, alt);
         addAttribute("class", cssClass);
     }
 }

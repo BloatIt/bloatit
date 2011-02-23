@@ -9,13 +9,12 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.actions;
+package com.bloatit.web.bugs;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.Locale;
 
-import com.bloatit.data.DaoBug.Level;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
@@ -23,7 +22,6 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
-import com.bloatit.framework.webserver.components.form.Displayable;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 import com.bloatit.framework.webserver.url.Url;
@@ -157,28 +155,6 @@ public final class ReportBugAction extends Action {
         session.addParameter(url.getLangParameter());
         session.addParameter(url.getAttachementDescriptionParameter());
         return new ReportBugPageUrl(batch.getOffer());
-    }
-
-    public enum BindedLevel implements Displayable {
-        FATAL(Level.FATAL, tr("FATAL")), MAJOR(Level.MAJOR, tr("MAJOR")), MINOR(Level.MINOR, tr("MINOR"));
-
-        private final String label;
-        private final Level level;
-
-        private BindedLevel(Level level, String label) {
-            this.level = level;
-            this.label = label;
-        }
-
-        @Override
-        public String getDisplayName() {
-            return label;
-        }
-
-        public Level getLevel() {
-            return level;
-        }
-
     }
 
 }

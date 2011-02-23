@@ -1,5 +1,8 @@
 package com.bloatit.framework.utils;
 
+import java.util.Map.Entry;
+import java.util.Set;
+
 /**
  * <p>
  * A class used to describe a set of parameters
@@ -9,7 +12,7 @@ package com.bloatit.framework.utils;
  * </p>
  * <p>
  * Whenever a parameter is read, it is deleted. A convenience method is provided
- * to read without deletion, but should be used unless for checking
+ * to read without deletion, but shouldn't be used unless for checking
  * </p>
  */
 public class Parameters extends GenericParameters<HttpParameter, String> {
@@ -25,7 +28,7 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
      * Add a parameter to the list
      * 
      * @param name the name of the parameter to add
-     * @param value the value of the paramter to add
+     * @param value the value of the parameter to add
      * @return itself
      */
     @Override
@@ -38,4 +41,9 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
             getElements().put(name, newHttpParameter);
         }
     }
+    
+    public Set<Entry<String, HttpParameter>> entrySet() {
+        return super.entrySet();
+    }
+
 }

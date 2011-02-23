@@ -121,7 +121,7 @@ public class UrlParameter<T, U> extends UrlNode {
             } else {
                 // TODO make sure this is working
                 strValue = httpParam.getSimpleValue();
-                if (value == null || value.getClass().isAssignableFrom(getValueClass())) {
+                if (value == null || getValueClass().isAssignableFrom(value.getClass())) {
                     setValue((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
                 } else {
                     throw new FatalErrorException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()

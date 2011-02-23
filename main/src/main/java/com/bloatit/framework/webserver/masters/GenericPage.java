@@ -32,8 +32,7 @@ public abstract class GenericPage extends Page {
     @Override
     public final void create() throws RedirectException {
         Log.framework().trace("Writing page: " + thisUrl.urlString());
-        super.add(new HtmlTagText("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
-        super.add(new HtmlTagText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">"));
+        super.add(new HtmlTagText("<!DOCTYPE html>"));
         final HtmlBranch html = new HtmlGenericElement("html");
 
         super.add(html);

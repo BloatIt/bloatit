@@ -1,32 +1,22 @@
 package com.bloatit.rest;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import com.bloatit.common.Log;
-import com.bloatit.framework.rest.RestResource;
 import com.bloatit.framework.rest.RestServer;
-import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.framework.rest.resources.ErrorResource;
-import com.bloatit.framework.utils.Parameters;
-import com.bloatit.framework.webserver.Session;
-import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
-import com.bloatit.rest.resources.TestResource;
 
 public class BloatitRestServer extends RestServer {
-    RequestMethod requestMethod;
+    private Map<String, Class<?>> locations = new HashMap<String, Class<?>>() {
+        private static final long serialVersionUID = -5012179845511358309L;
 
-    @Override
-    protected RestResource constructRestResource(String pageCode, RequestMethod requestMethod, Parameters params, Session session) {
-        this.requestMethod = requestMethod;
-
-        if (pageCode.equals("plop")) {
-            Log.rest().trace("Found resource plop");
-            return new TestResource(requestMethod);
+        {
+            put("members", Member.class);
         }
+    };
 
-        return null;
-    }
+    private Class<?>[] classes = new Class<?>[] { Member.class, Members.class, MarshableList.class };
 
     @Override
     protected Set<String> getResourcesDirectories() {
@@ -36,13 +26,18 @@ public class BloatitRestServer extends RestServer {
     }
 
     @Override
-    protected RestResource generateErrorResource(StatusCode status, String message) {
-        return new ErrorResource(requestMethod, status, message);
+    protected Class<?> getClass(String forResource) {
+        return locations.get(forResource);
     }
 
     @Override
-    protected RestResource generateErrorResource(RestException exception) {
-        return new ErrorResource(requestMethod, exception);
+    protected boolean isValidResource(String forResource) {
+        return locations.containsKey(forResource);
+    }
+
+    @Override
+    protected Class<?>[] getJAXClasses() {
+        return classes;
     }
 
     @Override

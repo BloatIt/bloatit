@@ -165,6 +165,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * @see com.bloatit.data.DaoBug#setResolved()
      */
     public void setResolved() {
+        //TODO: user right
         getDao().setResolved();
     }
 
@@ -174,6 +175,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * @see com.bloatit.data.DaoBug#setDeveloping()
      */
     public void setDeveloping() {
+        //TODO: user right
         getDao().setDeveloping();
     }
 

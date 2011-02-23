@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages;
+package com.bloatit.web.bugs;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -32,12 +32,12 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.web.actions.ReportBugAction;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
+import com.bloatit.web.url.ModifyBugPageUrl;
 
 @ParamContainer("demand/bug")
 public final class BugPage extends MasterPage {
@@ -68,6 +68,11 @@ public final class BugPage extends MasterPage {
         HtmlTitle bugTitle;
         bugTitle = new HtmlTitle(bug.getTitle(), 1);
         box.add(bugTitle);
+
+        box.add(new HtmlParagraph(tr("State: {0}", BindedState.getBindedState(bug.getState()))));
+        box.add(new HtmlParagraph(tr("Level: {0}", BindedLevel.getBindedLevel(bug.getErrorLevel()))));
+
+        box.add(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties")));
 
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
         box.add(description);

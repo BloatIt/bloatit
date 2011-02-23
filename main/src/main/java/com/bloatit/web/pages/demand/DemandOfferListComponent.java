@@ -32,6 +32,7 @@ import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.demand.DemandImplementation;
@@ -386,9 +387,10 @@ public class DemandOfferListComponent extends HtmlDiv {
 
             // Add project image
             try {
-                final FileResourceUrl imageUrl = new FileResourceUrl(offer.getDemand().getProject().getImage());
+                FileMetadata image = offer.getDemand().getProject().getImage();
+                final FileResourceUrl imageUrl = new FileResourceUrl(image);
                 // TODO: use avatar
-                final HtmlImage projectImage = new HtmlImage(imageUrl, "avatar_image");
+                final HtmlImage projectImage = new HtmlImage(imageUrl, image.getShortDescription(),  "avatar_image");
                 avatarBlock.add(projectImage);
             } catch (final UnauthorizedOperationException e) {
                 // no right, no image

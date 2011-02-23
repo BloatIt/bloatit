@@ -1,5 +1,7 @@
 package com.bloatit.web.pages.master;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.utils.Image;
 import com.bloatit.framework.webserver.Context;
@@ -95,7 +97,7 @@ public abstract class MasterPage extends GenericPage {
 
         final HtmlDiv logoDiv = new HtmlDiv("logo", "logo");
 
-        final HtmlImage logoImage = new HtmlImage(new Image("logo_linkeos.png", Image.ImageType.LOCAL));
+        final HtmlImage logoImage = new HtmlImage(new Image("logo_linkeos.png", Image.ImageType.LOCAL), tr("elveos.org logo"));
         logoImage.setCssClass("logo_linkeos");
 
         logoDiv.add(new IndexPageUrl().getHtmlLink(logoImage));
