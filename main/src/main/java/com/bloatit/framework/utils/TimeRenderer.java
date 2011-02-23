@@ -41,10 +41,11 @@ public class TimeRenderer {
     }
 
     private TimeRenderer.TimeBase computeBestResolution() {
-        if (milliseconds < 1000) {
+        long positiveMillisecond = Math.abs(milliseconds);
+        if (positiveMillisecond < 1000) {
             return TimeBase.MILLI;
         }
-        long second = milliseconds / 1000;
+        long second = positiveMillisecond / 1000;
         if (second > DateUtils.SECOND_PER_WEEK) {
             return TimeBase.WEEK;
         }
@@ -61,7 +62,10 @@ public class TimeRenderer {
     }
 
     public String getTimeString() {
-        return printTime(getTime(), getBase()) + " " + printTime(getSubTime(), getSubBase());
+        if (getSubBase() != null) {
+            return printTime(getTime(), getBase()) + " " + printTime(getSubTime(), getSubBase());
+        }
+        return printTime(getTime(), getBase());
     }
 
     private String printTime(long time, TimeBase theBase) {
@@ -92,6 +96,9 @@ public class TimeRenderer {
     }
 
     public long getSubTime() {
+        if (getSubBase() == null) {
+            return 0;
+        }
         return (milliseconds - (getTime() * base.getCoef())) / getSubBase().getCoef();
     }
 

@@ -28,8 +28,10 @@ import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.State;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
+import com.bloatit.model.lists.ListBinder;
 
 /**
  * A batch is a part of an offer. Simple offers are only composed of one batch.
@@ -122,8 +124,8 @@ public class Batch extends Identifiable<DaoBatch> {
      * (done by {@link Offer#validateCurrentBatch(boolean)}).
      * </p>
      */
-    public void addRelease(final String description, final Locale locale, FileMetadata file) {
-        Release release = new Release(getOffer().getAuthor(), this, description, locale);
+    public void addRelease(final String description, final String version, final Locale locale, FileMetadata file) {
+        Release release = new Release(getOffer().getAuthor(), this, description, version, locale);
         if (file != null) {
             release.addFile(file);
         }
@@ -318,6 +320,18 @@ public class Batch extends Identifiable<DaoBatch> {
         return -1;
     }
 
+    public Offer getOffer() {
+        return Offer.create(getDao().getOffer());
+    }
+
+    public BatchState getBatchState() {
+        return getDao().getBatchState();
+    }
+
+    public PageIterable<Release> getReleases() {
+        return new ListBinder<Release, DaoRelease>(getDao().getReleases());
+    }
+
     /*
      * (non-Javadoc)
      * @see
@@ -339,11 +353,4 @@ public class Batch extends Identifiable<DaoBatch> {
         return Offer.create(getDao().getOffer()).calculateMyGroupRights(member);
     }
 
-    public Offer getOffer() {
-        return Offer.create(getDao().getOffer());
-    }
-
-    public BatchState getBatchState() {
-        return getDao().getBatchState();
-    }
 }

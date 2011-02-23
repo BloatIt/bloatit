@@ -318,8 +318,8 @@ public final class DaoBatch extends DaoIdentifiable {
     }
 
     public PageIterable<DaoRelease> getReleases() {
-        final Query filteredBugs = SessionManager.createFilter(bugs, "order by creationDate DESC");
-        final Query filteredBugsSize = SessionManager.createFilter(bugs, "select count (*)");
+        final Query filteredBugs = SessionManager.createFilter(releases, "order by creationDate DESC");
+        final Query filteredBugsSize = SessionManager.createFilter(releases, "select count (*)");
         return new QueryCollection<DaoRelease>(filteredBugs, filteredBugsSize);
     }
 

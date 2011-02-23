@@ -17,7 +17,7 @@
 package com.bloatit.model.lists;
 
 import com.bloatit.data.DaoIdentifiable;
-import com.bloatit.model.ConstructorVisitor;
+import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.Identifiable;
 
 /**
@@ -70,7 +70,7 @@ public class IteratorBinder<E extends Identifiable<DAO>, DAO extends DaoIdentifi
     @SuppressWarnings("unchecked")
     @Override
     public final E next() {
-        return (E) daoIterator.next().accept(new ConstructorVisitor());
+        return (E) daoIterator.next().accept(new DataVisitorConstructor());
     }
 
     /*

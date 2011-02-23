@@ -22,9 +22,9 @@ import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
+import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Batch;
-import com.bloatit.web.actions.AddProjectAction;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
@@ -37,7 +37,7 @@ public final class AddReleasePage extends LoggedPage {
 
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
-    
+
     @RequestParam(name = "batch")
     Batch batch;
 
@@ -72,14 +72,20 @@ public final class AddReleasePage extends LoggedPage {
 
         createReleaseTitle.add(form);
 
-        // Create the fields that will describe the descriptions of the project
-        final FormFieldData<String> shortDescriptionFormFieldData = doCreateUrl.getShortDescriptionParameter().formFieldData();
-        final HtmlTextArea shortDescriptionInput = new HtmlTextArea(shortDescriptionFormFieldData,
-                                                                    tr("Comment your release"),
-                                                                    DESCRIPTION_INPUT_NB_LINES,
-                                                                    DESCRIPTION_INPUT_NB_COLUMNS);
-        shortDescriptionInput.setComment(tr("Enter a short comment on your release."));
-        form.add(shortDescriptionInput);
+        // version
+        final FormFieldData<String> versionFormFieldData = doCreateUrl.getVersionParameter().formFieldData();
+        final HtmlTextField version = new HtmlTextField(versionFormFieldData, tr("Version"));
+        version.setComment(tr("Enter your release version. For example ''1.2.3''."));
+        form.add(version);
+
+        // description
+        final FormFieldData<String> descriptionFormFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
+        final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
+                                                               tr("Comment your release"),
+                                                               DESCRIPTION_INPUT_NB_LINES,
+                                                               DESCRIPTION_INPUT_NB_COLUMNS);
+        descriptionInput.setComment(tr("Enter a short comment on your release."));
+        form.add(descriptionInput);
 
         // Language
         final FormFieldData<String> languageFormFieldData = doCreateUrl.getLangParameter().formFieldData();
@@ -87,7 +93,9 @@ public final class AddReleasePage extends LoggedPage {
         languageInput.setComment(tr("Language of the descriptions."));
         form.add(languageInput);
 
-        final HtmlFileInput attachedFileInput = new HtmlFileInput(AddProjectAction.IMAGE_CODE, tr("Attached file"));
+        // attachement
+        final FormFieldData<String> attachedFileParameter = doCreateUrl.getAttachedfileParameter().formFieldData();
+        final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileParameter, tr("Attached file"));
         attachedFileInput.setComment("You must attache a file. This is your release, it can take be a patch, a tar.gz etc.");
         form.add(attachedFileInput);
 

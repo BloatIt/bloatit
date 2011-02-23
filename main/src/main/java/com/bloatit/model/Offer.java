@@ -211,6 +211,14 @@ public final class Offer extends Kudosable<DaoOffer> {
         }
         return Float.POSITIVE_INFINITY;
     }
+    
+    public Batch getCurrentBatch() {
+        return Batch.create(getDao().getCurrentBatch());
+    }
+
+    public boolean hasRelease() {
+        return getDao().hasRelease();
+    }
 
     // ////////////////////////////////////////////////////////////////////////
     // Kudosable configuration
@@ -248,8 +256,5 @@ public final class Offer extends Kudosable<DaoOffer> {
         return ModelConfiguration.getKudosableOfferTurnHidden();
     }
 
-    public Batch getCurrentBatch() {
-        return Batch.create(getDao().getCurrentBatch());
-    }
 
 }
