@@ -207,6 +207,8 @@ public abstract class JavaGenerator {
             appendErrorMsg(constraints.optionalErrorMsg().value(), sb).append(", ");
             appendErrorMsg(constraints.precisionErrorMsg().value(), sb).append(", ");
             appendErrorMsg(constraints.LengthErrorMsg().value(), sb);
+        }else{
+            sb.append(isOptional);
         }
         sb.append(")");
 
