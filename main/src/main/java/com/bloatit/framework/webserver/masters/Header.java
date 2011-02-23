@@ -9,8 +9,8 @@ public final class Header extends HtmlElement {
 
     public Header(final String title, final String customCss) {
         super("head");
-        final HtmlBranch meta = new HtmlGenericElement("meta").addAttribute("http-equiv", "content-type").addAttribute("content",
-                                                                                                                       "text/html;charset=utf-8");
+
+        final HtmlBranch meta = new HtmlGenericElement("meta").addAttribute("charset", "UTF-8");
 
         final HtmlBranch link = new HtmlGenericElement("link").addAttribute("rel", "stylesheet")
                                                               .addAttribute("href", DESIGN)
