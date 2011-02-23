@@ -32,7 +32,6 @@ import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Offer;
 import com.bloatit.model.demand.DemandManager;
-import com.bloatit.web.bugs.ReportBugAction.BindedLevel;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.pages.LoggedPage;
 import com.bloatit.web.url.ReportBugActionUrl;

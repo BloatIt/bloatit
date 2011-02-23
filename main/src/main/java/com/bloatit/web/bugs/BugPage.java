@@ -37,6 +37,7 @@ import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
 import com.bloatit.web.url.BugPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
+import com.bloatit.web.url.ModifyBugPageUrl;
 
 @ParamContainer("demand/bug")
 public final class BugPage extends MasterPage {
@@ -67,6 +68,11 @@ public final class BugPage extends MasterPage {
         HtmlTitle bugTitle;
         bugTitle = new HtmlTitle(bug.getTitle(), 1);
         box.add(bugTitle);
+
+        box.add(new HtmlParagraph(tr("State: {0}", BindedState.getBindedState(bug.getState()))));
+        box.add(new HtmlParagraph(tr("Level: {0}", BindedLevel.getBindedLevel(bug.getErrorLevel()))));
+
+        box.add(new ModifyBugPageUrl(bug).getHtmlLink(tr("Modify the bug's properties")));
 
         final HtmlParagraph description = new HtmlParagraph(new HtmlRawTextRenderer(bug.getDescription()));
         box.add(description);
