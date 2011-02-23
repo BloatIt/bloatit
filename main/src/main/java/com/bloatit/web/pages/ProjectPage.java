@@ -65,7 +65,7 @@ public final class ProjectPage extends MasterPage {
             projectName = new HtmlTitle(project.getName(), 1);
             box.add(projectName);
 
-            box.add(new HtmlImage(new FileResourceUrl(project.getImage()), "float_right"));
+            box.add(new HtmlImage(new FileResourceUrl(project.getImage()), project.getImage().getShortDescription(), "float_right"));
 
             final Locale defaultLocale = Context.getLocalizator().getLocale();
             final Translation translatedDescription = project.getDescription().getTranslationOrDefault(defaultLocale);

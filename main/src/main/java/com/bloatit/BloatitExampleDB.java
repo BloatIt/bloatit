@@ -269,7 +269,7 @@ public class BloatitExampleDB {
     private FileMetadata getImage(final Member author, final String name) {
         final String path = WebConfiguration.getBloatitWwwDir() + "/resources/img/" + name;
 
-        return FileMetadataManager.createFromLocalFile(author, path, name, "Beautiful image");
+        return FileMetadataManager.createFromLocalFile(author, path, name, "Projet's logo image");
     }
 
     public static void main(final String[] args) throws UnauthorizedOperationException, NotEnoughMoneyException {

@@ -26,6 +26,7 @@ import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.demand.DemandImplementation;
@@ -65,8 +66,9 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 {
                     // Add project image
                     try {
-                        final FileResourceUrl imageUrl = new FileResourceUrl(demand.getProject().getImage());
-                        final HtmlImage projectImage = new HtmlImage(imageUrl, "project_image");
+                        FileMetadata image = demand.getProject().getImage();
+                        final FileResourceUrl imageUrl = new FileResourceUrl(image);
+                        final HtmlImage projectImage = new HtmlImage(imageUrl, image.getShortDescription(), "project_image");
                         demandSummaryLeft.add(projectImage);
                     } catch (final UnauthorizedOperationException e) {
                         // no right, no image
