@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.ExternalAccount;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.ExternalAccount;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestExternalAccount extends RestElement{ 
+public class RestExternalAccount extends RestElement<ExternalAccount>{ 
     private ExternalAccount model;
 
     protected RestExternalAccount(ExternalAccount model){
@@ -23,7 +22,7 @@ public class RestExternalAccount extends RestElement{
     }
 
     @REST(name = "externalaccounts", method = RequestMethod.GET)
-    public static RestList<RestExternalAccount> getAll(){
+    public static RestExternalAccountList getAll(){
         //TODO auto generated code
         return null;
     }

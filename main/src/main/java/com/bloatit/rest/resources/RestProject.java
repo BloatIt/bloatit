@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.Project;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestProjectList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Project;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestProject extends RestElement{ 
+public class RestProject extends RestElement<Project>{ 
     private Project model;
 
     protected RestProject(Project model){
@@ -23,7 +22,7 @@ public class RestProject extends RestElement{
     }
 
     @REST(name = "projects", method = RequestMethod.GET)
-    public static RestList<RestProject> getAll(){
+    public static RestProjectList getAll(){
         //TODO auto generated code
         return null;
     }

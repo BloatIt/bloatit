@@ -31,8 +31,8 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
-import com.bloatit.rest.resources.ModelClassVisitor;
 import com.bloatit.model.lists.ListBinder;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * A batch is a part of an offer. Simple offers are only composed of one batch.

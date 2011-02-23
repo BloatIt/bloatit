@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.IdentifiableInterface;
+import com.bloatit.data.DaoIdentifiable;
 
 /**
  * The cache manager is the class responsible of the model level cache. There is
@@ -84,7 +84,7 @@ public final class CacheManager {
      * @return the object if it exist, null otherwise.
      */
     @SuppressWarnings("rawtypes")
-    public static Identifiable get(final IdentifiableInterface identifiable) {
+    public static Identifiable get(final DaoIdentifiable identifiable) {
         Log.model().trace("Get from model cache: " + identifiable.getId());
         return UniqueThreadCache.getCurrentCache().get(identifiable.getId());
     }

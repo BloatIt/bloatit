@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.Batch;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestBatchList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Batch;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestBatch extends RestElement{ 
+public class RestBatch extends RestElement<Batch>{ 
     private Batch model;
 
     protected RestBatch(Batch model){
@@ -23,7 +22,7 @@ public class RestBatch extends RestElement{
     }
 
     @REST(name = "batchs", method = RequestMethod.GET)
-    public static RestList<RestBatch> getAll(){
+    public static RestBatchList getAll(){
         //TODO auto generated code
         return null;
     }

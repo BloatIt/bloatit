@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.JoinGroupInvitation;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestJoinGroupInvitationList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.JoinGroupInvitation;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestJoinGroupInvitation extends RestElement{ 
+public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation>{ 
     private JoinGroupInvitation model;
 
     protected RestJoinGroupInvitation(JoinGroupInvitation model){
@@ -23,7 +22,7 @@ public class RestJoinGroupInvitation extends RestElement{
     }
 
     @REST(name = "joingroupinvitations", method = RequestMethod.GET)
-    public static RestList<RestJoinGroupInvitation> getAll(){
+    public static RestJoinGroupInvitationList getAll(){
         //TODO auto generated code
         return null;
     }

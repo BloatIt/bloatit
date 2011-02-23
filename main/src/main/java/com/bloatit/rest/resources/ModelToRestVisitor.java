@@ -22,106 +22,105 @@ import com.bloatit.model.Transaction;
 import com.bloatit.model.Translation;
 import com.bloatit.rest.RestElement;
 
-public class ModelToRestVisitor implements ModelClassVisitor<RestElement> {
+public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 
     @Override
-    public RestElement visit(ExternalAccount model) {
+    public RestElement<ExternalAccount> visit(ExternalAccount model) {
         return new RestExternalAccount(model);
     }
 
     @Override
-    public RestElement visit(InternalAccount model) {
+    public RestElement<InternalAccount> visit(InternalAccount model) {
         return new RestInternalAccount(model);
     }
 
     @Override
-    public RestElement visit(Member model) {
+    public RestElement<Member> visit(Member model) {
         return new RestMember(model);
     }
 
     @Override
-    public RestElement visit(BankTransaction model) {
+    public RestElement<BankTransaction> visit(BankTransaction model) {
         return new RestBankTransaction(model);
     }
 
     @Override
-    public RestElement visit(Batch model) {
+    public RestElement<Batch> visit(Batch model) {
         return new RestBatch(model);
     }
 
     @Override
-    public RestElement visit(Description model) {
+    public RestElement<Description> visit(Description model) {
         return new RestDescription(model);
     }
 
     @Override
-    public RestElement visit(Group model) {
+    public RestElement<Group> visit(Group model) {
         return new RestGroup(model);
     }
 
     @Override
-    public RestElement visit(HighlightDemand model) {
+    public RestElement<HighlightDemand> visit(HighlightDemand model) {
         return new RestHighlightDemand(model);
     }
 
     @Override
-    public RestElement visit(JoinGroupInvitation model) {
+    public RestElement<JoinGroupInvitation> visit(JoinGroupInvitation model) {
         return new RestJoinGroupInvitation(model);
     }
 
     @Override
-    public RestElement visit(Project model) {
+    public RestElement<Project> visit(Project model) {
         return new RestProject(model);
     }
 
     @Override
-    public RestElement visit(Transaction model) {
+    public RestElement<Transaction> visit(Transaction model) {
         return new RestTransaction(model);
     }
 
     @Override
-    public RestElement visit(Bug model) {
+    public RestElement<Bug> visit(Bug model) {
         return new RestBug(model);
     }
 
     @Override
-    public RestElement visit(Contribution model) {
+    public RestElement<Contribution> visit(Contribution model) {
         return new RestContribution(model);
     }
 
     @Override
-    public RestElement visit(FileMetadata model) {
+    public RestElement<FileMetadata> visit(FileMetadata model) {
         return new RestFileMetadata(model);
     }
 
     @Override
-    public RestElement visit(Kudos model) {
+    public RestElement<Kudos> visit(Kudos model) {
         return new RestKudos(model);
     }
 
     @Override
-    public RestElement visit(Comment model) {
+    public RestElement<Comment> visit(Comment model) {
         return new RestComment(model);
     }
 
     @Override
-    public RestElement visit(Demand model) {
+    public RestElement<Demand> visit(Demand model) {
         return new RestDemand(model);
     }
 
     @Override
-    public RestElement visit(Offer model) {
+    public RestElement<Offer> visit(Offer model) {
         return new RestOffer(model);
     }
 
     @Override
-    public RestElement visit(Translation model) {
+    public RestElement<Translation> visit(Translation model) {
         return new RestTranslation(model);
     }
 
     @Override
-    public RestElement visit(Release model) {
+    public RestElement<Release> visit(Release model) {
         return new RestRelease(model);
     }
-
 }

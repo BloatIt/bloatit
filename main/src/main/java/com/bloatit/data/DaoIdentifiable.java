@@ -29,13 +29,12 @@ import org.hibernate.search.annotations.DocumentId;
  * to have a id column in your table. There is no DaoIdentifiable Table.
  */
 @MappedSuperclass
-public abstract class DaoIdentifiable implements IdentifiableInterface {
+public abstract class DaoIdentifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @DocumentId
     private Integer id;
 
-    @Override
     public final Integer getId() {
         return id;
     }

@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.Demand;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestDemandList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Demand;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestDemand extends RestElement{ 
+public class RestDemand extends RestElement<Demand>{ 
     private Demand model;
 
     protected RestDemand(Demand model){
@@ -23,7 +22,7 @@ public class RestDemand extends RestElement{
     }
 
     @REST(name = "demands", method = RequestMethod.GET)
-    public static RestList<RestDemand> getAll(){
+    public static RestDemandList getAll(){
         //TODO auto generated code
         return null;
     }
