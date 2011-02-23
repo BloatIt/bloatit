@@ -21,7 +21,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.model.UserContent;
+import com.bloatit.model.UserContentInterface;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.web.url.AddAttachementActionUrl;
@@ -41,7 +41,7 @@ public final class AddAttachementAction extends Action {
 
     @ParamConstraint(optionalErrorMsg = @tr("An attachement must be linked to a content"))
     @RequestParam(name = USER_CONTENT)
-    private final UserContent userContent;
+    private final UserContentInterface userContent;
 
     @ParamConstraint
     @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)

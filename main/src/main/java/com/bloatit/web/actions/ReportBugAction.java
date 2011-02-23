@@ -125,12 +125,14 @@ public final class ReportBugAction extends Action {
 
         final Bug bug = batch.addBug(session.getAuthToken().getMember(), title, description, langLocale, level.getLevel());
 
-        final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
-                                                                                            attachement,
-                                                                                            attachementFileName,
-                                                                                            attachementDescription);
+        if (attachement != null) {
+            final FileMetadata attachementFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
+                                                                                                attachement,
+                                                                                                attachementFileName,
+                                                                                                attachementDescription);
 
-        bug.addFile(attachementFileMedatata);
+            bug.addFile(attachementFileMedatata);
+        }
 
         final BugPageUrl to = new BugPageUrl(bug);
 

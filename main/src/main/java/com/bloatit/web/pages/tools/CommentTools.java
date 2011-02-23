@@ -1,5 +1,7 @@
 package com.bloatit.web.pages.tools;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
@@ -8,18 +10,26 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
+import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlFormBlock;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
+import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Comment;
 import com.bloatit.model.Commentable;
+import com.bloatit.model.FileMetadata;
+import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.actions.CreateCommentAction;
+import com.bloatit.web.actions.ReportBugAction;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
+import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 
@@ -30,9 +40,9 @@ public class CommentTools {
 
     public static XmlNode generateCommentList(PageIterable<Comment> comments) {
         PlaceHolderElement ph = new PlaceHolderElement();
-            for (final Comment comment : comments) {
-                ph.add(generateComment(comment, false));
-            }
+        for (final Comment comment : comments) {
+            ph.add(generateComment(comment, false));
+        }
         return ph;
     }
 
@@ -43,6 +53,14 @@ public class CommentTools {
             final HtmlParagraph commentText = new HtmlParagraph();
             commentText.add(new HtmlRawTextRenderer(comment.getText()));
             commentBlock.add(commentText);
+
+            // Attachements
+            for (FileMetadata attachement : comment.getFiles()) {
+                final HtmlParagraph attachementPara = new HtmlParagraph();
+                attachementPara.add(new FileResourceUrl(attachement).getHtmlLink(attachement.getFileName()));
+                attachementPara.addText(tr(": ") + attachement.getShortDescription());
+                commentBlock.add(attachementPara);
+            }
 
             final HtmlDiv commentInfo = new HtmlDiv("comment_info");
             commentBlock.add(commentInfo);
@@ -125,20 +143,43 @@ public class CommentTools {
         return commentBlock;
     }
 
-
-    public static HtmlElement generateNewCommentComponent(final Commentable commentable) {
+    public static <T extends UserContentInterface<?> & Commentable> HtmlElement generateNewCommentComponent(final T commentable) {
         final CreateCommentActionUrl url = new CreateCommentActionUrl(commentable);
         final HtmlDiv commentBlock = new HtmlDiv("new_comment_block");
 
         final HtmlForm form = new HtmlForm(url.urlString());
+        form.enableFileUpload();
         commentBlock.add(form);
 
-        final HtmlTextArea commentInput = new HtmlTextArea(CreateCommentAction.COMMENT_CONTENT_CODE, Context.tr("New comment : "), NB_ROWS, NB_COLUMNS);
+        final HtmlTextArea commentInput = new HtmlTextArea(CreateCommentAction.COMMENT_CONTENT_CODE,
+                                                           Context.tr("New comment : "),
+                                                           NB_ROWS,
+                                                           NB_COLUMNS);
         form.add(commentInput);
         commentInput.setComment(Context.tr("Use this field to comment the demand. If you want to reply to a previous comment, use the reply link."));
+
+        // Attachement
+        form.add(generateAttachementBlock(url, commentable));
 
         form.add(new HtmlSubmit(Context.tr("Submit comment")));
 
         return commentBlock;
     }
+
+    private static XmlNode generateAttachementBlock(CreateCommentActionUrl url, UserContentInterface userContent) {
+
+        final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
+
+        final HtmlFileInput attachementInput = new HtmlFileInput(ReportBugAction.ATTACHEMENT_CODE, Context.tr("Attachement file"));
+        attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
+        attachementBlock.add(attachementInput);
+
+        final FormFieldData<String> attachementDescriptionFormFieldData = url.getAttachementDescriptionParameter().formFieldData();
+        final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
+        attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
+        attachementBlock.add(attachementDescriptionInput);
+
+        return attachementBlock;
+    }
+
 }

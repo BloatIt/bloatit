@@ -121,7 +121,7 @@ public class UrlParameter<T, U> extends UrlNode {
             } else {
                 // TODO make sure this is working
                 strValue = httpParam.getSimpleValue();
-                if (value == null || getValueClass().equals(value.getClass())) {
+                if (value == null || value.getClass().isAssignableFrom(getValueClass())) {
                     setValue((T) Loaders.fromStr(getValueClass(), httpParam.getSimpleValue()));
                 } else {
                     throw new FatalErrorException("Type mismatch. " + getValueClass().getSimpleName() + " =! " + value.getClass().getSimpleName()
@@ -232,7 +232,7 @@ public class UrlParameter<T, U> extends UrlNode {
         /**
          * Try to locate <code>parameter</code> in the session. If found use
          * this one, else use the parameter passed in the constructor.
-         * 
+         *
          * @param parameter a parameter to find or use.
          */
         public FieldDataFromUrl(final UrlParameter<T, U> parameter) {
