@@ -41,7 +41,7 @@ public final class DaoProject extends DaoIdentifiable {
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private DaoDescription description;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private DaoFileMetadata image;
 
     @OneToMany(mappedBy = "project")
@@ -60,9 +60,9 @@ public final class DaoProject extends DaoIdentifiable {
     // Construction
     // ======================================================================
 
-    public static DaoProject createAndPersist(final String name, final DaoDescription description, final DaoFileMetadata image) {
+    public static DaoProject createAndPersist(final String name, final DaoDescription description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoProject project = new DaoProject(name, description, image);
+        final DaoProject project = new DaoProject(name, description);
         try {
             session.save(project);
         } catch (final HibernateException e) {
@@ -73,14 +73,13 @@ public final class DaoProject extends DaoIdentifiable {
         return project;
     }
 
-    private DaoProject(final String name, final DaoDescription description, final DaoFileMetadata image) {
+    private DaoProject(final String name, final DaoDescription description) {
         super();
-        if (name == null || name.isEmpty() || description == null || image == null) {
+        if (name == null || name.isEmpty() || description == null) {
             throw new NonOptionalParameterException();
         }
         this.name = name;
         this.description = description;
-        this.image = image;
     }
 
     protected void addDemand(final DaoDemand demand) {
@@ -177,6 +176,10 @@ public final class DaoProject extends DaoIdentifiable {
         }
 
         return true;
+    }
+
+    public void setImage(DaoFileMetadata image) {
+        this.image = image;
     }
 
 }

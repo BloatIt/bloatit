@@ -54,11 +54,11 @@ public class Project extends Identifiable<DaoProject> {
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link DemandManager#canCreate(AuthToken)} to make sure
      * you can create a new demand.
-     * 
+     *
      * @see DaoDemand#DaoDemand(Member,Locale,String, String)
      */
-    public Project(final String name, final Member author, final Locale locale, final String title, final String description, final FileMetadata image) {
-        this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description), image.getDao()));
+    public Project(final String name, final Member author, final Locale locale, final String title, final String description) {
+        this(DaoProject.createAndPersist(name, DaoDescription.createAndPersist(author.getDao(), locale, title, description)));
     }
 
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +112,11 @@ public class Project extends Identifiable<DaoProject> {
     @Override
     protected boolean isMine(final Member member) {
         return false;
+    }
+
+    public void setImage(FileMetadata fileImage) {
+        //TODO: right management
+        getDao().setImage(fileImage.getDao());
     }
 
 }

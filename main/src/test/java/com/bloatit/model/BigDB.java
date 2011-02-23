@@ -67,8 +67,8 @@ public class BigDB {
 
         DaoGroup.createAndPersiste("b2 ", "plop" + "@plop.com", "description", DaoGroup.Right.PUBLIC);
 
-        DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"),
-                DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
+        DaoProject project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(members.get(0), Locale.FRANCE, "title", "descrip"));
+        project.setImage(DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
 
         for (int i = 0; i < nbUsers; i++) {
             final DaoDemand demand = DaoDemand.createAndPersist(members.get(i),

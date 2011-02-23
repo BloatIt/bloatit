@@ -67,15 +67,16 @@ public class BloatitExampleDB {
 
         final String vlcTitle = "VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols. ";
         final String vlcDescription = "http://www.videolan.org/vlc/";
-        final Project vlc = new Project("VLC", thomas, Locale.FRANCE, vlcTitle, vlcDescription, getImage(thomas, "vlc.png"));
+        final Project vlc = new Project("VLC", thomas, Locale.FRANCE, vlcTitle, vlcDescription);
+        vlc.setImage(getImage(thomas, "vlc.png"));
 
         // Perroquet project
 
         final String perroquetTitle = "Perroquet est un programme éducatif dont le but est d'améliorer de manière divertissant votre niveau de compréhension orale des langues étrangères";
         final String perroquetDescription = "Le principe de Perroquet est d'utiliser une vidéo ou un fichier audio et les sous-titres associés pour vous faire écouter et comprendre les dialogues ou paroles. Après lui avoir indiqué les fichiers à utiliser, Perroquet va lire un morceau de la vidéo et puis la mettre en pause. Il vous indiquera alors le nombre de mot à trouver et vous devrez les taper pour pouvoir continuer la lecture. Il est possible de réécouter une séquence autant de fois que nécessaire. Si vous ne comprenez pas tout, Perroquet présente plusieurs moyen de vous aider. \n"
                 + "http://perroquet.b219.org/";
-        final Project perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription, getImage(fred,
-                                                                                                                                 "perroquet.png"));
+        final Project perroquet = new Project("Perroquet", thomas, Locale.FRANCE, perroquetTitle, perroquetDescription);
+        perroquet.setImage(getImage(fred, "perroquet.png"));
 
         // LibreOffice project
 
@@ -86,14 +87,15 @@ public class BloatitExampleDB {
                                                 thomas,
                                                 Locale.FRANCE,
                                                 libreOfficeTitle,
-                                                libreOfficeDescription,
-                                                getImage(fred, "libreoffice.png"));
+                                                libreOfficeDescription);
+        libreOffice.setImage(getImage(fred, "libreoffice.png"));
 
         // Mageia project
 
         final String mageiaTitle = "Mageia est un fork de Mandriva Linux, reposant sur une association de type 1901 composée de contributeurs reconnus et élus pour leur travail.";
         final String mageiaDescription = "http://mageia.org/fr/";
-        final Project mageia = new Project("Mageia", thomas, Locale.FRANCE, mageiaTitle, mageiaDescription, getImage(yoann, "mageia.png"));
+        final Project mageia = new Project("Mageia", thomas, Locale.FRANCE, mageiaTitle, mageiaDescription);
+        mageia.setImage(getImage(yoann, "mageia.png"));
 
         final String twoSubtitlesInVlcDemandDescription = "Offrir la possibilité d'afficher deux sous-titre à la fois dans VLC.\n"
                 + "\n"

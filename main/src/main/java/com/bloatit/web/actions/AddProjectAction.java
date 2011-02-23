@@ -60,12 +60,15 @@ public final class AddProjectAction extends Action {
     min = "3", minErrorMsg = @tr("The project name must have at least 3 chars."), optionalErrorMsg = @tr("The project name is requiered."))
     private final String projectName;
 
+    @Optional
     @RequestParam(name = IMAGE_CODE, role = Role.POST)
     private final String image;
 
+    @Optional
     @RequestParam(name = IMAGE_NAME_CODE, role = Role.POST)
     private final String imageFileName;
 
+    @Optional
     @RequestParam(name = IMAGE_CONTENT_TYPE_CODE, role = Role.POST)
     private final String imageContentType;
 
@@ -97,12 +100,17 @@ public final class AddProjectAction extends Action {
         }
         final Locale langLocale = new Locale(lang);
 
-        final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
-                                                                              image,
-                                                                              imageFileName,
-                                                                              "Image for the project '" + projectName + "'");
 
-        final Project p = new Project(projectName, session.getAuthToken().getMember(), langLocale, shortDescription, description, fileImage);
+        final Project p = new Project(projectName, session.getAuthToken().getMember(), langLocale, shortDescription, description);
+
+        if(image != null) {
+            final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
+                                                                                  image,
+                                                                                  imageFileName,
+                                                                                  "Image for the project '" + projectName + "'");
+            p.setImage(fileImage);
+        }
+
 
         final ProjectPageUrl to = new ProjectPageUrl(p);
 

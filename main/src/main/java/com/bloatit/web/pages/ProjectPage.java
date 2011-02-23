@@ -27,6 +27,7 @@ import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Project;
 import com.bloatit.model.Translation;
 import com.bloatit.web.pages.master.MasterPage;
@@ -65,7 +66,10 @@ public final class ProjectPage extends MasterPage {
             projectName = new HtmlTitle(project.getName(), 1);
             box.add(projectName);
 
-            box.add(new HtmlImage(new FileResourceUrl(project.getImage()), project.getImage().getShortDescription(), "float_right"));
+            FileMetadata image = project.getImage();
+            if (image != null) {
+                box.add(new HtmlImage(new FileResourceUrl(image), image.getShortDescription(), "float_right"));
+            }
 
             final Locale defaultLocale = Context.getLocalizator().getLocale();
             final Translation translatedDescription = project.getDescription().getTranslationOrDefault(defaultLocale);
