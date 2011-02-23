@@ -21,16 +21,17 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.Log;
@@ -76,9 +77,12 @@ public final class DaoMember extends DaoActor {
     @Basic(optional = false)
     private Locale locale;
 
+    //TODO: tom must set the good cascade type for images
+    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private DaoFileMetadata avatar;
+
     // this property is for hibernate mapping.
-    @OneToMany(mappedBy = "member")
-    @Cascade(value = { CascadeType.ALL })
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
 
     // ======================================================================
@@ -413,6 +417,22 @@ public final class DaoMember extends DaoActor {
      */
     protected Set<DaoGroupMembership> getGroupMembership() {
         return groupMembership;
+    }
+
+    /**
+     * @return the avatar
+     */
+    public DaoFileMetadata getAvatar() {
+        return avatar;
+    }
+
+
+    /**
+     *
+     * @param avatar
+     */
+    public void setAvatar(DaoFileMetadata avatar) {
+        this.avatar = avatar;
     }
 
     // ======================================================================

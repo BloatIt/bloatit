@@ -23,23 +23,23 @@ import com.bloatit.framework.utils.TimeRenderer;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitle;
+import com.bloatit.framework.webserver.components.PlaceHolderElement;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
-import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
+import com.bloatit.web.members.MembersTools;
 import com.bloatit.web.url.AddReleasePageUrl;
-import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -57,11 +57,11 @@ public class DemandOfferListComponent extends HtmlDiv {
 
             PageIterable<Offer> offers = new NullCollection<Offer>();
             offers = demand.getOffers();
-            int unselectedOfferCount = offers.size();
+            int nbUnselected = offers.size();
 
             final Offer selectedOffer = demand.getSelectedOffer();
             if (selectedOffer != null) {
-                unselectedOfferCount--;
+                nbUnselected--;
             }
 
             final HtmlDiv offersBlock = new HtmlDiv("offers_block");
@@ -69,22 +69,58 @@ public class DemandOfferListComponent extends HtmlDiv {
             switch (demand.getDemandState()) {
                 case PENDING:
                     offersBlock.add(new HtmlTitle(Context.tr("No selected offer"), 1));
+                    offersBlock.add(new BicolumnOfferBlock(true));
                     break;
                 case PREPARING:
                     offersBlock.add(new HtmlTitle(Context.tr("Selected offer"), 1));
-                    offersBlock.add(generateSelectedOfferTypeBlock(selectedOffer));
-                    final HtmlTitle unselectedOffersTitle = new HtmlTitle(Context.trn("Unselected offer ({0})",
-                                                                                      "Unselected offers ({0})",
-                                                                                      unselectedOfferCount,
-                                                                                      unselectedOfferCount), 1);
-                    offersBlock.add(unselectedOffersTitle);
-                    offersBlock.add(generateUnselectedOffersTypeBlock(offers, selectedOffer));
+
+                    //
+                    // Selected
+                    BicolumnOfferBlock block = new BicolumnOfferBlock(true);
+                    offersBlock.add(block);
+                    // Generating the left column
+                    block.addInLeftColumn(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
+                    if (DateUtils.isInTheFuture(demand.getValidationDate())) {
+                        TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), demand.getValidationDate()));
+                        block.addInLeftColumn(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString() + "."));
+                    } else {
+                        block.addInLeftColumn(new HtmlParagraph(tr("Coucou !! ")));
+                    }
+                    // Generating the right column
+                    block.addInRightColumn(new OfferBlock(selectedOffer, true));
+
+                    //
+                    // UnSelected
+                    offersBlock.add(new HtmlTitle(Context.trn("Unselected offer ({0})", "Unselected offers ({0})", nbUnselected, nbUnselected), 1));
+                    BicolumnOfferBlock unselectedBlock = new BicolumnOfferBlock(true);
+                    offersBlock.add(unselectedBlock);
+                    unselectedBlock.addInLeftColumn(new OfferPageUrl(demand).getHtmlLink(tr("Make a concurrent offer")));
+                    unselectedBlock.addInLeftColumn(new HtmlParagraph("The concurrent offers must be voted enought to become the selected offer."));
+
+                    for (final Offer offer : offers) {
+                        if (offer != selectedOffer) {
+                            unselectedBlock.addInRightColumn(new OfferBlock(offer, false));
+                        }
+                    }
                     break;
                 case DEVELOPPING:
                     offersBlock.add(new HtmlTitle(Context.tr("Offer in development"), 1));
-                    offersBlock.add(generateSelectedOfferTypeBlockInDevelopment(selectedOffer));
+                    offersBlock.add(block = new BicolumnOfferBlock(true));
+                    block.addInLeftColumn(new HtmlParagraph(tr("This offer is in development. You can discuss about it in the comments.")));
+                    if (selectedOffer != null && selectedOffer.hasRelease()) {
+                        block.addInLeftColumn(new HtmlParagraph(tr("Test the last release and report bugs.")));
+                    }
+                    block.addInRightColumn(new OfferBlock(selectedOffer, true));
                     break;
-
+                case FINISHED:
+                    offersBlock.add(new HtmlTitle(Context.tr("Finished offer"), 1));
+                    offersBlock.add(block = new BicolumnOfferBlock(true));
+                    block.addInLeftColumn(new HtmlParagraph(tr("This offer is finished.")));
+                    block.addInRightColumn(new OfferBlock(selectedOffer, true));
+                    break;
+                case DISCARDED:
+                    offersBlock.add(new HtmlTitle(Context.tr("Demand discared ..."), 1));
+                    break;
                 default:
                     break;
             }
@@ -95,91 +131,30 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
     }
 
-    private XmlNode generateSelectedOfferTypeBlockInDevelopment(final Offer selectedOffer) throws UnauthorizedOperationException {
-        final HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
+    private static class BicolumnOfferBlock extends HtmlDiv {
 
-        final HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
-        {
-            final HtmlDiv offerSelectedDescription = new HtmlDiv("offer_selected_description");
-            {
-                offerSelectedDescription.add(new HtmlParagraph(tr("This offer is in development. You can discuss about it in the comments.")));
-                if (selectedOffer.hasRelease()) {
-                    offerSelectedDescription.add(new HtmlParagraph(tr("Test the last release and report bugs.")));
-                }
+        private final PlaceHolderElement leftColumn = new PlaceHolderElement();
+        private final PlaceHolderElement rightColumn = new PlaceHolderElement();
 
-                if (DateUtils.isInTheFuture(selectedOffer.getExpirationDate())) {
-                    TimeRenderer renderer = new TimeRenderer(DateUtils.elapsedMilliseconds(DateUtils.now(), selectedOffer.getExpirationDate()));
-                    offerSelectedDescription.add(new HtmlParagraph(tr("This feature should be finished before ") + renderer.getTimeString() + "."));
-                }
+        public BicolumnOfferBlock(boolean isSelected) {
+            super("offer_type_block");
+            HtmlDiv divSelected;
+            if (isSelected) {
+                divSelected = new HtmlDiv("offer_selected_description");
+            } else {
+                divSelected = new HtmlDiv("offer_unselected_description");
             }
-            offerTypeLeftColumn.add(offerSelectedDescription);
-        }
-        offerTypeBlock.add(offerTypeLeftColumn);
-
-        offerTypeBlock.add(createSelectedRightColumn(selectedOffer));
-        return offerTypeBlock;
-    }
-
-    private HtmlDiv createSelectedRightColumn(final Offer selectedOffer) throws UnauthorizedOperationException {
-        final HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
-        {
-            offerTypeRightColumn.add(new OfferBlock(selectedOffer, true));
-        }
-        return offerTypeRightColumn;
-    }
-
-    private XmlNode generateSelectedOfferTypeBlock(final Offer selectedOffer) throws UnauthorizedOperationException {
-        final HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
-
-        final HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
-        {
-            final HtmlDiv offerSelectedDescription = new HtmlDiv("offer_selected_description");
-            {
-                offerSelectedDescription.add(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
-
-                if (DateUtils.isInTheFuture(demand.getValidationDate())) {
-                    TimeRenderer renderer = new TimeRenderer(DateUtils.elapsedMilliseconds(DateUtils.now(), demand.getValidationDate()));
-                    offerSelectedDescription.add(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString()
-                            + "."));
-                } else {
-                    offerSelectedDescription.add(new HtmlParagraph(tr("Coucou !! ")));
-                }
-            }
-            offerTypeLeftColumn.add(offerSelectedDescription);
+            add(new HtmlDiv("offer_type_left_column").add(divSelected.add(leftColumn)));
+            add(new HtmlDiv("offer_type_right_column").add(rightColumn));
         }
 
-        offerTypeBlock.add(offerTypeLeftColumn);
-        offerTypeBlock.add(createSelectedRightColumn(selectedOffer));
-        return offerTypeBlock;
-    }
-
-    private XmlNode
-            generateUnselectedOffersTypeBlock(final PageIterable<Offer> offers, final Offer selectedOffer) throws UnauthorizedOperationException {
-        final HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
-
-        final HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
-        {
-            final HtmlDiv offerUnselectedDescription = new HtmlDiv("offer_unselected_description");
-            {
-                offerUnselectedDescription.add(new OfferPageUrl(demand).getHtmlLink(Context.tr("Make a concurrent offer")));
-
-                offerUnselectedDescription.add(new HtmlParagraph("The concurrent offers must be voted enought to become the selected offer."));
-            }
-            offerTypeLeftColumn.add(offerUnselectedDescription);
+        public void addInLeftColumn(HtmlElement elment) {
+            leftColumn.add(elment);
         }
-        offerTypeBlock.add(offerTypeLeftColumn);
 
-        final HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
-        {
-            for (final Offer offer : offers) {
-                if (offer != selectedOffer) {
-                    offerTypeRightColumn.add(new OfferBlock(offer, false));
-                }
-            }
+        public void addInRightColumn(HtmlElement elment) {
+            rightColumn.add(elment);
         }
-        offerTypeBlock.add(offerTypeRightColumn);
-
-        return offerTypeBlock;
     }
 
     private class OfferBlock extends HtmlDiv {
@@ -194,7 +169,7 @@ public class DemandOfferListComponent extends HtmlDiv {
             {
                 final HtmlDiv offerLeftTopColumn = new HtmlDiv("offer_left_top_column");
                 {
-                    offerLeftTopColumn.add(generateAvatarBlock());
+                    offerLeftTopColumn.add(MembersTools.getMemberAvatar(offer.getAuthor()));
                 }
                 offerTopBlock.add(offerLeftTopColumn);
 
@@ -380,23 +355,6 @@ public class DemandOfferListComponent extends HtmlDiv {
             }
             Log.web().fatal("Lot not found in getLotState ! this is an implementation bug");
             return "";
-        }
-
-        private XmlNode generateAvatarBlock() {
-            final HtmlDiv avatarBlock = new HtmlDiv("offer_avatar");
-
-            // Add project image
-            try {
-                FileMetadata image = offer.getDemand().getProject().getImage();
-                final FileResourceUrl imageUrl = new FileResourceUrl(image);
-                // TODO: use avatar
-                final HtmlImage projectImage = new HtmlImage(imageUrl, image.getShortDescription(),  "avatar_image");
-                avatarBlock.add(projectImage);
-            } catch (final UnauthorizedOperationException e) {
-                // no right, no image
-            }
-
-            return avatarBlock;
         }
 
         private XmlNode generatePopularityBlock() {

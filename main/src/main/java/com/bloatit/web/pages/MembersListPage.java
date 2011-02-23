@@ -18,16 +18,17 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlLink;
-import com.bloatit.framework.webserver.components.HtmlListItem;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
+import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlPagedList;
+import com.bloatit.web.members.MembersTools;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.MembersListPageUrl;
@@ -56,6 +57,7 @@ public final class MembersListPage extends MasterPage {
         pagedMemberList = new HtmlPagedList<Member>(memberItemRenderer, memberList, clonedUrl, clonedUrl.getPagedMemberListUrl());
 
         pageTitle.add(pagedMemberList);
+        pageTitle.add(new HtmlClearer());
 
         box.add(pageTitle);
 
@@ -74,25 +76,37 @@ public final class MembersListPage extends MasterPage {
 
     private final class MemberRenderer implements HtmlRenderer<Member> {
         public MemberRenderer() {
-            // TODO Auto-generated constructor stub
         }
 
         @Override
         public XmlNode generate(final Member member) {
             final MemberPageUrl memberUrl = new MemberPageUrl(member);
             try {
+                HtmlDiv box = new HtmlDiv("member_box");
+
+                box.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
+
+                HtmlDiv textBox = new HtmlDiv("member_text");
                 HtmlLink htmlLink;
                 htmlLink = memberUrl.getHtmlLink(member.getDisplayName());
                 final HtmlSpan karma = new HtmlSpan("karma");
                 karma.addText(HtmlTools.compressKarma(member.getKarma()));
-                // final HtmlTagText htmlKarma = new
-                // HtmlTagText("<span class=\"karma\">"
-                // + HtmlTools.compressKarma(member.getKarma()) + "</span>");
-                return new HtmlListItem(htmlLink).add(karma);
+
+                textBox.add(htmlLink);
+                textBox.add(karma);
+                box.add(textBox);
+                box.add(new HtmlClearer());
+
+                return box;
             } catch (final UnauthorizedOperationException e) {
                 Log.web().warn(e);
             }
             return new PlaceHolderElement();
         }
+    }
+
+    @Override
+    protected String getCustomCss() {
+        return "members-list.css";
     }
 }

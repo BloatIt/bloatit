@@ -106,6 +106,11 @@ public class Project extends Identifiable<DaoProject> {
         return null;
     }
 
+    public void setImage(FileMetadata fileImage) {
+        //TODO: right management
+        getDao().setImage(fileImage.getDao());
+    }
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // RightManagement
     // /////////////////////////////////////////////////////////////////////////////////////////
@@ -114,19 +119,16 @@ public class Project extends Identifiable<DaoProject> {
     protected boolean isMine(final Member member) {
         return false;
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
-    public void setImage(FileMetadata fileImage) {
-        //TODO: right management
-        getDao().setImage(fileImage.getDao());
-    }
+
 
 }

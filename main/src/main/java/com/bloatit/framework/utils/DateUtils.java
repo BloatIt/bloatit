@@ -54,7 +54,13 @@ public class DateUtils {
         return nowPlusSomeYears(1000);
     }
 
-    public static long elapsedMilliseconds(Date from, Date to) {
+    /**
+     * In millisecond
+     * @param from
+     * @param to
+     * @return
+     */
+    public static long elapsed(Date from, Date to) {
         return to.getTime() - from.getTime();
     }
     

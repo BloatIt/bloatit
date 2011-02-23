@@ -38,7 +38,7 @@ public final class AddReleasePage extends LoggedPage {
     private static final int DESCRIPTION_INPUT_NB_LINES = 5;
     private static final int DESCRIPTION_INPUT_NB_COLUMNS = 80;
 
-    @RequestParam(name = "batch")
+    @RequestParam
     Batch batch;
 
     public AddReleasePage(final AddReleasePageUrl url) {
