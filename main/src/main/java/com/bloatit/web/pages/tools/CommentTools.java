@@ -26,7 +26,7 @@ import com.bloatit.model.FileMetadata;
 import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.actions.CreateCommentAction;
-import com.bloatit.web.actions.ReportBugAction;
+import com.bloatit.web.bugs.ReportBugAction;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FileResourceUrl;

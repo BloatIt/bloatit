@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages;
+package com.bloatit.web.bugs;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -32,7 +32,6 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.framework.webserver.components.renderer.HtmlRawTextRenderer;
 import com.bloatit.model.Bug;
 import com.bloatit.model.FileMetadata;
-import com.bloatit.web.actions.ReportBugAction;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.pages.tools.CommentTools;
 import com.bloatit.web.url.AddAttachementActionUrl;
