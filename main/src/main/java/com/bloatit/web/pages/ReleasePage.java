@@ -14,6 +14,7 @@ package com.bloatit.web.pages;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -45,7 +46,8 @@ public final class ReleasePage extends MasterPage {
         add(master);
 
         master.add(new HtmlTitleBlock(Context.tr("Release"), 1));
-        master.add(new HtmlDiv().add(new HtmlParagraph(tr("date: " + release.getCreationDate()))));
+        master.add(new HtmlDiv().add(new HtmlParagraph(tr("date: "
+                + Context.getLocalizator().getDate(release.getCreationDate()).toString(FormatStyle.MEDIUM)))));
         master.add(new HtmlDiv().add(new HtmlParagraph(tr("version: " + release.getVersion()))));
         master.add(new HtmlDiv().add(new HtmlParagraph(tr("description: ")).add(new HtmlParagraph(release.getDescription()))));
 
@@ -57,7 +59,6 @@ public final class ReleasePage extends MasterPage {
             attachementPara.addText(tr(": ") + files.getShortDescription());
             fileBloc.add(attachementPara);
         }
-
     }
 
     @Override

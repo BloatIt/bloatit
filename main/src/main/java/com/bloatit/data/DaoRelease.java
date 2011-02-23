@@ -71,7 +71,7 @@ public final class DaoRelease extends DaoUserContent implements DaoCommentable {
                                               final String version,
                                               final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoRelease release = new DaoRelease(member, batch, version, description, locale);
+        final DaoRelease release = new DaoRelease(member, batch, description, version, locale);
         try {
             session.save(release);
         } catch (final HibernateException e) {
