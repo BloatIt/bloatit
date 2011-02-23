@@ -61,7 +61,11 @@ import com.bloatit.rest.list.RestMemberList;
  */
 @XmlRootElement
 public class RestMember extends RestElement<Member> {
-    private final Member model;
+    private Member model;
+
+    @SuppressWarnings("unused")
+    private RestMember() {
+    }
 
     protected RestMember(final Member model) {
         this.model = model;
@@ -124,12 +128,12 @@ public class RestMember extends RestElement<Member> {
         }
     }
 
-//    @XmlElement
+    // @XmlElement
     public RestDemandList getDemands() {
         return new RestDemandList(model.getDemands());
     }
 
-//    @XmlIDREF
+    // @XmlIDREF
     public RestFileMetadata getAvatar() {
         return new RestFileMetadata(model.getAvatar());
     }

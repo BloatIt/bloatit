@@ -8,6 +8,9 @@ import com.bloatit.rest.RestElement;
 
 public class RestListBinder<T extends RestElement<M>, M extends IdentifiableInterface> implements Iterable<T> {
     private PageIterable<M> collection;
+    
+    protected RestListBinder(){
+    }
 
     /**
      * Instantiates a new list binder for model to rest elements

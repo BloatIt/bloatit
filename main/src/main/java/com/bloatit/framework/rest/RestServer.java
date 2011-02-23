@@ -11,6 +11,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.utils.HttpParameter;
 import com.bloatit.framework.utils.Parameters;
+import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.framework.xcgiserver.HttpHeader;
@@ -78,30 +79,36 @@ public abstract class RestServer implements XcgiProcessor {
         String restResource = header.getResourceName();
         Log.rest().trace("Received a rest request for resource: " + restResource);
 
-        RequestMethod requestMethod;
-        String requestMethodString = httpHeader.getRequestMethod();
-        if (requestMethodString == null) {
-            Log.web().warn("Received a rest request with no method. Should be either GET, POST, PUT or DELETE");
-            return true;
-        }
-
         try {
-            requestMethod = RequestMethod.valueOf(requestMethodString);
-        } catch (IllegalArgumentException e) {
-            Log.web().warn("Received a rest request with an invalid method: " + requestMethodString + ". Should be either GET, POST, PUT or DELETE");
+            ModelAccessor.open();
+            RequestMethod requestMethod;
+            String requestMethodString = httpHeader.getRequestMethod();
+            if (requestMethodString == null) {
+                Log.web().warn("Received a rest request with no method. Should be either GET, POST, PUT or DELETE");
+                return true;
+            }
+
+            try {
+                requestMethod = RequestMethod.valueOf(requestMethodString);
+            } catch (IllegalArgumentException e) {
+                Log.web().warn("Received a rest request with an invalid method: " + requestMethodString
+                        + ". Should be either GET, POST, PUT or DELETE");
+                return true;
+            }
+
+            final Parameters parameters = header.getParameters();
+
+            try {
+                Object result = doProcess(restResource, requestMethod, parameters);
+                RestResource rr = new RestResource(result, httpHeader.getRequestUri(), getJAXClasses());
+                response.writeRestResource(rr);
+            } catch (RestException e) {
+                response.writeRestError(e);
+            }
             return true;
+        } finally {
+            ModelAccessor.close();
         }
-
-        final Parameters parameters = header.getParameters();
-
-        try {
-            Object result = doProcess(restResource, requestMethod, parameters);
-            RestResource rr = new RestResource(result, httpHeader.getRequestUri(), getJAXClasses());
-            response.writeRestResource(rr);
-        } catch (RestException e) {
-            response.writeRestError(e);
-        }
-        return true;
     }
 
     /**

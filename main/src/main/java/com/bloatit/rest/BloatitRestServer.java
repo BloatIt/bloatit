@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.bloatit.framework.rest.RestServer;
+import com.bloatit.rest.list.RestMemberList;
 import com.bloatit.rest.resources.RestMember;
 
 public class BloatitRestServer extends RestServer {
@@ -18,7 +19,7 @@ public class BloatitRestServer extends RestServer {
         }
     };
 
-    private final Class<?>[] classes = new Class<?>[] { RestMember.class, Member.class, Members.class, MarshableList.class };
+    private final Class<?>[] classes = new Class<?>[] { RestMemberList.class, RestMember.class, Member.class, Members.class, MarshableList.class };
 
     @Override
     protected Set<String> getResourcesDirectories() {

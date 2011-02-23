@@ -27,6 +27,11 @@ import com.bloatit.rest.resources.RestMember;
  */
 @XmlRootElement
 public class RestMemberList extends RestListBinder<RestMember, Member> {
+    @SuppressWarnings("unused")
+    private RestMemberList(){
+        super();
+    }
+    
     /**
      * Creates a RestMemberList from a {@codePageIterable<Member>}
      * 
