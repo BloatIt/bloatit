@@ -10,6 +10,7 @@ import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
+import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
@@ -27,6 +28,7 @@ import com.bloatit.model.UserContentInterface;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.actions.CreateCommentAction;
 import com.bloatit.web.bugs.ReportBugAction;
+import com.bloatit.web.members.MembersTools;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.CreateCommentActionUrl;
 import com.bloatit.web.url.FileResourceUrl;
@@ -50,6 +52,9 @@ public class CommentTools {
         final HtmlDiv commentBlock = (child) ? new HtmlDiv("child_comment_block") : new HtmlDiv("main_comment_block");
         {
 
+            commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getAuthor())));
+
+
             final HtmlParagraph commentText = new HtmlParagraph();
             commentText.add(new HtmlRawTextRenderer(comment.getText()));
             commentBlock.add(commentText);
@@ -64,6 +69,7 @@ public class CommentTools {
 
             final HtmlDiv commentInfo = new HtmlDiv("comment_info");
             commentBlock.add(commentInfo);
+            commentBlock.add(new HtmlClearer());
 
             commentInfo.addText(Context.tr("Created by "));
 
@@ -140,6 +146,7 @@ public class CommentTools {
                 commentBlock.add(reply);
             }
         }
+
         return commentBlock;
     }
 
