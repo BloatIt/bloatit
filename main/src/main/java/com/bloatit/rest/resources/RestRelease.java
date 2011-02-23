@@ -1,33 +1,83 @@
 package com.bloatit.rest.resources;
 
-import com.bloatit.rest.RestElement;
-import com.bloatit.model.Release;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
-import com.bloatit.rest.list.RestReleaseList;
+
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
+import com.bloatit.model.Release;
+import com.bloatit.rest.RestElement;
+import com.bloatit.rest.list.RestReleaseList;
 
+/**
+ * <p>
+ * Representation of a Release for the ReST RPC calls
+ * </p>
+ * <p>
+ * This class should implement any methods from Release that needs to be called
+ * through the ReST RPC. Every such method needs to be mapped with the
+ * {@code @REST} interface.
+ * <p>
+ * ReST uses the four HTTP request methods <code>GET</code>, <code>POST</code>,
+ * <code>PUT</code>, <code>DELETE</code> each with their own meaning. Please
+ * only bind the according to the following:
+ * <li>GET list: List the URIs and perhaps other details of the collection's
+ * members.</li>
+ * <li>GET list/id: Retrieve a representation of the addressed member of the
+ * collection, expressed in an appropriate Internet media type.</li>
+ * <li>POST list: Create a new entry in the collection. The new entry's URL is
+ * assigned automatically and is usually returned by the operation.</li>
+ * <li>POST list/id: Treat the addressed member as a collection in its own right
+ * and create a new entry in it.</li>
+ * <li>PUT list: Replace the entire collection with another collection.</li>
+ * <li>PUT list/id: Replace the addressed member of the collection, or if it
+ * doesn't exist, create it.</li>
+ * <li>DELETE list: Delete the entire collection.</li>
+ * <li>DELETE list/id: Delete the addressed member of the collection.</li>
+ * </p>
+ * </p>
+ * <p>
+ * This class will be serialized as XML (or maybe JSON who knows) to be sent
+ * over to the client RPC. Hence this class needs to be annotated to indicate
+ * which methods (and/or fields) are to be matched in the XML data. For this
+ * use:
+ * <li>@XmlRootElement at the root of the class</li>
+ * <li>@XmlElement on each method/attribute that will yield <i>complex</i> data</li>
+ * <li>@XmlAttribute on each method/attribute that will yield <i>simple</i> data
+ * </li>
+ * <li>Methods that return a list need to be annotated with @XmlElement and to
+ * return a RestReleaseList</li>
+ * </p>
+ */
 @XmlRootElement
-public class RestRelease extends RestElement<Release>{ 
-    private Release model;
+public class RestRelease extends RestElement<Release> {
+    private final Release model;
 
-    protected RestRelease(Release model){
-        this.model=model;
+    protected RestRelease(final Release model) {
+        this.model = model;
     }
 
     @REST(name = "releases", method = RequestMethod.GET)
-    public static RestRelease getById(int id){
-        //TODO auto generated code
+    public static RestRelease getById(final int id) {
+        // TODO auto generated code
         return null;
     }
 
     @REST(name = "releases", method = RequestMethod.GET)
-    public static RestReleaseList getAll(){
-        //TODO auto generated code
+    public static RestReleaseList getAll() {
+        // TODO auto generated code
         return null;
     }
 
-    Release getModel(){
+    Release getModel() {
         return model;
     }
+
+    @XmlAttribute
+    @XmlID
+    public String getId() {
+        return model.getId().toString();
+    }
+
 }

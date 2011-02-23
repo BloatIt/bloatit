@@ -8,7 +8,7 @@ import java.util.Set;
 import com.bloatit.framework.rest.RestServer;
 
 public class BloatitRestServer extends RestServer {
-    private Map<String, Class<?>> locations = new HashMap<String, Class<?>>() {
+    private final Map<String, Class<?>> locations = new HashMap<String, Class<?>>() {
         private static final long serialVersionUID = -5012179845511358309L;
 
         {
@@ -16,22 +16,22 @@ public class BloatitRestServer extends RestServer {
         }
     };
 
-    private Class<?>[] classes = new Class<?>[] { Member.class, Members.class, MarshableList.class };
+    private final Class<?>[] classes = new Class<?>[] { Member.class, Members.class, MarshableList.class };
 
     @Override
     protected Set<String> getResourcesDirectories() {
-        HashSet<String> directories = new HashSet<String>();
+        final HashSet<String> directories = new HashSet<String>();
         directories.add("rest");
         return directories;
     }
 
     @Override
-    protected Class<?> getClass(String forResource) {
+    protected Class<?> getClass(final String forResource) {
         return locations.get(forResource);
     }
 
     @Override
-    protected boolean isValidResource(String forResource) {
+    protected boolean isValidResource(final String forResource) {
         return locations.containsKey(forResource);
     }
 

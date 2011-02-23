@@ -23,7 +23,6 @@ import com.bloatit.framework.utils.TimeRenderer;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlImage;
 import com.bloatit.framework.webserver.components.HtmlLink;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlSpan;
@@ -34,14 +33,13 @@ import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
-import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Release;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
+import com.bloatit.web.members.MembersTools;
 import com.bloatit.web.url.AddReleasePageUrl;
-import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
@@ -171,7 +169,7 @@ public class DemandOfferListComponent extends HtmlDiv {
             {
                 final HtmlDiv offerLeftTopColumn = new HtmlDiv("offer_left_top_column");
                 {
-                    offerLeftTopColumn.add(generateAvatarBlock());
+                    offerLeftTopColumn.add(MembersTools.getMemberAvatar(offer.getAuthor()));
                 }
                 offerTopBlock.add(offerLeftTopColumn);
 
@@ -357,23 +355,6 @@ public class DemandOfferListComponent extends HtmlDiv {
             }
             Log.web().fatal("Lot not found in getLotState ! this is an implementation bug");
             return "";
-        }
-
-        private XmlNode generateAvatarBlock() {
-            final HtmlDiv avatarBlock = new HtmlDiv("offer_avatar");
-
-            // Add project image
-            try {
-                FileMetadata image = offer.getDemand().getProject().getImage();
-                final FileResourceUrl imageUrl = new FileResourceUrl(image);
-                // TODO: use avatar
-                final HtmlImage projectImage = new HtmlImage(imageUrl, image.getShortDescription(), "avatar_image");
-                avatarBlock.add(projectImage);
-            } catch (final UnauthorizedOperationException e) {
-                // no right, no image
-            }
-
-            return avatarBlock;
         }
 
         private XmlNode generatePopularityBlock() {

@@ -21,7 +21,7 @@ import com.bloatit.model.Release;
 import com.bloatit.model.Transaction;
 import com.bloatit.model.Translation;
 
-public interface ModelClassVisitor <ReturnType> {
+public interface ModelClassVisitor<ReturnType> {
 
     ReturnType visit(ExternalAccount model);
 
@@ -60,6 +60,6 @@ public interface ModelClassVisitor <ReturnType> {
     ReturnType visit(Offer model);
 
     ReturnType visit(Translation model);
-    
+
     ReturnType visit(Release model);
 }

@@ -49,6 +49,14 @@ public class BloatitExampleDB {
         final Member celeste = createMember("celeste", "Céleste");
         final Member rataxes = createMember("rataxes", "Rataxès");
 
+        //Add avatar
+        chogall.setAvatar(getImage(chogall, "users/chogall.png"));
+        cerbere.setAvatar(getImage(cerbere, "users/cerbere.png"));
+        hydre.setAvatar(getImage(hydre, "users/hydre.png"));
+        elephantman.setAvatar(getImage(elephantman, "users/elephantman.png"));
+        celeste.setAvatar(getImage(celeste, "users/celeste.png"));
+        rataxes.setAvatar(getImage(rataxes, "users/rataxes.png"));
+
         // Add money
         giveMoney(fred, 1000000);
         giveMoney(thomas, 2000000);
