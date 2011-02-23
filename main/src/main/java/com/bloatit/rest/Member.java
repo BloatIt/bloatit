@@ -27,11 +27,11 @@ public class Member {
         }
     };
 
-    protected Member() { 
+    protected Member() {
         // Default constructor for XML generation
     }
 
-    public Member(int id, String name, Calendar birth) {
+    public Member(final int id, final String name, final Calendar birth) {
         this.id = id;
         this.name = name;
         this.birth = birth;
@@ -52,15 +52,15 @@ public class Member {
         return id;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
-    public void setBirth(Calendar birth) {
+    public void setBirth(final Calendar birth) {
         this.birth = birth;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -87,8 +87,8 @@ public class Member {
     }
 
     @REST(name = "members", method = RequestMethod.GET)
-    public static Member getMember(int id) {
-        for (Member m : members) {
+    public static Member getMember(final int id) {
+        for (final Member m : members) {
             if (m.id == id) {
                 return m;
             }
@@ -97,8 +97,8 @@ public class Member {
     }
 
     @REST(name = "members", method = RequestMethod.GET, params = { "name" })
-    public static Member getMemberByName(String name) {
-        for (Member m : members) {
+    public static Member getMemberByName(final String name) {
+        for (final Member m : members) {
             if (m.name.equalsIgnoreCase(name)) {
                 return m;
             }
@@ -107,8 +107,8 @@ public class Member {
     }
 
     @REST(name = "members", method = RequestMethod.GET, params = { "name", "plop" })
-    public static Member getMemberByName(String name, String plop) {
-        for (Member m : members) {
+    public static Member getMemberByName(final String name, final String plop) {
+        for (final Member m : members) {
             if (m.name.equalsIgnoreCase(name)) {
                 return m;
             }
