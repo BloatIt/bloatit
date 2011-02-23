@@ -14,6 +14,9 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
 
 public final class HttpResponse {
+    /**
+     * Describes the error level
+     */
     public enum StatusCode {
         OK_200("200"), //
         ERROR_301_MOVED_PERMANENTLY("301"), //
@@ -99,10 +102,8 @@ public final class HttpResponse {
     }
 
     public void writeResource(final String path, final long size, final String fileName) throws IOException {
-
         // writeLine("Vary: Accept-Encoding");
         // writeLine("Content-Encoding: gzip");
-
         // writeLine("ETag: \"3164227128\"");
         // Content-Type: image/png
         // writeLine("Content-Type: text/css");

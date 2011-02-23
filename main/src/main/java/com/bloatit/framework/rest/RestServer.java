@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.utils.HttpParameter;
@@ -101,7 +100,6 @@ public abstract class RestServer implements XcgiProcessor {
             response.writeRestResource(rr);
         } catch (RestException e) {
             response.writeRestError(e);
-
         }
         return true;
     }
@@ -168,7 +166,7 @@ public abstract class RestServer implements XcgiProcessor {
      * @see RestException
      * @see RestException#getStatus()
      */
-    private final Object doProcess(String restResource, RequestMethod requestMethod, Parameters parameters) throws RestException {
+    private Object doProcess(String restResource, RequestMethod requestMethod, Parameters parameters) throws RestException {
         String[] pathInfo = restResource.split("/");
         if (pathInfo.length == 0) {
             throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Please specify the resource you want to access");
@@ -180,6 +178,10 @@ public abstract class RestServer implements XcgiProcessor {
         Object result;
         if (pathInfo.length == 1) {
             result = invokeStatic(requestMethod, pathInfo[0], parameters);
+            if (result == null) {
+                throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request " + requestMethod + " " + pathInfo[0]
+                        + generateParametersString(parameters));
+            }
             return result;
 
         }
@@ -192,6 +194,10 @@ public abstract class RestServer implements XcgiProcessor {
                     + restResource);
         }
         result = invokeStatic(requestMethod, pathInfo[0], id);
+
+        if (result == null) {
+            throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request " + requestMethod + " " + pathInfo[0] + "/" + pathInfo[1]);
+        }
 
         for (int i = 2; i < pathInfo.length; i++) {
             String pathString = pathInfo[i];
@@ -214,7 +220,6 @@ public abstract class RestServer implements XcgiProcessor {
                     throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request: [" + requestMethod + " " + request
                             + "]. Ignored end of request: [" + ignored + "]");
                 }
-
             } else {
                 result = invokeMethod(requestMethod, result, pathString, parameters);
             }
@@ -367,7 +372,7 @@ public abstract class RestServer implements XcgiProcessor {
             Log.rest().warn("Method [" + requestMethod + " " + path + generateParametersString(params) + "] on " + lookup.toString()
                     + " does not exist");
             throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
-                    + "] on " + lookup.toString() + " does not exist");
+                    + "] on " + lookup.getClass().toString() + " does not exist");
         } else {
             Log.rest().warn("Method [" + requestMethod + " " + path + generateParametersString(params) + "] does not exist");
             throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "Request: [" + requestMethod + " " + path + generateParametersString(params)
@@ -381,6 +386,9 @@ public abstract class RestServer implements XcgiProcessor {
      * </p>
      */
     private String generateParametersString(Parameters params) {
+        if (params.size() == 0) {
+            return "()";
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("(");
         for (Entry<String, HttpParameter> param : params.entrySet()) {
