@@ -15,7 +15,7 @@ import com.bloatit.rest.resources.RestTransaction;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Transaction<br />
- * Example: 
+ * Example:
  * 
  * <pre>
  * {@code <Transactions>}
@@ -24,18 +24,18 @@ import com.bloatit.rest.resources.RestTransaction;
  * {@code </Transactions>}
  * </pre>
  * <p>
- */ 
+ */
 @XmlRootElement
 public class RestTransactionList extends RestListBinder<RestTransaction, Transaction> {
     /**
      * Creates a RestTransactionList from a {@codePageIterable<Transaction>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestTransactionList(PageIterable<Transaction> collection) {
+    public RestTransactionList(final PageIterable<Transaction> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -45,4 +45,3 @@ public class RestTransactionList extends RestListBinder<RestTransaction, Transac
         return this;
     }
 }
-

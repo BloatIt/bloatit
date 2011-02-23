@@ -58,18 +58,33 @@ public class RestGroup extends RestElement<Group> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestGroup matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestGroup
+     */
     @REST(name = "groups", method = RequestMethod.GET)
     public static RestGroup getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestGroup
+     * </p>
+     */
     @REST(name = "groups", method = RequestMethod.GET)
     public static RestGroupList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Group getModel() {
         return model;
     }

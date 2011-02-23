@@ -15,7 +15,7 @@ import com.bloatit.rest.resources.RestKudos;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Kudos<br />
- * Example: 
+ * Example:
  * 
  * <pre>
  * {@code <Kudoss>}
@@ -24,18 +24,18 @@ import com.bloatit.rest.resources.RestKudos;
  * {@code </Kudoss>}
  * </pre>
  * <p>
- */ 
+ */
 @XmlRootElement
 public class RestKudosList extends RestListBinder<RestKudos, Kudos> {
     /**
      * Creates a RestKudosList from a {@codePageIterable<Kudos>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestKudosList(PageIterable<Kudos> collection) {
+    public RestKudosList(final PageIterable<Kudos> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -45,4 +45,3 @@ public class RestKudosList extends RestListBinder<RestKudos, Kudos> {
         return this;
     }
 }
-

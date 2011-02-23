@@ -15,7 +15,7 @@ import com.bloatit.rest.resources.RestBatch;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Batch<br />
- * Example: 
+ * Example:
  * 
  * <pre>
  * {@code <Batchs>}
@@ -24,18 +24,18 @@ import com.bloatit.rest.resources.RestBatch;
  * {@code </Batchs>}
  * </pre>
  * <p>
- */ 
+ */
 @XmlRootElement
 public class RestBatchList extends RestListBinder<RestBatch, Batch> {
     /**
      * Creates a RestBatchList from a {@codePageIterable<Batch>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestBatchList(PageIterable<Batch> collection) {
+    public RestBatchList(final PageIterable<Batch> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -45,4 +45,3 @@ public class RestBatchList extends RestListBinder<RestBatch, Batch> {
         return this;
     }
 }
-

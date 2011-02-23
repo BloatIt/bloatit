@@ -58,18 +58,33 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestInternalAccount matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestInternalAccount
+     */
     @REST(name = "internalaccounts", method = RequestMethod.GET)
     public static RestInternalAccount getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestInternalAccount
+     * </p>
+     */
     @REST(name = "internalaccounts", method = RequestMethod.GET)
     public static RestInternalAccountList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     InternalAccount getModel() {
         return model;
     }

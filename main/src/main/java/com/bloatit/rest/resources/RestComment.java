@@ -58,18 +58,33 @@ public class RestComment extends RestElement<Comment> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestComment matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestComment
+     */
     @REST(name = "comments", method = RequestMethod.GET)
     public static RestComment getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestComment
+     * </p>
+     */
     @REST(name = "comments", method = RequestMethod.GET)
     public static RestCommentList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Comment getModel() {
         return model;
     }

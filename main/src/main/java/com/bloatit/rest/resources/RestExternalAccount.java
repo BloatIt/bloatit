@@ -58,18 +58,33 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestExternalAccount matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestExternalAccount
+     */
     @REST(name = "externalaccounts", method = RequestMethod.GET)
     public static RestExternalAccount getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestExternalAccount
+     * </p>
+     */
     @REST(name = "externalaccounts", method = RequestMethod.GET)
     public static RestExternalAccountList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     ExternalAccount getModel() {
         return model;
     }

@@ -58,18 +58,33 @@ public class RestRelease extends RestElement<Release> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestRelease matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestRelease
+     */
     @REST(name = "releases", method = RequestMethod.GET)
     public static RestRelease getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestRelease
+     * </p>
+     */
     @REST(name = "releases", method = RequestMethod.GET)
     public static RestReleaseList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Release getModel() {
         return model;
     }

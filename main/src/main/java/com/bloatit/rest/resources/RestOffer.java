@@ -58,18 +58,33 @@ public class RestOffer extends RestElement<Offer> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestOffer matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestOffer
+     */
     @REST(name = "offers", method = RequestMethod.GET)
     public static RestOffer getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestOffer
+     * </p>
+     */
     @REST(name = "offers", method = RequestMethod.GET)
     public static RestOfferList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Offer getModel() {
         return model;
     }

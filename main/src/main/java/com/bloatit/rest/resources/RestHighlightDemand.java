@@ -58,18 +58,33 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestHighlightDemand matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestHighlightDemand
+     */
     @REST(name = "highlightdemands", method = RequestMethod.GET)
     public static RestHighlightDemand getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestHighlightDemand
+     * </p>
+     */
     @REST(name = "highlightdemands", method = RequestMethod.GET)
     public static RestHighlightDemandList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     HighlightDemand getModel() {
         return model;
     }

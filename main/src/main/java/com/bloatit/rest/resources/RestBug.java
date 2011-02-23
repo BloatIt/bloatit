@@ -58,18 +58,33 @@ public class RestBug extends RestElement<Bug> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestBug matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestBug
+     */
     @REST(name = "bugs", method = RequestMethod.GET)
     public static RestBug getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestBug
+     * </p>
+     */
     @REST(name = "bugs", method = RequestMethod.GET)
     public static RestBugList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Bug getModel() {
         return model;
     }

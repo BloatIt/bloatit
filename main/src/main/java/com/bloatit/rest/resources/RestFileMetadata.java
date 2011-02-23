@@ -58,18 +58,33 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestFileMetadata matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestFileMetadata
+     */
     @REST(name = "filemetadatas", method = RequestMethod.GET)
     public static RestFileMetadata getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestFileMetadata
+     * </p>
+     */
     @REST(name = "filemetadatas", method = RequestMethod.GET)
     public static RestFileMetadataList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     FileMetadata getModel() {
         return model;
     }

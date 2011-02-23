@@ -58,18 +58,33 @@ public class RestProject extends RestElement<Project> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestProject matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestProject
+     */
     @REST(name = "projects", method = RequestMethod.GET)
     public static RestProject getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestProject
+     * </p>
+     */
     @REST(name = "projects", method = RequestMethod.GET)
     public static RestProjectList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Project getModel() {
         return model;
     }

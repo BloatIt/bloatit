@@ -58,18 +58,33 @@ public class RestContribution extends RestElement<Contribution> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestContribution matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestContribution
+     */
     @REST(name = "contributions", method = RequestMethod.GET)
     public static RestContribution getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestContribution
+     * </p>
+     */
     @REST(name = "contributions", method = RequestMethod.GET)
     public static RestContributionList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Contribution getModel() {
         return model;
     }

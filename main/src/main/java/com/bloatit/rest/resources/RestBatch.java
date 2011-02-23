@@ -58,18 +58,33 @@ public class RestBatch extends RestElement<Batch> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestBatch matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestBatch
+     */
     @REST(name = "batchs", method = RequestMethod.GET)
     public static RestBatch getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestBatch
+     * </p>
+     */
     @REST(name = "batchs", method = RequestMethod.GET)
     public static RestBatchList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Batch getModel() {
         return model;
     }

@@ -58,18 +58,33 @@ public class RestKudos extends RestElement<Kudos> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestKudos matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestKudos
+     */
     @REST(name = "kudoss", method = RequestMethod.GET)
     public static RestKudos getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestKudos
+     * </p>
+     */
     @REST(name = "kudoss", method = RequestMethod.GET)
     public static RestKudosList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Kudos getModel() {
         return model;
     }

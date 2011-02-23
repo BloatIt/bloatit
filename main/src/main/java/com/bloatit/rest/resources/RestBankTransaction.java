@@ -58,18 +58,33 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestBankTransaction matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestBankTransaction
+     */
     @REST(name = "banktransactions", method = RequestMethod.GET)
     public static RestBankTransaction getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestBankTransaction
+     * </p>
+     */
     @REST(name = "banktransactions", method = RequestMethod.GET)
     public static RestBankTransactionList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     BankTransaction getModel() {
         return model;
     }

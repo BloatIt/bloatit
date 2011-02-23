@@ -58,18 +58,33 @@ public class RestTransaction extends RestElement<Transaction> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestTransaction matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestTransaction
+     */
     @REST(name = "transactions", method = RequestMethod.GET)
     public static RestTransaction getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestTransaction
+     * </p>
+     */
     @REST(name = "transactions", method = RequestMethod.GET)
     public static RestTransactionList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Transaction getModel() {
         return model;
     }

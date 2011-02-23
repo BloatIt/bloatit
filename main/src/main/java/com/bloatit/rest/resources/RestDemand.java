@@ -58,18 +58,33 @@ public class RestDemand extends RestElement<Demand> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestDemand matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestDemand
+     */
     @REST(name = "demands", method = RequestMethod.GET)
     public static RestDemand getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestDemand
+     * </p>
+     */
     @REST(name = "demands", method = RequestMethod.GET)
     public static RestDemandList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Demand getModel() {
         return model;
     }

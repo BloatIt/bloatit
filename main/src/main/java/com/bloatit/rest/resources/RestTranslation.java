@@ -58,18 +58,33 @@ public class RestTranslation extends RestElement<Translation> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestTranslation matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestTranslation
+     */
     @REST(name = "translations", method = RequestMethod.GET)
     public static RestTranslation getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestTranslation
+     * </p>
+     */
     @REST(name = "translations", method = RequestMethod.GET)
     public static RestTranslationList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Translation getModel() {
         return model;
     }

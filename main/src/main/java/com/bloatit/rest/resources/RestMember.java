@@ -58,18 +58,33 @@ public class RestMember extends RestElement<Member> {
         this.model = model;
     }
 
+    /**
+     * <p>
+     * Finds the RestMember matching the <code>id</code>
+     * </p>
+     * 
+     * @param id the id of the RestMember
+     */
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMember getById(final int id) {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * <p>
+     * Finds the list of all (valid) RestMember
+     * </p>
+     */
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMemberList getAll() {
         // TODO auto generated code
         return null;
     }
 
+    /**
+     * Package method to find the model
+     */
     Member getModel() {
         return model;
     }

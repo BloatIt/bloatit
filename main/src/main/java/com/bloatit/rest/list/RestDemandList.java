@@ -15,7 +15,7 @@ import com.bloatit.rest.resources.RestDemand;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Demand<br />
- * Example: 
+ * Example:
  * 
  * <pre>
  * {@code <Demands>}
@@ -24,18 +24,18 @@ import com.bloatit.rest.resources.RestDemand;
  * {@code </Demands>}
  * </pre>
  * <p>
- */ 
+ */
 @XmlRootElement
 public class RestDemandList extends RestListBinder<RestDemand, Demand> {
     /**
      * Creates a RestDemandList from a {@codePageIterable<Demand>}
-     *
+     * 
      * @param collection the list of elements from the model
      */
-    public RestDemandList(PageIterable<Demand> collection) {
+    public RestDemandList(final PageIterable<Demand> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -45,4 +45,3 @@ public class RestDemandList extends RestListBinder<RestDemand, Demand> {
         return this;
     }
 }
-
