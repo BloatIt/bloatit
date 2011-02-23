@@ -44,7 +44,7 @@ import com.bloatit.model.demand.DemandImplementation;
  * The Class ConstructorVisitor is a visitor that visit the Dao layer and
  * construct the right Model layer object.
  */
-public class ConstructorVisitor implements DataClassVisitor<Identifiable<?>> {
+public class DataVisitorConstructor implements DataClassVisitor<Identifiable<?>> {
 
     /*
      * (non-Javadoc)

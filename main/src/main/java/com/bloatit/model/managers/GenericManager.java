@@ -21,7 +21,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.SessionManager;
-import com.bloatit.model.ConstructorVisitor;
+import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.Identifiable;
 
 /**
@@ -52,6 +52,6 @@ public final class GenericManager {
         if(daoIdentifiable == null) {
             return null;
         }
-        return daoIdentifiable.accept(new ConstructorVisitor());
+        return daoIdentifiable.accept(new DataVisitorConstructor());
     }
 }

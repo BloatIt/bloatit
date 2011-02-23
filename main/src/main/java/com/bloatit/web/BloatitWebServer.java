@@ -47,6 +47,7 @@ import com.bloatit.web.pages.PaylinePage;
 import com.bloatit.web.pages.ProjectListPage;
 import com.bloatit.web.pages.ProjectPage;
 import com.bloatit.web.pages.RegisterPage;
+import com.bloatit.web.pages.ReleasePage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.admin.DemandAdminPage;
@@ -111,6 +112,7 @@ import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.RegisterActionUrl;
 import com.bloatit.web.url.RegisterPageUrl;
+import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.ReportBugActionUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 import com.bloatit.web.url.SendGroupInvitationActionUrl;
@@ -231,6 +233,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(ModifyBugPageUrl.getName())) {
             return new ModifyBugPage(new ModifyBugPageUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ReleasePageUrl.getName())) {
+            return new ReleasePage(new ReleasePageUrl(params, session.getParameters()));
         }
 
         // Actions

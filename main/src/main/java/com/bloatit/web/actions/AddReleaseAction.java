@@ -32,31 +32,33 @@ import com.bloatit.web.url.AddReleaseActionUrl;
 @ParamContainer("release/doadd")
 public final class AddReleaseAction extends LoggedAction {
 
-    public static final String SHORT_DESCRIPTION_CODE = "bloatit_project_short_description";
-    public static final String DESCRIPTION_CODE = "bloatit_project_description";
-    public static final String PROJECT_NAME_CODE = "bloatit_idea_project";
-    public static final String IMAGE_CODE = "attachedfile";
-    public static final String IMAGE_NAME_CODE = "attachedfile/filename";
-    public static final String IMAGE_CONTENT_TYPE_CODE = "attachedfile/contenttype";
-    public static final String LANGUAGE_CODE = "bloatit_idea_lang";
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(min = "10", minErrorMsg = @tr("The description must have at least 10 chars."), //
+                     optionalErrorMsg = @tr("You forgot to write a description"))
+    private final String description;
 
-    @RequestParam(name = SHORT_DESCRIPTION_CODE, role = Role.POST)
-    @ParamConstraint(min = "10", minErrorMsg = @tr("The short description must have at least 10 chars."), optionalErrorMsg = @tr("You forgot to write a short description"))
-    private final String shortDescription;
-
-    @RequestParam(name = IMAGE_CODE, role = Role.POST)
+    @ParamConstraint(optionalErrorMsg = @tr("You forgot the attachment file."))
+    @RequestParam(role = Role.POST)
     private final String attachedfile;
 
-    @RequestParam(name = IMAGE_NAME_CODE, role = Role.POST)
+    @RequestParam(name = "attachedfile/filename", role = Role.POST)
     private final String attachedfileFileName;
 
-    @RequestParam(name = IMAGE_CONTENT_TYPE_CODE, role = Role.POST)
+    @RequestParam(name = "attachedfile/contenttype", role = Role.POST)
     private final String attachedfileContentType;
 
-    @RequestParam(name = LANGUAGE_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(min = "2", minErrorMsg = @tr("Are you sure this is a ISO language code"), //
+                     max = "2", maxErrorMsg = @tr("Are you sure this is a ISO language code"), //
+                     optionalErrorMsg = @tr("Language code is not optional. You are messing up with our web site..."))
     private final String lang;
 
-    @RequestParam(name = LANGUAGE_CODE)
+    @RequestParam(role = Role.POST)
+    @ParamConstraint(min = "1", minErrorMsg = @tr("The version should be something like ''1.2.3''."), //
+                     optionalErrorMsg = @tr("You forgot to write a version."))
+    private final String version;
+
+    @RequestParam
     private final Batch batch;
 
     private final AddReleaseActionUrl url;
@@ -65,13 +67,13 @@ public final class AddReleaseAction extends LoggedAction {
         super(url);
         this.url = url;
 
-        this.shortDescription = url.getShortDescription();
+        this.description = url.getDescription();
         this.attachedfile = url.getAttachedfile();
         this.attachedfileContentType = url.getAttachedfileContentType();
         this.attachedfileFileName = url.getAttachedfileFileName();
         this.lang = url.getLang();
         this.batch = url.getBatch();
-
+        this.version = url.getVersion();
     }
 
     @Override
@@ -79,13 +81,14 @@ public final class AddReleaseAction extends LoggedAction {
         if (!batch.getOffer().getAuthor().equals(authenticatedMember)) {
             return session.pickPreferredPage();
         }
-        
+
         final Locale langLocale = new Locale(lang);
         final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                               attachedfile,
                                                                               attachedfileFileName,
                                                                               null);
-        batch.addRelease(shortDescription, langLocale, fileImage);
+        batch.addRelease(description, version, langLocale, fileImage);
+        session.notifyGood(Context.tr("Release created successfuly !"));
         return session.getLastStablePage();
     }
 
@@ -93,15 +96,16 @@ public final class AddReleaseAction extends LoggedAction {
     protected String getRefusalReason() {
         return Context.tr("You must be logged to create a release.");
     }
-    
+
     @Override
     protected Url doProcessErrors() {
+        session.notifyList(url.getMessages());
         return session.pickPreferredPage();
     }
 
     @Override
     protected void transmitParameters() {
-        session.addParameter(url.getShortDescriptionParameter());
+        session.addParameter(url.getDescriptionParameter());
         session.addParameter(url.getAttachedfileContentTypeParameter());
         session.addParameter(url.getAttachedfileFileNameParameter());
         session.addParameter(url.getAttachedfileParameter());

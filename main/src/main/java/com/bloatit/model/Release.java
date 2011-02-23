@@ -29,8 +29,8 @@ public class Release extends UserContent<DaoRelease> {
         super(dao);
     }
 
-    Release(final Member member, final Batch batch, final String description, final Locale locale) {
-        this(DaoRelease.createAndPersist(member.getDao(), batch.getDao(), description, locale));
+    Release(final Member member, final Batch batch, final String description, final String version, final Locale locale) {
+        this(DaoRelease.createAndPersist(member.getDao(), batch.getDao(), description, version, locale));
     }
 
     public void addComment(DaoComment comment) {
@@ -64,6 +64,10 @@ public class Release extends UserContent<DaoRelease> {
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
+    }
+
+    public String getVersion() {
+        return getDao().getVersion();
     }
 
 }

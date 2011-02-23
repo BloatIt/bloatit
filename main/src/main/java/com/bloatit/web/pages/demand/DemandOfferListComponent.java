@@ -14,7 +14,7 @@ package com.bloatit.web.pages.demand;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoDemand.DemandState;
+import com.bloatit.data.DaoBatch.BatchState;
 import com.bloatit.data.queries.NullCollection;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
@@ -32,15 +32,18 @@ import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Offer;
+import com.bloatit.model.Release;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
-import com.bloatit.web.url.AddReleaseActionUrl;
+import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
+import com.bloatit.web.url.ReleasePageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
 public class DemandOfferListComponent extends HtmlDiv {
@@ -63,28 +66,66 @@ public class DemandOfferListComponent extends HtmlDiv {
 
             final HtmlDiv offersBlock = new HtmlDiv("offers_block");
 
-            if (selectedOffer != null) {
-                final HtmlTitle selectedOfferTitle = new HtmlTitle(Context.tr("Selected offer"), 1);
-                offersBlock.add(selectedOfferTitle);
-                offersBlock.add(generateSelectedOfferTypeBlock(selectedOffer));
-            } else {
-                final HtmlTitle selectedOfferTitle = new HtmlTitle(Context.tr("No selected offer"), 1);
-                offersBlock.add(selectedOfferTitle);
+            switch (demand.getDemandState()) {
+                case PENDING:
+                    offersBlock.add(new HtmlTitle(Context.tr("No selected offer"), 1));
+                    break;
+                case PREPARING:
+                    offersBlock.add(new HtmlTitle(Context.tr("Selected offer"), 1));
+                    offersBlock.add(generateSelectedOfferTypeBlock(selectedOffer));
+                    final HtmlTitle unselectedOffersTitle = new HtmlTitle(Context.trn("Unselected offer ({0})",
+                                                                                      "Unselected offers ({0})",
+                                                                                      unselectedOfferCount,
+                                                                                      unselectedOfferCount), 1);
+                    offersBlock.add(unselectedOffersTitle);
+                    offersBlock.add(generateUnselectedOffersTypeBlock(offers, selectedOffer));
+                    break;
+                case DEVELOPPING:
+                    offersBlock.add(new HtmlTitle(Context.tr("Offer in development"), 1));
+                    offersBlock.add(generateSelectedOfferTypeBlockInDevelopment(selectedOffer));
+                    break;
+
+                default:
+                    break;
             }
-
-            final HtmlTitle unselectedOffersTitle = new HtmlTitle(Context.trn("Unselected offer ({0})",
-                                                                              "Unselected offers ({0})",
-                                                                              unselectedOfferCount,
-                                                                              unselectedOfferCount), 1);
-            offersBlock.add(unselectedOffersTitle);
-
-            offersBlock.add(generateUnselectedOffersTypeBlock(offers, selectedOffer));
-
             add(offersBlock);
 
         } catch (final UnauthorizedOperationException e) {
             // No right no current offer.
         }
+    }
+
+    private XmlNode generateSelectedOfferTypeBlockInDevelopment(final Offer selectedOffer) throws UnauthorizedOperationException {
+        final HtmlDiv offerTypeBlock = new HtmlDiv("offer_type_block");
+
+        final HtmlDiv offerTypeLeftColumn = new HtmlDiv("offer_type_left_column");
+        {
+            final HtmlDiv offerSelectedDescription = new HtmlDiv("offer_selected_description");
+            {
+                offerSelectedDescription.add(new HtmlParagraph(tr("This offer is in development. You can discuss about it in the comments.")));
+                if (selectedOffer.hasRelease()) {
+                    offerSelectedDescription.add(new HtmlParagraph(tr("Test the last release and report bugs.")));
+                }
+
+                if (DateUtils.isInTheFuture(selectedOffer.getExpirationDate())) {
+                    TimeRenderer renderer = new TimeRenderer(DateUtils.elapsedMilliseconds(DateUtils.now(), selectedOffer.getExpirationDate()));
+                    offerSelectedDescription.add(new HtmlParagraph(tr("This feature should be finished before ") + renderer.getTimeString() + "."));
+                }
+            }
+            offerTypeLeftColumn.add(offerSelectedDescription);
+        }
+        offerTypeBlock.add(offerTypeLeftColumn);
+
+        offerTypeBlock.add(createSelectedRightColumn(selectedOffer));
+        return offerTypeBlock;
+    }
+
+    private HtmlDiv createSelectedRightColumn(final Offer selectedOffer) throws UnauthorizedOperationException {
+        final HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
+        {
+            offerTypeRightColumn.add(new OfferBlock(selectedOffer, true));
+        }
+        return offerTypeRightColumn;
     }
 
     private XmlNode generateSelectedOfferTypeBlock(final Offer selectedOffer) throws UnauthorizedOperationException {
@@ -101,20 +142,14 @@ public class DemandOfferListComponent extends HtmlDiv {
                     offerSelectedDescription.add(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString()
                             + "."));
                 } else {
-                    offerSelectedDescription.add(new HtmlParagraph(tr("This offer is in development.")));
+                    offerSelectedDescription.add(new HtmlParagraph(tr("Coucou !! ")));
                 }
             }
             offerTypeLeftColumn.add(offerSelectedDescription);
         }
+
         offerTypeBlock.add(offerTypeLeftColumn);
-
-        final HtmlDiv offerTypeRightColumn = new HtmlDiv("offer_type_right_column");
-        {
-            offerTypeRightColumn.add(new OfferBlock(selectedOffer, true));
-
-        }
-        offerTypeBlock.add(offerTypeRightColumn);
-
+        offerTypeBlock.add(createSelectedRightColumn(selectedOffer));
         return offerTypeBlock;
     }
 
@@ -284,9 +319,8 @@ public class DemandOfferListComponent extends HtmlDiv {
                                 final HtmlTitle lotTitle = new HtmlTitle(Context.tr("Lot {0} - ", i) + getLotState(lot), 2);
                                 lotBlock.add(lotTitle);
 
-                                if (isDeveloper() && demand.getDemandState() == DemandState.DEVELOPPING
-                                        && demand.getSelectedOffer().getCurrentBatch().equals(lot)) {
-                                    new HtmlLink(new AddReleaseActionUrl(lot).urlString(), tr("add a release"));
+                                if (isDeveloper() && (lot.getBatchState() == BatchState.DEVELOPING || lot.getBatchState() == BatchState.UAT)) {
+                                    lotBlock.add(new HtmlLink(new AddReleasePageUrl(lot).urlString(), tr("add a release")));
                                 }
 
                                 final HtmlParagraph datePara = new HtmlParagraph();
@@ -306,6 +340,13 @@ public class DemandOfferListComponent extends HtmlDiv {
                                 final HtmlParagraph description = new HtmlParagraph();
                                 description.addText(lot.getDescription());
                                 lotBlock.add(description);
+
+                                for (Release release : lot.getReleases()) {
+                                    String releaseLinkContent = tr("Release: " + release.getVersion() + tr(" the ")
+                                            + Context.getLocalizator().getDate(release.getCreationDate()).toString(FormatStyle.MEDIUM));
+                                    HtmlLink releaseLink = new ReleasePageUrl(release).getHtmlLink(releaseLinkContent);
+                                    lotBlock.add(new HtmlParagraph().add(releaseLink));
+                                }
 
                             }
                             offerRightBottomColumn.add(lotBlock);
@@ -346,9 +387,10 @@ public class DemandOfferListComponent extends HtmlDiv {
 
             // Add project image
             try {
-                final FileResourceUrl imageUrl = new FileResourceUrl(offer.getDemand().getProject().getImage());
+                FileMetadata image = offer.getDemand().getProject().getImage();
+                final FileResourceUrl imageUrl = new FileResourceUrl(image);
                 // TODO: use avatar
-                final HtmlImage projectImage = new HtmlImage(imageUrl, "avatar_image");
+                final HtmlImage projectImage = new HtmlImage(imageUrl, image.getShortDescription(),  "avatar_image");
                 avatarBlock.add(projectImage);
             } catch (final UnauthorizedOperationException e) {
                 // no right, no image

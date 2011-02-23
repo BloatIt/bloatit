@@ -51,19 +51,27 @@ public final class DaoRelease extends DaoUserContent implements DaoCommentable {
     @ManyToOne(optional = false)
     private DaoBatch batch;
 
-    public DaoRelease(final DaoMember member, final DaoBatch batch, final String description, final Locale locale) {
+    // @Basic(optional = false)
+    private String version;
+
+    public DaoRelease(final DaoMember member, final DaoBatch batch, final String description, final String version, final Locale locale) {
         super(member);
-        if (description == null || batch == null || locale == null || description.isEmpty()) {
+        if (description == null || batch == null || locale == null || version == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
         }
         this.batch = batch;
         this.description = description;
         this.locale = locale;
+        this.version = version;
     }
 
-    public static DaoRelease createAndPersist(final DaoMember member, final DaoBatch batch, final String description, final Locale locale) {
+    public static DaoRelease createAndPersist(final DaoMember member,
+                                              final DaoBatch batch,
+                                              final String description,
+                                              final String version,
+                                              final Locale locale) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoRelease release = new DaoRelease(member, batch, description, locale);
+        final DaoRelease release = new DaoRelease(member, batch, version, description, locale);
         try {
             session.save(release);
         } catch (final HibernateException e) {
@@ -84,6 +92,10 @@ public final class DaoRelease extends DaoUserContent implements DaoCommentable {
      */
     public String getDescription() {
         return description;
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     /**

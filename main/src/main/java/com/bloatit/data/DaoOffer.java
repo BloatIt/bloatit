@@ -29,6 +29,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
@@ -198,6 +199,11 @@ public final class DaoOffer extends DaoKudosable {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public boolean hasRelease() {
+        Query query = SessionManager.createFilter(batches, "SELECT count(*) WHERE this.releases is not empty");
+        return !((Long) query.uniqueResult()).equals(0L);
     }
 
     // ======================================================================

@@ -41,6 +41,11 @@ public abstract class Identifiable<T extends IdentifiableInterface> extends Rest
         }
         this.dao = dao;
     }
+    
+
+    // public Identifiable(Integer identifant, Class<T> daoClass) {
+    // this(DBRequests.getById(daoClass, identifant));
+    // }
 
     /**
      * @return a unique identifier for this object.

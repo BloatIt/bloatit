@@ -4,15 +4,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.ConstructorVisitor;
+import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.rest.RestElement;
 import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
 public class RestConstructorVisitor extends RestElement{ 
-    private ConstructorVisitor model;
+    private final DataVisitorConstructor model;
 
-    protected RestConstructorVisitor(ConstructorVisitor model){
+    protected RestConstructorVisitor(DataVisitorConstructor model){
         this.model=model;
     }
 
@@ -28,7 +28,7 @@ public class RestConstructorVisitor extends RestElement{
         return null;
     }
 
-    ConstructorVisitor getModel(){
+    DataVisitorConstructor getModel(){
         return model;
     }
 }
