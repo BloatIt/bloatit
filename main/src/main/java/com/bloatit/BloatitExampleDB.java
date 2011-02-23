@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.UUID;
 
-import com.bloatit.common.ConfigurationManager;
 import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoGroup.Right;
@@ -27,6 +26,7 @@ import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.model.right.AuthToken;
+import com.bloatit.web.WebConfiguration;
 
 public class BloatitExampleDB {
 
@@ -267,7 +267,7 @@ public class BloatitExampleDB {
     }
 
     private FileMetadata getImage(final Member author, final String name) {
-        final String path = ConfigurationManager.loadProperties("web.properties").getProperty("bloatit.www.dir") + "/resources/img/" + name;
+        final String path = WebConfiguration.getBloatitWwwDir() + "/resources/img/" + name;
 
         return FileMetadataManager.createFromLocalFile(author, path, name, "Beautiful image");
     }

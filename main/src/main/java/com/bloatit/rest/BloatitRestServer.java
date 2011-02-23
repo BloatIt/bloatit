@@ -44,4 +44,9 @@ public class BloatitRestServer extends RestServer {
     protected RestResource generateErrorResource(RestException exception) {
         return new ErrorResource(requestMethod, exception);
     }
+
+    @Override
+    public boolean initialize() {
+        return true;
+    }
 }

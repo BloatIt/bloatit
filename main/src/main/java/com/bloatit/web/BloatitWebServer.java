@@ -304,4 +304,10 @@ public class BloatitWebServer extends WebServer {
 
         return new PageNotFound(new PageNotFoundUrl(params, session.getParameters()));
     }
+
+    @Override
+    public boolean initialize() {
+        WebConfiguration.loadConfiguration();
+        return true;
+    }
 }

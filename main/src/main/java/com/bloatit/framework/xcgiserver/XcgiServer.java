@@ -54,10 +54,19 @@ public final class XcgiServer {
         return processors;
     }
 
-    public void init() throws IOException {
+    public void initialize() throws IOException {
         SessionManager.loadSessions();
         Log.framework().info("Init: Start BloatIt serveur");
 
+        Log.framework().info("-> initializing all processors");
+        for (XcgiProcessor processor : processors) {
+            Log.framework().info("--> initialization processor: " + processor.getClass().getSimpleName());
+            if (!processor.initialize()) {
+                throw new FatalErrorException("Initialization of processor failed");
+            }
+        }
+
+        Log.framework().info("-> launching " + NB_THREADS + " threads on ports " + SCGI_PORT + " ...");
         for (int i = SCGI_PORT; i < SCGI_PORT + NB_THREADS; ++i) {
             threads.add(new XcgiThread(i));
         }

@@ -33,8 +33,9 @@ public class Model implements AbstractModel {
      * @see com.bloatit.model.AbstractModelManager#launch()
      */
     @Override
-    public void init() {
+    public void initialize() {
         Log.model().trace("Launching the Model.");
+        ModelConfiguration.loadConfiguration();
         
         open();
         // Find the demand with selected offer that should pass into validated.

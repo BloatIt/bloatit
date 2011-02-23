@@ -11,7 +11,7 @@ import com.bloatit.framework.xcgiserver.HttpHeader;
 import com.bloatit.framework.xcgiserver.HttpPost;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
 
-public class ResourceServer  implements XcgiProcessor {
+public class ResourceServer implements XcgiProcessor {
 
     private final List<String> resourceDirList;
 
@@ -25,21 +25,26 @@ public class ResourceServer  implements XcgiProcessor {
     @Override
     public boolean process(HttpHeader header, HttpPost postData, HttpResponse response) throws IOException {
 
-        if(!resourceDirList.contains(header.getScriptName())) {
+        if (!resourceDirList.contains(header.getScriptName())) {
             return false;
         }
 
-        String path = header.getScriptFilename()+header.getPathInfo();
+        String path = header.getScriptFilename() + header.getPathInfo();
         File file = new File(path);
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             return false;
         }
 
-        Log.resources().trace("Send resource '"+path+"'");
+        Log.resources().trace("Send resource '" + path + "'");
 
-        response.writeResource( path, file.length(), file.getName());
+        response.writeResource(path, file.length(), file.getName());
 
+        return true;
+    }
+
+    @Override
+    public boolean initialize() {
         return true;
     }
 

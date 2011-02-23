@@ -3,14 +3,14 @@ package com.bloatit.framework.webserver.masters;
 import java.io.File;
 import java.io.IOException;
 
-import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
+import com.bloatit.framework.utils.FrameworkConfiguration;
 import com.bloatit.framework.webserver.url.PageNotFoundUrl;
 
 public abstract class Resource implements Linkable {
 
-    private final static String FILE_STORAGE_DIRECTORY = ConfigurationManager.SHARE_DIR + "file_storage";
+    private final static String FILE_STORAGE_DIRECTORY = FrameworkConfiguration.getRessourcesDirStorage();
 
     @Override
     final public void writeToHttp(final HttpResponse response) throws RedirectException, IOException {

@@ -4,6 +4,7 @@ import java.net.BindException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.mailsender.MailServer;
+import com.bloatit.framework.utils.FrameworkConfiguration;
 import com.bloatit.framework.webserver.ModelAccessor;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.xcgiserver.XcgiProcessor;
@@ -33,10 +34,11 @@ public class Framework {
 
     public boolean initialize() {
 
+        FrameworkConfiguration.loadConfiguration();
         try {
             mailServer.init();
-            scgiServer.init();
-            ModelAccessor.init(model);
+            scgiServer.initialize();
+            ModelAccessor.initialize(model);
         } catch (final BindException e) {
             Log.framework().fatal("Are you sure you have killed previous instance? ", e);
             return false;
