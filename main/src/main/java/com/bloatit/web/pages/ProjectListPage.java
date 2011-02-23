@@ -11,6 +11,8 @@
  */
 package com.bloatit.web.pages;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -28,6 +30,7 @@ import com.bloatit.model.Project;
 import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.AddProjectPageUrl;
 import com.bloatit.web.url.ProjectListPageUrl;
 import com.bloatit.web.url.ProjectPageUrl;
 
@@ -70,6 +73,7 @@ public final class ProjectListPage extends MasterPage {
         final ProjectListPageUrl clonedUrl = url.clone();
         pagedProjectList = new HtmlPagedList<Project>(projectItemRenderer, projectList, clonedUrl, clonedUrl.getPagedProjectListUrl());
 
+        pageTitle.add(new AddProjectPageUrl().getHtmlLink(tr("Add a software")));
         pageTitle.add(pagedProjectList);
 
         box.add(pageTitle);

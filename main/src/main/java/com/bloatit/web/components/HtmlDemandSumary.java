@@ -245,9 +245,17 @@ public final class HtmlDemandSumary extends HtmlDiv {
      * @throws UnauthorizedOperationException
      */
     private XmlNode generateProjectImage() throws UnauthorizedOperationException {
+        // TODO: set a fixed size block to not depend of the image
+        // size
         FileMetadata image = demand.getProject().getImage();
-        final FileResourceUrl imageUrl = new FileResourceUrl(image);
-        return new HtmlImage(imageUrl, image.getShortDescription(), "project_image");
+        if (image != null) {
+            final FileResourceUrl imageUrl = new FileResourceUrl(image);
+            return new HtmlImage(imageUrl, image.getShortDescription(), "project_image");
+        } else {
+            // TODO: add a fallback image
+            return new PlaceHolderElement();
+        }
+
     }
 
     /**

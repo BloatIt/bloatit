@@ -46,8 +46,8 @@ public class DaoKudosableTest extends TestCase {
         }
 
         DaoProject project = DaoProject.createAndPersist("VLC",
-                                              DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"),
-                                              DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
+                                              DaoDescription.createAndPersist(fred, Locale.FRANCE, "title", "descrip"));
+        project.setImage(DaoFileMetadata.createAndPersist(fred, null, "/dev/", "null", FileType.JPG, 12));
 
         demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo,
                                                                                 new Locale("fr"),
