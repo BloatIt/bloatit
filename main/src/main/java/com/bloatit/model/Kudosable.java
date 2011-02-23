@@ -30,13 +30,13 @@ import com.bloatit.model.right.KudosableRight;
 
 public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> implements KudosableInterface<T> {
 
-    private static final int TURN_VALID = KudosableConfiguration.getDefaultTurnValid();
-    private static final int TURN_REJECTED = KudosableConfiguration.getDefaultTurnRejected();
-    private static final int TURN_HIDDEN = KudosableConfiguration.getDefaultTurnHidden();
-    private static final int TURN_PENDING = KudosableConfiguration.getDefaultTurnPending();
+    private static final int TURN_VALID = ModelConfiguration.getKudosableDefaultTurnValid();
+    private static final int TURN_REJECTED = ModelConfiguration.getKudosableDefaultTurnRejected();
+    private static final int TURN_HIDDEN = ModelConfiguration.getKudosableDefaultTurnHidden();
+    private static final int TURN_PENDING = ModelConfiguration.getKudosableDefaultTurnPending();
 
-    private static final int MIN_INFLUENCE_TO_UNKUDOS = KudosableConfiguration.getMinInfluenceToUnkudos();
-    private static final int MIN_INFLUENCE_TO_KUDOS = KudosableConfiguration.getMinInfluenceToKudos();
+    private static final int MIN_INFLUENCE_TO_UNKUDOS = ModelConfiguration.getKudosableMinInfluenceToUnkudos();
+    private static final int MIN_INFLUENCE_TO_KUDOS = ModelConfiguration.getKudosableMinInfluenceToKudos();
 
     public Kudosable(final T dao) {
         super(dao);

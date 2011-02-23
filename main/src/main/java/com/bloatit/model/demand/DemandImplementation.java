@@ -37,8 +37,8 @@ import com.bloatit.model.Creator;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Description;
 import com.bloatit.model.Kudosable;
-import com.bloatit.model.KudosableConfiguration;
 import com.bloatit.model.Member;
+import com.bloatit.model.ModelConfiguration;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
 import com.bloatit.model.Project;
@@ -700,7 +700,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     protected int turnPending() {
-        return KudosableConfiguration.getDemandTurnPending();
+        return ModelConfiguration.getKudosableDemandTurnPending();
     }
 
     /**
@@ -711,7 +711,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     protected int turnValid() {
-        return KudosableConfiguration.getDemandTurnValid();
+        return ModelConfiguration.getKudosableDemandTurnValid();
     }
 
     /**
@@ -722,7 +722,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     protected int turnRejected() {
-        return KudosableConfiguration.getDemandTurnRejected();
+        return ModelConfiguration.getKudosableDemandTurnRejected();
     }
 
     /**
@@ -733,7 +733,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     @Override
     protected int turnHidden() {
-        return KudosableConfiguration.getDemandTurnHidden();
+        return ModelConfiguration.getKudosableDemandTurnHidden();
     }
 
     @Override

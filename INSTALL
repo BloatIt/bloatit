@@ -65,23 +65,10 @@ cat /var/log/lighttpd/error.log
 sudo apt-get install gettext
 
 ************************************
-*  Configure internal mail server  *
+*  Configure the java server       *
 ************************************
-Create file ~/.config/bloatit/mail.properties
-Add in the following content : 
-
-#mail.smtp.host=smtp.gmail.com (example value with gmail)
-mail.smtp.host= 
-mail.smtp.socketFactory.port=465 
-mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory 
-mail.smtp.auth=true
-mail.smtp.port=465
-#mail.from=example@gmail.com
-#mail.login=example@gmail.com
-#mail.password=<example password>
-mail.from=
-mail.login=
-mail.password=
+copy the file from etc/ to ~/.config/bloatit
+There are value to configure, see the comments in the files.
 
 *****************************************************
 *  Configure link to website documentation content  *

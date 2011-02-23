@@ -221,7 +221,7 @@ public final class Offer extends Kudosable<DaoOffer> {
      */
     @Override
     protected int turnPending() {
-        return KudosableConfiguration.getOfferTurnPending();
+        return ModelConfiguration.getKudosableOfferTurnPending();
     }
 
     /**
@@ -229,7 +229,7 @@ public final class Offer extends Kudosable<DaoOffer> {
      */
     @Override
     protected int turnValid() {
-        return KudosableConfiguration.getOfferTurnValid();
+        return ModelConfiguration.getKudosableOfferTurnValid();
     }
 
     /**
@@ -237,7 +237,7 @@ public final class Offer extends Kudosable<DaoOffer> {
      */
     @Override
     protected int turnRejected() {
-        return KudosableConfiguration.getOfferTurnRejected();
+        return ModelConfiguration.getKudosableOfferTurnRejected();
     }
 
     /**
@@ -245,7 +245,7 @@ public final class Offer extends Kudosable<DaoOffer> {
      */
     @Override
     protected int turnHidden() {
-        return KudosableConfiguration.getOfferTurnHidden();
+        return ModelConfiguration.getKudosableOfferTurnHidden();
     }
 
     public Batch getCurrentBatch() {

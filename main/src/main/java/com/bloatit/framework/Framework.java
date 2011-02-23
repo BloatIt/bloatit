@@ -33,10 +33,11 @@ public class Framework {
 
     public boolean initialize() {
 
+        FrameworkConfiguration.loadConfiguration();
         try {
             mailServer.init();
-            scgiServer.init();
-            ModelAccessor.init(model);
+            scgiServer.initialize();
+            ModelAccessor.initialize(model);
         } catch (final BindException e) {
             Log.framework().fatal("Are you sure you have killed previous instance? ", e);
             return false;

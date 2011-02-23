@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.RedirectException;
@@ -19,6 +18,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.renderer.HtmlMarkdownRenderer;
+import com.bloatit.web.WebConfiguration;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DocumentationUrl;
 
@@ -61,11 +61,7 @@ public class Documentation extends MasterPage {
 
     @Override
     protected void doCreate() throws RedirectException {
-        final String dir = ConfigurationManager.loadProperties("web.properties").getProperty("bloatit.documentation.dir");
-        if (dir == null) {
-            throw new FatalErrorException("Please configure your documentation dir : create " + ConfigurationManager.ETC_DIR
-                    + "/web.properties and add inside the property 'bloatit.documentation.dir=<value>'");
-        }
+        final String dir = WebConfiguration.getBloatitDocumentationDir();
         final HtmlDiv master = new HtmlDiv("padding_box");
         add(master);
 

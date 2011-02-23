@@ -22,12 +22,13 @@ import com.bloatit.web.actions.PaylineNotifyAction;
 import com.bloatit.web.actions.PaylineReturnAction;
 import com.bloatit.web.actions.PopularityVoteAction;
 import com.bloatit.web.actions.RegisterAction;
-import com.bloatit.web.actions.ReportBugAction;
 import com.bloatit.web.actions.UploadFileAction;
+import com.bloatit.web.bugs.BugPage;
+import com.bloatit.web.bugs.ReportBugAction;
+import com.bloatit.web.bugs.ReportBugPage;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
 import com.bloatit.web.pages.AddReleasePage;
-import com.bloatit.web.pages.BugPage;
 import com.bloatit.web.pages.CommentReplyPage;
 import com.bloatit.web.pages.ContributePage;
 import com.bloatit.web.pages.CreateDemandPage;
@@ -44,7 +45,6 @@ import com.bloatit.web.pages.PaylinePage;
 import com.bloatit.web.pages.ProjectListPage;
 import com.bloatit.web.pages.ProjectPage;
 import com.bloatit.web.pages.RegisterPage;
-import com.bloatit.web.pages.ReportBugPage;
 import com.bloatit.web.pages.SpecialsPage;
 import com.bloatit.web.pages.TestPage;
 import com.bloatit.web.pages.admin.DemandAdminPage;
@@ -303,5 +303,11 @@ public class BloatitWebServer extends WebServer {
         }
 
         return new PageNotFound(new PageNotFoundUrl(params, session.getParameters()));
+    }
+
+    @Override
+    public boolean initialize() {
+        WebConfiguration.loadConfiguration();
+        return true;
     }
 }

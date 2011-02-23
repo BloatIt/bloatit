@@ -18,9 +18,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.bloatit.common.ConfigurationManager;
-import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 import com.bloatit.common.Log;
+import com.bloatit.framework.FrameworkConfiguration;
 
 /**
  * <p>
@@ -49,14 +48,13 @@ import com.bloatit.common.Log;
  * </p>
  */
 public class MailServer extends Thread {
-    private final static String WIP_MAIL_DIRECTORY = ConfigurationManager.SHARE_DIR + "temp_mail";
-    private final static String SENT_MAIL_DIRECTORY = ConfigurationManager.SHARE_DIR + "sent_mail";
+    private final static String WIP_MAIL_DIRECTORY =  FrameworkConfiguration.getMailDirTmp();
+    private final static String SENT_MAIL_DIRECTORY = FrameworkConfiguration.getMailDirSend();
     private final static String FLUSH_AND_STOP = "FLUSHANDSTOP";
     private final static long MILLISECOND = 1L;
     private final static long SECOND = 1000L * MILLISECOND;
     private final static long MINUTE = 60L * SECOND;
 
-    private PropertiesRetriever mailProperties;
     private Session session;
     private LinkedBlockingQueue<String> mailsFileName;
     private Semaphore stopMutex;
@@ -79,7 +77,6 @@ public class MailServer extends Thread {
      */
     public void init() {
         mailsFileName = new LinkedBlockingQueue<String>();
-        mailProperties = ConfigurationManager.loadProperties("mail");
         stopMutex = new Semaphore(1);
         stop = false;
         numberOfTries = 0;
@@ -88,10 +85,10 @@ public class MailServer extends Thread {
         createSentDirectory();
         createWipDirectory();
 
-        session = Session.getDefaultInstance(mailProperties.getProperties(), new javax.mail.Authenticator() {
+        session = Session.getDefaultInstance(FrameworkConfiguration.getProperties().getProperties(), new javax.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(mailProperties.getProperty("mail.login"), (mailProperties.getProperty("mail.password")));
+                return new PasswordAuthentication(FrameworkConfiguration.getMailLogin(), FrameworkConfiguration.getMailPassword());
             }
         });
     }
@@ -141,7 +138,7 @@ public class MailServer extends Thread {
 
         try {
             final Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(mailProperties.getProperty("mail.from")));
+            message.setFrom(new InternetAddress(FrameworkConfiguration.getMailFrom()));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getTo()));
             message.setSubject(mail.getSubject());
             message.setText(mail.getContent());

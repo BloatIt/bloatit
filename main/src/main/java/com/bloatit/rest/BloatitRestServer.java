@@ -39,4 +39,9 @@ public class BloatitRestServer extends RestServer {
     protected Class<?>[] getJAXClasses() {
         return classes;
     }
+
+    @Override
+    public boolean initialize() {
+        return true;
+    }
 }

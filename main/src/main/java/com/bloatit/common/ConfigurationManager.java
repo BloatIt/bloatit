@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 
 import com.bloatit.framework.exceptions.FatalErrorException;
@@ -83,8 +84,16 @@ public class ConfigurationManager {
         }
 
         private <T> T getSome(final String key, final T defaultValue, final Class<T> clazz) {
+            try {
+                return getSome(key, clazz);
+            } catch (NoSuchElementException e) {
+                return defaultValue;
+            }
+        }
+
+        private <T> T getSome(final String key, final Class<T> clazz) {
             final String property = prop.getProperty(key);
-            Log.framework().trace("Loading property: " + key + ", value: " + property);
+            Log.framework().info("Loading property: " + key + ", value: " + property);
             if (prop.getProperty(key) != null) {
                 try {
                     return Loaders.fromStr(clazz, property);
@@ -92,57 +101,95 @@ public class ConfigurationManager {
                     Log.framework().error("Conversion error in loading the property: " + key, e);
                 }
             }
-            Log.framework().warn("Using the default property for: " + key);
-            return defaultValue;
+            throw new NoSuchElementException("Cannot find property: " + key);
         }
 
         public int getInt(final String key, final int defaultValue) {
             return getSome(key, defaultValue, Integer.class);
         }
 
+        public int getInt(final String key) {
+            return getSome(key, Integer.class);
+        }
+
         public Long getLong(final String key, final Long defaultValue) {
             return getSome(key, defaultValue, Long.class);
+        }
+
+        public Long getLong(final String key) {
+            return getSome(key, Long.class);
         }
 
         public Short getShort(final String key, final Short defaultValue) {
             return getSome(key, defaultValue, Short.class);
         }
 
+        public Short getShort(final String key) {
+            return getSome(key, Short.class);
+        }
+
         public Byte getByte(final String key, final Byte defaultValue) {
             return getSome(key, defaultValue, Byte.class);
+        }
+
+        public Byte getByte(final String key) {
+            return getSome(key, Byte.class);
         }
 
         public Boolean getBoolean(final String key, final Boolean defaultValue) {
             return getSome(key, defaultValue, Boolean.class);
         }
 
+        public Boolean getBoolean(final String key) {
+            return getSome(key, Boolean.class);
+        }
+
         public BigDecimal getBigDecimal(final String key, final BigDecimal defaultValue) {
             return getSome(key, defaultValue, BigDecimal.class);
+        }
+
+        public BigDecimal getBigDecimal(final String key) {
+            return getSome(key, BigDecimal.class);
         }
 
         public Character getCharacter(final String key, final Character defaultValue) {
             return getSome(key, defaultValue, Character.class);
         }
 
+        public Character getCharacter(final String key) {
+            return getSome(key, Character.class);
+        }
+
         public Date getDate(final String key, final Date defaultValue) {
             return getSome(key, defaultValue, Date.class);
+        }
+
+        public Date getDate(final String key) {
+            return getSome(key, Date.class);
         }
 
         public Double getDouble(final String key, final Double defaultValue) {
             return getSome(key, defaultValue, Double.class);
         }
 
+        public Double getDouble(final String key) {
+            return getSome(key, Double.class);
+        }
+
         public Float getFloat(final String key, final Float defaultValue) {
             return getSome(key, defaultValue, Float.class);
         }
 
+        public Float getFloat(final String key) {
+            return getSome(key, Float.class);
+        }
+
         public String getString(final String key, final String defaultValue) {
-            final String property = prop.getProperty(key);
-            if (property != null) {
-                return property;
-            }
-            Log.framework().warn("Using the default property for: " + key);
-            return defaultValue;
+            return getSome(key, defaultValue, String.class);
+        }
+
+        public String getString(final String key) {
+            return getSome(key, String.class);
         }
 
         /**

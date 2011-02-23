@@ -28,7 +28,7 @@ public interface AbstractModel {
      * Launch the model layer. This method will be called only once, before
      * everything else.
      */
-    public abstract void init();
+    public abstract void initialize();
 
     /**
      * Shutdown the model layer. This method will be called only once, at the

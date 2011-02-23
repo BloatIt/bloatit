@@ -22,11 +22,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 
@@ -37,7 +37,7 @@ import com.bloatit.model.Member;
 public final class FileMetadataManager {
 
     /** The Constant FILE_STORAGE_DIRECTORY. */
-    private final static String FILE_STORAGE_DIRECTORY = ConfigurationManager.SHARE_DIR + "file_storage";
+    private final static String FILE_STORAGE_DIRECTORY = FrameworkConfiguration.getRessourcesDirStorage();
 
     /**
      * Desactivated constructor on utility class.

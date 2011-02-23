@@ -5,6 +5,12 @@ import java.io.IOException;
 import com.bloatit.framework.webserver.masters.HttpResponse;
 
 public interface XcgiProcessor {
+    
+    /**
+     * Initialize this processor.
+     * @return true if the initialization process is sucessfull. False otherwise.
+     */
+    boolean initialize();
 
     /**
      * Take a request and use the {@link HttpResponse} object to create a

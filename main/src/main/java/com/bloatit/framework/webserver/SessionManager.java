@@ -26,8 +26,8 @@ import java.util.UUID;
 
 import javassist.NotFoundException;
 
-import com.bloatit.common.ConfigurationManager;
 import com.bloatit.common.Log;
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.model.right.AuthToken;
 
@@ -121,7 +121,7 @@ public final class SessionManager {
     public static synchronized void loadSessions() {
         com.bloatit.data.SessionManager.beginWorkUnit();
 
-        final String dump = ConfigurationManager.SHARE_DIR + "/sessions.dump";
+        final String dump = FrameworkConfiguration.getSessionDumpfile();
 
         BufferedReader br = null;
 

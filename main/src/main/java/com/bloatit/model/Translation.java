@@ -127,7 +127,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
      */
     @Override
     protected int turnPending() {
-        return KudosableConfiguration.getTranslationTurnPending();
+        return ModelConfiguration.getKudosableTranslationTurnPending();
     }
 
     /**
@@ -135,7 +135,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
      */
     @Override
     protected int turnValid() {
-        return KudosableConfiguration.getTranslationTurnValid();
+        return ModelConfiguration.getKudosableTranslationTurnValid();
     }
 
     /**
@@ -143,7 +143,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
      */
     @Override
     protected int turnRejected() {
-        return KudosableConfiguration.getTranslationTurnRejected();
+        return ModelConfiguration.getKudosableTranslationTurnRejected();
     }
 
     /**
@@ -151,7 +151,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
      */
     @Override
     protected int turnHidden() {
-        return KudosableConfiguration.getTranslationTurnHidden();
+        return ModelConfiguration.getKudosableTranslationTurnHidden();
     }
 
 }

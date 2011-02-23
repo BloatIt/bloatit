@@ -97,7 +97,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
      */
     @Override
     protected int turnPending() {
-        return KudosableConfiguration.getCommentTurnPending();
+        return ModelConfiguration.getKudosableCommentTurnPending();
     }
 
     /**
@@ -108,7 +108,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
      */
     @Override
     protected int turnValid() {
-        return KudosableConfiguration.getCommentTurnValid();
+        return ModelConfiguration.getKudosableCommentTurnValid();
     }
 
     /**
@@ -119,7 +119,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
      */
     @Override
     protected int turnRejected() {
-        return KudosableConfiguration.getCommentTurnRejected();
+        return ModelConfiguration.getKudosableCommentTurnRejected();
     }
 
     /**
@@ -130,7 +130,7 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
      */
     @Override
     protected int turnHidden() {
-        return KudosableConfiguration.getCommentTurnHidden();
+        return ModelConfiguration.getKudosableCommentTurnHidden();
     }
 
     /**

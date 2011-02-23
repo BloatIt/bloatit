@@ -33,13 +33,13 @@ public class ModelAccessor {
      * This method is the init method. Call it only once, in a non MultiThreaded
      * environment.
      * 
-     * @see com.bloatit.model.AbstractModel#init()
+     * @see com.bloatit.model.AbstractModel#initialize()
      */
-    public static void init(final AbstractModel manager) {
+    public static void initialize(final AbstractModel manager) {
         try {
             mutex.acquire();
             setModelManager(manager);
-            model.init();
+            model.initialize();
         } catch (final InterruptedException e) {
             throw new FatalErrorException(e);
         } finally {
