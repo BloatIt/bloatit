@@ -14,7 +14,8 @@ import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.components.HtmlTitleBlock;
+import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlTitle;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -49,11 +50,12 @@ public final class CommentReplyPage extends LoggedPage {
     public HtmlElement createRestrictedContent() throws RedirectException {
         session.notifyList(url.getMessages());
 
-        final HtmlTitleBlock htb = new HtmlTitleBlock(Context.tr("Reply to a comment"), 1);
+        final HtmlDiv box = new HtmlDiv("padding_box");
+
+        final HtmlTitle title = new HtmlTitle(Context.tr("Reply to a comment"), 1);
 
         final CommentCommentActionUrl commentCommentActionUrl = new CommentCommentActionUrl(targetComment);
         final HtmlForm form = new HtmlForm(commentCommentActionUrl.urlString());
-        htb.add(form);
 
         final FormFieldData<String> createFormFieldData = commentCommentActionUrl.getCommentParameter().formFieldData();
         final HtmlTextArea commentInput = new HtmlTextArea(createFormFieldData, Context.tr("Content"), NB_LINES, NB_COLUMNS);
@@ -62,7 +64,10 @@ public final class CommentReplyPage extends LoggedPage {
         final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
         form.add(submit);
 
-        return htb;
+        box.add(title);
+        box.add(form);
+
+        return box;
     }
 
     @Override
