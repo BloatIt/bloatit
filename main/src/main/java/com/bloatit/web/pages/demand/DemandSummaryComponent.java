@@ -29,14 +29,17 @@ import com.bloatit.framework.webserver.components.PlaceHolderElement;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
+import com.bloatit.web.members.MembersTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
+import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
 import com.bloatit.web.url.ProjectPageUrl;
@@ -242,7 +245,7 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                         actionsButtons.add(new HtmlDiv("make_offer_block").add(generatePendingLeftActions()));
                         break;
                     case DEVELOPPING:
-                        actionsButtons.add(new HtmlDiv("developer_block").add(generateDevelopingRightActions()));
+                        actionsButtons.add(new HtmlDiv("developer_description_block").add(generateDevelopingRightActions()));
                         actionsButtons.add(new HtmlDiv("report_bug_block").add(generateDevelopingLeftActions()));
                         break;
                     case FINISHED:
@@ -291,15 +294,13 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
 
     public PlaceHolderElement generateDevelopingRightActions() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
-//        final HtmlParagraph makeOfferText = new HtmlParagraph(Context.tr("You are a developer and want to be paid to achieve this request?"));
-//        element.add(makeOfferText);
-//
-//        final HtmlLink link = new OfferPageUrl(demand).getHtmlLink(Context.tr("Make an offer"));
-//        link.setCssClass("button");
-//        element.add(link);
+        Member author = demand.getSelectedOffer().getAuthor();
+        element.add(MembersTools.getMemberAvatar(author));
+        element.add(new HtmlParagraph(tr("The developer of this feature is:")));
+        element.add(new MemberPageUrl(author).getHtmlLink(author.getDisplayName()));
         return element;
     }
-    
+
     public PlaceHolderElement generateDevelopingLeftActions() throws UnauthorizedOperationException {
         PlaceHolderElement element = new PlaceHolderElement();
         if (!demand.getSelectedOffer().hasRelease()) {

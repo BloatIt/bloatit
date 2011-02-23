@@ -163,7 +163,7 @@ public final class DaoOffer extends DaoKudosable {
         // Find next batch. Passe it into developing state.
         for (int i = 0; i < batches.size(); ++i) {
             if (batches.get(i).equals(batch)) {
-                if (batches.size() < (i + 1)) {
+                if ((i + 1) < batches.size()) {
                     batches.get(i + 1).setDeveloping();
                 }
                 break;
