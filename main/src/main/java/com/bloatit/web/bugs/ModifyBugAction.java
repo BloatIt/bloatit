@@ -49,13 +49,12 @@ public final class ModifyBugAction extends Action {
     min = "0")
     private final String reason;
 
-
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug level"))
     @RequestParam(name = BUG_LEVEL, role = Role.POST)
     private final BindedLevel level;
 
     @ParamConstraint(optionalErrorMsg = @tr("You must indicate a bug state"))
-    @RequestParam(name = BUG_STATE,  role = Role.POST)
+    @RequestParam(name = BUG_STATE, role = Role.POST)
     private final BindedState state;
 
     @ParamConstraint(optionalErrorMsg = @tr("A bug change must be linked to a bug"))
@@ -73,7 +72,6 @@ public final class ModifyBugAction extends Action {
         this.bug = url.getBug();
         this.reason = url.getReason();
 
-
     }
 
     @Override
@@ -88,47 +86,43 @@ public final class ModifyBugAction extends Action {
         Level currentLevel = bug.getErrorLevel();
         State currentState = bug.getState();
 
-        if(currentLevel == level.getLevel() && currentState == state.getState()) {
+        if (currentLevel == level.getLevel() && currentState == state.getState()) {
             session.notifyBad(Context.tr("You must change at least a small thing on the bug to modify it."));
             return redirectWithError();
         }
 
-        if(state.getState() == State.PENDING) {
+        if (state.getState() == State.PENDING) {
             session.notifyBad(Context.tr("You can set a bug to the pending state."));
             return redirectWithError();
         }
 
         String changes = "";
 
-        if(currentLevel != level.getLevel()) {
-            changes+= tr("\nLevel: {0} => {1}", BindedLevel.getBindedLevel(currentLevel), level);
+        if (currentLevel != level.getLevel()) {
+            changes += tr("\nLevel: {0} => {1}", BindedLevel.getBindedLevel(currentLevel), level);
         }
 
-        if(currentState != state.getState()) {
-            changes+= tr("\nState: {0} => {1}", BindedState.getBindedState(currentState), state);
+        if (currentState != state.getState()) {
+            changes += tr("\nState: {0} => {1}", BindedState.getBindedState(currentState), state);
         }
 
         bug.setErrorLevel(level.getLevel());
-        if(state.getState() == State.DEVELOPING) {
+        if (state.getState() == State.DEVELOPING) {
             bug.setDeveloping();
-        } else if(state.getState() == State.RESOLVED) {
+        } else if (state.getState() == State.RESOLVED) {
             bug.setResolved();
         }
 
-
-
-
         try {
-            if(reason == null) {
+            if (reason == null) {
                 bug.addComment(changes);
             } else {
-                bug.addComment(changes + "\n"+ tr("Reason:") +"\n"+ reason );
+                bug.addComment(changes + "\n" + tr("Reason:") + "\n" + reason);
             }
         } catch (UnauthorizedOperationException e) {
-            //If the user can change state it should be able to add a comment
+            // If the user can change state it should be able to add a comment
             throw new FatalErrorException("The user can change the bug state but not post comments on this bug");
         }
-
 
         final BugPageUrl to = new BugPageUrl(bug);
 
@@ -150,7 +144,5 @@ public final class ModifyBugAction extends Action {
         session.addParameter(url.getStateParameter());
         return Context.getSession().getLastVisitedPage();
     }
-
-
 
 }

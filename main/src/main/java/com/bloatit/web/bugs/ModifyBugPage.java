@@ -11,7 +11,6 @@
  */
 package com.bloatit.web.bugs;
 
-
 import java.util.EnumSet;
 
 import com.bloatit.framework.webserver.Context;
@@ -77,10 +76,6 @@ public final class ModifyBugPage extends LoggedPage {
         final HtmlForm modifyBugForm = new HtmlForm(doModifyUrl.urlString());
 
         formTitle.add(modifyBugForm);
-
-
-
-
 
         // Level
         final FormFieldData<BindedLevel> levelFormFieldData = doModifyUrl.getLevelParameter().formFieldData();
