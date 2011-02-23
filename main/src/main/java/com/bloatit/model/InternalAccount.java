@@ -23,6 +23,7 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.InternalAccountRight;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * An internal account is an account containing the money we store for a user.
@@ -76,5 +77,14 @@ public final class InternalAccount extends Account<DaoInternalAccount> {
     public BigDecimal getBlocked() throws UnauthorizedOperationException {
         tryAccess(new InternalAccountRight.Blocked(), Action.READ);
         return getDao().getBlocked();
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 }

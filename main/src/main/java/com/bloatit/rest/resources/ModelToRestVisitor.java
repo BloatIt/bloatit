@@ -1,6 +1,5 @@
-package com.bloatit.rest.utils;
+package com.bloatit.rest.resources;
 
-import com.bloatit.framework.utils.Image;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Bug;
@@ -27,107 +26,102 @@ public class ModelToRestVisitor implements ModelClassVisitor<RestElement> {
 
     @Override
     public RestElement visit(ExternalAccount model) {
-        return null;
+        return new RestExternalAccount(model);
     }
 
     @Override
     public RestElement visit(InternalAccount model) {
-        return null;
+        return new RestInternalAccount(model);
     }
 
     @Override
     public RestElement visit(Member model) {
-        return null;
+        return new RestMember(model);
     }
 
     @Override
     public RestElement visit(BankTransaction model) {
-        return null;
+        return new RestBankTransaction(model);
     }
 
     @Override
     public RestElement visit(Batch model) {
-        return null;
+        return new RestBatch(model);
     }
 
     @Override
     public RestElement visit(Description model) {
-        return null;
+        return new RestDescription(model);
     }
 
     @Override
     public RestElement visit(Group model) {
-        return null;
+        return new RestGroup(model);
     }
 
     @Override
     public RestElement visit(HighlightDemand model) {
-        return null;
-    }
-
-    @Override
-    public RestElement visit(Image model) {
-        return null;
+        return new RestHighlightDemand(model);
     }
 
     @Override
     public RestElement visit(JoinGroupInvitation model) {
-        return null;
+        return new RestJoinGroupInvitation(model);
     }
 
     @Override
     public RestElement visit(Project model) {
-        return null;
+        return new RestProject(model);
     }
 
     @Override
     public RestElement visit(Transaction model) {
-        return null;
+        return new RestTransaction(model);
     }
 
     @Override
     public RestElement visit(Bug model) {
-        return null;
+        return new RestBug(model);
     }
 
     @Override
     public RestElement visit(Contribution model) {
-        return null;
+        return new RestContribution(model);
     }
 
     @Override
     public RestElement visit(FileMetadata model) {
-        return null;
+        return new RestFileMetadata(model);
     }
 
     @Override
     public RestElement visit(Kudos model) {
-        return null;
+        return new RestKudos(model);
     }
 
     @Override
     public RestElement visit(Comment model) {
-        return null;
+        return new RestComment(model);
     }
 
     @Override
     public RestElement visit(Demand model) {
-        return null;
+        return new RestDemand(model);
     }
 
     @Override
     public RestElement visit(Offer model) {
-        return null;
+        return new RestOffer(model);
     }
 
     @Override
     public RestElement visit(Translation model) {
-        return null;
+        return new RestTranslation(model);
     }
 
     @Override
     public RestElement visit(Release model) {
-        return null;
+        return new RestRelease(model);
     }
 
 }

@@ -17,6 +17,7 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoKudos;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 public final class Kudos extends UserContent<DaoKudos> {
 
@@ -41,6 +42,15 @@ public final class Kudos extends UserContent<DaoKudos> {
 
     public int getValue() {
         return getDao().getValue();
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
 }

@@ -6,6 +6,7 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.ListBinder;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 public class Release extends UserContent<DaoRelease> {
 
@@ -54,6 +55,15 @@ public class Release extends UserContent<DaoRelease> {
 
     public PageIterable<Comment> getComments() {
         return new ListBinder<Comment, DaoComment>(getDao().getComments());
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
 }

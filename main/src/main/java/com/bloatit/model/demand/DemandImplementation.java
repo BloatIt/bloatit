@@ -49,6 +49,7 @@ import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.DemandRight;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 // TODO : delete comment.
 //
@@ -749,6 +750,15 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     @Override
     public PageIterable<Bug> getClosedBugs() {
         return new BugList(getDao().getClosedBugs());
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
 }

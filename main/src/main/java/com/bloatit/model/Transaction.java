@@ -27,6 +27,7 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.AccountRight;
 import com.bloatit.model.right.Action;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 
@@ -101,5 +102,14 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     @Override
     protected boolean isMine(final Member member) {
         return getFromUnprotected().isMine(member) || getToUnprotected().isMine(member);
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 }

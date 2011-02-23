@@ -5,6 +5,7 @@ import java.util.Date;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Member;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> {
 
@@ -70,5 +71,14 @@ public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> 
     @Override
     protected boolean isMine(final Member member) {
         return false;
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return null;
     }
 }
