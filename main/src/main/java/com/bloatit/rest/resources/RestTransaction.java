@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.Transaction;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestTransactionList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Transaction;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestTransaction extends RestElement{ 
+public class RestTransaction extends RestElement<Transaction>{ 
     private Transaction model;
 
     protected RestTransaction(Transaction model){
@@ -23,7 +22,7 @@ public class RestTransaction extends RestElement{
     }
 
     @REST(name = "transactions", method = RequestMethod.GET)
-    public static RestList<RestTransaction> getAll(){
+    public static RestTransactionList getAll(){
         //TODO auto generated code
         return null;
     }

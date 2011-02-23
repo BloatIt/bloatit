@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.Contribution;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestContributionList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Contribution;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestContribution extends RestElement{ 
+public class RestContribution extends RestElement<Contribution>{ 
     private Contribution model;
 
     protected RestContribution(Contribution model){
@@ -23,7 +22,7 @@ public class RestContribution extends RestElement{
     }
 
     @REST(name = "contributions", method = RequestMethod.GET)
-    public static RestList<RestContribution> getAll(){
+    public static RestContributionList getAll(){
         //TODO auto generated code
         return null;
     }

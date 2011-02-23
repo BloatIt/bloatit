@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.FileMetadata;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.FileMetadata;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestFileMetadata extends RestElement{ 
+public class RestFileMetadata extends RestElement<FileMetadata>{ 
     private FileMetadata model;
 
     protected RestFileMetadata(FileMetadata model){
@@ -23,7 +22,7 @@ public class RestFileMetadata extends RestElement{
     }
 
     @REST(name = "filemetadatas", method = RequestMethod.GET)
-    public static RestList<RestFileMetadata> getAll(){
+    public static RestFileMetadataList getAll(){
         //TODO auto generated code
         return null;
     }

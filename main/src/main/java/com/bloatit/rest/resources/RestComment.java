@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.Comment;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Comment;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestComment extends RestElement{ 
+public class RestComment extends RestElement<Comment>{ 
     private Comment model;
 
     protected RestComment(Comment model){
@@ -23,7 +22,7 @@ public class RestComment extends RestElement{
     }
 
     @REST(name = "comments", method = RequestMethod.GET)
-    public static RestList<RestComment> getAll(){
+    public static RestCommentList getAll(){
         //TODO auto generated code
         return null;
     }

@@ -78,8 +78,8 @@ public class SimpleTestDB {
             e.printStackTrace();
         }
 
-        project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"),
-                DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
+        project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"));
+        project.setImage(DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
 
         demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
                 project);

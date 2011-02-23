@@ -21,6 +21,7 @@ import java.io.File;
 import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.DaoUserContent;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 public class FileMetadata extends UserContent<DaoFileMetadata> {
 
@@ -107,6 +108,15 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
      */
     public String getFileName() {
         return getDao().getFilename();
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
 }

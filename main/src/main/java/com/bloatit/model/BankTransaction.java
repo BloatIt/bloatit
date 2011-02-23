@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBankTransaction.State;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * The Class BankTransaction.
@@ -228,5 +229,14 @@ public final class BankTransaction extends Identifiable<DaoBankTransaction> {
     @Override
     protected boolean isMine(final Member member) {
         return getDao().getAuthor().getLogin().equals(member.getLoginUnprotected());
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 }

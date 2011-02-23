@@ -32,6 +32,7 @@ import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.BugList;
 import com.bloatit.model.lists.ListBinder;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * A batch is a part of an offer. Simple offers are only composed of one batch.
@@ -353,4 +354,12 @@ public class Batch extends Identifiable<DaoBatch> {
         return Offer.create(getDao().getOffer()).calculateMyGroupRights(member);
     }
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
 }

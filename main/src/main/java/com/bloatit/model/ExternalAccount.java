@@ -21,6 +21,7 @@ import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.ExternalAccountRight;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * @see DaoExternalAccount
@@ -84,5 +85,14 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
     public AccountType getType() throws UnauthorizedOperationException {
         tryAccess(new ExternalAccountRight.Type(), Action.READ);
         return getDao().getType();
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 }

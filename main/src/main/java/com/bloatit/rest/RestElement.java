@@ -1,5 +1,7 @@
 package com.bloatit.rest;
 
-public class RestElement {
+import com.bloatit.data.IdentifiableInterface;
+
+public class RestElement<M extends IdentifiableInterface> {
 
 }

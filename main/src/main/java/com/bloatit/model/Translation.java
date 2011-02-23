@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.framework.exceptions.FatalErrorException;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 public final class Translation extends Kudosable<DaoTranslation> {
 
@@ -152,6 +153,15 @@ public final class Translation extends Kudosable<DaoTranslation> {
     @Override
     protected int turnHidden() {
         return ModelConfiguration.getKudosableTranslationTurnHidden();
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
 }

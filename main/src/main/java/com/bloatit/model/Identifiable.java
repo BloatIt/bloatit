@@ -16,6 +16,7 @@
 //
 package com.bloatit.model;
 
+import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.model.right.RestrictedObject;
@@ -26,7 +27,7 @@ import com.bloatit.model.right.RestrictedObject;
  * @author Thomas Guyard
  * @param <T> is the dao being mapped.
  */
-public abstract class Identifiable<T extends IdentifiableInterface> extends RestrictedObject implements IdentifiableInterface {
+public abstract class Identifiable<T extends DaoIdentifiable> extends RestrictedObject implements IdentifiableInterface {
 
     private final T dao;
 
@@ -85,5 +86,4 @@ public abstract class Identifiable<T extends IdentifiableInterface> extends Rest
     public final T getDao() {
         return dao;
     }
-
 }

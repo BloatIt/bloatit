@@ -66,12 +66,18 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 // Div demand_summary_left
                 final HtmlDiv demandSummaryLeft = new HtmlDiv("demand_summary_left");
                 {
+                    // TODO: set a fixed size block to not depend of the image
+                    // size
                     // Add project image
                     try {
                         FileMetadata image = demand.getProject().getImage();
-                        final FileResourceUrl imageUrl = new FileResourceUrl(image);
-                        final HtmlImage projectImage = new HtmlImage(imageUrl, image.getShortDescription(), "project_image");
-                        demandSummaryLeft.add(projectImage);
+                        if (image != null) {
+                            final FileResourceUrl imageUrl = new FileResourceUrl(image);
+                            final HtmlImage projectImage = new HtmlImage(imageUrl, image.getShortDescription(), "project_image");
+                            demandSummaryLeft.add(projectImage);
+                        } else {
+                            // TODO: add a fallback image
+                        }
                     } catch (final UnauthorizedOperationException e) {
                         // no right, no image
                     }

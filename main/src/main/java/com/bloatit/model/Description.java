@@ -21,6 +21,7 @@ import java.util.Locale;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.TranslationList;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * A description must be created through the Demand class. (For example, you
@@ -109,5 +110,14 @@ public final class Description extends Identifiable<DaoDescription> {
     @Override
     protected boolean isMine(final Member member) {
         return false;
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 }

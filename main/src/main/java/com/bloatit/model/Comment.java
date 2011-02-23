@@ -20,6 +20,7 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * The Class Comment.
@@ -145,6 +146,15 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         final DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
         getDao().addChildComment(comment);
         return Comment.create(comment);
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
     }
 
 }

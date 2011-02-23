@@ -23,6 +23,7 @@ import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MemberList;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * This is a group ... There are member in it.
@@ -116,4 +117,12 @@ public final class Group extends Actor<DaoGroup> {
         return getDao().getUserGroupRight(member.getDao());
     }
 
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    // Visitor
+    // /////////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
 }

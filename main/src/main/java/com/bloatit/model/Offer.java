@@ -33,6 +33,7 @@ import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.model.lists.BatchList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.DemandRight;
+import com.bloatit.rest.resources.ModelClassVisitor;
 
 // TODO rightManagement
 
@@ -257,4 +258,8 @@ public final class Offer extends Kudosable<DaoOffer> {
     }
 
 
+    @Override
+    public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
+        return visitor.visit(this);
+    }
 }

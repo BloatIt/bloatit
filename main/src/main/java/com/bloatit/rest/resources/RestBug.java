@@ -1,15 +1,14 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.rest.RestElement;
+import com.bloatit.model.Bug;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import com.bloatit.rest.list.RestBugList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Bug;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.utils.RestList;
 
 @XmlRootElement
-public class RestBug extends RestElement{ 
+public class RestBug extends RestElement<Bug>{ 
     private Bug model;
 
     protected RestBug(Bug model){
@@ -23,7 +22,7 @@ public class RestBug extends RestElement{
     }
 
     @REST(name = "bugs", method = RequestMethod.GET)
-    public static RestList<RestBug> getAll(){
+    public static RestBugList getAll(){
         //TODO auto generated code
         return null;
     }
