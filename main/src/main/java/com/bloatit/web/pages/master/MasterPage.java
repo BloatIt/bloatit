@@ -8,6 +8,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
 import com.bloatit.framework.webserver.components.HtmlImage;
+import com.bloatit.framework.webserver.components.advanced.HtmlClearer;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
@@ -38,7 +39,7 @@ public abstract class MasterPage extends GenericPage {
         body.add(header);
         final HtmlBranch headerContent = new HtmlDiv("header_content").setId("header_content");
         header.add(headerContent);
-        header.add(new HtmlGenericElement("hr").setId("header_end"));
+        header.add(new HtmlClearer());
 
         headerContent.add(generateLogo());
         headerContent.add(new SessionBar());

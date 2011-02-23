@@ -38,6 +38,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
+import com.bloatit.web.members.MembersTools;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
@@ -82,6 +83,8 @@ public final class MemberPage extends MasterPage {
         try {
             final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Member: ") + member.getDisplayName(), 1);
             master.add(memberTitle);
+            //Display the avatar at the right size of the block
+            memberTitle.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
             final HtmlList memberInfo = new HtmlList();
             memberTitle.add(memberInfo);
 
