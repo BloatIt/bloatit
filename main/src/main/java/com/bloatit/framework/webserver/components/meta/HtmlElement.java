@@ -1,6 +1,5 @@
 package com.bloatit.framework.webserver.components.meta;
 
-import com.bloatit.common.Log;
 import com.bloatit.framework.webserver.components.writers.QueryResponseStream;
 
 /**

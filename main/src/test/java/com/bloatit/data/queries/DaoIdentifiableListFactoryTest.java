@@ -6,7 +6,6 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DataTestUnit;
-import com.bloatit.data.queries.DaoIdentifiableListFactory;
 
 public class DaoIdentifiableListFactoryTest extends DataTestUnit {
 

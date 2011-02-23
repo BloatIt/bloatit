@@ -1,7 +1,10 @@
 package com.bloatit.framework.utils;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public abstract class GenericParameters<T, U> {
 
@@ -68,8 +71,24 @@ public abstract class GenericParameters<T, U> {
         }
         return element;
     }
+    
+    
+    public final boolean containsKey(final String key){
+        if(key == null){
+            return false;
+        }
+        return elements.containsKey(key);
+    }
+    
+    public final int size(){
+        return elements.size();
+    }
 
     public void putAll(final GenericParameters<T, U> parameters) {
         elements.putAll(parameters.elements);
+    }
+
+    public Set<Entry<String, T>> entrySet() {
+        return elements.entrySet();
     }
 }

@@ -2,9 +2,14 @@ package com.bloatit.framework.webserver.masters;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import javax.xml.bind.JAXBException;
 
 import com.bloatit.common.Log;
 import com.bloatit.framework.rest.RestResource;
+import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.components.writers.IndentedHtmlStream;
 
@@ -40,6 +45,20 @@ public final class HttpResponse {
     public HttpResponse(final OutputStream output) {
         this.output = output;
         this.htmlText = new IndentedHtmlStream(output);
+    }
+
+    /**
+     * Sets the status (OK, ERROR+type) of the HttpResponse.
+     * <p>
+     * Default value of the status is OK_200, hence there is no need to call
+     * this method when everything is OK. When an error occurs, call this method
+     * to set the error status to its new value.
+     * </p>
+     * 
+     * @param status the new status
+     */
+    public void setStatus(StatusCode status) {
+        this.status = status;
     }
 
     public void writeException(final Exception e) {
@@ -99,11 +118,6 @@ public final class HttpResponse {
         closeHeaders();
     }
 
-    private void writeLine(String string) throws IOException {
-        String line = string + "\r\n";
-        output.write(line.getBytes());
-    }
-
     /**
      * <p>
      * Writes a rest resource into an HttpResponse
@@ -122,29 +136,71 @@ public final class HttpResponse {
      * goes haywire, think to set a correct status using the method
      * {@link #setStatus(StatusCode)}
      * </p>
-     *
+     * 
      * @param resource the resource to write
      * @throws IOException whenever an IO error occurs on the underlying stream
+     * @throws
      * @see #setStatus(StatusCode)
      */
     public void writeRestResource(final RestResource resource) throws IOException {
-        output.write("Content-Type: text/xml\r\n".getBytes());
-        closeHeaders();
-        htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
-        if (!(status == StatusCode.OK_200)) {
-            htmlText.writeLine("<rest result=\"fail\">");
-
-        } else {
-            htmlText.writeLine("<rest result=\"ok\">");
+        try {
+            String resourceXml = resource.getXmlString();
+            output.write("Content-Type: text/xml\r\n".getBytes());
+            closeHeaders();
+            htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
+            htmlText.writeLine("<rest result=\"ok\" request=\"" + resource.getRequest() + "\" >");
+            htmlText.indent();
+            htmlText.writeLine(resourceXml);
+            htmlText.unindent();
+            htmlText.writeLine("</rest>");
+        } catch (JAXBException e) {
+            Log.rest().fatal("Exception while marshalling RestResource " + resource.getUnderlying(), e);
+            writeRestError(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error while marhsalling the Object", e);
         }
-        htmlText.indent();
-        resource.write(htmlText);
-        htmlText.unindent();
-        htmlText.writeLine("</rest>");
     }
 
-    public void setStatus(StatusCode status) {
-        this.status = status;
+    /**
+     * Writes a rest error based on the <code>exception</code>
+     * 
+     * @param exception the exception describing the error
+     * @throws IOException when an IO error occurs
+     */
+    public void writeRestError(RestException exception) throws IOException {
+        writeRestError(exception.getStatus(), exception.getMessage(), exception);
+    }
+
+    private void writeLine(String string) throws IOException {
+        String line = string + "\r\n";
+        output.write(line.getBytes());
+    }
+
+    /**
+     * <p>
+     * Writes a rest error
+     * </p>
+     * 
+     * @see {@link #writeRestError(RestException)}
+     */
+    private void writeRestError(StatusCode status, String message, Exception e) throws IOException {
+        output.write("Content-Type: text/xml\r\n".getBytes());
+        closeHeaders();
+        htmlText.writeLine("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>");
+        htmlText.indent();
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        String stackTrace = sw.toString();
+
+        if (stackTrace != null && !stackTrace.isEmpty()) {
+            htmlText.writeLine("<error code=\"" + status.toString() + "\" reason=\"" + message + "\" >");
+            htmlText.writeLine(stackTrace);
+            htmlText.writeLine("</error>");
+        } else {
+            htmlText.writeLine("<error reason=\"" + status.toString() + "\" />");
+        }
+
+        htmlText.unindent();
     }
 
     private void closeHeaders() throws IOException {

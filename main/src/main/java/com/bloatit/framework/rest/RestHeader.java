@@ -7,16 +7,26 @@ import com.bloatit.common.Log;
 import com.bloatit.framework.utils.Parameters;
 import com.bloatit.framework.xcgiserver.HttpHeader;
 
+/**
+ * <p>
+ * Encapsulates all information from the HttpHeader when used by ReST protocol
+ * </p>
+ */
 public class RestHeader {
-
     private static final String UTF_8 = "UTF-8";
 
     private String resourceName = "";
     private final Parameters parameters = new Parameters();
     private final HttpHeader httpHeader;
 
+    /**
+     * Constructs a new RestHeader based on a given <code>HttpHeader</code>
+     * 
+     * @param httpHeader the <code>HttpHeader</code> containing all informations
+     *            of the Http request
+     * @see HttpHeader
+     */
     public RestHeader(HttpHeader httpHeader) {
-
         this.httpHeader = httpHeader;
         try {
             // Extract language
@@ -39,16 +49,43 @@ public class RestHeader {
 
     }
 
+    /**
+     * <p>
+     * Example : <br />
+     * <code>
+     * http://elveos.com/rest/directory/id/action?parameter=value <br /> 
+     * ==>    directory/id/action
+     * </code>
+     * </p>
+     * 
+     * @return the name of the resource
+     */
     public final String getResourceName() {
         return resourceName;
     }
 
+    /**
+     * <p>
+     * Finds the list of parameters (after the <code>?</code>)
+     * </p>
+     * <p>
+     * Example : <br />
+     * <code>
+     * http://elveos.com/rest/directory/id/action?parameter1=value1&parameter2=value2 <br /> 
+     * ==>    {[parameter1 : value1][parameter2 : value2]}
+     * </code>
+     * </p>
+     * 
+     * @return the list of parameters
+     */
     public final Parameters getParameters() {
         return parameters;
     }
 
+    /**
+     * @return the underlying <code>HttpHeader</code>
+     */
     public HttpHeader getHttpHeader() {
         return httpHeader;
     }
-
 }
