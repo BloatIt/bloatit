@@ -19,7 +19,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import com.bloatit.common.Log;
-import com.bloatit.framework.utils.FrameworkConfiguration;
+import com.bloatit.framework.FrameworkConfiguration;
 
 /**
  * <p>

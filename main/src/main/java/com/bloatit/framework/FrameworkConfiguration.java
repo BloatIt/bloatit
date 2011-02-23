@@ -1,4 +1,4 @@
-package com.bloatit.framework.utils;
+package com.bloatit.framework;
 
 import static com.bloatit.common.ConfigurationManager.SHARE_DIR;
 
@@ -28,12 +28,19 @@ public class FrameworkConfiguration {
     private final String mailSmtpSoketFactoryClass;
     private final Boolean mailSmtpAuth;
     private final int mailSmtpPort;
+    private final int xcgiListenport;
+    private final int xcgiThreadsNumber;
 
     private FrameworkConfiguration() {
         properties = ConfigurationManager.loadProperties("framework.properties");
 
+        // Server
+        xcgiThreadsNumber = properties.getInt("xcgi.threads.number");
+        xcgiListenport = properties.getInt("xcgi.listenport");
         // Resources
         ressourcesDirStorage = SHARE_DIR + properties.getString("ressources.dir.storage", "file_storage");
+        // Sessions.
+        sessionDumpfile = SHARE_DIR + properties.getString("session.dumpfile", "sessions.dump");
 
         // Mail configuration
         mailDirTmp = SHARE_DIR + properties.getString("mail.dir.tmp", "temp_mail");
@@ -46,15 +53,12 @@ public class FrameworkConfiguration {
         mailLogin = properties.getString("mail.login");
         mailPassword = properties.getString("mail.password");
         mailFrom = properties.getString("mail.from");
-
-        // Sessions.
-        sessionDumpfile = SHARE_DIR + properties.getString("session.dumpfile", "sessions.dump");
     }
-    
+
     /**
      * Make sure the configuration file is loaded.
      */
-    public static void loadConfiguration(){
+    public static void loadConfiguration() {
         configuration.getClass();
     }
 
@@ -110,4 +114,11 @@ public class FrameworkConfiguration {
         return configuration.mailSmtpPort;
     }
 
+    public static int getXcgiListenport() {
+        return configuration.xcgiListenport;
+    }
+
+    public static int getXcgiThreadsNumber() {
+        return configuration.xcgiThreadsNumber;
+    }
 }

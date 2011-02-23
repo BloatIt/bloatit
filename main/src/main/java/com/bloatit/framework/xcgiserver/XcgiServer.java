@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bloatit.common.Log;
+import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.webserver.SessionManager;
 import com.bloatit.framework.webserver.masters.HttpResponse;
@@ -36,8 +37,8 @@ import com.bloatit.framework.xcgiserver.fcgi.FCGIParser;
 
 public final class XcgiServer {
 
-    private static final int SCGI_PORT = 4000;
-    private static final int NB_THREADS = 2;
+    private static final int SCGI_PORT = FrameworkConfiguration.getXcgiListenport();
+    private static final int NB_THREADS = FrameworkConfiguration.getXcgiThreadsNumber();
 
     private final List<XcgiThread> threads = new ArrayList<XcgiThread>(NB_THREADS);
     private final List<XcgiProcessor> processors = new ArrayList<XcgiProcessor>();
