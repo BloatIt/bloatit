@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -113,8 +114,6 @@ public class RestDescription extends RestElement<Description> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -124,30 +123,25 @@ public class RestDescription extends RestElement<Description> {
     /**
      * @see com.bloatit.model.Description#getDefaultTranslation()
      */
-    // @XmlElement
+    @XmlElement
     public RestTranslation getDefaultTranslation() {
-        // TODO auto-generated code stub
-        RestTranslation defaultTranslation = new RestTranslation(model.getDefaultTranslation());
-        return defaultTranslation;
+        return new RestTranslation(model.getDefaultTranslation());
     }
 
     /**
      * @see com.bloatit.model.Description#getTranslations()
      */
-    // @XmlElement
+    @XmlElement
     public RestTranslationList getTranslations() {
-        // TODO auto-generated code stub
         return new RestTranslationList(model.getTranslations());
     }
 
     /**
      * @see com.bloatit.model.Description#getDefaultLocale()
      */
-    // @XmlElement
+    @XmlAttribute
     public Locale getDefaultLocale() {
-        // TODO auto-generated code stub
-        Locale defaultLocale = model.getDefaultLocale();
-        return defaultLocale;
+        return model.getDefaultLocale();
     }
 
     // ---------------------------------------------------------------------------------------

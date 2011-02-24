@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -117,8 +118,6 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -128,12 +127,10 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     /**
      * @see com.bloatit.model.InternalAccount#getBlocked()
      */
-    // @XmlElement
+    @XmlElement
     public BigDecimal getBlocked() throws RestException {
-        // TODO auto-generated code stub
         try {
-            BigDecimal blocked = model.getBlocked();
-            return blocked;
+            return model.getBlocked();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getBlocked on InternalAccount", e);
         }
@@ -142,12 +139,10 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     /**
      * @see com.bloatit.model.Account#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() throws RestException {
-        // TODO auto-generated code stub
         try {
-            Date creationDate = model.getCreationDate();
-            return creationDate;
+            return model.getCreationDate();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getCreationDate on InternalAccount", e);
         }
@@ -156,12 +151,10 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     /**
      * @see com.bloatit.model.Account#getAmount()
      */
-    // @XmlElement
+    @XmlElement
     public BigDecimal getAmount() throws RestException {
-        // TODO auto-generated code stub
         try {
-            BigDecimal amount = model.getAmount();
-            return amount;
+            return model.getAmount();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on InternalAccount", e);
         }
@@ -170,9 +163,8 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     /**
      * @see com.bloatit.model.Account#getTransactions()
      */
-    // @XmlElement
+    @XmlElement
     public RestTransactionList getTransactions() throws RestException {
-        // TODO auto-generated code stub
         try {
             return new RestTransactionList(model.getTransactions());
         } catch (UnauthorizedOperationException e) {
@@ -183,32 +175,14 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
     /**
      * @see com.bloatit.model.Account#getLastModificationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getLastModificationDate() throws RestException {
-        // TODO auto-generated code stub
         try {
-            Date lastModificationDate = model.getLastModificationDate();
-            return lastModificationDate;
+            return model.getLastModificationDate();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getLastModificationDate on InternalAccount", e);
         }
     }
-
-    // XXX Do something
-    // /**
-    // * @see com.bloatit.model.Account#getActor()
-    // */
-    // // @XmlElement
-    // public RestActor getActor() throws RestException {
-    // // TODO auto-generated code stub
-    // try {
-    // RestActor actor = new RestActor(model.getActor());
-    // return actor;
-    // } catch (UnauthorizedOperationException e) {
-    // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-    // "Not allowed to use getActor on InternalAccount", e);
-    // }
-    // }
 
     // ---------------------------------------------------------------------------------------
     // -- Utils

@@ -6,7 +6,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -116,8 +118,6 @@ public class RestTransaction extends RestElement<Transaction> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -127,12 +127,10 @@ public class RestTransaction extends RestElement<Transaction> {
     /**
      * @see com.bloatit.model.Transaction#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() throws RestException {
-        // TODO auto-generated code stub
         try {
-            Date creationDate = model.getCreationDate();
-            return creationDate;
+            return model.getCreationDate();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getCreationDate on Transaction", e);
         }
@@ -141,12 +139,10 @@ public class RestTransaction extends RestElement<Transaction> {
     /**
      * @see com.bloatit.model.Transaction#getAmount()
      */
-    // @XmlElement
+    @XmlAttribute
     public BigDecimal getAmount() throws RestException {
-        // TODO auto-generated code stub
         try {
-            BigDecimal amount = model.getAmount();
-            return amount;
+            return model.getAmount();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on Transaction", e);
         }
@@ -155,32 +151,15 @@ public class RestTransaction extends RestElement<Transaction> {
     /**
      * @see com.bloatit.model.Transaction#getFrom()
      */
-    // @XmlElement
+    @XmlElement
+    @XmlIDREF
     public RestInternalAccount getFrom() throws RestException {
-        // TODO auto-generated code stub
         try {
-            RestInternalAccount from = new RestInternalAccount(model.getFrom());
-            return from;
+            return new RestInternalAccount(model.getFrom());
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getFrom on Transaction", e);
         }
     }
-
-    // XXX : Do something
-    // /**
-    // * @see com.bloatit.model.Transaction#getTo()
-    // */
-    // // @XmlElement
-    // public RestAccount getTo() throws RestException {
-    // // TODO auto-generated code stub
-    // try{
-    // RestAccount to = new RestAccount(model.getTo());
-    // return to;
-    // }catch(UnauthorizedOperationException e){
-    // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
-    // "Not allowed to use getTo on Transaction", e);
-    // }
-    // }
 
     // ---------------------------------------------------------------------------------------
     // -- Utils

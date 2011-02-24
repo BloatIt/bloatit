@@ -5,7 +5,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
@@ -13,6 +15,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Comment;
+import com.bloatit.model.managers.CommentManager;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestFileMetadataList;
 
@@ -84,19 +87,16 @@ public class RestComment extends RestElement<Comment> {
      * <p>
      * Finds the RestComment matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestComment
      */
     @REST(name = "comments", method = RequestMethod.GET)
     public static RestComment getById(int id) {
-        // TODO auto generated code
-        // RestComment restComment = new
-        // RestComment(CommentManager.getCommentById(id));
-        // if (restComment.isNull()) {
-        // return null;
-        // }
-        // return restComment;
-        return null;
+        RestComment restComment = new RestComment(CommentManager.getCommentById(id));
+        if (restComment.isNull()) {
+            return null;
+        }
+        return restComment;
     }
 
     /**
@@ -106,15 +106,12 @@ public class RestComment extends RestElement<Comment> {
      */
     @REST(name = "comments", method = RequestMethod.GET)
     public static RestCommentList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestCommentList(CommentManager.getAllComments());
     }
 
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-
-    // TODO Generate
 
     @XmlAttribute
     @XmlID
@@ -125,88 +122,70 @@ public class RestComment extends RestElement<Comment> {
     /**
      * @see com.bloatit.model.Comment#getText()
      */
-    // @XmlElement
+    @XmlElement
     public String getText() {
-        // TODO auto-generated code stub
-        String text = model.getText();
-        return text;
+        return model.getText();
     }
 
     /**
      * @see com.bloatit.model.Comment#getChildren()
      */
-    // @XmlElement
+    @XmlElement
     public RestCommentList getChildren() {
-        // TODO auto-generated code stub
         return new RestCommentList(model.getChildren());
     }
 
     /**
      * @see com.bloatit.model.Kudosable#getState()
      */
-    // @XmlElement
+    @XmlAttribute
     public PopularityState getState() {
-        // TODO auto-generated code stub
-        PopularityState state = model.getState();
-        return state;
+        return model.getState();
     }
 
     /**
      * @see com.bloatit.model.Kudosable#getPopularity()
      */
-    // @XmlElement
+    @XmlAttribute
     public int getPopularity() {
-        // TODO auto-generated code stub
-        int popularity = model.getPopularity();
-        return popularity;
-    }
-
-    /**
-     * @see com.bloatit.model.Kudosable#getUserVoteValue()
-     */
-    // @XmlElement
-    public int getUserVoteValue() {
-        // TODO auto-generated code stub
-        int userVoteValue = model.getUserVoteValue();
-        return userVoteValue;
+        return model.getPopularity();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAuthor()
      */
-    // @XmlElement
+    @XmlAttribute
+    @XmlIDREF
     public RestMember getAuthor() {
-        // TODO auto-generated code stub
-        RestMember author = new RestMember(model.getAuthor());
-        return author;
+        return new RestMember(model.getAuthor());
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAsGroup()
      */
-    // @XmlElement
+    @XmlElement
+    @XmlIDREF
     public RestGroup getAsGroup() {
-        // TODO auto-generated code stub
         RestGroup asGroup = new RestGroup(model.getAsGroup());
+        if (asGroup.isNull()) {
+            return null;
+        }
         return asGroup;
     }
 
     /**
      * @see com.bloatit.model.UserContent#getFiles()
      */
-    // @XmlElement
+    @XmlElement
     public RestFileMetadataList getFiles() {
-        // TODO auto-generated code stub
         return new RestFileMetadataList(model.getFiles());
     }
 

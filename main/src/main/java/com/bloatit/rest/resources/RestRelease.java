@@ -5,7 +5,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.rest.RestElement;
@@ -84,7 +86,7 @@ public class RestRelease extends RestElement<Release> {
      * <p>
      * Finds the RestRelease matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestRelease
      */
     @REST(name = "releases", method = RequestMethod.GET)
@@ -114,8 +116,6 @@ public class RestRelease extends RestElement<Release> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -125,89 +125,69 @@ public class RestRelease extends RestElement<Release> {
     /**
      * @see com.bloatit.model.Release#getDescription()
      */
-    // @XmlElement
+    @XmlElement
     public String getDescription() {
-        // TODO auto-generated code stub
-        String description = model.getDescription();
-        return description;
+        return model.getDescription();
     }
 
     /**
      * @see com.bloatit.model.Release#getComments()
      */
-    // @XmlElement
+    @XmlElement
     public RestCommentList getComments() {
-        // TODO auto-generated code stub
-        // RestList<?> comments = new RestList<?>(model.getComments());
         return new RestCommentList(model.getComments());
     }
 
     /**
      * @see com.bloatit.model.Release#getBatch()
      */
-    // @XmlElement
+    @XmlElement
     public RestBatch getBatch() {
-        // TODO auto-generated code stub
-        RestBatch batch = new RestBatch(model.getBatch());
-        return batch;
-    }
-
-    /**
-     * @see com.bloatit.model.Release#getLastComment()
-     */
-    // @XmlElement
-    public RestComment getLastComment() {
-        // TODO auto-generated code stub
-        RestComment lastComment = new RestComment(model.getLastComment());
-        return lastComment;
+        return new RestBatch(model.getBatch());
     }
 
     /**
      * @see com.bloatit.model.Release#getVersion()
      */
-    // @XmlElement
+    @XmlElement
     public String getVersion() {
-        // TODO auto-generated code stub
-        String version = model.getVersion();
-        return version;
+        return model.getVersion();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
-    // @XmlElement
+    @XmlElement
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAuthor()
      */
-    // @XmlElement
+    @XmlAttribute
+    @XmlIDREF
     public RestMember getAuthor() {
-        // TODO auto-generated code stub
-        RestMember author = new RestMember(model.getAuthor());
-        return author;
+        return new RestMember(model.getAuthor());
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAsGroup()
      */
-    // @XmlElement
+    @XmlElement
     public RestGroup getAsGroup() {
-        // TODO auto-generated code stub
         RestGroup asGroup = new RestGroup(model.getAsGroup());
+        if (asGroup.isNull()) {
+            return null;
+        }
         return asGroup;
     }
 
     /**
      * @see com.bloatit.model.UserContent#getFiles()
      */
-    // @XmlElement
+    @XmlElement
     public RestFileMetadataList getFiles() {
-        // TODO auto-generated code stub
         return new RestFileMetadataList(model.getFiles());
     }
 

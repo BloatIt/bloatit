@@ -6,7 +6,9 @@ import java.util.Locale;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
@@ -115,8 +117,6 @@ public class RestTranslation extends RestElement<Translation> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -126,100 +126,73 @@ public class RestTranslation extends RestElement<Translation> {
     /**
      * @see com.bloatit.model.Translation#getTitle()
      */
-    // @XmlElement
+    @XmlElement
     public String getTitle() {
-        // TODO auto-generated code stub
-        String title = model.getTitle();
-        return title;
+        return model.getTitle();
     }
 
     /**
      * @see com.bloatit.model.Translation#getText()
      */
-    // @XmlElement
+    @XmlElement
     public String getText() {
-        // TODO auto-generated code stub
-        String text = model.getText();
-        return text;
+        return model.getText();
     }
 
     /**
      * @see com.bloatit.model.Translation#getLocale()
      */
-    // @XmlElement
+    @XmlAttribute
     public Locale getLocale() {
-        // TODO auto-generated code stub
-        Locale locale = model.getLocale();
-        return locale;
+        return model.getLocale();
     }
 
     /**
      * @see com.bloatit.model.Kudosable#getState()
      */
-    // @XmlElement
+    @XmlAttribute
     public PopularityState getState() {
-        // TODO auto-generated code stub
-        PopularityState state = model.getState();
-        return state;
+        return model.getState();
     }
 
     /**
      * @see com.bloatit.model.Kudosable#getPopularity()
      */
-    // @XmlElement
+    @XmlAttribute
     public int getPopularity() {
-        // TODO auto-generated code stub
-        int popularity = model.getPopularity();
-        return popularity;
-    }
-
-    /**
-     * @see com.bloatit.model.Kudosable#getUserVoteValue()
-     */
-    // @XmlElement
-    public int getUserVoteValue() {
-        // TODO auto-generated code stub
-        int userVoteValue = model.getUserVoteValue();
-        return userVoteValue;
+        return model.getPopularity();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAuthor()
      */
-    // @XmlElement
+    @XmlAttribute
+    @XmlIDREF
     public RestMember getAuthor() {
-        // TODO auto-generated code stub
-        RestMember author = new RestMember(model.getAuthor());
-        return author;
+        return new RestMember(model.getAuthor());
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAsGroup()
      */
-    // @XmlElement
+    @XmlElement
     public RestGroup getAsGroup() {
-        // TODO auto-generated code stub
-        RestGroup asGroup = new RestGroup(model.getAsGroup());
-        return asGroup;
+        return new RestGroup(model.getAsGroup());
     }
 
     /**
      * @see com.bloatit.model.UserContent#getFiles()
      */
-    // @XmlElement
+    @XmlElement
     public RestFileMetadataList getFiles() {
-        // TODO auto-generated code stub
-        // RestList<?> files = new RestList<?>();
         return new RestFileMetadataList(model.getFiles());
     }
 

@@ -27,6 +27,7 @@ import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 
@@ -183,6 +184,13 @@ public final class FileMetadataManager {
                 outChannel.close();
             }
         }
+    }
+
+    /**
+     * @return
+     */
+    public static PageIterable<FileMetadata> getFiles() {
+        return DBRequests.getAll(FileMetadata.class);
     }
 
 }

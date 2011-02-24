@@ -6,7 +6,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -17,7 +19,6 @@ import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Contribution;
 import com.bloatit.rest.list.RestContributionList;
-import com.bloatit.rest.list.RestFileMetadataList;
 
 /**
  * <p>
@@ -87,7 +88,7 @@ public class RestContribution extends RestElement<Contribution> {
      * <p>
      * Finds the RestContribution matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestContribution
      */
     @REST(name = "contributions", method = RequestMethod.GET)
@@ -117,8 +118,6 @@ public class RestContribution extends RestElement<Contribution> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -128,12 +127,10 @@ public class RestContribution extends RestElement<Contribution> {
     /**
      * @see com.bloatit.model.Contribution#getComment()
      */
-    // @XmlElement
+    @XmlElement
     public String getComment() throws RestException {
-        // TODO auto-generated code stub
         try {
-            String comment = model.getComment();
-            return comment;
+            return model.getComment();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getComment on Contribution", e);
         }
@@ -142,12 +139,10 @@ public class RestContribution extends RestElement<Contribution> {
     /**
      * @see com.bloatit.model.Contribution#getAmount()
      */
-    // @XmlElement
+    @XmlAttribute
     public BigDecimal getAmount() throws RestException {
-        // TODO auto-generated code stub
         try {
-            BigDecimal amount = model.getAmount();
-            return amount;
+            return model.getAmount();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on Contribution", e);
         }
@@ -156,40 +151,31 @@ public class RestContribution extends RestElement<Contribution> {
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAuthor()
      */
-    // @XmlElement
+    @XmlAttribute
+    @XmlIDREF
     public RestMember getAuthor() {
-        // TODO auto-generated code stub
-        RestMember author = new RestMember(model.getAuthor());
-        return author;
+        return new RestMember(model.getAuthor());
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAsGroup()
      */
-    // @XmlElement
+    @XmlElement
+    @XmlIDREF
     public RestGroup getAsGroup() {
-        // TODO auto-generated code stub
-        RestGroup asGroup = new RestGroup(model.getAsGroup());
-        return asGroup;
-    }
-
-    /**
-     * @see com.bloatit.model.UserContent#getFiles()
-     */
-    // @XmlElement
-    public RestFileMetadataList getFiles() {
-        // TODO auto-generated code stub
-        return new RestFileMetadataList(model.getFiles());
+        RestGroup restGroup = new RestGroup(model.getAsGroup());
+        if (restGroup.isNull()) {
+            return null;
+        }
+        return restGroup;
     }
 
     // ---------------------------------------------------------------------------------------

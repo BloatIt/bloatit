@@ -1,12 +1,13 @@
 package com.bloatit.rest.resources;
 
-import java.io.File;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.data.DaoFileMetadata.FileType;
@@ -14,6 +15,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.FileMetadata;
+import com.bloatit.model.managers.FileMetadataManager;
 import com.bloatit.rest.list.RestFileMetadataList;
 
 /**
@@ -84,19 +86,16 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      * <p>
      * Finds the RestFileMetadata matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestFileMetadata
      */
     @REST(name = "filemetadatas", method = RequestMethod.GET)
     public static RestFileMetadata getById(int id) {
-        // TODO auto generated code
-        // RestFileMetadata restFileMetadata = new
-        // RestFileMetadata(FileMetadataManager.getFileMetadataById(id));
-        // if (restFileMetadata.isNull()) {
-        // return null;
-        // }
-        // return restFileMetadata;
-        return null;
+        RestFileMetadata restFileMetadata = new RestFileMetadata(FileMetadataManager.getFileMetadataById(id));
+        if (restFileMetadata.isNull()) {
+            return null;
+        }
+        return restFileMetadata;
     }
 
     /**
@@ -106,15 +105,12 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      */
     @REST(name = "filemetadatas", method = RequestMethod.GET)
     public static RestFileMetadataList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestFileMetadataList(FileMetadataManager.getFiles());
     }
 
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-
-    // TODO Generate
 
     @XmlAttribute
     @XmlID
@@ -125,81 +121,58 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
     /**
      * @see com.bloatit.model.FileMetadata#getType()
      */
-    // @XmlElement
+    @XmlAttribute
     public FileType getType() {
-        // TODO auto-generated code stub
-        FileType type = model.getType();
-        return type;
+        return model.getType();
     }
 
     /**
      * @see com.bloatit.model.FileMetadata#getSize()
      */
-    // @XmlElement
+    @XmlAttribute
     public int getSize() {
-        // TODO auto-generated code stub
-        int size = model.getSize();
-        return size;
+        return model.getSize();
     }
 
     /**
      * @see com.bloatit.model.FileMetadata#getFileName()
      */
-    // @XmlElement
+    @XmlAttribute
     public String getFileName() {
-        // TODO auto-generated code stub
-        String fileName = model.getFileName();
-        return fileName;
-    }
-
-    /**
-     * @see com.bloatit.model.FileMetadata#getFile()
-     */
-    // @XmlElement
-    public File getFile() {
-        // TODO auto-generated code stub
-        File file = model.getFile();
-        return file;
+        return model.getFileName();
     }
 
     /**
      * @see com.bloatit.model.FileMetadata#getShortDescription()
      */
-    // @XmlElement
+     @XmlElement
     public String getShortDescription() {
-        // TODO auto-generated code stub
-        String shortDescription = model.getShortDescription();
-        return shortDescription;
+        return model.getShortDescription();
     }
 
     /**
      * @see com.bloatit.model.FileMetadata#getUrl()
      */
-    // @XmlElement
+    @XmlElement
     public String getUrl() {
-        // TODO auto-generated code stub
-        String url = model.getUrl();
-        return url;
+        return model.getUrl();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAuthor()
      */
-    // @XmlElement
+    @XmlAttribute
+    @XmlIDREF
     public RestMember getAuthor() {
-        // TODO auto-generated code stub
-        RestMember author = new RestMember(model.getAuthor());
-        return author;
+        return new RestMember(model.getAuthor());
     }
 
     /**
@@ -207,17 +180,18 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      */
     // @XmlElement
     public RestGroup getAsGroup() {
-        // TODO auto-generated code stub
         RestGroup asGroup = new RestGroup(model.getAsGroup());
+        if (asGroup.isNull()) {
+            return null;
+        }
         return asGroup;
     }
 
     /**
      * @see com.bloatit.model.UserContent#getFiles()
      */
-    // @XmlElement
+    @XmlElement
     public RestFileMetadataList getFiles() {
-        // TODO auto-generated code stub
         return new RestFileMetadataList(model.getFiles());
     }
 
