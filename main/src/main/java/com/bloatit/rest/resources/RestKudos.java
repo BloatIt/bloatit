@@ -1,17 +1,17 @@
 package com.bloatit.rest.resources;
 
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
-import com.bloatit.framework.rest.RestElement;
+import com.bloatit.rest.list.RestKudosList;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
+import com.bloatit.framework.rest.RestElement;
 import com.bloatit.model.Kudos;
-import com.bloatit.rest.list.RestKudosList;
 
 /**
 * <p>
@@ -54,7 +54,7 @@ import com.bloatit.rest.list.RestKudosList;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestKudos extends RestElement<Kudos>{ 
     private Kudos model;
 

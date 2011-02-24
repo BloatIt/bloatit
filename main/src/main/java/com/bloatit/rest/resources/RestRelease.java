@@ -54,7 +54,7 @@ import com.bloatit.model.Release;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestRelease extends RestElement<Release>{ 
     private Release model;
 

@@ -54,7 +54,7 @@ import com.bloatit.model.Bug;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestBug extends RestElement<Bug>{ 
     private Bug model;
 

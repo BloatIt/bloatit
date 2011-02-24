@@ -54,7 +54,7 @@ import com.bloatit.model.JoinGroupInvitation;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation>{ 
     private JoinGroupInvitation model;
 

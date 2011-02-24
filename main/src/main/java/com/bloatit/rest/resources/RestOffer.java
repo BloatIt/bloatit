@@ -54,7 +54,7 @@ import com.bloatit.model.Offer;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestOffer extends RestElement<Offer>{ 
     private Offer model;
 

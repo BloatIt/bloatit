@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -61,6 +62,10 @@ import com.bloatit.rest.list.RestMemberList;
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestMember extends RestElement<Member> {
     private Member model;
+    
+    // ---------------------------------------------------------------------------------------
+    // -- Constructors
+    // ---------------------------------------------------------------------------------------
 
     @SuppressWarnings("unused")
     private RestMember() {
@@ -70,10 +75,12 @@ public class RestMember extends RestElement<Member> {
         this.model = model;
     }
 
+    // ---------------------------------------------------------------------------------------
+    // -- Static methods
+    // ---------------------------------------------------------------------------------------
+
     /**
-     * <p>
      * Finds the RestMember matching the <code>id</code>
-     * </p>
      * 
      * @param id the id of the RestMember
      * @throws RestException
@@ -81,33 +88,24 @@ public class RestMember extends RestElement<Member> {
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMember getById(final int id) {
         RestMember restMember = new RestMember(MemberManager.getMemberById(id));
-        if(restMember.isNull()){
+        if (restMember.isNull()) {
             return null;
         }
         return restMember;
     }
 
     /**
-     * <p>
      * Finds the list of all (valid) RestMember
-     * </p>
      */
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMemberList getAll() {
         return new RestMemberList(MemberManager.getMembers());
     }
 
-    /**
-     * Package method to find the model
-     */
-    Member getModel() {
-        return model;
-    }
-
-    void setModel(final Member model) {
-        this.model = model;
-    }
-
+    // ---------------------------------------------------------------------------------------
+    // -- XML Getters
+    // ---------------------------------------------------------------------------------------
+    
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -142,14 +140,29 @@ public class RestMember extends RestElement<Member> {
     // return new RestDemandList(model.getDemands());
     // }
 
-    // @XmlIDREF
+    @XmlIDREF
     public RestFileMetadata getAvatar() {
         return new RestFileMetadata(model.getAvatar());
     }
+    
+    // ---------------------------------------------------------------------------------------
+    // -- Utils
+    // ---------------------------------------------------------------------------------------
 
     @Override
     public boolean isNull() {
         return (model == null);
+    }
+
+    /**
+     * Package method to find the model
+     */
+    Member getModel() {
+        return model;
+    }
+
+    void setModel(final Member model) {
+        this.model = model;
     }
 
 }

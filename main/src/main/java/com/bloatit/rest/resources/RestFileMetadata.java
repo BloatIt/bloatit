@@ -54,7 +54,7 @@ import com.bloatit.model.FileMetadata;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestFileMetadata extends RestElement<FileMetadata>{ 
     private FileMetadata model;
 

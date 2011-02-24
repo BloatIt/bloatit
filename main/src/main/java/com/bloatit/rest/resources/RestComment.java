@@ -54,7 +54,7 @@ import com.bloatit.model.Comment;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestComment extends RestElement<Comment>{ 
     private Comment model;
 

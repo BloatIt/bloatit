@@ -54,7 +54,7 @@ import com.bloatit.model.Batch;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestBatch extends RestElement<Batch>{ 
     private Batch model;
 

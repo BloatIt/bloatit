@@ -54,7 +54,7 @@ import com.bloatit.model.Transaction;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestTransaction extends RestElement<Transaction>{ 
     private Transaction model;
 

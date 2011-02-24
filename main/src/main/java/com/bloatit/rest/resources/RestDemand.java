@@ -54,7 +54,7 @@ import com.bloatit.model.Demand;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestDemand extends RestElement<Demand>{ 
     private Demand model;
 

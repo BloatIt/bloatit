@@ -54,7 +54,7 @@ import com.bloatit.model.HighlightDemand;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestHighlightDemand extends RestElement<HighlightDemand>{ 
     private HighlightDemand model;
 

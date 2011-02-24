@@ -54,7 +54,7 @@ import com.bloatit.model.Translation;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestTranslation extends RestElement<Translation>{ 
     private Translation model;
 

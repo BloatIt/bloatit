@@ -54,7 +54,7 @@ import com.bloatit.model.Description;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestDescription extends RestElement<Description>{ 
     private Description model;
 

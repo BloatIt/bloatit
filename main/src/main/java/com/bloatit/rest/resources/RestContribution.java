@@ -54,7 +54,7 @@ import com.bloatit.model.Contribution;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestContribution extends RestElement<Contribution>{ 
     private Contribution model;
 

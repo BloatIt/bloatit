@@ -54,7 +54,7 @@ import com.bloatit.model.Group;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestGroup extends RestElement<Group>{ 
     private Group model;
 

@@ -54,7 +54,7 @@ import com.bloatit.model.ExternalAccount;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestExternalAccount extends RestElement<ExternalAccount>{ 
     private ExternalAccount model;
 

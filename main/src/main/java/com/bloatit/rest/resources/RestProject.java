@@ -54,7 +54,7 @@ import com.bloatit.model.Project;
 * </p>
 */
 @XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestProject extends RestElement<Project>{ 
     private Project model;
 
