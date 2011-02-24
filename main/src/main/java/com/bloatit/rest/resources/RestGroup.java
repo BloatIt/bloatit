@@ -160,7 +160,7 @@ public class RestGroup extends RestElement<Group> {
     /**
      * @see com.bloatit.model.Actor#getInternalAccount()
      */
-    // @XmlElement
+    @XmlElement
     public RestInternalAccount getInternalAccount() throws RestException {
         try {
             return new RestInternalAccount(model.getInternalAccount());
@@ -172,7 +172,7 @@ public class RestGroup extends RestElement<Group> {
     /**
      * @see com.bloatit.model.Actor#getExternalAccount()
      */
-    // @XmlElement
+    @XmlElement
     public RestExternalAccount getExternalAccount() throws RestException {
         try {
             return new RestExternalAccount(model.getExternalAccount());
