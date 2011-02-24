@@ -1,5 +1,6 @@
 package com.bloatit.rest.resources;
 
+import com.bloatit.framework.rest.RestElement;
 import com.bloatit.model.BankTransaction;
 import com.bloatit.model.Batch;
 import com.bloatit.model.Bug;
@@ -20,7 +21,6 @@ import com.bloatit.model.Project;
 import com.bloatit.model.Release;
 import com.bloatit.model.Transaction;
 import com.bloatit.model.Translation;
-import com.bloatit.rest.RestElement;
 
 public class ModelToRestVisitor implements ModelClassVisitor<RestElement<?>> {
 

@@ -15,7 +15,7 @@ import com.bloatit.rest.resources.RestExternalAccount;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of ExternalAccount<br />
- * Example:
+ * Example: 
  * 
  * <pre>
  * {@code <ExternalAccounts>}
@@ -24,19 +24,18 @@ import com.bloatit.rest.resources.RestExternalAccount;
  * {@code </ExternalAccounts>}
  * </pre>
  * <p>
- */
+ */ 
 @XmlRootElement
 public class RestExternalAccountList extends RestListBinder<RestExternalAccount, ExternalAccount> {
     /**
-     * Creates a RestExternalAccountList from a
-     * {@codePageIterable<ExternalAccount>}
-     * 
+     * Creates a RestExternalAccountList from a {@codePageIterable<ExternalAccount>}
+     *
      * @param collection the list of elements from the model
      */
-    public RestExternalAccountList(final PageIterable<ExternalAccount> collection) {
+    public RestExternalAccountList(PageIterable<ExternalAccount> collection) {
         super(collection);
     }
-
+    
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -46,3 +45,4 @@ public class RestExternalAccountList extends RestListBinder<RestExternalAccount,
         return this;
     }
 }
+

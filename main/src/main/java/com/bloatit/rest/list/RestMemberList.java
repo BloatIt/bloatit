@@ -1,7 +1,6 @@
 package com.bloatit.rest.list;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -44,7 +43,7 @@ public class RestMemberList extends RestListBinder<RestMember, Member> {
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "members")
+//    @XmlElementWrapper(name = "members")
     @XmlElement(name = "member")
     public RestMemberList getMembers() {
         return this;

@@ -15,7 +15,7 @@ import com.bloatit.rest.resources.RestHighlightDemand;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of HighlightDemand<br />
- * Example:
+ * Example: 
  * 
  * <pre>
  * {@code <HighlightDemands>}
@@ -24,19 +24,18 @@ import com.bloatit.rest.resources.RestHighlightDemand;
  * {@code </HighlightDemands>}
  * </pre>
  * <p>
- */
+ */ 
 @XmlRootElement
 public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand, HighlightDemand> {
     /**
-     * Creates a RestHighlightDemandList from a
-     * {@codePageIterable<HighlightDemand>}
-     * 
+     * Creates a RestHighlightDemandList from a {@codePageIterable<HighlightDemand>}
+     *
      * @param collection the list of elements from the model
      */
-    public RestHighlightDemandList(final PageIterable<HighlightDemand> collection) {
+    public RestHighlightDemandList(PageIterable<HighlightDemand> collection) {
         super(collection);
     }
-
+    
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -46,3 +45,4 @@ public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand,
         return this;
     }
 }
+

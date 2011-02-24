@@ -190,7 +190,6 @@ public abstract class RestServer implements XcgiProcessor {
                         + generateParametersString(parameters));
             }
             return result;
-
         }
 
         int id;
@@ -202,7 +201,7 @@ public abstract class RestServer implements XcgiProcessor {
         }
         result = invokeStatic(requestMethod, pathInfo[0], id);
 
-        if (result == null) {
+        if (result == null || (RestElement.class.isAssignableFrom((result.getClass())) && ((RestElement<?>) result).isNull())) {
             throw new RestException(StatusCode.ERROR_404_NOT_FOUND, "No result to request " + requestMethod + " " + pathInfo[0] + "/" + pathInfo[1]);
         }
 

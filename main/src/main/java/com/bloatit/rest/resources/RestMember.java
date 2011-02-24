@@ -1,22 +1,20 @@
 package com.bloatit.rest.resources;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.bloatit.data.DaoJoinGroupInvitation.State;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
-import com.bloatit.model.JoinGroupInvitation;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
-import com.bloatit.rest.RestElement;
-import com.bloatit.rest.list.RestDemandList;
 import com.bloatit.rest.list.RestMemberList;
 
 /**
@@ -60,6 +58,7 @@ import com.bloatit.rest.list.RestMemberList;
  * </p>
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class RestMember extends RestElement<Member> {
     private Member model;
 
@@ -77,10 +76,15 @@ public class RestMember extends RestElement<Member> {
      * </p>
      * 
      * @param id the id of the RestMember
+     * @throws RestException
      */
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMember getById(final int id) {
-        return new RestMember(MemberManager.getMemberById(id));
+        RestMember restMember = new RestMember(MemberManager.getMemberById(id));
+        if(restMember.isNull()){
+            return null;
+        }
+        return restMember;
     }
 
     /**
@@ -100,21 +104,26 @@ public class RestMember extends RestElement<Member> {
         return model;
     }
 
+    void setModel(final Member model) {
+        this.model = model;
+    }
+
     @XmlAttribute
     @XmlID
     public String getId() {
         return model.getId().toString();
     }
 
-    public PageIterable<JoinGroupInvitation> getReceivedInvitation(State state) {
-        return model.getReceivedInvitation(state);
-    }
+    // public PageIterable<JoinGroupInvitation> getReceivedInvitation(State
+    // state) {
+    // return model.getReceivedInvitation(state);
+    // }
 
     @XmlAttribute(name = "name")
     public String getDisplayName() throws RestException {
         try {
             return model.getDisplayName();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to get name on user", e);
         }
     }
@@ -123,19 +132,24 @@ public class RestMember extends RestElement<Member> {
     public int getKarma() throws RestException {
         try {
             return model.getKarma();
-        } catch (UnauthorizedOperationException e) {
+        } catch (final UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to get karma on user", e);
         }
     }
 
     // @XmlElement
-    public RestDemandList getDemands() {
-        return new RestDemandList(model.getDemands());
-    }
+    // public RestDemandList getDemands() {
+    // return new RestDemandList(model.getDemands());
+    // }
 
     // @XmlIDREF
     public RestFileMetadata getAvatar() {
         return new RestFileMetadata(model.getAvatar());
+    }
+
+    @Override
+    public boolean isNull() {
+        return (model == null);
     }
 
 }
