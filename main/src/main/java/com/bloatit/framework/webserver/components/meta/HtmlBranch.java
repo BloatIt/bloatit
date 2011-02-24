@@ -28,7 +28,7 @@ public abstract class HtmlBranch extends HtmlElement {
     }
 
     @Override
-    public final HtmlBranch add(final XmlNode html) {
+    public HtmlBranch add(final XmlNode html) {
         super.add(html);
         return this;
     }

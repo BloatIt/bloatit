@@ -18,21 +18,25 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
-import com.bloatit.framework.webserver.components.form.HtmlFormBlock;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
+import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.pages.master.BoxLayout;
+import com.bloatit.web.pages.master.SideBarElementLayout;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
 
@@ -62,45 +66,37 @@ public final class CreateDemandPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() {
         if (DemandManager.canCreate(session.getAuthToken())) {
-            return new HtmlDiv("padding_box").add(generateIdeaCreationForm());
+
+            add(generateIdeaCreationForm());
         }
         return generateBadRightError();
     }
 
     private HtmlElement generateIdeaCreationForm() {
+
+        TwoColumnLayout layout = new TwoColumnLayout();
+
+
+        BoxLayout box = new BoxLayout();
+
         final HtmlTitleBlock createIdeaTitle = new HtmlTitleBlock(tr("Create a new demand"), 1);
         final CreateDemandActionUrl doCreateUrl = new CreateDemandActionUrl();
 
         // Create the form stub
         final HtmlForm createIdeaForm = new HtmlForm(doCreateUrl.urlString());
-        final HtmlFormBlock specifBlock = new HtmlFormBlock(tr("Specify the new demand"));
-        final HtmlFormBlock paramBlock = new HtmlFormBlock(tr("Parameters of the new demand"));
 
         createIdeaTitle.add(createIdeaForm);
-        createIdeaForm.add(specifBlock);
-        createIdeaForm.add(paramBlock);
-        createIdeaForm.add(new HtmlSubmit(tr("submit")));
+
 
         // Create the fields that will describe the description of the idea
         final FormFieldData<String> descriptionFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
         final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData, tr("Title"));
         descriptionInput.setCssClass("input_long_400px");
         descriptionInput.setComment(tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
+        createIdeaForm.add(descriptionInput);
 
-        // Create the fields that will describe the specification of the idea
-        final FormFieldData<String> specificationFieldData = doCreateUrl.getSpecificationParameter().formFieldData();
-        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData,
-                                                                 tr("Describe the idea"),
-                                                                 SPECIF_INPUT_NB_LINES,
-                                                                 SPECIF_INPUT_NB_COLUMNS);
-        specificationInput.setComment(tr("Enter a long description of the idea : list all features, describe them all "
-                + "... Try to leave as little room for ambiguity as possible."));
-        specifBlock.add(descriptionInput);
-        specifBlock.add(specificationInput);
 
-        final LanguageSelector languageInput = new LanguageSelector(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
-        paramBlock.add(languageInput);
-
+        // Linked project
         final HtmlDropDown projectInput = new HtmlDropDown(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
         for (final Project project : ProjectManager.getProjects()) {
             try {
@@ -111,12 +107,59 @@ public final class CreateDemandPage extends LoggedPage {
             }
         }
         // TODO: set the default value to "select a project"
-        paramBlock.add(projectInput);
-
         // TODO: add form to create a new project
-        final HtmlDiv group = new HtmlDiv();
-        group.add(createIdeaTitle);
-        return group;
+
+        createIdeaForm.add(projectInput);
+
+
+        // Description of the feature
+        final FormFieldData<String> specificationFieldData = doCreateUrl.getSpecificationParameter().formFieldData();
+        final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData,
+                                                                 tr("Describe the idea"),
+                                                                 SPECIF_INPUT_NB_LINES,
+                                                                 SPECIF_INPUT_NB_COLUMNS);
+        specificationInput.setComment(tr("Enter a long description of the idea : list all features, describe them all "
+                + "... Try to leave as little room for ambiguity as possible."));
+        createIdeaForm.add(specificationInput);
+
+        final LanguageSelector languageInput = new LanguageSelector(CreateDemandAction.LANGUAGE_CODE, tr("Language"));
+        createIdeaForm.add(languageInput);
+
+        //Submit button
+        createIdeaForm.add(new HtmlSubmit(tr("submit")));
+
+
+
+        box.add(createIdeaTitle);
+
+        layout.addLeft(box);
+
+        // RightColunm
+        layout.addRight(generateCreateDemandDocumentationBlock());
+        layout.addRight(generateMarkdownDocumentationBlock());
+
+        return layout;
+    }
+
+    private XmlNode generateMarkdownDocumentationBlock() {
+        SideBarElementLayout layout = new SideBarElementLayout();
+
+        layout.setTitle(tr("Markdown "));
+
+        layout.add(new HtmlParagraph(tr("Not yet documentation for markdown.")));
+
+        return layout;
+    }
+
+    private XmlNode generateCreateDemandDocumentationBlock() {
+        SideBarElementLayout layout = new SideBarElementLayout();
+
+        layout.setTitle(tr("Help"));
+
+        layout.add(new HtmlParagraph(tr("You can create a demand if you're a elephant. Create a demand will create it, and then a demand will have been create.")));
+        layout.add(new HtmlParagraph(tr("If you don't create a demand, maybe a demand will create you.")));
+
+        return layout;
     }
 
     private HtmlElement generateBadRightError() {

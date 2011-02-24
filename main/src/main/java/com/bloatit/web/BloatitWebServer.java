@@ -28,6 +28,7 @@ import com.bloatit.web.bugs.ModifyBugAction;
 import com.bloatit.web.bugs.ModifyBugPage;
 import com.bloatit.web.bugs.ReportBugAction;
 import com.bloatit.web.bugs.ReportBugPage;
+import com.bloatit.web.members.ChangeAvatarAction;
 import com.bloatit.web.pages.AccountChargingPage;
 import com.bloatit.web.pages.AddProjectPage;
 import com.bloatit.web.pages.AddReleasePage;
@@ -72,6 +73,7 @@ import com.bloatit.web.url.AddReleaseActionUrl;
 import com.bloatit.web.url.AddReleasePageUrl;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.BugPageUrl;
+import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.CommentCommentActionUrl;
 import com.bloatit.web.url.CommentReplyPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
@@ -310,6 +312,9 @@ public class BloatitWebServer extends WebServer {
         }
         if (pageCode.equals(ModifyBugActionUrl.getName())) {
             return new ModifyBugAction(new ModifyBugActionUrl(params, session.getParameters()));
+        }
+        if (pageCode.equals(ChangeAvatarActionUrl.getName())) {
+            return new ChangeAvatarAction(new ChangeAvatarActionUrl(params, session.getParameters()));
         }
 
         // Resource page
