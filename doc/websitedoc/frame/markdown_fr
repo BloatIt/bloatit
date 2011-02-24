@@ -1,0 +1,16 @@
+Aide mémoire markdown
+===========================
+
+[Documentation Markdown complète](documentation/markdown)
+<dl>
+<dt>2 espaces en fin de ligne</dt>
+<dd>forcer un saut de ligne</dd>
+<dt>**gras**</dt>
+<dd><strong>gras</strong></dd>
+<dt>_italique_</dt>
+<dd><em>italique</em></dd>
+<dt>> citation</dt>
+<dd><blockquote>citation</blockquote></dd>
+</dl> 
+
+

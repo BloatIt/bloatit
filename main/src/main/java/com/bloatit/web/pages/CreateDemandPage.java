@@ -18,7 +18,6 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
-import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
@@ -28,14 +27,13 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
-import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Project;
 import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.web.actions.CreateDemandAction;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
 import com.bloatit.web.pages.master.BoxLayout;
-import com.bloatit.web.pages.master.SideBarElementLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.CreateDemandActionUrl;
 import com.bloatit.web.url.CreateDemandPageUrl;
@@ -129,29 +127,8 @@ public final class CreateDemandPage extends LoggedPage {
         layout.addLeft(box);
 
         // RightColunm
-        layout.addRight(generateCreateDemandDocumentationBlock());
-        layout.addRight(generateMarkdownDocumentationBlock());
-
-        return layout;
-    }
-
-    private XmlNode generateMarkdownDocumentationBlock() {
-        SideBarElementLayout layout = new SideBarElementLayout();
-
-        layout.setTitle(tr("Markdown "));
-
-        layout.add(new HtmlParagraph(tr("Not yet documentation for markdown.")));
-
-        return layout;
-    }
-
-    private XmlNode generateCreateDemandDocumentationBlock() {
-        SideBarElementLayout layout = new SideBarElementLayout();
-
-        layout.setTitle(tr("Help"));
-
-        layout.add(new HtmlParagraph(tr("You can create a demand if you're a elephant. Create a demand will create it, and then a demand will have been create.")));
-        layout.add(new HtmlParagraph(tr("If you don't create a demand, maybe a demand will create you.")));
+        layout.addRight(new SideBarDocumentationBlock("create_demand"));
+        layout.addRight(new SideBarDocumentationBlock("markdown"));
 
         return layout;
     }
