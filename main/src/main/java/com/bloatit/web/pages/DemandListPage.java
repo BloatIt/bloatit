@@ -44,7 +44,7 @@ public final class DemandListPage extends MasterPage {
     public static final String FILTER_IN_PROGRESS = "in progress";
     public static final String FILTER_FINISHED = "finished";
     public static final String FILTER_CODE = "filter";
-    
+
     @RequestParam(name = FILTER_CODE)
     @Optional(FILTER_IN_PROGRESS)
     private final String filter;

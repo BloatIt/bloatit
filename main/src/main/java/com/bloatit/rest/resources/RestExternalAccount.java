@@ -88,7 +88,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      * <p>
      * Finds the RestExternalAccount matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestExternalAccount
      */
     @REST(name = "externalaccounts", method = RequestMethod.GET)
@@ -209,19 +209,20 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
         }
     }
 
-//    /** XXX Do something
-//     * @see com.bloatit.model.Account#getActor()
-//     */
-//    // @XmlElement
-//    public RestActor getActor() throws RestException {
-//        // TODO auto-generated code stub
-//        try {
-//            RestActor actor = new RestActor(model.getActor());
-//            return actor;
-//        } catch (UnauthorizedOperationException e) {
-//            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getActor on ExternalAccount", e);
-//        }
-//    }
+    // /** XXX Do something
+    // * @see com.bloatit.model.Account#getActor()
+    // */
+    // // @XmlElement
+    // public RestActor getActor() throws RestException {
+    // // TODO auto-generated code stub
+    // try {
+    // RestActor actor = new RestActor(model.getActor());
+    // return actor;
+    // } catch (UnauthorizedOperationException e) {
+    // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+    // "Not allowed to use getActor on ExternalAccount", e);
+    // }
+    // }
 
     // ---------------------------------------------------------------------------------------
     // -- Utils

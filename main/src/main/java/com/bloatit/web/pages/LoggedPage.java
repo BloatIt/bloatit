@@ -73,7 +73,7 @@ public abstract class LoggedPage extends MasterPage {
      * is not logged, a redirection to <code>LoginPage</code> will happen, and
      * user will be warned with <code>{@link #getRefusalReason()}</code>
      * </p>
-     * 
+     *
      * @return the root HtmlElement for the page
      * @throws RedirectException when an error occurs that need to interrupt
      *             content generation and redirect to another page
@@ -86,15 +86,15 @@ public abstract class LoggedPage extends MasterPage {
      * </p>
      * <p>
      * Standard example :
-     * 
+     *
      * <pre>
      * public String getRefusalReason() {
      *     return tr(&quot;You need to be logged to access %pagename%&quot;);
      * }
      * </pre>
-     * 
+     *
      * </p>
-     * 
+     *
      * @return a String indicating to the user why he cannot access this page
      */
     public abstract String getRefusalReason();

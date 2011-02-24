@@ -18,13 +18,13 @@ package com.bloatit.framework.webserver.components.form;
  * </p>
  * <p>
  * The result will be :
- * 
+ *
  * <pre>
  * {@code
  * <label for="...">plop</label>
  * <input id="..." type="password" class="cssClass" ...>default value</input>}
  * </pre>
- * 
+ *
  * </p>
  */
 public final class HtmlPasswordField extends HtmlFormField<String> {
@@ -36,7 +36,7 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
      * <p>
      * If a label is added, it will will be positioned BEFORE the element
      * </p>
-     * 
+     *
      * @param name the name of the element
      */
     public HtmlPasswordField(final String name) {
@@ -51,7 +51,7 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
      * <p>
      * The Label will be positioned BEFORE the element
      * </p>
-     * 
+     *
      * @param name the name of the element
      * @param label the label of the element
      */

@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestRelease;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Release<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Releases>}
  *     {@code <Release name=Release1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestRelease;
  * {@code </Releases>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "releases")
+ */
+@XmlRootElement(name = "releases")
 public class RestReleaseList extends RestListBinder<RestRelease, Release> {
 
     /**
@@ -47,7 +47,7 @@ public class RestReleaseList extends RestListBinder<RestRelease, Release> {
     public RestReleaseList(PageIterable<Release> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +61,3 @@ public class RestReleaseList extends RestListBinder<RestRelease, Release> {
         return releases;
     }
 }
-

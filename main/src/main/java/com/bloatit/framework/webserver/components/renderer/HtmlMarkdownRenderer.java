@@ -17,7 +17,7 @@ public class HtmlMarkdownRenderer extends PlaceHolderElement {
 
     /**
      * Creates a new MarkdownRenderer based on some markdown text
-     * 
+     *
      * @param text the markdown text
      */
     public HtmlMarkdownRenderer(final String text) {
@@ -26,7 +26,8 @@ public class HtmlMarkdownRenderer extends PlaceHolderElement {
 
     /**
      * Creates a new MarkdownRenderer based on markdown or html text
-     * 
+     *
+     *
      * @param text the content to display, must be markdown text if
      *            <code>alreadyRenderer</code> is <code>true</code> or html text
      *            if <code>alreadyRenderer</code> is <code>false</code>

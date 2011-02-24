@@ -116,7 +116,7 @@ public final class DaoFileMetadata extends DaoUserContent {
 
     /**
      * Tells that the current File is an image. Used in DaoImage constructor.
-     * 
+     *
      * @param image the image to set.
      */
     void setImage(final DaoImage image) {
@@ -125,7 +125,7 @@ public final class DaoFileMetadata extends DaoUserContent {
 
     /**
      * If the file is an image, it should be associated with a DaoImage object.
-     * 
+     *
      * @return the image object associated with this file. It can be null.
      */
     public DaoImage getImage() {

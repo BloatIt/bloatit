@@ -16,7 +16,7 @@ import com.bloatit.framework.xcgiserver.postparsing.exceptions.MalformedPostExce
 public abstract class PostParameterParser {
     /**
      * Finds the next POST data and return it as a <code>PostParameter</code>
-     * 
+     *
      * @return the <code>PostParameter</code> representing the POST data
      * @throws EOFException If EOF is reached too early. Parsing should stop
      *             after this occur
@@ -29,9 +29,6 @@ public abstract class PostParameterParser {
      * @throws MalformedPostException If post is malformed. Parsing should stop
      *             after this happen
      */
-    public abstract PostParameter readNext() throws EOFException,
-                                            IOException,
-                                            InvalidMimeEncodingException,
-                                            MalformedMimeException,
-                                            MalformedPostException;
+    public abstract PostParameter readNext()
+            throws EOFException, IOException, InvalidMimeEncodingException, MalformedMimeException, MalformedPostException;
 }

@@ -103,11 +103,11 @@ public final class Transaction extends Identifiable<DaoTransaction> {
     protected boolean isMine(final Member member) {
         return getFromUnprotected().isMine(member) || getToUnprotected().isMine(member);
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

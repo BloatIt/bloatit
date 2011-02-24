@@ -33,7 +33,7 @@ public abstract class WebServer implements XcgiProcessor {
         final Session session = findSession(httpHeader);
 
         try {
-            WebHeader header= new WebHeader(httpHeader);
+            WebHeader header = new WebHeader(httpHeader);
             Context.reInitializeContext(header, session);
 
             final String pageCode = header.getPageName();

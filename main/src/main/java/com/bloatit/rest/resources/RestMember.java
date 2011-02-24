@@ -83,7 +83,7 @@ public class RestMember extends RestElement<Member> {
 
     /**
      * Finds the RestMember matching the <code>id</code>
-     * 
+     *
      * @param id the id of the RestMember
      * @throws RestException
      */

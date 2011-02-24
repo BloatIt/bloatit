@@ -64,7 +64,7 @@ public final class DaoImage extends DaoIdentifiable {
 
     /**
      * Create an image.
-     * 
+     *
      * @param horizontalSize is the number of pixels for the X coordinate.
      * @param verticalSize is the number of pixels for the Y coordinate.
      * @param compression is a string describing the type of compression. This

@@ -173,7 +173,7 @@ public final class Session {
 
     /**
      * Finds all the session parameters
-     * 
+     *
      * @return the parameter of the session
      * @deprecated use a RequestParam
      */

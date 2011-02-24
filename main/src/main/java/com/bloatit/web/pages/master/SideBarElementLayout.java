@@ -7,7 +7,6 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 
 public class SideBarElementLayout extends HtmlDiv {
 
-
     private final HtmlTitle title;
     private final HtmlDiv body;
 

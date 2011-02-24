@@ -84,7 +84,7 @@ public class RestProject extends RestElement<Project> {
      * <p>
      * Finds the RestProject matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestProject
      */
     @REST(name = "projects", method = RequestMethod.GET)

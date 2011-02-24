@@ -15,10 +15,11 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface REST {
     /**
-     * 
      * @return
      */
     String name();
+
     RequestMethod method();
+
     public String[] params() default {};
 }

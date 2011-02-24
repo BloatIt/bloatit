@@ -44,7 +44,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
 
     /**
      * Create a DaoHighlightDemand and add it into the db.
-     * 
+     *
      * @param demand the demand
      * @param position the position
      * @param reason the reason
@@ -71,7 +71,7 @@ public final class DaoHighlightDemand extends DaoIdentifiable {
 
     /**
      * Create a DaoHighlightDemand
-     * 
+     *
      * @param demand
      * @param position
      * @param reason

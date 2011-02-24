@@ -65,14 +65,15 @@ public class UrlParameterConstraints<U> {
     public UrlParameterConstraints() {
         this(false);
     }
-    
+
     public UrlParameterConstraints(boolean optional) {
         this.isMinExclusive = false;
         this.isMaxExclusive = false;
         this.min = new Param<Integer>(ParamConstraint.DEFAULT_MIN, "min constraint violation (%value) invalide for parameter %param.");
         this.max = new Param<Integer>(ParamConstraint.DEFAULT_MAX, "max constraint violation (%value) invalide for parameter %param.");
         this.optional = new Param<Boolean>(optional, "optional constraint violation (%value) invalide for parameter %param.");
-        this.precision = new Param<Integer>(ParamConstraint.DEFAULT_PRECISION, "precision constraint violation (%value) invalide for parameter %param.");
+        this.precision = new Param<Integer>(ParamConstraint.DEFAULT_PRECISION,
+                                            "precision constraint violation (%value) invalide for parameter %param.");
         this.length = new Param<Integer>(ParamConstraint.DEFAULT_LENGTH, "length constraint violation (%value) invalide for parameter %param.");
     }
 

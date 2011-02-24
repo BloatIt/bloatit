@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestBug;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Bug<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Bugs>}
  *     {@code <Bug name=Bug1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestBug;
  * {@code </Bugs>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "bugs")
+ */
+@XmlRootElement(name = "bugs")
 public class RestBugList extends RestListBinder<RestBug, Bug> {
 
     /**
@@ -47,7 +47,7 @@ public class RestBugList extends RestListBinder<RestBug, Bug> {
     public RestBugList(PageIterable<Bug> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +61,3 @@ public class RestBugList extends RestListBinder<RestBug, Bug> {
         return bugs;
     }
 }
-

@@ -84,7 +84,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      * <p>
      * Finds the RestFileMetadata matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestFileMetadata
      */
     @REST(name = "filemetadatas", method = RequestMethod.GET)

@@ -30,7 +30,7 @@ import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 
-public interface Demand extends KudosableInterface<DaoDemand> , Commentable {
+public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
 
     /**
      * @param action is the type of action you can do on the property. (READ for
@@ -99,8 +99,8 @@ public interface Demand extends KudosableInterface<DaoDemand> , Commentable {
      *             {@link DemandState#PENDING} or {@link DemandState#PREPARING}.
      * @see #authenticate(AuthToken)
      */
-    Offer
-            addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation) throws UnauthorizedOperationException;
+    Offer addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
+            throws UnauthorizedOperationException;
 
     Offer addEmptyOffer(Member author) throws UnauthorizedOperationException;
 
@@ -125,8 +125,6 @@ public interface Demand extends KudosableInterface<DaoDemand> , Commentable {
 
     // TODO authorization
     boolean validateCurrentBatch(final boolean force);
-
-
 
     /**
      * Used by Offer class. You should never have to use it

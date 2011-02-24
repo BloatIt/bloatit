@@ -21,7 +21,7 @@ public class RestHeader {
 
     /**
      * Constructs a new RestHeader based on a given <code>HttpHeader</code>
-     * 
+     *
      * @param httpHeader the <code>HttpHeader</code> containing all informations
      *            of the Http request
      * @see HttpHeader
@@ -53,11 +53,11 @@ public class RestHeader {
      * <p>
      * Example : <br />
      * <code>
-     * http://elveos.com/rest/directory/id/action?parameter=value <br /> 
+     * http://elveos.com/rest/directory/id/action?parameter=value <br />
      * ==>    directory/id/action
      * </code>
      * </p>
-     * 
+     *
      * @return the name of the resource
      */
     public final String getResourceName() {
@@ -71,11 +71,11 @@ public class RestHeader {
      * <p>
      * Example : <br />
      * <code>
-     * http://elveos.com/rest/directory/id/action?parameter1=value1&parameter2=value2 <br /> 
+     * http://elveos.com/rest/directory/id/action?parameter1=value1&parameter2=value2 <br />
      * ==>    {[parameter1 : value1][parameter2 : value2]}
      * </code>
      * </p>
-     * 
+     *
      * @return the list of parameters
      */
     public final Parameters getParameters() {

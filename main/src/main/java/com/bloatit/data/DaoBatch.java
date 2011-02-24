@@ -49,7 +49,7 @@ import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A DaoBatch is a part of a DaoOffer.
- * 
+ *
  * @author Thomas Guyard
  */
 @Entity
@@ -121,7 +121,7 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /**
      * Create a new DaoBatch and add it into the db.
-     * 
+     *
      * @see #DaoBatch(Date, BigDecimal, DaoDescription, DaoOffer, int)
      * @return the newly created {@link DaoBatch}
      */
@@ -144,7 +144,7 @@ public final class DaoBatch extends DaoIdentifiable {
 
     /**
      * Create a DaoBatch.
-     * 
+     *
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must
@@ -185,7 +185,7 @@ public final class DaoBatch extends DaoIdentifiable {
      * level are closed. This method take parameters for the Fatal and Major
      * level. The Minor level is calculated from it (see
      * {@link #getMinorBugsPercent()}).
-     * 
+     *
      * @param fatalPercent is the percent of the money the developer will get
      *            when all the {@link Level#FATAL} bugs are closed. It must be >
      *            0 and <= 100.
@@ -210,7 +210,7 @@ public final class DaoBatch extends DaoIdentifiable {
 
     public void addRelease(final DaoRelease release) {
         releases.add(release);
-        if (batchState == BatchState.DEVELOPING){
+        if (batchState == BatchState.DEVELOPING) {
             batchState = BatchState.UAT;
         }
         getOffer().batchHasARelease(this);
@@ -228,7 +228,7 @@ public final class DaoBatch extends DaoIdentifiable {
      * behavior using the <code>force</code> parameter. The force parameter
      * allows to validate the batch without taking into account these previous
      * restrictions.
-     * 
+     *
      * @param force force the validation of this batch. Do not take care of the
      *            bugs and the timeOuts.
      * @return true if all parts of this batch is validated.
@@ -261,7 +261,7 @@ public final class DaoBatch extends DaoIdentifiable {
     /**
      * You can validate a batch after its release and when the bugs requirement
      * are done.
-     * 
+     *
      * @return true if an admin should validate this Batch part. False
      *         otherwise.
      */

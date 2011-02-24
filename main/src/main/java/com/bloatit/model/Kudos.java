@@ -43,11 +43,11 @@ public final class Kudos extends UserContent<DaoKudos> {
     public int getValue() {
         return getDao().getValue();
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

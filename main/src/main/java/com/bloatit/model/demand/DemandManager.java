@@ -38,7 +38,7 @@ public final class DemandManager {
 
     /**
      * Gets the all demands stored in the DB.
-     * 
+     *
      * @return the demands
      */
     public static PageIterable<Demand> getDemands() {
@@ -48,7 +48,7 @@ public final class DemandManager {
     /**
      * Gets the demands with a specified state and with on offer selected or
      * not.
-     * 
+     *
      * @param state the state of the demands to return
      * @param hasSelectedOffer true if you want demands with a selected offer.
      * @return the demands
@@ -66,7 +66,7 @@ public final class DemandManager {
 
     /**
      * Gets the demand by id.
-     * 
+     *
      * @param id the id of the demand we are looking for.
      * @return the demand or null if not found.
      */
@@ -76,7 +76,7 @@ public final class DemandManager {
 
     /**
      * Gets the demandImplementation by id.
-     * 
+     *
      * @param id the id of the demand
      * @return the demand or null if not found
      */
@@ -86,7 +86,7 @@ public final class DemandManager {
 
     /**
      * Gets the number of demand.
-     * 
+     *
      * @return the number of demand.
      */
     public static int getDemandsCount() {
@@ -96,7 +96,7 @@ public final class DemandManager {
     // Can create if authenticated.
     /**
      * Tells if a user can create a demand.
-     * 
+     *
      * @param authToken the auth token representing the user wanting to create a
      *            demand.
      * @return true, if successful

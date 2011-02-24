@@ -27,7 +27,7 @@ import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * This is a group ... There are member in it.
- * 
+ *
  * @see DaoGroup
  */
 public final class Group extends Actor<DaoGroup> {
@@ -51,7 +51,7 @@ public final class Group extends Actor<DaoGroup> {
      * <p>
      * Creates a new group
      * </p>
-     * 
+     *
      * @param login the displayed name of the group
      * @param contact a string with various means to contact the group
      * @param description a textual description of the group
@@ -98,7 +98,7 @@ public final class Group extends Actor<DaoGroup> {
 
     /**
      * Indicates wheter the group is public or not
-     * 
+     *
      * @return <code>true</code> if the group is public, <code>false</code>
      *         otherwise
      */
@@ -120,7 +120,7 @@ public final class Group extends Actor<DaoGroup> {
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

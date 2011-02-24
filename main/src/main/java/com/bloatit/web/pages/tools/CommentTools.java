@@ -54,7 +54,6 @@ public class CommentTools {
 
             commentBlock.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(comment.getAuthor())));
 
-
             final HtmlParagraph commentText = new HtmlParagraph();
             commentText.add(new HtmlRawTextRenderer(comment.getText()));
             commentBlock.add(commentText);

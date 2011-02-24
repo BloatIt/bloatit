@@ -10,7 +10,7 @@ import com.bloatit.framework.webserver.url.Messages;
  * This class is used to link an API used to handle parameters from POST/GET (or
  * even session) with the form fields
  * </p>
- * 
+ *
  * @param <T> the underlying type of the FormFieldData
  */
 public interface FormFieldData<T> {
@@ -23,7 +23,7 @@ public interface FormFieldData<T> {
     /**
      * When a user input wrong value, you have to regenerated the form with
      * error messages.
-     * 
+     *
      * @return the error messages on the field.
      */
     Messages getErrorMessages();

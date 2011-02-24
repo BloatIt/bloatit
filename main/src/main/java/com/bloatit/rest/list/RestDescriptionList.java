@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestDescription;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Description<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Descriptions>}
  *     {@code <Description name=Description1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestDescription;
  * {@code </Descriptions>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "descriptions")
+ */
+@XmlRootElement(name = "descriptions")
 public class RestDescriptionList extends RestListBinder<RestDescription, Description> {
 
     /**
@@ -47,7 +47,7 @@ public class RestDescriptionList extends RestListBinder<RestDescription, Descrip
     public RestDescriptionList(PageIterable<Description> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +61,3 @@ public class RestDescriptionList extends RestListBinder<RestDescription, Descrip
         return descriptions;
     }
 }
-

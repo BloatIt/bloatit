@@ -57,7 +57,7 @@ public class SCGIParser implements XcgiParser {
      * request headers.<br>
      * After the headers had been loaded, you can read the body of the request
      * manually from the same {@code input} stream:
-     * 
+     *
      * <pre>
      * // Load the SCGIUtils headers.
      * Socket clientSocket = socket.accept();
@@ -66,9 +66,9 @@ public class SCGIParser implements XcgiParser {
      * // Read the body of the request.
      * bis.read(new byte[Integer.parseInt(env.get(&quot;CONTENT_LENGTH&quot;))]);
      * </pre>
-     * 
+     *
      * an efficient (buffered) input stream.
-     * 
+     *
      * @return strings passed via the SCGIUtils request.
      */
     @Override

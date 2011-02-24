@@ -27,7 +27,6 @@ public final class DemandCommentListComponent extends HtmlPageComponent {
     private PageIterable<Comment> comments;
     private final Demand targetDemand;
 
-
     public DemandCommentListComponent(final Demand demand) {
         super();
         this.targetDemand = demand;

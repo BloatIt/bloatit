@@ -25,14 +25,14 @@ import com.bloatit.data.DaoIdentifiable;
 /**
  * The cache manager is the class responsible of the model level cache. There is
  * a cache different on each thread.
- * 
+ *
  * @author Thomas Guyard
  */
 public final class CacheManager {
 
     /**
      * Used to have a cache object for each threads.
-     * 
+     *
      * @author Thomas Guyard
      */
     static class UniqueThreadCache {
@@ -65,7 +65,7 @@ public final class CacheManager {
 
     /**
      * Add a model class to the cache.
-     * 
+     *
      * @param id is the identifant of the object into the cache.
      * @param identifiable is the object to store into the cache.
      * @return identifiable.
@@ -79,7 +79,7 @@ public final class CacheManager {
 
     /**
      * Get a class from the cache using its identifant.
-     * 
+     *
      * @param identifiable is the id of the object you are looking for.
      * @return the object if it exist, null otherwise.
      */

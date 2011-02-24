@@ -29,12 +29,12 @@ import com.bloatit.framework.FrameworkConfiguration;
  * <b>Note:</b> a file in the user configuration directory (default /home/
  * {@code<user>} /.config/bloatit/) called mail.properties should exist with the
  * following values
- * 
+ *
  * <pre>
  * #mail.smtp.host=smtp.gmail.com (example value with gmail)
- * mail.smtp.host= 
- * mail.smtp.socketFactory.port=465 
- * mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory 
+ * mail.smtp.host=
+ * mail.smtp.socketFactory.port=465
+ * mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory
  * mail.smtp.auth=true
  * mail.smtp.port=465
  * #mail.from=example@gmail.com
@@ -44,11 +44,11 @@ import com.bloatit.framework.FrameworkConfiguration;
  * mail.login=
  * mail.password=
  * </pre>
- * 
+ *
  * </p>
  */
 public class MailServer extends Thread {
-    private final static String WIP_MAIL_DIRECTORY =  FrameworkConfiguration.getMailDirTmp();
+    private final static String WIP_MAIL_DIRECTORY = FrameworkConfiguration.getMailDirTmp();
     private final static String SENT_MAIL_DIRECTORY = FrameworkConfiguration.getMailDirSend();
     private final static String FLUSH_AND_STOP = "FLUSHANDSTOP";
     private final static long MILLISECOND = 1L;
@@ -101,7 +101,7 @@ public class MailServer extends Thread {
      * If no instance exists yet, this method will not create one, instead it
      * will throw an exception. Therefore, init should always be called before
      * </p>
-     * 
+     *
      * @return the MailServer instance
      * @throws MailFatalError when the mail server cannot be created (i.e. :
      *             directories to store mails can't be created)
@@ -128,7 +128,7 @@ public class MailServer extends Thread {
      * therefore be called before doing any other actions (such as informing the
      * user that the mail has been sent, or updating the database).
      * </p>
-     * 
+     *
      * @param mail the mail to send
      */
     public void send(final Mail mail) {
@@ -285,7 +285,7 @@ public class MailServer extends Thread {
 
     /**
      * Computes the time to wait before we do a retry.
-     * 
+     *
      * @return The time in milliseconds before a retry to send a mail
      */
     private final long timeToRetry() {

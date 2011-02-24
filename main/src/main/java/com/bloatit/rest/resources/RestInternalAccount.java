@@ -87,7 +87,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      * <p>
      * Finds the RestInternalAccount matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestInternalAccount
      */
     @REST(name = "internalaccounts", method = RequestMethod.GET)

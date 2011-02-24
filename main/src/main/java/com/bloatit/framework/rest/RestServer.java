@@ -52,7 +52,7 @@ public abstract class RestServer implements XcgiProcessor {
      * Processes requests. If requests is a request to a <code>ReST</code>
      * resource, writes this resource to the <code>response</code>
      * </p>
-     * 
+     *
      * @return <code>true</code> if the request was a ReST request,
      *         <code>false</code> otherwise
      * @throws
@@ -122,7 +122,7 @@ public abstract class RestServer implements XcgiProcessor {
      * <code>http://example.com/ws/{@code <resource>}</code> then this method
      * will return a set containing {"rest", "ws"}.
      * </p>
-     * 
+     *
      * @return a list of directories that can contain ReST resources
      */
     protected abstract Set<String> getResourcesDirectories();
@@ -131,7 +131,7 @@ public abstract class RestServer implements XcgiProcessor {
      * <p>
      * Determines the class to used for a given resource
      * </p>
-     * 
+     *
      * @param forResource the resource
      * @return the <code>Class</code> that holds results for
      *         <code>forResource</code> request
@@ -148,7 +148,7 @@ public abstract class RestServer implements XcgiProcessor {
      * Indicates whether the <code>string description</code> of the resource is
      * a valid descriptor.
      * </p>
-     * 
+     *
      * @param resource the string descriptor of the resource we want to access
      * @return <code>true</code> if the resource descriptor is valid,
      *         <code>false</code> otherwise
@@ -160,7 +160,7 @@ public abstract class RestServer implements XcgiProcessor {
      * Process a rest request and return the <code>Object</code> resulting of
      * the invocation
      * </p>
-     * 
+     *
      * @param restResource the resource (eg: members/1/messages)
      * @param requestMethod the http request method (
      *            <code>GET, POST, PUT, DELETE</code>)
@@ -242,7 +242,7 @@ public abstract class RestServer implements XcgiProcessor {
      * <p>
      * This method has to be used when the ReST request doesn't specify an id
      * </p>
-     * 
+     *
      * @param requestMethod the http request method (
      *            <code>GET, POST, PUT, DELETE</code>)
      * @param path the path of the RestResource
@@ -265,15 +265,15 @@ public abstract class RestServer implements XcgiProcessor {
      * This method has to be used on the <b>root</b> of ReST request that
      * specifies an id. <br />
      * Example of usage:
-     * 
+     *
      * <pre>
      * Request: GET http://elveos.org/rest/members/1/messages
      * Use: invokeStatic(RequestMethod.GET, members, 1);
      * Return: Members.getById(1);
      * </pre>
-     * 
+     *
      * </p>
-     * 
+     *
      * @param requestMethod the http request method (
      *            <code>GET, POST, PUT, DELETE</code>)
      * @param path the <b>root</b> of the ReST request
@@ -305,7 +305,7 @@ public abstract class RestServer implements XcgiProcessor {
      * Invoke the method specified by <code>path</code> on the
      * <code>lookup</code> object
      * </p>
-     * 
+     *
      * @param requestMethod the http request method (
      *            <code>GET, POST, PUT, DELETE</code>)
      * @param lookup the object on which the method will be used
@@ -342,7 +342,7 @@ public abstract class RestServer implements XcgiProcessor {
      * <p>
      * Factorization of code
      * </p>
-     * 
+     *
      * @see #invokeStatic(RequestMethod, String, Parameters)
      * @see #invokeMethod(RequestMethod, Object, String, Parameters)
      */

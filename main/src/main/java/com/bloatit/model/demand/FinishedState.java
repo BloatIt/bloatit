@@ -24,7 +24,7 @@ public class FinishedState extends AbstractDemandState {
 
     /**
      * Instantiates a new finished state.
-     * 
+     *
      * @param demand the demand on which this state apply.
      */
     public FinishedState(final DemandImplementation demand) {

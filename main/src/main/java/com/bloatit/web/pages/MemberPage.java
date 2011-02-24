@@ -88,7 +88,7 @@ public final class MemberPage extends MasterPage {
         try {
             final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Member: ") + member.getDisplayName(), 1);
             master.add(memberTitle);
-            //Display the avatar at the right size of the block
+            // Display the avatar at the right size of the block
             memberTitle.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
             final HtmlList memberInfo = new HtmlList();
             memberTitle.add(memberInfo);
@@ -110,12 +110,11 @@ public final class MemberPage extends MasterPage {
             memberGroups.add(pagedTeamList);
 
             // Change avatar (only is the member is the user)
-            if(member.isOwner()) {
+            if (member.isOwner()) {
                 final HtmlTitleBlock changeAvatar = new HtmlTitleBlock(Context.tr("Change avatar"), 2);
                 changeAvatar.add(generateAvatarChangeForm());
                 master.add(changeAvatar);
             }
-
 
         } catch (final UnauthorizedOperationException e) {
             add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this member.")));
@@ -123,7 +122,7 @@ public final class MemberPage extends MasterPage {
     }
 
     private XmlNode generateAvatarChangeForm() {
-    final ChangeAvatarActionUrl changeAvatarActionUrl = new ChangeAvatarActionUrl(member);
+        final ChangeAvatarActionUrl changeAvatarActionUrl = new ChangeAvatarActionUrl(member);
         final HtmlForm changeAvatarForm = new HtmlForm(changeAvatarActionUrl.urlString());
         changeAvatarForm.enableFileUpload();
 

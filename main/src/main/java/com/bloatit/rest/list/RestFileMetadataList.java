@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestFileMetadata;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of FileMetadata<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <FileMetadatas>}
  *     {@code <FileMetadata name=FileMetadata1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestFileMetadata;
  * {@code </FileMetadatas>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "filemetadatas")
+ */
+@XmlRootElement(name = "filemetadatas")
 public class RestFileMetadataList extends RestListBinder<RestFileMetadata, FileMetadata> {
 
     /**
@@ -47,7 +47,7 @@ public class RestFileMetadataList extends RestListBinder<RestFileMetadata, FileM
     public RestFileMetadataList(PageIterable<FileMetadata> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +61,3 @@ public class RestFileMetadataList extends RestListBinder<RestFileMetadata, FileM
         return filemetadatas;
     }
 }
-

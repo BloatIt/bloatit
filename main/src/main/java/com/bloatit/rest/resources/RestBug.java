@@ -87,7 +87,7 @@ public class RestBug extends RestElement<Bug> {
      * <p>
      * Finds the RestBug matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestBug
      */
     @REST(name = "bugs", method = RequestMethod.GET)

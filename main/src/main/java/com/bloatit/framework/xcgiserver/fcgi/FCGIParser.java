@@ -1,18 +1,18 @@
 /*
  * Copyright (C) 2011 Linkeos.
- * 
+ *
  * This file is part of BloatIt.
- * 
+ *
  * BloatIt is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Affero General Public License as published by the Free
  * Software Foundation, either version 3 of the License, or (at your option) any
  * later version.
- * 
+ *
  * BloatIt is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -139,7 +139,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Create a fcgi parser with the 2 stream of the web server's socket.
-     * 
+     *
      * @param input stream containing data from the web server
      * @param output stream where to write the response to the web server
      * @throws IOException
@@ -354,7 +354,7 @@ public class FCGIParser implements XcgiParser {
 
     /**
      * Converts a 4 byte array of unsigned bytes to an long
-     * 
+     *
      * @param b an array of 4 unsigned bytes
      * @return a long representing the unsigned int
      */

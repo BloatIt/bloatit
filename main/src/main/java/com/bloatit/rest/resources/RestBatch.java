@@ -85,7 +85,7 @@ public class RestBatch extends RestElement<Batch> {
      * <p>
      * Finds the RestBatch matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestBatch
      */
     @REST(name = "batchs", method = RequestMethod.GET)

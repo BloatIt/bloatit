@@ -6,7 +6,6 @@ import com.bloatit.framework.webserver.components.meta.XmlNode;
 
 public class TwoColumnLayout extends HtmlDiv {
 
-
     private final HtmlDiv leftColumn;
     private final HtmlDiv rightColumn;
 

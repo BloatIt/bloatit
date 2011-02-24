@@ -23,7 +23,7 @@ import java.util.EnumSet;
  * The RightManager class contains some useful methods to create the
  * {@link Accessor} classes.
  * </p>
- * 
+ *
  * @see Accessor
  */
 public abstract class RightManager {

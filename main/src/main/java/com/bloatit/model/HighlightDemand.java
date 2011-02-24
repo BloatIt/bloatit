@@ -54,11 +54,11 @@ public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
         // TODO Auto-generated method stub
         return false;
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

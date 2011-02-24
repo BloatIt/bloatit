@@ -43,7 +43,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
 
     /**
      * Creates a new country
-     * 
+     *
      * @param name the long name of the country
      * @param code the ISO code of the country
      */
@@ -114,7 +114,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
      * <p>
      * Lists all available countries ordered on their fullname
      * </p>
-     * 
+     *
      * @return a list of the available countries
      */
     public static Set<Country> getAvailableCountries() {
@@ -123,7 +123,7 @@ public final class Country implements Comparable<Country>, DropDownElement {
 
     /**
      * Used to initialize the {@link Country#availableCountries} static field.
-     * 
+     *
      * @return the list of country loaded from a country ressources file.
      */
     private static Set<Country> createAvailableCountries() {

@@ -30,16 +30,16 @@ public abstract class XmlElement extends XmlNode {
      * </p>
      * <p>
      * Example :
-     * 
+     *
      * <pre>
      * HtmlElement e = new HtmlElement(&quot;img&quot;);
      * e.addAttribute(&quot;src&quot;, &quot;example.com/plop.png&quot;);
-     * 
+     *
      * </pre>
-     * 
+     *
      * will be used to create : {@code <img src="example.com/plop.png />}
      * </p>
-     * 
+     *
      * @param name the name of the attribute to add
      * @param value the value of the attribute to add
      * @return itself
@@ -51,7 +51,7 @@ public abstract class XmlElement extends XmlNode {
 
     /**
      * Add a son to this HtmlElement
-     * 
+     *
      * @param html the htmlNode son to add
      * @return itself
      */
@@ -62,7 +62,7 @@ public abstract class XmlElement extends XmlNode {
 
     /**
      * Adds some raw text to this HtmlElement
-     * 
+     *
      * @param text the text to add
      * @return itself
      */
@@ -73,7 +73,7 @@ public abstract class XmlElement extends XmlNode {
 
     /**
      * Return wether this element has at least one child
-     * 
+     *
      * @return <code>true</code> if this element has at least one child,
      *         <code>false</code> otherwise
      */

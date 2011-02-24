@@ -64,7 +64,7 @@ public final class Translation extends Kudosable<DaoTranslation> {
 
     /**
      * Smart cut the text, add a "…" char, and return it.
-     * 
+     *
      * @param sizeMax is the maximum size the returned text can be.
      * @param variance is how far we are looking for the punctuation mark to cut
      *            the text.
@@ -154,11 +154,11 @@ public final class Translation extends Kudosable<DaoTranslation> {
     protected int turnHidden() {
         return ModelConfiguration.getKudosableTranslationTurnHidden();
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

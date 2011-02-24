@@ -12,7 +12,7 @@ import com.bloatit.model.AbstractModel;
 
 /**
  * This class represent the whole framework.
- * 
+ *
  * @author Thomas Guyard
  */
 public class Framework {

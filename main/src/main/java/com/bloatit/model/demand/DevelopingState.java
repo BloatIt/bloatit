@@ -23,7 +23,7 @@ public class DevelopingState extends AbstractDemandState {
 
     /**
      * Instantiates a new developing state.
-     * 
+     *
      * @param demand the demand on which this state apply.
      */
     public DevelopingState(final DemandImplementation demand) {

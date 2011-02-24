@@ -13,7 +13,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
      * <p>
      * Creates a money field with a given <code>name</code>
      * </p>
-     * 
+     *
      * @param name the value of the html attribute <code>name</code>
      */
     public HtmlMoneyField(final String name) {
@@ -25,7 +25,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
      * Creates a money field with a given <code>name</code> and some text used
      * to explain the usage of the field
      * </p>
-     * 
+     *
      * @param name the value of the html attribute <code>name</code>
      * @param label some text displayed to explain how to use the field
      */
@@ -38,7 +38,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
      * Creates a money field based on some form data along some text used to
      * explain the usage of the field
      * </p>
-     * 
+     *
      * @param data the form data to base the field on
      * @param label some text displayed to explain how to use the field
      */

@@ -199,7 +199,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     /**
      * Return the progression of the funding of this offer with the amount
      * available on the demand
-     * 
+     *
      * @return
      * @throws UnauthorizedOperationException
      */
@@ -212,7 +212,7 @@ public final class Offer extends Kudosable<DaoOffer> {
         }
         return Float.POSITIVE_INFINITY;
     }
-    
+
     public Batch getCurrentBatch() {
         return Batch.create(getDao().getCurrentBatch());
     }
@@ -256,7 +256,6 @@ public final class Offer extends Kudosable<DaoOffer> {
     protected int turnHidden() {
         return ModelConfiguration.getKudosableOfferTurnHidden();
     }
-
 
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {

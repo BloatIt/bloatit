@@ -44,8 +44,8 @@ public final class UrlParameterDescription<U> {
     public final String getDefaultValue() {
         return defaultValue;
     }
-    
-    public final String getSuggestedValue(){
+
+    public final String getSuggestedValue() {
         return suggestedValue;
     }
 

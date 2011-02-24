@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestBankTransaction;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of BankTransaction<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <BankTransactions>}
  *     {@code <BankTransaction name=BankTransaction1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestBankTransaction;
  * {@code </BankTransactions>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "banktransactions")
+ */
+@XmlRootElement(name = "banktransactions")
 public class RestBankTransactionList extends RestListBinder<RestBankTransaction, BankTransaction> {
 
     /**
@@ -40,14 +40,15 @@ public class RestBankTransactionList extends RestListBinder<RestBankTransaction,
     }
 
     /**
-     * Creates a RestBankTransactionList from a {@codePageIterable<BankTransaction>}
+     * Creates a RestBankTransactionList from a
+     * {@codePageIterable<BankTransaction>}
      *
      * @param collection the list of elements from the model
      */
     public RestBankTransactionList(PageIterable<BankTransaction> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +62,3 @@ public class RestBankTransactionList extends RestListBinder<RestBankTransaction,
         return banktransactions;
     }
 }
-

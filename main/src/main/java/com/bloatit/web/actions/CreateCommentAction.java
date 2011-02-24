@@ -51,7 +51,6 @@ public final class CreateCommentAction extends LoggedAction {
     @RequestParam(name = ATTACHEMENT_CODE, role = Role.POST)
     private final String attachement;
 
-
     @Optional
     @RequestParam(name = ATTACHEMENT_NAME_CODE, role = Role.POST)
     private final String attachementFileName;

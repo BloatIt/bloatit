@@ -72,11 +72,11 @@ public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> 
     protected boolean isMine(final Member member) {
         return false;
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return null;

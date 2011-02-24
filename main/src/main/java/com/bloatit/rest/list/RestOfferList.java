@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestOffer;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Offer<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Offers>}
  *     {@code <Offer name=Offer1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestOffer;
  * {@code </Offers>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "offers")
+ */
+@XmlRootElement(name = "offers")
 public class RestOfferList extends RestListBinder<RestOffer, Offer> {
 
     /**
@@ -47,7 +47,7 @@ public class RestOfferList extends RestListBinder<RestOffer, Offer> {
     public RestOfferList(PageIterable<Offer> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +61,3 @@ public class RestOfferList extends RestListBinder<RestOffer, Offer> {
         return offers;
     }
 }
-

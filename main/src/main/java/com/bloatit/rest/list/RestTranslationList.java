@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestTranslation;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Translation<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Translations>}
  *     {@code <Translation name=Translation1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestTranslation;
  * {@code </Translations>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "translations")
+ */
+@XmlRootElement(name = "translations")
 public class RestTranslationList extends RestListBinder<RestTranslation, Translation> {
 
     /**
@@ -47,7 +47,7 @@ public class RestTranslationList extends RestListBinder<RestTranslation, Transla
     public RestTranslationList(PageIterable<Translation> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +61,3 @@ public class RestTranslationList extends RestListBinder<RestTranslation, Transla
         return translations;
     }
 }
-

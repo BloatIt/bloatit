@@ -15,7 +15,7 @@ public class XmlText extends XmlNode {
 
     /**
      * Creates a component to add raw Html to a page
-     * 
+     *
      * @param content the Html string to add
      */
     public XmlText(final String content) {

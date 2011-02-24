@@ -56,6 +56,7 @@ public class DateUtils {
 
     /**
      * In millisecond
+     *
      * @param from
      * @param to
      * @return
@@ -63,9 +64,9 @@ public class DateUtils {
     public static long elapsed(Date from, Date to) {
         return to.getTime() - from.getTime();
     }
-    
-    public static boolean isInTheFuture(Date date){
+
+    public static boolean isInTheFuture(Date date) {
         return date.after(now());
     }
-  
+
 }

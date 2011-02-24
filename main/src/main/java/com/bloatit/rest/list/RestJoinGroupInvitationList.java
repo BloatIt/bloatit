@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestJoinGroupInvitation;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of JoinGroupInvitation<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <JoinGroupInvitations>}
  *     {@code <JoinGroupInvitation name=JoinGroupInvitation1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestJoinGroupInvitation;
  * {@code </JoinGroupInvitations>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "joingroupinvitations")
+ */
+@XmlRootElement(name = "joingroupinvitations")
 public class RestJoinGroupInvitationList extends RestListBinder<RestJoinGroupInvitation, JoinGroupInvitation> {
 
     /**
@@ -40,14 +40,15 @@ public class RestJoinGroupInvitationList extends RestListBinder<RestJoinGroupInv
     }
 
     /**
-     * Creates a RestJoinGroupInvitationList from a {@codePageIterable<JoinGroupInvitation>}
+     * Creates a RestJoinGroupInvitationList from a
+     * {@codePageIterable<JoinGroupInvitation>}
      *
      * @param collection the list of elements from the model
      */
     public RestJoinGroupInvitationList(PageIterable<JoinGroupInvitation> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +62,3 @@ public class RestJoinGroupInvitationList extends RestListBinder<RestJoinGroupInv
         return joingroupinvitations;
     }
 }
-

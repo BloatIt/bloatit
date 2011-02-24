@@ -23,7 +23,7 @@ public class DiscardedState extends AbstractDemandState {
 
     /**
      * Instantiates a new discarded state.
-     * 
+     *
      * @param demand the demand on which this state apply.
      */
     public DiscardedState(final DemandImplementation demand) {

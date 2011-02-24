@@ -44,6 +44,7 @@ public abstract class LoggedAction extends Action {
 
     /**
      * Called when user is correctly authentified
+     *
      * @param authenticatedMember TODO
      */
     public abstract Url doProcessRestricted(Member authenticatedMember);
@@ -56,7 +57,7 @@ public abstract class LoggedAction extends Action {
 
     /**
      * <b>Do not forget to localize</p>
-     * 
+     *
      * @return the error message to dislay to the user, informing him while he
      *         couldn't access the page
      */

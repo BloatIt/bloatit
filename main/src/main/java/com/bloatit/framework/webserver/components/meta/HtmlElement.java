@@ -20,16 +20,16 @@ public abstract class HtmlElement extends XmlElement {
     /**
      * <p>
      * Sets the id of the html element :
-     * 
+     *
      * <pre>
      * <element id="..." />
      * </pre>
-     * 
+     *
      * </p>
      * <p>
      * Shortcut to element.addAttribute("id",value)
      * </p>
-     * 
+     *
      * @param id the value of the id
      * @return the element
      */
@@ -40,11 +40,11 @@ public abstract class HtmlElement extends XmlElement {
 
     /**
      * Finds the id of the element
-     * 
+     *
      * <pre>
      * <element id="value" />
      * </pre>
-     * 
+     *
      * @return The value contained in the attribute id of the element
      */
     public String getId() {
@@ -59,7 +59,7 @@ public abstract class HtmlElement extends XmlElement {
      * <p>
      * Shortcut for element.addattribute("class",cssClass)
      * </p>
-     * 
+     *
      * @param cssClass
      * @return
      */

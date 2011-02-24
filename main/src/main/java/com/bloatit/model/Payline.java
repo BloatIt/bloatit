@@ -161,8 +161,8 @@ public final class Payline extends RestrictedObject {
         return parameters;
     }
 
-    public Reponse
-            doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl) throws UnauthorizedOperationException {
+    public Reponse doPayment(final BigDecimal amount, final String cancelUrl, final String returnUrl, final String notificationUrl)
+            throws UnauthorizedOperationException {
         final DoWebPaymentRequest paymentRequest = new DoWebPaymentRequest();
         paymentRequest.setCancelURL(cancelUrl);
         paymentRequest.setReturnURL(returnUrl);
@@ -239,7 +239,7 @@ public final class Payline extends RestrictedObject {
 
     /**
      * Return a unique ref.
-     * 
+     *
      * @param member
      * @return
      */

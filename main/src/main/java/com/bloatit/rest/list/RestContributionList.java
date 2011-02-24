@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestContribution;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Contribution<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Contributions>}
  *     {@code <Contribution name=Contribution1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestContribution;
  * {@code </Contributions>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "contributions")
+ */
+@XmlRootElement(name = "contributions")
 public class RestContributionList extends RestListBinder<RestContribution, Contribution> {
 
     /**
@@ -47,7 +47,7 @@ public class RestContributionList extends RestListBinder<RestContribution, Contr
     public RestContributionList(PageIterable<Contribution> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +61,3 @@ public class RestContributionList extends RestListBinder<RestContribution, Contr
         return contributions;
     }
 }
-

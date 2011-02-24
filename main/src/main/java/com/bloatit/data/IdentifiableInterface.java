@@ -21,7 +21,7 @@ import com.bloatit.rest.resources.ModelClassVisitor;
 public interface IdentifiableInterface {
 
     Integer getId();
-    
+
     <ReturnType> ReturnType accept(ModelClassVisitor<ReturnType> visitor);
 
 }

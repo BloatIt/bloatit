@@ -123,10 +123,8 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     @Override
     public void addFile(FileMetadata file) {
-        //TODO right management: only the owner can add file
+        // TODO right management: only the owner can add file
         getDao().addFile(file.getDao());
     }
-
-
 
 }

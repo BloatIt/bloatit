@@ -114,7 +114,7 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
 
     /**
      * Add a WHERE close with demandState = <code>state</code>.
-     * 
+     *
      * @param state the state
      */
     public void stateEquals(final DemandState state) {
@@ -123,7 +123,7 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
 
     /**
      * Add a WHERE close with project = <code>project</code>.
-     * 
+     *
      * @param project the project
      */
     public void projectEquals(final DaoProject project) {
@@ -179,13 +179,13 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
      * Add a WHERE close restricting the total contribution value of the
      * returning demands. For example if you want your query to return only the
      * demands that have less than 42 €, you can call:
-     * 
+     *
      * <pre>
      * DaoDemandListFactory factory = new DaoDemandListfactory();
      * factory.contribution(Comparator.LESS, 42);
      * PageIterable&lt;DaoDemand&gt; demands = factory.createCollection();
      * </pre>
-     * 
+     *
      * @param cmp the cmp.
      * @param value the value
      */

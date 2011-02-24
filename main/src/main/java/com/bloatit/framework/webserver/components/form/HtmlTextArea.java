@@ -18,12 +18,12 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
  * Class used to created html textarea blocks
  * </p>
  * <p>
- * 
+ *
  * <pre>
  * <div>
  *      <div>
  * <label for="...">labeltext</label>
- * 
+ *
  * </p>
  * <div> <textarea name="..." class="cssClass" ...>defaultValue</textarea>
  * </div> </div> </pre> </p>

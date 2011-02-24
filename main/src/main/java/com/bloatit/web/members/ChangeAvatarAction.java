@@ -43,7 +43,7 @@ public final class ChangeAvatarAction extends Action {
     @RequestParam(name = MEMBER)
     private final Member member;
 
-    @ParamConstraint(optionalErrorMsg=@tr("You must provide an image as avatar"))
+    @ParamConstraint(optionalErrorMsg = @tr("You must provide an image as avatar"))
     @RequestParam(name = AVATAR_CODE, role = Role.POST)
     private final String avatar;
 
@@ -77,12 +77,12 @@ public final class ChangeAvatarAction extends Action {
         }
 
         final FileMetadata avatarFileMedatata = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
-                                                                                            avatar,
-                                                                                            avatarFileName,
-                                                                                            "avatar image");
+                                                                                       avatar,
+                                                                                       avatarFileName,
+                                                                                       "avatar image");
         member.setAvatar(avatarFileMedatata);
 
-        session.notifyGood(tr("Avatar change to '{0}'",avatarFileName));
+        session.notifyGood(tr("Avatar change to '{0}'", avatarFileName));
         return Context.getSession().pickPreferredPage();
     }
 

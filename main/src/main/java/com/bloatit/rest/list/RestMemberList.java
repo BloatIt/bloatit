@@ -18,7 +18,7 @@ import com.bloatit.rest.resources.RestMember;
  * <p>
  * This class can be represented in Xml as a list of Member<br />
  * Example:
- * 
+ *
  * <pre>
  * {@code <Members>}
  *     {@code <Member name=Member1 />}
@@ -29,7 +29,7 @@ import com.bloatit.rest.resources.RestMember;
  */
 @XmlRootElement(name = "members")
 public class RestMemberList extends RestListBinder<RestMember, Member> {
-    
+
     /**
      * Provided for XML generation
      */
@@ -40,7 +40,7 @@ public class RestMemberList extends RestListBinder<RestMember, Member> {
 
     /**
      * Creates a RestMemberList from a {@codePageIterable<Member>}
-     * 
+     *
      * @param collection the list of elements from the model
      */
     public RestMemberList(final PageIterable<Member> collection) {

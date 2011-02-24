@@ -29,7 +29,7 @@ public abstract class CanContributeMetaState extends AbstractDemandState {
 
     /**
      * Instantiates a new can contribute meta state.
-     * 
+     *
      * @param demand the demand on which this state apply.
      */
     public CanContributeMetaState(final DemandImplementation demand) {
@@ -39,7 +39,7 @@ public abstract class CanContributeMetaState extends AbstractDemandState {
     /**
      * Notify that a new contribution arrived. This method is called each time a
      * new contribution is done on the demand.
-     * 
+     *
      * @return the abstract demand state
      */
     protected abstract AbstractDemandState notifyAddContribution();
@@ -57,7 +57,7 @@ public abstract class CanContributeMetaState extends AbstractDemandState {
      * Test if the current demand should pass in DevelopingState. To pass in
      * {@link DevelopingState} state we have to have a selected offer, enough
      * contribution and the validation period spent.
-     * 
+     *
      * @return the abstract demand state (Developing or this.)
      */
     protected final AbstractDemandState handleEvent() {

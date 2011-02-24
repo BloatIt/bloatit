@@ -18,8 +18,8 @@ import com.bloatit.rest.resources.RestProject;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Project<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Projects>}
  *     {@code <Project name=Project1 />}
@@ -27,8 +27,8 @@ import com.bloatit.rest.resources.RestProject;
  * {@code </Projects>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "projects")
+ */
+@XmlRootElement(name = "projects")
 public class RestProjectList extends RestListBinder<RestProject, Project> {
 
     /**
@@ -47,7 +47,7 @@ public class RestProjectList extends RestListBinder<RestProject, Project> {
     public RestProjectList(PageIterable<Project> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
@@ -61,4 +61,3 @@ public class RestProjectList extends RestListBinder<RestProject, Project> {
         return projects;
     }
 }
-

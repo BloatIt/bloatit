@@ -45,7 +45,7 @@ public class PropertyLoader {
      * <li><i>name</i> can optionally end with <b>.properties</b></ki>
      * <li>leading <b>/</b> in <i>name</i> will be ignored Therefore all the
      * following <i>names</i> are the same :
-     * 
+     *
      * <pre>
      * foo.bar
      * foo.bar.properties
@@ -54,9 +54,9 @@ public class PropertyLoader {
      * /foo/bar
      * /foo/bar.properties
      * </pre>
-     * 
+     *
      * </p>
-     * 
+     *
      * @param name classpath resource name
      * @return resource converted to java.util.Properties
      * @throws IOException when <i>name</i> doesn't describe a valid properties

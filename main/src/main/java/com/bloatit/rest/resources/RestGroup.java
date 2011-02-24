@@ -87,7 +87,7 @@ public class RestGroup extends RestElement<Group> {
      * <p>
      * Finds the RestGroup matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestGroup
      */
     @REST(name = "groups", method = RequestMethod.GET)

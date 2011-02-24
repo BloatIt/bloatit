@@ -26,7 +26,7 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
 
     /**
      * Add a parameter to the list
-     * 
+     *
      * @param name the name of the parameter to add
      * @param value the value of the parameter to add
      * @return itself
@@ -41,7 +41,7 @@ public class Parameters extends GenericParameters<HttpParameter, String> {
             getElements().put(name, newHttpParameter);
         }
     }
-    
+
     public Set<Entry<String, HttpParameter>> entrySet() {
         return super.entrySet();
     }

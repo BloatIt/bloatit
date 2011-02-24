@@ -83,7 +83,7 @@ public class RestKudos extends RestElement<Kudos> {
      * <p>
      * Finds the RestKudos matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestKudos
      */
     @REST(name = "kudoss", method = RequestMethod.GET)

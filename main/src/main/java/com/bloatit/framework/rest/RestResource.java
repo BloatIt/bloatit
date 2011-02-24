@@ -17,7 +17,7 @@ public class RestResource {
 
     /**
      * Creates a rest resource
-     * 
+     *
      * @param underlying the object returned by the call to the rest method
      * @param request the string representation of the reqyest
      * @param classes the list of classes available to convert
@@ -31,7 +31,7 @@ public class RestResource {
 
     /**
      * Converts <code>underlying</code> to XML
-     * 
+     *
      * @return the XML string obtained from converting <code>underlying</code>
      *         to XML
      * @throws JAXBException when an error occurs during conversion
@@ -40,8 +40,9 @@ public class RestResource {
         if (context == null) {
             context = JAXBContext.newInstance(classes);
         }
-     // Marshaller is not thread-safe, and creating one can be expensive. If needed add pooling.
-        Marshaller m = context.createMarshaller();  
+        // Marshaller is not thread-safe, and creating one can be expensive. If
+        // needed add pooling.
+        Marshaller m = context.createMarshaller();
         m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         m.setProperty("com.sun.xml.bind.xmlDeclaration", false);

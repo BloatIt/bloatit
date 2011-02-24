@@ -87,7 +87,7 @@ public class RestContribution extends RestElement<Contribution> {
      * <p>
      * Finds the RestContribution matching the <code>id</code>
      * </p>
-     * 
+     *
      * @param id the id of the RestContribution
      */
     @REST(name = "contributions", method = RequestMethod.GET)

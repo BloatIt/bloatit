@@ -86,11 +86,11 @@ public final class ExternalAccount extends Account<DaoExternalAccount> {
         tryAccess(new ExternalAccountRight.Type(), Action.READ);
         return getDao().getType();
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
