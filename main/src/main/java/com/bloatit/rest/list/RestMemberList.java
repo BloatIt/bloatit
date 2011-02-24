@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -51,6 +52,7 @@ public class RestMemberList extends RestListBinder<RestMember, Member> {
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "member")
+    @XmlIDREF
     public List<RestMember> getMembers() {
         List<RestMember> members = new ArrayList<RestMember>();
         for (RestMember member : this) {

@@ -3,6 +3,7 @@ package com.bloatit.rest.resources;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -121,31 +122,25 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
     /**
      * @see com.bloatit.model.JoinGroupInvitation#getReciever()
      */
-    // @XmlElement
-    public RestMember getReciever() {
-        // TODO auto-generated code stub
-        RestMember reciever = new RestMember(model.getReciever());
-        return reciever;
+    @XmlElement
+    public RestMember getReceiver() {
+        return new RestMember(model.getReciever());
     }
 
     /**
      * @see com.bloatit.model.JoinGroupInvitation#getGroup()
      */
-    // @XmlElement
+    @XmlElement
     public RestGroup getGroup() {
-        // TODO auto-generated code stub
-        RestGroup group = new RestGroup(model.getGroup());
-        return group;
+        return new RestGroup(model.getGroup());
     }
 
     /**
      * @see com.bloatit.model.JoinGroupInvitation#getSender()
      */
-    // @XmlElement
+    @XmlElement
     public RestMember getSender() {
-        // TODO auto-generated code stub
-        RestMember sender = new RestMember(model.getSender());
-        return sender;
+        return new RestMember(model.getSender());
     }
 
     // ---------------------------------------------------------------------------------------

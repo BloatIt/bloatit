@@ -5,8 +5,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import javax.xml.bind.JAXBException;
-
 import org.springframework.web.util.HtmlUtils;
 
 import com.bloatit.common.Log;
@@ -156,7 +154,7 @@ public final class HttpResponse {
             htmlText.writeLine(resourceXml);
             htmlText.unindent();
             htmlText.writeLine("</rest>");
-        } catch (JAXBException e) {
+        } catch (Exception e) {
             Log.rest().fatal("Exception while marshalling RestResource " + resource.getUnderlying(), e);
             writeRestError(StatusCode.ERROR_500_INTERNAL_SERVER_ERROR, "Error while marhsalling the Object", e);
         }

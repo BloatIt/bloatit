@@ -3,6 +3,7 @@ package com.bloatit.rest.resources;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,6 +14,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Project;
+import com.bloatit.model.managers.ProjectManager;
 import com.bloatit.rest.list.RestDemandList;
 import com.bloatit.rest.list.RestProjectList;
 
@@ -84,19 +86,16 @@ public class RestProject extends RestElement<Project> {
      * <p>
      * Finds the RestProject matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestProject
      */
     @REST(name = "projects", method = RequestMethod.GET)
     public static RestProject getById(int id) {
-        // TODO auto generated code
-        // RestProject restProject = new
-        // RestProject(ProjectManager.getProjectById(id));
-        // if (restProject.isNull()) {
-        // return null;
-        // }
-        // return restProject;
-        return null;
+        RestProject restProject = new RestProject(ProjectManager.getProjectById(id));
+        if (restProject.isNull()) {
+            return null;
+        }
+        return restProject;
     }
 
     /**
@@ -106,15 +105,12 @@ public class RestProject extends RestElement<Project> {
      */
     @REST(name = "projects", method = RequestMethod.GET)
     public static RestProjectList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestProjectList(ProjectManager.getProjects());
     }
 
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-
-    // TODO Generate
 
     @XmlAttribute
     @XmlID
@@ -125,12 +121,10 @@ public class RestProject extends RestElement<Project> {
     /**
      * @see com.bloatit.model.Project#getName()
      */
-    // @XmlElement
+    @XmlAttribute
     public String getName() throws RestException {
-        // TODO auto-generated code stub
         try {
-            String name = model.getName();
-            return name;
+            return model.getName();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getName on Project", e);
         }
@@ -139,12 +133,10 @@ public class RestProject extends RestElement<Project> {
     /**
      * @see com.bloatit.model.Project#getDescription()
      */
-    // @XmlElement
+    @XmlElement
     public RestDescription getDescription() throws RestException {
-        // TODO auto-generated code stub
         try {
-            RestDescription description = new RestDescription(model.getDescription());
-            return description;
+            return new RestDescription(model.getDescription());
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getDescription on Project", e);
         }
@@ -153,9 +145,8 @@ public class RestProject extends RestElement<Project> {
     /**
      * @see com.bloatit.model.Project#getDemands()
      */
-    // @XmlElement
+    @XmlElement
     public RestDemandList getDemands() throws RestException {
-        // TODO auto-generated code stub
         try {
             return new RestDemandList(model.getDemands());
         } catch (UnauthorizedOperationException e) {
@@ -166,12 +157,10 @@ public class RestProject extends RestElement<Project> {
     /**
      * @see com.bloatit.model.Project#getImage()
      */
-    // @XmlElement
+    @XmlElement
     public RestFileMetadata getImage() throws RestException {
-        // TODO auto-generated code stub
         try {
-            RestFileMetadata image = new RestFileMetadata(model.getImage());
-            return image;
+            return new RestFileMetadata(model.getImage());
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getImage on Project", e);
         }
