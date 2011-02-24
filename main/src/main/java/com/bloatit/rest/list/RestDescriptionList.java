@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Description;
@@ -29,6 +30,15 @@ import com.bloatit.rest.resources.RestDescription;
  */ 
 @XmlRootElement (name = "descriptions")
 public class RestDescriptionList extends RestListBinder<RestDescription, Description> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestDescriptionList() {
+        super();
+    }
+
     /**
      * Creates a RestDescriptionList from a {@codePageIterable<Description>}
      *
@@ -42,6 +52,7 @@ public class RestDescriptionList extends RestListBinder<RestDescription, Descrip
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "description")
+    @XmlIDREF
     public List<RestDescription> getDescriptions() {
         List<RestDescription> descriptions = new ArrayList<RestDescription>();
         for (RestDescription description : this) {

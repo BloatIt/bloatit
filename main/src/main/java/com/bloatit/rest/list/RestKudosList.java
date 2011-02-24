@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Kudos;
@@ -29,6 +30,15 @@ import com.bloatit.rest.resources.RestKudos;
  */ 
 @XmlRootElement (name = "kudoss")
 public class RestKudosList extends RestListBinder<RestKudos, Kudos> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestKudosList() {
+        super();
+    }
+
     /**
      * Creates a RestKudosList from a {@codePageIterable<Kudos>}
      *
@@ -42,6 +52,7 @@ public class RestKudosList extends RestListBinder<RestKudos, Kudos> {
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "kudos")
+    @XmlIDREF
     public List<RestKudos> getKudoss() {
         List<RestKudos> kudoss = new ArrayList<RestKudos>();
         for (RestKudos kudos : this) {

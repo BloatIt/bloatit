@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -13,8 +14,10 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
+import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.managers.MemberManager;
+import com.bloatit.rest.list.RestDemandList;
 import com.bloatit.rest.list.RestMemberList;
 
 /**
@@ -134,14 +137,19 @@ public class RestMember extends RestElement<Member> {
         }
     }
 
-    // @XmlElement
-    // public RestDemandList getDemands() {
-    // return new RestDemandList(model.getDemands());
-    // }
+    @XmlElement
+    public RestDemandList getDemands() {
+        return new RestDemandList(model.getDemands());
+    }
 
-//    @XmlIDREF
+    @XmlIDREF
     public RestFileMetadata getAvatar() {
-        return new RestFileMetadata(model.getAvatar());
+        FileMetadata avatar = model.getAvatar();
+        if (avatar == null) {
+            return null;
+        }
+        return new RestFileMetadata(avatar);
+
     }
 
     // ---------------------------------------------------------------------------------------

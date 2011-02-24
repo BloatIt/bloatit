@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.HighlightDemand;
@@ -29,6 +30,15 @@ import com.bloatit.rest.resources.RestHighlightDemand;
  */ 
 @XmlRootElement (name = "highlightdemands")
 public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand, HighlightDemand> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestHighlightDemandList() {
+        super();
+    }
+
     /**
      * Creates a RestHighlightDemandList from a {@codePageIterable<HighlightDemand>}
      *
@@ -42,6 +52,7 @@ public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand,
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "highlightdemand")
+    @XmlIDREF
     public List<RestHighlightDemand> getHighlightDemands() {
         List<RestHighlightDemand> highlightdemands = new ArrayList<RestHighlightDemand>();
         for (RestHighlightDemand highlightdemand : this) {

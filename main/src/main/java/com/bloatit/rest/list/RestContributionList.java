@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Contribution;
@@ -29,6 +30,15 @@ import com.bloatit.rest.resources.RestContribution;
  */ 
 @XmlRootElement (name = "contributions")
 public class RestContributionList extends RestListBinder<RestContribution, Contribution> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestContributionList() {
+        super();
+    }
+
     /**
      * Creates a RestContributionList from a {@codePageIterable<Contribution>}
      *
@@ -42,6 +52,7 @@ public class RestContributionList extends RestListBinder<RestContribution, Contr
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "contribution")
+    @XmlIDREF
     public List<RestContribution> getContributions() {
         List<RestContribution> contributions = new ArrayList<RestContribution>();
         for (RestContribution contribution : this) {

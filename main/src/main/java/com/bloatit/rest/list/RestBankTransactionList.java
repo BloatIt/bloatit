@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.BankTransaction;
@@ -29,6 +30,15 @@ import com.bloatit.rest.resources.RestBankTransaction;
  */ 
 @XmlRootElement (name = "banktransactions")
 public class RestBankTransactionList extends RestListBinder<RestBankTransaction, BankTransaction> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestBankTransactionList() {
+        super();
+    }
+
     /**
      * Creates a RestBankTransactionList from a {@codePageIterable<BankTransaction>}
      *
@@ -42,6 +52,7 @@ public class RestBankTransactionList extends RestListBinder<RestBankTransaction,
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "banktransaction")
+    @XmlIDREF
     public List<RestBankTransaction> getBankTransactions() {
         List<RestBankTransaction> banktransactions = new ArrayList<RestBankTransaction>();
         for (RestBankTransaction banktransaction : this) {

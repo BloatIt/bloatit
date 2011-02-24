@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Offer;
@@ -29,6 +30,15 @@ import com.bloatit.rest.resources.RestOffer;
  */ 
 @XmlRootElement (name = "offers")
 public class RestOfferList extends RestListBinder<RestOffer, Offer> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestOfferList() {
+        super();
+    }
+
     /**
      * Creates a RestOfferList from a {@codePageIterable<Offer>}
      *
@@ -42,6 +52,7 @@ public class RestOfferList extends RestListBinder<RestOffer, Offer> {
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "offer")
+    @XmlIDREF
     public List<RestOffer> getOffers() {
         List<RestOffer> offers = new ArrayList<RestOffer>();
         for (RestOffer offer : this) {

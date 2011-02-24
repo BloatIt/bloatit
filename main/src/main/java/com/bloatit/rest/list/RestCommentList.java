@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Comment;
@@ -29,6 +30,15 @@ import com.bloatit.rest.resources.RestComment;
  */ 
 @XmlRootElement (name = "comments")
 public class RestCommentList extends RestListBinder<RestComment, Comment> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestCommentList() {
+        super();
+    }
+
     /**
      * Creates a RestCommentList from a {@codePageIterable<Comment>}
      *
@@ -42,6 +52,7 @@ public class RestCommentList extends RestListBinder<RestComment, Comment> {
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "comment")
+    @XmlIDREF
     public List<RestComment> getComments() {
         List<RestComment> comments = new ArrayList<RestComment>();
         for (RestComment comment : this) {

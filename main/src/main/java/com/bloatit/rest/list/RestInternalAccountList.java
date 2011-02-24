@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.InternalAccount;
@@ -29,6 +30,15 @@ import com.bloatit.rest.resources.RestInternalAccount;
  */ 
 @XmlRootElement (name = "internalaccounts")
 public class RestInternalAccountList extends RestListBinder<RestInternalAccount, InternalAccount> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestInternalAccountList() {
+        super();
+    }
+
     /**
      * Creates a RestInternalAccountList from a {@codePageIterable<InternalAccount>}
      *
@@ -42,6 +52,7 @@ public class RestInternalAccountList extends RestListBinder<RestInternalAccount,
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "internalaccount")
+    @XmlIDREF
     public List<RestInternalAccount> getInternalAccounts() {
         List<RestInternalAccount> internalaccounts = new ArrayList<RestInternalAccount>();
         for (RestInternalAccount internalaccount : this) {
