@@ -42,7 +42,7 @@ public final class KudosableManager {
 
     /**
      * Gets a kudosable by id.
-     * 
+     *
      * @param id the id
      * @return the {@link Kudosable} or <code>null</code> if not found.
      */

@@ -28,7 +28,7 @@ import com.bloatit.rest.resources.ModelClassVisitor;
  * create a description each time you create a demand.) There is no right
  * management for this class. I assume that if you can get a
  * <code>Description</code> then you can access every property in it.
- * 
+ *
  * @see DaoDescription
  */
 public final class Description extends Identifiable<DaoDescription> {
@@ -52,7 +52,7 @@ public final class Description extends Identifiable<DaoDescription> {
      * Create a Description. If you are looking for a way to create a new
      * description see
      * {@link Demand#addOffer(Member, java.math.BigDecimal, String, Locale, java.util.Date, int)}
-     * 
+     *
      * @param member is the author of this description
      * @param locale is the locale in which the description is written.
      * @param title is the title of the description
@@ -111,11 +111,11 @@ public final class Description extends Identifiable<DaoDescription> {
     protected boolean isMine(final Member member) {
         return false;
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

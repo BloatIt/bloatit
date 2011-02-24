@@ -19,7 +19,7 @@ public class AdminActionManager {
         UPDATE_DEVELOPMENT_STATE(tr("Re calculate if this demand should passe into development.")), //
         COMPUTE_SELECTED_OFFER(tr("Re calculate the selected offer")), //
         SET_VALIDATION_DATE(tr("Update the validation Date")), //
-        SET_DEMAND_STATE(tr("Change the demand state")), //
+        SET_DEMAND_IN_DEVELOPMENT(tr("Change the demand state")), //
 
         VALIDATE_BATCH(tr("Validate batch if possible")), //
         FORCE_VALIDATE_BATCH(tr("Validate batch --force !")), //
@@ -46,7 +46,7 @@ public class AdminActionManager {
     }
 
     public EnumSet<Action> demandActions() {
-        return EnumSet.range(Action.UPDATE_DEVELOPMENT_STATE, Action.SET_DEMAND_STATE);
+        return EnumSet.range(Action.UPDATE_DEVELOPMENT_STATE, Action.SET_DEMAND_IN_DEVELOPMENT);
     }
 
     public EnumSet<Action> batchActions() {

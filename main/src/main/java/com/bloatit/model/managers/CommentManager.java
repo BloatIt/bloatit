@@ -19,6 +19,7 @@ package com.bloatit.model.managers;
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Comment;
+import com.bloatit.model.lists.CommentList;
 
 /**
  * The Class CommentManager. Utility class containing static methods to get
@@ -41,5 +42,9 @@ public final class CommentManager {
      */
     public static Comment getCommentById(final Integer id) {
         return Comment.create(DBRequests.getById(DaoComment.class, id));
+    }
+
+    public static CommentList getAllComments() {
+        return new CommentList(DBRequests.getAll(DaoComment.class));
     }
 }

@@ -12,7 +12,7 @@ public class HtmlParagraph extends HtmlBranch {
 
     /**
      * Creates an HtmlParagraph with a preset text
-     * 
+     *
      * @param text the text that will be displayed
      */
     public HtmlParagraph(final String text) {
@@ -21,7 +21,7 @@ public class HtmlParagraph extends HtmlBranch {
 
     /**
      * Creates an HtmlParagraph with a preset text and a given css style
-     * 
+     *
      * @param cssClass the name of the css class applied
      * @param text the text that will be displayed
      */

@@ -27,6 +27,7 @@ import com.bloatit.data.DaoFileMetadata;
 import com.bloatit.data.DaoFileMetadata.FileType;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.FrameworkConfiguration;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 
@@ -48,7 +49,7 @@ public final class FileMetadataManager {
 
     /**
      * Gets the file metadata by id.
-     * 
+     *
      * @param id the id
      * @return the file metadata or null if not found.
      */
@@ -59,7 +60,7 @@ public final class FileMetadataManager {
     /**
      * Creates a new {@link FileMetadata} using a temporary file. This file will
      * move the temporary file to the definitive storage folder.
-     * 
+     *
      * @param author the author of the new {@link FileMetadata}
      * @param tempFileUrl the url to the temporary file.
      * @param filename the filename the file name to display in the web site
@@ -95,7 +96,7 @@ public final class FileMetadataManager {
     /**
      * Same as {@link #createFromTempFile(Member, String, String, String)} but
      * with a copy.
-     * 
+     *
      * @param author the author of the new {@link FileMetadata}
      * @param path the url to the local file.
      * @param name the filename the file name to display in the web site (may be
@@ -124,7 +125,7 @@ public final class FileMetadataManager {
 
     /**
      * Create a new fileMetadata.
-     * 
+     *
      * @param author
      * @param name
      * @param description
@@ -163,7 +164,7 @@ public final class FileMetadataManager {
 
     /**
      * Copy a file.
-     * 
+     *
      * @param in the original file.
      * @param out the file to where to copy <code>in</code>.
      * @throws IOException Signals that an I/O exception has occurred.
@@ -183,6 +184,13 @@ public final class FileMetadataManager {
                 outChannel.close();
             }
         }
+    }
+
+    /**
+     * @return
+     */
+    public static PageIterable<FileMetadata> getFiles() {
+        return DBRequests.getAll(FileMetadata.class);
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Group;
@@ -17,8 +18,8 @@ import com.bloatit.rest.resources.RestGroup;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Group<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Groups>}
  *     {@code <Group name=Group1 />}
@@ -26,9 +27,18 @@ import com.bloatit.rest.resources.RestGroup;
  * {@code </Groups>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "groups")
+ */
+@XmlRootElement(name = "groups")
 public class RestGroupList extends RestListBinder<RestGroup, Group> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestGroupList() {
+        super();
+    }
+
     /**
      * Creates a RestGroupList from a {@codePageIterable<Group>}
      *
@@ -37,11 +47,12 @@ public class RestGroupList extends RestListBinder<RestGroup, Group> {
     public RestGroupList(PageIterable<Group> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "group")
+    @XmlIDREF
     public List<RestGroup> getGroups() {
         List<RestGroup> groups = new ArrayList<RestGroup>();
         for (RestGroup group : this) {
@@ -50,4 +61,3 @@ public class RestGroupList extends RestListBinder<RestGroup, Group> {
         return groups;
     }
 }
-

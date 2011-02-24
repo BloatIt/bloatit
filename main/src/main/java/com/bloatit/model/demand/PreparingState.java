@@ -28,7 +28,7 @@ public class PreparingState extends CanContributeMetaState {
 
     /**
      * Instantiates a new preparing state.
-     * 
+     *
      * @param demand the demand on which this state apply.
      */
     public PreparingState(final DemandImplementation demand) {

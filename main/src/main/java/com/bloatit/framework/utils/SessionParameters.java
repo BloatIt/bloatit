@@ -13,7 +13,7 @@ public class SessionParameters extends GenericParameters<UrlParameter<?, ?>, Url
 
     /**
      * Add a parameter to the list
-     * 
+     *
      * @param name the name of the parameter to add
      * @param value the value of the paramter to add
      * @return itself

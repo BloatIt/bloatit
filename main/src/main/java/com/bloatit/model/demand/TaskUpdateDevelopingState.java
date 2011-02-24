@@ -42,7 +42,7 @@ public class TaskUpdateDevelopingState extends PlannedTask {
 
     /**
      * Instantiates a new task selected offer time out.
-     * 
+     *
      * @param id the id
      * @param time the date when to run this task.
      */

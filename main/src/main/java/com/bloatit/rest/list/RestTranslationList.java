@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Translation;
@@ -17,8 +18,8 @@ import com.bloatit.rest.resources.RestTranslation;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Translation<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Translations>}
  *     {@code <Translation name=Translation1 />}
@@ -26,9 +27,18 @@ import com.bloatit.rest.resources.RestTranslation;
  * {@code </Translations>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "translations")
+ */
+@XmlRootElement(name = "translations")
 public class RestTranslationList extends RestListBinder<RestTranslation, Translation> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestTranslationList() {
+        super();
+    }
+
     /**
      * Creates a RestTranslationList from a {@codePageIterable<Translation>}
      *
@@ -37,11 +47,12 @@ public class RestTranslationList extends RestListBinder<RestTranslation, Transla
     public RestTranslationList(PageIterable<Translation> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "translation")
+    @XmlIDREF
     public List<RestTranslation> getTranslations() {
         List<RestTranslation> translations = new ArrayList<RestTranslation>();
         for (RestTranslation translation : this) {
@@ -50,4 +61,3 @@ public class RestTranslationList extends RestListBinder<RestTranslation, Transla
         return translations;
     }
 }
-

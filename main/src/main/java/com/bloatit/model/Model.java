@@ -36,14 +36,14 @@ public class Model implements AbstractModel {
     public void initialize() {
         Log.model().trace("Launching the Model.");
         ModelConfiguration.loadConfiguration();
-        
+
         open();
         // Find the demand with selected offer that should pass into validated.
         PageIterable<Demand> demandsToValidate = new DemandList(DBRequests.demandsThatShouldBeValidated());
         for (Demand demand : demandsToValidate) {
             demand.updateDevelopmentState();
         }
-        
+
         // Find the demand with selected offer that should pass into validated.
         PageIterable<Demand> demandsToValidateInTheFuture = new DemandList(DBRequests.demandsThatShouldBeValidatedInTheFuture());
         for (Demand demand : demandsToValidateInTheFuture) {

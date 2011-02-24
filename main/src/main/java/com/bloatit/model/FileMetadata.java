@@ -46,7 +46,7 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
 
     /**
      * Create a new FileMetadata.
-     * 
+     *
      * @see DaoFileMetadata#createAndPersist(com.bloatit.data.DaoMember,
      *      DaoUserContent, String, String, FileType, int)
      */
@@ -109,11 +109,11 @@ public class FileMetadata extends UserContent<DaoFileMetadata> {
     public String getFileName() {
         return getDao().getFilename();
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

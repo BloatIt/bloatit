@@ -37,7 +37,7 @@ public final class HighlightDemandManager {
 
     /**
      * Gets a {@link HighlightDemand} by its id.
-     * 
+     *
      * @param id the id
      * @return the {@link HighlightDemand} or null if not found.
      */
@@ -47,7 +47,7 @@ public final class HighlightDemandManager {
 
     /**
      * Gets the all th {@link HighlightDemand}s.
-     * 
+     *
      * @return the {@link HighlightDemand} demands.
      */
     public static PageIterable<HighlightDemand> getHightlightDemand() {

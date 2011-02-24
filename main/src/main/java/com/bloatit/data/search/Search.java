@@ -27,13 +27,13 @@ public abstract class Search<T> {
 
     /**
      * Create a search on the db using Hibernate Search and Lucene
-     * 
+     *
      * <pre>
      * DBRequests.search(DaoDemand.class, new String[] { &quot;description.translations.title&quot;,
      *                                                  &quot;description.translations.text&quot;,
      *                                                  &quot;offers.description.translations.title&quot; }, &quot;Search string&quot;);
      * </pre>
-     * 
+     *
      * @param persistent is the class object associated with T.
      * @param fields is a list of field on which we are doing the search. These
      *            field are relative to the persistent class.

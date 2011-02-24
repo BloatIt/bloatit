@@ -21,7 +21,7 @@ import com.bloatit.web.url.FileResourceUrl;
 
 /**
  * A file resource is a resource representing a file
- * 
+ *
  * @author fred
  */
 @ParamContainer("resource")

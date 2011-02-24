@@ -8,7 +8,7 @@ import com.bloatit.common.ConfigurationManager.PropertiesRetriever;
 /**
  * Everything must be final and non mutable to make sure there is no pb wit the
  * multi-thread.
- * 
+ *
  * @author thomas
  */
 public class FrameworkConfiguration {

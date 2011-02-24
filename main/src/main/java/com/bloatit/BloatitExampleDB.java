@@ -49,7 +49,7 @@ public class BloatitExampleDB {
         final Member celeste = createMember("celeste", "Céleste");
         final Member rataxes = createMember("rataxes", "Rataxès");
 
-        //Add avatar
+        // Add avatar
         chogall.setAvatar(getImage(chogall, "users/chogall.png"));
         cerbere.setAvatar(getImage(cerbere, "users/cerbere.png"));
         hydre.setAvatar(getImage(hydre, "users/hydre.png"));
@@ -91,11 +91,7 @@ public class BloatitExampleDB {
         final String libreOfficeTitle = "LibreOffice (souvent abrégé en LibO) est une suite bureautique, dérivée directement de OpenOffice.org, créée par The Document Foundation. Cet embranchement a eu lieu le 28 septembre 2010, dans la continuité du rachat de Sun Microsystems par Oracle.";
         final String libreOfficeDescription = "LibreOffice is the free power-packed Open Source personal productivity suite for Windows, Macintosh and Linux, that gives you six feature-rich applications for all your document production and data processing needs: Writer, Calc, Impress, Draw, Math and Base. Support and documentation is free from our large, dedicated community of users, contributors and developers. You, too, can also get involved!"
                 + "\n" + "http://www.libreoffice.org/";
-        final Project libreOffice = new Project("LibreOffice",
-                                                thomas,
-                                                Locale.FRANCE,
-                                                libreOfficeTitle,
-                                                libreOfficeDescription);
+        final Project libreOffice = new Project("LibreOffice", thomas, Locale.FRANCE, libreOfficeTitle, libreOfficeDescription);
         libreOffice.setImage(getImage(fred, "libreoffice.png"));
 
         // Mageia project

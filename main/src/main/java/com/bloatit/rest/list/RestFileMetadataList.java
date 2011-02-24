@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
@@ -17,8 +18,8 @@ import com.bloatit.rest.resources.RestFileMetadata;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of FileMetadata<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <FileMetadatas>}
  *     {@code <FileMetadata name=FileMetadata1 />}
@@ -26,9 +27,18 @@ import com.bloatit.rest.resources.RestFileMetadata;
  * {@code </FileMetadatas>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "filemetadatas")
+ */
+@XmlRootElement(name = "filemetadatas")
 public class RestFileMetadataList extends RestListBinder<RestFileMetadata, FileMetadata> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestFileMetadataList() {
+        super();
+    }
+
     /**
      * Creates a RestFileMetadataList from a {@codePageIterable<FileMetadata>}
      *
@@ -37,11 +47,12 @@ public class RestFileMetadataList extends RestListBinder<RestFileMetadata, FileM
     public RestFileMetadataList(PageIterable<FileMetadata> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "filemetadata")
+    @XmlIDREF
     public List<RestFileMetadata> getFileMetadatas() {
         List<RestFileMetadata> filemetadatas = new ArrayList<RestFileMetadata>();
         for (RestFileMetadata filemetadata : this) {
@@ -50,4 +61,3 @@ public class RestFileMetadataList extends RestListBinder<RestFileMetadata, FileM
         return filemetadatas;
     }
 }
-

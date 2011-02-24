@@ -40,7 +40,7 @@ public final class UserContentManager {
 
     /**
      * Gets a {@link UserContent} by id.
-     * 
+     *
      * @param id the id
      * @return the {@link UserContent} or <code>null</code> if not found.
      */

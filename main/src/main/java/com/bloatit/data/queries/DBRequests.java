@@ -53,7 +53,7 @@ public final class DBRequests {
 
     /**
      * Make sure you test if the return is != null:
-     * 
+     *
      * <pre>
      * public static Group create() {
      *     DaoGroup dao = DBRequests.getById(DaoGroup.class, 12);
@@ -63,7 +63,7 @@ public final class DBRequests {
      *     return new Group(dao);
      * }
      * </pre>
-     * 
+     *
      * @param <T>
      * @param persistant
      * @param id

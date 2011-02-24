@@ -113,7 +113,7 @@ public final class ReportBugPage extends LoggedPage {
         levelInput.setComment(Context.tr("Level of the bug."));
         reportBugForm.add(levelInput);
 
-        //File
+        // File
         final HtmlFormBlock attachementBlock = new HtmlFormBlock(tr("Attachement"));
         reportBugForm.add(attachementBlock);
 
@@ -125,7 +125,6 @@ public final class ReportBugPage extends LoggedPage {
         final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
         attachementBlock.add(attachementDescriptionInput);
-
 
         reportBugForm.add(new HtmlSubmit(Context.tr("Report the bug")));
 

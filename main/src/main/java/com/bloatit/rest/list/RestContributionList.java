@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Contribution;
@@ -17,8 +18,8 @@ import com.bloatit.rest.resources.RestContribution;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Contribution<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Contributions>}
  *     {@code <Contribution name=Contribution1 />}
@@ -26,9 +27,18 @@ import com.bloatit.rest.resources.RestContribution;
  * {@code </Contributions>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "contributions")
+ */
+@XmlRootElement(name = "contributions")
 public class RestContributionList extends RestListBinder<RestContribution, Contribution> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestContributionList() {
+        super();
+    }
+
     /**
      * Creates a RestContributionList from a {@codePageIterable<Contribution>}
      *
@@ -37,11 +47,12 @@ public class RestContributionList extends RestListBinder<RestContribution, Contr
     public RestContributionList(PageIterable<Contribution> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "contribution")
+    @XmlIDREF
     public List<RestContribution> getContributions() {
         List<RestContribution> contributions = new ArrayList<RestContribution>();
         for (RestContribution contribution : this) {
@@ -50,4 +61,3 @@ public class RestContributionList extends RestListBinder<RestContribution, Contr
         return contributions;
     }
 }
-

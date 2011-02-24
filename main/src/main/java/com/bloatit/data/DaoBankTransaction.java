@@ -187,7 +187,7 @@ public final class DaoBankTransaction extends DaoIdentifiable {
     /**
      * Set the state to validated and create a {@link DaoTransaction} from the
      * external to the internal account.
-     * 
+     *
      * @return true if performed, false otherwise.
      */
     public boolean setValidated() {

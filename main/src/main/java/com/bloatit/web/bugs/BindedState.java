@@ -6,7 +6,7 @@ import com.bloatit.data.DaoBug.State;
 import com.bloatit.framework.webserver.components.form.Displayable;
 
 public enum BindedState implements Displayable {
-    PENDING(State.PENDING, tr("PENDING")), DEVELOPING(State.DEVELOPING , tr("DEVELOPING")), RESOLVED(State.RESOLVED , tr("RESOLVED"));
+    PENDING(State.PENDING, tr("PENDING")), DEVELOPING(State.DEVELOPING, tr("DEVELOPING")), RESOLVED(State.RESOLVED, tr("RESOLVED"));
 
     private final String label;
     private final State state;

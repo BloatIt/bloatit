@@ -22,7 +22,7 @@ import com.bloatit.rest.resources.ModelClassVisitor;
 /**
  * This is an invitation to join a group. Some groups are not public, and you
  * have to have an invitation to join it.
- * 
+ *
  * @author Thomas Guyard
  */
 public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitation> {
@@ -87,7 +87,7 @@ public final class JoinGroupInvitation extends Identifiable<DaoJoinGroupInvitati
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

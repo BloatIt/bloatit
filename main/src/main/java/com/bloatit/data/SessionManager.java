@@ -61,14 +61,14 @@ public final class SessionManager {
     public static Query createQuery(final String str) {
         return getSessionFactory().getCurrentSession().createQuery(str);
     }
-    
+
     public static Query createFilter(final Object collection, final String str) {
         return getSessionFactory().getCurrentSession().createFilter(collection, str);
     }
 
     /**
      * singleton pattern implementation.
-     * 
+     *
      * @return the current session.
      */
     public static SessionFactory getSessionFactory() {

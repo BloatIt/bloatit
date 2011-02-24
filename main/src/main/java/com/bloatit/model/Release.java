@@ -52,11 +52,11 @@ public class Release extends UserContent<DaoRelease> {
     public PageIterable<Comment> getComments() {
         return new ListBinder<Comment, DaoComment>(getDao().getComments());
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

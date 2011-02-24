@@ -1,0 +1,27 @@
+Aide mémoire markdown
+===========================
+
+[Documentation Markdown complète](/fr/documentation/markdown)
+<dl>
+<dt>2 espaces en fin de ligne</dt>
+<dd>forcer un saut de ligne</dd>
+<dt>**gras**</dt>
+<dd><strong>gras</strong></dd>
+<dt>_italique_</dt>
+<dd><em>italique</em></dd>
+<dt>> citation</dt>
+<dd><blockquote>citation</blockquote></dd>
+<dt>[lien](/fr/documentation/markdown)</dt>
+<dd><a href="documentation/markdown">lien</a></dd>
+<dt>#Titre de section#</dt>
+<dd><h1>Titre de section</h1></dd>
+<dt>##Sous-titre##</dt>
+<dd><h2>Sous-titre</h2></dd>
+<dt>* Liste à puces <br/>
+    * Deuxième élément</dt>
+<dd><ul><li>Liste à puces</li><li>Deuxième élément</li></ul></dd>
+</dl>  
+
+
+
+

@@ -21,7 +21,7 @@ public class TeamRole {
 
     /**
      * Indicates whether the user with the role can consult group information
-     * 
+     *
      * @return <code>true</code> if the user can consult group information,
      *         <code>false</code> otherwise
      */
@@ -31,7 +31,7 @@ public class TeamRole {
 
     /**
      * Indicates whether the user with the role can talk for the group
-     * 
+     *
      * @return <code>true</code> if the user can talk for the group,
      *         <code>false</code> otherwise
      */
@@ -41,7 +41,7 @@ public class TeamRole {
 
     /**
      * Indicates whether the user with the role can invite people into the group
-     * 
+     *
      * @return <code>true</code> if the user can invite people into the group,
      *         <code>false</code> otherwise
      */
@@ -51,7 +51,7 @@ public class TeamRole {
 
     /**
      * Indicates whether the user with the role can modify group information
-     * 
+     *
      * @return <code>true</code> if the user can modify group information,
      *         <code>false</code> otherwise
      */
@@ -65,7 +65,7 @@ public class TeamRole {
      * <p>
      * Note : giving promoting rights means the user can also demote
      * </p>
-     * 
+     *
      * @return <code>true</code> if the user can change the role of people,
      *         <code>false</code> otherwise
      */
@@ -76,7 +76,7 @@ public class TeamRole {
     /**
      * Indicates whether the user with the role have access to bank information
      * (withdraw money ...)
-     * 
+     *
      * @return <code>true</code> if the user can access bank information,
      *         <code>false</code> otherwise
      */
@@ -86,7 +86,7 @@ public class TeamRole {
 
     /**
      * Find all the rights for this role
-     * 
+     *
      * @return a set containing every right for this role
      */
     public Set<UserGroupRight> getRights() {

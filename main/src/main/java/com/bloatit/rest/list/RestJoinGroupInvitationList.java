@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.JoinGroupInvitation;
@@ -17,8 +18,8 @@ import com.bloatit.rest.resources.RestJoinGroupInvitation;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of JoinGroupInvitation<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <JoinGroupInvitations>}
  *     {@code <JoinGroupInvitation name=JoinGroupInvitation1 />}
@@ -26,22 +27,33 @@ import com.bloatit.rest.resources.RestJoinGroupInvitation;
  * {@code </JoinGroupInvitations>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "joingroupinvitations")
+ */
+@XmlRootElement(name = "joingroupinvitations")
 public class RestJoinGroupInvitationList extends RestListBinder<RestJoinGroupInvitation, JoinGroupInvitation> {
+
     /**
-     * Creates a RestJoinGroupInvitationList from a {@codePageIterable<JoinGroupInvitation>}
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestJoinGroupInvitationList() {
+        super();
+    }
+
+    /**
+     * Creates a RestJoinGroupInvitationList from a
+     * {@codePageIterable<JoinGroupInvitation>}
      *
      * @param collection the list of elements from the model
      */
     public RestJoinGroupInvitationList(PageIterable<JoinGroupInvitation> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "joingroupinvitation")
+    @XmlIDREF
     public List<RestJoinGroupInvitation> getJoinGroupInvitations() {
         List<RestJoinGroupInvitation> joingroupinvitations = new ArrayList<RestJoinGroupInvitation>();
         for (RestJoinGroupInvitation joingroupinvitation : this) {
@@ -50,4 +62,3 @@ public class RestJoinGroupInvitationList extends RestListBinder<RestJoinGroupInv
         return joingroupinvitations;
     }
 }
-

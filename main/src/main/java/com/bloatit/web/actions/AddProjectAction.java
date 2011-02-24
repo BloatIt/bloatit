@@ -100,17 +100,15 @@ public final class AddProjectAction extends Action {
         }
         final Locale langLocale = new Locale(lang);
 
-
         final Project p = new Project(projectName, session.getAuthToken().getMember(), langLocale, shortDescription, description);
 
-        if(image != null) {
+        if (image != null) {
             final FileMetadata fileImage = FileMetadataManager.createFromTempFile(session.getAuthToken().getMember(),
                                                                                   image,
                                                                                   imageFileName,
                                                                                   "Image for the project '" + projectName + "'");
             p.setImage(fileImage);
         }
-
 
         final ProjectPageUrl to = new ProjectPageUrl(p);
 

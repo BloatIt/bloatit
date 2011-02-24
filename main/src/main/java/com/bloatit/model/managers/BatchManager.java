@@ -35,7 +35,7 @@ public final class BatchManager {
 
     /**
      * Gets the a batch by Id.
-     * 
+     *
      * @param id the batch id.
      * @return the batch or null if not found.
      */

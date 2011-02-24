@@ -4,6 +4,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.List;
 
+import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoMember;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -41,11 +42,6 @@ public class AdministrationAction extends LoggedAction {
     @Optional
     private final DisplayableState stateToSet;
 
-    @RequestParam(name = DEMAND_STATE_CODE, role = Role.POST)
-    @ParamConstraint
-    @Optional
-    private final DisplayableDemandState demandState;
-
     private final AdministrationActionUrl url;
 
     public AdministrationAction(final AdministrationActionUrl url) {
@@ -54,7 +50,6 @@ public class AdministrationAction extends LoggedAction {
         contents = url.getContents();
         action = url.getAction();
         stateToSet = url.getStateToSet();
-        demandState = url.getDemandState();
     }
 
     @Override
@@ -84,15 +79,21 @@ public class AdministrationAction extends LoggedAction {
                             ((Kudosable<?>) content).setState(DisplayableState.getState(stateToSet));
                         }
                         break;
+                    case SET_VALIDATION_DATE:
+                        session.notifyBad("SetValidationDate not implemented yet");
+                        break;
                     case UPDATE_DEVELOPMENT_STATE:
                         ((Demand) content).updateDevelopmentState();
                         break;
                     case COMPUTE_SELECTED_OFFER:
                         ((Demand) content).computeSelectedOffer();
                         break;
-                    case SET_DEMAND_STATE:
-                        if (demandState != null && demandState != DisplayableDemandState.NO_FILTER) {
-                            ((Demand) content).setDemandState(DisplayableDemandState.getDemandState(demandState));
+                    case SET_DEMAND_IN_DEVELOPMENT:
+                        Demand demand = (Demand) content;
+                        if (demand.getSelectedOffer() == null || demand.getSelectedOffer().getAmount().compareTo(demand.getContribution()) > 0) {
+                            session.notifyBad("There is no offer or not enough money. So no developement state for id: " + demand.getId());
+                        } else {
+                            demand.setDemandState(DemandState.DEVELOPPING);
                         }
                         break;
                     case VALIDATE_BATCH:

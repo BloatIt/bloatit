@@ -79,7 +79,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /**
      * Create a new DemandImplementation. This method is not protected by any
      * right management.
-     * 
+     *
      * @param dao the dao
      * @return null if the <code>dao</code> is null.
      */
@@ -91,7 +91,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * Create a new demand. The right management for creating a demand is
      * specific. (The Right management system is not working in this case). You
      * have to use the {@link DemandManager}.
-     * 
+     *
      * @param author the author
      * @param locale the locale in which this demand is written
      * @param title the title of the demand
@@ -108,7 +108,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Use the {@link #create(DaoDemand)} method.
-     * 
+     *
      * @param dao the dao
      */
     private DemandImplementation(final DaoDemand dao) {
@@ -415,7 +415,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Sets the selected offer. Called internally and in demandState.
-     * 
+     *
      * @param offer the new selected offer
      */
     void setSelectedOffer(final Offer offer) {
@@ -436,7 +436,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     /**
      * Method called by Offer when the offer is kudosed. Update the
      * selectedOffer using it popularity.
-     * 
+     *
      * @param offer the offer that has been kudosed.
      * @param positif true means kudos up, false kudos down.
      */
@@ -538,7 +538,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Gets the contributions unprotected.
-     * 
+     *
      * @return the contributions unprotected
      * @see #getContribution()
      */
@@ -631,7 +631,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Gets the offers unprotected.
-     * 
+     *
      * @return the offers unprotected
      */
     private PageIterable<Offer> getOffersUnprotected() {
@@ -667,7 +667,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Gets the selected offer with no Right management.
-     * 
+     *
      * @return the selected offer unprotected
      */
     private Offer getSelectedOfferUnprotected() {
@@ -694,7 +694,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Sets the state object.
-     * 
+     *
      * @param stateObject the new state object
      */
     private void setStateObject(final AbstractDemandState stateObject) {
@@ -703,7 +703,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Gets the state object.
-     * 
+     *
      * @return the state object
      */
     private AbstractDemandState getStateObject() {
@@ -746,7 +746,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Turn pending.
-     * 
+     *
      * @return the int
      * @see com.bloatit.model.Kudosable#turnPending()
      */
@@ -757,7 +757,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Turn valid.
-     * 
+     *
      * @return the int
      * @see com.bloatit.model.Kudosable#turnValid()
      */
@@ -768,7 +768,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Turn rejected.
-     * 
+     *
      * @return the int
      * @see com.bloatit.model.Kudosable#turnRejected()
      */
@@ -779,7 +779,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
 
     /**
      * Turn hidden.
-     * 
+     *
      * @return the int
      * @see com.bloatit.model.Kudosable#turnHidden()
      */

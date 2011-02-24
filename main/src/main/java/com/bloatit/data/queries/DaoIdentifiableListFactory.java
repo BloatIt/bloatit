@@ -27,14 +27,14 @@ import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 /**
  * A factory for creating DaoIdentifiable Lists objects (PageIterable) using
  * hibernate Criteria query.
- * 
+ *
  * @param <T> the generic type
  */
 public class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractListFactory<T> {
 
     /**
      * Instantiates a new dao identifiable list factory.
-     * 
+     *
      * @param criteria the criteria
      */
     protected DaoIdentifiableListFactory(final Criteria criteria) {
@@ -51,7 +51,7 @@ public class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAb
     /**
      * Add a WHERE close to have only the identifiable with the id
      * <code>id</code>
-     * 
+     *
      * @param id the id
      */
     public void idEquals(final Integer id) {

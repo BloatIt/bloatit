@@ -22,7 +22,7 @@ public class HttpParameter implements Iterable<String> {
      * <p>
      * Indicates whether the parameter contains multiple values or not
      * </p>
-     * 
+     *
      * @return <code>true</code> if the parameter contains multiple values,
      *         <code>false</code> otherwise
      */
@@ -34,7 +34,7 @@ public class HttpParameter implements Iterable<String> {
      * <p>
      * Returns <b>only</b> the first value in the list of values
      * </p>
-     * 
+     *
      * @return the first value for this parameter
      */
     public String getSimpleValue() {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Bug;
@@ -17,8 +18,8 @@ import com.bloatit.rest.resources.RestBug;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Bug<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Bugs>}
  *     {@code <Bug name=Bug1 />}
@@ -26,9 +27,18 @@ import com.bloatit.rest.resources.RestBug;
  * {@code </Bugs>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "bugs")
+ */
+@XmlRootElement(name = "bugs")
 public class RestBugList extends RestListBinder<RestBug, Bug> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestBugList() {
+        super();
+    }
+
     /**
      * Creates a RestBugList from a {@codePageIterable<Bug>}
      *
@@ -37,11 +47,12 @@ public class RestBugList extends RestListBinder<RestBug, Bug> {
     public RestBugList(PageIterable<Bug> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "bug")
+    @XmlIDREF
     public List<RestBug> getBugs() {
         List<RestBug> bugs = new ArrayList<RestBug>();
         for (RestBug bug : this) {
@@ -50,4 +61,3 @@ public class RestBugList extends RestListBinder<RestBug, Bug> {
         return bugs;
     }
 }
-

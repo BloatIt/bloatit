@@ -166,7 +166,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * @see com.bloatit.data.DaoBug#setResolved()
      */
     public void setResolved() {
-        //TODO: user right
+        // TODO: user right
         getDao().setResolved();
     }
 
@@ -176,7 +176,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * @see com.bloatit.data.DaoBug#setDeveloping()
      */
     public void setDeveloping() {
-        //TODO: user right
+        // TODO: user right
         getDao().setDeveloping();
     }
 
@@ -219,17 +219,17 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      */
     @Override
     public Comment addComment(String text) throws UnauthorizedOperationException {
-        //TODO: access right
-        //tryAccess(new BugRight.Comment(), Action.WRITE);
+        // TODO: access right
+        // tryAccess(new BugRight.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
         getDao().addComment(comment);
         return Comment.create(comment);
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

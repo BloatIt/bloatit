@@ -20,7 +20,7 @@ public abstract class QueryResponseStream {
 
     /**
      * Creates an HtmlStream based on a given outputStream
-     * 
+     *
      * @param out the underlying stream. Should usually be a socket to a web
      *            server (or an encapsulation of a socket to a web server)
      */
@@ -31,14 +31,14 @@ public abstract class QueryResponseStream {
 
     /**
      * Write a line of text. Some implementations may not add a newLineChar.
-     * 
+     *
      * @param newText should not finish with a new line char.
      */
     public abstract void writeLine(String newText);
 
     /**
      * Write raw text. Just write the text to the output.
-     * 
+     *
      * @param newText is the text to write.
      */
     public abstract void writeRawText(String newText);
@@ -68,7 +68,7 @@ public abstract class QueryResponseStream {
 
     /**
      * ??
-     * 
+     *
      * @param text
      */
     protected final void append(final String text) {

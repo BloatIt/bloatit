@@ -36,7 +36,7 @@ public final class ProjectManager {
 
     /**
      * Gets the project by id.
-     * 
+     *
      * @param id the id
      * @return the project or null if not found.
      */
@@ -46,7 +46,7 @@ public final class ProjectManager {
 
     /**
      * Gets all the projects.
-     * 
+     *
      * @return all the projects
      */
     public static PageIterable<Project> getProjects() {

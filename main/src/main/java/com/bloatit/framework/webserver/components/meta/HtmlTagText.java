@@ -10,11 +10,11 @@ package com.bloatit.framework.webserver.components.meta;
  * </p>
  * <p>
  * Usage :
- * 
+ *
  * <pre>
  * {@code another_component.add(new HtmlTagText("<span class="plop">foo</span>));}
  * </pre>
- * 
+ *
  * <b>Note : </b> In the previous example, class <code>HtmlSpan</code> should be
  * used
  * </p>

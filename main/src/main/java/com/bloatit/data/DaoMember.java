@@ -77,7 +77,7 @@ public final class DaoMember extends DaoActor {
     @Basic(optional = false)
     private Locale locale;
 
-    //TODO: tom must set the good cascade type for images
+    // TODO: tom must set the good cascade type for images
     @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private DaoFileMetadata avatar;
 
@@ -426,9 +426,7 @@ public final class DaoMember extends DaoActor {
         return avatar;
     }
 
-
     /**
-     *
      * @param avatar
      */
     public void setAvatar(DaoFileMetadata avatar) {

@@ -18,7 +18,9 @@ package com.bloatit.model.managers;
 
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Offer;
+import com.bloatit.model.lists.OfferList;
 
 /**
  * The Class OfferManager is an utility class containing static methods.
@@ -40,6 +42,13 @@ public final class OfferManager {
      */
     public static Offer getOfferById(final Integer id) {
         return Offer.create(DBRequests.getById(DaoOffer.class, id));
+    }
+
+    /**
+     * @return
+     */
+    public static PageIterable<Offer> getOffers() {
+        return new OfferList(DBRequests.getAll(DaoOffer.class));
     }
 
 }

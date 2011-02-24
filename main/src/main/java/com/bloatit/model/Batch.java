@@ -36,7 +36,7 @@ import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * A batch is a part of an offer. Simple offers are only composed of one batch.
- * 
+ *
  * @author Thomas Guyard
  */
 public class Batch extends Identifiable<DaoBatch> {
@@ -66,7 +66,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * Check the cache, if a corresponding Batch exist return it, otherwise
      * create a new one using its dao representation. If the dao == null return
      * null;
-     * 
+     *
      * @param dao the dao
      * @return the batch or null if the dao == null
      * @see Creator
@@ -77,7 +77,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Instantiates a new batch.
-     * 
+     *
      * @param dao the dao
      */
     private Batch(final DaoBatch dao) {
@@ -86,7 +86,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Update major fatal percent.
-     * 
+     *
      * @param fatalPercent the fatal percent
      * @param majorPercent the major percent
      * @see com.bloatit.data.DaoBatch#updateMajorFatalPercent(int, int)
@@ -97,7 +97,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Adds the bug.
-     * 
+     *
      * @param member the author of the bug
      * @param title the title of the bug
      * @param description the description
@@ -148,7 +148,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Validate the batch after it has been relreased.
-     * 
+     *
      * @return true, if successful
      * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
@@ -159,7 +159,7 @@ public class Batch extends Identifiable<DaoBatch> {
     /**
      * Force validate the batch after it has been released even if there are
      * bugs left.
-     * 
+     *
      * @return true, if successful
      * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
@@ -169,7 +169,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Tells if an admin should validate this batch part.
-     * 
+     *
      * @param level the level corresponding to the part we want to validate.
      * @return true, if we should do it, false otherwise.
      * @see com.bloatit.data.DaoBatch#shouldValidatePart(com.bloatit.data.DaoBug.Level)
@@ -189,7 +189,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the non resolved bugs.
-     * 
+     *
      * @param level the level
      * @return the non resolved bugs for the level <code>level</code>.
      * @see com.bloatit.data.DaoBatch#getNonResolvedBugs(com.bloatit.data.DaoBug.Level)
@@ -200,7 +200,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the bugs on a specific <code>level</code>.
-     * 
+     *
      * @param level the level
      * @return the bugs that are at <code>level</code>.
      * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.Level)
@@ -211,7 +211,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the bugs on a specific state.
-     * 
+     *
      * @param state the state
      * @return the bugs
      * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.State)
@@ -222,7 +222,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the bugs on a specific <code>level</code> and <code>state</code>.
-     * 
+     *
      * @param level the level
      * @param state the state
      * @return the bugs
@@ -235,7 +235,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the release date.
-     * 
+     *
      * @return the release date
      * @see com.bloatit.data.DaoBatch#getReleasedDate()
      */
@@ -245,7 +245,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the fatal bugs percent.
-     * 
+     *
      * @return the fatal bugs percent
      * @see com.bloatit.data.DaoBatch#getFatalBugsPercent()
      */
@@ -255,7 +255,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the major bugs percent.
-     * 
+     *
      * @return the major bugs percent
      * @see com.bloatit.data.DaoBatch#getMajorBugsPercent()
      */
@@ -265,7 +265,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the minor bugs percent.
-     * 
+     *
      * @return the minor bugs percent
      * @see com.bloatit.data.DaoBatch#getMinorBugsPercent()
      */
@@ -275,7 +275,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the expiration date.
-     * 
+     *
      * @return the expiration date
      */
     public Date getExpirationDate() {
@@ -284,7 +284,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the amount.
-     * 
+     *
      * @return the amount
      */
     public BigDecimal getAmount() {
@@ -293,7 +293,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the title.
-     * 
+     *
      * @return the title
      */
     public String getTitle() {
@@ -302,7 +302,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the description.
-     * 
+     *
      * @return the description
      */
     public String getDescription() {
@@ -311,7 +311,7 @@ public class Batch extends Identifiable<DaoBatch> {
 
     /**
      * Gets the position.
-     * 
+     *
      * @return the position
      */
     public int getPosition() {
@@ -362,7 +362,7 @@ public class Batch extends Identifiable<DaoBatch> {
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

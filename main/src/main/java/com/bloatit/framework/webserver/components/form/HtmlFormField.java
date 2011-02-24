@@ -80,7 +80,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * If a label is added, it will will be positioned BEFORE the element
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      */
@@ -96,7 +96,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * The Label will be positioned BEFORE the element
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -114,7 +114,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * If a label is added later, it will be added before or after the element,
      * depending on the value of the parameter <code>position</code>
      * <p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param position the position of the future label
@@ -136,7 +136,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * The label position depends on the value of the parameter
      * <code>position</code>
      * </p>
-     * 
+     *
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
@@ -159,7 +159,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and
      * not modify any other parameters than redefining the placeholder
      * </p>
-     * 
+     *
      * @param label the label for the element
      */
     public final void setLabel(final String label) {
@@ -181,7 +181,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * depending on the kind of field. CSS can then be used to render it
      * properly.
      * </p>
-     * 
+     *
      * @param comment The text describing the goal of the form field
      */
     public void setComment(final String comment) {
@@ -199,7 +199,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * depending on the kind of field. CSS can then be used to render it
      * properly.
      * </p>
-     * 
+     *
      * @param messages The list of messages to display
      */
     public void addErrorMessages(final Messages messages) {
@@ -239,7 +239,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * Adds a default value to the object object.
      * </p>
-     * 
+     *
      * @param value the Object representing the default value
      */
     public final void setDefaultValue(final T value) {
@@ -252,18 +252,18 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * Sets the value displayed on page load, before the user even inputed data
      * </p>
-     * 
+     *
      * @param data the default value
      */
     protected final void setDefaultValue(final FormFieldData<T> data) {
         final String suggestedValue = data.getSuggestedValue();
         if (suggestedValue != null) {
             this.doSetDefaultValue(suggestedValue);
-        } 
+        }
     }
 
     /**
-     * 
+     *
      */
     protected void checkIdLabel() {
         if (getId() == null) {
@@ -281,7 +281,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Default value of an element is the value displayed to the user when the
      * page loads, before he even started adding data.
      * </p>
-     * 
+     *
      * @param value the default value
      */
     protected abstract void doSetDefaultValue(T value);
@@ -293,7 +293,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * Default value of an element is the value displayed to the user when the
      * page loads, before he even started adding data.
-     * 
+     *
      * @param defaultValueAsString the default value
      * @see #doSetDefaultValue(Object)
      */

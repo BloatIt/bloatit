@@ -70,7 +70,6 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
         super(dao);
     }
 
-
     /**
      * Return all the children comment of this comment.
      *
@@ -141,17 +140,17 @@ public final class Comment extends Kudosable<DaoComment> implements Commentable 
      */
     @Override
     public Comment addComment(String text) throws UnauthorizedOperationException {
-        //TODO: access right
-        //tryAccess(new BugRight.Comment(), Action.WRITE);
+        // TODO: access right
+        // tryAccess(new BugRight.Comment(), Action.WRITE);
         final DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
         getDao().addChildComment(comment);
         return Comment.create(comment);
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

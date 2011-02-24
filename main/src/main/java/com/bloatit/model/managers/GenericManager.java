@@ -49,7 +49,7 @@ public final class GenericManager {
         final Criteria criteria = SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoIdentifiable.class);
         criteria.add(Restrictions.eq("id", id));
         DaoIdentifiable daoIdentifiable = (DaoIdentifiable) criteria.uniqueResult();
-        if(daoIdentifiable == null) {
+        if (daoIdentifiable == null) {
             return null;
         }
         return daoIdentifiable.accept(new DataVisitorConstructor());

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.HighlightDemand;
@@ -17,8 +18,8 @@ import com.bloatit.rest.resources.RestHighlightDemand;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of HighlightDemand<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <HighlightDemands>}
  *     {@code <HighlightDemand name=HighlightDemand1 />}
@@ -26,22 +27,33 @@ import com.bloatit.rest.resources.RestHighlightDemand;
  * {@code </HighlightDemands>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "highlightdemands")
+ */
+@XmlRootElement(name = "highlightdemands")
 public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand, HighlightDemand> {
+
     /**
-     * Creates a RestHighlightDemandList from a {@codePageIterable<HighlightDemand>}
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestHighlightDemandList() {
+        super();
+    }
+
+    /**
+     * Creates a RestHighlightDemandList from a
+     * {@codePageIterable<HighlightDemand>}
      *
      * @param collection the list of elements from the model
      */
     public RestHighlightDemandList(PageIterable<HighlightDemand> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "highlightdemand")
+    @XmlIDREF
     public List<RestHighlightDemand> getHighlightDemands() {
         List<RestHighlightDemand> highlightdemands = new ArrayList<RestHighlightDemand>();
         for (RestHighlightDemand highlightdemand : this) {
@@ -50,4 +62,3 @@ public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand,
         return highlightdemands;
     }
 }
-

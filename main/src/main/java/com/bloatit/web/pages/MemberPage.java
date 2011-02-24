@@ -31,6 +31,9 @@ import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlRenderer;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.PlaceHolderElement;
+import com.bloatit.framework.webserver.components.form.HtmlFileInput;
+import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
 import com.bloatit.model.Group;
@@ -38,8 +41,10 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
+import com.bloatit.web.members.ChangeAvatarAction;
 import com.bloatit.web.members.MembersTools;
 import com.bloatit.web.pages.master.MasterPage;
+import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.TeamPageUrl;
 
@@ -83,7 +88,7 @@ public final class MemberPage extends MasterPage {
         try {
             final HtmlTitleBlock memberTitle = new HtmlTitleBlock(Context.tr("Member: ") + member.getDisplayName(), 1);
             master.add(memberTitle);
-            //Display the avatar at the right size of the block
+            // Display the avatar at the right size of the block
             memberTitle.add(new HtmlDiv("float_right").add(MembersTools.getMemberAvatar(member)));
             final HtmlList memberInfo = new HtmlList();
             memberTitle.add(memberInfo);
@@ -104,9 +109,32 @@ public final class MemberPage extends MasterPage {
             pagedTeamList = new HtmlPagedList<Group>(teamRenderer, teamList, clonedUrl, clonedUrl.getPagedTeamListUrl());
             memberGroups.add(pagedTeamList);
 
+            // Change avatar (only is the member is the user)
+            if (member.isOwner()) {
+                final HtmlTitleBlock changeAvatar = new HtmlTitleBlock(Context.tr("Change avatar"), 2);
+                changeAvatar.add(generateAvatarChangeForm());
+                master.add(changeAvatar);
+            }
+
         } catch (final UnauthorizedOperationException e) {
             add(new HtmlParagraph(tr("For obscure reasons, you are not allowed to see the details of this member.")));
         }
+    }
+
+    private XmlNode generateAvatarChangeForm() {
+        final ChangeAvatarActionUrl changeAvatarActionUrl = new ChangeAvatarActionUrl(member);
+        final HtmlForm changeAvatarForm = new HtmlForm(changeAvatarActionUrl.urlString());
+        changeAvatarForm.enableFileUpload();
+
+        // File
+        final HtmlFileInput avatarInput = new HtmlFileInput(ChangeAvatarAction.AVATAR_CODE, Context.tr("Avatar image file"));
+        avatarInput.setComment(tr("64px x 64px. 2Go max. Accecpted formats: png, jpg"));
+        changeAvatarForm.add(avatarInput);
+
+        final HtmlSubmit submit = new HtmlSubmit(Context.tr("Submit"));
+        changeAvatarForm.add(submit);
+
+        return changeAvatarForm;
     }
 
     @Override

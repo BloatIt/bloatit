@@ -107,7 +107,7 @@ public class Project extends Identifiable<DaoProject> {
     }
 
     public void setImage(FileMetadata fileImage) {
-        //TODO: right management
+        // TODO: right management
         getDao().setImage(fileImage.getDao());
     }
 
@@ -128,7 +128,5 @@ public class Project extends Identifiable<DaoProject> {
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
-
-
 
 }

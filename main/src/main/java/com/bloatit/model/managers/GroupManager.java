@@ -40,7 +40,7 @@ public final class GroupManager {
 
     /**
      * Gets the a group using its (unique) name.
-     * 
+     *
      * @param name the name of the group we are looking for.
      * @return the group found or null if not found.
      */
@@ -50,7 +50,7 @@ public final class GroupManager {
 
     /**
      * Tells if a group exist using its name.
-     * 
+     *
      * @param name the name of the group we are trying to know if it exists.
      * @return true, if it exist, false otherwise.
      */
@@ -60,7 +60,7 @@ public final class GroupManager {
 
     /**
      * Gets the invitation to join a group.
-     * 
+     *
      * @param group the group this invitation is on.
      * @param member the member this invitation was sent to.
      * @return the invitation, are null if there is no invitation on that
@@ -72,7 +72,7 @@ public final class GroupManager {
 
     /**
      * Gets the invitation by id.
-     * 
+     *
      * @param id the id
      * @return the invitation or null if not found.
      */
@@ -82,7 +82,7 @@ public final class GroupManager {
 
     /**
      * Gets the group by id.
-     * 
+     *
      * @param id the id
      * @return the group or null if not found
      */
@@ -92,7 +92,7 @@ public final class GroupManager {
 
     /**
      * Gets the all the groups.
-     * 
+     *
      * @return the groups.
      */
     public static PageIterable<Group> getGroups() {

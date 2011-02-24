@@ -32,7 +32,7 @@ public class ModelAccessor {
     /**
      * This method is the init method. Call it only once, in a non MultiThreaded
      * environment.
-     * 
+     *
      * @see com.bloatit.model.AbstractModel#initialize()
      */
     public static void initialize(final AbstractModel manager) {

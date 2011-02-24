@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlIDREF;
 
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Batch;
@@ -17,8 +18,8 @@ import com.bloatit.rest.resources.RestBatch;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Batch<br />
- * Example: 
- * 
+ * Example:
+ *
  * <pre>
  * {@code <Batchs>}
  *     {@code <Batch name=Batch1 />}
@@ -26,9 +27,18 @@ import com.bloatit.rest.resources.RestBatch;
  * {@code </Batchs>}
  * </pre>
  * <p>
- */ 
-@XmlRootElement (name = "batchs")
+ */
+@XmlRootElement(name = "batchs")
 public class RestBatchList extends RestListBinder<RestBatch, Batch> {
+
+    /**
+     * Provided for XML generation
+     */
+    @SuppressWarnings("unused")
+    private RestBatchList() {
+        super();
+    }
+
     /**
      * Creates a RestBatchList from a {@codePageIterable<Batch>}
      *
@@ -37,11 +47,12 @@ public class RestBatchList extends RestListBinder<RestBatch, Batch> {
     public RestBatchList(PageIterable<Batch> collection) {
         super(collection);
     }
-    
+
     /**
      * This method is provided only to be able to represent the list as XmL
      */
     @XmlElement(name = "batch")
+    @XmlIDREF
     public List<RestBatch> getBatchs() {
         List<RestBatch> batchs = new ArrayList<RestBatch>();
         for (RestBatch batch : this) {
@@ -50,4 +61,3 @@ public class RestBatchList extends RestListBinder<RestBatch, Batch> {
         return batchs;
     }
 }
-

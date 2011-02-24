@@ -35,7 +35,7 @@ public final class BugManager {
 
     /**
      * Gets a Bug by id.
-     * 
+     *
      * @param id the {@link Bug} id
      * @return the bug or null if not found.
      */

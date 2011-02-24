@@ -55,7 +55,7 @@ public class Image {
      * <p>
      * Should <i>always</i> be used <i>after</i> a call to isLocal.
      * </p>
-     * 
+     *
      * @return the identifier of the image
      * @see Image#isLocal()
      */

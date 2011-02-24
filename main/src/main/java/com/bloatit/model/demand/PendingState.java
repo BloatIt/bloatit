@@ -24,7 +24,7 @@ public class PendingState extends CanContributeMetaState {
 
     /**
      * Instantiates a new pending state.
-     * 
+     *
      * @param demand the demand on which this state apply.
      */
     public PendingState(final DemandImplementation demand) {

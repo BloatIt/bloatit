@@ -27,7 +27,7 @@ import com.bloatit.model.Identifiable;
  * The Class ListBinder is the base class of all the binder lists. A Binder list
  * transform a PageIterable<Dao...> to a PageIterable<...> (the same but without
  * the Dao)
- * 
+ *
  * @param <E> the Model level representation of a Dao class
  * @param <DAO> the Dao class corresponding to <code>E</code>
  */
@@ -38,7 +38,7 @@ public class ListBinder<E extends IdentifiableInterface, DAO extends DaoIdentifi
 
     /**
      * Instantiates a new list binder.
-     * 
+     *
      * @param daoCollection the dao collection
      */
     public ListBinder(final PageIterable<DAO> daoCollection) {
@@ -111,11 +111,11 @@ public class ListBinder<E extends IdentifiableInterface, DAO extends DaoIdentifi
 
     /**
      * Creates the from dao iterator.
-     * 
+     *
      * @param dao the dao
      * @return the iterator
      */
-    protected Iterator<E> createFromDaoIterator(Iterator<DAO> dao){
+    protected Iterator<E> createFromDaoIterator(Iterator<DAO> dao) {
         return new IteratorBinder<E, DAO>(dao);
     }
 
