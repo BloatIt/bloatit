@@ -6,7 +6,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
@@ -16,8 +18,8 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
-import com.bloatit.model.Demand;
 import com.bloatit.model.Offer;
+import com.bloatit.model.managers.OfferManager;
 import com.bloatit.rest.list.RestBatchList;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestOfferList;
@@ -90,18 +92,16 @@ public class RestOffer extends RestElement<Offer> {
      * <p>
      * Finds the RestOffer matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestOffer
      */
     @REST(name = "offers", method = RequestMethod.GET)
     public static RestOffer getById(int id) {
-        // TODO auto generated code
-        // RestOffer restOffer = new RestOffer(OfferManager.getOfferById(id));
-        // if (restOffer.isNull()) {
-        // return null;
-        // }
-        // return restOffer;
-        return null;
+        RestOffer restOffer = new RestOffer(OfferManager.getOfferById(id));
+        if (restOffer.isNull()) {
+            return null;
+        }
+        return restOffer;
     }
 
     /**
@@ -111,15 +111,12 @@ public class RestOffer extends RestElement<Offer> {
      */
     @REST(name = "offers", method = RequestMethod.GET)
     public static RestOfferList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestOfferList(OfferManager.getOffers());
     }
 
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-
-    // TODO Generate
 
     @XmlAttribute
     @XmlID
@@ -130,62 +127,50 @@ public class RestOffer extends RestElement<Offer> {
     /**
      * @see com.bloatit.model.Offer#getExpirationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getExpirationDate() {
-        // TODO auto-generated code stub
-        Date expirationDate = model.getExpirationDate();
-        return expirationDate;
+        return model.getExpirationDate();
     }
 
     /**
      * @see com.bloatit.model.Offer#getAmount()
      */
-    // @XmlElement
+    @XmlAttribute
     public BigDecimal getAmount() {
-        // TODO auto-generated code stub
-        BigDecimal amount = model.getAmount();
-        return amount;
+        return model.getAmount();
     }
 
     /**
      * @see com.bloatit.model.Offer#getBatches()
      */
-    // @XmlElement
+    @XmlElement
     public RestBatchList getBatches() {
-        // TODO auto-generated code stub
-        // RestList<?> batches = new RestList<?>(model.getBatches());
         return new RestBatchList(model.getBatches());
     }
 
     /**
      * @see com.bloatit.model.Offer#getDemand()
      */
-    // @XmlElement
-    public Demand getDemand() {
-        // TODO auto-generated code stub
-        Demand demand = model.getDemand();
-        return demand;
+    @XmlElement
+    public RestDemand getDemand() {
+        return new RestDemand(model.getDemand());
     }
 
     /**
      * @see com.bloatit.model.Offer#getCurrentBatch()
      */
-    // @XmlElement
+    @XmlElement
     public RestBatch getCurrentBatch() {
-        // TODO auto-generated code stub
-        RestBatch currentBatch = new RestBatch(model.getCurrentBatch());
-        return currentBatch;
+        return new RestBatch(model.getCurrentBatch());
     }
 
     /**
      * @see com.bloatit.model.Offer#getProgression()
      */
-    // @XmlElement
+    @XmlAttribute
     public float getProgression() throws RestException {
-        // TODO auto-generated code stub
         try {
-            float progression = model.getProgression();
-            return progression;
+            return model.getProgression();
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getProgression on Offer", e);
         }
@@ -194,70 +179,53 @@ public class RestOffer extends RestElement<Offer> {
     /**
      * @see com.bloatit.model.Kudosable#getState()
      */
-    // @XmlElement
+    @XmlAttribute
     public PopularityState getState() {
-        // TODO auto-generated code stub
-        PopularityState state = model.getState();
-        return state;
+        return model.getState();
     }
 
     /**
      * @see com.bloatit.model.Kudosable#getPopularity()
      */
-    // @XmlElement
+    @XmlAttribute
     public int getPopularity() {
-        // TODO auto-generated code stub
-        int popularity = model.getPopularity();
-        return popularity;
-    }
-
-    /**
-     * @see com.bloatit.model.Kudosable#getUserVoteValue()
-     */
-    // @XmlElement
-    public int getUserVoteValue() {
-        // TODO auto-generated code stub
-        int userVoteValue = model.getUserVoteValue();
-        return userVoteValue;
+        return model.getPopularity();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAuthor()
      */
-    // @XmlElement
+    @XmlElement
+    @XmlIDREF
     public RestMember getAuthor() {
-        // TODO auto-generated code stub
-        RestMember author = new RestMember(model.getAuthor());
-        return author;
+        return new RestMember(model.getAuthor());
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAsGroup()
      */
-    // @XmlElement
+    @XmlElement(name = "asgroup")
     public RestGroup getAsGroup() {
-        // TODO auto-generated code stub
-        RestGroup asGroup = new RestGroup(model.getAsGroup());
-        return asGroup;
+        RestGroup restGroup = new RestGroup(model.getAsGroup());
+        if (restGroup.isNull()) {
+            return null;
+        }
+        return restGroup;
     }
 
     /**
      * @see com.bloatit.model.UserContent#getFiles()
      */
-    // @XmlElement
+    @XmlElement
     public RestFileMetadataList getFiles() {
-        // TODO auto-generated code stub
-        // RestList<?> files = new RestList<?>(model.getFiles());
         return new RestFileMetadataList(model.getFiles());
     }
 

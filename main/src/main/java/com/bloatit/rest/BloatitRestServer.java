@@ -6,7 +6,26 @@ import java.util.Map;
 import java.util.Set;
 
 import com.bloatit.framework.rest.RestServer;
+import com.bloatit.rest.list.RestBankTransactionList;
+import com.bloatit.rest.list.RestBatchList;
+import com.bloatit.rest.list.RestBugList;
+import com.bloatit.rest.list.RestCommentList;
+import com.bloatit.rest.list.RestContributionList;
+import com.bloatit.rest.list.RestDemandList;
+import com.bloatit.rest.list.RestDescriptionList;
+import com.bloatit.rest.list.RestExternalAccountList;
+import com.bloatit.rest.list.RestFileMetadataList;
+import com.bloatit.rest.list.RestGroupList;
+import com.bloatit.rest.list.RestHighlightDemandList;
+import com.bloatit.rest.list.RestInternalAccountList;
+import com.bloatit.rest.list.RestJoinGroupInvitationList;
+import com.bloatit.rest.list.RestKudosList;
 import com.bloatit.rest.list.RestMemberList;
+import com.bloatit.rest.list.RestOfferList;
+import com.bloatit.rest.list.RestProjectList;
+import com.bloatit.rest.list.RestReleaseList;
+import com.bloatit.rest.list.RestTransactionList;
+import com.bloatit.rest.list.RestTranslationList;
 import com.bloatit.rest.resources.RestBankTransaction;
 import com.bloatit.rest.resources.RestBatch;
 import com.bloatit.rest.resources.RestBug;
@@ -75,7 +94,30 @@ public class BloatitRestServer extends RestServer {
                                                        RestRelease.class,
                                                        RestTransaction.class,
                                                        RestTranslation.class,
-                                                       RestMemberList.class, };
+                                                       RestMemberList.class,
+
+                                                       RestMemberList.class,
+                                                       RestBankTransactionList.class,
+                                                       RestBatchList.class,
+                                                       RestBugList.class,
+                                                       RestCommentList.class,
+                                                       RestContributionList.class,
+                                                       RestDemandList.class,
+                                                       RestDescriptionList.class,
+                                                       RestExternalAccountList.class,
+                                                       RestFileMetadataList.class,
+                                                       RestGroupList.class,
+                                                       RestHighlightDemandList.class,
+                                                       RestInternalAccountList.class,
+                                                       RestJoinGroupInvitationList.class,
+                                                       RestKudosList.class,
+                                                       RestOfferList.class,
+                                                       RestProjectList.class,
+                                                       RestReleaseList.class,
+                                                       RestTransactionList.class,
+                                                       RestTranslationList.class,
+    
+    };
 
     @Override
     protected Set<String> getResourcesDirectories() {
