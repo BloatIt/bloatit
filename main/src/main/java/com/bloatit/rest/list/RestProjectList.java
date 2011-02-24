@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -15,7 +17,7 @@ import com.bloatit.rest.resources.RestProject;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Project<br />
- * Example:
+ * Example: 
  * 
  * <pre>
  * {@code <Projects>}
@@ -24,24 +26,28 @@ import com.bloatit.rest.resources.RestProject;
  * {@code </Projects>}
  * </pre>
  * <p>
- */
-@XmlRootElement
+ */ 
+@XmlRootElement (name = "projects")
 public class RestProjectList extends RestListBinder<RestProject, Project> {
     /**
      * Creates a RestProjectList from a {@codePageIterable<Project>}
-     * 
+     *
      * @param collection the list of elements from the model
      */
-    public RestProjectList(final PageIterable<Project> collection) {
+    public RestProjectList(PageIterable<Project> collection) {
         super(collection);
     }
-
+    
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "projects")
     @XmlElement(name = "project")
-    public RestProjectList getProjects() {
-        return this;
+    public List<RestProject> getProjects() {
+        List<RestProject> projects = new ArrayList<RestProject>();
+        for (RestProject project : this) {
+            projects.add(project);
+        }
+        return projects;
     }
 }
+

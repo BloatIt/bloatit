@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -15,7 +17,7 @@ import com.bloatit.rest.resources.RestBankTransaction;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of BankTransaction<br />
- * Example:
+ * Example: 
  * 
  * <pre>
  * {@code <BankTransactions>}
@@ -24,25 +26,28 @@ import com.bloatit.rest.resources.RestBankTransaction;
  * {@code </BankTransactions>}
  * </pre>
  * <p>
- */
-@XmlRootElement
+ */ 
+@XmlRootElement (name = "banktransactions")
 public class RestBankTransactionList extends RestListBinder<RestBankTransaction, BankTransaction> {
     /**
-     * Creates a RestBankTransactionList from a
-     * {@codePageIterable<BankTransaction>}
-     * 
+     * Creates a RestBankTransactionList from a {@codePageIterable<BankTransaction>}
+     *
      * @param collection the list of elements from the model
      */
-    public RestBankTransactionList(final PageIterable<BankTransaction> collection) {
+    public RestBankTransactionList(PageIterable<BankTransaction> collection) {
         super(collection);
     }
-
+    
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "banktransactions")
     @XmlElement(name = "banktransaction")
-    public RestBankTransactionList getBankTransactions() {
-        return this;
+    public List<RestBankTransaction> getBankTransactions() {
+        List<RestBankTransaction> banktransactions = new ArrayList<RestBankTransaction>();
+        for (RestBankTransaction banktransaction : this) {
+            banktransactions.add(banktransaction);
+        }
+        return banktransactions;
     }
 }
+

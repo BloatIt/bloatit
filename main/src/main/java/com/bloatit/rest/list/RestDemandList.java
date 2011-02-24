@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -15,7 +17,7 @@ import com.bloatit.rest.resources.RestDemand;
  * </p>
  * <p>
  * This class can be represented in Xml as a list of Demand<br />
- * Example:
+ * Example: 
  * 
  * <pre>
  * {@code <Demands>}
@@ -24,24 +26,28 @@ import com.bloatit.rest.resources.RestDemand;
  * {@code </Demands>}
  * </pre>
  * <p>
- */
-@XmlRootElement
+ */ 
+@XmlRootElement (name = "demands")
 public class RestDemandList extends RestListBinder<RestDemand, Demand> {
     /**
      * Creates a RestDemandList from a {@codePageIterable<Demand>}
-     * 
+     *
      * @param collection the list of elements from the model
      */
-    public RestDemandList(final PageIterable<Demand> collection) {
+    public RestDemandList(PageIterable<Demand> collection) {
         super(collection);
     }
-
+    
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "demands")
     @XmlElement(name = "demand")
-    public RestDemandList getDemands() {
-        return this;
+    public List<RestDemand> getDemands() {
+        List<RestDemand> demands = new ArrayList<RestDemand>();
+        for (RestDemand demand : this) {
+            demands.add(demand);
+        }
+        return demands;
     }
 }
+

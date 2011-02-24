@@ -3,7 +3,7 @@ package com.bloatit.rest.list.master;
 import java.util.Iterator;
 
 import com.bloatit.data.IdentifiableInterface;
-import com.bloatit.rest.RestElement;
+import com.bloatit.framework.rest.RestElement;
 import com.bloatit.rest.resources.ModelToRestVisitor;
 
 /**

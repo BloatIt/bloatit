@@ -1,5 +1,8 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,13 +28,13 @@ import com.bloatit.rest.resources.RestMember;
  * </pre>
  * <p>
  */
-@XmlRootElement
+@XmlRootElement(name = "members")
 public class RestMemberList extends RestListBinder<RestMember, Member> {
     @SuppressWarnings("unused")
-    private RestMemberList(){
+    private RestMemberList() {
         super();
     }
-    
+
     /**
      * Creates a RestMemberList from a {@codePageIterable<Member>}
      * 
@@ -44,9 +47,12 @@ public class RestMemberList extends RestListBinder<RestMember, Member> {
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "members")
     @XmlElement(name = "member")
-    public RestMemberList getMembers() {
-        return this;
+    public List<RestMember> getMembers() {
+        List<RestMember> members = new ArrayList<RestMember>();
+        for (RestMember member : this) {
+            members.add(member);
+        }
+        return members;
     }
 }
