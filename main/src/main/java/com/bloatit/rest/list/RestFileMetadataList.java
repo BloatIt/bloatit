@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -25,7 +27,7 @@ import com.bloatit.rest.resources.RestFileMetadata;
  * </pre>
  * <p>
  */ 
-@XmlRootElement
+@XmlRootElement (name = "filemetadatas")
 public class RestFileMetadataList extends RestListBinder<RestFileMetadata, FileMetadata> {
     /**
      * Creates a RestFileMetadataList from a {@codePageIterable<FileMetadata>}
@@ -39,10 +41,13 @@ public class RestFileMetadataList extends RestListBinder<RestFileMetadata, FileM
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "filemetadatas")
     @XmlElement(name = "filemetadata")
-    public RestFileMetadataList getFileMetadatas() {
-        return this;
+    public List<RestFileMetadata> getFileMetadatas() {
+        List<RestFileMetadata> filemetadatas = new ArrayList<RestFileMetadata>();
+        for (RestFileMetadata filemetadata : this) {
+            filemetadatas.add(filemetadata);
+        }
+        return filemetadatas;
     }
 }
 

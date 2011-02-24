@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -25,7 +27,7 @@ import com.bloatit.rest.resources.RestTransaction;
  * </pre>
  * <p>
  */ 
-@XmlRootElement
+@XmlRootElement (name = "transactions")
 public class RestTransactionList extends RestListBinder<RestTransaction, Transaction> {
     /**
      * Creates a RestTransactionList from a {@codePageIterable<Transaction>}
@@ -39,10 +41,13 @@ public class RestTransactionList extends RestListBinder<RestTransaction, Transac
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
-    public RestTransactionList getTransactions() {
-        return this;
+    public List<RestTransaction> getTransactions() {
+        List<RestTransaction> transactions = new ArrayList<RestTransaction>();
+        for (RestTransaction transaction : this) {
+            transactions.add(transaction);
+        }
+        return transactions;
     }
 }
 

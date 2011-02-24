@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -25,7 +27,7 @@ import com.bloatit.rest.resources.RestJoinGroupInvitation;
  * </pre>
  * <p>
  */ 
-@XmlRootElement
+@XmlRootElement (name = "joingroupinvitations")
 public class RestJoinGroupInvitationList extends RestListBinder<RestJoinGroupInvitation, JoinGroupInvitation> {
     /**
      * Creates a RestJoinGroupInvitationList from a {@codePageIterable<JoinGroupInvitation>}
@@ -39,10 +41,13 @@ public class RestJoinGroupInvitationList extends RestListBinder<RestJoinGroupInv
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "joingroupinvitations")
     @XmlElement(name = "joingroupinvitation")
-    public RestJoinGroupInvitationList getJoinGroupInvitations() {
-        return this;
+    public List<RestJoinGroupInvitation> getJoinGroupInvitations() {
+        List<RestJoinGroupInvitation> joingroupinvitations = new ArrayList<RestJoinGroupInvitation>();
+        for (RestJoinGroupInvitation joingroupinvitation : this) {
+            joingroupinvitations.add(joingroupinvitation);
+        }
+        return joingroupinvitations;
     }
 }
 
