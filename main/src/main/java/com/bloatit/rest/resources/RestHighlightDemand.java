@@ -1,17 +1,20 @@
 package com.bloatit.rest.resources;
 
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlID;
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import com.bloatit.rest.list.RestHighlightDemandList;
+import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.framework.rest.RestElement;
+import com.bloatit.model.Demand;
 import com.bloatit.model.HighlightDemand;
+import com.bloatit.rest.list.RestHighlightDemandList;
 
 /**
 * <p>
@@ -117,6 +120,35 @@ public class RestHighlightDemand extends RestElement<HighlightDemand>{
     public String getId(){
         return model.getId().toString();
     }
+
+    /** 
+     * @see com.bloatit.model.HighlightDemand#getPosition() 
+     */ 
+    // @XmlElement
+    public int getPosition()  { 
+        // TODO auto-generated code stub
+        int position = model.getPosition();
+        return position;
+    }
+    /** 
+     * @see com.bloatit.model.HighlightDemand#getDemand() 
+     */ 
+    // @XmlElement
+    public Demand getDemand()  { 
+        // TODO auto-generated code stub
+        Demand demand = model.getDemand();
+        return demand;
+    }
+    /** 
+     * @see com.bloatit.model.HighlightDemand#getActivationDate() 
+     */ 
+    // @XmlElement
+    public Date getActivationDate()  { 
+        // TODO auto-generated code stub
+        Date activationDate = model.getActivationDate();
+        return activationDate;
+    }
+
 
     // ---------------------------------------------------------------------------------------
     // -- Utils
