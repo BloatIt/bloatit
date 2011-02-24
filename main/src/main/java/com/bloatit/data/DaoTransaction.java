@@ -26,6 +26,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.FatalErrorException;
 
@@ -45,8 +46,8 @@ public final class DaoTransaction extends DaoIdentifiable {
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 
-    public static DaoTransaction
-            createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
+    public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount)
+            throws NotEnoughMoneyException {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
         final DaoTransaction transaction = new DaoTransaction(from, to, amount);
         try {
@@ -84,6 +85,7 @@ public final class DaoTransaction extends DaoIdentifiable {
         this.creationDate = new Date();
         from.substractToAmountValue(amount);
         to.addToAmountValue(amount);
+        Log.data().info("Transaction done: " + amount);
     }
 
     public DaoInternalAccount getFrom() {

@@ -246,7 +246,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
         this.validationDate = validationDate;
     }
 
-    public void validateContributions(final int percent) {
+    void validateContributions(final int percent) {
         if (selectedOffer == null) {
             throw new FatalErrorException("The selectedOffer shouldn't be null here !");
         }

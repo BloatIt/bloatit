@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -211,7 +212,7 @@ public final class DaoBatch extends DaoIdentifiable {
 
     public void addRelease(final DaoRelease release) {
         releases.add(release);
-        if (batchState == BatchState.DEVELOPING){
+        if (batchState == BatchState.DEVELOPING) {
             batchState = BatchState.UAT;
         }
         getOffer().batchHasARelease(this);
@@ -235,21 +236,31 @@ public final class DaoBatch extends DaoIdentifiable {
      * @return true if all parts of this batch is validated.
      */
     public boolean validate(final boolean force) {
+        //
+        // Calculate the real percent (= percent of this batch * percent of this level).
+        int batchPercent = offer.getBatchPercent(this);
+        int fatalPercent = (batchPercent * fatalBugsPercent) / 100;
+        int majorPercent = (batchPercent * majorBugsPercent) / 100;
+        int minorPercent = batchPercent - majorPercent - fatalPercent;
+        
+        //
+        // Do the validation
+        //
         if (levelToValidate == Level.FATAL && (force || shouldValidatePart(Level.FATAL))) {
             levelToValidate = Level.MAJOR;
-            offer.getDemand().validateContributions(fatalBugsPercent);
+            offer.getDemand().validateContributions(fatalPercent);
         }
         // if fatalBugPercent == 100, there is nothing left to validate so it is
         // automatically validated.
         if (levelToValidate == Level.MAJOR && (force || shouldValidatePart(Level.MAJOR) || fatalBugsPercent == 100)) {
             levelToValidate = Level.MINOR;
-            offer.getDemand().validateContributions(majorBugsPercent);
+            offer.getDemand().validateContributions(majorPercent);
         }
         // when minorBugPercent == 0, there is nothing left to validate so it is
         // automatically validated.
         if (levelToValidate == Level.MINOR && (force || shouldValidatePart(Level.MINOR) || getMinorBugsPercent() == 0)) {
             levelToValidate = null;
-            offer.getDemand().validateContributions(getMinorBugsPercent());
+            offer.getDemand().validateContributions(minorPercent);
         }
         if (levelToValidate == null) {
             batchState = BatchState.VALIDATED;
@@ -272,7 +283,7 @@ public final class DaoBatch extends DaoIdentifiable {
         }
         return false;
     }
-    
+
     public boolean partIsValidated(Level level) {
         return this.levelToValidate == null || !EnumSet.range(levelToValidate, Level.MINOR).contains(level);
     }
@@ -472,6 +483,5 @@ public final class DaoBatch extends DaoIdentifiable {
         }
         return true;
     }
-
 
 }

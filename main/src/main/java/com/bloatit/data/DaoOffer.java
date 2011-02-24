@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,7 @@ import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Batch;
 
 /**
  * An offer is a developer offer to a demand.
@@ -199,6 +201,31 @@ public final class DaoOffer extends DaoKudosable {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    // TODO comment; it make sure the sum returned is 100.
+    int getBatchPercent(DaoBatch current) {
+        if (batches.size() == 1) {
+            return 100;
+        }
+        
+        int alreadyReturned = 0;
+        for (int i = 0; i < batches.size(); ++i) {
+            // Calculate the percent of the batch
+            DaoBatch batch = batches.get(i);
+            int percent = batch.getAmount().divide(amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
+            if (current.equals(batch)) {
+                // is the current is the last one
+                if (i == (batches.size() - 1)) {
+                    return 100 - alreadyReturned;
+                } else {
+                    return percent;
+                }
+            }
+            // Save how much has been sent.
+            alreadyReturned += percent;
+        }
+        throw new FatalErrorException("This offer has no batch, or the 'current' batch isn't found");
     }
 
     public boolean hasRelease() {
