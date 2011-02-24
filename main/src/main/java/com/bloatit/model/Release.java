@@ -33,10 +33,6 @@ public class Release extends UserContent<DaoRelease> {
         this(DaoRelease.createAndPersist(member.getDao(), batch.getDao(), description, version, locale));
     }
 
-    public void addComment(DaoComment comment) {
-        getDao().addComment(comment);
-    }
-
     public Batch getBatch() {
         return Batch.create(getDao().getBatch());
     }

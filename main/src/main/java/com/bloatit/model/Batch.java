@@ -174,7 +174,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @return true, if we should do it, false otherwise.
      * @see com.bloatit.data.DaoBatch#shouldValidatePart(com.bloatit.data.DaoBug.Level)
      */
-    boolean shouldValidatePart(final Level level) {
+    public boolean shouldValidatePart(final Level level) {
         return getDao().shouldValidatePart(level);
     }
 

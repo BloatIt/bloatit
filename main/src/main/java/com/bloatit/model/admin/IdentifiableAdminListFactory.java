@@ -3,6 +3,7 @@ package com.bloatit.model.admin;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DaoIdentifiableListFactory;
+import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.framework.utils.PageIterable;
 
 public abstract class IdentifiableAdminListFactory<T extends DaoIdentifiable, U extends IdentifiableInterface> {
@@ -22,5 +23,8 @@ public abstract class IdentifiableAdminListFactory<T extends DaoIdentifiable, U 
     protected DaoIdentifiableListFactory<T> getfactory() {
         return factory;
     }
-
+    
+    public void orderBy(final String column, final OrderType orderType) {
+        getfactory().orderBy(column, orderType);
+    }
 }

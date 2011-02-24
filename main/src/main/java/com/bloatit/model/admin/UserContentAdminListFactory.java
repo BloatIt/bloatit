@@ -52,10 +52,6 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
         getfactory().orderByCreationDate(orderType);
     }
 
-    public void orderBy(final String column, final OrderType orderType) {
-        getfactory().orderBy(column, orderType);
-    }
-
     public void deletedOnly() {
         getfactory().deletedOnly();
     }

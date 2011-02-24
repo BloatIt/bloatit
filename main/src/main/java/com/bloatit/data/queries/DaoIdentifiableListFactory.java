@@ -17,10 +17,12 @@
 package com.bloatit.data.queries;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.SessionManager;
+import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 
 /**
  * A factory for creating DaoIdentifiable Lists objects (PageIterable) using
@@ -54,5 +56,13 @@ public class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAb
      */
     public void idEquals(final Integer id) {
         add(Restrictions.eq("id", id));
+    }
+    
+    public void orderBy(final String column, final OrderType order) {
+        if (order == OrderType.ASC) {
+            addOrder(Order.asc(column));
+        } else {
+            addOrder(Order.desc(column));
+        }
     }
 }

@@ -69,14 +69,6 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         }
     }
 
-    public void orderBy(final String column, final OrderType order) {
-        if (order == OrderType.ASC) {
-            addOrder(Order.asc(column));
-        } else {
-            addOrder(Order.desc(column));
-        }
-    }
-
     public void orderByCreationDate(final OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(CREATION_DATE));
