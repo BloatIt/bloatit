@@ -1,10 +1,7 @@
-Accueil de la documentation
-===========================
+Qu'est-ce qu'une demande dans Elveos ?
+=====================================
 
+Une demande est une fonctionnalité manquante dans un logiciel. Il y a 2 raisons pour laquelle créer une demande:
 
-Table of contents
------------------
-
-[Présentation courte](documentation/doc-short)
-
-[FAQ](documentation/doc-faq)
+* Vous êtes utilisateur d'un logiciel et vous avez besoin d'une fonctionnalité.
+* Vous êtes développeur d'un logiciel et vous souhaitez financer le développement d'une future fonctionnalité.
