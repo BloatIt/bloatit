@@ -15,7 +15,6 @@ import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.Demand;
-import com.bloatit.model.admin.DemandAdmin;
 import com.bloatit.model.admin.DemandAdminListFactory;
 import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.url.DemandAdminPageUrl;

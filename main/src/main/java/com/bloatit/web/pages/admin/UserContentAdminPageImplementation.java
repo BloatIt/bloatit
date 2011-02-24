@@ -6,7 +6,6 @@ import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.model.UserContent;
-import com.bloatit.model.admin.UserContentAdmin;
 import com.bloatit.model.admin.UserContentAdminListFactory;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
