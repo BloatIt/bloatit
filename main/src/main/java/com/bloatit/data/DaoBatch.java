@@ -18,6 +18,7 @@ package com.bloatit.data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -271,6 +272,10 @@ public final class DaoBatch extends DaoIdentifiable {
         }
         return false;
     }
+    
+    public boolean partIsValidated(Level level) {
+        return this.levelToValidate == null || !EnumSet.range(levelToValidate, Level.MINOR).contains(level);
+    }
 
     private boolean validationPeriodFinished() {
         Date releasedDate = getReleasedDate();
@@ -290,18 +295,18 @@ public final class DaoBatch extends DaoIdentifiable {
 
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
         final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        final Query filteredBugs = currentSession.createFilter(bugs, "where level = :level and state!=:state")
+        final Query filteredBugs = currentSession.createFilter(bugs, "where errorLevel = :level and state!=:state")
                                                  .setParameter("level", level)
                                                  .setParameter("state", State.RESOLVED);
-        final Query filteredBugsSize = currentSession.createFilter(bugs, "select count (*) where level = :level and state!=:state")
+        final Query filteredBugsSize = currentSession.createFilter(bugs, "select count (*) where errorLevel = :level and state!=:state")
                                                      .setParameter("level", level)
                                                      .setParameter("state", State.RESOLVED);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level) {
-        final Query filteredBugs = SessionManager.createFilter(bugs, "where level = :level").setParameter("level", level);
-        final Query filteredBugsSize = SessionManager.createFilter(bugs, "select count (*) where level = :level").setParameter("level", level);
+        final Query filteredBugs = SessionManager.createFilter(bugs, "where errorLevel = :level").setParameter("level", level);
+        final Query filteredBugsSize = SessionManager.createFilter(bugs, "select count (*) where errorLevel = :level").setParameter("level", level);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
@@ -312,8 +317,8 @@ public final class DaoBatch extends DaoIdentifiable {
     }
 
     public PageIterable<DaoBug> getBugs(final Level level, final State state) {
-        final Query filteredBugs = SessionManager.createFilter(bugs, "where level = :level and state = :state");
-        final Query filteredBugsSize = SessionManager.createFilter(bugs, "select count (*) where level = :level and state = :state");
+        final Query filteredBugs = SessionManager.createFilter(bugs, "where errorLevel = :level and state = :state");
+        final Query filteredBugsSize = SessionManager.createFilter(bugs, "select count (*) where errorLevel = :level and state = :state");
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setParameter("level", level).setParameter("state", state);
     }
 
@@ -467,4 +472,6 @@ public final class DaoBatch extends DaoIdentifiable {
         }
         return true;
     }
+
+
 }

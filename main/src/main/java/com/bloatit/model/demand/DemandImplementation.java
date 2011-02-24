@@ -19,12 +19,14 @@ package com.bloatit.model.demand;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoMember.Role;
+import com.bloatit.data.DaoOffer;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
@@ -198,7 +200,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         if (!offer.getAuthor().equals(getAuthToken().getMember())) {
             throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
         }
-        setStateObject(getStateObject().eventAddOffer(offer));
+        setStateObject(getStateObject().eventAddOffer());
         getDao().addOffer(offer.getDao());
         return offer;
     }
@@ -277,7 +279,25 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         if (!hasUserPrivilege(Role.ADMIN)) {
             throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
         }
-        getDao().setDemandState(demandState);
+        switch (demandState) {
+            case PENDING:
+                inPendingState();
+                break;
+            case PREPARING:
+                inPreparingState();
+                break;
+            case DEVELOPPING:
+                inDevelopmentState();
+                break;
+            case DISCARDED:
+                inDiscardedState();
+                break;
+            case FINISHED:
+                inFinishedState();
+                break;
+            default:
+                break;
+        }
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -324,6 +344,12 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * Slot called when this demand state change to {@link PreparingState}.
      */
     void inPreparingState() {
+        Set<DaoOffer> offers = getDao().getOffers();
+        if (offers.size() == 1) {
+            getDao().setSelectedOffer(offers.iterator().next());
+        } else {
+            getDao().computeSelectedOffer();
+        }
         getDao().setDemandState(DemandState.PREPARING);
     }
 

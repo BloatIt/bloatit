@@ -43,7 +43,7 @@ public class PreparingState extends CanContributeMetaState {
      * .model.Offer)
      */
     @Override
-    public AbstractDemandState eventAddOffer(final Offer offer) {
+    public AbstractDemandState eventAddOffer() {
         return this;
     }
 

@@ -8,7 +8,6 @@ import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
 import com.bloatit.data.queries.DaoBatchListFactory;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Batch;
-import com.bloatit.model.Identifiable;
 import com.bloatit.model.lists.BatchList;
 
 public class BatchAdminListFactory extends IdentifiableAdminListFactory<DaoBatch, Batch> {

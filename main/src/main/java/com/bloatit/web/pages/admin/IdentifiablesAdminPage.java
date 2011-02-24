@@ -34,7 +34,6 @@ import com.bloatit.web.url.UserContentAdminPageUrl;
 public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extends IdentifiableInterface, T extends IdentifiableAdminListFactory<U, V>>
         extends AdminPage {
 
-
     @RequestParam
     @Optional("id")
     private final String orderByStr;
@@ -92,7 +91,6 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         filterForm.add(new HtmlSubmit(tr("Filter")));
     }
 
-
     public final void generateTable(final HtmlForm actionForm) {
         final HtmlGenericTableModel<V> tableModel = new HtmlGenericTableModel<V>(factory.list());
 
@@ -102,6 +100,13 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
                 final HtmlCheckbox htmlCheckbox = new HtmlCheckbox("id", LabelPosition.BEFORE);
                 htmlCheckbox.addAttribute("value", element.getId().toString());
                 return htmlCheckbox;
+            }
+        });
+
+        tableModel.addColumn(tr("id"), new StringColumnGenerator<V>() {
+            @Override
+            public String getStringBody(final V element) {
+                return String.valueOf(element.getId());
             }
         });
 
@@ -131,7 +136,7 @@ public abstract class IdentifiablesAdminPage<U extends DaoIdentifiable, V extend
         actionForm.add(new HtmlSubmit(tr("Validate")));
     }
 
-    protected abstract void addActions(final HtmlDropDown dropDown, final HtmlBranch actionGroup) ;
+    protected abstract void addActions(final HtmlDropDown dropDown, final HtmlBranch actionGroup);
 
     protected abstract void addColumns(HtmlGenericTableModel<V> tableModel);
 

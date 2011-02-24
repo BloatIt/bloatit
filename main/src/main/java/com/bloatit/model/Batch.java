@@ -152,7 +152,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @return true, if successful
      * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
-    boolean validate() {
+    public boolean validate() {
         return getDao().validate(false);
     }
 
@@ -163,7 +163,7 @@ public class Batch extends Identifiable<DaoBatch> {
      * @return true, if successful
      * @see com.bloatit.data.DaoBatch#validate(boolean)
      */
-    boolean forceValidate() {
+    public boolean forceValidate() {
         return getDao().validate(true);
     }
 
@@ -176,6 +176,11 @@ public class Batch extends Identifiable<DaoBatch> {
      */
     public boolean shouldValidatePart(final Level level) {
         return getDao().shouldValidatePart(level);
+    }
+    
+    // TODO doc
+    public boolean partIsValidated(final Level level) {
+        return getDao().partIsValidated(level);
     }
 
     // ////////////////////////////////////////////////////////////////////////

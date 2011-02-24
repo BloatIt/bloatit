@@ -37,6 +37,11 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
         super(url, new BatchAdminListFactory());
         this.url = url;
         batchState = url.getBatchState();
+
+        if (batchState != null && batchState != DisplayableBatchState.NOT_SELECTED) {
+            getFactory().stateEquals(DisplayableBatchState.getState(batchState));
+            Context.getSession().addParameter(url.getBatchStateParameter());
+        }
     }
 
     @Override
@@ -53,12 +58,6 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
     protected void addActions(final HtmlDropDown dropDown, final HtmlBranch block) {
         // Add actions into the drop down
         dropDown.addDropDownElements(new AdminActionManager().batchActions());
-
-        // add a demand state selector
-        final HtmlDropDown demandState = new HtmlDropDown(AdministrationAction.DEMAND_STATE_CODE);
-        demandState.addDropDownElements(EnumSet.allOf(DisplayableBatchState.class));
-        demandState.setLabel(tr("Change the batch state"));
-        block.add(demandState);
     }
 
     @Override
@@ -74,7 +73,7 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
     protected void addColumns(final HtmlGenericTableModel<Batch> tableModel) {
         BatchAdminPageUrl clonedUrl = url.clone();
         clonedUrl.setOrderByStr("batchState");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("contribution")), new StringColumnGenerator<Batch>() {
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("batchState")), new StringColumnGenerator<Batch>() {
             @Override
             public String getStringBody(final Batch element) {
                 return String.valueOf(element.getBatchState());
@@ -98,24 +97,23 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
                 return place;
             }
         });
-        tableModel.addColumn(tr("Should validated Fatal"), new StringColumnGenerator<Batch>() {
+        tableModel.addColumn(tr("Should validated"), new ColumnGenerator<Batch>() {
             @Override
-            public String getStringBody(final Batch element) {
-                return String.valueOf(element.shouldValidatePart(Level.FATAL));
+            public XmlNode getBody(final Batch element) {
+                PlaceHolderElement place = new PlaceHolderElement();
+                for (Level level : EnumSet.allOf(Level.class)) {
+                    if (element.partIsValidated(level)) {
+                        place.add(new HtmlParagraph(level.toString() + " -> VALIDATED"));
+                    } else {
+                        if (element.shouldValidatePart(level)) {
+                            place.add(new HtmlParagraph(level.toString() + " -> SHOULD"));
+                        } else {
+                            place.add(new HtmlParagraph(level.toString() + " -> SHOULDN'T"));
+                        }
+                    }
+                }
+                return place;
             }
         });
-        tableModel.addColumn(tr("Major"), new StringColumnGenerator<Batch>() {
-            @Override
-            public String getStringBody(final Batch element) {
-                return String.valueOf(element.shouldValidatePart(Level.MAJOR));
-            }
-        });
-        tableModel.addColumn(tr("Minor"), new StringColumnGenerator<Batch>() {
-            @Override
-            public String getStringBody(final Batch element) {
-                return String.valueOf(element.shouldValidatePart(Level.MINOR));
-            }
-        });
-
     }
 }

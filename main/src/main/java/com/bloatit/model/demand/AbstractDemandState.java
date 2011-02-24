@@ -53,11 +53,10 @@ abstract class AbstractDemandState {
     /**
      * Event add offer. Called when an offer is add to the demand.
      * 
-     * @param offer the offer
      * @return the state object representing the demandState, after recieving
      *         this event
      */
-    public AbstractDemandState eventAddOffer(final Offer offer) {
+    public AbstractDemandState eventAddOffer() {
         // Implement me if you wish.
         throw new WrongStateException();
     }

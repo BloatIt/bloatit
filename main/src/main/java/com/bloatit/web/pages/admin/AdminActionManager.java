@@ -21,7 +21,8 @@ public class AdminActionManager {
         SET_VALIDATION_DATE(tr("Update the validation Date")), //
         SET_DEMAND_STATE(tr("Change the demand state")), //
 
-        SET_BATCH_STATE(tr("Change the batch state")), //
+        VALIDATE_BATCH(tr("Validate batch if possible")), //
+        FORCE_VALIDATE_BATCH(tr("Validate batch --force !")), //
         ;
 
         private final String displayName;
@@ -49,7 +50,7 @@ public class AdminActionManager {
     }
 
     public EnumSet<Action> batchActions() {
-        return EnumSet.of(Action.SET_BATCH_STATE);
+        return EnumSet.range(Action.VALIDATE_BATCH, Action.FORCE_VALIDATE_BATCH);
     }
 
 }

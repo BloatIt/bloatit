@@ -115,7 +115,7 @@ public final class DaoBatchListFactory extends DaoIdentifiableListFactory<DaoBat
     }
 
     public void stateEquals(DaoBatch.BatchState state) {
-        add(Restrictions.eq("batcheState", state));
+        add(Restrictions.eq("batchState", state));
     }
 
     public void withRelease() {

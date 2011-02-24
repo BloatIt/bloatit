@@ -257,7 +257,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                             dateLabel.addText(Context.tr("Delivery Date: "));
                             datePara.add(dateLabel);
 
-                            // TODO: use scheduled release date
+                            // TODO: use scheduled e date
                             final HtmlSpan date = new HtmlSpan("offer_block_date");
                             date.addText(Context.getLocalizator().getDate(lot.getExpirationDate()).toString(FormatStyle.MEDIUM));
                             datePara.add(date);

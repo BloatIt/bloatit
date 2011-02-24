@@ -16,7 +16,6 @@
 //
 package com.bloatit.model.demand;
 
-import com.bloatit.model.Offer;
 
 /**
  * The Class PendingState.
@@ -40,8 +39,7 @@ public class PendingState extends CanContributeMetaState {
      * .model.Offer)
      */
     @Override
-    public AbstractDemandState eventAddOffer(final Offer offer) {
-        demand.setSelectedOffer(offer);
+    public AbstractDemandState eventAddOffer() {
         return new PreparingState(demand);
     }
 

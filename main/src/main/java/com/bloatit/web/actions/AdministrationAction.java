@@ -12,7 +12,9 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
+import com.bloatit.model.Identifiable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContent;
@@ -29,7 +31,7 @@ public class AdministrationAction extends LoggedAction {
     public static final String DEMAND_STATE_CODE = "demandstate";
 
     @RequestParam(name = "id", role = Role.POST)
-    private final List<UserContent> contents;
+    private final List<Identifiable> contents;
 
     @RequestParam(name = "action", role = Role.POST)
     private final AdminActionManager.Action action;
@@ -62,14 +64,14 @@ public class AdministrationAction extends LoggedAction {
             return new LoginPageUrl();
         }
         try {
-            for (final UserContent<?> content : contents) {
+            for (final Identifiable<?> content : contents) {
 
                 switch (action) {
                     case DELETE:
-                        content.delete();
+                        ((UserContent<?>) content).delete();
                         break;
                     case RESTORE:
-                        content.restore();
+                        ((UserContent<?>) content).restore();
                         break;
                     case LOCK:
                         ((Kudosable<?>) content).lockPopularity();
@@ -92,6 +94,12 @@ public class AdministrationAction extends LoggedAction {
                         if (demandState != null && demandState != DisplayableDemandState.NO_FILTER) {
                             ((Demand) content).setDemandState(DisplayableDemandState.getDemandState(demandState));
                         }
+                        break;
+                    case VALIDATE_BATCH:
+                        ((Batch) content).validate();
+                        break;
+                    case FORCE_VALIDATE_BATCH:
+                        ((Batch) content).forceValidate();
                         break;
                     default:
                         break;

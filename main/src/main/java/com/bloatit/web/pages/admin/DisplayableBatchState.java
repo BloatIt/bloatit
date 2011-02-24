@@ -2,7 +2,7 @@ package com.bloatit.web.pages.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
+import com.bloatit.data.DaoBatch.BatchState;
 import com.bloatit.framework.webserver.components.form.Displayable;
 
 public enum DisplayableBatchState implements Displayable {
@@ -24,11 +24,11 @@ public enum DisplayableBatchState implements Displayable {
         this.displayName = displayName;
     }
 
-    public static DisplayableBatchState getComparator(final Comparator cmp) {
+    public static DisplayableBatchState getState(final BatchState cmp) {
         return Enum.valueOf(DisplayableBatchState.class, cmp.name());
     }
 
-    public static Comparator getComparator(final DisplayableBatchState cmp) {
-        return Enum.valueOf(Comparator.class, cmp.name());
+    public static BatchState getState(final DisplayableBatchState cmp) {
+        return Enum.valueOf(BatchState.class, cmp.name());
     }
 }
