@@ -6,6 +6,7 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
 import com.bloatit.data.DaoProject;
+import com.bloatit.model.Demand;
 
 public class DemandAdmin extends KudosableAdmin<DaoDemand> {
 
@@ -20,7 +21,7 @@ public class DemandAdmin extends KudosableAdmin<DaoDemand> {
         return null;
     }
 
-    public static DemandAdmin createDemand(final Integer id) {
+    public static Demand createDemand(final Integer id) {
         final DemandAdminListFactory factory = new DemandAdminListFactory();
         factory.idEquals(id);
         if (factory.list().iterator().hasNext()) {

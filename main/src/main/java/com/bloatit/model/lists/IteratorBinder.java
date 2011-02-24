@@ -17,6 +17,7 @@
 package com.bloatit.model.lists;
 
 import com.bloatit.data.DaoIdentifiable;
+import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.Identifiable;
 
@@ -29,7 +30,7 @@ import com.bloatit.model.Identifiable;
  * @param <DAO> the Dao Element. (If <code>E</code> id Demand then
  *            <code>DAO</code> must be DaoDemand.
  */
-public class IteratorBinder<E extends Identifiable<DAO>, DAO extends DaoIdentifiable> implements java.util.Iterator<E> {
+public class IteratorBinder<E extends IdentifiableInterface, DAO extends DaoIdentifiable> implements java.util.Iterator<E> {
 
     /** The dao iterator. */
     private final java.util.Iterator<DAO> daoIterator;

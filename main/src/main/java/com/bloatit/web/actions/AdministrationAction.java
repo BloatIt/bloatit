@@ -1,30 +1,35 @@
 package com.bloatit.web.actions;
 
+import static com.bloatit.framework.webserver.Context.tr;
+
 import java.util.List;
 
+import com.bloatit.data.DaoMember;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.framework.webserver.masters.Action;
 import com.bloatit.framework.webserver.url.Url;
-import com.bloatit.model.admin.DemandAdmin;
-import com.bloatit.model.admin.KudosableAdmin;
-import com.bloatit.model.admin.UserContentAdmin;
+import com.bloatit.model.Demand;
+import com.bloatit.model.Kudosable;
+import com.bloatit.model.Member;
+import com.bloatit.model.UserContent;
 import com.bloatit.web.pages.admin.AdminActionManager;
 import com.bloatit.web.pages.admin.DisplayableDemandState;
 import com.bloatit.web.pages.admin.DisplayableState;
 import com.bloatit.web.url.AdministrationActionUrl;
+import com.bloatit.web.url.LoginPageUrl;
 
 @ParamContainer("doadministration")
-public class AdministrationAction extends Action {
+public class AdministrationAction extends LoggedAction {
 
     public static final String POPULARITY_STATE_CODE = "popularitystate";
     public static final String DEMAND_STATE_CODE = "demandstate";
 
     @RequestParam(name = "id", role = Role.POST)
-    private final List<Integer> contents;
+    private final List<UserContent> contents;
 
     @RequestParam(name = "action", role = Role.POST)
     private final AdminActionManager.Action action;
@@ -51,38 +56,50 @@ public class AdministrationAction extends Action {
     }
 
     @Override
-    protected Url doProcess() {
-        for (final Integer content : contents) {
+    public Url doProcessRestricted(Member authenticatedMember) {
+        if (!authenticatedMember.hasUserPrivilege(DaoMember.Role.ADMIN)) {
+            session.notifyError(getRefusalReason());
+            return new LoginPageUrl();
+        }
+        try {
+            for (final UserContent<?> content : contents) {
 
-            switch (action) {
-                case DELETE:
-                    UserContentAdmin.createUserContent(content).delete();
-                    break;
-                case RESTORE:
-                    UserContentAdmin.createUserContent(content).restore();
-                    break;
-                case LOCK:
-                    KudosableAdmin.createKudosable(content).lockPopularity();
-                    break;
-                case UNLOCK:
-                    KudosableAdmin.createKudosable(content).unlockPopularity();
-                    break;
-                case SETSTATE:
-                    if (stateToSet != null && stateToSet != DisplayableState.NO_FILTER) {
-                        KudosableAdmin.createKudosable(content).setState(DisplayableState.getState(stateToSet));
-                    }
-                    break;
-                case COMPUTE_SELECTED_OFFER:
-                    DemandAdmin.createDemand(content).computeSelectedOffer();
-                    break;
-                case SET_DEMAND_STATE:
-                    if (demandState != null && demandState != DisplayableDemandState.NO_FILTER) {
-                        DemandAdmin.createDemand(content).setDemandState(DisplayableDemandState.getDemandState(demandState));
-                    }
-                    break;
-                default:
-                    break;
+                switch (action) {
+                    case DELETE:
+                        content.delete();
+                        break;
+                    case RESTORE:
+                        content.restore();
+                        break;
+                    case LOCK:
+                        ((Kudosable<?>) content).lockPopularity();
+                        break;
+                    case UNLOCK:
+                        ((Kudosable<?>) content).unlockPopularity();
+                        break;
+                    case SETSTATE:
+                        if (stateToSet != null && stateToSet != DisplayableState.NO_FILTER) {
+                            ((Kudosable<?>) content).setState(DisplayableState.getState(stateToSet));
+                        }
+                        break;
+                    case UPDATE_DEVELOPMENT_STATE:
+                        ((Demand) content).updateDevelopmentState();
+                        break;
+                    case COMPUTE_SELECTED_OFFER:
+                        ((Demand) content).computeSelectedOffer();
+                        break;
+                    case SET_DEMAND_STATE:
+                        if (demandState != null && demandState != DisplayableDemandState.NO_FILTER) {
+                            ((Demand) content).setDemandState(DisplayableDemandState.getDemandState(demandState));
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
+        } catch (UnauthorizedOperationException e) {
+            session.notifyError(getRefusalReason());
+            return new LoginPageUrl();
         }
         return session.getLastStablePage();
     }
@@ -92,6 +109,16 @@ public class AdministrationAction extends Action {
         session.notifyError("Ça marche pas");
         session.notifyList(url.getMessages());
         return session.getLastStablePage();
+    }
+
+    @Override
+    protected String getRefusalReason() {
+        return tr("You have to be admin to do this action.");
+    }
+
+    @Override
+    protected void transmitParameters() {
+        // TODO Auto-generated method stub
     }
 
 }

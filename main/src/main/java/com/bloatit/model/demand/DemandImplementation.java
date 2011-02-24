@@ -24,6 +24,7 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.DaoDescription;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
@@ -261,6 +262,22 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         }
         setStateObject(getStateObject().eventDeveloperCanceled());
         // Work is done in the slot system.
+    }
+
+    @Override
+    public void computeSelectedOffer() throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        getDao().computeSelectedOffer();
+    }
+
+    @Override
+    public void setDemandState(DemandState demandState) throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        getDao().setDemandState(demandState);
     }
 
     // ////////////////////////////////////////////////////////////////////////
@@ -751,11 +768,11 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     public PageIterable<Bug> getClosedBugs() {
         return new BugList(getDao().getClosedBugs());
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////////////////
     // Visitor
     // /////////////////////////////////////////////////////////////////////////////////////////
-    
+
     @Override
     public <ReturnType> ReturnType accept(final ModelClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);

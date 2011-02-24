@@ -5,6 +5,7 @@ import java.util.Date;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.Member;
+import com.bloatit.model.UserContent;
 import com.bloatit.rest.resources.ModelClassVisitor;
 
 public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> {
@@ -20,7 +21,7 @@ public class UserContentAdmin<T extends DaoUserContent> extends Identifiable<T> 
         return null;
     }
 
-    public static UserContentAdmin<DaoUserContent> createUserContent(final Integer id) {
+    public static UserContent<DaoUserContent> createUserContent(final Integer id) {
         final UserContentAdminListFactory.DefaultFactory factory = new UserContentAdminListFactory.DefaultFactory();
         factory.idEquals(id);
         if (factory.list().iterator().hasNext()) {

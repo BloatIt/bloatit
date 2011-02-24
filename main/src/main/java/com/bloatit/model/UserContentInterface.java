@@ -78,4 +78,6 @@ public interface UserContentInterface<T extends DaoUserContent> extends Identifi
      */
     void addFile(FileMetadata file);
 
+    boolean isDeleted() throws UnauthorizedOperationException;
+
 }

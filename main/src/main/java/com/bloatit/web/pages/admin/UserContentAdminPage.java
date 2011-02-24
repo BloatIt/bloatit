@@ -4,8 +4,10 @@ import static com.bloatit.framework.webserver.Context.tr;
 
 import java.util.EnumSet;
 
+import com.bloatit.common.Log;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale.FormatStyle;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -27,13 +29,15 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.XmlNode;
-import com.bloatit.model.admin.UserContentAdmin;
-import com.bloatit.model.admin.UserContentAdminListFactory;
+import com.bloatit.model.Group;
+import com.bloatit.model.UserContent;
+import com.bloatit.model.UserContentInterface;
+import com.bloatit.model.admin.IdentifiableAdminListFactory;
 import com.bloatit.web.url.AdministrationActionUrl;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 @ParamContainer("admin/usercontent")
-public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentAdmin<U>, T extends UserContentAdminListFactory<U, V>>
+public abstract class UserContentAdminPage<U extends DaoUserContent, V extends UserContentInterface<U>, T extends IdentifiableAdminListFactory<T, U>>
         extends AdminPage {
 
     public enum OrderByUserContent implements Displayable {
@@ -142,28 +146,32 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
         filterForm.add(blockOrder);
         blockOrder.add(new HtmlCheckbox(url.getAscParameter().formFieldData(), tr("Asc"), LabelPosition.BEFORE));
 
-        // delete ?
-        final HtmlDropDown groupDeleted = new HtmlDropDown(url.getFilterDeletedParameter().formFieldData());
-        groupDeleted.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
-        groupDeleted.setLabel(tr("Filter by deleted content"));
-        filterForm.add(groupDeleted);
-
-        // Files
-        final HtmlDropDown groupFile = new HtmlDropDown(url.getFilterFileParameter().formFieldData());
-        groupFile.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
-        groupFile.setLabel(tr("Filter by Content with file"));
-        filterForm.add(groupFile);
-
-        final HtmlDropDown groupAsGroup = new HtmlDropDown(url.getFilterGroupParameter().formFieldData());
-        groupAsGroup.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
-        groupAsGroup.setLabel(tr("Filter by Content created as a group"));
-        filterForm.add(groupAsGroup);
-
         // extends
         addFormFilters(filterForm);
 
         // submit
         filterForm.add(new HtmlSubmit(tr("Filter")));
+    }
+
+    protected void addAsGroupFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
+        final HtmlDropDown groupAsGroup = new HtmlDropDown(url.getFilterGroupParameter().formFieldData());
+        groupAsGroup.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
+        groupAsGroup.setLabel(tr("Filter by Content created as a group"));
+        filterForm.add(groupAsGroup);
+    }
+
+    protected void addHasFileFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
+        final HtmlDropDown groupFile = new HtmlDropDown(url.getFilterFileParameter().formFieldData());
+        groupFile.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
+        groupFile.setLabel(tr("Filter by Content with file"));
+        filterForm.add(groupFile);
+    }
+
+    protected void addIsDeletedFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
+        final HtmlDropDown groupDeleted = new HtmlDropDown(url.getFilterDeletedParameter().formFieldData());
+        groupDeleted.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
+        groupDeleted.setLabel(tr("Filter by deleted content"));
+        filterForm.add(groupDeleted);
     }
 
     public final void generateTable(final HtmlForm actionForm) {
@@ -178,23 +186,46 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
             }
         });
 
-        final UserContentAdminPageUrl clonedUrl = url.clone();
-        clonedUrl.setOrderByStr("m.login");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Author")), new StringColumnGenerator<V>() {
+        final UserContentAdminPageUrl clonedUrl = addAuthorColumn(tableModel);
+
+        addColumns(tableModel);
+        actionForm.add(new HtmlTable(tableModel));
+    }
+
+    protected void addTypeColumn(final HtmlGenericTableModel<V> tableModel) {
+        tableModel.addColumn(tr("Type"), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
-                return element.getAuthor();
+                return element.getClass().getSimpleName();
             }
         });
+    }
 
-        clonedUrl.setOrderByStr("asGroup");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("asGroup")), new StringColumnGenerator<V>() {
+    protected void addIsDeletedColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
+        clonedUrl.setOrderByStr("isDeleted");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Deleted")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
-                return element.getAsGroup();
+                try {
+                    return String.valueOf(element.isDeleted());
+                } catch (UnauthorizedOperationException e) {
+                    Log.web().fatal("", e);
+                    return "";
+                }
             }
         });
+    }
 
+    protected void addNbFilesColumn(final HtmlGenericTableModel<V> tableModel) {
+        tableModel.addColumn(tr("Nb files"), new StringColumnGenerator<V>() {
+            @Override
+            public String getStringBody(final V element) {
+                return String.valueOf(element.getFiles().size());
+            }
+        });
+    }
+
+    protected void addCreationDateColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
         clonedUrl.setOrderByStr("creationDate");
         tableModel.addColumn(clonedUrl.getHtmlLink(tr("Creation date")), new StringColumnGenerator<V>() {
             @Override
@@ -202,31 +233,42 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
                 return Context.getLocalizator().getDate(element.getCreationDate()).toString(FormatStyle.MEDIUM);
             }
         });
+    }
 
-        tableModel.addColumn(tr("Nb files"), new StringColumnGenerator<V>() {
+    protected void addAsGroupColumn(final HtmlGenericTableModel<V> tableModel, final UserContentAdminPageUrl clonedUrl) {
+        clonedUrl.setOrderByStr("asGroup");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("asGroup")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
-                return String.valueOf(element.getFilesNumber());
+                try {
+                    Group asGroup = element.getAsGroup();
+                    if (asGroup != null) {
+                        return asGroup.getLogin();
+                    }
+                    return "null";
+                } catch (UnauthorizedOperationException e) {
+                    Log.web().fatal("", e);
+                    return "";
+                }
             }
         });
+    }
 
-        clonedUrl.setOrderByStr("isDeleted");
-        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Deleted")), new StringColumnGenerator<V>() {
+    protected UserContentAdminPageUrl addAuthorColumn(final HtmlGenericTableModel<V> tableModel) {
+        final UserContentAdminPageUrl clonedUrl = url.clone();
+        clonedUrl.setOrderByStr("m.login");
+        tableModel.addColumn(clonedUrl.getHtmlLink(tr("Author")), new StringColumnGenerator<V>() {
             @Override
             public String getStringBody(final V element) {
-                return String.valueOf(element.isDeleted());
+                try {
+                    return element.getAuthor().getLogin();
+                } catch (UnauthorizedOperationException e) {
+                    Log.web().fatal("", e);
+                    return "";
+                }
             }
         });
-
-        tableModel.addColumn(tr("Type"), new StringColumnGenerator<V>() {
-            @Override
-            public String getStringBody(final V element) {
-                return element.getType();
-            }
-        });
-
-        addColumns(tableModel);
-        actionForm.add(new HtmlTable(tableModel));
+        return clonedUrl;
     }
 
     public final void generateActionForm(final HtmlForm actionForm) {
@@ -251,7 +293,7 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
 
     protected abstract void addFormFilters(HtmlForm form);
 
-    protected T getFactory() {
+    protected IdentifiableAdminListFactory<T, U> getFactory() {
         return factory;
     }
 

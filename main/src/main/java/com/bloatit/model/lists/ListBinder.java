@@ -19,6 +19,7 @@ package com.bloatit.model.lists;
 import java.util.Iterator;
 
 import com.bloatit.data.DaoIdentifiable;
+import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Identifiable;
 
@@ -30,7 +31,7 @@ import com.bloatit.model.Identifiable;
  * @param <E> the Model level representation of a Dao class
  * @param <DAO> the Dao class corresponding to <code>E</code>
  */
-public class ListBinder<E extends Identifiable<DAO>, DAO extends DaoIdentifiable> implements PageIterable<E> {
+public class ListBinder<E extends IdentifiableInterface, DAO extends DaoIdentifiable> implements PageIterable<E> {
 
     /** The dao collection. */
     private final PageIterable<DAO> daoCollection;

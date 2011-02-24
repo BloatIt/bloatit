@@ -3,91 +3,88 @@ package com.bloatit.model.admin;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.data.queries.DaoUserContentListFactory;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.model.UserContent;
+import com.bloatit.model.UserContentInterface;
 
-public class UserContentAdminListFactory<T extends DaoUserContent, U extends UserContentAdmin<T>> {
-    private final DaoUserContentListFactory<T> factory;
-
-    public static class DefaultFactory extends UserContentAdminListFactory<DaoUserContent, UserContentAdmin<DaoUserContent>> {
+public class UserContentAdminListFactory<T extends DaoUserContent, U extends UserContentInterface<T>> extends IdentifiableAdminListFactory<T, U> {
+    
+    public static class DefaultFactory extends UserContentAdminListFactory<DaoUserContent, UserContent<DaoUserContent>> {
         // Just a rename
     }
 
     public UserContentAdminListFactory() {
-        factory = new DaoUserContentListFactory<T>();
+        super(new DaoUserContentListFactory<T>());
     }
 
     public UserContentAdminListFactory(final DaoUserContentListFactory<T> factory) {
-        this.factory = factory;
+        super(factory);
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    protected DaoUserContentListFactory<T> getfactory() {
+        return (DaoUserContentListFactory) super.getfactory();
     }
 
     public void idEquals(final Integer id) {
-        factory.idEquals(id);
+        getfactory().idEquals(id);
     }
 
     public void groupByMember() {
-        factory.groupByMember();
+        getfactory().groupByMember();
     }
 
     public void groupByAsGroup() {
-        factory.groupByAsGroup();
+        getfactory().groupByAsGroup();
     }
 
     public void orderByMember(final OrderType order) {
-        factory.orderByMember(order);
+        getfactory().orderByMember(order);
     }
 
     public void orderByAsGroup(final OrderType order) {
-        factory.orderByAsGroup(order);
+        getfactory().orderByAsGroup(order);
     }
 
     public void orderByCreationDate(final OrderType orderType) {
-        factory.orderByCreationDate(orderType);
+        getfactory().orderByCreationDate(orderType);
     }
 
     public void orderBy(final String column, final OrderType orderType) {
-        factory.orderBy(column, orderType);
+        getfactory().orderBy(column, orderType);
     }
 
     public void deletedOnly() {
-        factory.deletedOnly();
+        getfactory().deletedOnly();
     }
 
     public void nonDeletedOnly() {
-        factory.nonDeletedOnly();
+        getfactory().nonDeletedOnly();
     }
 
     public void withoutFile() {
-        factory.withoutFile();
+        getfactory().withoutFile();
     }
 
     public void withFile() {
-        factory.withFile();
+        getfactory().withFile();
     }
 
     public void withAnyGroup() {
-        factory.withAnyGroup();
+        getfactory().withAnyGroup();
     }
 
     public void withNoGroup() {
-        factory.withNoGroup();
+        getfactory().withNoGroup();
     }
 
     public void fromMember(final Member member) {
-        factory.fromMember(member.getDao());
+        getfactory().fromMember(member.getDao());
     }
 
     public void fromGroup(final Group group) {
-        factory.fromGroup(group.getDao());
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public PageIterable<U> list() {
-        return (PageIterable) new AdminList<DaoUserContent, UserContentAdmin<DaoUserContent>>((PageIterable<DaoUserContent>) factory.createCollection());
-    }
-
-    protected DaoUserContentListFactory<T> getfactory() {
-        return factory;
+        getfactory().fromGroup(group.getDao());
     }
 }

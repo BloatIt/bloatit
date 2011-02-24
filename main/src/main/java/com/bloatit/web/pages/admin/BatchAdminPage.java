@@ -5,7 +5,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import java.util.EnumSet;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoOffer;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
@@ -15,13 +15,13 @@ import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 import com.bloatit.model.Demand;
-import com.bloatit.model.admin.DemandAdmin;
+import com.bloatit.model.Offer;
 import com.bloatit.model.admin.DemandAdminListFactory;
 import com.bloatit.web.actions.AdministrationAction;
 import com.bloatit.web.url.DemandAdminPageUrl;
 
-@ParamContainer("admin/demands")
-public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand, DemandAdminListFactory> {
+@ParamContainer("batch/demands")
+public final class BatchAdminPage extends KudosableAdminPage<DaoOffer, Offer, BatchAdminListFactory> {
 
     @RequestParam(role = RequestParam.Role.POST)
     protected DisplayableDemandState filterByState;
@@ -37,7 +37,7 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
 
     private final DemandAdminPageUrl url;
 
-    public DemandAdminPage(final DemandAdminPageUrl url) {
+    public BatchAdminPage(final DemandAdminPageUrl url) {
         super(url, new DemandAdminListFactory());
         this.url = url;
         filterByState = url.getFilterByState();

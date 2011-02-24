@@ -5,15 +5,19 @@ import static com.bloatit.framework.webserver.Context.tr;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
+import com.bloatit.model.UserContent;
 import com.bloatit.model.admin.UserContentAdmin;
 import com.bloatit.model.admin.UserContentAdminListFactory;
 import com.bloatit.web.url.UserContentAdminPageUrl;
 
 public class UserContentAdminPageImplementation extends
-        UserContentAdminPage<DaoUserContent, UserContentAdmin<DaoUserContent>, UserContentAdminListFactory.DefaultFactory> {
+        UserContentAdminPage<DaoUserContent, UserContent<DaoUserContent>, UserContentAdminListFactory.DefaultFactory> {
+
+    private final UserContentAdminPageUrl url;
 
     public UserContentAdminPageImplementation(final UserContentAdminPageUrl url) {
         super(url, new UserContentAdminListFactory.DefaultFactory());
+        this.url = url;
     }
 
     @Override
@@ -27,13 +31,21 @@ public class UserContentAdminPageImplementation extends
     }
 
     @Override
-    protected void addColumns(final HtmlGenericTableModel<UserContentAdmin<DaoUserContent>> tableModel) {
-        // Nothing to do here.
+    protected void addColumns(final HtmlGenericTableModel<UserContent<DaoUserContent>> tableModel) {
+        UserContentAdminPageUrl clonedUrl = url.clone();
+
+        addAsGroupColumn(tableModel, clonedUrl);
+        addCreationDateColumn(tableModel, clonedUrl);
+        addNbFilesColumn(tableModel);
+        addIsDeletedColumn(tableModel, clonedUrl);
+        addTypeColumn(tableModel);
     }
 
     @Override
     protected void addFormFilters(final HtmlForm form) {
-        // Nothing to do here.
+        addIsDeletedFilter(form, url);
+        addHasFileFilter(form, url);
+        addAsGroupFilter(form, url);
     }
 
 }

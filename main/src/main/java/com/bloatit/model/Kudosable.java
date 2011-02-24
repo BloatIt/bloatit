@@ -159,35 +159,35 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         switch (getState()) {
             case PENDING:
                 if (newPop >= turnValid()) {
-                    setState(PopularityState.VALIDATED);
+                    setStateUnprotected(PopularityState.VALIDATED);
                     notifyValid();
                 } else if (newPop <= turnHidden() && newPop > turnRejected()) {
-                    setState(PopularityState.HIDDEN);
+                    setStateUnprotected(PopularityState.HIDDEN);
                     notifyHidden();
                 } else if (newPop <= turnRejected()) {
-                    setState(PopularityState.REJECTED);
+                    setStateUnprotected(PopularityState.REJECTED);
                     notifyRejected();
                 }
                 // NO BREAK IT IS OK !!
             case VALIDATED:
                 if (newPop <= turnPending()) {
-                    setState(PopularityState.PENDING);
+                    setStateUnprotected(PopularityState.PENDING);
                     notifyPending();
                 }
                 break;
             case HIDDEN:
             case REJECTED:
                 if (newPop >= turnPending() && newPop < turnValid()) {
-                    setState(PopularityState.PENDING);
+                    setStateUnprotected(PopularityState.PENDING);
                     notifyPending();
                 } else if (newPop >= turnValid()) {
-                    setState(PopularityState.VALIDATED);
+                    setStateUnprotected(PopularityState.VALIDATED);
                     notifyValid();
                 } else if (newPop <= turnHidden() && newPop > turnRejected()) {
-                    setState(PopularityState.VALIDATED);
+                    setStateUnprotected(PopularityState.VALIDATED);
                     notifyValid();
                 } else if (newPop <= turnRejected()) {
-                    setState(PopularityState.REJECTED);
+                    setStateUnprotected(PopularityState.REJECTED);
                     notifyRejected();
                 }
                 break;
@@ -197,19 +197,45 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
         }
     }
 
-    private void setState(final PopularityState newState) {
-        Log.model().info("Kudosable: " + getId() + " change from state: " + this.getState() + ", to: " + newState);
+    public void setState(final PopularityState newState) throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        setStateUnprotected(newState);
+    }
+
+    private void setStateUnprotected(final PopularityState newState) {
+        if (getState() != newState) {
+            Log.model().info("Kudosable: " + getId() + " change from state: " + this.getState() + ", to: " + newState);
+        }
         getDao().setState(newState);
     }
 
     // TODO right management
-    public void lockPopularity() {
+    @Override
+    public void lockPopularity() throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
         getDao().lockPopularity();
     }
 
     // TODO right management
-    public void unlockPopularity() {
+    @Override
+    public void unlockPopularity() throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
         getDao().unlockPopularity();
+    }
+
+    // TODO right management
+    @Override
+    public boolean isPopularityLocked() throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        return getDao().isPopularityLocked();
     }
 
     /*
@@ -235,7 +261,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     /**
      * You can redefine me if you want to customize the state calculation
      * limits. Default value is {@value #TURN_PENDING}.
-     *
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#PENDING} state.
      */
@@ -246,7 +272,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     /**
      * You can redefine me if you want to customize the state calculation
      * limits. Default value is {@value #TURN_VALID}.
-     *
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#VALIDATED} state.
      */
@@ -257,7 +283,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     /**
      * You can redefine me if you want to customize the state calculation
      * limits. Default value is {@value #TURN_REJECTED}.
-     *
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#REJECTED} state.
      */
@@ -268,7 +294,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
     /**
      * You can redefine me if you want to customize the state calculation
      * limits. Default value is {@value #TURN_HIDDEN}.
-     *
+     * 
      * @return The popularity to for a Kudosable to reach to turn to
      *         {@link PopularityState#HIDDEN} state.
      */
@@ -278,7 +304,7 @@ public abstract class Kudosable<T extends DaoKudosable> extends UserContent<T> i
 
     /**
      * This method is called each time this Kudosable is kudosed.
-     *
+     * 
      * @param positif true if it is a kudos false if it is an unKudos.
      */
     protected void notifyKudos(final boolean positif) {

@@ -20,8 +20,10 @@ import java.util.Date;
 import java.util.EnumSet;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.data.DaoMember.Role;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.exceptions.UnauthorizedOperationException.SpecialCode;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.FileMetadataList;
 import com.bloatit.model.right.Action;
@@ -29,7 +31,7 @@ import com.bloatit.model.right.UserContentRight;
 
 /**
  * The Class UserContent. Model vision of the {@link DaoUserContent} class.
- *
+ * 
  * @param <T> the generic type. Must be the concrete Dao version of the concrete
  *            subClass. For example: Demand extends UserContent<DaoDemand>
  */
@@ -37,7 +39,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     /**
      * Instantiates a new user content.
-     *
+     * 
      * @param dao the dao
      */
     protected UserContent(final T dao) {
@@ -98,13 +100,28 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     }
 
     // TODO right management
-    public void delete() {
+    public void delete() throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
         getDao().setIsDeleted(true);
     }
 
     // TODO right management
-    public void restore() {
+    public void restore() throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
         getDao().setIsDeleted(false);
+    }
+
+    // TODO right management
+    @Override
+    public boolean isDeleted() throws UnauthorizedOperationException {
+        if (!hasUserPrivilege(Role.ADMIN)) {
+            throw new UnauthorizedOperationException(SpecialCode.ADMIN_ONLY);
+        }
+        return getDao().isDeleted();
     }
 
     @Override
@@ -123,10 +140,8 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     @Override
     public void addFile(FileMetadata file) {
-        //TODO right management: only the owner can add file
+        // TODO right management: only the owner can add file
         getDao().addFile(file.getDao());
     }
-
-
 
 }

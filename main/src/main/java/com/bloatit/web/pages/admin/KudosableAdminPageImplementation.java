@@ -7,15 +7,18 @@ import com.bloatit.framework.webserver.components.advanced.HtmlGenericTableModel
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
-import com.bloatit.model.admin.KudosableAdmin;
+import com.bloatit.model.Kudosable;
 import com.bloatit.model.admin.KudosableAdminListFactory;
 import com.bloatit.web.url.KudosableAdminPageUrl;
 
 public final class KudosableAdminPageImplementation extends
-        KudosableAdminPage<DaoKudosable, KudosableAdmin<DaoKudosable>, KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>>> {
+        KudosableAdminPage<DaoKudosable, Kudosable<DaoKudosable>, KudosableAdminListFactory<DaoKudosable, Kudosable<DaoKudosable>>> {
+
+    private final KudosableAdminPageUrl url;
 
     public KudosableAdminPageImplementation(final KudosableAdminPageUrl url) {
-        super(url, new KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>>());
+        super(url, new KudosableAdminListFactory<DaoKudosable, Kudosable<DaoKudosable>>());
+        this.url = url;
     }
 
     @Override
@@ -29,8 +32,18 @@ public final class KudosableAdminPageImplementation extends
     }
 
     @Override
-    protected void doAddColumns(final HtmlGenericTableModel<KudosableAdmin<DaoKudosable>> tableModel) {
-        // Everything done in super class
+    protected void addColumns(final HtmlGenericTableModel<Kudosable<DaoKudosable>> tableModel) {
+        KudosableAdminPageUrl clonedUrl = url.clone();
+
+        addAsGroupColumn(tableModel, clonedUrl);
+        addCreationDateColumn(tableModel, clonedUrl);
+        addTypeColumn(tableModel);
+        // addNbFilesColumn(tableModel);
+        // addIsDeletedColumn(tableModel, clonedUrl);
+
+        addPopularityColumn(tableModel, clonedUrl);
+        addPopularityStateColumn(tableModel, clonedUrl);
+        addIsLockedColumn(tableModel, clonedUrl);
     }
 
     @Override
@@ -39,8 +52,11 @@ public final class KudosableAdminPageImplementation extends
     }
 
     @Override
-    protected void doAddFormFilters(final HtmlForm form) {
-        // Everything done in super class
+    protected void addFormFilters(final HtmlForm form) {
+        addIsDeletedFilter(form, url);
+        addHasFileFilter(form, url);
+        addAsGroupFilter(form, url);
+        addPopularityStateFilter(form);
     }
 
 }

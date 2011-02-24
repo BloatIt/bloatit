@@ -28,7 +28,7 @@ import com.bloatit.data.SessionManager;
  * 
  * @param <T> the generic type
  */
-class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractListFactory<T> {
+public class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractListFactory<T> {
 
     /**
      * Instantiates a new dao identifiable list factory.

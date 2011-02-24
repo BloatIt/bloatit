@@ -6,8 +6,10 @@ import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
 import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
 import com.bloatit.data.queries.DaoKudosableListFactory;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Kudosable;
+import com.bloatit.model.KudosableInterface;
 
-public class KudosableAdminListFactory<T extends DaoKudosable, U extends KudosableAdmin<T>> extends UserContentAdminListFactory<T, U> {
+public class KudosableAdminListFactory<T extends DaoKudosable, U extends KudosableInterface<T>> extends UserContentAdminListFactory<T, U> {
 
     public KudosableAdminListFactory() {
         super(new DaoKudosableListFactory<T>());

@@ -2,6 +2,7 @@ package com.bloatit.model.admin;
 
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
+import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
 
 public class KudosableAdmin<T extends DaoKudosable> extends UserContentAdmin<T> {
@@ -17,8 +18,8 @@ public class KudosableAdmin<T extends DaoKudosable> extends UserContentAdmin<T> 
         return null;
     }
 
-    public static KudosableAdmin<DaoKudosable> createKudosable(final Integer id) {
-        final KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>> factory = new KudosableAdminListFactory<DaoKudosable, KudosableAdmin<DaoKudosable>>();
+    public static Kudosable<DaoKudosable> createKudosable(final Integer id) {
+        final KudosableAdminListFactory<DaoKudosable, Kudosable<DaoKudosable>> factory = new KudosableAdminListFactory<DaoKudosable, Kudosable<DaoKudosable>>();
         factory.idEquals(id);
         if (factory.list().iterator().hasNext()) {
             return factory.list().iterator().next();

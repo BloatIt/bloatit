@@ -4,8 +4,10 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.queries.DaoDemandListFactory;
 import com.bloatit.framework.utils.PageIterable;
+import com.bloatit.model.Demand;
+import com.bloatit.model.demand.DemandList;
 
-public class DemandAdminListFactory extends KudosableAdminListFactory<DaoDemand, DemandAdmin> {
+public class DemandAdminListFactory extends KudosableAdminListFactory<DaoDemand, Demand> {
 
     public DemandAdminListFactory() {
         super(new DaoDemandListFactory());
@@ -17,8 +19,8 @@ public class DemandAdminListFactory extends KudosableAdminListFactory<DaoDemand,
     }
 
     @Override
-    public PageIterable<DemandAdmin> list() {
-        return new AdminList<DaoDemand, DemandAdmin>(getfactory().createCollection());
+    public PageIterable<Demand> list() {
+        return new DemandList(getfactory().createCollection());
     }
 
     public void stateEquals(final DemandState state) {
