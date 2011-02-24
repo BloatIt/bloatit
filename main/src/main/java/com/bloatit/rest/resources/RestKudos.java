@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Kudos;
-import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestKudosList;
 
 /**
@@ -86,7 +86,7 @@ public class RestKudos extends RestElement<Kudos> {
      *
      * @param id the id of the RestKudos
      */
-    @REST(name = "kudoss", method = RequestMethod.GET)
+    @REST(name = "kudos", method = RequestMethod.GET)
     public static RestKudos getById(int id) {
         // TODO auto generated code
         // RestKudos restKudos = new RestKudos(KudosManager.getKudosById(id));
@@ -112,8 +112,6 @@ public class RestKudos extends RestElement<Kudos> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -123,50 +121,26 @@ public class RestKudos extends RestElement<Kudos> {
     /**
      * @see com.bloatit.model.Kudos#getValue()
      */
-    // @XmlElement
+    @XmlAttribute
     public int getValue() {
-        // TODO auto-generated code stub
-        int value = model.getValue();
-        return value;
+        return model.getValue();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAuthor()
      */
-    // @XmlElement
+    @XmlAttribute
+    @XmlIDREF
     public RestMember getAuthor() {
-        // TODO auto-generated code stub
-        RestMember author = new RestMember(model.getAuthor());
-        return author;
-    }
-
-    /**
-     * @see com.bloatit.model.UserContent#getAsGroup()
-     */
-    // @XmlElement
-    public RestGroup getAsGroup() {
-        // TODO auto-generated code stub
-        RestGroup asGroup = new RestGroup(model.getAsGroup());
-        return asGroup;
-    }
-
-    /**
-     * @see com.bloatit.model.UserContent#getFiles()
-     */
-    // @XmlElement
-    public RestFileMetadataList getFiles() {
-        // TODO auto-generated code stub
-        return new RestFileMetadataList(model.getFiles());
+        return new RestMember(model.getAuthor());
     }
 
     // ---------------------------------------------------------------------------------------
