@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -25,7 +27,7 @@ import com.bloatit.rest.resources.RestComment;
  * </pre>
  * <p>
  */ 
-@XmlRootElement
+@XmlRootElement (name = "comments")
 public class RestCommentList extends RestListBinder<RestComment, Comment> {
     /**
      * Creates a RestCommentList from a {@codePageIterable<Comment>}
@@ -39,10 +41,13 @@ public class RestCommentList extends RestListBinder<RestComment, Comment> {
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "comments")
     @XmlElement(name = "comment")
-    public RestCommentList getComments() {
-        return this;
+    public List<RestComment> getComments() {
+        List<RestComment> comments = new ArrayList<RestComment>();
+        for (RestComment comment : this) {
+            comments.add(comment);
+        }
+        return comments;
     }
 }
 

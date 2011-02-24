@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -25,7 +27,7 @@ import com.bloatit.rest.resources.RestBug;
  * </pre>
  * <p>
  */ 
-@XmlRootElement
+@XmlRootElement (name = "bugs")
 public class RestBugList extends RestListBinder<RestBug, Bug> {
     /**
      * Creates a RestBugList from a {@codePageIterable<Bug>}
@@ -39,10 +41,13 @@ public class RestBugList extends RestListBinder<RestBug, Bug> {
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "bugs")
     @XmlElement(name = "bug")
-    public RestBugList getBugs() {
-        return this;
+    public List<RestBug> getBugs() {
+        List<RestBug> bugs = new ArrayList<RestBug>();
+        for (RestBug bug : this) {
+            bugs.add(bug);
+        }
+        return bugs;
     }
 }
 

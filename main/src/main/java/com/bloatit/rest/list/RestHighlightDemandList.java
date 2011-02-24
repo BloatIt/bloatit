@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -25,7 +27,7 @@ import com.bloatit.rest.resources.RestHighlightDemand;
  * </pre>
  * <p>
  */ 
-@XmlRootElement
+@XmlRootElement (name = "highlightdemands")
 public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand, HighlightDemand> {
     /**
      * Creates a RestHighlightDemandList from a {@codePageIterable<HighlightDemand>}
@@ -39,10 +41,13 @@ public class RestHighlightDemandList extends RestListBinder<RestHighlightDemand,
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "highlightdemands")
     @XmlElement(name = "highlightdemand")
-    public RestHighlightDemandList getHighlightDemands() {
-        return this;
+    public List<RestHighlightDemand> getHighlightDemands() {
+        List<RestHighlightDemand> highlightdemands = new ArrayList<RestHighlightDemand>();
+        for (RestHighlightDemand highlightdemand : this) {
+            highlightdemands.add(highlightdemand);
+        }
+        return highlightdemands;
     }
 }
 

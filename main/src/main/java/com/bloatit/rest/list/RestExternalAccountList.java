@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -25,7 +27,7 @@ import com.bloatit.rest.resources.RestExternalAccount;
  * </pre>
  * <p>
  */ 
-@XmlRootElement
+@XmlRootElement (name = "externalaccounts")
 public class RestExternalAccountList extends RestListBinder<RestExternalAccount, ExternalAccount> {
     /**
      * Creates a RestExternalAccountList from a {@codePageIterable<ExternalAccount>}
@@ -39,10 +41,13 @@ public class RestExternalAccountList extends RestListBinder<RestExternalAccount,
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "externalaccounts")
     @XmlElement(name = "externalaccount")
-    public RestExternalAccountList getExternalAccounts() {
-        return this;
+    public List<RestExternalAccount> getExternalAccounts() {
+        List<RestExternalAccount> externalaccounts = new ArrayList<RestExternalAccount>();
+        for (RestExternalAccount externalaccount : this) {
+            externalaccounts.add(externalaccount);
+        }
+        return externalaccounts;
     }
 }
 

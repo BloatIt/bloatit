@@ -1,7 +1,9 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -25,7 +27,7 @@ import com.bloatit.rest.resources.RestTranslation;
  * </pre>
  * <p>
  */ 
-@XmlRootElement
+@XmlRootElement (name = "translations")
 public class RestTranslationList extends RestListBinder<RestTranslation, Translation> {
     /**
      * Creates a RestTranslationList from a {@codePageIterable<Translation>}
@@ -39,10 +41,13 @@ public class RestTranslationList extends RestListBinder<RestTranslation, Transla
     /**
      * This method is provided only to be able to represent the list as XmL
      */
-    @XmlElementWrapper(name = "translations")
     @XmlElement(name = "translation")
-    public RestTranslationList getTranslations() {
-        return this;
+    public List<RestTranslation> getTranslations() {
+        List<RestTranslation> translations = new ArrayList<RestTranslation>();
+        for (RestTranslation translation : this) {
+            translations.add(translation);
+        }
+        return translations;
     }
 }
 
