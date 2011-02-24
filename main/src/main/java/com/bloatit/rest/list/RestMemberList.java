@@ -1,5 +1,8 @@
 package com.bloatit.rest.list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -45,7 +48,12 @@ public class RestMemberList extends RestListBinder<RestMember, Member> {
      */
 //    @XmlElementWrapper(name = "members")
     @XmlElement(name = "member")
-    public RestMemberList getMembers() {
-        return this;
+    public List<RestMember> getMembers() {
+        //return this;
+        List<RestMember> members = new ArrayList<RestMember>();
+        for(RestMember member: this){
+            members.add(member);
+        }
+        return members;
     }
 }

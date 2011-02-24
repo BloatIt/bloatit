@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -140,7 +139,7 @@ public class RestMember extends RestElement<Member> {
     // return new RestDemandList(model.getDemands());
     // }
 
-    @XmlIDREF
+//    @XmlIDREF
     public RestFileMetadata getAvatar() {
         return new RestFileMetadata(model.getAvatar());
     }
