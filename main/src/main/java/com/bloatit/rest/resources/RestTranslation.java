@@ -58,6 +58,11 @@ import com.bloatit.model.Translation;
 public class RestTranslation extends RestElement<Translation>{ 
     private Translation model;
 
+
+    // ---------------------------------------------------------------------------------------
+    // -- Constructors
+    // ---------------------------------------------------------------------------------------
+
     /**
      * Provided for JAXB 
      */
@@ -68,6 +73,10 @@ public class RestTranslation extends RestElement<Translation>{
     protected RestTranslation(Translation model){
         this.model=model;
     }
+
+    // ---------------------------------------------------------------------------------------
+    // -- Static methods
+    // ---------------------------------------------------------------------------------------
 
     /**
      * <p>
@@ -96,6 +105,22 @@ public class RestTranslation extends RestElement<Translation>{
         return null;
     }
 
+    // ---------------------------------------------------------------------------------------
+    // -- XML Getters
+    // ---------------------------------------------------------------------------------------
+
+    // TODO Generate 
+
+    @XmlAttribute
+    @XmlID
+    public String getId(){
+        return model.getId().toString();
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // -- Utils
+    // ---------------------------------------------------------------------------------------
+
     /**
      * Provided for JAXB 
      */
@@ -110,13 +135,8 @@ public class RestTranslation extends RestElement<Translation>{
         return model;
     }
 
-    @XmlAttribute
-    @XmlID
-    public String getId(){
-        return model.getId().toString();
-    }
-
-    @Override    public boolean isNull(){
+    @Override
+    public boolean isNull(){
         return (model == null);
     }
 

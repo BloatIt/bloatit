@@ -58,6 +58,11 @@ import com.bloatit.model.Project;
 public class RestProject extends RestElement<Project>{ 
     private Project model;
 
+
+    // ---------------------------------------------------------------------------------------
+    // -- Constructors
+    // ---------------------------------------------------------------------------------------
+
     /**
      * Provided for JAXB 
      */
@@ -68,6 +73,10 @@ public class RestProject extends RestElement<Project>{
     protected RestProject(Project model){
         this.model=model;
     }
+
+    // ---------------------------------------------------------------------------------------
+    // -- Static methods
+    // ---------------------------------------------------------------------------------------
 
     /**
      * <p>
@@ -96,6 +105,22 @@ public class RestProject extends RestElement<Project>{
         return null;
     }
 
+    // ---------------------------------------------------------------------------------------
+    // -- XML Getters
+    // ---------------------------------------------------------------------------------------
+
+    // TODO Generate 
+
+    @XmlAttribute
+    @XmlID
+    public String getId(){
+        return model.getId().toString();
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // -- Utils
+    // ---------------------------------------------------------------------------------------
+
     /**
      * Provided for JAXB 
      */
@@ -110,13 +135,8 @@ public class RestProject extends RestElement<Project>{
         return model;
     }
 
-    @XmlAttribute
-    @XmlID
-    public String getId(){
-        return model.getId().toString();
-    }
-
-    @Override    public boolean isNull(){
+    @Override
+    public boolean isNull(){
         return (model == null);
     }
 

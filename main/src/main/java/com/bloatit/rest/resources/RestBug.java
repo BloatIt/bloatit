@@ -58,6 +58,11 @@ import com.bloatit.model.Bug;
 public class RestBug extends RestElement<Bug>{ 
     private Bug model;
 
+
+    // ---------------------------------------------------------------------------------------
+    // -- Constructors
+    // ---------------------------------------------------------------------------------------
+
     /**
      * Provided for JAXB 
      */
@@ -68,6 +73,10 @@ public class RestBug extends RestElement<Bug>{
     protected RestBug(Bug model){
         this.model=model;
     }
+
+    // ---------------------------------------------------------------------------------------
+    // -- Static methods
+    // ---------------------------------------------------------------------------------------
 
     /**
      * <p>
@@ -96,6 +105,22 @@ public class RestBug extends RestElement<Bug>{
         return null;
     }
 
+    // ---------------------------------------------------------------------------------------
+    // -- XML Getters
+    // ---------------------------------------------------------------------------------------
+
+    // TODO Generate 
+
+    @XmlAttribute
+    @XmlID
+    public String getId(){
+        return model.getId().toString();
+    }
+
+    // ---------------------------------------------------------------------------------------
+    // -- Utils
+    // ---------------------------------------------------------------------------------------
+
     /**
      * Provided for JAXB 
      */
@@ -110,13 +135,8 @@ public class RestBug extends RestElement<Bug>{
         return model;
     }
 
-    @XmlAttribute
-    @XmlID
-    public String getId(){
-        return model.getId().toString();
-    }
-
-    @Override    public boolean isNull(){
+    @Override
+    public boolean isNull(){
         return (model == null);
     }
 

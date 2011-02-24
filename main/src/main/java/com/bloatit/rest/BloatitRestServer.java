@@ -46,7 +46,7 @@ public class BloatitRestServer extends RestServer {
             put("highlightdemands", RestHighlightDemand.class);
             put("internalaccounts", RestInternalAccount.class);
             put("joingroupinvitations", RestJoinGroupInvitation.class);
-            put("kudoss", RestKudos.class);
+            put("kudos", RestKudos.class); // Note : kudos not kudosS
             put("offers", RestOffer.class);
             put("projects", RestProject.class);
             put("releases", RestRelease.class);
