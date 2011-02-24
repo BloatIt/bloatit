@@ -87,10 +87,11 @@ public class RestOffer extends RestElement<Offer>{
     @REST(name = "offers", method = RequestMethod.GET)
     public static RestOffer getById(int id){
         // TODO auto generated code
-        // RestOffer restOffer = OfferManager.getById(id); 
-        // if(restOffer == null) { 
+        // RestOffer restOffer = new RestOffer(OfferManager.getOfferById(id));
+        // if (restOffer.isNull()) {
         //     return null;
         // }
+        // return restOffer;
         return null;
     }
 

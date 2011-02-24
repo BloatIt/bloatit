@@ -87,10 +87,11 @@ public class RestTranslation extends RestElement<Translation>{
     @REST(name = "translations", method = RequestMethod.GET)
     public static RestTranslation getById(int id){
         // TODO auto generated code
-        // RestTranslation restTranslation = TranslationManager.getById(id); 
-        // if(restTranslation == null) { 
+        // RestTranslation restTranslation = new RestTranslation(TranslationManager.getTranslationById(id));
+        // if (restTranslation.isNull()) {
         //     return null;
         // }
+        // return restTranslation;
         return null;
     }
 

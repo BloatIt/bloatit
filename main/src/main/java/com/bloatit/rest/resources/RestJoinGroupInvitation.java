@@ -87,10 +87,11 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation>{
     @REST(name = "joingroupinvitations", method = RequestMethod.GET)
     public static RestJoinGroupInvitation getById(int id){
         // TODO auto generated code
-        // RestJoinGroupInvitation restJoinGroupInvitation = JoinGroupInvitationManager.getById(id); 
-        // if(restJoinGroupInvitation == null) { 
+        // RestJoinGroupInvitation restJoinGroupInvitation = new RestJoinGroupInvitation(JoinGroupInvitationManager.getJoinGroupInvitationById(id));
+        // if (restJoinGroupInvitation.isNull()) {
         //     return null;
         // }
+        // return restJoinGroupInvitation;
         return null;
     }
 

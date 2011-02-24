@@ -87,10 +87,11 @@ public class RestInternalAccount extends RestElement<InternalAccount>{
     @REST(name = "internalaccounts", method = RequestMethod.GET)
     public static RestInternalAccount getById(int id){
         // TODO auto generated code
-        // RestInternalAccount restInternalAccount = InternalAccountManager.getById(id); 
-        // if(restInternalAccount == null) { 
+        // RestInternalAccount restInternalAccount = new RestInternalAccount(InternalAccountManager.getInternalAccountById(id));
+        // if (restInternalAccount.isNull()) {
         //     return null;
         // }
+        // return restInternalAccount;
         return null;
     }
 

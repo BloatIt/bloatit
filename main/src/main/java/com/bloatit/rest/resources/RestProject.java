@@ -87,10 +87,11 @@ public class RestProject extends RestElement<Project>{
     @REST(name = "projects", method = RequestMethod.GET)
     public static RestProject getById(int id){
         // TODO auto generated code
-        // RestProject restProject = ProjectManager.getById(id); 
-        // if(restProject == null) { 
+        // RestProject restProject = new RestProject(ProjectManager.getProjectById(id));
+        // if (restProject.isNull()) {
         //     return null;
         // }
+        // return restProject;
         return null;
     }
 

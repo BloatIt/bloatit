@@ -87,10 +87,11 @@ public class RestGroup extends RestElement<Group>{
     @REST(name = "groups", method = RequestMethod.GET)
     public static RestGroup getById(int id){
         // TODO auto generated code
-        // RestGroup restGroup = GroupManager.getById(id); 
-        // if(restGroup == null) { 
+        // RestGroup restGroup = new RestGroup(GroupManager.getGroupById(id));
+        // if (restGroup.isNull()) {
         //     return null;
         // }
+        // return restGroup;
         return null;
     }
 

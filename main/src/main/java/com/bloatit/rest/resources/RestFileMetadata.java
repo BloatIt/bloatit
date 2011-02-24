@@ -87,10 +87,11 @@ public class RestFileMetadata extends RestElement<FileMetadata>{
     @REST(name = "filemetadatas", method = RequestMethod.GET)
     public static RestFileMetadata getById(int id){
         // TODO auto generated code
-        // RestFileMetadata restFileMetadata = FileMetadataManager.getById(id); 
-        // if(restFileMetadata == null) { 
+        // RestFileMetadata restFileMetadata = new RestFileMetadata(FileMetadataManager.getFileMetadataById(id));
+        // if (restFileMetadata.isNull()) {
         //     return null;
         // }
+        // return restFileMetadata;
         return null;
     }
 

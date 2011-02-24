@@ -87,10 +87,11 @@ public class RestContribution extends RestElement<Contribution>{
     @REST(name = "contributions", method = RequestMethod.GET)
     public static RestContribution getById(int id){
         // TODO auto generated code
-        // RestContribution restContribution = ContributionManager.getById(id); 
-        // if(restContribution == null) { 
+        // RestContribution restContribution = new RestContribution(ContributionManager.getContributionById(id));
+        // if (restContribution.isNull()) {
         //     return null;
         // }
+        // return restContribution;
         return null;
     }
 

@@ -24,6 +24,7 @@ import com.bloatit.model.Contribution;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Description;
 import com.bloatit.model.Offer;
+import com.bloatit.model.demand.DemandManager;
 import com.bloatit.rest.list.RestDemandList;
 
 /**
@@ -99,12 +100,11 @@ public class RestDemand extends RestElement<Demand> {
      */
     @REST(name = "demands", method = RequestMethod.GET)
     public static RestDemand getById(int id) {
-        // TODO auto generated code
-        // RestDemand restDemand = DemandManager.getById(id);
-        // if(restDemand == null) {
-        // return null;
-        // }
-        return null;
+        RestDemand restDemand = new RestDemand(DemandManager.getDemandById(id));
+        if (restDemand.isNull()) {
+            return null;
+        }
+        return restDemand;
     }
 
     /**
@@ -114,8 +114,7 @@ public class RestDemand extends RestElement<Demand> {
      */
     @REST(name = "demands", method = RequestMethod.GET)
     public static RestDemandList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestDemandList(DemandManager.getDemands());
     }
 
     // ---------------------------------------------------------------------------------------
@@ -141,7 +140,7 @@ public class RestDemand extends RestElement<Demand> {
         return model.getCreationDate();
     }
 
-//    @XmlAttribute
+    // @XmlAttribute
     public PopularityState getState() {
         return model.getState();
     }
@@ -188,7 +187,7 @@ public class RestDemand extends RestElement<Demand> {
         }
     }
 
-//    @XmlElement
+    // @XmlElement
     public Description getDescription() throws RestException {
         try {
             return model.getDescription();
@@ -207,7 +206,7 @@ public class RestDemand extends RestElement<Demand> {
         }
     }
 
-//    @XmlElement
+    // @XmlElement
     public PageIterable<Offer> getOffers() throws RestException {
         try {
             return model.getOffers();

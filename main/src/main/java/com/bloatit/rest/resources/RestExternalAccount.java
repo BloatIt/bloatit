@@ -87,10 +87,11 @@ public class RestExternalAccount extends RestElement<ExternalAccount>{
     @REST(name = "externalaccounts", method = RequestMethod.GET)
     public static RestExternalAccount getById(int id){
         // TODO auto generated code
-        // RestExternalAccount restExternalAccount = ExternalAccountManager.getById(id); 
-        // if(restExternalAccount == null) { 
+        // RestExternalAccount restExternalAccount = new RestExternalAccount(ExternalAccountManager.getExternalAccountById(id));
+        // if (restExternalAccount.isNull()) {
         //     return null;
         // }
+        // return restExternalAccount;
         return null;
     }
 

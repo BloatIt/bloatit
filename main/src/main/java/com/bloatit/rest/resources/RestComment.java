@@ -87,10 +87,11 @@ public class RestComment extends RestElement<Comment>{
     @REST(name = "comments", method = RequestMethod.GET)
     public static RestComment getById(int id){
         // TODO auto generated code
-        // RestComment restComment = CommentManager.getById(id); 
-        // if(restComment == null) { 
+        // RestComment restComment = new RestComment(CommentManager.getCommentById(id));
+        // if (restComment.isNull()) {
         //     return null;
         // }
+        // return restComment;
         return null;
     }
 

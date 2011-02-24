@@ -87,10 +87,11 @@ public class RestHighlightDemand extends RestElement<HighlightDemand>{
     @REST(name = "highlightdemands", method = RequestMethod.GET)
     public static RestHighlightDemand getById(int id){
         // TODO auto generated code
-        // RestHighlightDemand restHighlightDemand = HighlightDemandManager.getById(id); 
-        // if(restHighlightDemand == null) { 
+        // RestHighlightDemand restHighlightDemand = new RestHighlightDemand(HighlightDemandManager.getHighlightDemandById(id));
+        // if (restHighlightDemand.isNull()) {
         //     return null;
         // }
+        // return restHighlightDemand;
         return null;
     }
 

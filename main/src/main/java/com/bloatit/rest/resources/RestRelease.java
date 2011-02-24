@@ -87,10 +87,11 @@ public class RestRelease extends RestElement<Release>{
     @REST(name = "releases", method = RequestMethod.GET)
     public static RestRelease getById(int id){
         // TODO auto generated code
-        // RestRelease restRelease = ReleaseManager.getById(id); 
-        // if(restRelease == null) { 
+        // RestRelease restRelease = new RestRelease(ReleaseManager.getReleaseById(id));
+        // if (restRelease.isNull()) {
         //     return null;
         // }
+        // return restRelease;
         return null;
     }
 

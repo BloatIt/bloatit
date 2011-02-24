@@ -87,10 +87,11 @@ public class RestBatch extends RestElement<Batch>{
     @REST(name = "batchs", method = RequestMethod.GET)
     public static RestBatch getById(int id){
         // TODO auto generated code
-        // RestBatch restBatch = BatchManager.getById(id); 
-        // if(restBatch == null) { 
+        // RestBatch restBatch = new RestBatch(BatchManager.getBatchById(id));
+        // if (restBatch.isNull()) {
         //     return null;
         // }
+        // return restBatch;
         return null;
     }
 

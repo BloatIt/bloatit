@@ -87,10 +87,11 @@ public class RestKudos extends RestElement<Kudos>{
     @REST(name = "kudoss", method = RequestMethod.GET)
     public static RestKudos getById(int id){
         // TODO auto generated code
-        // RestKudos restKudos = KudosManager.getById(id); 
-        // if(restKudos == null) { 
+        // RestKudos restKudos = new RestKudos(KudosManager.getKudosById(id));
+        // if (restKudos.isNull()) {
         //     return null;
         // }
+        // return restKudos;
         return null;
     }
 

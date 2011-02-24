@@ -87,10 +87,11 @@ public class RestBankTransaction extends RestElement<BankTransaction>{
     @REST(name = "banktransactions", method = RequestMethod.GET)
     public static RestBankTransaction getById(int id){
         // TODO auto generated code
-        // RestBankTransaction restBankTransaction = BankTransactionManager.getById(id); 
-        // if(restBankTransaction == null) { 
+        // RestBankTransaction restBankTransaction = new RestBankTransaction(BankTransactionManager.getBankTransactionById(id));
+        // if (restBankTransaction.isNull()) {
         //     return null;
         // }
+        // return restBankTransaction;
         return null;
     }
 

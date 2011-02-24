@@ -87,10 +87,11 @@ public class RestDescription extends RestElement<Description>{
     @REST(name = "descriptions", method = RequestMethod.GET)
     public static RestDescription getById(int id){
         // TODO auto generated code
-        // RestDescription restDescription = DescriptionManager.getById(id); 
-        // if(restDescription == null) { 
+        // RestDescription restDescription = new RestDescription(DescriptionManager.getDescriptionById(id));
+        // if (restDescription.isNull()) {
         //     return null;
         // }
+        // return restDescription;
         return null;
     }
 

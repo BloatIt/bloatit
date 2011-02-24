@@ -87,10 +87,11 @@ public class RestBug extends RestElement<Bug>{
     @REST(name = "bugs", method = RequestMethod.GET)
     public static RestBug getById(int id){
         // TODO auto generated code
-        // RestBug restBug = BugManager.getById(id); 
-        // if(restBug == null) { 
+        // RestBug restBug = new RestBug(BugManager.getBugById(id));
+        // if (restBug.isNull()) {
         //     return null;
         // }
+        // return restBug;
         return null;
     }
 
