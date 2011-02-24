@@ -308,6 +308,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * Tells that we are in development state.
      */
     void inDevelopmentState() {
+        if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().getAmount().compareTo(getDao().getContribution()) > 0) {
+            throw new WrongStateException("Cannot be in development state, not enough money.");
+        }
         getDao().setDemandState(DemandState.DEVELOPPING);
         getSelectedOfferUnprotected().getCurrentBatch().setDeveloping();
         new TaskDevelopmentTimeOut(getId(), getDao().getSelectedOffer().getCurrentBatch().getExpirationDate());
@@ -329,6 +332,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * Slot called when this demand state change to {@link FinishedState}.
      */
     void inFinishedState() {
+        if (getDao().getSelectedOffer() == null || getDao().getSelectedOffer().hasBatchesLeft()) {
+            throw new WrongStateException("Cannot be in finished state if the current offer has lots to validate.");
+        }
         getDao().setDemandState(DemandState.FINISHED);
     }
 
@@ -337,7 +343,6 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     void inPendingState() {
         getDao().setDemandState(DemandState.PENDING);
-
     }
 
     /**
@@ -345,6 +350,9 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      */
     void inPreparingState() {
         Set<DaoOffer> offers = getDao().getOffers();
+        if (offers.size() < 1) {
+            throw new WrongStateException("There must be at least one offer to be in Preparing state.");
+        }
         if (offers.size() == 1) {
             getDao().setSelectedOffer(offers.iterator().next());
         } else {
