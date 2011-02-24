@@ -62,7 +62,7 @@ import com.bloatit.rest.list.RestMemberList;
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestMember extends RestElement<Member> {
     private Member model;
-    
+
     // ---------------------------------------------------------------------------------------
     // -- Constructors
     // ---------------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ public class RestMember extends RestElement<Member> {
      */
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMember getById(final int id) {
-        RestMember restMember = new RestMember(MemberManager.getMemberById(id));
+        final RestMember restMember = new RestMember(MemberManager.getMemberById(id));
         if (restMember.isNull()) {
             return null;
         }
@@ -105,7 +105,7 @@ public class RestMember extends RestElement<Member> {
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-    
+
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -144,7 +144,7 @@ public class RestMember extends RestElement<Member> {
     public RestFileMetadata getAvatar() {
         return new RestFileMetadata(model.getAvatar());
     }
-    
+
     // ---------------------------------------------------------------------------------------
     // -- Utils
     // ---------------------------------------------------------------------------------------
