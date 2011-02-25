@@ -23,4 +23,5 @@ public class MembersTools {
 
         return avatarDiv;
     }
+
 }
