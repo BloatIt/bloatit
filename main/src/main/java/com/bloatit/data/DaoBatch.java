@@ -118,37 +118,12 @@ public final class DaoBatch extends DaoIdentifiable {
     // Construction.
     // ======================================================================
 
-    // /**
-    // * Create a new DaoBatch and add it into the db.
-    // *
-    // * @see #DaoBatch(Date, BigDecimal, DaoDescription, DaoOffer, int)
-    // * @return the newly created {@link DaoBatch}
-    // */
-    // public static DaoBatch createAndPersist(final Date dateExpire,
-    // final BigDecimal amount,
-    // final DaoDescription description,
-    // final DaoOffer offer,
-    // final int secondBeforeValidation) {
-    // final Session session =
-    // SessionManager.getSessionFactory().getCurrentSession();
-    // final DaoBatch batch = new DaoBatch(dateExpire, amount, description,
-    // offer, secondBeforeValidation);
-    // try {
-    // session.save(batch);
-    // } catch (final HibernateException e) {
-    // session.getTransaction().rollback();
-    // SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-    // throw e;
-    // }
-    // return batch;
-    // }
-
     /**
      * Create a DaoBatch.
      * 
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
-     * @param expirationDate is the date when this offer should be finish. Must
+     * @param dateExpire is the date when this offer should be finish. Must
      *            be non null, and in the future.
      * @param secondBeforeValidation TODO
      * @throws NonOptionalParameterException if a parameter is null.
