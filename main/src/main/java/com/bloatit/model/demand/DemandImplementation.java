@@ -200,8 +200,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         if (!offer.getAuthor().equals(getAuthToken().getMember())) {
             throw new UnauthorizedOperationException(SpecialCode.CREATOR_INSERTOR_MISMATCH);
         }
-        setStateObject(getStateObject().eventAddOffer());
         getDao().addOffer(offer.getDao());
+        setStateObject(getStateObject().eventAddOffer());
         return offer;
     }
 
@@ -215,8 +215,8 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         if (getDao().getSelectedOffer().getId() == offer.getId()) {
             getDao().computeSelectedOffer();
         }
-        setStateObject(getStateObject().eventRemoveOffer(offer));
         getDao().removeOffer(offer.getDao());
+        setStateObject(getStateObject().eventRemoveOffer(offer));
     }
 
     /*
@@ -354,7 +354,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
             throw new WrongStateException("There must be at least one offer to be in Preparing state.");
         }
         if (offers.size() == 1) {
-            getDao().setSelectedOffer(offers.iterator().next());
+            setSelectedOffer(Offer.create(offers.iterator().next()));
         } else {
             getDao().computeSelectedOffer();
         }
@@ -445,7 +445,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         final boolean isSelectedOffer = offer.equals(selectedOffer);
         if (positif && !isSelectedOffer) {
             if (selectedOffer == null || offer.getPopularity() > selectedOffer.getPopularity()) {
-                getDao().setSelectedOffer(offer.getDao());
+                setSelectedOffer(Offer.create(offer.getDao()));
             }
         }
         if (!positif && isSelectedOffer) {

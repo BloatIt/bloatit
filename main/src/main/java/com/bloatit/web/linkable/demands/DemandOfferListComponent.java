@@ -80,7 +80,7 @@ public class DemandOfferListComponent extends HtmlDiv {
                     offersBlock.add(block);
                     // Generating the left column
                     block.addInLeftColumn(new HtmlParagraph(tr("The selected offer is the one with the more popularity.")));
-                    if (DateUtils.isInTheFuture(demand.getValidationDate())) {
+                    if (demand.getValidationDate() != null && DateUtils.isInTheFuture(demand.getValidationDate())) {
                         TimeRenderer renderer = new TimeRenderer(DateUtils.elapsed(DateUtils.now(), demand.getValidationDate()));
                         block.addInLeftColumn(new HtmlParagraph(tr("This offer will go into development in about ") + renderer.getTimeString() + "."));
                     } else {
