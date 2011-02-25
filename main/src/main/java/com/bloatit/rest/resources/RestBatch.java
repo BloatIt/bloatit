@@ -16,6 +16,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Batch;
+import com.bloatit.model.managers.BatchManager;
 import com.bloatit.rest.list.RestBatchList;
 import com.bloatit.rest.list.RestReleaseList;
 
@@ -92,13 +93,11 @@ public class RestBatch extends RestElement<Batch> {
      */
     @REST(name = "batchs", method = RequestMethod.GET)
     public static RestBatch getById(int id) {
-        // TODO auto generated code
-        // RestBatch restBatch = new RestBatch(BatchManager.getBatchById(id));
-        // if (restBatch.isNull()) {
-        // return null;
-        // }
-        // return restBatch;
-        return null;
+        RestBatch restBatch = new RestBatch(BatchManager.getById(id));
+        if (restBatch.isNull()) {
+            return null;
+        }
+        return restBatch;
     }
 
     /**
@@ -108,8 +107,7 @@ public class RestBatch extends RestElement<Batch> {
      */
     @REST(name = "batchs", method = RequestMethod.GET)
     public static RestBatchList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestBatchList(BatchManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

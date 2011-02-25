@@ -40,7 +40,7 @@ public final class ProjectManager {
      * @param id the id
      * @return the project or null if not found.
      */
-    public static Project getProjectById(final Integer id) {
+    public static Project getById(final Integer id) {
         return Project.create(DBRequests.getById(DaoProject.class, id));
     }
 
@@ -49,7 +49,7 @@ public final class ProjectManager {
      *
      * @return all the projects
      */
-    public static PageIterable<Project> getProjects() {
+    public static PageIterable<Project> getAll() {
         return new ProjectList(DBRequests.getAll(DaoProject.class));
     }
 }

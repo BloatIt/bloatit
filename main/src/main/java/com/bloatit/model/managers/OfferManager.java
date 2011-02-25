@@ -40,14 +40,14 @@ public final class OfferManager {
      * @param id the id
      * @return the offer or <code>null</code> if not found.
      */
-    public static Offer getOfferById(final Integer id) {
+    public static Offer getById(final Integer id) {
         return Offer.create(DBRequests.getById(DaoOffer.class, id));
     }
 
     /**
      * @return
      */
-    public static PageIterable<Offer> getOffers() {
+    public static PageIterable<Offer> getAll() {
         return new OfferList(DBRequests.getAll(DaoOffer.class));
     }
 

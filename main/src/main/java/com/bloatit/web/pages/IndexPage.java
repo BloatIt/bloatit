@@ -63,7 +63,7 @@ public final class IndexPage extends MasterPage {
 
             final int demandCount = 6;
 
-            final PageIterable<HighlightDemand> hightlightDemandList = HighlightDemandManager.getHightlightDemand();
+            final PageIterable<HighlightDemand> hightlightDemandList = HighlightDemandManager.getAll();
 
             final HighlightDemand[] hightlightDemandArray = new HighlightDemand[demandCount];
 

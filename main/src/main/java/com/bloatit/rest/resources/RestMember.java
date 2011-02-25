@@ -89,7 +89,7 @@ public class RestMember extends RestElement<Member> {
      */
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMember getById(final int id) {
-        final RestMember restMember = new RestMember(MemberManager.getMemberById(id));
+        final RestMember restMember = new RestMember(MemberManager.getById(id));
         if (restMember.isNull()) {
             return null;
         }
@@ -101,7 +101,7 @@ public class RestMember extends RestElement<Member> {
      */
     @REST(name = "members", method = RequestMethod.GET)
     public static RestMemberList getAll() {
-        return new RestMemberList(MemberManager.getMembers());
+        return new RestMemberList(MemberManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

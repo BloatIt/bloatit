@@ -77,7 +77,7 @@ public final class MemberManager {
      * @param id the id
      * @return the member or <code>null</code> if not found.
      */
-    public static Member getMemberById(final Integer id) {
+    public static Member getById(final Integer id) {
         return Member.create(DBRequests.getById(DaoMember.class, id));
     }
 
@@ -86,7 +86,7 @@ public final class MemberManager {
      *
      * @return the all the members in the DB.
      */
-    public static PageIterable<Member> getMembers() {
+    public static PageIterable<Member> getAll() {
         return new MemberList(DBRequests.getAll(DaoMember.class));
     }
 

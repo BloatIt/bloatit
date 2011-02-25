@@ -50,7 +50,7 @@ public final class HighlightDemandManager {
      *
      * @return the {@link HighlightDemand} demands.
      */
-    public static PageIterable<HighlightDemand> getHightlightDemand() {
+    public static PageIterable<HighlightDemand> getAll() {
         return new HighlightDemandList(DBRequests.getAll(DaoHighlightDemand.class));
     }
 }
