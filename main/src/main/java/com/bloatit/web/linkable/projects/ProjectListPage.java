@@ -52,7 +52,7 @@ public final class ProjectListPage extends MasterPage {
         final HtmlDiv box = new HtmlDiv("padding_box");
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Project list", 1);
-        final PageIterable<Project> projectList = ProjectManager.getProjects();
+        final PageIterable<Project> projectList = ProjectManager.getAll();
         final HtmlRenderer<Project> projectItemRenderer = new HtmlRenderer<Project>() {
             @Override
             public XmlNode generate(final Project project) {

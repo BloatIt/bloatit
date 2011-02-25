@@ -93,7 +93,7 @@ public final class CreateDemandPage extends LoggedPage {
 
         // Linked project
         final HtmlDropDown projectInput = new HtmlDropDown(CreateDemandAction.PROJECT_CODE, Context.tr("Project"));
-        for (final Project project : ProjectManager.getProjects()) {
+        for (final Project project : ProjectManager.getAll()) {
             try {
                 projectInput.addDropDownElement(String.valueOf(project.getId()), project.getName());
             } catch (final UnauthorizedOperationException e) {

@@ -37,7 +37,7 @@ public class TeamsPage extends MasterPage {
         add(master);
         master.add(new HtmlLink(new CreateTeamPageUrl().urlString(), Context.tr("Create a new team")));
 
-        final PageIterable<Group> teamList = GroupManager.getGroups();
+        final PageIterable<Group> teamList = GroupManager.getAll();
         final HtmlRenderer<Group> teamRenderer = new TeamListRenderer();
 
         final TeamsPageUrl clonedUrl = url.clone();

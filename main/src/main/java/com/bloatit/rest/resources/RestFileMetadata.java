@@ -91,7 +91,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      */
     @REST(name = "filemetadatas", method = RequestMethod.GET)
     public static RestFileMetadata getById(int id) {
-        RestFileMetadata restFileMetadata = new RestFileMetadata(FileMetadataManager.getFileMetadataById(id));
+        RestFileMetadata restFileMetadata = new RestFileMetadata(FileMetadataManager.getById(id));
         if (restFileMetadata.isNull()) {
             return null;
         }
@@ -105,7 +105,7 @@ public class RestFileMetadata extends RestElement<FileMetadata> {
      */
     @REST(name = "filemetadatas", method = RequestMethod.GET)
     public static RestFileMetadataList getAll() {
-        return new RestFileMetadataList(FileMetadataManager.getFiles());
+        return new RestFileMetadataList(FileMetadataManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

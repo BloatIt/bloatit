@@ -94,7 +94,7 @@ public class RestGroup extends RestElement<Group> {
      */
     @REST(name = "groups", method = RequestMethod.GET)
     public static RestGroup getById(int id) {
-        RestGroup restGroup = new RestGroup(GroupManager.getGroupById(id));
+        RestGroup restGroup = new RestGroup(GroupManager.getById(id));
         if (restGroup.isNull()) {
             return null;
         }
@@ -108,7 +108,7 @@ public class RestGroup extends RestElement<Group> {
      */
     @REST(name = "groups", method = RequestMethod.GET)
     public static RestGroupList getAll() {
-        return new RestGroupList(GroupManager.getGroups());
+        return new RestGroupList(GroupManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

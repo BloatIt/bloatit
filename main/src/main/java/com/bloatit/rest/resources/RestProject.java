@@ -91,7 +91,7 @@ public class RestProject extends RestElement<Project> {
      */
     @REST(name = "projects", method = RequestMethod.GET)
     public static RestProject getById(int id) {
-        RestProject restProject = new RestProject(ProjectManager.getProjectById(id));
+        RestProject restProject = new RestProject(ProjectManager.getById(id));
         if (restProject.isNull()) {
             return null;
         }
@@ -105,7 +105,7 @@ public class RestProject extends RestElement<Project> {
      */
     @REST(name = "projects", method = RequestMethod.GET)
     public static RestProjectList getAll() {
-        return new RestProjectList(ProjectManager.getProjects());
+        return new RestProjectList(ProjectManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

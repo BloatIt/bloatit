@@ -97,7 +97,7 @@ public class RestOffer extends RestElement<Offer> {
      */
     @REST(name = "offers", method = RequestMethod.GET)
     public static RestOffer getById(int id) {
-        RestOffer restOffer = new RestOffer(OfferManager.getOfferById(id));
+        RestOffer restOffer = new RestOffer(OfferManager.getById(id));
         if (restOffer.isNull()) {
             return null;
         }
@@ -111,7 +111,7 @@ public class RestOffer extends RestElement<Offer> {
      */
     @REST(name = "offers", method = RequestMethod.GET)
     public static RestOfferList getAll() {
-        return new RestOfferList(OfferManager.getOffers());
+        return new RestOfferList(OfferManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
