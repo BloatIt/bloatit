@@ -18,6 +18,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Transaction;
+import com.bloatit.model.managers.TransactionManager;
 import com.bloatit.rest.list.RestTransactionList;
 
 /**
@@ -88,19 +89,16 @@ public class RestTransaction extends RestElement<Transaction> {
      * <p>
      * Finds the RestTransaction matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestTransaction
      */
     @REST(name = "transactions", method = RequestMethod.GET)
     public static RestTransaction getById(int id) {
-        // TODO auto generated code
-        // RestTransaction restTransaction = new
-        // RestTransaction(TransactionManager.getTransactionById(id));
-        // if (restTransaction.isNull()) {
-        // return null;
-        // }
-        // return restTransaction;
-        return null;
+        RestTransaction restTransaction = new RestTransaction(TransactionManager.getById(id));
+        if (restTransaction.isNull()) {
+            return null;
+        }
+        return restTransaction;
     }
 
     /**
@@ -110,8 +108,7 @@ public class RestTransaction extends RestElement<Transaction> {
      */
     @REST(name = "transactions", method = RequestMethod.GET)
     public static RestTransactionList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestTransactionList(TransactionManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

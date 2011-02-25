@@ -13,6 +13,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Kudos;
+import com.bloatit.model.managers.KudosManager;
 import com.bloatit.rest.list.RestKudosList;
 
 /**
@@ -83,18 +84,16 @@ public class RestKudos extends RestElement<Kudos> {
      * <p>
      * Finds the RestKudos matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestKudos
      */
     @REST(name = "kudos", method = RequestMethod.GET)
     public static RestKudos getById(int id) {
-        // TODO auto generated code
-        // RestKudos restKudos = new RestKudos(KudosManager.getKudosById(id));
-        // if (restKudos.isNull()) {
-        // return null;
-        // }
-        // return restKudos;
-        return null;
+        RestKudos restKudos = new RestKudos(KudosManager.getById(id));
+        if (restKudos.isNull()) {
+            return null;
+        }
+        return restKudos;
     }
 
     /**
@@ -104,8 +103,7 @@ public class RestKudos extends RestElement<Kudos> {
      */
     @REST(name = "kudoss", method = RequestMethod.GET)
     public static RestKudosList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestKudosList(KudosManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

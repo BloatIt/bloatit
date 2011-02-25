@@ -16,6 +16,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Translation;
+import com.bloatit.model.managers.TranslationManager;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestTranslationList;
 
@@ -87,19 +88,16 @@ public class RestTranslation extends RestElement<Translation> {
      * <p>
      * Finds the RestTranslation matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestTranslation
      */
     @REST(name = "translations", method = RequestMethod.GET)
     public static RestTranslation getById(int id) {
-        // TODO auto generated code
-        // RestTranslation restTranslation = new
-        // RestTranslation(TranslationManager.getTranslationById(id));
-        // if (restTranslation.isNull()) {
-        // return null;
-        // }
-        // return restTranslation;
-        return null;
+        RestTranslation restTranslation = new RestTranslation(TranslationManager.getById(id));
+        if (restTranslation.isNull()) {
+            return null;
+        }
+        return restTranslation;
     }
 
     /**
@@ -109,8 +107,7 @@ public class RestTranslation extends RestElement<Translation> {
      */
     @REST(name = "translations", method = RequestMethod.GET)
     public static RestTranslationList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestTranslationList(TranslationManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

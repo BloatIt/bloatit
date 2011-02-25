@@ -11,6 +11,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.JoinGroupInvitation;
+import com.bloatit.model.managers.JoinGroupInvitationManager;
 import com.bloatit.rest.list.RestJoinGroupInvitationList;
 
 /**
@@ -81,19 +82,16 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
      * <p>
      * Finds the RestJoinGroupInvitation matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestJoinGroupInvitation
      */
     @REST(name = "joingroupinvitations", method = RequestMethod.GET)
     public static RestJoinGroupInvitation getById(int id) {
-        // TODO auto generated code
-        // RestJoinGroupInvitation restJoinGroupInvitation = new
-        // RestJoinGroupInvitation(JoinGroupInvitationManager.getJoinGroupInvitationById(id));
-        // if (restJoinGroupInvitation.isNull()) {
-        // return null;
-        // }
-        // return restJoinGroupInvitation;
-        return null;
+        RestJoinGroupInvitation restJoinGroupInvitation = new RestJoinGroupInvitation(JoinGroupInvitationManager.getById(id));
+        if (restJoinGroupInvitation.isNull()) {
+            return null;
+        }
+        return restJoinGroupInvitation;
     }
 
     /**
@@ -103,15 +101,12 @@ public class RestJoinGroupInvitation extends RestElement<JoinGroupInvitation> {
      */
     @REST(name = "joingroupinvitations", method = RequestMethod.GET)
     public static RestJoinGroupInvitationList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestJoinGroupInvitationList(JoinGroupInvitationManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-
-    // TODO Generate
 
     @XmlAttribute
     @XmlID

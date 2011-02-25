@@ -13,6 +13,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Description;
+import com.bloatit.model.managers.DescriptionManager;
 import com.bloatit.rest.list.RestDescriptionList;
 import com.bloatit.rest.list.RestTranslationList;
 
@@ -84,19 +85,16 @@ public class RestDescription extends RestElement<Description> {
      * <p>
      * Finds the RestDescription matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestDescription
      */
     @REST(name = "descriptions", method = RequestMethod.GET)
     public static RestDescription getById(int id) {
-        // TODO auto generated code
-        // RestDescription restDescription = new
-        // RestDescription(DescriptionManager.getDescriptionById(id));
-        // if (restDescription.isNull()) {
-        // return null;
-        // }
-        // return restDescription;
-        return null;
+        RestDescription restDescription = new RestDescription(DescriptionManager.getById(id));
+        if (restDescription.isNull()) {
+            return null;
+        }
+        return restDescription;
     }
 
     /**
@@ -106,8 +104,7 @@ public class RestDescription extends RestElement<Description> {
      */
     @REST(name = "descriptions", method = RequestMethod.GET)
     public static RestDescriptionList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestDescriptionList(DescriptionManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

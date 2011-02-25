@@ -121,8 +121,6 @@ public class RestDemand extends RestElement<Demand> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {

@@ -17,6 +17,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.InternalAccount;
+import com.bloatit.model.managers.InternalAccountManager;
 import com.bloatit.rest.list.RestInternalAccountList;
 import com.bloatit.rest.list.RestTransactionList;
 
@@ -88,19 +89,16 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      * <p>
      * Finds the RestInternalAccount matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestInternalAccount
      */
     @REST(name = "internalaccounts", method = RequestMethod.GET)
     public static RestInternalAccount getById(int id) {
-        // TODO auto generated code
-        // RestInternalAccount restInternalAccount = new
-        // RestInternalAccount(InternalAccountManager.getInternalAccountById(id));
-        // if (restInternalAccount.isNull()) {
-        // return null;
-        // }
-        // return restInternalAccount;
-        return null;
+        RestInternalAccount restInternalAccount = new RestInternalAccount(InternalAccountManager.getById(id));
+        if (restInternalAccount.isNull()) {
+            return null;
+        }
+        return restInternalAccount;
     }
 
     /**
@@ -110,8 +108,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      */
     @REST(name = "internalaccounts", method = RequestMethod.GET)
     public static RestInternalAccountList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestInternalAccountList(InternalAccountManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

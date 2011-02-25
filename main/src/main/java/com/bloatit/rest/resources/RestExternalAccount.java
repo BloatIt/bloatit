@@ -18,6 +18,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.managers.ExternalAccountManager;
 import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestTransactionList;
 
@@ -94,14 +95,11 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      */
     @REST(name = "externalaccounts", method = RequestMethod.GET)
     public static RestExternalAccount getById(int id) {
-        // TODO auto generated code
-        // RestExternalAccount restExternalAccount = new
-        // RestExternalAccount(ExternalAccountManager.getExternalAccountById(id));
-        // if (restExternalAccount.isNull()) {
-        // return null;
-        // }
-        // return restExternalAccount;
-        return null;
+        RestExternalAccount restExternalAccount = new RestExternalAccount(ExternalAccountManager.getById(id));
+        if (restExternalAccount.isNull()) {
+            return null;
+        }
+        return restExternalAccount;
     }
 
     /**
@@ -111,8 +109,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      */
     @REST(name = "externalaccounts", method = RequestMethod.GET)
     public static RestExternalAccountList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestExternalAccountList(ExternalAccountManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

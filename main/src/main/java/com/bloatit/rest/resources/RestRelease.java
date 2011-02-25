@@ -14,6 +14,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Release;
+import com.bloatit.model.managers.ReleaseManager;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestReleaseList;
@@ -91,14 +92,11 @@ public class RestRelease extends RestElement<Release> {
      */
     @REST(name = "releases", method = RequestMethod.GET)
     public static RestRelease getById(int id) {
-        // TODO auto generated code
-        // RestRelease restRelease = new
-        // RestRelease(ReleaseManager.getReleaseById(id));
-        // if (restRelease.isNull()) {
-        // return null;
-        // }
-        // return restRelease;
-        return null;
+        RestRelease restRelease = new RestRelease(ReleaseManager.getById(id));
+        if (restRelease.isNull()) {
+            return null;
+        }
+        return restRelease;
     }
 
     /**
@@ -108,8 +106,7 @@ public class RestRelease extends RestElement<Release> {
      */
     @REST(name = "releases", method = RequestMethod.GET)
     public static RestReleaseList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestReleaseList(ReleaseManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
