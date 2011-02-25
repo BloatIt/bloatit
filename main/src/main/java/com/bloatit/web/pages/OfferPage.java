@@ -38,6 +38,7 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.linkable.demands.DemandOfferListComponent;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 
@@ -76,11 +77,18 @@ public final class OfferPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
-        
-//        offerPageContainer.add(new DemandOfferListComponent.Offer);
-        
+
+        try {
+            if (offer != null) {
+                offerPageContainer.add(new DemandOfferListComponent.OfferBlock(offer, true));
+            }
+        } catch (UnauthorizedOperationException e1) {
+            offerPageContainer.addText(Context.tr("For an unknown raison you have not the right to see the Offer you are constructing..."));
+        }
+
         // Create offer form
         final OfferActionUrl offerActionUrl = new OfferActionUrl(demand);
+        offerActionUrl.setDraftOffer(offer);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
         offerForm.setCssClass("padding_box");
 
@@ -95,9 +103,9 @@ public final class OfferPage extends LoggedPage {
                 groupDropDown.addDropDownElement("", Context.tr("Myself"));
                 int nbGroup = 0;
                 for (final Group group : groups) {
-                    nbGroup++;
                     if (group.getUserGroupRight(me).contains(UserGroupRight.TALK)) {
                         groupDropDown.addDropDownElement(group.getId().toString(), group.getLogin());
+                        nbGroup++;
                     }
                 }
                 if (nbGroup > 0) {

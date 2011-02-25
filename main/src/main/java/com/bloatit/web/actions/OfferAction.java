@@ -120,9 +120,9 @@ public final class OfferAction extends LoggedAction {
             session.notifyBad(Context.tr("You cannot talk on the behalf of this group."));
             return session.pickPreferredPage();
         }
+        Offer constructingOffer;
         try {
             Batch constructingBatch;
-            Offer constructingOffer;
             if (draftOffer == null) {
                 constructingOffer = demand.addOffer(session.getAuthToken().getMember(),
                                                     price,
@@ -157,7 +157,7 @@ public final class OfferAction extends LoggedAction {
         }
 
         OfferPageUrl returnUrl = new OfferPageUrl(demand);
-        returnUrl.setOffer(draftOffer);
+        returnUrl.setOffer(constructingOffer);
         return returnUrl;
     }
 

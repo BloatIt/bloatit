@@ -157,7 +157,7 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
     }
 
-    public class OfferBlock extends HtmlDiv {
+    public static class OfferBlock extends HtmlDiv {
 
         private final Offer offer;
 
@@ -335,7 +335,7 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
 
         private boolean isDeveloper() throws UnauthorizedOperationException {
-            return Context.getSession().isLogged() && Context.getSession().getAuthToken().getMember().equals(demand.getSelectedOffer().getAuthor());
+            return Context.getSession().isLogged() && Context.getSession().getAuthToken().getMember().equals(offer.getDemand().getSelectedOffer().getAuthor());
         }
 
         private String getLotState(Batch lot) {

@@ -195,7 +195,7 @@ public final class DaoOffer extends DaoKudosable {
      * @return All the batches for this offer. (Even the MasterBatch).
      */
     public PageIterable<DaoBatch> getBatches() {
-        final String query = "from DaoBatch where offer = :this order by expirationDate";
+        final String query = "from DaoBatch where offer = :this order by expirationDate, id";
         final String queryCount = "select count(*) from DaoBatch where offer = :this";
         return new QueryCollection<DaoBatch>( //
                                              SessionManager.createQuery(query).setEntity("this", this),//

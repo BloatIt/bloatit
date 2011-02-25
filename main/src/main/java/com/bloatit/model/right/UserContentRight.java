@@ -17,6 +17,7 @@
 package com.bloatit.model.right;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
+import com.bloatit.model.Group;
 import com.bloatit.model.UserContent;
 
 /**
@@ -30,6 +31,13 @@ public class UserContentRight extends RightManager {
      */
     public static class AsGroup extends Accessor {
 
+        private final Group group;
+
+        // TODO document
+        public AsGroup(Group group) {
+            this.group = group;
+        }
+
         /*
          * (non-Javadoc)
          * @see com.bloatit.model.right.Accessor#can(com.bloatit.model.right.
@@ -37,7 +45,7 @@ public class UserContentRight extends RightManager {
          */
         @Override
         protected final boolean can(final RestrictedInterface role, final Action action) {
-            return canRead(action) || (role.hasGroupPrivilege(UserGroupRight.TALK) && canWrite(action));
+            return canRead(action) || (group.hasGroupPrivilege(UserGroupRight.TALK) && canWrite(action));
         }
     }
 }

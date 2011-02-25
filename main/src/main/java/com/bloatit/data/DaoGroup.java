@@ -193,9 +193,6 @@ public final class DaoGroup extends DaoActor {
         q.setEntity("member", member);
         q.setEntity("group", this);
         final DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
-        if (gm == null) {
-            return null;
-        }
         final EnumSet<UserGroupRight> rights = EnumSet.noneOf(UserGroupRight.class);
         for (final DaoGroupRight groupRight : gm.getRights()) {
             rights.add(groupRight.getUserStatus());

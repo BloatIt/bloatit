@@ -65,8 +65,8 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
     }
 
     @Override
-    public final boolean canAccessAsGroup() {
-        return canAccess(new UserContentRight.AsGroup(), Action.WRITE);
+    public final boolean canAccessAsGroup(final Group asGroup) {
+        return canAccess(new UserContentRight.AsGroup(asGroup), Action.WRITE);
     }
 
     /*
@@ -77,7 +77,7 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
      */
     @Override
     public final void setAsGroup(final Group asGroup) throws UnauthorizedOperationException {
-        tryAccess(new UserContentRight.AsGroup(), Action.WRITE);
+        tryAccess(new UserContentRight.AsGroup(asGroup), Action.WRITE);
         getDao().setAsGroup(asGroup.getDao());
     }
 
