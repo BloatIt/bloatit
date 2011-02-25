@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2010 BloatIt.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BloatIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.rest.resources;
 
 import java.math.BigDecimal;
@@ -17,6 +35,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.InternalAccount;
+import com.bloatit.model.managers.InternalAccountManager;
 import com.bloatit.rest.list.RestInternalAccountList;
 import com.bloatit.rest.list.RestTransactionList;
 
@@ -88,19 +107,16 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      * <p>
      * Finds the RestInternalAccount matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestInternalAccount
      */
     @REST(name = "internalaccounts", method = RequestMethod.GET)
     public static RestInternalAccount getById(int id) {
-        // TODO auto generated code
-        // RestInternalAccount restInternalAccount = new
-        // RestInternalAccount(InternalAccountManager.getInternalAccountById(id));
-        // if (restInternalAccount.isNull()) {
-        // return null;
-        // }
-        // return restInternalAccount;
-        return null;
+        RestInternalAccount restInternalAccount = new RestInternalAccount(InternalAccountManager.getById(id));
+        if (restInternalAccount.isNull()) {
+            return null;
+        }
+        return restInternalAccount;
     }
 
     /**
@@ -110,8 +126,7 @@ public class RestInternalAccount extends RestElement<InternalAccount> {
      */
     @REST(name = "internalaccounts", method = RequestMethod.GET)
     public static RestInternalAccountList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestInternalAccountList(InternalAccountManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

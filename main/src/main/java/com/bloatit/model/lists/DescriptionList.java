@@ -16,18 +16,16 @@
 //
 package com.bloatit.model.lists;
 
-import com.bloatit.data.DaoJoinGroupInvitation;
+import com.bloatit.data.DaoDescription;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.JoinGroupInvitation;
+import com.bloatit.model.Description;
 
 /**
- * The Class JoinGroupInvitationList transforms
- * PageIterable<DaoJoinGroupInvitation> to PageIterable<JoinGroupInvitation>.
+ * The Class DescriptionList transforms PageIterable<Description> to
+ * PageIterable<Description>.
  */
-public final class JoinGroupInvitationtList extends ListBinder<JoinGroupInvitation, DaoJoinGroupInvitation> {
-
-    public JoinGroupInvitationtList(PageIterable<DaoJoinGroupInvitation> daoCollection) {
+public final class DescriptionList extends ListBinder<Description, DaoDescription> {
+    public DescriptionList(PageIterable<DaoDescription> daoCollection) {
         super(daoCollection);
     }
-
 }
