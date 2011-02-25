@@ -48,7 +48,7 @@ public final class MembersListPage extends MasterPage {
         final HtmlDiv box = new HtmlDiv("padding_box");
 
         final HtmlTitleBlock pageTitle = new HtmlTitleBlock("Members list", 1);
-        final PageIterable<Member> memberList = MemberManager.getMembers();
+        final PageIterable<Member> memberList = MemberManager.getAll();
         final HtmlRenderer<Member> memberItemRenderer = new MemberRenderer();
 
         // TODO: avoid conflict
