@@ -17,7 +17,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -44,7 +44,7 @@ public final class LoginPage extends MasterPage {
             final HtmlForm loginForm = new HtmlForm(loginActionUrl.urlString());
 
             // Login field
-            final FormFieldData loginData = loginActionUrl.getLoginParameter().formFieldData();
+            final FieldData loginData = loginActionUrl.getLoginParameter().fieldData();
             final HtmlTextField loginField = new HtmlTextField(loginData, Context.trc("Login (noun)", "Login"));
             // passwordField
             final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));

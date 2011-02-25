@@ -15,7 +15,7 @@ import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Message;
 import com.bloatit.framework.webserver.annotations.Message.What;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 
 public class UrlParameter<T, U> extends UrlNode {
     private final UrlParameterDescription<U> description;
@@ -219,11 +219,11 @@ public class UrlParameter<T, U> extends UrlNode {
         return description.getRole();
     }
 
-    public FormFieldData formFieldData() {
+    public FieldData fieldData() {
         return new FieldDataFromUrl<T, U>(this);
     }
 
-    static class FieldDataFromUrl<T, U> implements FormFieldData {
+    static class FieldDataFromUrl<T, U> implements FieldData {
 
         private final String name;
         private final String suggestedValue;

@@ -21,7 +21,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
@@ -85,14 +85,14 @@ public final class ReportBugPage extends LoggedPage {
         formTitle.add(reportBugForm);
 
         // Create the field for the title of the bug
-        final FormFieldData createFormFieldData = doReportUrl.getTitleParameter().formFieldData();
+        final FieldData createFormFieldData = doReportUrl.getTitleParameter().fieldData();
         final HtmlTextField bugTitleInput = new HtmlTextField(createFormFieldData, Context.tr("Bug title"));
         bugTitleInput.setComment(Context.tr("A short title of the bug."));
         reportBugForm.add(bugTitleInput);
 
         // Create the fields that will describe the descriptions of the project
 
-        final FormFieldData descriptionFormFieldData = doReportUrl.getDescriptionParameter().formFieldData();
+        final FieldData descriptionFormFieldData = doReportUrl.getDescriptionParameter().fieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
                                                                Context.tr("Describe the bug"),
                                                                BUG_DESCRIPTION_INPUT_NB_LINES,
@@ -101,13 +101,13 @@ public final class ReportBugPage extends LoggedPage {
         reportBugForm.add(descriptionInput);
 
         // Language
-        final FormFieldData languageFormFieldData = doReportUrl.getLangParameter().formFieldData();
+        final FieldData languageFormFieldData = doReportUrl.getLangParameter().fieldData();
         final LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, Context.tr("Language"));
         languageInput.setComment(Context.tr("Language of the description."));
         reportBugForm.add(languageInput);
 
         // Level
-        final FormFieldData levelFormFieldData = doReportUrl.getLevelParameter().formFieldData();
+        final FieldData levelFormFieldData = doReportUrl.getLevelParameter().fieldData();
         final HtmlDropDown levelInput = new HtmlDropDown(levelFormFieldData, Context.tr("Level"));
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
         levelInput.setComment(Context.tr("Level of the bug."));
@@ -121,7 +121,7 @@ public final class ReportBugPage extends LoggedPage {
         attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
         attachementBlock.add(attachementInput);
 
-        final FormFieldData attachementDescriptionFormFieldData = doReportUrl.getAttachementDescriptionParameter().formFieldData();
+        final FieldData attachementDescriptionFormFieldData = doReportUrl.getAttachementDescriptionParameter().fieldData();
         final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
         attachementBlock.add(attachementDescriptionInput);

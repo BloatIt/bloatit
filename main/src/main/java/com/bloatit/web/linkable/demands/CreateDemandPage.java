@@ -20,7 +20,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.DropDownElement;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -85,7 +85,7 @@ public final class CreateDemandPage extends LoggedPage {
         createIdeaTitle.add(createIdeaForm);
 
         // Create the fields that will describe the description of the idea
-        final FormFieldData descriptionFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
+        final FieldData descriptionFieldData = doCreateUrl.getDescriptionParameter().fieldData();
         final HtmlTextField descriptionInput = new HtmlTextField(descriptionFieldData, tr("Title"));
         descriptionInput.setCssClass("input_long_400px");
         descriptionInput.setComment(tr("The title of the new idea must be permit to identify clearly the idea's specificity."));
@@ -107,7 +107,7 @@ public final class CreateDemandPage extends LoggedPage {
         createIdeaForm.add(projectInput);
 
         // Description of the feature
-        final FormFieldData specificationFieldData = doCreateUrl.getSpecificationParameter().formFieldData();
+        final FieldData specificationFieldData = doCreateUrl.getSpecificationParameter().fieldData();
         final HtmlTextArea specificationInput = new HtmlTextArea(specificationFieldData,
                                                                  tr("Describe the idea"),
                                                                  SPECIF_INPUT_NB_LINES,

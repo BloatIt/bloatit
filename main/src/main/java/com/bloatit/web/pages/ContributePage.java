@@ -19,7 +19,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -62,12 +62,12 @@ public final class ContributePage extends LoggedPage {
         contribForm.setCssClass("padding_box");
 
         // Input field : choose amount
-        final FormFieldData amountFieldData = formActionUrl.getAmountParameter().formFieldData();
+        final FieldData amountFieldData = formActionUrl.getAmountParameter().fieldData();
         final HtmlMoneyField contribField = new HtmlMoneyField(amountFieldData, tr("Choose amount: "));
         contribField.setComment(Context.tr("The minimun is 1€. Don't use cents."));
 
         // Input field : comment
-        final FormFieldData commentFieldData = formActionUrl.getCommentParameter().formFieldData();
+        final FieldData commentFieldData = formActionUrl.getCommentParameter().fieldData();
         final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment: "), 10, 60);
         commentField.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list."));
 

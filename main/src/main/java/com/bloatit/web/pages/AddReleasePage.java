@@ -17,7 +17,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -73,13 +73,13 @@ public final class AddReleasePage extends LoggedPage {
         createReleaseTitle.add(form);
 
         // version
-        final FormFieldData versionFormFieldData = doCreateUrl.getVersionParameter().formFieldData();
+        final FieldData versionFormFieldData = doCreateUrl.getVersionParameter().fieldData();
         final HtmlTextField version = new HtmlTextField(versionFormFieldData, tr("Version"));
         version.setComment(tr("Enter your release version. For example ''1.2.3''."));
         form.add(version);
 
         // description
-        final FormFieldData descriptionFormFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
+        final FieldData descriptionFormFieldData = doCreateUrl.getDescriptionParameter().fieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
                                                                tr("Comment your release"),
                                                                DESCRIPTION_INPUT_NB_LINES,
@@ -88,13 +88,13 @@ public final class AddReleasePage extends LoggedPage {
         form.add(descriptionInput);
 
         // Language
-        final FormFieldData languageFormFieldData = doCreateUrl.getLangParameter().formFieldData();
+        final FieldData languageFormFieldData = doCreateUrl.getLangParameter().fieldData();
         final LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, tr("Language"));
         languageInput.setComment(tr("Language of the descriptions."));
         form.add(languageInput);
 
         // attachement
-        final FormFieldData attachedFileParameter = doCreateUrl.getAttachedfileParameter().formFieldData();
+        final FieldData attachedFileParameter = doCreateUrl.getAttachedfileParameter().fieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileParameter, tr("Attached file"));
         attachedFileInput.setComment("You must attache a file. This is your release, it can take be a patch, a tar.gz etc.");
         form.add(attachedFileInput);

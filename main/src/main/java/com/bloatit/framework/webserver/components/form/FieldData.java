@@ -11,7 +11,7 @@ import com.bloatit.framework.webserver.url.Messages;
  * even session) with the form fields
  * </p>
  */
-public interface FormFieldData {
+public interface FieldData {
 
     /**
      * @return the name of the field.

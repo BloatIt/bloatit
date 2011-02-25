@@ -108,21 +108,21 @@ public abstract class UserContentAdminPage<U extends DaoUserContent, V extends U
     }
 
     protected void addAsGroupFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
-        final HtmlDropDown groupAsGroup = new HtmlDropDown(url.getFilterGroupParameter().formFieldData());
+        final HtmlDropDown groupAsGroup = new HtmlDropDown(url.getFilterGroupParameter().fieldData());
         groupAsGroup.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupAsGroup.setLabel(tr("Filter by Content created as a group"));
         filterForm.add(groupAsGroup);
     }
 
     protected void addHasFileFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
-        final HtmlDropDown groupFile = new HtmlDropDown(url.getFilterFileParameter().formFieldData());
+        final HtmlDropDown groupFile = new HtmlDropDown(url.getFilterFileParameter().fieldData());
         groupFile.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupFile.setLabel(tr("Filter by Content with file"));
         filterForm.add(groupFile);
     }
 
     protected void addIsDeletedFilter(final HtmlForm filterForm, final UserContentAdminPageUrl url) {
-        final HtmlDropDown groupDeleted = new HtmlDropDown(url.getFilterDeletedParameter().formFieldData());
+        final HtmlDropDown groupDeleted = new HtmlDropDown(url.getFilterDeletedParameter().fieldData());
         groupDeleted.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         groupDeleted.setLabel(tr("Filter by deleted content"));
         filterForm.add(groupDeleted);

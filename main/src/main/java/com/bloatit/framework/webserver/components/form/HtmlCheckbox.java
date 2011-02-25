@@ -96,7 +96,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
      * @param labelPosition the relative position of the label compared to the
      *            checkbox
      */
-    public HtmlCheckbox(final FormFieldData data, final String label, final LabelPosition position) {
+    public HtmlCheckbox(final FieldData data, final String label, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), data.getFieldName(), label, position);
         addErrorMessages(data.getErrorMessages());
     }

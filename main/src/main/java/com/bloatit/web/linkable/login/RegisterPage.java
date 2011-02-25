@@ -20,7 +20,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlPasswordField;
@@ -68,15 +68,15 @@ public final class RegisterPage extends MasterPage {
         final HtmlForm form = new HtmlForm(registerActionUrl.urlString());
         container.add(form);
 
-        final FormFieldData loginFieldData = registerActionUrl.getLoginParameter().formFieldData();
+        final FieldData loginFieldData = registerActionUrl.getLoginParameter().fieldData();
         final HtmlTextField loginInput = new HtmlTextField(loginFieldData, Context.trc("Login (noun)", "Login"));
         form.add(loginInput);
 
-        final FormFieldData passwordFieldData = registerActionUrl.getPasswordParameter().formFieldData();
+        final FieldData passwordFieldData = registerActionUrl.getPasswordParameter().fieldData();
         final HtmlPasswordField passwordInput = new HtmlPasswordField(passwordFieldData, Context.tr("Password"));
         form.add(passwordInput);
 
-        final FormFieldData emailFieldData = registerActionUrl.getEmailParameter().formFieldData();
+        final FieldData emailFieldData = registerActionUrl.getEmailParameter().fieldData();
         final HtmlTextField emailInput = new HtmlTextField(emailFieldData, Context.tr("Email"));
         form.add(emailInput);
 

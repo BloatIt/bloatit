@@ -23,12 +23,12 @@ public class HtmlDropDown extends HtmlFormField<String> {
     private String checked = null;
     private final Map<String, HtmlGenericElement> elements = new HashMap<String, HtmlGenericElement>();
 
-    public HtmlDropDown(final FormFieldData data) {
+    public HtmlDropDown(final FieldData data) {
         this(data.getFieldName());
         setDefaultOnConstruction(data);
     }
 
-    public HtmlDropDown(final FormFieldData data, final String label) {
+    public HtmlDropDown(final FieldData data, final String label) {
         this(data.getFieldName(), label);
         setDefaultOnConstruction(data);
     }
@@ -41,7 +41,7 @@ public class HtmlDropDown extends HtmlFormField<String> {
         super(new HtmlGenericElement("select"), name, label);
     }
 
-    private void setDefaultOnConstruction(final FormFieldData data) {
+    private void setDefaultOnConstruction(final FieldData data) {
         checked = data.getSuggestedValue();
     }
 

@@ -4,7 +4,7 @@ import java.util.Map.Entry;
 
 import com.bloatit.framework.utils.i18n.Localizator;
 import com.bloatit.framework.utils.i18n.Localizator.LanguageDescriptor;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 
 /**
@@ -20,7 +20,7 @@ public class LanguageSelector extends HtmlDropDown {
         }
     }
 
-    public LanguageSelector(final FormFieldData languageFormFieldData, final String label) {
+    public LanguageSelector(final FieldData languageFormFieldData, final String label) {
         super(languageFormFieldData, label);
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             addDropDownElement(langEntry.getValue().getCode(), langEntry.getValue().getName());

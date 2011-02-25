@@ -5,7 +5,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -39,10 +39,10 @@ public class CreateTeamPage extends MasterPage {
 
         final CreateTeamActionUrl target = new CreateTeamActionUrl();
 
-        final FormFieldData name = target.getLoginParameter().formFieldData();
-        final FormFieldData contact = target.getContactParameter().formFieldData();
-        final FormFieldData right = target.getRightParameter().formFieldData();
-        final FormFieldData description = target.getDescriptionParameter().formFieldData();
+        final FieldData name = target.getLoginParameter().fieldData();
+        final FieldData contact = target.getContactParameter().fieldData();
+        final FieldData right = target.getRightParameter().fieldData();
+        final FieldData description = target.getDescriptionParameter().fieldData();
 
         final HtmlForm form = new HtmlForm(target.urlString());
         master.add(form);

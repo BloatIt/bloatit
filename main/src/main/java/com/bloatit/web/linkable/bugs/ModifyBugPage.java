@@ -19,7 +19,7 @@ import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -78,7 +78,7 @@ public final class ModifyBugPage extends LoggedPage {
         formTitle.add(modifyBugForm);
 
         // Level
-        final FormFieldData levelFormFieldData = doModifyUrl.getLevelParameter().formFieldData();
+        final FieldData levelFormFieldData = doModifyUrl.getLevelParameter().fieldData();
         final HtmlDropDown levelInput = new HtmlDropDown(levelFormFieldData, Context.tr("New Level"));
         // TODO: IMPORTANT set the current value as default value
         levelInput.addDropDownElements(EnumSet.allOf(BindedLevel.class));
@@ -86,7 +86,7 @@ public final class ModifyBugPage extends LoggedPage {
         modifyBugForm.add(levelInput);
 
         // State
-        final FormFieldData stateFormFieldData = doModifyUrl.getStateParameter().formFieldData();
+        final FieldData stateFormFieldData = doModifyUrl.getStateParameter().fieldData();
         final HtmlDropDown stateInput = new HtmlDropDown(stateFormFieldData, Context.tr("New state"));
         // TODO: IMPORTANT set the current value as default value
         stateInput.addDropDownElements(EnumSet.allOf(BindedState.class));
@@ -94,7 +94,7 @@ public final class ModifyBugPage extends LoggedPage {
         modifyBugForm.add(stateInput);
 
         // Create the fields that will describe the reason of bug change
-        final FormFieldData descriptionFormFieldData = doModifyUrl.getReasonParameter().formFieldData();
+        final FieldData descriptionFormFieldData = doModifyUrl.getReasonParameter().fieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
                                                                Context.tr("Reason"),
                                                                BUG_CHANGE_COMMENT_INPUT_NB_LINES,

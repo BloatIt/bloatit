@@ -23,7 +23,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.components.HtmlDiv;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitle;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlFileInput;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -119,8 +119,8 @@ public final class BugPage extends MasterPage {
         attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
         addAttachementForm.add(attachementInput);
 
-        final FormFieldData attachementDescriptionFormFieldData = addAttachementActionUrl.getAttachementDescriptionParameter()
-                                                                                                 .formFieldData();
+        final FieldData attachementDescriptionFormFieldData = addAttachementActionUrl.getAttachementDescriptionParameter()
+                                                                                                 .fieldData();
         final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
         addAttachementForm.add(attachementDescriptionInput);

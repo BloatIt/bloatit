@@ -16,7 +16,7 @@ import static com.bloatit.framework.webserver.Context.tr;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
@@ -55,7 +55,7 @@ public final class AccountChargingPage extends LoggedPage {
         final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
-            final FormFieldData loginData = chargeActionUrl.getAmountParameter().formFieldData();
+            final FieldData loginData = chargeActionUrl.getAmountParameter().fieldData();
             final HtmlMoneyField amount = new HtmlMoneyField(loginData, "Amount");
             final HtmlSubmit submit = new HtmlSubmit(tr("Submit"));
 

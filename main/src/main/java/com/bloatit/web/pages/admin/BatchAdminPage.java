@@ -63,7 +63,7 @@ public final class BatchAdminPage extends IdentifiablesAdminPage<DaoBatch, Batch
     @Override
     protected void addFormFilters(final HtmlForm form) {
 
-        final HtmlDropDown state = new HtmlDropDown(url.getBatchStateParameter().formFieldData());
+        final HtmlDropDown state = new HtmlDropDown(url.getBatchStateParameter().fieldData());
         state.addDropDownElements(EnumSet.allOf(DisplayableBatchState.class));
         state.setLabel(tr("Filter by batch state"));
         form.add(state);

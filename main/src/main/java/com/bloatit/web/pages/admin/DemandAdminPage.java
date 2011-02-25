@@ -99,19 +99,19 @@ public final class DemandAdminPage extends KudosableAdminPage<DaoDemand, Demand,
         addIsDeletedFilter(form, url);
         addPopularityStateFilter(form);
         
-        final HtmlDropDown state = new HtmlDropDown(url.getFilterByStateParameter().formFieldData());
+        final HtmlDropDown state = new HtmlDropDown(url.getFilterByStateParameter().fieldData());
         state.addDropDownElements(EnumSet.allOf(DisplayableDemandState.class));
         state.setLabel(tr("Filter by demand state"));
 
-        final HtmlDropDown hasSelectedOffer = new HtmlDropDown(url.getFilterSelectedOfferParameter().formFieldData());
+        final HtmlDropDown hasSelectedOffer = new HtmlDropDown(url.getFilterSelectedOfferParameter().fieldData());
         hasSelectedOffer.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasSelectedOffer.setLabel(tr("Filter by selected offer"));
 
-        final HtmlDropDown hasOffer = new HtmlDropDown(url.getFilterHasOfferParameter().formFieldData());
+        final HtmlDropDown hasOffer = new HtmlDropDown(url.getFilterHasOfferParameter().fieldData());
         hasOffer.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasOffer.setLabel(tr("Filter by offer"));
 
-        final HtmlDropDown hasContribution = new HtmlDropDown(url.getFilterHasContributionParameter().formFieldData());
+        final HtmlDropDown hasContribution = new HtmlDropDown(url.getFilterHasContributionParameter().fieldData());
         hasContribution.addDropDownElements(EnumSet.allOf(DisplayableFilterType.class));
         hasContribution.setLabel(tr("Filter by contribution"));
 

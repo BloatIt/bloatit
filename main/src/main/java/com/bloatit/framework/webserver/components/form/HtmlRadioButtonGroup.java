@@ -28,7 +28,7 @@ public final class HtmlRadioButtonGroup extends HtmlLeaf {
         this.position = LabelPosition.AFTER;
     }
 
-    public <T extends Enum<T> & Displayable> HtmlRadioButtonGroup(final FormFieldData data) {
+    public <T extends Enum<T> & Displayable> HtmlRadioButtonGroup(final FieldData data) {
         this(data.getFieldName());
         final String fieldDefaultValue = data.getSuggestedValue();
         if (fieldDefaultValue != null) {

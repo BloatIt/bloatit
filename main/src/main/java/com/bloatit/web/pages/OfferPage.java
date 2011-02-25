@@ -21,7 +21,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
-import com.bloatit.framework.webserver.components.form.FormFieldData;
+import com.bloatit.framework.webserver.components.form.FieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDateField;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
@@ -87,7 +87,7 @@ public final class OfferPage extends LoggedPage {
         if (me.canAccessGroups(Action.READ)) {
             try {
                 final PageIterable<Group> groups = me.getGroups();
-                final FormFieldData groupField = offerActionUrl.getGroupParameter().formFieldData();
+                final FieldData groupField = offerActionUrl.getGroupParameter().fieldData();
                 final HtmlDropDown groupDropDown = new HtmlDropDown(groupField, Context.tr("On the behalf of"));
                 groupDropDown.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
                 groupDropDown.addDropDownElement("-1", Context.tr("Myself"));
@@ -102,18 +102,18 @@ public final class OfferPage extends LoggedPage {
         }
 
         // Price field
-        final FormFieldData priceFieldData = offerActionUrl.getPriceParameter().formFieldData();
+        final FieldData priceFieldData = offerActionUrl.getPriceParameter().fieldData();
         final HtmlMoneyField priceField = new HtmlMoneyField(priceFieldData, Context.tr("Offer price"));
         priceField.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
         offerForm.add(priceField);
 
         // Date field
-        final FormFieldData dateFieldData = offerActionUrl.getExpiryDateParameter().formFieldData();
+        final FieldData dateFieldData = offerActionUrl.getExpiryDateParameter().fieldData();
         final HtmlDateField dateField = new HtmlDateField(dateFieldData, Context.tr("Expiration date"));
         dateField.setComment(Context.tr("Date formatted in ISO format. Example: 2012/03/15 for March 15, 2012."));
         offerForm.add(dateField);
 
-        final FormFieldData descriptionFieldData = offerActionUrl.getExpiryDateParameter().formFieldData();
+        final FieldData descriptionFieldData = offerActionUrl.getExpiryDateParameter().fieldData();
         final HtmlTextArea descriptionField = new HtmlTextArea(descriptionFieldData, Context.tr("Description of the offer"), 10, 80);
         offerForm.add(descriptionField);
 

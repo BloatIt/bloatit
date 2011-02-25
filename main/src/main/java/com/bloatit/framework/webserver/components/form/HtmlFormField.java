@@ -255,7 +255,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      *
      * @param data the default value
      */
-    protected final void setDefaultValue(final FormFieldData data) {
+    protected final void setDefaultValue(final FieldData data) {
         final String suggestedValue = data.getSuggestedValue();
         if (suggestedValue != null) {
             this.doSetDefaultValue(suggestedValue);
