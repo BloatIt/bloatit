@@ -86,7 +86,7 @@ public final class GroupManager {
      * @param id the id
      * @return the group or null if not found
      */
-    public static Group getGroupById(final int id) {
+    public static Group getById(final int id) {
         return Group.create(DBRequests.getById(DaoGroup.class, id));
     }
 
@@ -95,7 +95,7 @@ public final class GroupManager {
      *
      * @return the groups.
      */
-    public static PageIterable<Group> getGroups() {
+    public static PageIterable<Group> getAll() {
         return new GroupList(DBRequests.getAll(DaoGroup.class));
     }
 }

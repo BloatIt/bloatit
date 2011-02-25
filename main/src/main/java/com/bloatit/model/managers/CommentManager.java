@@ -40,11 +40,11 @@ public final class CommentManager {
      * @param id the {@link Comment} id
      * @return the Comment or null if not found.
      */
-    public static Comment getCommentById(final Integer id) {
+    public static Comment getById(final Integer id) {
         return Comment.create(DBRequests.getById(DaoComment.class, id));
     }
 
-    public static CommentList getAllComments() {
+    public static CommentList getAll() {
         return new CommentList(DBRequests.getAll(DaoComment.class));
     }
 }

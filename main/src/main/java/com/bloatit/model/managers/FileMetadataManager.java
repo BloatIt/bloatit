@@ -53,7 +53,7 @@ public final class FileMetadataManager {
      * @param id the id
      * @return the file metadata or null if not found.
      */
-    public static FileMetadata getFileMetadataById(final Integer id) {
+    public static FileMetadata getById(final Integer id) {
         return FileMetadata.create(DBRequests.getById(DaoFileMetadata.class, id));
     }
 
@@ -189,7 +189,7 @@ public final class FileMetadataManager {
     /**
      * @return
      */
-    public static PageIterable<FileMetadata> getFiles() {
+    public static PageIterable<FileMetadata> getAll() {
         return DBRequests.getAll(FileMetadata.class);
     }
 

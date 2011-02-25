@@ -68,7 +68,7 @@ public final class AuthToken {
      * @throws NotFoundException
      */
     public AuthToken(final int memberId) throws NotFoundException {
-        final Member tmp = MemberManager.getMemberById(memberId);
+        final Member tmp = MemberManager.getById(memberId);
         if (tmp == null) {
             throw new NotFoundException("Identification failed");
         }
@@ -99,7 +99,7 @@ public final class AuthToken {
         if (!currentSession.getTransaction().isActive() || currentSession.contains(member.getDao())) {
             return member;
         }
-        final Member memberById = MemberManager.getMemberById(member.getId());
+        final Member memberById = MemberManager.getById(member.getId());
         return memberById;
     }
 

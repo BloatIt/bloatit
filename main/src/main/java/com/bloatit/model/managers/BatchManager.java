@@ -19,6 +19,7 @@ package com.bloatit.model.managers;
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.Batch;
+import com.bloatit.model.lists.BatchList;
 
 /**
  * The Class BatchManager. Utility class containing static methods to get
@@ -35,12 +36,19 @@ public final class BatchManager {
 
     /**
      * Gets the a batch by Id.
-     *
+     * 
      * @param id the batch id.
      * @return the batch or null if not found.
      */
     public static Batch getById(final Integer id) {
         return Batch.create(DBRequests.getById(DaoBatch.class, id));
+    }
+
+    /**
+     * @return
+     */
+    public static BatchList getAll() {
+        return new BatchList(DBRequests.getAll(DaoBatch.class));
     }
 
 }

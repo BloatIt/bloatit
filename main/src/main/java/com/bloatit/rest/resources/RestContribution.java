@@ -18,6 +18,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Contribution;
+import com.bloatit.model.managers.ContributionManager;
 import com.bloatit.rest.list.RestContributionList;
 
 /**
@@ -93,14 +94,11 @@ public class RestContribution extends RestElement<Contribution> {
      */
     @REST(name = "contributions", method = RequestMethod.GET)
     public static RestContribution getById(int id) {
-        // TODO auto generated code
-        // RestContribution restContribution = new
-        // RestContribution(ContributionManager.getContributionById(id));
-        // if (restContribution.isNull()) {
-        // return null;
-        // }
-        // return restContribution;
-        return null;
+        RestContribution restContribution = new RestContribution(ContributionManager.getById(id));
+        if (restContribution.isNull()) {
+            return null;
+        }
+        return restContribution;
     }
 
     /**
@@ -110,8 +108,7 @@ public class RestContribution extends RestElement<Contribution> {
      */
     @REST(name = "contributions", method = RequestMethod.GET)
     public static RestContributionList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestContributionList(ContributionManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

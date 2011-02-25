@@ -92,7 +92,7 @@ public class RestComment extends RestElement<Comment> {
      */
     @REST(name = "comments", method = RequestMethod.GET)
     public static RestComment getById(int id) {
-        RestComment restComment = new RestComment(CommentManager.getCommentById(id));
+        RestComment restComment = new RestComment(CommentManager.getById(id));
         if (restComment.isNull()) {
             return null;
         }
@@ -106,7 +106,7 @@ public class RestComment extends RestElement<Comment> {
      */
     @REST(name = "comments", method = RequestMethod.GET)
     public static RestCommentList getAll() {
-        return new RestCommentList(CommentManager.getAllComments());
+        return new RestCommentList(CommentManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

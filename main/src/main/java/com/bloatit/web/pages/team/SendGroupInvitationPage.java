@@ -70,7 +70,7 @@ public class SendGroupInvitationPage extends LoggedPage {
 
             final HtmlDropDown receiverInput = new HtmlDropDown(SendGroupInvitationAction.RECEIVER_CODE, Context.tr("Select group"));
             form.add(receiverInput);
-            for (final Member m : MemberManager.getMembers()) {
+            for (final Member m : MemberManager.getAll()) {
                 try {
                     if (!m.equals(me)) {
                         receiverInput.addDropDownElement(m.getId().toString(), m.getLogin());
