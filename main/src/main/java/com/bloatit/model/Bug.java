@@ -21,7 +21,7 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoBug.State;
+import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoComment;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
@@ -156,7 +156,7 @@ public class Bug extends UserContent<DaoBug> implements Commentable {
      * @return the state
      * @see com.bloatit.data.DaoBug#getState()
      */
-    public State getState() {
+    public BugState getState() {
         return getDao().getState();
     }
 

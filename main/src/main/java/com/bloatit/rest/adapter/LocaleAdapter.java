@@ -22,7 +22,10 @@ import java.util.Locale;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-public class LocaleAdapter extends XmlAdapter<Locale, String> {
+import com.bloatit.framework.rest.exception.RestException;
+import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
+
+public class LocaleAdapter extends XmlAdapter<String, Locale> {
 
     /*
      * (non-Javadoc)
@@ -30,8 +33,28 @@ public class LocaleAdapter extends XmlAdapter<Locale, String> {
      * javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
      */
     @Override
-    public Locale marshal(String arg0) throws Exception {
-        return null;
+    public Locale unmarshal(String localeString) throws Exception {
+        if(localeString.isEmpty()){
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Locale mustn't be empty !");
+        }
+        
+        String sep = " ";
+        if (localeString.contains("_")) {
+            sep = "_";
+        } else if( localeString.contains("-") ){
+            sep = "-";
+        } 
+
+        if ( sep.equals(" ")) {
+            return new Locale(localeString);
+        }
+        
+        String[] parts = localeString.split(sep);
+        if(parts.length > 1){
+            return new Locale(parts[0], parts[1]);
+        }
+        
+        return new Locale(parts[0]);
     }
 
     /*
@@ -40,8 +63,7 @@ public class LocaleAdapter extends XmlAdapter<Locale, String> {
      * javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
      */
     @Override
-    public String unmarshal(Locale arg0) throws Exception {
-        // TODO Auto-generated method stub
-        return null;
+    public String marshal(Locale locale) throws Exception {
+        return locale.toString();
     }
 }

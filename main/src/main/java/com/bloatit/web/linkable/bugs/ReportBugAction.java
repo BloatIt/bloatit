@@ -11,8 +11,6 @@
  */
 package com.bloatit.web.linkable.bugs;
 
-import static com.bloatit.framework.webserver.Context.tr;
-
 import java.util.Locale;
 
 import com.bloatit.framework.webserver.Context;

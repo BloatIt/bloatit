@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.rest.RestElement;
@@ -35,6 +36,7 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Translation;
 import com.bloatit.model.managers.TranslationManager;
+import com.bloatit.rest.adapter.LocaleAdapter;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestTranslationList;
 
@@ -158,6 +160,7 @@ public class RestTranslation extends RestElement<Translation> {
      * @see com.bloatit.model.Translation#getLocale()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter(LocaleAdapter.class)
     public Locale getLocale() {
         return model.getLocale();
     }

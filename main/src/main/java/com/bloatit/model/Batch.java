@@ -26,7 +26,7 @@ import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBatch.BatchState;
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoBug.State;
+import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.DaoRelease;
 import com.bloatit.framework.utils.PageIterable;
@@ -214,9 +214,9 @@ public class Batch extends Identifiable<DaoBatch> {
      *
      * @param state the state
      * @return the bugs
-     * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.State)
+     * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.BugState)
      */
-    public PageIterable<DaoBug> getBugs(final State state) {
+    public PageIterable<DaoBug> getBugs(final BugState state) {
         return getDao().getBugs(state);
     }
 
@@ -227,9 +227,9 @@ public class Batch extends Identifiable<DaoBatch> {
      * @param state the state
      * @return the bugs
      * @see com.bloatit.data.DaoBatch#getBugs(com.bloatit.data.DaoBug.Level,
-     *      com.bloatit.data.DaoBug.State)
+     *      com.bloatit.data.DaoBug.BugState)
      */
-    public PageIterable<Bug> getBugs(final Level level, final State state) {
+    public PageIterable<Bug> getBugs(final Level level, final BugState state) {
         return new BugList(getDao().getBugs(level, state));
     }
 
