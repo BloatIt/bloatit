@@ -28,7 +28,6 @@ import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
 import com.bloatit.web.components.SideBarDemandBlock;
 import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
-import com.bloatit.web.pages.master.BoxLayout;
 import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
@@ -58,8 +57,8 @@ public final class ContributePage extends LoggedPage {
             throw new RedirectException(Context.getSession().getLastStablePage());
         }
 
-        TwoColumnLayout layout = new TwoColumnLayout();
-        layout.addLeft(new BoxLayout().add(generateContributeForm()));
+        TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addLeft(generateContributeForm());
 
         layout.addRight(new SideBarDemandBlock(targetIdea));
         layout.addRight(new SideBarDocumentationBlock("markdown"));
