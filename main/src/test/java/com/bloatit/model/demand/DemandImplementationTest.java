@@ -408,9 +408,8 @@ public class DemandImplementationTest extends ModelTestUnit {
 
 
         demand.authenticate(tomAuthToken);
-        final Offer offer = demand.addEmptyOffer(tomAuthToken.getMember());
+        final Offer offer = demand.addOffer(tomAuthToken.getMember(), BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
 
-        offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
         offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.tomorrow(), DateUtils.SECOND_PER_WEEK);
         offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.nowPlusSomeDays(2), DateUtils.SECOND_PER_WEEK);
         offer.addBatch(BigDecimal.TEN, "description",  Locale.FRENCH, DateUtils.nowPlusSomeDays(4), DateUtils.SECOND_PER_WEEK);

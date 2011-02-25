@@ -76,16 +76,12 @@ public final class Offer extends Kudosable<DaoOffer> {
                  final Locale local,
                  final Date dateExpire,
                  final int secondsBeforeValidation) {
-        super(DaoOffer.createAndPersist(member.getDao(),
-                                        DBRequests.getById(DaoDemand.class, demand.getId()),
-                                        amount,
-                                        DaoDescription.createAndPersist(member.getDao(), local, "RFU", description),
-                                        dateExpire,
-                                        secondsBeforeValidation));
-    }
-
-    public Offer(final Member member, final Demand demand) {
-        super(DaoOffer.createAndPersist(member.getDao(), DBRequests.getById(DaoDemand.class, demand.getId())));
+        super(new DaoOffer(member.getDao(),
+                           DBRequests.getById(DaoDemand.class, demand.getId()),
+                           amount,
+                           DaoDescription.createAndPersist(member.getDao(), local, "RFU", description),
+                           dateExpire,
+                           secondsBeforeValidation));
     }
 
     private Offer(final DaoOffer dao) {
@@ -97,11 +93,11 @@ public final class Offer extends Kudosable<DaoOffer> {
                           final Locale local,
                           final Date dateExpire,
                           final int secondBeforeValidation) {
-        DaoBatch daoBatch = DaoBatch.createAndPersist(dateExpire,
-                                                      amount,
-                                                      DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
-                                                      getDao(),
-                                                      secondBeforeValidation);
+        DaoBatch daoBatch = new DaoBatch(dateExpire,
+                                         amount,
+                                         DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
+                                         getDao(),
+                                         secondBeforeValidation);
         getDao().addBatch(daoBatch);
         return Batch.create(daoBatch);
     }

@@ -104,4 +104,18 @@ public class ModelAccessor {
             mutex.release();
         }
     }
+    
+    /**
+     * @see com.bloatit.model.AbstractModel#close()
+     */
+    public static void rollback() {
+        try {
+            mutex.acquire();
+            model.rollback();
+        } catch (final InterruptedException e) {
+            throw new FatalErrorException(e);
+        } finally {
+            mutex.release();
+        }
+    }
 }

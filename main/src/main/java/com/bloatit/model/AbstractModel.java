@@ -52,4 +52,6 @@ public interface AbstractModel {
      */
     public abstract void close();
 
+    public abstract void rollback();
+
 }

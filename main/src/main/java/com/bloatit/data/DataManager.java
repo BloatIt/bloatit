@@ -51,4 +51,8 @@ public final class DataManager {
         SessionManager.endWorkUnitAndFlush();
     }
 
+    public static void rollback() {
+        SessionManager.rollback();
+    }
+
 }

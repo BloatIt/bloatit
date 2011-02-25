@@ -102,7 +102,7 @@ public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
     Offer addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
             throws UnauthorizedOperationException;
 
-    Offer addEmptyOffer(Member author) throws UnauthorizedOperationException;
+//    Offer addEmptyOffer(Member author) throws UnauthorizedOperationException;
 
     /**
      * For now only the admin can delete an offer.

@@ -81,8 +81,9 @@ public class SimpleTestDB {
         project = DaoProject.createAndPersist("VLC", DaoDescription.createAndPersist(tom, Locale.FRANCE, "title", "descrip"));
         project.setImage(DaoFileMetadata.createAndPersist(tom, null, "/dev/", "null", FileType.JPG, 12));
 
-        demand = DaoDemand.createAndPersist(yo, DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
-                project);
+        demand = DaoDemand.createAndPersist(yo,
+                                            DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
+                                            project);
         final DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
         final DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
         final DaoComment c21 = DaoComment.createAndPersist(tom, "plup");
@@ -105,11 +106,12 @@ public class SimpleTestDB {
             demand.addContribution(yo, new BigDecimal("120"), "I'm so generous too");
             demand.addContribution(tom, new BigDecimal("121"), "I'm so generous too");
 
-            demand.addOffer(DaoOffer.createAndPersist(fred,
-                                                      demand,
-                                                      new BigDecimal("200"),
-                                                      DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
-                                                      DateUtils.tomorrow(),0));
+            demand.addOffer(new DaoOffer(fred,
+                                         demand,
+                                         new BigDecimal("200"),
+                                         DaoDescription.createAndPersist(fred, new Locale("fr"), "Mon Offre", "Voici la description"),
+                                         DateUtils.tomorrow(),
+                                         0));
 
             demand.getOffers().iterator().next().setState(PopularityState.VALIDATED);
 
@@ -121,10 +123,15 @@ public class SimpleTestDB {
                 }
             }
 
-            final DaoDemand demand1 = DaoDemand.createAndPersist(fred,
-                    DaoDescription.createAndPersist(fred, new Locale("en"), "I try it in English", "Hello world"), project);
-            demand1.getDescription().addTranslation(
-                    new DaoTranslation(tom, demand1.getDescription(), new Locale("fr"), "J'essaie en anglais", "Salut le monde"));
+            final DaoDemand demand1 = DaoDemand.createAndPersist(fred, DaoDescription.createAndPersist(fred,
+                                                                                                       new Locale("en"),
+                                                                                                       "I try it in English",
+                                                                                                       "Hello world"), project);
+            demand1.getDescription().addTranslation(new DaoTranslation(tom,
+                                                                       demand1.getDescription(),
+                                                                       new Locale("fr"),
+                                                                       "J'essaie en anglais",
+                                                                       "Salut le monde"));
             demand1.addContribution(yo, new BigDecimal("12"), "I'm so generous too");
             demand1.addContribution(fred, new BigDecimal("11"), "I'm so generous too");
         } catch (final NotEnoughMoneyException e1) {

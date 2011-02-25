@@ -154,10 +154,14 @@ public class BloatitExampleDB {
         rataxesOffer.voteUp();
 
         twoSubtitlesInVlcDemand.authenticate(new AuthToken(celeste));
-        final Offer celesteOffer = twoSubtitlesInVlcDemand.addEmptyOffer(celeste);
         final String celesteBatch1Description = "Oulala, ça à l'air compliqué tout ça... Je peux tout de même essayer mais je vais ramer. Je découpe le travail en 3 parties pour simplifier la tache.\n"
                 + "Pour la première partie, je vais modifier le coeur du logiciel pour permettre d'afficher un nombre variable de sous-titre.";
-        celesteOffer.addBatch(new BigDecimal(2500), celesteBatch1Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(2), 0);
+        final Offer celesteOffer = twoSubtitlesInVlcDemand.addOffer(celeste,
+                                                                    new BigDecimal(2500),
+                                                                    celesteBatch1Description,
+                                                                    celeste.getLocale(),
+                                                                    DateUtils.nowPlusSomeDays(2),
+                                                                    0);
 
         final String celesteBatch2Description = "Pour la 2ème partie, je vais faire les modifications d'IHM pour choisir les sous-titres et configurer leur disposition.";
         celesteOffer.addBatch(new BigDecimal(1000), celesteBatch2Description, celeste.getLocale(), DateUtils.nowPlusSomeDays(3), 0);

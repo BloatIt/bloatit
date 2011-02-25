@@ -124,7 +124,7 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     private DaoOffer createOffer(final DaoDemand demand) {
-        return DaoOffer.createAndPersist(fred, demand, new BigDecimal("200"), DaoDescription
+        return new DaoOffer(fred, demand, new BigDecimal("200"), DaoDescription
                 .createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), DateUtils.tomorrow(), 0);
     }
 

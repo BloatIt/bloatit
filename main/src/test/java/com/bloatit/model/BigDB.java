@@ -71,9 +71,11 @@ public class BigDB {
         project.setImage(DaoFileMetadata.createAndPersist(members.get(0), null, "/dev/", "null", FileType.JPG, 12));
 
         for (int i = 0; i < nbUsers; i++) {
-            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i),
-                    DaoDescription.createAndPersist(members.get(i), new Locale("fr"), fortune(140), fortune(1000) + fortune(1000) + fortune(1000)),
-                    project);
+            final DaoDemand demand = DaoDemand.createAndPersist(members.get(i), DaoDescription.createAndPersist(members.get(i),
+                                                                                                                new Locale("fr"),
+                                                                                                                fortune(140),
+                                                                                                                fortune(1000) + fortune(1000)
+                                                                                                                        + fortune(1000)), project);
 
             final int commentCount = (int) (Math.random() * 5);
 
@@ -96,11 +98,12 @@ public class BigDB {
 
             final DaoMember member = members.get(pick(nbUsers));
             if (pick(2) == 0) {
-                demand.addOffer(DaoOffer.createAndPersist(member,
-                                                          demand,
-                                                          new BigDecimal((pick(50) + 10) * 10),
-                                                          DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
-                                                          new Date(System.currentTimeMillis() + 200), 0));
+                demand.addOffer(new DaoOffer(member,
+                                             demand,
+                                             new BigDecimal((pick(50) + 10) * 10),
+                                             DaoDescription.createAndPersist(member, new Locale("fr"), "Offre", fortune(254)),
+                                             new Date(System.currentTimeMillis() + 200),
+                                             0));
                 if (pick(2) == 0) {
                     for (final DaoContribution contrib : demand.getContributionsFromQuery()) {
                         try {

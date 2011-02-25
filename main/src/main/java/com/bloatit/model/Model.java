@@ -92,4 +92,10 @@ public class Model implements AbstractModel {
         CacheManager.clear();
         DataManager.close();
     }
+
+    @Override
+    public void rollback() {
+        CacheManager.clear();
+        DataManager.rollback();
+    }
 }

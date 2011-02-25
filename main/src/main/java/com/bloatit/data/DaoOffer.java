@@ -29,9 +29,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -85,39 +83,6 @@ public final class DaoOffer extends DaoKudosable {
     // Construction
     // ======================================================================
 
-    public static DaoOffer createAndPersist(final DaoMember member,
-                                            final DaoDemand demand,
-                                            final BigDecimal amount,
-                                            final DaoDescription description,
-                                            final Date dateExpire,
-                                            final int secondsBeforeValidation) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoOffer offer = new DaoOffer(member, demand);
-        try {
-            session.save(offer);
-            // Must be done here because of non null property in addBatch.
-            offer.addBatch(DaoBatch.createAndPersist(dateExpire, amount, description, offer, secondsBeforeValidation));
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-            throw e;
-        }
-        return offer;
-    }
-
-    public static DaoOffer createAndPersist(final DaoMember member, final DaoDemand demand) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoOffer offer = new DaoOffer(member, demand);
-        try {
-            session.save(offer);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-            throw e;
-        }
-        return offer;
-    }
-
     /**
      * Create a DaoOffer.
      * 
@@ -128,7 +93,12 @@ public final class DaoOffer extends DaoKudosable {
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the
      *             future.
      */
-    private DaoOffer(final DaoMember member, final DaoDemand demand) {
+    public DaoOffer(final DaoMember member,
+                    final DaoDemand demand,
+                    final BigDecimal amount,
+                    final DaoDescription description,
+                    final Date dateExpire,
+                    final int secondsBeforeValidation) {
         super(member);
         if (demand == null) {
             throw new NonOptionalParameterException();
@@ -138,6 +108,7 @@ public final class DaoOffer extends DaoKudosable {
         this.expirationDate = new Date();// Will be updated by addBatch
         this.currentBatch = 0;
         this.setDraft(true);
+        addBatch(new DaoBatch(dateExpire, amount, description, this, secondsBeforeValidation));
     }
 
     public void cancelEverythingLeft() {

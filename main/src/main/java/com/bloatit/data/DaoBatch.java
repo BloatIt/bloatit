@@ -29,9 +29,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.DateBridge;
@@ -41,8 +39,8 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.Store;
 
-import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.DaoBug.BugState;
+import com.bloatit.data.DaoBug.Level;
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -50,7 +48,7 @@ import com.bloatit.framework.utils.PageIterable;
 
 /**
  * A DaoBatch is a part of a DaoOffer.
- *
+ * 
  * @author Thomas Guyard
  */
 @Entity
@@ -120,32 +118,34 @@ public final class DaoBatch extends DaoIdentifiable {
     // Construction.
     // ======================================================================
 
-    /**
-     * Create a new DaoBatch and add it into the db.
-     *
-     * @see #DaoBatch(Date, BigDecimal, DaoDescription, DaoOffer, int)
-     * @return the newly created {@link DaoBatch}
-     */
-    public static DaoBatch createAndPersist(final Date dateExpire,
-                                            final BigDecimal amount,
-                                            final DaoDescription description,
-                                            final DaoOffer offer,
-                                            final int secondBeforeValidation) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoBatch batch = new DaoBatch(dateExpire, amount, description, offer, secondBeforeValidation);
-        try {
-            session.save(batch);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-            throw e;
-        }
-        return batch;
-    }
+    // /**
+    // * Create a new DaoBatch and add it into the db.
+    // *
+    // * @see #DaoBatch(Date, BigDecimal, DaoDescription, DaoOffer, int)
+    // * @return the newly created {@link DaoBatch}
+    // */
+    // public static DaoBatch createAndPersist(final Date dateExpire,
+    // final BigDecimal amount,
+    // final DaoDescription description,
+    // final DaoOffer offer,
+    // final int secondBeforeValidation) {
+    // final Session session =
+    // SessionManager.getSessionFactory().getCurrentSession();
+    // final DaoBatch batch = new DaoBatch(dateExpire, amount, description,
+    // offer, secondBeforeValidation);
+    // try {
+    // session.save(batch);
+    // } catch (final HibernateException e) {
+    // session.getTransaction().rollback();
+    // SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+    // throw e;
+    // }
+    // return batch;
+    // }
 
     /**
      * Create a DaoBatch.
-     *
+     * 
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
      * @param expirationDate is the date when this offer should be finish. Must
@@ -155,11 +155,11 @@ public final class DaoBatch extends DaoIdentifiable {
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the
      *             future.
      */
-    private DaoBatch(final Date dateExpire,
-                     final BigDecimal amount,
-                     final DaoDescription description,
-                     final DaoOffer offer,
-                     final int secondBeforeValidation) {
+    public DaoBatch(final Date dateExpire,
+                    final BigDecimal amount,
+                    final DaoDescription description,
+                    final DaoOffer offer,
+                    final int secondBeforeValidation) {
         super();
         if (dateExpire == null || amount == null || description == null || offer == null) {
             throw new NonOptionalParameterException();
@@ -186,13 +186,13 @@ public final class DaoBatch extends DaoIdentifiable {
      * level are closed. This method take parameters for the Fatal and Major
      * level. The Minor level is calculated from it (see
      * {@link #getMinorBugsPercent()}).
-     *
+     * 
      * @param fatalPercent is the percent of the money the developer will get
-     *            when all the {@link Level#FATAL} bugs are closed. It must be >=
-     *            0 and <= 100.
+     *            when all the {@link Level#FATAL} bugs are closed. It must be
+     *            >= 0 and <= 100.
      * @param majorPercent is the percent of the money the developer will get
-     *            when all the {@link Level#MAJOR} bugs are closed. It must be >=
-     *            0 and <= 100.
+     *            when all the {@link Level#MAJOR} bugs are closed. It must be
+     *            >= 0 and <= 100.
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
         if (fatalPercent < 0 || majorPercent < 0) {
@@ -229,19 +229,20 @@ public final class DaoBatch extends DaoIdentifiable {
      * behavior using the <code>force</code> parameter. The force parameter
      * allows to validate the batch without taking into account these previous
      * restrictions.
-     *
+     * 
      * @param force force the validation of this batch. Do not take care of the
      *            bugs and the timeOuts.
      * @return true if all parts of this batch is validated.
      */
     public boolean validate(final boolean force) {
         //
-        // Calculate the real percent (= percent of this batch * percent of this level).
+        // Calculate the real percent (= percent of this batch * percent of this
+        // level).
         int batchPercent = offer.getBatchPercent(this);
         int fatalPercent = (batchPercent * fatalBugsPercent) / 100;
         int majorPercent = (batchPercent * majorBugsPercent) / 100;
         int minorPercent = batchPercent - majorPercent - fatalPercent;
-        
+
         //
         // Do the validation
         //
@@ -272,7 +273,7 @@ public final class DaoBatch extends DaoIdentifiable {
     /**
      * You can validate a batch after its release and when the bugs requirement
      * are done.
-     *
+     * 
      * @return true if an admin should validate this Batch part. False
      *         otherwise.
      */
