@@ -16,27 +16,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.rest;
+package com.bloatit.rest.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-@XmlRootElement
-@XmlSeeAlso({ Member.class })
-public class Members extends ArrayList<Member> {
-    private static final long serialVersionUID = -6854206394315558823L;
+public class LocaleAdapter extends XmlAdapter<Locale, String> {
 
-    public Members() {
-        super();
+    /*
+     * (non-Javadoc)
+     * @see
+     * javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
+     */
+    @Override
+    public Locale marshal(String arg0) throws Exception {
+        return null;
     }
 
-    @XmlElement
-    public List<Member> getMembers() {
-        return this;
+    /*
+     * (non-Javadoc)
+     * @see
+     * javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
+     */
+    @Override
+    public String unmarshal(Locale arg0) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
     }
-
 }
