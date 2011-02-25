@@ -17,7 +17,6 @@
 package com.bloatit.model.demand;
 
 import com.bloatit.data.DaoDemand;
-import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Demand;
@@ -43,25 +42,6 @@ public final class DemandManager {
      */
     public static PageIterable<Demand> getDemands() {
         return new DemandList(DBRequests.getAllUserContentOrderByDate(DaoDemand.class));
-    }
-
-    /**
-     * Gets the demands with a specified state and with on offer selected or
-     * not.
-     *
-     * @param state the state of the demands to return
-     * @param hasSelectedOffer true if you want demands with a selected offer.
-     * @return the demands
-     */
-    public static PageIterable<Demand> getDemands(final DemandState state, final boolean hasSelectedOffer) {
-        // return new DemandList(DBRequests.getDemands(state, null, null, null,
-        // null,
-        // null, null, null, hasSelectedOffer, null, null, null, null, null,//
-        // null,
-        // null,
-        // null));
-        // TODO !!
-        return null;
     }
 
     /**

@@ -58,7 +58,7 @@ public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
      *            the getter, WRITE for the SETTER etc.)
      * @return true if you can access the <code>Offer</code> property.
      * @see #getOffers()
-     * @see #addOffer(BigDecimal, Locale, String, String, Date)
+     * @see #addOffer(Member, BigDecimal, String, Locale, Date, int)
      */
     boolean canAccessOffer(final Action action);
 
@@ -101,8 +101,6 @@ public interface Demand extends KudosableInterface<DaoDemand>, Commentable {
      */
     Offer addOffer(Member author, BigDecimal amount, String description, Locale locale, Date expireDate, int secondsBeforeValidation)
             throws UnauthorizedOperationException;
-
-//    Offer addEmptyOffer(Member author) throws UnauthorizedOperationException;
 
     /**
      * For now only the admin can delete an offer.

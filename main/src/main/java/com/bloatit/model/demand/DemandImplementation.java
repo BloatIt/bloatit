@@ -185,12 +185,6 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
         return doAddOffer(offer);
     }
 
-//    @Override
-//    public Offer addEmptyOffer(final Member member) throws UnauthorizedOperationException {
-//        final Offer offer = new Offer(member, this);
-//        return doAddOffer(offer);
-//    }
-
     private Offer doAddOffer(final Offer offer) throws UnauthorizedOperationException {
         if (!offer.getDemand().equals(this)) {
             throw new IllegalArgumentException();
