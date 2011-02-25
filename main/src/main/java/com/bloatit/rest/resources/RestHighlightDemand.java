@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2010 BloatIt.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BloatIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.rest.resources;
 
 import java.util.Date;
@@ -5,6 +23,7 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,6 +32,7 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Demand;
 import com.bloatit.model.HighlightDemand;
+import com.bloatit.model.managers.HighlightDemandManager;
 import com.bloatit.rest.list.RestHighlightDemandList;
 
 /**
@@ -83,19 +103,16 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
      * <p>
      * Finds the RestHighlightDemand matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestHighlightDemand
      */
     @REST(name = "highlightdemands", method = RequestMethod.GET)
     public static RestHighlightDemand getById(int id) {
-        // TODO auto generated code
-        // RestHighlightDemand restHighlightDemand = new
-        // RestHighlightDemand(HighlightDemandManager.getHighlightDemandById(id));
-        // if (restHighlightDemand.isNull()) {
-        // return null;
-        // }
-        // return restHighlightDemand;
-        return null;
+        RestHighlightDemand restHighlightDemand = new RestHighlightDemand(HighlightDemandManager.getById(id));
+        if (restHighlightDemand.isNull()) {
+            return null;
+        }
+        return restHighlightDemand;
     }
 
     /**
@@ -105,15 +122,12 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
      */
     @REST(name = "highlightdemands", method = RequestMethod.GET)
     public static RestHighlightDemandList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestHighlightDemandList(HighlightDemandManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-
-    // TODO Generate
 
     @XmlAttribute
     @XmlID
@@ -124,31 +138,25 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
     /**
      * @see com.bloatit.model.HighlightDemand#getPosition()
      */
-    // @XmlElement
+    @XmlAttribute
     public int getPosition() {
-        // TODO auto-generated code stub
-        int position = model.getPosition();
-        return position;
+        return model.getPosition();
     }
 
     /**
      * @see com.bloatit.model.HighlightDemand#getDemand()
      */
-    // @XmlElement
+    @XmlElement
     public Demand getDemand() {
-        // TODO auto-generated code stub
-        Demand demand = model.getDemand();
-        return demand;
+        return model.getDemand();
     }
 
     /**
      * @see com.bloatit.model.HighlightDemand#getActivationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getActivationDate() {
-        // TODO auto-generated code stub
-        Date activationDate = model.getActivationDate();
-        return activationDate;
+        return model.getActivationDate();
     }
 
     // ---------------------------------------------------------------------------------------

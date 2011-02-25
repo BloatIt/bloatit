@@ -37,7 +37,7 @@ import com.bloatit.model.demand.DemandList;
 import com.bloatit.model.lists.CommentList;
 import com.bloatit.model.lists.ContributionList;
 import com.bloatit.model.lists.GroupList;
-import com.bloatit.model.lists.JoinGroupInvitationtList;
+import com.bloatit.model.lists.JoinGroupInvitationList;
 import com.bloatit.model.lists.KudosList;
 import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.lists.TranslationList;
@@ -296,7 +296,7 @@ public final class Member extends Actor<DaoMember> {
      * @return all the received invitation with the specified state.
      */
     public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state) {
-        return new JoinGroupInvitationtList(getDao().getReceivedInvitation(state));
+        return new JoinGroupInvitationList(getDao().getReceivedInvitation(state));
     }
 
     /**
@@ -305,7 +305,7 @@ public final class Member extends Actor<DaoMember> {
      * @return all the received invitation with the specified state and group
      */
     public PageIterable<JoinGroupInvitation> getReceivedInvitation(final State state, final Group group) {
-        return new JoinGroupInvitationtList(getDao().getReceivedInvitation(state, group.getDao()));
+        return new JoinGroupInvitationList(getDao().getReceivedInvitation(state, group.getDao()));
     }
 
     /**

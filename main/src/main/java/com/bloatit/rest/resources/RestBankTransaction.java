@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2010 BloatIt.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BloatIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.rest.resources;
 
 import java.math.BigDecimal;
@@ -6,6 +24,7 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,6 +33,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.BankTransaction;
+import com.bloatit.model.managers.BankTransactionManager;
 import com.bloatit.rest.list.RestBankTransactionList;
 
 /**
@@ -84,19 +104,16 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      * <p>
      * Finds the RestBankTransaction matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestBankTransaction
      */
     @REST(name = "banktransactions", method = RequestMethod.GET)
     public static RestBankTransaction getById(int id) {
-        // TODO auto generated code
-        // RestBankTransaction restBankTransaction = new
-        // RestBankTransaction(BankTransactionManager.getBankTransactionById(id));
-        // if (restBankTransaction.isNull()) {
-        // return null;
-        // }
-        // return restBankTransaction;
-        return null;
+        RestBankTransaction restBankTransaction = new RestBankTransaction(BankTransactionManager.getById(id));
+        if (restBankTransaction.isNull()) {
+            return null;
+        }
+        return restBankTransaction;
     }
 
     /**
@@ -106,15 +123,12 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
      */
     @REST(name = "banktransactions", method = RequestMethod.GET)
     public static RestBankTransactionList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestBankTransactionList(BankTransactionManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-
-    // TODO Generate
 
     @XmlAttribute
     @XmlID
@@ -125,81 +139,65 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     /**
      * @see com.bloatit.model.BankTransaction#getValue()
      */
-    // @XmlElement
+    @XmlAttribute
     public BigDecimal getValue() {
-        // TODO auto-generated code stub
-        BigDecimal value = model.getValue();
-        return value;
+        return model.getValue();
     }
 
     /**
      * @see com.bloatit.model.BankTransaction#getMessage()
      */
-    // @XmlElement
+    @XmlElement
     public String getMessage() {
-        // TODO auto-generated code stub
-        String message = model.getMessage();
-        return message;
+        return model.getMessage();
     }
 
     /**
      * @see com.bloatit.model.BankTransaction#getState()
      */
-    // @XmlElement
+    @XmlAttribute
     public State getState() {
-        // TODO auto-generated code stub
-        State state = model.getState();
-        return state;
+        return model.getState();
     }
 
     /**
      * @see com.bloatit.model.BankTransaction#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.BankTransaction#getModificationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getModificationDate() {
-        // TODO auto-generated code stub
-        Date modificationDate = model.getModificationDate();
-        return modificationDate;
+        return model.getModificationDate();
     }
 
     /**
      * @see com.bloatit.model.BankTransaction#getReference()
      */
-    // @XmlElement
+    @XmlElement
     public String getReference() {
-        // TODO auto-generated code stub
-        String reference = model.getReference();
-        return reference;
+        return model.getReference();
     }
 
     /**
      * @see com.bloatit.model.BankTransaction#getToken()
      */
-    // @XmlElement
+    @XmlElement
     public String getToken() {
-        // TODO auto-generated code stub
-        String token = model.getToken();
-        return token;
+        return model.getToken();
     }
 
     /**
      * @see com.bloatit.model.BankTransaction#getProcessInformations()
      */
-    // @XmlElement
+    @XmlElement
     public String getProcessInformations() {
-        // TODO auto-generated code stub
-        String processInformations = model.getProcessInformations();
-        return processInformations;
+        return model.getProcessInformations();
     }
 
     // ---------------------------------------------------------------------------------------

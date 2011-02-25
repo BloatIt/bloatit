@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2010 BloatIt.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BloatIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.rest.resources;
 
 import java.util.Date;
@@ -16,6 +34,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Translation;
+import com.bloatit.model.managers.TranslationManager;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestTranslationList;
 
@@ -87,19 +106,16 @@ public class RestTranslation extends RestElement<Translation> {
      * <p>
      * Finds the RestTranslation matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestTranslation
      */
     @REST(name = "translations", method = RequestMethod.GET)
     public static RestTranslation getById(int id) {
-        // TODO auto generated code
-        // RestTranslation restTranslation = new
-        // RestTranslation(TranslationManager.getTranslationById(id));
-        // if (restTranslation.isNull()) {
-        // return null;
-        // }
-        // return restTranslation;
-        return null;
+        RestTranslation restTranslation = new RestTranslation(TranslationManager.getById(id));
+        if (restTranslation.isNull()) {
+            return null;
+        }
+        return restTranslation;
     }
 
     /**
@@ -109,8 +125,7 @@ public class RestTranslation extends RestElement<Translation> {
      */
     @REST(name = "translations", method = RequestMethod.GET)
     public static RestTranslationList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestTranslationList(TranslationManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

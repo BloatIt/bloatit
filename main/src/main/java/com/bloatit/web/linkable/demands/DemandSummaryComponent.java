@@ -14,7 +14,6 @@ package com.bloatit.web.linkable.demands;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import java.text.NumberFormat;
-import java.util.Locale;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.CurrencyLocale;
@@ -31,18 +30,17 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
-import com.bloatit.model.Translation;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
 import com.bloatit.web.components.HtmlProgressBar;
 import com.bloatit.web.linkable.members.MembersTools;
+import com.bloatit.web.linkable.projects.ProjectsTools;
 import com.bloatit.web.pages.master.HtmlPageComponent;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 import com.bloatit.web.url.MemberPageUrl;
 import com.bloatit.web.url.OfferPageUrl;
 import com.bloatit.web.url.PopularityVoteActionUrl;
-import com.bloatit.web.url.ProjectPageUrl;
 import com.bloatit.web.url.ReportBugPageUrl;
 
 public final class DemandSummaryComponent extends HtmlPageComponent {
@@ -53,9 +51,6 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
     public DemandSummaryComponent(final Demand demand) {
         super();
         this.demand = demand;
-
-        // Extract locales stuffs
-        final Locale defaultLocale = Context.getLocalizator().getLocale();
 
         // ////////////////////
         // Div demand_summary
@@ -94,14 +89,11 @@ public final class DemandSummaryComponent extends HtmlPageComponent {
                 {
                     // Try to display the title
                     try {
-                        final Translation translatedDescription = demand.getDescription().getTranslationOrDefault(defaultLocale);
-                        final HtmlSpan projectSpan = new HtmlSpan("demand_project_title");
-                        projectSpan.add(new ProjectPageUrl(demand.getProject()).getHtmlLink(demand.getProject().getName()));
                         final HtmlTitle title = new HtmlTitle(1);
                         title.setCssClass("demand_title");
-                        title.add(projectSpan);
+                        title.add(ProjectsTools.getProjectLink(demand.getProject()));
                         title.addText(" – ");
-                        title.addText(translatedDescription.getTitle());
+                        title.addText(DemandsTools.getTitle(demand));
 
                         demandSummaryCenter.add(title);
 

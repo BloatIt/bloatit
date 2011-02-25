@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2010 BloatIt.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BloatIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.rest.resources;
 
 import java.math.BigDecimal;
@@ -18,6 +36,7 @@ import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.ExternalAccount;
+import com.bloatit.model.managers.ExternalAccountManager;
 import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestTransactionList;
 
@@ -94,14 +113,11 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      */
     @REST(name = "externalaccounts", method = RequestMethod.GET)
     public static RestExternalAccount getById(int id) {
-        // TODO auto generated code
-        // RestExternalAccount restExternalAccount = new
-        // RestExternalAccount(ExternalAccountManager.getExternalAccountById(id));
-        // if (restExternalAccount.isNull()) {
-        // return null;
-        // }
-        // return restExternalAccount;
-        return null;
+        RestExternalAccount restExternalAccount = new RestExternalAccount(ExternalAccountManager.getById(id));
+        if (restExternalAccount.isNull()) {
+            return null;
+        }
+        return restExternalAccount;
     }
 
     /**
@@ -111,8 +127,7 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      */
     @REST(name = "externalaccounts", method = RequestMethod.GET)
     public static RestExternalAccountList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestExternalAccountList(ExternalAccountManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

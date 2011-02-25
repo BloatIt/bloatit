@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2010 BloatIt.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BloatIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.rest.resources;
 
 import java.util.Date;
@@ -14,6 +32,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Release;
+import com.bloatit.model.managers.ReleaseManager;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestReleaseList;
@@ -91,14 +110,11 @@ public class RestRelease extends RestElement<Release> {
      */
     @REST(name = "releases", method = RequestMethod.GET)
     public static RestRelease getById(int id) {
-        // TODO auto generated code
-        // RestRelease restRelease = new
-        // RestRelease(ReleaseManager.getReleaseById(id));
-        // if (restRelease.isNull()) {
-        // return null;
-        // }
-        // return restRelease;
-        return null;
+        RestRelease restRelease = new RestRelease(ReleaseManager.getById(id));
+        if (restRelease.isNull()) {
+            return null;
+        }
+        return restRelease;
     }
 
     /**
@@ -108,8 +124,7 @@ public class RestRelease extends RestElement<Release> {
      */
     @REST(name = "releases", method = RequestMethod.GET)
     public static RestReleaseList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestReleaseList(ReleaseManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

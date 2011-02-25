@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2010 BloatIt.
+ *
+ * This file is part of BloatIt.
+ *
+ * BloatIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BloatIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.bloatit.rest.resources;
 
 import java.util.Date;
@@ -13,6 +31,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Kudos;
+import com.bloatit.model.managers.KudosManager;
 import com.bloatit.rest.list.RestKudosList;
 
 /**
@@ -83,18 +102,16 @@ public class RestKudos extends RestElement<Kudos> {
      * <p>
      * Finds the RestKudos matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestKudos
      */
     @REST(name = "kudos", method = RequestMethod.GET)
     public static RestKudos getById(int id) {
-        // TODO auto generated code
-        // RestKudos restKudos = new RestKudos(KudosManager.getKudosById(id));
-        // if (restKudos.isNull()) {
-        // return null;
-        // }
-        // return restKudos;
-        return null;
+        RestKudos restKudos = new RestKudos(KudosManager.getById(id));
+        if (restKudos.isNull()) {
+            return null;
+        }
+        return restKudos;
     }
 
     /**
@@ -104,8 +121,7 @@ public class RestKudos extends RestElement<Kudos> {
      */
     @REST(name = "kudoss", method = RequestMethod.GET)
     public static RestKudosList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestKudosList(KudosManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------

@@ -26,8 +26,10 @@ import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
-import com.bloatit.web.components.HtmlDemandSumary;
-import com.bloatit.web.components.HtmlDemandSumary.Compacity;
+import com.bloatit.web.components.SideBarDemandBlock;
+import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.pages.master.BoxLayout;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;
 
@@ -56,10 +58,19 @@ public final class ContributePage extends LoggedPage {
             throw new RedirectException(Context.getSession().getLastStablePage());
         }
 
+        TwoColumnLayout layout = new TwoColumnLayout();
+        layout.addLeft(new BoxLayout().add(generateContributeForm()));
+
+        layout.addRight(new SideBarDemandBlock(targetIdea));
+        layout.addRight(new SideBarDocumentationBlock("markdown"));
+
+        return layout;
+    }
+
+    public HtmlElement generateContributeForm() {
         final ContributionActionUrl formActionUrl = new ContributionActionUrl(targetIdea);
 
         final HtmlForm contribForm = new HtmlForm(formActionUrl.urlString());
-        contribForm.setCssClass("padding_box");
 
         // Input field : choose amount
         final FieldData amountFieldData = formActionUrl.getAmountParameter().fieldData();
@@ -79,7 +90,6 @@ public final class ContributePage extends LoggedPage {
         contribForm.add(submitButton);
 
         final HtmlTitleBlock contribTitle = new HtmlTitleBlock(tr("Contribute"), 1);
-        contribTitle.add(new HtmlDemandSumary(targetIdea, Compacity.NORMAL));
         contribTitle.add(contribForm);
 
         final HtmlDiv group = new HtmlDiv();
