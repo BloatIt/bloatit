@@ -36,7 +36,6 @@ import com.bloatit.model.right.DemandRight;
 import com.bloatit.rest.resources.ModelClassVisitor;
 
 // TODO rightManagement
-
 public final class Offer extends Kudosable<DaoOffer> {
 
     // ////////////////////////////////////////////////////////////////////////
@@ -93,16 +92,18 @@ public final class Offer extends Kudosable<DaoOffer> {
         super(dao);
     }
 
-    public void addBatch(final BigDecimal amount,
-                         final String description,
-                         final Locale local,
-                         final Date dateExpire,
-                         final int secondBeforeValidation) {
-        getDao().addBatch(DaoBatch.createAndPersist(dateExpire,
-                                                    amount,
-                                                    DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
-                                                    getDao(),
-                                                    secondBeforeValidation));
+    public Batch addBatch(final BigDecimal amount,
+                          final String description,
+                          final Locale local,
+                          final Date dateExpire,
+                          final int secondBeforeValidation) {
+        DaoBatch daoBatch = DaoBatch.createAndPersist(dateExpire,
+                                                      amount,
+                                                      DaoDescription.createAndPersist(getDao().getAuthor(), local, "RFU", description),
+                                                      getDao(),
+                                                      secondBeforeValidation);
+        getDao().addBatch(daoBatch);
+        return Batch.create(daoBatch);
     }
 
     // ////////////////////////////////////////////////////////////////////////

@@ -17,7 +17,6 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -189,10 +188,10 @@ public final class DaoBatch extends DaoIdentifiable {
      * {@link #getMinorBugsPercent()}).
      *
      * @param fatalPercent is the percent of the money the developer will get
-     *            when all the {@link Level#FATAL} bugs are closed. It must be >
+     *            when all the {@link Level#FATAL} bugs are closed. It must be >=
      *            0 and <= 100.
      * @param majorPercent is the percent of the money the developer will get
-     *            when all the {@link Level#MAJOR} bugs are closed. It must be >
+     *            when all the {@link Level#MAJOR} bugs are closed. It must be >=
      *            0 and <= 100.
      */
     public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {

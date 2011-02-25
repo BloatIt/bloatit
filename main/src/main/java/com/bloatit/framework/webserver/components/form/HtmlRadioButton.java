@@ -26,7 +26,7 @@ final class HtmlRadioButton extends HtmlFormField<Boolean> {
         addAttribute("value", value);
     }
 
-    public HtmlRadioButton(final FormFieldData<Boolean> data, final String label, final LabelPosition position) {
+    public HtmlRadioButton(final FormFieldData data, final String label, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT)), data.getFieldName(), label, position);
         setDefaultValue(data);
         addErrorMessages(data.getErrorMessages());

@@ -80,7 +80,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
 
     /**
      * <p>
-     * Creates a new checkbox from a <code>FormFieldData</code>
+     * Creates a new checkbox from a <code>FormFieldData
      * </p>
      * <p>
      * Example of <code>LabelPosition.BEFORE</code> :<br />
@@ -96,9 +96,8 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
      * @param labelPosition the relative position of the label compared to the
      *            checkbox
      */
-    public HtmlCheckbox(final FormFieldData<Boolean> data, final String label, final LabelPosition position) {
+    public HtmlCheckbox(final FormFieldData data, final String label, final LabelPosition position) {
         super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), data.getFieldName(), label, position);
-        setDefaultValue(data);
         addErrorMessages(data.getErrorMessages());
     }
 

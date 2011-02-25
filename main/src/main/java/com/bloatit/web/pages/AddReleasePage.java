@@ -73,13 +73,13 @@ public final class AddReleasePage extends LoggedPage {
         createReleaseTitle.add(form);
 
         // version
-        final FormFieldData<String> versionFormFieldData = doCreateUrl.getVersionParameter().formFieldData();
+        final FormFieldData versionFormFieldData = doCreateUrl.getVersionParameter().formFieldData();
         final HtmlTextField version = new HtmlTextField(versionFormFieldData, tr("Version"));
         version.setComment(tr("Enter your release version. For example ''1.2.3''."));
         form.add(version);
 
         // description
-        final FormFieldData<String> descriptionFormFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
+        final FormFieldData descriptionFormFieldData = doCreateUrl.getDescriptionParameter().formFieldData();
         final HtmlTextArea descriptionInput = new HtmlTextArea(descriptionFormFieldData,
                                                                tr("Comment your release"),
                                                                DESCRIPTION_INPUT_NB_LINES,
@@ -88,13 +88,13 @@ public final class AddReleasePage extends LoggedPage {
         form.add(descriptionInput);
 
         // Language
-        final FormFieldData<String> languageFormFieldData = doCreateUrl.getLangParameter().formFieldData();
+        final FormFieldData languageFormFieldData = doCreateUrl.getLangParameter().formFieldData();
         final LanguageSelector languageInput = new LanguageSelector(languageFormFieldData, tr("Language"));
         languageInput.setComment(tr("Language of the descriptions."));
         form.add(languageInput);
 
         // attachement
-        final FormFieldData<String> attachedFileParameter = doCreateUrl.getAttachedfileParameter().formFieldData();
+        final FormFieldData attachedFileParameter = doCreateUrl.getAttachedfileParameter().formFieldData();
         final HtmlFileInput attachedFileInput = new HtmlFileInput(attachedFileParameter, tr("Attached file"));
         attachedFileInput.setComment("You must attache a file. This is your release, it can take be a patch, a tar.gz etc.");
         form.add(attachedFileInput);

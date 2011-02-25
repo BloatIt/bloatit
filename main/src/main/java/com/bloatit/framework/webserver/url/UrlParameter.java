@@ -219,11 +219,11 @@ public class UrlParameter<T, U> extends UrlNode {
         return description.getRole();
     }
 
-    public FormFieldData<T> formFieldData() {
+    public FormFieldData formFieldData() {
         return new FieldDataFromUrl<T, U>(this);
     }
 
-    static class FieldDataFromUrl<T, U> implements FormFieldData<T> {
+    static class FieldDataFromUrl<T, U> implements FormFieldData {
 
         private final String name;
         private final String suggestedValue;

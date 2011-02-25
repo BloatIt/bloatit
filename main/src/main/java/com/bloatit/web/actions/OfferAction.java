@@ -18,11 +18,13 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
+import com.bloatit.model.Batch;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
@@ -37,28 +39,46 @@ import com.bloatit.web.url.OfferPageUrl;
  */
 @ParamContainer("action/offer")
 public final class OfferAction extends LoggedAction {
-    public static final String PRICE_CODE = "offer_price";
-    public static final String EXPIRY_CODE = "offer_expiry";
-    public static final String TITLE_CODE = "offer_title";
-    public static final String DESCRIPTION_CODE = "offer_description";
-    public static final String ON_THE_BEHALF = "offer_behalf";
 
     @RequestParam(role = Role.GET, conversionErrorMsg = @tr("The target idea is mandatory to make an offer."))
-    private Demand targetIdea = null;
+    private final Demand demand;
 
-    @RequestParam(name = PRICE_CODE, role = Role.POST, conversionErrorMsg = @tr("Invalid or missing value for price field."))
+    @RequestParam(role = Role.GET)
+    @Optional
+    private final Offer draftOffer;
+
+    @RequestParam(role = Role.POST, conversionErrorMsg = @tr("Invalid or missing value for price field."))
     private final BigDecimal price;
 
-    @RequestParam(name = EXPIRY_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final DateLocale expiryDate;
 
-    @RequestParam(name = TITLE_CODE, role = Role.POST)
-    private final String title;
-
-    @RequestParam(name = DESCRIPTION_CODE, role = Role.POST)
+    @RequestParam(role = Role.POST)
     private final String description;
 
-    @RequestParam(name = ON_THE_BEHALF, role = Role.POST)
+    @RequestParam(role = Role.POST)
+    private final Locale locale;
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    private final Integer daysBeforeValidation;
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    @ParamConstraint(min = "0", minErrorMsg = @tr("''%param'' is a percent, and must be greater or equal to 0."), //
+                     max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
+    private final Integer percentFatal;
+
+    @RequestParam(role = Role.POST)
+    @Optional
+    @ParamConstraint(min = "0", minErrorMsg = @tr("''%param'' is a percent, and must be greater or equal to 0."), //
+                     max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
+    private final Integer percentMajor;
+
+    @RequestParam(role = Role.POST)
+    private final Boolean isFinished;
+
+    @RequestParam(role = Role.POST)
     @Optional
     private final Group group;
 
@@ -66,34 +86,55 @@ public final class OfferAction extends LoggedAction {
 
     public OfferAction(final OfferActionUrl url) {
         super(url);
-
         this.url = url;
         this.description = url.getDescription();
-        this.title = url.getTitle();
+        this.locale = url.getLocale();
         this.expiryDate = url.getExpiryDate();
         this.price = url.getPrice();
-        this.targetIdea = url.getTargetIdea();
+        this.demand = url.getDemand();
+        this.draftOffer = url.getDraftOffer();
         this.group = url.getGroup();
+        this.daysBeforeValidation = url.getDaysBeforeValidation();
+        this.percentFatal = url.getPercentFatal();
+        this.percentMajor = url.getPercentMajor();
+        this.isFinished = url.getIsFinished();
     }
 
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
+        if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
+            session.notifyBad("You have to specify both the Major and Fatal percent.");
+            return session.pickPreferredPage();
+        }
+        if (draftOffer != null && !draftOffer.isDraft()) {
+            session.notifyBad("The specified offer is not editable. You cannot add a lot in it.");
+            return session.pickPreferredPage();
+        }
         try {
-            final Offer newOffer = targetIdea.addOffer(session.getAuthToken().getMember(),
-                                                       price,
-                                                       description,
-                                                       Locale.FRENCH,
-                                                       expiryDate.getJavaDate(),
-                                                       0);
-            if (group != null) {
-                newOffer.setAsGroup(group);
+            Batch constructingBatch;
+            if (draftOffer == null) {
+                Offer offer = demand.addOffer(session.getAuthToken().getMember(),
+                                              price,
+                                              description,
+                                              locale,
+                                              expiryDate.getJavaDate(),
+                                              daysBeforeValidation);
+                if (group != null) {
+                    offer.setAsGroup(group);
+                }
+                constructingBatch = offer.getBatches().iterator().next();
+            } else {
+                constructingBatch = draftOffer.addBatch(price, description, locale, expiryDate.getJavaDate(), daysBeforeValidation);
+            }
+            if (percentFatal != null && percentMajor != null) {
+                constructingBatch.updateMajorFatalPercent(percentFatal, percentMajor);
             }
 
         } catch (final UnauthorizedOperationException e) {
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
             return session.pickPreferredPage();
         }
-        final DemandPageUrl demandPageUrl = new DemandPageUrl(targetIdea);
+        final DemandPageUrl demandPageUrl = new DemandPageUrl(demand);
         demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
         return demandPageUrl;
     }
@@ -102,16 +143,10 @@ public final class OfferAction extends LoggedAction {
     protected Url doProcessErrors() {
         session.notifyList(url.getMessages());
 
-        if (targetIdea != null) {
-
-            final OfferPageUrl redirectUrl = new OfferPageUrl(targetIdea);
-            session.addParameter(url.getDescriptionParameter());
-            session.addParameter(url.getPriceParameter());
-            session.addParameter(url.getTitleParameter());
-
-            if (expiryDate != null) {
-                session.addParameter(url.getExpiryDateParameter());
-            }
+        if (demand != null) {
+            transmitParameters();
+            final OfferPageUrl redirectUrl = new OfferPageUrl(demand);
+            redirectUrl.setOffer(draftOffer);
             return redirectUrl;
         }
         return session.pickPreferredPage();
@@ -125,11 +160,13 @@ public final class OfferAction extends LoggedAction {
     @Override
     protected void transmitParameters() {
         session.addParameter(url.getDescriptionParameter());
+        session.addParameter(url.getLocaleParameter());
+        session.addParameter(url.getExpiryDateParameter());
         session.addParameter(url.getPriceParameter());
-        session.addParameter(url.getTitleParameter());
-
-        if (expiryDate != null) {
-            session.addParameter(url.getExpiryDateParameter());
-        }
+        session.addParameter(url.getGroupParameter());
+        session.addParameter(url.getDaysBeforeValidationParameter());
+        session.addParameter(url.getPercentFatalParameter());
+        session.addParameter(url.getPercentMajorParameter());
+        session.addParameter(url.getIsFinishedParameter());
     }
 }

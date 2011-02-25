@@ -180,7 +180,7 @@ public class CommentTools {
         attachementInput.setComment("Optional. If attach a file, you must add an attachement description. Max 2go.");
         attachementBlock.add(attachementInput);
 
-        final FormFieldData<String> attachementDescriptionFormFieldData = url.getAttachementDescriptionParameter().formFieldData();
+        final FormFieldData attachementDescriptionFormFieldData = url.getAttachementDescriptionParameter().formFieldData();
         final HtmlTextField attachementDescriptionInput = new HtmlTextField(attachementDescriptionFormFieldData, Context.tr("Attachment description"));
         attachementDescriptionInput.setComment(Context.tr("Need only if you add an attachement."));
         attachementBlock.add(attachementDescriptionInput);

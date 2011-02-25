@@ -10,10 +10,8 @@ import com.bloatit.framework.webserver.url.Messages;
  * This class is used to link an API used to handle parameters from POST/GET (or
  * even session) with the form fields
  * </p>
- *
- * @param <T> the underlying type of the FormFieldData
  */
-public interface FormFieldData<T> {
+public interface FormFieldData {
 
     /**
      * @return the name of the field.

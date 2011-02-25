@@ -44,7 +44,7 @@ public final class LoginPage extends MasterPage {
             final HtmlForm loginForm = new HtmlForm(loginActionUrl.urlString());
 
             // Login field
-            final FormFieldData<String> loginData = loginActionUrl.getLoginParameter().formFieldData();
+            final FormFieldData loginData = loginActionUrl.getLoginParameter().formFieldData();
             final HtmlTextField loginField = new HtmlTextField(loginData, Context.trc("Login (noun)", "Login"));
             // passwordField
             final HtmlPasswordField passwordField = new HtmlPasswordField(LoginAction.PASSWORD_CODE, Context.tr("Password"));

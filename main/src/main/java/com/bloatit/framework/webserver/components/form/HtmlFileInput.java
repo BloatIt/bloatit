@@ -50,7 +50,7 @@ public final class HtmlFileInput extends HtmlFormField<String> {
      * @param data the data used to generate the field
      * @param label the text displayed inside the {@code <label>} markup
      */
-    public HtmlFileInput(final FormFieldData<String> data, final String label) {
+    public HtmlFileInput(final FormFieldData data, final String label) {
         super(new HtmlSimpleInput("file"), data.getFieldName(), label);
         setDefaultValue(data);
 

@@ -20,7 +20,7 @@ public class LanguageSelector extends HtmlDropDown {
         }
     }
 
-    public LanguageSelector(final FormFieldData<?> languageFormFieldData, final String label) {
+    public LanguageSelector(final FormFieldData languageFormFieldData, final String label) {
         super(languageFormFieldData, label);
         for (final Entry<String, LanguageDescriptor> langEntry : Localizator.getAvailableLanguages().entrySet()) {
             addDropDownElement(langEntry.getValue().getCode(), langEntry.getValue().getName());

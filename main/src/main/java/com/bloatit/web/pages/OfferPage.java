@@ -11,17 +11,15 @@
  */
 package com.bloatit.web.pages;
 
-import java.math.BigDecimal;
-
 import com.bloatit.common.Log;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
+import com.bloatit.framework.webserver.annotations.ParamConstraint;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
-import com.bloatit.framework.webserver.annotations.RequestParam.Role;
+import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
 import com.bloatit.framework.webserver.components.form.FormFieldData;
 import com.bloatit.framework.webserver.components.form.HtmlDateField;
@@ -30,13 +28,12 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
-import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
+import com.bloatit.model.Offer;
 import com.bloatit.model.right.Action;
-import com.bloatit.web.actions.OfferAction;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.url.OfferActionUrl;
@@ -45,33 +42,18 @@ import com.bloatit.web.url.OfferPageUrl;
 @ParamContainer("offer")
 public final class OfferPage extends LoggedPage {
 
-    @RequestParam()
-    private Demand targetIdea = null;
+    @RequestParam
+    @ParamConstraint(optionalErrorMsg = @tr("The demand id is not optional !"))
+    private final Demand demand;
 
-    @RequestParam(name = OfferAction.PRICE_CODE, role = Role.SESSION)
+    @RequestParam
     @Optional
-    private final BigDecimal price;
-
-    @RequestParam(name = OfferAction.EXPIRY_CODE, role = Role.SESSION)
-    @Optional
-    private final DateLocale expiryDate;
-
-    @SuppressWarnings("unused")
-    @RequestParam(name = OfferAction.TITLE_CODE, role = Role.SESSION)
-    @Optional
-    private final String title; // Keeping it for now, most likely useless
-
-    @RequestParam(name = OfferAction.DESCRIPTION_CODE, role = Role.SESSION)
-    @Optional
-    private final String description;
+    private final Offer offer;
 
     public OfferPage(final OfferPageUrl url) {
         super(url);
-        this.targetIdea = url.getTargetIdea();
-        this.price = url.getPrice();
-        this.expiryDate = url.getExpiryDate();
-        this.title = url.getTitle();
-        this.description = url.getDescription();
+        this.demand = url.getDemand();
+        this.offer = url.getOffer();
     }
 
     @Override
@@ -93,24 +75,20 @@ public final class OfferPage extends LoggedPage {
     public HtmlElement createRestrictedContent() {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
-        offerPageContainer.add(new HtmlDemandSumary(targetIdea, Compacity.NORMAL));
+        offerPageContainer.add(new HtmlDemandSumary(demand, Compacity.NORMAL));
 
         // Create offer form
-        final OfferActionUrl offerActionUrl = new OfferActionUrl(targetIdea);
+        final OfferActionUrl offerActionUrl = new OfferActionUrl(demand);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
         offerForm.setCssClass("padding_box");
-
-        // Title field
-        final FormFieldData<String> titleFieldData = offerActionUrl.getTitleParameter().formFieldData();
-        final HtmlTextField titleField = new HtmlTextField(titleFieldData, Context.tr("Title to the offer"));
-        offerForm.add(titleField);
 
         // Offering on the behalf of
         final Member me = session.getAuthToken().getMember();
         if (me.canAccessGroups(Action.READ)) {
             try {
                 final PageIterable<Group> groups = me.getGroups();
-                final HtmlDropDown groupDropDown = new HtmlDropDown(OfferAction.ON_THE_BEHALF, Context.tr("On the behalf of"));
+                final FormFieldData groupField = offerActionUrl.getGroupParameter().formFieldData();
+                final HtmlDropDown groupDropDown = new HtmlDropDown(groupField, Context.tr("On the behalf of"));
                 groupDropDown.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
                 groupDropDown.addDropDownElement("-1", Context.tr("Myself"));
                 for (final Group group : groups) {
@@ -124,22 +102,19 @@ public final class OfferPage extends LoggedPage {
         }
 
         // Price field
-        final FormFieldData<BigDecimal> priceFieldData = offerActionUrl.getPriceParameter().formFieldData();
+        final FormFieldData priceFieldData = offerActionUrl.getPriceParameter().formFieldData();
         final HtmlMoneyField priceField = new HtmlMoneyField(priceFieldData, Context.tr("Offer price"));
         priceField.setComment(Context.tr("The price must be in euros (€) and can't contains cents."));
-        if (price != null) {
-            priceField.setDefaultValue(price);
-        }
         offerForm.add(priceField);
 
         // Date field
-        final HtmlDateField dateField = new HtmlDateField(OfferAction.EXPIRY_CODE, Context.tr("Expiration date"));
+        final FormFieldData dateFieldData = offerActionUrl.getExpiryDateParameter().formFieldData();
+        final HtmlDateField dateField = new HtmlDateField(dateFieldData, Context.tr("Expiration date"));
         dateField.setComment(Context.tr("Date formatted in ISO format. Example: 2012/03/15 for March 15, 2012."));
-        dateField.setDefaultValue(expiryDate);
         offerForm.add(dateField);
 
-        final HtmlTextArea descriptionField = new HtmlTextArea(OfferAction.DESCRIPTION_CODE, Context.tr("Description of the offer"), 10, 80);
-        descriptionField.setDefaultValue(description);
+        final FormFieldData descriptionFieldData = offerActionUrl.getExpiryDateParameter().formFieldData();
+        final HtmlTextArea descriptionField = new HtmlTextArea(descriptionFieldData, Context.tr("Description of the offer"), 10, 80);
         offerForm.add(descriptionField);
 
         final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Make an offer"));

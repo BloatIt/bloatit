@@ -13,8 +13,6 @@ package com.bloatit.web.linkable.money;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.math.BigDecimal;
-
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.components.HtmlParagraph;
 import com.bloatit.framework.webserver.components.HtmlTitleBlock;
@@ -57,7 +55,7 @@ public final class AccountChargingPage extends LoggedPage {
         final PaylineActionUrl chargeActionUrl = new PaylineActionUrl();
         final HtmlForm form = new HtmlForm(chargeActionUrl.urlString());
         {
-            final FormFieldData<BigDecimal> loginData = chargeActionUrl.getAmountParameter().formFieldData();
+            final FormFieldData loginData = chargeActionUrl.getAmountParameter().formFieldData();
             final HtmlMoneyField amount = new HtmlMoneyField(loginData, "Amount");
             final HtmlSubmit submit = new HtmlSubmit(tr("Submit"));
 

@@ -13,8 +13,6 @@ package com.bloatit.web.pages;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import java.math.BigDecimal;
-
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
@@ -64,12 +62,12 @@ public final class ContributePage extends LoggedPage {
         contribForm.setCssClass("padding_box");
 
         // Input field : choose amount
-        final FormFieldData<BigDecimal> amountFieldData = formActionUrl.getAmountParameter().formFieldData();
+        final FormFieldData amountFieldData = formActionUrl.getAmountParameter().formFieldData();
         final HtmlMoneyField contribField = new HtmlMoneyField(amountFieldData, tr("Choose amount: "));
         contribField.setComment(Context.tr("The minimun is 1€. Don't use cents."));
 
         // Input field : comment
-        final FormFieldData<String> commentFieldData = formActionUrl.getCommentParameter().formFieldData();
+        final FormFieldData commentFieldData = formActionUrl.getCommentParameter().formFieldData();
         final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment: "), 10, 60);
         commentField.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list."));
 
