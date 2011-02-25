@@ -28,6 +28,7 @@ import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
+import com.bloatit.framework.webserver.components.form.HtmlTextField;
 import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Group;
@@ -36,6 +37,7 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlDemandSumary;
 import com.bloatit.web.components.HtmlDemandSumary.Compacity;
+import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 
@@ -109,13 +111,44 @@ public final class OfferPage extends LoggedPage {
 
         // Date field
         final FieldData dateFieldData = offerActionUrl.getExpiryDateParameter().fieldData();
-        final HtmlDateField dateField = new HtmlDateField(dateFieldData, Context.tr("Expiration date"));
-        dateField.setComment(Context.tr("Date formatted in ISO format. Example: 2012/03/15 for March 15, 2012."));
+        final HtmlDateField dateField = new HtmlDateField(dateFieldData, Context.tr("Release date"));
+        dateField.setComment(Context.tr("You will have to release this feature before the release date."));
         offerForm.add(dateField);
 
+        // Description
         final FieldData descriptionFieldData = offerActionUrl.getExpiryDateParameter().fieldData();
-        final HtmlTextArea descriptionField = new HtmlTextArea(descriptionFieldData, Context.tr("Description of the offer"), 10, 80);
+        final HtmlTextArea descriptionField = new HtmlTextArea(descriptionFieldData, Context.tr("Description"), 10, 80);
         offerForm.add(descriptionField);
+
+        // locale
+        final FieldData localeFieldData = offerActionUrl.getLocaleParameter().fieldData();
+        final LanguageSelector localeField = new LanguageSelector(localeFieldData, Context.tr("description langue"));
+        localeField.setComment(Context.tr("The language in which you have maid the description."));
+        offerForm.add(localeField);
+
+        // days before validation
+        final FieldData nbDaysFiledData = offerActionUrl.getDaysBeforeValidationParameter().fieldData();
+        final HtmlTextField nbDaysField = new HtmlTextField(nbDaysFiledData, Context.tr("Days before validation"));
+        nbDaysField.setComment(Context.tr("The number of days to wait before this offer is can be validated. "
+                + "During this time users can add bugs un the bug tracker. Fatal bugs have to be colsed before the validation."));
+        offerForm.add(nbDaysField);
+
+        // percent Fatal
+        final FieldData percentFatalFiledData = offerActionUrl.getPercentFatalParameter().fieldData();
+        final HtmlTextField percentFatalField = new HtmlTextField(percentFatalFiledData, Context.tr("Percent gained when no FATAL bugs"));
+        percentFatalField.setComment(Context.tr("If you want to add some warenty to the contributor you can say that you want to gain less than 100% "
+                + "of the amount on this feature request when all the FATAL bugs are closed. "
+                + "The money left will be transfered when all the MAJOR bugs are closed. If you specify this field, you have to specify the next one on MAJOR bug percent. "
+                + "By default, all the money on this feature request is transfered when all the FATAL bugs are closed."));
+        offerForm.add(percentFatalField);
+
+        // percent Major
+        final FieldData percentMajorFiledData = offerActionUrl.getPercentMajorParameter().fieldData();
+        final HtmlTextField percentMajorField = new HtmlTextField(percentMajorFiledData, Context.tr("Percent gained when no MAJOR bugs"));
+        percentMajorField.setComment(Context.tr("If you specified a value for the 'FATAL bugs percent', you have to also specify one for the MAJOR bugs. "
+                + "You can say that you want to gain less than 100% of the amount on this offer when all the MAJOR bugs are closed. "
+                + "The money left will be transfered when all the MINOR bugs are closed. Make sure that (FATAL percent + MAJOR percent) <= 100."));
+        offerForm.add(percentMajorField);
 
         final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Make an offer"));
         offerForm.add(offerButton);

@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
+import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;
@@ -106,6 +107,10 @@ public final class OfferAction extends LoggedAction {
             session.notifyBad("You have to specify both the Major and Fatal percent.");
             return session.pickPreferredPage();
         }
+        if (percentFatal != null && percentFatal + percentMajor > 100) {
+            session.notifyBad("Major + Fatal percent cannot be > 100 !!");
+            return session.pickPreferredPage();
+        }
         if (draftOffer != null && !draftOffer.isDraft()) {
             session.notifyBad("The specified offer is not editable. You cannot add a lot in it.");
             return session.pickPreferredPage();
@@ -118,13 +123,14 @@ public final class OfferAction extends LoggedAction {
                                               description,
                                               locale,
                                               expiryDate.getJavaDate(),
-                                              daysBeforeValidation);
+                                              daysBeforeValidation * DateUtils.SECOND_PER_DAY);
                 if (group != null) {
                     offer.setAsGroup(group);
                 }
                 constructingBatch = offer.getBatches().iterator().next();
             } else {
-                constructingBatch = draftOffer.addBatch(price, description, locale, expiryDate.getJavaDate(), daysBeforeValidation);
+                constructingBatch = draftOffer.addBatch(price, description, locale, expiryDate.getJavaDate(), daysBeforeValidation
+                        * DateUtils.SECOND_PER_DAY);
             }
             if (percentFatal != null && percentMajor != null) {
                 constructingBatch.updateMajorFatalPercent(percentFatal, percentMajor);
