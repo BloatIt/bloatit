@@ -21,6 +21,7 @@ import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Demand;
+import com.bloatit.model.Project;
 import com.bloatit.model.right.AuthToken;
 
 /**

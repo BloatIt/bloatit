@@ -30,6 +30,7 @@ import com.bloatit.framework.FrameworkConfiguration;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.FileMetadata;
 import com.bloatit.model.Member;
+import com.bloatit.model.lists.FileMetadataList;
 
 /**
  * The Class FileMetadataManager is an utility class containing static methods
@@ -190,7 +191,7 @@ public final class FileMetadataManager {
      * @return
      */
     public static PageIterable<FileMetadata> getAll() {
-        return DBRequests.getAll(FileMetadata.class);
+        return new FileMetadataList(DBRequests.getAll(DaoFileMetadata.class));
     }
 
 }

@@ -30,7 +30,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
+import com.bloatit.framework.utils.PageIterable;
 
 @Entity
 public final class DaoProject extends DaoIdentifiable {
@@ -109,6 +111,12 @@ public final class DaoProject extends DaoIdentifiable {
      */
     public Set<DaoDemand> getDemands() {
         return demands;
+    }
+
+    public PageIterable<DaoDemand> getAllDemands() {
+        final QueryCollection<DaoDemand> q = new QueryCollection<DaoDemand>("FROM DaoDemand as x WHERE x.project = :project");
+        q.setEntity("project", this);
+        return q;
     }
 
     /**

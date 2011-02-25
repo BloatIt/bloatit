@@ -102,8 +102,8 @@ public class Project extends Identifiable<DaoProject> {
      */
     public final DemandList getDemands() throws UnauthorizedOperationException {
         tryAccess(new ProjectRight.Name(), Action.READ);
-        // TODO: implement
-        return null;
+        return new DemandList(getDao().getAllDemands());
+        
     }
 
     public void setImage(FileMetadata fileImage) {
