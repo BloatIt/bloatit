@@ -6,7 +6,9 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.data.DaoBatch.BatchState;
@@ -85,7 +87,7 @@ public class RestBatch extends RestElement<Batch> {
      * <p>
      * Finds the RestBatch matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestBatch
      */
     @REST(name = "batchs", method = RequestMethod.GET)
@@ -114,8 +116,6 @@ public class RestBatch extends RestElement<Batch> {
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
 
-    // TODO Generate
-
     @XmlAttribute
     @XmlID
     public String getId() {
@@ -125,119 +125,101 @@ public class RestBatch extends RestElement<Batch> {
     /**
      * @see com.bloatit.model.Batch#getOffer()
      */
-    // @XmlElement
+    @XmlElement
+    @XmlIDREF
     public RestOffer getOffer() {
-        // TODO auto-generated code stub
         RestOffer offer = new RestOffer(model.getOffer());
+        if (offer.isNull()) {
+            return null;
+        }
         return offer;
     }
 
     /**
      * @see com.bloatit.model.Batch#getReleaseDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getReleaseDate() {
-        // TODO auto-generated code stub
-        Date releaseDate = model.getReleaseDate();
-        return releaseDate;
+        return model.getReleaseDate();
     }
 
     /**
      * @see com.bloatit.model.Batch#getFatalBugsPercent()
      */
-    // @XmlElement
+    @XmlElement
     public int getFatalBugsPercent() {
-        // TODO auto-generated code stub
-        int fatalBugsPercent = model.getFatalBugsPercent();
-        return fatalBugsPercent;
+        return model.getFatalBugsPercent();
     }
 
     /**
      * @see com.bloatit.model.Batch#getMajorBugsPercent()
      */
-    // @XmlElement
+    @XmlElement
     public int getMajorBugsPercent() {
-        // TODO auto-generated code stub
-        int majorBugsPercent = model.getMajorBugsPercent();
-        return majorBugsPercent;
+        return model.getMajorBugsPercent();
     }
 
     /**
      * @see com.bloatit.model.Batch#getMinorBugsPercent()
      */
-    // @XmlElement
+    @XmlElement
     public int getMinorBugsPercent() {
-        // TODO auto-generated code stub
-        int minorBugsPercent = model.getMinorBugsPercent();
-        return minorBugsPercent;
+        return model.getMinorBugsPercent();
     }
 
     /**
      * @see com.bloatit.model.Batch#getExpirationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getExpirationDate() {
-        // TODO auto-generated code stub
-        Date expirationDate = model.getExpirationDate();
-        return expirationDate;
+        return model.getExpirationDate();
     }
 
     /**
      * @see com.bloatit.model.Batch#getAmount()
      */
-    // @XmlElement
+    @XmlAttribute
     public BigDecimal getAmount() {
-        // TODO auto-generated code stub
-        BigDecimal amount = model.getAmount();
-        return amount;
+        return model.getAmount();
     }
 
     /**
      * @see com.bloatit.model.Batch#getTitle()
      */
-    // @XmlElement
+    @XmlElement
     public String getTitle() {
-        // TODO auto-generated code stub
-        String title = model.getTitle();
-        return title;
+        return model.getTitle();
     }
 
     /**
      * @see com.bloatit.model.Batch#getDescription()
      */
-    // @XmlElement
+    @XmlElement
     public String getDescription() {
-        // TODO auto-generated code stub
-        String description = model.getDescription();
-        return description;
+        return model.getDescription();
     }
 
     /**
      * @see com.bloatit.model.Batch#getPosition()
      */
-    // @XmlElement
+    @XmlElement
     public int getPosition() {
-        // TODO auto-generated code stub
-        int position = model.getPosition();
-        return position;
+        return model.getPosition();
     }
 
     /**
      * @see com.bloatit.model.Batch#getBatchState()
      */
-    // @XmlElement
+    @XmlElement
     public BatchState getBatchState() {
-        // TODO auto-generated code stub
-        BatchState batchState = model.getBatchState();
-        return batchState;
+        return model.getBatchState();
     }
 
     /**
      * @see com.bloatit.model.Batch#getReleases()
      */
-    // @XmlElement
+    @XmlElement
     public RestReleaseList getReleases() {
-        // TODO auto-generated code stub
         return new RestReleaseList(model.getReleases());
     }
 
