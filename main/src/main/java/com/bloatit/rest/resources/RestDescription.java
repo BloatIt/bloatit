@@ -34,7 +34,7 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Description;
 import com.bloatit.model.managers.DescriptionManager;
-import com.bloatit.rest.adapter.LocaleAdapter;
+import com.bloatit.rest.adapters.LocaleAdapter;
 import com.bloatit.rest.list.RestDescriptionList;
 import com.bloatit.rest.list.RestTranslationList;
 
@@ -143,7 +143,11 @@ public class RestDescription extends RestElement<Description> {
      */
     @XmlElement
     public RestTranslation getDefaultTranslation() {
-        return new RestTranslation(model.getDefaultTranslation());
+        RestTranslation restTranslation = new RestTranslation(model.getDefaultTranslation());
+        if(restTranslation.isNull()){
+            return null;
+        }
+        return restTranslation;
     }
 
     /**

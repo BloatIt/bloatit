@@ -28,15 +28,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Transaction;
 import com.bloatit.model.managers.TransactionManager;
+import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestTransactionList;
 
 /**
@@ -143,11 +144,14 @@ public class RestTransaction extends RestElement<Transaction> {
      * @see com.bloatit.model.Transaction#getCreationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() throws RestException {
         try {
             return model.getCreationDate();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getCreationDate on Transaction", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getCreationDate on Transaction", e);
         }
     }
 
@@ -159,7 +163,9 @@ public class RestTransaction extends RestElement<Transaction> {
         try {
             return model.getAmount();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on Transaction", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getAmount on Transaction", e);
         }
     }
 
@@ -172,7 +178,9 @@ public class RestTransaction extends RestElement<Transaction> {
         try {
             return new RestInternalAccount(model.getFrom());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getFrom on Transaction", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getFrom on Transaction", e);
         }
     }
 

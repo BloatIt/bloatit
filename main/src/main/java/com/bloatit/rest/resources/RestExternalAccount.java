@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -34,9 +35,9 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.ExternalAccount;
 import com.bloatit.model.managers.ExternalAccountManager;
+import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestExternalAccountList;
 import com.bloatit.rest.list.RestTransactionList;
 
@@ -148,7 +149,9 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
         try {
             return model.getType();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getType on ExternalAccount", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getType on ExternalAccount", e);
         }
     }
 
@@ -160,7 +163,9 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
         try {
             return model.getBankCode();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getBankCode on ExternalAccount", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getBankCode on ExternalAccount", e);
         }
     }
 
@@ -168,11 +173,14 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      * @see com.bloatit.model.Account#getCreationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() throws RestException {
         try {
             return model.getCreationDate();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getCreationDate on ExternalAccount", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getCreationDate on ExternalAccount", e);
         }
     }
 
@@ -184,7 +192,9 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
         try {
             return model.getAmount();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getAmount on ExternalAccount", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getAmount on ExternalAccount", e);
         }
     }
 
@@ -196,7 +206,9 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
         try {
             return new RestTransactionList(model.getTransactions());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getTransactions on ExternalAccount", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getTransactions on ExternalAccount", e);
         }
     }
 
@@ -204,12 +216,16 @@ public class RestExternalAccount extends RestElement<ExternalAccount> {
      * @see com.bloatit.model.Account#getLastModificationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getLastModificationDate() throws RestException {
         try {
             Date lastModificationDate = model.getLastModificationDate();
             return lastModificationDate;
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getLastModificationDate on ExternalAccount", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getLastModificationDate on ExternalAccount",
+            // e);
         }
     }
 

@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -33,9 +34,9 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Group;
 import com.bloatit.model.managers.GroupManager;
+import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestGroupList;
 import com.bloatit.rest.list.RestMemberList;
 
@@ -171,7 +172,9 @@ public class RestGroup extends RestElement<Group> {
         try {
             return model.getLogin();
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getLogin on Group", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getLogin on Group", e);
         }
     }
 
@@ -183,7 +186,9 @@ public class RestGroup extends RestElement<Group> {
         try {
             return new RestInternalAccount(model.getInternalAccount());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getInternalAccount on Group", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getInternalAccount on Group", e);
         }
     }
 
@@ -195,7 +200,9 @@ public class RestGroup extends RestElement<Group> {
         try {
             return new RestExternalAccount(model.getExternalAccount());
         } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getExternalAccount on Group", e);
+            return null;
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getExternalAccount on Group", e);
         }
     }
 
@@ -208,7 +215,8 @@ public class RestGroup extends RestElement<Group> {
             return model.getEmail();
         } catch (UnauthorizedOperationException e) {
             return null;
-//            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getEmail on Group", e);
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getEmail on Group", e);
         }
     }
 
@@ -216,12 +224,14 @@ public class RestGroup extends RestElement<Group> {
      * @see com.bloatit.model.Actor#getDateCreation()
      */
     @XmlAttribute(name = "creationdate")
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getDateCreation() throws RestException {
         try {
             return model.getDateCreation();
         } catch (UnauthorizedOperationException e) {
             return null;
-//            throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED, "Not allowed to use getDateCreation on Group", e);
+            // throw new RestException(StatusCode.ERROR_405_METHOD_NOT_ALLOWED,
+            // "Not allowed to use getDateCreation on Group", e);
         }
     }
 
