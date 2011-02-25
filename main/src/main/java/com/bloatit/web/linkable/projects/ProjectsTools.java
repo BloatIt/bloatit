@@ -16,7 +16,7 @@ public class ProjectsTools {
 
     public static HtmlElement getProjectLogo(Project project) throws UnauthorizedOperationException {
 
-        HtmlDiv logoDiv = new HtmlDiv("project_logo");
+        HtmlDiv logoDiv = new HtmlDiv("project_logo_block");
         if (project.getImage() == null) {
             logoDiv.add(new HtmlImage(new Image("idea.png", Image.ImageType.LOCAL), tr("Project logo"), "project_logo"));
         } else {

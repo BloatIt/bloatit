@@ -32,17 +32,13 @@
     }
 }
 
-.project_image {
+.demand_summary_left {
     padding-right: 15px;
     border-right: 2px solid @border_color;
 
 }
 
-.demand_project_title {
-    a {
-        color: @project_color;
-    }
-}
+
 
 
 .demand_summary_popularity {
@@ -56,6 +52,10 @@
     display:table-cell;
     width:100%;
     padding-bottom: 10px;
+    
+    .progress_text {
+        font-size: 1.1em;
+    }
 }
 
 .demand_summary_share_button {
@@ -64,79 +64,7 @@
     width:50px;
 }
 
-.progress_bar_block{
-    display:inline-block;
-    margin-left:50px;
-    margin-right:50px;
-    width:80%;
-}
 
-.progress_bar_background{
-    display:block;
-    .rounded_corners(7px);
-    padding:0;
-    margin:0;
-    height:16px;
-    border: 1px solid @default_background_color;
-    background: @default_background_color;
-    padding:0;
-    margin-bottom:0px;
-    width:100%;
-
-
-}
-
-.progress_bar_border{
-    //margin-left: 50px;
-    //margin-right: 50px;
-    display:block;
-    .rounded_corners(7px);
-
-    height:16px;
-    border: 1px solid @progress_border_color;
-    background: transparent;
-    padding:0;
-    margin:0;
-    margin-left:-1px;
-   
-    margin-top: -18px;
-    width:100%;
-}
-
-
-.progress_bar_state{
-    display:block;
-    
-    background: @progress_color;
-    
-    .horizontal-gradient(@progress_color_dark, @progress_color_light);
-    
-    .rounded_corners(7px);
-    height:18px;
-    padding:0;
-    margin:0;
-
-     margin-top: -18px;
-    
-}
-
-.demand_progress_text {
-     color: @light_text_color;
-     font-size: 1em;
-     margin: 0px;
-     padding: 0px;
-     margin-top : 5px;
-     margin-bottom : 7px;
-     text-align: center;
-     .important {
-        font-size: 1.2em;
-        margin-left: 15px;
-        margin-right: 15px;
-        color:@title_color;
-     }
-     
-    
-}
 
 .demand_summary_actions {
     width:100%;
@@ -355,66 +283,3 @@ display:table-cell;
     }
 }
 
-
-
-/*
-// displays the description of the offer
-.offer_block{
-    margin-top:1em;
-    padding:0.5em;
-    -moz-border-radius:5px;
-    -webkit-border-radius:5px;
-    -o-border-radius:5px;
-    -ms-border-radius:5px;
-    -khtml-border-radius:5px;
-    border-radius:5px;
-    border: 1px solid rgb(230,230,230);
-    background:rgb(253,253,253);
-}
-
-// displays the description of the offer
-.offer_block_validated{
-    margin-top:1em;
-    padding:0.5em;
-    -moz-border-radius:5px;
-    -webkit-border-radius:5px;
-    -o-border-radius:5px;
-    -ms-border-radius:5px;
-    -khtml-border-radius:5px;
-    border-radius:5px;
-    border: 1px solid rgb(230,230,230);
-    background:rgb(220,255,220);
-}
-
-// displays the list of offers
-.offers_block{
-    margin :1em;
-    line-height: 0.9em;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    padding-bottom:0.5em;
-}
-
-.offer_validated_info{
-    font-weight:bold;
-    float:left;
-}
-
-// displays the description of the offer
-.offer_info_block{
-    padding-left: 1em;
-}
-
-.offer_maint_block{
-    margin-top:0.3em;
-}
-
-.offer_avatar{
-    float: left;
-    max-height: 120px;
-    max-width: 100px;
-    margin-right: 1em;
-}
-
-
-*/
