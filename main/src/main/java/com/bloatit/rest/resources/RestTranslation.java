@@ -36,7 +36,8 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Translation;
 import com.bloatit.model.managers.TranslationManager;
-import com.bloatit.rest.adapter.LocaleAdapter;
+import com.bloatit.rest.adapters.DateAdapter;
+import com.bloatit.rest.adapters.LocaleAdapter;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestTranslationList;
 
@@ -185,6 +186,7 @@ public class RestTranslation extends RestElement<Translation> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter( DateAdapter.class )
     public Date getCreationDate() {
         return model.getCreationDate();
     }
@@ -203,7 +205,11 @@ public class RestTranslation extends RestElement<Translation> {
      */
     @XmlElement
     public RestGroup getAsGroup() {
-        return new RestGroup(model.getAsGroup());
+        RestGroup restGroup = new RestGroup(model.getAsGroup());
+        if(restGroup.isNull()){
+            return null;
+        }
+        return restGroup;
     }
 
     /**

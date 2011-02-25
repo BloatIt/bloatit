@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoBatch.BatchState;
 import com.bloatit.framework.rest.RestElement;
@@ -35,6 +36,7 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Batch;
 import com.bloatit.model.managers.BatchManager;
+import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestBatchList;
 import com.bloatit.rest.list.RestReleaseList;
 
@@ -155,6 +157,7 @@ public class RestBatch extends RestElement<Batch> {
      * @see com.bloatit.model.Batch#getReleaseDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getReleaseDate() {
         return model.getReleaseDate();
     }
@@ -187,6 +190,7 @@ public class RestBatch extends RestElement<Batch> {
      * @see com.bloatit.model.Batch#getExpirationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter( DateAdapter.class )
     public Date getExpirationDate() {
         return model.getExpirationDate();
     }

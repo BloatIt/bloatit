@@ -16,16 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.rest.adapter;
+package com.bloatit.rest.adapters;
 
-import java.util.Locale;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
+public class DateAdapter extends XmlAdapter<String, Date> {
 
-public class LocaleAdapter extends XmlAdapter<String, Locale> {
+    private static DateFormat ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     /*
      * (non-Javadoc)
@@ -33,28 +34,12 @@ public class LocaleAdapter extends XmlAdapter<String, Locale> {
      * javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
      */
     @Override
-    public Locale unmarshal(String localeString) throws Exception {
-        if(localeString.isEmpty()){
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Locale mustn't be empty !");
+    public String marshal(Date date) throws Exception {
+        if (date == null) {
+            return ISO8601Local.format(new Date());
         }
-        
-        String sep = " ";
-        if (localeString.contains("_")) {
-            sep = "_";
-        } else if( localeString.contains("-") ){
-            sep = "-";
-        } 
 
-        if ( sep.equals(" ")) {
-            return new Locale(localeString);
-        }
-        
-        String[] parts = localeString.split(sep);
-        if(parts.length > 1){
-            return new Locale(parts[0], parts[1]);
-        }
-        
-        return new Locale(parts[0]);
+        return ISO8601Local.format(date);
     }
 
     /*
@@ -63,7 +48,8 @@ public class LocaleAdapter extends XmlAdapter<String, Locale> {
      * javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
      */
     @Override
-    public String marshal(Locale locale) throws Exception {
-        return locale.toString();
+    public Date unmarshal(String dateString) throws Exception {
+        return ISO8601Local.parse(dateString);
     }
+
 }

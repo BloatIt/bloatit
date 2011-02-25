@@ -29,6 +29,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
@@ -36,15 +38,14 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.framework.rest.exception.RestException;
-import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
-import com.bloatit.model.Comment;
-import com.bloatit.model.Contribution;
 import com.bloatit.model.Demand;
-import com.bloatit.model.Description;
-import com.bloatit.model.Offer;
 import com.bloatit.model.demand.DemandManager;
+import com.bloatit.rest.adapters.DateAdapter;
+import com.bloatit.rest.list.RestCommentList;
+import com.bloatit.rest.list.RestContributionList;
 import com.bloatit.rest.list.RestDemandList;
+import com.bloatit.rest.list.RestOfferList;
 
 /**
  * <p>
@@ -86,7 +87,7 @@ import com.bloatit.rest.list.RestDemandList;
  * return a RestDemandList</li>
  * </p>
  */
-@XmlRootElement
+@XmlRootElement(name = "demand")
 @XmlAccessorType(XmlAccessType.NONE)
 public class RestDemand extends RestElement<Demand> {
     private Demand model;
@@ -114,7 +115,7 @@ public class RestDemand extends RestElement<Demand> {
      * <p>
      * Finds the RestDemand matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestDemand
      */
     @REST(name = "demands", method = RequestMethod.GET)
@@ -153,13 +154,23 @@ public class RestDemand extends RestElement<Demand> {
     }
 
     @XmlAttribute
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public Date getCreationDate() {
         return model.getCreationDate();
     }
 
-    // @XmlAttribute
+    @XmlAttribute
     public PopularityState getState() {
         return model.getState();
+    }
+
+    @XmlElement
+    public String getTitle() throws RestException {
+        try {
+            return model.getTitle();
+        } catch (UnauthorizedOperationException e) {
+            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getTitle()");
+        }
     }
 
     @XmlAttribute
@@ -167,20 +178,19 @@ public class RestDemand extends RestElement<Demand> {
         return model.getPopularity();
     }
 
-    // @XmlElement
-    public PageIterable<Comment> getComments() throws RestException {
+    @XmlElement
+    public RestCommentList getComments() throws RestException {
         try {
-            return model.getComments();
+            return new RestCommentList(model.getComments());
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getComments()");
         }
     }
 
-    // @XmlElement
-    public PageIterable<Contribution> getContributions() throws RestException {
-
+    @XmlElement
+    public RestContributionList getContributions() throws RestException {
         try {
-            return model.getContributions();
+            return new RestContributionList(model.getContributions());
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getContributions()");
         }
@@ -204,10 +214,10 @@ public class RestDemand extends RestElement<Demand> {
         }
     }
 
-    // @XmlElement
-    public Description getDescription() throws RestException {
+    @XmlElement
+    public RestDescription getDescription() throws RestException {
         try {
-            return model.getDescription();
+            return new RestDescription(model.getDescription());
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getDescription()");
         }
@@ -223,27 +233,14 @@ public class RestDemand extends RestElement<Demand> {
         }
     }
 
-    // @XmlElement
-    public PageIterable<Offer> getOffers() throws RestException {
+    @XmlElement
+    public RestOfferList getOffers() throws RestException {
         try {
-            return model.getOffers();
+            return new RestOfferList(model.getOffers());
         } catch (UnauthorizedOperationException e) {
             throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getOffers()");
         }
     }
-
-    @XmlElement
-    public String getTitle() throws RestException {
-        try {
-            return model.getTitle();
-        } catch (UnauthorizedOperationException e) {
-            throw new RestException(StatusCode.ERROR_403_FORBIDDEN, "Not allowed to use Demand.getTitle()");
-        }
-    }
-
-    // ---------------------------------------------------------------------------------------
-    // -- Utils
-    // ---------------------------------------------------------------------------------------
 
     /**
      * Provided for JAXB

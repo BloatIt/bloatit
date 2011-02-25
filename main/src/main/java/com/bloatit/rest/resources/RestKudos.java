@@ -26,12 +26,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.managers.KudosManager;
+import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestKudosList;
 
 /**
@@ -119,7 +121,7 @@ public class RestKudos extends RestElement<Kudos> {
      * Finds the list of all (valid) RestKudos
      * </p>
      */
-    @REST(name = "kudoss", method = RequestMethod.GET)
+    @REST(name = "kudos", method = RequestMethod.GET)
     public static RestKudosList getAll() {
         return new RestKudosList(KudosManager.getAll());
     }
@@ -146,6 +148,7 @@ public class RestKudos extends RestElement<Kudos> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter( DateAdapter.class )
     public Date getCreationDate() {
         return model.getCreationDate();
     }

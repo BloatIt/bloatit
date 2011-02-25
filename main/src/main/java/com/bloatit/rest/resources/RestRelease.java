@@ -27,12 +27,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Release;
 import com.bloatit.model.managers.ReleaseManager;
+import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestFileMetadataList;
 import com.bloatit.rest.list.RestReleaseList;
@@ -173,6 +175,7 @@ public class RestRelease extends RestElement<Release> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlElement
+    @XmlJavaTypeAdapter( DateAdapter.class )
     public Date getCreationDate() {
         return model.getCreationDate();
     }

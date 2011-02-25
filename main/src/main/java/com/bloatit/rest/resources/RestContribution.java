@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.rest.RestElement;
@@ -38,6 +39,7 @@ import com.bloatit.framework.rest.exception.RestException;
 import com.bloatit.framework.webserver.masters.HttpResponse.StatusCode;
 import com.bloatit.model.Contribution;
 import com.bloatit.model.managers.ContributionManager;
+import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestContributionList;
 
 /**
@@ -168,6 +170,7 @@ public class RestContribution extends RestElement<Contribution> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter( DateAdapter.class )
     public Date getCreationDate() {
         return model.getCreationDate();
     }
