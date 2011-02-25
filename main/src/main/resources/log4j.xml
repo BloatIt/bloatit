@@ -42,6 +42,9 @@
 	<logger name="com.bloatit.rest">
 		<level value="trace" />
 	</logger>
+	<logger name="com.bloatit.cache">
+		<level value="info" />
+	</logger>
 
 	<root>
 		<priority value="trace" />

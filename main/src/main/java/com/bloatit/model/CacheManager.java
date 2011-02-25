@@ -60,7 +60,7 @@ public final class CacheManager {
      */
     public static void clear() {
         UniqueThreadCache.getCurrentCache().clear();
-        Log.model().trace("Model cache cleared.");
+        Log.cache().trace("Model cache cleared.");
     }
 
     /**
@@ -73,7 +73,7 @@ public final class CacheManager {
     @SuppressWarnings("rawtypes")
     public static Identifiable add(final Integer id, final Identifiable identifiable) {
         UniqueThreadCache.getCurrentCache().put(id, identifiable);
-        Log.model().trace("Add into model cache: " + id);
+        Log.cache().trace("Add into model cache: " + id);
         return identifiable;
     }
 
@@ -85,7 +85,7 @@ public final class CacheManager {
      */
     @SuppressWarnings("rawtypes")
     public static Identifiable get(final DaoIdentifiable identifiable) {
-        Log.model().trace("Get from model cache: " + identifiable.getId());
+        Log.cache().trace("Get from model cache: " + identifiable.getId());
         return UniqueThreadCache.getCurrentCache().get(identifiable.getId());
     }
 

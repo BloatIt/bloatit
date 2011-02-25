@@ -22,6 +22,7 @@ public final class Log {
     private static final Logger MAIL = Logger.getLogger("com.bloatit.mail");
     private static final Logger REST = Logger.getLogger("com.bloatit.rest");
     private static final Logger RESOURCE = Logger.getLogger("com.bloatit.resource");
+    private static final Logger CACHE = Logger.getLogger("com.bloatit.cache");
 
     public static Logger model() {
         return MODEL;
@@ -49,6 +50,10 @@ public final class Log {
 
     public static Logger resources() {
         return RESOURCE;
+    }
+    
+    public static Logger cache() {
+        return CACHE;
     }
 
 }
