@@ -34,7 +34,7 @@ import com.bloatit.model.Offer;
 import com.bloatit.model.Translation;
 import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.HtmlTools;
-import com.bloatit.web.demands.DemandTabPane;
+import com.bloatit.web.linkable.demands.DemandTabPane;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.FileResourceUrl;
 

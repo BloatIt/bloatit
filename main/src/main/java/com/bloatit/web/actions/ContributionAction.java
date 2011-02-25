@@ -25,7 +25,7 @@ import com.bloatit.framework.webserver.annotations.tr;
 import com.bloatit.framework.webserver.url.Url;
 import com.bloatit.model.Demand;
 import com.bloatit.model.Member;
-import com.bloatit.web.demands.DemandTabPane;
+import com.bloatit.web.linkable.demands.DemandTabPane;
 import com.bloatit.web.url.AccountChargingPageUrl;
 import com.bloatit.web.url.ContributePageUrl;
 import com.bloatit.web.url.ContributionActionUrl;

@@ -27,7 +27,7 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
-import com.bloatit.web.demands.DemandTabPane;
+import com.bloatit.web.linkable.demands.DemandTabPane;
 import com.bloatit.web.url.DemandPageUrl;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
