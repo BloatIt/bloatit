@@ -38,7 +38,8 @@ import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Bug;
 import com.bloatit.model.managers.BugManager;
-import com.bloatit.rest.adapter.LocaleAdapter;
+import com.bloatit.rest.adapters.DateAdapter;
+import com.bloatit.rest.adapters.LocaleAdapter;
 import com.bloatit.rest.list.RestBugList;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestFileMetadataList;
@@ -221,6 +222,7 @@ public class RestBug extends RestElement<Bug> {
      * @see com.bloatit.model.Bug#getLastUpdateDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter( DateAdapter.class )
     public Date getLastUpdateDate() {
         return model.getLastUpdateDate();
     }
@@ -229,6 +231,7 @@ public class RestBug extends RestElement<Bug> {
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter( DateAdapter.class )
     public Date getCreationDate() {
         return model.getCreationDate();
     }

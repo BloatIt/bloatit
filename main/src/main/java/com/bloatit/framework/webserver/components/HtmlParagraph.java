@@ -1,6 +1,7 @@
 package com.bloatit.framework.webserver.components;
 
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlTagText;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 
@@ -34,5 +35,10 @@ public class HtmlParagraph extends HtmlBranch {
     public HtmlParagraph(final HtmlTagText htmlText) {
         super("p");
         add(htmlText);
+    }
+
+    public HtmlParagraph(HtmlElement content) {
+        super("p");
+        add(content);
     }
 }

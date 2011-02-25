@@ -26,12 +26,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.managers.HighlightDemandManager;
+import com.bloatit.rest.adapters.DateAdapter;
 import com.bloatit.rest.list.RestHighlightDemandList;
 
 /**
@@ -154,6 +156,7 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
      * @see com.bloatit.model.HighlightDemand#getActivationDate()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter( DateAdapter.class )
     public Date getActivationDate() {
         return model.getActivationDate();
     }

@@ -113,7 +113,7 @@ public final class DaoDescription extends DaoIdentifiable {
      * PageIterable This will return every translation EVEN this description.
      */
     public PageIterable<DaoTranslation> getTranslations() {
-        return new QueryCollection<DaoTranslation>("from DaoTransaltion as t where t.description = :this").setEntity("this", this);
+        return new QueryCollection<DaoTranslation>("from DaoTranslation as t where t.description = :this").setEntity("this", this);
     }
 
     /**

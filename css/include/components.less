@@ -131,7 +131,7 @@ legend {
             margin-left: 0em;
         }
         
-        input {
+        .input_field {
             float:left;
             margin-right: 1em;
         }
@@ -162,8 +162,8 @@ label{
 input[type=text],
 input[type=password]{
        background: rgba(255, 255, 255, 0.9);
-       background:-moz-linear-gradient(90deg, #fff, #eee); /* Firefox */
-       background:-webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff), color-stop(0.2, #fff)); /* Webkit */
+       background:-moz-linear-gradient(90deg, #fff, #eee); // Firefox 
+       background:-webkit-gradient(linear, left top, left bottom, from(#eee), to(#fff), color-stop(0.2, #fff)); // Webkit 
        border:1px solid #aaa;
        -moz-border-radius:3px;
        -webkit-border-radius:3px;
@@ -177,9 +177,24 @@ input[type=password]:focus{
        border-color:#093c75;
        -moz-box-shadow:0 0 3px #0459b7;
        -webkit-box-shadow:0 0 3px #0459b7;
-       outline:none; /* Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome */
+       outline:none; // Pour enlever le contour jaune lorsque l'on sélectionne un input dans Chrome 
 }
 
+.money_input {
+
+    input {
+        width: 100px;
+        text-align: right;
+        font-size: 1em;    
+    }
+    font-size: 2em;
+}
+
+
+input:after
+{
+    content: "€";
+}
 
 .input_long_500px {
     width: 500px;
@@ -534,4 +549,16 @@ blockquote {
     padding-left: 5px;
     padding-right: 0;
     background-color: @default_background_color;   
+}
+
+dd {
+    margin-left: 0px;
+    padding-left: 30px;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+    border-bottom : 1px solid @border_color;
+}
+
+dd:last-child {
+    border-bottom : none;
 }

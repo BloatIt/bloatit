@@ -149,35 +149,48 @@ body {
 }
 
 .project_logo_block {
-    width: 90px;
-    height: 90px;
+    width: 64px;
+    height: 64px;
     text-align:center;
 }
 
 .project_logo {
-    max-width: 90px;
-    max-height: 90px;
+    max-width: 64px;
+    max-height: 64px;
 }
 
 .two_column {
+ border-spacing: 15px 0px;
+}
 
+.left_column_block_without_box {
+    display: table-cell;    
+    width: 100%;
+    border-spacing:0px;
 }
 
 .left_column_block {
     display: table-cell;    
-        width: 100%;
+    width: 100%;
+    .box;
+    border-spacing:0px;   
 }
 
 .right_column_block {
     display: table-cell;
-        .box;
+    .box;
+    border-spacing:0px;
+}
+
+.left_column_without_box {
+
 
 }
 
 .left_column {
-    margin-right:15px;
-
+    padding: 10px;
 }
+
 
 .right_column {
 
@@ -188,9 +201,9 @@ body {
 
 .side_bar_element {
     font-size: 0.8em;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
     border-bottom: 1px solid @border_color;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     
     .float_right {
         margin-bottom:5px;

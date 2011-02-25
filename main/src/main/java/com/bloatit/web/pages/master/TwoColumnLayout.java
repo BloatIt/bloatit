@@ -10,10 +10,14 @@ public class TwoColumnLayout extends HtmlDiv {
     private final HtmlDiv rightColumn;
 
     public TwoColumnLayout() {
+        this(false);
+    }
+
+    public TwoColumnLayout(boolean box) {
         super("two_column");
-        HtmlDiv leftColumnBlock = new HtmlDiv("left_column_block");
+        HtmlDiv leftColumnBlock = new HtmlDiv((box ?"left_column_block":"left_column_block_without_box"));
         HtmlDiv rightColumnBlock = new HtmlDiv("right_column_block");
-        leftColumn = new HtmlDiv("left_column");
+        leftColumn = new HtmlDiv((box ?"left_column":"left_column_without_box"));
         rightColumn = new HtmlDiv("right_column");
         leftColumnBlock.add(leftColumn);
         rightColumnBlock.add(rightColumn);
