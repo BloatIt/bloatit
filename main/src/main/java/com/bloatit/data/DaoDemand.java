@@ -19,7 +19,6 @@ package com.bloatit.data;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -306,22 +305,23 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
-        // If there is no validated offer then we try to find a pending offer
-        final String queryString = "FROM DaoOffer " + //
-                "WHERE demand = :this " + //
-                "AND state <= :state " + // <= PENDING and VALIDATED.
-                "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
-                "AND popularity >= 0 " + //
-                "ORDER BY amount ASC, creationDate DESC";
-        try {
-            return (DaoOffer) SessionManager.createQuery(queryString)
-                                            .setEntity("this", this)
-                                            .setParameter("state", DaoKudosable.PopularityState.PENDING)
-                                            .iterate()
-                                            .next();
-        } catch (final NoSuchElementException e) {
-            return null;
-        }
+        throw new FatalErrorException("plop");
+//        // If there is no validated offer then we try to find a pending offer
+//        final String queryString = "FROM DaoOffer " + //
+//                "WHERE demand = :this " + //
+//                "AND state <= :state " + // <= PENDING and VALIDATED.
+//                "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
+//                "AND popularity >= 0 " + //
+//                "ORDER BY amount ASC, creationDate DESC";
+//        try {
+//            return (DaoOffer) SessionManager.createQuery(queryString)
+//                                            .setEntity("this", this)
+//                                            .setParameter("state", DaoKudosable.PopularityState.PENDING)
+//                                            .iterate()
+//                                            .next();
+//        } catch (final NoSuchElementException e) {
+//            return null;
+//        }
     }
 
     public Set<DaoOffer> getOffers() {

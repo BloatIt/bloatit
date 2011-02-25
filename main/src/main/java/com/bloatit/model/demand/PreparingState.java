@@ -18,6 +18,7 @@ package com.bloatit.model.demand;
 
 import java.math.BigDecimal;
 
+import com.bloatit.data.DaoDemand.DemandState;
 import com.bloatit.model.Offer;
 
 // TODO: Auto-generated Javadoc
@@ -33,7 +34,7 @@ public class PreparingState extends CanContributeMetaState {
      */
     public PreparingState(final DemandImplementation demand) {
         super(demand);
-        demand.inPreparingState();
+        demand.setDemandStateUnprotected(getState());
     }
 
     /*
@@ -80,5 +81,10 @@ public class PreparingState extends CanContributeMetaState {
     @Override
     public AbstractDemandState notifyAddContribution() {
         return handleEvent();
+    }
+    
+    @Override
+    public final DemandState getState() {
+        return DemandState.PREPARING;
     }
 }

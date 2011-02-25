@@ -16,6 +16,8 @@
 //
 package com.bloatit.model.demand;
 
+import com.bloatit.data.DaoDemand.DemandState;
+
 /**
  * The Class DiscardedState.
  */
@@ -28,7 +30,7 @@ public class DiscardedState extends AbstractDemandState {
      */
     public DiscardedState(final DemandImplementation demand) {
         super(demand);
-        demand.inDiscardedState();
+        demand.setDemandStateUnprotected(getState());
     }
 
     /*
@@ -48,6 +50,11 @@ public class DiscardedState extends AbstractDemandState {
     @Override
     public AbstractDemandState popularityValidated() {
         return new PendingState(demand);
+    }
+    
+    @Override
+    public final DemandState getState() {
+        return DemandState.DISCARDED;
     }
 
 }

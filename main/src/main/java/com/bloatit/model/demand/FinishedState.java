@@ -16,6 +16,8 @@
 //
 package com.bloatit.model.demand;
 
+import com.bloatit.data.DaoDemand.DemandState;
+
 /**
  * The Class FinishedState. It is the final state. You cannot change of state
  * here (no event method implemented).
@@ -29,6 +31,11 @@ public class FinishedState extends AbstractDemandState {
      */
     public FinishedState(final DemandImplementation demand) {
         super(demand);
-        demand.inFinishedState();
+        demand.setDemandStateUnprotected(getState());
+    }
+    
+    @Override
+    public final DemandState getState() {
+        return DemandState.FINISHED;
     }
 }

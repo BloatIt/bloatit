@@ -16,6 +16,8 @@
 //
 package com.bloatit.model.demand;
 
+import com.bloatit.data.DaoDemand.DemandState;
+
 /**
  * The Class DeveloppingState.
  */
@@ -23,12 +25,12 @@ public class DevelopingState extends AbstractDemandState {
 
     /**
      * Instantiates a new developing state.
-     *
+     * 
      * @param demand the demand on which this state apply.
      */
     public DevelopingState(final DemandImplementation demand) {
         super(demand);
-        demand.inDevelopmentState();
+        demand.setDemandStateUnprotected(getState());
     }
 
     /*
@@ -61,4 +63,8 @@ public class DevelopingState extends AbstractDemandState {
         return this;
     }
 
+    @Override
+    public final DemandState getState() {
+        return DemandState.DEVELOPPING;
+    }
 }

@@ -16,6 +16,8 @@
 //
 package com.bloatit.model.demand;
 
+import com.bloatit.data.DaoDemand.DemandState;
+
 
 /**
  * The Class PendingState.
@@ -29,7 +31,7 @@ public class PendingState extends CanContributeMetaState {
      */
     public PendingState(final DemandImplementation demand) {
         super(demand);
-        demand.inPendingState();
+        demand.setDemandStateUnprotected(getState());
     }
 
     /*
@@ -51,5 +53,10 @@ public class PendingState extends CanContributeMetaState {
     @Override
     protected AbstractDemandState notifyAddContribution() {
         return this;
+    }
+    
+    @Override
+    public final DemandState getState() {
+        return DemandState.PENDING;
     }
 }

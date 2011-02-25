@@ -28,7 +28,7 @@ import com.bloatit.model.Offer;
  * demandState. Each sub-class is a state.
  */
 abstract class AbstractDemandState {
-
+    
     /** The demand. */
     protected final DemandImplementation demand;
 
@@ -46,15 +46,12 @@ abstract class AbstractDemandState {
      * 
      * @return the state
      */
-    public DemandState getState() {
-        return demand.getDao().getDemandState();
-    }
+    public abstract DemandState getState();
 
     /**
      * Event add offer. Called when an offer is add to the demand.
      * 
-     * @param offer the offer
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      */
     public AbstractDemandState eventAddOffer() {
@@ -66,7 +63,7 @@ abstract class AbstractDemandState {
      * Event remove offer.
      * 
      * @param offer the offer
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      */
     public AbstractDemandState eventRemoveOffer(final Offer offer) {
@@ -77,7 +74,7 @@ abstract class AbstractDemandState {
     /**
      * Event add contribution.
      * 
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      */
     public AbstractDemandState eventAddContribution() {
@@ -89,7 +86,7 @@ abstract class AbstractDemandState {
      * Event selected offer time out.
      * 
      * @param contribution the contribution
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      */
     public AbstractDemandState eventSelectedOfferTimeOut(final BigDecimal contribution) {
@@ -139,7 +136,7 @@ abstract class AbstractDemandState {
     /**
      * Event popularity pending.
      * 
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the demand was
      *             not in the right state (For example you cannot Finish a
@@ -153,7 +150,7 @@ abstract class AbstractDemandState {
     /**
      * Popularity validated.
      * 
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the demand was
      *             not in the right state (For example you cannot Finish a
@@ -167,7 +164,7 @@ abstract class AbstractDemandState {
     /**
      * Event batch released.
      * 
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the demand was
      *             not in the right state (For example you cannot Finish a
@@ -181,7 +178,7 @@ abstract class AbstractDemandState {
     /**
      * Event batch is rejected.
      * 
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the demand was
      *             not in the right state (For example you cannot Finish a
@@ -195,7 +192,7 @@ abstract class AbstractDemandState {
     /**
      * Event batch is validated.
      * 
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the demand was
      *             not in the right state (For example you cannot Finish a
@@ -209,7 +206,7 @@ abstract class AbstractDemandState {
     /**
      * Event offer is validated is called when every batches are finished.
      * 
-     * @return the state object representing the demandState, after recieving
+     * @return the state object representing the demandState, after receiving
      *         this event
      * @throws WrongStateException if this event occurs whereas the demand was
      *             not in the right state (For example you cannot Finish a
@@ -219,5 +216,5 @@ abstract class AbstractDemandState {
         // Implement me if you wish.
         throw new WrongStateException();
     }
-
+    
 }
