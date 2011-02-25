@@ -131,7 +131,6 @@ public abstract class UserContent<T extends DaoUserContent> extends Identifiable
 
     @Override
     protected EnumSet<UserGroupRight> calculateMyGroupRights(final Member member) {
-
         if (getAsGroup() != null && member.isInGroup(getAsGroup())) {
             return getAsGroup().getUserGroupRight(member);
         }

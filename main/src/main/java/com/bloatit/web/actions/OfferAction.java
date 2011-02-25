@@ -14,6 +14,8 @@ package com.bloatit.web.actions;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+import com.bloatit.common.Log;
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.DateUtils;
 import com.bloatit.framework.utils.i18n.DateLocale;
@@ -58,10 +60,9 @@ public final class OfferAction extends LoggedAction {
     private final String description;
 
     @RequestParam(role = Role.POST)
-    private final Locale locale;
+    private final String locale;
 
     @RequestParam(role = Role.POST)
-    @Optional
     private final Integer daysBeforeValidation;
 
     @RequestParam(role = Role.POST)
@@ -76,7 +77,7 @@ public final class OfferAction extends LoggedAction {
                      max = "100", maxErrorMsg = @tr("''%param'' is a percent, and must be lesser or equal to 100."))
     private final Integer percentMajor;
 
-    @RequestParam(role = Role.POST)
+    @RequestParam(role = Role.POST, suggestedValue = "true")
     private final Boolean isFinished;
 
     @RequestParam(role = Role.POST)
@@ -104,45 +105,60 @@ public final class OfferAction extends LoggedAction {
     @Override
     public Url doProcessRestricted(Member authenticatedMember) {
         if ((percentFatal != null && percentMajor == null) || (percentFatal == null && percentMajor != null)) {
-            session.notifyBad("You have to specify both the Major and Fatal percent.");
+            session.notifyBad(Context.tr("You have to specify both the Major and Fatal percent."));
             return session.pickPreferredPage();
         }
         if (percentFatal != null && percentFatal + percentMajor > 100) {
-            session.notifyBad("Major + Fatal percent cannot be > 100 !!");
+            session.notifyBad(Context.tr("Major + Fatal percent cannot be > 100 !!"));
             return session.pickPreferredPage();
         }
         if (draftOffer != null && !draftOffer.isDraft()) {
-            session.notifyBad("The specified offer is not editable. You cannot add a lot in it.");
+            session.notifyBad(Context.tr("The specified offer is not editable. You cannot add a lot in it."));
+            return session.pickPreferredPage();
+        }
+        if (group != null && !group.getUserGroupRight(authenticatedMember).contains(UserGroupRight.TALK)) {
+            session.notifyBad(Context.tr("You cannot talk on the behalf of this group."));
             return session.pickPreferredPage();
         }
         try {
             Batch constructingBatch;
+            Offer constructingOffer;
             if (draftOffer == null) {
-                Offer offer = demand.addOffer(session.getAuthToken().getMember(),
-                                              price,
-                                              description,
-                                              locale,
-                                              expiryDate.getJavaDate(),
-                                              daysBeforeValidation * DateUtils.SECOND_PER_DAY);
+                constructingOffer = demand.addOffer(session.getAuthToken().getMember(),
+                                                    price,
+                                                    description,
+                                                    new Locale(locale),
+                                                    expiryDate.getJavaDate(),
+                                                    daysBeforeValidation * DateUtils.SECOND_PER_DAY);
                 if (group != null) {
-                    offer.setAsGroup(group);
+                    constructingOffer.setAsGroup(group);
                 }
-                constructingBatch = offer.getBatches().iterator().next();
+                constructingBatch = constructingOffer.getBatches().iterator().next();
             } else {
-                constructingBatch = draftOffer.addBatch(price, description, locale, expiryDate.getJavaDate(), daysBeforeValidation
+                constructingOffer = draftOffer;
+                constructingBatch = draftOffer.addBatch(price, description, new Locale(locale), expiryDate.getJavaDate(), daysBeforeValidation
                         * DateUtils.SECOND_PER_DAY);
             }
             if (percentFatal != null && percentMajor != null) {
                 constructingBatch.updateMajorFatalPercent(percentFatal, percentMajor);
             }
+            if (isFinished) {
+                constructingOffer.setDraftFinished();
+
+                final DemandPageUrl demandPageUrl = new DemandPageUrl(demand);
+                demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
+                return demandPageUrl;
+            }
 
         } catch (final UnauthorizedOperationException e) {
+            Log.web().error("Should never happend", e);
             session.notifyBad(Context.tr("For obscure reasons, you are not allowed to make an offer on this idea."));
             return session.pickPreferredPage();
         }
-        final DemandPageUrl demandPageUrl = new DemandPageUrl(demand);
-        demandPageUrl.getDemandTabPaneUrl().setActiveTabKey(DemandTabPane.OFFERS_TAB);
-        return demandPageUrl;
+
+        OfferPageUrl returnUrl = new OfferPageUrl(demand);
+        returnUrl.setOffer(draftOffer);
+        return returnUrl;
     }
 
     @Override

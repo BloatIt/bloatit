@@ -157,7 +157,7 @@ public class DemandOfferListComponent extends HtmlDiv {
         }
     }
 
-    private class OfferBlock extends HtmlDiv {
+    public class OfferBlock extends HtmlDiv {
 
         private final Offer offer;
 

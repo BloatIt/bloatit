@@ -12,6 +12,7 @@
 package com.bloatit.web.pages;
 
 import com.bloatit.common.Log;
+import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.framework.webserver.Context;
@@ -26,6 +27,7 @@ import com.bloatit.framework.webserver.components.form.HtmlDateField;
 import com.bloatit.framework.webserver.components.form.HtmlDropDown;
 import com.bloatit.framework.webserver.components.form.HtmlForm;
 import com.bloatit.framework.webserver.components.form.HtmlMoneyField;
+import com.bloatit.framework.webserver.components.form.HtmlRadioButtonGroup;
 import com.bloatit.framework.webserver.components.form.HtmlSubmit;
 import com.bloatit.framework.webserver.components.form.HtmlTextArea;
 import com.bloatit.framework.webserver.components.form.HtmlTextField;
@@ -35,8 +37,6 @@ import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.right.Action;
-import com.bloatit.web.components.HtmlDemandSumary;
-import com.bloatit.web.components.HtmlDemandSumary.Compacity;
 import com.bloatit.web.components.LanguageSelector;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
@@ -76,9 +76,9 @@ public final class OfferPage extends LoggedPage {
     @Override
     public HtmlElement createRestrictedContent() {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
-
-        offerPageContainer.add(new HtmlDemandSumary(demand, Compacity.NORMAL));
-
+        
+//        offerPageContainer.add(new DemandOfferListComponent.Offer);
+        
         // Create offer form
         final OfferActionUrl offerActionUrl = new OfferActionUrl(demand);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
@@ -92,11 +92,17 @@ public final class OfferPage extends LoggedPage {
                 final FieldData groupField = offerActionUrl.getGroupParameter().fieldData();
                 final HtmlDropDown groupDropDown = new HtmlDropDown(groupField, Context.tr("On the behalf of"));
                 groupDropDown.setComment("If you make an offer on the behalf of a team, this teamwill get the money instead of you");
-                groupDropDown.addDropDownElement("-1", Context.tr("Myself"));
+                groupDropDown.addDropDownElement("", Context.tr("Myself"));
+                int nbGroup = 0;
                 for (final Group group : groups) {
-                    groupDropDown.addDropDownElement(group.getId().toString(), group.getLogin());
+                    nbGroup++;
+                    if (group.getUserGroupRight(me).contains(UserGroupRight.TALK)) {
+                        groupDropDown.addDropDownElement(group.getId().toString(), group.getLogin());
+                    }
                 }
-                offerForm.add(groupDropDown);
+                if (nbGroup > 0) {
+                    offerForm.add(groupDropDown);
+                }
             } catch (final UnauthorizedOperationException e) {
                 // Shouldn't happen
                 Log.web().error("Can't access current user groups (I check before tho)", e);
@@ -116,7 +122,7 @@ public final class OfferPage extends LoggedPage {
         offerForm.add(dateField);
 
         // Description
-        final FieldData descriptionFieldData = offerActionUrl.getExpiryDateParameter().fieldData();
+        final FieldData descriptionFieldData = offerActionUrl.getDescriptionParameter().fieldData();
         final HtmlTextArea descriptionField = new HtmlTextArea(descriptionFieldData, Context.tr("Description"), 10, 80);
         offerForm.add(descriptionField);
 
@@ -149,6 +155,13 @@ public final class OfferPage extends LoggedPage {
                 + "You can say that you want to gain less than 100% of the amount on this offer when all the MAJOR bugs are closed. "
                 + "The money left will be transfered when all the MINOR bugs are closed. Make sure that (FATAL percent + MAJOR percent) <= 100."));
         offerForm.add(percentMajorField);
+
+        // Is finished
+        final FieldData isFinishedFiledData = offerActionUrl.getIsFinishedParameter().fieldData();
+        final HtmlRadioButtonGroup isFinishedField = new HtmlRadioButtonGroup(isFinishedFiledData);
+        isFinishedField.addRadioButton("true", Context.tr("Finish your Offer"));
+        isFinishedField.addRadioButton("false", Context.tr("Add an other lot"));
+        offerForm.add(isFinishedField);
 
         final HtmlSubmit offerButton = new HtmlSubmit(Context.tr("Make an offer"));
         offerForm.add(offerButton);

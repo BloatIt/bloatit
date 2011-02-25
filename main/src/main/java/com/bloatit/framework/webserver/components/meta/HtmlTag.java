@@ -51,7 +51,7 @@ public class HtmlTag {
      * @return itself
      */
     protected HtmlTag addAttribute(final String name, final String value) {
-        if (value != null && name != null && !value.isEmpty() && !name.isEmpty()) {
+        if (value != null && name != null && !name.isEmpty()) {
             attributes.put(name, value);
         }
         return this;
