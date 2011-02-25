@@ -46,21 +46,22 @@ public class SimplePostParser extends PostParameterParser {
             return null;
         }
         Log.framework().trace("Reading simple POST data n°" + i);
-        final String param = postData[i];
         while (i < postData.length) {
+            final String param = postData[i];
             try {
                 final String[] pair = param.split("=");
                 if (pair.length >= 2) {
                     final String key = URLDecoder.decode(pair[0], "UTF-8");
                     String value;
                     value = URLDecoder.decode(pair[1], "UTF-8");
+                    PostParameter postParameter = new PostParameter(key, value);
                     i++;
-                    return new PostParameter(key, value);
+                    return postParameter;
                 }
                 i++;
             } catch (final UnsupportedEncodingException e) {
-                Log.framework().fatal("Encoding is UTF-8 not supported. This is bad, check system parameters", e);
-                throw new MalformedPostException("Encoding is UTF-8 not supported. This is bad, check system parameters", e);
+                Log.framework().fatal("Encoding UTF-8 is not supported. This is bad, check system parameters", e);
+                throw new MalformedPostException("Encoding UTF-8 is not supported. This is bad, check system parameters", e);
             }
         }
         return null;
