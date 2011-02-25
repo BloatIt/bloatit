@@ -109,8 +109,8 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Work-flow
     // ////////////////////////////////////////////////////////////////////////
 
-    public boolean isFinished() {
-        return !hasBatchLeft();
+    public void setDraftFinished() {
+        getDao().setDraft(false);
     }
 
     public boolean validateCurrentBatch(final boolean force) {
@@ -173,6 +173,14 @@ public final class Offer extends Kudosable<DaoOffer> {
     // Getters
     // ////////////////////////////////////////////////////////////////////////
 
+    public boolean isFinished() {
+        return !hasBatchLeft();
+    }
+
+    public boolean isDraft() {
+        return getDao().isDraft();
+    }
+
     public Demand getDemand() {
         return getDemandImplementation();
     }
@@ -199,7 +207,7 @@ public final class Offer extends Kudosable<DaoOffer> {
     /**
      * Return the progression of the funding of this offer with the amount
      * available on the demand
-     *
+     * 
      * @return
      * @throws UnauthorizedOperationException
      */

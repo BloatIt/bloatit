@@ -42,7 +42,6 @@ import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
-import com.bloatit.model.Batch;
 
 /**
  * An offer is a developer offer to a demand.
@@ -78,6 +77,9 @@ public final class DaoOffer extends DaoKudosable {
      */
     @Basic(optional = false)
     private BigDecimal amount;
+
+    @Basic(optional = false)
+    private boolean isDraft;
 
     // ======================================================================
     // Construction
@@ -118,7 +120,7 @@ public final class DaoOffer extends DaoKudosable {
 
     /**
      * Create a DaoOffer.
-     *
+     * 
      * @param member is the author of the offer. Must be non null.
      * @param demand is the demand on which this offer is made. Must be non
      *            null.
@@ -135,6 +137,7 @@ public final class DaoOffer extends DaoKudosable {
         this.amount = BigDecimal.ZERO; // Will be updated by addBatch
         this.expirationDate = new Date();// Will be updated by addBatch
         this.currentBatch = 0;
+        this.setDraft(true);
     }
 
     public void cancelEverythingLeft() {
@@ -145,6 +148,9 @@ public final class DaoOffer extends DaoKudosable {
     }
 
     public void addBatch(final DaoBatch batch) {
+        if (isDraft() == false) {
+            throw new FatalErrorException("You cannot add a batch on a non draft offer.");
+        }
         amount = batch.getAmount().add(amount);
         final Date expiration = batch.getExpirationDate();
         if (expirationDate.before(expiration)) {
@@ -173,9 +179,17 @@ public final class DaoOffer extends DaoKudosable {
         }
     }
 
+    public void setDraft(boolean isDraft) {
+        this.isDraft = isDraft;
+    }
+
     // ======================================================================
     // Getters
     // ======================================================================
+
+    public boolean isDraft() {
+        return isDraft;
+    }
 
     /**
      * @return All the batches for this offer. (Even the MasterBatch).
@@ -208,7 +222,7 @@ public final class DaoOffer extends DaoKudosable {
         if (batches.size() == 1) {
             return 100;
         }
-        
+
         int alreadyReturned = 0;
         for (int i = 0; i < batches.size(); ++i) {
             // Calculate the percent of the batch
@@ -218,9 +232,8 @@ public final class DaoOffer extends DaoKudosable {
                 // is the current is the last one
                 if (i == (batches.size() - 1)) {
                     return 100 - alreadyReturned;
-                } else {
-                    return percent;
                 }
+                return percent;
             }
             // Save how much has been sent.
             alreadyReturned += percent;
