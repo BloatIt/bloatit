@@ -6,7 +6,9 @@ import java.util.Locale;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.bloatit.data.DaoBug.Level;
@@ -15,6 +17,7 @@ import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Bug;
+import com.bloatit.model.managers.BugManager;
 import com.bloatit.rest.list.RestBugList;
 import com.bloatit.rest.list.RestCommentList;
 import com.bloatit.rest.list.RestFileMetadataList;
@@ -87,18 +90,16 @@ public class RestBug extends RestElement<Bug> {
      * <p>
      * Finds the RestBug matching the <code>id</code>
      * </p>
-     *
+     * 
      * @param id the id of the RestBug
      */
     @REST(name = "bugs", method = RequestMethod.GET)
     public static RestBug getById(int id) {
-        // TODO auto generated code
-        // RestBug restBug = new RestBug(BugManager.getBugById(id));
-        // if (restBug.isNull()) {
-        // return null;
-        // }
-        // return restBug;
-        return null;
+        RestBug restBug = new RestBug(BugManager.getById(id));
+        if (restBug.isNull()) {
+            return null;
+        }
+        return restBug;
     }
 
     /**
@@ -108,15 +109,12 @@ public class RestBug extends RestElement<Bug> {
      */
     @REST(name = "bugs", method = RequestMethod.GET)
     public static RestBugList getAll() {
-        // TODO auto generated code
-        return null;
+        return new RestBugList(BugManager.getAll());
     }
 
     // ---------------------------------------------------------------------------------------
     // -- XML Getters
     // ---------------------------------------------------------------------------------------
-
-    // TODO Generate
 
     @XmlAttribute
     @XmlID
@@ -127,128 +125,123 @@ public class RestBug extends RestElement<Bug> {
     /**
      * @see com.bloatit.model.Bug#getState()
      */
-    // @XmlElement
+    @XmlAttribute
     public State getState() {
-        // TODO auto-generated code stub
-        State state = model.getState();
-        return state;
+        return model.getState();
     }
 
     /**
      * @see com.bloatit.model.Bug#getTitle()
      */
-    // @XmlElement
+    @XmlElement
     public String getTitle() {
-        // TODO auto-generated code stub
-        String title = model.getTitle();
-        return title;
+        return model.getTitle();
     }
 
     /**
      * @see com.bloatit.model.Bug#getDescription()
      */
-    // @XmlElement
+    @XmlElement
     public String getDescription() {
-        // TODO auto-generated code stub
-        String description = model.getDescription();
-        return description;
+        return model.getDescription();
     }
 
     /**
      * @see com.bloatit.model.Bug#getLocale()
      */
-    // @XmlElement
+    @XmlAttribute
     public Locale getLocale() {
-        // TODO auto-generated code stub
-        Locale locale = model.getLocale();
-        return locale;
+        return model.getLocale();
     }
 
     /**
      * @see com.bloatit.model.Bug#getComments()
      */
-    // @XmlElement
+    @XmlElement
     public RestCommentList getComments() {
-        // TODO auto-generated code stub
         return new RestCommentList(model.getComments());
     }
 
     /**
      * @see com.bloatit.model.Bug#getAssignedTo()
      */
-    // @XmlElement
+    @XmlElement
+    @XmlIDREF
     public RestMember getAssignedTo() {
-        // TODO auto-generated code stub
         RestMember assignedTo = new RestMember(model.getAssignedTo());
+        if (assignedTo.isNull()) {
+            return null;
+        }
         return assignedTo;
     }
 
     /**
      * @see com.bloatit.model.Bug#getErrorLevel()
      */
-    // @XmlElement
+    @XmlAttribute
     public Level getErrorLevel() {
-        // TODO auto-generated code stub
-        Level errorLevel = model.getErrorLevel();
-        return errorLevel;
+        return model.getErrorLevel();
     }
 
     /**
      * @see com.bloatit.model.Bug#getBatch()
      */
-    // @XmlElement
+    @XmlElement
     public RestBatch getBatch() {
-        // TODO auto-generated code stub
         RestBatch batch = new RestBatch(model.getBatch());
+        if (batch.isNull()) {
+            return null;
+        }
         return batch;
     }
 
     /**
      * @see com.bloatit.model.Bug#getLastUpdateDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getLastUpdateDate() {
-        // TODO auto-generated code stub
-        Date lastUpdateDate = model.getLastUpdateDate();
-        return lastUpdateDate;
+        return model.getLastUpdateDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getCreationDate()
      */
-    // @XmlElement
+    @XmlAttribute
     public Date getCreationDate() {
-        // TODO auto-generated code stub
-        Date creationDate = model.getCreationDate();
-        return creationDate;
+        return model.getCreationDate();
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAuthor()
      */
-    // @XmlElement
+    @XmlAttribute
+    @XmlIDREF
     public RestMember getAuthor() {
-        // TODO auto-generated code stub
         RestMember author = new RestMember(model.getAuthor());
+        if (author.isNull()) {
+            return null;
+        }
         return author;
     }
 
     /**
      * @see com.bloatit.model.UserContent#getAsGroup()
      */
-    // @XmlElement
+    @XmlElement
+    @XmlIDREF
     public RestGroup getAsGroup() {
-        // TODO auto-generated code stub
         RestGroup asGroup = new RestGroup(model.getAsGroup());
+        if (asGroup.isNull()) {
+            return null;
+        }
         return asGroup;
     }
 
     /**
      * @see com.bloatit.model.UserContent#getFiles()
      */
-    // @XmlElement
+    @XmlElement
     public RestFileMetadataList getFiles() {
-        // TODO auto-generated code stub
         return new RestFileMetadataList(model.getFiles());
     }
 

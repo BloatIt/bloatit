@@ -18,7 +18,9 @@ package com.bloatit.model.managers;
 
 import com.bloatit.data.DaoBug;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Bug;
+import com.bloatit.model.lists.BugList;
 
 /**
  * The Class BugManager. Utility class containing static methods to get
@@ -35,12 +37,19 @@ public final class BugManager {
 
     /**
      * Gets a Bug by id.
-     *
+     * 
      * @param id the {@link Bug} id
      * @return the bug or null if not found.
      */
     public static Bug getById(final Integer id) {
         return Bug.create(DBRequests.getById(DaoBug.class, id));
+    }
+
+    /**
+     * @return
+     */
+    public static PageIterable<Bug> getAll() {
+        return new BugList(DBRequests.getAll(DaoBug.class));
     }
 
 }
