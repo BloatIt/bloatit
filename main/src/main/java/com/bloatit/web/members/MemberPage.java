@@ -9,7 +9,7 @@
  * details. You should have received a copy of the GNU Affero General Public
  * License along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.web.pages;
+package com.bloatit.web.members;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
@@ -41,8 +41,6 @@ import com.bloatit.model.Member;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.HtmlPagedList;
 import com.bloatit.web.components.TeamListRenderer;
-import com.bloatit.web.members.ChangeAvatarAction;
-import com.bloatit.web.members.MembersTools;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.ChangeAvatarActionUrl;
 import com.bloatit.web.url.MemberPageUrl;
