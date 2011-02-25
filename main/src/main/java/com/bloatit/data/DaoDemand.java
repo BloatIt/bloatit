@@ -155,7 +155,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * Create a DaoDemand and set its state to the state PENDING.
-     *
+     * 
      * @param member is the author of the demand
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
@@ -190,7 +190,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * Add a contribution to a demand.
-     *
+     * 
      * @param member the author of the contribution
      * @param amount the > 0 amount of euros on this contribution
      * @param comment a <= 144 char comment on this contribution
@@ -223,7 +223,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * delete offer from this demand AND FROM DB !
-     *
+     * 
      * @param offer the offer we want to delete.
      */
     public void removeOffer(final DaoOffer offer) {
@@ -266,7 +266,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * Called by contribution when canceled.
-     *
+     * 
      * @param amount
      */
     void cancelContribution(final BigDecimal amount) {
@@ -302,7 +302,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
     /**
      * The current offer is the offer with the max popularity then the min
      * amount.
-     *
+     * 
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {

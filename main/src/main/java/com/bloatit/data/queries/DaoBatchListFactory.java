@@ -77,7 +77,6 @@
 package com.bloatit.data.queries;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import org.hibernate.criterion.Restrictions;
 
@@ -114,7 +113,7 @@ public final class DaoBatchListFactory extends DaoIdentifiableListFactory<DaoBat
         add(createNbCriterion(cmp, "amount", value));
     }
 
-    public void stateEquals(DaoBatch.BatchState state) {
+    public void stateEquals(final DaoBatch.BatchState state) {
         add(Restrictions.eq("batchState", state));
     }
 

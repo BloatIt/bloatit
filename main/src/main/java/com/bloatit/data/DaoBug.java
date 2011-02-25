@@ -128,7 +128,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
      * The person assigned to a bug is the developer (the member that has
      * created the offer). The person assigned to a bug is the developer (the
      * member that has created the offer).
-     *
+     * 
      * @return the member assigned to this bug.
      */
     public DaoMember getAssignedTo() {

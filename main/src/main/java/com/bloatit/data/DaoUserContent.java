@@ -73,7 +73,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
 
     /**
      * Initialize the creation date to now.
-     *
+     * 
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */

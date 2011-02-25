@@ -178,7 +178,7 @@ public final class DaoProject extends DaoIdentifiable {
         return true;
     }
 
-    public void setImage(DaoFileMetadata image) {
+    public void setImage(final DaoFileMetadata image) {
         this.image = image;
     }
 

@@ -24,7 +24,7 @@ public class DemandSearch extends Search<DaoDemand> {
 
     /**
      * The demands with state as DemandState will not be in the search results
-     *
+     * 
      * @param state
      */
     public void addDemandStateFilter(final DemandState state) {

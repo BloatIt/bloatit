@@ -83,7 +83,6 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.SessionManager;
-import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
 
 /**
  * A Factory to create query on the DB and return list of DaoDemand.

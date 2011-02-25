@@ -138,7 +138,7 @@ public final class DaoOffer extends DaoKudosable {
         currentBatch++;
     }
 
-    void batchHasARelease(DaoBatch batch) {
+    void batchHasARelease(final DaoBatch batch) {
         // Find next batch. Passe it into developing state.
         for (int i = 0; i < batches.size(); ++i) {
             if (batches.get(i).equals(batch)) {
@@ -150,7 +150,7 @@ public final class DaoOffer extends DaoKudosable {
         }
     }
 
-    public void setDraft(boolean isDraft) {
+    public void setDraft(final boolean isDraft) {
         this.isDraft = isDraft;
     }
 
@@ -189,7 +189,7 @@ public final class DaoOffer extends DaoKudosable {
     }
 
     // TODO comment; it make sure the sum returned is 100.
-    int getBatchPercent(DaoBatch current) {
+    int getBatchPercent(final DaoBatch current) {
         if (batches.size() == 1) {
             return 100;
         }
@@ -197,8 +197,8 @@ public final class DaoOffer extends DaoKudosable {
         int alreadyReturned = 0;
         for (int i = 0; i < batches.size(); ++i) {
             // Calculate the percent of the batch
-            DaoBatch batch = batches.get(i);
-            int percent = batch.getAmount().divide(amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
+            final DaoBatch batch = batches.get(i);
+            final int percent = batch.getAmount().divide(amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
             if (current.equals(batch)) {
                 // is the current is the last one
                 if (i == (batches.size() - 1)) {
@@ -213,7 +213,7 @@ public final class DaoOffer extends DaoKudosable {
     }
 
     public boolean hasRelease() {
-        Query query = SessionManager.createFilter(batches, "SELECT count(*) WHERE this.releases is not empty");
+        final Query query = SessionManager.createFilter(batches, "SELECT count(*) WHERE this.releases is not empty");
         return !((Long) query.uniqueResult()).equals(0L);
     }
 

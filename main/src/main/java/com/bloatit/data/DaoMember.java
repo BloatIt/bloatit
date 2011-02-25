@@ -91,7 +91,7 @@ public final class DaoMember extends DaoActor {
 
     /**
      * Find a DaoMember using its login.
-     *
+     * 
      * @param login the member login.
      * @return null if not found. (or if login == null)
      */
@@ -105,7 +105,7 @@ public final class DaoMember extends DaoActor {
     /**
      * Find a DaoMember using its login, and password. This method can be use to
      * authenticate a use.
-     *
+     * 
      * @param login the member login.
      * @param password the password of the member "login". It is a string
      *            corresponding to the string in the database. This method does
@@ -127,7 +127,7 @@ public final class DaoMember extends DaoActor {
     /**
      * Create a member. The member login must be unique, and you cannot change
      * it.
-     *
+     * 
      * @param login The login of the member.
      * @param password The password of the member (md5 ??)
      * @param locale the locale of the user.
@@ -151,7 +151,7 @@ public final class DaoMember extends DaoActor {
 
     /**
      * You have to use CreateAndPersist instead of this constructor
-     *
+     * 
      * @param locale is the locale in which this user is. (The country and
      *            language.)
      * @see DaoMember#createAndPersist(String, String, String, Locale)
@@ -269,7 +269,7 @@ public final class DaoMember extends DaoActor {
     /**
      * [ Maybe it could be cool to have a parameter to list all the PUBLIC or
      * PROTECTED groups. ]
-     *
+     * 
      * @return All the groups this member is in. (Use a HQL query)
      */
     public PageIterable<DaoGroup> getGroups() {
@@ -429,7 +429,7 @@ public final class DaoMember extends DaoActor {
     /**
      * @param avatar
      */
-    public void setAvatar(DaoFileMetadata avatar) {
+    public void setAvatar(final DaoFileMetadata avatar) {
         this.avatar = avatar;
     }
 

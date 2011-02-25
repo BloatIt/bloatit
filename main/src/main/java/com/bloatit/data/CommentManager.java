@@ -35,7 +35,7 @@ public final class CommentManager {
         return queryCollection.iterator().next();
     }
 
-    private static Query createFilter(final Set<DaoComment> persistentSetOfComments, String filter) {
+    private static Query createFilter(final Set<DaoComment> persistentSetOfComments, final String filter) {
         return SessionManager.getSessionFactory().getCurrentSession().createFilter(persistentSetOfComments, filter);
     }
 

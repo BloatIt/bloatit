@@ -85,7 +85,7 @@ public final class DaoContribution extends DaoUserContent {
     /**
      * Create a new contribution. Update the internal account of the member
      * (block the value that is reserved to this contribution)
-     *
+     * 
      * @param member the person making the contribution.
      * @param demand the demand on which we add a contribution.
      * @param amount the amount of the contribution.
@@ -118,7 +118,7 @@ public final class DaoContribution extends DaoUserContent {
      * not enough money then throw and set the state to canceled. After that if
      * all the money is transfered, the state of this contribution is become
      * VALIDATED.
-     *
+     * 
      * @param offer the offer that is accepted.
      * @param percent integer ]0,100]. It is the percent of the total amount and
      *            not a percent of what is remaining. It is the percent of the

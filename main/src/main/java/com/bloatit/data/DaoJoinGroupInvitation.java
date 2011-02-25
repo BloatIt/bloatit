@@ -64,7 +64,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * Gets the invitation to join a group.
-     *
+     * 
      * @param group the group this invitation is on.
      * @param member the member this invitation was sent to.
      * @return the invitation, are null if there is no invitation on that
@@ -95,7 +95,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * Create a new invitation. Set the state to PENDING.
-     *
+     * 
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
     private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember receiver, final DaoGroup group) {

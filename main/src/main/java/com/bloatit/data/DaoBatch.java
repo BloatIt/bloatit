@@ -123,8 +123,8 @@ public final class DaoBatch extends DaoIdentifiable {
      * 
      * @param amount is the amount of the offer. Must be non null, and > 0.
      * @param text is the description of the demand. Must be non null.
-     * @param dateExpire is the date when this offer should be finish. Must
-     *            be non null, and in the future.
+     * @param dateExpire is the date when this offer should be finish. Must be
+     *            non null, and in the future.
      * @param secondBeforeValidation TODO
      * @throws NonOptionalParameterException if a parameter is null.
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the
@@ -213,10 +213,10 @@ public final class DaoBatch extends DaoIdentifiable {
         //
         // Calculate the real percent (= percent of this batch * percent of this
         // level).
-        int batchPercent = offer.getBatchPercent(this);
-        int fatalPercent = (batchPercent * fatalBugsPercent) / 100;
-        int majorPercent = (batchPercent * majorBugsPercent) / 100;
-        int minorPercent = batchPercent - majorPercent - fatalPercent;
+        final int batchPercent = offer.getBatchPercent(this);
+        final int fatalPercent = (batchPercent * fatalBugsPercent) / 100;
+        final int majorPercent = (batchPercent * majorBugsPercent) / 100;
+        final int minorPercent = batchPercent - majorPercent - fatalPercent;
 
         //
         // Do the validation
@@ -259,12 +259,12 @@ public final class DaoBatch extends DaoIdentifiable {
         return false;
     }
 
-    public boolean partIsValidated(Level level) {
+    public boolean partIsValidated(final Level level) {
         return this.levelToValidate == null || !EnumSet.range(levelToValidate, Level.MINOR).contains(level);
     }
 
     private boolean validationPeriodFinished() {
-        Date releasedDate = getReleasedDate();
+        final Date releasedDate = getReleasedDate();
         if (releasedDate == null) {
             return false;
         }
@@ -338,7 +338,7 @@ public final class DaoBatch extends DaoIdentifiable {
      * @return the releaseDate
      */
     public Date getReleasedDate() {
-        Query query = SessionManager.createFilter(releases, "select max(creationDate)");
+        final Query query = SessionManager.createFilter(releases, "select max(creationDate)");
         return (Date) query.uniqueResult();
     }
 
