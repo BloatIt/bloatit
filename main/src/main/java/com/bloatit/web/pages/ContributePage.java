@@ -78,8 +78,8 @@ public final class ContributePage extends LoggedPage {
 
         // Input field : comment
         final FieldData commentFieldData = formActionUrl.getCommentParameter().fieldData();
-        final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment: "), 10, 60);
-        commentField.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list."));
+        final HtmlTextArea commentField = new HtmlTextArea(commentFieldData, tr("Comment: "), 3, 60);
+        commentField.setComment(Context.tr("Optional. The comment will be publicly visible in the contribution list. Max 140 characters."));
 
         final HtmlSubmit submitButton = new HtmlSubmit(tr("Contribute"));
 

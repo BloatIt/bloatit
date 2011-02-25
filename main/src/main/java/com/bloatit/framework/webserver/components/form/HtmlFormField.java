@@ -316,11 +316,16 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
                 break;
         }
         this.input.setCssClass("input");
-        this.input.add(element);
+
+        HtmlDiv inputDiv = new HtmlDiv("input_field");
+        inputDiv.add(element);
+        this.input.add(inputDiv);
+
         this.input.add(commentPh);
         this.input.add(notificationPh);
 
         add(container);
         container.setCssClass("field");
     }
+
 }
