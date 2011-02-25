@@ -53,7 +53,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
      * It is the state of the bug ... The developer change it during the process
      * of fixing it.
      */
-    public enum State {
+    public enum BugState {
         PENDING, DEVELOPING, RESOLVED
     }
 
@@ -82,7 +82,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
 
     @Basic(optional = false)
     @Enumerated
-    private State state;
+    private BugState state;
 
     public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
         super(member);
@@ -94,7 +94,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
         this.description = description;
         this.locale = locale;
         this.errorLevel = level;
-        this.state = State.PENDING;
+        this.state = BugState.PENDING;
     }
 
     public static DaoBug createAndPersist(final DaoMember member,
@@ -167,16 +167,16 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
         return batch;
     }
 
-    public State getState() {
+    public BugState getState() {
         return state;
     }
 
     public void setResolved() {
-        state = State.RESOLVED;
+        state = BugState.RESOLVED;
     }
 
     public void setDeveloping() {
-        state = State.DEVELOPING;
+        state = BugState.DEVELOPING;
     }
 
     /**

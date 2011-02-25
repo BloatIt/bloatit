@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
-import com.bloatit.model.Demand;
 import com.bloatit.model.HighlightDemand;
 import com.bloatit.model.managers.HighlightDemandManager;
 import com.bloatit.rest.list.RestHighlightDemandList;
@@ -147,8 +146,8 @@ public class RestHighlightDemand extends RestElement<HighlightDemand> {
      * @see com.bloatit.model.HighlightDemand#getDemand()
      */
     @XmlElement
-    public Demand getDemand() {
-        return model.getDemand();
+    public RestDemand getDemand() {
+        return new RestDemand(model.getDemand());
     }
 
     /**

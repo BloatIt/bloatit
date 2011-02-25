@@ -14,7 +14,7 @@ package com.bloatit.web.linkable.bugs;
 import static com.bloatit.framework.webserver.Context.tr;
 
 import com.bloatit.data.DaoBug.Level;
-import com.bloatit.data.DaoBug.State;
+import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
@@ -84,14 +84,14 @@ public final class ModifyBugAction extends Action {
         }
 
         Level currentLevel = bug.getErrorLevel();
-        State currentState = bug.getState();
+        BugState currentState = bug.getState();
 
         if (currentLevel == level.getLevel() && currentState == state.getState()) {
             session.notifyBad(Context.tr("You must change at least a small thing on the bug to modify it."));
             return redirectWithError();
         }
 
-        if (state.getState() == State.PENDING) {
+        if (state.getState() == BugState.PENDING) {
             session.notifyBad(Context.tr("You can set a bug to the pending state."));
             return redirectWithError();
         }
@@ -107,9 +107,9 @@ public final class ModifyBugAction extends Action {
         }
 
         bug.setErrorLevel(level.getLevel());
-        if (state.getState() == State.DEVELOPING) {
+        if (state.getState() == BugState.DEVELOPING) {
             bug.setDeveloping();
-        } else if (state.getState() == State.RESOLVED) {
+        } else if (state.getState() == BugState.RESOLVED) {
             bug.setResolved();
         }
 

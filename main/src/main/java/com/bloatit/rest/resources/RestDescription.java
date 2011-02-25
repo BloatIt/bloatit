@@ -27,12 +27,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.bloatit.framework.rest.RestElement;
 import com.bloatit.framework.rest.RestServer.RequestMethod;
 import com.bloatit.framework.rest.annotations.REST;
 import com.bloatit.model.Description;
 import com.bloatit.model.managers.DescriptionManager;
+import com.bloatit.rest.adapter.LocaleAdapter;
 import com.bloatit.rest.list.RestDescriptionList;
 import com.bloatit.rest.list.RestTranslationList;
 
@@ -156,6 +158,7 @@ public class RestDescription extends RestElement<Description> {
      * @see com.bloatit.model.Description#getDefaultLocale()
      */
     @XmlAttribute
+    @XmlJavaTypeAdapter(LocaleAdapter.class)
     public Locale getDefaultLocale() {
         return model.getDefaultLocale();
     }

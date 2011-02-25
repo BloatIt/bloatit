@@ -459,7 +459,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
                 "AND b.state != :close ";//
         final Query query = SessionManager.getSessionFactory().getCurrentSession().createQuery(q);
         query.setEntity("selectedOffer", selectedOffer);
-        query.setParameter("close", DaoBug.State.RESOLVED);
+        query.setParameter("close", DaoBug.BugState.RESOLVED);
         return ((Long) query.uniqueResult()).intValue();
     }
 
@@ -483,7 +483,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
         return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
                                                                                                                         selectedOffer)
                                                                                                              .setParameter("close",
-                                                                                                                           DaoBug.State.RESOLVED);
+                                                                                                                           DaoBug.BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getClosedBugs() {
@@ -507,7 +507,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
         return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
                                                                                                                         selectedOffer)
                                                                                                              .setParameter("close",
-                                                                                                                           DaoBug.State.RESOLVED)
+                                                                                                                           DaoBug.BugState.RESOLVED)
                                                                                                              .setEntity("this", this);
     }
 

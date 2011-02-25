@@ -2,21 +2,21 @@ package com.bloatit.web.linkable.bugs;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.data.DaoBug.State;
+import com.bloatit.data.DaoBug.BugState;
 import com.bloatit.framework.webserver.components.form.Displayable;
 
 public enum BindedState implements Displayable {
-    PENDING(State.PENDING, tr("PENDING")), DEVELOPING(State.DEVELOPING, tr("DEVELOPING")), RESOLVED(State.RESOLVED, tr("RESOLVED"));
+    PENDING(BugState.PENDING, tr("PENDING")), DEVELOPING(BugState.DEVELOPING, tr("DEVELOPING")), RESOLVED(BugState.RESOLVED, tr("RESOLVED"));
 
     private final String label;
-    private final State state;
+    private final BugState state;
 
-    private BindedState(State state, String label) {
+    private BindedState(BugState state, String label) {
         this.state = state;
         this.label = label;
     }
 
-    public static BindedState getBindedState(State state) {
+    public static BindedState getBindedState(BugState state) {
         return Enum.valueOf(BindedState.class, state.name());
     }
 
@@ -25,7 +25,7 @@ public enum BindedState implements Displayable {
         return label;
     }
 
-    public State getState() {
+    public BugState getState() {
         return state;
     }
 

@@ -155,8 +155,8 @@ public class RestBankTransaction extends RestElement<BankTransaction> {
     /**
      * @see com.bloatit.model.BankTransaction#getState()
      */
-    @XmlAttribute
-    public State getState() {
+    @XmlAttribute(name = "transactionstate")
+    public State getTransactionState() {
         return model.getState();
     }
 
