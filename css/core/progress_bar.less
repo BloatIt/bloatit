@@ -1,0 +1,77 @@
+@import "../include/tools";
+
+.progress_bar_block{
+    display:inline-block;
+    margin-left:10%;
+    margin-right:10%;
+    width:80%;
+}
+
+.progress_bar_background{
+    display:block;
+    .rounded_corners(7px);
+    padding:0;
+    margin:0;
+    height:16px;
+    border: 1px solid @default_background_color;
+    background: @default_background_color;
+    padding:0;
+    margin-bottom:0px;
+    width:100%;
+
+
+}
+
+.progress_bar_border{
+    //margin-left: 50px;
+    //margin-right: 50px;
+    display:block;
+    .rounded_corners(7px);
+
+    height:16px;
+    border: 1px solid @progress_border_color;
+    background: transparent;
+    padding:0;
+    margin:0;
+    margin-left:-1px;
+   
+    margin-top: -18px;
+    width:100%;
+}
+
+
+.progress_bar_state{
+    display:block;
+    
+    background: @progress_color;
+    
+    .horizontal-gradient(@progress_color_dark, @progress_color_light);
+    
+    .rounded_corners(7px);
+    height:18px;
+    padding:0;
+    margin:0;
+
+     margin-top: -18px;
+    
+}
+
+
+
+.progress_text {
+     color: @light_text_color;
+     font-size: 0.8em;
+     margin: 0px;
+     padding: 0px;
+     margin-top : 5px;
+     margin-bottom : 7px;
+     text-align: center;
+     .important {
+        font-size: 1.2em;
+        margin-left: 15px;
+        margin-right: 15px;
+        color:@title_color;
+     }
+     
+    
+}
