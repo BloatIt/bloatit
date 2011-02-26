@@ -1,6 +1,6 @@
 package com.bloatit.data;
 
-import java.util.Set;
+import java.util.Collection;
 
 import org.hibernate.Query;
 
@@ -16,7 +16,7 @@ public final class CommentManager {
     /**
      * @return the comments
      */
-    public static PageIterable<DaoComment> getComments(final Set<DaoComment> persistentSetOfComments) {
+    public static PageIterable<DaoComment> getComments(final Collection<DaoComment> persistentSetOfComments) {
         final Query allComments = createFilter(persistentSetOfComments, "");
         final Query allCommentsSize = createFilter(persistentSetOfComments, "select count(*)");
         return new QueryCollection<DaoComment>(allComments, allCommentsSize);
@@ -25,7 +25,7 @@ public final class CommentManager {
     /**
      * @return the last comment
      */
-    public static DaoComment getLastComment(final Set<DaoComment> persistentSetOfComments) {
+    public static DaoComment getLastComment(final Collection<DaoComment> persistentSetOfComments) {
         final Query allComments = createFilter(persistentSetOfComments, "ORDER BY creationDate DESC");
         final Query allCommentsSize = createFilter(persistentSetOfComments, "select count(*)");
         final QueryCollection<DaoComment> queryCollection = new QueryCollection<DaoComment>(allComments, allCommentsSize);
@@ -35,7 +35,7 @@ public final class CommentManager {
         return queryCollection.iterator().next();
     }
 
-    private static Query createFilter(final Set<DaoComment> persistentSetOfComments, final String filter) {
+    private static Query createFilter(final Collection<DaoComment> persistentSetOfComments, final String filter) {
         return SessionManager.getSessionFactory().getCurrentSession().createFilter(persistentSetOfComments, filter);
     }
 

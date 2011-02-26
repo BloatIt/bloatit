@@ -16,8 +16,10 @@
 //
 package com.bloatit.data;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -68,7 +70,7 @@ public final class DaoGroup extends DaoActor {
 
     @OneToMany(mappedBy = "bloatitGroup")
     @Cascade(value = { CascadeType.ALL })
-    private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
+    private final List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
 
     // ======================================================================
     // Static HQL Requests
@@ -216,7 +218,7 @@ public final class DaoGroup extends DaoActor {
     /**
      * Used in DaoMember.
      */
-    protected Set<DaoGroupMembership> getGroupMembership() {
+    protected List<DaoGroupMembership> getGroupMembership() {
         return groupMembership;
     }
 

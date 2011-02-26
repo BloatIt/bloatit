@@ -16,7 +16,8 @@
 //
 package com.bloatit.data;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -83,7 +85,7 @@ public final class DaoMember extends DaoActor {
 
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private final Set<DaoGroupMembership> groupMembership = new HashSet<DaoGroupMembership>(0);
+    private final List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
 
     // ======================================================================
     // Static HQL requests
@@ -415,7 +417,7 @@ public final class DaoMember extends DaoActor {
     /**
      * used by DaoGroup
      */
-    protected Set<DaoGroupMembership> getGroupMembership() {
+    protected List<DaoGroupMembership> getGroupMembership() {
         return groupMembership;
     }
 

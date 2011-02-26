@@ -19,6 +19,7 @@ package com.bloatit.data;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -27,6 +28,8 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -42,6 +45,8 @@ import com.bloatit.framework.utils.PageIterable;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public abstract class DaoActor extends DaoIdentifiable {
 
     /**
@@ -57,6 +62,7 @@ public abstract class DaoActor extends DaoIdentifiable {
 
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private DaoInternalAccount internalAccount;
 
     @OneToOne(optional = false)

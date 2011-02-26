@@ -17,9 +17,10 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -27,12 +28,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.Indexed;
@@ -103,16 +107,17 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
-    private final Set<DaoOffer> offers = new HashSet<DaoOffer>(0);
+    private final List<DaoOffer> offers = new ArrayList<DaoOffer>(0);
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
-    private final Set<DaoContribution> contributions = new HashSet<DaoContribution>(0);
+    private final List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
+    @OrderBy("id")
     @IndexedEmbedded
-    private final Set<DaoComment> comments = new HashSet<DaoComment>(0);
+    private final List<DaoComment> comments = new ArrayList<DaoComment>(0);
 
     /**
      * The selected offer is the offer that is most likely to be validated and
@@ -252,7 +257,7 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
         if (percent == 0) {
             return;
         }
-        for (final DaoContribution contribution : getContributionsFromQuery()) {
+        for (final DaoContribution contribution : getContributions()) {
             try {
                 if (contribution.getState() == DaoContribution.State.PENDING) {
                     contribution.validate(selectedOffer, percent);
@@ -285,58 +290,40 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
     }
 
     /**
-     * Use a HQL query to get the offers as a PageIterable collection
-     */
-    public PageIterable<DaoOffer> getOffersFromQuery() {
-        final String queryStr = "SELECT o from DaoOffer o, DaoKudosable k " + //
-                "WHERE o.demand = :this " + //
-                "AND k.id = o.id " + //
-                "ORDER BY k.popularity asc";
-
-        final String sizeStr = "SELECT count(o) from DaoOffer o " + //
-                "WHERE o.demand = :this "; //
-        return new QueryCollection<DaoOffer>(queryStr, sizeStr).setEntity("this", this);
-    }
-
-    /**
      * The current offer is the offer with the max popularity then the min
      * amount.
      * 
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
-        throw new FatalErrorException("plop");
-//        // If there is no validated offer then we try to find a pending offer
-//        final String queryString = "FROM DaoOffer " + //
-//                "WHERE demand = :this " + //
-//                "AND state <= :state " + // <= PENDING and VALIDATED.
-//                "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
-//                "AND popularity >= 0 " + //
-//                "ORDER BY amount ASC, creationDate DESC";
-//        try {
-//            return (DaoOffer) SessionManager.createQuery(queryString)
-//                                            .setEntity("this", this)
-//                                            .setParameter("state", DaoKudosable.PopularityState.PENDING)
-//                                            .iterate()
-//                                            .next();
-//        } catch (final NoSuchElementException e) {
-//            return null;
-//        }
+        // If there is no validated offer then we try to find a pending offer
+        final String queryString = "FROM DaoOffer " + //
+                "WHERE demand = :this " + //
+                "AND state <= :state " + // <= PENDING and VALIDATED.
+                "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
+                "AND popularity >= 0 " + //
+                "ORDER BY amount ASC, creationDate DESC";
+        try {
+            return (DaoOffer) SessionManager.createQuery(queryString)
+                                            .setEntity("this", this)
+                                            .setParameter("state", DaoKudosable.PopularityState.PENDING)
+                                            .iterate()
+                                            .next();
+        } catch (final NoSuchElementException e) {
+            return null;
+        }
     }
 
-    public Set<DaoOffer> getOffers() {
-        return offers;
+    public PageIterable<DaoOffer> getOffers() {
+        return new MappedList<DaoOffer>(offers);
     }
 
     public DemandState getDemandState() {
         return demandState;
     }
 
-    /**
-     * Use a HQL query to get the contributions as a PageIterable collection
-     */
-    public PageIterable<DaoContribution> getContributionsFromQuery() {
-        return new QueryCollection<DaoContribution>("from DaoContribution as f where f.demand = :this").setEntity("this", this);
+    public PageIterable<DaoContribution> getContributions() {
+        return new MappedList<DaoContribution>(contributions);
     }
 
     /*
@@ -345,12 +332,12 @@ public final class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return CommentManager.getComments(comments);
+        return new MappedList<DaoComment>(comments);
     }
 
     @Override
     public DaoComment getLastComment() {
-        return CommentManager.getLastComment(comments);
+        return comments.get(comments.size() - 1);
     }
 
     public DaoOffer getSelectedOffer() {

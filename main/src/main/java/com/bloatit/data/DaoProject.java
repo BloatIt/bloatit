@@ -16,15 +16,19 @@
 //
 package com.bloatit.data;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -44,10 +48,11 @@ public final class DaoProject extends DaoIdentifiable {
     private DaoDescription description;
 
     @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("id")
     private DaoFileMetadata image;
 
     @OneToMany(mappedBy = "project")
-    private final Set<DaoDemand> demands = new HashSet<DaoDemand>();
+    private final List<DaoDemand> demands = new ArrayList<DaoDemand>();
 
     // ======================================================================
     // Static HQL requests
@@ -106,17 +111,8 @@ public final class DaoProject extends DaoIdentifiable {
         return image;
     }
 
-    /**
-     * @return the demands
-     */
-    public Set<DaoDemand> getDemands() {
-        return demands;
-    }
-
-    public PageIterable<DaoDemand> getAllDemands() {
-        final QueryCollection<DaoDemand> q = new QueryCollection<DaoDemand>("FROM DaoDemand as x WHERE x.project = :project");
-        q.setEntity("project", this);
-        return q;
+    public PageIterable<DaoDemand> getDemands() {
+        return new MappedList<DaoDemand>(demands);
     }
 
     /**

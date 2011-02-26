@@ -60,7 +60,7 @@ public class DaoDemandTest extends DataTestUnit {
 
         demand = DBRequests.getById(DaoDemand.class, demand.getId());
 
-        assertEquals(2, demand.getContributionsFromQuery().size());
+        assertEquals(2, demand.getContributions().size());
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("25")));
         assertEquals(0, fred.getInternalAccount().getAmount().compareTo(new BigDecimal("75")));
         assertEquals(0, yo.getInternalAccount().getBlocked().compareTo(new BigDecimal("18")));
@@ -113,7 +113,7 @@ public class DaoDemandTest extends DataTestUnit {
         demand.addContribution(fred, new BigDecimal("25.00"), "I'm so generous too");
         demand.addContribution(yo, new BigDecimal("18.00"), "I'm so generous too");
 
-        for (final DaoContribution Contribution : demand.getContributionsFromQuery()) {
+        for (final DaoContribution Contribution : demand.getContributions()) {
             Contribution.validate(offer, 100);
         }
 
@@ -147,8 +147,8 @@ public class DaoDemandTest extends DataTestUnit {
         fred = DBRequests.getById(DaoMember.class, fred.getId());
         yo = DBRequests.getById(DaoMember.class, yo.getId());
 
-        for (final DaoContribution Contribution : demand.getContributionsFromQuery()) {
-            Contribution.cancel();
+        for (final DaoContribution contribution : demand.getContributions()) {
+            contribution.cancel();
         }
 
         assertEquals(0, fred.getInternalAccount().getBlocked().compareTo(new BigDecimal("0")));

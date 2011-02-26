@@ -105,7 +105,7 @@ public class BigDB {
                                              new Date(System.currentTimeMillis() + 200),
                                              0));
                 if (pick(2) == 0) {
-                    for (final DaoContribution contrib : demand.getContributionsFromQuery()) {
+                    for (final DaoContribution contrib : demand.getContributions()) {
                         try {
                             contrib.validate(demand.getOffers().iterator().next(), 100);
                         } catch (final NotEnoughMoneyException e) {

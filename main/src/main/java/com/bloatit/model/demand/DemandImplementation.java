@@ -18,6 +18,7 @@ package com.bloatit.model.demand;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -352,7 +353,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * Slot called when this demand state change to {@link PreparingState}.
      */
     void inPreparingState() {
-        Set<DaoOffer> offers = getDao().getOffers();
+        PageIterable<DaoOffer> offers = getDao().getOffers();
         if (offers.size() < 1) {
             throw new WrongStateException("There must be at least one offer to be in Preparing state.");
         }
@@ -546,7 +547,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * @see #getContribution()
      */
     private PageIterable<Contribution> getContributionsUnprotected() {
-        return new ContributionList(getDao().getContributionsFromQuery());
+        return new ContributionList(getDao().getContributions());
     }
 
     /** The Constant PROGRESSION_COEF. */
@@ -638,7 +639,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
      * @return the offers unprotected
      */
     private PageIterable<Offer> getOffersUnprotected() {
-        return new OfferList(getDao().getOffersFromQuery());
+        return new OfferList(getDao().getOffers());
     }
 
     /*

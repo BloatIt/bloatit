@@ -17,7 +17,9 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -28,6 +30,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
+
+import org.hibernate.annotations.IndexColumn;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -73,8 +79,9 @@ public final class DaoContribution extends DaoUserContent {
      * on each validated contribution and only on those. (Except when a user add
      * on offer on his own offer -> no transaction)
      */
-    @OneToMany(orphanRemoval = false, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private final Set<DaoTransaction> transaction = new HashSet<DaoTransaction>();
+    @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST)
+    // TODO add a nullable contribution into daoTransaction to have a mapped by ?
+    private final List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
 
     @Basic(optional = false)
     private int percentDone;

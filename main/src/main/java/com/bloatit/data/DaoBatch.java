@@ -17,19 +17,23 @@
 package com.bloatit.data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.Query;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.DateBridge;
@@ -52,6 +56,8 @@ import com.bloatit.framework.utils.PageIterable;
  * @author Thomas Guyard
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public final class DaoBatch extends DaoIdentifiable {
 
     public enum BatchState {
@@ -101,15 +107,19 @@ public final class DaoBatch extends DaoIdentifiable {
     @ManyToOne
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoDescription description;
 
     @OneToMany(mappedBy = "batch")
     @Cascade(value = { CascadeType.ALL })
-    private final Set<DaoBug> bugs = new HashSet<DaoBug>();
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private final List<DaoBug> bugs = new ArrayList<DaoBug>();
 
     @OneToMany(mappedBy = "batch")
     @Cascade(value = { CascadeType.ALL })
-    private final Set<DaoRelease> releases = new HashSet<DaoRelease>();
+    @OrderBy("id DESC")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private final List<DaoRelease> releases = new ArrayList<DaoRelease>();
 
     @ManyToOne(optional = false)
     private DaoOffer offer;
@@ -309,9 +319,7 @@ public final class DaoBatch extends DaoIdentifiable {
     }
 
     public PageIterable<DaoRelease> getReleases() {
-        final Query filteredBugs = SessionManager.createFilter(releases, "order by creationDate DESC");
-        final Query filteredBugsSize = SessionManager.createFilter(releases, "select count (*)");
-        return new QueryCollection<DaoRelease>(filteredBugs, filteredBugsSize);
+        return new MappedList<DaoRelease>(releases);
     }
 
     public Date getExpirationDate() {

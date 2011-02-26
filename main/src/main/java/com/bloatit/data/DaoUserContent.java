@@ -16,9 +16,9 @@
 //
 package com.bloatit.data;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -28,13 +28,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.Query;
-import org.hibernate.classic.Session;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
 import com.bloatit.common.Log;
-import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
@@ -68,8 +65,8 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     @Basic(optional = false)
     private Boolean isDeleted;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private final Set<DaoFileMetadata> files = new HashSet<DaoFileMetadata>();
+    @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL)
+    private final List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
 
     /**
      * Initialize the creation date to now.
@@ -104,10 +101,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * @return all the files associated with this DaoUserContent.
      */
     public final PageIterable<DaoFileMetadata> getFiles() {
-        final Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        final Query filesQuery = currentSession.createFilter(files, "");
-        final Query filesSizeQuery = currentSession.createFilter(files, "select count(*)");
-        return new QueryCollection<DaoFileMetadata>(filesQuery, filesSizeQuery);
+        return new MappedList<DaoFileMetadata>(files);
     }
 
     public Boolean isDeleted() {

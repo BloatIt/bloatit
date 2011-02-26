@@ -115,7 +115,7 @@ public class SimpleTestDB {
 
             demand.getOffers().iterator().next().setState(PopularityState.VALIDATED);
 
-            for (final DaoContribution contribution : demand.getContributionsFromQuery()) {
+            for (final DaoContribution contribution : demand.getContributions()) {
                 try {
                     contribution.validate(demand.getOffers().iterator().next(), 100);
                 } catch (final NotEnoughMoneyException e) {

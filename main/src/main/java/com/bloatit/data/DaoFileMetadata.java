@@ -20,6 +20,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
@@ -52,6 +53,9 @@ public final class DaoFileMetadata extends DaoUserContent {
 
     @OneToOne(optional = true, mappedBy = "file")
     private DaoImage image;
+
+    @ManyToOne(optional = true)
+    private DaoUserContent relatedContent;
 
     public static DaoFileMetadata createAndPersist(final DaoMember member,
                                                    final DaoUserContent relatedContent,
@@ -97,6 +101,7 @@ public final class DaoFileMetadata extends DaoUserContent {
         this.url = url;
         this.type = type;
         this.shortDescription = null;
+        this.relatedContent = relatedContent;
         if (relatedContent != null) {
             relatedContent.addFile(this);
         }
@@ -162,6 +167,10 @@ public final class DaoFileMetadata extends DaoUserContent {
 
     public FileType getType() {
         return type;
+    }
+    
+    public DaoUserContent getRelatedContent() {
+        return relatedContent;
     }
 
     // ======================================================================

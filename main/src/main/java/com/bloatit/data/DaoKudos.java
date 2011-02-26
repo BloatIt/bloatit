@@ -18,6 +18,7 @@ package com.bloatit.data;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -40,18 +41,8 @@ public final class DaoKudos extends DaoUserContent {
     @Basic(optional = false)
     private int value;
 
-    protected static DaoKudos createAndPersist(final DaoMember member, final int value) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoKudos kudos = new DaoKudos(member, value);
-        try {
-            session.save(kudos);
-        } catch (final HibernateException e) {
-            session.getTransaction().rollback();
-            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
-            throw e;
-        }
-        return kudos;
-    }
+    @ManyToOne(optional = false)
+    private DaoKudosable kudosable;
 
     /**
      * Create a new kudos.
@@ -59,13 +50,18 @@ public final class DaoKudos extends DaoUserContent {
      * @param member is the person creating the kudos.
      * @param value is value of the kudos.
      */
-    public DaoKudos(final DaoMember member, final int value) {
+    public DaoKudos(final DaoMember member, final int value, DaoKudosable kudosable) {
         super(member);
         this.value = value;
+        this.kudosable = kudosable;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public DaoKudosable getKudosable() {
+        return kudosable;
     }
 
     // ======================================================================
@@ -122,5 +118,4 @@ public final class DaoKudos extends DaoUserContent {
         }
         return true;
     }
-
 }

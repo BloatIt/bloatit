@@ -16,7 +16,9 @@
 //
 package com.bloatit.data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -25,6 +27,7 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -73,9 +76,11 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
     @Enumerated
     private Level errorLevel;
 
+    // TODO make the comments mapped by DaoUserContent ?
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
-    private final Set<DaoComment> comments = new HashSet<DaoComment>();
+    @OrderBy("id")
+    private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false)
     private DaoBatch batch;

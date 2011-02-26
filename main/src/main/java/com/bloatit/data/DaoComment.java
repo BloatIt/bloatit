@@ -16,13 +16,16 @@
 //
 package com.bloatit.data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -54,8 +57,9 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
      */
     @OneToMany(mappedBy = "father")
     @Cascade(value = { CascadeType.ALL })
+    @OrderBy("id")
     @IndexedEmbedded(depth = 1)
-    private final Set<DaoComment> children = new HashSet<DaoComment>(0);
+    private final List<DaoComment> children = new ArrayList<DaoComment>(0);
 
     public static DaoComment createAndPersist(final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -119,12 +123,12 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
 
     @Override
     public PageIterable<DaoComment> getComments() {
-        return CommentManager.getComments(children);
+        return new MappedList<DaoComment>(children);
     }
 
     @Override
     public DaoComment getLastComment() {
-        return CommentManager.getLastComment(children);
+        return children.get(children.size() - 1);
     }
 
     @Override

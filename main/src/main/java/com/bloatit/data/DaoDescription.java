@@ -16,13 +16,15 @@
 //
 package com.bloatit.data;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -31,7 +33,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
-import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
@@ -49,10 +50,10 @@ public final class DaoDescription extends DaoIdentifiable {
     /**
      * This is a set of translation of this description
      */
-    @OneToMany(mappedBy = "description", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "description")
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
-    private final Set<DaoTranslation> translations = new HashSet<DaoTranslation>(0);
+    private final List<DaoTranslation> translations = new ArrayList<DaoTranslation>(0);
 
     public static DaoDescription createAndPersist(final DaoMember member, final Locale locale, final String title, final String description) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
@@ -109,11 +110,11 @@ public final class DaoDescription extends DaoIdentifiable {
     }
 
     /**
-     * Use a HQL query to get the Translations of this description in a
-     * PageIterable This will return every translation EVEN this description.
+     * Gets the Translations of this description in a PageIterable This will
+     * return every translation EVEN this description.
      */
     public PageIterable<DaoTranslation> getTranslations() {
-        return new QueryCollection<DaoTranslation>("from DaoTranslation as t where t.description = :this").setEntity("this", this);
+        return new MappedList<DaoTranslation>(translations);
     }
 
     /**

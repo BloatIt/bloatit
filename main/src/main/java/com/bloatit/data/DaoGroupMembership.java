@@ -16,7 +16,9 @@
 //
 package com.bloatit.data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -47,7 +49,7 @@ class DaoGroupMembership extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "membership", orphanRemoval = true, cascade = { CascadeType.ALL })
     @Cascade(value = {})
-    private final Set<DaoGroupRight> memberRight = new HashSet<DaoGroupRight>(0);
+    private final List<DaoGroupRight> memberRight = new ArrayList<DaoGroupRight>(0);
 
     /**
      * Get a GroupMembership line using its composite key. (HQL request)
@@ -73,7 +75,7 @@ class DaoGroupMembership extends DaoIdentifiable {
         return bloatitGroup;
     }
 
-    protected final Set<DaoGroupRight> getRights() {
+    protected final List<DaoGroupRight> getRights() {
         return memberRight;
     }
 

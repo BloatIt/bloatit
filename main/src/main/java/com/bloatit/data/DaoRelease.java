@@ -16,14 +16,15 @@
 //
 package com.bloatit.data;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -46,7 +47,8 @@ public final class DaoRelease extends DaoUserContent implements DaoCommentable {
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
-    private final Set<DaoComment> comments = new HashSet<DaoComment>();
+    @OrderBy("id")
+    private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false)
     private DaoBatch batch;
@@ -114,7 +116,7 @@ public final class DaoRelease extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return CommentManager.getComments(comments);
+        return new MappedList<DaoComment>(comments);
     }
 
     /**
@@ -122,7 +124,7 @@ public final class DaoRelease extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public DaoComment getLastComment() {
-        return CommentManager.getLastComment(comments);
+        return comments.get(comments.size() - 1);
     }
 
     // ======================================================================

@@ -16,8 +16,8 @@
 //
 package com.bloatit.data;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -59,9 +59,9 @@ public abstract class DaoKudosable extends DaoUserContent {
     @Field(store = Store.NO)
     private int popularity;
 
-    @OneToMany
+    @OneToMany(mappedBy = "kudosable")
     @Cascade(value = { CascadeType.ALL })
-    private final Set<DaoKudos> kudos = new HashSet<DaoKudos>(0);
+    private final List<DaoKudos> kudos = new ArrayList<DaoKudos>(0);
 
     @Basic(optional = false)
     @Field(store = Store.NO)
@@ -90,7 +90,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return the new popularity
      */
     public final int addKudos(final DaoMember member, final int value) {
-        kudos.add(new DaoKudos(member, value));
+        kudos.add(new DaoKudos(member, value, this));
         popularity += value;
         return popularity;
     }
