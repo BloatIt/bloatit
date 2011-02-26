@@ -88,22 +88,22 @@ import com.bloatit.data.SessionManager;
 /**
  * A Factory to create query on the DB and return list of DaoDemand.
  */
-public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDemand> {
+public  class DaoDemandListFactory extends DaoKudosableListFactory<DaoDemand> {
 
     /** The Constant CONTRIBUTION. */
-    private static final String CONTRIBUTION = "contribution";
+    private static  String CONTRIBUTION = "contribution";
 
     /** The Constant OFFERS. */
-    private static final String OFFERS = "offers";
+    private static  String OFFERS = "offers";
 
     /** The Constant SELECTED_OFFER. */
-    private static final String SELECTED_OFFER = "selectedOffer";
+    private static  String SELECTED_OFFER = "selectedOffer";
 
     /** The Constant PROJECT. */
-    private static final String PROJECT = "project";
+    private static  String PROJECT = "project";
 
     /** The Constant DEMAND_STATE. */
-    private static final String DEMAND_STATE = "demandState";
+    private static  String DEMAND_STATE = "demandState";
 
     /**
      * Instantiates a new dao demand list factory.
@@ -117,7 +117,7 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
      * 
      * @param state the state
      */
-    public void stateEquals(final DemandState state) {
+    public void stateEquals( DemandState state) {
         add(Restrictions.eq(DEMAND_STATE, state));
     }
 
@@ -126,7 +126,7 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
      * 
      * @param project the project
      */
-    public void projectEquals(final DaoProject project) {
+    public void projectEquals( DaoProject project) {
         add(Restrictions.eq(PROJECT, project));
     }
 
@@ -189,7 +189,7 @@ public final class DaoDemandListFactory extends DaoKudosableListFactory<DaoDeman
      * @param cmp the cmp.
      * @param value the value
      */
-    public void contribution(final Comparator cmp, final BigDecimal value) {
+    public void contribution( Comparator cmp,  BigDecimal value) {
         add(createNbCriterion(cmp, CONTRIBUTION, value));
     }
 

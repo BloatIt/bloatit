@@ -29,8 +29,8 @@ import com.bloatit.framework.utils.PageIterable;
  */
 public class QueryCollection<T> implements PageIterable<T> {
 
-    private final Query query;
-    private final Query sizeQuery;
+    private  Query query;
+    private  Query sizeQuery;
     private int pageSize;
     private int size;
     private int currentPage;
@@ -38,35 +38,35 @@ public class QueryCollection<T> implements PageIterable<T> {
     /**
      * Use this constructor with string that start with "from ..."
      */
-    public QueryCollection(final String queryStr) {
+    public QueryCollection( String queryStr) {
         this(SessionManager.createQuery(queryStr));
     }
 
-    public QueryCollection(final String queryStr, final String sizeQuery) {
+    public QueryCollection( String queryStr,  String sizeQuery) {
         this(SessionManager.createQuery(queryStr), SessionManager.createQuery(sizeQuery));
     }
 
     /**
      * Use this constructor with query that start with "from ..."
      */
-    public QueryCollection(final Query query) {
+    public QueryCollection( Query query) {
         this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
     }
 
-    public QueryCollection(final Query query, final Query sizeQuery) {
+    public QueryCollection( Query query,  Query sizeQuery) {
         pageSize = 0;
         size = -1;
         this.query = query;
         this.sizeQuery = sizeQuery;
     }
 
-    public final QueryCollection<T> setEntity(final String name, final Object entity) {
+    public  QueryCollection<T> setEntity( String name,  Object entity) {
         query.setEntity(name, entity);
         sizeQuery.setEntity(name, entity);
         return this;
     }
 
-    public QueryCollection<T> setParameter(final String name, final Object entity) {
+    public QueryCollection<T> setParameter( String name,  Object entity) {
         query.setParameter(name, entity);
         sizeQuery.setParameter(name, entity);
         return this;
@@ -74,30 +74,30 @@ public class QueryCollection<T> implements PageIterable<T> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public final Iterator<T> iterator() {
+    public  Iterator<T> iterator() {
         return query.list().iterator();
     }
 
     @Override
-    public final void setPage(final int page) {
+    public  void setPage( int page) {
         currentPage = page;
         query.setFirstResult(page * pageSize);
     }
 
     @Override
-    public final void setPageSize(final int pageSize) {
+    public  void setPageSize( int pageSize) {
         query.setMaxResults(pageSize);
         query.setFetchSize(pageSize);
         this.pageSize = pageSize;
     }
 
     @Override
-    public final int getPageSize() {
+    public  int getPageSize() {
         return pageSize;
     }
 
     @Override
-    public final int size() {
+    public  int size() {
         if (size == -1) {
             size = ((Long) sizeQuery.uniqueResult()).intValue();
             return size;
@@ -106,7 +106,7 @@ public class QueryCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public final int pageNumber() {
+    public  int pageNumber() {
         if (pageSize != 0) {
             return (int) Math.ceil((double) size() / (double) pageSize);
         }
@@ -114,7 +114,7 @@ public class QueryCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public final int getCurrentPage() {
+    public  int getCurrentPage() {
         return currentPage;
     }
 }

@@ -19,7 +19,7 @@ package com.bloatit.data;
 import org.hibernate.FlushMode;
 import org.hibernate.classic.Session;
 
-public final class DataManager {
+public  class DataManager {
 
     private DataManager() {
         // disactivate ctor;
@@ -34,13 +34,13 @@ public final class DataManager {
     }
 
     public static void setReadOnly() {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
         session.setDefaultReadOnly(true);
         session.setFlushMode(FlushMode.MANUAL);
     }
 
     public static void open() {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
 
         session.beginTransaction();
         session.setDefaultReadOnly(false);

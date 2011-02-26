@@ -26,12 +26,12 @@ import com.bloatit.data.SessionManager;
 
 public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserContentListFactory<T> {
 
-    private static final String IS_POPULARITY_LOCKED = "isPopularityLocked";
-    private static final String KUDOS = "kudos";
-    private static final String STATE = "state";
-    private static final String POPULARITY = "popularity";
+    private static  String IS_POPULARITY_LOCKED = "isPopularityLocked";
+    private static  String KUDOS = "kudos";
+    private static  String STATE = "state";
+    private static  String POPULARITY = "popularity";
 
-    protected DaoKudosableListFactory(final Criteria criteria) {
+    protected DaoKudosableListFactory( Criteria criteria) {
         super(criteria);
     }
 
@@ -39,7 +39,7 @@ public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserCont
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoKudosable.class));
     }
 
-    public void orderByPopularity(final DaoAbstractListFactory.OrderType order) {
+    public void orderByPopularity( DaoAbstractListFactory.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(POPULARITY));
         } else {
@@ -47,15 +47,15 @@ public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserCont
         }
     }
 
-    public void popularity(final Comparator cmp, final int value) {
+    public void popularity( Comparator cmp,  int value) {
         add(createNbCriterion(cmp, POPULARITY, value));
     }
 
-    public void stateEquals(final PopularityState state) {
+    public void stateEquals( PopularityState state) {
         add(Restrictions.eq(STATE, state));
     }
 
-    public void kudosSize(final Comparator cmp, final int number) {
+    public void kudosSize( Comparator cmp,  int number) {
         add(createNbCriterion(cmp, KUDOS, number));
     }
 

@@ -21,7 +21,7 @@ import java.util.Iterator;
 
 import com.bloatit.framework.utils.PageIterable;
 
-public final class NullCollection<T> implements PageIterable<T> {
+public  class NullCollection<T> implements PageIterable<T> {
 
     private int pageSize;
 
@@ -32,7 +32,7 @@ public final class NullCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPageSize(final int pageSize) {
+    public void setPageSize( int pageSize) {
         this.pageSize = pageSize;
     }
 
@@ -52,7 +52,7 @@ public final class NullCollection<T> implements PageIterable<T> {
     }
 
     @Override
-    public void setPage(final int page) {
+    public void setPage( int page) {
         // nothing to do it is empty.
     }
 

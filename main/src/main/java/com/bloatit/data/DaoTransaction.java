@@ -35,7 +35,7 @@ import com.bloatit.framework.exceptions.FatalErrorException;
  * account.
  */
 @Entity
-public final class DaoTransaction extends DaoIdentifiable {
+public  class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
@@ -47,12 +47,12 @@ public final class DaoTransaction extends DaoIdentifiable {
     private BigDecimal amount;
 
     public static DaoTransaction
-            createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoTransaction transaction = new DaoTransaction(from, to, amount);
+            createAndPersist( DaoInternalAccount from,  DaoAccount to,  BigDecimal amount) throws NotEnoughMoneyException {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         DaoTransaction transaction = new DaoTransaction(from, to, amount);
         try {
             session.save(transaction);
-        } catch (final HibernateException e) {
+        } catch ( HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -71,7 +71,7 @@ public final class DaoTransaction extends DaoIdentifiable {
      * @throws FatalErrorException if to == from
      * @throws NullPointerException if any of the parameters = null
      */
-    private DaoTransaction(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
+    private DaoTransaction( DaoInternalAccount from,  DaoAccount to,  BigDecimal amount) throws NotEnoughMoneyException {
         super();
         if (from.equals(to)) {
             throw new FatalErrorException("Cannot create a transaction on the same account.", null);
@@ -109,7 +109,7 @@ public final class DaoTransaction extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -131,7 +131,7 @@ public final class DaoTransaction extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = 1;
         result = prime * result + ((amount == null) ? 0 : amount.hashCode());
         result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
@@ -145,7 +145,7 @@ public final class DaoTransaction extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -155,7 +155,7 @@ public final class DaoTransaction extends DaoIdentifiable {
         if (!(obj instanceof DaoTransaction)) {
             return false;
         }
-        final DaoTransaction other = (DaoTransaction) obj;
+         DaoTransaction other = (DaoTransaction) obj;
         if (amount == null) {
             if (other.amount != null) {
                 return false;

@@ -47,7 +47,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public final class DaoBug extends DaoUserContent implements DaoCommentable {
+public  class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Criticality of the bug. A {@link Level#FATAL} error is a very important
@@ -86,7 +86,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private final List<DaoComment> comments = new ArrayList<DaoComment>();
+    private  List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false)
     private DaoBatch batch;
@@ -95,7 +95,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
     @Enumerated
     private BugState state;
 
-    public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
+    public DaoBug( DaoMember member,  DaoBatch batch,  String title,  String description,  Locale locale,  Level level) {
         super(member);
         if (title == null || description == null || batch == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -108,17 +108,17 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
         this.state = BugState.PENDING;
     }
 
-    public static DaoBug createAndPersist(final DaoMember member,
-                                          final DaoBatch batch,
-                                          final String title,
-                                          final String description,
-                                          final Locale locale,
-                                          final Level level) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoBug bug = new DaoBug(member, batch, title, description, locale, level);
+    public static DaoBug createAndPersist( DaoMember member,
+                                           DaoBatch batch,
+                                           String title,
+                                           String description,
+                                           Locale locale,
+                                           Level level) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         DaoBug bug = new DaoBug(member, batch, title, description, locale, level);
         try {
             session.save(bug);
-        } catch (final HibernateException e) {
+        } catch ( HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -127,11 +127,11 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     @Override
-    public void addComment(final DaoComment comment) {
+    public void addComment( DaoComment comment) {
         comments.add(comment);
     }
 
-    public void setErrorLevel(final Level level) {
+    public void setErrorLevel( Level level) {
         this.errorLevel = level;
     }
 
@@ -211,7 +211,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -233,7 +233,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((locale == null) ? 0 : locale.hashCode());
@@ -245,7 +245,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -255,7 +255,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoBug other = (DaoBug) obj;
+         DaoBug other = (DaoBug) obj;
         if (description == null) {
             if (other.description != null) {
                 return false;

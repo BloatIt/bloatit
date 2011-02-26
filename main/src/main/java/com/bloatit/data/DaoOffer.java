@@ -45,7 +45,7 @@ import com.bloatit.framework.utils.PageIterable;
  * An offer is a developer offer to a demand.
  */
 @Entity
-public final class DaoOffer extends DaoKudosable {
+public  class DaoOffer extends DaoKudosable {
 
     /**
      * This is demand on which this offer is done.
@@ -55,7 +55,7 @@ public final class DaoOffer extends DaoKudosable {
 
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     @OrderBy("expirationDate ASC")
-    private final List<DaoBatch> batches = new ArrayList<DaoBatch>();
+    private  List<DaoBatch> batches = new ArrayList<DaoBatch>();
 
     /**
      * The expirationDate is calculated from the batches variables.
@@ -93,12 +93,12 @@ public final class DaoOffer extends DaoKudosable {
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the
      *             future.
      */
-    public DaoOffer(final DaoMember member,
-                    final DaoDemand demand,
-                    final BigDecimal amount,
-                    final DaoDescription description,
-                    final Date dateExpire,
-                    final int secondsBeforeValidation) {
+    public DaoOffer( DaoMember member,
+                     DaoDemand demand,
+                     BigDecimal amount,
+                     DaoDescription description,
+                     Date dateExpire,
+                     int secondsBeforeValidation) {
         super(member);
         if (demand == null) {
             throw new NonOptionalParameterException();
@@ -118,12 +118,12 @@ public final class DaoOffer extends DaoKudosable {
         currentBatch = batches.size();
     }
 
-    public void addBatch(final DaoBatch batch) {
+    public void addBatch( DaoBatch batch) {
         if (isDraft() == false) {
             throw new FatalErrorException("You cannot add a batch on a non draft offer.");
         }
         amount = batch.getAmount().add(amount);
-        final Date expiration = batch.getExpirationDate();
+         Date expiration = batch.getExpirationDate();
         if (expirationDate.before(expiration)) {
             expirationDate = expiration;
         }
@@ -138,7 +138,7 @@ public final class DaoOffer extends DaoKudosable {
         currentBatch++;
     }
 
-    void batchHasARelease(final DaoBatch batch) {
+    void batchHasARelease( DaoBatch batch) {
         // Find next batch. Passe it into developing state.
         for (int i = 0; i < batches.size(); ++i) {
             if (batches.get(i).equals(batch)) {
@@ -150,7 +150,7 @@ public final class DaoOffer extends DaoKudosable {
         }
     }
 
-    public void setDraft(final boolean isDraft) {
+    public void setDraft( boolean isDraft) {
         this.isDraft = isDraft;
     }
 
@@ -166,8 +166,8 @@ public final class DaoOffer extends DaoKudosable {
      * @return All the batches for this offer. (Even the MasterBatch).
      */
     public PageIterable<DaoBatch> getBatches() {
-        final String query = "from DaoBatch where offer = :this order by expirationDate, id";
-        final String queryCount = "select count(*) from DaoBatch where offer = :this";
+         String query = "from DaoBatch where offer = :this order by expirationDate, id";
+         String queryCount = "select count(*) from DaoBatch where offer = :this";
         return new QueryCollection<DaoBatch>( //
                                              SessionManager.createQuery(query).setEntity("this", this),//
                                              SessionManager.createQuery(queryCount).setEntity("this", this));//
@@ -189,7 +189,7 @@ public final class DaoOffer extends DaoKudosable {
     }
 
     // TODO comment; it make sure the sum returned is 100.
-    int getBatchPercent(final DaoBatch current) {
+    int getBatchPercent( DaoBatch current) {
         if (batches.size() == 1) {
             return 100;
         }
@@ -197,8 +197,8 @@ public final class DaoOffer extends DaoKudosable {
         int alreadyReturned = 0;
         for (int i = 0; i < batches.size(); ++i) {
             // Calculate the percent of the batch
-            final DaoBatch batch = batches.get(i);
-            final int percent = batch.getAmount().divide(amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
+             DaoBatch batch = batches.get(i);
+             int percent = batch.getAmount().divide(amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
             if (current.equals(batch)) {
                 // is the current is the last one
                 if (i == (batches.size() - 1)) {
@@ -213,7 +213,7 @@ public final class DaoOffer extends DaoKudosable {
     }
 
     public boolean hasRelease() {
-        final Query query = SessionManager.createFilter(batches, "SELECT count(*) WHERE this.releases is not empty");
+         Query query = SessionManager.createFilter(batches, "SELECT count(*) WHERE this.releases is not empty");
         return !((Long) query.uniqueResult()).equals(0L);
     }
 
@@ -222,7 +222,7 @@ public final class DaoOffer extends DaoKudosable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -248,7 +248,7 @@ public final class DaoOffer extends DaoKudosable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((amount == null) ? 0 : amount.hashCode());
         result = prime * result + ((demand == null) ? 0 : demand.hashCode());
@@ -261,7 +261,7 @@ public final class DaoOffer extends DaoKudosable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -271,7 +271,7 @@ public final class DaoOffer extends DaoKudosable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoOffer other = (DaoOffer) obj;
+         DaoOffer other = (DaoOffer) obj;
         if (amount == null) {
             if (other.amount != null) {
                 return false;

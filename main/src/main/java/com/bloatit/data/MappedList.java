@@ -9,7 +9,7 @@ import com.bloatit.framework.utils.PageIterable;
 
 public class MappedList<T> implements PageIterable<T> {
 
-    private final List<T> list;
+    private  List<T> list;
     private Query sizeQuery;
     private int pageSize;
     private int size;
@@ -66,7 +66,7 @@ public class MappedList<T> implements PageIterable<T> {
 
     private class BoundedIterator<E> implements Iterator<E> {
 
-        private final Iterator<E> it;
+        private  Iterator<E> it;
         int i;
 
         public BoundedIterator(Iterator<E> it) {

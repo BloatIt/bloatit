@@ -87,7 +87,7 @@ import com.bloatit.data.SessionManager;
 /**
  * A Factory to create query on the DB and return list of DaoDemand.
  */
-public final class DaoOfferListFactory extends DaoKudosableListFactory<DaoOffer> {
+public  class DaoOfferListFactory extends DaoKudosableListFactory<DaoOffer> {
 
     /**
      * Instantiates a new dao demand list factory.
@@ -110,7 +110,7 @@ public final class DaoOfferListFactory extends DaoKudosableListFactory<DaoOffer>
      * @param cmp the cmp.
      * @param value the value
      */
-    public void amount(final Comparator cmp, final BigDecimal value) {
+    public void amount( Comparator cmp,  BigDecimal value) {
         add(createNbCriterion(cmp, "amount", value));
     }
 

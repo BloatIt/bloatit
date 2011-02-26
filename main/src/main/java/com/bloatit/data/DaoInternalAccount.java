@@ -32,7 +32,7 @@ import com.bloatit.data.exceptions.NotEnoughMoneyException;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public final class DaoInternalAccount extends DaoAccount {
+public  class DaoInternalAccount extends DaoAccount {
 
     /**
      * This is the amount that is currently used by contributions. (amount -
@@ -42,7 +42,7 @@ public final class DaoInternalAccount extends DaoAccount {
     private BigDecimal blocked;
 
     // Used in Member constructor.
-    DaoInternalAccount(final DaoActor actor) {
+    DaoInternalAccount( DaoActor actor) {
         super(actor);
         blocked = BigDecimal.ZERO;
     }
@@ -54,7 +54,7 @@ public final class DaoInternalAccount extends DaoAccount {
      * @throws NotEnoughMoneyException if there is not enough money to block.
      *             (nothing is done, modification date is unchanged)
      */
-    protected void block(final BigDecimal blocked) throws NotEnoughMoneyException {
+    protected void block( BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(getAmount()) > 0) {
             Log.data().fatal("Cannot block " + blocked.toEngineeringString() + " on account " + getId() + ", Throwing NotEnougthMoneyEcception.");
             throw new NotEnoughMoneyException();
@@ -71,7 +71,7 @@ public final class DaoInternalAccount extends DaoAccount {
      * @throws NotEnoughMoneyException if there is not enough money already
      *             bloken. (nothing is done, modification date is unchanged)
      */
-    protected void unBlock(final BigDecimal blocked) throws NotEnoughMoneyException {
+    protected void unBlock( BigDecimal blocked) throws NotEnoughMoneyException {
         if (blocked.compareTo(this.blocked) > 0) {
             Log.data().fatal("Cannot unblock " + blocked.toEngineeringString() + " on account " + getId() + ", Throwing NotEnougthMoneyEcception.");
             throw new NotEnoughMoneyException();
@@ -82,7 +82,7 @@ public final class DaoInternalAccount extends DaoAccount {
     }
 
     @Override
-    protected boolean hasEnoughMoney(final BigDecimal amount) {
+    protected boolean hasEnoughMoney( BigDecimal amount) {
         return getAmount().compareTo(amount) >= 0;
     }
 
@@ -91,7 +91,7 @@ public final class DaoInternalAccount extends DaoAccount {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

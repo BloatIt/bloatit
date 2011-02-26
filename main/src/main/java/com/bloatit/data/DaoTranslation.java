@@ -36,7 +36,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  */
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "locale", "description_id" }) })
-public final class DaoTranslation extends DaoKudosable {
+public  class DaoTranslation extends DaoKudosable {
 
     @Basic(optional = false)
     private Locale locale;
@@ -62,7 +62,7 @@ public final class DaoTranslation extends DaoKudosable {
      * @param text
      * @throws NonOptionalParameterException if any of the field is null
      */
-    public DaoTranslation(final DaoMember member, final DaoDescription description, final Locale locale, final String title, final String text) {
+    public DaoTranslation( DaoMember member,  DaoDescription description,  Locale locale,  String title,  String text) {
         super(member);
         if (description == null || locale == null || title == null || text == null) {
             throw new NonOptionalParameterException();
@@ -93,7 +93,7 @@ public final class DaoTranslation extends DaoKudosable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -119,7 +119,7 @@ public final class DaoTranslation extends DaoKudosable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((locale == null) ? 0 : locale.hashCode());
         result = prime * result + ((text == null) ? 0 : text.hashCode());
@@ -132,7 +132,7 @@ public final class DaoTranslation extends DaoKudosable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -142,7 +142,7 @@ public final class DaoTranslation extends DaoKudosable {
         if (!(obj instanceof DaoTranslation)) {
             return false;
         }
-        final DaoTranslation other = (DaoTranslation) obj;
+         DaoTranslation other = (DaoTranslation) obj;
         if (locale == null) {
             if (other.locale != null) {
                 return false;

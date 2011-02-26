@@ -29,7 +29,7 @@ import org.hibernate.Session;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 @Entity
-public final class DaoFileMetadata extends DaoUserContent {
+public  class DaoFileMetadata extends DaoUserContent {
 
     public enum FileType {
         TEXT, HTML, TEX, PDF, ODT, DOC, BMP, JPG, PNG, SVG, UNKNOWN
@@ -57,17 +57,17 @@ public final class DaoFileMetadata extends DaoUserContent {
     @ManyToOne(optional = true)
     private DaoUserContent relatedContent;
 
-    public static DaoFileMetadata createAndPersist(final DaoMember member,
-                                                   final DaoUserContent relatedContent,
-                                                   final String filename,
-                                                   final String url,
-                                                   final FileType type,
-                                                   final int size) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoFileMetadata file = new DaoFileMetadata(member, relatedContent, filename, url, type, size);
+    public static DaoFileMetadata createAndPersist( DaoMember member,
+                                                    DaoUserContent relatedContent,
+                                                    String filename,
+                                                    String url,
+                                                    FileType type,
+                                                    int size) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         DaoFileMetadata file = new DaoFileMetadata(member, relatedContent, filename, url, type, size);
         try {
             session.save(file);
-        } catch (final HibernateException e) {
+        } catch ( HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -86,12 +86,12 @@ public final class DaoFileMetadata extends DaoUserContent {
      *            mimetype)
      * @param size is the size of the file.
      */
-    private DaoFileMetadata(final DaoMember member,
-                            final DaoUserContent relatedContent,
-                            final String filename,
-                            final String url,
-                            final FileType type,
-                            final int size) {
+    private DaoFileMetadata( DaoMember member,
+                             DaoUserContent relatedContent,
+                             String filename,
+                             String url,
+                             FileType type,
+                             int size) {
         super(member);
         if (filename == null || url == null || type == null || filename.isEmpty() || url.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -106,7 +106,7 @@ public final class DaoFileMetadata extends DaoUserContent {
             relatedContent.addFile(this);
         }
         // At the end to make sure the assignment are done.
-        // It works only if equal is final !!
+        // It works only if equal is  !!
         if (equals(relatedContent)) {
             throw new IllegalArgumentException();
         }
@@ -115,7 +115,7 @@ public final class DaoFileMetadata extends DaoUserContent {
     /**
      * @param shortDescription the shortDescription to set
      */
-    public final void setShortDescription(final String shortDescription) {
+    public  void setShortDescription( String shortDescription) {
         this.shortDescription = shortDescription;
     }
 
@@ -124,7 +124,7 @@ public final class DaoFileMetadata extends DaoUserContent {
      * 
      * @param image the image to set.
      */
-    void setImage(final DaoImage image) {
+    void setImage( DaoImage image) {
         this.image = image;
     }
 
@@ -140,28 +140,28 @@ public final class DaoFileMetadata extends DaoUserContent {
     /**
      * @return the url.
      */
-    public final String getUrl() {
+    public  String getUrl() {
         return url;
     }
 
     /**
      * @return the shortDescription
      */
-    public final String getShortDescription() {
+    public  String getShortDescription() {
         return shortDescription;
     }
 
     /**
      * @return the filename
      */
-    public final String getFilename() {
+    public  String getFilename() {
         return filename;
     }
 
     /**
      * @return the size
      */
-    public final int getSize() {
+    public  int getSize() {
         return size;
     }
 
@@ -178,7 +178,7 @@ public final class DaoFileMetadata extends DaoUserContent {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -199,8 +199,8 @@ public final class DaoFileMetadata extends DaoUserContent {
      * @see java.lang.Object#hashCode()
      */
     @Override
-    public final int hashCode() {
-        final int prime = 31;
+    public  int hashCode() {
+         int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((url == null) ? 0 : url.hashCode());
         result = prime * result + ((filename == null) ? 0 : filename.hashCode());
@@ -212,7 +212,7 @@ public final class DaoFileMetadata extends DaoUserContent {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public final boolean equals(final Object obj) {
+    public  boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -222,7 +222,7 @@ public final class DaoFileMetadata extends DaoUserContent {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoFileMetadata other = (DaoFileMetadata) obj;
+         DaoFileMetadata other = (DaoFileMetadata) obj;
         if (url == null) {
             if (other.url != null) {
                 return false;

@@ -39,7 +39,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 @Entity
-public final class DaoProject extends DaoIdentifiable {
+public  class DaoProject extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = false)
     private String name;
@@ -52,14 +52,14 @@ public final class DaoProject extends DaoIdentifiable {
     private DaoFileMetadata image;
 
     @OneToMany(mappedBy = "project")
-    private final List<DaoDemand> demands = new ArrayList<DaoDemand>();
+    private  List<DaoDemand> demands = new ArrayList<DaoDemand>();
 
     // ======================================================================
     // Static HQL requests
     // ======================================================================
 
-    public static DaoProject getByName(final String name) {
-        final Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
+    public static DaoProject getByName( String name) {
+         Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
         return (DaoProject) query.uniqueResult();
     }
 
@@ -67,12 +67,12 @@ public final class DaoProject extends DaoIdentifiable {
     // Construction
     // ======================================================================
 
-    public static DaoProject createAndPersist(final String name, final DaoDescription description) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoProject project = new DaoProject(name, description);
+    public static DaoProject createAndPersist( String name,  DaoDescription description) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         DaoProject project = new DaoProject(name, description);
         try {
             session.save(project);
-        } catch (final HibernateException e) {
+        } catch ( HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -80,7 +80,7 @@ public final class DaoProject extends DaoIdentifiable {
         return project;
     }
 
-    private DaoProject(final String name, final DaoDescription description) {
+    private DaoProject( String name,  DaoDescription description) {
         super();
         if (name == null || name.isEmpty() || description == null) {
             throw new NonOptionalParameterException();
@@ -89,7 +89,7 @@ public final class DaoProject extends DaoIdentifiable {
         this.description = description;
     }
 
-    protected void addDemand(final DaoDemand demand) {
+    protected void addDemand( DaoDemand demand) {
         demands.add(demand);
     }
 
@@ -127,7 +127,7 @@ public final class DaoProject extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -149,7 +149,7 @@ public final class DaoProject extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = 1;
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         return result;
@@ -160,7 +160,7 @@ public final class DaoProject extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -170,7 +170,7 @@ public final class DaoProject extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoProject other = (DaoProject) obj;
+         DaoProject other = (DaoProject) obj;
         if (description == null) {
             if (other.description != null) {
                 return false;
@@ -182,7 +182,7 @@ public final class DaoProject extends DaoIdentifiable {
         return true;
     }
 
-    public void setImage(final DaoFileMetadata image) {
+    public void setImage( DaoFileMetadata image) {
         this.image = image;
     }
 

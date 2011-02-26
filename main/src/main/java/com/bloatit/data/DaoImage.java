@@ -32,7 +32,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * the DaoFileMetadata object.
  */
 @Entity
-public final class DaoImage extends DaoIdentifiable {
+public  class DaoImage extends DaoIdentifiable {
 
     @Basic(optional = false)
     private int horizontalSize;
@@ -49,12 +49,12 @@ public final class DaoImage extends DaoIdentifiable {
     /**
      * @see #DaoImage(int, int, String, DaoFileMetadata)
      */
-    public static DaoImage createAndPersist(final int horizontalSize, final int verticalSize, final String compression, final DaoFileMetadata file) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoImage image = new DaoImage(horizontalSize, verticalSize, compression, file);
+    public static DaoImage createAndPersist( int horizontalSize,  int verticalSize,  String compression,  DaoFileMetadata file) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         DaoImage image = new DaoImage(horizontalSize, verticalSize, compression, file);
         try {
             session.save(file);
-        } catch (final HibernateException e) {
+        } catch ( HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -71,7 +71,7 @@ public final class DaoImage extends DaoIdentifiable {
      *            parameter is optional (it can be null, or empty).
      * @param file is the file where this image is stored.
      */
-    private DaoImage(final int horizontalSize, final int verticalSize, final String compression, final DaoFileMetadata file) {
+    private DaoImage( int horizontalSize,  int verticalSize,  String compression,  DaoFileMetadata file) {
         super();
         if (file == null) {
             throw new NonOptionalParameterException();
@@ -86,35 +86,35 @@ public final class DaoImage extends DaoIdentifiable {
     /**
      * @param compression the compression to set
      */
-    public final void setCompression(final String compression) {
+    public  void setCompression( String compression) {
         this.compression = compression;
     }
 
     /**
      * @return the horizontalSize
      */
-    public final int getHorizontalSize() {
+    public  int getHorizontalSize() {
         return horizontalSize;
     }
 
     /**
      * @return the verticalSize
      */
-    public final int getVerticalSize() {
+    public  int getVerticalSize() {
         return verticalSize;
     }
 
     /**
      * @return the compression
      */
-    public final String getCompression() {
+    public  String getCompression() {
         return compression;
     }
 
     /**
      * @return the file
      */
-    public final DaoFileMetadata getFile() {
+    public  DaoFileMetadata getFile() {
         return file;
     }
 
@@ -123,7 +123,7 @@ public final class DaoImage extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -145,7 +145,7 @@ public final class DaoImage extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = 1;
         result = prime * result + ((file == null) ? 0 : file.hashCode());
         return result;
@@ -156,7 +156,7 @@ public final class DaoImage extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -166,7 +166,7 @@ public final class DaoImage extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoImage other = (DaoImage) obj;
+         DaoImage other = (DaoImage) obj;
         if (file == null) {
             if (other.file != null) {
                 return false;

@@ -66,7 +66,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     private Boolean isDeleted;
 
     @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL)
-    private final List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
+    private  List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
 
     /**
      * Initialize the creation date to now.
@@ -74,7 +74,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */
-    public DaoUserContent(final DaoMember member) {
+    public DaoUserContent( DaoMember member) {
         super();
         if (member == null) {
             Log.data().fatal("Cannot create a DaoUserContent with a null member.");
@@ -85,22 +85,22 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         setIsDeleted(false);
     }
 
-    public final DaoMember getAuthor() {
+    public  DaoMember getAuthor() {
         return member;
     }
 
-    public final Date getCreationDate() {
+    public  Date getCreationDate() {
         return (Date) creationDate.clone();
     }
 
-    public final DaoGroup getAsGroup() {
+    public  DaoGroup getAsGroup() {
         return asGroup;
     }
 
     /**
      * @return all the files associated with this DaoUserContent.
      */
-    public final PageIterable<DaoFileMetadata> getFiles() {
+    public  PageIterable<DaoFileMetadata> getFiles() {
         return new MappedList<DaoFileMetadata>(files);
     }
 
@@ -108,7 +108,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         return isDeleted;
     }
 
-    public void setIsDeleted(final Boolean isDeleted) {
+    public void setIsDeleted( Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
@@ -116,11 +116,11 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * null is the default value and means that the content has a member as
      * author.
      */
-    public final void setAsGroup(final DaoGroup asGroup) {
+    public  void setAsGroup( DaoGroup asGroup) {
         this.asGroup = asGroup;
     }
 
-    public void addFile(final DaoFileMetadata daoFileMetadata) {
+    public void addFile( DaoFileMetadata daoFileMetadata) {
         this.files.add(daoFileMetadata);
     }
 
@@ -142,7 +142,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = 1;
         result = prime * result + ((asGroup == null) ? 0 : asGroup.hashCode());
         result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
@@ -155,7 +155,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -165,7 +165,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         if (!(obj instanceof DaoUserContent)) {
             return false;
         }
-        final DaoUserContent other = (DaoUserContent) obj;
+         DaoUserContent other = (DaoUserContent) obj;
         if (asGroup == null) {
             if (other.asGroup != null) {
                 return false;

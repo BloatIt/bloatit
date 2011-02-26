@@ -18,6 +18,6 @@
 package com.bloatit.data.exceptions;
 
 public class NotEnoughMoneyException extends Exception {
-    private static final long serialVersionUID = -1810777523607205468L;
+    private static  long serialVersionUID = -1810777523607205468L;
 
 }

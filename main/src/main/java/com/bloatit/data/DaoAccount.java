@@ -66,7 +66,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @param actor is the owner of this account
      * @throws NonOptionalParameterException if the actor == null
      */
-    public DaoAccount(final DaoActor actor) {
+    public DaoAccount( DaoActor actor) {
         if (actor == null) {
             throw new NonOptionalParameterException();
         }
@@ -90,7 +90,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * Used internally or by subclasses to every time the Amount is changed. It
      * reset the modification date to now.
      */
-    protected final void resetModificationDate() {
+    protected  void resetModificationDate() {
         lastModificationDate = new Date();
     }
 
@@ -106,7 +106,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @param value the quantity of money to add to the amount of this account.
      *            (May be a negative value)
      */
-    final void addToAmountValue(final BigDecimal value) {
+     void addToAmountValue( BigDecimal value) {
         resetModificationDate();
         lastModificationDate = new Date();
         amount = amount.add(value);
@@ -122,7 +122,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @param value the quantity of money to subtract to the amount of this
      *            account. (May be a negative value)
      */
-    protected final void substractToAmountValue(final BigDecimal value) {
+    protected  void substractToAmountValue( BigDecimal value) {
         resetModificationDate();
         lastModificationDate = new Date();
         amount = amount.subtract(value);
@@ -136,7 +136,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @see DaoTransaction
      * @param amount the new amount to set.
      */
-    protected final void setAmount(final BigDecimal amount) {
+    protected  void setAmount( BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -155,23 +155,23 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * 
      * @return all the transactions that are from/to this account.
      */
-    public final PageIterable<DaoTransaction> getTransactions() {
+    public  PageIterable<DaoTransaction> getTransactions() {
         return new QueryCollection<DaoTransaction>("from DaoTransaction as t where t.from = :this or t.to = :this").setEntity("this", this);
     }
 
-    public final Date getLastModificationDate() {
+    public  Date getLastModificationDate() {
         return (Date) lastModificationDate.clone();
     }
 
-    public final BigDecimal getAmount() {
+    public  BigDecimal getAmount() {
         return amount;
     }
 
-    public final DaoActor getActor() {
+    public  DaoActor getActor() {
         return actor;
     }
 
-    public final Date getCreationDate() {
+    public  Date getCreationDate() {
         return (Date) creationDate.clone();
     }
 
@@ -195,8 +195,8 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @see java.lang.Object#hashCode()
      */
     @Override
-    public final int hashCode() {
-        final int prime = 31;
+    public  int hashCode() {
+         int prime = 31;
         int result = 1;
         result = prime * result + ((actor == null) ? 0 : actor.hashCode());
         result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
@@ -208,7 +208,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public final boolean equals(final Object obj) {
+    public  boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -218,7 +218,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
         if (!(obj.getClass().equals(getClass()))) {
             return false;
         }
-        final DaoAccount other = (DaoAccount) obj;
+         DaoAccount other = (DaoAccount) obj;
         if (actor == null) {
             if (other.actor != null) {
                 return false;

@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
  * </p>
  */
 @Entity
-public final class DaoGroupRight extends DaoIdentifiable {
+public  class DaoGroupRight extends DaoIdentifiable {
 
     public enum UserGroupRight {
         CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK,
@@ -25,7 +25,7 @@ public final class DaoGroupRight extends DaoIdentifiable {
     @Enumerated
     private UserGroupRight userStatus;
 
-    protected DaoGroupRight(final DaoGroupMembership membership, final UserGroupRight userStatus) {
+    protected DaoGroupRight( DaoGroupMembership membership,  UserGroupRight userStatus) {
         super();
         this.membership = membership;
         this.userStatus = userStatus;
@@ -44,7 +44,7 @@ public final class DaoGroupRight extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return null;
     }
 
@@ -62,7 +62,7 @@ public final class DaoGroupRight extends DaoIdentifiable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = 1;
         result = prime * result + ((membership == null) ? 0 : membership.hashCode());
         result = prime * result + ((userStatus == null) ? 0 : userStatus.hashCode());
@@ -70,7 +70,7 @@ public final class DaoGroupRight extends DaoIdentifiable {
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -80,7 +80,7 @@ public final class DaoGroupRight extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoGroupRight other = (DaoGroupRight) obj;
+         DaoGroupRight other = (DaoGroupRight) obj;
         if (membership == null) {
             if (other.membership != null) {
                 return false;

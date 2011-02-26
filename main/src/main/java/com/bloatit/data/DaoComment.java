@@ -50,7 +50,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public final class DaoComment extends DaoKudosable implements DaoCommentable {
+public  class DaoComment extends DaoKudosable implements DaoCommentable {
 
     // WARNING "TEXT" is not a standard SQL type.
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -64,14 +64,14 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id")
     @IndexedEmbedded(depth = 1)
-    private final List<DaoComment> children = new ArrayList<DaoComment>(0);
+    private  List<DaoComment> children = new ArrayList<DaoComment>(0);
 
-    public static DaoComment createAndPersist(final DaoMember member, final String text) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment comment = new DaoComment(member, text);
+    public static DaoComment createAndPersist( DaoMember member,  String text) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         DaoComment comment = new DaoComment(member, text);
         try {
             session.save(comment);
-        } catch (final HibernateException e) {
+        } catch ( HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -89,7 +89,7 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
      * @throws NonOptionalParameterException if the text is null
      * @see DaoKudosable#DaoKudosable(DaoMember)
      */
-    private DaoComment(final DaoMember member, final String text) {
+    private DaoComment( DaoMember member,  String text) {
         super(member);
         if (text == null || text.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -100,7 +100,7 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
     /**
      * @throws NonOptionalParameterException if the comment is null.
      */
-    public void addChildComment(final DaoComment comment) {
+    public void addChildComment( DaoComment comment) {
         if (comment == null) {
             throw new NonOptionalParameterException();
         }
@@ -137,7 +137,7 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
     }
 
     @Override
-    public void addComment(final DaoComment comment) {
+    public void addComment( DaoComment comment) {
         addChildComment(comment);
     }
 
@@ -146,7 +146,7 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -174,7 +174,7 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((text == null) ? 0 : text.hashCode());
         return result;
@@ -185,7 +185,7 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -195,7 +195,7 @@ public final class DaoComment extends DaoKudosable implements DaoCommentable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoComment other = (DaoComment) obj;
+         DaoComment other = (DaoComment) obj;
         if (text == null) {
             if (other.text != null) {
                 return false;

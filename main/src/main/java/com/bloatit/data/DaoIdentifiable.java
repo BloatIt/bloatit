@@ -35,7 +35,7 @@ public abstract class DaoIdentifiable {
     @DocumentId
     private Integer id;
 
-    public final Integer getId() {
+    public  Integer getId() {
         return id;
     }
 

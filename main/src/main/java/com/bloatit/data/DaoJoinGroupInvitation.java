@@ -30,7 +30,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * This represent an invitation to join a group.
  */
 @Entity
-public final class DaoJoinGroupInvitation extends DaoIdentifiable {
+public  class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * <p>
@@ -70,7 +70,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
      * @return the invitation, are null if there is no invitation on that
      *         <code>group</code> sent to this <code>member</code>.
      */
-    public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
+    public static DaoJoinGroupInvitation getInvitation( DaoGroup group,  DaoMember member) {
         return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
                                                       .setEntity("group", group)
                                                       .setEntity("member", member)
@@ -81,12 +81,12 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     // Construction.
     // ======================================================================
 
-    public static DaoJoinGroupInvitation createAndPersist(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoJoinGroupInvitation joinDemand = new DaoJoinGroupInvitation(sender, reciever, group);
+    public static DaoJoinGroupInvitation createAndPersist( DaoMember sender,  DaoMember reciever,  DaoGroup group) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         DaoJoinGroupInvitation joinDemand = new DaoJoinGroupInvitation(sender, reciever, group);
         try {
             session.save(joinDemand);
-        } catch (final HibernateException e) {
+        } catch ( HibernateException e) {
             session.getTransaction().rollback();
             throw e;
         }
@@ -98,7 +98,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
      * 
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
-    private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember receiver, final DaoGroup group) {
+    private DaoJoinGroupInvitation( DaoMember sender,  DaoMember receiver,  DaoGroup group) {
         super();
         if (sender == null || receiver == null || group == null) {
             throw new NonOptionalParameterException();
@@ -148,7 +148,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -190,7 +190,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = 1;
         result = prime * result + ((group == null) ? 0 : group.hashCode());
         result = prime * result + ((receiver == null) ? 0 : receiver.hashCode());
@@ -203,7 +203,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -213,7 +213,7 @@ public final class DaoJoinGroupInvitation extends DaoIdentifiable {
         if (!(obj instanceof DaoJoinGroupInvitation)) {
             return false;
         }
-        final DaoJoinGroupInvitation other = (DaoJoinGroupInvitation) obj;
+         DaoJoinGroupInvitation other = (DaoJoinGroupInvitation) obj;
         if (group == null) {
             if (other.group != null) {
                 return false;

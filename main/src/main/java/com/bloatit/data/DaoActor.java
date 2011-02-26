@@ -78,9 +78,9 @@ public abstract class DaoActor extends DaoIdentifiable {
      * "getByName", "exist" is useless. (In that case you'd better test if
      * getByLogin != null, to minimize the number of HQL request).
      */
-    public static boolean loginExists(final String login) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where login = :login");
+    public static boolean loginExists( String login) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where login = :login");
         q.setString("login", login);
         return ((Long) q.uniqueResult()) > 0;
     }
@@ -88,9 +88,9 @@ public abstract class DaoActor extends DaoIdentifiable {
     /**
      * This method use a HQL request.
      */
-    public static boolean emailExists(final String email) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where email = :email");
+    public static boolean emailExists( String email) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where email = :email");
         q.setString("email", email);
         return ((Long) q.uniqueResult()) > 0;
     }
@@ -107,7 +107,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      *            unique.
      * @throws NonOptionalParameterException if login or mail is null.
      */
-    protected DaoActor(final String login) {
+    protected DaoActor( String login) {
         super();
         if (login == null) {
             Log.data().fatal("Login null!");
@@ -133,7 +133,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * 
      * @param email the new email.
      */
-    public abstract void setContact(final String email);
+    public abstract void setContact( String email);
 
     // ======================================================================
     // Getters.
@@ -145,26 +145,26 @@ public abstract class DaoActor extends DaoIdentifiable {
      * @param externalAccount the new external account for this actor
      * @throws FatalErrorException if the externalAccount.getActor() != this
      */
-    public final void setExternalAccount(final DaoExternalAccount externalAccount) {
+    public  void setExternalAccount( DaoExternalAccount externalAccount) {
         if (externalAccount.getActor() != this) {
             throw new FatalErrorException("Add an external account to the wrong user.", null);
         }
         this.externalAccount = externalAccount;
     }
 
-    public final String getLogin() {
+    public  String getLogin() {
         return login;
     }
 
-    public final Date getDateCreation() {
+    public  Date getDateCreation() {
         return (Date) dateCreation.clone();
     }
 
-    public final DaoInternalAccount getInternalAccount() {
+    public  DaoInternalAccount getInternalAccount() {
         return internalAccount;
     }
 
-    public final DaoExternalAccount getExternalAccount() {
+    public  DaoExternalAccount getExternalAccount() {
         return externalAccount;
     }
 
@@ -173,7 +173,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      *         <code>this</code>, order by <code>creationDate</code>, most
      *         recent first.
      */
-    public final PageIterable<DaoBankTransaction> getBankTransactions() {
+    public  PageIterable<DaoBankTransaction> getBankTransactions() {
         return new QueryCollection<DaoBankTransaction>(SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
                                                        SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author")).setEntity("author",
                                                                                                                                                                this);
@@ -199,8 +199,8 @@ public abstract class DaoActor extends DaoIdentifiable {
      * @see java.lang.Object#hashCode()
      */
     @Override
-    public final int hashCode() {
-        final int prime = 31;
+    public  int hashCode() {
+         int prime = 31;
         int result = 1;
         result = prime * result + ((login == null) ? 0 : login.hashCode());
         return result;
@@ -211,7 +211,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public final boolean equals(final Object obj) {
+    public  boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -221,7 +221,7 @@ public abstract class DaoActor extends DaoIdentifiable {
         if (!(obj.getClass().equals(getClass()))) {
             return false;
         }
-        final DaoActor other = (DaoActor) obj;
+         DaoActor other = (DaoActor) obj;
         if (login == null) {
             if (other.login != null) {
                 return false;

@@ -22,7 +22,7 @@ public abstract class Search<T> {
     private Class<T> persistent;
     private String[] fields;
     private String filter = null;
-    private final List<Pair<String, String>> filteredTerms = new ArrayList<Pair<String, String>>();
+    private  List<Pair<String, String>> filteredTerms = new ArrayList<Pair<String, String>>();
     private Sort sort = null;
 
     /**
@@ -39,29 +39,29 @@ public abstract class Search<T> {
      *            field are relative to the persistent class.
      * @param searchStr is the string we are looking for.
      */
-    protected void configure(final Class<T> persistent, final String[] fields, final String searchStr) {
+    protected void configure( Class<T> persistent,  String[] fields,  String searchStr) {
         this.persistent = persistent;
         this.fields = fields;
         this.searchStr = searchStr != null ? searchStr : "";
     }
 
-    public final PageIterable<T> doSearch() {
+    public  PageIterable<T> doSearch() {
         prepareSearch();
 
-        final org.apache.lucene.search.Query query;
+         org.apache.lucene.search.Query query;
 
         if ("".equals(searchStr)) {
             query = new MatchAllDocsQuery();
         } else {
-            final MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
+             MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
             try {
                 query = parser.parse(searchStr);
-            } catch (final ParseException e) {
+            } catch ( ParseException e) {
                 return new NullCollection<T>();
             }
         }
 
-        final FullTextQuery luceneQuery = SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent);
+         FullTextQuery luceneQuery = SessionManager.getCurrentFullTextSession().createFullTextQuery(query, persistent);
 
         applyFilters(luceneQuery);
 
@@ -69,9 +69,9 @@ public abstract class Search<T> {
 
     }
 
-    private void applyFilters(final FullTextQuery luceneQuery) {
+    private void applyFilters( FullTextQuery luceneQuery) {
         if (filter != null) {
-            final FullTextFilter fullTextFilter = luceneQuery.enableFullTextFilter(filter);
+             FullTextFilter fullTextFilter = luceneQuery.enableFullTextFilter(filter);
 
             fullTextFilter.setParameter("filteredTerms", filteredTerms);
         }
@@ -82,31 +82,31 @@ public abstract class Search<T> {
 
     protected abstract void prepareSearch();
 
-    protected void addFilterTerm(final String term, final String value) {
+    protected void addFilterTerm( String term,  String value) {
         filteredTerms.add(new Pair<String, String>(term, value));
     }
 
-    protected void enableFilter(final String filter) {
+    protected void enableFilter( String filter) {
         this.filter = filter;
     }
 
-    protected void setSort(final Sort sort) {
+    protected void setSort( Sort sort) {
         this.sort = sort;
     }
 
     public static class Pair<U, V> {
 
-        public final U key;
-        public final V value;
+        public  U key;
+        public  V value;
 
-        public Pair(final U key, final V value) {
+        public Pair( U key,  V value) {
             this.key = key;
             this.value = value;
         }
 
         @Override
         public int hashCode() {
-            final int prime = 31;
+             int prime = 31;
             int result = 1;
             result = prime * result + ((key == null) ? 0 : key.hashCode());
             result = prime * result + ((value == null) ? 0 : value.hashCode());
@@ -114,7 +114,7 @@ public abstract class Search<T> {
         }
 
         @Override
-        public boolean equals(final Object obj) {
+        public boolean equals( Object obj) {
             if (this == obj) {
                 return true;
             }
@@ -124,7 +124,7 @@ public abstract class Search<T> {
             if (getClass() != obj.getClass()) {
                 return false;
             }
-            final Pair<?, ?> other = (Pair<?, ?>) obj;
+             Pair<?, ?> other = (Pair<?, ?>) obj;
             if (key == null) {
                 if (other.key != null) {
                     return false;

@@ -49,37 +49,37 @@ class DaoGroupMembership extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "membership", orphanRemoval = true, cascade = { CascadeType.ALL })
     @Cascade(value = {})
-    private final List<DaoGroupRight> memberRight = new ArrayList<DaoGroupRight>(0);
+    private  List<DaoGroupRight> memberRight = new ArrayList<DaoGroupRight>(0);
 
     /**
      * Get a GroupMembership line using its composite key. (HQL request)
      */
-    protected static DaoGroupMembership get(final DaoGroup group, final DaoMember member) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("from com.bloatit.data.DaoGroupMembership as gm where gm.bloatitGroup = :bloatitGroup and gm.member = :member");
+    protected static DaoGroupMembership get( DaoGroup group,  DaoMember member) {
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         Query q = session.createQuery("from com.bloatit.data.DaoGroupMembership as gm where gm.bloatitGroup = :bloatitGroup and gm.member = :member");
         q.setEntity("bloatitGroup", group);
         q.setEntity("member", member);
         return (DaoGroupMembership) q.uniqueResult();
     }
 
-    protected DaoGroupMembership(final DaoMember member, final DaoGroup group) {
+    protected DaoGroupMembership( DaoMember member,  DaoGroup group) {
         this.member = member;
         this.bloatitGroup = group;
     }
 
-    protected final DaoMember getMember() {
+    protected  DaoMember getMember() {
         return member;
     }
 
-    protected final DaoGroup getGroup() {
+    protected  DaoGroup getGroup() {
         return bloatitGroup;
     }
 
-    protected final List<DaoGroupRight> getRights() {
+    protected  List<DaoGroupRight> getRights() {
         return memberRight;
     }
 
-    protected final void addUserRight(final UserGroupRight newRight) {
+    protected  void addUserRight( UserGroupRight newRight) {
         this.memberRight.add(new DaoGroupRight(this, newRight));
     }
 
@@ -88,7 +88,7 @@ class DaoGroupMembership extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return null;
     }
 
@@ -106,7 +106,7 @@ class DaoGroupMembership extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = 1;
         result = prime * result + ((bloatitGroup == null) ? 0 : bloatitGroup.hashCode());
         result = prime * result + ((member == null) ? 0 : member.hashCode());
@@ -118,14 +118,14 @@ class DaoGroupMembership extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
         if (!(obj instanceof DaoGroupMembership)) {
             return false;
         }
-        final DaoGroupMembership other = (DaoGroupMembership) obj;
+         DaoGroupMembership other = (DaoGroupMembership) obj;
         if (bloatitGroup == null) {
             if (other.bloatitGroup != null) {
                 return false;

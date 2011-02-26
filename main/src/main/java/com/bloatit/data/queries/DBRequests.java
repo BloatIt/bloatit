@@ -32,7 +32,7 @@ import com.bloatit.framework.utils.PageIterable;
  * object is not found.)</li> <li>If a method return a collection then the
  * collection is always != null (but can be empty)</li>
  */
-public final class DBRequests {
+public  class DBRequests {
 
     public enum Comparator {
         EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL
@@ -46,8 +46,8 @@ public final class DBRequests {
     }
 
     public static PageIterable<DaoUserContent> getUserContents() {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Criteria criteria = session.createCriteria(DaoUserContent.class);
+         Session session = SessionManager.getSessionFactory().getCurrentSession();
+         Criteria criteria = session.createCriteria(DaoUserContent.class);
         return new CriteriaCollection<DaoUserContent>(criteria);
     }
 
@@ -71,23 +71,23 @@ public final class DBRequests {
      *         null if non existing.
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getById(final Class<T> persistant, final Integer id) {
+    public static <T> T getById( Class<T> persistant,  Integer id) {
         return (T) SessionManager.getSessionFactory().getCurrentSession().get(persistant, id);
     }
 
-    public static <T> PageIterable<T> getAll(final Class<T> persistent) {
-        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+    public static <T> PageIterable<T> getAll( Class<T> persistent) {
+         ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return new QueryCollection<T>("from " + meta.getEntityName());
     }
 
-    public static <T extends DaoUserContent> PageIterable<T> getAllUserContentOrderByDate(final Class<T> persistent) {
-        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+    public static <T extends DaoUserContent> PageIterable<T> getAllUserContentOrderByDate( Class<T> persistent) {
+         ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return new QueryCollection<T>(SessionManager.createQuery("from " + meta.getEntityName() + " order by creationDate DESC"),
                                       SessionManager.createQuery("select count(*) from " + meta.getEntityName()));
     }
 
-    public static <T> int count(final Class<T> persistent) {
-        final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+    public static <T> int count( Class<T> persistent) {
+         ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return ((Long) SessionManager.getSessionFactory()
                                      .getCurrentSession()
                                      .createQuery("select count(*) from " + meta.getEntityName())
@@ -106,7 +106,7 @@ public final class DBRequests {
         return demandsOrderBy("creationDate");
     }
 
-    private static PageIterable<DaoDemand> demandsOrderBy(final String field) {
+    private static PageIterable<DaoDemand> demandsOrderBy( String field) {
         return new QueryCollection<DaoDemand>("from DaoDemand where state == PENDING order by " + field);
     }
 

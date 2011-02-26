@@ -36,7 +36,7 @@ public class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAb
      * 
      * @param criteria the criteria
      */
-    protected DaoIdentifiableListFactory(final Criteria criteria) {
+    protected DaoIdentifiableListFactory( Criteria criteria) {
         super(criteria);
     }
 
@@ -53,11 +53,11 @@ public class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAb
      * 
      * @param id the id
      */
-    public void idEquals(final Integer id) {
+    public void idEquals( Integer id) {
         add(Restrictions.eq("id", id));
     }
 
-    public void orderBy(final String column, final OrderType order) {
+    public void orderBy( String column,  OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(column));
         } else {

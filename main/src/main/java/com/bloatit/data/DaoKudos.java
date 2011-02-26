@@ -32,7 +32,7 @@ import org.hibernate.Session;
  * @see DaoKudosable#addKudos(DaoMember, int)
  */
 @Entity
-public final class DaoKudos extends DaoUserContent {
+public  class DaoKudos extends DaoUserContent {
 
     /**
      * The value can be positive or negative. The value should never be equals
@@ -50,7 +50,7 @@ public final class DaoKudos extends DaoUserContent {
      * @param member is the person creating the kudos.
      * @param value is value of the kudos.
      */
-    public DaoKudos(final DaoMember member, final int value, DaoKudosable kudosable) {
+    public DaoKudos( DaoMember member,  int value, DaoKudosable kudosable) {
         super(member);
         this.value = value;
         this.kudosable = kudosable;
@@ -69,7 +69,7 @@ public final class DaoKudos extends DaoUserContent {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -91,7 +91,7 @@ public final class DaoKudos extends DaoUserContent {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = super.hashCode();
         result = prime * result + value;
         return result;
@@ -102,7 +102,7 @@ public final class DaoKudos extends DaoUserContent {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -112,7 +112,7 @@ public final class DaoKudos extends DaoUserContent {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoKudos other = (DaoKudos) obj;
+         DaoKudos other = (DaoKudos) obj;
         if (value != other.value) {
             return false;
         }

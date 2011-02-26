@@ -45,7 +45,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * can have a little comment/description text on it (144 char max like twitter)
  */
 @Entity
-public final class DaoContribution extends DaoUserContent {
+public  class DaoContribution extends DaoUserContent {
     protected static final int COMMENT_MAX_LENGTH = 144;
 
     /**
@@ -81,7 +81,7 @@ public final class DaoContribution extends DaoUserContent {
      */
     @OneToMany(orphanRemoval = false, cascade = CascadeType.PERSIST)
     // TODO add a nullable contribution into daoTransaction to have a mapped by ?
-    private final List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
+    private  List<DaoTransaction> transaction = new ArrayList<DaoTransaction>();
 
     @Basic(optional = false)
     private int percentDone;
@@ -102,7 +102,7 @@ public final class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if the account of "member" has not enough
      *             money in it.
      */
-    public DaoContribution(final DaoMember member, final DaoDemand demand, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
+    public DaoContribution( DaoMember member,  DaoDemand demand,  BigDecimal amount,  String comment) throws NotEnoughMoneyException {
         super(member);
         if (demand == null) {
             throw new NonOptionalParameterException();
@@ -136,18 +136,18 @@ public final class DaoContribution extends DaoUserContent {
      * @throws NotEnoughMoneyException if there is not enough money to create
      *             the transaction.
      */
-    public void validate(final DaoOffer offer, final int percent) throws NotEnoughMoneyException {
+    public void validate( DaoOffer offer,  int percent) throws NotEnoughMoneyException {
         if (state != State.PENDING) {
             throw new FatalErrorException("Cannot validate a contribution if its state isn't PENDING");
         }
         if (percent > 100 || percent <= 0 || (percentDone + percent) > 100) {
             throw new FatalErrorException("Percent must be > 0 and <= 100.");
         }
-        final BigDecimal moneyToGive = calculateHowMuchToTransfer(percent);
+         BigDecimal moneyToGive = calculateHowMuchToTransfer(percent);
         try {
             // First we try to unblock. It can throw a notEnouthMoneyException.
             getAuthor().getInternalAccount().unBlock(moneyToGive);
-        } catch (final NotEnoughMoneyException e) {
+        } catch ( NotEnoughMoneyException e) {
             // If it fails then there is a bug in our code. Set the state to
             // canceled and throw a fatalError.
             this.state = State.CANCELED;
@@ -166,13 +166,13 @@ public final class DaoContribution extends DaoUserContent {
             if (percentDone == 100) {
                 this.state = State.VALIDATED;
             }
-        } catch (final NotEnoughMoneyException e) {
+        } catch ( NotEnoughMoneyException e) {
             this.state = State.CANCELED;
             throw e;
         }
     }
 
-    private BigDecimal calculateHowMuchToTransfer(final int percent) {
+    private BigDecimal calculateHowMuchToTransfer( int percent) {
         BigDecimal moneyToGive;
         if ((percent + percentDone) == 100) {
             moneyToGive = amount.subtract(alreadyGivenMoney);
@@ -190,10 +190,10 @@ public final class DaoContribution extends DaoUserContent {
             throw new FatalErrorException("Cannot cancel a contribution if its state isn't PENDING");
         }
         try {
-            final BigDecimal moneyToCancel = amount.subtract(alreadyGivenMoney);
+             BigDecimal moneyToCancel = amount.subtract(alreadyGivenMoney);
             getAuthor().getInternalAccount().unBlock(moneyToCancel);
             demand.cancelContribution(moneyToCancel);
-        } catch (final NotEnoughMoneyException e) {
+        } catch ( NotEnoughMoneyException e) {
             throw new FatalErrorException("Not enough money exception on cancel !!", e);
         }
         this.state = State.CANCELED;
@@ -216,7 +216,7 @@ public final class DaoContribution extends DaoUserContent {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -242,7 +242,7 @@ public final class DaoContribution extends DaoUserContent {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
+         int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((amount == null) ? 0 : amount.hashCode());
         result = prime * result + ((comment == null) ? 0 : comment.hashCode());
@@ -255,7 +255,7 @@ public final class DaoContribution extends DaoUserContent {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals( Object obj) {
         if (this == obj) {
             return true;
         }
@@ -265,7 +265,7 @@ public final class DaoContribution extends DaoUserContent {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final DaoContribution other = (DaoContribution) obj;
+         DaoContribution other = (DaoContribution) obj;
         if (amount == null) {
             if (other.amount != null) {
                 return false;
