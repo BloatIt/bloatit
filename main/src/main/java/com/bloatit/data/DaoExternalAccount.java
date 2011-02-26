@@ -34,7 +34,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public  class DaoExternalAccount extends DaoAccount {
+public class DaoExternalAccount extends DaoAccount {
 
     /**
      * Ok for now there is only IBAN code but they may have other types.
@@ -58,12 +58,12 @@ public  class DaoExternalAccount extends DaoAccount {
      * @see DaoExternalAccount#DaoExternalAccount(DaoActor,
      *      DaoExternalAccount.AccountType, String)
      */
-    public static DaoExternalAccount createAndPersist( DaoActor actor,  AccountType type,  String bankCode) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoExternalAccount account = new DaoExternalAccount(actor, type, bankCode);
+    public static DaoExternalAccount createAndPersist(final DaoActor actor, final AccountType type, final String bankCode) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoExternalAccount account = new DaoExternalAccount(actor, type, bankCode);
         try {
             session.save(account);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             throw e;
         }
@@ -81,7 +81,7 @@ public  class DaoExternalAccount extends DaoAccount {
      * @throws anExceptionToDefine when we will check the validity of the IBAN
      *             we will have to throw an exception if its not valid.
      */
-    private DaoExternalAccount( DaoActor actor,  AccountType type,  String bankCode) {
+    private DaoExternalAccount(final DaoActor actor, final AccountType type, final String bankCode) {
         super(actor);
         if (type == null || bankCode == null || bankCode.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -90,33 +90,33 @@ public  class DaoExternalAccount extends DaoAccount {
         this.bankCode = bankCode;
     }
 
-    protected DaoExternalAccount( DaoActor actor) {
+    protected DaoExternalAccount(final DaoActor actor) {
         super(actor);
         this.type = AccountType.VIRTUAL;
         this.bankCode = "";
     }
 
-    public void setBankCode( String bankCode) {
+    public void setBankCode(final String bankCode) {
         this.bankCode = bankCode;
     }
 
-    public void setType( AccountType type) {
+    public void setType(final AccountType type) {
         this.type = type;
     }
 
     public String getBankCode() {
-        return bankCode;
+        return this.bankCode;
     }
 
     public AccountType getType() {
-        return type;
+        return this.type;
     }
 
     /**
      * Return true all the time.
      */
     @Override
-    protected boolean hasEnoughMoney( BigDecimal amount) {
+    protected boolean hasEnoughMoney(final BigDecimal amount) {
         return true;
     }
 
@@ -125,7 +125,7 @@ public  class DaoExternalAccount extends DaoAccount {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

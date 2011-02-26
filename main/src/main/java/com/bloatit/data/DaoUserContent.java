@@ -66,7 +66,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     private Boolean isDeleted;
 
     @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL)
-    private  List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
+    private List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
 
     /**
      * Initialize the creation date to now.
@@ -74,7 +74,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */
-    public DaoUserContent( DaoMember member) {
+    public DaoUserContent(final DaoMember member) {
         super();
         if (member == null) {
             Log.data().fatal("Cannot create a DaoUserContent with a null member.");
@@ -85,30 +85,30 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         setIsDeleted(false);
     }
 
-    public  DaoMember getAuthor() {
-        return member;
+    public DaoMember getAuthor() {
+        return this.member;
     }
 
-    public  Date getCreationDate() {
-        return (Date) creationDate.clone();
+    public Date getCreationDate() {
+        return (Date) this.creationDate.clone();
     }
 
-    public  DaoGroup getAsGroup() {
-        return asGroup;
+    public DaoGroup getAsGroup() {
+        return this.asGroup;
     }
 
     /**
      * @return all the files associated with this DaoUserContent.
      */
-    public  PageIterable<DaoFileMetadata> getFiles() {
-        return new MappedList<DaoFileMetadata>(files);
+    public PageIterable<DaoFileMetadata> getFiles() {
+        return new MappedList<DaoFileMetadata>(this.files);
     }
 
     public Boolean isDeleted() {
-        return isDeleted;
+        return this.isDeleted;
     }
 
-    public void setIsDeleted( Boolean isDeleted) {
+    public void setIsDeleted(final Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
@@ -116,11 +116,11 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * null is the default value and means that the content has a member as
      * author.
      */
-    public  void setAsGroup( DaoGroup asGroup) {
+    public void setAsGroup(final DaoGroup asGroup) {
         this.asGroup = asGroup;
     }
 
-    public void addFile( DaoFileMetadata daoFileMetadata) {
+    public void addFile(final DaoFileMetadata daoFileMetadata) {
         this.files.add(daoFileMetadata);
     }
 
@@ -142,11 +142,11 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((asGroup == null) ? 0 : asGroup.hashCode());
-        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
-        result = prime * result + ((member == null) ? 0 : member.hashCode());
+        result = prime * result + ((this.asGroup == null) ? 0 : this.asGroup.hashCode());
+        result = prime * result + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
+        result = prime * result + ((this.member == null) ? 0 : this.member.hashCode());
         return result;
     }
 
@@ -155,7 +155,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -165,26 +165,26 @@ public abstract class DaoUserContent extends DaoIdentifiable {
         if (!(obj instanceof DaoUserContent)) {
             return false;
         }
-         DaoUserContent other = (DaoUserContent) obj;
-        if (asGroup == null) {
+        final DaoUserContent other = (DaoUserContent) obj;
+        if (this.asGroup == null) {
             if (other.asGroup != null) {
                 return false;
             }
-        } else if (!asGroup.equals(other.asGroup)) {
+        } else if (!this.asGroup.equals(other.asGroup)) {
             return false;
         }
-        if (creationDate == null) {
+        if (this.creationDate == null) {
             if (other.creationDate != null) {
                 return false;
             }
-        } else if (!creationDate.equals(other.creationDate)) {
+        } else if (!this.creationDate.equals(other.creationDate)) {
             return false;
         }
-        if (member == null) {
+        if (this.member == null) {
             if (other.member != null) {
                 return false;
             }
-        } else if (!member.equals(other.member)) {
+        } else if (!this.member.equals(other.member)) {
             return false;
         }
         return true;

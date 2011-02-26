@@ -29,7 +29,7 @@ import com.bloatit.common.Log;
  * These are some simple static utils to manage Hibernate sessions (and
  * hibernate Search)
  */
-public  class SessionManager {
+public class SessionManager {
 
     /**
      * Desactivate the default constructor;
@@ -42,7 +42,7 @@ public  class SessionManager {
 
     private static SessionFactory buildSessionFactory() {
         try {
-             SessionFactory buildSessionFactory = new AnnotationConfiguration().configure()
+            final SessionFactory buildSessionFactory = new AnnotationConfiguration().configure()
                                                                                     .setProperty("hibernate.hbm2ddl.auto", "update")
                                                                                     .buildSessionFactory();
 
@@ -51,18 +51,18 @@ public  class SessionManager {
             }
 
             return buildSessionFactory;
-        } catch ( Exception ex) {
+        } catch (final Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             Log.data().fatal("Initial SessionFactory creation failed.", ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
 
-    public static Query createQuery( String str) {
+    public static Query createQuery(final String str) {
         return getSessionFactory().getCurrentSession().createQuery(str);
     }
 
-    public static Query createFilter( Object collection,  String str) {
+    public static Query createFilter(final Object collection, final String str) {
         return getSessionFactory().getCurrentSession().createFilter(collection, str);
     }
 
@@ -86,7 +86,7 @@ public  class SessionManager {
     public static void endWorkUnitAndFlush() {
         try {
             sessionFactory.getCurrentSession().getTransaction().commit();
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             sessionFactory.getCurrentSession().getTransaction().rollback();
             throw e;
         }
@@ -114,7 +114,7 @@ public  class SessionManager {
                                                           .setProperty("hibernate.hbm2ddl.auto", "create-drop")
                                                           .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost/bloatit_test")
                                                           .buildSessionFactory();
-        } catch ( Exception ex) {
+        } catch (final Exception ex) {
             // Make sure you log the exception, as it might be swallowed
             Log.data().fatal("Initial SessionFactory creation failed.", ex);
             throw new ExceptionInInitializerError(ex);

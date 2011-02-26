@@ -45,7 +45,7 @@ import com.bloatit.framework.utils.PageIterable;
  * An offer is a developer offer to a demand.
  */
 @Entity
-public  class DaoOffer extends DaoKudosable {
+public class DaoOffer extends DaoKudosable {
 
     /**
      * This is demand on which this offer is done.
@@ -55,7 +55,7 @@ public  class DaoOffer extends DaoKudosable {
 
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     @OrderBy("expirationDate ASC")
-    private  List<DaoBatch> batches = new ArrayList<DaoBatch>();
+    private List<DaoBatch> batches = new ArrayList<DaoBatch>();
 
     /**
      * The expirationDate is calculated from the batches variables.
@@ -93,12 +93,12 @@ public  class DaoOffer extends DaoKudosable {
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the
      *             future.
      */
-    public DaoOffer( DaoMember member,
-                     DaoDemand demand,
-                     BigDecimal amount,
-                     DaoDescription description,
-                     Date dateExpire,
-                     int secondsBeforeValidation) {
+    public DaoOffer(final DaoMember member,
+                    final DaoDemand demand,
+                    final BigDecimal amount,
+                    final DaoDescription description,
+                    final Date dateExpire,
+                    final int secondsBeforeValidation) {
         super(member);
         if (demand == null) {
             throw new NonOptionalParameterException();
@@ -112,45 +112,45 @@ public  class DaoOffer extends DaoKudosable {
     }
 
     public void cancelEverythingLeft() {
-        for (int i = currentBatch; i < batches.size(); ++i) {
-            batches.get(i).cancelBatch();
+        for (int i = this.currentBatch; i < this.batches.size(); ++i) {
+            this.batches.get(i).cancelBatch();
         }
-        currentBatch = batches.size();
+        this.currentBatch = this.batches.size();
     }
 
-    public void addBatch( DaoBatch batch) {
+    public void addBatch(final DaoBatch batch) {
         if (isDraft() == false) {
             throw new FatalErrorException("You cannot add a batch on a non draft offer.");
         }
-        amount = batch.getAmount().add(amount);
-         Date expiration = batch.getExpirationDate();
-        if (expirationDate.before(expiration)) {
-            expirationDate = expiration;
+        this.amount = batch.getAmount().add(this.amount);
+        final Date expiration = batch.getExpirationDate();
+        if (this.expirationDate.before(expiration)) {
+            this.expirationDate = expiration;
         }
-        batches.add(batch);
+        this.batches.add(batch);
     }
 
     public boolean hasBatchesLeft() {
-        return currentBatch < batches.size();
+        return this.currentBatch < this.batches.size();
     }
 
     void passToNextBatch() {
-        currentBatch++;
+        this.currentBatch++;
     }
 
-    void batchHasARelease( DaoBatch batch) {
+    void batchHasARelease(final DaoBatch batch) {
         // Find next batch. Passe it into developing state.
-        for (int i = 0; i < batches.size(); ++i) {
-            if (batches.get(i).equals(batch)) {
-                if ((i + 1) < batches.size()) {
-                    batches.get(i + 1).setDeveloping();
+        for (int i = 0; i < this.batches.size(); ++i) {
+            if (this.batches.get(i).equals(batch)) {
+                if ((i + 1) < this.batches.size()) {
+                    this.batches.get(i + 1).setDeveloping();
                 }
                 break;
             }
         }
     }
 
-    public void setDraft( boolean isDraft) {
+    public void setDraft(final boolean isDraft) {
         this.isDraft = isDraft;
     }
 
@@ -159,49 +159,49 @@ public  class DaoOffer extends DaoKudosable {
     // ======================================================================
 
     public boolean isDraft() {
-        return isDraft;
+        return this.isDraft;
     }
 
     /**
      * @return All the batches for this offer. (Even the MasterBatch).
      */
     public PageIterable<DaoBatch> getBatches() {
-         String query = "from DaoBatch where offer = :this order by expirationDate, id";
-         String queryCount = "select count(*) from DaoBatch where offer = :this";
+        final String query = "from DaoBatch where offer = :this order by expirationDate, id";
+        final String queryCount = "select count(*) from DaoBatch where offer = :this";
         return new QueryCollection<DaoBatch>( //
                                              SessionManager.createQuery(query).setEntity("this", this),//
                                              SessionManager.createQuery(queryCount).setEntity("this", this));//
     }
 
     public DaoBatch getCurrentBatch() {
-        return batches.get(currentBatch);
+        return this.batches.get(this.currentBatch);
     }
 
     /**
      * @return a cloned version of the expirationDate attribute.
      */
     public Date getExpirationDate() {
-        return (Date) expirationDate.clone();
+        return (Date) this.expirationDate.clone();
     }
 
     public BigDecimal getAmount() {
-        return amount;
+        return this.amount;
     }
 
     // TODO comment; it make sure the sum returned is 100.
-    int getBatchPercent( DaoBatch current) {
-        if (batches.size() == 1) {
+    int getBatchPercent(final DaoBatch current) {
+        if (this.batches.size() == 1) {
             return 100;
         }
 
         int alreadyReturned = 0;
-        for (int i = 0; i < batches.size(); ++i) {
+        for (int i = 0; i < this.batches.size(); ++i) {
             // Calculate the percent of the batch
-             DaoBatch batch = batches.get(i);
-             int percent = batch.getAmount().divide(amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
+            final DaoBatch batch = this.batches.get(i);
+            final int percent = batch.getAmount().divide(this.amount, RoundingMode.HALF_EVEN).multiply(new BigDecimal("100")).intValue();
             if (current.equals(batch)) {
                 // is the current is the last one
-                if (i == (batches.size() - 1)) {
+                if (i == (this.batches.size() - 1)) {
                     return 100 - alreadyReturned;
                 }
                 return percent;
@@ -213,7 +213,7 @@ public  class DaoOffer extends DaoKudosable {
     }
 
     public boolean hasRelease() {
-         Query query = SessionManager.createFilter(batches, "SELECT count(*) WHERE this.releases is not empty");
+        final Query query = SessionManager.createFilter(this.batches, "SELECT count(*) WHERE this.releases is not empty");
         return !((Long) query.uniqueResult()).equals(0L);
     }
 
@@ -222,7 +222,7 @@ public  class DaoOffer extends DaoKudosable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -235,7 +235,7 @@ public  class DaoOffer extends DaoKudosable {
     }
 
     public DaoDemand getDemand() {
-        return demand;
+        return this.demand;
     }
 
     // ======================================================================
@@ -248,11 +248,11 @@ public  class DaoOffer extends DaoKudosable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-        result = prime * result + ((demand == null) ? 0 : demand.hashCode());
-        result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
+        result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
+        result = prime * result + ((this.demand == null) ? 0 : this.demand.hashCode());
+        result = prime * result + ((this.expirationDate == null) ? 0 : this.expirationDate.hashCode());
         return result;
     }
 
@@ -261,7 +261,7 @@ public  class DaoOffer extends DaoKudosable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -271,26 +271,26 @@ public  class DaoOffer extends DaoKudosable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoOffer other = (DaoOffer) obj;
-        if (amount == null) {
+        final DaoOffer other = (DaoOffer) obj;
+        if (this.amount == null) {
             if (other.amount != null) {
                 return false;
             }
-        } else if (!amount.equals(other.amount)) {
+        } else if (!this.amount.equals(other.amount)) {
             return false;
         }
-        if (demand == null) {
+        if (this.demand == null) {
             if (other.demand != null) {
                 return false;
             }
-        } else if (!demand.equals(other.demand)) {
+        } else if (!this.demand.equals(other.demand)) {
             return false;
         }
-        if (expirationDate == null) {
+        if (this.expirationDate == null) {
             if (other.expirationDate != null) {
                 return false;
             }
-        } else if (!expirationDate.equals(other.expirationDate)) {
+        } else if (!this.expirationDate.equals(other.expirationDate)) {
             return false;
         }
         return true;

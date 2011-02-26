@@ -35,7 +35,7 @@ import com.bloatit.framework.exceptions.FatalErrorException;
  * account.
  */
 @Entity
-public  class DaoTransaction extends DaoIdentifiable {
+public class DaoTransaction extends DaoIdentifiable {
 
     @Column(updatable = false, nullable = false)
     private Date creationDate;
@@ -46,13 +46,13 @@ public  class DaoTransaction extends DaoIdentifiable {
     @Column(updatable = false, nullable = false)
     private BigDecimal amount;
 
-    public static DaoTransaction
-            createAndPersist( DaoInternalAccount from,  DaoAccount to,  BigDecimal amount) throws NotEnoughMoneyException {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoTransaction transaction = new DaoTransaction(from, to, amount);
+    public static DaoTransaction createAndPersist(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount)
+            throws NotEnoughMoneyException {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoTransaction transaction = new DaoTransaction(from, to, amount);
         try {
             session.save(transaction);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -71,7 +71,7 @@ public  class DaoTransaction extends DaoIdentifiable {
      * @throws FatalErrorException if to == from
      * @throws NullPointerException if any of the parameters = null
      */
-    private DaoTransaction( DaoInternalAccount from,  DaoAccount to,  BigDecimal amount) throws NotEnoughMoneyException {
+    private DaoTransaction(final DaoInternalAccount from, final DaoAccount to, final BigDecimal amount) throws NotEnoughMoneyException {
         super();
         if (from.equals(to)) {
             throw new FatalErrorException("Cannot create a transaction on the same account.", null);
@@ -89,19 +89,19 @@ public  class DaoTransaction extends DaoIdentifiable {
     }
 
     public DaoInternalAccount getFrom() {
-        return from;
+        return this.from;
     }
 
     public DaoAccount getTo() {
-        return to;
+        return this.to;
     }
 
     public BigDecimal getAmount() {
-        return amount;
+        return this.amount;
     }
 
     public Date getCreationDate() {
-        return (Date) creationDate.clone();
+        return (Date) this.creationDate.clone();
     }
 
     // ======================================================================
@@ -109,7 +109,7 @@ public  class DaoTransaction extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -131,12 +131,12 @@ public  class DaoTransaction extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
-        result = prime * result + ((from == null) ? 0 : from.hashCode());
-        result = prime * result + ((to == null) ? 0 : to.hashCode());
+        result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
+        result = prime * result + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
+        result = prime * result + ((this.from == null) ? 0 : this.from.hashCode());
+        result = prime * result + ((this.to == null) ? 0 : this.to.hashCode());
         return result;
     }
 
@@ -145,7 +145,7 @@ public  class DaoTransaction extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -155,33 +155,33 @@ public  class DaoTransaction extends DaoIdentifiable {
         if (!(obj instanceof DaoTransaction)) {
             return false;
         }
-         DaoTransaction other = (DaoTransaction) obj;
-        if (amount == null) {
+        final DaoTransaction other = (DaoTransaction) obj;
+        if (this.amount == null) {
             if (other.amount != null) {
                 return false;
             }
-        } else if (!amount.equals(other.amount)) {
+        } else if (!this.amount.equals(other.amount)) {
             return false;
         }
-        if (creationDate == null) {
+        if (this.creationDate == null) {
             if (other.creationDate != null) {
                 return false;
             }
-        } else if (!creationDate.equals(other.creationDate)) {
+        } else if (!this.creationDate.equals(other.creationDate)) {
             return false;
         }
-        if (from == null) {
+        if (this.from == null) {
             if (other.from != null) {
                 return false;
             }
-        } else if (!from.equals(other.from)) {
+        } else if (!this.from.equals(other.from)) {
             return false;
         }
-        if (to == null) {
+        if (this.to == null) {
             if (other.to != null) {
                 return false;
             }
-        } else if (!to.equals(other.to)) {
+        } else if (!this.to.equals(other.to)) {
             return false;
         }
         return true;

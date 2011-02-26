@@ -18,28 +18,24 @@ package com.bloatit.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 @Entity
-public  class DaoProject extends DaoIdentifiable {
+public class DaoProject extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = false)
     private String name;
@@ -52,14 +48,14 @@ public  class DaoProject extends DaoIdentifiable {
     private DaoFileMetadata image;
 
     @OneToMany(mappedBy = "project")
-    private  List<DaoDemand> demands = new ArrayList<DaoDemand>();
+    private List<DaoDemand> demands = new ArrayList<DaoDemand>();
 
     // ======================================================================
     // Static HQL requests
     // ======================================================================
 
-    public static DaoProject getByName( String name) {
-         Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
+    public static DaoProject getByName(final String name) {
+        final Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
         return (DaoProject) query.uniqueResult();
     }
 
@@ -67,12 +63,12 @@ public  class DaoProject extends DaoIdentifiable {
     // Construction
     // ======================================================================
 
-    public static DaoProject createAndPersist( String name,  DaoDescription description) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoProject project = new DaoProject(name, description);
+    public static DaoProject createAndPersist(final String name, final DaoDescription description) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoProject project = new DaoProject(name, description);
         try {
             session.save(project);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -80,7 +76,7 @@ public  class DaoProject extends DaoIdentifiable {
         return project;
     }
 
-    private DaoProject( String name,  DaoDescription description) {
+    private DaoProject(final String name, final DaoDescription description) {
         super();
         if (name == null || name.isEmpty() || description == null) {
             throw new NonOptionalParameterException();
@@ -89,8 +85,8 @@ public  class DaoProject extends DaoIdentifiable {
         this.description = description;
     }
 
-    protected void addDemand( DaoDemand demand) {
-        demands.add(demand);
+    protected void addDemand(final DaoDemand demand) {
+        this.demands.add(demand);
     }
 
     // ======================================================================
@@ -101,25 +97,25 @@ public  class DaoProject extends DaoIdentifiable {
      * @return the description
      */
     public DaoDescription getDescription() {
-        return description;
+        return this.description;
     }
 
     /**
      * @return the image
      */
     public DaoFileMetadata getImage() {
-        return image;
+        return this.image;
     }
 
     public PageIterable<DaoDemand> getDemands() {
-        return new MappedList<DaoDemand>(demands);
+        return new MappedList<DaoDemand>(this.demands);
     }
 
     /**
      * @return the name
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 
     // ======================================================================
@@ -127,7 +123,7 @@ public  class DaoProject extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -149,9 +145,9 @@ public  class DaoProject extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         return result;
     }
 
@@ -160,7 +156,7 @@ public  class DaoProject extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -170,19 +166,19 @@ public  class DaoProject extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoProject other = (DaoProject) obj;
-        if (description == null) {
+        final DaoProject other = (DaoProject) obj;
+        if (this.description == null) {
             if (other.description != null) {
                 return false;
             }
-        } else if (!description.equals(other.description)) {
+        } else if (!this.description.equals(other.description)) {
             return false;
         }
 
         return true;
     }
 
-    public void setImage( DaoFileMetadata image) {
+    public void setImage(final DaoFileMetadata image) {
         this.image = image;
     }
 

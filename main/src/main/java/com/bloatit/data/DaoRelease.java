@@ -35,7 +35,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 @Entity
-public  class DaoRelease extends DaoUserContent implements DaoCommentable {
+public class DaoRelease extends DaoUserContent implements DaoCommentable {
     @Basic(optional = false)
     private String description;
 
@@ -48,7 +48,7 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id")
-    private  List<DaoComment> comments = new ArrayList<DaoComment>();
+    private List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false)
     private DaoBatch batch;
@@ -56,7 +56,7 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
     // @Basic(optional = false)
     private String version;
 
-    public DaoRelease( DaoMember member,  DaoBatch batch,  String description,  String version,  Locale locale) {
+    public DaoRelease(final DaoMember member, final DaoBatch batch, final String description, final String version, final Locale locale) {
         super(member);
         if (description == null || batch == null || locale == null || version == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -67,16 +67,16 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
         this.version = version;
     }
 
-    public static DaoRelease createAndPersist( DaoMember member,
-                                               DaoBatch batch,
-                                               String description,
-                                               String version,
-                                               Locale locale) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoRelease release = new DaoRelease(member, batch, description, version, locale);
+    public static DaoRelease createAndPersist(final DaoMember member,
+                                              final DaoBatch batch,
+                                              final String description,
+                                              final String version,
+                                              final Locale locale) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoRelease release = new DaoRelease(member, batch, description, version, locale);
         try {
             session.save(release);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -85,30 +85,30 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
     }
 
     @Override
-    public void addComment( DaoComment comment) {
-        comments.add(comment);
+    public void addComment(final DaoComment comment) {
+        this.comments.add(comment);
     }
 
     /**
      * @return the description
      */
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public String getVersion() {
-        return version;
+        return this.version;
     }
 
     /**
      * @return the locale
      */
     public Locale getLocale() {
-        return locale;
+        return this.locale;
     }
 
     public DaoBatch getBatch() {
-        return batch;
+        return this.batch;
     }
 
     /**
@@ -116,7 +116,7 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return new MappedList<DaoComment>(comments);
+        return new MappedList<DaoComment>(this.comments);
     }
 
     /**
@@ -124,7 +124,7 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public DaoComment getLastComment() {
-        return comments.get(comments.size() - 1);
+        return this.comments.get(this.comments.size() - 1);
     }
 
     // ======================================================================
@@ -132,7 +132,7 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -150,14 +150,14 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
 
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -167,12 +167,12 @@ public  class DaoRelease extends DaoUserContent implements DaoCommentable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoRelease other = (DaoRelease) obj;
-        if (description == null) {
+        final DaoRelease other = (DaoRelease) obj;
+        if (this.description == null) {
             if (other.description != null) {
                 return false;
             }
-        } else if (!description.equals(other.description)) {
+        } else if (!this.description.equals(other.description)) {
             return false;
         }
         return true;

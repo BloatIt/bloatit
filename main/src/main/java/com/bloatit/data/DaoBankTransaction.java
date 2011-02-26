@@ -37,7 +37,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * informations on the transaction.
  */
 @Entity
-public  class DaoBankTransaction extends DaoIdentifiable {
+public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
      * Enumerate the different state a BankTranscation can be in. After being
@@ -124,7 +124,7 @@ public  class DaoBankTransaction extends DaoIdentifiable {
      * @return the <code>DaoBankTransaction</code> with this <code>token</code>.
      *         Return null if not found.
      */
-    public static DaoBankTransaction getByToken( String token) {
+    public static DaoBankTransaction getByToken(final String token) {
         return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token")
                                                   .setString("token", token)
                                                   .uniqueResult();
@@ -134,16 +134,16 @@ public  class DaoBankTransaction extends DaoIdentifiable {
     // Construction
     // ======================================================================
 
-    public static DaoBankTransaction createAndPersist( String message,
-                                                       String token,
-                                                       DaoActor author,
-                                                       BigDecimal value,
-                                                       String orderReference) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, value, orderReference);
+    public static DaoBankTransaction createAndPersist(final String message,
+                                                      final String token,
+                                                      final DaoActor author,
+                                                      final BigDecimal value,
+                                                      final String orderReference) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoBankTransaction bankTransaction = new DaoBankTransaction(message, token, author, value, orderReference);
         try {
             session.save(bankTransaction);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -155,7 +155,7 @@ public  class DaoBankTransaction extends DaoIdentifiable {
      * throw a {@link NonOptionalParameterException} if any of the parameters is
      * null (or string isEmpty).
      */
-    private DaoBankTransaction( String message,  String token,  DaoActor author,  BigDecimal value,  String orderReference) {
+    private DaoBankTransaction(final String message, final String token, final DaoActor author, final BigDecimal value, final String orderReference) {
         super();
         if (message == null || token == null || author == null || value == null || orderReference == null) {
             throw new NonOptionalParameterException();
@@ -170,7 +170,7 @@ public  class DaoBankTransaction extends DaoIdentifiable {
         this.state = State.PENDING;
         this.reference = orderReference;
         this.creationDate = new Date();
-        this.modificationDate = (Date) creationDate.clone();
+        this.modificationDate = (Date) this.creationDate.clone();
     }
 
     /**
@@ -178,9 +178,9 @@ public  class DaoBankTransaction extends DaoIdentifiable {
      * {@link State#PENDING}. Reset the modification date.
      */
     public void setAuthorized() {
-        if (state == State.PENDING) {
-            modificationDate = new Date();
-            state = State.AUTHORIZED;
+        if (this.state == State.PENDING) {
+            this.modificationDate = new Date();
+            this.state = State.AUTHORIZED;
         }
     }
 
@@ -191,15 +191,15 @@ public  class DaoBankTransaction extends DaoIdentifiable {
      * @return true if performed, false otherwise.
      */
     public boolean setValidated() {
-        if (state != State.AUTHORIZED) {
+        if (this.state != State.AUTHORIZED) {
             return false;
         }
-        modificationDate = new Date();
+        this.modificationDate = new Date();
         try {
-            DaoTransaction.createAndPersist(author.getInternalAccount(), author.getExternalAccount(), getValue().negate());
-            state = State.VALIDATED;
+            DaoTransaction.createAndPersist(this.author.getInternalAccount(), this.author.getExternalAccount(), getValue().negate());
+            this.state = State.VALIDATED;
             return true;
-        } catch ( NotEnoughMoneyException e) {
+        } catch (final NotEnoughMoneyException e) {
             Log.data().fatal("Error when trying to validate a bankTransaction.", e);
             return false;
         }
@@ -209,12 +209,12 @@ public  class DaoBankTransaction extends DaoIdentifiable {
      * Set the state to {@link State#REFUSED}.
      */
     public void setRefused() {
-        modificationDate = new Date();
-        state = State.REFUSED;
+        this.modificationDate = new Date();
+        this.state = State.REFUSED;
     }
 
-    public void setProcessInformations( String processInformations) {
-        modificationDate = new Date();
+    public void setProcessInformations(final String processInformations) {
+        this.modificationDate = new Date();
         this.processInformations = processInformations;
     }
 
@@ -223,45 +223,45 @@ public  class DaoBankTransaction extends DaoIdentifiable {
     // ======================================================================
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public String getToken() {
-        return token;
+        return this.token;
     }
 
     public DaoActor getAuthor() {
-        return author;
+        return this.author;
     }
 
     public BigDecimal getValue() {
-        return value;
+        return this.value;
     }
 
     public State getState() {
-        return state;
+        return this.state;
     }
 
     /**
      * @return a clone of the creationDate
      */
     public Date getCreationDate() {
-        return (Date) creationDate.clone();
+        return (Date) this.creationDate.clone();
     }
 
     /**
      * @return a clone of the creationDate
      */
     public Date getModificationDate() {
-        return (Date) modificationDate.clone();
+        return (Date) this.modificationDate.clone();
     }
 
     public String getReference() {
-        return reference;
+        return this.reference;
     }
 
     public String getProcessInformations() {
-        return processInformations;
+        return this.processInformations;
     }
 
     // ======================================================================
@@ -269,7 +269,7 @@ public  class DaoBankTransaction extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -291,11 +291,11 @@ public  class DaoBankTransaction extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((author == null) ? 0 : author.hashCode());
-        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
-        result = prime * result + ((token == null) ? 0 : token.hashCode());
+        result = prime * result + ((this.author == null) ? 0 : this.author.hashCode());
+        result = prime * result + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
+        result = prime * result + ((this.token == null) ? 0 : this.token.hashCode());
         return result;
     }
 
@@ -304,33 +304,33 @@ public  class DaoBankTransaction extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (!(obj instanceof DaoBankTransaction)) {
             return false;
         }
-         DaoBankTransaction other = (DaoBankTransaction) obj;
-        if (author == null) {
+        final DaoBankTransaction other = (DaoBankTransaction) obj;
+        if (this.author == null) {
             if (other.author != null) {
                 return false;
             }
-        } else if (!author.equals(other.author)) {
+        } else if (!this.author.equals(other.author)) {
             return false;
         }
-        if (creationDate == null) {
+        if (this.creationDate == null) {
             if (other.creationDate != null) {
                 return false;
             }
-        } else if (!creationDate.equals(other.creationDate)) {
+        } else if (!this.creationDate.equals(other.creationDate)) {
             return false;
         }
-        if (token == null) {
+        if (this.token == null) {
             if (other.token != null) {
                 return false;
             }
-        } else if (!token.equals(other.token)) {
+        } else if (!this.token.equals(other.token)) {
             return false;
         }
         return true;

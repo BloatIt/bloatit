@@ -12,5 +12,5 @@ public interface DaoCommentable {
 
     DaoComment getLastComment();
 
-    void addComment( DaoComment comment);
+    void addComment(DaoComment comment);
 }

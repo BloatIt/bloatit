@@ -61,7 +61,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     @OneToMany(mappedBy = "kudosable")
     @Cascade(value = { CascadeType.ALL })
-    private  List<DaoKudos> kudos = new ArrayList<DaoKudos>(0);
+    private List<DaoKudos> kudos = new ArrayList<DaoKudos>(0);
 
     @Basic(optional = false)
     @Field(store = Store.NO)
@@ -77,11 +77,11 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @param member the author.
      * @see DaoUserContent#DaoUserContent(DaoMember)
      */
-    public DaoKudosable( DaoMember member) {
+    public DaoKudosable(final DaoMember member) {
         super(member);
-        popularity = 0;
+        this.popularity = 0;
         setState(PopularityState.PENDING);
-        isPopularityLocked = false;
+        this.isPopularityLocked = false;
     }
 
     /**
@@ -89,24 +89,24 @@ public abstract class DaoKudosable extends DaoUserContent {
      * 
      * @return the new popularity
      */
-    public  int addKudos( DaoMember member,  int value) {
-        kudos.add(new DaoKudos(member, value, this));
-        popularity += value;
-        return popularity;
+    public int addKudos(final DaoMember member, final int value) {
+        this.kudos.add(new DaoKudos(member, value, this));
+        this.popularity += value;
+        return this.popularity;
     }
 
-    public  void lockPopularity() {
-        isPopularityLocked = true;
+    public void lockPopularity() {
+        this.isPopularityLocked = true;
     }
 
-    public  void unlockPopularity() {
-        isPopularityLocked = false;
+    public void unlockPopularity() {
+        this.isPopularityLocked = false;
     }
 
     /**
      * The state must be update from the framework layer.
      */
-    public  void setState( PopularityState state) {
+    public void setState(final PopularityState state) {
         this.state = state;
     }
 
@@ -117,8 +117,8 @@ public abstract class DaoKudosable extends DaoUserContent {
      *            even think of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
-    public  boolean hasKudosed( DaoMember member) {
-         Query q = SessionManager.getSessionFactory()
+    public boolean hasKudosed(final DaoMember member) {
+        final Query q = SessionManager.getSessionFactory()
                                       .getCurrentSession()
                                       .createQuery("select count(k) from " + this.getClass().getName()
                                               + " as a join a.kudos as k where k.member = :member and a = :this");
@@ -128,7 +128,7 @@ public abstract class DaoKudosable extends DaoUserContent {
     }
 
     public boolean isPopularityLocked() {
-        return isPopularityLocked;
+        return this.isPopularityLocked;
     }
 
     /**
@@ -138,27 +138,27 @@ public abstract class DaoKudosable extends DaoUserContent {
      *            even think of passing a null member)
      * @return true if member has kudosed, false otherwise.
      */
-    public  int getVote( DaoMember member) {
-         Query q = SessionManager.getSessionFactory()
+    public int getVote(final DaoMember member) {
+        final Query q = SessionManager.getSessionFactory()
                                       .getCurrentSession()
                                       .createQuery("select k.value from " + this.getClass().getName()
                                               + " as a join a.kudos as k where k.member = :member and a = :this");
         q.setEntity("member", member);
         q.setEntity("this", this);
         // return 0 if no vote
-         Integer vote = (Integer) q.uniqueResult();
+        final Integer vote = (Integer) q.uniqueResult();
         if (vote == null) {
             return 0;
         }
         return vote;
     }
 
-    public  PopularityState getState() {
-        return state;
+    public PopularityState getState() {
+        return this.state;
     }
 
-    public  int getPopularity() {
-        return popularity;
+    public int getPopularity() {
+        return this.popularity;
     }
 
     // ======================================================================
@@ -187,7 +187,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         return super.equals(obj);
     }
 

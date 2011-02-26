@@ -36,7 +36,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  */
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "locale", "description_id" }) })
-public  class DaoTranslation extends DaoKudosable {
+public class DaoTranslation extends DaoKudosable {
 
     @Basic(optional = false)
     private Locale locale;
@@ -62,7 +62,7 @@ public  class DaoTranslation extends DaoKudosable {
      * @param text
      * @throws NonOptionalParameterException if any of the field is null
      */
-    public DaoTranslation( DaoMember member,  DaoDescription description,  Locale locale,  String title,  String text) {
+    public DaoTranslation(final DaoMember member, final DaoDescription description, final Locale locale, final String title, final String text) {
         super(member);
         if (description == null || locale == null || title == null || text == null) {
             throw new NonOptionalParameterException();
@@ -77,15 +77,15 @@ public  class DaoTranslation extends DaoKudosable {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public Locale getLocale() {
-        return locale;
+        return this.locale;
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     // ======================================================================
@@ -93,7 +93,7 @@ public  class DaoTranslation extends DaoKudosable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -106,7 +106,7 @@ public  class DaoTranslation extends DaoKudosable {
     }
 
     protected DaoDescription getDescription() {
-        return description;
+        return this.description;
     }
 
     // ======================================================================
@@ -119,11 +119,11 @@ public  class DaoTranslation extends DaoKudosable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((locale == null) ? 0 : locale.hashCode());
-        result = prime * result + ((text == null) ? 0 : text.hashCode());
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((this.locale == null) ? 0 : this.locale.hashCode());
+        result = prime * result + ((this.text == null) ? 0 : this.text.hashCode());
+        result = prime * result + ((this.title == null) ? 0 : this.title.hashCode());
         return result;
     }
 
@@ -132,7 +132,7 @@ public  class DaoTranslation extends DaoKudosable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -142,26 +142,26 @@ public  class DaoTranslation extends DaoKudosable {
         if (!(obj instanceof DaoTranslation)) {
             return false;
         }
-         DaoTranslation other = (DaoTranslation) obj;
-        if (locale == null) {
+        final DaoTranslation other = (DaoTranslation) obj;
+        if (this.locale == null) {
             if (other.locale != null) {
                 return false;
             }
-        } else if (!locale.equals(other.locale)) {
+        } else if (!this.locale.equals(other.locale)) {
             return false;
         }
-        if (text == null) {
+        if (this.text == null) {
             if (other.text != null) {
                 return false;
             }
-        } else if (!text.equals(other.text)) {
+        } else if (!this.text.equals(other.text)) {
             return false;
         }
-        if (title == null) {
+        if (this.title == null) {
             if (other.title != null) {
                 return false;
             }
-        } else if (!title.equals(other.title)) {
+        } else if (!this.title.equals(other.title)) {
             return false;
         }
         return true;

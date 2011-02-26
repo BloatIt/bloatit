@@ -17,9 +17,7 @@
 package com.bloatit.data;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -49,37 +47,37 @@ class DaoGroupMembership extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "membership", orphanRemoval = true, cascade = { CascadeType.ALL })
     @Cascade(value = {})
-    private  List<DaoGroupRight> memberRight = new ArrayList<DaoGroupRight>(0);
+    private List<DaoGroupRight> memberRight = new ArrayList<DaoGroupRight>(0);
 
     /**
      * Get a GroupMembership line using its composite key. (HQL request)
      */
-    protected static DaoGroupMembership get( DaoGroup group,  DaoMember member) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         Query q = session.createQuery("from com.bloatit.data.DaoGroupMembership as gm where gm.bloatitGroup = :bloatitGroup and gm.member = :member");
+    protected static DaoGroupMembership get(final DaoGroup group, final DaoMember member) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query q = session.createQuery("from com.bloatit.data.DaoGroupMembership as gm where gm.bloatitGroup = :bloatitGroup and gm.member = :member");
         q.setEntity("bloatitGroup", group);
         q.setEntity("member", member);
         return (DaoGroupMembership) q.uniqueResult();
     }
 
-    protected DaoGroupMembership( DaoMember member,  DaoGroup group) {
+    protected DaoGroupMembership(final DaoMember member, final DaoGroup group) {
         this.member = member;
         this.bloatitGroup = group;
     }
 
-    protected  DaoMember getMember() {
-        return member;
+    protected DaoMember getMember() {
+        return this.member;
     }
 
-    protected  DaoGroup getGroup() {
-        return bloatitGroup;
+    protected DaoGroup getGroup() {
+        return this.bloatitGroup;
     }
 
-    protected  List<DaoGroupRight> getRights() {
-        return memberRight;
+    protected List<DaoGroupRight> getRights() {
+        return this.memberRight;
     }
 
-    protected  void addUserRight( UserGroupRight newRight) {
+    protected void addUserRight(final UserGroupRight newRight) {
         this.memberRight.add(new DaoGroupRight(this, newRight));
     }
 
@@ -88,7 +86,7 @@ class DaoGroupMembership extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return null;
     }
 
@@ -106,10 +104,10 @@ class DaoGroupMembership extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((bloatitGroup == null) ? 0 : bloatitGroup.hashCode());
-        result = prime * result + ((member == null) ? 0 : member.hashCode());
+        result = prime * result + ((this.bloatitGroup == null) ? 0 : this.bloatitGroup.hashCode());
+        result = prime * result + ((this.member == null) ? 0 : this.member.hashCode());
         return result;
     }
 
@@ -118,26 +116,26 @@ class DaoGroupMembership extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (!(obj instanceof DaoGroupMembership)) {
             return false;
         }
-         DaoGroupMembership other = (DaoGroupMembership) obj;
-        if (bloatitGroup == null) {
+        final DaoGroupMembership other = (DaoGroupMembership) obj;
+        if (this.bloatitGroup == null) {
             if (other.bloatitGroup != null) {
                 return false;
             }
-        } else if (!bloatitGroup.equals(other.bloatitGroup)) {
+        } else if (!this.bloatitGroup.equals(other.bloatitGroup)) {
             return false;
         }
-        if (member == null) {
+        if (this.member == null) {
             if (other.member != null) {
                 return false;
             }
-        } else if (!member.equals(other.member)) {
+        } else if (!this.member.equals(other.member)) {
             return false;
         }
         return true;

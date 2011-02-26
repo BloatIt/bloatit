@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
  * </p>
  */
 @Entity
-public  class DaoGroupRight extends DaoIdentifiable {
+public class DaoGroupRight extends DaoIdentifiable {
 
     public enum UserGroupRight {
         CONSULT, TALK, INVITE, MODIFY, PROMOTE, BANK,
@@ -25,18 +25,18 @@ public  class DaoGroupRight extends DaoIdentifiable {
     @Enumerated
     private UserGroupRight userStatus;
 
-    protected DaoGroupRight( DaoGroupMembership membership,  UserGroupRight userStatus) {
+    protected DaoGroupRight(final DaoGroupMembership membership, final UserGroupRight userStatus) {
         super();
         this.membership = membership;
         this.userStatus = userStatus;
     }
 
     protected DaoGroupMembership getMembership() {
-        return membership;
+        return this.membership;
     }
 
     protected UserGroupRight getUserStatus() {
-        return userStatus;
+        return this.userStatus;
     }
 
     // ======================================================================
@@ -44,7 +44,7 @@ public  class DaoGroupRight extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return null;
     }
 
@@ -62,15 +62,15 @@ public  class DaoGroupRight extends DaoIdentifiable {
 
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((membership == null) ? 0 : membership.hashCode());
-        result = prime * result + ((userStatus == null) ? 0 : userStatus.hashCode());
+        result = prime * result + ((this.membership == null) ? 0 : this.membership.hashCode());
+        result = prime * result + ((this.userStatus == null) ? 0 : this.userStatus.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -80,15 +80,15 @@ public  class DaoGroupRight extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoGroupRight other = (DaoGroupRight) obj;
-        if (membership == null) {
+        final DaoGroupRight other = (DaoGroupRight) obj;
+        if (this.membership == null) {
             if (other.membership != null) {
                 return false;
             }
-        } else if (!membership.equals(other.membership)) {
+        } else if (!this.membership.equals(other.membership)) {
             return false;
         }
-        if (userStatus != other.userStatus) {
+        if (this.userStatus != other.userStatus) {
             return false;
         }
         return true;

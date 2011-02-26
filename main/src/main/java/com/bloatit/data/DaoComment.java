@@ -17,9 +17,7 @@
 package com.bloatit.data;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -50,7 +48,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public  class DaoComment extends DaoKudosable implements DaoCommentable {
+public class DaoComment extends DaoKudosable implements DaoCommentable {
 
     // WARNING "TEXT" is not a standard SQL type.
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -64,14 +62,14 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id")
     @IndexedEmbedded(depth = 1)
-    private  List<DaoComment> children = new ArrayList<DaoComment>(0);
+    private List<DaoComment> children = new ArrayList<DaoComment>(0);
 
-    public static DaoComment createAndPersist( DaoMember member,  String text) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoComment comment = new DaoComment(member, text);
+    public static DaoComment createAndPersist(final DaoMember member, final String text) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoComment comment = new DaoComment(member, text);
         try {
             session.save(comment);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -89,7 +87,7 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
      * @throws NonOptionalParameterException if the text is null
      * @see DaoKudosable#DaoKudosable(DaoMember)
      */
-    private DaoComment( DaoMember member,  String text) {
+    private DaoComment(final DaoMember member, final String text) {
         super(member);
         if (text == null || text.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -100,7 +98,7 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
     /**
      * @throws NonOptionalParameterException if the comment is null.
      */
-    public void addChildComment( DaoComment comment) {
+    public void addChildComment(final DaoComment comment) {
         if (comment == null) {
             throw new NonOptionalParameterException();
         }
@@ -108,11 +106,11 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
             throw new FatalErrorException("Cannot add ourself as child comment.");
         }
         comment.father = this;
-        children.add(comment);
+        this.children.add(comment);
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     /**
@@ -128,16 +126,16 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
 
     @Override
     public PageIterable<DaoComment> getComments() {
-        return new MappedList<DaoComment>(children);
+        return new MappedList<DaoComment>(this.children);
     }
 
     @Override
     public DaoComment getLastComment() {
-        return children.get(children.size() - 1);
+        return this.children.get(this.children.size() - 1);
     }
 
     @Override
-    public void addComment( DaoComment comment) {
+    public void addComment(final DaoComment comment) {
         addChildComment(comment);
     }
 
@@ -146,7 +144,7 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -161,7 +159,7 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
     }
 
     protected DaoComment getFather() {
-        return father;
+        return this.father;
     }
 
     // ======================================================================
@@ -174,9 +172,9 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((text == null) ? 0 : text.hashCode());
+        result = prime * result + ((this.text == null) ? 0 : this.text.hashCode());
         return result;
     }
 
@@ -185,7 +183,7 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -195,12 +193,12 @@ public  class DaoComment extends DaoKudosable implements DaoCommentable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoComment other = (DaoComment) obj;
-        if (text == null) {
+        final DaoComment other = (DaoComment) obj;
+        if (this.text == null) {
             if (other.text != null) {
                 return false;
             }
-        } else if (!text.equals(other.text)) {
+        } else if (!this.text.equals(other.text)) {
             return false;
         }
         return true;

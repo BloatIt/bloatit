@@ -21,10 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -42,7 +39,7 @@ import com.bloatit.framework.utils.PageIterable;
  * specific locale.
  */
 @Entity
-public  class DaoDescription extends DaoIdentifiable {
+public class DaoDescription extends DaoIdentifiable {
 
     // @Field(index = Index.UN_TOKENIZED)
     private Locale defaultLocale;
@@ -53,14 +50,14 @@ public  class DaoDescription extends DaoIdentifiable {
     @OneToMany(mappedBy = "description")
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
-    private  List<DaoTranslation> translations = new ArrayList<DaoTranslation>(0);
+    private List<DaoTranslation> translations = new ArrayList<DaoTranslation>(0);
 
-    public static DaoDescription createAndPersist( DaoMember member,  Locale locale,  String title,  String description) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoDescription descr = new DaoDescription(member, locale, title, description);
+    public static DaoDescription createAndPersist(final DaoMember member, final Locale locale, final String title, final String description) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoDescription descr = new DaoDescription(member, locale, title, description);
         try {
             session.save(descr);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -77,23 +74,23 @@ public  class DaoDescription extends DaoIdentifiable {
      * @param description is the main text of the description (the actual
      *            description)
      */
-    private DaoDescription( DaoMember member,  Locale locale,  String title,  String description) {
+    private DaoDescription(final DaoMember member, final Locale locale, final String title, final String description) {
         super();
         setDefaultLocale(locale);
-        translations.add(new DaoTranslation(member, this, locale, title, description));
+        this.translations.add(new DaoTranslation(member, this, locale, title, description));
     }
 
     /**
      * Add a new translation to this description.
      */
-    public void addTranslation( DaoTranslation translation) {
-        translations.add(translation);
+    public void addTranslation(final DaoTranslation translation) {
+        this.translations.add(translation);
     }
 
     /**
      * Change the default locale.
      */
-    public void setDefaultLocale( Locale defaultLocale) {
+    public void setDefaultLocale(final Locale defaultLocale) {
         this.defaultLocale = defaultLocale;
     }
 
@@ -114,7 +111,7 @@ public  class DaoDescription extends DaoIdentifiable {
      * return every translation EVEN this description.
      */
     public PageIterable<DaoTranslation> getTranslations() {
-        return new MappedList<DaoTranslation>(translations);
+        return new MappedList<DaoTranslation>(this.translations);
     }
 
     /**
@@ -123,15 +120,15 @@ public  class DaoDescription extends DaoIdentifiable {
      * @param locale the locale in which we want the description
      * @return null if no translation exists for this locale.
      */
-    public DaoTranslation getTranslation( Locale locale) {
-         Query q = SessionManager.createQuery("from com.bloatit.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
+    public DaoTranslation getTranslation(final Locale locale) {
+        final Query q = SessionManager.createQuery("from com.bloatit.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
         q.setLocale("locale", locale);
         q.setEntity("this", this);
         return (DaoTranslation) q.uniqueResult();
     }
 
     public Locale getDefaultLocale() {
-        return defaultLocale;
+        return this.defaultLocale;
     }
 
     // ======================================================================
@@ -139,7 +136,7 @@ public  class DaoDescription extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -161,10 +158,10 @@ public  class DaoDescription extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((defaultLocale == null) ? 0 : defaultLocale.hashCode());
-        result = prime * result + ((translations == null) ? 0 : translations.hashCode());
+        result = prime * result + ((this.defaultLocale == null) ? 0 : this.defaultLocale.hashCode());
+        result = prime * result + ((this.translations == null) ? 0 : this.translations.hashCode());
         return result;
     }
 
@@ -173,7 +170,7 @@ public  class DaoDescription extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -183,19 +180,19 @@ public  class DaoDescription extends DaoIdentifiable {
         if (!(obj instanceof DaoDescription)) {
             return false;
         }
-         DaoDescription other = (DaoDescription) obj;
-        if (defaultLocale == null) {
+        final DaoDescription other = (DaoDescription) obj;
+        if (this.defaultLocale == null) {
             if (other.defaultLocale != null) {
                 return false;
             }
-        } else if (!defaultLocale.equals(other.defaultLocale)) {
+        } else if (!this.defaultLocale.equals(other.defaultLocale)) {
             return false;
         }
-        if (translations == null) {
+        if (this.translations == null) {
             if (other.translations != null) {
                 return false;
             }
-        } else if (!translations.equals(other.translations)) {
+        } else if (!this.translations.equals(other.translations)) {
             return false;
         }
         return true;

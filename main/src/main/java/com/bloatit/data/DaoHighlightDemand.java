@@ -21,7 +21,7 @@ import com.bloatit.framework.utils.PageIterable;
  * date
  */
 @Entity
-public  class DaoHighlightDemand extends DaoIdentifiable {
+public class DaoHighlightDemand extends DaoIdentifiable {
 
     @Basic(optional = false)
     private int position;
@@ -52,16 +52,16 @@ public  class DaoHighlightDemand extends DaoIdentifiable {
      * @param desactivationDate the desactivation date
      * @return the dao highlight demand
      */
-    public static DaoHighlightDemand createAndPersist( DaoDemand demand,
-                                                       int position,
-                                                       String reason,
-                                                       Date activationDate,
-                                                       Date desactivationDate) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoHighlightDemand hightlightDemand = new DaoHighlightDemand(demand, position, reason, activationDate, desactivationDate);
+    public static DaoHighlightDemand createAndPersist(final DaoDemand demand,
+                                                      final int position,
+                                                      final String reason,
+                                                      final Date activationDate,
+                                                      final Date desactivationDate) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoHighlightDemand hightlightDemand = new DaoHighlightDemand(demand, position, reason, activationDate, desactivationDate);
         try {
             session.save(hightlightDemand);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -78,7 +78,7 @@ public  class DaoHighlightDemand extends DaoIdentifiable {
      * @param activationDate
      * @param desactivationDate
      */
-    public DaoHighlightDemand( DaoDemand demand,  int position,  String reason,  Date activationDate,  Date desactivationDate) {
+    public DaoHighlightDemand(final DaoDemand demand, final int position, final String reason, final Date activationDate, final Date desactivationDate) {
         if (demand == null || activationDate == null || desactivationDate == null) {
             throw new NonOptionalParameterException();
         }
@@ -98,64 +98,64 @@ public  class DaoHighlightDemand extends DaoIdentifiable {
      * @return all the member in this group. (Use a HQL query).
      */
     public PageIterable<DaoHighlightDemand> getActiveHightlightDemands() {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
 
-         Query query = session.createQuery("from DaoHighlightDemand " + //
+        final Query query = session.createQuery("from DaoHighlightDemand " + //
                 "where activationDate < :now " + //
                 "and desactivationDate > :now");//
 
         query.setDate("now", new Date());
 
-         QueryCollection<DaoHighlightDemand> queryCollection = new QueryCollection<DaoHighlightDemand>(query);
+        final QueryCollection<DaoHighlightDemand> queryCollection = new QueryCollection<DaoHighlightDemand>(query);
         return queryCollection;
     }
 
     public int getPosition() {
-        return position;
+        return this.position;
     }
 
-    public void setPosition( int position) {
+    public void setPosition(final int position) {
         this.position = position;
     }
 
     public Date getActivationDate() {
-        return activationDate;
+        return this.activationDate;
     }
 
-    public void setActivationDate( Date activationDate) {
+    public void setActivationDate(final Date activationDate) {
         this.activationDate = activationDate;
     }
 
     public Date getDesactivationDate() {
-        return desactivationDate;
+        return this.desactivationDate;
     }
 
-    public void setDesactivationDate( Date desactivationDate) {
+    public void setDesactivationDate(final Date desactivationDate) {
         this.desactivationDate = desactivationDate;
     }
 
     public String getReason() {
-        return reason;
+        return this.reason;
     }
 
     public DaoDemand getDemand() {
-        return demand;
+        return this.demand;
     }
 
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((activationDate == null) ? 0 : activationDate.hashCode());
-        result = prime * result + ((demand == null) ? 0 : demand.hashCode());
-        result = prime * result + ((desactivationDate == null) ? 0 : desactivationDate.hashCode());
-        result = prime * result + position;
-        result = prime * result + ((reason == null) ? 0 : reason.hashCode());
+        result = prime * result + ((this.activationDate == null) ? 0 : this.activationDate.hashCode());
+        result = prime * result + ((this.demand == null) ? 0 : this.demand.hashCode());
+        result = prime * result + ((this.desactivationDate == null) ? 0 : this.desactivationDate.hashCode());
+        result = prime * result + this.position;
+        result = prime * result + ((this.reason == null) ? 0 : this.reason.hashCode());
         return result;
     }
 
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -165,36 +165,36 @@ public  class DaoHighlightDemand extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoHighlightDemand other = (DaoHighlightDemand) obj;
-        if (activationDate == null) {
+        final DaoHighlightDemand other = (DaoHighlightDemand) obj;
+        if (this.activationDate == null) {
             if (other.activationDate != null) {
                 return false;
             }
-        } else if (!activationDate.equals(other.activationDate)) {
+        } else if (!this.activationDate.equals(other.activationDate)) {
             return false;
         }
-        if (demand == null) {
+        if (this.demand == null) {
             if (other.demand != null) {
                 return false;
             }
-        } else if (!demand.equals(other.demand)) {
+        } else if (!this.demand.equals(other.demand)) {
             return false;
         }
-        if (desactivationDate == null) {
+        if (this.desactivationDate == null) {
             if (other.desactivationDate != null) {
                 return false;
             }
-        } else if (!desactivationDate.equals(other.desactivationDate)) {
+        } else if (!this.desactivationDate.equals(other.desactivationDate)) {
             return false;
         }
-        if (position != other.position) {
+        if (this.position != other.position) {
             return false;
         }
-        if (reason == null) {
+        if (this.reason == null) {
             if (other.reason != null) {
                 return false;
             }
-        } else if (!reason.equals(other.reason)) {
+        } else if (!this.reason.equals(other.reason)) {
             return false;
         }
         return true;
@@ -205,7 +205,7 @@ public  class DaoHighlightDemand extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 

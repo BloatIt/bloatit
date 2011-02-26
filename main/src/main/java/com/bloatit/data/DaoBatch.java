@@ -58,7 +58,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public  class DaoBatch extends DaoIdentifiable {
+public class DaoBatch extends DaoIdentifiable {
 
     public enum BatchState {
         PENDING, DEVELOPING, UAT, VALIDATED, CANCELED
@@ -113,13 +113,13 @@ public  class DaoBatch extends DaoIdentifiable {
     @OneToMany(mappedBy = "batch")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private  List<DaoBug> bugs = new ArrayList<DaoBug>();
+    private List<DaoBug> bugs = new ArrayList<DaoBug>();
 
     @OneToMany(mappedBy = "batch")
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id DESC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private  List<DaoRelease> releases = new ArrayList<DaoRelease>();
+    private List<DaoRelease> releases = new ArrayList<DaoRelease>();
 
     @ManyToOne(optional = false)
     private DaoOffer offer;
@@ -140,11 +140,11 @@ public  class DaoBatch extends DaoIdentifiable {
      * @throws FatalErrorException if the amount is < 0 or if the Date is in the
      *             future.
      */
-    public DaoBatch( Date dateExpire,
-                     BigDecimal amount,
-                     DaoDescription description,
-                     DaoOffer offer,
-                     int secondBeforeValidation) {
+    public DaoBatch(final Date dateExpire,
+                    final BigDecimal amount,
+                    final DaoDescription description,
+                    final DaoOffer offer,
+                    final int secondBeforeValidation) {
         super();
         if (dateExpire == null || amount == null || description == null || offer == null) {
             throw new NonOptionalParameterException();
@@ -179,7 +179,7 @@ public  class DaoBatch extends DaoIdentifiable {
      *            when all the {@link Level#MAJOR} bugs are closed. It must be
      *            >= 0 and <= 100.
      */
-    public void updateMajorFatalPercent( int fatalPercent,  int majorPercent) {
+    public void updateMajorFatalPercent(final int fatalPercent, final int majorPercent) {
         if (fatalPercent < 0 || majorPercent < 0) {
             throw new FatalErrorException("The parameters must be percents !");
         }
@@ -191,19 +191,19 @@ public  class DaoBatch extends DaoIdentifiable {
     }
 
     public void setDeveloping() {
-        batchState = BatchState.DEVELOPING;
+        this.batchState = BatchState.DEVELOPING;
     }
 
-    public void addRelease( DaoRelease release) {
-        releases.add(release);
-        if (batchState == BatchState.DEVELOPING) {
-            batchState = BatchState.UAT;
+    public void addRelease(final DaoRelease release) {
+        this.releases.add(release);
+        if (this.batchState == BatchState.DEVELOPING) {
+            this.batchState = BatchState.UAT;
         }
         getOffer().batchHasARelease(this);
     }
 
-    public void addBug( DaoBug bug) {
-        bugs.add(bug);
+    public void addBug(final DaoBug bug) {
+        this.bugs.add(bug);
     }
 
     /**
@@ -219,37 +219,37 @@ public  class DaoBatch extends DaoIdentifiable {
      *            bugs and the timeOuts.
      * @return true if all parts of this batch is validated.
      */
-    public boolean validate( boolean force) {
+    public boolean validate(final boolean force) {
         //
         // Calculate the real percent (= percent of this batch * percent of this
         // level).
-         int batchPercent = offer.getBatchPercent(this);
-         int fatalPercent = (batchPercent * fatalBugsPercent) / 100;
-         int majorPercent = (batchPercent * majorBugsPercent) / 100;
-         int minorPercent = batchPercent - majorPercent - fatalPercent;
+        final int batchPercent = this.offer.getBatchPercent(this);
+        final int fatalPercent = (batchPercent * this.fatalBugsPercent) / 100;
+        final int majorPercent = (batchPercent * this.majorBugsPercent) / 100;
+        final int minorPercent = batchPercent - majorPercent - fatalPercent;
 
         //
         // Do the validation
         //
-        if (levelToValidate == Level.FATAL && (force || shouldValidatePart(Level.FATAL))) {
-            levelToValidate = Level.MAJOR;
-            offer.getDemand().validateContributions(fatalPercent);
+        if (this.levelToValidate == Level.FATAL && (force || shouldValidatePart(Level.FATAL))) {
+            this.levelToValidate = Level.MAJOR;
+            this.offer.getDemand().validateContributions(fatalPercent);
         }
         // if fatalBugPercent == 100, there is nothing left to validate so it is
         // automatically validated.
-        if (levelToValidate == Level.MAJOR && (force || shouldValidatePart(Level.MAJOR) || fatalBugsPercent == 100)) {
-            levelToValidate = Level.MINOR;
-            offer.getDemand().validateContributions(majorPercent);
+        if (this.levelToValidate == Level.MAJOR && (force || shouldValidatePart(Level.MAJOR) || this.fatalBugsPercent == 100)) {
+            this.levelToValidate = Level.MINOR;
+            this.offer.getDemand().validateContributions(majorPercent);
         }
         // when minorBugPercent == 0, there is nothing left to validate so it is
         // automatically validated.
-        if (levelToValidate == Level.MINOR && (force || shouldValidatePart(Level.MINOR) || getMinorBugsPercent() == 0)) {
-            levelToValidate = null;
-            offer.getDemand().validateContributions(minorPercent);
+        if (this.levelToValidate == Level.MINOR && (force || shouldValidatePart(Level.MINOR) || getMinorBugsPercent() == 0)) {
+            this.levelToValidate = null;
+            this.offer.getDemand().validateContributions(minorPercent);
         }
-        if (levelToValidate == null) {
-            batchState = BatchState.VALIDATED;
-            offer.passToNextBatch();
+        if (this.levelToValidate == null) {
+            this.batchState = BatchState.VALIDATED;
+            this.offer.passToNextBatch();
             return true;
         }
         return false;
@@ -262,91 +262,92 @@ public  class DaoBatch extends DaoIdentifiable {
      * @return true if an admin should validate this Batch part. False
      *         otherwise.
      */
-    public boolean shouldValidatePart( Level level) {
+    public boolean shouldValidatePart(final Level level) {
         if (validationPeriodFinished() && getNonResolvedBugs(level).size() == 0) {
             return true;
         }
         return false;
     }
 
-    public boolean partIsValidated( Level level) {
-        return this.levelToValidate == null || !EnumSet.range(levelToValidate, Level.MINOR).contains(level);
+    public boolean partIsValidated(final Level level) {
+        return this.levelToValidate == null || !EnumSet.range(this.levelToValidate, Level.MINOR).contains(level);
     }
 
     private boolean validationPeriodFinished() {
-         Date releasedDate = getReleasedDate();
+        final Date releasedDate = getReleasedDate();
         if (releasedDate == null) {
             return false;
         }
-        return new Date(releasedDate.getTime() + ((long) secondBeforeValidation) * 1000).before(new Date());
+        return new Date(releasedDate.getTime() + ((long) this.secondBeforeValidation) * 1000).before(new Date());
     }
 
     public void cancelBatch() {
-        batchState = BatchState.CANCELED;
+        this.batchState = BatchState.CANCELED;
     }
 
     // ======================================================================
     // Getters.
     // ======================================================================
 
-    public PageIterable<DaoBug> getNonResolvedBugs( Level level) {
-         org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-         Query filteredBugs = currentSession.createFilter(bugs, "where errorLevel = :level and state!=:state")
+    public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
+        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        final Query filteredBugs = currentSession.createFilter(this.bugs, "where errorLevel = :level and state!=:state")
                                                  .setParameter("level", level)
                                                  .setParameter("state", BugState.RESOLVED);
-         Query filteredBugsSize = currentSession.createFilter(bugs, "select count (*) where errorLevel = :level and state!=:state")
+        final Query filteredBugsSize = currentSession.createFilter(this.bugs, "select count (*) where errorLevel = :level and state!=:state")
                                                      .setParameter("level", level)
                                                      .setParameter("state", BugState.RESOLVED);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
-    public PageIterable<DaoBug> getBugs( Level level) {
-         Query filteredBugs = SessionManager.createFilter(bugs, "where errorLevel = :level").setParameter("level", level);
-         Query filteredBugsSize = SessionManager.createFilter(bugs, "select count (*) where errorLevel = :level").setParameter("level", level);
+    public PageIterable<DaoBug> getBugs(final Level level) {
+        final Query filteredBugs = SessionManager.createFilter(this.bugs, "where errorLevel = :level").setParameter("level", level);
+        final Query filteredBugsSize = SessionManager.createFilter(this.bugs, "select count (*) where errorLevel = :level").setParameter("level",
+                                                                                                                                         level);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
-    public PageIterable<DaoBug> getBugs( BugState state) {
-         Query filteredBugs = SessionManager.createFilter(bugs, "where state = :state").setParameter("state", state);
-         Query filteredBugsSize = SessionManager.createFilter(bugs, "select count (*) where state = :state").setParameter("state", state);
+    public PageIterable<DaoBug> getBugs(final BugState state) {
+        final Query filteredBugs = SessionManager.createFilter(this.bugs, "where state = :state").setParameter("state", state);
+        final Query filteredBugsSize = SessionManager.createFilter(this.bugs, "select count (*) where state = :state").setParameter("state", state);
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
     }
 
-    public PageIterable<DaoBug> getBugs( Level level,  BugState state) {
-         Query filteredBugs = SessionManager.createFilter(bugs, "where errorLevel = :level and state = :state");
-         Query filteredBugsSize = SessionManager.createFilter(bugs, "select count (*) where errorLevel = :level and state = :state");
+    public PageIterable<DaoBug> getBugs(final Level level, final BugState state) {
+        final Query filteredBugs = SessionManager.createFilter(this.bugs, "where errorLevel = :level and state = :state");
+        final Query filteredBugsSize = SessionManager.createFilter(this.bugs, "select count (*) where errorLevel = :level and state = :state");
         return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setParameter("level", level).setParameter("state", state);
     }
 
     public PageIterable<DaoRelease> getReleases() {
-        return new MappedList<DaoRelease>(releases);
+        return new MappedList<DaoRelease>(this.releases);
     }
 
     public Date getExpirationDate() {
-        return (Date) expirationDate.clone();
+        return (Date) this.expirationDate.clone();
     }
 
     public BatchState getBatchState() {
-        return batchState;
+        return this.batchState;
     }
 
     public BigDecimal getAmount() {
-        return amount;
+        return this.amount;
     }
 
     public DaoDescription getDescription() {
-        return description;
+        return this.description;
     }
 
     public DaoOffer getOffer() {
-        return offer;
+        return this.offer;
     }
 
     /**
      * @return the releaseDate
      */
     public Date getReleasedDate() {
-         Query query = SessionManager.createFilter(releases, "select max(creationDate)");
+        final Query query = SessionManager.createFilter(this.releases, "select max(creationDate)");
         return (Date) query.uniqueResult();
     }
 
@@ -354,14 +355,14 @@ public  class DaoBatch extends DaoIdentifiable {
      * @return the fatalBugsPercent
      */
     public int getFatalBugsPercent() {
-        return fatalBugsPercent;
+        return this.fatalBugsPercent;
     }
 
     /**
      * @return the majorBugsPercent
      */
     public int getMajorBugsPercent() {
-        return majorBugsPercent;
+        return this.majorBugsPercent;
     }
 
     /**
@@ -369,7 +370,7 @@ public  class DaoBatch extends DaoIdentifiable {
      *         fatalBugsPercent)).
      */
     public int getMinorBugsPercent() {
-        return 100 - (majorBugsPercent + fatalBugsPercent);
+        return 100 - (this.majorBugsPercent + this.fatalBugsPercent);
     }
 
     // ======================================================================
@@ -377,7 +378,7 @@ public  class DaoBatch extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -399,15 +400,15 @@ public  class DaoBatch extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((expirationDate == null) ? 0 : expirationDate.hashCode());
-        result = prime * result + fatalBugsPercent;
-        result = prime * result + majorBugsPercent;
-        result = prime * result + ((offer == null) ? 0 : offer.hashCode());
-        result = prime * result + secondBeforeValidation;
+        result = prime * result + ((this.amount == null) ? 0 : this.amount.hashCode());
+        result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.expirationDate == null) ? 0 : this.expirationDate.hashCode());
+        result = prime * result + this.fatalBugsPercent;
+        result = prime * result + this.majorBugsPercent;
+        result = prime * result + ((this.offer == null) ? 0 : this.offer.hashCode());
+        result = prime * result + this.secondBeforeValidation;
         return result;
     }
 
@@ -416,7 +417,7 @@ public  class DaoBatch extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -426,42 +427,42 @@ public  class DaoBatch extends DaoIdentifiable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoBatch other = (DaoBatch) obj;
-        if (amount == null) {
+        final DaoBatch other = (DaoBatch) obj;
+        if (this.amount == null) {
             if (other.amount != null) {
                 return false;
             }
-        } else if (!amount.equals(other.amount)) {
+        } else if (!this.amount.equals(other.amount)) {
             return false;
         }
-        if (description == null) {
+        if (this.description == null) {
             if (other.description != null) {
                 return false;
             }
-        } else if (!description.equals(other.description)) {
+        } else if (!this.description.equals(other.description)) {
             return false;
         }
-        if (expirationDate == null) {
+        if (this.expirationDate == null) {
             if (other.expirationDate != null) {
                 return false;
             }
-        } else if (!expirationDate.equals(other.expirationDate)) {
+        } else if (!this.expirationDate.equals(other.expirationDate)) {
             return false;
         }
-        if (fatalBugsPercent != other.fatalBugsPercent) {
+        if (this.fatalBugsPercent != other.fatalBugsPercent) {
             return false;
         }
-        if (majorBugsPercent != other.majorBugsPercent) {
+        if (this.majorBugsPercent != other.majorBugsPercent) {
             return false;
         }
-        if (offer == null) {
+        if (this.offer == null) {
             if (other.offer != null) {
                 return false;
             }
-        } else if (!offer.equals(other.offer)) {
+        } else if (!this.offer.equals(other.offer)) {
             return false;
         }
-        if (secondBeforeValidation != other.secondBeforeValidation) {
+        if (this.secondBeforeValidation != other.secondBeforeValidation) {
             return false;
         }
         return true;

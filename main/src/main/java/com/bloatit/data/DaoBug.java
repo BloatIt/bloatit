@@ -17,10 +17,8 @@
 package com.bloatit.data;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
@@ -47,7 +45,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public  class DaoBug extends DaoUserContent implements DaoCommentable {
+public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
      * Criticality of the bug. A {@link Level#FATAL} error is a very important
@@ -86,7 +84,7 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private  List<DaoComment> comments = new ArrayList<DaoComment>();
+    private List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false)
     private DaoBatch batch;
@@ -95,7 +93,7 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
     @Enumerated
     private BugState state;
 
-    public DaoBug( DaoMember member,  DaoBatch batch,  String title,  String description,  Locale locale,  Level level) {
+    public DaoBug(final DaoMember member, final DaoBatch batch, final String title, final String description, final Locale locale, final Level level) {
         super(member);
         if (title == null || description == null || batch == null || locale == null || level == null || description.isEmpty()) {
             throw new NonOptionalParameterException();
@@ -108,17 +106,17 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
         this.state = BugState.PENDING;
     }
 
-    public static DaoBug createAndPersist( DaoMember member,
-                                           DaoBatch batch,
-                                           String title,
-                                           String description,
-                                           Locale locale,
-                                           Level level) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoBug bug = new DaoBug(member, batch, title, description, locale, level);
+    public static DaoBug createAndPersist(final DaoMember member,
+                                          final DaoBatch batch,
+                                          final String title,
+                                          final String description,
+                                          final Locale locale,
+                                          final Level level) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoBug bug = new DaoBug(member, batch, title, description, locale, level);
         try {
             session.save(bug);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -127,11 +125,11 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     @Override
-    public void addComment( DaoComment comment) {
-        comments.add(comment);
+    public void addComment(final DaoComment comment) {
+        this.comments.add(comment);
     }
 
-    public void setErrorLevel( Level level) {
+    public void setErrorLevel(final Level level) {
         this.errorLevel = level;
     }
 
@@ -150,44 +148,44 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
      * @return the title
      */
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     /**
      * @return the description
      */
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     /**
      * @return the locale
      */
     public Locale getLocale() {
-        return locale;
+        return this.locale;
     }
 
     /**
      * @return the errorLevel
      */
     public Level getErrorLevel() {
-        return errorLevel;
+        return this.errorLevel;
     }
 
     public DaoBatch getBatch() {
-        return batch;
+        return this.batch;
     }
 
     public BugState getState() {
-        return state;
+        return this.state;
     }
 
     public void setResolved() {
-        state = BugState.RESOLVED;
+        this.state = BugState.RESOLVED;
     }
 
     public void setDeveloping() {
-        state = BugState.DEVELOPING;
+        this.state = BugState.DEVELOPING;
     }
 
     /**
@@ -195,7 +193,7 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return CommentManager.getComments(comments);
+        return CommentManager.getComments(this.comments);
     }
 
     /**
@@ -203,7 +201,7 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public DaoComment getLastComment() {
-        return CommentManager.getLastComment(comments);
+        return CommentManager.getLastComment(this.comments);
     }
 
     // ======================================================================
@@ -211,7 +209,7 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -233,10 +231,10 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((locale == null) ? 0 : locale.hashCode());
+        result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.locale == null) ? 0 : this.locale.hashCode());
         return result;
     }
 
@@ -245,7 +243,7 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -255,19 +253,19 @@ public  class DaoBug extends DaoUserContent implements DaoCommentable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoBug other = (DaoBug) obj;
-        if (description == null) {
+        final DaoBug other = (DaoBug) obj;
+        if (this.description == null) {
             if (other.description != null) {
                 return false;
             }
-        } else if (!description.equals(other.description)) {
+        } else if (!this.description.equals(other.description)) {
             return false;
         }
-        if (locale == null) {
+        if (this.locale == null) {
             if (other.locale != null) {
                 return false;
             }
-        } else if (!locale.equals(other.locale)) {
+        } else if (!this.locale.equals(other.locale)) {
             return false;
         }
         return true;

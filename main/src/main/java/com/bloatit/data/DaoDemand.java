@@ -35,8 +35,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.CollectionId;
-import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.Indexed;
@@ -60,7 +58,7 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Indexed
 @FullTextFilterDef(name = "searchFilter", impl = DaoDemandSearchFilterFactory.class)
-public  class DaoDemand extends DaoKudosable implements DaoCommentable {
+public class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
      * This is the state of the demand. It's used in the workflow modeling. The
@@ -107,17 +105,17 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
     @IndexedEmbedded
-    private  List<DaoOffer> offers = new ArrayList<DaoOffer>(0);
+    private List<DaoOffer> offers = new ArrayList<DaoOffer>(0);
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
-    private  List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
+    private List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id")
     @IndexedEmbedded
-    private  List<DaoComment> comments = new ArrayList<DaoComment>(0);
+    private List<DaoComment> comments = new ArrayList<DaoComment>(0);
 
     /**
      * The selected offer is the offer that is most likely to be validated and
@@ -144,12 +142,12 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
     /**
      * @see #DaoDemand(DaoMember, DaoDescription, DaoProject)
      */
-    public static DaoDemand createAndPersist( DaoMember member,  DaoDescription description,  DaoProject project) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoDemand demand = new DaoDemand(member, description, project);
+    public static DaoDemand createAndPersist(final DaoMember member, final DaoDescription description, final DaoProject project) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoDemand demand = new DaoDemand(member, description, project);
         try {
             session.save(demand);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
@@ -164,7 +162,7 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      * @param description is the description ...
      * @throws NonOptionalParameterException if any of the parameter is null.
      */
-    private DaoDemand( DaoMember member,  DaoDescription description,  DaoProject project) {
+    private DaoDemand(final DaoMember member, final DaoDescription description, final DaoProject project) {
         super(member);
         if (description == null || project == null) {
             throw new NonOptionalParameterException();
@@ -183,13 +181,13 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      * unmapped. (You shoudn't use it then)
      */
     public void delete() {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
         session.delete(this);
     }
 
     @Override
-    public void addComment( DaoComment comment) {
-        comments.add(comment);
+    public void addComment(final DaoComment comment) {
+        this.comments.add(comment);
     }
 
     /**
@@ -200,7 +198,7 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      * @param comment a <= 144 char comment on this contribution
      * @throws NotEnoughMoneyException
      */
-    public void addContribution( DaoMember member,  BigDecimal amount,  String comment) throws NotEnoughMoneyException {
+    public void addContribution(final DaoMember member, final BigDecimal amount, final String comment) throws NotEnoughMoneyException {
         if (amount == null) {
             throw new NonOptionalParameterException();
         }
@@ -213,16 +211,16 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
             throw new FatalErrorException("Comments lenght of Contribution must be < 144.", null);
         }
 
-        contributions.add(new DaoContribution(member, this, amount, comment));
-        contribution = contribution.add(amount);
+        this.contributions.add(new DaoContribution(member, this, amount, comment));
+        this.contribution = this.contribution.add(amount);
     }
 
     /**
      * Add a new offer for this demand. If there is no selected offer, select
      * this one.
      */
-    public void addOffer( DaoOffer offer) {
-        offers.add(offer);
+    public void addOffer(final DaoOffer offer) {
+        this.offers.add(offer);
     }
 
     /**
@@ -230,39 +228,39 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      * 
      * @param offer the offer we want to delete.
      */
-    public void removeOffer( DaoOffer offer) {
-        offers.remove(offer);
-        if (offer.equals(selectedOffer)) {
-            selectedOffer = null;
+    public void removeOffer(final DaoOffer offer) {
+        this.offers.remove(offer);
+        if (offer.equals(this.selectedOffer)) {
+            this.selectedOffer = null;
         }
         SessionManager.getSessionFactory().getCurrentSession().delete(offer);
     }
 
     public void computeSelectedOffer() {
-        selectedOffer = getCurrentOffer();
+        this.selectedOffer = getCurrentOffer();
     }
 
-    public void setSelectedOffer( DaoOffer selectedOffer) {
+    public void setSelectedOffer(final DaoOffer selectedOffer) {
         this.selectedOffer = selectedOffer;
     }
 
-    public void setValidationDate( Date validationDate) {
+    public void setValidationDate(final Date validationDate) {
         this.validationDate = validationDate;
     }
 
-    void validateContributions( int percent) {
-        if (selectedOffer == null) {
+    void validateContributions(final int percent) {
+        if (this.selectedOffer == null) {
             throw new FatalErrorException("The selectedOffer shouldn't be null here !");
         }
         if (percent == 0) {
             return;
         }
-        for ( DaoContribution contribution : getContributions()) {
+        for (final DaoContribution contribution : getContributions()) {
             try {
                 if (contribution.getState() == DaoContribution.State.PENDING) {
-                    contribution.validate(selectedOffer, percent);
+                    contribution.validate(this.selectedOffer, percent);
                 }
-            } catch ( NotEnoughMoneyException e) {
+            } catch (final NotEnoughMoneyException e) {
                 Log.data().fatal("Cannot validate contribution, not enought money.", e);
             }
         }
@@ -273,11 +271,11 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      * 
      * @param amount
      */
-    void cancelContribution( BigDecimal amount) {
+    void cancelContribution(final BigDecimal amount) {
         this.contribution = this.contribution.subtract(amount);
     }
 
-    public void setDemandState( DemandState demandState) {
+    public void setDemandState(final DemandState demandState) {
         this.demandState = demandState;
     }
 
@@ -286,7 +284,7 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
     // ======================================================================
 
     public DaoDescription getDescription() {
-        return description;
+        return this.description;
     }
 
     /**
@@ -297,7 +295,7 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     private DaoOffer getCurrentOffer() {
         // If there is no validated offer then we try to find a pending offer
-         String queryString = "FROM DaoOffer " + //
+        final String queryString = "FROM DaoOffer " + //
                 "WHERE demand = :this " + //
                 "AND state <= :state " + // <= PENDING and VALIDATED.
                 "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
@@ -309,21 +307,21 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
                                             .setParameter("state", DaoKudosable.PopularityState.PENDING)
                                             .iterate()
                                             .next();
-        } catch ( NoSuchElementException e) {
+        } catch (final NoSuchElementException e) {
             return null;
         }
     }
 
     public PageIterable<DaoOffer> getOffers() {
-        return new MappedList<DaoOffer>(offers);
+        return new MappedList<DaoOffer>(this.offers);
     }
 
     public DemandState getDemandState() {
-        return demandState;
+        return this.demandState;
     }
 
     public PageIterable<DaoContribution> getContributions() {
-        return new MappedList<DaoContribution>(contributions);
+        return new MappedList<DaoContribution>(this.contributions);
     }
 
     /*
@@ -332,20 +330,20 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return new MappedList<DaoComment>(comments);
+        return new MappedList<DaoComment>(this.comments);
     }
 
     @Override
     public DaoComment getLastComment() {
-        return comments.get(comments.size() - 1);
+        return this.comments.get(this.comments.size() - 1);
     }
 
     public DaoOffer getSelectedOffer() {
-        return selectedOffer;
+        return this.selectedOffer;
     }
 
     public BigDecimal getContribution() {
-        return contribution;
+        return this.contribution;
     }
 
     /**
@@ -367,14 +365,14 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
     }
 
     public Date getValidationDate() {
-        return validationDate;
+        return this.validationDate;
     }
 
     /**
      * @return the project
      */
     public DaoProject getProject() {
-        return project;
+        return this.project;
     }
 
     // ======================================================================
@@ -382,7 +380,7 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -404,9 +402,9 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         return result;
     }
 
@@ -415,7 +413,7 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -425,12 +423,12 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoDemand other = (DaoDemand) obj;
-        if (description == null) {
+        final DaoDemand other = (DaoDemand) obj;
+        if (this.description == null) {
             if (other.description != null) {
                 return false;
             }
-        } else if (!description.equals(other.description)) {
+        } else if (!this.description.equals(other.description)) {
             return false;
         }
         return true;
@@ -438,43 +436,43 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     public int countOpenBugs() {
 
-         String q = "SELECT count(*) " + //
+        final String q = "SELECT count(*) " + //
                 "FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
                 "JOIN bs.bugs as b " + //
                 "WHERE o = :selectedOffer " + //
                 "AND b.state != :close ";//
-         Query query = SessionManager.getSessionFactory().getCurrentSession().createQuery(q);
-        query.setEntity("selectedOffer", selectedOffer);
+        final Query query = SessionManager.getSessionFactory().getCurrentSession().createQuery(q);
+        query.setEntity("selectedOffer", this.selectedOffer);
         query.setParameter("close", DaoBug.BugState.RESOLVED);
         return ((Long) query.uniqueResult()).intValue();
     }
 
     public PageIterable<DaoBug> getOpenBugs() {
 
-         String q = "SELECT b" + //
+        final String q = "SELECT b" + //
                 " FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
                 "JOIN bs.bugs as b " + //
                 "WHERE o = :selectedOffer " + //
                 "AND b.state != :close ";//
 
-         String qCount = "SELECT count(b)" + //
+        final String qCount = "SELECT count(b)" + //
                 " FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
                 "JOIN bs.bugs as b " + //
                 "WHERE o = :selectedOffer " + //
                 "AND b.state != :close ";//
 
-         org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
         return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
-                                                                                                                        selectedOffer)
+                                                                                                                        this.selectedOffer)
                                                                                                              .setParameter("close",
                                                                                                                            DaoBug.BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getClosedBugs() {
-         String q = "SELECT b" + //
+        final String q = "SELECT b" + //
                 " FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
                 "JOIN bs.bugs as b " + //
@@ -482,7 +480,7 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
                 "AND o.demand = :this " + //
                 "AND b.state = :close ";//
 
-         String qCount = "SELECT count(b)" + //
+        final String qCount = "SELECT count(b)" + //
                 " FROM com.bloatit.data.DaoOffer o " + //
                 "JOIN o.batches as bs " + //
                 "JOIN bs.bugs as b " + //
@@ -490,9 +488,9 @@ public  class DaoDemand extends DaoKudosable implements DaoCommentable {
                 "AND o.demand = :this " + //
                 "AND b.state = :close ";//
 
-         org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
+        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
         return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
-                                                                                                                        selectedOffer)
+                                                                                                                        this.selectedOffer)
                                                                                                              .setParameter("close",
                                                                                                                            DaoBug.BugState.RESOLVED)
                                                                                                              .setEntity("this", this);

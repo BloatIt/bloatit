@@ -20,9 +20,6 @@ import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
 /**
  * A kudos is a positive or negative appreciation of a Kudosable content. [ Yes
  * there is a 's' at the end of kudos even when there is only one. ] The kudos
@@ -32,7 +29,7 @@ import org.hibernate.Session;
  * @see DaoKudosable#addKudos(DaoMember, int)
  */
 @Entity
-public  class DaoKudos extends DaoUserContent {
+public class DaoKudos extends DaoUserContent {
 
     /**
      * The value can be positive or negative. The value should never be equals
@@ -50,18 +47,18 @@ public  class DaoKudos extends DaoUserContent {
      * @param member is the person creating the kudos.
      * @param value is value of the kudos.
      */
-    public DaoKudos( DaoMember member,  int value, DaoKudosable kudosable) {
+    public DaoKudos(final DaoMember member, final int value, final DaoKudosable kudosable) {
         super(member);
         this.value = value;
         this.kudosable = kudosable;
     }
 
     public int getValue() {
-        return value;
+        return this.value;
     }
 
     public DaoKudosable getKudosable() {
-        return kudosable;
+        return this.kudosable;
     }
 
     // ======================================================================
@@ -69,7 +66,7 @@ public  class DaoKudos extends DaoUserContent {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -91,9 +88,9 @@ public  class DaoKudos extends DaoUserContent {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + value;
+        result = prime * result + this.value;
         return result;
     }
 
@@ -102,7 +99,7 @@ public  class DaoKudos extends DaoUserContent {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -112,8 +109,8 @@ public  class DaoKudos extends DaoUserContent {
         if (getClass() != obj.getClass()) {
             return false;
         }
-         DaoKudos other = (DaoKudos) obj;
-        if (value != other.value) {
+        final DaoKudos other = (DaoKudos) obj;
+        if (this.value != other.value) {
             return false;
         }
         return true;

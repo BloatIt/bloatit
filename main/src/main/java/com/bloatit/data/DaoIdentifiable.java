@@ -35,8 +35,8 @@ public abstract class DaoIdentifiable {
     @DocumentId
     private Integer id;
 
-    public  Integer getId() {
-        return id;
+    public Integer getId() {
+        return this.id;
     }
 
     public abstract <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor);

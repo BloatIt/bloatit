@@ -66,13 +66,13 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @param actor is the owner of this account
      * @throws NonOptionalParameterException if the actor == null
      */
-    public DaoAccount( DaoActor actor) {
+    public DaoAccount(final DaoActor actor) {
         if (actor == null) {
             throw new NonOptionalParameterException();
         }
         this.actor = actor;
         this.creationDate = new Date();
-        this.lastModificationDate = creationDate;
+        this.lastModificationDate = this.creationDate;
         this.amount = BigDecimal.ZERO;
     }
 
@@ -90,8 +90,8 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * Used internally or by subclasses to every time the Amount is changed. It
      * reset the modification date to now.
      */
-    protected  void resetModificationDate() {
-        lastModificationDate = new Date();
+    protected void resetModificationDate() {
+        this.lastModificationDate = new Date();
     }
 
     /**
@@ -106,10 +106,10 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @param value the quantity of money to add to the amount of this account.
      *            (May be a negative value)
      */
-     void addToAmountValue( BigDecimal value) {
+    void addToAmountValue(final BigDecimal value) {
         resetModificationDate();
-        lastModificationDate = new Date();
-        amount = amount.add(value);
+        this.lastModificationDate = new Date();
+        this.amount = this.amount.add(value);
     }
 
     /**
@@ -122,10 +122,10 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @param value the quantity of money to subtract to the amount of this
      *            account. (May be a negative value)
      */
-    protected  void substractToAmountValue( BigDecimal value) {
+    protected void substractToAmountValue(final BigDecimal value) {
         resetModificationDate();
-        lastModificationDate = new Date();
-        amount = amount.subtract(value);
+        this.lastModificationDate = new Date();
+        this.amount = this.amount.subtract(value);
     }
 
     /**
@@ -136,7 +136,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @see DaoTransaction
      * @param amount the new amount to set.
      */
-    protected  void setAmount( BigDecimal amount) {
+    protected void setAmount(final BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -155,24 +155,24 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * 
      * @return all the transactions that are from/to this account.
      */
-    public  PageIterable<DaoTransaction> getTransactions() {
+    public PageIterable<DaoTransaction> getTransactions() {
         return new QueryCollection<DaoTransaction>("from DaoTransaction as t where t.from = :this or t.to = :this").setEntity("this", this);
     }
 
-    public  Date getLastModificationDate() {
-        return (Date) lastModificationDate.clone();
+    public Date getLastModificationDate() {
+        return (Date) this.lastModificationDate.clone();
     }
 
-    public  BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getAmount() {
+        return this.amount;
     }
 
-    public  DaoActor getActor() {
-        return actor;
+    public DaoActor getActor() {
+        return this.actor;
     }
 
-    public  Date getCreationDate() {
-        return (Date) creationDate.clone();
+    public Date getCreationDate() {
+        return (Date) this.creationDate.clone();
     }
 
     // ======================================================================
@@ -195,11 +195,11 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @see java.lang.Object#hashCode()
      */
     @Override
-    public  int hashCode() {
-         int prime = 31;
+    public int hashCode() {
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((actor == null) ? 0 : actor.hashCode());
-        result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+        result = prime * result + ((this.actor == null) ? 0 : this.actor.hashCode());
+        result = prime * result + ((this.creationDate == null) ? 0 : this.creationDate.hashCode());
         return result;
     }
 
@@ -208,7 +208,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public  boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -218,19 +218,19 @@ public abstract class DaoAccount extends DaoIdentifiable {
         if (!(obj.getClass().equals(getClass()))) {
             return false;
         }
-         DaoAccount other = (DaoAccount) obj;
-        if (actor == null) {
+        final DaoAccount other = (DaoAccount) obj;
+        if (this.actor == null) {
             if (other.actor != null) {
                 return false;
             }
-        } else if (!actor.equals(other.actor)) {
+        } else if (!this.actor.equals(other.actor)) {
             return false;
         }
-        if (creationDate == null) {
+        if (this.creationDate == null) {
             if (other.creationDate != null) {
                 return false;
             }
-        } else if (!creationDate.equals(other.creationDate)) {
+        } else if (!this.creationDate.equals(other.creationDate)) {
             return false;
         }
         return true;

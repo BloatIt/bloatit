@@ -18,9 +18,7 @@ package com.bloatit.data;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -42,7 +40,7 @@ import com.bloatit.framework.utils.PageIterable;
  * A group is an entity where people can be group...
  */
 @Entity
-public  class DaoGroup extends DaoActor {
+public class DaoGroup extends DaoActor {
 
     /**
      * There is 2 kinds of groups : The PUBLIC that everybody can see and and go
@@ -70,15 +68,15 @@ public  class DaoGroup extends DaoActor {
 
     @OneToMany(mappedBy = "bloatitGroup")
     @Cascade(value = { CascadeType.ALL })
-    private  List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
+    private List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
 
     // ======================================================================
     // Static HQL Requests
     // ======================================================================
 
-    public static DaoGroup getByName( String name) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         Query q = session.createQuery("from com.bloatit.data.DaoGroup where login = :login");
+    public static DaoGroup getByName(final String name) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query q = session.createQuery("from com.bloatit.data.DaoGroup where login = :login");
         q.setString("login", name);
         return (DaoGroup) q.uniqueResult();
     }
@@ -95,12 +93,12 @@ public  class DaoGroup extends DaoActor {
      * @return the newly created group.
      * @throws HibernateException
      */
-    public static DaoGroup createAndPersiste( String login,  String contact,  String description,  Right right) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoGroup group = new DaoGroup(login, contact, description, right);
+    public static DaoGroup createAndPersiste(final String login, final String contact, final String description, final Right right) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoGroup group = new DaoGroup(login, contact, description, right);
         try {
             session.save(group);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             throw e;
         }
@@ -114,7 +112,7 @@ public  class DaoGroup extends DaoActor {
      * @param contact ...
      * @param right is the default right value for this group.
      */
-    private DaoGroup( String login,  String contact,  String description,  Right right) {
+    private DaoGroup(final String login, final String contact, final String description, final Right right) {
         super(login);
         if (right == null || contact == null || contact.isEmpty() || description == null) {
             throw new NonOptionalParameterException();
@@ -124,12 +122,12 @@ public  class DaoGroup extends DaoActor {
         this.description = description;
     }
 
-    public void setRight( Right right) {
+    public void setRight(final Right right) {
         this.right = right;
     }
 
     @Override
-    public void setContact( String contact) {
+    public void setContact(final String contact) {
         this.contact = contact;
     }
 
@@ -140,16 +138,16 @@ public  class DaoGroup extends DaoActor {
      * @param isAdmin true if the member need to have the right to administer
      *            this group. (This may change if the number of role change !)
      */
-    public void addMember( DaoMember member,  boolean isAdmin) {
-        groupMembership.add(new DaoGroupMembership(member, this));
+    public void addMember(final DaoMember member, final boolean isAdmin) {
+        this.groupMembership.add(new DaoGroupMembership(member, this));
     }
 
     /**
      * Remove a member from the group
      */
-    public void removeMember( DaoMember member) {
-         DaoGroupMembership link = DaoGroupMembership.get(this, member);
-        groupMembership.remove(link);
+    public void removeMember(final DaoMember member) {
+        final DaoGroupMembership link = DaoGroupMembership.get(this, member);
+        this.groupMembership.remove(link);
         member.getGroupMembership().remove(link);
         SessionManager.getSessionFactory().getCurrentSession().delete(link);
     }
@@ -159,7 +157,7 @@ public  class DaoGroup extends DaoActor {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -171,14 +169,14 @@ public  class DaoGroup extends DaoActor {
      * @return all the member in this group. (Use a HQL query).
      */
     public PageIterable<DaoMember> getMembers() {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         Query filter = session.createFilter(getGroupMembership(), "select this.member order by login");
-         Query count = session.createFilter(getGroupMembership(), "select count(*)");
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final Query filter = session.createFilter(getGroupMembership(), "select this.member order by login");
+        final Query count = session.createFilter(getGroupMembership(), "select count(*)");
         return new QueryCollection<DaoMember>(filter, count);
     }
 
     public Right getRight() {
-        return right;
+        return this.right;
     }
 
     /**
@@ -188,38 +186,38 @@ public  class DaoGroup extends DaoActor {
      *         otherwise. <br />
      *         Note, the returned set can be empty if the user is only a Member
      */
-    public EnumSet<UserGroupRight> getUserGroupRight( DaoMember member) {
-         Query q = SessionManager.getSessionFactory()
+    public EnumSet<UserGroupRight> getUserGroupRight(final DaoMember member) {
+        final Query q = SessionManager.getSessionFactory()
                                       .getCurrentSession()
                                       .createQuery("select gm from com.bloatit.data.DaoGroup g join g.groupMembership as gm join gm.member as m where g = :group and m = :member");
         q.setEntity("member", member);
         q.setEntity("group", this);
-         DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
-         EnumSet<UserGroupRight> rights = EnumSet.noneOf(UserGroupRight.class);
-        for ( DaoGroupRight groupRight : gm.getRights()) {
+        final DaoGroupMembership gm = (DaoGroupMembership) q.uniqueResult();
+        final EnumSet<UserGroupRight> rights = EnumSet.noneOf(UserGroupRight.class);
+        for (final DaoGroupRight groupRight : gm.getRights()) {
             rights.add(groupRight.getUserStatus());
         }
         return rights;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
-    public void setDescription( String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
     @Override
     public String getContact() {
-        return contact;
+        return this.contact;
     }
 
     /**
      * Used in DaoMember.
      */
     protected List<DaoGroupMembership> getGroupMembership() {
-        return groupMembership;
+        return this.groupMembership;
     }
 
     // ======================================================================

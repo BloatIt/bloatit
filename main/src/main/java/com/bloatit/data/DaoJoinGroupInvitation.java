@@ -30,7 +30,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * This represent an invitation to join a group.
  */
 @Entity
-public  class DaoJoinGroupInvitation extends DaoIdentifiable {
+public class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
      * <p>
@@ -70,7 +70,7 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
      * @return the invitation, are null if there is no invitation on that
      *         <code>group</code> sent to this <code>member</code>.
      */
-    public static DaoJoinGroupInvitation getInvitation( DaoGroup group,  DaoMember member) {
+    public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
         return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
                                                       .setEntity("group", group)
                                                       .setEntity("member", member)
@@ -81,12 +81,12 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
     // Construction.
     // ======================================================================
 
-    public static DaoJoinGroupInvitation createAndPersist( DaoMember sender,  DaoMember reciever,  DaoGroup group) {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         DaoJoinGroupInvitation joinDemand = new DaoJoinGroupInvitation(sender, reciever, group);
+    public static DaoJoinGroupInvitation createAndPersist(final DaoMember sender, final DaoMember reciever, final DaoGroup group) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoJoinGroupInvitation joinDemand = new DaoJoinGroupInvitation(sender, reciever, group);
         try {
             session.save(joinDemand);
-        } catch ( HibernateException e) {
+        } catch (final HibernateException e) {
             session.getTransaction().rollback();
             throw e;
         }
@@ -98,7 +98,7 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
      * 
      * @throws NonOptionalParameterException if any of the parameters are null.
      */
-    private DaoJoinGroupInvitation( DaoMember sender,  DaoMember receiver,  DaoGroup group) {
+    private DaoJoinGroupInvitation(final DaoMember sender, final DaoMember receiver, final DaoGroup group) {
         super();
         if (sender == null || receiver == null || group == null) {
             throw new NonOptionalParameterException();
@@ -114,8 +114,8 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
      * of this.group. If the state is not PENDING then do nothing.
      */
     public void accept() {
-        if (state == State.PENDING) {
-            receiver.addToGroup(group);
+        if (this.state == State.PENDING) {
+            this.receiver.addToGroup(this.group);
             this.state = State.ACCEPTED;
         }
     }
@@ -124,7 +124,7 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
      * Set the state to refused. If the state is not PENDING then do nothing.
      */
     public void refuse() {
-        if (state == State.PENDING) {
+        if (this.state == State.PENDING) {
             this.state = State.REFUSED;
         }
     }
@@ -138,7 +138,7 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
      * </p>
      */
     public void discard() {
-        if (state == State.PENDING) {
+        if (this.state == State.PENDING) {
             this.state = State.DISCARDED;
         }
     }
@@ -148,7 +148,7 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
     // ======================================================================
 
     @Override
-    public <ReturnType> ReturnType accept( DataClassVisitor<ReturnType> visitor) {
+    public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return visitor.visit(this);
     }
 
@@ -157,19 +157,19 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
     // ======================================================================
 
     public DaoMember getSender() {
-        return sender;
+        return this.sender;
     }
 
     public DaoMember getReceiver() {
-        return receiver;
+        return this.receiver;
     }
 
     public State getState() {
-        return state;
+        return this.state;
     }
 
     public DaoGroup getGroup() {
-        return group;
+        return this.group;
     }
 
     // ======================================================================
@@ -190,11 +190,11 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
      */
     @Override
     public int hashCode() {
-         int prime = 31;
+        final int prime = 31;
         int result = 1;
-        result = prime * result + ((group == null) ? 0 : group.hashCode());
-        result = prime * result + ((receiver == null) ? 0 : receiver.hashCode());
-        result = prime * result + ((sender == null) ? 0 : sender.hashCode());
+        result = prime * result + ((this.group == null) ? 0 : this.group.hashCode());
+        result = prime * result + ((this.receiver == null) ? 0 : this.receiver.hashCode());
+        result = prime * result + ((this.sender == null) ? 0 : this.sender.hashCode());
         return result;
     }
 
@@ -203,7 +203,7 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals( Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -213,26 +213,26 @@ public  class DaoJoinGroupInvitation extends DaoIdentifiable {
         if (!(obj instanceof DaoJoinGroupInvitation)) {
             return false;
         }
-         DaoJoinGroupInvitation other = (DaoJoinGroupInvitation) obj;
-        if (group == null) {
+        final DaoJoinGroupInvitation other = (DaoJoinGroupInvitation) obj;
+        if (this.group == null) {
             if (other.group != null) {
                 return false;
             }
-        } else if (!group.equals(other.group)) {
+        } else if (!this.group.equals(other.group)) {
             return false;
         }
-        if (receiver == null) {
+        if (this.receiver == null) {
             if (other.receiver != null) {
                 return false;
             }
-        } else if (!receiver.equals(other.receiver)) {
+        } else if (!this.receiver.equals(other.receiver)) {
             return false;
         }
-        if (sender == null) {
+        if (this.sender == null) {
             if (other.sender != null) {
                 return false;
             }
-        } else if (!sender.equals(other.sender)) {
+        } else if (!this.sender.equals(other.sender)) {
             return false;
         }
         return true;
