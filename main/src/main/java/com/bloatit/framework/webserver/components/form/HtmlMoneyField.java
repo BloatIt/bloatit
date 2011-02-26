@@ -3,6 +3,7 @@ package com.bloatit.framework.webserver.components.form;
 import java.math.BigDecimal;
 
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.meta.HtmlElement;
 import com.bloatit.framework.webserver.components.meta.HtmlText;
 
 /**
@@ -20,16 +21,33 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
      * @param name the value of the html attribute <code>name</code>
      */
     public HtmlMoneyField(final String name) {
-        super(generateInputField(), name);
+        super(new InputField(), name);
 
     }
 
-    public static HtmlDiv generateInputField() {
-        HtmlDiv styleInputDiv = new HtmlDiv("money_input");
-        styleInputDiv.add(new HtmlSimpleInput("text"));
-        styleInputDiv.add(new HtmlText("€"));
+    public static class InputField extends InputBlock {
+        
+        private HtmlSimpleInput input;
+        private HtmlDiv content;
 
-        return styleInputDiv;
+        public InputField() {
+            content = new HtmlDiv("money_input");
+            input = new HtmlSimpleInput("text");
+            content.add(input);
+            content.add(new HtmlText("€"));
+    
+        }
+        
+        @Override
+        public HtmlElement getInputElement() {
+            return input;
+        }
+
+        @Override
+        public HtmlElement getContentElement() {
+            return content;
+        }
+
     }
 
     /**
@@ -42,7 +60,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
      * @param label some text displayed to explain how to use the field
      */
     public HtmlMoneyField(final String name, final String label) {
-        super(generateInputField(), name, label);
+        super(new InputField(), name, label);
     }
 
 
@@ -56,7 +74,7 @@ public class HtmlMoneyField extends HtmlFormField<BigDecimal> {
      * @param label some text displayed to explain how to use the field
      */
     public HtmlMoneyField(final FieldData data, final String label) {
-        super(generateInputField(), data.getFieldName(), label);
+        super(new InputField(), data.getFieldName(), label);
         setDefaultValue(data);
         addErrorMessages(data.getErrorMessages());
     }

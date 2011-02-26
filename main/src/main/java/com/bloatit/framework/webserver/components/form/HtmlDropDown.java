@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bloatit.framework.webserver.components.HtmlGenericElement;
+import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webserver.components.meta.HtmlBranch;
 
 public class HtmlDropDown extends HtmlFormField<String> {
@@ -34,11 +35,11 @@ public class HtmlDropDown extends HtmlFormField<String> {
     }
 
     public HtmlDropDown(final String name) {
-        super(new HtmlGenericElement("select"), name);
+        super(InputBlock.create(new HtmlGenericElement("select")), name);
     }
 
     public HtmlDropDown(final String name, final String label) {
-        super(new HtmlGenericElement("select"), name, label);
+        super(InputBlock.create(new HtmlGenericElement("select")), name, label);
     }
 
     private void setDefaultOnConstruction(final FieldData data) {
@@ -53,7 +54,7 @@ public class HtmlDropDown extends HtmlFormField<String> {
         if (value.equals(checked)) {
             opt.addAttribute("selected", "selected");
         }
-        ((HtmlBranch) element).add(opt);
+        ((HtmlBranch) inputBlock.getInputElement()).add(opt);
         elements.put(value, opt);
     }
 

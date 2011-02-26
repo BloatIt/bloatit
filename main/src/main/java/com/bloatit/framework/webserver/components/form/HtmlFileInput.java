@@ -11,6 +11,8 @@
  */
 package com.bloatit.framework.webserver.components.form;
 
+import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
+
 /**
  * <p>
  * Class used to create a file uploading box
@@ -31,7 +33,7 @@ public final class HtmlFileInput extends HtmlFormField<String> {
      * @param name the name used in the html attribute <code>name</code>
      */
     public HtmlFileInput(final String name) {
-        super(new HtmlSimpleInput("file"), name);
+        super(InputBlock.create(new HtmlSimpleInput("file")), name);
     }
 
     /**
@@ -41,7 +43,7 @@ public final class HtmlFileInput extends HtmlFormField<String> {
      * @param label the text displayed inside the {@code <label>} markup
      */
     public HtmlFileInput(final String name, final String label) {
-        super(new HtmlSimpleInput("file"), name, label);
+        super(InputBlock.create(new HtmlSimpleInput("file")), name, label);
     }
 
     /**
@@ -51,7 +53,7 @@ public final class HtmlFileInput extends HtmlFormField<String> {
      * @param label the text displayed inside the {@code <label>} markup
      */
     public HtmlFileInput(final FieldData data, final String label) {
-        super(new HtmlSimpleInput("file"), data.getFieldName(), label);
+        super(InputBlock.create(new HtmlSimpleInput("file")), data.getFieldName(), label);
         setDefaultValue(data);
 
         addErrorMessages(data.getErrorMessages());

@@ -12,22 +12,23 @@
 
 package com.bloatit.framework.webserver.components.form;
 
+import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 import com.bloatit.framework.webserver.components.form.HtmlSimpleInput.InputType;
 
 final class HtmlRadioButton extends HtmlFormField<Boolean> {
 
     public HtmlRadioButton(final String name, final String value, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT)), name, position);
+        super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, position);
         addAttribute("value", value);
     }
 
     public HtmlRadioButton(final String name, final String value, final String label, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT)), name, label, position);
+        super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), name, label, position);
         addAttribute("value", value);
     }
 
     public HtmlRadioButton(final FieldData data, final String label, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT)), data.getFieldName(), label, position);
+        super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.RADIO_INPUT))), data.getFieldName(), label, position);
         setDefaultValue(data);
         addErrorMessages(data.getErrorMessages());
     }
