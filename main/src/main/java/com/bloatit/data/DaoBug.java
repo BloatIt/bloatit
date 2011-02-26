@@ -23,6 +23,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
@@ -31,6 +32,8 @@ import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -42,6 +45,8 @@ import com.bloatit.framework.utils.PageIterable;
  * bugtracker.
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public final class DaoBug extends DaoUserContent implements DaoCommentable {
 
     /**
@@ -80,6 +85,7 @@ public final class DaoBug extends DaoUserContent implements DaoCommentable {
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private final List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false)

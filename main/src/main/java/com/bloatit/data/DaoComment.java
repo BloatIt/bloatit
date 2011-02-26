@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -29,6 +30,8 @@ import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
@@ -45,6 +48,8 @@ import com.bloatit.framework.utils.PageIterable;
  * A comment is a Kudosable content. It cannot be translated.
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public final class DaoComment extends DaoKudosable implements DaoCommentable {
 
     // WARNING "TEXT" is not a standard SQL type.
