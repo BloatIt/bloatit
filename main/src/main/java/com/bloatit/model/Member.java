@@ -44,7 +44,6 @@ import com.bloatit.model.lists.TranslationList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.MemberRight;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 public final class Member extends Actor<DaoMember> {
 

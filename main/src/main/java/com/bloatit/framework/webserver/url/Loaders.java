@@ -9,6 +9,7 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.IdentifiableInterface;
+import com.bloatit.data.queries.DBRequests;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
@@ -259,7 +260,9 @@ public final class Loaders {
         @Override
         public final T fromString(final String data) throws ConversionErrorException {
             try {
-                final T fromStr = theClass.cast(GenericManager.getById(Integer.valueOf(data)));
+                final T fromStr = theClass.cast(DBRequests.getById(persistant, Integer.valueOf(data))
+                                                
+                                                GenericManager.getById(Integer.valueOf(data)));
                 if (fromStr == null) {
                     throw new ConversionErrorException("Identifiable not found for Id: " + data);
                 }

@@ -27,7 +27,6 @@ import com.bloatit.model.demand.DemandManager;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.ProjectRight;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 public class Project extends Identifiable<DaoProject> {
 

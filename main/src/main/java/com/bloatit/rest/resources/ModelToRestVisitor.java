@@ -34,6 +34,7 @@ import com.bloatit.model.InternalAccount;
 import com.bloatit.model.JoinGroupInvitation;
 import com.bloatit.model.Kudos;
 import com.bloatit.model.Member;
+import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.Offer;
 import com.bloatit.model.Project;
 import com.bloatit.model.Release;

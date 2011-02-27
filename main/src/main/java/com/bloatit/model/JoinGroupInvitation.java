@@ -17,7 +17,6 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoJoinGroupInvitation;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * This is an invitation to join a group. Some groups are not public, and you

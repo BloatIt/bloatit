@@ -24,7 +24,6 @@ import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.ContributionRight;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * This is a financial contribution.

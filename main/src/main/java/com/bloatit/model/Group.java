@@ -23,7 +23,6 @@ import com.bloatit.data.DaoGroup.Right;
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.MemberList;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * This is a group ... There are member in it.

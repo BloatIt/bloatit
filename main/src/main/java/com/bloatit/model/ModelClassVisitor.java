@@ -16,28 +16,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with BloatIt. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.bloatit.rest.resources;
+package com.bloatit.model;
 
-import com.bloatit.model.BankTransaction;
-import com.bloatit.model.Batch;
-import com.bloatit.model.Bug;
-import com.bloatit.model.Comment;
-import com.bloatit.model.Contribution;
-import com.bloatit.model.Demand;
-import com.bloatit.model.Description;
-import com.bloatit.model.ExternalAccount;
-import com.bloatit.model.FileMetadata;
-import com.bloatit.model.Group;
-import com.bloatit.model.HighlightDemand;
-import com.bloatit.model.InternalAccount;
-import com.bloatit.model.JoinGroupInvitation;
-import com.bloatit.model.Kudos;
-import com.bloatit.model.Member;
-import com.bloatit.model.Offer;
-import com.bloatit.model.Project;
-import com.bloatit.model.Release;
-import com.bloatit.model.Transaction;
-import com.bloatit.model.Translation;
 
 public interface ModelClassVisitor<ReturnType> {
 

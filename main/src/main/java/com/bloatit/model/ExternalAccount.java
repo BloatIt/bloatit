@@ -21,7 +21,6 @@ import com.bloatit.data.DaoExternalAccount.AccountType;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.ExternalAccountRight;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * @see DaoExternalAccount

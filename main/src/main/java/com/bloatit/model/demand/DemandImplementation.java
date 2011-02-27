@@ -42,6 +42,7 @@ import com.bloatit.model.Demand;
 import com.bloatit.model.Description;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.Member;
+import com.bloatit.model.ModelClassVisitor;
 import com.bloatit.model.ModelConfiguration;
 import com.bloatit.model.Offer;
 import com.bloatit.model.PlannedTask;
@@ -53,7 +54,6 @@ import com.bloatit.model.lists.OfferList;
 import com.bloatit.model.right.Action;
 import com.bloatit.model.right.AuthToken;
 import com.bloatit.model.right.DemandRight;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 // TODO : delete comment.
 //

@@ -27,7 +27,6 @@ import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.model.right.AccountRight;
 import com.bloatit.model.right.Action;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 public final class Transaction extends Identifiable<DaoTransaction> {
 

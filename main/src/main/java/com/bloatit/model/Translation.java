@@ -20,7 +20,6 @@ import java.util.Locale;
 
 import com.bloatit.data.DaoTranslation;
 import com.bloatit.framework.exceptions.FatalErrorException;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 public final class Translation extends Kudosable<DaoTranslation> {
 

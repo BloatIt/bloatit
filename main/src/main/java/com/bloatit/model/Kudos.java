@@ -17,7 +17,6 @@
 package com.bloatit.model;
 
 import com.bloatit.data.DaoKudos;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 public final class Kudos extends UserContent<DaoKudos> {
 

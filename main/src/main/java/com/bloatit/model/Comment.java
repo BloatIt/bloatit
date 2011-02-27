@@ -20,7 +20,6 @@ import com.bloatit.data.DaoComment;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.lists.CommentList;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * The Class Comment.

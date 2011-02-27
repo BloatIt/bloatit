@@ -16,7 +16,7 @@
 //
 package com.bloatit.data;
 
-import com.bloatit.rest.resources.ModelClassVisitor;
+import com.bloatit.model.ModelClassVisitor;
 
 public interface IdentifiableInterface {
 

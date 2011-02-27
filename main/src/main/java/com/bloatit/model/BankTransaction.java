@@ -23,7 +23,6 @@ import javax.persistence.Entity;
 
 import com.bloatit.data.DaoBankTransaction;
 import com.bloatit.data.DaoBankTransaction.State;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 /**
  * The Class BankTransaction.

@@ -6,7 +6,6 @@ import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoHighlightDemand;
 import com.bloatit.data.queries.DBRequests;
 import com.bloatit.model.demand.DemandImplementation;
-import com.bloatit.rest.resources.ModelClassVisitor;
 
 public class HighlightDemand extends Identifiable<DaoHighlightDemand> {
 
