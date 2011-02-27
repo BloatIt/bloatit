@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +25,8 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
@@ -32,6 +35,8 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * the DaoFileMetadata object.
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoImage extends DaoIdentifiable {
 
     @Basic(optional = false)
@@ -44,6 +49,7 @@ public class DaoImage extends DaoIdentifiable {
     private String compression;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoFileMetadata file;
 
     /**

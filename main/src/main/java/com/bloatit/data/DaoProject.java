@@ -19,6 +19,7 @@ package com.bloatit.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,17 +31,23 @@ import javax.persistence.OrderBy;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoProject extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = false)
     private String name;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(updatable = false)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoDescription description;
 
     @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -48,6 +55,7 @@ public class DaoProject extends DaoIdentifiable {
     private DaoFileMetadata image;
 
     @OneToMany(mappedBy = "project")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<DaoDemand> demands = new ArrayList<DaoDemand>();
 
     // ======================================================================

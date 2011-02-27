@@ -19,6 +19,7 @@ package com.bloatit.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -28,6 +29,8 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
@@ -37,6 +40,8 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
  */
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "member_id", "bloatitGroup_id" }) })
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 class DaoGroupMembership extends DaoIdentifiable {
 
     @ManyToOne(optional = false)

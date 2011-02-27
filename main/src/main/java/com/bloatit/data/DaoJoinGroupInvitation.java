@@ -17,12 +17,16 @@
 package com.bloatit.data;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
@@ -30,6 +34,8 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * This represent an invitation to join a group.
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
@@ -49,11 +55,20 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
 
     @ManyToOne(optional = false)
+    @Column(updatable = false)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember sender;
+    
     @ManyToOne(optional = false)
+    @Column(updatable = false)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember receiver;
+    
     @ManyToOne(optional = false)
+    @Column(updatable = false)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoGroup group;
+    
     @Basic(optional = false)
     @Enumerated
     private State state;

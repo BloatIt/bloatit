@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -28,6 +29,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -40,6 +43,8 @@ import com.bloatit.framework.utils.PageIterable;
  * A group is an entity where people can be group...
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoGroup extends DaoActor {
 
     /**
@@ -68,6 +73,7 @@ public class DaoGroup extends DaoActor {
 
     @OneToMany(mappedBy = "bloatitGroup")
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
 
     // ======================================================================

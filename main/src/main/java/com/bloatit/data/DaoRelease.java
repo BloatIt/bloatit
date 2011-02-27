@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -28,6 +30,8 @@ import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -35,6 +39,8 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoRelease extends DaoUserContent implements DaoCommentable {
     @Basic(optional = false)
     private String description;
@@ -48,12 +54,14 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
     @OrderBy("id")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false)
+    @Column(updatable = false)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoBatch batch;
 
-    // @Basic(optional = false)
     private String version;
 
     public DaoRelease(final DaoMember member, final DaoBatch batch, final String description, final String version, final Locale locale) {

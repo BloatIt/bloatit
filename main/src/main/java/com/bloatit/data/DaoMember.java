@@ -22,6 +22,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +34,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.Log;
@@ -48,6 +51,8 @@ import com.bloatit.framework.utils.PageIterable;
  * anything for you ...
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoMember extends DaoActor {
 
     public enum Role {
@@ -59,10 +64,13 @@ public class DaoMember extends DaoActor {
     }
 
     private String fullname;
+
     @Basic(optional = false)
     private String password;
+
     @Basic(optional = false)
     private Integer karma;
+
     @Basic(optional = false)
     @Enumerated
     private Role role;
@@ -78,12 +86,13 @@ public class DaoMember extends DaoActor {
     @Basic(optional = false)
     private Locale locale;
 
-    // TODO: tom must set the good cascade type for images
-    @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = true, cascade = { CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoFileMetadata avatar;
 
     // this property is for hibernate mapping.
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoGroupMembership> groupMembership = new ArrayList<DaoGroupMembership>(0);
 
     // ======================================================================

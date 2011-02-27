@@ -20,11 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 
 import org.hibernate.Query;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
@@ -35,6 +38,8 @@ import org.hibernate.search.annotations.Store;
  * Each attribute is mapped by children classes.
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public abstract class DaoKudosable extends DaoUserContent {
 
     /**
@@ -61,6 +66,7 @@ public abstract class DaoKudosable extends DaoUserContent {
 
     @OneToMany(mappedBy = "kudosable")
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoKudos> kudos = new ArrayList<DaoKudos>(0);
 
     @Basic(optional = false)

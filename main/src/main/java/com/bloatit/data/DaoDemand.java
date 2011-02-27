@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
@@ -33,6 +34,8 @@ import javax.persistence.OrderBy;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.search.annotations.Field;
@@ -56,6 +59,8 @@ import com.bloatit.framework.utils.PageIterable;
  * contriutions.
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Indexed
 @FullTextFilterDef(name = "searchFilter", impl = DaoDemandSearchFilterFactory.class)
 public class DaoDemand extends DaoKudosable implements DaoCommentable {
@@ -99,20 +104,24 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     @OneToOne(optional = false)
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @IndexedEmbedded
     private DaoDescription description;
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @IndexedEmbedded
     private List<DaoOffer> offers = new ArrayList<DaoOffer>(0);
 
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
 
     @OneToMany
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @OrderBy("id")
     @IndexedEmbedded
     private List<DaoComment> comments = new ArrayList<DaoComment>(0);
@@ -124,11 +133,13 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     @ManyToOne(optional = true)
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @IndexedEmbedded
     private DaoOffer selectedOffer;
 
     @ManyToOne
     @Cascade(value = { CascadeType.ALL })
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @IndexedEmbedded
     private DaoProject project;
 

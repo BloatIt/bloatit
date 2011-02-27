@@ -17,8 +17,13 @@
 package com.bloatit.data;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A kudos is a positive or negative appreciation of a Kudosable content. [ Yes
@@ -29,6 +34,8 @@ import javax.persistence.ManyToOne;
  * @see DaoKudosable#addKudos(DaoMember, int)
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class DaoKudos extends DaoUserContent {
 
     /**
@@ -36,9 +43,12 @@ public class DaoKudos extends DaoUserContent {
      * zero.
      */
     @Basic(optional = false)
+    @Column(updatable = false)
     private int value;
 
     @ManyToOne(optional = false)
+    @Column(updatable = false)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoKudosable kudosable;
 
     /**

@@ -21,13 +21,17 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
@@ -43,12 +47,16 @@ import com.bloatit.framework.utils.PageIterable;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public abstract class DaoUserContent extends DaoIdentifiable {
 
     /**
      * This is the author of the user content.
      */
     @ManyToOne(optional = false)
+    @Column(updatable = false)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember member;
 
     /**
@@ -56,6 +64,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * name of a group, asGroup point on it.
      */
     @ManyToOne(optional = true)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoGroup asGroup;
 
     @Basic(optional = false)
@@ -66,6 +75,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     private Boolean isDeleted;
 
     @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
 
     /**

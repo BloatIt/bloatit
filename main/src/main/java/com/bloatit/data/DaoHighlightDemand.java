@@ -3,6 +3,7 @@ package com.bloatit.data;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -21,6 +24,8 @@ import com.bloatit.framework.utils.PageIterable;
  * date
  */
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoHighlightDemand extends DaoIdentifiable {
 
     @Basic(optional = false)
@@ -29,7 +34,8 @@ public class DaoHighlightDemand extends DaoIdentifiable {
     @Basic(optional = true)
     private String reason;
 
-    @ManyToOne(cascade = { CascadeType.ALL })
+    @ManyToOne(optional = false)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoDemand demand;
 
     @Column(updatable = false, nullable = false)

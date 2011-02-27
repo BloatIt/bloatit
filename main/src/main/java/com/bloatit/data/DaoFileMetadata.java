@@ -17,6 +17,7 @@
 package com.bloatit.data;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -25,10 +26,14 @@ import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
 @Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DaoFileMetadata extends DaoUserContent {
 
     public enum FileType {
@@ -52,9 +57,11 @@ public class DaoFileMetadata extends DaoUserContent {
     private FileType type;
 
     @OneToOne(optional = true, mappedBy = "file")
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoImage image;
 
     @ManyToOne(optional = true)
+    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoUserContent relatedContent;
 
     public static DaoFileMetadata createAndPersist(final DaoMember member,
