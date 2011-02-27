@@ -81,7 +81,7 @@ public class BigDB {
 
             for (int j = 0; j < commentCount; j++) {
 
-                final DaoComment comment = DaoComment.createAndPersist(members.get(i), fortune());
+                final DaoComment comment = DaoComment.createAndPersist(demand, members.get(i), fortune());
                 createComment(comment);
                 demand.addComment(comment);
             }
@@ -129,7 +129,7 @@ public class BigDB {
         final int nbComment = (int) (Math.random() * 15);
         for (int i = 0; i < nbComment; i++) {
             final int memberNum = (int) (Math.random() * nbUsers);
-            final DaoComment other = DaoComment.createAndPersist(DaoMember.getByLogin("member " + memberNum), fortune());
+            final DaoComment other =  DaoComment.createAndPersist(comment, DaoMember.getByLogin("member " + memberNum), fortune());
             comment.addChildComment(other);
             if ((int) (Math.random() * 15) % 15 == 0) {
                 createComment(other);

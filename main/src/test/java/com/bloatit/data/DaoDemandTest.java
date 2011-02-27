@@ -87,10 +87,10 @@ public class DaoDemandTest extends DataTestUnit {
                                                                                           new Locale("fr"),
                                                                                           "Ma super demande !",
                                                                                           "Ceci est la descption de ma demande :) "), project);
-        demand.addComment(DaoComment.createAndPersist(yo, "4"));
-        demand.addComment(DaoComment.createAndPersist(yo, "3"));
-        demand.addComment(DaoComment.createAndPersist(yo, "2"));
-        demand.addComment(DaoComment.createAndPersist(yo, "1"));
+        demand.addComment(DaoComment.createAndPersist(demand, yo, "4"));
+        demand.addComment(DaoComment.createAndPersist(demand, yo, "3"));
+        demand.addComment(DaoComment.createAndPersist(demand, yo, "2"));
+        demand.addComment(DaoComment.createAndPersist(demand, yo, "1"));
 
         SessionManager.endWorkUnitAndFlush();
         SessionManager.beginWorkUnit();
@@ -124,8 +124,12 @@ public class DaoDemandTest extends DataTestUnit {
     }
 
     private DaoOffer createOffer(final DaoDemand demand) {
-        return new DaoOffer(fred, demand, new BigDecimal("200"), DaoDescription
-                .createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "), DateUtils.tomorrow(), 0);
+        return new DaoOffer(fred,
+                            demand,
+                            new BigDecimal("200"),
+                            DaoDescription.createAndPersist(fred, new Locale("fr"), "Ma super offre !", "Ceci est la descption de mon Offre:) "),
+                            DateUtils.tomorrow(),
+                            0);
     }
 
     public void testRejectContribution() throws Throwable {
@@ -194,7 +198,7 @@ public class DaoDemandTest extends DataTestUnit {
                                                                                                 new Locale("fr"),
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
-        demand.addComment(DaoComment.createAndPersist(yo, "plop"));
+        demand.addComment(DaoComment.createAndPersist(demand, yo, "plop"));
         assertNotNull(demand.getComments().iterator().next());
     }
 

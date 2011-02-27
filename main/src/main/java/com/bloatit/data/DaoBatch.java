@@ -148,7 +148,7 @@ public class DaoBatch extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "batch")
     @Cascade(value = { CascadeType.ALL })
-    @OrderBy("id DESC")
+    //@OrderBy("id DESC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoRelease> releases = new ArrayList<DaoRelease>();
 

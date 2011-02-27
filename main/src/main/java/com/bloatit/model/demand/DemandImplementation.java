@@ -221,7 +221,7 @@ public final class DemandImplementation extends Kudosable<DaoDemand> implements 
     @Override
     public Comment addComment(final String text) throws UnauthorizedOperationException {
         tryAccess(new DemandRight.Comment(), Action.WRITE);
-        final DaoComment comment = DaoComment.createAndPersist(getAuthToken().getMember().getDao(), text);
+        final DaoComment comment = DaoComment.createAndPersist(this.getDao(), getAuthToken().getMember().getDao(), text);
         getDao().addComment(comment);
         return Comment.create(comment);
     }

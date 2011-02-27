@@ -13,6 +13,7 @@ package com.bloatit.web.linkable.demands;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
+import com.bloatit.data.DaoComment;
 import com.bloatit.framework.exceptions.RedirectException;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.PageNotFoundException;
@@ -21,6 +22,7 @@ import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;
 import com.bloatit.framework.webserver.annotations.RequestParam.Role;
 import com.bloatit.model.Demand;
+import com.bloatit.model.demand.DemandImplementation;
 import com.bloatit.web.pages.master.MasterPage;
 import com.bloatit.web.url.DemandPageUrl;
 
@@ -89,6 +91,11 @@ public final class DemandPage extends MasterPage {
 
         add(new DemandSummaryComponent(demand));
         add(new DemandTabPane(url.getDemandTabPaneUrl(), demand));
+        
+        for (DaoComment c : ((DemandImplementation) demand).getDao().comments) {
+            System.out.println(c.getText());
+        }
+        
         add(new DemandCommentListComponent(demand));
 
     }

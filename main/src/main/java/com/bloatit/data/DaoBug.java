@@ -80,9 +80,9 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     private Level level;
 
     // TODO make the comments mapped by DaoUserContent ?
-    @OneToMany
+    @OneToMany(mappedBy = "bug")
     @Cascade(value = { CascadeType.ALL })
-    @OrderBy("id")
+    //@OrderBy("id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoComment> comments = new ArrayList<DaoComment>();
 

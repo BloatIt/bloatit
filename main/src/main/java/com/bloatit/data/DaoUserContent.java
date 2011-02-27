@@ -23,7 +23,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -40,8 +39,7 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
 
 /**
- * A user content is a content created by a user. There is no table
- * DaoUserContent (the attributes are copied in the sub classes) A user content
+ * A user content is a content created by a user. A user content
  * as an Author, and can be posted in the name of a group. It also has a
  * creation date.
  */

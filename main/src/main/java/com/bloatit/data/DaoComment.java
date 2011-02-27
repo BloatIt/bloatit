@@ -25,6 +25,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -55,26 +57,74 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
     @Field(index = Index.TOKENIZED, store = Store.NO)
     private String text;
 
+    @ManyToOne
+    private DaoComment father;
+    @ManyToOne
+    private DaoBug bug;
+    @ManyToOne
+    private DaoDemand demand;
+    @ManyToOne
+    private DaoRelease release;
+
     /**
      * Any comment can have some child comments.
      */
     @OneToMany(mappedBy = "father")
     @Cascade(value = { CascadeType.ALL })
-    @OrderBy("id")
+    //@OrderBy("id")
     @IndexedEmbedded(depth = 1)
     private List<DaoComment> children = new ArrayList<DaoComment>(0);
 
-    public static DaoComment createAndPersist(final DaoMember member, final String text) {
+    public static DaoComment createAndPersist(final DaoBug father, final DaoMember member, final String text) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final DaoComment comment = new DaoComment(member, text);
+        final DaoComment demand = new DaoComment(father, member, text);
         try {
-            session.save(comment);
+            session.save(demand);
         } catch (final HibernateException e) {
             session.getTransaction().rollback();
             SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
             throw e;
         }
-        return comment;
+        return demand;
+    }
+
+    public static DaoComment createAndPersist(final DaoDemand father, final DaoMember member, final String text) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoComment demand = new DaoComment(father, member, text);
+        try {
+            session.save(demand);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+            throw e;
+        }
+        return demand;
+    }
+
+    public static DaoComment createAndPersist(final DaoRelease father, final DaoMember member, final String text) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoComment demand = new DaoComment(father, member, text);
+        try {
+            session.save(demand);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+            throw e;
+        }
+        return demand;
+    }
+
+    public static DaoComment createAndPersist(final DaoComment father, final DaoMember member, final String text) {
+        final Session session = SessionManager.getSessionFactory().getCurrentSession();
+        final DaoComment demand = new DaoComment(father, member, text);
+        try {
+            session.save(demand);
+        } catch (final HibernateException e) {
+            session.getTransaction().rollback();
+            SessionManager.getSessionFactory().getCurrentSession().beginTransaction();
+            throw e;
+        }
+        return demand;
     }
 
     /**
@@ -93,6 +143,26 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
             throw new NonOptionalParameterException();
         }
         this.text = text;
+    }
+
+    private DaoComment(final DaoBug father, final DaoMember member, final String text) {
+        this(member, text);
+        this.bug = father;
+    }
+
+    private DaoComment(final DaoDemand father, final DaoMember member, final String text) {
+        this(member, text);
+        this.demand = father;
+    }
+
+    private DaoComment(final DaoRelease father, final DaoMember member, final String text) {
+        this(member, text);
+        this.release = father;
+    }
+
+    private DaoComment(final DaoComment father, final DaoMember member, final String text) {
+        this(member, text);
+        this.father = father;
     }
 
     /**
@@ -139,6 +209,26 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         addChildComment(comment);
     }
 
+    public DaoUserContent getCommented() {
+        if (father != null) {
+            return father;
+        }
+        if (bug != null) {
+            return bug;
+        }
+        if (demand != null) {
+            return demand;
+        }
+        if (release != null) {
+            return release;
+        }
+        return null;
+    }
+
+    protected DaoComment getFather() {
+        return this.father;
+    }
+
     // ======================================================================
     // Visitor.
     // ======================================================================
@@ -148,18 +238,8 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
         return visitor.visit(this);
     }
 
-    /**
-     * You should never use this attribute. It is for hibernate only.
-     */
-    @ManyToOne(optional = true)
-    private DaoComment father;
-
     protected DaoComment() {
         super();
-    }
-
-    protected DaoComment getFather() {
-        return this.father;
     }
 
     // ======================================================================

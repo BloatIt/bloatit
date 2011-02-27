@@ -19,13 +19,16 @@ package com.bloatit.data;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -114,17 +117,17 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     @IndexedEmbedded
     private List<DaoOffer> offers = new ArrayList<DaoOffer>(0);
 
-    @OneToMany(mappedBy = "demand")
+    @OneToMany
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<DaoContribution> contributions = new ArrayList<DaoContribution>(0);
 
-    @OneToMany
+    @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @OrderBy("id")
+    //@OrderBy("id")
     @IndexedEmbedded
-    private List<DaoComment> comments = new ArrayList<DaoComment>(0);
+    public Set<DaoComment> comments = new HashSet<DaoComment>(0);
 
     /**
      * The selected offer is the offer that is most likely to be validated and
@@ -341,12 +344,12 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return new MappedList<DaoComment>(this.comments);
+        return CommentManager.getComments(comments);//new MappedList<DaoComment>(this.comments);
     }
 
     @Override
     public DaoComment getLastComment() {
-        return this.comments.get(this.comments.size() - 1);
+        return CommentManager.getLastComment(comments);
     }
 
     public DaoOffer getSelectedOffer() {

@@ -51,9 +51,9 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
     @Basic(optional = false)
     private Locale locale;
 
-    @OneToMany
+    @OneToMany(mappedBy = "release")
     @Cascade(value = { CascadeType.ALL })
-    @OrderBy("id")
+    //@OrderBy("id")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoComment> comments = new ArrayList<DaoComment>();
 

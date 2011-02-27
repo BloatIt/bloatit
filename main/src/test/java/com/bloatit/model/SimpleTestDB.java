@@ -84,14 +84,14 @@ public class SimpleTestDB {
         demand = DaoDemand.createAndPersist(yo,
                                             DaoDescription.createAndPersist(yo, new Locale("fr"), "Mon titre", "Ceci est une description"),
                                             project);
-        final DaoComment c1 = DaoComment.createAndPersist(tom, "Pas tres constructif hein !");
-        final DaoComment c2 = DaoComment.createAndPersist(fred, "Plop");
-        final DaoComment c21 = DaoComment.createAndPersist(tom, "plup");
-        final DaoComment c22 = DaoComment.createAndPersist(tom, "CCC-Combo Breaker ;) ");
-        final DaoComment c23 = DaoComment.createAndPersist(fred, "Plip");
+        final DaoComment c1 = DaoComment.createAndPersist(demand, tom, "Pas tres constructif hein !");
+        final DaoComment c2 = DaoComment.createAndPersist(demand, fred, "Plop");
+        final DaoComment c21 = DaoComment.createAndPersist(c2, tom, "plup");
+        final DaoComment c22 = DaoComment.createAndPersist(c2, tom, "CCC-Combo Breaker ;) ");
+        final DaoComment c23 = DaoComment.createAndPersist(c2, fred, "Plip");
         demand.addComment(c1);
         demand.addComment(c2);
-        c1.addChildComment(DaoComment.createAndPersist(yo, "Je sais c'est just un test"));
+        c1.addChildComment(DaoComment.createAndPersist(c1, yo, "Je sais c'est just un test"));
         c2.addChildComment(c21);
         c2.addChildComment(c22);
         c2.addChildComment(c23);
