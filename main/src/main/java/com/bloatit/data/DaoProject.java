@@ -46,7 +46,6 @@ public class DaoProject extends DaoIdentifiable {
     private String name;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Column(updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoDescription description;
 

@@ -55,17 +55,14 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     }
 
     @ManyToOne(optional = false)
-    @Column(updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember sender;
     
     @ManyToOne(optional = false)
-    @Column(updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember receiver;
     
     @ManyToOne(optional = false)
-    @Column(updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoGroup group;
     

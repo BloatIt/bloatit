@@ -47,7 +47,6 @@ public class DaoKudos extends DaoUserContent {
     private int value;
 
     @ManyToOne(optional = false)
-    @Column(updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoKudosable kudosable;
 

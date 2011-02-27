@@ -64,28 +64,28 @@ import com.bloatit.framework.utils.PageIterable;
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
                            name = "batch.getBugs.byNonStateLevel AND level = :level",
-                           query = "FROM DaoBugs WHERE batch = :this AND state != :state"),
+                           query = "FROM DaoBug WHERE batch = :this AND state != :state"),
                         @NamedQuery(
                            name = "batch.getBugs.byNonState.size",
-                           query = "SELECT count(*) FROM DaoBugs WHERE batch = :this AND state != :state"),
+                           query = "SELECT count(*) FROM DaoBug WHERE batch = :this AND state != :state"),
                         @NamedQuery(
                            name = "batch.getBugs.byState",
-                           query = "FROM DaoBugs WHERE batch = :this AND state = :state"),
+                           query = "FROM DaoBug WHERE batch = :this AND state = :state"),
                         @NamedQuery(
                             name = "batch.getBugs.byState.size",
-                            query = "SELECT count(*) FROM DaoBugs WHERE batch = :this AND state != :state"),
+                            query = "SELECT count(*) FROM DaoBug WHERE batch = :this AND state != :state"),
                         @NamedQuery(
                             name = "batch.getBugs.byLevel",
-                            query = "FROM DaoBugs WHERE batch = :this AND level = :level"),
+                            query = "FROM DaoBug WHERE batch = :this AND level = :level"),
                         @NamedQuery(
                             name = "batch.getBugs.byLevel.size",
-                            query = "SELECT count (*) FROM DaoBugs WHERE batch = :this AND level = :level"),
+                            query = "SELECT count (*) FROM DaoBug WHERE batch = :this AND level = :level"),
                         @NamedQuery(
                             name = "batch.getBugs.byStateLevel",
-                            query = "FROM DaoBugs WHERE batch = :this AND state = :state AND level = :level"),
+                            query = "FROM DaoBug WHERE batch = :this AND state = :state AND level = :level"),
                         @NamedQuery(
                             name = "batch.getBugs.byStateLevel.size",
-                            query = "SELECT count(*) FROM DaoBugs WHERE batch = :this AND state = :state AND level = :level"),
+                            query = "SELECT count(*) FROM DaoBug WHERE batch = :this AND state = :state AND level = :level"),
                      }
              )
 // @formatter:on

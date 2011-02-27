@@ -58,7 +58,6 @@ public class DaoRelease extends DaoUserContent implements DaoCommentable {
     private List<DaoComment> comments = new ArrayList<DaoComment>();
 
     @ManyToOne(optional = false)
-    @Column(updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoBatch batch;
 

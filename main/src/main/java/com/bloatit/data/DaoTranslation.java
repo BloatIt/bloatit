@@ -57,7 +57,6 @@ public class DaoTranslation extends DaoKudosable {
     private String text;
 
     @ManyToOne(optional = false)
-    @Column(updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoDescription description;
 

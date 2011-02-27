@@ -55,7 +55,6 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * This is the author of the user content.
      */
     @ManyToOne(optional = false)
-    @Column(updatable = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember member;
 

@@ -19,17 +19,23 @@
 
 		<!-- Echo all executed SQL to stdout -->
 		<property name="hibernate.show_sql">false</property>
-		<!-- Drop and re-create the database schema on startup -->
-		<!-- <property name="hbm2ddl.auto">update</property> -->
 		<property name="hibernate.jdbc.batch_size">25</property>
+
+		<!-- second level cache -->
+		<property name="hibernate.cache.use_second_level_cache">true</property>
+		<property name="hibernate.cache.use_query_cache">true</property>
+		<property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
+		<!-- <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property> -->
+
 
 
 		<property name="hibernate.id.new_generator_mappings">true</property>
 
-
+		<!-- Hibernate search -->
 		<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
 		<property name="hibernate.search.default.indexBase">/var/local/lucene/indexes</property>
 
+		<!-- mapping -->
 		<mapping class="com.bloatit.data.DaoAccount" />
 		<mapping class="com.bloatit.data.DaoInternalAccount" />
 		<mapping class="com.bloatit.data.DaoExternalAccount" />
