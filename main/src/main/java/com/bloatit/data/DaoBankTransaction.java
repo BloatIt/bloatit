@@ -27,6 +27,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.exceptions.NotEnoughMoneyException;
@@ -37,6 +39,13 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
  * informations on the transaction.
  */
 @Entity
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "bankTransaction.byToken",
+                           query = "from DaoBankTransaction where token = :token"),
+                     }
+             )
+// @formatter:on
 public class DaoBankTransaction extends DaoIdentifiable {
 
     /**
@@ -125,9 +134,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
      *         Return null if not found.
      */
     public static DaoBankTransaction getByToken(final String token) {
-        return (DaoBankTransaction) SessionManager.createQuery("from DaoBankTransaction where token = :token")
-                                                  .setString("token", token)
-                                                  .uniqueResult();
+        return (DaoBankTransaction) SessionManager.get().getNamedQuery("bankTransaction.byToken").setString("token", token).uniqueResult();
     }
 
     // ======================================================================

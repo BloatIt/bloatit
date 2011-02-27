@@ -25,6 +25,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -37,8 +40,16 @@ import com.bloatit.model.InternalAccount;
  * for each of its children. Each time you want to access a DaoAccount, there is
  * a SQL join done, between the daoAccount and its child.
  */
+// @formatter:off
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@NamedQueries(value = { @NamedQuery(
+                           name = "account.getTransactions",
+                           query = "from DaoTransaction as t where t.from = :this or t.to = :this"),
+                       @NamedQuery(
+                           name = "account.getTransactions.size",
+                           query = "select count(*) from DaoTransaction as t where t.from = :this or t.to = :this") })
+// @formatter:on
 public abstract class DaoAccount extends DaoIdentifiable {
 
     /**
@@ -156,7 +167,8 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @return all the transactions that are from/to this account.
      */
     public PageIterable<DaoTransaction> getTransactions() {
-        return new QueryCollection<DaoTransaction>("from DaoTransaction as t where t.from = :this or t.to = :this").setEntity("this", this);
+        return new QueryCollection<DaoTransaction>(SessionManager.get().getNamedQuery("account.getTransactions"),
+                                                   SessionManager.get().getNamedQuery("account.getTransactions.size")).setEntity("this", this);
     }
 
     public Date getLastModificationDate() {

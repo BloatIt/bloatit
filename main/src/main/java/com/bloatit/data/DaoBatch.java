@@ -34,8 +34,11 @@ import javax.persistence.OrderBy;
 import org.hibernate.Query;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.CacheModeType;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -58,6 +61,34 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "batch.getBugs.byNonStateLevel AND level = :level",
+                           query = "FROM DaoBugs WHERE batch = :this AND state != :state"),
+                        @NamedQuery(
+                           name = "batch.getBugs.byNonState.size",
+                           query = "SELECT count(*) FROM DaoBugs WHERE batch = :this AND state != :state"),
+                        @NamedQuery(
+                           name = "batch.getBugs.byState",
+                           query = "FROM DaoBugs WHERE batch = :this AND state = :state"),
+                        @NamedQuery(
+                            name = "batch.getBugs.byState.size",
+                            query = "SELECT count(*) FROM DaoBugs WHERE batch = :this AND state != :state"),
+                        @NamedQuery(
+                            name = "batch.getBugs.byLevel",
+                            query = "FROM DaoBugs WHERE batch = :this AND level = :level"),
+                        @NamedQuery(
+                            name = "batch.getBugs.byLevel.size",
+                            query = "SELECT count (*) FROM DaoBugs WHERE batch = :this AND level = :level"),
+                        @NamedQuery(
+                            name = "batch.getBugs.byStateLevel",
+                            query = "FROM DaoBugs WHERE batch = :this AND state = :state AND level = :level"),
+                        @NamedQuery(
+                            name = "batch.getBugs.byStateLevel.size",
+                            query = "SELECT count(*) FROM DaoBugs WHERE batch = :this AND state = :state AND level = :level"),
+                     }
+             )
+// @formatter:on
 public class DaoBatch extends DaoIdentifiable {
 
     public enum BatchState {
@@ -290,33 +321,31 @@ public class DaoBatch extends DaoIdentifiable {
     // ======================================================================
 
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
-        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        final Query filteredBugs = currentSession.createFilter(this.bugs, "where errorLevel = :level and state!=:state")
-                                                 .setParameter("level", level)
-                                                 .setParameter("state", BugState.RESOLVED);
-        final Query filteredBugsSize = currentSession.createFilter(this.bugs, "select count (*) where errorLevel = :level and state!=:state")
-                                                     .setParameter("level", level)
-                                                     .setParameter("state", BugState.RESOLVED);
-        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
+        final Query filteredBugs = SessionManager.get().getNamedQuery("batch.getBugs.byNonStateLevel");
+        final Query filteredBugsSize = SessionManager.get().getNamedQuery("batch.getBugs.byNonStateLevel.size");
+        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setEntity("this", this)
+                                                                          .setParameter("level", level)
+                                                                          .setParameter("state", BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level) {
-        final Query filteredBugs = SessionManager.createFilter(this.bugs, "where errorLevel = :level").setParameter("level", level);
-        final Query filteredBugsSize = SessionManager.createFilter(this.bugs, "select count (*) where errorLevel = :level").setParameter("level",
-                                                                                                                                         level);
-        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
+        final Query filteredBugs = SessionManager.get().getNamedQuery("batch.getBugs.byLevel");
+        final Query filteredBugsSize = SessionManager.get().getNamedQuery("batch.getBugs.byLevel.size");
+        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setEntity("this", this).setParameter("level", level);
     }
 
     public PageIterable<DaoBug> getBugs(final BugState state) {
-        final Query filteredBugs = SessionManager.createFilter(this.bugs, "where state = :state").setParameter("state", state);
-        final Query filteredBugsSize = SessionManager.createFilter(this.bugs, "select count (*) where state = :state").setParameter("state", state);
-        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize);
+        final Query filteredBugs = SessionManager.get().getNamedQuery("batch.getBugs.byState");
+        final Query filteredBugsSize = SessionManager.get().getNamedQuery("batch.getBugs.byState.size");
+        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setEntity("this", this).setParameter("state", state);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level, final BugState state) {
-        final Query filteredBugs = SessionManager.createFilter(this.bugs, "where errorLevel = :level and state = :state");
-        final Query filteredBugsSize = SessionManager.createFilter(this.bugs, "select count (*) where errorLevel = :level and state = :state");
-        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setParameter("level", level).setParameter("state", state);
+        final Query filteredBugs = SessionManager.get().getNamedQuery("batch.getBugs.byStateLevel");
+        final Query filteredBugsSize = SessionManager.get().getNamedQuery("batch.getBugs.byStateLevel.size");
+        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setEntity("this", this)
+                                                                          .setParameter("level", level)
+                                                                          .setParameter("state", state);
     }
 
     public PageIterable<DaoRelease> getReleases() {

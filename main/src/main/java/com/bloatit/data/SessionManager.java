@@ -20,6 +20,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.classic.Session;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 
@@ -73,6 +74,10 @@ public class SessionManager {
      */
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+    
+    public static Session get() {
+        return sessionFactory.getCurrentSession();
     }
 
     public static FullTextSession getCurrentFullTextSession() {

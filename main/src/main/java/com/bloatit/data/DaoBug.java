@@ -77,7 +77,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
 
     @Basic(optional = false)
     @Enumerated
-    private Level errorLevel;
+    private Level level;
 
     // TODO make the comments mapped by DaoUserContent ?
     @OneToMany
@@ -102,7 +102,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
         this.title = title;
         this.description = description;
         this.locale = locale;
-        this.errorLevel = level;
+        this.level = level;
         this.state = BugState.PENDING;
     }
 
@@ -130,7 +130,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
     }
 
     public void setErrorLevel(final Level level) {
-        this.errorLevel = level;
+        this.level = level;
     }
 
     /**
@@ -169,7 +169,7 @@ public class DaoBug extends DaoUserContent implements DaoCommentable {
      * @return the errorLevel
      */
     public Level getErrorLevel() {
-        return this.errorLevel;
+        return this.level;
     }
 
     public DaoBatch getBatch() {

@@ -32,6 +32,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.queries.QueryCollection;
@@ -47,6 +49,22 @@ import com.bloatit.framework.utils.PageIterable;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+// @formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "actor.byLogin.size",
+                           query = "select count(*) from DaoActor where login = :login"),
+                       @NamedQuery(
+                           name = "actor.byEmail.size",
+                           query = "select count(*) from DaoActor where email = :email"),
+                       @NamedQuery(
+                           name = "actor.getBankTransaction",
+                           query = "from DaoBankTransaction where author = :author order by creationDate DESC"),
+                       @NamedQuery(
+                           name = "actor.getBankTransaction.size",
+                           query = "select count(*) from DaoBankTransaction where author = :author order by creationDate DESC") 
+                     }
+             )
+// @formatter:on
 public abstract class DaoActor extends DaoIdentifiable {
 
     /**
@@ -79,9 +97,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * getByLogin != null, to minimize the number of HQL request).
      */
     public static boolean loginExists(final String login) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where login = :login");
-        q.setString("login", login);
+        final Query q = SessionManager.get().getNamedQuery("actor.byLogin.size").setString("login", login);
         return ((Long) q.uniqueResult()) > 0;
     }
 
@@ -89,9 +105,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * This method use a HQL request.
      */
     public static boolean emailExists(final String email) {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("select count(*) from com.bloatit.data.DaoActor as m where email = :email");
-        q.setString("email", email);
+        final Query q = SessionManager.get().getNamedQuery("actor.byEmail.size").setString("email", email);
         return ((Long) q.uniqueResult()) > 0;
     }
 
@@ -174,9 +188,9 @@ public abstract class DaoActor extends DaoIdentifiable {
      *         recent first.
      */
     public PageIterable<DaoBankTransaction> getBankTransactions() {
-        return new QueryCollection<DaoBankTransaction>(SessionManager.createQuery("from DaoBankTransaction where author = :author order by creationDate DESC"),
-                                                       SessionManager.createQuery("select count(*) from DaoBankTransaction where author = :author")).setEntity("author",
-                                                                                                                                                               this);
+        Query query = SessionManager.get().getNamedQuery("actor.getBankTransactions");
+        Query querySize = SessionManager.get().getNamedQuery("actor.getBankTransactions.size");
+        return new QueryCollection<DaoBankTransaction>(query, querySize).setEntity("author", this);
     }
 
     // ======================================================================
