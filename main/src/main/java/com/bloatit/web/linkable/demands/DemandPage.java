@@ -91,11 +91,6 @@ public final class DemandPage extends MasterPage {
 
         add(new DemandSummaryComponent(demand));
         add(new DemandTabPane(url.getDemandTabPaneUrl(), demand));
-        
-        for (DaoComment c : ((DemandImplementation) demand).getDao().comments) {
-            System.out.println(c.getText());
-        }
-        
         add(new DemandCommentListComponent(demand));
 
     }
