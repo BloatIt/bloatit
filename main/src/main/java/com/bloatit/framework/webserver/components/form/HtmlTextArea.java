@@ -12,6 +12,7 @@
 package com.bloatit.framework.webserver.components.form;
 
 import com.bloatit.framework.webserver.components.HtmlDiv;
+import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
 
 /**
  * <p>
@@ -31,15 +32,15 @@ import com.bloatit.framework.webserver.components.HtmlDiv;
 public final class HtmlTextArea extends HtmlFormField<String> {
 
     public HtmlTextArea(final String name, final int rows, final int cols) {
-        super(new HtmlSimpleTextArea(rows, cols), name);
+        super(InputBlock.create(new HtmlSimpleTextArea(rows, cols)), name);
     }
 
     public HtmlTextArea(final String name, final String label, final int rows, final int cols) {
-        super(new HtmlSimpleTextArea(rows, cols), name, label);
+        super(InputBlock.create(new HtmlSimpleTextArea(rows, cols)), name, label);
     }
 
     public HtmlTextArea(final FieldData data, final String label, final int rows, final int cols) {
-        super(new HtmlSimpleTextArea(rows, cols), data.getFieldName(), label);
+        super(InputBlock.create(new HtmlSimpleTextArea(rows, cols)), data.getFieldName(), label);
         setDefaultValue(data);
         addErrorMessages(data.getErrorMessages());
     }
@@ -53,6 +54,6 @@ public final class HtmlTextArea extends HtmlFormField<String> {
 
     @Override
     protected void doSetDefaultValue(final String value) {
-        ((HtmlSimpleTextArea) this.element).setDefaultValue(value);
+        ((HtmlSimpleTextArea) this.inputBlock.getInputElement()).setDefaultValue(value);
     }
 }

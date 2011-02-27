@@ -51,7 +51,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
      *            checkbox
      */
     public HtmlCheckbox(final String name, final LabelPosition labelPosition) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), name, labelPosition);
+        super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), name, labelPosition);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
      *            checkbox
      */
     public HtmlCheckbox(final String name, final String label, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), name, label, position);
+        super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), name, label, position);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class HtmlCheckbox extends HtmlFormField<Boolean> {
      *            checkbox
      */
     public HtmlCheckbox(final FieldData data, final String label, final LabelPosition position) {
-        super(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT)), data.getFieldName(), label, position);
+        super(InputBlock.create(new HtmlSimpleInput(HtmlSimpleInput.getInput(InputType.CHECKBOX_INPUT))), data.getFieldName(), label, position);
         addErrorMessages(data.getErrorMessages());
     }
 

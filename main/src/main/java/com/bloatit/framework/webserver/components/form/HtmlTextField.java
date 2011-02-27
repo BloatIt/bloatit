@@ -11,21 +11,23 @@
  */
 package com.bloatit.framework.webserver.components.form;
 
+import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
+
 /**
  * Class used to create a 1 line text input field
  */
 public final class HtmlTextField extends HtmlFormField<String> {
 
     public HtmlTextField(final String name) {
-        super(new HtmlSimpleInput("text"), name);
+        super(InputBlock.create(new HtmlSimpleInput("text")), name);
     }
 
     public HtmlTextField(final String name, final String label) {
-        super(new HtmlSimpleInput("text"), name, label);
+        super(InputBlock.create(new HtmlSimpleInput("text")), name, label);
     }
 
     public HtmlTextField(final FieldData data, final String label) {
-        super(new HtmlSimpleInput("text"), data.getFieldName(), label);
+        super(InputBlock.create(new HtmlSimpleInput("text")), data.getFieldName(), label);
         setDefaultValue(data);
         addErrorMessages(data.getErrorMessages());
     }

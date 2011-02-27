@@ -66,7 +66,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
     protected PlaceHolderElement commentPh = new PlaceHolderElement();
     protected PlaceHolderElement notificationPh = new PlaceHolderElement();
-    protected HtmlElement element;
+    protected InputBlock inputBlock;
     private final PlaceHolderElement ph = new PlaceHolderElement();
     private HtmlLabel label;
     private final HtmlDiv container = new HtmlDiv();
@@ -80,12 +80,12 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * If a label is added, it will will be positioned BEFORE the element
      * </p>
-     *
+     * 
      * @param element the element to add
      * @param name the name of the element
      */
-    protected HtmlFormField(final HtmlElement element, final String name) {
-        this(element, name, LabelPosition.BEFORE);
+    protected HtmlFormField(final InputBlock inputBlock, final String name) {
+        this(inputBlock, name, LabelPosition.BEFORE);
     }
 
     /**
@@ -96,13 +96,13 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * The Label will be positioned BEFORE the element
      * </p>
-     *
+     * 
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
      */
-    protected HtmlFormField(final HtmlElement element, final String name, final String label) {
-        this(element, name, label, LabelPosition.BEFORE);
+    protected HtmlFormField(final InputBlock inputBlock, final String name, final String label) {
+        this(inputBlock, name, label, LabelPosition.BEFORE);
     }
 
     /**
@@ -114,14 +114,14 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * If a label is added later, it will be added before or after the element,
      * depending on the value of the parameter <code>position</code>
      * <p>
-     *
+     * 
      * @param element the element to add
      * @param name the name of the element
      * @param position the position of the future label
      */
-    protected HtmlFormField(final HtmlElement element, final String name, final LabelPosition position) {
+    protected HtmlFormField(final InputBlock inputBlock, final String name, final LabelPosition position) {
         super();
-        this.element = element;
+        this.inputBlock = inputBlock;
         this.position = position;
         this.setName(name);
         init();
@@ -136,15 +136,15 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * The label position depends on the value of the parameter
      * <code>position</code>
      * </p>
-     *
+     * 
      * @param element the element to add
      * @param name the name of the element
      * @param label the label of the element
      * @param position the position of the future label
      */
-    protected HtmlFormField(final HtmlElement element, final String name, final String label, final LabelPosition position) {
+    protected HtmlFormField(final InputBlock inputBlock, final String name, final String label, final LabelPosition position) {
         super();
-        this.element = element;
+        this.inputBlock = inputBlock;
         this.position = position;
         this.setName(name);
         init();
@@ -159,7 +159,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <b>CONTRACT :</b> Any class overriding this method have to be careful and
      * not modify any other parameters than redefining the placeholder
      * </p>
-     *
+     * 
      * @param label the label for the element
      */
     public final void setLabel(final String label) {
@@ -181,7 +181,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * depending on the kind of field. CSS can then be used to render it
      * properly.
      * </p>
-     *
+     * 
      * @param comment The text describing the goal of the form field
      */
     public void setComment(final String comment) {
@@ -199,7 +199,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * depending on the kind of field. CSS can then be used to render it
      * properly.
      * </p>
-     *
+     * 
      * @param messages The list of messages to display
      */
     public void addErrorMessages(final Messages messages) {
@@ -215,31 +215,31 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         if (this.label != null) {
             this.label.setFor(id);
         }
-        element.setId(id);
+        inputBlock.getInputElement().setId(id);
         return this;
     }
 
     @Override
     public final String getId() {
-        return element.getId();
+        return inputBlock.getInputElement().getId();
     }
 
     @Override
     public final HtmlFormField<T> addAttribute(final String name, final String value) {
-        this.element.addAttribute(name, value);
+        this.inputBlock.getInputElement().addAttribute(name, value);
         return this;
     }
 
     @Override
     public final void setName(final String name) {
-        element.addAttribute("name", name);
+        inputBlock.getInputElement().addAttribute("name", name);
     }
 
     /**
      * <p>
      * Adds a default value to the object object.
      * </p>
-     *
+     * 
      * @param value the Object representing the default value
      */
     public final void setDefaultValue(final T value) {
@@ -252,7 +252,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * Sets the value displayed on page load, before the user even inputed data
      * </p>
-     *
+     * 
      * @param data the default value
      */
     protected final void setDefaultValue(final FieldData data) {
@@ -281,7 +281,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * Default value of an element is the value displayed to the user when the
      * page loads, before he even started adding data.
      * </p>
-     *
+     * 
      * @param value the default value
      */
     protected abstract void doSetDefaultValue(T value);
@@ -293,7 +293,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
      * <p>
      * Default value of an element is the value displayed to the user when the
      * page loads, before he even started adding data.
-     *
+     * 
      * @param defaultValueAsString the default value
      * @see #doSetDefaultValue(Object)
      */
@@ -318,7 +318,7 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
         this.input.setCssClass("input");
 
         HtmlDiv inputDiv = new HtmlDiv("input_field");
-        inputDiv.add(element);
+        inputDiv.add(inputBlock.getContentElement());
         this.input.add(inputDiv);
 
         this.input.add(commentPh);
@@ -326,6 +326,45 @@ public abstract class HtmlFormField<T extends Object> extends HtmlLeaf implement
 
         add(container);
         container.setCssClass("field");
+    }
+
+    /**
+     * The inputBlock interface permit to create complex form structure with a
+     * tre of html element and not only a input tag. Many methods of
+     * HtmlFormFiel are overriding the HtmlElement ones to apply the changes to
+     * the input field and not to the root element. If the input element is a
+     * tree, the form field don't know where to add the attribute. This class
+     * permit to give two reference, one to the input element and one on the
+     * root subelement.
+     */
+    public abstract static class InputBlock {
+
+        /**
+         * Return the input tag element
+         * @return
+         */
+        public abstract HtmlElement getInputElement();
+
+        /**
+         * return the element to add in the tree
+         * @return
+         */
+        public abstract HtmlElement getContentElement();
+
+        public static InputBlock create(final HtmlElement element) {
+            return new InputBlock() {
+
+                @Override
+                public HtmlElement getInputElement() {
+                    return element;
+                }
+
+                @Override
+                public HtmlElement getContentElement() {
+                    return element;
+                }};
+        }
+
     }
 
 }

@@ -12,6 +12,8 @@
 
 package com.bloatit.framework.webserver.components.form;
 
+import com.bloatit.framework.webserver.components.form.HtmlFormField.InputBlock;
+
 /**
  * <p>
  * A class used to create input fields of password type
@@ -40,7 +42,7 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
      * @param name the name of the element
      */
     public HtmlPasswordField(final String name) {
-        super(new HtmlSimpleInput("password"), name);
+        super(InputBlock.create(new HtmlSimpleInput("password")), name);
     }
 
     /**
@@ -56,17 +58,17 @@ public final class HtmlPasswordField extends HtmlFormField<String> {
      * @param label the label of the element
      */
     public HtmlPasswordField(final String name, final String label) {
-        super(new HtmlSimpleInput("password"), name, label);
+        super(InputBlock.create(new HtmlSimpleInput("password")), name, label);
     }
 
     public HtmlPasswordField(final FieldData data, final String label) {
-        super(new HtmlSimpleInput("password"), data.getFieldName(), label);
+        super(InputBlock.create(new HtmlSimpleInput("password")), data.getFieldName(), label);
         setDefaultValue(data);
         addErrorMessages(data.getErrorMessages());
     }
 
     @Override
     protected void doSetDefaultValue(final String value) {
-        this.element.addAttribute("value", value);
+        this.inputBlock.getInputElement().addAttribute("value", value);
     }
 }
