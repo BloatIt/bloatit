@@ -16,6 +16,7 @@ import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
 import com.bloatit.model.Commentable;
+import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.managers.GenericManager;
 
@@ -260,9 +261,7 @@ public final class Loaders {
         @Override
         public final T fromString(final String data) throws ConversionErrorException {
             try {
-                final T fromStr = theClass.cast(DBRequests.getById(persistant, Integer.valueOf(data))
-                                                
-                                                GenericManager.getById(Integer.valueOf(data)));
+                final T fromStr = theClass.cast(GenericConstructor.create(theClass, Integer.valueOf(data)));
                 if (fromStr == null) {
                     throw new ConversionErrorException("Identifiable not found for Id: " + data);
                 }
