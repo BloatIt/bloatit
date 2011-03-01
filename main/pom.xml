@@ -184,11 +184,11 @@
 
 		<!-- sl4j uses log4j -->
 
-		<!-- We need postgresql -->
+		<!-- We need mysql -->
 		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>8.4-701.jdbc4</version>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.9</version>
 		</dependency>
 
 		<!-- we need information from the APT project -->
