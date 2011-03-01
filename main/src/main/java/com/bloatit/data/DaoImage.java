@@ -21,6 +21,7 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
@@ -48,7 +49,7 @@ public class DaoImage extends DaoIdentifiable {
     @Column(length = 64)
     private String compression;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(optional = false, fetch=FetchType.LAZY,  cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoFileMetadata file;
 
@@ -70,7 +71,7 @@ public class DaoImage extends DaoIdentifiable {
 
     /**
      * Create an image.
-     * 
+     *
      * @param horizontalSize is the number of pixels for the X coordinate.
      * @param verticalSize is the number of pixels for the Y coordinate.
      * @param compression is a string describing the type of compression. This
@@ -86,7 +87,6 @@ public class DaoImage extends DaoIdentifiable {
         this.verticalSize = verticalSize;
         this.compression = compression;
         this.file = file;
-        file.setImage(this);
     }
 
     /**

@@ -21,8 +21,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -56,11 +56,7 @@ public class DaoFileMetadata extends DaoUserContent {
     @Enumerated
     private FileType type;
 
-    @OneToOne(optional = true, mappedBy = "file")
-    @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
-    private DaoImage image;
-
-    @ManyToOne(optional = true)
+   @ManyToOne(optional = true, fetch=FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoUserContent relatedContent;
 
@@ -124,24 +120,6 @@ public class DaoFileMetadata extends DaoUserContent {
      */
     public void setShortDescription(final String shortDescription) {
         this.shortDescription = shortDescription;
-    }
-
-    /**
-     * Tells that the current File is an image. Used in DaoImage constructor.
-     * 
-     * @param image the image to set.
-     */
-    void setImage(final DaoImage image) {
-        this.image = image;
-    }
-
-    /**
-     * If the file is an image, it should be associated with a DaoImage object.
-     * 
-     * @return the image object associated with this file. It can be null.
-     */
-    public DaoImage getImage() {
-        return this.image;
     }
 
     /**

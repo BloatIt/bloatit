@@ -24,6 +24,7 @@ import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
@@ -52,7 +53,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     /**
      * This is the author of the user content.
      */
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember member;
 
@@ -60,7 +61,7 @@ public abstract class DaoUserContent extends DaoIdentifiable {
      * Most of the time this is null. But when a user create a content in the
      * name of a group, asGroup point on it.
      */
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, fetch=FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private DaoGroup asGroup;
 
@@ -71,13 +72,13 @@ public abstract class DaoUserContent extends DaoIdentifiable {
     @Basic(optional = false)
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "relatedContent", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
+    private final List<DaoFileMetadata> files = new ArrayList<DaoFileMetadata>();
 
     /**
      * Initialize the creation date to now.
-     * 
+     *
      * @param member is the author of this UserContent.
      * @throws NonOptionalParameterException if the member == null.
      */
