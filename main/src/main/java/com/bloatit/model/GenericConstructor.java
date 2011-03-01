@@ -27,6 +27,7 @@ import com.bloatit.data.queries.DBRequests;
 public class GenericConstructor {
 
     public static IdentifiableInterface create(Class<? extends IdentifiableInterface> clazz, Integer id) {
+        //TODO: Crash if not found
         return ((DaoIdentifiable) DBRequests.getById(getDaoClass(clazz), id)).accept(new DataVisitorConstructor());
     }
 
