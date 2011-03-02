@@ -38,7 +38,10 @@ import com.bloatit.model.Member;
 import com.bloatit.model.Offer;
 import com.bloatit.model.right.Action;
 import com.bloatit.web.components.LanguageSelector;
+import com.bloatit.web.components.SideBarDemandBlock;
 import com.bloatit.web.linkable.demands.DemandOfferListComponent;
+import com.bloatit.web.pages.documentation.SideBarDocumentationBlock;
+import com.bloatit.web.pages.master.TwoColumnLayout;
 import com.bloatit.web.url.OfferActionUrl;
 import com.bloatit.web.url.OfferPageUrl;
 
@@ -76,6 +79,17 @@ public final class OfferPage extends LoggedPage {
 
     @Override
     public HtmlElement createRestrictedContent() {
+
+        TwoColumnLayout layout = new TwoColumnLayout(true);
+        layout.addLeft(generateOfferForm());
+
+        layout.addRight(new SideBarDemandBlock(demand));
+        layout.addRight(new SideBarDocumentationBlock("markdown"));
+
+        return layout;
+    }
+
+    public HtmlTitleBlock generateOfferForm() {
         final HtmlTitleBlock offerPageContainer = new HtmlTitleBlock(Context.tr("Make an offer"), 1);
 
         try {
@@ -90,7 +104,6 @@ public final class OfferPage extends LoggedPage {
         final OfferActionUrl offerActionUrl = new OfferActionUrl(demand);
         offerActionUrl.setDraftOffer(offer);
         final HtmlForm offerForm = new HtmlForm(offerActionUrl.urlString());
-        offerForm.setCssClass("padding_box");
 
         // Offering on the behalf of
         final Member me = session.getAuthToken().getMember();
