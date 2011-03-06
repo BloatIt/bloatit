@@ -17,10 +17,12 @@
 package com.bloatit.data.queries;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.data.DaoDemand;
+import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.utils.PageIterable;
@@ -32,7 +34,7 @@ import com.bloatit.framework.utils.PageIterable;
  * object is not found.)</li> <li>If a method return a collection then the
  * collection is always != null (but can be empty)</li>
  */
-public  class DBRequests {
+public class DBRequests {
 
     public enum Comparator {
         EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL
@@ -46,8 +48,8 @@ public  class DBRequests {
     }
 
     public static PageIterable<DaoUserContent> getUserContents() {
-         Session session = SessionManager.getSessionFactory().getCurrentSession();
-         Criteria criteria = session.createCriteria(DaoUserContent.class);
+        Session session = SessionManager.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(DaoUserContent.class);
         return new CriteriaCollection<DaoUserContent>(criteria);
     }
 
@@ -71,23 +73,25 @@ public  class DBRequests {
      *         null if non existing.
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getById( Class<T> persistant,  Integer id) {
+    public static <T> T getById(Class<T> persistant, Integer id) {
         return (T) SessionManager.getSessionFactory().getCurrentSession().get(persistant, id);
     }
 
-    public static <T> PageIterable<T> getAll( Class<T> persistent) {
-         ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
-        return new QueryCollection<T>("from " + meta.getEntityName());
+    public static <T extends DaoIdentifiable> PageIterable<T> getAll(Class<T> persistent) {
+        ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+        Query query = SessionManager.createQuery("FROM " + meta.getEntityName());
+        Query size = SessionManager.createQuery("SELECT count(*) FROM " + meta.getEntityName());
+        return new QueryCollection<T>(query, size);
     }
 
-    public static <T extends DaoUserContent> PageIterable<T> getAllUserContentOrderByDate( Class<T> persistent) {
-         ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+    public static <T extends DaoUserContent> PageIterable<T> getAllUserContentOrderByDate(Class<T> persistent) {
+        ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return new QueryCollection<T>(SessionManager.createQuery("from " + meta.getEntityName() + " order by creationDate DESC"),
                                       SessionManager.createQuery("select count(*) from " + meta.getEntityName()));
     }
 
-    public static <T> int count( Class<T> persistent) {
-         ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
+    public static <T> int count(Class<T> persistent) {
+        ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(persistent);
         return ((Long) SessionManager.getSessionFactory()
                                      .getCurrentSession()
                                      .createQuery("select count(*) from " + meta.getEntityName())
@@ -106,24 +110,40 @@ public  class DBRequests {
         return demandsOrderBy("creationDate");
     }
 
-    private static PageIterable<DaoDemand> demandsOrderBy( String field) {
-        return new QueryCollection<DaoDemand>("from DaoDemand where state == PENDING order by " + field);
+    private static PageIterable<DaoDemand> demandsOrderBy(String field) {
+        Query query = SessionManager.createQuery("from DaoDemand where state == PENDING order by " + field);
+        Query size = SessionManager.createQuery("SELECT count(*) from DaoDemand where state == PENDING order by " + field);
+        return new QueryCollection<DaoDemand>(query, size);
     }
 
     public static PageIterable<DaoDemand> demandsThatShouldBeValidated() {
-        return new QueryCollection<DaoDemand>("FROM DaoDemand " + //
+        Query query = SessionManager.createQuery("FROM DaoDemand " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
                 "AND validationDate < now() " + //
-                "AND demandState = :state").setParameter("state", DaoDemand.DemandState.PREPARING);
+                "AND demandState = :state");
+        Query size = SessionManager.createQuery("SELECT count(*) " + //
+                "FROM DaoDemand " + //
+                "WHERE selectedOffer is not null " + //
+                "AND validationDate is not null " + //
+                "AND validationDate < now() " + //
+                "AND demandState = :state");
+        return new QueryCollection<DaoDemand>(query, size).setParameter("state", DaoDemand.DemandState.PREPARING);
     }
 
     public static PageIterable<DaoDemand> demandsThatShouldBeValidatedInTheFuture() {
-        return new QueryCollection<DaoDemand>("FROM DaoDemand " + //
+        Query query = SessionManager.createQuery("FROM DaoDemand " + //
                 "WHERE selectedOffer is not null " + //
                 "AND validationDate is not null " + //
                 "AND validationDate > now() " + //
-                "AND demandState = :state").setParameter("state", DaoDemand.DemandState.PREPARING);
+                "AND demandState = :state");
+        Query size = SessionManager.createQuery("SELECT count(*) " + //
+                "FROM DaoDemand " + //
+                "WHERE selectedOffer is not null " + //
+                "AND validationDate is not null " + //
+                "AND validationDate > now() " + //
+                "AND demandState = :state");
+        return new QueryCollection<DaoDemand>(query, size).setParameter("state", DaoDemand.DemandState.PREPARING);
     }
 
 }

@@ -18,6 +18,7 @@ package com.bloatit.data.queries;
 
 import java.util.Iterator;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
 import com.bloatit.data.SessionManager;
@@ -36,28 +37,36 @@ public class QueryCollection<T> implements PageIterable<T> {
     private int currentPage;
 
     /**
-     * Use this constructor with string that start with "from ..."
+     * Create a {@link QueryCollection} using a named query. This constructor
+     * will look for <b>two</b> named queries:
+     * <ul>
+     * <li>The query named: <code>nameQuery</code></li>
+     * <li>The query named: <code>nameQuery + ".size"</code>, for the size of
+     * the collection.</li>
+     * </ul>
+     * This should not be a problem if you follow the naming convention for
+     * queries.
+     * <p>
+     * If One of the two queries is missing this will throws an
+     * {@link HibernateException}.
+     * </p>
+     * 
+     * @param nameQuery the name of the query to find the collection. The query
+     *            named <code>nameQuery + ".size"</code> <b>must</b> exists.
      */
-    public QueryCollection(String queryStr) {
-        this(SessionManager.createQuery(queryStr));
-    }
-
-    public QueryCollection(String queryStr, String sizeQuery) {
-        this(SessionManager.createQuery(queryStr), SessionManager.createQuery(sizeQuery));
-    }
-
-    /**
-     * Use this constructor with query that start with "from ..."
-     */
-    public QueryCollection(Query query) {
-        this(query, SessionManager.getSessionFactory().getCurrentSession().createQuery("select count (*) " + query.getQueryString()));
+    public QueryCollection(String nameQuery) {
+        this(SessionManager.get().getNamedQuery(nameQuery), SessionManager.get().getNamedQuery(nameQuery + ".size"));
     }
 
     public QueryCollection(Query query, Query sizeQuery) {
-        pageSize = 0;
-        size = -1;
+        this();
         this.query = query;
         this.sizeQuery = sizeQuery;
+    }
+
+    private QueryCollection() {
+        pageSize = 0;
+        size = -1;
     }
 
     public QueryCollection<T> setEntity(String name, Object entity) {

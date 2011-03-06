@@ -30,7 +30,15 @@ import com.bloatit.framework.utils.PageIterable;
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
                            name = "highlightDemand.byIsActivated",
-                           query = "FROM DaoHighlightDemand WHERE activationDate < now() AND desactivationDate > now()")
+                           query =  "FROM DaoHighlightDemand " +
+                               		"WHERE activationDate < now() " +
+                               		"AND desactivationDate > now()"),
+                       @NamedQuery(
+                           name = "highlightDemand.byIsActivated.size",
+                           query =  "SELECT count(*) " +
+                               		"FROM DaoHighlightDemand " +
+                               		"WHERE activationDate < now() " +
+                               		"AND desactivationDate > now()")
                        }
              )
 // @formatter:on
@@ -113,7 +121,8 @@ public class DaoHighlightDemand extends DaoIdentifiable {
      */
     public PageIterable<DaoHighlightDemand> getActiveHightlightDemands() {
         Query query = SessionManager.get().getNamedQuery("highlightDemand.byIsActivated");
-        final QueryCollection<DaoHighlightDemand> queryCollection = new QueryCollection<DaoHighlightDemand>(query);
+        Query size = SessionManager.get().getNamedQuery("highlightDemand.byIsActivated.size");
+        final QueryCollection<DaoHighlightDemand> queryCollection = new QueryCollection<DaoHighlightDemand>(query, size);
         return queryCollection;
     }
 

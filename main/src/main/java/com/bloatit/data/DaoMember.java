@@ -492,7 +492,9 @@ public class DaoMember extends DaoActor {
      */
     private <T extends DaoUserContent> PageIterable<T> getUserContent(final Class<T> theClass) {
         final ClassMetadata meta = SessionManager.getSessionFactory().getClassMetadata(theClass);
-        final QueryCollection<T> q = new QueryCollection<T>("from " + meta.getEntityName() + " as x where x.member = :author");
+        Query query = SessionManager.createQuery("from " + meta.getEntityName() + " as x where x.member = :author");
+        Query size = SessionManager.createQuery("SELECT count(*) from " + meta.getEntityName() + " as x where x.member = :author");
+        final QueryCollection<T> q = new QueryCollection<T>(query, size);
         q.setEntity("author", this);
         return q;
     }
