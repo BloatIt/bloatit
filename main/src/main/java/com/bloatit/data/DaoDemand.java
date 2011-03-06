@@ -445,20 +445,20 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     }
 
     public int countOpenBugs() {
-        Query query = SessionManager.getNamedQuery("demand.getBugs.ByNonState.size");
+        Query query = SessionManager.getNamedQuery("demand.getBugs.byNonState.size");
         query.setEntity("offer", this.selectedOffer);
         query.setParameter("state", DaoBug.BugState.RESOLVED);
         return ((Long) query.uniqueResult()).intValue();
     }
 
     public PageIterable<DaoBug> getOpenBugs() {
-        return new QueryCollection<DaoBug>("demand.getBugs.ByNonState").setEntity("offer", this.selectedOffer)
+        return new QueryCollection<DaoBug>("demand.getBugs.byNonState").setEntity("offer", this.selectedOffer)
                                                                        .setEntity("this", this)
                                                                        .setParameter("state", DaoBug.BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getClosedBugs() {
-        return new QueryCollection<DaoBug>("demand.getBugs.ByState").setEntity("offer", this.selectedOffer)
+        return new QueryCollection<DaoBug>("demand.getBugs.byState").setEntity("offer", this.selectedOffer)
                                                                     .setEntity("this", this)
                                                                     .setParameter("state", DaoBug.BugState.RESOLVED);
     }
