@@ -134,7 +134,7 @@ public class DaoBankTransaction extends DaoIdentifiable {
      *         Return null if not found.
      */
     public static DaoBankTransaction getByToken(final String token) {
-        return (DaoBankTransaction) SessionManager.get().getNamedQuery("bankTransaction.byToken").setString("token", token).uniqueResult();
+        return (DaoBankTransaction) SessionManager.getNamedQuery("bankTransaction.byToken").setString("token", token).uniqueResult();
     }
 
     // ======================================================================

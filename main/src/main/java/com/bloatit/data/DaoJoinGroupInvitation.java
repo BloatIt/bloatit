@@ -95,16 +95,14 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
      *         <code>group</code> sent to this <code>member</code>.
      */
     public static DaoJoinGroupInvitation getRecievedInvitation(final DaoGroup group, final DaoMember member) {
-        return (DaoJoinGroupInvitation) SessionManager.get()
-                                                      .getNamedQuery("joinGroupInvitation.byGroupReceiver")
+        return (DaoJoinGroupInvitation) SessionManager.getNamedQuery("joinGroupInvitation.byGroupReceiver")
                                                       .setEntity("group", group)
                                                       .setEntity("member", member)
                                                       .uniqueResult();
     }
 
     public static DaoJoinGroupInvitation getSentInvitation(final DaoGroup group, final DaoMember member) {
-        return (DaoJoinGroupInvitation) SessionManager.get()
-                                                      .getNamedQuery("joinGroupInvitation.byGroupSender")
+        return (DaoJoinGroupInvitation) SessionManager.getNamedQuery("joinGroupInvitation.byGroupSender")
                                                       .setEntity("group", group)
                                                       .setEntity("member", member)
                                                       .uniqueResult();

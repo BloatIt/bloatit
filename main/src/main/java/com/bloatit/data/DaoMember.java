@@ -436,9 +436,8 @@ public class DaoMember extends DaoActor {
      *         specified state
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
-        Query query = SessionManager.get().getNamedQuery("member.getReceivedInvitations.byState");
-        Query size = SessionManager.get().getNamedQuery("member.getReceivedInvitations.byState.size");
-        return new QueryCollection<DaoJoinGroupInvitation>(query, size).setEntity("receiver", this).setParameter("state", state);
+        return new QueryCollection<DaoJoinGroupInvitation>("member.getReceivedInvitations.byState").setEntity("receiver", this).setParameter("state",
+                                                                                                                                             state);
     }
 
     /**
@@ -448,19 +447,15 @@ public class DaoMember extends DaoActor {
      *         in a given state
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state, final DaoGroup group) {
-        Query query = SessionManager.get().getNamedQuery("member.getReceivedInvitations.byStateGroup");
-        Query size = SessionManager.get().getNamedQuery("member.getReceivedInvitations.byStateGroup.size");
-        return new QueryCollection<DaoJoinGroupInvitation>(query, size).setEntity("receiver", this)
-                                                                       .setParameter("state", state)
-                                                                       .setEntity("group", group);
+        return new QueryCollection<DaoJoinGroupInvitation>("member.getReceivedInvitations.byStateGroup").setEntity("receiver", this)
+                                                                                                        .setParameter("state", state)
+                                                                                                        .setEntity("group", group);
     }
 
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state, final DaoGroup group) {
-        Query query = SessionManager.get().getNamedQuery("member.getSentInvitations.byStateGroup");
-        Query size = SessionManager.get().getNamedQuery("member.getSentInvitations.byStateGroup.size");
-        return new QueryCollection<DaoJoinGroupInvitation>(query, size).setEntity("sender", this)
-                                                                       .setParameter("state", state)
-                                                                       .setEntity("group", group);
+        return new QueryCollection<DaoJoinGroupInvitation>("member.getSentInvitations.byStateGroup").setEntity("sender", this)
+                                                                                                    .setParameter("state", state)
+                                                                                                    .setEntity("group", group);
     }
 
     /**
@@ -468,16 +463,14 @@ public class DaoMember extends DaoActor {
      *         state
      */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
-        Query query = SessionManager.get().getNamedQuery("member.getSentInvitations.byState");
-        Query size = SessionManager.get().getNamedQuery("member.getSentInvitations.byState.size");
-        return new QueryCollection<DaoJoinGroupInvitation>(query, size).setEntity("sender", this).setEntity("state", state);
+        return new QueryCollection<DaoJoinGroupInvitation>("member.getSentInvitations.byState").setEntity("sender", this).setEntity("state", state);
     }
 
     /**
      * @return if the current member is in the "group".
      */
     public boolean isInGroup(final DaoGroup group) {
-        final Query q = SessionManager.get().getNamedQuery("member.isInGroup");
+        final Query q = SessionManager.getNamedQuery("member.isInGroup");
         q.setEntity("member", this);
         q.setEntity("group", group);
         return ((Long) q.uniqueResult()) >= 1;

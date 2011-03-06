@@ -71,7 +71,7 @@ public class DaoProject extends DaoIdentifiable {
     // ======================================================================
 
     public static DaoProject getByName(final String name) {
-        final Query query = SessionManager.get().getNamedQuery("project.byName").setString("name", name);
+        final Query query = SessionManager.getNamedQuery("project.byName").setString("name", name);
         return (DaoProject) query.uniqueResult();
     }
 

@@ -148,7 +148,7 @@ public class DaoBatch extends DaoIdentifiable {
 
     @OneToMany(mappedBy = "batch")
     @Cascade(value = { CascadeType.ALL })
-    //@OrderBy("id DESC")
+    // @OrderBy("id DESC")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private List<DaoRelease> releases = new ArrayList<DaoRelease>();
 
@@ -321,31 +321,23 @@ public class DaoBatch extends DaoIdentifiable {
     // ======================================================================
 
     public PageIterable<DaoBug> getNonResolvedBugs(final Level level) {
-        final Query filteredBugs = SessionManager.get().getNamedQuery("batch.getBugs.byNonStateLevel");
-        final Query filteredBugsSize = SessionManager.get().getNamedQuery("batch.getBugs.byNonStateLevel.size");
-        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setEntity("this", this)
-                                                                          .setParameter("level", level)
-                                                                          .setParameter("state", BugState.RESOLVED);
+        return new QueryCollection<DaoBug>("batch.getBugs.byNonStateLevel").setEntity("this", this)
+                                                                           .setParameter("level", level)
+                                                                           .setParameter("state", BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level) {
-        final Query filteredBugs = SessionManager.get().getNamedQuery("batch.getBugs.byLevel");
-        final Query filteredBugsSize = SessionManager.get().getNamedQuery("batch.getBugs.byLevel.size");
-        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setEntity("this", this).setParameter("level", level);
+        return new QueryCollection<DaoBug>("batch.getBugs.byLevel").setEntity("this", this).setParameter("level", level);
     }
 
     public PageIterable<DaoBug> getBugs(final BugState state) {
-        final Query filteredBugs = SessionManager.get().getNamedQuery("batch.getBugs.byState");
-        final Query filteredBugsSize = SessionManager.get().getNamedQuery("batch.getBugs.byState.size");
-        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setEntity("this", this).setParameter("state", state);
+        return new QueryCollection<DaoBug>("batch.getBugs.byState").setEntity("this", this).setParameter("state", state);
     }
 
     public PageIterable<DaoBug> getBugs(final Level level, final BugState state) {
-        final Query filteredBugs = SessionManager.get().getNamedQuery("batch.getBugs.byStateLevel");
-        final Query filteredBugsSize = SessionManager.get().getNamedQuery("batch.getBugs.byStateLevel.size");
-        return new QueryCollection<DaoBug>(filteredBugs, filteredBugsSize).setEntity("this", this)
-                                                                          .setParameter("level", level)
-                                                                          .setParameter("state", state);
+        return new QueryCollection<DaoBug>("batch.getBugs.byStateLevel").setEntity("this", this)
+                                                                        .setParameter("level", level)
+                                                                        .setParameter("state", state);
     }
 
     public PageIterable<DaoRelease> getReleases() {

@@ -66,6 +66,10 @@ public class SessionManager {
     public static Query createFilter(final Object collection, final String str) {
         return getSessionFactory().getCurrentSession().createFilter(collection, str);
     }
+    
+    public static Query getNamedQuery(final String name) {
+        return getSessionFactory().getCurrentSession().getNamedQuery(name);
+    }
 
     /**
      * singleton pattern implementation.
@@ -76,10 +80,6 @@ public class SessionManager {
         return sessionFactory;
     }
     
-    public static Session get() {
-        return sessionFactory.getCurrentSession();
-    }
-
     public static FullTextSession getCurrentFullTextSession() {
         return Search.getFullTextSession(sessionFactory.getCurrentSession());
     }

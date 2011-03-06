@@ -30,8 +30,8 @@ import com.bloatit.framework.utils.PageIterable;
  */
 public class QueryCollection<T> implements PageIterable<T> {
 
-    private Query query;
-    private Query sizeQuery;
+    private final Query query;
+    private final Query sizeQuery;
     private int pageSize;
     private int size;
     private int currentPage;
@@ -55,18 +55,14 @@ public class QueryCollection<T> implements PageIterable<T> {
      *            named <code>nameQuery + ".size"</code> <b>must</b> exists.
      */
     public QueryCollection(String nameQuery) {
-        this(SessionManager.get().getNamedQuery(nameQuery), SessionManager.get().getNamedQuery(nameQuery + ".size"));
+        this(SessionManager.getNamedQuery(nameQuery), SessionManager.getNamedQuery(nameQuery + ".size"));
     }
 
     public QueryCollection(Query query, Query sizeQuery) {
-        this();
+        this.pageSize = 0;
+        this.size = -1;
         this.query = query;
         this.sizeQuery = sizeQuery;
-    }
-
-    private QueryCollection() {
-        pageSize = 0;
-        size = -1;
     }
 
     public QueryCollection<T> setEntity(String name, Object entity) {

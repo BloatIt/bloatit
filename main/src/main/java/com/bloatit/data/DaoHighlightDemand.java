@@ -120,10 +120,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
      * @return all the member in this group. (Use a HQL query).
      */
     public PageIterable<DaoHighlightDemand> getActiveHightlightDemands() {
-        Query query = SessionManager.get().getNamedQuery("highlightDemand.byIsActivated");
-        Query size = SessionManager.get().getNamedQuery("highlightDemand.byIsActivated.size");
-        final QueryCollection<DaoHighlightDemand> queryCollection = new QueryCollection<DaoHighlightDemand>(query, size);
-        return queryCollection;
+        return new QueryCollection<DaoHighlightDemand>("highlightDemand.byIsActivated");
     }
 
     public int getPosition() {

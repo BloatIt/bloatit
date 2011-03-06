@@ -184,9 +184,7 @@ public class DaoOffer extends DaoKudosable {
      * @return All the batches for this offer. (Even the MasterBatch).
      */
     public PageIterable<DaoBatch> getBatches() {
-        Query query = SessionManager.get().getNamedQuery("offer.getBatches");
-        Query size = SessionManager.get().getNamedQuery("offer.getBatches.size");
-        return new QueryCollection<DaoBatch>(query, size);//
+        return new QueryCollection<DaoBatch>("offer.getBatches");//
     }
 
     public DaoBatch getCurrentBatch() {

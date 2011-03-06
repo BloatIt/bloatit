@@ -97,7 +97,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * getByLogin != null, to minimize the number of HQL request).
      */
     public static boolean loginExists(final String login) {
-        final Query q = SessionManager.get().getNamedQuery("actor.byLogin.size").setString("login", login);
+        final Query q = SessionManager.getNamedQuery("actor.byLogin.size").setString("login", login);
         return ((Long) q.uniqueResult()) > 0;
     }
 
@@ -105,7 +105,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      * This method use a HQL request.
      */
     public static boolean emailExists(final String email) {
-        final Query q = SessionManager.get().getNamedQuery("actor.byEmail.size").setString("email", email);
+        final Query q = SessionManager.getNamedQuery("actor.byEmail.size").setString("email", email);
         return ((Long) q.uniqueResult()) > 0;
     }
 
@@ -188,9 +188,7 @@ public abstract class DaoActor extends DaoIdentifiable {
      *         recent first.
      */
     public PageIterable<DaoBankTransaction> getBankTransactions() {
-        Query query = SessionManager.get().getNamedQuery("actor.getBankTransactions");
-        Query querySize = SessionManager.get().getNamedQuery("actor.getBankTransactions.size");
-        return new QueryCollection<DaoBankTransaction>(query, querySize).setEntity("author", this);
+        return new QueryCollection<DaoBankTransaction>("actor.getBankTransactions").setEntity("author", this);
     }
 
     // ======================================================================

@@ -144,7 +144,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return true if member has kudosed, false otherwise.
      */
     public boolean hasKudosed(final DaoMember member) {
-        final Query q = SessionManager.get().getNamedQuery("kudosable.getKudos.byMember.size");
+        final Query q = SessionManager.getNamedQuery("kudosable.getKudos.byMember.size");
         q.setEntity("member", member);
         q.setEntity("this", this);
         return (Long) q.uniqueResult() > 0;
@@ -162,7 +162,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return true if member has kudosed, false otherwise.
      */
     public int getVote(final DaoMember member) {
-        final Query q = SessionManager.get().getNamedQuery("kudosable.getKudos.byMember.value");
+        final Query q = SessionManager.getNamedQuery("kudosable.getKudos.byMember.value");
         q.setEntity("member", member);
         q.setEntity("this", this);
         // return 0 if no vote

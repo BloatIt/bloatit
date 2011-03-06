@@ -368,8 +368,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     private DaoOffer getCurrentOffer() {
         try {
-            return (DaoOffer) SessionManager.get()
-                                            .getNamedQuery("demand.getOffers.bySelected")
+            return (DaoOffer) SessionManager.getNamedQuery("demand.getOffers.bySelected")
                                             .setEntity("this", this)
                                             .setParameter("state", DaoKudosable.PopularityState.PENDING)
                                             .iterate()
@@ -417,21 +416,21 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      * @return the minimum value of the contributions on this demand.
      */
     public BigDecimal getContributionMin() {
-        return (BigDecimal) SessionManager.get().getNamedQuery("demand.getAmounts.min").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("demand.getAmounts.min").setEntity("this", this).uniqueResult();
     }
 
     /**
      * @return the maximum value of the contributions on this demand.
      */
     public BigDecimal getContributionMax() {
-        return (BigDecimal) SessionManager.get().getNamedQuery("demand.getAmounts.max").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("demand.getAmounts.max").setEntity("this", this).uniqueResult();
     }
 
     /**
      * @return the average value of the contributions on this demand.
      */
     public BigDecimal getContributionAvg() {
-        return (BigDecimal) SessionManager.get().getNamedQuery("demand.getAmounts.avg").setEntity("this", this).uniqueResult();
+        return (BigDecimal) SessionManager.getNamedQuery("demand.getAmounts.avg").setEntity("this", this).uniqueResult();
     }
 
     public Date getValidationDate() {
@@ -446,26 +445,22 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     }
 
     public int countOpenBugs() {
-        Query query = SessionManager.get().getNamedQuery("demand.getBugs.ByNonState.size");
-        query.setEntity("selectedOffer", this.selectedOffer);
-        query.setParameter("close", DaoBug.BugState.RESOLVED);
+        Query query = SessionManager.getNamedQuery("demand.getBugs.ByNonState.size");
+        query.setEntity("offer", this.selectedOffer);
+        query.setParameter("state", DaoBug.BugState.RESOLVED);
         return ((Long) query.uniqueResult()).intValue();
     }
 
     public PageIterable<DaoBug> getOpenBugs() {
-        Query query = SessionManager.get().getNamedQuery("demand.getBugs.ByNonState");
-        Query querySize = SessionManager.get().getNamedQuery("demand.getBugs.ByNonState.size");
-        return new QueryCollection<DaoBug>(query, querySize).setEntity("offer", this.selectedOffer)
-                                                            .setEntity("this", this)
-                                                            .setParameter("state", DaoBug.BugState.RESOLVED);
+        return new QueryCollection<DaoBug>("demand.getBugs.ByNonState").setEntity("offer", this.selectedOffer)
+                                                                       .setEntity("this", this)
+                                                                       .setParameter("state", DaoBug.BugState.RESOLVED);
     }
 
     public PageIterable<DaoBug> getClosedBugs() {
-        Query query = SessionManager.get().getNamedQuery("demand.getBugs.ByState");
-        Query querySize = SessionManager.get().getNamedQuery("demand.getBugs.ByState.size");
-        return new QueryCollection<DaoBug>(query, querySize).setEntity("offer", this.selectedOffer)
-                                                            .setEntity("this", this)
-                                                            .setParameter("state", DaoBug.BugState.RESOLVED);
+        return new QueryCollection<DaoBug>("demand.getBugs.ByState").setEntity("offer", this.selectedOffer)
+                                                                    .setEntity("this", this)
+                                                                    .setParameter("state", DaoBug.BugState.RESOLVED);
     }
 
     // ======================================================================

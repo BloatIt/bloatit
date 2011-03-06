@@ -135,7 +135,7 @@ public class DaoDescription extends DaoIdentifiable {
      * @return null if no translation exists for this locale.
      */
     public DaoTranslation getTranslation(final Locale locale) {
-        final Query q = SessionManager.get().getNamedQuery("description.getTranslations.byLocale");
+        final Query q = SessionManager.getNamedQuery("description.getTranslations.byLocale");
         q.setLocale("locale", locale);
         q.setEntity("this", this);
         return (DaoTranslation) q.uniqueResult();

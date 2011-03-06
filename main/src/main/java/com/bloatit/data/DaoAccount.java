@@ -167,8 +167,7 @@ public abstract class DaoAccount extends DaoIdentifiable {
      * @return all the transactions that are from/to this account.
      */
     public PageIterable<DaoTransaction> getTransactions() {
-        return new QueryCollection<DaoTransaction>(SessionManager.get().getNamedQuery("account.getTransactions"),
-                                                   SessionManager.get().getNamedQuery("account.getTransactions.size")).setEntity("this", this);
+        return new QueryCollection<DaoTransaction>("account.getTransactions").setEntity("this", this);
     }
 
     public Date getLastModificationDate() {
