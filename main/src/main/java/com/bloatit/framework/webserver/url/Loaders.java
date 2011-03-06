@@ -10,12 +10,14 @@ import org.apache.commons.lang.NotImplementedException;
 import com.bloatit.common.Log;
 import com.bloatit.data.IdentifiableInterface;
 import com.bloatit.data.queries.DBRequests;
+import com.bloatit.data.queries.DaoIdentifiableQuery;
 import com.bloatit.framework.utils.i18n.DateLocale;
 import com.bloatit.framework.utils.i18n.DateParsingException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.ConversionErrorException;
 import com.bloatit.framework.webserver.annotations.Loader;
 import com.bloatit.model.Commentable;
+import com.bloatit.model.DataVisitorConstructor;
 import com.bloatit.model.GenericConstructor;
 import com.bloatit.model.Identifiable;
 import com.bloatit.model.managers.GenericManager;
@@ -59,34 +61,48 @@ public final class Loaders {
     static <T> Loader<T> getLoader(final Class<T> theClass) throws ConversionErrorException {
         if (theClass.equals(Integer.class)) {
             return (Loader<T>) new ToInteger();
-        } else if (theClass.equals(Byte.class)) {
+        }
+        if (theClass.equals(Byte.class)) {
             return (Loader<T>) new ToByte();
-        } else if (theClass.isEnum()) {
+        }
+        if (theClass.isEnum()) {
             return (Loader<T>) new ToEnum(theClass);
-        } else if (theClass.equals(Short.class)) {
+        }
+        if (theClass.equals(Short.class)) {
             return (Loader<T>) new ToShort();
-        } else if (theClass.equals(Long.class)) {
+        }
+        if (theClass.equals(Long.class)) {
             return (Loader<T>) new ToLong();
-        } else if (theClass.equals(Float.class)) {
+        }
+        if (theClass.equals(Float.class)) {
             return (Loader<T>) new ToFloat();
-        } else if (theClass.equals(Double.class)) {
+        }
+        if (theClass.equals(Double.class)) {
             return (Loader<T>) new ToDouble();
-        } else if (theClass.equals(Character.class)) {
+        }
+        if (theClass.equals(Character.class)) {
             return (Loader<T>) new ToCharacter();
-        } else if (theClass.equals(Boolean.class)) {
+        }
+        if (theClass.equals(Boolean.class)) {
             return (Loader<T>) new ToBoolean();
-        } else if (theClass.equals(BigDecimal.class)) {
+        }
+        if (theClass.equals(BigDecimal.class)) {
             return (Loader<T>) new ToBigdecimal();
-        } else if (theClass.equals(String.class)) {
+        }
+        if (theClass.equals(String.class)) {
             return (Loader<T>) new ToString();
-        } else if (theClass.equals(Date.class)) {
+        }
+        if (theClass.equals(Date.class)) {
             return (Loader<T>) new ToDate();
-        } else if (IdentifiableInterface.class.isAssignableFrom(theClass)) {
-            return (Loader<T>) new ToIdentifiable(theClass);
-        } else if (Commentable.class.isAssignableFrom(theClass)) {
-            return (Loader<T>) new ToIdentifiable(theClass);
-        } else if (theClass.equals(DateLocale.class)) {
+        }
+        if (Commentable.class.equals(theClass)) {
+            return (Loader<T>) new LowToIdentifiable();
+        }
+        if (theClass.equals(DateLocale.class)) {
             return (Loader<T>) new ToBloatitDate();
+        }
+        if (IdentifiableInterface.class.isAssignableFrom(theClass)) {
+            return (Loader<T>) new ToIdentifiable(theClass);
         }
         throw new NotImplementedException("Cannot find a convertion class for: " + theClass);
     }
@@ -245,6 +261,24 @@ public final class Loaders {
         }
     }
 
+    private static class LowToIdentifiable extends Loader<Identifiable<?>> {
+        @Override
+        public String toString(final Identifiable<?> data) {
+            return data.getId().toString();
+        }
+
+        @Override
+        public Identifiable<?> fromString(final String data) throws ConversionErrorException {
+            try {
+                DaoIdentifiableQuery daoIdentifiableQuery = new DaoIdentifiableQuery();
+                daoIdentifiableQuery.idEquals(Integer.valueOf(data));
+                return daoIdentifiableQuery.uniqueResult().accept(new DataVisitorConstructor());
+            } catch (final NumberFormatException e) {
+                throw new ConversionErrorException(e);
+            }
+        }
+    }
+
     private static class ToIdentifiable<T extends Identifiable<?>> extends Loader<T> {
 
         private final Class<T> theClass;
@@ -269,6 +303,8 @@ public final class Loaders {
             } catch (final NumberFormatException e) {
                 throw new ConversionErrorException(e);
             } catch (ClassCastException e) {
+                throw new ConversionErrorException(e);
+            } catch (ClassNotFoundException e) {
                 throw new ConversionErrorException(e);
             }
         }

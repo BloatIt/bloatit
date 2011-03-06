@@ -15,6 +15,7 @@ import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.DaoInternalAccount;
 import com.bloatit.data.DaoJoinGroupInvitation;
 import com.bloatit.data.DaoKudos;
+import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoOffer;
 import com.bloatit.data.DaoProject;
@@ -26,9 +27,13 @@ import com.bloatit.data.queries.DBRequests;
 
 public class GenericConstructor {
 
-    public static IdentifiableInterface create(Class<? extends IdentifiableInterface> clazz, Integer id) {
-        //TODO: Crash if not found
-        return ((DaoIdentifiable) DBRequests.getById(getDaoClass(clazz), id)).accept(new DataVisitorConstructor());
+    public static IdentifiableInterface create(Class<? extends IdentifiableInterface> clazz, Integer id) throws ClassNotFoundException {
+        // TODO: Crash if not found
+        Class<?> daoClass = getDaoClass(clazz);
+        if (daoClass == null) {
+            throw new ClassNotFoundException("Cannot find a dao class for the class " + clazz);
+        }
+        return ((DaoIdentifiable) DBRequests.getById(daoClass, id)).accept(new DataVisitorConstructor());
     }
 
     public static Class<?> getDaoClass(Class<? extends IdentifiableInterface> clazz) {
@@ -91,6 +96,9 @@ public class GenericConstructor {
         }
         if (clazz.equals(Release.class)) {
             return DaoRelease.class;
+        }
+        if (clazz.equals(Kudosable.class) || clazz.equals(KudosableInterface.class)) {
+            return DaoKudosable.class;
         }
         return null;
     }

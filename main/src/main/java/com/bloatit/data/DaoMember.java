@@ -117,7 +117,7 @@ import com.bloatit.framework.utils.PageIterable;
                                    "AND group = :group"),
                                    
                        @NamedQuery(
-                           name = "member.IsInGroup",
+                           name = "member.isInGroup",
                            query = "SELECT count(*) " +
                                    "FROM DaoMember m " + 
                                    "JOIN m.groupMembership AS gm " +

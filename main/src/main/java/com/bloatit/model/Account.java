@@ -188,12 +188,7 @@ public abstract class Account<T extends DaoAccount> extends Identifiable<T> {
      * @see #getActor()
      */
     protected final Actor<?> getActorUnprotected() {
-        if (getDao().getActor().getClass() == DaoMember.class) {
-            return Member.create((DaoMember) getDao().getActor());
-        } else if (getDao().getActor().getClass() == DaoGroup.class) {
-            return Group.create((DaoGroup) getDao().getActor());
-        }
-        throw new FatalErrorException("Cannot find the right Actor child class.", null);
+        return (Actor<?>) getDao().getActor().accept(new DataVisitorConstructor());
     }
 
     /*
