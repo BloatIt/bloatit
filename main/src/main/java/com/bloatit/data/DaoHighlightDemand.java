@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -14,6 +13,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
@@ -26,6 +27,13 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "highlightDemand.byIsActivated",
+                           query = "FROM DaoHighlightDemand WHERE activationDate < now() AND desactivationDate > now()")
+                       }
+             )
+// @formatter:on
 public class DaoHighlightDemand extends DaoIdentifiable {
 
     @Basic(optional = false)
@@ -104,14 +112,7 @@ public class DaoHighlightDemand extends DaoIdentifiable {
      * @return all the member in this group. (Use a HQL query).
      */
     public PageIterable<DaoHighlightDemand> getActiveHightlightDemands() {
-        final Session session = SessionManager.getSessionFactory().getCurrentSession();
-
-        final Query query = session.createQuery("from DaoHighlightDemand " + //
-                "where activationDate < :now " + //
-                "and desactivationDate > :now");//
-
-        query.setDate("now", new Date());
-
+        Query query = SessionManager.get().getNamedQuery("highlightDemand.byIsActivated");
         final QueryCollection<DaoHighlightDemand> queryCollection = new QueryCollection<DaoHighlightDemand>(query);
         return queryCollection;
     }

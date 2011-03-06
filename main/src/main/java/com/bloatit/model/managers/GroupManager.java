@@ -67,7 +67,7 @@ public final class GroupManager {
      *         <code>group</code> sent to this <code>member</code>.
      */
     public static JoinGroupInvitation getInvitation(final Group group, final Member member) {
-        return JoinGroupInvitation.create(DaoJoinGroupInvitation.getInvitation(group.getDao(), member.getDao()));
+        return JoinGroupInvitation.create(DaoJoinGroupInvitation.getRecievedInvitation(group.getDao(), member.getDao()));
     }
 
     /**

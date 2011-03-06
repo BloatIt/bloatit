@@ -63,8 +63,8 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
-                           name = "batch.getBugs.byNonStateLevel AND level = :level",
-                           query = "FROM DaoBug WHERE batch = :this AND state != :state"),
+                           name = "batch.getBugs.byNonStateLevel",
+                           query = "FROM DaoBug WHERE batch = :this AND state != :state AND level = :level"),
                         @NamedQuery(
                            name = "batch.getBugs.byNonState.size",
                            query = "SELECT count(*) FROM DaoBug WHERE batch = :this AND state != :state"),

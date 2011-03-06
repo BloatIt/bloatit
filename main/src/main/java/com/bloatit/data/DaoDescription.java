@@ -31,6 +31,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
 import com.bloatit.framework.utils.PageIterable;
@@ -44,6 +46,13 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "description.getTranslations.byLocale",
+                           query = "FROM DaoTranslation WHERE locale = :locale AND description = :this")
+                       }
+             )
+// @formatter:on
 public class DaoDescription extends DaoIdentifiable {
 
     // @Field(index = Index.UN_TOKENIZED)
@@ -126,7 +135,7 @@ public class DaoDescription extends DaoIdentifiable {
      * @return null if no translation exists for this locale.
      */
     public DaoTranslation getTranslation(final Locale locale) {
-        final Query q = SessionManager.createQuery("from com.bloatit.data.DaoTranslation as t where t.locale = :locale and t.description = :this");
+        final Query q = SessionManager.get().getNamedQuery("description.getTranslations.byLocale");
         q.setLocale("locale", locale);
         q.setEntity("this", this);
         return (DaoTranslation) q.uniqueResult();

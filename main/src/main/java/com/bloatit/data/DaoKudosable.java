@@ -30,6 +30,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Store;
 
@@ -40,6 +42,24 @@ import org.hibernate.search.annotations.Store;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "kudosable.getKudos.byMember.size",
+                           query = "SELECT count(k) " +
+                                   "FROM DaoKudosable as a " +
+                                   "JOIN a.kudos as k " +
+                                   "WHERE k.member = :member " +
+                                   "AND a = :this"),
+                       @NamedQuery(
+                           name = "kudosable.getKudos.byMember.value",
+                           query = "SELECT k.value " +
+                               	   "FROM DaoKudosable as a " +
+                               	   "JOIN a.kudos as k " +
+                               	   "WHERE k.member = :member " +
+                               	   "AND a = :this")
+                       }
+             )
+// @formatter:on
 public abstract class DaoKudosable extends DaoUserContent {
 
     /**
@@ -124,10 +144,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return true if member has kudosed, false otherwise.
      */
     public boolean hasKudosed(final DaoMember member) {
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("select count(k) from " + this.getClass().getName()
-                                              + " as a join a.kudos as k where k.member = :member and a = :this");
+        final Query q = SessionManager.get().getNamedQuery("kudosable.getKudos.byMember.size");
         q.setEntity("member", member);
         q.setEntity("this", this);
         return (Long) q.uniqueResult() > 0;
@@ -145,10 +162,7 @@ public abstract class DaoKudosable extends DaoUserContent {
      * @return true if member has kudosed, false otherwise.
      */
     public int getVote(final DaoMember member) {
-        final Query q = SessionManager.getSessionFactory()
-                                      .getCurrentSession()
-                                      .createQuery("select k.value from " + this.getClass().getName()
-                                              + " as a join a.kudos as k where k.member = :member and a = :this");
+        final Query q = SessionManager.get().getNamedQuery("kudosable.getKudos.byMember.value");
         q.setEntity("member", member);
         q.setEntity("this", this);
         // return 0 if no vote

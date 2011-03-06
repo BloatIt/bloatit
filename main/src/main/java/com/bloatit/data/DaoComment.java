@@ -24,9 +24,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -39,7 +36,6 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 
-import com.bloatit.data.queries.QueryCollection;
 import com.bloatit.framework.exceptions.FatalErrorException;
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -191,7 +187,7 @@ public class DaoComment extends DaoKudosable implements DaoCommentable {
      *         is no child.
      */
     public PageIterable<DaoComment> getChildren() {
-        return new QueryCollection<DaoComment>("from DaoComment as c where c.father = :this order by c.creationDate asc, id").setEntity("this", this);
+        return new MappedList<DaoComment>(children);
     }
 
     @Override

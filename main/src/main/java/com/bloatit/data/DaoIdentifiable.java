@@ -39,6 +39,10 @@ public abstract class DaoIdentifiable {
         return this.id;
     }
 
+    // ======================================================================
+    // Visitor.
+    // ======================================================================
+
     public abstract <ReturnType> ReturnType accept(DataClassVisitor<ReturnType> visitor);
 
     // ======================================================================

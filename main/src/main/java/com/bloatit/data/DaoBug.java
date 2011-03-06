@@ -26,7 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

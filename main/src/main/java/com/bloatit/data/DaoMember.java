@@ -36,6 +36,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.bloatit.common.Log;
@@ -53,6 +55,79 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "member.byLogin",
+                           query = "FROM DaoMember WHERE login = :login"),
+                       @NamedQuery(
+                           name = "member.byLoginPassword",
+                           query = "FROM DaoMember WHERE login = :login AND password = :password"),
+                           
+                       @NamedQuery(
+                           name = "member.getRecievedInvitations.byStateGroup",
+                           query = "FROM DaoJoinGroupInvitation " +
+                               	   "WHERE receiver = :receiver " +
+                               	   "AND state = :state  " +
+                               	   "AND group = :group"),
+                   	   @NamedQuery(
+           	               name = "member.getRecievedInvitations.byStateGroup.size",
+           	               query =  "SELECT count(*)" +
+           	               		    "FROM DaoJoinGroupInvitation " +
+                   	                "WHERE receiver = :receiver " +
+                   	                "AND state = :state  " +
+                   	                "AND group = :group"),
+                   	                
+                       @NamedQuery(
+                           name = "member.getRecievedInvitations.byState",
+                           query = "FROM DaoJoinGroupInvitation " +
+                                   "WHERE receiver = :receiver " +
+                                   "AND state = :state "),
+                       @NamedQuery(
+                           name = "member.getRecievedInvitations.byState.size",
+                           query = "SELECT count(*)" +
+                           		   "FROM DaoJoinGroupInvitation " +
+                                   "WHERE receiver = :receiver " +
+                                   "AND state = :state "),            
+                                   
+                       @NamedQuery(
+                           name = "member.getSentInvitations.byState",
+                           query = "FROM DaoJoinGroupInvitation " +
+                                   "WHERE sender = :sender " +
+                                   "AND state = :state "),
+                       @NamedQuery(
+                           name = "member.getSentInvitations.byState.size",
+                           query = "SELECT count(*)" +
+                                   "FROM DaoJoinGroupInvitation " +
+                                   "WHERE sender = :sender " +
+                                   "AND state = :state "),
+                                   
+                       @NamedQuery(
+                           name = "member.getSentInvitations.byStateGroup",
+                           query = "SELECT count(*)" +
+                                   "FROM DaoJoinGroupInvitation " +
+                                   "WHERE sender = :sender " +
+                                   "AND state = :state " +
+                                   "AND group = :group"),
+                       @NamedQuery(
+                           name = "member.getSentInvitations.byStateGroup.size",
+                           query = "SELECT count(*)" +
+                                   "FROM DaoJoinGroupInvitation " +
+                                   "WHERE sender = :sender " +
+                                   "AND state = :state " +
+                                   "AND group = :group"),
+                                   
+                       @NamedQuery(
+                           name = "member.IsInGroup",
+                           query = "SELECT count(*) " +
+                                   "FROM DaoMember m " + 
+                                   "JOIN m.groupMembership AS gm " +
+                                   "JOIN gm.bloatitGroup AS g " + 
+                                   "WHERE m = :member AND g = :group"),
+                       
+                                   
+                      }
+             )
+// @formatter:on
 public class DaoMember extends DaoActor {
 
     public enum Role {
@@ -107,7 +182,7 @@ public class DaoMember extends DaoActor {
      */
     public static DaoMember getByLogin(final String login) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("from com.bloatit.data.DaoMember where login = :login");
+        final Query q = session.getNamedQuery("member.byLogin");
         q.setString("login", login);
         return (DaoMember) q.uniqueResult();
     }
@@ -124,7 +199,7 @@ public class DaoMember extends DaoActor {
      */
     public static DaoMember getByLoginAndPassword(final String login, final String password) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("from com.bloatit.data.DaoMember where login = :login and password = :password");
+        final Query q = session.getNamedQuery("member.byLoginPassword");
         q.setString("login", login);
         q.setString("password", password);
         return (DaoMember) q.uniqueResult();
@@ -361,10 +436,9 @@ public class DaoMember extends DaoActor {
      *         specified state
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state) {
-        return new QueryCollection<DaoJoinGroupInvitation>("from com.bloatit.data.DaoJoinGroupInvitation as j where j.receiver = :receiver and j.state = :state  ").setEntity("receiver",
-                                                                                                                                                                              this)
-                                                                                                                                                                   .setParameter("state",
-                                                                                                                                                                                 state);
+        Query query = SessionManager.get().getNamedQuery("member.getReceivedInvitations.byState");
+        Query size = SessionManager.get().getNamedQuery("member.getReceivedInvitations.byState.size");
+        return new QueryCollection<DaoJoinGroupInvitation>(query, size).setEntity("receiver", this).setParameter("state", state);
     }
 
     /**
@@ -374,12 +448,19 @@ public class DaoMember extends DaoActor {
      *         in a given state
      */
     public PageIterable<DaoJoinGroupInvitation> getReceivedInvitation(final State state, final DaoGroup group) {
-        return new QueryCollection<DaoJoinGroupInvitation>("from com.bloatit.data.DaoJoinGroupInvitation as j where j.receiver = :receiver and j.state = :state  and j.group = :group").setEntity("receiver",
-                                                                                                                                                                                                  this)
-                                                                                                                                                                                       .setParameter("state",
-                                                                                                                                                                                                     state)
-                                                                                                                                                                                       .setEntity("group",
-                                                                                                                                                                                                  group);
+        Query query = SessionManager.get().getNamedQuery("member.getReceivedInvitations.byStateGroup");
+        Query size = SessionManager.get().getNamedQuery("member.getReceivedInvitations.byStateGroup.size");
+        return new QueryCollection<DaoJoinGroupInvitation>(query, size).setEntity("receiver", this)
+                                                                       .setParameter("state", state)
+                                                                       .setEntity("group", group);
+    }
+
+    public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state, final DaoGroup group) {
+        Query query = SessionManager.get().getNamedQuery("member.getSentInvitations.byStateGroup");
+        Query size = SessionManager.get().getNamedQuery("member.getSentInvitations.byStateGroup.size");
+        return new QueryCollection<DaoJoinGroupInvitation>(query, size).setEntity("sender", this)
+                                                                       .setParameter("state", state)
+                                                                       .setEntity("group", group);
     }
 
     /**
@@ -387,22 +468,16 @@ public class DaoMember extends DaoActor {
      *         state
      */
     public PageIterable<DaoJoinGroupInvitation> getSentInvitation(final State state) {
-        return new QueryCollection<DaoJoinGroupInvitation>("from com.bloatit.data.DaoJoinGroupInvitation as j where j.sender = :sender and j.state = :state").setEntity("sender",
-                                                                                                                                                                        this)
-                                                                                                                                                             .setEntity("state",
-                                                                                                                                                                        state);
+        Query query = SessionManager.get().getNamedQuery("member.getSentInvitations.byState");
+        Query size = SessionManager.get().getNamedQuery("member.getSentInvitations.byState.size");
+        return new QueryCollection<DaoJoinGroupInvitation>(query, size).setEntity("sender", this).setEntity("state", state);
     }
 
     /**
      * @return if the current member is in the "group".
      */
     public boolean isInGroup(final DaoGroup group) {
-        final Query q = SessionManager.getSessionFactory().getCurrentSession().createQuery( //
-        "SELECT count(*) " + //
-                "FROM com.bloatit.data.DaoMember m " + //
-                "JOIN m.groupMembership AS gm " + //
-                "JOIN gm.bloatitGroup AS g " + //
-                "WHERE m = :member AND g = :group");
+        final Query q = SessionManager.get().getNamedQuery("member.isInGroup");
         q.setEntity("member", this);
         q.setEntity("group", group);
         return ((Long) q.uniqueResult()) >= 1;

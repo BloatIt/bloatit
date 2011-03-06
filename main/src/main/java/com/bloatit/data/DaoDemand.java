@@ -28,11 +28,9 @@ import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -41,6 +39,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FullTextFilterDef;
 import org.hibernate.search.annotations.Indexed;
@@ -66,6 +66,66 @@ import com.bloatit.framework.utils.PageIterable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Indexed
 @FullTextFilterDef(name = "searchFilter", impl = DaoDemandSearchFilterFactory.class)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "demand.getOffers.bySelected",
+                           query = "FROM DaoOffer " + 
+                                   "WHERE demand = :this " + 
+                                   "AND state <= :state " + // <= PENDING and VALIDATED.
+                                   "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
+                                   "AND popularity >= 0 " + 
+                                   "ORDER BY amount ASC, creationDate DESC"),
+                                   
+                        @NamedQuery(
+                           name = "demand.getAmounts.min",
+                           query = "SELECT min(amount) FROM DaoContribution WHERE demand = :this"),
+                           
+                        @NamedQuery(
+                           name = "demand.getAmounts.max",
+                           query = "SELECT max(amount) FROM DaoContribution WHERE demand = :this"),
+                           
+                       @NamedQuery(
+                           name = "demand.getAmounts.avg",
+                           query = "SELECT avg(amount) FROM DaoContribution WHERE demand = :this"),
+                           
+                        @NamedQuery(
+                            name = "demand.getBugs.byNonState",
+                            query = "SELECT bugs_ " + 
+                                    "FROM com.bloatit.data.DaoOffer offer_ " + 
+                                    "JOIN offer_.batches as bs " + 
+                                    "JOIN bs.bugs as bugs_ " + 
+                                    "WHERE offer_ = :offer " + 
+                                    "AND bugs_.state != :state "),
+                                    
+                        @NamedQuery(
+                            name = "demand.getBugs.byNonState.size",
+                            query = "SELECT count(bugs_) " + 
+                                    "FROM com.bloatit.data.DaoOffer offer_ " + 
+                                    "JOIN offer_.batches as bs " + 
+                                    "JOIN bs.bugs as bugs_ " + 
+                                    "WHERE offer_ = :offer " + 
+                                    "AND bugs_.state != :state "),
+                                    
+                        @NamedQuery(
+                            name = "demand.getBugs.byState",
+                            query = "SELECT bugs_ " + 
+                                    "FROM com.bloatit.data.DaoOffer offer_ " + 
+                                    "JOIN offer_.batches as bs " + 
+                                    "JOIN bs.bugs as bugs_ " + 
+                                    "WHERE offer_ = :offer " + 
+                                    "AND bugs_.state = :state "),
+                                    
+                        @NamedQuery(
+                            name = "demand.getBugs.byState.size",
+                            query = "SELECT count(bugs_) " + 
+                                    "FROM com.bloatit.data.DaoOffer offer_ " + 
+                                    "JOIN offer_.batches as bs " + 
+                                    "JOIN bs.bugs as bugs_ " + 
+                                    "WHERE offer_ = :offer " + 
+                                    "AND bugs_.state = :state "),
+                     }
+             )
+// @formatter:on
 public class DaoDemand extends DaoKudosable implements DaoCommentable {
 
     /**
@@ -125,9 +185,8 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     @OneToMany(mappedBy = "demand")
     @Cascade(value = { CascadeType.ALL })
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    //@OrderBy("id")
     @IndexedEmbedded
-    public Set<DaoComment> comments = new HashSet<DaoComment>(0);
+    public List<DaoComment> comments = new ArrayList<DaoComment>();
 
     /**
      * The selected offer is the offer that is most likely to be validated and
@@ -308,15 +367,9 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      * @return the current offer for this demand, or null if there is no offer.
      */
     private DaoOffer getCurrentOffer() {
-        // If there is no validated offer then we try to find a pending offer
-        final String queryString = "FROM DaoOffer " + //
-                "WHERE demand = :this " + //
-                "AND state <= :state " + // <= PENDING and VALIDATED.
-                "AND popularity = (select max(popularity) from DaoOffer where demand = :this) " + //
-                "AND popularity >= 0 " + //
-                "ORDER BY amount ASC, creationDate DESC";
         try {
-            return (DaoOffer) SessionManager.createQuery(queryString)
+            return (DaoOffer) SessionManager.get()
+                                            .getNamedQuery("demand.getOffers.bySelected")
                                             .setEntity("this", this)
                                             .setParameter("state", DaoKudosable.PopularityState.PENDING)
                                             .iterate()
@@ -344,7 +397,7 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     @Override
     public PageIterable<DaoComment> getComments() {
-        return CommentManager.getComments(comments);//new MappedList<DaoComment>(this.comments);
+        return new MappedList<DaoComment>(this.comments);
     }
 
     @Override
@@ -361,21 +414,24 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
     }
 
     /**
-     * @return the minimum value of the contribution on this demand.
+     * @return the minimum value of the contributions on this demand.
      */
     public BigDecimal getContributionMin() {
-        return (BigDecimal) SessionManager.createQuery("select min(f.amount) from DaoContribution as f where f.demand = :this")
-                                          .setEntity("this", this)
-                                          .uniqueResult();
+        return (BigDecimal) SessionManager.get().getNamedQuery("demand.getAmounts.min").setEntity("this", this).uniqueResult();
     }
 
     /**
-     * @return the maximum value of the contribution on this demand.
+     * @return the maximum value of the contributions on this demand.
      */
     public BigDecimal getContributionMax() {
-        return (BigDecimal) SessionManager.createQuery("select max(f.amount) from DaoContribution as f where f.demand = :this")
-                                          .setEntity("this", this)
-                                          .uniqueResult();
+        return (BigDecimal) SessionManager.get().getNamedQuery("demand.getAmounts.max").setEntity("this", this).uniqueResult();
+    }
+
+    /**
+     * @return the average value of the contributions on this demand.
+     */
+    public BigDecimal getContributionAvg() {
+        return (BigDecimal) SessionManager.get().getNamedQuery("demand.getAmounts.avg").setEntity("this", this).uniqueResult();
     }
 
     public Date getValidationDate() {
@@ -387,6 +443,29 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
      */
     public DaoProject getProject() {
         return this.project;
+    }
+
+    public int countOpenBugs() {
+        Query query = SessionManager.get().getNamedQuery("demand.getBugs.ByNonState.size");
+        query.setEntity("selectedOffer", this.selectedOffer);
+        query.setParameter("close", DaoBug.BugState.RESOLVED);
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    public PageIterable<DaoBug> getOpenBugs() {
+        Query query = SessionManager.get().getNamedQuery("demand.getBugs.ByNonState");
+        Query querySize = SessionManager.get().getNamedQuery("demand.getBugs.ByNonState.size");
+        return new QueryCollection<DaoBug>(query, querySize).setEntity("offer", this.selectedOffer)
+                                                            .setEntity("this", this)
+                                                            .setParameter("state", DaoBug.BugState.RESOLVED);
+    }
+
+    public PageIterable<DaoBug> getClosedBugs() {
+        Query query = SessionManager.get().getNamedQuery("demand.getBugs.ByState");
+        Query querySize = SessionManager.get().getNamedQuery("demand.getBugs.ByState.size");
+        return new QueryCollection<DaoBug>(query, querySize).setEntity("offer", this.selectedOffer)
+                                                            .setEntity("this", this)
+                                                            .setParameter("state", DaoBug.BugState.RESOLVED);
     }
 
     // ======================================================================
@@ -447,67 +526,4 @@ public class DaoDemand extends DaoKudosable implements DaoCommentable {
         }
         return true;
     }
-
-    public int countOpenBugs() {
-
-        final String q = "SELECT count(*) " + //
-                "FROM com.bloatit.data.DaoOffer o " + //
-                "JOIN o.batches as bs " + //
-                "JOIN bs.bugs as b " + //
-                "WHERE o = :selectedOffer " + //
-                "AND b.state != :close ";//
-        final Query query = SessionManager.getSessionFactory().getCurrentSession().createQuery(q);
-        query.setEntity("selectedOffer", this.selectedOffer);
-        query.setParameter("close", DaoBug.BugState.RESOLVED);
-        return ((Long) query.uniqueResult()).intValue();
-    }
-
-    public PageIterable<DaoBug> getOpenBugs() {
-
-        final String q = "SELECT b" + //
-                " FROM com.bloatit.data.DaoOffer o " + //
-                "JOIN o.batches as bs " + //
-                "JOIN bs.bugs as b " + //
-                "WHERE o = :selectedOffer " + //
-                "AND b.state != :close ";//
-
-        final String qCount = "SELECT count(b)" + //
-                " FROM com.bloatit.data.DaoOffer o " + //
-                "JOIN o.batches as bs " + //
-                "JOIN bs.bugs as b " + //
-                "WHERE o = :selectedOffer " + //
-                "AND b.state != :close ";//
-
-        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
-                                                                                                                        this.selectedOffer)
-                                                                                                             .setParameter("close",
-                                                                                                                           DaoBug.BugState.RESOLVED);
-    }
-
-    public PageIterable<DaoBug> getClosedBugs() {
-        final String q = "SELECT b" + //
-                " FROM com.bloatit.data.DaoOffer o " + //
-                "JOIN o.batches as bs " + //
-                "JOIN bs.bugs as b " + //
-                "WHERE o = :selectedOffer " + //
-                "AND o.demand = :this " + //
-                "AND b.state = :close ";//
-
-        final String qCount = "SELECT count(b)" + //
-                " FROM com.bloatit.data.DaoOffer o " + //
-                "JOIN o.batches as bs " + //
-                "JOIN bs.bugs as b " + //
-                "WHERE o = :selectedOffer " + //
-                "AND o.demand = :this " + //
-                "AND b.state = :close ";//
-
-        final org.hibernate.classic.Session currentSession = SessionManager.getSessionFactory().getCurrentSession();
-        return new QueryCollection<DaoBug>(currentSession.createQuery(q), currentSession.createQuery(qCount)).setEntity("selectedOffer",
-                                                                                                                        this.selectedOffer)
-                                                                                                             .setParameter("close",
-                                                                                                                           DaoBug.BugState.RESOLVED)
-                                                                                                             .setEntity("this", this);
-    }
-
 }

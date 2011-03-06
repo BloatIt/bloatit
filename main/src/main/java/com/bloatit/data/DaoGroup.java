@@ -33,6 +33,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 import com.bloatit.data.queries.QueryCollection;
@@ -45,6 +47,13 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "group.byName",
+                           query = "FROM DaoGroup WHERE login = :login")
+                       }
+             )
+// @formatter:on
 public class DaoGroup extends DaoActor {
 
     /**
@@ -82,7 +91,7 @@ public class DaoGroup extends DaoActor {
 
     public static DaoGroup getByName(final String name) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("from com.bloatit.data.DaoGroup where login = :login");
+        final Query q = session.getNamedQuery("group.byName");
         q.setString("login", name);
         return (DaoGroup) q.uniqueResult();
     }

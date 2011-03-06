@@ -27,6 +27,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 
@@ -36,6 +38,16 @@ import com.bloatit.framework.exceptions.NonOptionalParameterException;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "joinGroupInvitation.byGroupReceiver",
+                           query = "FROM DaoJoinGroupInvitation WHERE group = :group AND receiver = :member"),
+                       @NamedQuery(
+                           name = "joinGroupInvitation.byGroupSender",
+                           query = "FROM DaoJoinGroupInvitation WHERE group = :group AND sender = :member")
+                       }
+             )
+// @formatter:on
 public class DaoJoinGroupInvitation extends DaoIdentifiable {
 
     /**
@@ -45,7 +57,7 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
      * </p>
      * <p>
      * The state DISCARDED means the invitation have been refused cause the user
-     * accepted another invitation for the same group, cancelling all other
+     * accepted another invitation for the same group, canceling all other
      * invitations for this group. It is therefore an alternative to REFUSED or
      * ACCEPTED
      * </p>
@@ -57,15 +69,15 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
     @ManyToOne(optional = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember sender;
-    
+
     @ManyToOne(optional = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoMember receiver;
-    
+
     @ManyToOne(optional = false)
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private DaoGroup group;
-    
+
     @Basic(optional = false)
     @Enumerated
     private State state;
@@ -82,8 +94,17 @@ public class DaoJoinGroupInvitation extends DaoIdentifiable {
      * @return the invitation, are null if there is no invitation on that
      *         <code>group</code> sent to this <code>member</code>.
      */
-    public static DaoJoinGroupInvitation getInvitation(final DaoGroup group, final DaoMember member) {
-        return (DaoJoinGroupInvitation) SessionManager.createQuery("from DaoJoinGroupInvitation where group = :group and receiver = :member")
+    public static DaoJoinGroupInvitation getRecievedInvitation(final DaoGroup group, final DaoMember member) {
+        return (DaoJoinGroupInvitation) SessionManager.get()
+                                                      .getNamedQuery("joinGroupInvitation.byGroupReceiver")
+                                                      .setEntity("group", group)
+                                                      .setEntity("member", member)
+                                                      .uniqueResult();
+    }
+
+    public static DaoJoinGroupInvitation getSentInvitation(final DaoGroup group, final DaoMember member) {
+        return (DaoJoinGroupInvitation) SessionManager.get()
+                                                      .getNamedQuery("joinGroupInvitation.byGroupSender")
                                                       .setEntity("group", group)
                                                       .setEntity("member", member)
                                                       .uniqueResult();

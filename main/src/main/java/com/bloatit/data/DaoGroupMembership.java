@@ -32,6 +32,8 @@ import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.data.DaoGroupRight.UserGroupRight;
 
@@ -42,6 +44,13 @@ import com.bloatit.data.DaoGroupRight.UserGroupRight;
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "member_id", "bloatitGroup_id" }) })
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "groupMembership.byGroupMember",
+                           query = "FROM DaoGroupMembership WHERE bloatitGroup = :bloatitGroup AND member = :member")
+                       }
+             )
+// @formatter:on
 class DaoGroupMembership extends DaoIdentifiable {
 
     @ManyToOne(optional = false)
@@ -59,7 +68,7 @@ class DaoGroupMembership extends DaoIdentifiable {
      */
     protected static DaoGroupMembership get(final DaoGroup group, final DaoMember member) {
         final Session session = SessionManager.getSessionFactory().getCurrentSession();
-        final Query q = session.createQuery("from com.bloatit.data.DaoGroupMembership as gm where gm.bloatitGroup = :bloatitGroup and gm.member = :member");
+        final Query q = session.getNamedQuery("groupMembership.byGroupMember");
         q.setEntity("bloatitGroup", group);
         q.setEntity("member", member);
         return (DaoGroupMembership) q.uniqueResult();
@@ -94,6 +103,10 @@ class DaoGroupMembership extends DaoIdentifiable {
     public <ReturnType> ReturnType accept(final DataClassVisitor<ReturnType> visitor) {
         return null;
     }
+
+    // ======================================================================
+    // For hibernate mapping
+    // ======================================================================
 
     protected DaoGroupMembership() {
         super();

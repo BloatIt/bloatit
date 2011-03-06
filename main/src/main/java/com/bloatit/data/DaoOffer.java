@@ -33,6 +33,8 @@ import javax.persistence.OrderBy;
 import org.hibernate.Query;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
@@ -50,6 +52,16 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "offer.getBatches",
+                           query = "FROM DaoBatch WHERE offer = :this ORDER BY expirationDate, id"),
+                        @NamedQuery(
+                           name = "offer.getBatches.size",
+                           query = "SELECT count(*) FROM DaoBatch WHERE offer = :this"),
+                       }
+             )
+// @formatter:on
 public class DaoOffer extends DaoKudosable {
 
     /**
@@ -172,11 +184,9 @@ public class DaoOffer extends DaoKudosable {
      * @return All the batches for this offer. (Even the MasterBatch).
      */
     public PageIterable<DaoBatch> getBatches() {
-        final String query = "from DaoBatch where offer = :this order by expirationDate, id";
-        final String queryCount = "select count(*) from DaoBatch where offer = :this";
-        return new QueryCollection<DaoBatch>( //
-                                             SessionManager.createQuery(query).setEntity("this", this),//
-                                             SessionManager.createQuery(queryCount).setEntity("this", this));//
+        Query query = SessionManager.get().getNamedQuery("offer.getBatches");
+        Query size = SessionManager.get().getNamedQuery("offer.getBatches.size");
+        return new QueryCollection<DaoBatch>(query, size);//
     }
 
     public DaoBatch getCurrentBatch() {

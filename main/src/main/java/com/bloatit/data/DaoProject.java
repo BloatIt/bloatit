@@ -33,6 +33,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 import com.bloatit.framework.exceptions.NonOptionalParameterException;
 import com.bloatit.framework.utils.PageIterable;
@@ -40,6 +42,13 @@ import com.bloatit.framework.utils.PageIterable;
 @Entity
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@formatter:off
+@NamedQueries(value = { @NamedQuery(
+                           name = "project.byName",
+                           query = "FROM DaoProject WHERE name = :name"),
+                       }
+             )
+// @formatter:on
 public class DaoProject extends DaoIdentifiable {
 
     @Column(nullable = false, unique = true, updatable = false)
@@ -62,7 +71,7 @@ public class DaoProject extends DaoIdentifiable {
     // ======================================================================
 
     public static DaoProject getByName(final String name) {
-        final Query query = SessionManager.createQuery("from DaoProject where name = :name").setString("name", name);
+        final Query query = SessionManager.get().getNamedQuery("project.byName").setString("name", name);
         return (DaoProject) query.uniqueResult();
     }
 
