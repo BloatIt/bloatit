@@ -53,10 +53,10 @@ import org.hibernate.search.annotations.Store;
                        @NamedQuery(
                            name = "kudosable.getKudos.byMember.value",
                            query = "SELECT k.value " +
-                               	   "FROM DaoKudosable as a " +
-                               	   "JOIN a.kudos as k " +
-                               	   "WHERE k.member = :member " +
-                               	   "AND a = :this")
+                                      "FROM DaoKudosable as a " +
+                                      "JOIN a.kudos as k " +
+                                      "WHERE k.member = :member " +
+                                      "AND a = :this")
                        }
              )
 // @formatter:on

@@ -66,17 +66,17 @@ import com.bloatit.framework.utils.PageIterable;
                        @NamedQuery(
                            name = "member.getRecievedInvitations.byStateGroup",
                            query = "FROM DaoJoinGroupInvitation " +
-                               	   "WHERE receiver = :receiver " +
-                               	   "AND state = :state  " +
-                               	   "AND group = :group"),
-                   	   @NamedQuery(
-           	               name = "member.getRecievedInvitations.byStateGroup.size",
-           	               query =  "SELECT count(*)" +
-           	               		    "FROM DaoJoinGroupInvitation " +
-                   	                "WHERE receiver = :receiver " +
-                   	                "AND state = :state  " +
-                   	                "AND group = :group"),
-                   	                
+                                      "WHERE receiver = :receiver " +
+                                      "AND state = :state  " +
+                                      "AND group = :group"),
+                          @NamedQuery(
+                              name = "member.getRecievedInvitations.byStateGroup.size",
+                              query =  "SELECT count(*)" +
+                                          "FROM DaoJoinGroupInvitation " +
+                                       "WHERE receiver = :receiver " +
+                                       "AND state = :state  " +
+                                       "AND group = :group"),
+                                       
                        @NamedQuery(
                            name = "member.getRecievedInvitations.byState",
                            query = "FROM DaoJoinGroupInvitation " +
@@ -85,7 +85,7 @@ import com.bloatit.framework.utils.PageIterable;
                        @NamedQuery(
                            name = "member.getRecievedInvitations.byState.size",
                            query = "SELECT count(*)" +
-                           		   "FROM DaoJoinGroupInvitation " +
+                                      "FROM DaoJoinGroupInvitation " +
                                    "WHERE receiver = :receiver " +
                                    "AND state = :state "),            
                                    

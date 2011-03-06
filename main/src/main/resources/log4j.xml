@@ -2,68 +2,68 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-	<appender name="console" class="org.apache.log4j.ConsoleAppender">
-		<param name="Threshold" value="trace" />
-		<param name="Target" value="System.out" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{ABSOLUTE} [%t] %-5p %c{1} - %m%n" />
-		</layout>
-	</appender>
-	<appender name="rolling-file" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="bloatitjava.log" />
-		<param name="MaxFileSize" value="1000KB" />
-		<!-- Keep one backup file -->
-		<param name="MaxBackupIndex" value="4" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d [%t] %-5p %l - %m%n" />
-		</layout>
-	</appender>
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
+        <param name="Threshold" value="trace" />
+        <param name="Target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} [%t] %-5p %c{1} - %m%n" />
+        </layout>
+    </appender>
+    <appender name="rolling-file" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="bloatitjava.log" />
+        <param name="MaxFileSize" value="1000KB" />
+        <!-- Keep one backup file -->
+        <param name="MaxBackupIndex" value="4" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] %-5p %l - %m%n" />
+        </layout>
+    </appender>
 
-	<!-- must be before the root element -->
-	<logger name="org.hibernate">
-		<level value="warn" />
-	</logger>
+    <!-- must be before the root element -->
+    <logger name="org.hibernate">
+        <level value="warn" />
+    </logger>
 
-	<logger name="com.bloatit.data">
-		<level value="trace" />
-	</logger>
-	<logger name="com.bloatit.model">
-		<level value="trace" />
-	</logger>
-	<logger name="com.bloatit.web">
-		<level value="trace" />
-	</logger>
-	<logger name="com.bloatit.framework">
-		<level value="trace" />
-	</logger>
-	<logger name="com.bloatit.mail">
-		<level value="trace" />
-	</logger>
-	<logger name="com.bloatit.rest">
-		<level value="trace" />
-	</logger>
-	<logger name="com.bloatit.cache">
-		<level value="info" />
-	</logger>
+    <logger name="com.bloatit.data">
+        <level value="trace" />
+    </logger>
+    <logger name="com.bloatit.model">
+        <level value="trace" />
+    </logger>
+    <logger name="com.bloatit.web">
+        <level value="trace" />
+    </logger>
+    <logger name="com.bloatit.framework">
+        <level value="trace" />
+    </logger>
+    <logger name="com.bloatit.mail">
+        <level value="trace" />
+    </logger>
+    <logger name="com.bloatit.rest">
+        <level value="trace" />
+    </logger>
+    <logger name="com.bloatit.cache">
+        <level value="info" />
+    </logger>
 
-	<root>
-		<priority value="trace" />
-		<appender-ref ref="console" />
-	</root>
+    <root>
+        <priority value="trace" />
+        <appender-ref ref="console" />
+    </root>
 
 
 </log4j:configuration>
 <!-- Log all SQL DML statements as they are executed <logger name="org.hibernate.SQL"> 
-	<level value="warn" /> </logger> Log all JDBC parameters <logger name="org.hibernate.type"> 
-	<level value="warn" /> </logger> Log all SQL DDL statements as they are executed 
-	<logger name="org.hibernate.tool.hbm2ddl"> <level value="warn" /> </logger> 
-	Log the state of all entities (max 20 entities) associated with the session 
-	at flush time <logger name="org.hibernate.pretty"> <level value="warn" /> 
-	</logger> Log all second-level cache activity <logger name="org.hibernate.cache"> 
-	<level value="warn" /> </logger> Log transaction related activity <logger 
-	name="org.hibernate.transaction"> <level value="warn" /> </logger> Log all 
-	JDBC resource acquisition <logger name="org.hibernate.jdbc"> <level value="warn" 
-	/> </logger> Log HQL and SQL ASTs during query parsing <logger name="org.hibernate.hql.ast.AST"> 
-	<level value="warn" /> </logger> Log all JAAS authorization requests <logger 
-	name="org.hibernate.secure"> <level value="warn" /> </logger> -->
-	
+    <level value="warn" /> </logger> Log all JDBC parameters <logger name="org.hibernate.type"> 
+    <level value="warn" /> </logger> Log all SQL DDL statements as they are executed 
+    <logger name="org.hibernate.tool.hbm2ddl"> <level value="warn" /> </logger> 
+    Log the state of all entities (max 20 entities) associated with the session 
+    at flush time <logger name="org.hibernate.pretty"> <level value="warn" /> 
+    </logger> Log all second-level cache activity <logger name="org.hibernate.cache"> 
+    <level value="warn" /> </logger> Log transaction related activity <logger 
+    name="org.hibernate.transaction"> <level value="warn" /> </logger> Log all 
+    JDBC resource acquisition <logger name="org.hibernate.jdbc"> <level value="warn" 
+    /> </logger> Log HQL and SQL ASTs during query parsing <logger name="org.hibernate.hql.ast.AST"> 
+    <level value="warn" /> </logger> Log all JAAS authorization requests <logger 
+    name="org.hibernate.secure"> <level value="warn" /> </logger> -->
+    

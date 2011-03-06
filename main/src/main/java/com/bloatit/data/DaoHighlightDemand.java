@@ -30,15 +30,15 @@ import com.bloatit.framework.utils.PageIterable;
 //@formatter:off
 @NamedQueries(value = { @NamedQuery(
                            name = "highlightDemand.byIsActivated",
-                           query =  "FROM DaoHighlightDemand " +
-                               		"WHERE activationDate < now() " +
-                               		"AND desactivationDate > now()"),
+                           query = "FROM DaoHighlightDemand " +
+                                   "WHERE activationDate < now() " +
+                                   "AND desactivationDate > now()"),
                        @NamedQuery(
                            name = "highlightDemand.byIsActivated.size",
-                           query =  "SELECT count(*) " +
-                               		"FROM DaoHighlightDemand " +
-                               		"WHERE activationDate < now() " +
-                               		"AND desactivationDate > now()")
+                           query = "SELECT count(*) " +
+                                   "FROM DaoHighlightDemand " +
+                                   "WHERE activationDate < now() " +
+                                   "AND desactivationDate > now()")
                        }
              )
 // @formatter:on

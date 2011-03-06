@@ -1,25 +1,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://cxf.apache.org/configuration/security"
-	xmlns:http="http://cxf.apache.org/transports/http/configuration"
-	xsi:schemaLocation="
-			http://cxf.apache.org/configuration/security
-			http://cxf.apache.org/schemas/configuration/security.xsd
-			http://cxf.apache.org/transports/http/configuration
-			http://cxf.apache.org/schemas/configuration/http-conf.xsd
-			http://www.springframework.org/schema/beans
-			http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<http:conduit
-		name="{http://impl.ws.payline.experian.com}WebPaymentAPI.http-conduit">
-		<http:authorization>
-			<sec:AuthorizationType>BASIC</sec:AuthorizationType>
-			<sec:Authorization>NTQ2NTIzOTE3NDI1OTE6YXI2TnNIOGdPRmRBeEZYbm01Njg=</sec:Authorization>
-			<!-- Si votre identifiant de compte commerçant est 1234567890 et votre 
-				clé d’accès est DJMESHXYou6LmjQFdH, vous devez encoder en base64 la valeur 
-				de 123456 7890:DJMESHXYou6LmjQFdH. La chaîne obtenue est à ajouter à l’entête 
-				HTTP  -->
-		</http:authorization>
-		<http:tlsClientParameters
-			secureSocketProtocol="SSL">
-		</http:tlsClientParameters>
-	</http:conduit>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://cxf.apache.org/configuration/security"
+    xmlns:http="http://cxf.apache.org/transports/http/configuration"
+    xsi:schemaLocation="
+            http://cxf.apache.org/configuration/security
+            http://cxf.apache.org/schemas/configuration/security.xsd
+            http://cxf.apache.org/transports/http/configuration
+            http://cxf.apache.org/schemas/configuration/http-conf.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <http:conduit
+        name="{http://impl.ws.payline.experian.com}WebPaymentAPI.http-conduit">
+        <http:authorization>
+            <sec:AuthorizationType>BASIC</sec:AuthorizationType>
+            <sec:Authorization>NTQ2NTIzOTE3NDI1OTE6YXI2TnNIOGdPRmRBeEZYbm01Njg=</sec:Authorization>
+            <!-- Si votre identifiant de compte commerçant est 1234567890 et votre 
+                clé d’accès est DJMESHXYou6LmjQFdH, vous devez encoder en base64 la valeur 
+                de 123456 7890:DJMESHXYou6LmjQFdH. La chaîne obtenue est à ajouter à l’entête 
+                HTTP  -->
+        </http:authorization>
+        <http:tlsClientParameters
+            secureSocketProtocol="SSL">
+        </http:tlsClientParameters>
+    </http:conduit>
 </beans>
