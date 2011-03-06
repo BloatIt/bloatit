@@ -27,7 +27,7 @@ import org.hibernate.criterion.Restrictions;
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.framework.utils.PageIterable;
 
-public abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
+public abstract class DaoAbstractQuery<T extends DaoIdentifiable> {
     private  Criteria criteria;
     private  ProjectionList projections = Projections.projectionList();
 
@@ -39,7 +39,7 @@ public abstract class DaoAbstractListFactory<T extends DaoIdentifiable> {
         EQUAL, LESS, GREATER, LESS_EQUAL, GREATER_EQUAL
     }
 
-    public DaoAbstractListFactory( Criteria criteria) {
+    public DaoAbstractQuery( Criteria criteria) {
         super();
         this.criteria = criteria;
     }

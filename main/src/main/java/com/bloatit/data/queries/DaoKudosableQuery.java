@@ -24,22 +24,22 @@ import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
 import com.bloatit.data.SessionManager;
 
-public class DaoKudosableListFactory<T extends DaoKudosable> extends DaoUserContentListFactory<T> {
+public class DaoKudosableQuery<T extends DaoKudosable> extends DaoUserContentQuery<T> {
 
     private static  String IS_POPULARITY_LOCKED = "isPopularityLocked";
     private static  String KUDOS = "kudos";
     private static  String STATE = "state";
     private static  String POPULARITY = "popularity";
 
-    protected DaoKudosableListFactory( Criteria criteria) {
+    protected DaoKudosableQuery( Criteria criteria) {
         super(criteria);
     }
 
-    public DaoKudosableListFactory() {
+    public DaoKudosableQuery() {
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoKudosable.class));
     }
 
-    public void orderByPopularity( DaoAbstractListFactory.OrderType order) {
+    public void orderByPopularity( DaoAbstractQuery.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(POPULARITY));
         } else {

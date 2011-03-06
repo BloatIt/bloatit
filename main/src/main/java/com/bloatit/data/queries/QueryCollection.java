@@ -29,7 +29,6 @@ import org.hibernate.Query;
 import com.bloatit.data.SessionManager;
 import com.bloatit.framework.utils.PageIterable;
 
-// TODO: Auto-generated Javadoc
 /**
  * This is the implementation of the {@link PageIterable} interface using a
  * Hibernate HQL query.

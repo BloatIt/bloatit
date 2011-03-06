@@ -3,8 +3,8 @@ package com.bloatit.model.admin;
 import java.math.BigDecimal;
 
 import com.bloatit.data.DaoOffer;
-import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
-import com.bloatit.data.queries.DaoOfferListFactory;
+import com.bloatit.data.queries.DaoAbstractQuery.Comparator;
+import com.bloatit.data.queries.DaoOfferQuery;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Offer;
 import com.bloatit.model.lists.OfferList;
@@ -13,12 +13,12 @@ public class OfferAdminListFactory extends KudosableAdminListFactory<DaoOffer, O
 
 
     public OfferAdminListFactory() {
-        super(new DaoOfferListFactory());
+        super(new DaoOfferQuery());
     }
 
     @Override
-    protected DaoOfferListFactory getfactory() {
-        return (DaoOfferListFactory) super.getfactory();
+    protected DaoOfferQuery getfactory() {
+        return (DaoOfferQuery) super.getfactory();
     }
 
     @Override

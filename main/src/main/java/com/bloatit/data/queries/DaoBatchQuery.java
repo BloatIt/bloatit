@@ -86,12 +86,12 @@ import com.bloatit.data.SessionManager;
 /**
  * A Factory to create query on the DB and return list of DaoDemand.
  */
-public  class DaoBatchListFactory extends DaoIdentifiableListFactory<DaoBatch> {
+public  class DaoBatchQuery extends DaoIdentifiableQuery<DaoBatch> {
 
     /**
      * Instantiates a new dao demand list factory.
      */
-    public DaoBatchListFactory() {
+    public DaoBatchQuery() {
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoBatch.class));
     }
 

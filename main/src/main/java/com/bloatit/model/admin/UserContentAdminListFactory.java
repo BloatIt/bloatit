@@ -1,8 +1,8 @@
 package com.bloatit.model.admin;
 
 import com.bloatit.data.DaoUserContent;
-import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
-import com.bloatit.data.queries.DaoUserContentListFactory;
+import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
+import com.bloatit.data.queries.DaoUserContentQuery;
 import com.bloatit.model.Group;
 import com.bloatit.model.Member;
 import com.bloatit.model.UserContent;
@@ -15,17 +15,17 @@ public class UserContentAdminListFactory<T extends DaoUserContent, U extends Use
     }
 
     public UserContentAdminListFactory() {
-        super(new DaoUserContentListFactory<T>());
+        super(new DaoUserContentQuery<T>());
     }
 
-    public UserContentAdminListFactory(final DaoUserContentListFactory<T> factory) {
+    public UserContentAdminListFactory(final DaoUserContentQuery<T> factory) {
         super(factory);
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    protected DaoUserContentListFactory<T> getfactory() {
-        return (DaoUserContentListFactory) super.getfactory();
+    protected DaoUserContentQuery<T> getfactory() {
+        return (DaoUserContentQuery) super.getfactory();
     }
 
     public void idEquals(final Integer id) {

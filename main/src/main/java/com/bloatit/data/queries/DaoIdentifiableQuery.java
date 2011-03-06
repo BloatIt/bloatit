@@ -29,21 +29,21 @@ import com.bloatit.data.SessionManager;
  * 
  * @param <T> the generic type
  */
-public class DaoIdentifiableListFactory<T extends DaoIdentifiable> extends DaoAbstractListFactory<T> {
+public class DaoIdentifiableQuery<T extends DaoIdentifiable> extends DaoAbstractQuery<T> {
 
     /**
      * Instantiates a new dao identifiable list factory.
      * 
      * @param criteria the criteria
      */
-    protected DaoIdentifiableListFactory( Criteria criteria) {
+    protected DaoIdentifiableQuery( Criteria criteria) {
         super(criteria);
     }
 
     /**
      * Instantiates a new dao identifiable list factory.
      */
-    public DaoIdentifiableListFactory() {
+    public DaoIdentifiableQuery() {
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoIdentifiable.class));
     }
 

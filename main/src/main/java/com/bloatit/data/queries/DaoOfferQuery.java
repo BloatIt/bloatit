@@ -87,12 +87,12 @@ import com.bloatit.data.SessionManager;
 /**
  * A Factory to create query on the DB and return list of DaoDemand.
  */
-public  class DaoOfferListFactory extends DaoKudosableListFactory<DaoOffer> {
+public  class DaoOfferQuery extends DaoKudosableQuery<DaoOffer> {
 
     /**
      * Instantiates a new dao demand list factory.
      */
-    public DaoOfferListFactory() {
+    public DaoOfferQuery() {
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoOffer.class));
     }
 

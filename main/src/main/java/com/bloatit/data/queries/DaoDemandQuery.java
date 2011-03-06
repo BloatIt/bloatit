@@ -88,7 +88,7 @@ import com.bloatit.data.SessionManager;
 /**
  * A Factory to create query on the DB and return list of DaoDemand.
  */
-public  class DaoDemandListFactory extends DaoKudosableListFactory<DaoDemand> {
+public  class DaoDemandQuery extends DaoKudosableQuery<DaoDemand> {
 
     /** The Constant CONTRIBUTION. */
     private static  String CONTRIBUTION = "contribution";
@@ -108,7 +108,7 @@ public  class DaoDemandListFactory extends DaoKudosableListFactory<DaoDemand> {
     /**
      * Instantiates a new dao demand list factory.
      */
-    public DaoDemandListFactory() {
+    public DaoDemandQuery() {
         super(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoDemand.class));
     }
 

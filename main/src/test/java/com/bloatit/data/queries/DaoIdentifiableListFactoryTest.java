@@ -16,13 +16,13 @@ public class DaoIdentifiableListFactoryTest extends DataTestUnit {
                                                                                                 "Ma super demande !",
                                                                                                 "Ceci est la descption de ma demande :) "), project);
 
-        DaoIdentifiableListFactory<DaoIdentifiable> factory = new DaoIdentifiableListFactory<DaoIdentifiable>();
+        DaoIdentifiableQuery<DaoIdentifiable> factory = new DaoIdentifiableQuery<DaoIdentifiable>();
         factory.idEquals(demand.getId());
         assertEquals(demand, factory.uniqueResult());
     }
 
     public void testCreateCollection() {
-        DaoIdentifiableListFactory<DaoIdentifiable> factory = new DaoIdentifiableListFactory<DaoIdentifiable>();
+        DaoIdentifiableQuery<DaoIdentifiable> factory = new DaoIdentifiableQuery<DaoIdentifiable>();
 
         assertTrue(factory.createCollection().size() != 0);
     }

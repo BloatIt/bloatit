@@ -2,7 +2,7 @@ package com.bloatit.model.admin;
 
 import com.bloatit.data.DaoDemand;
 import com.bloatit.data.DaoDemand.DemandState;
-import com.bloatit.data.queries.DaoDemandListFactory;
+import com.bloatit.data.queries.DaoDemandQuery;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Demand;
 import com.bloatit.model.demand.DemandList;
@@ -10,12 +10,12 @@ import com.bloatit.model.demand.DemandList;
 public class DemandAdminListFactory extends KudosableAdminListFactory<DaoDemand, Demand> {
 
     public DemandAdminListFactory() {
-        super(new DaoDemandListFactory());
+        super(new DaoDemandQuery());
     }
 
     @Override
-    protected DaoDemandListFactory getfactory() {
-        return (DaoDemandListFactory) super.getfactory();
+    protected DaoDemandQuery getfactory() {
+        return (DaoDemandQuery) super.getfactory();
     }
 
     @Override

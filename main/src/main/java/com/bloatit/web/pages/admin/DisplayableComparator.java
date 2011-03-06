@@ -2,7 +2,7 @@ package com.bloatit.web.pages.admin;
 
 import static com.bloatit.framework.webserver.Context.tr;
 
-import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
+import com.bloatit.data.queries.DaoAbstractQuery.Comparator;
 import com.bloatit.framework.webserver.components.form.Displayable;
 
 public enum DisplayableComparator implements Displayable {

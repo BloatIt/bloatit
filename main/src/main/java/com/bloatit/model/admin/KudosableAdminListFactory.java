@@ -2,9 +2,9 @@ package com.bloatit.model.admin;
 
 import com.bloatit.data.DaoKudosable;
 import com.bloatit.data.DaoKudosable.PopularityState;
-import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
-import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
-import com.bloatit.data.queries.DaoKudosableListFactory;
+import com.bloatit.data.queries.DaoAbstractQuery.Comparator;
+import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
+import com.bloatit.data.queries.DaoKudosableQuery;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Kudosable;
 import com.bloatit.model.KudosableInterface;
@@ -12,16 +12,16 @@ import com.bloatit.model.KudosableInterface;
 public class KudosableAdminListFactory<T extends DaoKudosable, U extends KudosableInterface<T>> extends UserContentAdminListFactory<T, U> {
 
     public KudosableAdminListFactory() {
-        super(new DaoKudosableListFactory<T>());
+        super(new DaoKudosableQuery<T>());
     }
 
-    protected KudosableAdminListFactory(final DaoKudosableListFactory<T> factory) {
+    protected KudosableAdminListFactory(final DaoKudosableQuery<T> factory) {
         super(factory);
     }
 
     @Override
-    protected DaoKudosableListFactory<T> getfactory() {
-        return (DaoKudosableListFactory<T>) super.getfactory();
+    protected DaoKudosableQuery<T> getfactory() {
+        return (DaoKudosableQuery<T>) super.getfactory();
     }
 
     public void orderByPopularity(final OrderType order) {

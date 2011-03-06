@@ -6,7 +6,7 @@ import java.util.EnumSet;
 
 import com.bloatit.data.DaoIdentifiable;
 import com.bloatit.data.IdentifiableInterface;
-import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
+import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
 import com.bloatit.framework.webserver.annotations.Optional;
 import com.bloatit.framework.webserver.annotations.ParamContainer;
 import com.bloatit.framework.webserver.annotations.RequestParam;

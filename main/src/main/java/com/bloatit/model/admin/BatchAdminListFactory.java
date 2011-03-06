@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 import com.bloatit.data.DaoBatch;
 import com.bloatit.data.DaoBatch.BatchState;
-import com.bloatit.data.queries.DaoAbstractListFactory.Comparator;
-import com.bloatit.data.queries.DaoBatchListFactory;
+import com.bloatit.data.queries.DaoAbstractQuery.Comparator;
+import com.bloatit.data.queries.DaoBatchQuery;
 import com.bloatit.framework.utils.PageIterable;
 import com.bloatit.model.Batch;
 import com.bloatit.model.lists.BatchList;
@@ -13,12 +13,12 @@ import com.bloatit.model.lists.BatchList;
 public class BatchAdminListFactory extends IdentifiableAdminListFactory<DaoBatch, Batch> {
 
     public BatchAdminListFactory() {
-        super(new DaoBatchListFactory());
+        super(new DaoBatchQuery());
     }
 
     @Override
-    protected DaoBatchListFactory getfactory() {
-        return (DaoBatchListFactory) super.getfactory();
+    protected DaoBatchQuery getfactory() {
+        return (DaoBatchQuery) super.getfactory();
     }
 
     @Override

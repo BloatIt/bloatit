@@ -6,7 +6,7 @@ import java.util.EnumSet;
 
 import com.bloatit.common.Log;
 import com.bloatit.data.DaoKudosable;
-import com.bloatit.data.queries.DaoAbstractListFactory.OrderType;
+import com.bloatit.data.queries.DaoAbstractQuery.OrderType;
 import com.bloatit.framework.exceptions.UnauthorizedOperationException;
 import com.bloatit.framework.webserver.Context;
 import com.bloatit.framework.webserver.annotations.Optional;

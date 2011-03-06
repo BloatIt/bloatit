@@ -26,22 +26,22 @@ import com.bloatit.data.DaoMember;
 import com.bloatit.data.DaoUserContent;
 import com.bloatit.data.SessionManager;
 
-public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIdentifiableListFactory<T> {
+public class DaoUserContentQuery<T extends DaoUserContent> extends DaoIdentifiableQuery<T> {
 
-    private static  String CREATION_DATE = "creationDate";
-    private static  String MEMBER = "member";
-    private static  String MEMBER_LOGIN = "m.member";
-    private static  String FILES = "files";
-    private static  String IS_DELETED = "isDeleted";
-    private static  String AS_GROUP = "asGroup";
+    private static String CREATION_DATE = "creationDate";
+    private static String MEMBER = "member";
+    private static String MEMBER_LOGIN = "m.member";
+    private static String FILES = "files";
+    private static String IS_DELETED = "isDeleted";
+    private static String AS_GROUP = "asGroup";
 
-    protected DaoUserContentListFactory( Criteria criteria) {
+    protected DaoUserContentQuery(Criteria criteria) {
         super(criteria);
         criteria.createAlias("member", "m");
         criteria.setReadOnly(true);
     }
 
-    public DaoUserContentListFactory() {
+    public DaoUserContentQuery() {
         this(SessionManager.getSessionFactory().getCurrentSession().createCriteria(DaoUserContent.class));
     }
 
@@ -53,7 +53,7 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         add(Projections.groupProperty(AS_GROUP));
     }
 
-    public void orderByMember( DaoAbstractListFactory.OrderType order) {
+    public void orderByMember(DaoAbstractQuery.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(MEMBER_LOGIN));
         } else {
@@ -61,7 +61,7 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         }
     }
 
-    public void orderByAsGroup( DaoAbstractListFactory.OrderType order) {
+    public void orderByAsGroup(DaoAbstractQuery.OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(AS_GROUP));
         } else {
@@ -69,7 +69,7 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         }
     }
 
-    public void orderByCreationDate( OrderType order) {
+    public void orderByCreationDate(OrderType order) {
         if (order == OrderType.ASC) {
             addOrder(Order.asc(CREATION_DATE));
         } else {
@@ -101,11 +101,11 @@ public class DaoUserContentListFactory<T extends DaoUserContent> extends DaoIden
         add(Restrictions.isNull(AS_GROUP));
     }
 
-    public void fromMember( DaoMember member) {
+    public void fromMember(DaoMember member) {
         add(Restrictions.eq(MEMBER, member));
     }
 
-    public void fromGroup( DaoGroup group) {
+    public void fromGroup(DaoGroup group) {
         add(Restrictions.eq(AS_GROUP, group));
     }
 
